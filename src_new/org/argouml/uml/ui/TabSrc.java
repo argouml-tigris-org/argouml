@@ -37,7 +37,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import org.tigris.gef.presentation.*;
 
 import org.argouml.ui.*;
-import org.argouml.uml.generator.*;
+import org.argouml.language.java.generator.*;
 
 public class TabSrc extends TabText {
   ////////////////////////////////////////////////////////////////
@@ -58,7 +58,7 @@ public class TabSrc extends TabText {
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
     //System.out.println("TabSrc getting src for " + modelObject);
-    return GeneratorDisplay.Generate(modelObject);
+    return GeneratorJava.Generate(modelObject);
   }
 
   protected void parseText(String s) {

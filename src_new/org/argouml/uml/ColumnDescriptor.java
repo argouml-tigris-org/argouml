@@ -103,6 +103,9 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor BaseForComponentInstance = new ColumnBaseForComponentInstance();
   public static ColumnDescriptor BaseForNodeInstance = new ColumnBaseForNodeInstance();
 
+  public static ColumnDescriptor Communication = new ColumnCommunication();
+  public static ColumnDescriptor ActionType = new ColumnActionType();
+  public static ColumnDescriptor Action = new ColumnAction();
 
   
   ////////////////////////////////////////////////////////////////
@@ -706,6 +709,10 @@ class ColumnEntry extends ColumnDescriptor {
 	public void setValueFor(Object target, Object value) {
 		if (!(target instanceof MState)) return;
     if (!(value instanceof String)) return;
+
+
+    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX");
+
     MState st = (MState) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
@@ -870,7 +877,7 @@ class ColumnEffect extends ColumnDescriptor {
     MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    tr.setEffect(pd.parseActions(s));
+    tr.setEffect(pd.parseAction(s));
   }
 } /* end class ColumnEffect */
 
@@ -1330,5 +1337,67 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
   }  
 
 } /* end class ColumnBaseForNodeInstance */
+
+class ColumnCommunication extends ColumnDescriptor {
+  ColumnCommunication() { super("Communication", String.class, true); }
+
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MActionImpl)) return null;
+    MAction act = (MAction) target;
+    boolean isAsync = act.isAsynchronous();
+    String async = "";
+    if (isAsync) async = "true";
+    else async = "false";
+    return async;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }
+
+} /* end class ColumnCommunication */
+
+class ColumnActionType extends ColumnDescriptor {
+  ColumnActionType() { super("Action Type", String.class, true); }
+
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MActionImpl)) return null;
+    MAction act = (MAction) target;
+    String type = "";
+    if (act instanceof MCallAction) type = "Call";
+    else if (act instanceof MSendAction) type = "Send";
+    else if (act instanceof MCreateAction) type = "Create";
+    else if (act instanceof MReturnAction) type = "Return";
+    else if (act instanceof MDestroyAction) type = "Destroy";
+    return type;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }
+
+} /* end class ColumnActionType */
+
+class ColumnAction extends ColumnDescriptor {
+  ColumnAction() { super("Action", String.class, true); }
+
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MStimulusImpl)) return null;
+    MStimulus sti = (MStimulus) target;
+    String action = "";
+    if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
+	action = sti.getDispatchAction().getName();
+    return action;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MStimulusImpl)) return;
+    if (!(value instanceof String)) return;
+    MStimulus sti = (MStimulus) target;
+    String _value = (String) value;
+    if (_value != null) {
+      ((MAction)sti.getDispatchAction()).setName(_value);
+    }
+  }
+
+} /* end class ColumnAction */
 
 

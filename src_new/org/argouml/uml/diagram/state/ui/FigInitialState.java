@@ -101,6 +101,8 @@ public class FigInitialState extends FigStateVertex {
       Selection sel = null;
       if (getOwner() != null) {
 	  pstate = (MPseudostate)getOwner();
+          if (pstate.getContainer().getStateMachine()==null) return sel;
+
 	  if (pstate.getContainer().getStateMachine() instanceof MActivityGraph) {
 	      sel = new SelectionActionState(this);
 	      ((SelectionActionState)sel).setIncomingButtonEnabled(false);
@@ -116,7 +118,7 @@ public class FigInitialState extends FigStateVertex {
       }
       return sel;
   }
-    
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -146,7 +148,7 @@ public class FigInitialState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // Event handlers
-  
+
   public void mouseClicked(MouseEvent me) { }
   public void keyPressed(KeyEvent ke) { }
 

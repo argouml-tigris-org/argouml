@@ -69,6 +69,8 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
     public GraphModel makeGraphModel() { return null; }
     public Object makeEdge() { return null; }
 
-    public Object makeNode() { return _object; }
+    public Object makeNode() {
+        return _object;
+    }
 
 } /* end class ActionAddExistingNode */

@@ -122,7 +122,7 @@ public class SelectionObject extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = MObject.class;
+    Class nodeClass = MObjectImpl.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {

@@ -152,7 +152,21 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof MAssociationRole);
+    if(_edges.contains(edge)) return false;
+    Object end0 = null, end1 = null;
+    if (edge instanceof MAssociationRole) {
+      List conns = ((MAssociationRole)edge).getConnections();
+      if (conns.size() < 2) return false;
+      MAssociationEndRole ae0 = (MAssociationEndRole) conns.get(0);
+      MAssociationEndRole ae1 = (MAssociationEndRole) conns.get(1);
+      if (ae0 == null || ae1 == null) return false;
+      end0 = ae0.getType();
+      end1 = ae1.getType();
+    }
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
   }
 
   /** Remove the given node from the graph. */
@@ -189,7 +203,17 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
     fireEdgeAdded(edge);
   }
 
-  public void addNodeRelatedEdges(Object node) { }
+  public void addNodeRelatedEdges(Object node) {
+    if ( node instanceof MClassifier ) {
+      Collection ends = ((MClassifier)node).getAssociationEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MAssociationEndRole ae = (MAssociationEndRole) iter.next();
+         if(canAddEdge(ae.getAssociation()))
+           addEdge(ae.getAssociation());
+      }
+    }
+ }
 
 
   /** Remove the given edge from the graph. */

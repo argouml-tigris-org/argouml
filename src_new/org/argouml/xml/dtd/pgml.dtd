@@ -103,7 +103,8 @@
             xml:link       CDATA #FIXED "simple"
             href       CDATA #IMPLIED
             refx       CDATA #IMPLIED
-            refy       CDATA #IMPLIED'
+            refy       CDATA #IMPLIED
+            dynobjects      CDATA #IMPLIED'
 >
 <!-- =============================================================== -->
 <!--

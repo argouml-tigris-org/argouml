@@ -24,8 +24,10 @@
 package org.argouml.ui;
 
 import java.util.*;
+import java.util.zip.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.OutputStreamWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
@@ -40,6 +42,7 @@ import javax.swing.filechooser.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -57,10 +60,15 @@ import org.argouml.persistence.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.ui.*;
-import org.argouml.ocl.*;
+
+//
+//   Template reader, has nothing to do with OCL
+//
+import org.tigris.gef.ocl.*;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.ui.*;
+import org.argouml.uml.reveng.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.activity.ui.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
@@ -68,6 +76,7 @@ import org.argouml.uml.diagram.deployment.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
 import org.argouml.util.*;
 import org.argouml.xml.argo.ArgoParser;
 
@@ -88,6 +97,7 @@ public class Actions {
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
+  public static UMLAction ImportFromSources = new ActionImportFromSources();
   public static UMLAction SaveGIF = new ActionSaveGIF();
 //   public static UMLAction SavePS = new ActionSavePS();
   public static UMLAction SaveGraphics = new ActionSaveGraphics();
@@ -128,6 +138,7 @@ public class Actions {
   public static UMLAction ActivityDiagram = new ActionActivityDiagram();
   public static UMLAction CollaborationDiagram = new ActionCollaborationDiagram();
   public static UMLAction DeploymentDiagram = new ActionDeploymentDiagram();
+  public static UMLAction SequenceDiagram = new ActionSequenceDiagram();
 
   //public static UMLAction Class = new ActionClass();
   //public static UMLAction MInterface = new ActionInterface();
@@ -259,7 +270,7 @@ class ActionNew extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
 	JOptionPane.showConfirmDialog(pb, t, t,
@@ -287,7 +298,7 @@ class ActionOpenProject extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
 	JOptionPane.showConfirmDialog(pb, t, t,
@@ -304,42 +315,33 @@ class ActionOpenProject extends UMLAction {
     }
 
     try {
+        String directory = Globals.getLastDirectory();
+        JFileChooser chooser = new JFileChooser(directory);
 
-      String directory = Globals.getLastDirectory();
-      JFileChooser chooser = new JFileChooser(directory);
-     	
-      if (chooser == null) chooser = new JFileChooser();
+        if (chooser == null) chooser = new JFileChooser();
 
-      chooser.setDialogTitle("Open Project");
-      FileFilter filter = FileFilters.ArgoFilter;
-      chooser.addChoosableFileFilter(filter);
-      chooser.setFileFilter(filter);
+        chooser.setDialogTitle("Open Project");
+        SuffixFilter filter = FileFilters.ZArgoFilter;
+        chooser.addChoosableFileFilter(filter);
+        chooser.addChoosableFileFilter(FileFilters.ArgoFilter);
+        chooser.addChoosableFileFilter(FileFilters.XMIFilter);
+        chooser.setFileFilter(filter);
 
-      int retval = chooser.showOpenDialog(pb);
-      if (retval == 0) {
-	File theFile = chooser.getSelectedFile();
-	if (theFile != null) {
-	  String path = chooser.getSelectedFile().getParent();
-	  String filename = chooser.getSelectedFile().getName();
-          filename = path + separator + filename;
-	  if (!filename.endsWith(Project.FILE_EXT)) {
-	    filename += Project.FILE_EXT;
-	    theFile = new File(filename);
-	  }
-	  Globals.setLastDirectory(path);
-	  if (filename != null) {
-	    pb.showStatus("Reading " + path + filename + "...");
-	    URL url = Util.fileToURL(theFile);
-	    ArgoParser.SINGLETON.readProject(url);
-	    p = ArgoParser.SINGLETON.getProject();
-	    p.loadAllMembers();
-	    p.postLoad();
-	    pb.setProject(p);
-	    pb.showStatus("Read " + filename);
-	    return;
-	  }
-	}
-      }
+        int retval = chooser.showOpenDialog(pb);
+        if (retval == 0) {
+	    File theFile = chooser.getSelectedFile();
+	    if (theFile != null) {
+	        String path = theFile.getParent();
+	        Globals.setLastDirectory(path);
+                URL url = theFile.toURL();
+                if(url != null) {
+                     p = Project.loadProject(url);
+                    pb.setProject(p);
+                    pb.showStatus("Read " + url.toString());
+                }
+	        return;
+	    }
+        }
     }
     //catch (FileNotFoundException ignore) {
     //  System.out.println("got an FileNotFoundException");
@@ -368,6 +370,14 @@ class ActionSaveProject extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite) {
+
+      StringBuffer msg = new StringBuffer();
+      msg.append("This is a developer release of ArgoUML. You should not use it \n");
+      msg.append("for production use, it's only for testing. You may save your models,\n");
+      msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
+      msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
+      msg.append("and get one there. Thank you.");
+      JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);
     try {
       if (expander == null) {
 	java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
@@ -379,7 +389,7 @@ class ActionSaveProject extends UMLAction {
       //       String path = p.getPathname();
       System.out.println("ActionSaveProject at " + p.getURL());
       //       System.out.println("ActionSaveProject name = " + name);
-      String fullpath = "Untitled.argo";
+      String fullpath = "Untitled.zargo";
       if (p.getURL() != null) fullpath = p.getURL().getFile();
       System.out.println("filename is " + fullpath);
       if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
@@ -389,15 +399,22 @@ class ActionSaveProject extends UMLAction {
 	System.out.println("Are you sure you want to overwrite " +
 			   fullpath + "?");
       }
-      FileWriter fw = new FileWriter(f);
+
+      ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+      ZipEntry zipEntry = new ZipEntry(p.getName());
+      zos.putNextEntry(zipEntry);
+      OutputStreamWriter fw = new OutputStreamWriter(zos);
       p.preSave();
       expander.expand(fw, p, "", "");
+      zos.flush();
+      zos.closeEntry();
       String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
       System.out.println("Dir ==" + parentDirName);
-      p.saveAllMembers(parentDirName, overwrite);
+      p.saveAllMembers(parentDirName, overwrite, fw, zos);
       //needs-more-work: in future allow independent saving
       p.postSave();
       fw.close();
+      // zos.close();
       pb.showStatus("Wrote " + p.getURL());
       return true;
     }
@@ -436,6 +453,15 @@ class ActionSaveProjectAs extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite) {
+
+      StringBuffer msg = new StringBuffer();
+      msg.append("This is a developer release of ArgoUML. You should not use it \n");
+      msg.append("for production use, it's only for testing. You may save your models,\n");
+      msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
+      msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
+      msg.append("and get one there. Thank you.");
+      JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);
+
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
@@ -455,7 +481,7 @@ class ActionSaveProjectAs extends UMLAction {
       if (chooser == null) chooser = new JFileChooser();
 
       chooser.setDialogTitle("Save Project: " + p.getName());
-      FileFilter filter = FileFilters.ArgoFilter;
+      FileFilter filter = FileFilters.ZArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
 
@@ -466,7 +492,7 @@ class ActionSaveProjectAs extends UMLAction {
 	  //String pathname = chooser.getSelectedFile().getAbsolutePath();
 	  String path = chooser.getSelectedFile().getParent();
 	  String name = chooser.getSelectedFile().getName();
-	  if (!name.endsWith(".argo")) name += ".argo";
+	  if (!name.endsWith(".zargo")) name += ".zargo";
 	  if (!path.endsWith(separator)) path += separator;
 	  pb.showStatus("Writing " + path + name + "...");
 	  p.setFile(chooser.getSelectedFile());
@@ -477,13 +503,26 @@ class ActionSaveProjectAs extends UMLAction {
 	    System.out.println("Are you sure you want to overwrite " +
 			       name + "?");
 	  }
-	  FileWriter fw = new FileWriter(f);
+
+	  ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
+	  ZipEntry zipEntry = new ZipEntry(p.getName());
+	  zos.putNextEntry(zipEntry);
+	  OutputStreamWriter fw = new OutputStreamWriter(zos);
 	  p.preSave();
 	  expander.expand(fw, p, "", "");
-	  p.saveAllMembers(path, overwrite);
-	  //needs-more-work: in future allow indendent saving
+	  fw.flush();
+	  zos.closeEntry();
+// 	  String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
+// 	  System.out.println("Dir ==" + parentDirName);
+	  p.saveAllMembers(path, overwrite, fw, zos);
+// 	  FileWriter fw = new FileWriter(f);
+// 	  p.preSave();
+// 	  expander.expand(fw, p, "", "");
+// 	  p.saveAllMembers(path, overwrite);
+// 	  //needs-more-work: in future allow indendent saving
 	  p.postSave();
 	  fw.close();
+	  //	  zos.close();
 	  pb.showStatus("Wrote " + path + name);
 	  pb.updateTitle();
 	  return true;
@@ -516,12 +555,12 @@ class ActionLoadModelFromDB extends UMLAction {
 	public ActionLoadModelFromDB() {
 		super("Load model from DB", NO_ICON);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 	  // when the action is performed, i.e. someone clicked on the menuitem,
 	  // create a new DBLoader, ask the user for the models name to load,
 	  // then load it and put it into an empty project.
-		
+
 		String modelName = JOptionPane.showInputDialog("What is the name of the model?");
 		if ((modelName == null)|| (modelName.equals(""))) return;
 		DBLoader loader = new DBLoader();
@@ -543,13 +582,13 @@ class ActionLoadModelFromDB extends UMLAction {
 		try {
 			java.io.InputStream is = new java.io.FileInputStream(configFile);
 			props.load(is);
-		}	
+		}
 		catch (java.io.IOException e) {
 			return false;
 		}
 		return true;
 	}
-	
+
 } /* end class ActionLoadModelFromDB */
 
 
@@ -566,11 +605,11 @@ class ActionStoreModelToDB extends UMLAction {
 	  // then store it. Simple as this.
 
 	  DBWriter writer = new DBWriter();
-	  
+
 	  if (writer.hasConnection()) {
 	      ProjectBrowser pb = ProjectBrowser.TheInstance;
 	      Project p =  pb.getProject();
-	      
+
 	      MNamespace nm = p.getCurrentNamespace();
 	      if (!(nm instanceof MModel)) {
 		  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
@@ -606,14 +645,70 @@ class ActionStoreModelToDB extends UMLAction {
 		try {
 			java.io.InputStream is = new java.io.FileInputStream(configFile);
 			props.load(is);
-		}	
+		}
 		catch (java.io.IOException e) {
 			return false;
 		}
 		return true;
 	}
-	
+
 } /* end class ActionStoreModelToDB */
+
+/* class ActionImportFromSources */
+class ActionImportFromSources extends UMLAction {
+    public static final String separator = "/"; //System.getProperty("file.separator");
+
+    public ActionImportFromSources() {
+        super("Import sources...");
+    }
+
+    public void actionPerformed(ActionEvent event) {
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        Project p = pb.getProject();
+
+        try {
+            String directory = Globals.getLastDirectory();
+            JFileChooser chooser = new JFileChooser(directory);
+
+            if (chooser == null) chooser = new JFileChooser();
+
+            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+            chooser.setDialogTitle("Import sources");
+            //      FileFilter filter = FileFilters.ArgoFilter;
+            //chooser.addChoosableFileFilter(filter);
+            //chooser.setFileFilter(filter);
+
+            int retval = chooser.showOpenDialog(pb);
+
+            if (retval == 0) {
+                File theFile = chooser.getSelectedFile();
+                if (theFile != null) {
+                    String path = chooser.getSelectedFile().getParent();
+                    String filename = chooser.getSelectedFile().getName();
+                    filename = path + separator + filename;
+                    //    if (!filename.endsWith(Project.FILE_EXT)) {
+                    //  filename += Project.FILE_EXT;
+                    //  theFile = new File(filename);
+                    //}
+                    Globals.setLastDirectory(path);
+                    if (filename != null) {
+                        pb.showStatus("Parsing " + path + filename + "...");
+                        //p = ArgoParser.SINGLETON.getProject();
+                        Import.doFile(p, theFile);
+                        p.postLoad();
+                        pb.setProject(p);
+                        pb.showStatus("Parsed " + filename);
+                        return;
+                    }
+                }
+            }
+        } catch (Exception exception) {
+            System.out.println("got an Exception in ActionImportFromSources");
+            exception.printStackTrace();
+        }
+    }
+}
+/* end class ActionImportFromSources */   
 
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }
@@ -651,7 +746,7 @@ class ActionSaveGIF extends UMLAction {
       String defaultName = ((Diagram)target).getName();
       defaultName = Util.stripJunk(defaultName);
 
-      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // FIX - It's probably worthwhile to abstract and factor this chooser
       // and directory stuff. More file handling is coming, I'm sure.
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -705,11 +800,11 @@ class ActionSaveGIF extends UMLAction {
 	  }
 	}
       }
-      catch( FileNotFoundException ignore ) 
+      catch( FileNotFoundException ignore )
 	{
 	  System.out.println( "got a FileNotFoundException" );
 	}
-      catch( IOException ignore ) 
+      catch( IOException ignore )
 	{
 	  System.out.println( "got an IOException" );
 	  ignore.printStackTrace();
@@ -740,7 +835,7 @@ class ActionSaveGraphics extends UMLAction {
       String defaultName = ((Diagram)target).getName();
       defaultName = Util.stripJunk(defaultName);
 
-      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // FIX - It's probably worthwhile to abstract and factor this chooser
       // and directory stuff. More file handling is coming, I'm sure.
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -766,7 +861,7 @@ class ActionSaveGraphics extends UMLAction {
 	chooser.addChoosableFileFilter( FileFilters.GIFFilter );
 	chooser.addChoosableFileFilter( FileFilters.PSFilter );
 	chooser.addChoosableFileFilter( FileFilters.EPSFilter );
-	//chooser.addChoosableFileFilter( FileFilters.SVGFilter );
+	chooser.addChoosableFileFilter( FileFilters.SVGFilter );
 	// concerning the following lines: is .GIF preferred?
 	chooser.setFileFilter( FileFilters.GIFFilter );
 	File def = new File(  defaultName + "."
@@ -782,14 +877,14 @@ class ActionSaveGraphics extends UMLAction {
 	    String extension=SuffixFilter.getExtension(name);
 
 	    CmdSaveGraphics cmd=null;
-	    if (FileFilters.PSFilter._suffix.equals(extension)) 
+	    if (FileFilters.PSFilter._suffix.equals(extension))
 		cmd = new CmdSavePS();
-	    else if (FileFilters.EPSFilter._suffix.equals(extension)) 
+	    else if (FileFilters.EPSFilter._suffix.equals(extension))
 		cmd = new CmdSaveEPS();
-	    else if (FileFilters.GIFFilter._suffix.equals(extension)) 
+	    else if (FileFilters.GIFFilter._suffix.equals(extension))
 		cmd = new CmdSaveGIF();
-	    //else if (FileFilters.SVGFilter._suffix.equals(extension)) 
-		//cmd = new CmdSaveSVG();
+	    else if (FileFilters.SVGFilter._suffix.equals(extension))
+		cmd = new CmdSaveSVG();
 	    else {
 		pb.showStatus("Unknown graphics file type withextension "
 			      +extension);
@@ -815,11 +910,11 @@ class ActionSaveGraphics extends UMLAction {
 	  }
 	}
       }
-      catch( FileNotFoundException ignore ) 
+      catch( FileNotFoundException ignore )
 	{
 	  System.out.println( "got a FileNotFoundException" );
 	}
-      catch( IOException ignore ) 
+      catch( IOException ignore )
 	{
 	  System.out.println( "got an IOException" );
 	  ignore.printStackTrace();
@@ -842,15 +937,24 @@ class ActionExit extends UMLAction {
   public void actionPerformed(ActionEvent ae) {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
-    if (p != null) { // && p.getNeedsSave()) {
+    if (p != null && p.needsSave()) {
       String t = "Save changes to " + p.getName();
       int response =
-	JOptionPane.showConfirmDialog(pb, t, t,
-				      JOptionPane.YES_NO_CANCEL_OPTION);
+        JOptionPane.showConfirmDialog(pb, t, t,
+                                      JOptionPane.YES_NO_CANCEL_OPTION);
       if (response == JOptionPane.CANCEL_OPTION) return;
-      if (response == JOptionPane.YES_OPTION)
-	if (!((ActionSaveProjectAs)Actions.SaveProjectAs).trySave(false))
-	  return;
+      if (response == JOptionPane.YES_OPTION) {
+        boolean safe = false;
+        if (((ActionSaveProject)Actions.SaveProject).shouldBeEnabled()) {
+          safe = ((ActionSaveProject)Actions.SaveProject).trySave(true);
+        }
+        if (!safe) {
+          safe = ((ActionSaveProjectAs)Actions.SaveProjectAs).trySave(false);
+        }
+        if (!safe) {
+          return;
+        }
+      }
     }
     System.exit(0);
   }
@@ -877,7 +981,16 @@ class ActionCut extends UMLAction {
 class ActionCopy extends UMLChangeAction {
   public ActionCopy() { super("Copy"); }
   public boolean shouldBeEnabled() {
-    int size = Globals.curEditor().getSelectionManager().selections().size();
+    int size = 0;
+    try {
+      size = Globals.curEditor().getSelectionManager().selections().size();
+    }
+    //
+    //   this can happen when running in a debugger, not sure why
+    //
+    catch(Exception e) {
+      size = 0;
+    }
     return (size > 0);
   }
   public void actionPerformed(ActionEvent ae) {
@@ -906,9 +1019,15 @@ class ActionPaste extends UMLChangeAction {
 class ActionDeleteFromDiagram extends UMLChangeAction {
   public ActionDeleteFromDiagram() { super("Remove From Diagram", NO_ICON); }
   public boolean shouldBeEnabled() {
-    Editor ce = Globals.curEditor();
-    Vector figs = ce.getSelectionManager().getFigs();
-    return figs.size() > 0;
+    int size = 0;
+    try {
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      size = figs.size();
+    }
+    catch(Exception e) {
+    }
+    return size > 0;
   }
   public void actionPerformed(ActionEvent ae) {
     Editor ce = Globals.curEditor();
@@ -925,10 +1044,14 @@ class ActionRemoveFromModel extends UMLChangeAction {
     Object target = pb.getDetailsTarget();
     if (target instanceof MModelElement) return true;
 
+    int size = 0;
+    try {
     // needs-more-work: trashing diagrams
-    Editor ce = Globals.curEditor();
-    Vector figs = ce.getSelectionManager().getFigs();
-    int size = figs.size();
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      size = figs.size();
+    }
+    catch(Exception e) {}
     if (size > 0) return true;
     //     for (int i = 0; i < size; i++) {
     //       Fig f = (Fig) figs.elementAt(i);
@@ -950,22 +1073,26 @@ class ActionRemoveFromModel extends UMLChangeAction {
 
     // needs-more-work: trashing diagrams
     else {
-      Editor ce = Globals.curEditor();
-      Vector figs = ce.getSelectionManager().getFigs();
-      int size = figs.size();
-      for (int i = 0; i < size; i++) {
+      int size = 0;
+      try {
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        size = figs.size();
+        for (int i = 0; i < size; i++) {
 		  Fig f = (Fig) figs.elementAt(i);
 		  Object owner = f.getOwner();
 		  if (owner instanceof MModelElement) {
 			  if (!sureRemove((MModelElement)owner)) return;
 		  }
-      }
-      for (int i = 0; i < size; i++) {
+        }
+        for (int i = 0; i < size; i++) {
 		  Fig f = (Fig) figs.elementAt(i);
 		  Object owner = f.getOwner();
 		  if (owner == null) f.delete();
 		  else if (owner instanceof MModelElement) p.moveToTrash(owner);
+        }
       }
+      catch(Exception ex) {}
     }
     super.actionPerformed(ae);
   }
@@ -1179,7 +1306,7 @@ class ActionClassDiagram extends UMLChangeAction {
     MNamespace ns = p.getCurrentNamespace();
     if (target instanceof MPackage) ns = (MNamespace) target;
     try {
-      Diagram d = new UMLClassDiagram(ns);
+      ArgoDiagram d = new UMLClassDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1199,7 +1326,7 @@ class ActionUseCaseDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MPackage) ns = (MNamespace) target;
-      Diagram d  = new UMLUseCaseDiagram(ns);
+      ArgoDiagram d  = new UMLUseCaseDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1320,7 +1447,7 @@ class ActionDeploymentDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MPackage) ns = (MNamespace) target;
-      Diagram d  = new UMLDeploymentDiagram(ns);
+      ArgoDiagram d  = new UMLDeploymentDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       ProjectBrowser.TheInstance.setTarget(d);
@@ -1329,6 +1456,28 @@ class ActionDeploymentDiagram extends UMLChangeAction {
     super.actionPerformed(ae);
   }
 } /* end class ActionDeploymentDiagram */
+
+
+class ActionSequenceDiagram extends UMLChangeAction {
+  public ActionSequenceDiagram() { super("SequenceDiagram"); }
+
+  public void actionPerformed(ActionEvent ae) {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
+      MNamespace ns = p.getCurrentNamespace();
+      if (target instanceof MModel) ns = (MNamespace) target;
+      ArgoDiagram d  = new UMLSequenceDiagram(ns);
+      p.addMember(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
+    }
+    catch (PropertyVetoException pve) { }
+    super.actionPerformed(ae);
+  }
+
+    
+}  /* end class ActionSequenceDiagram */
 
 ////////////////////////////////////////////////////////////////
 // model element creation actions
@@ -1426,24 +1575,24 @@ class ActionAddInternalTrans extends UMLChangeAction {
     Object target = pb.getDetailsTarget();
     if (!(target instanceof MState)) return;
     MState st = (MState) target;
-	MTransition t = new MTransitionImpl();
+    /*	MTransition t = new MTransitionImpl();
 	t.setSource(st);
 	t.setTarget(st);
 	MStateMachine sm = (MStateMachine)st.getStateMachine();
 	sm.addTransition(t);
-	
+
 	// which nsuml-Event to generate as default? is SignalEvent ok?
 	MEvent triggerEvent = new MSignalEventImpl();
 	triggerEvent.setName("event");
 	t.setTrigger(triggerEvent);
-	
+
 	MGuard guard = new MGuardImpl();
 	guard.setName("condition");
 	t.setGuard(guard);
 	MActionSequence as = new MActionSequenceImpl();
 	as.setName("actions");
 	t.setEffect(as);
-	t.setState(st);
+	t.setState(st);*/
 	super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
@@ -1514,13 +1663,8 @@ class ActionAddAttribute extends UMLChangeAction {
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
-	MClassifier intType = p.findType("int");
-	MAttribute attr = new MAttributeImpl();
-	attr.setName("newAttr");
-	attr.setType(intType);
-	attr.setInitialValue(new MExpression("Java", "0"));
-	attr.setVisibility(MVisibilityKind.PUBLIC);
-	cls.addFeature(attr);
+
+	MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
 	super.actionPerformed(ae);
     }
 
@@ -1538,20 +1682,14 @@ class ActionAddOperation extends UMLChangeAction {
 
     public ActionAddOperation() { super("Add Operation"); }
 
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae) {	
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
+
 	MClassifier cls = (MClassifier) target;
-	MClassifier voidType = p.findType("void");
-	MOperation oper = new MOperationImpl();
-	MParameter returnParameter = new MParameterImpl();
-	returnParameter.setKind(MParameterDirectionKind.RETURN);
-	oper.addParameter(returnParameter);
-	oper.setName("newOperation");
-	oper.setVisibility(MVisibilityKind.PUBLIC);
-	cls.addFeature(oper);
+	MOperation oper=MMUtil.SINGLETON.buildOperation(cls);
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {
@@ -1563,68 +1701,50 @@ class ActionAddOperation extends UMLChangeAction {
 
 class ActionAddMessage extends UMLChangeAction {
 	public ActionAddMessage() { super("Add Message"); }
-	
-	public void actionPerformed(ActionEvent ae) {
-		ProjectBrowser pb = ProjectBrowser.TheInstance;
-		Object target = pb.getDetailsTarget();
-		Object d = pb.getTarget();
-		if (!(d instanceof UMLCollaborationDiagram)) return;
-		UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
-		if (!(target instanceof MAssociationRole)) return;
-		MAssociationRole ar = (MAssociationRole) target;
 
-		Editor ce = Globals.curEditor();
-		GraphModel gm = ce.getGraphModel();
-		GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-		Layer lay = ce.getLayerManager().getActiveLayer();
-		SelectionManager sm = ce.getSelectionManager();
-		Vector figs = sm.selections();
-		Selection cf = (Selection) figs.firstElement();
-		FigEdge curFig = (FigEdge) cf.getContent();
-		Point center = curFig.center();
-		
-		String nextStr = "" + (cd.getNumMessages() + 1);
-		MMessage msg = new MMessageImpl();
-		msg.setName(nextStr);
-		Collection ascEnds = ar.getConnections();
-		
-		if (ascEnds.size() != 2 ) return;
-		Iterator iter = ascEnds.iterator();
-		MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
-		MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
-		
-		// by default the "first" Classifierrole is the Sender,
-		// should be configurable in PropPanelMessage!
-		MClassifierRole crSrc = (MClassifierRole)aer1.getType();
-		MClassifierRole crDst = (MClassifierRole)aer2.getType();
-		msg.setSender(crSrc);
-		msg.setReceiver(crDst);
-		MUninterpretedAction ua = new MUninterpretedActionImpl();
-		msg.setAction(ua);
-		ar.addMessage(msg);
-		MCollaboration collab = (MCollaboration) ar.getNamespace();
-		// collab.addOwnedElement(msg);
-		Collection interactions = collab.getInteractions();
-		// at the moment there can be only one Interaction per Collaboration
-		Iterator iter2 = interactions.iterator();
-		((MInteraction)iter2.next()).addMessage(msg);
-		FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
-		Collection messages = ar.getMessages();
-		int size = messages.size();
-		int percent = 15 + size*10;
-		if (percent > 100) percent = 100;
-		curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
-		curFig.updatePathItemLocations();
-		lay.add(pers);
-		super.actionPerformed(ae);
-	}
+        public void actionPerformed(ActionEvent ae) {
+	    ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    Object target = pb.getDetailsTarget();
+	    Object d = pb.getTarget();
 	
+	    if (!(target instanceof MAssociationRole)) return;
+	    MAssociationRole ar = (MAssociationRole) target;
+
+	    String nextStr="";
+	    if (d instanceof UMLCollaborationDiagram){
+		UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
+		nextStr = "" + (cd.getNumMessages() + 1);
+	    }
+	    
+	    MMessage msg=MMUtil.SINGLETON.buildMessage(ar,nextStr);
+
+	    Editor ce = Globals.curEditor();
+	    GraphModel gm = ce.getGraphModel();
+	    GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
+	    Layer lay = ce.getLayerManager().getActiveLayer();
+	    SelectionManager sm = ce.getSelectionManager();
+	    Vector figs = sm.selections();
+	    Selection cf = (Selection) figs.firstElement();
+	    FigEdge curFig = (FigEdge) cf.getContent();
+	    Point center = curFig.center();
+	
+	    FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
+	    Collection messages = ar.getMessages();
+	    int size = messages.size();
+	    int percent = 15 + size*10;
+	    if (percent > 100) percent = 100;
+	    curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
+	    curFig.updatePathItemLocations();
+	    lay.add(pers);
+	    super.actionPerformed(ae);
+	}
+
 	public boolean shouldBeEnabled() {
 		ProjectBrowser pb = ProjectBrowser.TheInstance;
 		Object target = pb.getDetailsTarget();
 		return super.shouldBeEnabled() && target instanceof MAssociationRole;
 	}
-} 
+}
 
 
 /* end class ActionAddMessage */
@@ -1699,19 +1819,21 @@ class ActionGenerateOne extends UMLAction {
 
   public boolean shouldBeEnabled() {
     if (!super.shouldBeEnabled()) return false;
-    Editor ce = org.tigris.gef.base.Globals.curEditor();
-    Vector sels = ce.getSelectionManager().getFigs();
-    java.util.Enumeration enum = sels.elements();
     boolean foundOne = false;
-    while (enum.hasMoreElements()) {
-      Fig f = (Fig) enum.nextElement();
-      Object owner = f.getOwner();
-      if (!(owner instanceof MClass) && !(owner instanceof MInterface))
-	continue;
-      MClassifier cls = (MClassifier) owner;
-      String name = cls.getName();
-      if (name == null || name.length() == 0) return false;
-      foundOne = true;
+    Editor ce = org.tigris.gef.base.Globals.curEditor();
+    if(ce != null) {
+      Vector sels = ce.getSelectionManager().getFigs();
+      java.util.Enumeration enum = sels.elements();
+      while (enum.hasMoreElements()) {
+        Fig f = (Fig) enum.nextElement();
+        Object owner = f.getOwner();
+        if (!(owner instanceof MClass) && !(owner instanceof MInterface))
+          continue;
+        MClassifier cls = (MClassifier) owner;
+        String name = cls.getName();
+        if (name == null || name.length() == 0) return false;
+        foundOne = true;
+      }
     }
     return foundOne;
   }
@@ -1827,7 +1949,7 @@ class ToDoItemAction extends UMLAction {
   }
 
   public void updateEnabled(Object target) {
-	  if (target == null) return;
+    if (target == null) return;
     _target = target;
     setEnabled(shouldBeEnabled(target));
   }
@@ -1922,7 +2044,8 @@ class ActionMultiplicity extends UMLAction {
   String str = "";
   MMultiplicity mult = null;
   public ActionMultiplicity(MMultiplicity m, String s) {
-    super(m.getLower() + ".." + m.getUpper(), NO_ICON);
+      //super(m.getLower() + ".." + m.getUpper(), NO_ICON);
+    super(m.toString(), NO_ICON);
     str = s;
     mult = m;
   }
@@ -1939,7 +2062,7 @@ class ActionMultiplicity extends UMLAction {
         ascEnd = (MAssociationEnd) ascEnds.get(0);
       else
         ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size()-1);
-      ascEnd.setMultiplicity(mult); 
+      ascEnd.setMultiplicity(mult);
     }
   }
   public boolean shouldBeEnabled() { return true; }
@@ -1949,7 +2072,7 @@ class ActionAggregation extends UMLAction {
   String str = "";
   MAggregationKind agg = null;
   public ActionAggregation(MAggregationKind a, String s) {
-    super(a.toString(), NO_ICON);
+    super(a.getName(), NO_ICON);
     str = s;
     agg = a;
   }
@@ -1966,7 +2089,7 @@ class ActionAggregation extends UMLAction {
         ascEnd = (MAssociationEnd) ascEnds.get(0);
       else
         ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size()-1);
-      ascEnd.setAggregation(agg); 
+      ascEnd.setAggregation(agg);
     }
   }
   public boolean shouldBeEnabled() { return true; }
@@ -1987,13 +2110,13 @@ class ActionCompartmentDisplay extends UMLAction {
     if( sels.size() == 1 ) {
       Selection sel = (Selection) sels.firstElement();
       Fig f = sel.getContent();
-      if (compartment.equals("Show MAttribute Compartment"))
+      if (compartment.equals("Show Attribute Compartment"))
         ((FigClass)f).setAttributeVisible(display);
-      else if (compartment.equals("Hide MAttribute Compartment"))
+      else if (compartment.equals("Hide Attribute Compartment"))
         ((FigClass)f).setAttributeVisible(display);
-      else if (compartment.equals("Show MOperation Compartment"))
+      else if (compartment.equals("Show Operation Compartment"))
         ((FigClass)f).setOperationVisible(display);
-      else if (compartment.equals("Hide MOperation Compartment"))
+      else if (compartment.equals("Hide Operation Compartment"))
         ((FigClass)f).setOperationVisible(display);
       else if (compartment.equals("Show All Compartments")) {
         ((FigClass)f).setAttributeVisible(display);
@@ -2007,3 +2130,5 @@ class ActionCompartmentDisplay extends UMLAction {
   }
   public boolean shouldBeEnabled() { return true; }
 } /* end class ActionCompartmentDisplay */
+
+

@@ -24,113 +24,53 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
 
 import org.tigris.gef.base.*;
+import org.tigris.gef.util.Util;
 
 import org.argouml.ui.*;
 import org.argouml.uml.ui.*;
+import org.argouml.kernel.*;
 
-public class PropPanelDiagram extends TabSpawnable
-implements TabModelTarget, DocumentListener {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  protected Object _target;
-  protected JLabel _nameLabel = new JLabel("Name: ");
-  protected JTextField _nameField = new JTextField();
-  protected boolean _inChange = false;
+public class PropPanelDiagram extends PropPanel  {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    public PropPanelDiagram() {
+	super("Diagram",null, 2);
 
-  public PropPanelDiagram() {
-    super("Diagram");
-    GridBagLayout gb = new GridBagLayout();
-    setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(_nameLabel, c);
-    add(_nameLabel);
-
-    c.weightx = 1.0;
-    c.gridx = 1;
-    //c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_nameField, c);
-    add(_nameField);
-
-    _nameField.getDocument().addDocumentListener(this);
-    // needs-more-work: set font?
-    
-  }
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  public void setTarget(Object t) {
-    try {
-      _inChange = true;
-      setTargetInternal(t);
+	addCaption("Name:",1,0,0);
+	addField(new UMLTextField(this,
+				  new UMLTextProperty(ArgoDiagram.class,"name","getName","setName")),1,0,0);
+	//
+	//   filler to take up rest of panel
+	addCaption(new JPanel(),1,0,1);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
     }
-    finally {
-      _inChange = false;
+
+    public void removeElement() {
+        Object target = getTarget();
+        if(target instanceof ArgoDiagram) {
+          try {
+            ArgoDiagram diagram = (ArgoDiagram) target;
+            Project project = ProjectBrowser.TheInstance.getProject();
+            //
+            //  can't easily find owner of diagram
+            //    set new target to the model
+            //
+            Object newTarget = project.getModel();
+            project.removeDiagram(diagram);
+            navigateTo(newTarget);
+          }
+          catch(Exception e) {
+            e.printStackTrace();
+          }
+        }
     }
-  }
 
-  protected void setTargetInternal(Object t) {
-    _target = t;
-    if (!(_target instanceof Diagram)) return;
-    Diagram d = (Diagram) _target;
-    _nameField.setText(d.getName());
-  }
-
-  public Object getTarget() { return _target; }
-
-  public void refresh() { setTarget(_target); }
-
-  public boolean shouldBeEnabled() { return _target instanceof Diagram; }
-
-
-  protected void setTargetName() {
-    if (!(_target instanceof Diagram)) return;
-    try {
-      ((Diagram)_target).setName(_nameField.getText());
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+	return false;
     }
-    catch (PropertyVetoException pve) {
-      System.out.println("Could not set diagram name");
-    }
-  }
 
-  ////////////////////////////////////////////////////////////////
-  // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    if (e.getDocument() == _nameField.getDocument()) setTargetName();
-  }
-
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
-
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
-  
 } /* end class PropPanelDiagram */

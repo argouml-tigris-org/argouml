@@ -75,7 +75,7 @@ public class CrAttrNameConflict extends CrUML {
         continue;
       MStructuralFeature sf = (MStructuralFeature) f;
       String sfName = sf.getName();
-      if ("".equals(sfName)) continue;
+      if (sfName == null || sfName.length() == 0) continue;
       String nameStr = sfName;
       if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;

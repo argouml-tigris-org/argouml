@@ -111,7 +111,7 @@ public class SelectionActor extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = MUseCase.class;
+    Class nodeClass = MUseCaseImpl.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {

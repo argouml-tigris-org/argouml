@@ -25,6 +25,8 @@ package org.argouml.uml.generator;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -42,9 +44,9 @@ public abstract class Parser {
   public abstract MTaggedValue parseTaggedValue(String s);
 //   public abstract MAssociation parseAssociation(String s);
 //   public abstract MAssociationEnd parseAssociationEnd(String s);
-  public abstract MMultiplicity parseMultiplicity(String s);
+  public abstract ru.novosoft.uml.foundation.data_types.MMultiplicity parseMultiplicity(String s);
   public abstract MState parseState(String s);
-  public abstract MTransition parseTransition(String s);
+  public abstract MTransition parseTransition(MTransition trans, String s);
   public abstract MAction parseAction(String s);
   public abstract MGuard parseGuard(String s);
   public abstract MEvent parseEvent(String s);

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -44,6 +44,8 @@ import org.argouml.ui.*;
 
 public class UMLAction extends AbstractAction {
 
+  private static ResourceBundle _menuResource;
+
   public static boolean HAS_ICON = true;
   public static boolean NO_ICON = false;
 
@@ -53,13 +55,13 @@ public class UMLAction extends AbstractAction {
   }
 
   public UMLAction(String name, boolean global, boolean hasIcon) {
-    super(name);
+    super(localize(name));
     if (hasIcon) {
       Icon icon = Util.loadIconResource(name);
       if (icon != null) putValue(Action.SMALL_ICON, icon);
       else { System.out.println("icon not found: " + name); }
     }
-    putValue(Action.SHORT_DESCRIPTION, name + " ");
+    putValue(Action.SHORT_DESCRIPTION, localize(name) + " ");
     if (global) Actions.addAction(this);
   }
 
@@ -75,15 +77,14 @@ public class UMLAction extends AbstractAction {
   }
 
   public void markNeedsSave() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    p.needsSave();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    p.setNeedsSave(true);
   }
 
-  public void updateEnabled(Object target) { 
-	  setEnabled(shouldBeEnabled()); 
+  public void updateEnabled(Object target) {
+	  setEnabled(shouldBeEnabled());
   }
-  
+
   public void updateEnabled() {
 	  boolean b = shouldBeEnabled();
 	  // System.out.println("b is "+b + " in " +this);
@@ -94,8 +95,8 @@ public class UMLAction extends AbstractAction {
    *  method should examine the ProjectBrowser that owns it.  Sublass
    *  implementations of this method should always call
    *  super.shouldBeEnabled first. */
-  public boolean shouldBeEnabled() { 
-	  return true; 
+  public boolean shouldBeEnabled() {
+	  return true;
   }
 
 
@@ -108,4 +109,74 @@ public class UMLAction extends AbstractAction {
     }
     return res;
   }
+
+  /**
+   * This method is called as part of the ProjectBrowser constructor
+   * to set the locale for the menus.
+   */
+  static public void setLocale(Locale locale) {
+    _menuResource =
+            ResourceBundle.getBundle("org.argouml.ui.MenuResourceBundle",locale);
+  }
+  /**
+   *    This function returns a resource bundle for the menu
+   *    based on the current locale.
+   *
+   *    The implementation of this function leaves much to be
+   *      desired.  However, significant additional effort
+   *      is not justified until menu architecture is reworked
+   */
+  static final private ResourceBundle getResourceBundle() {
+    if(_menuResource == null) {
+        _menuResource =
+            ResourceBundle.getBundle("org.argouml.ui.MenuResourceBundle",Locale.getDefault());
+    }
+    return _menuResource;
+  }
+
+  /**
+   *    This function returns a localized string corresponding
+   *    to the specified key.
+   *
+   */
+  static final public String localize(String key) {
+    String localized = null;
+    try {
+        localized =  getResourceBundle().getString(key);
+    }
+    catch(MissingResourceException e) {}
+    if(localized == null) {
+        localized = key;
+    }
+    return localized;
+  }
+
+  /**
+   *    This function returns a localized menu shortcut key
+   *    to the specified key.
+   *
+   */
+  static final public KeyStroke getShortcut(String key) {
+    try {
+        return (KeyStroke) getResourceBundle().getObject(key);
+    }
+    catch(MissingResourceException e) {}
+    return null;
+  }
+
+  /**
+   *    This function returns a localized string corresponding
+   *    to the specified key.
+   *
+   */
+  static final public String getMnemonic(String key) {
+    String mnemonic = null;
+    try {
+        mnemonic =  getResourceBundle().getString(key);
+    }
+    catch(MissingResourceException e) {}
+    return mnemonic;
+  }
+
+
 } /* end class UMLAction */

@@ -198,6 +198,11 @@ public class FigState extends FigStateVertex {
     if (s == null) return;
     String newText = GeneratorDisplay.SINGLETON.generateStateBody(s);
     _internal.setText(newText);
+
+    calcBounds();
+    Rectangle rect = getBounds();
+    setBounds(rect.x, rect.y, rect.width, rect.height);
+    firePropChange("bounds", rect, getBounds());  
   }
 
   public void textEdited(FigText ft) throws PropertyVetoException {
