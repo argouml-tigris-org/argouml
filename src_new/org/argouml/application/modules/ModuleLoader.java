@@ -227,31 +227,29 @@ public class ModuleLoader {
 	    Map entries = manifest.getEntries();
 	    Iterator iMap = entries.keySet().iterator();
 	    while (iMap.hasNext()) {
-		// Look for our specification
-		String cname = (String) iMap.next();
-		Attributes atrs = manifest.getAttributes(cname);
-		String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
-		String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
-
-		// TODO:  If we are in jdk1.3 or above, check
-		// EXTENSION_NAME.  Otherwise pass the class name.  It's not
-		// as good of a check (we might get duplicate modules with
-		// the same key), but it's better than nothing.
-
-		// String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
-		String key = cname;
-		if (Pluggable.PLUGIN_TITLE.equals(s1)
-		        && Pluggable.PLUGIN_VENDOR.equals(s2)
-		        && key != null
-		        && cname.endsWith(CLASS_SUFFIX)) {
-		    int cslen = CLASS_SUFFIX.length();
-		    // This load is not secure.
-		    loadClassFromLoader(classloader, key,
-					cname.substring(0, 
-							cname.length()
-							- cslen),
-					false);
-		}
+                // Look for our specification
+                String cname = (String) iMap.next();
+                Attributes atrs = manifest.getAttributes(cname);
+                String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
+                String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
+                
+                // TODO:  If we are in jdk1.3 or above, check
+                // EXTENSION_NAME.  Otherwise pass the class name.  It's not
+                // as good of a check (we might get duplicate modules with
+                // the same key), but it's better than nothing.
+                
+                // String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
+                String key = cname;
+                if (Pluggable.PLUGIN_TITLE.equals(s1)
+                        && Pluggable.PLUGIN_VENDOR.equals(s2)
+                        && key != null
+                        && cname.endsWith(CLASS_SUFFIX)) {
+                    int classNamelen = cname.length() - CLASS_SUFFIX.length();
+                    String className = cname.substring(0, classNamelen);
+                    className = className.replace('/','.');
+                    // This load is not secure.
+                    loadClassFromLoader(classloader, key, className, false);
+                }
 	    }
 	    // }
 	}
@@ -387,7 +385,7 @@ public class ModuleLoader {
 
 	LOG.debug("Load key:" + key + " class:" + classname);
 	if (keyAlreadyLoaded(key)) return;
-
+    
 	Object obj = null;
 	try {
             Class moduleClass = classloader.loadClass(classname);
@@ -403,15 +401,13 @@ public class ModuleLoader {
 	}
 	catch (Exception e) {
 	    obj = null;
-            LOG.warn("Could not instantiate module " + classname);
-            LOG.debug("Could not instantiate " + classname, e);
+            LOG.error("Could not instantiate module" + classname, e);
 	}
         if (obj != null && obj instanceof ArgoModule) {
             ArgoModule aModule = (ArgoModule) obj;
 	    if (aModule.getModuleKey().equals(key) || (!secure)) {
                 if (aModule.initializeModule()) {
-                    LOG.info("Loaded Module: "
-			     + aModule.getModuleName());
+                    LOG.info("Loaded Module: " + aModule.getModuleName());
                     _moduleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
@@ -462,7 +458,7 @@ public class ModuleLoader {
 		try {
 		    int equalPos = line.indexOf("=");
 		    sKey = line.substring(0, equalPos).trim();
-		    sClassName = line.substring(equalPos + 1).trim();
+		    sClassName = line.substring(equalPos + 1).trim().replace('/','.');
 		}
 		catch (Exception e) {
 		    LOG.warn ("Unable to process " + filename
