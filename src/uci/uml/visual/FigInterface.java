@@ -36,6 +36,7 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
+import uci.uml.util.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -225,9 +226,8 @@ public class FigInterface extends FigNodeModelElement {
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
     //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
-    Collection strs = cls.getStructuralFeatures();
-    Collection behs = cls.getFeatures();
-    behs.removeAll(strs);
+
+    Collection behs = MMUtil.SINGLETON.getOperations(cls);
     String operStr = "";
     if (behs != null) {
 	Iterator iter = behs.iterator();
