@@ -21,22 +21,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+//$Id$
+
 package org.argouml.uml.ui;
 
+import java.awt.event.ActionEvent;
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.reveng.*;
-import org.argouml.util.osdep.*;
-import org.argouml.util.FileFilters;
-import org.argouml.util.SuffixFilter;
 
-import org.tigris.gef.base.*;
-
-import java.awt.event.*;
-import java.io.*;
-
-import javax.swing.*;
+import org.argouml.uml.reveng.Import;
 
 
 /** Action to trigger importing from sources.
@@ -51,8 +43,6 @@ public class ActionImportFromSources extends UMLAction {
 
     public static ActionImportFromSources SINGLETON = new ActionImportFromSources(); 
 
-    public static final String separator = "/"; //System.getProperty("file.separator");
-
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -66,55 +56,7 @@ public class ActionImportFromSources extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent event) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        Project p = ProjectManager.getManager().getCurrentProject();
-
-        try {
-            String directory = Globals.getLastDirectory();
-            JFileChooser chooser = OsUtil.getFileChooser(directory);
-
-            if (chooser == null) chooser = OsUtil.getFileChooser();
-
-            chooser.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
-            chooser.setDialogTitle("Import sources");
-            SuffixFilter filter = FileFilters.JavaFilter;
-            chooser.addChoosableFileFilter(filter);
-            // chooser.setFileFilter(filter);
-	    
-	    chooser.setAccessory(Import.getConfigPanel());
-
-            int retval = chooser.showOpenDialog(pb);
-
-            if (retval == 0) {
-                File theFile = chooser.getSelectedFile();
-                if (theFile != null) {
-                    String path = chooser.getSelectedFile().getParent();
-                    String filename = chooser.getSelectedFile().getName();
-                    filename = path + separator + filename;
-                    Globals.setLastDirectory(path);
-                    if (filename != null) {
-                        pb.showStatus("Parsing " + filename + "...");
-                        Import.doFile(p, theFile);
-
-//                        p.postLoad();
-//
-//			// Check if any diagrams where modified and the project
-//			// should be saved before exiting.
-//			if(Import.needsSave()) {
-//			    p.setNeedsSave(true);
-//			}
-//
-//                        ProjectManager.getManager().setCurrentProject(p);
-//                        pb.showStatus("Parsed " + filename);
-
-
-                        return;
-                    }
-                }
-            }
-        } catch (Exception exception) {
-            cat.error("got an Exception in ActionImportFromSources", exception);
-        }
+    	new Import();
     }
 }
 /* end class ActionImportFromSources */   
