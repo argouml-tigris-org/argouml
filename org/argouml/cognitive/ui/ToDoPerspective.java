@@ -32,6 +32,17 @@ import javax.swing.event.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
+/**
+ * This class represents 3 concepts, although it should only represent
+ * a todo perspective, TODO: separate.
+ *
+ * This class represents, at the same time:
+ *   - a todo tree view / perspective (which is a collection of rules)
+ *   - a tree model
+ *   - a collection of perspectives.
+ *
+ * $Id$
+ */
 public abstract class ToDoPerspective extends TreeModelComposite
 implements Serializable {
 
@@ -49,7 +60,6 @@ implements Serializable {
 //     ToDoPerspective difficulty = new ToDoByDifficulty();
 //     ToDoPerspective skill = new ToDoBySkill();
 
-
     registerPerspective(priority);
     registerPerspective(decision);
     registerPerspective(goal);
@@ -65,7 +75,6 @@ implements Serializable {
     registerRule(new GoListToTypeToItem());
     registerRule(new GoListToOffenderToItem());
     registerRule(new GoListToPosterToItem());
-
   }
 
   ////////////////////////////////////////////////////////////////
@@ -94,7 +103,10 @@ implements Serializable {
 
   protected ToDoList _root;
 
-  protected EventListenerList _listenerList = new EventListenerList();
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
+    protected EventListenerList _listenerList = new EventListenerList();
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -104,8 +116,10 @@ implements Serializable {
   //  Change Events
   //
 
-  /*
-   * Notify all listeners that have registered interest for
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
+     * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance 
    * is lazily created using the parameters passed into 
    * the fire method.
@@ -130,8 +144,10 @@ implements Serializable {
     }
   }
 
-  /*
-   * Notify all listeners that have registered interest for
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
+     * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance 
    * is lazily created using the parameters passed into 
    * the fire method.
@@ -156,8 +172,10 @@ implements Serializable {
     }
   }
 
-  /*
-   * Notify all listeners that have registered interest for
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
+     * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance 
    * is lazily created using the parameters passed into 
    * the fire method.
@@ -182,8 +200,10 @@ implements Serializable {
     }
   }
 
-  /*
-   * Notify all listeners that have registered interest for
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     *
+     * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance 
    * is lazily created using the parameters passed into 
    * the fire method.
@@ -205,11 +225,17 @@ implements Serializable {
   }
 
 
-  public void addTreeModelListener(TreeModelListener l) {
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
+    public void addTreeModelListener(TreeModelListener l) {
     _listenerList.add(TreeModelListener.class, l);
   }
 
-  public void removeTreeModelListener(TreeModelListener l) {
+  /** re-factor up into a new events support class
+     * eg TreeSupport.
+     */
+    public void removeTreeModelListener(TreeModelListener l) {
     _listenerList.remove(TreeModelListener.class, l);
   }
 
