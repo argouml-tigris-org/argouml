@@ -80,8 +80,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     public final static int ROWDISTANCE = 2;
 
     /**
-     * The defaultheight of the object rectangle. That's 3 times the rowheight + 
-     * 3 times a distance of 2 between the rows + the stereoheight. 
+     * The defaultheight of the object rectangle. That's 3 times the rowheight +
+     * 3 times a distance of 2 between the rows + the stereoheight.
      */
     public final static int DEFAULT_HEIGHT =
         (3 * ROWHEIGHT + 3 * ROWDISTANCE + STEREOHEIGHT);
@@ -102,7 +102,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     private FigRect _backgroundBox;
 
     /**
-     * The lifeline (dashed line under the object box to which activations are 
+     * The lifeline (dashed line under the object box to which activations are
      * attached)
      */
     private FigLine _lifeLine;
@@ -120,12 +120,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     /**
      * The list where the figrects are stored that are the activation boxes. The list is only here for
      * performance issues. When removing a figrect, it should also be removed from this list, not only from
-     * the figs list. 
+     * the figs list.
      */
     private List _figActivations = new ArrayList();
 
     /**
-     * The list with the figLinkPorts. The list is only here for performance issues. When deleting a figLinkPort, 
+     * The list with the figLinkPorts. The list is only here for performance issues. When deleting a figLinkPort,
      * it should also be removed from this list, not only from the figs list.
      */
     private List _figFigLinkPorts = new ArrayList();
@@ -148,7 +148,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     private String _objectName = "";
 
     /**
-     * Default constructor. Constructs the object rectangle, the lifeline, 
+     * Default constructor. Constructs the object rectangle, the lifeline,
      * the name box and the stereotype box.
      */
     public FigObject() {
@@ -311,7 +311,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 fig.getWidth(),
                 fig.getHeight());
         }
-        calcBounds(); //_x = x; _height = y; _w = w; _h = h;		
+        calcBounds(); //_x = x; _height = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
 
@@ -319,12 +319,12 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * Scales the given fig that must be part of this FigObject
      * @param f the fig to scale
      * @param x the new x coordinate for the FigObject
-     * @param y the new y coordinate for the FigObject 
+     * @param y the new y coordinate for the FigObject
      * @param w the new w coordinate for the FigObject
      * @param h the new h coordinate for the FigObject
      */
     private void reSize(Fig f, int x, int y, int w, int h) {
-        if (f.isDisplayed()) {
+        if (f.isVisible()) {
             int newX =
                 (_w == 0)
                     ? x
@@ -615,7 +615,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * Returns the port for a given coordinate pair. Normally deepHitPort returns
      * the owner of the fig in the figgroup that is present at the given coordinate
      * pair (returning figs that are added later first). In this case it returns
-     * a LinkPort. This method has a side effect of creating a FigLinkPort if 
+     * a LinkPort. This method has a side effect of creating a FigLinkPort if
      * @see org.tigris.gef.presentation.FigNode#deepHitPort(int, int)
      */
     public Object deepHitPort(int x, int y) {
@@ -647,7 +647,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             }
             int yCoordinate = 0;
             SequenceDiagramLayout layout = (SequenceDiagramLayout) getLayer();
-            if (!layout.getFigLinks(getYCoordinate(foundNode)).isEmpty()) { 
+            if (!layout.getFigLinks(getYCoordinate(foundNode)).isEmpty()) {
                 FigLinkPort figLinkPort =
                     new FigLinkPort(
                         _lifeLine.getX() - WIDTH / 2,
@@ -658,7 +658,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                 _figFigLinkPorts.add(figLinkPort);
                 LinkNode linkNode = new LinkNode(getOwner(), figLinkPort);
                 layout.addNode(getIndexOf(foundNode) + 1, linkNode);
-                foundNode = linkNode;           
+                foundNode = linkNode;
             } else {
                 if (!(foundNode instanceof LinkPort)
                     && !(foundNode instanceof ObjectNode)) {
@@ -674,7 +674,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
                         _linkPositions.indexOf(foundNode),
                         linkNode);
                     foundNode = linkNode;
-                } 
+                }
 
             }
             return foundNode;
@@ -959,7 +959,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
     }
 
     /**
-     * Removes the fig from both the figs list as from the _figActivations list and the _figLinkPorts. This 
+     * Removes the fig from both the figs list as from the _figActivations list and the _figLinkPorts. This
      * assures us that removal will indeed remove all 'pointers' to the object.
      * @see org.tigris.gef.presentation.FigGroup#removeFig(org.tigris.gef.presentation.Fig)
      */

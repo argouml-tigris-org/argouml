@@ -219,7 +219,7 @@ public class FigClass extends FigNodeModelElement {
         _stereo.setEditable(false);
         _stereo.setHeight(STEREOHEIGHT + 1);
         // +1 to have 1 pixel overlap with getNameFig()
-        _stereo.setDisplayed(false);
+        _stereo.setVisible(false);
 
         // A thin rectangle to overlap the boundary line between stereotype
         // and name. This is just 2 pixels high, and we rely on the line
@@ -229,7 +229,7 @@ public class FigClass extends FigNodeModelElement {
 	    new FigRect(11, 10 + STEREOHEIGHT, 58, 2,
 			Color.white, Color.white);
         _stereoLineBlinder.setLineWidth(1);
-        _stereoLineBlinder.setDisplayed(false);
+        _stereoLineBlinder.setVisible(false);
 
         // Mark this as newly created. This is to get round the problem with
         // creating figs for loaded classes that had stereotypes. They are
@@ -313,37 +313,37 @@ public class FigClass extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        
-        ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");        
+
+        ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");
         addMenu.add(ActionAddAttribute.SINGLETON);
         addMenu.add(ActionAddOperation.SINGLETON);
         addMenu.add(ActionAddNote.SINGLETON);
-        popUpActions.insertElementAt(addMenu, 
+        popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
-        
+
         ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
-        if (_attrVec.isDisplayed() && _operVec.isDisplayed()) {
+        if (_attrVec.isVisible() && _operVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
-        } else if (!_attrVec.isDisplayed() && !_operVec.isDisplayed()) {
+        } else if (!_attrVec.isVisible() && !_operVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.ShowAllCompartments);
         }
 
-        if (_attrVec.isDisplayed()) {
+        if (_attrVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideAttrCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowAttrCompartment);
         }
 
-        if (_operVec.isDisplayed()) {
+        if (_operVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
         } else {
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
         }
-        
+
         showMenu.add(ActionEdgesDisplay.ShowEdges);
         showMenu.add(ActionEdgesDisplay.HideEdges);
 
-        popUpActions.insertElementAt(showMenu, 
+        popUpActions.insertElementAt(showMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
 
         Object mclass = /*(MClass)*/ getOwner();
@@ -372,7 +372,7 @@ public class FigClass extends FigNodeModelElement {
 				   "isActive", "isActive", "setActive",
 				   mclass));
 
-        popUpActions.insertElementAt(modifierMenu, 
+        popUpActions.insertElementAt(modifierMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
         // end of block
 
@@ -391,7 +391,7 @@ public class FigClass extends FigNodeModelElement {
      * @return true if the operations are visible, false otherwise
      */
     public boolean isOperationVisible() {
-        return _operVec.isDisplayed();
+        return _operVec.isVisible();
     }
 
     /**
@@ -399,7 +399,7 @@ public class FigClass extends FigNodeModelElement {
      * @return true if the attributes are visible, false otherwise
      */
     public boolean isAttributeVisible() {
-        return _attrVec.isDisplayed();
+        return _attrVec.isVisible();
     }
 
     public void setAttributeVisible(boolean isVisible) {
@@ -410,14 +410,14 @@ public class FigClass extends FigNodeModelElement {
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
-        if (_attrVec.isDisplayed()) {
+        if (_attrVec.isVisible()) {
             if (!isVisible) {  // hide compartment
                 damage();
                 Iterator it = _attrVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(false);
+		    ((Fig) (it.next())).setVisible(false);
                 }
-                _attrVec.setDisplayed(false);
+                _attrVec.setVisible(false);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
 			  (int) aSize.getWidth(), (int) aSize.getHeight());
@@ -426,9 +426,9 @@ public class FigClass extends FigNodeModelElement {
             if (isVisible) { // show compartement
                 Iterator it = _attrVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(true);
+		    ((Fig) (it.next())).setVisible(true);
                 }
-                _attrVec.setDisplayed(true);
+                _attrVec.setVisible(true);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
 			  (int) aSize.getWidth(), (int) aSize.getHeight());
@@ -445,14 +445,14 @@ public class FigClass extends FigNodeModelElement {
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
-        if (_operVec.isDisplayed()) { // if displayed
+        if (_operVec.isVisible()) { // if displayed
             if (!isVisible) {
                 damage();
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(false);
+		    ((Fig) (it.next())).setVisible(false);
                 }
-                _operVec.setDisplayed(false);
+                _operVec.setVisible(false);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
 			  (int) aSize.getWidth(), (int) aSize.getHeight());
@@ -461,9 +461,9 @@ public class FigClass extends FigNodeModelElement {
             if (isVisible) {
                 Iterator it = _operVec.getFigs(null).iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setDisplayed(true);
+		    ((Fig) (it.next())).setVisible(true);
                 }
-                _operVec.setDisplayed(true);
+                _operVec.setVisible(true);
                 Dimension aSize = this.getMinimumSize();
                 setBounds(rect.x, rect.y,
 			  (int) aSize.getWidth(), (int) aSize.getHeight());
@@ -499,14 +499,14 @@ public class FigClass extends FigNodeModelElement {
         // If we have a stereotype displayed, then allow some space for that
         // (width and height)
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             aSize.width = Math.max(aSize.width, _stereo.getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
 
         // Allow space for each of the attributes we have
 
-        if (_attrVec.isDisplayed()) {
+        if (_attrVec.isVisible()) {
 
             // Loop through all the attributes, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
@@ -529,7 +529,7 @@ public class FigClass extends FigNodeModelElement {
 
         // Allow space for each of the operations we have
 
-        if (_operVec.isDisplayed()) {
+        if (_operVec.isVisible()) {
 
             // Loop through all the operations, to find the widest (remember
             // the first fig is the box for the whole lot, so ignore it).
@@ -668,7 +668,7 @@ public class FigClass extends FigNodeModelElement {
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed()) {
+        if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
         do {
@@ -679,7 +679,7 @@ public class FigClass extends FigNodeModelElement {
                 i = v.size() - 1;
             }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed()) {
+            if (!ft2.isVisible()) {
                 ft2 = null;
             }
         } while (ft2 == null);
@@ -694,7 +694,7 @@ public class FigClass extends FigNodeModelElement {
         FigText ft2 = null;
         // TODO: come GEF V 0.12 use getFigs returning an array
         Vector v = new Vector(fgVec.getFigs(null));
-        if (i >= v.size() || !((FigText) v.elementAt(i)).isDisplayed()) {
+        if (i >= v.size() || !((FigText) v.elementAt(i)).isVisible()) {
             return null;
         }
         do {
@@ -705,7 +705,7 @@ public class FigClass extends FigNodeModelElement {
                 i = 1;
             }
             ft2 = (FigText) v.elementAt(i);
-            if (!ft2.isDisplayed())
+            if (!ft2.isVisible())
                 ft2 = null;
         } while (ft2 == null);
         return ft2;
@@ -819,9 +819,9 @@ public class FigClass extends FigNodeModelElement {
                 || (ModelFacade.getName(stereo) == null)
                 || (ModelFacade.getName(stereo).length() == 0))	{
 
-            if (_stereo.isDisplayed()) {
-                _stereoLineBlinder.setDisplayed(false);
-                _stereo.setDisplayed(false);
+            if (_stereo.isVisible()) {
+                _stereoLineBlinder.setVisible(false);
+                _stereo.setVisible(false);
                 rect.y += STEREOHEIGHT;
                 rect.height -= STEREOHEIGHT;
                 setBounds(rect.x, rect.y, rect.width, rect.height);
@@ -830,9 +830,9 @@ public class FigClass extends FigNodeModelElement {
         } else {
             _stereo.setText(Notation.generateStereotype(this, stereo));
 
-            if (!_stereo.isDisplayed()) {
-                _stereoLineBlinder.setDisplayed(true);
-                _stereo.setDisplayed(true);
+            if (!_stereo.isVisible()) {
+                _stereoLineBlinder.setVisible(true);
+                _stereo.setVisible(true);
 
                 // Only adjust the stereotype height if we are not newly
                 // created. This gets round the problem of loading classes with
@@ -908,11 +908,11 @@ public class FigClass extends FigNodeModelElement {
 
             int displayedFigs = 1; //this is for getNameFig()
 
-            if (_attrVec.isDisplayed()) {
+            if (_attrVec.isVisible()) {
                 displayedFigs++;
             }
 
-            if (_operVec.isDisplayed()) {
+            if (_operVec.isVisible()) {
                 displayedFigs++;
             }
 
@@ -944,7 +944,7 @@ public class FigClass extends FigNodeModelElement {
 
         int currentY = y;
 
-        if (_stereo.isDisplayed()) {
+        if (_stereo.isVisible()) {
             currentY += STEREOHEIGHT;
         }
 
@@ -960,11 +960,11 @@ public class FigClass extends FigNodeModelElement {
         currentY += height - 1; // -1 for 1 pixel overlap
 
         int na =
-	    (_attrVec.isDisplayed())
+	    (_attrVec.isVisible())
 	    ? Math.max(1, _attrVec.getFigs(null).size() - 1)
 	    : 0;
         int no =
-	    (_operVec.isDisplayed())
+	    (_operVec.isVisible())
 	    ? Math.max(1, _operVec.getFigs(null).size() - 1)
 	    : 0;
         if (checkSize) {
@@ -976,7 +976,7 @@ public class FigClass extends FigNodeModelElement {
         }
         aSize = getUpdatedSize(_attrVec, x, currentY, newW, height);
 
-        if (_attrVec.isDisplayed()) {
+        if (_attrVec.isVisible()) {
             currentY += aSize.height - 1; // -1 for 1 pixel overlap
         }
 
@@ -1201,7 +1201,7 @@ public class FigClass extends FigNodeModelElement {
         super.updateNameText();
         calcBounds();
         setBounds(getBounds());
-        
+
         // setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 
