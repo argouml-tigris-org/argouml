@@ -25,8 +25,11 @@ package org.argouml.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
@@ -91,8 +94,12 @@ public class XmiFilePersister extends AbstractFilePersister {
     
             project.setFile(file);
             
+            String encoding = "UTF-8";
+            FileOutputStream stream =
+                new FileOutputStream(file);
             writer =
-                new BufferedWriter(new FileWriter(file));
+                new BufferedWriter(new OutputStreamWriter(
+                        stream, encoding));
     
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
