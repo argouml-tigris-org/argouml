@@ -132,10 +132,8 @@ public class MultiEditorPane
      * (that is a tab that displays model elements) that tab should
      * display the target if the target is an ArgoDiagram.
      * @param target
-     * @deprecated As of ArgoUml version 0.13.5, 
-     *             this method will change visibility in the near future
      */
-    public void setTarget(Object target) {
+    private void setTarget(Object target) {
         enableTabs(target);
         for (int i = 0; i < _tabs.getTabCount(); i++) {
             Component tab = _tabs.getComponentAt(i);
