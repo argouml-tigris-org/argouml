@@ -282,28 +282,18 @@ This is the Analysis tutorial chapter of the User Manual.
       <sect3>
         <title>Creating a Sequence Diagram</title>
 
+        <warning>
+          <!-- TODO: Issue 683 -->
+          <para>
+For versions 0.12, 0.14, 0.16, and 0.18, the sequence diagrams
+are not working.
+</para>
+        </warning>
+
         <para>Normally, you can just start a sequence diagram right
         away. On the <literal>Create&nbsp;Diagram</literal> menu choose
         <literal>Sequence</literal>.</para>
-      </sect3>
 
-      <sect3>
-        <title>Known Issues with Sequence Diagrams</title>
-
-        <para>The following problems are currently identified.</para>
-
-        <itemizedlist>
-          <listitem><para>Checklist is not enabled with Sequence
-            artifacts.</para></listitem>
-
-          <listitem><para>It is not possible (as yet) to create call
-          backs.</para></listitem>
-
-          <listitem><para>You cannot change the order of the connectivity of a
-          link artifact in ArgoUML yet.</para></listitem>
-
-          <listitem><para>StimulusDestroy is not dependable.</para></listitem>
-        </itemizedlist>
       </sect3>
     </sect2>
 
