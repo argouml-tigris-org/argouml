@@ -91,7 +91,7 @@ public class CrWrongDepEnds extends CrUML {
       Object obj = figs.elementAt(i);
       if (!(obj instanceof FigDependency)) continue;
       FigDependency fd = (FigDependency) obj;
-      if (!(fd.getOwner() instanceof MDependencyImpl)) continue;
+      if (!(fd.getOwner() instanceof MDependency)) continue;
       MDependency dep = (MDependency) fd.getOwner();
       Collection suppliers = dep.getSuppliers();
       int count = 0;
@@ -99,7 +99,7 @@ public class CrWrongDepEnds extends CrUML {
         Iterator it = suppliers.iterator();
         while (it.hasNext()) {
           MModelElement moe = (MModelElement) it.next();
-          if (moe instanceof MObjectImpl) {
+          if (moe instanceof MObject) {
             MObject obj_sup = (MObject) moe;
             if (obj_sup.getElementResidences() != null && (obj_sup.getElementResidences().size() > 0)) count = count+2;
             if (obj_sup.getComponentInstance() != null) count = count+1;
@@ -111,7 +111,7 @@ public class CrWrongDepEnds extends CrUML {
         Iterator it = clients.iterator();
         while (it.hasNext()) {
           MModelElement moe = (MModelElement) it.next();
-          if (moe instanceof MObjectImpl) {
+          if (moe instanceof MObject) {
             MObject obj_cli = (MObject) moe;
             if (obj_cli.getElementResidences() != null && (obj_cli.getElementResidences().size() > 0)) count = count+2;
             if (obj_cli.getComponentInstance() != null) count = count+1;

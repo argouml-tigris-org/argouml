@@ -59,7 +59,7 @@ public class TableModelSeqObjectByProps extends TableModelComposite {
     int size = nodes.size();
     for (int i = 0; i < size; i++) {
       Object node = nodes.elementAt(i);
-      if (node instanceof MObjectImpl) res.addElement(node);
+      if (node instanceof MObject) res.addElement(node);
     }
     return res;
   }

@@ -123,7 +123,7 @@ public class FigFinalState extends FigStateVertex {
     super.setOwner(node);
     bindPort(node, _bigPort);
     // if it is a UML meta-model object, register interest in any change events
-    if (node instanceof MElementImpl)
+    if (node instanceof MElement)
       ((MElementImpl)node).addMElementListener(this);
   }
 

@@ -1026,7 +1026,7 @@ public class Project implements java.io.Serializable {
         /* old version
            if (Trash.SINGLETON.contains(obj)) return;
            Vector alsoTrash = null;
-           if (obj instanceof MModelElementImpl)
+           if (obj instanceof MModelElement)
            alsoTrash = ((MModelElementImpl)obj).alsoTrash();
            trashInternal(obj);
            if (alsoTrash != null) {

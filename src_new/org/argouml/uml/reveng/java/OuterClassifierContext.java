@@ -79,7 +79,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(mPackage instanceof MModelImpl) {
+		if(mPackage instanceof MModel) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
@@ -129,7 +129,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 		
 		// Special case for model
-		if(mPackage instanceof MModelImpl) {
+		if(mPackage instanceof MModel) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {

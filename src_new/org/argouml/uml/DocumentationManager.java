@@ -39,7 +39,7 @@ public class DocumentationManager {
      */
     String sResult = defaultFor(o,indent);
 
-    if (o instanceof MModelElementImpl) {
+    if (o instanceof MModelElement) {
       Collection tValues = ((MModelElement) o).getTaggedValues();
       if (!tValues.isEmpty()) {
         Iterator iter = tValues.iterator();
@@ -219,7 +219,7 @@ public class DocumentationManager {
   public static String getComments(Object o) {
       StringBuffer result = new StringBuffer();
 
-      if(o instanceof MModelElementImpl) {
+      if(o instanceof MModelElement) {
 	  Collection comments = ((MModelElement) o).getComments();
 	  if (!comments.isEmpty()) {
 	    for(Iterator iter = comments.iterator(); iter.hasNext(); ) {

@@ -438,7 +438,7 @@ public class FigInterface extends FigNodeModelElement {
     // The next if-clause is important for the Deployment-diagram
     // it detects if the enclosing fig is a component, in this case
     // the ImplementationLocation will be set for the owning MInterface
-    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+    if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
       MComponent component = (MComponent) encloser.getOwner();
       MInterface in = (MInterface) getOwner();
       resident.setImplementationLocation(component);

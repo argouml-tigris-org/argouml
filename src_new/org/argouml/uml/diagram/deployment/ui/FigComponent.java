@@ -204,15 +204,15 @@ public class FigComponent extends FigNodeModelElement {
       }
     }
 
-    if (!(getOwner() instanceof MModelElementImpl)) return;
-    if (getOwner() instanceof MComponentImpl) {
+    if (!(getOwner() instanceof MModelElement)) return;
+    if (getOwner() instanceof MComponent) {
       MComponent me = (MComponent) getOwner();
       MNode mnode = null;
 
-      if (encloser != null && (encloser.getOwner() instanceof MNodeImpl)) {
+      if (encloser != null && (encloser.getOwner() instanceof MNode)) {
         mnode = (MNode) encloser.getOwner();
       }
-      if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+      if (encloser != null && (encloser.getOwner() instanceof MComponent)) {
         MComponent comp = (MComponent) encloser.getOwner();
         Collection compNodes = comp.getDeploymentLocations();
         Iterator it = compNodes.iterator();

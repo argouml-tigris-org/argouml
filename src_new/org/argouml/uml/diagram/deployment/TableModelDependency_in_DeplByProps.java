@@ -58,7 +58,7 @@ public class TableModelDependency_in_DeplByProps extends TableModelComposite {
     int size = edges.size();
     for (int i = 0; i < size; i++) {
       Object edge = edges.elementAt(i);
-      if (edge instanceof MDependencyImpl) res.addElement(edge);
+      if (edge instanceof MDependency) res.addElement(edge);
     }
     return res;
   }

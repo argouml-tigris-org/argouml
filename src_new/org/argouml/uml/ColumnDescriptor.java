@@ -149,7 +149,7 @@ class ColumnName extends ColumnDescriptor {
     if (target instanceof MModelElement) {
       String res = ((MModelElement) target).getName();
       String ocl = "";
-      if (target instanceof MElementImpl)
+      if (target instanceof MElement)
 	ocl = ((MElementImpl)target).getUMLClassName();
       if (res == null || res.length() == 0) res = "(anon " + ocl +")";
       return res;
@@ -1012,7 +1012,7 @@ class ColumnCompNode extends ColumnDescriptor {
   ColumnCompNode() { super("DeploymentLocation", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MComponentImpl)) return null;
+    if (!(target instanceof MComponent)) return null;
     MComponent co = (MComponent) target;
     Collection nodes = co.getDeploymentLocations();  
     MNode node = null;
@@ -1039,7 +1039,7 @@ class ColumnCompNodeInstance extends ColumnDescriptor {
   ColumnCompNodeInstance() { super("NodeInstance", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MComponentInstanceImpl)) return null;
+    if (!(target instanceof MComponentInstance)) return null;
     MComponentInstance co = (MComponentInstance) target;
     MNodeInstance node = co.getNodeInstance();
     String name = "";
@@ -1058,9 +1058,9 @@ class ColumnImplLocation extends ColumnDescriptor {
   ColumnImplLocation() { super("ImplementationLocation", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MClassifierImpl || target instanceof MObjectImpl)) return null;
+    if (!(target instanceof MClassifier || target instanceof MObject)) return null;
     String name = "";
-    if (target instanceof MClassifierImpl) {
+    if (target instanceof MClassifier) {
       MClassifier co = (MClassifier) target;
       Collection residences = co.getElementResidences();  
       if (residences != null) {
@@ -1075,7 +1075,7 @@ class ColumnImplLocation extends ColumnDescriptor {
         }
       }
     }
-    else if (target instanceof MObjectImpl) {
+    else if (target instanceof MObject) {
       MObject obj = (MObject) target;
       Collection residences = obj.getElementResidences();  
       if (residences != null) {
@@ -1103,7 +1103,7 @@ class ColumnComponentInstance extends ColumnDescriptor {
   ColumnComponentInstance() { super("ComponentInstance", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MObjectImpl)) return null;
+    if (!(target instanceof MObject)) return null;
     MObject co = (MObject) target;
     String name = "";
     MComponentInstance comp = co.getComponentInstance();
@@ -1122,7 +1122,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
   ColumnBaseForObject() { super("Base", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MInstanceImpl)) return null;
+    if (!(target instanceof MInstance)) return null;
     MInstance in = (MInstance) target;
     String instance_base = "";
     Collection col = in.getClassifiers();
@@ -1140,7 +1140,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MInstanceImpl)) return;
+    if (!(target instanceof MInstance)) return;
     if (!(value instanceof String)) return;
     MObject tt = (MObject) target;
     String _value = (String) value;
@@ -1171,7 +1171,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
       int s = nodes.size();
       for (int j=0; j<s; j++) {
         MModelElement node = (MModelElement) nodes.elementAt(j);
-        if (node != null && (node instanceof MClassImpl)) {
+        if (node != null && (node instanceof MClass)) {
           MClass mclass = (MClass) node;
           if (mclass.getNamespace() != tt.getNamespace()) continue;
           String class_name = mclass.getName();
@@ -1196,7 +1196,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
   ColumnBaseForComponentInstance() { super("Base", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MInstanceImpl)) return null;
+    if (!(target instanceof MInstance)) return null;
     MInstance in = (MInstance) target;
     String instance_base = "";
     Collection col = in.getClassifiers();
@@ -1214,7 +1214,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MInstanceImpl)) return;
+    if (!(target instanceof MInstance)) return;
     if (!(value instanceof String)) return;
     MComponentInstance tt = (MComponentInstance) target;
     String _value = (String) value;
@@ -1245,7 +1245,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
       int s = nodes.size();
       for (int j=0; j<s; j++) {
         MModelElement node = (MModelElement) nodes.elementAt(j);
-        if (node != null && (node instanceof MComponentImpl)) {
+        if (node != null && (node instanceof MComponent)) {
           MComponent mcomp = (MComponent) node;
           if (mcomp.getNamespace() != tt.getNamespace()) continue;
           String comp_name = mcomp.getName();
@@ -1271,7 +1271,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
   ColumnBaseForNodeInstance() { super("Base", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MInstanceImpl)) return null;
+    if (!(target instanceof MInstance)) return null;
     MInstance in = (MInstance) target;
     String instance_base = "";
     Collection col = in.getClassifiers();
@@ -1289,7 +1289,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MInstanceImpl)) return;
+    if (!(target instanceof MInstance)) return;
     if (!(value instanceof String)) return;
     MNodeInstance tt = (MNodeInstance) target;
     String _value = (String) value;
@@ -1320,7 +1320,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
       int s = nodes.size();
       for (int j=0; j<s; j++) {
         MModelElement node = (MModelElement) nodes.elementAt(j);
-        if (node != null && (node instanceof MNodeImpl)) {
+        if (node != null && (node instanceof MNode)) {
           MNode mnode = (MNode) node;
           if (mnode.getNamespace() != tt.getNamespace()) continue;
           String node_name = mnode.getName();
@@ -1345,7 +1345,7 @@ class ColumnCommunication extends ColumnDescriptor {
   ColumnCommunication() { super("Communication", String.class, true); }
 
   public Object getValueFor(Object target) {
-    if (!(target instanceof MActionImpl)) return null;
+    if (!(target instanceof MAction)) return null;
     MAction act = (MAction) target;
     boolean isAsync = act.isAsynchronous();
     String async = "";
@@ -1363,7 +1363,7 @@ class ColumnActionType extends ColumnDescriptor {
   ColumnActionType() { super("Action Type", String.class, true); }
 
   public Object getValueFor(Object target) {
-    if (!(target instanceof MActionImpl)) return null;
+    if (!(target instanceof MAction)) return null;
     MAction act = (MAction) target;
     String type = "";
     if (act instanceof MCallAction) type = "Call";
@@ -1383,7 +1383,7 @@ class ColumnAction extends ColumnDescriptor {
   ColumnAction() { super("Action", String.class, true); }
 
   public Object getValueFor(Object target) {
-    if (!(target instanceof MStimulusImpl)) return null;
+    if (!(target instanceof MStimulus)) return null;
     MStimulus sti = (MStimulus) target;
     String action = "";
     if (sti.getDispatchAction() != null && sti.getDispatchAction().getName() != null)
@@ -1392,7 +1392,7 @@ class ColumnAction extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MStimulusImpl)) return;
+    if (!(target instanceof MStimulus)) return;
     if (!(value instanceof String)) return;
     MStimulus sti = (MStimulus) target;
     String _value = (String) value;

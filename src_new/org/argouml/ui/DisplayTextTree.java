@@ -87,7 +87,7 @@ implements MElementListener, VetoableChangeListener {
       // original
       MElement e = (MElement) value;
       String ocl = "";
-      if (e instanceof MModelElementImpl)
+      if (e instanceof MModelElement)
 	ocl = ((MModelElementImpl)e).getUMLClassName();
         String name = ((MModelElementImpl)e).getName();
       if (e instanceof MTransition) {

@@ -68,7 +68,7 @@ class PackageContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(mPackage instanceof MModelImpl) {
+		if(mPackage instanceof MModel) {
 		    classifier = Class.forName(name);
 		}
 		else {
@@ -122,7 +122,7 @@ class PackageContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(mPackage instanceof MModelImpl) {
+		if(mPackage instanceof MModel) {
 		    classifier = Class.forName(name);
 		}
 		else {

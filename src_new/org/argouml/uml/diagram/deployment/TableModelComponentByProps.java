@@ -50,7 +50,7 @@ public class TableModelComponentByProps extends TableModelComposite {
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeImpl)) return new Vector();
+    if (!(t instanceof UMLDeploymentDiagram || t instanceof MNode)) return new Vector();
     if (t instanceof UMLDeploymentDiagram) {
       UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
       Vector nodes = d.getNodes();
@@ -58,7 +58,7 @@ public class TableModelComponentByProps extends TableModelComposite {
       int size = nodes.size();
       for (int i = 0; i < size; i++) {
         Object node = nodes.elementAt(i);
-        if (node instanceof MComponentImpl) res.addElement(node);
+        if (node instanceof MComponent) res.addElement(node);
       }
       return res;
     }
@@ -69,7 +69,7 @@ public class TableModelComponentByProps extends TableModelComposite {
       Iterator it = residences.iterator();
       while (it.hasNext()) {
         MClassifier cls = (MClassifier) it.next();
-        if (cls instanceof MComponentImpl) res.addElement(cls);
+        if (cls instanceof MComponent) res.addElement(cls);
       }
       return res;
     }

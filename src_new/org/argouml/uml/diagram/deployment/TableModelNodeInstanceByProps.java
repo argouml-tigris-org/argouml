@@ -57,7 +57,7 @@ public class TableModelNodeInstanceByProps extends TableModelComposite {
     int size = nodes.size();
     for (int i = 0; i < size; i++) {
       Object node = nodes.elementAt(i);
-      if (node instanceof MNodeInstanceImpl) res.addElement(node);
+      if (node instanceof MNodeInstance) res.addElement(node);
     }
     return res;
   }

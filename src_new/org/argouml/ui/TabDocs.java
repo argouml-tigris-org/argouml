@@ -48,7 +48,7 @@ public class TabDocs extends TabText {
   protected String genText() {
     //System.out.println("Docstab getting docs for " + _target);
     Object modelObject = _target;
-    if ( !(modelObject instanceof MElementImpl) ) return null;
+    if ( !(modelObject instanceof MElement) ) return null;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
