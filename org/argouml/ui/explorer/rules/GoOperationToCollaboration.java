@@ -22,46 +22,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+// $header$
+package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
-
 /**
- * Generates only package and classifier children from a namespace parent.
- *
- * @since 0.15.2
+ * Go rule for navigation in the navpane from an operation to the collaboration
+ * representing it.
+ * @since Oct 1, 2002
+ * @author jaap.branderhorst@xs4all.nl
  */
-public class GoNamespaceToClassifierAndPackage extends AbstractGoRule {
+public class GoOperationToCollaboration implements PerspectiveRule {
 
-    public String getRuleName() {
-        return "nsp -> owned elems";
-    }
+    public String getRuleName() { return "Operation->Collaboration"; }
 
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
+     */
     public Collection getChildren(Object parent) {
-        
-        if (!(org.argouml.model.ModelFacade.isANamespace(parent)))
-            return null;
-        
-        Iterator elements = ModelFacade.getOwnedElements(parent).iterator();
-        List result = new ArrayList();
-        
-        while(elements.hasNext()){
-            
-            Object element = elements.next();
-            if (ModelFacade.isAPackage(element) ||
-                ModelFacade.isAClassifier(element)){
-                
-                    result.add(element);
-            }
+        if (ModelFacade.isAOperation(parent)) {
+            return ModelFacade.getCollaborations(parent);
         }
-        
-        return result;
+        return null;
     }
 
 }

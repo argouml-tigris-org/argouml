@@ -22,28 +22,32 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+package org.argouml.ui.explorer.rules;
 
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Iterator;
-import org.argouml.model.ModelFacade;
 
+import org.argouml.kernel.Project;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-public class GoNamespaceToOwnedElements extends AbstractGoRule {
+public class GoProjectToStateMachine implements PerspectiveRule {
 
-    public String getRuleName() {
-        return "nsp -> owned elems";
-    }
+    public String getRuleName() { return "Project->Machine"; }
 
     public Collection getChildren(Object parent) {
-        
-        if (!(org.argouml.model.ModelFacade.isANamespace(parent)))
-            return null;
-        
-        return ModelFacade.getOwnedElements(parent);
+	Collection col = new ArrayList();
+	if (parent instanceof Project) {
+	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
+	    while (it.hasNext()) {
+		col.addAll(ModelManagementHelper.getHelper()
+			   .getAllModelElementsOfKind(it.next(),
+					(Class)ModelFacade.STATEMACHINE));
+	    }
+	}
+	return col;
     }
 
 }

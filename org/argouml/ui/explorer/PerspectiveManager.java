@@ -27,57 +27,8 @@ package org.argouml.ui.explorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
-import org.argouml.uml.diagram.collaboration.ui.GoCollaborationInteraction;
-import org.argouml.uml.diagram.collaboration.ui.GoInteractionMessage;
-import org.argouml.uml.diagram.collaboration.ui.GoMessageAction;
-import org.argouml.uml.diagram.collaboration.ui.GoModelToCollaboration;
-import org.argouml.uml.diagram.collaboration.ui.GoOperationToCollaboration;
-import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
-import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
-import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
-import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
-import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
-import org.argouml.uml.diagram.state.ui.GoMachineToState;
-import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
-import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
-import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
-import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
-import org.argouml.uml.diagram.state.ui.GoStateToEntry;
-import org.argouml.uml.diagram.state.ui.GoStateToExit;
-import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
-import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
-import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
 
-import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
-import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
-import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
-import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
-import org.argouml.uml.diagram.ui.GoClassifierToBeh;
-import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
-import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
-
-import org.argouml.uml.diagram.ui.GoDiagramToEdge;
-import org.argouml.uml.diagram.ui.GoGenElementToDerived;
-import org.argouml.uml.diagram.ui.GoModelToBaseElements;
-import org.argouml.uml.diagram.ui.GoNamespaceToDiagram;
-import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
-import org.argouml.uml.diagram.ui.GoProjectToDiagram;
-import org.argouml.uml.diagram.ui.GoProjectToModel;
-
-
-
-import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
-import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
+import org.argouml.ui.explorer.rules.*;
 
 /**
  * Provides a model and event management for perspectives(views) of the

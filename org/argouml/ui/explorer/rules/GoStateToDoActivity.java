@@ -22,50 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+// $Id$
 
-import java.util.List;
-import java.util.ArrayList;
+package org.argouml.ui.explorer.rules;
 
-import org.argouml.ui.explorer.rules.PerspectiveRule;
-import org.argouml.application.api.Argo;
+import java.util.Collection;
+import java.util.Vector;
+import org.argouml.model.ModelFacade;
+
+import org.argouml.ui.AbstractGoRule;
+
 /**
- * Represents a perspective (or view) of the uml model for display in the
- * explorer.
- *
- * This class replaces the old NavPerspective class. This is much simpler.
- *
- * The rules in the perspective generate child nodes for any given parent
- * node in the explorer tree view. Those nodes are then stored as user objects
- * in the ExplorerTreeModel for efficient rendering.
- *
- * @author  alexb
- * @since 0.15.2, Created on 27 September 2003, 09:32
+ * Go rule to navigate from a state to it's doactivity. Used in the package
+ * perspective.
+ * 
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Dec 25, 2002
  */
-public class ExplorerPerspective {
-    
-    List rules;
-    String name;
-    
-    /** Creates a new instance of ExplorerPerspective */
-    public ExplorerPerspective(String newName) {
-        
-        name = Argo.localize("Tree", newName);
-        rules = new ArrayList();
+public class GoStateToDoActivity implements PerspectiveRule {
+
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
+     */
+    public Collection getChildren(Object parent) {
+        if (ModelFacade.isAState(parent)
+	    && ModelFacade.getDoActivity(parent) != null)
+	{
+            Vector children = new Vector();
+            
+            children.add(ModelFacade.getDoActivity(parent));
+            return children;
+        }
+        return null;
     }
-    
-    public void addRule(PerspectiveRule rule){
-        
-        rules.add(rule);
+
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getRuleName()
+     */
+    public String getRuleName() {
+        return "State->Do Activity"; 
     }
-    
-    public Object[] getRulesArray(){
-        
-        return rules.toArray();
-    }
-    
-    public String toString(){
-        
-        return name;
-    }
+
 }

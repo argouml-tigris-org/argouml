@@ -1,5 +1,7 @@
+
+
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,50 +24,47 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui.explorer;
+package org.argouml.ui.explorer.rules;
 
-import java.util.List;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Vector;
 
-import org.argouml.ui.explorer.rules.PerspectiveRule;
-import org.argouml.application.api.Argo;
-/**
- * Represents a perspective (or view) of the uml model for display in the
- * explorer.
- *
- * This class replaces the old NavPerspective class. This is much simpler.
- *
- * The rules in the perspective generate child nodes for any given parent
- * node in the explorer tree view. Those nodes are then stored as user objects
- * in the ExplorerTreeModel for efficient rendering.
- *
- * @author  alexb
- * @since 0.15.2, Created on 27 September 2003, 09:32
- */
-public class ExplorerPerspective {
-    
-    List rules;
-    String name;
-    
-    /** Creates a new instance of ExplorerPerspective */
-    public ExplorerPerspective(String newName) {
-        
-        name = Argo.localize("Tree", newName);
-        rules = new ArrayList();
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.AbstractGoRule;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+
+public class GoMachineDiagram implements PerspectiveRule {
+
+    public String getRuleName() {
+        return "Machine->Diagram";
     }
-    
-    public void addRule(PerspectiveRule rule){
+
+    public Collection getChildren(Object parent) {
         
-        rules.add(rule);
+        if (!(org.argouml.model.ModelFacade.isAStateMachine(parent)))
+            return null;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p == null)
+            return null;
+
+        Vector res = new Vector();
+        Vector diagrams = p.getDiagrams();
+        if (diagrams == null)
+            return null;
+        java.util.Enumeration enum = diagrams.elements();
+        while (enum.hasMoreElements()) {
+            Object d = enum.nextElement();
+            if (d instanceof UMLStateDiagram
+		&& ((UMLStateDiagram) d).getStateMachine() == parent)
+                res.addElement(d);
+            else if (d instanceof UMLActivityDiagram
+		     && ((UMLActivityDiagram) d).getStateMachine() == parent)
+                res.addElement(d);
+        }
+        return res;
     }
-    
-    public Object[] getRulesArray(){
-        
-        return rules.toArray();
-    }
-    
-    public String toString(){
-        
-        return name;
-    }
+
 }

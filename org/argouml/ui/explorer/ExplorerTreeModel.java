@@ -37,7 +37,7 @@ import java.awt.event.ItemListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.NavPerspective;
-import org.argouml.ui.AbstractGoRule;
+import org.argouml.ui.explorer.rules.PerspectiveRule;
 
 /**
  * The model for the Explorer tree view of the uml model.
@@ -150,7 +150,7 @@ ItemListener{
         
         for(int x=0;x<rules.length;x++){
             
-            Collection children = ((AbstractGoRule)rules[x]).getChildren(modelElement);
+            Collection children = ((PerspectiveRule)rules[x]).getChildren(modelElement);
             if(children != null){
                 Iterator childrenIt = children.iterator();
                 
