@@ -44,7 +44,6 @@ public class SplashScreen extends JWindow implements IStatusBar {
     static private boolean _doSplash;
     static public synchronized SplashScreen getInstance() {
         if (!_doSplash) return null;
-System.out.println("Getting the splashscreen");
         if (instance == null) {
             instance = new SplashScreen("Loading ArgoUML...", "Splash");
         }
@@ -57,7 +56,6 @@ System.out.println("Getting the splashscreen");
      */
     public SplashScreen(String title, String iconName) {
 	super();
-System.out.println("Creating the splashscreen");        
 
 	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	getContentPane().setLayout(new BorderLayout(0, 0));
