@@ -45,35 +45,27 @@ public class UUIDManager {
     ////////////////////////////////////////////////////////////////
     // static variables
     
-    private static final UUIDManager SINGLETON = new UUIDManager();
+    private static final UUIDManager INSTANCE = new UUIDManager();
 
-    private static InetAddress address = null; 
+    private InetAddress address;
 
-    static {
-        try {
-            address = InetAddress.getLocalHost(); 
-        }
-	catch (UnknownHostException e) {
-            LOG.fatal("ERROR: unable to get localhost information.", e);
-            LOG.fatal("On Unix systems this usually indicates that your "
-		      + "/etc/hosts file is incorrectly setup.");
-            LOG.fatal("Stopping execution of ArgoUML.");
-            ExitSecurityManager.getInstance().setAllowExit(true);
-            System.exit(-1);
-        }
-    }
-    
     ////////////////////////////////////////////////////////////////
     // constructors
     
     /**
      * Constructor for the UUIDManager. This is private to make sure that 
      * we are a proper singleton.
-     *
-     * @deprecated by Linus Tolke as of 0.15.4. Will be made private.
-     * Use the UUIDManager singleton instead.
      */
-    protected UUIDManager() { }
+    private UUIDManager() {
+        try {
+            address = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            // We can ignore this as the application should
+            // have checked for availability at startup.
+            // For tests we would expect unix developers
+            // to be correctly configured.
+        }
+    }
     
     /**
      * Return the UUIDManager.
@@ -81,7 +73,7 @@ public class UUIDManager {
      * @return an UUIDManager
      */
     public static UUIDManager getInstance() {
-	return SINGLETON;
+	return INSTANCE;
     }
 
     ////////////////////////////////////////////////////////////////
@@ -99,7 +91,6 @@ public class UUIDManager {
 		s.append((new Byte(b[i])).longValue()).append("-");
 	}
 	s.append(uid.toString());
-//	LOG.debug("new UUID: " + s);
 	return s.toString();
     }
 

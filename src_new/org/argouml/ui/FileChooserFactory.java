@@ -26,7 +26,7 @@ package org.argouml.ui;
 
 import javax.swing.JFileChooser;
 
-import org.argouml.model.OsUtil;
+import org.argouml.util.osdep.OsUtil;
 import org.argouml.util.osdep.win32.Win32FileSystemView;
 
 /**
