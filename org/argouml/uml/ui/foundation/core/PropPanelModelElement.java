@@ -119,8 +119,8 @@ abstract public class PropPanelModelElement extends PropPanel {
     private JCheckBox specializationCheckBox;
     private JScrollPane elementResidenceScroll;
 
-    private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
-    private UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
+    private static UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
+    private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
 
     /**
      *    Constructs the PropPanel.
