@@ -49,14 +49,14 @@ public class TestUMLMessagePredecessorListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createMessage();
+        setElem(CollaborationsFactory.getFactory().createMessage());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
-        model = new UMLMessagePredecessorListModel();
+        setModel(new UMLMessagePredecessorListModel());
     }
 
     /**
@@ -66,7 +66,7 @@ public class TestUMLMessagePredecessorListModel
         MMessage[] pres = new MMessage[10];
         for (int i = 0; i < pres.length; i++) {
             pres[i] = CollaborationsFactory.getFactory().createMessage();
-            ((MMessage) elem).addPredecessor(pres[i]);
+            ((MMessage) getElem()).addPredecessor(pres[i]);
         }
         return pres;
     }
@@ -76,7 +76,7 @@ public class TestUMLMessagePredecessorListModel
      */
     protected void removeHalfModel(MBase[] elements) {
 	for (int i = 0; i < 5; i++) {
-            ((MMessage) elem).removePredecessor((MMessage) elements[i]);
+            ((MMessage) getElem()).removePredecessor((MMessage) elements[i]);
         }
     }
 

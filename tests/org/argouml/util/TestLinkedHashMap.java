@@ -458,7 +458,7 @@ public class TestLinkedHashMap extends TestCase {
         assertEquals(array.length , count);
     }
     
-    public void assertEntrySetAgainstArrays(Set entrySet, Object[] keyArray, 
+    private void assertEntrySetAgainstArrays(Set entrySet, Object[] keyArray, 
             Object[] valueArray) {
         // Check that the set returned by keySet() contains all the items in the
         // keys array

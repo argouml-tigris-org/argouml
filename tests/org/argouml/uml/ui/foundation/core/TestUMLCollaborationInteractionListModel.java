@@ -52,14 +52,14 @@ public class TestUMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createCollaboration();
+        setElem(CollaborationsFactory.getFactory().createCollaboration());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
     protected void buildModel() {
-        model = new UMLCollaborationInteractionListModel();
+        setModel(new UMLCollaborationInteractionListModel());
     }
 
     /**
@@ -69,7 +69,7 @@ public class TestUMLCollaborationInteractionListModel
         MInteraction[] inter = new MInteraction[10];
         for (int i = 0; i < 10; i++) {
             inter[i] = CollaborationsFactory.getFactory().createInteraction();
-            inter[i].setContext((MCollaboration) elem);
+            inter[i].setContext((MCollaboration) getElem());
         }
         return inter;
     }
@@ -79,7 +79,7 @@ public class TestUMLCollaborationInteractionListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MCollaboration) elem).removeInteraction(
+            ((MCollaboration) getElem()).removeInteraction(
                     (MInteraction) elements[i]);
         }
     }

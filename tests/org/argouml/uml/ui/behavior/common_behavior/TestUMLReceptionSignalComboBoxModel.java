@@ -92,6 +92,9 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         model = null;
     }
     
+    /**
+     * Set up the test.
+     */
     public void testSetUp() {
         assertEquals(10, model.getSize());
         assertTrue(model.contains(signals[5]));

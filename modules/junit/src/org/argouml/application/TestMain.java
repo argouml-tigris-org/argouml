@@ -25,6 +25,10 @@
 package org.argouml.application;
 import junit.framework.*;
 
+/**
+ * This class does not do very much...
+ *
+ */
 public class TestMain extends TestCase {
     /**
      * The constructor.
@@ -47,11 +51,15 @@ public class TestMain extends TestCase {
      */
     private void compileTestStatics() {
 	Main.main(new String[10]);
-	Main.addPostLoadAction(new localTestMainRunnable());
+	Main.addPostLoadAction(new LocalTestMainRunnable());
     }
 }
 
-class localTestMainRunnable implements Runnable {
+/**
+ * Used by TestMain.compileTestStatics().
+ *
+ */
+class LocalTestMainRunnable implements Runnable {
     public void run() {
     }
 }

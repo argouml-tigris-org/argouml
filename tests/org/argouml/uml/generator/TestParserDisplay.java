@@ -68,14 +68,14 @@ public class TestParserDisplay extends TestCase {
      * Test ClassifierRoleObjectName.
      * TODO: Implement this test.
      */
-    public void TestClassifierRoleObjectName() {
+    public void testClassifierRoleObjectName() {
 	/* Not implemented in ParserDisplay */
     }
 
     /**
      * Test the name of the ClassifierRole.
      */
-    public void TestClassifierRoleName() {
+    public void testClassifierRoleName() {
 	MClassifierRole cr;
 
 	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
@@ -89,7 +89,7 @@ public class TestParserDisplay extends TestCase {
     /**
      * Test the Base of the ClassifierRole.
      */
-    public void TestClassifierRoleBases() {
+    public void testClassifierRoleBases() {
 	MClassifierRole cr;
 	String res1[] = {
 	    "int"
@@ -113,7 +113,7 @@ public class TestParserDisplay extends TestCase {
     /**
      * Test if parsing a ClassifierRole throws exceptions.
      */
-    public void TestClassifierRoleThrows() {
+    public void testClassifierRoleThrows() {
 	MClassifierRole cr;
 
 	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();

@@ -1328,7 +1328,7 @@ public class GeneratorCSharp extends Generator2
     }
 
 
-    public static final String ANY_RANGE = "0..*";
+    private static final String ANY_RANGE = "0..*";
     //public static final String ANY_RANGE = "*";
     // TODO: user preference between "*" and "0..*"
 

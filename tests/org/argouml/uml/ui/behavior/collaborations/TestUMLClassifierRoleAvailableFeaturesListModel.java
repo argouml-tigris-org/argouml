@@ -56,14 +56,14 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createClassifierRole();
+        setElem(CollaborationsFactory.getFactory().createClassifierRole());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
-        model = new UMLClassifierRoleAvailableFeaturesListModel();
+        setModel(new UMLClassifierRoleAvailableFeaturesListModel());
     }
 
     /**
@@ -93,7 +93,7 @@ public class TestUMLClassifierRoleAvailableFeaturesListModel
     protected void setUp() throws Exception {
         super.setUp();
         base = CoreFactory.getFactory().createClass();
-        CollaborationsHelper.getHelper().addBase(elem, base);
+        CollaborationsHelper.getHelper().addBase(getElem(), base);
     }
 
     /**

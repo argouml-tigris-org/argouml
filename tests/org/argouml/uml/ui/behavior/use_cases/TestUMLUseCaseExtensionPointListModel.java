@@ -51,14 +51,14 @@ public class TestUMLUseCaseExtensionPointListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = UseCasesFactory.getFactory().createUseCase();
+        setElem(UseCasesFactory.getFactory().createUseCase());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
     protected void buildModel() {
-        model = new UMLUseCaseExtensionPointListModel();
+        setModel(new UMLUseCaseExtensionPointListModel());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLUseCaseExtensionPointListModel
         MExtensionPoint[] ext = new MExtensionPoint[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = UseCasesFactory.getFactory().createExtensionPoint();
-            ((MUseCase) elem).addExtensionPoint(ext[i]);
+            ((MUseCase) getElem()).addExtensionPoint(ext[i]);
         }
         return ext;
     }
@@ -78,7 +78,7 @@ public class TestUMLUseCaseExtensionPointListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MUseCase) elem).removeExtensionPoint(
+            ((MUseCase) getElem()).removeExtensionPoint(
                     (MExtensionPoint) elements[i]);
         }
     }

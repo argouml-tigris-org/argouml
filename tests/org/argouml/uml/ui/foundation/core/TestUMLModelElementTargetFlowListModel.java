@@ -51,14 +51,14 @@ public class TestUMLModelElementTargetFlowListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CoreFactory.getFactory().createClass();
+        setElem(CoreFactory.getFactory().createClass());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
     protected void buildModel() {
-        model = new UMLModelElementTargetFlowListModel();
+        setModel(new UMLModelElementTargetFlowListModel());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLModelElementTargetFlowListModel
         MFlow[] ext = new MFlow[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = CoreFactory.getFactory().createFlow();
-            ((MModelElement) elem).addTargetFlow(ext[i]);
+            ((MModelElement) getElem()).addTargetFlow(ext[i]);
         }
         return ext;
     }
@@ -78,7 +78,7 @@ public class TestUMLModelElementTargetFlowListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MModelElement) elem).removeTargetFlow((MFlow) elements[i]);
+            ((MModelElement) getElem()).removeTargetFlow((MFlow) elements[i]);
         }
     }
 }

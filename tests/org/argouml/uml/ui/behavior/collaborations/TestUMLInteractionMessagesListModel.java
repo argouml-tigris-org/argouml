@@ -51,14 +51,14 @@ public class TestUMLInteractionMessagesListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createInteraction();
+        setElem(CollaborationsFactory.getFactory().createInteraction());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
-        model = new UMLInteractionMessagesListModel();
+        setModel(new UMLInteractionMessagesListModel());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLInteractionMessagesListModel
         MMessage[] messages = new MMessage[10];
         for (int i = 0; i < messages.length; i++) {
             messages[i] = CollaborationsFactory.getFactory().createMessage();
-            ((MInteraction) elem).addMessage(messages[i]);
+            ((MInteraction) getElem()).addMessage(messages[i]);
         }
         return messages;
     }
@@ -78,7 +78,7 @@ public class TestUMLInteractionMessagesListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MInteraction) elem).removeMessage((MMessage) elements[i]);
+            ((MInteraction) getElem()).removeMessage((MMessage) elements[i]);
         }
     }
 

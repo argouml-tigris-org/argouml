@@ -125,7 +125,7 @@ public class TestAll extends TestCase {
 
     /**
      * @return the test
-     * @throws Throwable
+     * @throws Throwable any exception
      */
     public static Test suite()
 	throws Throwable {

@@ -39,7 +39,7 @@ public class TestStylePanel extends TestCase {
 
     class MockStylePanel extends StylePanel {
 
-        boolean _refreshCalled = false;
+        private boolean refreshCalled = false;
 
         public MockStylePanel() {
             super("mock");
@@ -50,7 +50,14 @@ public class TestStylePanel extends TestCase {
          */
         public void refresh() {
             super.refresh();
-            _refreshCalled = true;
+            refreshCalled = true;
+        }
+
+        /**
+         * @return Returns the refreshCalled.
+         */
+        boolean isRefreshCalled() {
+            return refreshCalled;
         }
 
     }
@@ -80,7 +87,7 @@ public class TestStylePanel extends TestCase {
 			    });
         pane.targetSet(e);
         // new target is of type object, refresh should not be called
-        assertTrue(!((MockStylePanel) pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane).isRefreshCalled());
         target = new UMLClassDiagram();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
@@ -92,7 +99,7 @@ public class TestStylePanel extends TestCase {
 			    });
         pane.targetSet(e);
         // new target is of type UMLClassDiagram, refresh should not be called
-        assertTrue(!((MockStylePanel) pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane).isRefreshCalled());
         target = CoreFactory.getFactory().createClass();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
@@ -104,7 +111,7 @@ public class TestStylePanel extends TestCase {
 			    });
         pane.targetSet(e);
         // new target is a modelelement, refresh should not be called
-        assertTrue(!((MockStylePanel) pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane).isRefreshCalled());
         target = new FigText(0, 0, 0, 0);
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
@@ -116,7 +123,7 @@ public class TestStylePanel extends TestCase {
 			    });
         pane.targetSet(e);
         // new target is a fig, refresh should be called
-        assertTrue(((MockStylePanel) pane)._refreshCalled);
+        assertTrue(((MockStylePanel) pane).isRefreshCalled());
 
     }
 }

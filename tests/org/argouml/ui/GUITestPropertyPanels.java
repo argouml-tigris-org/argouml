@@ -126,7 +126,7 @@ public class GUITestPropertyPanels extends TestCase {
 
     /**
      * @return the test suite
-     * @throws Exception 
+     * @throws Exception any exception
      */
     public static Test suite() throws Exception {
 
@@ -200,7 +200,7 @@ public class GUITestPropertyPanels extends TestCase {
     }
     
     /**
-     * @throws Throwable
+     * @throws Throwable any error or exception
      */
     public void testPropertyTab() throws Throwable {
 	System.out.println("testPropertyTab called in "

@@ -28,7 +28,6 @@ import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 /**

@@ -122,43 +122,15 @@ public class GUITestParseMessage extends TestCase {
 
         /* TRY MOVING IN A SIMPLE MANER */
 
-        parseMessage(m3, " \t1.1 : ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m3.getPredecessors().size() == 0);
-        assertTrue(
-            m2.getPredecessors().iterator().next() == m3
-                && m2.getPredecessors().size() == 1);
-
-        parseMessage(m3, " / 1.2\t: ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m2.getPredecessors().size() == 0);
-        assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
+        trySimpleMoving(m1, m2, m3);
 
         /* TRY SOME ERRORS */
 
-        checkParseException(m3, " 2.1 : ");
-        checkParseException(m3, " 1.2 : 1.2 :");
-        checkParseException(m3, " / / 1.2 : ");
+        trySomeErrors(m3);
 
         /* TRY SOME MORE COMPLEX MOVING */
 
-        parseMessage(m3, " 1.1.1 : ");
-        assertTrue(m3.getActivator() == m2);
-        assertTrue(m3.getPredecessors().size() == 0);
-
-        parseMessage(m3, " / 1..2 : ");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(m2.getPredecessors().size() == 0);
-        assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
-        parseMessage(m3, "");
-        assertTrue(m3.getActivator() == m1);
-        assertTrue(
-            m3.getPredecessors().iterator().next() == m2
-                && m3.getPredecessors().size() == 1);
+        trySomeMoreComplexMoving(m1, m2, m3);
 
         /* TRY SOME MORE ERRORS */
 
@@ -167,72 +139,19 @@ public class GUITestParseMessage extends TestCase {
 
         /* TRY GUARD/ITERATOR SYNTAX */
 
-        parseMessage(m3, " 1.2 [ x < 5 ] : ");
-        assertNotNull(m3.getAction());
-        assertNotNull(m3.getAction().getRecurrence());
-        assertTrue("[x < 5]".equals(m3.getAction().getRecurrence().getBody()));
-
-        parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
-        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
-
-        parseMessage(m3, " 1.2 *// : ");
-        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
-
-        parseMessage(m3, " * // [i=1..] 1.2 : ");
-        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
-        parseMessage(m3, " 1.2 : ");
-        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
+        tryGuardAndIteratorSyntax(m3);
 
         /* TRY SOME GUARD/ITERATOR ERRORS */
 
-        checkParseException(m3, " [x < 5] 1.2 [x > 6] : ");
-        checkParseException(m3, " 1 [x < 5] / 1.2 : ");
-        checkParseException(m3, " 1 * / 1.2 : ");
-        checkParseException(m3, " 1 // / 1.2 : ");
-        checkParseException(m3, " 1 , 2 [x < 5] / 1.2 : ");
-        checkParseException(m3, " 1 , 2 * / 1.2 : ");
-        checkParseException(m3, " 1 , 2 // / 1.2 : ");
-        checkParseException(m3, "/ 1.2 , 2 : ");
-        checkParseException(m3, "/1.2,2:");
+        trySomeGuardAndIteratorErrors(m3);
 
         /* TRY THE ACTIONS */
 
-        parseMessage(m3, " 1.2 : func() ");
-        assertEquals("func", m3.getAction().getScript().getBody());
-        parseMessage(m3, " 1.2 ");
-        assertEquals("func", m3.getAction().getScript().getBody());
-        parseMessage(m3, " 1.2 : ");
-        assertEquals("", m3.getAction().getScript().getBody());
-
-        parseMessage(m3, " 1.2 : var := func() ");
-        assertEquals("var := func", m3.getAction().getScript().getBody());
-
-        parseMessage(m3, " 1.2 : var = func() ");
-        assertEquals("var := func", m3.getAction().getScript().getBody());
-
-        parseMessage(m3, "1.2:var2:=func2()");
-        assertEquals("var2 := func2", m3.getAction().getScript().getBody());
-
-        parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
-        assertEquals(
-            "var, var2, var3 := func",
-            m3.getAction().getScript().getBody());
-
-        parseMessage(m3, "1.2 : load_the_accumulating_taxes");
+        tryTheActions(m3);
 
         /* TRY SOME ACTION ERRORS */
 
-        checkParseException(m3, "1.2 : func() ()");
-        checkParseException(m3, "1.2 : func() foo()");
-        checkParseException(m3, "1.2 : func(), foo()");
-        checkParseException(m3, "1.2 : var() = func()");
-        checkParseException(m3, "1.2 : var = func(), foo()");
-        checkParseException(m3, "1.2 : func() foo()");
-        checkParseException(m3, "1.2 : var = ()");
-        checkParseException(m3, "1.2 : var = () foo");
-        checkParseException(m3, "1.2 : var = (foo(), bar())");
-        checkParseException(m3, "1.2 : func(");
-        checkParseException(m3, "1.2 : func(a, b");
+        trySomeActionErrors(m3);
 
         /* TRY THE PREDECESSORS */
 
@@ -262,6 +181,25 @@ public class GUITestParseMessage extends TestCase {
         assertTrue(m7.getActivator() == m6);
         assertTrue(m7.getPredecessors().size() == 0);
 
+        /* TRY PREDECESSORS */
+        tryPredecessors(m1, m3, m4, m5, m7);
+
+        /* TRY SOME PREDECESSOR ERRORS */
+        trySomePredecessorErrors(m2, m3);
+    }
+
+    /**
+     * @param m1 message to be tested
+     * @param m3 message to be tested
+     * @param m4 message to be tested
+     * @param m5 message to be tested
+     * @param m7 message to be tested
+     * @throws ParseException if the parser found a syntax error
+     */
+    private void tryPredecessors(MMessage m1, MMessage m3, MMessage m4, 
+            MMessage m5, MMessage m7) throws ParseException {
+        MMessage m;
+        Iterator it;
         assertNull(m1.getActivator());
         assertTrue(m1.getPredecessors().size() == 0);
         assertTrue(m4.getActivator() == m3);
@@ -294,11 +232,156 @@ public class GUITestParseMessage extends TestCase {
         assertTrue(pre1);
         assertTrue(pre2);
         assertTrue(!it.hasNext());
+    }
 
-        /* TRY SOME PREDECESSOR ERRORS */
+    /**
+     * @param m2 message to be tested
+     * @param m3 message to be tested
+     */
+    private void trySomePredecessorErrors(MMessage m2, MMessage m3) {
         checkParseException(m2, "1.2 / 1.1 :");
         checkParseException(m2, "1.2.1 / 1.1 :");
         checkParseException(m3, "1.2.1 / 1.2 :");
+    }
+
+    /**
+     * @param m3 message to be tested
+     */
+    private void trySomeActionErrors(MMessage m3) {
+        checkParseException(m3, "1.2 : func() ()");
+        checkParseException(m3, "1.2 : func() foo()");
+        checkParseException(m3, "1.2 : func(), foo()");
+        checkParseException(m3, "1.2 : var() = func()");
+        checkParseException(m3, "1.2 : var = func(), foo()");
+        checkParseException(m3, "1.2 : func() foo()");
+        checkParseException(m3, "1.2 : var = ()");
+        checkParseException(m3, "1.2 : var = () foo");
+        checkParseException(m3, "1.2 : var = (foo(), bar())");
+        checkParseException(m3, "1.2 : func(");
+        checkParseException(m3, "1.2 : func(a, b");
+    }
+
+    /**
+     * @param m3 message to be tested
+     * @throws ParseException if the parser found a syntax error
+     */
+    private void tryTheActions(MMessage m3) throws ParseException {
+        parseMessage(m3, " 1.2 : func() ");
+        assertEquals("func", m3.getAction().getScript().getBody());
+        parseMessage(m3, " 1.2 ");
+        assertEquals("func", m3.getAction().getScript().getBody());
+        parseMessage(m3, " 1.2 : ");
+        assertEquals("", m3.getAction().getScript().getBody());
+
+        parseMessage(m3, " 1.2 : var := func() ");
+        assertEquals("var := func", m3.getAction().getScript().getBody());
+
+        parseMessage(m3, " 1.2 : var = func() ");
+        assertEquals("var := func", m3.getAction().getScript().getBody());
+
+        parseMessage(m3, "1.2:var2:=func2()");
+        assertEquals("var2 := func2", m3.getAction().getScript().getBody());
+
+        parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
+        assertEquals(
+            "var, var2, var3 := func",
+            m3.getAction().getScript().getBody());
+
+        parseMessage(m3, "1.2 : load_the_accumulating_taxes");
+    }
+
+    /**
+     * @param m3 message to be tested
+     */
+    private void trySomeGuardAndIteratorErrors(MMessage m3) {
+        checkParseException(m3, " [x < 5] 1.2 [x > 6] : ");
+        checkParseException(m3, " 1 [x < 5] / 1.2 : ");
+        checkParseException(m3, " 1 * / 1.2 : ");
+        checkParseException(m3, " 1 // / 1.2 : ");
+        checkParseException(m3, " 1 , 2 [x < 5] / 1.2 : ");
+        checkParseException(m3, " 1 , 2 * / 1.2 : ");
+        checkParseException(m3, " 1 , 2 // / 1.2 : ");
+        checkParseException(m3, "/ 1.2 , 2 : ");
+        checkParseException(m3, "/1.2,2:");
+    }
+
+    /**
+     * @param m3 message to be tested
+     * @throws ParseException if the parser found a syntax error
+     */
+    private void tryGuardAndIteratorSyntax(MMessage m3) throws ParseException {
+        parseMessage(m3, " 1.2 [ x < 5 ] : ");
+        assertNotNull(m3.getAction());
+        assertNotNull(m3.getAction().getRecurrence());
+        assertTrue("[x < 5]".equals(m3.getAction().getRecurrence().getBody()));
+
+        parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
+        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
+
+        parseMessage(m3, " 1.2 *// : ");
+        assertEquals("*[i = 1..10]", m3.getAction().getRecurrence().getBody());
+
+        parseMessage(m3, " * // [i=1..] 1.2 : ");
+        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
+        parseMessage(m3, " 1.2 : ");
+        assertEquals("*//[i=1..]", m3.getAction().getRecurrence().getBody());
+    }
+
+    /**
+     * @param m1 message to be tested
+     * @param m2 message to be tested
+     * @param m3 message to be tested
+     * @throws ParseException if the parser found a syntax error
+     */
+    private void trySomeMoreComplexMoving(MMessage m1, MMessage m2, 
+            MMessage m3) throws ParseException {
+        parseMessage(m3, " 1.1.1 : ");
+        assertTrue(m3.getActivator() == m2);
+        assertTrue(m3.getPredecessors().size() == 0);
+
+        parseMessage(m3, " / 1..2 : ");
+        assertTrue(m3.getActivator() == m1);
+        assertTrue(m2.getPredecessors().size() == 0);
+        assertTrue(
+            m3.getPredecessors().iterator().next() == m2
+                && m3.getPredecessors().size() == 1);
+        parseMessage(m3, "");
+        assertTrue(m3.getActivator() == m1);
+        assertTrue(
+            m3.getPredecessors().iterator().next() == m2
+                && m3.getPredecessors().size() == 1);
+    }
+
+    /**
+     * @param m3 message to be tested
+     */
+    private void trySomeErrors(MMessage m3) {
+        checkParseException(m3, " 2.1 : ");
+        checkParseException(m3, " 1.2 : 1.2 :");
+        checkParseException(m3, " / / 1.2 : ");
+    }
+
+    /**
+     * @param m1 message to be tested
+     * @param m2 message to be tested
+     * @param m3 message to be tested
+     * @throws ParseException if the parser found a syntax error
+     */
+    private void trySimpleMoving(MMessage m1, MMessage m2, MMessage m3) 
+        throws ParseException {
+        parseMessage(m3, " \t1.1 : ");
+        assertTrue(m3.getActivator() == m1);
+        assertTrue(m3.getPredecessors().size() == 0);
+        assertTrue(
+            m2.getPredecessors().iterator().next() == m3
+                && m2.getPredecessors().size() == 1);
+
+        parseMessage(m3, " / 1.2\t: ");
+        assertTrue(m3.getActivator() == m1);
+        assertTrue(m2.getPredecessors().size() == 0);
+        assertTrue(
+            m3.getPredecessors().iterator().next() == m2
+                && m3.getPredecessors().size() == 1);
     }
 
     private void parseMessage(MMessage m, String s) throws ParseException {

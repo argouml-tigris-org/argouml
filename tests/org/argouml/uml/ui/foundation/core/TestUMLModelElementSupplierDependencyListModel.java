@@ -51,14 +51,14 @@ public class TestUMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CoreFactory.getFactory().createClass();
+        setElem(CoreFactory.getFactory().createClass());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel(org.argouml.uml.ui.UMLUserInterfaceContainer)
      */
     protected void buildModel() {
-        model = new UMLModelElementSupplierDependencyListModel();
+        setModel(new UMLModelElementSupplierDependencyListModel());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLModelElementSupplierDependencyListModel
         MDependency[] ext = new MDependency[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = CoreFactory.getFactory().createDependency();
-            ((MModelElement) elem).addSupplierDependency(ext[i]);
+            ((MModelElement) getElem()).addSupplierDependency(ext[i]);
         }
         return ext;
     }
@@ -78,7 +78,7 @@ public class TestUMLModelElementSupplierDependencyListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MModelElement) elem).removeSupplierDependency(
+            ((MModelElement) getElem()).removeSupplierDependency(
                     (MDependency) elements[i]);
         }
     }

@@ -52,14 +52,14 @@ public class TestUMLAssociationRoleMessageListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createAssociationRole();
+        setElem(CollaborationsFactory.getFactory().createAssociationRole());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
-        model = new UMLAssociationRoleMessageListModel();
+        setModel(new UMLAssociationRoleMessageListModel());
     }
 
     /**
@@ -69,7 +69,7 @@ public class TestUMLAssociationRoleMessageListModel
         MMessage[] messages = new MMessage[10];
         for (int i = 0; i < messages.length; i++) {
             messages[i] = CollaborationsFactory.getFactory().createMessage();
-            ((MAssociationRole) elem).addMessage(messages[i]);
+            ((MAssociationRole) getElem()).addMessage(messages[i]);
         }   
         return messages;
     }
@@ -79,7 +79,8 @@ public class TestUMLAssociationRoleMessageListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MAssociationRole) elem).removeMessage((MMessage) elements[i]);
+            ((MAssociationRole) getElem()).removeMessage(
+                    (MMessage) elements[i]);
         }
     }
 

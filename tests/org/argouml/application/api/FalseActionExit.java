@@ -46,21 +46,21 @@ public class FalseActionExit extends ActionExit {
     }
 
     /**
-     * @return Returns the argument.
+     * @return returns the argument
      */
     public String getArgument() {
         return argument;
     }
 
     /**
-     * @return Returns the isExited.
+     * @return returns true if exited
      */
     public boolean isExited() {
         return isExited;
     }
 
     /**
-     * @return Returns the lastInvoked.
+     * @return returns the last invoked instance of this class
      */
     public static FalseActionExit getLast() {
         return lastInvoked;

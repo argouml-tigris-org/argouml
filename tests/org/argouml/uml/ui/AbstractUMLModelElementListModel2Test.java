@@ -40,8 +40,8 @@ import ru.novosoft.uml.MFactoryImpl;
 public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     
     private int oldEventPolicy;
-    protected MBase elem;
-    protected UMLModelElementListModel2 model;
+    private MBase elem;
+    private UMLModelElementListModel2 model;
 
     /**
      * Constructor for AbstractUMLModelElementListModel2Test.
@@ -126,5 +126,33 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      * @param elements the element
      */
     protected abstract void removeHalfModel(MBase[] elements);
+
+    /**
+     * @param theModel The model to set.
+     */
+    protected void setModel(UMLModelElementListModel2 theModel) {
+        this.model = theModel;
+    }
+
+    /**
+     * @return Returns the model.
+     */
+    protected UMLModelElementListModel2 getModel() {
+        return model;
+    }
+
+    /**
+     * @param theElement The elem to set.
+     */
+    protected void setElem(MBase theElement) {
+        this.elem = theElement;
+    }
+
+    /**
+     * @return Returns the elem.
+     */
+    protected MBase getElem() {
+        return elem;
+    }
 
 }

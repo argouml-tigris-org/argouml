@@ -52,14 +52,14 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        elem = CollaborationsFactory.getFactory().createAssociationRole();
+        setElem(CollaborationsFactory.getFactory().createAssociationRole());
     }
 
     /**
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildModel()
      */
     protected void buildModel() {
-        model = new UMLAssociationRoleAssociationEndRoleListModel();
+        setModel(new UMLAssociationRoleAssociationEndRoleListModel());
     }
 
     /**
@@ -70,7 +70,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
         for (int i = 0; i < ends.length; i++) {
             ends[i] =
 		CollaborationsFactory.getFactory().createAssociationEndRole();
-            ends[i].setAssociation((MAssociationRole) elem);
+            ends[i].setAssociation((MAssociationRole) getElem());
         }
         return ends;
     }
@@ -80,7 +80,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MAssociationRole) elem)
+            ((MAssociationRole) getElem())
 		.removeConnection((MAssociationEnd) elements[i]);
         }
     }

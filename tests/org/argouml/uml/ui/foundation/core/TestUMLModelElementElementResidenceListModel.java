@@ -93,6 +93,9 @@ public class TestUMLModelElementElementResidenceListModel extends TestCase {
         assertTrue(list.getSize() == 0);
     }
     
+    /**
+     * Test getting an element when there is none.
+     */
     public void testNoElements() {
         try {
             list.getElementAt(0);

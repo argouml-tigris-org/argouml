@@ -81,7 +81,7 @@ public class CheckUMLModelHelper {
     }
 
     /**
-     * Deleted a model object, looses the refence and then checks that 
+     * Deleted a model object, looses the reference and then checks that 
      * the object is reclaimed.
      *
      * This must be called with just one reference to the object or
@@ -103,8 +103,9 @@ public class CheckUMLModelHelper {
 	TestCase.assertTrue("getUMLClassName() corrupt in " + c, 
 		      mo.getUMLClassName() instanceof String);
 
-	TestCase.assertTrue("getUMLClassName() different from expected in " + c, 
-		      name.equals(mo.getUMLClassName()));
+	TestCase.assertTrue(
+            "getUMLClassName() different from expected in " + c, 
+	    name.equals(mo.getUMLClassName()));
 
 	UmlFactory.getFactory().delete(mo);
 
@@ -114,6 +115,16 @@ public class CheckUMLModelHelper {
 	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
+    /**
+     * Creates a UML modelelement (i.e. check if a creation function exists).
+     * Then deletes it, looses the reference and then checks that 
+     * the object is reclaimed.
+     *  
+     * @param tc the testcase class
+     * @param f the DataTypesFactory
+     * @param names the UML elements to test
+     * @param args the arguments of the UML elements
+     */
     public static void createAndRelease(TestCase tc,
 					AbstractUmlModelFactory f,
 					String [] names,
@@ -159,6 +170,11 @@ public class CheckUMLModelHelper {
 	}
     }
 
+    /**
+     * @param tc the testcase class
+     * @param f the DataTypesFactory
+     * @param names the UML elements to test
+     */
     public static void createAndRelease(TestCase tc,
 					AbstractUmlModelFactory f,
 					String [] names) {
@@ -168,6 +184,14 @@ public class CheckUMLModelHelper {
 	createAndRelease(tc, f, names, noarguments);
     }
     
+    /**
+     * Test the presence of deletion functions for a list of modelelements.
+     * 
+     * @param tc the testcase class
+     * @param f the model factory that provides the "delete" functions 
+     *          for the modelelements
+     * @param names the names of the modelelements
+     */
     public static void deleteComplete(TestCase tc, 
 				      AbstractUmlModelFactory f, 
 				      String[] names) {
@@ -198,6 +222,13 @@ public class CheckUMLModelHelper {
         }
     }
     
+    /**
+     * Check if for every metamodel element name a create function exists.
+     * 
+     * @param tc the testcase class
+     * @param f the modelfactory that should contain the creation function
+     * @param names the metamodel class names
+     */
     public static void metaModelNameCorrect(TestCase tc, 
             AbstractUmlModelFactory f, String[] names) {
         try {
@@ -226,6 +257,14 @@ public class CheckUMLModelHelper {
         }
     } 
     
+    /**
+     * Try creating a stereotype for every modelelement type.
+     * 
+     * @param tc the testcase class
+     * @param f the factory containing the creation function for 
+     *          all the given metamodel element names
+     * @param names the metamodel element names
+     */
     public static void isValidStereoType(
             TestCase tc, 
             AbstractUmlModelFactory f, 

@@ -27,6 +27,10 @@ package org.argouml.uml.diagram.use_case.ui;
 import junit.framework.*;
 
 
+/**
+ * Test if a Fig is cloneable.
+ *
+ */
 public class TestFigClonable extends TestCase {
     
     /**
