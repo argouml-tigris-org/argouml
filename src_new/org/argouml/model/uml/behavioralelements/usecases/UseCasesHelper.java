@@ -159,6 +159,18 @@ public class UseCasesHelper {
 		}
 		return list;
 	}
+    
+    public Collection getExtendingUseCases(MUseCase usecase) {
+        if (usecase == null) return new ArrayList();
+        Iterator it = usecase.getExtends2().iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            MExtend ext = (MExtend)it.next();
+            MUseCase extension = ext.getExtension();
+            list.add(extension);
+        }
+        return list;
+    }
 	
 	/**
 	 * Returns the extend relation between two usecases base and extension. If there is none

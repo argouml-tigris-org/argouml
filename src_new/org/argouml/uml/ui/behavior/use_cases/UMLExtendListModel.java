@@ -36,10 +36,9 @@
 // changed or moved.
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 
 import javax.swing.*;
@@ -49,15 +48,19 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.UMLBinaryRelationListModel;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 
 /**
@@ -71,7 +74,7 @@ import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsH
  *   relationship itself.</p>
  */
 
-public class UMLExtendListModel extends UMLModelElementListModel  {
+public class UMLExtendListModel extends UMLBinaryRelationListModel  {
     protected static Category cat = Category.getInstance(UMLExtendListModel.class);
 
     /**
@@ -112,7 +115,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      *
      * @return the number of elements the list model (0 if there are none).
      */
-
+/*
     protected int recalcModelElementSize() {
         int        size   = 0;
         Collection xtends = getExtends();
@@ -123,7 +126,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 
         return size;
     }
-
+*/
     
     /**
      * <p>Get the element at a given offset in the model This method must be
@@ -137,12 +140,12 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      * @return  the element at that index if there is one, otherwise
      *          <code>null</code>.
      */
-
+/*
     protected MModelElement getModelElementAt(int index) {
 
         return elementAtUtil(getExtends(), index, MExtend.class);
     }
-            
+*/            
         
     /**
      * <p>A private utility to get the list of extends relationships for this
@@ -150,7 +153,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      *
      * @return the list of extends relationships for this use case.
      */
-
+/*
     private Collection getExtends() {
 
         Collection xtends = null;
@@ -169,7 +172,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 
         return xtends;
     }
-    
+*/    
 
     /**
      * <p>Format a given model element.</p>
@@ -193,7 +196,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      *
      * @return an object (typically a string) representing the element.
      */
-
+/*
     public Object formatElement(MModelElement element) {
 
         Object value = _nullLabel;
@@ -226,7 +229,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 
         return value;
     }
-
+*/
 
     /**
      * <p>Implement the "add" function of the pop up menu.</p>
@@ -236,9 +239,16 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked.
      */
-
+/*
     public void add(int index) {
     	Object target = getTarget();
+        boolean extensionPoint = false;
+        MExtensionPoint point = null;
+        if (target instanceof MExtensionPoint) {
+            point = (MExtensionPoint)target;
+            target = point.getUseCase();
+            extensionPoint = true;
+        }
     	if (target instanceof MUseCase) {
     		MUseCase usecase = (MUseCase)target;	
 	    	Vector choices = new Vector();
@@ -260,10 +270,29 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 	    				if (figclass != null && figeusecase != null) {
 	    					GraphModel gm = diagram.getGraphModel();
 	    					if (gm instanceof MutableGraphModel) {
+                                if (!extensionPoint)
 	    						((MutableGraphModel)gm).connect(usecase, eusecase, MExtend.class);
+                                else {
+                                    ((MutableGraphModel)gm).connect(eusecase, usecase, MExtend.class);
+                                    List list = new ArrayList();
+                                    list.add(point);
+                                    MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
+                                    UmlFactory.getFactory().delete(e.getExtensionPoint(0));
+                                    e.setExtensionPoints(list);
+                                }
 	    					}
 	    				} else {
+                            if (!extensionPoint)
 	    					UseCasesFactory.getFactory().buildExtend(eusecase, usecase);
+                            else {
+                                 UseCasesFactory.getFactory().buildExtend(usecase, eusecase);
+                                 List list = new ArrayList();
+                                 list.add(point);
+                                 MExtend e = UseCasesHelper.getHelper().getExtends(usecase, eusecase);
+                                 UmlFactory.getFactory().delete(e.getExtensionPoint(0));
+                                 e.setExtensionPoints(list);
+                            }
+                            
 	    				}
 	    			}
 	    		}
@@ -283,7 +312,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
     	}
     }
 
-
+*/
     /**
      * <p>Implement the "delete" function of the pop up menu. Delete the
      *   element at the given index.</p>
@@ -299,9 +328,12 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      * @param index  Offset in the list of the element at which the pop-up was
      *               invoked and which is to be deleted.
      */
-
+/*
     public void delete(int index) {
 		Object target = getTarget();
+        if (target instanceof MExtensionPoint) {
+            target = ((MExtensionPoint)target).getUseCase();
+        }
     	if (target instanceof MUseCase) {
     		MUseCase usecase = (MUseCase)target;
     		MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
@@ -314,7 +346,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
     		fireIntervalRemoved(this,index,index);
     	}
     }
-
+*/
 
     /**
      * <p>Implement the action that occurs with the "MoveUp" pop up.</p>
@@ -326,7 +358,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      * @param index  the index in the list of the extend relationship to move
      *               up.
      */
-
+/*
     public void moveUp(int index) {
 
         // Only do this if we are an extension point or use case
@@ -360,7 +392,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
         fireContentsChanged(this, index - 1, index);
     }
     
-
+*/
     /**
      * <p>The action that occurs with the "MoveDown" pop up.</p>
      *
@@ -371,7 +403,7 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
      * @param index  the index in the list of the extend relationship to move
      *               down.
      */
-
+/*
     public void moveDown(int index) {
 
         // Only do this if we are an extension point or use case
@@ -404,11 +436,12 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 
         fireContentsChanged(this,index,index+1);
     }
-
+*/
 
 	/**
 	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
 	 */
+/*
 	public boolean buildPopup(JPopupMenu popup, int index) {
 		UMLUserInterfaceContainer container = getContainer();
         UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
@@ -428,5 +461,56 @@ public class UMLExtendListModel extends UMLModelElementListModel  {
 
         return true;
 	}
+*/
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
+     */
+    protected void build(MModelElement from, MModelElement to) {
+        if (from instanceof MUseCase && to instanceof MUseCase) {
+            UseCasesFactory.getFactory().buildExtend((MUseCase)to, (MUseCase)from);
+        } else
+            throw new IllegalArgumentException("In build of UMLExtendListModel: either the arguments are null or not instanceof MUseCase");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#connect(MutableGraphModel, MModelElement, MModelElement)
+     */
+    protected void connect(
+        MutableGraphModel gm,
+        MModelElement from,
+        MModelElement to) {
+            gm.connect(from, to, MExtend.class);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getAddDialogTitle()
+     */
+    protected String getAddDialogTitle() {
+        return Argo.localize("UMLMenu", "dialog.title.add-extended-usecases");
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
+     */
+    protected Collection getChoices() {
+        return ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getRelation(MModelElement, MModelElement)
+     */
+    protected MModelElement getRelation(MModelElement from, MModelElement to) {
+        return UseCasesHelper.getHelper().getExtends((MUseCase)to, (MUseCase)from);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
+     */
+    protected Collection getSelected() {
+        if (getTarget() instanceof MUseCase) {
+            return UseCasesHelper.getHelper().getExtendedUseCases((MUseCase)getTarget());
+        } else
+            throw new IllegalStateException("In getSelected of UMLExtendListModel: target is not an instanceof MUseCase");
+    }
 
 } /* End of class UMLExtendListModel */

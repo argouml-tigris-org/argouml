@@ -43,7 +43,7 @@
 // changed or moved.
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
 import java.awt.*;
@@ -56,6 +56,11 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.UMLAddDialog;
+import org.argouml.uml.ui.UMLListMenuItem;
+import org.argouml.uml.ui.UMLModelElementListModel;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;

@@ -25,7 +25,7 @@
 // to support proper UML extension points.
 
 
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.*;
 import java.awt.*;
@@ -37,6 +37,9 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.argouml.ui.*;
+import org.argouml.uml.ui.UMLListMenuItem;
+import org.argouml.uml.ui.UMLModelElementListLinkModel;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 

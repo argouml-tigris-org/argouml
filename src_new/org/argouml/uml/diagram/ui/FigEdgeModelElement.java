@@ -439,27 +439,19 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
      * @see org.tigris.gef.presentation.Fig#dispose()
      */
     public void dispose() {
-		Object own = getOwner();
-		if(own != null) {
-	    	Trash.SINGLETON.addItemFrom(getOwner(), null);
-	    	if (own instanceof MModelElement) {	
-                    UmlFactory.getFactory().delete((MModelElement)own);
-	    	}
-		}
+	Object own = getOwner();
+	if(own != null) {
+	    Trash.SINGLETON.addItemFrom(getOwner(), null);
+	    if (own instanceof MModelElement) {	
+                UmlFactory.getFactory().delete((MModelElement)own);
+	    }
+	}
         Iterator it = getPathItemFigs().iterator();
         while (it.hasNext()) {
             ((Fig)it.next()).dispose();
         }
 		super.dispose();
     }
-
-    /** delete just this object.
-     * The owner is preserved.
-     */
-    public void remove() {
-        super.delete();
-    }
-
 
    /** This default implementation simply requests the default notation.
    */
@@ -504,6 +496,18 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
         return false;
     }
 		
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        super.delete();
+        Iterator it = getPathItemFigs().iterator();
+        while (it.hasNext()) {
+            Fig fig = (Fig)it.next();
+            fig.delete();
+        }
+    }
 
 } /* end class FigEdgeModelElement */
 

@@ -83,6 +83,14 @@ public class FigAssociationRole extends FigAssociation {
     	_messages.damage();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#delete()
+     */
+    public void delete() {
+        super.delete();
+        _messages.delete();
+    }
+
 } /* end class FigAssociationRole */
 
 class FigMessageGroup extends FigGroup {
@@ -164,7 +172,15 @@ class FigMessageGroup extends FigGroup {
     /**
      * @see org.tigris.gef.presentation.Fig#delete()
      */ 
-    public void delete() {  
+    public void delete() { 
+        Vector figs = getFigs();
+        if (figs != null) {
+            Iterator it = figs.iterator();
+            while (it.hasNext()) {
+                Fig fig = (Fig)it.next();
+                fig.delete();
+            }
+        } 
         removeAll();
         super.delete();
     }
@@ -182,8 +198,11 @@ class FigMessageGroup extends FigGroup {
         		fig.dispose();
         	}
         }
+        removeAll();
         super.dispose();
     }
+
+    
 
 }
 

@@ -123,7 +123,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         // The extension use cases (via the Extend relationship)
 
         JList extendList =
-            new UMLList(new UMLExtendListModel(this, null, true),
+            new UMLList(new UMLExtendedUseCasesListModel(this, null, false),
                         true);
 
         extendList.setBackground(getBackground());
