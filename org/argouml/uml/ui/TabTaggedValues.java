@@ -159,7 +159,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   ////////////////
   // accessors
   public void setTarget(MModelElement t) {
-    UmlModelEventPump.getPump().removeModelEventListener(this, _target);
+    if (_target != null)
+        UmlModelEventPump.getPump().removeModelEventListener(this, _target);
     _target = t;
     UmlModelEventPump.getPump().addModelEventListener(this, t);
     fireTableDataChanged();

@@ -620,7 +620,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     Object oldOwner = getOwner();
     super.setOwner(own);
     if (oldOwner instanceof MModelElement)
-      ((MModelElement)oldOwner).removeMElementListener(this);
+      UmlModelEventPump.getPump().removeModelEventListener(this, (MModelElement)oldOwner);
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
         UmlModelEventPump.getPump().removeModelEventListener(this, me);
