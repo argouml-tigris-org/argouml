@@ -56,7 +56,8 @@ public class CheckUMLModelHelper {
     }
 
     public static void createAndRelease(TestCase tc,
-					MBase mo) {
+					MBase mo,
+					String name) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
@@ -65,6 +66,9 @@ public class CheckUMLModelHelper {
 		  mo.toString() instanceof String);
 	tc.assert("getUMLClassName() corrupt in " + c, 
 		  mo.getUMLClassName() instanceof String);
+
+	tc.assert("getUMLClassName() different from expected in " + c, 
+		  name.equals(mo.getUMLClassName()));
 
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
@@ -97,7 +101,7 @@ public class CheckUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    createAndRelease(tc, (MBase) m.invoke(f, args));
+		    createAndRelease(tc, (MBase) m.invoke(f, args), names[i]);
 		}
 		catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
