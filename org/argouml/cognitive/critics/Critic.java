@@ -121,7 +121,9 @@ public class Critic implements Poster, Serializable {
   /** The moreInfoURL of the ToDoItem produced. */
   private String _moreInfoURL;
 
-  /** Arguments used to configure the critic. */
+  /** Arguments used to configure the critic.
+   * TODO: Could this be removed from the main critics class?
+   */
   private Hashtable _args = new Hashtable();
 
   /** The icon representing the resource.
