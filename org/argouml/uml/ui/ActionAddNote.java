@@ -225,7 +225,10 @@ public class ActionAddNote extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
+    if (pb.getActiveDiagram() == null) return false;
 	return super.shouldBeEnabled() && 
-        (target instanceof MModelElement) && (pb.getActiveDiagram().presentationFor(target) instanceof FigNode);
+        (target instanceof MModelElement) && 
+        (!(target instanceof MComment)) &&
+        (pb.getActiveDiagram().presentationFor(target) instanceof FigNode);
     }
 } /* end class ActionAddNote */
