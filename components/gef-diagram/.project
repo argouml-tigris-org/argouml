@@ -3,8 +3,14 @@
 	<name>gef-diagram</name>
 	<comment></comment>
 	<projects>
+		<project>api</project>
 	</projects>
 	<buildSpec>
+		<buildCommand>
+			<name>de.mvmsoft.checkclipse.CheckclipseBuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
 		<buildCommand>
 			<name>org.eclipse.jdt.core.javabuilder</name>
 			<arguments>
