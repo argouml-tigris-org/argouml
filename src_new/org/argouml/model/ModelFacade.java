@@ -1989,6 +1989,18 @@ public class ModelFacade {
         }
     }
 
+    /** getUMLClassName returns the name of the UML Model class, e.g. it 
+     *  it will return Class for an object of type MClass.
+     * @param handle Modelelement
+     * @return classname of modelelement
+     */
+    public static String getUMLClassName(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getUMLClassName();
+        }
+        return null;
+    }
+
     ////////////////////////////////////////////////////////////////
     // Convenience methods
 
