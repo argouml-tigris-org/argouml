@@ -1,3 +1,0 @@
-// $ANTLR 2.7.1: classfile.g -> ClassfileParserTokenTypes.txt$
-ClassfileParser    // output token vocab name
-BYTE=4
