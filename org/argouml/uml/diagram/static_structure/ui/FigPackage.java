@@ -546,7 +546,7 @@ public class FigPackage extends FigNodeModelElement {
         Vector popUpActions = super.getPopUpActions(me);
         Object mpackage = /*(MPackage)*/ getOwner();
 
-        ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
+        ArgoJMenu modifierMenu = new ArgoJMenu(BUNDLE, "menu.popup.modifiers");
 
         modifierMenu.addCheckItem(new ActionModifier("Abstract",
 						     "isAbstract",
@@ -556,9 +556,9 @@ public class FigPackage extends FigNodeModelElement {
         modifierMenu.addCheckItem(new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf", (MPackage)mpackage));
         modifierMenu.addCheckItem(new ActionModifier("Root", "isRoot", "isRoot", "setRoot", (MPackage)mpackage));
 
-        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
 
-        ArgoJMenu showMenu = new ArgoJMenu("Show");
+        ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
 
         if (!_showStereotype) {
             showMenu.add(new UMLAction("Show Stereotype", UMLAction.NO_ICON) 
@@ -580,7 +580,7 @@ public class FigPackage extends FigNodeModelElement {
 		});
         }
 
-        popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(showMenu, popUpActions.size() - 2);
 
         return popUpActions;
     }

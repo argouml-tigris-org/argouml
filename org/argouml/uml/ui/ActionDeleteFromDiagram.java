@@ -27,7 +27,10 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 import java.util.Vector;
 
+import javax.swing.Action;
+
 import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -49,6 +52,10 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
 
     private ActionDeleteFromDiagram() {
         super("action.remove-from-diagram");
+        String localMnemonic = Translator.localize("action.remove-from-diagram.mnemonic");
+        if (localMnemonic != null && localMnemonic.length() == 1) {
+            putValue(Action.MNEMONIC_KEY, new Integer((int) localMnemonic.charAt(0)));
+        }                
     }
 
     ////////////////////////////////////////////////////////////////

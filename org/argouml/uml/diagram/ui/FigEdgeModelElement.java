@@ -48,11 +48,9 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Icon;
-import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
@@ -69,20 +67,20 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDManager;
 import org.argouml.uml.ui.ActionDeleteFromDiagram;
 import org.argouml.uml.ui.ActionProperties;
 import org.argouml.util.Trash;
-
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -113,6 +111,9 @@ public abstract class FigEdgeModelElement
 
     protected static Logger cat =
         Logger.getLogger(FigEdgeModelElement.class);
+        
+    protected static final String BUNDLE = "UMLMenu";
+        
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -211,11 +212,12 @@ public abstract class FigEdgeModelElement
         ToDoList list = Designer.TheDesigner.getToDoList();
         Vector items = (Vector) list.elementsForOffender(getOwner()).clone();
         if (items != null && items.size() > 0) {
-            JMenu critiques = new JMenu("Critiques");
+            ArgoJMenu critiques = new ArgoJMenu(BUNDLE, "menu.popup.critiques");
             ToDoItem itemUnderMouse = hitClarifier(me.getX(), me.getY());
-            if (itemUnderMouse != null)
+            if (itemUnderMouse != null) {
                 critiques.add(new ActionGoToCritique(itemUnderMouse));
-            critiques.addSeparator();
+                critiques.addSeparator();
+            }
             int size = items.size();
             for (int i = 0; i < size; i++) {
                 ToDoItem item = (ToDoItem) items.elementAt(i);

@@ -316,12 +316,14 @@ public class FigClass extends FigNodeModelElement {
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        JMenu addMenu = new JMenu("Add");
+        
+        ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");        
         addMenu.add(ActionAddAttribute.SINGLETON);
         addMenu.add(ActionAddOperation.SINGLETON);
         addMenu.add(ActionAddNote.SINGLETON);
-        popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
-        JMenu showMenu = new JMenu("Show");
+        popUpActions.insertElementAt(addMenu, popUpActions.size() - 2);
+        
+        ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
         if (_attrVec.isDisplayed() && _operVec.isDisplayed())
             showMenu.add(ActionCompartmentDisplay.HideAllCompartments);
         else if (!_attrVec.isDisplayed() && !_operVec.isDisplayed())
@@ -340,10 +342,10 @@ public class FigClass extends FigNodeModelElement {
         showMenu.add(ActionEdgesDisplay.ShowEdges);
         showMenu.add(ActionEdgesDisplay.HideEdges);
 
-        popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(showMenu, popUpActions.size() - 2);
 
         Object mclass = /*(MClass)*/ getOwner();
-        ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
+        ArgoJMenu modifierMenu = new ArgoJMenu(BUNDLE, "menu.popup.modifiers");
 
         modifierMenu.addCheckItem(
 		new ActionModifier("Public",
@@ -368,7 +370,7 @@ public class FigClass extends FigNodeModelElement {
 				   "isActive", "isActive", "setActive",
 				   (MClass)mclass));
 
-        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
+        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
         // end of block
 
         return popUpActions;

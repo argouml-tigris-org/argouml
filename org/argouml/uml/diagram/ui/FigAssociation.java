@@ -33,16 +33,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import javax.swing.JMenu;
-
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.ArgoJMenu;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
-
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -339,32 +337,34 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	if (srcDeterminingFactor < rSquared &&
 	    srcDeterminingFactor < destDeterminingFactor) {
-	    JMenu multMenu = new JMenu("Multiplicity");
+        ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
+        
 	    multMenu.add(ActionMultiplicity.SrcMultOne);
 	    multMenu.add(ActionMultiplicity.SrcMultZeroToOne);
 	    multMenu.add(ActionMultiplicity.SrcMultOneToMany);
 	    multMenu.add(ActionMultiplicity.SrcMultZeroToMany);
-	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
+	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
 
-	    JMenu aggMenu = new JMenu("Aggregation");
+        ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
+        
 	    aggMenu.add(ActionAggregation.SrcAggNone);
 	    aggMenu.add(ActionAggregation.SrcAgg);
 	    aggMenu.add(ActionAggregation.SrcAggComposite);
-	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
+	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 2);
 	}
 	else if (destDeterminingFactor < rSquared) {
-	    JMenu multMenu = new JMenu("Multiplicity");
+        ArgoJMenu multMenu = new ArgoJMenu(BUNDLE, "menu.popup.multiplicity");
 	    multMenu.add(ActionMultiplicity.DestMultOne);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToOne);
 	    multMenu.add(ActionMultiplicity.DestMultOneToMany);
 	    multMenu.add(ActionMultiplicity.DestMultZeroToMany);
-	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 1);
+	    popUpActions.insertElementAt(multMenu, popUpActions.size() - 2);
 
-	    JMenu aggMenu = new JMenu("Aggregation");
+        ArgoJMenu aggMenu = new ArgoJMenu(BUNDLE, "menu.popup.aggregation");
 	    aggMenu.add(ActionAggregation.DestAggNone);
 	    aggMenu.add(ActionAggregation.DestAgg);
 	    aggMenu.add(ActionAggregation.DestAggComposite);
-	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
+	    popUpActions.insertElementAt(aggMenu, popUpActions.size() - 2);
 	}
 	else {
 	    // No particular options for right click in middle of line
@@ -385,7 +385,8 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	    if (ModelFacade.isAClassifier(ModelFacade.getType(ascStart))
                     && ModelFacade.isAClassifier(ModelFacade.getType(ascEnd))) {
-		JMenu navMenu = new JMenu("Navigability");
+        ArgoJMenu navMenu = new ArgoJMenu(BUNDLE, "menu.popup.navigability");
+        
 		navMenu.add(ActionNavigability.newActionNavigability(ascStart,
 								     ascEnd,
 								     ActionNavigability.BIDIRECTIONAL));
@@ -396,7 +397,7 @@ public class FigAssociation extends FigEdgeModelElement {
 								     ascEnd,
 								     ActionNavigability.ENDTOSTART));
 
-		popUpActions.insertElementAt(navMenu, popUpActions.size() - 1);
+		popUpActions.insertElementAt(navMenu, popUpActions.size() - 2);
 	    }
 	}
 
