@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrDupParamName.java
 // Classes: CrDupParamName
 // Original Author: jrobbins@ics.uci.edu
@@ -38,10 +36,9 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
-
 /** Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
-
+ *  Semantics. OMG document ad/97-08-04.
+ */
 public class CrDupParamName extends CrUML {
 
     public CrDupParamName() {
@@ -52,22 +49,31 @@ public class CrDupParamName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isABehavioralFeature(dm))) return NO_PROBLEM;
-	Object bf = /*(MBehavioralFeature)*/ dm;
-	Vector params = new Vector(ModelFacade.getParameters(bf));
-	params.remove(UmlHelper.getHelper().getCore()
-		      .getReturnParameter(/*(MOperation)*/ bf));
-	Vector namesSeen = new Vector();
-	Iterator enum = params.iterator();
-	while (enum.hasNext()) {
-	    Object p = /*(MParameter)*/ enum.next();
-	    String pName = ModelFacade.getName(p);
-	    if (pName == null || "".equals(pName)) continue;
-	    String nameStr = pName;
-	    if (nameStr == null || nameStr.length() == 0) continue;
-	    if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
-	    namesSeen.addElement(nameStr);
+	if (!ModelFacade.isABehavioralFeature(dm)) {
+	    return NO_PROBLEM;
 	}
+
+	Object bf = /*(MBehavioralFeature)*/ dm;
+	Vector namesSeen = new Vector();
+	Iterator params = ModelFacade.getParameters(bf).iterator();
+	while (params.hasNext()) {
+	    Object p = /*(MParameter)*/ params.next();
+	    if (ModelFacade.isReturn(p)) {
+		continue;
+	    }
+
+	    String pName = ModelFacade.getName(p);
+	    if (pName == null || "".equals(pName)) {
+		continue;
+	    }
+
+	    if (namesSeen.contains(pName)) {
+		return PROBLEM_FOUND;
+	    }
+
+	    namesSeen.addElement(pName);
+	}
+
 	return NO_PROBLEM;
     }
 
