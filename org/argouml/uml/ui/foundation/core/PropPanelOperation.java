@@ -102,7 +102,8 @@ public class PropPanelOperation extends PropPanelFeature {
 
         add(modifiersPanel);
         // TODO: i18n
-        add(new UMLOperationConcurrencyRadioButtonPanel("Concurrency:", true));
+        add(new UMLOperationConcurrencyRadioButtonPanel(
+                Translator.localize("label.concurrency"), true));
 
         addSeperator();
 
@@ -120,7 +121,7 @@ public class PropPanelOperation extends PropPanelFeature {
         addButton(new PropPanelButton2(this, new ActionNavigateOwner()));
         addButton(new PropPanelButton2(this, 
                         new ActionAddOperation()));
-        addButton(new PropPanelButton2(this, ActionNewParameter.getInstance()));
+        addButton(new PropPanelButton2(this, new ActionNewParameter()));
         new PropPanelButton(this, lookupIcon("SignalSending"),
                 localize("New Raised Signal"), "buttonAddRaisedSignal", null);
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
@@ -205,7 +206,7 @@ public class PropPanelOperation extends PropPanelFeature {
     public Collection getRaisedSignals() {
         Collection signals = null;
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
+        if (ModelFacade.isAOperation(target)) {
             signals = ModelFacade.getRaisedSignals(target);
         }
         return signals;
@@ -216,7 +217,7 @@ public class PropPanelOperation extends PropPanelFeature {
      */
     public void setRaisedSignals(Collection signals) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
+        if (ModelFacade.isAOperation(target)) {
             ModelFacade.setRaisedSignals(target, signals);
         }
     }
@@ -226,7 +227,7 @@ public class PropPanelOperation extends PropPanelFeature {
      */
     public void addRaisedSignal(Integer index) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
+        if (ModelFacade.isAOperation(target)) {
             Object oper = /* (MOperation) */target;
             Object newSignal = UmlFactory.getFactory().getCommonBehavior()
                     .createSignal(); 
