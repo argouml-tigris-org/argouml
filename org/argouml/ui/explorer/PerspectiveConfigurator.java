@@ -208,7 +208,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         JScrollPane persScroll = new JScrollPane(perspectiveList,
 			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        persPanel.add(renameTextField, BorderLayout.PAGE_START);
+        persPanel.add(renameTextField, BorderLayout.NORTH);
         persPanel.add(persScroll, BorderLayout.CENTER);
         c.gridx = 0;	  c.gridy = 1;
         c.gridwidth = 4;
