@@ -39,7 +39,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -154,7 +153,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // than setBase() to set the base use case.
 
         if (org.argouml.model.ModelFacade.isAInclude(target)) {
-            ((MInclude) target).setAddition((MUseCase) base);
+            ModelFacade.setAddition(target, base);
         }
     }
 
@@ -212,7 +211,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // than setAddition() to set the addition use case.
 
         if (org.argouml.model.ModelFacade.isAInclude(target)) {
-            ((MInclude) target).setBase((MUseCase) addition);
+            ModelFacade.setBase(target, addition);
         }
     }
 

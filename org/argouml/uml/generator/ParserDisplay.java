@@ -288,7 +288,7 @@ public class ParserDisplay extends Parser {
 			    if (value != null && value.equalsIgnoreCase("false"))
 				isAbstract = false;
 			    if (ModelFacade.isAOperation(element))
-				((MOperation) element).setAbstract(isAbstract);
+				ModelFacade.setAbstract(element, isAbstract);
 			}
 		    });
 	_operationSpecialStrings[5] =

@@ -123,7 +123,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     public void setBaseClass(String baseClass) {
 	Object target = getTarget();
 	if (org.argouml.model.ModelFacade.isAStereotype(target)) {
-	    ((MStereotype) target).setBaseClass(baseClass);
+	    ModelFacade.setBaseClass(target, baseClass);
 	}
     }
 

@@ -3577,6 +3577,32 @@ public class ModelFacade {
     }
 
     /**
+     * Set the base of some model element
+     * @param target 
+     * @param base
+     */
+    public static void setBase(Object target, Object base) {
+        if (target instanceof MAssociationRole && base instanceof MAssociation) {
+            ((MAssociationRole)target).setBase((MAssociation)base);
+            return;
+        }
+        if (target instanceof MAssociationEndRole && base instanceof MAssociationEnd) {
+            ((MAssociationEndRole)target).setBase((MAssociationEnd)base);
+            return;
+        }
+        if (target instanceof MExtend && base instanceof MUseCase) {
+            ((MExtend)target).setBase((MUseCase)base);
+            return;
+        }
+        if (target instanceof MInclude && base instanceof MUseCase) {
+            ((MInclude)target).setBase((MUseCase)base);
+            return;
+        }
+        throw new IllegalArgumentException(
+            "Unrecognized object " + target + " or " + base);
+    }
+
+    /**
      * Set the baseclass of some stereotype
      * @param handle the stereotype
      * @param baseClass the baseclass
@@ -3584,6 +3610,7 @@ public class ModelFacade {
     public static void setBaseClass(Object handle, Object baseClass) {
         if (isAStereotype(handle) && baseClass instanceof String) {
             ((MStereotype) handle).setBaseClass((String)baseClass);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -3961,6 +3988,24 @@ public class ModelFacade {
     }
 
     /**
+     * Sets the association of some model element.
+     * @param target the model element to set association
+     * @param association
+     */
+    public static void setAssociation(Object target, Object association) {
+        if (association instanceof MAssociation) {
+            if (target instanceof MAssociationEnd) {
+                ((MAssociationEnd)target).setAssociation((MAssociation)association);
+                return;
+            }
+            if (target instanceof MLink) {
+                ((MLink)target).setAssociation((MAssociation)association);
+                return;
+            }
+        }
+    }
+
+    /**
      * Set the changeability of some feature.
      * @param feature
      * @param changeability flag
@@ -3985,16 +4030,25 @@ public class ModelFacade {
 
 
     /**
-     * Sets if of some classifier is abstract.
+     * Sets if of some model element is abstract.
      * @param classifier
      * @param flag
      */
-    public static void setAbstract(Object o, boolean flag) {
-        if (o != null) {
-            if (o instanceof MClassifier)
-		((MClassifier) o).setAbstract(flag);
-            else if (o instanceof MOperation)
-		((MOperation) o).setAbstract(flag);
+    public static void setAbstract(Object target, boolean flag) {
+        if (target != null) {
+            if (target instanceof MGeneralizableElement)
+		((MGeneralizableElement)target).setAbstract(flag);
+            else if (target instanceof MOperation)
+		((MOperation) target).setAbstract(flag);
+            else if (target instanceof MReception)
+		((MReception) target).setAbstarct(flag);
+        }
+    }
+
+    public static void setAddition(Object target, Object useCase) {
+        if (target != null 
+                && target instanceof MInclude) {
+            ((MInclude)target).setAddition((MUseCase)useCase);
         }
     }
 
