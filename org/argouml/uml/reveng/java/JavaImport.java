@@ -139,7 +139,7 @@ public class JavaImport {
      * This method parses 1 Java file.
      *
      * @param f The input file for the parser.
-     * @exception Parser exception.
+     * @exception Exception Parser exception.
      */
     public static void parseFile( Project p, File f, DiagramInterface diagram)
 	throws Exception {

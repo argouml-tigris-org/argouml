@@ -61,14 +61,17 @@ import org.argouml.cognitive.critics.*;
  *  HREF="../cookbook.html#define_design_material">define_design_material</a>
  *  <p>
  *
- * @see jargo.softarch.C2BrickDM
- * @see jargo.softarch.C2CompDM
- * @see jargo.softarch.C2ConnDM
  * @see Design
- * @see jargo.ui.UiPropertyBrowser */
+ */
+
 
 public abstract class DesignMaterial extends Observable
 implements Highlightable, java.io.Serializable {
+/*
+ * @see jargo.softarch.C2BrickDM
+ * @see jargo.softarch.C2CompDM
+ * @see jargo.softarch.C2ConnDM
+ * @see jargo.ui.UiPropertyBrowser */
 
   ////////////////////////////////////////////////////////////////
   // instance variables

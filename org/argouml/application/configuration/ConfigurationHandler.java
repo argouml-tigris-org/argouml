@@ -113,7 +113,7 @@ public abstract class ConfigurationHandler {
    *  otherwise false, not distinguishing between a load
    *  error or a previously loaded configuration.
    *
-   *  @see isLoaded
+   *  @see #isLoaded
    */
   public final boolean loadDefault() {
       // Only allow one load

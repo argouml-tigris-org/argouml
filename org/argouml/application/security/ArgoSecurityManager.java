@@ -52,7 +52,8 @@ import java.net.InetAddress;
  *
  *  One of the areas this is necessary is to protect from the
  *  {@link java.lang.System#exit(int)} or
- *  {@link java.lang.Runtime#exit(int)} calls.
+ *  <!-- for some reason, java.lang.Runtime#exit is not found by javadoc -->
+ *  java.lang.Runtime.exit(int) calls.
  *
  *  Another is to prevent modules from replacing the awt exception
  *  trapping hook so that we are able to properly catch any

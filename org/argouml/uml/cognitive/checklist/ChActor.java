@@ -36,7 +36,7 @@ import ru.novosoft.uml.model_management.*;
  *  @deprecated Now created by loading strings from 
  *     UMLCognitiveResourceBundle into a generic UMLChecklist instance
  *           
- *  @see UMLCognitiveResourceBundle
+ *  @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle
  *  @see UMLChecklist
  * 
  */

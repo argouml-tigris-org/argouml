@@ -403,7 +403,6 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <!-- Links allow reference to external classes from within Argo javadocs -->
     <javadoc sourcepath="${build.src}"
              destdir="${docs.dir}"
-             classpath="${classpath}"
              packagenames="${packages}"
 	     use="true"
 	     private="true"
@@ -411,6 +410,15 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 	     windowtitle="ArgoUML API Documentation"
 	     overview="org/argouml/overview-argo.html"
 	     >
+      <classpath>
+          <pathelement path="${java.home}/../lib/tools.jar"/>
+          <pathelement path="${lib.dir}/nsuml.jar"/>
+          <pathelement path="${lib.dir}/ocl-argo.jar"/>
+          <pathelement path="${lib.dir}/gef.jar"/>
+          <pathelement path="${lib.dir}/antlrall.jar"/>
+          <pathelement path="${lib.dir}/log4j.jar"/>
+          <pathelement path="${lib.dir}/xerces.jar"/>
+      </classpath>
       <link offline="true"
             href="${jdk.javadoc.link}"
             packagelistLoc="${jdk.javadoc.link}"/>

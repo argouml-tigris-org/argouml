@@ -38,7 +38,7 @@ public class ArgoFileFilter extends FileFilter {
      * Files that begin with "." are ignored.
      *
      * @see #getExtension
-     * @see FileFilter#accepts
+     * @see FileFilter#accept
      */
     public boolean accept(File f) {
       if (f == null) return false;

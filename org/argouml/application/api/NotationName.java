@@ -50,7 +50,7 @@ public interface NotationName {
 
     /** Returns the text string stored in the configuration
      *  for this notation.  This string is used to determine
-     *  notation equality in {@link #equals()}.
+     *  notation equality in {@link #equals(NotationName)}.
      *  
      *  This should incorporate both the name and the version if one
      *  exists.

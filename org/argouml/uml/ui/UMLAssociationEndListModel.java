@@ -35,8 +35,8 @@ import java.awt.*;
 *
 * @author Curt Arnold
 * @see UMLModelElementListModel
-* @see PropPanelClass
-* @see PropPanelInterface
+* @see org.argouml.uml.ui.foundation.core.PropPanelClass
+* @see org.argouml.uml.ui.foundation.core.PropPanelInterface
 * @see UMLList
 */
 public class UMLAssociationEndListModel extends UMLModelElementListModel  {
