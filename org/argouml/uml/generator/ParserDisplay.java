@@ -66,19 +66,82 @@ import org.argouml.application.api.*;
 import org.argouml.util.MyTokenizer;
 import org.argouml.model.uml.foundation.extensionmechanisms.*;
 
+/**
+ * Interface specifying the operation to take when a PropertySpecialString
+ * is matched.
+ *
+ * @author Michael Stockman
+ * @since 0.11.2
+ * @see PropertySpecialString
+ */
 interface PropertyOperation {
+  /**
+   * Invoked by PropertySpecialString when it has matched a property name.
+   *
+   * @param element The element on which the property was set.
+   * @param value The value of the property, may be null if no value was
+   *		  given.
+   */
   public void found(MModelElement element, String value);
 }
 
+/**
+ * Declares a string that should take special action when it is found as a
+ * property in
+ * {@link ParserDisplay#setProperties ParserDisplay.setProperties}.
+ *
+ * <p><b>Example:</b><pre>
+ *  _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
+ *	new PropertyOperation() {
+ *	    public void found(MModelElement element, String value) {
+ *		MChangeableKind kind = MChangeableKind.FROZEN;
+ *		if (value != null && value.equalsIgnoreCase("false"))
+ *		    kind = MChangeableKind.CHANGEABLE;
+ *		if (element instanceof MStructuralFeature)
+ *		    ((MStructuralFeature)element).setChangeability(kind);
+ *	    }
+ *	});</pre>
+ *
+ * <p>Taken from the ParserDisplay constructor. It creates a
+ * PropertySpecialString that is invoken when the String "frozen" is found
+ * as a property name. Then the found mehod in the anonymous inner class
+ * defined on the 2nd line is invoked and performs a custom action on the
+ * element on which the property was specified by the user. In this case
+ * it does a setChangeability on an attribute instead of setting a tagged
+ * value, which would not have the desired effect.
+ *
+ * @author Michael Stockman
+ * @since 0.11.2
+ * @see PropertyOperation
+ * @see ParserDisplay#setProperties
+ */
 class PropertySpecialString {
   private String _name;
   private PropertyOperation _op;
 
+  /**
+   * Constructs a new PropertySpecialString that will invoke the action in
+   * op when {@link #invoke() invoke} is called with name equal to str and
+   * then return true from invoke.
+   *
+   * @param str The name of this PropertySpecialString.
+   * @param op An object containing the method to invoke on a match.
+   */
   public PropertySpecialString(String str, PropertyOperation op) {
     _name = str;
     _op = op;
   }
 
+  /**
+   * Called by {@link ParserDisplay#setProperties() ParserDisplay.setProperties}
+   * while searching for an action to invoke for a property. If it returns
+   * true, then setProperties may assume that all required actions have been
+   * taken and stop searching.
+   *
+   * @param name The name of a property.
+   * @param value The value of a property.
+   * @return <b>true</b> if an action is performed, otherwise <b>false</b>.
+   */
   public boolean invoke(MModelElement element, String name, String value) {
     if (!_name.equalsIgnoreCase(name))
 	return false;
@@ -96,9 +159,21 @@ public class ParserDisplay extends Parser {
   protected static final Category _cat = 
     Category.getInstance(ParserDisplay.class);
 
+  /** The array of special properties for attributes */
   private PropertySpecialString _attributeSpecialStrings[];
+
+  /** The vector of CustomSeparators to use when tokenizing attributes */
   private Vector _attributeCustomSep;
 
+  /** The character with a meaning as a visibility at the start of an attribute */   
+  private final static String visibilityChars = "+#-";
+
+  /**
+   * Constructs the object contained in SINGLETON and initializes some
+   * instance variables.
+   *
+   * @see SINGLETON
+   */
   private ParserDisplay() {
     _attributeSpecialStrings = new PropertySpecialString[1];
     _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
@@ -444,14 +519,29 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     return s;
 }
 
-  /** The character with a meaning as a visibility at the start of an attribute */   
-  private final static String visibilityChars = "+#-";
-
-   /** Parse a line reasonably like:
-    * visibility name [multiplicity] : type-expression = initial-value {property-string}
-    * Same as in the UML 1.3 spec. 
+   /** Parse a line on the form:<br>
+    * visibility name [: type-expression] [= initial-value]
+    *<ul>
+    * <li>If only one of visibility and name is given, then it is assumed to be
+    *	the name and the visibility is left unchanged.
+    * <li>Type and initial value can be given in any order.
+    * <li>Properties can be given between any element on the form
+    *	{[name] [= [value]] [, ...]}.
+    * <li>Multiplicity can be given between any element except after the
+    *	initial-value and before the type or end (to allow java-style array
+    *	indexing in the initial value). It must be given on form
+    *	[multiplicity] with the square brackets included.
+    *</ul>
+    * <p>It is compatible with the UML 1.3 spec.
+    *
+    * @param s The String to parse.
+    * @param attr The attribute to modify to comply with the instructions in s.
+    * @throws java.text.ParseException when it detects an error in the
+    *	attribute string. See also ParseError.getErrorOffset().
     */
-   /* (formerly: [visibility] [keywords] type name [= init] [;] ) */
+   /* (formerly: visibility name [multiplicity] : type-expression
+    *   = initial-value {property-string} ) */
+   /* (2nd formerly: [visibility] [keywords] type name [= init] [;] ) */
   public void parseAttribute(String s, MAttribute attr) throws ParseException {
     String multiplicity = null;
     String name = null;
@@ -580,10 +670,14 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	throw pre;
     }
 /*
-    System.out.println("ParseAttribute [name: " + name + " visibility: " + visibility + " type: " + type + " value: " + value + " stereo: " + stereotype + " mult: " + multiplicity);
+    System.out.println("ParseAttribute [name: " + name + " visibility: " +
+	visibility + " type: " + type + " value: " + value + " stereo: " +
+	stereotype + " mult: " + multiplicity);
+
     if (properties != null) {
 	for (int i = 0; i + 1 < properties.size(); i += 2) {
-	    System.out.println("\tProperty [name: " + properties.get(i) + " = " + properties.get(i+1) + "]");
+	    System.out.println("\tProperty [name: " + properties.get(i) +
+		" = " + properties.get(i+1) + "]");
 	}
     }
 */
@@ -623,10 +717,18 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 //	attr.setStereotype();
   }
 
+  /**
+   * Finds the MClassifier associated with the type named in name.
+   *
+   * @param name The name of the type to get.
+   * @param defaultSpace The default name-space to place the type in.
+   * @return The MClassifier associated with the name.
+   */
   private MClassifier getType(String name, MNamespace defaultSpace) {
     MClassifier type = null;
     Project p = ProjectBrowser.TheInstance.getProject();
-    type = p.findType(name); // Should we be getting this from the GUI? BT 11 aug 2002
+    // Should we be getting this from the GUI? BT 11 aug 2002
+    type = p.findType(name);
     if (type == null) { // no type defined yet
 	type = UmlFactory.getFactory().getCore().buildClass(name);                
     }
@@ -636,6 +738,13 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     return type;
   }
 
+  /**
+   * Finds a MVisibilityKind for the visibility specified by name. If no
+   * known visibility can be deduced, private visibility is used.
+   *
+   * @param name The name of the visibility.
+   * @return A MVisibilityKind corresponding to name.
+   */
   private MVisibilityKind getVisibility(String name) {
     if ("+".equals(name) || "public".equals(name))
 	return MVisibilityKind.PUBLIC;
@@ -645,18 +754,24 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	return MVisibilityKind.PRIVATE;
   }
 
-  // Requires only MModelElement
-  private void setProperties(MModelElement elem, Vector prop, PropertySpecialString spec[]) {
-    Collection taggedValues = elem.getTaggedValues();
+  /**
+   * Applies a Vector of name value pairs of properties to a MModelElement.
+   * The name is treaded as the tag of a tagged value unless it is one of the
+   * PropertySpecialStrings, in which case the action of the
+   * PropertySpecialString is invoked.
+   *
+   * @param elem An element to apply the properties to.
+   * @param prop A Vector with name, value pairs of properties.
+   * @param spec An array of PropertySpecialStrings to use.
+   */
+  private void setProperties(MModelElement elem, Vector prop,
+			     PropertySpecialString spec[]) {
     String name;
     String value;
     int i, j;
 
 nextProp:
     for (i = 0; i + 1 < prop.size(); i += 2) {
-	Iterator it;
-	MTaggedValue tv = null;
-
 	name = (String) prop.get(i);
 	value = (String) prop.get(i+1);
 
@@ -679,23 +794,7 @@ nextProp:
 		    continue nextProp;
 	}
 
-	for (it = taggedValues.iterator(); it.hasNext(); tv = null) {
-	    tv = (MTaggedValue) it.next();
-	    if (name.equals(tv.getTag()))
-		break;
-	}
-
-	if (tv != null) {
-	    String tval = tv.getValue();
-	    if (value == null && (tval == null || "".equals(tval)) ||
-		value != null && value.equals(tval))
-		continue;
-	    elem.removeTaggedValue(tv);
-	}
-	tv = ExtensionMechanismsFactory.getFactory().createTaggedValue();
-	tv.setTag(name);
-	tv.setValue(value);
-	elem.addTaggedValue(tv);
+	elem.setTaggedValue(name, value);
     }
   }
 
