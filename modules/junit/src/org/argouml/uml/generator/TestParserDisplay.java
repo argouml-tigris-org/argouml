@@ -253,63 +253,67 @@ public class TestParserDisplay extends TestCase {
 
 	public void testOperationName() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkName(op, oper01, "name");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkName(op, oper02, "name");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkName(op, oper03, "name2");
 	}
 
 	public void testOperationType() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkType(op, oper01, "void");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkType(op, oper02, "int");
 		checkType(op, oper01, "int");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkType(op, oper03, "String");
 	}
 
 	public void testOperationVisibility() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper01, "public");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper02, "private");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper03, "protected");
 		checkVisibility(op, oper01, "protected");
 		checkVisibility(op, oper02, "private");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkVisibility(op, oper04, "protected");
 	}
 
 	public void testOperationParameters() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
 		String res1[] = {};
 		String res2[] = {"in", "foo", "float", "0"};
 		String res3[] = {"out", "foo", "double", "0.", "inout", "bar", "String", "\"\"some\"\""};
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkParameters(op, oper01, res1);
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkParameters(op, oper02, res2);
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkParameters(op, oper03, res3);
 		checkParameters(op, oper01, res1);
 		checkParameters(op, oper02, res2);
@@ -317,33 +321,35 @@ public class TestParserDisplay extends TestCase {
 
 	public void testOperationProperties() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
 		String res1[] = {"abstract", null, "concurrency", null,
 			"concurrent", null, "guarded", null, "leaf", null,
 			"query", null, "root", null, "sequential", null};
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkProperties(op, oper01, res1);
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkProperties(op, oper02, res1);
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkProperties(op, oper03, res1);
 	}
 
 	public void testOperationStereotype() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper01, null);
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper02, "create");
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper03, "destroy");
 		checkStereotype(op, oper01, "destroy");
@@ -352,8 +358,9 @@ public class TestParserDisplay extends TestCase {
 
 	public void testOperationParseExceptions() {
 		MOperation op;
+		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
-		op = UmlFactory.getFactory().getCore().buildOperation();
+		op = UmlFactory.getFactory().getCore().buildOperation(cl);
 		checkThrows(op, noper01, true, false, false);
 		checkThrows(op, noper02, true, false, false);
 		checkThrows(op, noper03, true, false, false);
