@@ -54,6 +54,7 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.foundation.core.MComment;
 
 /**
  * This is the JTree that is the gui component view of the model navigation and
@@ -95,8 +96,17 @@ public class DisplayTextTree
     /** needs documenting */
     public DisplayTextTree() {
         
+        super();
+        
         setCellRenderer(new UMLTreeCellRenderer());
         putClientProperty("JTree.lineStyle", "Angled");
+        setRootVisible(false);
+        setShowsRootHandles(true);
+        
+        // can save a significant amount of rendering time.
+        //this.setLargeModel(true); // produces errors... a pain.
+        //this.setRowHeight(18);
+        
         showStereotype = Configuration
                             .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
         _expandedPathsInModel = new Hashtable();
@@ -130,9 +140,20 @@ public class DisplayTextTree
             if(value instanceof MTransition || value instanceof MExtensionPoint){
                 name = GeneratorDisplay.Generate(value);
             }
+            // changing the label in case of comments
+            // this is necessary since the name of the comment is the same as
+            // the content of the comment causing the total comment to be
+            // displayed in the navperspective
+            else if (value instanceof MComment) {
+                name = ((MComment)value).getName();
+                if (name != null && name.length() > 10) {
+                    name = name.substring(0, 10) + "...";
+                }
+            }
             else{
                 name = ((MModelElement)value).getName();
             }
+
             
             if (name == null || name.equals("")){
                 
@@ -166,8 +187,10 @@ public class DisplayTextTree
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
-        
-        return value.toString();
+        if(value != null)
+            return value.toString();
+        else
+            return "-";
     }
     
     /** needs documenting */
@@ -221,7 +244,10 @@ public class DisplayTextTree
     
     // ------------- other methods ------------------
     
-    /** needs documenting */
+    /** needs documenting
+     *
+     * called in reexpand()
+     */
     protected Vector getExpandedPaths() {
         
         cat.debug("getExpandedPaths");
@@ -255,11 +281,11 @@ public class DisplayTextTree
      * This is the real update function. It won't return until the tree
      * really is updated.
      * <P>
-     * Never call this one from any code.
+     * Never call this one from any code, it is package private.
      *
      * @since 0.13.1
      */
-    public void doForceUpdate() {
+    void doForceUpdate() {
         
         cat.debug("doForceUpdate");
         Object rootArray[] = new Object[1];
@@ -276,24 +302,23 @@ public class DisplayTextTree
         reexpand();
     }
     
-    /** needs documenting */
-    public void reexpand() {
+    /** notifies the tree model that the structure has changed,
+     * this causes the nodes to colapse, then we re-expand the ones
+     * that were open before to maintain the same viewable tree.
+     *
+     * called by doForceUpdate(), setModel()
+     */
+    private void reexpand() {
         
         cat.debug("reexpand");
         if (_expandedPathsInModel == null)
             return;
+        
         _reexpanding = true;
-        Object[] path2 = new Object[1];
-        path2[0] = getModel().getRoot();
-        TreeModelEvent tme = new TreeModelEvent(this, path2, null, null);
-        treeModelListener.treeStructureChanged(tme);
-        treeDidChange();
         
         java.util.Enumeration enum = getExpandedPaths().elements();
         while (enum.hasMoreElements()) {
             TreePath path = (TreePath) enum.nextElement();
-            tme = new TreeModelEvent(this, path, null, null);
-            treeModelListener.treeStructureChanged(tme);
             expandPath(path);
         }
         _reexpanding = false;
@@ -333,6 +358,7 @@ public class DisplayTextTree
                 
                 if(rowItem == target){
                     this.addSelectionRow(row);
+                    this.scrollRowToVisible(row);
                 }
             }
             
