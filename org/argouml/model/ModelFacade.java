@@ -48,6 +48,7 @@ import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -128,16 +129,17 @@ public class ModelFacade {
     public static final Object USAGE            = MUsage.class;
 
     // Types of node
-    public static final Object CLASSIFIER_ROLE    = MClassifierRole.class;
+    public static final Object ACTOR              = MActor.class;
     public static final Object CLASS              = MClass.class;
-    public static final Object INTERFACE          = MInterface.class;
-    public static final Object PACKAGE            = MPackage.class;
-    public static final Object NODE               = MNode.class;
-    public static final Object NODE_INSTANCE      = MNodeInstance.class;
+    public static final Object CLASSIFIER_ROLE    = MClassifierRole.class;
     public static final Object COMPONENT          = MComponent.class;
     public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Object INTERFACE          = MInterface.class;
+    public static final Object NODE               = MNode.class;
+    public static final Object NODE_INSTANCE      = MNodeInstance.class;
     public static final Object OBJECT             = MObject.class;
-    public static final Object ACTOR              = MActor.class;
+    public static final Object PACKAGE            = MPackage.class;
+    public static final Object STATE              = MState.class;
     public static final Object USE_CASE           = MUseCase.class;
     
     // Invisible model elements
