@@ -43,7 +43,6 @@ import org.argouml.persistence.LastLoadInfo;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
-import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ExceptionDialog;
 import org.argouml.ui.ProjectBrowser;
 

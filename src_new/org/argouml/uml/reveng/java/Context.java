@@ -82,7 +82,8 @@ abstract class Context
 	    return Model.getFacade().getName(mPackage);
 	}
 	else if (parent != null) {
-	    return getJavaName(parent) + "." + Model.getFacade().getName(mPackage);
+	    return getJavaName(parent) + "." 
+	            + Model.getFacade().getName(mPackage);
 	}
 	else {
 	    return "";
