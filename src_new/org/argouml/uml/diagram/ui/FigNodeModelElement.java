@@ -184,7 +184,13 @@ public abstract class FigNodeModelElement
     // instance variables
 
     protected FigRect _bigPort;
+    /**
+     * @deprecated 0.16 use getter/setter
+     */
     public FigText _name; // TODO - public!! Make private!
+    /**
+     * @deprecated 0.16 use getter/setter
+     */
     public FigText _stereo; // TODO - public!! Make private!
     protected Vector _enclosedFigs = new Vector();
     protected Fig _encloser = null;
