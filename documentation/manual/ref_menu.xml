@@ -1,0 +1,987 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+A description of all the menu bar entries
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chrefmenu">
+  <title>The Menu bar</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- General mouse behaviour in Menus -->
+
+  <sect1>
+    <title>General Mouse Behaviour in Menus</title>
+
+    <remark>Cover naming of buttons. Assume 2 button mouse. To be
+      written&hellip;</remark>
+
+    <!-- Button1 click -->
+
+    <sect2>
+      <title>Button 1 Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button1 doubleclick -->
+
+    <sect2>
+      <title>Button 1 Double Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button1 Move -->
+
+    <sect2>
+      <title>Button 1 Move</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>Button 2 Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 doubleclick -->
+
+    <sect2>
+      <title>Button 2 Double Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 Move -->
+
+    <sect2>
+      <title>Button 2 Move</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The File menu entries -->
+
+  <sect1>
+    <title>The File Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- New project -->
+
+    <sect2>
+      <title>New&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Open existing project -->
+
+    <sect2>
+      <title>Open Project&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Save project -->
+
+    <sect2>
+      <title>Save Project</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Save project under different name -->
+
+    <sect2>
+      <title>Save Project As&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Import sources -->
+
+    <sect2>
+      <title>Import Sources&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Load model from DB (greyed out) -->
+
+    <sect2>
+      <title>Load Model From DB</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Save model to DB (greyed out) -->
+
+    <sect2>
+      <title>Save Model To DB</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Print out the model -->
+
+    <sect2>
+      <title>Print&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Save the graphics of the model -->
+
+    <sect2>
+      <title>Save Graphics&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Save configuration data -->
+
+    <sect2>
+      <title>Save Configuration</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Exit -->
+
+    <sect2>
+      <title>Exit</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Edit menu entries -->
+  
+  <sect1>
+    <title>The Edit Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The Select sub-menu entries -->
+
+    <sect2>
+      <title>The Select Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Select all entities -->
+
+      <sect3>
+        <title>Select All</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select previous entity -->
+
+      <sect3>
+        <title>Select Previous</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select next entity -->
+
+      <sect3>
+        <title>Select Next</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Invert selection -->
+
+      <sect3>
+        <title>Invert Selection</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+    </sect2>
+
+    <!-- Undo -->
+
+    <sect2>
+      <title>Undo</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Redo -->
+
+    <sect2>
+      <title>Redo</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Cut selection -->
+
+    <sect2>
+      <title>Cut</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Copy selection -->
+
+    <sect2>
+      <title>Copy</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Paste selection -->
+
+    <sect2>
+      <title>Paste</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Remove entity from the diagram -->
+
+    <sect2 id="s2menueditremdiag">
+      <title>Remove From Diagram</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Remove entity from the model -->
+
+    <sect2>
+      <title>Delete From Model</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Empty trash (what does this actually do?) -->
+
+    <sect2>
+      <title>Empty trash</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Settings for Argo/UML -->
+
+    <sect2>
+      <title>Settings &hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The View menu entries -->
+
+  <sect1>
+    <title>The View Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Go to a particular diagram -->
+
+    <sect2>
+      <title>Goto Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Find an entity -->
+
+    <sect2>
+      <title>Find&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Sub-menu to zoom the diagram -->
+
+    <sect2>
+      <title>The Zoom Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Zoom to 25% scaling -->
+
+      <sect3>
+        <title>25%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Zoom to 50% scaling -->
+
+      <sect3>
+        <title>50%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Zoom to 75% scaling -->
+
+      <sect3>
+        <title>75%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Zoom to 100% scaling -->
+
+      <sect3>
+        <title>100%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Zoom to 125% scaling -->
+
+      <sect3>
+        <title>125%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Zoom to 150% scaling -->
+
+      <sect3>
+        <title>150%</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Sub-menu to select editing presentation (largely irrelevant - there
+         is only one option now. -->
+
+    <sect2>
+      <title>The Editor Tabs Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Select next editing tab (does nothing, since there is only one
+           tab, "As Diagram" -->
+
+      <sect3>
+        <title>Next Editing Tab</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Show the diagram as a diagram -->
+
+      <sect3>
+        <title>As Diagram</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Show the diagram as a table (greyed out) -->
+
+      <sect3>
+        <title>As Table</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Show the diagram as metrics (greyed out) -->
+
+      <sect3>
+        <title>As Metrics</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Sub-menu to select which details tab you want. -->
+
+    <sect2>
+      <title>The Details Tabs Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Select next details tab. What actually happens depends on the
+           available tabs. -->
+
+      <sect3>
+        <title>Next Details Tab</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the To Do Item tab -->
+
+      <sect3>
+        <title>To Do Item</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Properties tab -->
+
+      <sect3>
+        <title>Properties</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Javadocs tab (obsolete, so greyed out) -->
+
+      <sect3>
+        <title>Javadocs</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Source tab -->
+
+      <sect3>
+        <title>Source</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Constraints tab -->
+
+      <sect3>
+        <title>Constraints</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Tagged Values tab -->
+
+      <sect3>
+        <title>Tagged Values</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the Checklist tab -->
+
+      <sect3>
+        <title>Checklist</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select the History tab (greyed out, since obsolete) -->
+
+      <sect3>
+        <title>History</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Alter the grid spacing -->
+
+    <sect2>
+      <title>Adjust Grid</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Alter the rules for snapping to the grid -->
+
+    <sect2>
+      <title>Adjust Grid Snap</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Sort out pagination -->
+
+    <sect2>
+      <title>Adjust Page Breaks</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Can't work out what this does -->
+
+    <sect2>
+      <title>Buttons on Selection</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Choose whether UML or Java notation -->
+
+    <sect2>
+      <title>The Notation Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Select the default (which is UML 1.3) -->
+
+      <sect3>
+        <title>Default</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select UML 1.3 -->
+
+      <sect3>
+        <title>UML 1.3</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Select Java (what difference does this make?) -->
+
+      <sect3>
+        <title>Java</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- The Create Diagram menu entries -->
+
+  <sect1>
+    <title>The Create Diagram Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Create a Class Diagram -->
+
+    <sect2>
+      <title>Class Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create a Use Case Diagram -->
+
+    <sect2>
+      <title>Use Case Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create a State Diagram -->
+
+    <sect2>
+      <title>State Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create an Activity Diagram -->
+
+    <sect2>
+      <title>Activity Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create a Collaboraton Diagram -->
+
+    <sect2>
+      <title>Collaboration Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create a Deployment Diagram -->
+
+    <sect2>
+      <title>Deployment Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Create a Sequence Diagram -->
+
+    <sect2>
+      <title>Sequence Diagram&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Arrange menu entries -->
+
+  <sect1>
+    <title>The Arrange Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The Align sub-menu entries -->
+
+    <sect2>
+      <title>The Align Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Align selected entities by their tops -->
+
+      <sect3>
+        <title>Align Tops</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities by their bottoms -->
+
+      <sect3>
+        <title>Align Bottoms</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities by their left sides -->
+
+      <sect3>
+        <title>Align Lefts</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities by their rights -->
+
+      <sect3>
+        <title>Align Rights</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities by their horizontal centres -->
+
+      <sect3>
+        <title>Align Horizontal Centers</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities by their vertical centres -->
+
+      <sect3>
+        <title>Align Vertical Centers</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Align selected entities to the grid -->
+
+      <sect3>
+        <title>Align To Grid</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- The Distribute sub-menu entries -->
+
+    <sect2>
+      <title>The Distribute Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Distribute selected entities to have even horizontal spacing. -->
+
+      <sect3>
+        <title>Distribute Horizontal Spacing</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Distribute selected entities to have even distance between
+           horizontal centres. -->
+
+      <sect3>
+        <title>Distribute Horizontal Centers</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Distribute selected entities to have even vertical spacing. -->
+
+      <sect3>
+        <title>Distribute Vertical Spacing</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Distribute selected entities to have even distance between
+           vertical centres. -->
+
+      <sect3>
+        <title>Distribute Vertical Centers</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- The Reorder sub-menu entries -->
+
+    <sect2>
+      <title>The Reorder Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Send selected entries to the back. -->
+
+      <sect3>
+        <title>To Back</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Bring selected entries to the front. -->
+
+      <sect3>
+        <title>To Front</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Send selected entries backward -->
+
+      <sect3>
+        <title>Backward</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Bring selected entries forward. -->
+
+      <sect3>
+        <title>Forward</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- The Nudge sub-menu entries -->
+
+    <sect2>
+      <title>The Nudge Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Nudge selected entries left. -->
+
+      <sect3>
+        <title>Nudge Left</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Nudge selected entries right. -->
+
+      <sect3>
+        <title>Nudge Right</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Nudge selected entries up. -->
+
+      <sect3>
+        <title>Nudge Up</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Nudge selected entries down. -->
+
+      <sect3>
+        <title>Nudge Down</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- The Layout sub-menu entries -->
+
+    <sect2>
+      <title>The Layout Sub-Menu</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Use automatic layout. -->
+
+      <sect3>
+        <title>Automatic</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Use incremental layout -->
+
+      <sect3>
+        <title>Incremental</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- The Generation menu entries -->
+
+  <sect1>
+    <title>The Generation Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Generate code for selected classes -->
+
+    <sect2>
+      <title>Generate Selected Classes</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Generate code for all classes -->
+
+    <sect2>
+      <title>Generate All Classes</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Critique menu entries -->
+
+  <sect1>
+    <title>The Critique Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Toggle auto-critique function -->
+
+    <sect2>
+      <title>Toggle Auto-Critique</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Critques for design issues -->
+
+    <sect2>
+      <title>Design Issues&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Critques for design goals -->
+
+    <sect2>
+      <title>Design Goals&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Browse critics -->
+
+    <sect2>
+      <title>Browse Critics&hellip;</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Tools menu entries (greyed out, obsolete?) -->
+
+  <sect1>
+    <title>The Tools Menu</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- The Help menu entries -->
+
+  <sect1>
+    <title>The Help Menu</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Information about Argo/UML -->
+
+    <sect2>
+      <title>About &argouml;</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Tabs on the separate help window. The Splash tab -->
+
+      <sect3>
+        <title>Splash</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The version tab -->
+
+      <sect3>
+        <title>Version</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The credits tab -->
+
+      <sect3>
+        <title>Credits</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The contact info tab -->
+
+      <sect3>
+        <title>Contact Info</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Legal tab -->
+
+      <sect3>
+        <title>Legal</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+argomanual.xml"
+End:
+
+-->

@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Desription of all the entities associated with Class Diagrams within
+Argo/UML.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+11 Dec 2001:  Jeremy Bennett. Removed wishlist. Added section on built in
+              classes.
+-->
+
+<chapter id="chrefentclass">
+  <title>&argouml; Class Diagram Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within a Class
+      Diagram. Note that some subentities of entities on the diagram may not
+      actually themselves appear on the diagram.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+
+    <!-- A diagram to show all things visible on the diagram -->
+
+    <para><xref linkend="figrefentclass"/> shows a Class Diagram with all
+      possible entities displayed.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefentclass" float="1">
+      <title>Possible entities on a Class Diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/tobeprovided.png"/>
+        </imageobject>
+
+        <textobject>
+          <para>A Class Diagram, showing (from left to right and top to
+            bottom) a Class with Attributes and Operations, a Realisation
+            (Abstraction), an Interface, a Relationship and a Package.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Entities specific to Class Diagrams. Package entity - cross reference to
+       Model properties. Has DataType and StereoType as subentities. -->
+
+  <sect1>
+    <title>Package</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Datatype entity. Subentity of Package. -->
+
+  <sect1>
+    <title>Datatype</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stereotype entity. Subentity of Package. -->
+
+  <sect1>
+    <title>Stereotype</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Class entity. Has Attributes and Operations as
+       sub-entities. Operations itself has Signal and Parameters as
+       sub-entities -->
+
+  <sect1>
+    <title>Class</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Attribute entity (subsidiary of Class) -->
+
+  <sect1>
+    <title>Attribute</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Operation entity (subsidiary of Class), with subsidiaries Parameter
+       and Signal. -->
+
+  <sect1>
+    <title>Operation</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Parameter entity (subsidiary of Operation) -->
+
+  <sect1>
+    <title>Parameter</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Signal entity (subsidiary of Operation) -->
+
+  <sect1>
+    <title>Signal</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association entity. Has Association End as subentity. Reference back
+       to Use Case -->
+
+  <sect1>
+    <title>Association</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association End entity (subentity of Association). Reference back to
+       Use Case -->
+
+  <sect1>
+    <title>Association End</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Dependency entity. Reference back to Use Case -->
+
+  <sect1>
+    <title>Dependency</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Generalization entity. Reference back to Use Case -->
+
+  <sect1>
+    <title>Generalization</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Interface entity -->
+
+  <sect1>
+    <title>Interface</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Abstraction entity. Make it clear that this is another name
+       for realization. -->
+
+  <sect1>
+    <title>Abstraction (Realization)</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Top level desription of all the entities within Argo/UML.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+-->
+
+<chapter id="chrefentities">
+  <title>&argouml; Top Level Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within
+      &argouml;. The chapter covers top-level <quote>general</quote>
+      entities. The following chapters (see <xref linkend="chrefentusecase"/>
+      through <xref linkend="chrefentdeploy"/>) cover each of the &argouml;
+      diagrams.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see 
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+  </sect1>
+
+  <!-- General mouse behaviour -->
+
+  <sect1>
+    <title>General Mouse Behaviour</title>
+
+    <remark>Cover naming of buttons. Assume 2 button mouse. To be
+      written&hellip;</remark>
+
+    <!-- Button1 click -->
+
+    <sect2>
+      <title>Button 1 Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button1 doubleclick -->
+
+    <sect2>
+      <title>Button 1 Double Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button1 Move -->
+
+    <sect2>
+      <title>Button 1 Move</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 click -->
+
+    <sect2>
+      <title>Button 2 Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 doubleclick -->
+
+    <sect2>
+      <title>Button 2 Double Click</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Button2 Move -->
+
+    <sect2>
+      <title>Button 2 Move</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- Top level entities -->
+
+  <sect1>
+    <title>Top Level Entities</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The Model -->
+
+    <sect2>
+      <title>The Model</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Model properties (see package later) -->
+
+      <sect3>
+        <title>Model Properties</title>
+
+        <remark>The same as package (qv). To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Diagrams -->
+
+    <sect2>
+      <title>&argouml; Diagrams</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Diagram properties -->
+
+      <sect3>
+        <title>Diagram Properties</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

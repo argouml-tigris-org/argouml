@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+The frontispiece information about the book.
+
+Modifications
+=============
+
+30 Nov 2001:  Jeremy Bennett. Broken out as a separate section from the
+               original manual by Alejandro, Phillipe and Andreas. Added
+               revision history.
+
+-->
+
+<bookinfo>
+  <date>11/30/2001</date>
+
+  <title>&argouml; User Manual</title>
+  <subtitle>An introduction to &argouml;</subtitle>
+
+  <authorgroup>
+    <author>
+      <firstname>Alejandro</firstname>
+      <surname>Ramirez</surname>
+    </author>
+
+    <author>
+      <firstname>Philippe</firstname>
+      <surname>Vanpeperstraete</surname>
+    </author>
+
+    <author>
+      <firstname>Andreas</firstname>
+      <surname>Rueckert</surname>
+    </author>
+
+    <author>
+      <firstname>Jeremy</firstname>
+      <surname>Bennett</surname>
+    </author>
+  </authorgroup>
+
+  <copyright>
+    <year>2001</year>
+    <holder>Jeremy Bennett</holder>
+  </copyright>
+
+  <copyright>
+    <year>2000</year>
+    <holder>Philippe Vanpeperstraete</holder>
+  </copyright>
+
+  <legalnotice>
+    <para>Permission is granted to copy, distribute and/or modify this document
+      under the terms of the GNU Free Documentation License, Version 1.1 or any
+      later version published by the Free Software Foundation; with no
+      Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+      Texts. A copy of the license is included in the section entitled <link
+        linkend="applegal">GNU Free Documentation License.</link></para>
+  </legalnotice>
+
+  <revhistory>
+    <revision>
+      <revnumber>0.9.5, draft B</revnumber>
+      <date>11 Dec 2001</date>
+      <revremark>Tidied up Introduction chapter; completed UML tutorial chapter
+        apart from the case study description; added GNU Free Documentation
+        Licence as an appendix; added reference chapter on predefined
+        datatypes; classes, interfaces and stereotypes; reorganised diagrams
+        into images/tutorial and images/reference sections and substituted "To
+        Be Provided" diagram where no suitable one is available.</revremark>
+    </revision>
+
+    <revision>
+      <revnumber>0.9.5, draft A</revnumber>
+      <date>7 Dec 2001</date>
+      <revremark>Update by Jeremy Bennett preparing to support release of
+        &argouml;&nbsp;0.9.6. Incorporates material from previous manuals,
+        attempts to provide a skeleton structure for the whole
+        document.</revremark>
+    </revision>
+
+    <revision>
+      <revnumber></revnumber>
+      <date>22 Feb 2000</date>
+      <revremark>Version due to Philippe Vanpeperstraete. History of previous
+        versions unknown.</revremark>
+    </revision>
+  </revhistory>
+</bookinfo>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "bookinfo" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

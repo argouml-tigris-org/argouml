@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+This chapter covers the Navigator Pane.
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chrefnavpane">
+  <title>The Navigator Pane</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><xref linkend="figrefnavoverview"/> shows the Navigator
+      Pane.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefnavoverview" float="1">
+      <title>Overview of the Navigator Pane</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/navoverview.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>The ArgoUML Navigator Pane. A rectangular pane, with a bar at
+            the top, in which a drop down selection indicates this is a
+            <literal>Package-centric</literal> view. The remainder of the
+            pane shows a hierarchical listing. The first item is
+            <literal>untitledModel</literal>, and beneath it are two
+            children, <literal>class&nbsp;diagram&nbsp;1</literal> and
+            <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>. A scrollbar
+            appears on the right should the view be to large for the Pane (not
+            shown in this example).</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Selecting different perspectives with the drop down menu -->
+
+  <sect1>
+    <title>Perspective Selection</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Navigating around with the buttons -->
+
+  <sect1>
+    <title>Navigating Back and Forward</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Button for configuring perspectives-->
+
+  <sect1>
+    <title>Configuring Perspectives</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The Perspectives -->
+
+    <sect2>
+      <title>Perspectives Tag</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+    
+    <!-- The Panes - appears to be a null operation -->
+
+    <sect2>
+      <title>Panes Tag</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- What can the mouse do -->
+
+  <sect1>
+    <title>Mouse Actions</title>
+
+    <!-- Diagram selection -->
+
+    <sect2>
+      <title>Diagram Selection</title>
+
+      <para>Button 1 Click over a the name of a diagram in the main area of the
+        Navigation Pane will select that diagram in the Editing Pane and its
+        details in the Details Pane.</para>
+    </sect2>
+
+    <!-- Entity selection -->
+
+    <sect2>
+      <title>Entity Selection</title>
+
+      <para>Button 1 Click over the name of any entity other than a diagram in
+        the main area of the Navigation Pane will cause it to be selected, and
+        its details shown in the Details Pane. If the entity is part of a
+        digram currently displayed in the Editing Pane, it will be highlighted
+        there.</para>
+
+      <note><para>If the entity is part of a diagram other than that currently
+        displayed in the Editing Pane, there will be <emphasis>no</emphasis>
+        change of diagram in the Editing Pane.</para></note>
+    </sect2>
+
+    <!-- Context Sensitive Menu -->
+
+    <sect2>
+      <title>Context Sensitive Menu</title>
+
+      <para>Button 2 Click over any selected entity in the main area of the
+        Navigation Pane will cause a Pop-Up menu to appear.</para>
+
+       <!-- Properties -->
+
+      <sect3>
+        <title>Properties Pop-Up</title>
+
+        <para>This entry on the Pop-Up menu causes the Properties Tab of the
+          selected entity or diagram to be displayed in the Details
+          Pane.</para>
+      </sect3>
+
+      <!-- Add entity to diagram -->
+
+      <sect3>
+        <title>Add to Diagram</title>
+
+        <para>This entry on the Pop-Up menu appears for any entity that could
+          be added to the diagram currently displayed in the Editing
+          Pane. The item can be placed in the diagram by moving the cursor to
+          the Editing Pane (where it will appear as a cross and clicking
+          Button 1.</para>
+      </sect3>
+
+      <!-- Delete From Model -->
+
+      <sect3>
+        <title>Delete From Model</title>
+
+        <para>This entry on the Pop-Up menu appears for any entity that could
+          be deleted from the model.</para>
+
+        <warning><para>This deletes the entity from the model completely, not
+          just from the diagram. To remove just from the diagram use the Edit
+          Menu (see <xref linkend="s2menueditremdiag"/>).</para></warning>
+      </sect3>
+    </sect2>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+argomanual.xml"
+End:
+
+-->

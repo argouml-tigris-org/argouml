@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+This section covers requirements capture and how Argo/UML supports such
+actitivity.
+
+
+Modifications
+=============
+
+ 4 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chtutreqs">
+  <title>Requirements Capture</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>Requirements capture is the process of identifying what the
+      <quote>customer</quote> wants from the proposed system.</para>
+
+    <para>The key at this stage is that we are in the problem domain. At this
+      stage we must describe everything from the <quote>customer</quote>
+      perspective and in the language of the <quote>customer</quote>.</para>
+
+    <para>The biggest risk we have in requirements capture is to start thinking
+      in terms of possible solutions. That must wait until the
+      <emphasis>Analysis Phase</emphasis> (see
+      <xref linkend="chtutanalysis"/>). One of the steps of the Analysis Phase
+      will be to take the output of the Requirements Phase and recast it in the
+      language of a putative solution.</para>
+
+    <para>Remember we are using both a <emphasis>recursive</emphasis>, and an
+      <emphasis>iterative</emphasis> process.</para>
+
+    <para>We may well come back to the requirements process again as we break
+      down the problem into smaller chunks, each of which must have its
+      requirements captured.</para>
+
+    <para>We will certainly come back through the requirements phase on each
+      iteration as we seek to define the requirements of more and more of the
+      system</para>
+  </sect1>
+
+  <!-- Take the reader through the process of capturing requirements. This will
+       be quite high level in the current version of the document. -->
+
+  <sect1>
+    <title>The Requirements Capture Process</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <sect2>
+      <title>Process Steps</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Output of the Requirements Capture Process</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <sect3>
+        <title>Use Case Diagram</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Documents</title>
+
+        <remark>Vision, Use Case Specifications and Supplementary Requirements
+          Specifications. To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- Introduce UML Use Cases and how they can be used. Will be very limited
+       for this edition. -->
+
+  <sect1 id="s1umlusecases">
+    <title>Use Cases</title>
+
+    <!-- Para due to Andreas -->
+
+    <para>Use Cases model the interaction between <quote>users</quote> (animate
+      or inanimate) and the system. In creating Use Cases we define the system
+      boundaries.</para>
+
+    <sect2>
+      <title>The Use Case Diagram</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>The Use Case Specification</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Advanced Use Case Diagrams</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <sect3>
+        <title>Includes</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Extends</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Generalization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- Now show how to do in in Argo/UML. -->
+
+  <sect1 id="s1argousecases">
+    <title>Creating Use Cases in &argouml;</title>
+
+    <sect2>
+      <title>Actors</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Use Cases</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Associations</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Advanced Use Case Features</title>
+
+      <sect3>
+        <title>Includes</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+       
+      <sect3>
+        <title>Extends</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Generalization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Stereotypes</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- The Case Study will show at least some of these features -->
+
+  <sect1>
+    <title>Case Study</title>
+
+    <sect2>
+      <title>Vision Document</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Identifying Actors and Use Cases</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Associations</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Advanced Diagram Features</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Use Case Specifications</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Supplementary Requirements Specification</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

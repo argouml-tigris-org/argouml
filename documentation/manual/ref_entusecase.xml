@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Desription of all the entities associated with Use Case Diagrams within
+Argo/UML.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+-->
+
+<chapter id="chrefentusecase">
+  <title>&argouml; Use Case Diagram Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within a Use
+      Case Diagram. Note that some subentities of entities on the diagram may
+      not actually themselves appear on the diagram.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+
+    <!-- A diagram to show all things visible on the diagram -->
+
+    <para><xref linkend="figrefentusecase"/> shows a Use Case Diagram with all
+      possible entities displayed.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefentusecase" float="1">
+      <title>Possible entities on a Use Case Diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/tobeprovided.png"/>
+        </imageobject>
+
+        <textobject>
+          <para>A Use Case Diagram, showing (from left to right and top to
+            bottom) an Actor, Association, Use Case, Generalisation and
+            Dependency.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Entities specific to Use Case Diagrams. Actor -->
+
+  <sect1>
+    <title>Actor</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The properties of an Actor -->
+
+    <sect2>
+      <title>Actor Properties</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- The property toolbar -->
+
+      <sect3>
+        <title>Property Toolbar</title>
+
+        <!-- Common toolbar buttons (navigation, delete) -->
+
+        <remark>To be written&hellip;</remark>
+
+        <sect4>
+          <title>Common Buttons</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+
+        <!-- New Actor (appears to be a mistake - does nothing) -->
+
+        <sect4>
+          <title>New Actor Button</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+      </sect3>
+
+      <!-- The common properties (Name, Stereotype, Namespace) -->
+
+      <sect3>
+        <title>Common (Name, Stereotype, Namespace)</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Modifiers -->
+
+      <sect3>
+        <title>Modifiers</title>
+
+        <remark>To be written&hellip;</remark>
+
+        <!-- Abstract option -->
+
+        <sect4>
+          <title>Abstract</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+
+        <!-- Final option -->
+
+        <sect4>
+          <title>Final</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+
+        <!-- Root option -->
+
+        <sect4>
+          <title>Root</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+      </sect3>
+
+      <!-- Derived entities -->
+
+      <sect3>
+        <title>Derived</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Associations -->
+
+      <sect3>
+        <title>Associations</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Implements -->
+
+      <sect3>
+        <title>Implements</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- Use Case -->
+
+  <sect1>
+    <title>Use Case</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association (has Association End as a sub-entity) -->
+
+  <sect1>
+    <title>Association</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association End entities (sub-entity of Association) -->
+
+  <sect1>
+    <title>Association End</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Generalization -->
+
+  <sect1>
+    <title>Generalization</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Dependency -->
+
+  <sect1>
+    <title>Dependency</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Desription of all the entities associated with Activity Diagrams within
+Argo/UML.
+
+
+Modifications
+=============
+
+ 6 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+-->
+
+<chapter id="chrefentactiv">
+  <title>&argouml; Activity Diagram Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within an
+      Activity Diagram. Note that some subentities of entities on the diagram
+      may not actually themselves appear on the diagram.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+
+    <!-- A diagram to show all things visible on the diagram -->
+
+    <para><xref linkend="figrefentactivity"/> shows an Activity Diagram with
+      all possible entities displayed.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefentactivity" float="1">
+      <title>Possible entities on an Activity Diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/tobeprovided.png"/>
+        </imageobject>
+
+        <textobject>
+          <para>An Activity Diagram, showing (from left to right and top to
+            bottom) an Action State, Transition, Trigger and second Action
+            State.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Entities specific to Activity Diagrams. Action State entity. Has Action
+       as sub-entity -->
+
+  <sect1>
+    <title>Action State</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Action entity (subsidiary of Action State), cross refer to State
+       Diagram -->
+
+  <sect1>
+    <title>Action</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Transition entity. Has Call Event and Guard as subentities. Cross refer
+       to State Diagram -->
+
+  <sect1>
+    <title>Transition</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Call Event entity (subsidiary of Transition) -->
+
+  <sect1>
+    <title>Call Event</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Guard entity (subsidiary of Transition) -->
+
+  <sect1>
+    <title>Guard</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Initial State. This is a pseudo state, which all have the same
+       property sheet. The pseudo states are Initial State, Branch, Fork,
+       Join, Shallow History and Deep Histroy but *NOT* Final State,
+       which is a real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Initial State</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Final State - cross refer to State Diagram-->
+
+  <sect1>
+    <title>Final State</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Branch. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Branch</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+
+  <!-- Fork. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Fork</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+
+  <!-- Join. This is a pseudo state, which all have the same property
+       sheet. The pseudo states are Initial State, Branch, Fork, Join,
+       Shallow History and Deep Histroy but *NOT* Final State, which is a
+       real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Join</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+
+  <!-- Shallow History. This is a pseudo state, which all have the same
+       property sheet. The pseudo states are Initial State, Branch, Fork,
+       Join, Shallow History and Deep Histroy but *NOT* Final State,
+       which is a real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Shallow History</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Deep History. This is a pseudo state, which all have the same
+       property sheet. The pseudo states are Initial State, Branch, Fork,
+       Join, Shallow History and Deep Histroy but *NOT* Final State,
+       which is a real state. Cross refer to State Diagram -->
+
+  <sect1>
+    <title>Deep History</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

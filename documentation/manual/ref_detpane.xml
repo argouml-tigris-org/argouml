@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+This describes the Details Pane. We set a boundary here, to avoid describing
+all the entities. The description of properties for each entity is left to the
+chapter on diagrams.
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chrefdetpane">
+  <title>The Details Pane</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><xref linkend="figrefdetailsoverview"/> shows the Details
+      Pane.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefdetailsoverview" float="1">
+      <title>Overview of the Details Pane</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/detailsoverview.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>The ArgoUML Details Pane. A rectangular pane, with a series
+            of eight tabs along the top, labelled from left to right
+            <literal>To&nbsp;Do&nbsp;Item</literal>,
+            <literal>Properties</literal>, <literal>Documentation</literal>,
+            <literal>Style</literal>, <literal>Source</literal>,
+            <literal>Constraints</literal>, <literal>Tagged Values</literal>
+            and <literal>Checklist</literal>. The body of a pane is a menu of
+            items to be checked, selected or entered specific to the
+            particular tab selected.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para>For any entity within the system, this Pane is where all its
+      associated data is entered.</para>
+
+    <para>The Pane has a series of tabs at the top. The body of a pane is a
+      menu of items to be checked, selected or entered specific to the
+      particular tab selected.</para>
+
+    <para>Of these, the <literal>Properties</literal> Tab is by far the most
+      complex, with a different presentation for each entity within the
+      system. Its description forms the bulk of this section.</para>
+  </sect1>
+
+  <!-- The To-Do tab -->
+
+  <sect1>
+    <title>To-Do Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Properties Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Properties Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Properties tab -->
+
+  <sect1 id="s1refproptab">
+    <title>Properties Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- The property toolbars gathered together to avoid repetition -->
+
+    <sect2 id="s2refproptoolbar">
+      <title>Property Toolbars</title>
+
+      <para>Whilst all property sheets differ, many have toolbars. To avoid
+        repetition, the toobar buttons are all gathered in this
+        section.</para>
+
+      <para>The property toolbar buttons can be grouped into three
+        sets.</para>
+
+      <!-- Note that there are three groupings of buttons -->
+        
+      <orderedlist>
+        <listitem><para>Those that appear on most property sheets (Up,
+          Back, Forward and Delete).</para></listitem>
+
+        <listitem><para>Those that appear only on package property
+          sheets, including Model property sheets (Add Class, Add
+          Interface, Add Datatype, Add Stereotype, Add Actor, Add Use
+          Case, Add Subpackage, Add Generalization and Add
+          Realization). There is one exception, in that the Add Use Case
+          button appears on the Use Case property sheet. However it does
+          nothing, and this is presumably a mistake.</para></listitem>
+
+        <listitem><para>Those that appear only Class and Interface
+          property sheets (Add Attributed, Add Operations and Add Inner
+          Class).</para></listitem>
+      </orderedlist>
+
+      <!-- Now all the buttons described. First is the Up button. -->
+
+      <sect3>
+        <title>Up</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Back button -->
+
+      <sect3>
+        <title>Back</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Forward button -->
+
+      <sect3>
+        <title>Forward</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Delete button -->
+
+      <sect3>
+        <title>Delete</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Now the button that appear just on Package property sheets. The
+           Add Class button -->
+
+      <sect3>
+        <title>Add Class</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Interface button -->
+
+      <sect3>
+        <title>Add Interface</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Datatype button -->
+
+      <sect3>
+        <title>Add Datatype</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Stereotype button -->
+
+      <sect3>
+        <title>Add Stereotype</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Actor button -->
+
+      <sect3>
+        <title>Add Actor</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Use Case button. Note this appears on the Use Case property
+           sheet, where it does nothing - presumably a mistake. -->
+
+      <sect3>
+        <title>Add Use Case (mistake)</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Subpackage button -->
+
+      <sect3>
+        <title>Add Subpackage</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Generalization button -->
+
+      <sect3>
+        <title>Add Generalization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Realization button -->
+
+      <sect3>
+        <title>Add Realization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The buttons specific to Classes and Interfaces. The Add
+           Attributes button (why is this plural and operations
+           singular?) -->
+
+      <sect3>
+        <title>Add Attributes</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Operation button -->
+
+      <sect3>
+        <title>Add Operation</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Inner Class  button -->
+
+      <sect3>
+        <title>Add Inner Class</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Add Parameter button -->
+
+      <sect3>
+        <title>Add Parameter</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Go to other end button -->
+
+      <sect3>
+        <title>Go To Other End</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- The entries that appear on property sheets. Gathered in one place
+         to avoid repetition. -->
+
+    <sect2 id="s2refpropcommonfeat">
+      <title>Common Property Sheet Features</title>
+
+      <para>Whilst all property sheets differ, some components that make up
+        those sheets are very common. To avoid repetition, these are
+        gathered in this section.</para>
+
+      <!-- Property sheet type -->
+
+      <sect3>
+        <title>Property Sheet Type</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Name of the entity -->
+
+      <sect3>
+        <title>Name</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stereotype -->
+
+      <sect3>
+        <title>Stereotype</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Namespace -->
+
+      <sect3>
+        <title>Namespace</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- How to drive property sheets. Navigating, adding features etc. -->
+
+    <sect2>
+      <title>Using the Property Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- What can the mouse do in the Properties Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Properties Tab</title>
+
+      <!-- Toolbar Navigation -->
+
+      <!-- Toolbar Function Selection -->
+
+      <!-- Data Entry -->
+
+        <!-- Direct -->
+
+        <!-- Checkboxes -->
+
+        <!-- Drop down selection -->
+
+      <!-- Navigation to named subsidiaries -->
+
+      <sect3>
+        <title>Context Sensitive Pop-Up Menu</title>
+
+        <para>Button 2 Click over the some named entities in the details tab
+          Drawing Pane will cause a Pop-Up menu to appear.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- The Documentation tab -->
+
+  <sect1>
+    <title>Documentation Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Properties Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Properties Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Style tab -->
+
+  <sect1>
+    <title>Style Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Properties Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Properties Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Source tab -->
+
+  <sect1>
+    <title>Source tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Source Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Source Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Constraints tab -->
+
+  <sect1>
+    <title>Constraints Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Constraints Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Constraints Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Tagged Values tab -->
+
+  <sect1>
+    <title>Tagged Values Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Tagged Values Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Tagged Values Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The Checklist tab -->
+
+  <sect1>
+    <title>Checklist Tab</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- What can the mouse do in the Checklist Tab -->
+
+    <sect2>
+      <title>Mouse Actions in the Checklist Tab</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- Mouse Actions that are not tab specific -->
+
+  <sect1>
+    <title>General Mouse Actions</title>
+
+    <!-- Spawning a New Window (double click button1 on any tab) -->
+
+    <sect2>
+      <title>Spawning Tabs as New Windows</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

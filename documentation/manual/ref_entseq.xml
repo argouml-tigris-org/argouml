@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Desription of all the entities associated with Sequence Diagrams within
+Argo/UML.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+-->
+
+<chapter id="chrefentseq">
+  <title>&argouml; Sequence Diagram Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within a
+      Sequence Diagram. Note that some subentities of entities on the diagram
+      may not actually themselves appear on the diagram.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+
+    <!-- A diagram to show all things visible on the diagram -->
+
+    <para><xref linkend="figrefentseq"/> shows a Sequence Diagram with all
+      possible entities displayed.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefentseq" float="1">
+      <title>Possible entities on a Sequence Diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/tobeprovided.png"/>
+        </imageobject>
+
+        <textobject>
+          <para>A Sequence Diagram, showing (from left to right and top to
+            bottom) two Objects, a Stimulus Call, a Stimulus Create, a Stimulus
+            Destroy, a Stimulus Send and a Stimulus Return.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Entities specific to Sequence Diagrams. Object Entity -->
+
+  <sect1>
+    <title>Object</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stimulus Call entity. Note properties are all the same for Stimulus
+       Call, Create, Destroy, Send and Return. -->
+
+  <sect1>
+    <title>Stimulus Call</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stimulus Create entity. Note properties are all the same for Stimulus
+       Call, Create, Destroy, Send and Return. -->
+
+  <sect1>
+    <title>Stimulus Create</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stimulus Destroy entity. Note properties are all the same for Stimulus
+       Call, Create, Destroy, Send and Return. -->
+
+  <sect1>
+    <title>Stimulus Destroy</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stimulus Send entity. Note properties are all the same for Stimulus
+       Call, Create, Destroy, Send and Return. -->
+
+  <sect1>
+    <title>Stimulus Send</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Stimulus Return entity. Note properties are all the same for Stimulus
+       Call, Create, Destroy, Send and Return. -->
+
+  <sect1>
+    <title>Stimulus Return</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

@@ -1,0 +1,1978 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+This chapter introduces the user to UML based OOA&D and explains how to get
+Argo/UML up and running.
+
+
+Modifications
+=============
+
+30 Nov 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+10 Dec 2001:  Jeremy Bennett. Introduction, background to UML and UML based
+              processes, introduction to mouse, menus and drawing added for
+              0.9.5, draft B.
+-->
+
+<chapter id="chtutuml">
+  <title>UML Based &ooad;</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>In this chapter, we look at how UML as a notation is used within
+      &ooad;.</para>
+  </sect1>
+
+  <sect1>
+    <title>Background to UML</title>
+
+    <para><emphasis>Object orientation</emphasis> as a concept has been around
+      since the 1960's, and as a design concept since 1972. However it was in
+      the 1980's that it started to develop as a credible alternative to a
+      <emphasis>functional approach</emphasis> in analysis and design. We can
+      identify a number of drivers.</para>
+
+    <orderedlist>
+      <listitem><para>The emergence of mainstream OO programming languages like
+        SmallTalk and particularly C++. C++ was a pragmatic OO language derived
+        from C, widely used because of its association with
+        Unix.</para></listitem>
+
+      <listitem><para>The development of powerful workstations, and with them
+        the emergence into the mainstream of windowing operating user
+        environments. Graphical User Interfaces (GUI) have an inherently object
+        structure.</para></listitem>
+
+      <listitem><para>A number of very public major project failures,
+        suggesting that current approaches were not
+        satisfactory.</para></listitem>
+    </orderedlist>
+
+    <para>A number of researchers proposed &ooad; processes, and with them
+      notations. Those that achieved some success include Coad-Yourdon, Booch,
+      Rumbaugh OMT, OOSE/Jacobson, Shlaer-Mellor, ROOM (for real-time design)
+      and the hybrid Jackson Structured Development.</para>
+
+    <para>During the early 1990's it became clear that these approaches had
+      many good ideas, often very similar. A major stumbling block was the
+      diversity of notation, meaning engineers tended to be familiar with one
+      &ooad; methodology, rather than the approach in general.</para>
+
+    <para>UML was conceived as a common notation, that would be in the
+      interests of all involved. The original standard was driven by Rational
+      Software (<ulink url="http://www.rational.com">www.rational.com</ulink>,
+      in which three of the key researchers in the field (Booch, Jacobson and
+      Rumbaugh were involved). They produced documents describing v0.9 and
+      v0.91 during 1996. The effort was taken industry wide through the
+      Object Management Group (OMG), already well known for the CORBA
+      standard. A first proposal, 1.0 was published in early 1997, with an
+      improved version 1.1 approved that autumn.</para>
+
+    <para>&argouml; is based on UML v1.3, which was adopted by OMG in November
+      1999. UML v1.4 has recently been approved (2001). A major revision, UML
+      v2.0 is planned to be completed in 2002.</para>
+  </sect1>
+
+  <!-- Put a process with the notation -->
+
+  <sect1>
+    <title>UML Based Processes for &ooad;</title>
+
+    <para>It is important to understand that UML is a notation for &ooad;. It
+     does not prescribe any particular process.</para>
+
+    <para>Whatever process is adopted, it must take the system being
+      constructed through a number of phases.</para>
+
+    <orderedlist>
+      <listitem><para>Requirements Capture. This is where we identify the
+        requirements for the system, using the language of the
+        <emphasis>problem domain</emphasis>. In other words we describe the
+        problem in the <quote>customer's</quote> terms.</para></listitem>
+
+      <listitem><para>Analysis. We take the requirements and start to recast
+        them in the language of a putative solution&mdash;the
+        <emphasis>solution domain</emphasis>. At this stage, although thinking
+        in terms of a solution, we ensure we keep things at a high level, away
+        from concrete details of a specific solution&mdash;what is known as
+        <emphasis>abstration</emphasis>.</para></listitem>
+
+      <listitem><para>Design. We take the specification from the Analysis phase
+        and construct the solution in full detail. We are moving from
+        <emphasis>abstraction</emphasis> of the problem to its
+        <emphasis>realization</emphasis> in concrete terms.</para></listitem>
+
+      <listitem><para>Build Phase. We take the actual design and write it in a
+        real programming language. This includes not just the programming, but
+        the testing that the program meets the requirements
+        (<emphasis>verfication</emphasis>), testing that the program actually
+        solves the customer's problem (<emphasis>validation</emphasis>) and
+        writing all user documentation.</para></listitem>
+    </orderedlist>
+
+    <!-- Waterfall v Iterative -->
+
+    <sect2 id="s2proctypes">
+      <title>Types of Process</title>
+
+      <para>In this section we look at the two main types of process in use for
+        software engineering. There are others, but they are less widely
+        used.</para>
+
+      <sect3>
+        <title>The Waterfall Process</title>
+
+        <para>In this process, each stage of the process&mdash;requirements,
+          analysis, design and build (code and test) is completed before the
+          next one starts. This is illustrated in <xref
+            linkend="figwaterfallsteps"/>.</para>
+
+        <!-- A diagram showing the waterfall steps leading to each other. -->
+
+        <figure id="figwaterfallsteps" float="1">
+          <title>The waterfall process</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                         fileref="images/tutorial/waterfallsteps.png"/>
+            </imageobject>
+
+            <textobject>
+              <para>A diagram showing the steps of the waterfall
+              process&mdash;requirements, analysis, design, code and test in a
+              diagonal line from top left to bottom right, with an arrow
+              linking each to the next down the diagonal.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>This is a very satisfactory process where requirements are well
+          designed and not expected to change, for example automating a well
+          proven manual system.</para>
+
+        <para>The weaknesses of this approach show with less well defined
+          problems. Invariably some of the uncertainties in the requirements
+          will not be clarified until well into the analysis and design, or
+          even code phases, requiring backtracking to redo work.</para>
+
+        <para>The worst aspect of this, is that working code does not become
+          available until near the end of the project, and very often it is
+          only at this stage that problems with the original requirements (for
+          example with the user interface) become apparent.</para>
+
+        <para>This is exacerbated, by each successive stage requiring more
+          effort, than the previous, so that the costs of late problem
+          discovery are hugely expensive. This is illustrated by the pyramid in
+          <xref linkend="figwaterfall"/>.</para>
+
+        <!-- A diagram showing the waterfall process as a pyramid -->
+
+        <figure id="figwaterfall" float="1">
+          <title>Effort involved in the steps of the waterfall process</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                         fileref="images/tutorial/waterfall.png"/>
+            </imageobject>
+
+            <textobject>
+              <para>A diagram showing the steps of the waterfall
+              process&mdash;requirements, analysis, design, code and test as a
+              pyramid from top to bottom.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>The waterfall process is still probably the dominant design
+          process. However because of its limitations it is increasingly
+          replaced by <emphasis>iterative</emphasis> processes, particularly
+          for projects where the requirements are not well defined.</para>
+      </sect3>
+
+      <!-- Iterative processes -->
+
+      <sect3>
+        <title>Iterative Development Processes</title>
+
+        <para>In recent years a new approach has been used, which aims to get
+          at least part of the code up and running as quickly as possible, to
+          bring discovery of problems forward in the development cycle.</para>
+
+        <para>These processes use a series of <quote>mini-waterfalls</quote>,
+          defining a few requirements (the most important) first, taking them
+          through analysis, design and build to get an early version of the
+          product, with limited functionality, related to the most important
+          requirements. Feedback from this can then be used to refine the
+          requirements, spot problems etc before more work is done.</para>
+
+        <para>The process is then repeated for further requirements to
+          construct a product with a step up in functionality. Again further
+          feedback can be applied to the requirements.</para>
+
+        <para>The process is repeated more times, until eventually all
+          requirements have been implemented and the product is complete. It is
+          this <emphasis>iteration</emphasis> that gives these processes their
+          name. <xref linkend="figiterative"/> shows how this process compares
+          to the pyramid structure of the Waterfall Process.</para>
+
+        <!-- A diagram showing an iterative process as a pyramid -->
+
+        <figure id="figiterative" float="1">
+          <title>Effort involved in the steps of an iterative process</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
+                         fileref="images/tutorial/iterative.png"/>
+            </imageobject>
+
+            <textobject>
+              <para>A diagram showing the steps of the iterative
+              process&mdash;requirements, analysis, design, code and test as a
+              pyramid from top to bottom, but taken in stages, a slice at a
+              time.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>The growth in popularity of iterative processes is closely tied
+          to the growth of &ooad;. It is the clean encapsulation of objects
+          that allows a part of a system to be built with stubs for the
+          remaining code clearly defined.</para>
+
+        <sect4>
+          <title>The Rational Unified Process</title>
+
+          <para>Perhaps the best known Iterative Process is the Rational
+            Unified Process (RUP) from Rational Software (<ulink
+              url="http://www.rational.com">www.rational.com</ulink>.</para>
+
+          <para>This process recognises that our pyramid view of even slices of
+            the waterfall is not realistic. In practice the early iterations
+            tend to be heavy on the requirements end of things (you need to
+            define a reasonable amount even to get started), whilst the later
+            iterations have more of their effort in the design and build
+            areas.</para>
+
+          <para>RUP recognises that iterations can be grouped into a number of
+            <emphasis>phases</emphasis> according to their stage in the overall
+            project. Each phase may have one or more iterations.</para>
+
+          <itemizedlist>
+            <listitem><para>In the <emphasis>inception
+              phase</emphasis> iterations tend to be heavy on the
+              requirements/analysis end, whilst any build activity may be
+              limited to emulation of the design within a CASE
+              tool.</para></listitem>
+
+            <listitem><para>In the <emphasis>elaboration
+              phase</emphasis> iterations tend to be completing the
+              specification of the requirements, and starting to focus on the
+              analysis and design, and possibly the first real built
+              code.</para></listitem>
+
+            <listitem><para>In the <emphasis>construction phase</emphasis>
+              iterations are more or less completed with the requirements and
+              analysis, and the effort is mostly in design and
+              build.</para></listitem>
+
+            <listitem><para>Finally, in the <emphasis>deployment
+              phase</emphasis> iterations are largely about build activity, and
+              in particular the testing of the software.</para></listitem>
+          </itemizedlist>
+
+          <para>We shall use an iterative process in this manual, that is
+            loosely based on the RUP.</para>
+        </sect4>
+
+        <!-- Defining the size of an iteration -->
+
+        <sect4>
+          <title>How Big is an Iteration?</title>
+
+          <para>A good rule of thumb is that an iteration should take between
+            six and ten weeks for typical commercial projects. Any longer and
+            you have probably bitten off too many requirements to do in one
+            go. You also lose focus on getting the next working iteration
+            completed. Any shorter and you probably haven't got enough
+            requirements to make a significant advance, and will struggle to
+            get all the work done.</para>
+
+          <para>This then begs the question of how many iterations in
+            total. This depends on the size of project. Take the estimated time
+            (and working out/guessing that is a whole subject on its own), and
+            divided it into 8 week chunks. Experience seems to suggest that
+            the iterations will divide in the ratio of around 1:2:3:3 into RUP
+            style inception, elaboration, construction and deployment
+            phases. A project that has great vagueness in its specification
+            (some advanced research projects for example) will tend to be
+            heavier on the early phases.</para>
+
+          <para>When building a product to contract for a customer the end
+            point is well defined. However when developing a new product for
+            the market place, a strategy that can be used is to decide the
+            product launch date, and hence the end date for completion of
+            engineering (some time before). The time is then divided into
+            iterations, and as much of the product as can be built in that time
+            developed. The iterative process is very effective where time to
+            market is more important that the exact functionality.</para>
+        </sect4>
+      </sect3>
+
+      <!-- Recursive Development Processes -->
+
+      <sect3>
+        <title>Recursive Development Processes</title>
+
+        <para>Very few software systems are conceived as monolithic
+          entities. They are broken down into subsystems, modules etc.</para>
+
+        <para>Software processes are the same, with early parts of the process
+          defining a top level structure, and the process reapplying to parts
+          of the structure in turn to define ever greater details.</para>
+
+        <para>For example the intial design of a telephone system might
+          identify objects to i) handle the phone lines, ii) process the calls,
+          iii) manage the system and iv) bill the customer. The software
+          process can then be reapplied to each of these four components to
+          identify their design.</para>
+
+        <para>&ooad; with its clean boundaries to objects, naturally supports
+          this approach. Such &ooad; with recursive development is sometimes
+          abbreviated as &ooad;/RD.</para>
+
+        <para>Recursive development can be applied equally well to waterall or
+          iterative processes. It is not an alternative to them.</para>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>A Development Process for This Manual</title>
+
+      <para>For the purpose of this manual we will use a stripped down
+        iterative process with recursive development, loosely akin to RUP. The
+        case study will take us through the first iteration, although at the
+        end of the tutorial section of the manual we will look at how the
+        project will develop to completion.</para>
+
+      <para>Within that first iteration, we will tackle each of the
+        requirements capture, analysis, design and build activities in
+        turn. Not all parts of the process are based on UML or &argouml;. We
+        will look at what other material is needed outside.</para>
+
+      <!-- Requirements Capture -->
+
+      <sect3>
+        <title>Requirements Capture</title>
+
+        <para>Our requirements capture will use the UML concept of
+          <emphasis>Use Cases</emphasis>. Starting with a <emphasis>Vision
+          Document</emphasis> we will see how Use Cases can be developed to
+          describe all aspects of the system's behaviour in the problem
+          domain.</para>
+      </sect3>
+
+      <!-- Analysis -->
+
+      <sect3>
+        <title>Analysis</title>
+
+        <para>During the analysis stage, we will introduce the UML concept of
+          <emphasis>classes</emphasis> to allow us to build a top level view of
+          the objects that will make up the solution&mdash;sometimes known as a
+          <emphasis>concept diagram</emphasis>.</para>
+
+        <para>We will introduce the UML <emphasis>sequence diagram</emphasis>
+          and <emphasis>state diagram</emphasis> to capture requirements for
+          the overall behaviour of the system.</para>
+
+        <para>Finally we will take the Use Cases from the requirements capture
+          stage, and recast them in the language of the solution domain. This
+          will illustrate the UML ideas of <emphasis>stereotyping</emphasis>
+          and <emphasis>realisation</emphasis>.</para>
+      </sect3>
+
+      <!-- Design -->
+
+      <sect3>
+        <title>Design</title>
+
+        <para>We use the UML <emphasis>package diagram</emphasis> to organise
+          the components of the project. We then revisit the class diagram,
+          sequence diagram and state diagram, to show how they can be used
+          recursively to design the complete solution.</para>
+
+        <para>During this part of the process, we need to develop our system
+          architecture, to define how all the components will fit together and
+          operate.</para>
+
+        <para>Although not strictly part of our process, we'll look at how the
+          UML <emphasis>collaboration diagram</emphasis> can be used as an
+          alternative to, or to complement the <emphasis>sequence
+          diagram</emphasis>. Similarly we will look at the UML
+          <emphasis>activity diagram</emphasis> as an alternative or complement
+          to the state diagram.</para>
+
+        <para>Finally we shall use the UML <emphasis>deployment
+          diagram</emphasis> to specify how the system will actually be
+          realised.</para>
+      </sect3>
+
+      <!-- Build -->
+
+      <sect3>
+        <title>Build</title>
+
+        <para>UML is not really concerned with code writing. However at this
+          stage we will show how &argouml; can be used for code
+          generation.</para>
+
+        <para>We will also look at how the UML Use Case Diagram and Use Case
+          Specification are invaluable tools for a test program.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- What Argo/UML is different to other UML CASE tools -->
+
+  <sect1>
+    <title>Why &argouml; is Different</title>
+
+    <para>In the introduction, we listed the four key things that make
+    &argouml; different: i) it makes use of ideas from cognitive psychology,
+    ii) it is based on open standards; iii) it is 100% pure Java; and iv) it is
+    an open source project.</para>
+
+    <sect2>
+      <title>Cognitive Psychology</title>
+
+      <!-- The theory -->
+
+      <sect3>
+        <title>Theory</title>
+
+        <para>&argouml; is particularly inspired by three theories within
+        cognitive psychology: i) reflection-in-action, ii) opportunistic design
+        ii) and comprehension and problem solving.</para>
+
+        <!-- A bit on reflection-in-action -->
+
+        <sect4>
+          <title>Reflection-in-Action</title>
+
+          <para>This theory observes that designers of complex systems do not
+            conceive a design fully-formed. Instead, they must construct a
+            partial design, evaluate, reflect on, and revise it, until they are
+            ready to extend it further.</para>
+
+          <para>As developers work hands-on with the design, their mental model
+            of the problem situation improves, hence improving their
+            design.</para>
+        </sect4>
+
+        <!-- A bit on Opportunistic Design -->
+
+        <sect4>
+          <title>Opportunistic Design</title>
+
+          <para>A theory within cognitive psychology suggesting that although
+            designers plan and describe their work in an ordered, hierarchical
+            fashion, in actuality, they choose successive tasks based on the
+            criteria of cognitive cost.</para>
+
+          <para>Simply stated, designers do not follow even their own plans in
+            order, but choose steps that are mentally least expensive among
+            alternatives.</para>
+        </sect4>
+
+        <!-- A bit on comprehension and problem solving -->
+
+        <sect4>
+          <title>Comprehension and Problem Solving</title>
+
+          <para>A design visualization theory within cognitive psychology. The
+            theory notes that designers must bridge a gap between their mental
+            model of the problem or situation and the formal model of a
+            solution or system.</para>
+
+          <para>This theory suggests that programmers will benefit from:</para>
+
+          <orderedlist>
+            <listitem><para>Multiple representations such as program syntactic
+              decomposition, state transitions, control flow, and data
+              flow. These allow the programmer to better identify elements and
+              relationships in the problem and solution and thus more readily
+              create a mapping between their situation models and working
+              system models.</para></listitem>
+
+            <listitem><para>Familiar aspects of a situation model, which
+              improve designers' abilities to formulate
+              solutions.</para></listitem>
+          </orderedlist>
+        </sect4>
+      </sect3>
+
+      <!-- The practice -->
+
+      <sect3>
+        <title>Practical Application in &argouml;</title>
+
+        <para>The implementation of these theories within &argouml; is through
+         a number of techniques.</para>
+
+        <orderedlist>
+          <listitem><para>The design of a user interface which allows the user
+            to view the design from a number of different perspectives, and
+            allows the user to achieve goals through a number of alternative
+            routes.</para></listitem>
+
+          <listitem><para>The the use of processes running in parallel with the
+            design tool, evaluating the current design against models of how
+            <quote>best practice</quote> design might work. These processes are
+            known as <emphasis>design critics</emphasis>.</para></listitem>
+
+          <listitem><para>The use of <emphasis>to-do lists</emphasis> to convey
+            suggestions from the design critics to the user, as well as
+            allowing the user the record areas for future
+            action.</para></listitem>
+
+          <listitem><para>The use of checklists, to guide the user through a
+            complex process.</para></listitem>
+        </orderedlist>
+      </sect3>
+    </sect2>
+
+    <!-- Open Standards -->
+
+    <sect2>
+      <title>Open Standards</title>
+
+      <para>UML is itself an open standard. &argouml; throughout has tried to
+        use open standards for all its interfaces.</para>
+
+      <para>The key advantage of open standards is that it permits easy
+        interworking between applications, and the ability to move from one
+        application to another as necessary.</para>
+
+      <para>It is this very flexibility that means some commercial software is
+        not built to use standards. In a monopolistic strategy, non-standard
+        interfaces lock your customer to you.</para>
+
+      <para>This is a two-edged sword. Customers are not stupid, and are
+        reluctant to buy non-standard software, because of the danger of
+        lock-in.</para>
+
+      <para>The open source movement, is inherently about avoiding monopolistic
+        control of software. Open standards are a natural direction for such
+        software&mdash;including &argouml;.</para>
+
+      <!-- XMI -->
+
+      <sect3>
+        <title>XML Metadata Interchange (XMI)</title>
+
+        <para><emphasis>XML Metadata Interchange (XMI)</emphasis> is the
+          standard for saving the metadata that make up a particular UML
+          model. In principle this will allow you to take the model you have
+          created in &argouml; and import it into another tool.</para>
+
+        <para>This clearly has advantages in allowing UML to meet its goal of
+          being a standard for communication between designers.</para>
+
+        <para>The reality is not quite this good. XMI is a recent standard, and
+          &argouml; is one of the few tools to implement it. Furthermore it
+          says nothing about the graphical representation of the models, so
+          diagram layout is lost. &argouml; gets round this by saving graphical
+          information with the model (see <xref
+            linkend="s3tutloadsave"/>).</para>
+      </sect3>
+
+      <!-- SVG -->
+
+      <sect3>
+        <title>Standard Vector Graphics (SVG)</title>
+
+        <para><emphasis>Standard Vector Graphics (SVG)</emphasis> is a recent
+          standard proposed to the W3C Standardisation body (<ulink
+            url="http://www.w3c.org">www.w3c.org</ulink>) by Adobe (<ulink
+            url="http://www.adobe.com">www.adobe.com</ulink>). As yet it is not
+          widely adopted, but is likely to become the standard for graphical
+          data that is based on vectors (i.e. lines) rather than
+          bitmaps.</para>
+
+        <para>For now &argouml; uses an earlier proposed standard,
+          <emphasis>Portable Graphics Markup Language (PGML)</emphasis>. For
+          now &argouml; saves graphical information in PGML format. However it
+          has the option to export graphical data as SVG for those who can make
+          use of it.</para>
+      </sect3>
+
+      <!-- OCL -->
+
+      <sect3>
+        <title>Object Constraint Languge (OCL)</title>
+
+        <para><emphasis>Object Constraint Language (OCL)</emphasis> is the
+          UML standard for expressing constraints within diagrams that express
+          the dynamic behaviour of a design.</para>
+
+        <para>As yet OCL is not widely used anywhere. However as part of the
+          future development of OCL, &argouml; will implement this
+          language.</para>
+      </sect3>
+    </sect2>
+
+    <!-- Why it is in pure Java -->
+
+    <sect2>
+      <title>100% Pure Java</title>
+
+      <para>Java was conceived as an interpreted language. It doen't have a
+        compiler to produce code for any particular target machine. It compiles
+        code for its own target, the <emphasis>Java Virtual Machine
+        (JVM)</emphasis>.</para>
+
+      <para>Writing an interpreter for a JVM is much easier than writing a
+        compiler, and such machines are now incorporated into almost every Web
+        Browser. As a result most machines can run Java, with no further
+        work.</para>
+
+      <para>(In case you wonder why all languages aren't like this, it is
+        because interpreted languages tend to be slower than compiled
+        languages. However with the high performance of modern PCs, the
+        trade-off for portability is worthwhile for many
+        applications. Furthermore modern multi-level caches can mean that
+        interpreted languages, which produce denser code, may actually not be
+        that much slower anyway.)</para>
+
+      <para>By choosing to write &argouml; in pure Java, it is immediately made
+        available to the maximum number of users with the minimum amount of
+        effort.</para>
+    </sect2>
+
+    <!-- Open Source -->
+
+    <sect2>
+      <title>Open Source</title>
+
+      <para>&argouml; is an <emphasis>open source</emphasis> project. That
+        means anyone can have a free copy of the source code, change it, use it
+        for new purposes and so on. The only (major) obligation is that you
+        pass your code on in the same way to others. The precise nature of what
+        you can and can't do varies from project to project, but the principle
+        is the same.</para>
+
+      <para>The advantage is that a small project like &argouml; suddenly is
+        open to a lot of additional help from those who can chip in their ideas
+        for how the program might be improved. At any one time their may be 10,
+        15, 20 or more people making significant contributions to &argouml;. To
+        do that commercially would cost $1m+ per year.</para>
+
+      <para>Its not just a spirit of pure altruism. Contributing is a way of
+        learning <quote>hands-on</quote> about leading edge software. Its a way
+        of getting a lot of visibility (over 100,000 people had downloaded
+        &argouml; by the spring of 2001). Thats a lot of good experience on a
+        resum&eacute; and a lot of potential employers seeing you!</para>
+
+      <para>And its great for the ego!</para>
+
+      <para>Open Source doesn't preclude making money. Gentleware <ulink
+        url="http://www.gentleware.com">www.gentleware.com</ulink> sell a
+        commercial version of &argouml;, Poseidon. Their value proposition is
+        not a piece of private code. Its the commercial polish and support that
+        take risk out of using &argouml; in a commercial development, allowing
+        customers to take advantage of &argouml;'s leading edge
+        techology.</para>
+    </sect2>
+  </sect1>
+
+  <!-- Get started with Argo/UML -->
+
+  <sect1>
+    <title>&argouml; Basics</title>
+
+    <para>The aim of this section is to get you up and running with
+      &argouml;. It takes you through obtaining the code and getting it
+      running.</para>
+
+    <sect2>
+      <title>Getting Started</title>
+
+      <para>You have three options for obtaining &argouml;.</para>
+
+      <orderedlist>
+        <listitem><para>Run &argouml; directly from the Web Site using Java
+          WebStart (JWS). This is the easiest option.</para></listitem>
+
+        <listitem><para>Download the binary code. This is the right option if
+          you intend using &argouml; regularly and is not that
+          difficult.</para></listitem>
+
+        <listitem><para>Download the source code using CVS and build your own
+          version. Choose this option if you want to look at the internal
+          workings of &argouml;, or want to join in as a
+          developer.</para></listitem>
+      </orderedlist>
+
+      <para>All three options are freely available through the project web
+        site,
+        <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>.
+      </para>
+
+      <para>If you choose to download binary, you will have a choice of
+        downloading the latest stable version of the code (which will be more
+        reliable, but not have all the latest features), or the current version
+        (which will be less reliable, but have more features). Choose according
+        to your own situation</para>
+
+      <para>If you are intending using &argouml; for a commercial product, you
+        may want greater support than is guaranteed under an open source
+        project. There is a commercial version of &argouml;,
+        <emphasis>Poseidon</emphasis> developed by Gentleware. It can be
+        obtained from their website,
+        <ulink url="http://www.gentleware.com">www.gentleware.com</ulink>.
+      </para>
+
+      <para>This documentation was produced using &argouml; 0.9.6, which at the
+        time of writing was the latest stable version.</para>
+
+      <warning><para>The previous paragraph is a statement of
+        <quote>anticipation</quote>. The preparation of 0.9.6 and the writing
+        of this edition of the User Manual are running in
+        parallel. So this manual really reflects the current (unstable) 0.9.5
+        development today!</para></warning>
+
+      <!-- Using Java WebStart (JWS) -->
+
+      <sect3>
+        <title>&argouml; using JWS</title>
+
+        <para>There are two steps to this.</para>
+
+        <orderedlist>
+          <listitem><para>Install JavaWebStart (JWS) on your machine. This is
+            available from <ulink
+            url="http://java.sun.com/products/javawebstart">
+            java.sun.com/products/javawebstart</ulink>, or via the
+            <literal>JavaWebStart</literal> link on the &argouml; <ulink
+              url="http://argouml.tigris.org">home
+            page</ulink>.</para></listitem>
+
+          <listitem><para>Click on the
+            <literal>Launch&nbsp;&argouml;&nbsp;0.9.5</literal> link on the
+            &argouml; <ulink url="http://argouml.tigris.org">home
+            page</ulink>.</para></listitem>
+        </orderedlist>
+      </sect3>
+
+      <!-- How to download the files -->
+
+      <sect3>
+        <title>Downloading &argouml;</title>
+
+        <para>Since &argouml; is written in 100% pure Java, it should run on
+          any machine with a Java Engine. Java2, version 1.2 or later is
+          needed. You may have this in place, but if not it can be downloaded
+          free from Sun MicroSystems
+          (<ulink url="http://www.sun.com">www.sun.com</ulink>). Note that you
+          only need the Java Runtime Environment (JRE), there is no need to
+          download the whole Java Development Kit (JDK).</para>
+
+        <para>&argouml; needs a reasonable amount of computing resource. A PC
+          with 300MHz processor, 64Mb RAM and 10Mb of disk should be
+          adequate. Download the code from Download section of the project
+          website
+          <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>.
+          Choose the version that suits your needs as described in the section
+          above.</para>
+
+        <para>&argouml; comes in <literal>.zip</literal> or
+          <literal>tar.gz</literal> flavours. Choose the former if you are a
+          Microsoft Windows user, and the latter if you are running some
+          flavour of Unix. Unpacking is as follows.</para>
+
+        <itemizedlist>
+          <listitem><para>On Windows. Unzip the <literal>.zip</literal> file
+            with WinZip, or on later versions of Windows (ME, XP) copy the
+            files out of the compressed folder and put them into a directory of
+            your choosing.</para></listitem>
+
+          <listitem><para>Use GNU tar to unzip and break out the files to a
+            directory of your choice
+            <literal>tar&nbsp;zxvpf&nbsp;&lt;file&gt;.tar.gz</literal>.</para>
+          </listitem>
+        </itemizedlist>
+
+        <!-- Possible Problems -->
+
+        <sect4 id="s4probsolving">
+          <title>Problems Downloading</title>
+
+          <para>If you get completely stuck, the web site doesn't help you, and
+            local assistance isn't able to resolve things, try the &argouml;
+            users' mailing list.</para>
+
+          <para>You can subscribe through the mailing lists section of the
+            project web site
+            <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>,
+            or send an empty message to
+            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink>
+            with the subject line <literal>subscribe</literal>.</para>
+
+          <para>You can then send your problem to 
+            <ulink url="mailto:users@argouml.org">users@argouml.org</ulink> and
+            see how other users are able to help.</para>
+
+          <para>The users' mailing list is an excellent introduction to the
+            live activity of the project. If you want to get further invovled
+            there are additional mailing lists that cover the development of
+            the product and issues in the current and future releases.</para>
+        </sect4>
+      </sect3>
+
+      <!-- How to get the code running -->
+
+      <sect3>
+        <title>Running Your Downloaded &argouml;</title>
+
+        <para>You should have a directory containing the following files:
+          <literal>antlrall.jar</literal>, <literal>gef.jar</literal>,
+          <literal>nsuml.jar</literal>, <literal>README.txt</literal>,
+          <literal>argouml.jar</literal>, <literal>log4j.jar</literal>,
+          <literal>ocl-argo.jar</literal> and
+          <literal>xerces.jar</literal>. To run &argouml; depends on whether
+          you are a Microsoft Windows or Unix user.</para>
+
+        <itemizedlist>
+          <listitem><para>On Windows. Start a MSDOS shell window. Use Start/Run
+            with the default <quote>command</quote>. In the window change to
+            the directory holding your &argouml; files and type
+            <literal>java&nbsp;-jar&nbsp;argouml.jar</literal>
+          </para></listitem>
+
+          <listitem><para>Start a shell window and type
+            <literal>java&nbsp;-jar&nbsp;argouml.jar</literal>
+          </para></listitem>
+        </itemizedlist>
+
+        <!-- Possible Problems -->
+
+        <sect4>
+          <title>Problems Running &argouml;</title>
+
+          <para>It's unusual to encounter problems if you have made a
+            successful download. Most common issue is not having a new enough
+            Java Runtime Environment (it must be 1.2 or later).</para>
+
+          <para>If you can' solve the problem. Try the users' mailing list (see
+            <xref linkend="s4probsolving"/></para>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <!-- Now give an outline of the User Interface -->
+
+    <sect2>
+      <title>The &argouml; User Interface</title>
+
+      <para><xref linkend="figtutguioverview"/> shows the main &argouml;
+        window.</para>
+
+      <!-- A big diagram with all the bits pointed out. At the moment its
+           just a plane screenshot, but it would be nice to float in some
+           bubbles pointing out things. -->
+
+      <figure id="figtutguioverview" float="1">
+        <title>Overview of the &argouml; window</title>
+
+        <screenshot><mediaobject>
+          <imageobject>
+            <imagedata format="GIF" align="center"
+                       fileref="images/tutorial/guioverview.gif"/>
+          </imageobject>
+
+          <textobject>
+            <para>A display of the &argouml; window, showing at the top the
+              menu bar, in the main area four sub-windows and at the bottom a
+              status bar. The four sub-windows are arranged two by two, and
+              named, clockwise from top left as: Navigator Pane, Editing
+              Pane, Details Pane and To-Do Pane. At the top of the diagram
+              Pane is a horizontal toolbar.</para>
+          </textobject>
+        </mediaobject></screenshot>
+      </figure>
+
+      <para>At the top of screen is a <emphasis>menu bar</emphasis>. The bulk
+        of the window comprises four sub-windows or
+        <emphasis>Panes</emphasis>. Clockwise from top left these are the
+        <emphasis>Navigator Pane</emphasis>, <emphasis>Editing
+        Pane</emphasis>, <emphasis>Details Pane</emphasis> and
+        <emphasis>To-Do Pane</emphasis>. At the top of the details Pane is a
+        <emphasis>toolbar</emphasis>. Finally at the bottom of the window is
+        a <emphasis>status bar</emphasis>.</para>
+
+      <!-- Subsection describing the Navigator Pane -->
+
+      <sect3>
+        <title>The Navigator Pane</title>
+
+        <para><xref linkend="figtutnavoverview"/> shows the Navigator
+          Pane.</para>
+
+        <figure id="figtutnavoverview" float="1">
+          <title>Overview of the Navigator Pane</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                         fileref="images/tutorial/navoverview.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The ArgoUML Navigator Pane. A rectangular pane, with a
+                bar at the top, in which a drop down selection indicates this
+                is a <literal>Package-centric</literal> view. The remainder
+                of the pane shows a hierarchical listing. The first item is
+                <literal>untitledModel</literal>, and beneath it are two
+                children, <literal>class&nbsp;diagram&nbsp;1</literal> and
+                <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>. A
+                scrollbar appears on the right should the view be to large
+                for the Pane (not shown in this example).</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>This is the navigator pane, where you can navigate through your
+          model. This pane list all the classes, interfaces and datatypes of
+          your model as a treeview.</para>
+      </sect3>
+
+      <!-- Subsection describing the Editing Pane -->
+
+      <sect3>
+        <title>The Editing Pane</title>
+
+        <para><xref linkend="figtuteditoverview"/> shows the Editing
+          Pane.</para>
+
+        <figure id="figtuteditoverview" float="1">
+          <title>Overview of the Editing Pane</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                         fileref="images/tutorial/editoverview.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The ArgoUML Editing Pane. A rectangular pane, with a
+                toolbar at the top, and a single tab labelled
+                <literal>As&nbsp;Diagram</literal> at the bottom. At the right
+                end of the toolbar is the type and name of the diagram being
+                edited. The main part of the Pane shows the UML graphical items
+                being edited.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>This is the Editing Pane, where you can edit your
+          diagram. This pane lets the user edit her diagram in a graphical
+          way.</para>
+      </sect3>
+
+      <!-- Subsection describing the Details Pane -->
+
+      <sect3>
+        <title>The Details Pane</title>
+
+        <para><xref linkend="figtutdetailsoverview"/> shows the Details
+          Pane.</para>
+
+        <figure id="figtutdetailsoverview" float="1">
+          <title>Overview of the Details Pane</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                          fileref="images/tutorial/detailsoverview.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The ArgoUML Details Pane. A rectangular pane, with a series
+                of eight tabs along the top, labelled from left to right
+                <literal>To&nbsp;Do&nbsp;Item</literal>,
+                <literal>Properties</literal>,
+                <literal>Documentation</literal>, <literal>Style</literal>,
+                <literal>Source</literal>, <literal>Constraints</literal>,
+                <literal>Tagged Values</literal> and
+                <literal>Checklist</literal>. The body of a pane is a menu of
+                items to be checked, selected or entered specific to the
+                particular tab selected.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>This is the Details Pane, that allows you to edit various details
+          of your model. The Details Pane lets the user edit various details of
+          the model.</para>
+      </sect3>
+
+      <!-- Subsection describing the To-Do Pane -->
+
+      <sect3>
+        <title>The To-Do Pane</title>
+
+        <para><xref linkend="figtuttodooverview"/> shows the To-Do
+          Pane.</para>
+
+        <figure id="figtuttodooverview" float="1">
+          <title>Overview of the To-Do Pane</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                         fileref="images/tutorial/todooverview.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The ArgoUML To-Do Pane. A rectangular pane, with a bar at
+                the top containing from left-to-right, a drop-down selection
+                box labelled <literal>By&nbsp;Priority</literal>, a button and
+                a yellow highlighted count of items. The body of the Pane shows
+                a hierarchy of To-Do items.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>This is the todo pane, that shows all the items on your todo
+          list. The todo pane list the items on the users todo list.</para>
+      </sect3>
+
+      <!-- More about the Menu Bar -->
+
+      <sect3>
+        <title>The Menu Bar</title>
+
+        <para>The menu bar gives access to all the main features of
+          &argouml;. As is conventional, menu options that are not available
+          are greyed out and menu items that invoke a dialogue box are followed
+          by an ellipsis (&hellip;).</para>
+
+        <itemizedlist>
+          <listitem><para><emphasis>File</emphasis> menu. This allows you to
+            create a new project, save and open projects, import sources from
+            elsewhere, load and save the model to and from a database, print
+            the model, save the graphics of the model, save the configuration
+            of the model and exit &argouml;</para></listitem>
+
+          <listitem><para><emphasis>Edit</emphasis> menu. This allows you to
+            select one or more UML items on a diagram, undo and redo edits,
+            remove items from diagrams or the whole model, empty the trash and
+            change settings.</para></listitem>
+
+          <listitem><para><emphasis>View</emphasis> menu. This allows you to
+            switch between diagrams, find entities in the model, zoom in a
+            diagram, select a particular diagram representation (although at
+            present there is only one), select a particular tab in the details
+            menu, adjust the grid, view buttons on a selection, and switch
+            between UML and Java notation.</para></listitem>
+
+          <listitem><para><emphasis>Create Diagram</emphasis> menu. This allows
+            you to create any one of the seven UML diagram types (class, use
+            case, state, activity, collaboration, deployment and sequence)
+            supported by &argouml;.</para>
+
+          <warning><para>State and activity diagrams can only be created when
+            a class or actor is selected, even though the relevant menu entries
+            are <emphasis>not</emphasis> greyed out if this has not been done
+            (nothing will happen under this
+            circumstance).</para></warning></listitem>
+
+          <listitem><para><emphasis>Arrange</emphasis> menu. This allows you to
+            align, distribute, reorder and nudge entities on a diagram and set
+            the layout strategy for the diagram.</para></listitem>
+
+          <listitem><para><emphasis>Generation</emphasis> menu. This allows you
+            to generate Java code for selected classes or all
+            classes.</para></listitem>
+
+          <listitem><para><emphasis>Critique</emphasis> menu. This allows you
+            to toggle the auto-critique on and off, set the level of importance
+            of design issues and design goals and browse the critics
+            available.</para></listitem>
+
+          <listitem><para><emphasis>Tools</emphasis> menu. This menu appears to
+            be permanently greyed out.</para></listitem>
+
+          <listitem><para><emphasis>Help</emphasis> menu. This menu gives
+            access to details of those who authored the system, and where
+            additional help may be found.</para></listitem>
+        </itemizedlist>
+      </sect3>
+
+      <!-- More about mice -->
+
+      <sect3 id="s3tutmouse">
+        <title>The Mouse</title>
+
+        <para>The mouse and mouse buttons (or their equivalent with alternative
+          tracking devices) are used in a wide variety of ways. In this section
+          we look at the common modes of use. </para>
+
+        <para>&argouml; assumes a two button mouse. We will refer to the
+        buttons as <quote>Button 1</quote> and <quote>Button 2</quote>. Button
+        1 is the leftmost button on a right-handed mouse, and sometime referred
+        to as the <quote>select</quote> button.</para>
+
+        <orderedlist>
+          <listitem><para><emphasis>Button 1 click</emphasis>. This action is
+            generally used to select an item for subsequent operations. If the
+            item is an entity in the navigation pane or the editing pane it
+            will be highlighted.</para>
+
+          <para>In the case of the toolbar of the editing pane, that entity is
+            selected as the next to be added to the diagram (but only
+            once&mdash;see double clicking for adding multiple entities). The
+            adding to the diagram is achieved by moving the mouse to the
+            editing area and clicking again.</para></listitem>
+
+          <listitem><para><emphasis>Button 1 double click</emphasis>. This
+            action is identical to a single click <emphasis>except</emphasis>,
+            when it is used with the editing pane toolbar. Under these
+            circumstances the selected entity will be added multiple times to
+            the drawing area, once for each further button click, until the
+            tool is again selected or another tool chosen.</para></listitem>
+
+          <listitem><para><emphasis>Button 2 click</emphasis>. When used over
+            text items in the the navigation or details panes, or graphical
+            entities in the editing pane, this will deplay a context dependent
+            drop-down menu.</para>
+
+          <para>If the item has not yet been selected it will also be
+            selected.</para></listitem>
+
+          <listitem><para><emphasis>Button 1 motion</emphasis>. This only has
+            an effect in the editing pane. Over graphical entitys it will move
+            the entity to a new position. Graphical entities that are selected
+            show handles, and these can be used for resizing.</para>
+
+          <para>Where the entity is some form of connector between other items,
+            button 1 motion other than at a handle will cause a new handle to
+            be created, allowing the connector to be articulated at that
+            point. Such new handles can be removed by moving them to the end of
+            the connector.</para></listitem>
+        </orderedlist>
+
+        <para>There are other more specific behaviours that will be encountered
+          under the specific cases where they are used.</para>
+      </sect3>
+
+      <!-- How to draw -->
+
+      <sect3>
+        <title>Drawing Diagrams</title>
+
+        <para>In general diagrams are drawn by using the editing pane toolbar
+          to select the entity desired and clicking in the diagram at the
+          position required as described in <xref linkend="s3tutmouse"/>. That
+          section also explains the use of the mouse for resizing
+          entities.</para>
+
+        <para>Entities that are already in the model, but not on a diagram, may
+          be added to a diagram by selecting the entity in the navigation pane,
+          using <literal>Add&nbsp;to&nbsp;Diagram</literal> from the drop down
+          menu (Button 2) over that entity, and then clicking Button 1 at the
+          desired location on the diagram.</para>
+
+        <para>As well as UML entities, the toolbar provides for general drawing
+          entities (rectangles, circles, lines, polygons, curves, text) to
+          provide supplementary information on diagrams.</para>
+
+        <!-- Moving diagram elements about -->
+
+        <sect4>
+          <title>Moving Diagram Elements</title>
+
+          <para>There are several ways to move diagram elements.</para>
+
+          <!-- Using mouse keys -->
+
+          <sect5>
+            <title>Using the Mouse Keys</title>
+
+            <para>Select the elements you want to move. By holding down the
+              control key you can select several.</para>
+
+            <para>Now hit your arrow keys. Your elements move a little with
+              every key stroke.</para> 
+
+            <para>If you also hold down the shift key, they move a bit
+              faster.</para>
+          </sect5>
+
+          <!-- Using the toolbar -->
+
+          <sect5>
+            <title>Using the Toolbar</title>
+
+            <para>Click on the broom button on the toolbar. Move your mouse to
+             the diagram pane, right click and hold. Now moving your mouse will
+             align elements.</para>
+          </sect5>
+        </sect4>
+
+        <!-- Arranging Elements -->
+
+        <sect4>
+          <title>Arranging Elements</title>  
+
+          <para>The menu item <literal>Arrange</literal> allows you to align,
+            group, or nudge elements.</para>
+        </sect4>
+      </sect3>
+
+      <sect3>
+        <title>Working with Projects</title>
+
+        <!-- Thanks to Alejandro, Philippe and Andreas for this text -->
+
+        <sect4>
+          <title>The Startup Window</title>
+
+          <para><xref linkend="figtutstartup"/> shows the &argouml; main window
+            as it appears as right after startup</para>
+
+          <!-- A figure of the Argo/UML startup window -->
+
+          <figure id="figtutstartup" float="1">
+            <title>&argouml; window at startup</title>
+
+            <screenshot><mediaobject>
+              <imageobject>
+                <imagedata format="GIF" align="center"
+                           fileref="images/tutorial/startup.gif"/>
+              </imageobject>
+
+              <textobject>
+                <para>The main window's client area, below the menu bar, is
+                  subdivided into four panes. Starting at the leftmost top
+                  pane, and working around the clock, you can see the
+                  Navigation Pane, showing an explorer-like tree view of your
+                  UML model, the Editing Pane with its toolbar, two scroll bars
+                  and grey drawing area, the Details Pane with the ToDoItem tab
+                  selected, and the Todo pane with a tree view of the to do
+                  items, ranked into three priority levels (High, Medium and
+                  Low).</para>
+              </textobject>
+            </mediaobject></screenshot>
+          </figure>
+
+          <para>The main window's client area, below the menu bar, is
+            subdivided into four panes. Starting at the leftmost top pane, and
+            working around the clock, you can see the Navigation Pane, showing
+            an explorer-like tree view of your UML model, the Editing Pane with
+            its toolbar, two scroll bars and grey drawing area, the Details
+            Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
+            view of the to do items, ranked into three priority levels (High,
+            Medium and Low).</para>
+
+          <para>Notice that the title bar says
+            <literal>&argouml;&nbsp;-&nbsp;Untitled</literal>. The
+            <quote>Untitled</quote> means that the current project has not yet
+            been saved. After saving the current project, the
+            <quote>Untitled</quote> will be replaced by the file name of the
+            current project.</para>
+
+          <para>Each time &argouml; is started up without a project file as an
+            argument, a new blank project is created. This project contains a
+            model called <literal>untitledModel</literal>. This model contains
+            a blank Class Diagram, called
+            <literal>class&nbsp;diagram&nbsp;1</literal>, and a blank Use 
+            Case Diagram called
+            <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>.</para>
+
+          <para>The model and both empty diagrams can be seen in the Navigation
+            Pane, which is the main tool for you to navigate through your
+            model.</para>
+
+          <para>Let's assume for a moment that this is the point where you want
+            to start modeling a new purchasing system. You want to give the
+            name <quote>purchasingmodel</quote> to your model, and you want to
+            store it in a file called <literal>FirstProject</literal>.</para>
+        </sect4>
+
+        <sect4>
+          <title>Saving a project - the file menu </title>
+
+          <para>First, let's save the model in it's current (empty and unnamed)
+            state. On the menu bar, click on <literal>File</literal>, then on
+            <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> as shown in
+            <xref linkend="figtutsaveas"/>.</para>
+
+          <!-- A figure of the Argo/UML Save Project As drop down menu
+               option. -->
+
+          <figure id="figtutsaveas" float="1">
+            <title>Invoking
+              <literal>Save&nbsp;Project&nbsp;As&hellip;</literal></title>
+
+            <screenshot><mediaobject>
+              <imageobject>
+                <imagedata format="GIF" align="center"
+                           fileref="images/tutorial/saveas.gif"/>
+              </imageobject>
+
+              <textobject>
+                <para>The &argouml; window showing the <literal>File</literal>
+                  drop down menu with
+                  <literal>Save&nbsp;Project&nbsp;As&hellip;</literal>
+                  selected.</para>
+              </textobject>
+            </mediaobject></screenshot>
+          </figure>
+
+          <para>Please notice that the File menu contains the usual options for
+            creating a new project, for opening an existing project, for saving
+            a project under a new name, for printing the currently displayed
+            diagram (which of course is empty at this moment), for saving the
+            currently displayed diagram as a file, and for program Exit.</para>
+
+          <para>Some of these menu commands can be invoked by pressing key
+            combinations, as indicated on the drop-down menu. For instance,
+            holding down the <quote>Ctrl</quote> key, and pressing
+            <quote>N</quote>, will create a new project.</para>
+
+          <para>In the current version, &argouml; can only contain one active
+            project at a time. In addition, a project can only contain one UML
+            model. Since an UML model can contain an unlimited number of
+            elements and diagrams, this should not present any serious
+            limitations, even for modelling quite large and complex
+            systems.</para>
+
+          <para>Also take notice of a number of disabled commands, greyed out
+            on the drop-down menu. First, the
+            <literal>Save&nbsp;Project</literal> command (Ctrl-S), which
+            obviously cannot be executed since we haven't entered a file name
+            yet to store our project. Second, you can see the two commands
+            <literal>Load&nbsp;model&nbsp;from&nbsp;DB</literal> and
+            <literal>Store&nbsp;model&nbsp;to&nbsp;DB</literal>. This is a
+            unique feature of &argouml; that allows you to save and retrieve
+            your model into a relational database. Currently, the only database
+            supported is MySQL, but support for other database engines will
+            undoubtedly be introduced in the future.</para>
+        </sect4>
+
+        <!-- Choosing the file to save as -->
+
+        <sect4>
+          <title>The File Chooser Dialog</title>
+
+          <para>But let's go back to saving our project. After clicking on the
+            <literal>Save&nbsp;Project&nbsp;As&hellip;</literal> menu command,
+            we get the file chooser dialog to enter the file name we wish to
+            use as shown in <xref linkend="figtutfilechoose"/>.</para>
+
+          <!-- A figure of the Argo/UML file choice dialogue -->
+
+          <figure id="figtutfilechoose" float="1">
+            <title>File chooser dialog</title>
+
+            <screenshot><mediaobject>
+              <imageobject>
+                <imagedata format="GIF" align="center"
+                           fileref="images/tutorial/filechoose.gif"/>
+              </imageobject>
+
+              <textobject>
+                <para>The file chooser window for &argouml;. At the top we have
+                  a drop down menu showing the currently chosen directory and
+                  alongside buttons to go up a directory, to the home directory
+                  to create a new directory and to change between styles for
+                  viewing directories. The main window shows the files
+                  available in the chosen directory with a scrollbar to te
+                  right. At the bottom we have a text box to enter the file
+                  name, and below that a drop down selector of file types. To
+                  the right of these last two are two buttons, Save (above) and
+                  Close (below).</para>
+              </textobject>
+            </mediaobject></screenshot>
+          </figure>
+
+          <para>This is a standard Java FileChooser. Let's go over it in some
+            detail.</para>
+
+          <para>The main, outstanding feature, is the scrollable folders list
+            in the center of the dialog. By using the scrollbar on the right,
+            you can move up and down in the list of folders contained inside
+            the currently selected folder.</para>
+
+          <para>Double-clicking on one of the displayed folders navigates you
+            into that folder, allowing you to quickly navigate down into the
+            folders hierarchy on your hard disk.</para>
+
+          <para>Notice that only folder names, and no file names are displayed
+            in the scrollable area. Indeed, the dialog is currently set up in
+            order to show only &argouml; project files with an extension of
+            <literal>.argo</literal>, as can be seen on the lower drop-down
+            control labeled <literal>Files&nbsp;of&nbsp;type:</literal>.</para>
+
+          <para>Also notice that the currently selected folder's name is
+            displayed in the upper drop-down control labeled
+            <literal>Look&nbsp;in:</literal>. A single click on a folder inside
+            the scrollable area does select that folder on screen but does not
+            select the folder for saving.</para>
+
+          <para>At the top of the dialog, above the scrollable folder chooser
+          area, there are a few more folder navigation tools.</para>
+
+          <itemizedlist>
+            <listitem><para>
+              <guiicon>
+                <inlinegraphic format="GIF"
+                              fileref="images/tutorial/guifolderdropdown.gif"/>
+              </guiicon> The Folder drop-down control. Clicking on the
+              down-arrow displays a tree view of the folder hierarchy,
+              allowing you to navigate quickly up the hierarchy, and at
+              the same time to quickly determine where in the hierarchy
+              you are currently positioned.</para></listitem>
+
+            <listitem><para>
+              <guiicon>
+                <inlinegraphic format="GIF"
+                  fileref="images/tutorial/guifolderupicon.gif"/>
+              </guiicon> The Folder-Up icon. Clicking on this icon will bring
+              you to the parent folder of the current folder.</para></listitem>
+
+            <listitem><para>
+              <guiicon>
+                <inlinegraphic format="GIF"
+                  fileref="images/tutorial/guihomefoldericon.gif"/>
+              </guiicon> The Home Folder icon. Clicking on this icon will bring
+              you to your home directory</para></listitem>
+
+            <listitem><para>
+              <guiicon>
+                <inlinegraphic format="GIF"
+                  fileref="images/tutorial/guinewfoldericon.gif"/>
+              </guiicon> The New Folder icon. Clicking on this icon will create
+                a new folder called "New Folder" under the current folder. (I
+                haven't been able to create a folder with a specific name,
+                using this button. This forces me to use my file manager to
+                rename the newly created folder. Any suggestions on how this
+                can be done would be welcome)</para></listitem>
+
+            <listitem><para>
+              <guiicon>
+                <inlinegraphic format="GIF"
+                  fileref="images/tutorial/guifolderspresentationicon.gif"/>
+                </guiicon> The Folders Presentation Icon. This button is not
+                functional at this time.</para></listitem>
+          </itemizedlist>
+
+          <para>OK, now navigate to the directory where you want to save your
+            &argouml; project, fill in the <literal>File&nbsp;name:</literal>
+            with an appropriate name, such as <quote>FirstProject</quote> and
+            click on the <literal>Save</literal> button.</para>
+        </sect4>
+
+        <!-- A little bit about file formats -->
+
+        <sect4>
+          <title>File formats used by &argouml;</title>
+
+          <para>Notice that the file name of your project
+            (<literal>FirstProject.argo</literal>) is now reflected in the
+            title bar of &argouml;. If you select the java console, you will
+            notice that three files have been written to the hard disk.</para>
+
+          <itemizedlist>
+            <listitem><para>A file <literal>FirstProject.xmi</literal>. This is
+            a representation of your (still empty) model in <emphasis>XML
+            Metadata Interchange (XMI)</emphasis> format. If you want to know
+            more about XMI, you can start at the following
+            <ulink url="http://www.oasis-open.org/cover/xmi.html">rather
+              extensive XMI page</ulink>. In short, XMI allows your models
+            created with &argouml; to be used by other applications. That is,
+            only the contents of your model, without the graphic representation
+            of the diagrams.</para></listitem>
+
+            <listitem><para>A file
+              <literal>FirstProject_classdiagram1.pgml</literal>, containing
+              the graphical representation of the (still empty) class diagram
+              <literal>classdiagram1</literal> in Precision Graphics Markup
+              Language (PGML) format. PGML is probably the first proposal for
+              sending vector graphics over the Web. You can find more
+              information at the
+              <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">PGML
+                specification page</ulink>.</para></listitem>
+
+            <listitem><para>A file
+              <literal>FirstProject_usecasediagram1.pgml</literal>, containing
+              a graphical representation of the (still empty) use case diagram
+              <literal>usecasediagram1</literal>.</para></listitem>
+          </itemizedlist>
+
+          <para>You have now an active project called
+            <literal>FirstProject</literal>, connected to the file
+            <literal>FirstProject.argo</literal>.</para>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <!-- Output from Argo/UML. Taken from Alejandro, Phillippe and Andreas -->
+
+    <sect2>
+      <title>Output</title>
+      
+      <!-- Loading and Saving Files -->
+
+      <sect3 id="s3tutloadsave">
+        <title>Loading and Saving</title>
+
+        <!-- Saving XMI files -->
+
+        <sect4>
+          <title>Saving XMI files in ArgoUML</title>
+
+          <para>&argouml; saves the diagram information in a PGML file (with
+            extension <literal>.pgml</literal>, the model information in an XMI
+            file (with extension <literal>.xmi</literal> and information about
+            the project in a file with extension <literal>.argo</literal>. See
+            <xref linkend="s4tutpgml"/> and <xref linkend="s3tutxmi"/> for more
+            about PGML and XMI respectively.</para>
+
+          <para>All of these are then zipped to a file with extension
+            <literal>.zargo</literal>. You can easily extract the
+            <literal>.xmi</literal> file from the <literal>.zargo</literal>
+            file using any old generic <application>ZIP</application>
+            application. Give it a try and look into the magic of Argo.</para>
+
+          <warning><para>Be aware that double clicking will launch a
+            <literal>ZIP utility</literal>, if one is installed, and NOT
+            Argo.</para></warning>
+        </sect4>
+      </sect3>
+
+      <!-- All about Graphics and Printing -->
+
+      <sect3>
+        <title>Graphics and Printing</title>
+
+        <!-- The Graph Editing Framework -->
+
+        <sect4>
+          <title>The Graph Editing Framework (GEF)</title>
+
+          <para>GEF, the thing which is hidden in gef.jar, is responsible for
+            displaying the graphs and which gives you the the ability to move
+            things around. GEF used to be closely interwoven with Argo, but is
+            now more or less separate. The sources are also available via
+            <ulink url="http://www.tigris.org">www.tigris.org</ulink>.</para>
+        </sect4>
+
+        <!-- PGML -->
+
+        <sect4 id="s4tutpgml">
+          <title>Precision Graphics Markup Language (PGML)</title>
+
+          <para>PGML is the saving format for diagram information used in
+            &argouml;. Although this is outdated a little, it shows why we
+            chose PGML in the first place. In the future, PGML will be replaced
+            by an extended XMI format which will include graphical
+            representation.</para>
+
+          <para>In April 1998 Adobe Systems proposed a new Standard for Vector
+            Graphics to the World Wide Web Consortium (W3C), which should
+            facilitate the creation and usage of image material in the World
+            Wide Web. It will be replaced by SVG. We will support SVG by
+            generating it from the XMI in the future.</para>
+        </sect4>
+
+        <!-- Using PGML -->
+
+        <sect4>
+          <title>Applications Which Open PGML</title>
+
+          <para>PGML is a predecessor of SVG (see
+            <xref linkend="s4tutsvg"/>. It was dropped by the W3C
+            Consortium.</para>  
+
+          <para>Currently there are no other tools that we know of working on
+            PGML. We will move to SVG soon. And <emphasis>that</emphasis> will
+            be read by many tools.</para>
+        </sect4>
+
+        <!-- Printing Diagrams -->
+        
+        <sect4>
+          <title>xPrinting Diagrams</title>
+
+          <para>Select a diagram, then go to
+          <literal>File</literal>&rarr;<literal>Export&nbsp;Diagrams</literal>.
+            You can generate GIF, PostScript, Encapsulated PostScript or SVG
+            format.</para>
+
+        </sect4>
+
+        <!-- What is SVG -->
+
+        <sect4 id="s4tutsvg">
+          <title>Standard Vector Graphics (SVG)</title>
+
+          <para>A super cool vector graphics format (like MM Flash) that is
+            totally open and is gaining enormous ground in the graphics
+            world. Find out more at
+            <ulink url="http://www.w3c.org">www.w3c.org</ulink>.</para>
+
+          <para>As well visit
+            <ulink url="http://www.adobe.com">adobe.com</ulink> for the plugin
+            for Netscape Navigator and Internet Explorer.</para> 
+        </sect4>
+
+        <!-- Saving diagrams using SVG -->
+
+        <sect4>
+          <title>Saving Diagrams as SVG</title>
+
+          <orderedlist>
+            <listitem><para>Select <literal>.svg</literal> as the file
+              type.</para></listitem>
+
+            <listitem><para>Type the name of the file as you like with the
+              <literal>.svg</literal> tag at the end. Example
+              <literal>myumldiagram.svg</literal></para>
+
+              <warning><para>&argouml; does not do this automatically. See the
+               to-do list in <xref linkend="chrefentities"/>.
+            </para></warning></listitem>
+          </orderedlist>
+
+          <para> Et viola! SVG! Give it a try and zoom around a little&hellip;
+            They are not pretty though, so if you know anything about rendering
+            beautiful SVG let us know!</para>
+
+          <para>Oh, and by the way, you'll need a browser that can read
+            SVG. See <ulink url="http://www.adobe.com">adobe.com</ulink> for
+            the plugin for Netscape Navigator and Internet Explorer</para>
+
+          <para>There are a few browsers that read SVG natively:
+            <application>Amaya</application>,
+            <application>X-Smiles</application>, and a rudimentary version of
+            <application>Mozilla.</application></para> 
+
+          <note><para>You will not have scroll bars for your SVG unless it is
+            embedded into an HTML! Good luck and let us know what you
+            find!</para></note>
+        </sect4>
+      </sect3>
+
+      <!-- XMI -->
+
+      <sect3 id="s3tutxmi">
+        <title>XMI</title>
+
+        <!-- Using Rational Rose XMI -->
+
+        <sect4>
+          <title>Using XMI from Rational Rose</title>
+
+          <para>It is probably not possible to take a model generated by
+            Rational Rose in XMI format and put it into &argouml;</para>
+
+          <para>If you want to take on the task of writing an XSLT that
+          transposes the Rose XMI to &argouml; XMI you'd make a lot of friends
+          in a hurry!</para> 
+        </sect4>
+
+        <!-- Interchangeability of Argo/UML XMI between versions -->
+
+        <sect4>
+          <title>XMI Interchangeability between &argouml; 0.8.1a and
+            0.9.x</title>
+
+          <para>This depends on the version of NSUML (the UML engine underling
+            &argouml;) you are using. You can find out about this i your
+            startup messages on console). Using version 0.4.19 is okay, should
+            be interchangeable.</para>
+        </sect4>
+
+        <!-- Importing XMI into ArgoUML -->
+
+        <sect4>
+          <title>Importing Other XMI Formats into &argouml;</title>
+
+          <para>Because of the variety of XMI formats being generated you will
+            encounter problems using XMI files generated from other
+            applications.  ArgoUML's native storage format is another
+            implementation of XMI (Curt Arnold believes that it has been hacked
+            so it can also read the Unisys variant).  He recommends that if you
+            are comfortable with XSLT, you can typically transform one variant
+            of UML and XMI to another, plus MetaIntegrations
+            <ulink
+              url="http://www.metaintegrations.net">www.metaintegrations.net
+              </ulink> makes a version of their
+            <application>Bridge</application> product available to transform
+            between XMI flavors.</para>
+        </sect4>
+
+        <!-- Generating the XMI format -->
+
+        <sect4>
+          <title>Generating XMI Format</title>
+
+          <para>Unzip the <literal>.zargo</literal> file. Open it and Viola!
+            It's tucked inside.</para>
+        </sect4>
+      </sect3>
+
+      <!-- All about code generation -->
+
+      <sect3>
+        <title>Code Generation</title>
+
+        <!-- What sort of code is generated -->
+
+        <sect4>
+          <title>Code generated by &argouml;</title>
+
+          <para>It is possible to compile your generated code with &argouml;,
+            you still need to implement method bodies, though, to get usable
+            results.</para>
+        </sect4>
+
+        <!-- Generating Code for methods -->
+
+        <sect4>
+          <title>Generating Code for Methods</title>
+
+          <para>At the moment you cannot write code for methods (operations)
+            within &argouml;. The source pane is editable, but the changes are
+            ignored.  ArgoUML is a pure design tool for now, no IDE
+            functionality but the desire is there. You might consider using
+            Forte and ArgoUML together&mdash;it's a good work around!</para>
+ 
+          <para>You can help us out there if you'd like!</para>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <!-- Working with design critics. Taken from Alejandro, Phillippe and
+         Andreas -->
+
+    <sect2>
+      <title>Working With Design Critics</title>
+
+      <sect3>
+        <title>The To-Do Pane&mdash;Messages From the Design Critics</title>
+
+        <para>Where do we stand now? A new project has been created, and is
+          connected to the file <literal>FirstProject.argo</literal>.
+          <xref linkend="figtutcritstart"/> shows how your &argouml; window
+          should look at this stage.</para>
+
+        <!-- A figure of the Argo/UML window having saved the project. -->
+
+        <figure id="figtutcritstart" float="1">
+          <title>&argouml; window having save
+            <literal>FirstProject.argo</literal></title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                fileref="images/tutorial/critstart.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The &argouml; screen after saving as project
+                <literal>FirstProject.arg</literal>. The name of the project is
+                shown in the title bar, and the Panes have nothing other than
+                the default diagrams
+                (<literal>class&nbsp;diagram&nbsp;1</literal> and
+                <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>)
+                displayed. The Details Pane shows the ToDo Tab.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>The project filename is displayed in the title bar, the project
+          contains a top-level package, called
+          <literal>untitledModel</literal>, which contains a class diagram and
+          a use case diagram.</para>
+
+        <para>If we look carefully at the screen, we can see that the "Medium"
+          folder in the To Do pane (the lower left pane) must contain some
+          items, since its activation icon
+          <guiicon><inlinegraphic format="GIF"
+            fileref="images/tutorial/guitreefoldercloseicon.gif"/></guiicon> is
+          displayed.</para>
+
+        <para>Clicking on this icon will open the "Medium" folder. An open
+          folder is indicated by the
+          <guiicon><inlinegraphic format="GIF"
+            fileref="images/tutorial/guitreefolderopenicon.gif"/></guiicon>
+          icon.</para>
+
+        <para>But what is this <quote>To-Do</quote> Pane anyway. You haven't
+        recorded anything yet that has to be done, so where do these to do
+        items originate.</para>
+
+        <para>The answer is simple, and is at the same time one of the strong
+          points of &argouml;. While you are working on your UML model, your
+          work is monitored continuously and invisibly by a piece of code
+          called a <emphasis>design critic</emphasis>. This is like a personal
+          mentor that watches over your shoulder and notifies you each time he
+          sees something questionable in your design.</para>
+
+        <para>Critics are quite unobstrusive. They give you a friendly warning,
+          but they do not force you into design principles that you don't want
+          or like to follow.  Let us take a look at what the critics are
+          telling us. Click on the
+            <guiicon><inlinegraphic format="GIF"
+              fileref="images/tutorial/guitreefoldercloseicon.gif"/></guiicon>
+          icon next to the <literal>Medium</literal> folder, and click on the
+          <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</literal>
+          item.</para>
+
+        <para><xref linkend="figtutcritrevname"/> shows how your screen should
+          now look.</para>
+
+        <!-- A figure of the Argo/UML showing a critic item. -->
+
+        <figure id="figtutcritrevname" float="1">
+          <title>&argouml; window showing the critic item
+            <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel</literal>
+          </title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                fileref="images/tutorial/critrevname.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The &argouml; screen showing the To-Do Pane expanded with
+                <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
+                </literal> highlighted as a medium priority To-Do item. The
+                Details Pane shows the ToDo Tab containing the text from the
+                Critic.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>Notice that your selection is highlighted in red in the To-Do
+          Pane, and that a full explanation appears now in the Details Pane
+          (the lower right pane). You may have to resize your Details Pane or
+          to scroll down in order to see the full message as diplayed in our
+          example.</para>
+
+        <para>What &argouml; is trying to tell you is that usually, package
+          names are written in lower cases. The default top level package
+          created by &argouml; is called <literal>untitledModel</literal> and
+          therefore violates a sound design principle. (Actually, this could be
+          considered as a bug within &argouml;, but it comes in handy to
+          demonstrate the working of critics).</para>
+
+        <para>At this point, you can choose to change the package name
+          manually, to impose silence on the design critic for some time or
+          permanently, or to request a more comprehensive explanation by Email
+          from an expert.</para>
+
+        <para>We will do nothing of this (we'll come back to it when we talk
+          about the design critics in more detail) but we'll use another handy
+          feature of ArgoUML&mdash;an auto-correct feature.</para>
+
+        <para>In order to do that, just click on the <literal>Next</literal>
+          button on the Details Pane. This will cause a renaming wizard to be
+          diplayed inside the properties panel, proposing to use the name
+          <literal>untitledmodel</literal> (all in lower case).</para>
+      </sect3>
+
+      <!-- The Design Critic being used -->
+
+      <sect3>
+        <title>Design Critics at Work: The Rename Package Wizard</title>
+
+        <para>Replace the name <literal>untitledmodel</literal> with
+          <literal>purchasingmodel</literal>, and click on the
+          <literal>Finish</literal> button. <xref linkend="figtutcritwiz"/>
+          shows how the &argouml; window will now look.</para>
+
+        <!-- A figure of the Argo/UML showing a critic wizard -->
+
+        <figure id="figtutcritwiz" float="1">
+          <title>&argouml; window showing the critic wizard to rename the
+            package</title>
+
+          <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="GIF" align="center"
+                fileref="images/tutorial/critwiz.gif"/>
+            </imageobject>
+
+            <textobject>
+              <para>The &argouml; screen showing the To-Do Pane expanded with
+                <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
+                </literal> highlighted as a medium priority To-Do item. The
+                Details Pane shows the ToDo Tab containing  Rename Package
+                wizard.</para>
+            </textobject>
+          </mediaobject></screenshot>
+        </figure>
+
+        <para>Watch now how the design critic note in the To Do panel
+          disappears, leaving only the
+          <literal>Add&nbsp;Elements&nbsp;to&nbsp;Package&nbsp;purchasingmodel
+          </literal> note in the To-Do list.</para>
+
+        <para>If this doen't happen at once, wait for a few seconds. &argouml;
+          makes heavy use of several threads of execution that execute in
+          parallel. This can cause delays of a few seconds before the
+          information gets updated on the screen.</para>
+
+        <para>Normally, the package name change should also be reflected in the
+          navigation pane, in the top left corner of your &argouml;
+          window.</para>
+
+        <para>Actually, that doesn't happen until you click on one of the items
+          in the navigator pane. This is also a small bug in &argouml; that
+          will need to be fixed in following versions.</para>
+
+        <para>Don't let this discourage you, but remember that &argouml; is
+          still pretty much <quote>work in progress</quote>, and that still
+          quite a bit can be done to improve the user interface.</para>
+
+        <para>We are now ready to create our first UML diagram, a Use Case
+        diagram, but first let's save what we've done so far.</para>
+
+        <para>Click on the <literal>File</literal> menu item, and select
+          <literal>Save&nbsp;Project</literal>. You can now safely exit
+          &argouml; without losing your work so far, or go on creating your
+          first diagram.</para>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>The Case Study</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

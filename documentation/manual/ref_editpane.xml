@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+A description of the Editing Pane. This has been known in the past as the
+Diagram Pane or the Drawing Pane of the Multi-Editor Pane.
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chrefeditpane">
+  <title>The Editing Pane</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><xref linkend="figrefeditoverview"/> shows the Editor Pane.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefeditoverview" float="1">
+      <title>Overview of the Editing Pane</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/editoverview.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>The ArgoUML Editing Pane. A rectangular pane, with a toolbar
+            at the top, and a single tab labelled
+            <literal>As&nbsp;Diagram</literal> at the bottom. At the right
+            end of the toolbar is the type and name of the diagram being
+            edited. The main part of the Pane shows the UML graphical items
+            being edited.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <!-- Need to clarify that this has been known in the past as the Diagram
+         Pane or the Drawing Pane of the Multi-Editor Pane. -->
+
+    <para>This is where all the diagrams are drawn. In earlier versions of
+      &argouml; this Pane went under a variety of names. You may encounter
+      <quote>Drawing Pane</quote>, <quote>Diagram Pane</quote> or
+      <quote>Multi-Editor Pane</quote> in other documentation that is still
+      being updated.</para>
+
+    <para>The Pane has a toolbar at the top, and a single tab labelled
+      <literal>As&nbsp;Diagram</literal> at the bottom. So long as your
+      window is big enough, you will see the name of the diagram in the top
+      right corner at the end of the toolbar.</para>
+  </sect1>
+
+  <!-- The Toolbar -->
+
+  <sect1>
+    <title>The toolbar</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- Tools for organising layout -->
+
+    <sect2>
+      <title>Layout Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- The Select tool -->
+
+      <sect3>
+        <title>Select</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- The Broom tool -->
+
+      <sect3>
+        <title>Broom</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools for adding annotation (only one in the present
+         implementation -->
+
+    <sect2>
+      <title>Annotation Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- The Note tool -->
+
+      <sect3>
+        <title>Note</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools for drawing non-UML entities on diagrams -->
+
+    <sect2>
+      <title>Drawing Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Rectangle drawing tool -->
+
+      <sect3>
+        <title>Rectangle</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!--  Rounded Rectangle drawing tool -->
+
+      <sect3>
+        <title>RRect</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Circle drawing tool -->
+
+      <sect3>
+        <title>Circle</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Line drawing tool -->
+
+      <sect3>
+        <title>Line</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Text tool -->
+
+      <sect3>
+        <title>Text</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Polygon drawing tool -->
+
+      <sect3>
+        <title>Polygon</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Spline drawing tool -->
+
+      <sect3>
+        <title>Spline</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Arbitrary path drawing tool -->
+
+      <sect3>
+        <title>Ink</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Use Case Diagrams -->
+
+    <sect2>
+      <title>Use Case Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Actor tool -->
+
+      <sect3>
+        <title>Actor</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Use Case tool -->
+
+      <sect3>
+        <title>Use Case</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Association tool -->
+
+      <sect3>
+        <title>Association</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Dependency tool -->
+
+      <sect3>
+        <title>Dependency</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Generalization tool -->
+
+      <sect3>
+        <title>Generalization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Class Diagrams -->
+
+    <sect2>
+      <title>Class Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Package tool -->
+
+      <sect3>
+        <title>Package</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Class tool -->
+
+      <sect3>
+        <title>Class</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Association tool -->
+
+      <sect3>
+        <title>Association</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Dependency tool -->
+
+      <sect3>
+        <title>Dependency</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Generalization tool -->
+
+      <sect3>
+        <title>Generalization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Interface tool -->
+
+      <sect3>
+        <title>Interface</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Realization tool -->
+
+      <sect3>
+        <title>Realization</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Tool for adding attributes -->
+
+      <sect3>
+        <title>Add Attribute</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Tool for adding operations -->
+
+      <sect3>
+        <title>Add Operation</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Sequence Diagrams -->
+
+    <sect2>
+      <title>Sequence Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Object tool -->
+
+      <sect3>
+        <title>Object</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stimulus Call tool -->
+
+      <sect3>
+        <title>Stimulus Call</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stimulus Create tool -->
+
+      <sect3>
+        <title>Stimulus Create</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stimulus Destroy tool -->
+
+      <sect3>
+        <title>Stimulus Destroy</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stimulus Send tool -->
+
+      <sect3>
+        <title>Stimulus Send</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Stimulus Return tool -->
+
+      <sect3>
+        <title>Stimulus Return</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools for State Diagrams and in many cases for Activity Diagrams -->
+
+    <sect2>
+      <title>State Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- State tool -->
+
+      <sect3>
+        <title>State</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Composite State tool -->
+
+      <sect3>
+        <title>Composite State</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Transition tool -->
+
+      <sect3>
+        <title>Transition</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Initial state tool -->
+
+      <sect3>
+        <title>Initial</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Final State tool -->
+
+      <sect3>
+        <title>Final State</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Branch tool -->
+
+      <sect3>
+        <title>Branch</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Fork tool -->
+
+      <sect3>
+        <title>Fork</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Join tool -->
+
+      <sect3>
+        <title>Join</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Shallow History tool -->
+
+      <sect3>
+        <title>Shallow History</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Deep History tool -->
+
+      <sect3>
+        <title>Deep History</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Collaboration Diagrams -->
+
+    <sect2>
+      <title>Collaboration Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Classifier Role tool -->
+
+      <sect3>
+        <title>Classifier Role</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Association Role tool -->
+
+      <sect3>
+        <title>Association Role</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Add Message tool -->
+
+      <sect3>
+        <title>Add Message</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Activity Diagrams -->
+
+    <sect2>
+      <title>Activity Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Action State tool -->
+
+      <sect3>
+        <title>Action State</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Tools just for Deployment Diagrams -->
+
+    <sect2>
+      <title>Deployment Diagram Specific Tools</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Node tool -->
+
+      <sect3>
+        <title>Node</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Node Instance tool -->
+
+      <sect3>
+        <title>Node Instance</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Component tool -->
+
+      <sect3>
+        <title>Component</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Component Instance tool -->
+
+      <sect3>
+        <title>Component Instance</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+  </sect1>
+
+  <!-- The Grid -->
+
+  <sect1>
+    <title>The Drawing Grid</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- The Diagram Tab -->
+
+  <sect1>
+    <title>The Diagram Tab</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- What can the mouse do -->
+
+  <sect1>
+    <title>Mouse Actions</title>
+
+    <!-- Toolbar selection -->
+
+    <sect2>
+      <title>Toolbar Selection</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- One off selection by single click button 1 or 2. Pointer is
+      default. -->
+
+      <sect3>
+        <title>One-Off Tool Bar Selection</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Multiple selection by double click button 1 or 2 -->
+
+      <sect3>
+        <title>Multiple Tool Bar Selection</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Entity selection with button 1 or 2 (and pointer) -->
+
+    <sect2>
+      <title>Entity Selection</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Entity movement holding down button 1 -->
+
+    <sect2>
+      <title>Entity Movement</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Entity rezing holding down button 1 on corner handles -->
+
+    <sect2>
+      <title>Entity Resizing</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- The Broom -->
+
+    <sect2>
+      <title>The Broom</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Adding standalone UML entities -->
+
+    <sect2>
+      <title>Adding Standalone UML Entities</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Using the Toolbar and button 1 -->
+
+      <sect3>
+        <title>Using the Toolbar</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- From the Navigation pane -->
+
+      <sect3>
+        <title>From the Navigation Pane</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Linking UML entities -->
+
+    <sect2>
+      <title>Linking UML Entities</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <!-- Using the Toolbar and button 1 -->
+
+      <sect3>
+        <title>Using the Toolbar</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- From the entities on screen with Button 1 -->
+
+      <sect3>
+        <title>From Entities on Screen</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <!-- Adding annotation using the toolbar and button 1 -->
+
+    <sect2>
+      <title>Annotation</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- Drawing arbitrary lines and shapes -->
+
+    <sect2>
+      <title>Drawing Arbitrary Lines and Shapes</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <sect2>
+      <title>Context Sensitive Pop-Up Menu</title>
+
+      <para>Button 2 Click over any selected entity in the main area of the
+        Drawing Pane will cause a Pop-Up menu to appear.</para>
+
+       <!-- Properties -->
+
+      <sect3>
+        <title>Properties Pop-Up</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Critiques -->
+
+      <sect3>
+        <title>Critiques</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Ordering -->
+
+      <sect3>
+        <title>Ordering</title>
+
+        <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <!-- Add (entity dependent) -->
+
+      <sect3>
+        <title>Add</title>
+
+        <remark>To be written&hellip;</remark>
+
+        <!-- Add selections for Class -->
+
+        <sect4>
+          <title>Add Selections for Class</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+
+        <!-- Add selections for Interface -->
+
+        <sect4>
+          <title>Add Selections for Interface</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+      </sect3>
+
+      <!-- Show (entity dependent) -->
+
+      <sect3>
+        <title>Show</title>
+
+        <remark>To be written&hellip;</remark>
+
+        <!-- Show selections for Class -->
+
+        <sect4>
+          <title>Add Operations for Class</title>
+
+          <remark>To be written&hellip;</remark>
+        </sect4>
+      </sect3>
+    </sect2>
+
+    <!-- Spawning a New Window (double click button1 on Details tab) -->
+
+    <sect2>
+      <title>Spawning a New Editing Window</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

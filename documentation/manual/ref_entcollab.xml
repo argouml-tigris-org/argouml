@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+Desription of all the entities associated with Collaboration Diagrams within
+Argo/UML.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Created as a new chapter.
+
+-->
+
+<chapter id="chrefentcollab">
+  <title>&argouml; Collaboration Diagram Entity Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para>This chapter describes each entity that can be created within a
+      Collaboration Diagram. Note that some subentities of entities on the
+      diagram may not actually themselves appear on the diagram.</para>
+
+    <para>There is a close relationship between this material and the
+      Properties Tab of the Details Pane (see
+      <xref linkend="s1refproptab"/>). That section covers Properties in
+      general, in this chapter they are linked to specific entities.</para>
+
+    <para>Of particular importance are the sections on Property Toolbars (see
+      <xref linkend="s2refproptoolbar"/>) and Common Property Sheet Features
+      (see <xref linkend="s2refpropcommonfeat"/>). These document the toolbar
+      buttons and key features that are common to most Property Sheets.</para>
+
+    <!-- A diagram to show all things visible on the diagram -->
+
+    <para><xref linkend="figrefentcollab"/> shows a Collaboration Diagram with
+      all possible entities displayed.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figrefentcollab" float="1">
+      <title>Possible entities on a Collaboration Diagram.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/tobeprovided.png"/>
+        </imageobject>
+
+        <textobject>
+          <para>A Collaboration Diagram, showing (from left to right and top to
+            bottom) a Classifier Role, Association Role, Message and Classifier
+            Role.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+  </sect1>
+
+  <!-- Entities specific to Collaboration Diagrams. Classifier Role entity -->
+
+  <sect1>
+    <title>Classifier Role</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association Role entity. Has Associate Role End and Message as
+       subentities. -->
+
+  <sect1>
+    <title>Association Role</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Association Role End entity. A subentity of Association Role. -->
+
+  <sect1>
+    <title>Association Role End</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- Message entity. A subentity of Association Role. -->
+
+  <sect1>
+    <title>Message</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

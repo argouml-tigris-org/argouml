@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+This is the top level reference to the User Interface. To keep things
+manageable, the description of each of the panes and the menu bar have their
+own chapters.
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chrefui">
+  <title>User Interface Reference</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- An overview of the window as a whole -->
+
+  <sect1>
+    <title>Overview of the Window</title>
+
+    <para><xref linkend="figrefguioverview"/> shows the main &argouml;
+      window.</para>
+
+    <!-- A big diagram with all the bits pointed out. At the moment its just a
+         plane screenshot, but it would be nice to float in some bubbles
+         pointing out things. -->
+
+    <figure id="figrefguioverview" float="1">
+      <title>Overview of the &argouml; window</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/guioverview.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>A display of the &argouml; window, showing at the top the menu
+            bar, in the main area four sub-windows and at the bottom a status
+            bar. The four sub-windows are arranged two by two, and named,
+            clockwise from top left as: Navigator Pane, Editing Pane, Details
+            Pane and To-Do Pane. At the top of the diagram Pane is a horizontal
+            toolbar.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para>At the top of screen is a <emphasis>menu bar</emphasis> described in
+      <xref linkend="chrefmenu"/>. The bulk of the window comprises four
+      sub-windows or <emphasis>Panes</emphasis>. Clockwise from top left these
+      are the <emphasis>Navigator Pane</emphasis> (see
+      <xref linkend="chrefnavpane"/>), <emphasis>Editing
+      Pane</emphasis> (see <xref linkend="chrefeditpane"/>), <emphasis>Details
+      Pane</emphasis> (see <xref linkend="chrefnavpane"/>) and <emphasis>To-Do
+      Pane</emphasis> (see <xref linkend="chrefnavpane"/>). At the top of the
+      details Pane is a <emphasis>toolbar</emphasis>. An overview of the Panes
+      is given in <xref linkend="s1refpanes"/>. Finally at the bottom of the
+      window is a <emphasis>status bar</emphasis> described in 
+      <xref linkend="s1refstatus"/>.</para>
+
+  </sect1>
+
+  <!-- General information about Panes -->
+
+  <sect1 id="s1refpanes">
+    <title>General Information About Panes</title>
+
+    <para>The four sub-windows of the main &argouml; window are called
+      <emphasis>Panes</emphasis>. Clockwise from top left these
+      are the <emphasis>Navigator Pane</emphasis> (see
+      <xref linkend="chrefnavpane"/>), <emphasis>Editing
+      Pane</emphasis> (see <xref linkend="chrefeditpane"/>), <emphasis>Details
+      Pane</emphasis> (see <xref linkend="chrefnavpane"/>) and <emphasis>To-Do
+      Pane</emphasis> (see <xref linkend="chrefnavpane"/>). At the top the
+      details Pane is a <emphasis>toolbar</emphasis>.</para>
+
+    <sect2>
+      <title>Resizing Panes</title>
+
+      <para>You can resize panes by dragging on the divider bars between
+        them.</para>
+    </sect2>
+
+    <sect2 id="s3refspawn">
+      <title>Looking at Different Diagrams Simultaneously</title>
+
+      <para>You can <quote>spawn</quote> the Editing Pane by double-clicking on
+        the <literal>As Diagram</literal> tab. It will then show as an
+        individual window and you can put it next to another.</para>
+
+      <para>The same effect is achievable with the tabs of the Details
+        Pane.</para>
+
+      <note><para>There is no equivalent function for the Navigation or ToDo
+        Panes.</para></note>
+    </sect2>
+
+    <sect2>
+      <title>Reducing the Number of Panes Open</title>
+
+      <para>This function is not implemented directly. However you can spawn
+        a pane (see <xref linkend="s3refspawn"/>) and maximise this to be the
+        whole window, which achieves the same thing.</para>
+    </sect2>
+  </sect1>
+
+  <!-- All about the status bar -->
+
+  <sect1 id="s1refstatus">
+    <title>The status bar</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+argomanual.xml"
+End:
+
+-->

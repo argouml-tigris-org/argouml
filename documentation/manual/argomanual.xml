@@ -1,1149 +1,135 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <!DOCTYPE book SYSTEM "../docbook-setup/docbookx/docbookx.dtd" [
-  <!ENTITY glossary SYSTEM "glossary.xml">
+
+<!--
+
+The main file for the User Manual. Includes everything else through ENTITY
+declarations.
+
+Modifications
+=============
+
+30 Nov 2001:  Jeremy Bennett. Created as a top level file including other
+              sections from the original manual by Alejandro, Phillipe and
+              Andreas.
+
+11 Dec 2001:  Jeremy Bennett. Added chapter on built in classes
+
+-->
+
+  <!-- File inclusion ENTITIES -->
+
+  <!ENTITY frontis       SYSTEM "frontis.xml">
+  <!ENTITY preface       SYSTEM "preface.xml">
+  <!ENTITY intro         SYSTEM "intro.xml">
+
+  <!ENTITY tutuml        SYSTEM "tut_uml.xml">
+  <!ENTITY tutreqs       SYSTEM "tut_reqs.xml">
+  <!ENTITY tutanalysis   SYSTEM "tut_analysis.xml">
+  <!ENTITY tutdesign     SYSTEM "tut_design.xml">
+  <!ENTITY tutbuild      SYSTEM "tut_build.xml">
+
+  <!ENTITY refui         SYSTEM "ref_ui.xml">
+  <!ENTITY refnavpane    SYSTEM "ref_navpane.xml">
+  <!ENTITY refeditpane   SYSTEM "ref_editpane.xml">
+  <!ENTITY refdetpane    SYSTEM "ref_detpane.xml">
+  <!ENTITY reftodopane   SYSTEM "ref_todopane.xml">
+  <!ENTITY refmenu       SYSTEM "ref_menu.xml">
+
+  <!ENTITY refentities   SYSTEM "ref_entities.xml">
+  <!ENTITY refentusecase SYSTEM "ref_entusecase.xml">
+  <!ENTITY refentclass   SYSTEM "ref_entclass.xml">
+  <!ENTITY refentseq     SYSTEM "ref_entseq.xml">
+  <!ENTITY refentstate   SYSTEM "ref_entstate.xml">
+  <!ENTITY refentcollab  SYSTEM "ref_entcollab.xml">
+  <!ENTITY refentactiv   SYSTEM "ref_entactiv.xml">
+  <!ENTITY refentdeploy  SYSTEM "ref_entdeploy.xml">
+  <!ENTITY refentbuiltin SYSTEM "ref_entbuiltin.xml">
+
+  <!ENTITY glossary      SYSTEM "glossary.xml">
+
+  <!ENTITY appcasestudy  SYSTEM "app_casestudy.xml">
+  <!ENTITY appumlres     SYSTEM "app_umlres.xml">
+  <!ENTITY appumlcase    SYSTEM "app_umlcase.xml">
+  <!ENTITY appdocplan    SYSTEM "app_docplan.xml">
+  <!ENTITY appdocstand   SYSTEM "app_docstand.xml">
+  <!ENTITY applegal      SYSTEM "app_legal.xml">
+
+  <!-- Text substitution ENTITIES -->
+
+  <!ENTITY argouml          "ArgoUML">
+  <!ENTITY ooad             "OOA&amp;D">
+
+  <!-- Application name ENTITIES -->
+
+  <!ENTITY docbook          "<application>DocBook</application>">
+  <!ENTITY emacs            "<application>emacs</application>">
+  <!ENTITY psgml            "<application>psgml</application>">
 ]>
 
 <book>
-	<bookinfo>
-		<date>2/22/2000
-</date>
-		<title>ArgoUML user manual</title>
-		<subtitle>A introduction to Argo</subtitle>
-		<authorgroup>
-			<author>
-				<firstname>Alejandro</firstname>
-				<surname>Ramirez</surname>
-			</author>
-			<author>
-				<firstname>Philippe</firstname>
-				<surname>Vanpeperstraete</surname>
-			</author>
-			<author>
-				<firstname>Andreas</firstname>
-				<surname>Rueckert</surname>
-			</author>
-		</authorgroup>
-		<copyright>
-			<year>2000
-</year>
-			<holder>Philippe</holder>
-		</copyright>
-		<legalnotice>
-      <para>The legalnotice is missing in this document.</para>
-		</legalnotice>
-	</bookinfo>
-	<toc/>
 
-  <chapter>
-    <title>Introduction</title>
-    <sect1>
-      <title>About this Manual...</title>
-      <para>
-This document, the ArgoUML User Manual, is provided
-with the hopes to be helpful for the users of ArgoUML when
-it comes to installing and using ArgoUML as a tool in their
-projects.
-</para>
-      <sect2>
-	<title>In this Manual, you will find...</title>
-	<remark>
-This refers to the ambition of the document and not to the current contents.
-</remark>
+  <!-- The frontispiece, table of contents and overall introduction for the
+       book -->
 
-	<para>
-Information on how you download, install, and start ArgoUML.
-</para>
-	<para>
-Information on how to work with ArgoUML.
-</para>
-	<para>
-A complete reference of everything you can do with ArgoUML.
-</para>
+  &frontis;
+  <toc/>
+  &preface;
+  &intro;
 
-      </sect2>
-      <sect2>
-	<title>In this guide, you will not find...</title>
-	<para>
-Descriptions on how ArgoUML works on the inside or on
-how to improve on ArgoUML with new features and functions.
-This is covered in the Cookbook.
-</para>
-	<para>
-Information on how ArgoUML is included in your development process.
-</para>
-      </sect2>
-    </sect1>
-  </chapter>
+  <!-- The tutorial chapters -->
 
+  &tutuml;
+  &tutreqs;
+  &tutanalysis;
+  &tutdesign;
+  &tutbuild;
 
-	<chapter id="getting-started">
-		<title>Getting started with ArgoUML</title>
-		<para>Here's the introduction.</para>
-		<sect1 id="installation">
-			<title>Installation</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1 id="quick-tour">
-			<title>Quick tour</title>
-			<sect2 id="navigator-pane">
-				<title>The navigator pane</title>
-				<para>
-This pane list all the classes, interfaces and datatypes of your model as a treeview.
-<mediaobject>
-						<imageobject>
-							<imagedata format="GIF" fileref="images/screenshots/NavigatorPaneScreen.gif"/>
-						</imageobject>
-						<textobject>
-							<phrase>The ArgoUML navigator pane
-</phrase>
-						</textobject>
-						<caption>
-							<para>This is the navigator pane, where you can navigate through your model.
-</para>
-						</caption>
-					</mediaobject>
-				</para>
-			</sect2>
-			<sect2 id="diagram-editor-pane">
-				<title>The diagram editor pane</title>
-				<para>
-This pane lets the user edit her diagram in a graphical way.
-<mediaobject>
-						<imageobject>
-							<imagedata format="GIF" fileref="images/screenshots/DiagramEditorScreen.gif"/>
-						</imageobject>
-						<textobject>
-							<phrase>The ArgoUML diagram editor pane
-</phrase>
-						</textobject>
-						<caption>
-							<para>
-This is the diagram editor pane, where you can edit your diagram.
-</para>
-						</caption>
-					</mediaobject>
-				</para>
-			</sect2>
-			<sect2 id="todo-pane">
-				<title>The ToDo pane</title>
-				<para>
-The todo pane list the items on the users todo list.
-<mediaobject>
-						<imageobject>
-							<imagedata format="GIF" fileref="images/screenshots/ToDoPaneScreen.gif"/>
-						</imageobject>
-						<textobject>
-							<phrase>The ArgoUML todo pane
-</phrase>
-						</textobject>
-						<caption>
-							<para>This is the todo pane, that shows all the items on your todo list.
-</para>
-						</caption>
-					</mediaobject>
-				</para>
-			</sect2>
-			<sect2 id="details-pane">
-				<title>The details pane</title>
-				<para>
-The details pane lets the user edit various details of the model.
-<mediaobject>
-						<imageobject>
-							<imagedata format="GIF" fileref="images/screenshots/DetailsPaneScreen.gif"/>
-						</imageobject>
-						<textobject>
-							<phrase>The ArgoUML details pane
-</phrase>
-						</textobject>
-						<caption>
-							<para>This is the detials pane, that allows you to edit various details of your model.
-</para>
-						</caption>
-					</mediaobject>
-				</para>
-			</sect2>
-		</sect1>
-		<sect1 id="tutorial">
-			<title>ArgoUML tutorial</title>
-			<para>...
-</para>
-		</sect1>
-	</chapter>
-	<chapter>
-		<title>ArgoUML user manual</title>
-		<sect1>
-			<title>An introduction to UML modeling</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1>
-			<title>Working with projects</title>
-			<sect2>
-				<title>The startup screen </title>
-				<para>Right after startup, Argo/UML's main window appears as follows: </para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/StartupScreen.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>The main window's client area, below the menu bar, is subdivided into four panes: Starting at the leftmost top pane, and working around the clock, you can see the navigation pane, showing an explorer-like tree view of your UML model, the editing pane with its toolbar, two scroll bars and grey drawing area, the details pane with the ToDoItem tab selected, and the todo pane with a tree view of the to do items, ranked into three priority levels (High, Medium and Low). 
-</para>
-				<para>Notice that the title bar says "Argo/UML - Untitled". The "Untitled means that the current project has not yet been saved. After saving the current project, the "Untitled" will be replaced by the file name of the current project. 
-</para>
-				<para>Each time Argo/UML is started up without a project file as an argument, a new blank project is created. This project contains a model called untitledModel. This model contains a blank class diagram, called "class diagram 1", and a blank use case diagram called "use case diagram 1". 
-</para>
-				<para>The model and both empty diagrams can be seen in the navigation pane, which is the main tool for you to navigate through your model. 
-</para>
-				<para>Let's assume for a moment that this is the point where you want to start modeling a new purchasing system. You want to give the name "purchasingmodel" to your model, and you want to store it in a file called "FirstProject". 
-</para>
-				<para>First, let's save the model in it's current (empty and unnamed) state. On the menu bar, click on "File", then on "Save Project As..., as shown in the following screen shot. 
-</para>
-			</sect2>
-			<sect2>
-				<title>Saving a project - the file menu </title>
-				<para>Please notice that the File menu contains the usual options for creating a new project, for opening an existing project, for saving a project under a new name, for printing the currently displayed diagram (which of course is empty at this moment), for saving the currently displayed diagram as a file, and for program Exit. 
-</para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/SaveAsCommand.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>Some of these menu commands can be invoked by pressing key combinations, as indicated on the drop-down menu. For instance, holding down the "Ctrl" key, and pressing "N", will create a new project. 
-</para>
-				<para>In the current version, Argo/UML can only contain one active project at a time. In addition, a project can only contain one UML model. Since an UML model can contain an unlimited number of elements and diagrams, this should not present any serious limitations, even for modelling quite large and complex systems. 
-</para>
-				<para>Also take notice of a number of disabled commands, greyed out on the drop-down menu. First, the "Save Project" command (Ctrl-S), which obviously cannot be executed since we haven't entered a file name yet to store our project. Second, you can see the two commands "Load model from DB" and "Store model to DB". This is a unique feature of Argo/UML that allows you to save and retrieve your model into a relational database. Currently, the only database supported is MySQL, but support for other database engines will undoubtedly be introduced in the future. 
-</para>
-				<para>But let's go back to saving our project. After clicking on the "Save Project As..." menu command, we get the following file chooser dialog to enter the file name we wish to use: 
-</para>
-			</sect2>
-			<sect2>
-				<title>The File Chooser Dialog </title>
-				<para>This is a standard Java FileChooser. Let's go over it in some detail: 
-</para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/FileChooseDialog.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>The main, outstanding feature, is the scrollable folders list in the center of the dialog. By using the scrollbar on the right, you can move up and down in the list of folders contained inside the currently selected folder. 
-</para>
-				<para>Double-clicking on one of the displayed folders navigates you into that folder, allowing you to quickly navigate down into the folders hierarchy on your hard disk. 
-</para>
-				<para>Notice that only folder names , and no file names are displayed in the scrollable area. Indeed, the dialog is currently set up in order to show only ArgoUML project files with an extension of .argo, as can be seen on the lower drop-down control labeled "Files of type:" 
-</para>
-				<para>Also notice that the currently selected folder's name is displayed in the upper drop-down control labeled "Look in:". A single click on a folder inside the scrollable area does select that folder on screen but does not select the folder for saving. 
-</para>
-				<para>At the top of the dialog, above the scrollable folder chooser area, there are a few more folder navigation tools: 
-</para>
-				<itemizedlist>
-					<listitem>
-						<para>
-							<guiicon>
-								<inlinegraphic format="GIF" fileref="images/screenshots/FolderDropdown.gif"/>
-							</guiicon> The Folder drop-down control. Clicking on the down-arrow displays a tree view of the folder hierarchy, allowing you to navigate quickly up the hierarchy, and at the same time to quickly determine where in the hierarchy you are currently positioned.</para>
-					</listitem>
-					<listitem>
-						<para>
-							<guiicon>
-								<inlinegraphic format="GIF" fileref="images/screenshots/FolderUpIcon.gif"/>
-							</guiicon> The Folder-Up icon. Clicking on this icon will bring you to the parent folder of the current folder.</para>
-					</listitem>
-					<listitem>
-						<para>
-							<guiicon>
-								<inlinegraphic format="GIF" fileref="images/screenshots/HomeFolderIcon.gif"/>
-							</guiicon> The Home Folder icon. Clicking on this icon will bring you to your home directory</para>
-					</listitem>
-					<listitem>
-						<para>
-							<guiicon>
-								<inlinegraphic format="GIF" fileref="images/screenshots/NewFolderIcon.gif"/>
-							</guiicon> The New Folder icon. Clicking on this icon will create a new folder called "New Folder" under the current folder. (I haven't been able to create a folder with a specific name, using this button. This forces me to use my file manager to rename the newly created folder. Any suggestions on how this can be done would be welcome)</para>
-					</listitem>
-					<listitem>
-						<para>
-							<guiicon>
-								<inlinegraphic format="GIF" fileref="images/screenshots/FoldersPresentationIcon.gif"/>
-							</guiicon> The Folders Presentation Icon. This button is not functional at this time.</para>
-					</listitem>
-				</itemizedlist>
-				<para>Ok, now navigate to the directory where you want to save your Argo/UML project, fill in the "File name" with an appropriate name, such as "FirstProject" and click on the "Save button. 
-</para>
-			</sect2>
-			<sect2>
-				<title>File formats used by Argo/UML</title>
-				<para>Notice that the file name of your project (FirstProject.argo) is now reflected in the title bar of Argo/UML. If you select the java console, you will notice that three files have been written to the hard disk: 
-</para>
-				<itemizedlist>
-					<listitem>
-						<para>A file FirstProject.xmi - this is a representation of your (still empty) model in xmi format. If you want to know more about the Xml Metadata Interchange format (XMI), you can start at the following <ulink url="http://www.oasis-open.org/cover/xmi.html">rather extensive XMI page</ulink>. In short, XMI allows your models created with Argo/UML to be used by other applications. That is, only the contents of your model, without the graphic representation of the diagrams. 
-</para>
-					</listitem>
-					<listitem>
-						<para>A file FirstProject_classdiagram1.pgml, containing the graphical representation of the (still empty) class diagram "classdiagram1" in pgml format. The PGML (Precision Graphics Markup Language) is probably the first proposal for sending vector graphics over the Web. You can find more information at the <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">PGML specification page</ulink>. 
-</para>
-					</listitem>
-					<listitem>
-						<para>A file FirstProject_usecasediagram1.pgml, containing a graphical representation of the (still empty) use case diagram "usecasediagram1". 
-</para>
-					</listitem>
-				</itemizedlist>
-				<para>You have now an active project called "FirstProject", connected to the file "FirstProject.argo" 
-</para>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>Working with diagrams</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1>
-			<title>The diagram editor - general features</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1>
-			<title>Use case diagrams</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1>
-			<title>Class diagrams</title>
-			<para>...
-</para>
-		</sect1>
-    <sect1>
-      <title>From the User FAQ</title>
-      <para>
-// Needs-More-Work: Directly from the User FAQ.
-</para>
-      <sect2>
-	<title>Sequence Diagrams</title>
-	<qandaset>
-	  <qandadiv>
-	    <title>Sequence Diagrams</title>
-	    <qandaentry>
-	      <question>
-		<para>Are there known issues with sequence diagrams in Argo?</para>
-	      </question>
-	      <answer>
-		<para>Yes.
-</para>
-		<para>Checklist is not enabled with Sequence artifacts.</para>
-		<para>It is not possible (as yet) to create call backs.</para>
-		<para>You cannot change the order of the connectivity of a link artifact in ArgoUML yet.</para>
-		<para>StimulusDestroy is not dependable.</para>
-		<para>If you would like to help us out, please see to do list.</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-How do I create a sequence diagram?
-</para>
-	      </question>
-	      <answer>
-		<para>Normally, you can just start a sequence diagram right away. Create>Diagrams>Sequence
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>I'm trying to change the ordering of the links in the sequence diagram. How do I do that?
-</para>
-	      </question>
-	      <answer>
-		<para>Unimplemented feature.</para>
-		<para>If you can help out there please let us know.</para>
-		<para>see to do list</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	</qandaset>
-      </sect2>
-      <sect2>
-	<title>State Diagrams</title>
-	<qandaset>
-	  <qandadiv>
-	    <title>State Diagrams</title>
-	    <qandaentry>
-	      <question>
-		<para>
-How do I create a state diagram?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Select a class, then you can create a state
-diagram.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-I am trying to use ArgoUML to edit a state machine diagram for a model. But when I edit a composite state, I don't know how to provide do and event for a composite state. Can you help me?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Select a class, then you can create a state
-diagram.
-</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	</qandaset>
-      </sect2>
-      <sect2>
-	<title>Activity Diagrams</title>
-	<qandaset>
-	  <qandadiv>
-	    <title>Activity Diagrams</title>
-	    <qandaentry>
-	      <question>
-		<para>How do I create an activity diagram?
-                                                </para>
-	      </question>
-	      <answer>
-		<para>
-Select a use case or class, then you can create an activity
-diagram.
-</para>
-		<para>Enabling an activity diagram that is connected to an actor has been requested as a feature.
-</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	</qandaset>
-      </sect2>
-      <sect2>
-	<title>Class Diagrams</title>
-	<qandaset>
-	  <qandadiv>
-	    <title>Class Diagrams</title>
-	    <qandaentry>
-	      <question>
-		<para>Is it possible to switch to 'real' UML Syntax, like 'Name : String' in class diagrams?</para>
-	      </question>
-	      <answer>
-		<para>No, but it is planned to make that the default.</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>I see there is a note icon in the tool bar. How do I use it?</para>
-	      </question>
-	      <answer>
-		<para>Click on your target class. Then click on the note icon. ArgoUML will generate the link automatically.</para>
-		<para>You can also right click to add a note as well! Be aware that you can add an undefined number of notes to any one class!</para>
-		<para>Be aware that your note will not appear in the source code documentation tab.</para>
-		<para>Please see to do list.</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>What is the easiet way to enter data into attributes and methods window for classes?</para>
-	      </question>
-	      <answer>
-		<para>Click directly in the class artifact and start typing. Do not use the properties window dialog fields...they are not fully functional and liable to cause you a little frustration.</para>
-		<para> In fact, it would be interesting to see if you can type 'stereotypes' write in the class attribute box for generating XML diagrams.
-</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	</qandaset>
-      </sect2>
-      <sect2>
-	<title>Output</title>
-	<qandaset>
-	  <qandadiv>
-	    <title>Loading and Saving</title>
-	    <qandaentry>
-	      <question>
-		<para>
-Do ArgoUML save .xmi files?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Yes. They save the model information in an .xmi-file, the diagram
-information in a .pgml-file and information about the project in a .Argo
-file. All of these are
-then
-zipped  to a .zArgo-file. You can easily extract the .xmi from the
-.zArgo file
-using any old generic ZIP application. Give it a try and look into the
-magic of Argo.
-Be aware that double clicking will launch a ZIP utility, if one is
-installed, and NOT Argo.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-How do I import an .xmi into ArgoUML and what formats are known to be
-supported?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Because of the variety of .xmi formats being generated you will
-encounter problems using other .xmis generated from other applications.
-ArgoUML's native storage format is another implementation of XMI (Curt
-Arnold believes that it has been hacked so it can also read the Unisys
-variant).  He recommends that if you are comfortable with XSLT, you can
-typically transform one variant of UML + XMI to another, plus
-MetaIntegrations (http://www.metaintegrations.net) makes a version of
-their Bridge product available to transform between XMI flavors.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-If i design a model by using ArgoUML how I can generate XMI format?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Check out the .zArgo file. Open it and Viola! It's tucked inside...
-</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	  <qandadiv>
-	    <title>Graphics and Printing</title>
-	    <qandaentry>
-	      <question>
-		<para>
-What does GEF mean?
-</para>
-	      </question>
-	      <answer>
-		<para>
-GEF = Graph Editing Framework - the thing which is hidden in gef.jar and
-is responsible for displaying the graphs and which gives you the the
-ability to move things around. GEF used to be closely interwoven with
-Argo, but is now more or less separate as far as I know. The sources are
-also available via www.tigris.org
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-What is PGML?
-</para>
-	      </question>
-	      <answer>
-		<para>
-PGML is the saving format for diagram information used in ArgoUML. Although this is outdated a little, it shows why we chose PGML in the first place. In the future, PGML will be replaced by an extended XMI format which will include graphical representation. PGML is shortcut for Precision Graphics Markup Language. In April 1998 Adobe Systems proposed a new Standard for Vector Graphics to the World Wide Web Consortium (W3C), which should facilitate the creation and usage of image material in the World Wide Web. It will be replaced by SVG. We will support SVG by generating it from the XMI in the future.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-What applications open PGML?
-</para>
-	      </question>
-	      <answer>
-		<para>PGML is a predecessor of SVG. It was dropped by the W3C Consortium.</para>
-		<para>Currently there are no other tools that we know of working on PGML. We will move to SVG soon. And THAT will be read by many tools.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-How can I print my diagrams?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Select a diagram, then go to File->Export Diagrams. You can generate
-gif, postscript, eps or .svg format.
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-What does SVG stand for?
-</para>
-	      </question>
-	      <answer>
-		<para>
-A super cool vector graphics format (like MM Flash) that is totally open
-and is gaining enormous ground in the graphics world. Find out more at
-the www.W3C.org. </para>
-		<para>As well visit Adobe.com for the plugin for NN and IE</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para> How do I save my diagrams as .SVG?
-</para>
-	      </question>
-	      <answer>
-		<para>First: select .svg as the file type. Second: type the name of the file as you like with the .svg tag at the end. Example myumldiagram.svg</para>
-		<para>ArgoUML does not do it automatically. See the to-do list.</para>
-		<para> Et viola! SVG! Give it a try and zoom around a little...They are not pretty though, so if you know anything about rendering beautiful SVG let us know!</para>
-		<para>Oh, and by the way, you'll need a browser that can read SVG, the plugin for NN and IE are available at Adobe.com</para>
-		<para>There are a few browsers that read SVG natively: Amaya, X-Smiles, and a rudimentary version of Mozilla.</para>
-		<para/>
-						<para>See to do list</para>
-		<para>Be aware: You will not have scroll bars for your SVG unless it is embedded into an HTML! Good luck and let us know what you find!
-</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>
-							Can I output my entire ZArgo project as an HTML?
-						</para>
-	      </question>
-	      <answer>
-		<para>No not yet. This feature is much desired. Please see the to-do list.</para>
-		<para>Use case: File>Save As>project.html>select diagram output i.e. .svg, .gif, .jpg, etc.</para>
-		<para>Output would include: Java docs.</para>
-		<para>Diagrams with rollover functionality i.e. when users rollover diagram elements their is an embedded link to the javadocs.</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	  <qandadiv>
-	    <title>.XMI</title>
-	    <qandaentry>
-	      <question>
-		<para>I have a model generated by Rational Rose in xmi format and I want input it into ArgoUML case tool. Could anyone tell me how I can do that? </para>
-	      </question>
-	      <answer>
-		<para>Probably not possible but if you want to take on the task of writing an XSLT that transposes the ROSE .xmi to ArgoUML .xmi you'd make a lot of friends in a hurry!</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>When I save in 0.8.1a .xmi files show up in my save directory, are these just as interchangeable as the 0.9.x .xmi files?</para>
-	      </question>
-	      <answer>
-		<para>This depends on the nsuml version you are using (you can find out about this i your startup messages on console). Version 0.4.19 is okay, should be interchangeable.</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>How do I import an .xmi into ArgoUML and what formats are known to be supported?</para>
-	      </question>
-	      <answer>
-		<para>Because of the variety of .xmi formats being generated you will encounter problems using other .xmis generated from other applications. </para>
-		<para>ArgoUML's native storage format is another implementation of XMI (Curt Arnold believes that it has been hacked so it can also read the Unisys variant).  He recommends that if you are comfortable with XSLT, you can typically transform one variant of UML + XMI to another, plus MetaIntegrations (http://www.metaintegrations.net) makes a version of their Bridge product available to transform between XMI flavors.</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>Does ArgoUML generate an XMI document?</para>
-	      </question>
-	      <answer>
-		<para>Yes! Check out the .zArgo file. Open it and Viola! It's tucked inside...</para>
-		<para> ArgoUML saves all .xmi and .pgml and .Argo files in one zipped .ZArgo file. You can easily extract the .xmi from the .zArgo file using any old generic ZIP application. (PowerArchiver is a cool freeware app for the Win folks). Give it a try and look into the magic of Argo!</para>
-		<para>
+  <!-- The reference chapters on the user interface -->
 
-</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	  <qandadiv>
-	    <title>Code Generation</title>
-	    <qandaentry>
-	      <question>
-		<para>
-Is the generated code meant to be able to compile?
-</para>
-	      </question>
-	      <answer>
-		<para>
-Yes, it is possible to compile your generated code with ArgoUML, you
-still need to implement method bodies, though, to get usable results.
-</para>
-		<para>But not Argo!</para>
-		<para>Yes, it is possible to compile your generated code from Argo, but that is of no use yet, since you can't implement method bodies.
-</para>
-		<para>You can help us out there if you'd like!</para>
-	      </answer>
-	    </qandaentry>
-	    <qandaentry>
-	      <question>
-		<para>Where/how do I implement code for my methods?</para>
-	      </question>
-	      <answer>
-		<para>Nowhere, yet. The source pane is editable, but the changes are ignored.
-ArgoUML is a pure design tool for now, no IDE functionality but the desire is there. You might consider using Forte and ArgoUML together...it's a good work around!</para>
-	      </answer>
-	    </qandaentry>
-	  </qandadiv>
-	</qandaset>
-      </sect2>
-    </sect1>
+  &refui;
+  &refnavpane;
+  &refeditpane;
+  &refdetpane;
+  &reftodopane;
+  &refmenu;
 
-		<sect1>
-			<title>Working with design critics</title>
-			<sect2>
-				<title>The To Do pane - messages from the design critics </title>
-				<para>Where do we stand now? A new project has been created, and is connected to the file FirstProject.argo. Your Argo/UML screen should look as follows: 
-</para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/ProjectSavedScreen.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>The project filename is displayed in the title bar, the project contains a top-level package, called "untitledModel", which contains a class diagram and a use case diagram. 
-</para>
-				<para>If we look carefully at the screen, we can see that the "Medium" folder in the To Do pane (the lower left pane) must contain some items, since it's activation icon <guiicon>
-						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderCloseIcon.gif"/>
-					</guiicon> is displayed. 
-</para>
-				<para>Clicking on this icon will open the "Medium" folder. An open folder is indicated by the <guiicon>
-						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderOpenIcon.gif"/>
-					</guiicon> icon.
-</para>
-				<para>But what is this "To do" pane anyway. You haven't recorded anything yet that has to be done, so where do these to do items originate. 
-</para>
-				<para>The answer is simple, and is at the same time one of the strong points of Argo/UML. While you are working on your UML model, your work is monitored continuously and invisibly by a piece of code called a design critic. This is like a personal mentor that watches over your shoulder and notifies you each time he sees something questionable in your design. 
-</para>
-				<para>Critics are quite unobstrusive. They give you a friendly warning, but they do not force you into design principles that you don't want or like to follow.  Let us take a look at what the critics are telling us. Click on the <guiicon>
-						<inlinegraphic format="GIF" fileref="images/screenshots/TreeFolderCloseIcon.gif"/>
-					</guiicon> icon next to the "Medium" folder, and click on the "Revise Package Name UntitledModel" item. 
-</para>
-				<para>Your screen should now look as follows: 
-</para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/LookatCriticsAdvice.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>Notice that your selection is highlighted in red in the To Do pane, and that a full explanation appears now in the Properties Pane (the lower right pane). You may have to resize your properties panel or to scroll down in order to see the full message as diplayed in our example. 
-</para>
-				<para>What Argo/UML is trying to tell you is that usually, package names are written in lower cases. The default top level package created by Argo/UML is called untitledModel and therefore violates a sound design principle. (Actually, this could be considered as a bug within Argo/UML, but it comes in handy to demonstrate the working of critics). 
-</para>
-				<para>At this point, you can choose to change the package name manually, to impose silence on the design critic for some time or permanently, or to request a more comprehensive explanation by Email from an expert . 
-</para>
-				<para>We will do nothing of this (we'll come back to it when we talk about the design critics in more detail) but we'll use another handy feature of ArgoUML: an auto-correct feature. 
-</para>
-				<para>In order to do that, just click on the "Next" button on the properties pane. This will cause a renaming wizard to be diplayed inside the properties panel, proposing to use the name "untitledmodel" (all in lower cases). 
-</para>
-			</sect2>
-			<sect2>
-				<title>Design critics at work: the Rename Package wizard </title>
-				<para>Replace the name "untitledmodel" with "purchasingmodel", and click on the "Finish" button as shown below: 
-</para>
-				<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/screenshots/RenamingTopPackage.gif"/>
-					</imageobject>
-				</mediaobject>
-				<para>Watch now how the design critic note in the To Do panel disappears, leaving only the "Add Elements to Package purchasingmodel" note in the to do list. 
-</para>
-				<para>If this doen't happen at once, wait for a few seconds. Argo/UML makes heavy use of several threads of execution that execute in parallel. This can cause delays of a few seconds before the information gets updated on the screen. 
-</para>
-				<para>Normally, the package name change shoudl also be reflected in the navigation pane, in the top left corner of your Argo/UML window. 
-</para>
-				<para>Actually, that doesn't happen until you click on one of the items in the navigator pane. This is also a small bug in Argo/UML that will need to be fixed in following versions. 
-</para>
-				<para>Don't let this discourage you, but remember that Argo/UML is still pretty much "work in progress", and that still quite a bit can be done to improve the user interface. 
-</para>
-				<para>We are now ready to create our first UML diagram, a Use Case diagram, but first let's save what we've done so far. 
-</para>
-				<para>Click on the "File" menu item, and select "Save Project". You can now safely exit Argo/UML without losing your work so far, or go on creating your first diagram. 
-</para>
-			</sect2>
-		</sect1>
-	</chapter>
-	<chapter>
-		<title>ArgoUML reference</title>
-      <sect1>
-	<title>From the User FAQ</title>
-	<para>
-// Needs-More-Work: This information needs to be added into the manual in a better way.
-</para>
-		<qandaset>
-	  <qandadiv>
-	    <title> Diagrams: Contribute.</title>
-	    <qandadiv>
-	      <title>User Interface:Navigation Panes</title>
-	      <qandaentry>
-		<question>
-		  <para>
-How do I know what diagram I'm working on?</para>
-		</question>
-		<answer>
-		  <para>
-Sometimes, if your screen is large enough, you will see the name of the diagram in the top right corner.</para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>What are the names of the various work screens?</para>
-		</question>
-		<answer>
-		  <para>
-The different screens are called panes. They all have an individual
-name, Navigation Pane, Diagram Pane, ToDo Pane and Details Pane, as
-shown in the following table.
-                    <table frame="all">
-		      <title>Table title</title>
-		      <tgroup cols="2" align="left" colsep="1" rowsep="1">
-			<tbody>
-			  <row>
-			    <entry>Navigation Pane</entry>
-			    <entry>Diagram Pane</entry>
-			  </row>
-			  <row>
-			    <entry>ToDo Pane</entry>
-			    <entry>Details Pane</entry>
-			    <!--This would be a good place to put links to the screen grabs for the nav panes-->
-			  </row>
-			</tbody>
-		      </tgroup>
-		    </table>
-		   </para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>
-How can I look at different diagrams at the same time?	
-</para>
-		</question>
-		<answer>
-		  <para>
-You can 'spawn' a panel by double-clicking on the tab. It will then
-show as individual window and you can put it next to another. But
-beware, this function does not work in the diagram window for the
-moment. This is believed to be an issue with GEF.
-</para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>
-How do I reduce the  number of panes open in the window?
-</para>
-		</question>
-		<answer>
-		  <para>
-Unimplemented feature :(You can, however, "spawn" a window by
-double-clicking on the tab, and maximize that.
-</para>
-		  <para>See to do list.</para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>
-How can I sort the artifacts in the Navigation Pane, for example sort
-all of my Actors?
-</para>
-		</question>
-		<answer>
-		  <para>
-It's an unimplemented feature? It would be nice though wouldn't it?
-</para>
-		  <para>See to do list.</para>
-		</answer>
-	      </qandaentry>
-	    </qandadiv>
-	  </qandadiv>
-	</qandaset>
-	<qandaset>
-	  <qandadiv>
-	    <title>Navigation Pane: Contribute.</title>
-	    <qandadiv>
-	      <title>User Interface:Navigation Panes</title>
-	      <qandaentry>
-		<question>
-		  <para> How do I arrange my diagram elements?</para>
-		</question>
-		<answer>
-		  <para>
-There are several ways to easily and elegantly move diagram elements.
-</para>
-		  <para>
-Select the elements you want to move. By holding down the control key
-you can select several.
-</para>
-		  <para>
-Now hit your arrow keys. Your elements move a little with every key
-stroke.
-</para>
-		  <para>
-If you also hold down the shift key, they move a bit faster.</para>
+  <!-- The reference chapters on the diagrams and entities -->
 
-		  <para>
-Or click on the broom button, move your mouse to the diagram pane,
-right click and hold. Now moving your mouse side ways (or up and down)
-will align elements.
-</para>
+  &refentities;
+  &refentusecase;
+  &refentclass;
+  &refentseq;
+  &refentstate;
+  &refentcollab;
+  &refentactiv;
+  &refentdeploy;
+  &refentbuiltin;
 
-		  <para>
-There also is the menu item arrange where you can align, group or
-nudge (move a little bit) elements.
-</para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>
-I've reviewed the list of to-dos as determined by "poster" but every
-time I try to click in the properties pane, it closes on me. What can
-I do?
-</para>
-		</question>
-		<answer>
-		  <para>
-Review the bug list first to see if it has already been posted.
-</para>
-		  <para>If not, post the bug.</para>
-		  <para>If you know how to fix it, then submit a patch.</para>
-		</answer>
-	      </qandaentry>
-	      <qandaentry>
-		<question>
-		  <para>What works under the details pane?
-</para>
-		</question>
-		<answer>
-		  <para>Plenty.</para>
-		</answer>
-	      </qandaentry>
-	    </qandadiv>
-	  </qandadiv>
-	</qandaset>
-      </sect1>
+  <!-- The glossary -->
 
-		<sect1>
-			<title>The navigator pane</title>
-			<mediaobject>
-				<imageobject>
-					<imagedata format="GIF" fileref="images/screenshots/NavigatorPaneScreen.gif"/>
-				</imageobject>
-				<textobject>
-					<phrase>The ArgoUML navigator pane
-</phrase>
-				</textobject>
-				<caption>
-					<para>This is the navigator pane, where you can navigate through your model.
-</para>
-				</caption>
-			</mediaobject>
-			<sect2>
-				<title>Perspective selector combo box</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Back button</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Forward button</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Navigator configuration button</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Scrollable tree view</title>
-				<para>...
-</para>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>The ToDo pane</title>
-			<sect2>
-				<title>View selector combo box</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Flat/hierachical button</title>
-				<para>...
-</para>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>The multi-editor pane</title>
-			<sect2>
-				<title>As diagram tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>As table tab</title>
-				<para>...
-</para>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>The details pane</title>
-			<sect2>
-				<title>ToDo tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Properties tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Docs tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Javasource tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Constraints tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Tagged values tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>Checklist tab</title>
-				<para>...
-</para>
-			</sect2>
-			<sect2>
-				<title>History tab</title>
-				<para>...
-</para>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>The Menu bar</title>
-			<sect2>
-				<title>The File menu</title>
-				<sect3>
-					<title>New</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Open project</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Save project</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Save project as</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Print</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Save GIF</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Exit</title>
-					<para>...
-</para>
-				</sect3>
-			</sect2>
-			<sect2>
-				<title>The Edit menu</title>
-				<sect3>
-					<title>Select</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Select all</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Select next</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Invert selection</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Undo/Redo</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Cut</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Copy</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Paste</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Remove from diagram</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Delete from model</title>
-					<para>...
-</para>
-				</sect3>
-				<sect3>
-					<title>Empty trash</title>
-					<para>...
-</para>
-				</sect3>
-			</sect2>
-		</sect1>
-		<sect1>
-			<title>The status bar</title>
-			<para>...
-</para>
-		</sect1>
-		<sect1>
-			<title>The toolbar</title>
-			<para>...
-</para>
-		</sect1>
-	</chapter>
+  &glossary;
 
-&glossary;
+  <!-- Appendices cover supplementary material for the case study, the document
+       plan, coding standards and the legal stuff. -->
+
+  &appcasestudy;
+  &appumlres;
+  &appumlcase;
+  &appdocplan;
+  &appdocstand;
+  &applegal;
+
+  <!-- The index will go here (to be done) -->
 
 </book>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+  argomanual.xml"
+End:
+
+-->

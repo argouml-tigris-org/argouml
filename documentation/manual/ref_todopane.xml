@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!--
+
+The To-Do Pane. Need to decide if it is To-Do, To Do or ToDo.
+
+
+Modifications
+=============
+
+ 5 Dec 2001:  Jeremy Bennett. Broken out as a separate section from the
+              original manual by Alejandro, Phillipe and Andreas.
+
+-->
+
+<chapter id="chreftodopane">
+  <title>The To-Do Pane</title>
+
+  <sect1>
+    <title>Introduction</title>
+
+    <para><xref linkend="figreftodooverview"/> shows the To-Do Pane.</para>
+
+    <!-- This should be a comprehensive picture. In fact its just the minimum
+         at the moment. It would be good to put some bubbles on this one
+         pointing things out as well. -->
+
+    <figure id="figreftodooverview" float="1">
+      <title>Overview of the To-Do Pane</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="GIF" align="center"
+                     fileref="images/reference/todooverview.gif"/>
+        </imageobject>
+
+        <textobject>
+          <para>The ArgoUML To-Do Pane. A rectangular pane, with a bar at the
+            top containing from left-to-right, a drop-down selection box
+            labelled <literal>By&nbsp;Priority</literal>, a button and a
+            yellow highlighted count of items. The body of the Pane shows a
+            hierarchy of To-Do items.</para>
+        </textobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <para>This pane provides access to the advice that comes from the Critics
+      processes running within &argouml;.</para>
+
+    <para>A selector box at the allows a choice of how the data is presented,
+      a button allows the display of the hierarchy to be changed, and
+      there is an indicator the number of To-Do items identified.</para>
+  </sect1>
+
+  <!-- How the information is presented -->
+
+  <sect1>
+    <title>Presentation Selection</title>
+
+    <remark>To be written&hellip;</remark>
+
+    <!-- By priority (the default) -->
+
+    <sect2>
+      <title>By Priority</title>
+
+      <remark>The default. To be written&hellip;</remark>
+    </sect2>
+
+    <!-- By decision -->
+
+    <sect2>
+      <title>By Decision</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- By goal -->
+
+    <sect2>
+      <title>Goal</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- By offender -->
+
+    <sect2>
+      <title>Offender</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- By poster -->
+
+    <sect2>
+      <title>Poster</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+
+    <!-- By knowledge type -->
+
+    <sect2>
+      <title>Knowledge Type</title>
+
+      <remark>To be written&hellip;</remark>
+    </sect2>
+  </sect1>
+
+  <!-- The display type -->
+
+  <sect1>
+    <title>Flat/Hierachical Button</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- The item count -->
+
+  <sect1>
+    <title>Item Count</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+  <!-- What can the mouse do -->
+
+  <sect1>
+    <title>Mouse Actions</title>
+
+    <remark>To be written&hellip;</remark>
+  </sect1>
+
+</chapter>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "argomanual.xml"
+sgml-parent-document: ("argomanual.xml" "chapter" nil)
+sgml-validate-command: "nsgmls -wxml -sv ../docbook-setup/xml.dcl \
+argomanual.xml"
+End:
+
+-->
