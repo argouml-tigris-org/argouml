@@ -46,7 +46,8 @@ public class ActionResolve extends ToDoItemAction {
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	DismissToDoItemDialog dialog = new DismissToDoItemDialog(ProjectBrowser.getInstance());
+	DismissToDoItemDialog dialog = new DismissToDoItemDialog(
+            ProjectBrowser.getInstance());
 	dialog.setTarget(getRememberedTarget());
 	dialog.setVisible(true);
     }
