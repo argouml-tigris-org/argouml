@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,7 +35,6 @@ import javax.swing.AbstractAction;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
@@ -55,13 +53,13 @@ import org.tigris.gef.base.Diagram;
 
 
 public class Actions implements TargetListener {
-    
+
     private static Actions _instance = new Actions();
-    
+
     public static Actions getInstance() {
         return _instance;
     }
-    
+
     private Actions() {
         TargetManager.getInstance().addTargetListener(this);
     }
@@ -116,7 +114,7 @@ public class Actions implements TargetListener {
 	    a.updateEnabled();
 	}
     }
-  
+
     /**
      * Updates all global actions as a consequence of the send TargetEvent.
      * @param e
@@ -132,7 +130,7 @@ public class Actions implements TargetListener {
     public static void addAction(AbstractAction newAction) {
 	_allActions.addElement(newAction);
     }
-    
+
     public static boolean isGlobalAction(AbstractAction action) {
         return _allActions.contains(action);
     }
@@ -171,7 +169,9 @@ public class Actions implements TargetListener {
 /** print the current active diagram.
  */
 class ActionPrint extends UMLAction {
+
     CmdPrint cmd = new CmdPrint();
+
     public ActionPrint() { super("action.print"); }
 
     public void actionPerformed(ActionEvent ae) {
@@ -183,6 +183,7 @@ class ActionPrint extends UMLAction {
 	    cmd.doIt();
 	}
     }
+
     public CmdPrint getCmdPrint() {
 	return cmd;
     }
@@ -191,6 +192,7 @@ class ActionPrint extends UMLAction {
 /** Page setup for printing.
  */
 class ActionPageSetup extends UMLAction {
+
     public ActionPageSetup() { super("action.page-setup", HAS_ICON); }
 
     public void actionPerformed(ActionEvent ae) {
@@ -203,12 +205,16 @@ class ActionPageSetup extends UMLAction {
 // generic editing actions
 
 class ActionUndo extends UMLAction {
+
     public ActionUndo() { super("action.undo"); }
+
     public boolean shouldBeEnabled() { return false; }
 } /* end class ActionUndo */
 
 class ActionRedo extends UMLAction {
+
     public ActionRedo() { super("action.redo"); }
+
     public boolean shouldBeEnabled() { return false; }
 } /* end class ActionRedo */
 
@@ -217,14 +223,18 @@ class ActionRedo extends UMLAction {
 // items on view menu
 
 class ActionFind extends UMLAction {
+
     public ActionFind() { super("action.find"); }
+
     public void actionPerformed(ActionEvent ae) {
 	FindDialog.getInstance().setVisible(true);
     }
 } /* end class ActionFind */
 
 class ActionGotoDiagram extends UMLAction {
+
     public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
@@ -251,7 +261,7 @@ class ActionGotoDiagram extends UMLAction {
                 super.actionPerformed(e);
             }
         }
-        
+
         protected void nameButtons() {
             super.nameButtons();
             nameButton(getOkButton(), "button.go-to-selection");
@@ -271,7 +281,9 @@ class ActionGotoDiagram extends UMLAction {
 
 /*
 class ActionNavBack extends UMLAction {
+
   public ActionNavBack() { super("action.navigate-back"); }
+
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.getInstance() != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -281,9 +293,10 @@ class ActionNavBack extends UMLAction {
 	boolean b = np.canNavBack();
         return b;
     }
-    else 
+    else
         return false;
   }
+
   public void actionPerformed(ActionEvent ae) {
     NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
     np.navBack();
@@ -292,7 +305,9 @@ class ActionNavBack extends UMLAction {
 
 /*
 class ActionNavForw extends UMLAction {
+
   public ActionNavForw() { super("action.navigate-forward"); }
+
   public boolean shouldBeEnabled() {
     if (ProjectBrowser.getInstance() != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
@@ -302,6 +317,7 @@ class ActionNavForw extends UMLAction {
     } else
         return false;
   }
+
   public void actionPerformed(ActionEvent ae) {
     NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
     np.navForw();
@@ -317,9 +333,11 @@ class ActionNavForw extends UMLAction {
 // } /* end class ActionNavFavs */
 
 class ActionNavConfig extends UMLAction {
+
     public ActionNavConfig() { super("action.nav-config"); }
+
     public void actionPerformed(ActionEvent ae) {
-	NavigatorConfigDialog ncd = 
+	NavigatorConfigDialog ncd =
             new NavigatorConfigDialog(ProjectBrowser.getInstance(),
                                       NavigatorPane.getInstance());
 	ncd.setVisible(true);
@@ -327,7 +345,9 @@ class ActionNavConfig extends UMLAction {
 } /* end class ActionNavConfig */
 
 class ActionNextEditTab extends UMLAction {
+
     public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	MultiEditorPane mep = pb.getEditorPane();
@@ -354,9 +374,11 @@ class ActionNextEditTab extends UMLAction {
 
 
 class ActionShowRapidButtons extends UMLAction {
+
     public ActionShowRapidButtons() {
 	super("action.buttons-on-selection", NO_ICON);
     }
+
     public void actionPerformed(ActionEvent ae) {
 	SelectionWButtons.toggleShowRapidButtons();
     }
@@ -367,7 +389,9 @@ class ActionShowRapidButtons extends UMLAction {
 // items on create menu
 
 class ActionCreateMultiple extends UMLAction {
+
     public ActionCreateMultiple() { super("action.create-multiple", NO_ICON); }
+
     public boolean shouldBeEnabled() {
 	//Project p = ProjectBrowser.getInstance().getProject();
 	//return super.shouldBeEnabled() && p != null;
@@ -381,11 +405,8 @@ class ActionCreateMultiple extends UMLAction {
 
 // class ActionGenerateWeb extends UMLAction {
 //   public ActionGenerateWeb() { super("Generate Web Site", NO_ICON); }
-
 //   public void actionPerformed(ActionEvent ae) {
-
 //   }
-
 //   public boolean shouldBeEnabled() {
 //     return false;
 //   }
@@ -395,18 +416,23 @@ class ActionCreateMultiple extends UMLAction {
 // critiquing related actions
 
 class ActionAutoCritique extends UMLAction {
+
     public ActionAutoCritique() {
 	super("action.toggle-auto-critique", NO_ICON);
     }
+
     public void actionPerformed(ActionEvent ae) {
 	Designer d = Designer.TheDesigner;
 	boolean b = d.getAutoCritique();
 	d.setAutoCritique(!b);
     }
+
 } /* end class ActionAutoCritique */
 
 class ActionOpenDecisions extends UMLAction {
+
     public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	DesignIssuesDialog d =
 	    new DesignIssuesDialog(ProjectBrowser.getInstance());
@@ -415,7 +441,9 @@ class ActionOpenDecisions extends UMLAction {
 } /* end class ActionOpenDecisions */
 
 class ActionOpenGoals extends UMLAction {
+
     public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
 	d.show();
@@ -423,7 +451,9 @@ class ActionOpenGoals extends UMLAction {
 } /* end class ActionOpenGoals */
 
 class ActionOpenCritics extends UMLAction {
+
     public ActionOpenCritics() { super("action.browse-critics", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	CriticBrowserDialog dialog = new CriticBrowserDialog();
 	dialog.show();
@@ -431,20 +461,21 @@ class ActionOpenCritics extends UMLAction {
 
 } /* end class ActionOpenCritics */
 
-
 class ActionFlatToDo extends UMLAction {
+
     public ActionFlatToDo() { super("action.toggle-flat-view", NO_ICON); }
+
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser.getInstance().getTodoPane().toggleFlat();
     }
 } /* end class ActionFlatToDo */
 
 class ActionNewToDoItem extends UMLAction {
-    
+
     public ActionNewToDoItem() {
         super("action.new-todo-item");
     }
-    
+
     public void actionPerformed(ActionEvent ae) {       
         AddToDoItemDialog dialog = new AddToDoItemDialog();
         dialog.show();
@@ -452,8 +483,11 @@ class ActionNewToDoItem extends UMLAction {
 } /* end class ActionNewToDoItem */
 
 class ToDoItemAction extends UMLAction {
+
     Object _target = null;
+
     public ToDoItemAction(String name) { super(name, false, HAS_ICON); }
+
     public ToDoItemAction(String name, boolean hasIcon) {
 	super(name, false, hasIcon);
     }
@@ -463,6 +497,7 @@ class ToDoItemAction extends UMLAction {
 	    setEnabled(false);
 	    return;
 	}
+
 	_target = target;
 	setEnabled(shouldBeEnabled(target));
     }
@@ -473,7 +508,9 @@ class ToDoItemAction extends UMLAction {
 }
 
 class ActionResolve extends ToDoItemAction {
+
     public ActionResolve() { super("action.resolve-item"); }
+
     public void actionPerformed(ActionEvent ae) {
 	DismissToDoItemDialog dialog = new DismissToDoItemDialog();
 	dialog.setTarget(_target);
@@ -482,12 +519,15 @@ class ActionResolve extends ToDoItemAction {
 } /* end class ActionResolve */
 
 class ActionEmailExpert extends ToDoItemAction {
+
     public ActionEmailExpert() { super("action.send-email-to-expert"); }
+
     public void actionPerformed(ActionEvent ae) {
 	EmailExpertDialog dialog = new EmailExpertDialog();
 	dialog.setTarget(_target);
 	dialog.show();
     }
+
     /**
      * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
      */
@@ -498,13 +538,17 @@ class ActionEmailExpert extends ToDoItemAction {
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
+
     public ActionMoreInfo() { super("action.more-info", NO_ICON); }
 } /* end class ActionMoreInfo */
 
 class ActionSnooze extends ToDoItemAction {
+
     public ActionSnooze() { super("action.snooze-critic"); }
+
     public void actionPerformed(ActionEvent ae) {
 	if (!(_target instanceof ToDoItem)) return;
+
 	ToDoItem item = (ToDoItem) _target;
 	Poster p = item.getPoster();
 	p.snooze();
@@ -512,13 +556,15 @@ class ActionSnooze extends ToDoItemAction {
     }
 } /* end class ActionSnooze */
 
-
 ////////////////////////////////////////////////////////////////
 // general user interface actions
+
 /**
  * System information dialog. 
  */
+
 class ActionSystemInfo extends UMLAction {
+
     public ActionSystemInfo() { super("action.system-information", HAS_ICON); }
 
     public void actionPerformed(ActionEvent ae) {
@@ -526,28 +572,37 @@ class ActionSystemInfo extends UMLAction {
 	SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame, true);
 	Dimension siDim = sysInfoDialog.getSize();
 	Dimension pbDim = jFrame.getSize();
+
 	if ( siDim.width > pbDim.width / 2 ) {
 	    sysInfoDialog.setSize(pbDim.width / 2, siDim.height + 45);
 	} else {
 	    sysInfoDialog.setSize(siDim.width, siDim.height + 45);
 	}
+
 	sysInfoDialog.setLocationRelativeTo(jFrame);
 	sysInfoDialog.show();
     }
+
     public boolean shouldBeEnabled() { return true; }
+
 } /* end class ActionSystemInfo */
 
 /**
  * About ArgoUML dialog.
  */
 class ActionAboutArgoUML extends UMLAction {
+
     public ActionAboutArgoUML() { super("action.about-argouml", HAS_ICON); }
 
     public void actionPerformed(ActionEvent ae) {
 	JFrame jFrame = (JFrame) ActionUtilities.getActionRoot(ae);
 	AboutBox box = new AboutBox(jFrame, true);
+
 	box.setLocationRelativeTo(jFrame);
 	box.show();
     }
+
     public boolean shouldBeEnabled() { return true; }
+
 } /* end class ActionAboutArgoUML */
+
