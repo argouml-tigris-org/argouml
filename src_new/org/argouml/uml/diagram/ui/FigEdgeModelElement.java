@@ -254,9 +254,11 @@ public abstract class FigEdgeModelElement
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
             }
-            stuffPointAlongPerimeter(iconPos, p);
-            icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
-            iconPos += icon.getIconWidth() + gap;
+            if (icon != null) {
+                stuffPointAlongPerimeter(iconPos, p);
+                icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
+                iconPos += icon.getIconWidth() + gap;
+            }
         }
         items = list.elementsForOffender(this);
         size = items.size();
@@ -267,9 +269,11 @@ public abstract class FigEdgeModelElement
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
             }
-            stuffPointAlongPerimeter(iconPos, p);
-            icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
-            iconPos += icon.getIconWidth() + gap;
+            if (icon != null) {
+                stuffPointAlongPerimeter(iconPos, p);
+                icon.paintIcon(null, g, p.x + xOff, p.y + yOff);
+                iconPos += icon.getIconWidth() + gap;
+            }
         }
     }
 
