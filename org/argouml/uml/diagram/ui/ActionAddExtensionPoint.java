@@ -63,7 +63,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
      *   access method.</p>
      */
 
-    private static ActionAddExtensionPoint _singleton = null;
+    private static ActionAddExtensionPoint singleton = null;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -75,13 +75,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
     /**
      * <p>Constructor is private, since it cannot be called directly for a
      *   singleton. Make use of the access funtion.</p>
-     *
-     * <p><em>Warning</em>. There is a horrible piece of coding under all
-     *   this. The name of the icon MUST be the same as the tool tip with
-     *   spaces removed (Arrgh!). So we must have
-     *   <code>AddExtensionPoint.gif</code> somewhere.</p>
      */
-
     public ActionAddExtensionPoint() {
         super("New Extension Point");
     }
@@ -107,11 +101,11 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
 
         // Create the singleton if it does not exist, and then return it
 
-        if (_singleton == null) {
-            _singleton = new ActionAddExtensionPoint();
+        if (singleton == null) {
+            singleton = new ActionAddExtensionPoint();
         }
 
-        return _singleton;
+        return singleton;
     }
 
 
@@ -136,7 +130,8 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // invoke the superclass action method.
 
 	Object/*MExtensionPoint*/ ep =
-            UmlFactory.getFactory().getUseCases().buildExtensionPoint(/*(MUseCase)*/target);
+            UmlFactory.getFactory().getUseCases()
+                            .buildExtensionPoint(/*(MUseCase)*/target);
 
         TargetManager.getInstance().setTarget(ep);
 	super.actionPerformed(ae);
@@ -154,7 +149,8 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	Object         target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled() && (org.argouml.model.ModelFacade.isAUseCase(target));
+	return super.shouldBeEnabled() && (org.argouml.model.ModelFacade
+	                .isAUseCase(target));
     }
 
 } /* end class ActionAddExtensionPoint */
