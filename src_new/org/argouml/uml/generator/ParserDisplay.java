@@ -683,7 +683,7 @@ public class ParserDisplay extends Parser {
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of operation", s.length());
     } catch (ParseException pre) {
-	System.out.println(pre);
+	// System.out.println(pre);
 	throw pre;
     }
 /*
@@ -1092,7 +1092,7 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of attribute", s.length());
     } catch (ParseException pre) {
-	System.out.println(pre);
+	// System.out.println(pre);
 	throw pre;
     }
 /*
@@ -1930,8 +1930,11 @@ nextProp:
 		hasSlash = true;
 		hasColon = false;
 
-		if (base != null)
+		if (base != null) {
+		    if (bases == null)
+			bases = new Vector();
 		    bases.add(base);
+		}
 		base = null;
 	    } else if (":".equals(token)) {
 		hasColon = true;
@@ -1943,8 +1946,11 @@ nextProp:
 		    bases.add(base);
 		base = null;
 	    } else if (",".equals(token)) {
-		if (base != null)
+		if (base != null) {
+		    if (bases == null)
+			bases = new Vector();
 		    bases.add(base);
+		}
 		base = null;
 	    } else if (hasColon) {
 		if (base != null)
@@ -1973,8 +1979,11 @@ nextProp:
 	throw pre;
     }
 
-    if (base != null)
+    if (base != null) {
+	if (bases == null)
+	    bases = new Vector();
 	bases.add(base);
+    }
 
 // Needs-more-work: What to do about object name???
 //    if (name != null)
@@ -2033,8 +2042,10 @@ addBases:
    * <p>This syntax is compatible with the UML 1.3 specification.
    *
    * <p>Actually, only a subset of this syntax is currently supported, and
-   * some is not even planned to be supported. Also, not even all supported
-   * syntax is currently completely implemented.
+   * some is not even planned to be supported. The exceptions are intno, which
+   * allows a number possibly followed by a sequence of letters in the range
+   * 'a' - 'z', seqelem, which does not allow a recurrance, and message, which
+   * does allow one recurrance near seq2.
    *
    * @param mes The MMessage to apply any changes to.
    * @param s The String to parse.
@@ -2058,7 +2069,7 @@ addBases:
     boolean iterative = false;
     boolean mayDeleteExpr = false;
     boolean refindOperation = false;
-    MMessage root;
+    boolean hasPredecessors = false;
     int i;
 
     currentseq.add(null);
@@ -2082,6 +2093,11 @@ addBases:
 		    throw new ParseException("Predecessors cannot be " +
 			"qualified", st.getTokenIndex());
 		mustBeSeq = true;
+
+		if (guard != null)
+		    throw new ParseException("Messages cannot have several " +
+			"guard or iteration specifications",
+			st.getTokenIndex());
 
 		guard = "";
 		while (true) {
@@ -2169,6 +2185,7 @@ addBases:
 		    currentseq.add(null);
 		    currentseq.add(null);
 		}
+		hasPredecessors = true;
 	    } else if ("//".equals(token)) {
 		if (mustBePre)
 		    throw new ParseException("Predecessors cannot be " +
@@ -2201,6 +2218,7 @@ addBases:
 			currentseq.add(null);
 			currentseq.add(null);
 		    }
+		    hasPredecessors = true;
 		} else {
 		    if (varname == null && fname != null) {
 			varname = fname + token;
@@ -2222,15 +2240,20 @@ addBases:
 		    }
 		}
 	    } else if (currentseq == null) {
-		if (varname != null && fname == null) {
-		    varname += token;
-		} else if (fname == null || fname.length() == 0) {
-		    fname = token;
-		} else if (paramExpr == null && token.charAt(0) == '(') {
+		if (paramExpr == null && token.charAt(0) == '(') {
 		    if (token.charAt(token.length()-1) != ')')
 			throw new ParseException("Malformed parameters",
 			    st.getTokenIndex());
+		    if (fname == null || "".equals(fname))
+			throw new ParseException("Must be a function name " +
+			    "before the parameters", st.getTokenIndex());
+		    if (varname == null)
+			varname = "";
 		    paramExpr = token.substring(1, token.length() - 1);
+		} else if (varname != null && fname == null) {
+		    varname += token;
+		} else if (fname == null || fname.length() == 0) {
+		    fname = token;
 		} else {
 		    throw new ParseException("Unexpected token (" + token +
 			")", st.getTokenIndex());
@@ -2283,7 +2306,7 @@ addBases:
     } catch (NoSuchElementException nsee) {
 	throw new ParseException("Unexpected end of message", s.length());
     } catch (ParseException pre) {
-	System.out.println(pre);
+	// System.out.println(pre);
 	throw pre;
     }
 
@@ -2341,8 +2364,6 @@ System.out.println("guard: " + guard + " it: " + iterative + " pl: " + parallell
 System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 */
 
-    root = findMsgRoot(mes);
-
     if (mes.getAction() == null) {
 	MCallAction a = UmlFactory.getFactory().getCommonBehavior()
 		.createCallAction();
@@ -2378,8 +2399,7 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 	    if (idx >= 0)
 		fname = body.substring(idx + 1);
 	    else
-		fname = "";
-	    System.out.println("FName: " + body + " => " + fname);
+		fname = body;
 	} else
 	    fname = "";
     }
@@ -2395,9 +2415,24 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 		varname = body.substring(0, idx);
 	    else
 		varname = "";
-	    System.out.println("VarName: " + body + " => " + varname);
 	} else
 	    varname = "";
+    }
+
+    if (fname != null) {
+	String expr = fname.trim();
+	if (varname != null && varname.length() > 0)
+	    expr = varname.trim() + " := " + expr;
+
+	if (mes.getAction().getScript() == null ||
+	    !expr.equals(mes.getAction().getScript().getBody())) {
+	    MActionExpression e = UmlFactory.getFactory().getDataTypes()
+		.createActionExpression(
+			Notation.getDefaultNotation().toString(),
+			expr.trim());
+	    mes.getAction().setScript(e);
+	    refindOperation = true;
+	}
     }
 
     if (args != null) {
@@ -2430,39 +2465,8 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 	}
     }
 
-    if (fname != null) {
-	String expr = fname.trim();
-	if (varname != null && varname.length() > 0)
-	    expr = varname.trim() + " := " + expr;
-
-	if (mes.getAction().getScript() == null ||
-	    !expr.equals(mes.getAction().getScript().getBody())) {
-	    MActionExpression e = UmlFactory.getFactory().getDataTypes()
-		.createActionExpression(
-			Notation.getDefaultNotation().toString(),
-			expr.trim());
-	    mes.getAction().setScript(e);
-	    refindOperation = true;
-	}
-
-	if (refindOperation) {
-	    MClassifierRole role = mes.getReceiver();
-	    Vector ops = getOperation(role.getBases(), fname.trim(),
-		mes.getAction().getActualArguments().size());
-
-	    // Needs-more-work: Should someone choose one, if there are more
-	    // than one?
-	    if (mes.getAction() instanceof MCallAction) {
-		MCallAction a = (MCallAction) mes.getAction();
-		if (ops.size() > 0)
-		    a.setOperation((MOperation) ops.get(0));
-		else
-		    a.setOperation(null);
-	    }
-	}
-    }
-
     if (seqno != null) {
+	MMessage root;
 	// Find the preceding message, if any, on either end of the
 	// association.
 	String pname = "";
@@ -2519,6 +2523,10 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 	} else if (root == null && pname.length() > 0) {
 	    throw new ParseException("Cannot find the activator for the " +
 		"message", 0);
+	} else if (swapRoles && mes.getMessages4().size() > 0 &&
+	    mes.getSender() != mes.getReceiver()) {
+	    throw new ParseException("Cannot reverse the direction of a " +
+		"message that is an activator", 0);
 	} else {
 	    // Disconnect the message from the call graph
 	    Collection c = mes.getPredecessors();
@@ -2563,7 +2571,7 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 		while (it.hasNext())
 		    mes.addMessage3((MMessage) it.next());
 	    } else if (it.hasNext()) {
-		MMessage pre = walk((MMessage) it.next(), majval - 1);
+		MMessage pre = walk((MMessage) it.next(), majval - 1, false);
 		MMessage post = successor(pre, minval);
 		if (post != null) {
 		    post.removePredecessor(pre);
@@ -2571,6 +2579,23 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 		}
 		insertSuccessor(pre, mes, minval);
 	    }
+	    refindOperation = true;
+	}
+    }
+
+    if (fname != null && refindOperation) {
+	MClassifierRole role = mes.getReceiver();
+	Vector ops = getOperation(role.getBases(), fname.trim(),
+		mes.getAction().getActualArguments().size());
+
+	// Needs-more-work: Should someone choose one, if there are more
+	// than one?
+	if (mes.getAction() instanceof MCallAction) {
+	    MCallAction a = (MCallAction) mes.getAction();
+	    if (ops.size() > 0)
+		a.setOperation((MOperation) ops.get(0));
+	    else
+		a.setOperation(null);
 	}
     }
 
@@ -2578,8 +2603,114 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     // causes some problems that I've not found an easy way to handle yet,
     // d00mst. The specific problem is that the notation currently is
     // ambiguous on second message after a thread split.
+
+    // Why not implement it anyway? d00mst
+
+    if (hasPredecessors) {
+	Collection roots = findCandidateRoots(mes.getInteraction()
+						.getMessages(), null, null);
+	Vector pre = new Vector();
+	Iterator it;
+predfor:
+	for (i = 0; i < predecessors.size(); i++) {
+	    it = roots.iterator();
+	    while (it.hasNext()) {
+		MMessage msg = walkTree((MMessage) it.next(),
+				(Vector) predecessors.get(i));
+		if (msg != null && msg != mes) {
+		    if (isBadPreMsg(mes, msg)) {
+			throw new ParseException("One predecessor cannot be " +
+				"a predecessor to this message", 0);
+		    }
+		    pre.add(msg);
+		    continue predfor;
+		}
+	    }
+	    throw new ParseException("Could not find predecessor", 0);
+	}
+	GeneratorDisplay.MsgPtr ptr =
+		GeneratorDisplay.getInstance().new MsgPtr();
+	GeneratorDisplay.getInstance().recCountPredecessors(mes, ptr);
+	if (ptr.message != null && !pre.contains(ptr.message))
+	    pre.add(ptr.message);
+	mes.setPredecessors(pre);
+    }
   }
 
+  /**
+   * Examines the call tree from chld to see if ans is an ancestor.
+   */
+  private boolean isBadPreMsg(MMessage ans, MMessage chld) {
+    while (chld != null) {
+	if (ans == chld)
+	    return true;
+	if (isPredecessorMsg(ans, chld, 100))
+	    return true;
+	chld = chld.getActivator();
+    }
+    return false;
+  }
+
+  /**
+   * Examines the call tree from suc to see if pre is a predecessor.
+   * This function is recursive and md specifies the maximum level of
+   * recursions allowed.
+   */
+  private boolean isPredecessorMsg(MMessage pre, MMessage suc, int md) {
+    Iterator it = suc.getPredecessors().iterator();
+    while (it.hasNext()) {
+	MMessage m = (MMessage) it.next();
+	if (m == pre)
+	    return true;
+	if (md > 0 && isPredecessorMsg(pre, m, md-1))
+	    return true;
+    }
+    return false;
+  }
+
+  /**
+   * Walks a call tree from a root node following the directions given in path
+   * to a destination node. If the destination node cannot be reached, then
+   * null is returned.
+   *
+   * @param root The root of the call tree.
+   * @param path The path to walk in the call tree.
+   * @return The message at the end of path, or null.
+   */
+  private MMessage walkTree(MMessage root, Vector path) {
+    int i;
+    for (i = 0; i + 1 < path.size(); i+= 2) {
+	int bv = (path.get(i) != null ?
+		Math.max(((Integer)path.get(i)).intValue()-1, 0) : 0);
+	int sv = (path.get(i+1) != null ?
+		Math.max(((Integer)path.get(i+1)).intValue(), 0) : 0);
+	root = walk(root, bv-1, true);
+	if (root == null) {
+	    return null;
+	}
+	if (bv > 0) {
+	    root = successor(root, sv);
+	    if (root == null) {
+		return null;
+	    }
+	}
+	if (i + 3 < path.size()) {
+	    Iterator it = findCandidateRoots(root.getMessages4(), root, null)
+			.iterator();
+	    // Things are strange if there are more than one candidate root,
+	    // it has no obvious interpretation in terms of a call tree.
+	    if (!it.hasNext())
+		return null;
+	    root = (MMessage) it.next();
+	}
+    }
+    return root;
+  }
+
+  /**
+   * Examines a collection to see if any message has the given message
+   * as an activator.
+   */
   private boolean hasMsgWithActivator(MClassifierRole r, MMessage m) {
     Iterator it = r.getMessages2().iterator();
     while (it.hasNext())
@@ -2588,6 +2719,9 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return false;
   }
 
+  /**
+   * Inserts message s as the p'th successor of message m.
+   */
   private void insertSuccessor(MMessage m, MMessage s, int p) {
     Vector v = new Vector(m.getMessages3());
     if (v.size() > p)
@@ -2597,26 +2731,48 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     m.setMessages3(v);
   }
 
+  /**
+   * Finds the steps'th successor of message r in the sense that it is a
+   * direct successor of r. Returns null if r has fewer successors.
+   */
   private MMessage successor(MMessage r, int steps) {
     Iterator it = r.getMessages3().iterator();
-    while (it.hasNext() && steps > 0)
+    while (it.hasNext() && steps > 0) {
 	it.next();
+	steps--;
+    }
     if (it.hasNext())
 	return (MMessage) it.next();
     return null;
   }
 
-  private MMessage walk(MMessage r, int steps) {
+  /**
+   * Finds the steps'th successor of r in the sense that it is a successor
+   * of a successor of r (steps times). The first successor with the same
+   * activator as r is used in each step. If there are not enough successors,
+   * then struct determines the result. If struct is true, then null is
+   * returned, otherwise the last successor found.
+   */
+  private MMessage walk(MMessage r, int steps, boolean strict) {
+    MMessage act = r.getActivator();
     while (steps > 0) {
 	Iterator it = r.getMessages3().iterator();
-	if (!it.hasNext())
-	    return r;
-	r = (MMessage) it.next();
+	do {
+	    if (!it.hasNext())
+		return (strict ? null : r);
+	    r = (MMessage) it.next();
+	} while (r.getActivator() != act);
 	steps--;
     }
     return r;
   }
 
+  /**
+   * Finds the root candidates in a collection c, ie the messages in c that
+   * has the activator a (may be null) and has no predecessor with the same
+   * activator. If veto isn't null, then the message in veto will not be
+   * included in the Collection of candidates.
+   */
   private Collection findCandidateRoots(Collection c, MMessage a,
 		MMessage veto) {
     Iterator it = c.iterator();
@@ -2624,6 +2780,8 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     while (it.hasNext()) {
 	MMessage m = (MMessage) it.next();
 	if (m == veto)
+	    continue;
+	if (m.getActivator() != a)
 	    continue;
 	Iterator it2 = m.getPredecessors().iterator();
 	boolean candidate = true;
@@ -2638,6 +2796,9 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return v;
   }
 
+  /**
+   * Finds the messages in Collection c that has message a as activator.
+   */
   private Collection filterWithActivator(Collection c, MMessage a) {
     Iterator it = c.iterator();
     Vector v = new Vector();
@@ -2649,6 +2810,10 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return v;
   }
 
+  /**
+   * Finds the message in ClassifierRole r that has the message number
+   * written in n. If it isn't found, null is returned.
+   */
   private MMessage findMsg(MClassifierRole r, String n) {
     Collection c = r.getMessages1();
     Iterator it = c.iterator();
@@ -2662,10 +2827,19 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return null;
   }
 
+  /**
+   * Compares two message numbers with each other to see if they are equal,
+   * in the sense that they refer to the same position in a call tree.
+   */
   private boolean compareMsgNumbers(String n1, String n2) {
     return isMsgNumberStartOf(n1, n2) && isMsgNumberStartOf(n2, n1);
   }
 
+  /**
+   * Compares two message numbers n1, n2 with each other to determine if n1
+   * specifies a the same position as n2 in a call tree or n1 specifies a
+   * position that is a father of the position specified by n2.
+   */
   private boolean isMsgNumberStartOf(String n1, String n2) {
     int i, j, len, jlen;
     len = n1.length();
@@ -2726,6 +2900,11 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return true;
   }
 
+  /**
+   * Finds the operations in Collection c with name name and params number
+   * of parameters. If no operation is found, one is created. The applicable
+   * operations are returned.
+   */
   private Vector getOperation(Collection c, String name, int params) {
     Vector options = new Vector();
     Iterator it;
@@ -2776,6 +2955,9 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return options;
   }
 
+  /**
+   * Counts the number of parameters that are not return values.
+   */
   private int countParameters(MBehavioralFeature bf) {
     Collection c = bf.getParameters();
     Iterator it = c.iterator();
@@ -2791,6 +2973,9 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return count;
   }
 
+  /**
+   * Parses a message order specification.
+   */
   private static int parseMsgOrder(String s) {
     int i, t;
     int v = 0;
@@ -2807,6 +2992,9 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
     return v;
   }
 
+  /**
+   * Finds the break between message number and (possibly) message order.
+   */
   private static int findMsgOrderBreak(String s) {
     int i, t;
     int v = 0;
@@ -2818,40 +3006,6 @@ System.out.println(varname + " := " + fname + " ( " + paramExpr + " )");
 	    break;
     }
     return i;
-  }
-
-  private MMessage findMsgRoot(MMessage m) {
-    Collection c;
-    Iterator it;
-    MMessage root = null;
-
-    while (true) {
-	if (root != null)
-	    c = root.getMessages4();
-	else
-	    c = m.getMessages4();
-	it = c.iterator();
-	if (!it.hasNext())
-	    break;
-	root = (MMessage) it.next();
-	if (root == null)
-	    return null;
-    }
-
-    while (true) {
-	if (root != null)
-	    c = root.getPredecessors();
-	else
-	    c = m.getPredecessors();
-	it = c.iterator();
-	if (!it.hasNext())
-	    break;
-	root = (MMessage) it.next();
-	if (root == null)
-	    return null;
-    }
-
-    return root;
   }
 
   /** Parse a line of the form: "name: action" */
