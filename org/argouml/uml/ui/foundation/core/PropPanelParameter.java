@@ -28,6 +28,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -55,13 +56,13 @@ public class PropPanelParameter extends PropPanelModelElement {
 	      "Parameter",
 	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
-//        Class[] namesToWatch = {
-//	    (Class) ModelFacade.STEREOTYPE,
-//	    (Class) ModelFacade.OPERATION,
-//	    (Class) ModelFacade.PARAMETER,
-//	    (Class) ModelFacade.CLASSIFIER 
-//	};
-//        setNameEventListening(namesToWatch);
+        Class[] namesToWatch = {
+	    (Class) ModelFacade.STEREOTYPE,
+	    (Class) ModelFacade.OPERATION,
+	    (Class) ModelFacade.PARAMETER,
+	    (Class) ModelFacade.CLASSIFIER 
+	};
+        setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"), 
                 getNameTextField());
