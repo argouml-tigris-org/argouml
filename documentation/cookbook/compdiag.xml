@@ -15,7 +15,7 @@ The contents of the diagrams and model is modifiable.
 TODO: Notation!
 </para>
       <para>
-The Diagrams will be located in <classname>org.argouml.???</classname>.
+The Diagrams will be located in <classname>org.argouml.uml.diagram</classname>.
 </para>
       <para>
 The Diagrams is a Layer 2 subsystem. <xref linkend="layer2"></xref>.
@@ -99,7 +99,10 @@ To add a new element to a diagram, two main things have to be done.
 	  <listitem>
 	    <para>
 Create new Fig classes to represent the element on the
-diagram and add them to the graph model and renderer.
+diagram and add them to the graph model 
+(org.argouml.uml.diagram.xxxx.XxxxDiagramGraphModel.java)
+and renderer
+(org.argouml.uml.diagram.xxxx.ui.XxxxDiagramRenderer.java).
 </para>
 	  </listitem>
 
@@ -170,7 +173,7 @@ Use Case nodes.
 
 	    <para><programlisting>
 protected static Action _actionUseCase =
-    new CmdCreateNode(MUseCaseImpl.class, "UseCase");
+    new CmdCreateNode(ModelFacade.USE_CASE, "UseCase");
 </programlisting>
 </para>
 
@@ -180,7 +183,7 @@ second a textual tool tip.
 </para>
 
 	    <para>For creating associations we have:</para>
-
+<!-- TODO: Update this! It has been changed. -->
 	    <para><programlisting>
 protected static Action _actionAssoc =
       new CmdSetMode(ModeCreatePolyEdge.class,
@@ -229,11 +232,11 @@ example the use case diagram graph model is in
 </para>
 
 	    <para>
-The graph model is defined as a child of the GEF class
+The graph model is defined as 
+<classname>UMLMutableGraphSupport</classname>,
+a child of the GEF class
 <classname>MutableGraphSupport</classname>, and should implement
-<classname>MutableGraphModel</classname> (GEF),
-<classname>VetoableChangeListener</classname> (Java) and
-<classname>MElementListener</classname> (NSUML).
+<classname>MutableGraphModel</classname> (GEF).
 </para>
 	</sect3>
 
