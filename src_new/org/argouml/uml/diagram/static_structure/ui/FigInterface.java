@@ -66,7 +66,7 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 /** Class to display graphics for a UML Interface in a diagram. */
 
@@ -267,27 +267,27 @@ public class FigInterface extends FigNodeModelElement {
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
         // Block added by BobTarling 7-Jan-2001
-        Object mclass = /*(MInterface)*/ getOwner();
+        Object minterface = /*(MInterface)*/ getOwner();
         ArgoJMenu modifierMenu = new ArgoJMenu("Modifiers");
 
         modifierMenu.addCheckItem(
 		new ActionModifier("Public",
 				   "visibility", "getVisibility",
 				   "setVisibility",
-				   (MClass)mclass,
+				   (MInterface)minterface,
 				   (Class)ModelFacade.VISIBILITYKIND,
 				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
 				   "isAbstract", "isAbstract", "setAbstract",
-				   (MClass)mclass));
+				   (MInterface)minterface));
         modifierMenu.addCheckItem(
 		new ActionModifier("Leaf", "isLeaf", "isLeaf", "setLeaf",
-				   (MClass)mclass));
+				   (MInterface)minterface));
         modifierMenu.addCheckItem(
 		new ActionModifier("Root",
-				   "isRoot", "isRoot", "setRoot", (MClass)mclass));
+				   "isRoot", "isRoot", "setRoot", (MInterface)minterface));
 
         popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 1);
         // end of block
