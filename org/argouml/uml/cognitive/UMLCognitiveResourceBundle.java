@@ -22,6 +22,11 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
+// File: UMLCognitiveResourceBundle.java
+// Classes: UMLCognitiveResourceBundle
+// Original Author: Curt Arnold
+// $Id$
+
 // 4 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed description of
 // CrConstructorNeeded, CrConsiderSingleton and CrSingletonViolated.
 
@@ -33,6 +38,10 @@
 
 // 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Further fix to
 // CrOperNameConflict to make clear return parameters are ignored.
+
+// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Description of
+// CrCrossNamespaceAssoc, CrDupRoleName, CrMultipleAgg and CrNWayAgg given in
+// more detail.
 
 
 package org.argouml.uml.cognitive;
@@ -92,18 +101,50 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Remove Circular Composition" },
         { "CrCircularComposition_desc" ,
                 "Composition relationships (black diamonds) cannot have cycles. \n\nA legal aggregation hierarchy is needed for code generation and the correctness of the design. \n\nTo fix this, use the \"Next>\" button, or manually select one of the  associations in the cycle and remove it or change its aggregation to something other than composite." },
+
+        // Updated following bug fix
+
         { "CrCrossNamespaceAssoc_head" ,
-                "Classifier not in Namespace of its Association" },
+          "Classifier not in Namespace of its Association" },
+
         { "CrCrossNamespaceAssoc_desc" ,
-                "Each Class or Interface involved in an Association should be in the Namespace of the Association." },
+          "Each Class, Interface or other Classifier involved in an " +
+          "Association should be in the Namespace of the Association.\n" +
+          "\n" +
+          "If this is not the case, then there will be no way for the " +
+          "Classes, Interfaces or other Classifiers to name the reference " +
+          "to each other using the Association.\n" +
+          "\n" +
+          "Note that this critic currently does not interpret hierarchical " +
+          "namespaces. It will trigger if the final components of the " +
+          "namespaces are different, even if they share a common root, and " +
+          "this critic should be interpreted in the light of this.\n" +
+          "\n" +
+          "To fix this, delete the association, and recreate it in a " +
+          "diagram, whose namespace includes the classes, interfaces and " +
+          "classifiers involved." },
+
         { "CrDupParamName_head" ,
                 "Duplicate Parameter Name" },
         { "CrDupParamName_desc" ,
                 "Each parameter of an operation must have a unique name. \n\nClean and unambigous naming is needed for code generation and to achieve clear and maintainable designs.\n\nTo fix this, use the \"Next>\" button, or manually rename one of the parameters to this operation." },
+
+        // Updated following bug fix
+
         { "CrDupRoleNames_head" ,
-                "Change <ocl>self</ocl> Role Names" },
+          "Duplicate end (role) names for <ocl>self</ocl>" },
+
         { "CrDupRoleNames_desc" ,
-                "Association <ocl>self</ocl> has two roles with conflicting names. \n\nClear and unambiguous naming is key to code generation and the understandability and maintainability of the design. \n\nTo fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> and use the Properties tab to change the role names." },
+          "Association <ocl>self</ocl> has two (or more) roles with the " +
+          "same name.\n" +
+          "\n" +
+          "Clear and unambiguous naming is key to code generation and the " +
+          "understandability and maintainability of the design.\n" +
+          "\n" +
+          "To fix this manually select <ocl>self</ocl> and use the " +
+          "Properties tab to change one or more of the conflicting role " +
+          "names." },
+
         { "CrFinalSubclassed_head" ,
                 "Remove final keyword or remove subclasses" },
         { "CrFinalSubclassed_desc" ,
@@ -124,14 +165,39 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Interfaces may only have operations" },
         { "CrInterfaceOperOnly_desc" ,
                 "Interfaces are intended to specify the set of operations that \nother classes must implement.  They do not implement these \noperations themselves, and cannot have attribues. \n\nA well-designed set of interfaces is a good way to define the \npossible extensions of a class framework. \n\nTo fix this, use the \"Next>\" button, or manually select the  \ninterface and use the Properties tab to remove all attributes." },
+
+        // Fixed to go with updated critic
+
         { "CrMultipleAgg_head" ,
-                "Multiple Aggregate Roles" },
+          "Two aggregate ends (roles) in binary Association" },
+
         { "CrMultipleAgg_desc" ,
-                "Only one role of an Association can be aggregate or composite.\n\nA clear and consistent is-part-of hierarchy is a key to design clarity, \nmanageable object storage, and the implementation of recursive methods.\nTo fix this, select the Association and set some of its role \naggregations to None." },
+          "Only one end (role) of a binary Association can be aggregate or " +
+          "composite.\n" +
+          "\n" +
+          "Aggregation and composition are used to indicate whole-part " +
+          "relationships and by defintion, the \"part\" end cannot be " +
+          "aggregate.\n" +
+          "\n" +
+          "To fix this, select \"Next>\" to use the wizard, or manually " +
+          "select the Association and set some of its role aggregations to " +
+          "None." },
+
+        // Fixed to go with updated critic
+
         { "CrNWayAgg_head" ,
-                "Aggregate Role in N-way Association" },
+          "Aggregate end (role) in 3-way (or more) Association" },
+
         { "CrNWayAgg_desc" ,
-                "Three-way (or more) Associations can not have aggregate ends.\n\nA clear and consistent is-part-of hierarchy is a key to design clarity, \nmanagable object storage, and the implementation of recursive methods.\nTo fix this, use the \"Next>\" button, or manually select the Association \nand set all of its role aggregations to None." },
+          "Three-way (or more) Associations can not have aggregate ends " +
+          "(roles).\n" +
+          "\n" +
+          "Aggregation and composition are used to indicated whole-part " +
+          "relationships, and by definition can only apply to binary " +
+          "associations between artifacts.\n" +
+          "\n" +
+          "To fix this, manually select the Association and set the " +
+          "aggregation of each of its ends (roles) to None." },
 
         // Updated to ensure reference is to the Associaton between Class and
         // Interface.
@@ -213,8 +279,6 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Import Parameter Type into Class" },
         { "CrParamTypeNotImported_desc" ,
                 "The type of each operation parameter must be visible and imported into the class that owns the operation.\n\nImporting classes is needed for code generation. Good modularization of classes into packages is key to an understandable design.\n\nTo fix this, use the \"Next>\" button, or manually add an import to the class that owns this operation." },
-        { "CrSignatureConflict_head" ,
-                "Resolve Signature Conflict" },
         { "CrUselessAbstract_head" ,
                 "Define Concrete (Sub)Class" },
         { "CrUselessAbstract_desc" ,
