@@ -48,9 +48,11 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final MVisibilityKind VISIBILITIES[] = {
-    MVisibilityKind.PUBLIC };
-	// PACKAGE in nsuml?
+
+  public static final String VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
+    MVisibilityKind.PROTECTED.getName() };
+	// what about PACKAGE in nsuml?
   
   ////////////////////////////////////////////////////////////////
   // instance vars
@@ -109,7 +111,8 @@ implements DocumentListener, ItemListener {
     MInterface inf = (MInterface) t;
 
     MVisibilityKind vk = inf.getVisibility();
-    _visField.setSelectedItem(vk);
+    if (vk == null) vk = MVisibilityKind.PUBLIC;
+    _visField.setSelectedItem(vk.getName());
 
     Vector gens = new Vector(inf.getGeneralizations());
     MGeneralization gen = null;
@@ -148,7 +151,7 @@ implements DocumentListener, ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MVisibilityKind vk = MVisibilityKind.forName((String)_visField.getSelectedItem());
     MInterface inf = (MInterface) _target;
     inf.setVisibility(vk);
   }

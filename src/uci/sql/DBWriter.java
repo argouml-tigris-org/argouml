@@ -3,6 +3,14 @@ package uci.sql;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.tree.*;
+import javax.swing.text.*;
+import javax.swing.table.*;
+import javax.swing.border.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
+
 
 import com.sun.java.util.collections.*;
 
@@ -44,6 +52,7 @@ public class DBWriter
 	    props.load(is);
 	}	
 	catch (IOException e) {
+	    errorMessage("Could not load DB properties from /db.ini", e);
 	    System.out.println("Could not load DB properties from /db.ini");
 	    System.out.println(e);
 	}
@@ -69,6 +78,11 @@ public class DBWriter
 	    System.out.println(e);
 	}
     }
+
+
+//     private void errorMessage(String msg, Exception e) {
+// 	JOptionPane.showMessageDialog(null, null, msg, JOptionPane.ERROR_MESSAGE);
+//     }
 
 	/**
 	 * This method is called from uci.uml.ui.ActionStoreProjectToDb to store the current namespace (which should be a MModel) into the database.

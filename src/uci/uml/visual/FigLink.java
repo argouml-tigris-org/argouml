@@ -22,7 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 
-
+  
 // File: FigLink.java
 // Classes: FigLink
 // Original Author: your email address here

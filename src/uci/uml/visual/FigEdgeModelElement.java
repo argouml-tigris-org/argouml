@@ -42,6 +42,7 @@ import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -50,7 +51,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
  *  look like arcs and that have editiable names. */
 
 public abstract class FigEdgeModelElement extends FigEdgePoly
-implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  { 
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener  { 
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -381,6 +382,29 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     modelChanged();
   }
 
+
+	public void propertySet(MElementEvent mee) {
+	    //if (_group != null) _group.propertySet(mee);
+	    modelChanged();
+	    damage();
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	    //if (_group != null) _group.listRoleItemSet(mee);
+	}
+	public void recovered(MElementEvent mee) {
+	    //if (_group != null) _group.recovered(mee);
+	}
+	public void removed(MElementEvent mee) {
+		//System.out.println("deleting: "+this + mee);
+	    //if (_group != null) _group.removed(mee);
+	    this.delete();
+	}
+	public void roleAdded(MElementEvent mee) {
+	    //if (_group != null) _group.roleAdded(mee);
+	}
+	public void roleRemoved(MElementEvent mee) {
+	    //if (_group != null) _group.roleRemoved(mee);
+	}
 
 
 } /* end class FigEdgeModelElement */

@@ -48,7 +48,7 @@ import uci.graph.*;
  *  look of FigNodes on NetNodes. */
 
 public class Fig
-implements Cloneable, java.io.Serializable, PropertyChangeListener, MElementListener, PopupGenerator  {
+implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -862,30 +862,6 @@ implements Cloneable, java.io.Serializable, PropertyChangeListener, MElementList
   public void propertyChange(PropertyChangeEvent pce) {
     if (_group != null) _group.propertyChange(pce);
   }
-
-
-
-	public void propertySet(MElementEvent mee) {
-		if (_group != null) _group.propertySet(mee);
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-		if (_group != null) _group.listRoleItemSet(mee);
-	}
-	public void recovered(MElementEvent mee) {
-		if (_group != null) _group.recovered(mee);
-	}
-	public void removed(MElementEvent mee) {
-		//System.out.println("deleting: "+this + mee);
-		if (_group != null) _group.removed(mee);
-		this.delete();
-	}
-	public void roleAdded(MElementEvent mee) {
-		if (_group != null) _group.roleAdded(mee);
-	}
-	public void roleRemoved(MElementEvent mee) {
-		if (_group != null) _group.roleRemoved(mee);
-	}
-
 
   public void preSave() { }
   public void postSave() { }

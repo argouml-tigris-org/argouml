@@ -53,7 +53,7 @@ import ru.novosoft.uml.foundation.data_types.*;
  *  resized. */
 
 public abstract class FigNodeModelElement extends FigNode
-implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
+implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener, MElementListener  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -416,6 +416,30 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
   }
 
 
+	public void propertySet(MElementEvent mee) {
+	    //if (_group != null) _group.propertySet(mee);
+	    modelChanged();
+	    damage();
+	}
+	public void listRoleItemSet(MElementEvent mee) {
+	    //if (_group != null) _group.listRoleItemSet(mee);
+	}
+	public void recovered(MElementEvent mee) {
+	    //if (_group != null) _group.recovered(mee);
+	}
+	public void removed(MElementEvent mee) {
+		//System.out.println("deleting: "+this + mee);
+	    //if (_group != null) _group.removed(mee);
+	    this.delete();
+	}
+	public void roleAdded(MElementEvent mee) {
+	    //if (_group != null) _group.roleAdded(mee);
+	}
+	public void roleRemoved(MElementEvent mee) {
+	    //if (_group != null) _group.roleRemoved(mee);
+	}
+
+
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     super.setOwner(own);
@@ -427,12 +451,4 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     _readyToEdit = true;
     updateBounds();
   }
-
-
-
-	public void propertySet(MElementEvent mee) {
-	    super.propertySet(mee);
-		modelChanged();
-	}
-
 } /* end class FigNodeModelElement */

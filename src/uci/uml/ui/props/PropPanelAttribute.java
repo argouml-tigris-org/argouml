@@ -57,13 +57,13 @@ implements DocumentListener, ItemListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final MVisibilityKind VISIBILITIES[] = {
-    MVisibilityKind.PUBLIC, MVisibilityKind.PRIVATE,
-    MVisibilityKind.PROTECTED};
+  public static final String VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
+    MVisibilityKind.PROTECTED.getName() };
 	// what about PACKAGE in nsuml?
 
   public static final String ATTRKEYWORDS[] = {
-    "None", "transient", "static", "final", "static final"};
+    "none", "transient", "static", "final", "static final"};
 
 
   public static Vector OFFERED_TYPES = null;
@@ -166,7 +166,7 @@ implements DocumentListener, ItemListener {
       _typeField.setModel(new DefaultComboBoxModel(Converter.convert(offeredTypes)));
 
     MVisibilityKind vk = attr.getVisibility();
-    _visField.setSelectedItem(vk);
+    _visField.setSelectedItem(vk.getName());
 
     MScopeKind sk = attr.getOwnerScope();
     MChangeableKind ck = attr.getChangeability();
@@ -194,7 +194,7 @@ implements DocumentListener, ItemListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MVisibilityKind vk = MVisibilityKind.forName((String)_visField.getSelectedItem());
     MAttribute attr = (MAttribute) _target;
 	attr.setVisibility(vk);
   }
@@ -242,10 +242,11 @@ implements DocumentListener, ItemListener {
 
     if (sel instanceof MClassifier)
       cls = (MClassifier) sel;
-    else
-      cls = new MClassifierImpl();
+    else {
+	cls = new MClassifierImpl();
 	cls.setName(sel.toString());
-	attr.setType(cls);
+    }
+    attr.setType(cls);
   }
 
 
@@ -253,7 +254,7 @@ implements DocumentListener, ItemListener {
     if (_target == null) return;
     String initStr = _initText.getText();
     MAttribute attr = (MAttribute) _target;
-	MExpression exp = new MExpression("Java", initStr);
+	MExpression exp = new MExpression("", initStr);
 	attr.setInitialValue(exp);
   }
 

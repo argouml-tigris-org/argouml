@@ -57,9 +57,13 @@ implements DocumentListener, ItemListener, ChangeListener {
     MMultiplicity.M1_1, MMultiplicity.M0_1,
     MMultiplicity.M1_N, MMultiplicity.M0_N };
 
-  public static final MAggregationKind AGGREGATES[] = {
-    MAggregationKind.NONE, MAggregationKind.AGGREGATE,
-    MAggregationKind.COMPOSITE };
+//   public static final MAggregationKind AGGREGATES[] = {
+//     MAggregationKind.NONE, MAggregationKind.AGGREGATE,
+//     MAggregationKind.COMPOSITE };
+  
+  public static final String AGGREGATES[] = {
+    MAggregationKind.NONE.getName(), MAggregationKind.AGGREGATE.getName(),
+    MAggregationKind.COMPOSITE.getName() };
   
   
   ////////////////////////////////////////////////////////////////
@@ -205,9 +209,9 @@ implements DocumentListener, ItemListener, ChangeListener {
     MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
 
     String roleAStr = endA.getName();
-    if (roleAStr ==null) roleAStr = "(anon)";
+    if (roleAStr ==null) roleAStr = "";
     String roleBStr = endB.getName();
-    if (roleBStr == null) roleBStr = "(anon)";
+    if (roleBStr == null) roleBStr = "";
     
 //     MVisibilityKind vkA = endA.getVisibility();
 //     _visAField.setSelectedItem(vkA);
@@ -227,8 +231,10 @@ implements DocumentListener, ItemListener, ChangeListener {
     _roleBField.setText(roleBStr);
     _multAField.setSelectedItem(mA);
     _multBField.setSelectedItem(mB);
-    _aggAField.setSelectedItem(akA);
-    _aggBField.setSelectedItem(akB);
+    if (akA != null)
+	_aggAField.setSelectedItem(akA.getName());
+    if (akB != null)
+	_aggBField.setSelectedItem(akB.getName());
     _navAField.getModel().setSelected(navA);
     _navBField.getModel().setSelected(navB);
   }
@@ -247,7 +253,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     return type.getName();
   }
   public String getDestLabel() {
-    if (!(_target instanceof MAssociation)) return "non AssociationEnd";
+    if (!(_target instanceof MAssociation)) return "non Association";
     return "Classifier:";
   }
   public String getDestValue() {
@@ -274,38 +280,41 @@ implements DocumentListener, ItemListener, ChangeListener {
 
   public void setMult() {
     if (_target == null) return;
-    MMultiplicity mA, mB;
+    MMultiplicity mA = null;
+    MMultiplicity mB = null;
     Object mAs = _multAField.getSelectedItem();
     Object mBs = _multBField.getSelectedItem();
-
-    if (mAs == null || mBs == null) return;
-
-    // will be a String if I allow editing, needs-more-work: implement
-    // parsing of multiplicities
-    if (mAs instanceof String)
-      mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
-    if (mBs instanceof String)
-      mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
-
-    if (mAs instanceof MMultiplicity) mA = (MMultiplicity) mAs;
-    else mA = MMultiplicity.M1_1; // needs-more-work: parse
-
-    if (mBs instanceof MMultiplicity) mB = (MMultiplicity) mBs;
-    else mB = MMultiplicity.M1_1; // needs-more-work: parse
 
     MAssociation asc = (MAssociation) _target;
     Vector conns = new Vector(asc.getConnections());
     if (conns == null || conns.size() != 2) return;
-    MAssociationEnd endA = (MAssociationEnd) conns.elementAt(0);
-    MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
+
+    if (mAs != null) {
+    // will be a String if I allow editing, needs-more-work: implement
+    // parsing of multiplicities
+	if (mAs instanceof String)
+	    mAs = ParserDisplay.SINGLETON.parseMultiplicity((String)mAs);
+
+	if (mAs instanceof MMultiplicity) mA = (MMultiplicity) mAs;
+	else mA = MMultiplicity.M1_1; // needs-more-work: parse
+	MAssociationEnd endA = (MAssociationEnd) conns.elementAt(0);
 	endA.setMultiplicity(mA);
+    }
+
+    if (mBs != null) {
+	if (mBs instanceof String)
+	    mBs = ParserDisplay.SINGLETON.parseMultiplicity((String)mBs);
+	if (mBs instanceof MMultiplicity) mB = (MMultiplicity) mBs;
+	else mB = MMultiplicity.M1_1; // needs-more-work: parse
+	MAssociationEnd endB = (MAssociationEnd) conns.elementAt(1);
 	endB.setMultiplicity(mB);
+    }
   }
 
   public void setAgg() {
     if (_target == null) return;
-    MAggregationKind aggA = (MAggregationKind) _aggAField.getSelectedItem();
-    MAggregationKind aggB = (MAggregationKind) _aggBField.getSelectedItem();
+    MAggregationKind aggA = MAggregationKind.forName( (String)_aggAField.getSelectedItem());
+    MAggregationKind aggB = MAggregationKind.forName( (String)_aggBField.getSelectedItem());
     //if (aggA == null || aggB == null) return;
     MAssociation asc = (MAssociation) _target;
     Vector conns = new Vector(asc.getConnections());

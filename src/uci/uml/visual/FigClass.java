@@ -93,16 +93,26 @@ public class FigClass extends FigNodeWithCompartments {
 
   public String placeString() { return "new Class"; }
 
+//   public Object clone() {
+//     FigClass figClone = (FigClass) super.clone();
+//     Vector v = figClone.getFigs();
+//     figClone._bigPort = (FigRect) v.elementAt(0);
+//     figClone._name = (FigText) v.elementAt(1);
+//     figClone._attr = (FigCompartment) v.elementAt(2);
+//     figClone._oper = (FigCompartment) v.elementAt(3);
+//     return figClone;
+//   }
+
   public Object clone() {
-    FigClass figClone = (FigClass) super.clone();
-    Vector v = figClone.getFigs();
-    figClone._bigPort = (FigRect) v.elementAt(0);
-    figClone._name = (FigText) v.elementAt(1);
-    figClone._attr = (FigCompartment) v.elementAt(2);
-    figClone._oper = (FigCompartment) v.elementAt(3);
+    FigClass figClone = new FigClass();
+    figClone.setOwner(getOwner());
+    figClone.setAttributeVisible(isAttributeVisible());
+    figClone.setOperationVisible(isOperationVisible());
+    Rectangle r = getBounds();
+    figClone.setBounds(r.x, r.y, r.width, r.height);
+    figClone.modelChanged();
     return figClone;
   }
-
   ////////////////////////////////////////////////////////////////
   // accessors
 

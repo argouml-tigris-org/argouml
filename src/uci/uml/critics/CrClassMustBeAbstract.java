@@ -60,7 +60,8 @@ public class CrClassMustBeAbstract extends CrUML {
     if (!(dm instanceof MClass)) return NO_PROBLEM;
     MClass cls = (MClass) dm;
     if (!cls.isAbstract()) return NO_PROBLEM;
-    Collection beh = getInheritedBehavioralFeatures(cls);
+    //    Collection beh = getInheritedBehavioralFeatures(cls);
+    Collection beh = MMUtil.SINGLETON.getOperationsInh(cls);
     Iterator enum = beh.iterator();
     while (enum.hasNext()) {
       MBehavioralFeature bf = (MBehavioralFeature) enum.next();
@@ -69,21 +70,6 @@ public class CrClassMustBeAbstract extends CrUML {
     }
     return NO_PROBLEM;
   }
-  private Collection getInheritedBehavioralFeatures(MClassifier cls)
-  {
-     Collection res = new Vector();
-     Collection features = MMUtil.SINGLETON.getOperations(cls);
-	 res.add(features);
-	 Collection inh = cls.getGeneralizations();
-     for (Iterator iter = inh.iterator(); iter.hasNext();) {
-       MGeneralization gen = (MGeneralization)iter.next();
-       if (gen.getParent() instanceof MClassifier) {
-         Collection superops = getInheritedBehavioralFeatures((MClassifier)gen.getParent());
-         res.addAll(superops);
-       };
-     };
-     return res;
-  };
 
 } /* end class CrClassMustBeAbstract.java */
 

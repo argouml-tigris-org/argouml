@@ -442,6 +442,8 @@ private void handlesinglepixel(int x, int y, int pixel) {
       p.println("(" + buf.toString() + ") show");
   }
 
+    public void drawString(java.text.AttributedCharacterIterator aci, int i1, int i2) {}
+
   public void comment(String cmt) {
       p.println("% " + cmt);
   }

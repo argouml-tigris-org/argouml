@@ -91,6 +91,27 @@ public class FigAssociation extends FigEdgeModelElement {
     setOwner(edge);
   }
 
+  public void setOwner(Object own) {
+    Object oldOwner = getOwner();
+    super.setOwner(own);
+    if (oldOwner instanceof MAssociation) {
+	MAssociation oldAsc = (MAssociation)oldOwner;
+	for (int i = 0; i < oldAsc.getConnections().size(); i++)
+	    ((MAssociationEnd)((Object[]) oldAsc.getConnections().toArray())[i]).removeMElementListener(this);
+    
+	oldAsc.removeMElementListener(this);
+    }
+    
+    if (own instanceof MAssociation) {
+	MAssociation newAsc = (MAssociation)own;
+	for (int i = 0; i < newAsc.getConnections().size(); i++)
+	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
+    
+      newAsc.addMElementListener(this);
+    }
+    modelChanged();
+  }
+
   ////////////////////////////////////////////////////////////////
   // event handlers
 

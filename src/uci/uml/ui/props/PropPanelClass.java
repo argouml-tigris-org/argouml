@@ -53,8 +53,9 @@ implements ItemListener, DocumentListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  public static final MVisibilityKind
-  VISIBILITIES[] = { MVisibilityKind.PUBLIC};
+  public static final String VISIBILITIES[] = {
+    MVisibilityKind.PUBLIC.getName(), MVisibilityKind.PRIVATE.getName(),
+    MVisibilityKind.PROTECTED.getName() };
 	// what about PACKAGE in nsuml?
 
 
@@ -163,10 +164,9 @@ implements ItemListener, DocumentListener {
 	//System.out.println("PropPanelClass: setTargetInternal "+t);
     MClass cls = (MClass) t;
 
-    MVisibilityKind vk = MVisibilityKind.PUBLIC;
-    MNamespace oe = cls.getNamespace();
-    if (oe != null) vk = oe.getVisibility();
-    _visField.setSelectedItem(vk);
+    MVisibilityKind vk = cls.getVisibility();
+    if (vk == null) vk = MVisibilityKind.PUBLIC;
+    _visField.setSelectedItem(vk.getName());
 
     if (cls.isAbstract())
       _keywordsField.setSelectedItem("abstract");
@@ -219,7 +219,7 @@ implements ItemListener, DocumentListener {
   public void setTargetVisibility() {
     if (_target == null) return;
     if (_inChange) return;
-    MVisibilityKind vk = (MVisibilityKind) _visField.getSelectedItem();
+    MVisibilityKind vk = MVisibilityKind.forName((String)_visField.getSelectedItem());
     MClass cls = (MClass) _target;
 	cls.setVisibility(vk);
   }
