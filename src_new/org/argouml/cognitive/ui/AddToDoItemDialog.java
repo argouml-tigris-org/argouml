@@ -33,9 +33,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -49,15 +47,14 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.swingext.Horizontal;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.SerialLayout;
+import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.util.VectorSet;
 
-public class AddToDoItemDialog extends JDialog implements ActionListener {
+public class AddToDoItemDialog extends ArgoDialog {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final String BUNDLE = "Cognitive";
-
     private static final String PRIORITIES[] = {
         Argo.localize(BUNDLE, "level.high"),
         Argo.localize(BUNDLE, "level.medium"),
@@ -66,70 +63,53 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private JTextField _headline = new JTextField(30);
-    private JComboBox  _priority = new JComboBox(PRIORITIES);
-    private JTextField _moreinfo = new JTextField(30);
-    private JTextArea  _description = new JTextArea(10, 30);
-    private JButton _okButton = new JButton(Argo.localize(BUNDLE, "button.ok"));
-    private JButton _cancelButton = new JButton(Argo.localize(BUNDLE, "button.cancel"));
+    private JTextField _headline;
+    private JComboBox  _priority;
+    private JTextField _moreinfo;
+    private JTextArea  _description;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-
+    /**
+     * Create a new AddToDoItemDialog
+     */
     public AddToDoItemDialog() {
         super(ProjectBrowser.getInstance(), Argo.localize(BUNDLE, "dialog.title.add-todo-item"), true);
+    }
+
+    protected void addComponents() {
+        _headline = new JTextField(30);
+        _priority = new JComboBox(PRIORITIES);
+        _moreinfo = new JTextField(30);
+        _description = new JTextArea(10, 30);
+    
         JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
         JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
         JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
     
         _priority.setSelectedItem(PRIORITIES[0]);
     
-        JPanel panel = new JPanel(new LabelledLayout(10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        getContentPane().add(panel);
+        JPanel panel = new JPanel(new LabelledLayout(labelGap, componentGap));
+        mainPanel.add(panel);
 
         headlineLabel.setLabelFor(_headline);
-        headlineLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(headlineLabel);
         panel.add(_headline);
 
         priorityLabel.setLabelFor(_priority);
-        priorityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(priorityLabel);
         panel.add(_priority);
 
         moreInfoLabel.setLabelFor(_moreinfo);
-        moreInfoLabel.setHorizontalAlignment(SwingConstants.RIGHT);
         panel.add(moreInfoLabel);
         panel.add(_moreinfo);
     
         _description.setText(Argo.localize(BUNDLE, "label.enter-todo-item") + "\n");
-        JPanel descriptionPanel = new JPanel(new BorderLayout());
         JScrollPane descriptionScroller = new JScrollPane(_description);
         descriptionScroller.setPreferredSize(_description.getPreferredSize());
         panel.add(descriptionScroller);
-        
-        //JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
-        JPanel buttonPanel = new JPanel(new SerialLayout(Horizontal.getInstance(), SerialLayout.EAST, SerialLayout.LEFTTORIGHT, SerialLayout.TOP, 4));
-        buttonPanel.add(_okButton);
-        buttonPanel.add(_cancelButton);
-        panel.add(buttonPanel, BorderLayout.SOUTH);
-
-        getRootPane().setDefaultButton(_okButton);
-        _okButton.addActionListener(this);
-        _cancelButton.addActionListener(this);
-
-        pack();
-        
-        centerOnParent();
     }
-
-    private void centerOnParent() {
-        Dimension size = getSize();
-        Dimension p = getParent().getSize();
-        int x = (getParent().getX() - size.width) + (int) ((size.width + p.width) / 2d);
-        int y = (getParent().getY() - size.height) + (int) ((size.height + p.height) / 2d);
-        setLocation(x, y);
+    
+    protected void addButtons() {
+        // No special buttons for this dialog
     }
     
     ////////////////////////////////////////////////////////////////
