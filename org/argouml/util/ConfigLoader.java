@@ -44,7 +44,8 @@ public class ConfigLoader {
 	
     private static final String BUNDLE = "statusmsg";
 	
-    private static Logger _Log = Logger.getLogger("org.argouml.util.ConfigLoader"); 
+    private static final Logger LOG = 
+        Logger.getLogger(ConfigLoader.class); 
 	
     ////////////////////////////////////////////////////////////////
     // static utility functions
@@ -52,17 +53,19 @@ public class ConfigLoader {
     public static String TabPath = "org.argouml";
     private static Orientation tabPropsOrientation;
 
+    /**
+     * @return the orientation
+     */
     public static Orientation getTabPropsOrientation() {
         return tabPropsOrientation;
     }
 
     public static void loadTabs(Vector tabs, String panelName, Orientation orientation) {
         String position = null;
-        if (
-	    panelName.equals("north") || panelName.equals("south") || 
-	    panelName.equals("west") || panelName.equals("east") ||
-	    panelName.equals("northwest") || panelName.equals("northeast") || 
-	    panelName.equals("southwest") || panelName.equals("southeast")) {
+        if (panelName.equals("north") || panelName.equals("south")  
+	    || panelName.equals("west") || panelName.equals("east") 
+	    || panelName.equals("northwest") || panelName.equals("northeast")  
+	    || panelName.equals("southwest") || panelName.equals("southeast")) {
             position = panelName;
             panelName = "detail";
         }
@@ -80,7 +83,10 @@ public class ConfigLoader {
             catch (FileNotFoundException e) {
                 is = ConfigLoader.class.getResourceAsStream(configFile);
                 if (is != null) {
-                    _Log.info("Value of argo.config (" + configFile + ") could not be loaded.\nLoading default configuration.");
+                    LOG.info("Value of argo.config (" + configFile 
+                        + 
+                        ") could not be loaded.\nLoading default configuration."
+                    );
                 }
             }
         }
@@ -96,14 +102,21 @@ public class ConfigLoader {
                     String line = lnr.readLine();
                     while (line != null) {
                         Class tabClass =
-                            parseConfigLine(line, panelName, lnr.getLineNumber(), configFile);
+                            parseConfigLine(line, panelName, 
+                                    lnr.getLineNumber(), configFile);
                         if (tabClass != null) {
                             try {
                                 String className = tabClass.getName();
-                                String shortClassName = className.substring(className.lastIndexOf('.') + 1).toLowerCase();
-                                ConfigurationKey key = Configuration.makeKey("layout", shortClassName);
-                                if (position == null || position.equalsIgnoreCase(Configuration.getString(key, "South"))) {
-                                    if (className.equals("org.argouml.uml.ui.TabProps")) {
+                                String shortClassName = 
+                                    className.substring(className
+                                        .lastIndexOf('.') + 1).toLowerCase();
+                                ConfigurationKey key = Configuration
+                                    .makeKey("layout", shortClassName);
+                                if (position == null || position
+                                        .equalsIgnoreCase(Configuration
+                                                .getString(key, "South"))) {
+                                    if (className.equals(
+                                            "org.argouml.uml.ui.TabProps")) {
                                         tabPropsOrientation = orientation;
                                     }
                                     Object newTab = tabClass.newInstance();
@@ -111,23 +124,23 @@ public class ConfigLoader {
                                 }
                             }
                             catch (InstantiationException ex) {
-                                _Log.error("Could not make instance of " +
-					   tabClass.getName());
+                                LOG.error("Could not make instance of " 
+					   + tabClass.getName());
                             }
                             catch (IllegalAccessException ex) {
-                                _Log.error("Could not make instance of " +
-					   tabClass.getName());
+                                LOG.error("Could not make instance of " 
+					   + tabClass.getName());
                             }
                         }
                         line = lnr.readLine();                     
                     }
                 }
                 catch (IOException io) {
-                    _Log.error(io);
+                    LOG.error(io);
                 }
             }
             else {
-                _Log.error("lnr is null");
+                LOG.error("lnr is null");
             }
         }
     }
@@ -141,7 +154,8 @@ public class ConfigLoader {
 	}
 	else if (line.startsWith(panelName)) {
 	    String tabNames = stripBeforeColon(line).trim();
-	    StringTokenizer tabAlternatives = new StringTokenizer(tabNames, "|");
+	    StringTokenizer tabAlternatives = 
+	        new StringTokenizer(tabNames, "|");
 	    Class res = null;
 	    while (tabAlternatives.hasMoreElements()) {
 		String tabSpec = tabAlternatives.nextToken().trim();
@@ -156,10 +170,10 @@ public class ConfigLoader {
 		try {
 		    res = Class.forName(tabClassName);
 		}
-		catch (ClassNotFoundException cnfe) {}
+		catch (ClassNotFoundException cnfe) { }
 		catch (Exception e) {
-		    _Log.error("Unanticipated exception, skipping " + tabName);
-		    _Log.error(e);
+		    LOG.error("Unanticipated exception, skipping " + tabName);
+		    LOG.error(e);
 		}
 		if (res != null) {
 		    if (SplashScreen.getDoSplash()) {
@@ -169,31 +183,36 @@ public class ConfigLoader {
 			};
 			splash.getStatusBar().showStatus(Translator.
 				messageFormat(BUNDLE, 
-					      "statusmsg.bar.making-project-browser", 
-					      msgArgs));
+				    "statusmsg.bar.making-project-browser", 
+				    msgArgs));
 			splash.getStatusBar().incProgress(2);
 		    }
-                    // TODO This is a problem with non-gui calling GUI.
+                    // TODO: This is a problem with non-gui calling GUI.
                     // I need to reimplement this with the splash panel
                     // as a listener to progress changes - Bob
                     //if (SplashScreen.getDoSplash()) {
                     //    SplashScreen splash = SplashScreen.getInstance();
-                    //    splash.getStatusBar().showStatus("Making Project Browser: " + tabName);
+                    //    splash.getStatusBar().showStatus(
+		    //        "Making Project Browser: " + tabName);
                     //    splash.getStatusBar().incProgress(2);
                     //}
 		    return res;
 		}
 	    }
 	    if (Boolean.getBoolean("dbg")) {
-		_Log.warn("\nCould not find any of these classes:\n" +
-			  "TabPath=" + TabPath + "\n" +
-			  "Config file=" + configFile + "\n" +
-			  "Config line #" + lineNum + ":" + line);
+		LOG.warn("\nCould not find any of these classes:\n" 
+			  + "TabPath=" + TabPath + "\n" 
+			  + "Config file=" + configFile + "\n" 
+			  + "Config line #" + lineNum + ":" + line);
 	    }
 	}
 	return null;
     }
 
+    /**
+     * @param s input string
+     * @return string with everything before (including) colon stripped
+     */
     public static String stripBeforeColon(String s) {
 	int colonPos = s.indexOf(":");
 	return s.substring(colonPos  + 1);
