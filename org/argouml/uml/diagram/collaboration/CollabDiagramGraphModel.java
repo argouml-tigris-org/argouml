@@ -202,14 +202,6 @@ implements VetoableChangeListener {
         fireEdgeAdded(edge);
     }
 
-    /** Add the given edge to the graph, if valid. */
-    protected Object addEdge(MModelElement edge) {
-        addEdge((Object)edge);
-        return edge;
-    }
-
-
-  
   public void addNodeRelatedEdges(Object node) {
     if ( node instanceof MClassifier ) {
       Collection ends = ((MClassifier)node).getAssociationEnds();
@@ -273,26 +265,34 @@ implements VetoableChangeListener {
                           java.lang.Class edgeClass) {
         Object connection = null;
         try {
-            if (edgeClass == MAssociationRole.class) {
-                connection = connectAssociationRole((MClassifierRole)fromPort, (MClassifierRole)toPort);
-            } else if (edgeClass == MGeneralization.class) {
-                if (fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole) {
-                    MGeneralization gen = CoreFactory.getFactory().buildGeneralization((MClassifierRole)fromPort, (MClassifierRole)toPort);
-                    addEdge(gen);
-                    return gen;
-                }
-            }
-      
-        } catch (ClassCastException ex) {
+            Editor curEditor = Globals.curEditor();
+            ModeManager modeManager = curEditor.getModeManager();
+            Mode mode = (Mode)modeManager.top();
+            Hashtable args = mode.getArgs();
+            MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
+            Boolean unidirectional = (Boolean)args.get("unidirectional");
+            connection = UmlFactory.getFactory().buildConnection(
+                (MClassifierRole)fromPort,
+                aggregation,
+                (MClassifierRole)toPort,
+                null,
+                edgeClass,
+                unidirectional
+            );
+        } catch (org.argouml.model.uml.UmlException ex) {
             // fail silently as we expect users to accidentally drop on to wrong component
         }
         
-        if (connection != null) return connection;
+        if (connection == null) {
+            cat.debug("Cannot make a "+ edgeClass.getName() +
+                         " between a " + fromPort.getClass().getName() +
+                         " and a " + toPort.getClass().getName());
+            return null;
+        }
         
-        cat.debug("Cannot make a "+ edgeClass.getName() +
-                     " between a " + fromPort.getClass().getName() +
-                     " and a " + toPort.getClass().getName());
-        return null;
+        addEdge(connection);
+        return connection;
+        
     }
 
     /** Contruct and add a new association and connect to
@@ -305,23 +305,13 @@ implements VetoableChangeListener {
             Mode mode = (Mode)modeManager.top();
             Hashtable args = mode.getArgs();
             MAggregationKind aggregation = (MAggregationKind)args.get("aggregation");
-            MAssociation asc;
-            if (aggregation != null) {
-                boolean unidirectional = ((Boolean)args.get("unidirectional")).booleanValue();
-                asc = UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, !unidirectional, aggregation, toPort, true, MAggregationKind.NONE);
-            } else {
-                asc = UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, toPort);
-            }
-            return addEdge(asc);
+            Boolean unidirectional = (Boolean)args.get("unidirectional");
+            return UmlFactory.getFactory().getCollaborations().buildAssociationRole(fromPort, aggregation, toPort, MAggregationKind.NONE, unidirectional);
         }
         
         return null;
     }
     
-    private Object connectGeneralization(MClassifierRole fromPort, MClassifierRole toPort) {
-        return addEdge(UmlFactory.getFactory().getCore().buildGeneralization(fromPort, toPort));
-    }
-
 
   ////////////////////////////////////////////////////////////////
   // VetoableChangeListener implementation

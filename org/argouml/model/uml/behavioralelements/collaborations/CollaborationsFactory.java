@@ -182,28 +182,31 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
      */
     public MAssociationRole buildAssociationRole(
             MClassifierRole from,
-            boolean nav1,
             MAggregationKind agg1,
             MClassifierRole to, 
-            boolean nav2,
-            MAggregationKind agg2) {
+            MAggregationKind agg2,
+            Boolean unidirectional) {
     	MCollaboration colFrom = (MCollaboration)from.getNamespace();
     	MCollaboration colTo = (MCollaboration)to.getNamespace();
+        if (agg1 == null) agg1 = MAggregationKind.NONE;
+        if (agg2 == null) agg2 = MAggregationKind.NONE;
     	if (colFrom != null && colFrom.equals(colTo)) {
-    		MAssociationRole role = createAssociationRole();
-    		// we do not create on basis of associations between the bases of the classifierroles
-                MAssociationEndRole fromEnd = buildAssociationEndRole(from);
-                fromEnd.setNavigable(nav1);
-                fromEnd.setAggregation(agg1);
-    		role.addConnection(fromEnd);
-                
-                MAssociationEndRole toEnd = buildAssociationEndRole(to);
-                toEnd.setNavigable(nav2);
-                toEnd.setAggregation(agg2);
-    		role.addConnection(toEnd);
-                
-                colFrom.addOwnedElement(role);
-    		return role;
+            boolean nav1 = Boolean.FALSE.equals(unidirectional);
+            boolean nav2 = true;
+            MAssociationRole role = createAssociationRole();
+            // we do not create on basis of associations between the bases of the classifierroles
+            MAssociationEndRole fromEnd = buildAssociationEndRole(from);
+            fromEnd.setNavigable(nav1);
+            fromEnd.setAggregation(agg1);
+            role.addConnection(fromEnd);
+
+            MAssociationEndRole toEnd = buildAssociationEndRole(to);
+            toEnd.setNavigable(nav2);
+            toEnd.setAggregation(agg2);
+            role.addConnection(toEnd);
+
+            colFrom.addOwnedElement(role);
+            return role;
     	}
     	return null;
     }
