@@ -145,29 +145,29 @@ public class ModelFacade {
     public static final short SEQUENTIAL = 2;
     
     // Types of line
-    public static final Class GENERALIZATION   = MGeneralization.class;
-    public static final Class ASSOCIATION_ROLE = MAssociationRole.class;
-    public static final Class ASSOCIATION      = MAssociation.class;
-    public static final Class DEPENDENCY       = MDependency.class;
-    public static final Class ABSTRACTION      = MAbstraction.class;
-    public static final Class LINK             = MLink.class;
-    public static final Class EXTEND           = MExtend.class;
-    public static final Class INCLUDE          = MInclude.class;
-    public static final Class PERMISSION       = MPermission.class;
-    public static final Class USAGE            = MUsage.class;
+    public static final Object GENERALIZATION   = MGeneralization.class;
+    public static final Object ASSOCIATION_ROLE = MAssociationRole.class;
+    public static final Object ASSOCIATION      = MAssociation.class;
+    public static final Object DEPENDENCY       = MDependency.class;
+    public static final Object ABSTRACTION      = MAbstraction.class;
+    public static final Object LINK             = MLink.class;
+    public static final Object EXTEND           = MExtend.class;
+    public static final Object INCLUDE          = MInclude.class;
+    public static final Object PERMISSION       = MPermission.class;
+    public static final Object USAGE            = MUsage.class;
 
     // Types of node
-    public static final Class CLASSIFIER_ROLE    = MClassifierRole.class;
-    public static final Class CLASS              = MClass.class;
-    public static final Class INTERFACE          = MInterface.class;
-    public static final Class PACKAGE            = MPackage.class;
-    public static final Class NODE               = MNode.class;
-    public static final Class NODE_INSTANCE      = MNodeInstance.class;
-    public static final Class COMPONENT          = MComponent.class;
-    public static final Class COMPONENT_INSTANCE = MComponentInstance.class;
-    public static final Class OBJECT             = MObject.class;
-    public static final Class ACTOR              = MActor.class;
-    public static final Class USE_CASE           = MUseCase.class;
+    public static final Object CLASSIFIER_ROLE    = MClassifierRole.class;
+    public static final Object CLASS              = MClass.class;
+    public static final Object INTERFACE          = MInterface.class;
+    public static final Object PACKAGE            = MPackage.class;
+    public static final Object NODE               = MNode.class;
+    public static final Object NODE_INSTANCE      = MNodeInstance.class;
+    public static final Object COMPONENT          = MComponent.class;
+    public static final Object COMPONENT_INSTANCE = MComponentInstance.class;
+    public static final Object OBJECT             = MObject.class;
+    public static final Object ACTOR              = MActor.class;
+    public static final Object USE_CASE           = MUseCase.class;
     
     /** Constructor that forbids instantiation.
      */
