@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,76 +24,74 @@
 package org.argouml.uml.ui;
 import java.util.*;
 
-/**
-*    This class is the generic German member of the UMLResourceBundle
-*    that supports localization of the UML related PropPanels
-* 
-*    @author Curt Arnold
-*    @since 0.9
-*/
 public class UMLResourceBundle_de extends UMLResourceBundle {
 
     public UMLResourceBundle_de() {
-        //
-        //   first argument is key (english)
-        //      second argument is localized equivalent
         put("Abstract","Abstract");
         put("abstract","abstract");
         put("Action:","Action:");
         put("Activator:","Activator:");
         put("active","active");
+        put("Add","Add");
         put("Add actor","Add actor");
-        put("Add association","Add association");
+	    put("Add association","Assoziation hinzufuegen");
         put("Add association end","Add association end");
-        put("Add attribute","Add attribute");
+	    put("Add attribute","Attribut hinzufuegen");
         put("Add class","Add class");
-        put("Add datatype","Add datatype");
+	    put("Add datatype","Datentyp hinzufuegen");
         put("Add enumeration literal","Add enumeration literal");
         put("Add generalization","Add generalization");
         put("Add inner class","Add inner class");
         put("Add interface","Add interface");
         put("Add new class","Add new class");
         put("add only","add only");
-        put("Add operation","Add operation");
-        put("Add parameter","Add parameter");
+	    put("Add operation","Operation hinzufuegen");
+	    put("Add parameter","Parameter hinzufuegen");
         put("Add raised signal","Add raised signal");
         put("Add realization","Add realization");
         put("Add stereotype","Add stereotype");
         put("Add subpackage","Add subpackage");
-        put("Add use case","Add use case");
+	    put("Add use case","Anwendungsfall hinzufuegen");
+        put("Add_Menu_Actor","Actor...");
+        put("Add_Menu_Class","Class...");
+        put("Add_Menu_Datatype","Datatype...");
+        put("Add_Menu_Exception","Exception...");
+        put("Add_Menu_Interface","Interface...");
+        put("Add_Menu_Signal","Signal...");
+        put("Add_Menu_UseCase","Use Case...");
         put("aggregation","aggregation");
         put("Aggregation:","Aggregation:");
         put("Arguments:","Arguments:");
         put("Association Ends:","Association Ends:");
-        put("Association:","Association:");
+	    put("Association:","Assoziation:");
         put("AssociationRole Ends:","AssociationRole Ends:");
-        put("Associations:","Associations:");
-        put("Attributes:","Attributes:");
+	    put("Associations:","Assoziationen:");
+	    put("Attributes:","Attribute:");
         put("Author:","Author:");
-        put("Base Class:","Base Class:");
+	    put("Base Class:","Basisklasse");
         put("Changeability:","Changeability:");
-        put("changeable","changeable");
+	    put("changeable", "aenderbar");
         put("Child:","Child:");
+        put("Class","Klasse");
         put("classifier","classifier");
         put("Classifier:","Classifier:");
         put("Classifiers:","Classifiers:");
         put("Clients:","Clients:");
-        put("Components:","Components:");
+	    put("Components:","Komponenten:");
         put("composite","composite");
         put("Concurrency:","Concurrency:");
-        put("Connections:","Connections:");
-        put("Delete actor","Delete actor");
-        put("Delete association","Delete association");
-        put("Delete association end","Delete association end");
-        put("Delete attribute","Delete attribute");
-        put("Delete class","Delete class");
-        put("Delete generalization","Delete generalization");
-        put("Delete interface","Delete interface");
-        put("Delete operation","Delete operation");
-        put("Delete package","Delete package");
-        put("Delete parameter","Delete parameter");
-        put("Deprecated:","Deprecated:");
-        put("Derived:","Derived:");
+	    put("Connections:","Verbindungen:");
+        put("Delete","Delete");
+	    put("Delete actor","Aktor loeschen");
+	    put("Delete association","Assoziation loeschen");
+	    put("Delete association end","Assoziationsende loeschen");
+	    put("Delete attribute", "Attribut loeschen");
+	    put("Delete class","Klasse loeschen");
+	    put("Delete interface","Interface loeschen");
+	    put("Delete operation","Operation loeschen");
+	    put("Delete package","Package loeschen");
+	    put("Delete parameter","Parameter loeschen");
+	    put("Derived:","Abgeleitet:");
         put("Discriminator:","Discriminator:");
         put("Documentation:","Documentation:");
         put("dynamic","dynamic");
@@ -101,51 +99,54 @@ public class UMLResourceBundle_de extends UMLResourceBundle {
         put("Entry","Entry");
         put("Exceptions:","Exceptions:");
         put("Exit","Exit");
-        put("Expression:","Expression:");
-        put("Extends:","Extends:");
+	    put("Expression:","Ausdruck:");
+	    put("Extends:","Erweitert:");
         put("Extension Points:","Extension Points:");
         put("Final","Final");
         put("final","final");
         put("frozen","frozen");
         put("Generalizations:","Generalizations:");
-        put("Go back","Go back");
-        put("Go forward","Go forward");
+	    put("Go back", "Gehe zurueck");
+	    put("Go forward","Gehe vorwaerts");
         put("Go to other end","Go to other end");
         put("Go to package","Go to package");
         put("Go up","Go up");
         put("Guard:","Guard:");
         put("Implementations:","Implementations:");
-        put("Implements:","Implements:");
+	    put("Implements:","Implementiert:");
         put("Includes:","Includes:");
-        put("Incoming:","Incoming:");
+	    put("Incoming:","Eingehend:");
         put("Initial Value:","Initial Value:");
         put("Kind:","Kind:");
-        put("Language:","Language:");
+	    put("Language:","Sprache");
+	    put("Literals:","Literale");
         put("Link Ends:","Link Ends:");
         put("Links:","Links:");
         put("Literals:","Literals:");
         put("Modifiers:","Modifiers:");
-        put("Multiplicity:","Multiplicity:");
-        put("Name:","Name:");
-        put("Namespace:","Namespace:");
+        put("Move Down", "Move Down");
+        put("Move Up","Move Up");
+	    put("Multiplicity:","Kardinalitaet:");
+	    put("Namespace:","Namensraum:");
         put("navigable","navigable");
         put("Navigable:","Navigable:");
-        put("New actor","New actor");
-        put("New association","New association");
-        put("New attribute","New attribute");
-        put("New class","New class");
-        put("New data type","New data type");
-        put("New interface","New interface");
-        put("New operation","New operation");
-        put("New signal","New signal");
+	    put("New actor","Neuer Aktor");
+	    put("New association","Neue Assoziation");
+	    put("New attribute","Neues Attribut");
+	    put("New class","Neue Klasse");
+	    put("New data type","Neuer Datentyp");
+	    put("New interface","Neues Interface");
+	    put("New operation","Neue Operation");
+	    put("New signal","Neues Signal");
         put("New stereotype","New stereotype");
         put("none","none");
-        put("Operations:","Operations:");
+        put("Open","Open");
+    	put("Operations:","Operationen:");
         put("ordered","ordered");
-        put("Ordering:","Ordering:");
-        put("Outgoing:","Outgoing:");
+	    put("Ordering:","Sortierung:");
+	    put("Outgoing:","Ausgehend:");
         put("Owned Elements","Owned Elements");
-        put("Owner:","Owner:");
+    	put("Owner:","Inhaber:");
         put("Packages:","Packages:");
         put("Parameters:","Parameters:");
         put("Parent:","Parent:");
@@ -154,30 +155,34 @@ public class UMLResourceBundle_de extends UMLResourceBundle {
         put("public","public");
         put("Public","Public");
         put("query","query");
-        put("Receiver:","Receiver:");
-        put("Receives:","Receives:");
+    	put("Receiver:","Empfaenger:");
+    	put("Receives:","Empfaengt:");
         put("Related Elements","Related Elements");
         put("Root","Root");
         put("root","root");
         put("Scope:","Scope:");
         put("See:","See:");
         put("Sender:","Sender:");
-        put("Sends:","Sends:");
+    	put("Sends:","Sendet:");
         put("Since:","Since:");
-        put("sorted","sorted");
+    	put("sorted","sortiert");
         put("State Machine:","State Machine:");
         put("static","static");
         put("Stereotype:","Stereotype:");
         put("Stereotypes:","Stereotypes:");
         put("Suppliers:","Suppliers:");
         put("transient","transient");
-        put("Transition","Transition");
-        put("Transition:","Transition:");
-        put("Trigger:","Trigger:");
-        put("Type:","Type:");
+    	put("Transition","Uebergang");
+    	put("Transition:","Uebergang:");
+    	put("Trigger:","Ausloeser");
+    	put("Type:","Typ");
         put("unordered","unordered");
         put("Version:","Version:");
-        put("Visibility:","Visibility:");
+    	put("Visibility:","Sichtbarkeit:");
         put("volatile","volatile");
     }
 }
+
+
+
+

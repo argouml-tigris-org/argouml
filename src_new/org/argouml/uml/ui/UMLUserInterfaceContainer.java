@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -75,5 +75,11 @@ public interface UMLUserInterfaceContainer extends NavigationListener {
      *     Removes a listener for navigation events.
      */
     public void removeNavigationListener(NavigationListener navListener);
-    
+
+    /**
+     *     Returns a localized string corresponding to the key
+     *     @param key key for resource bundle, typically english literal
+     *     @returns localized string for key based on system settings and configuration file
+     */
+    public String localize(String key);    
 }

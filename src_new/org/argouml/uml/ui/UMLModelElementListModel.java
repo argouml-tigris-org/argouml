@@ -329,25 +329,26 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @returns "true" if popup menu should be displayed
      */
     public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLListMenuItem open = new UMLListMenuItem("Open...",this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem("Delete",this,"delete",index);
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
         if(_currentModelElementSize <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem("Add...",this,"add",index);
+        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
         if(_upper >= 0 && _currentModelElementSize >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);
         popup.add(delete);
 
-        UMLListMenuItem moveUp = new UMLListMenuItem("Move Up",this,"moveUp",index);
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
         if(index == 0) moveUp.setEnabled(false);
         popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem("Move Down",this,"moveDown",index);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
         if(index == getSize()-1) moveDown.setEnabled(false);
         popup.add(moveDown);
         return true;
