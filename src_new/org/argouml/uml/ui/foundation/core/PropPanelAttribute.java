@@ -53,12 +53,6 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
-        //	addField(
-        //	    Translator.localize("label.stereotype"),
-        //		new UMLComboBoxNavigator(
-        //		 this,
-        //		 Translator.localize("UMLMenu", "tooltip.nav-stereo"),
-        //					  getStereotypeBox()));
         addField(Translator.localize("label.stereotype"),
                 getStereotypeBox());
         addField(Translator.localize("label.owner"),
@@ -71,7 +65,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
         addField(Translator.localize("label.type"),
                 new UMLComboBoxNavigator(
                         this, 
-                        Translator.localize("tooltip.nav-class"), 
+                        Translator.localize("label.class.navigate.tooltip"), 
                         getTypeComboBox()));
 
         // addField(Translator.localize("label.initial-value"), new

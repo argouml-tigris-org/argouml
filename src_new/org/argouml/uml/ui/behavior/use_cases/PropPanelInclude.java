@@ -54,12 +54,6 @@ public class PropPanelInclude extends PropPanelModelElement {
 
         addField(Translator.localize("label.name"),
 		 getNameTextField());
-//        addField(Translator.localize("label.stereotype"),
-//		 new UMLComboBoxNavigator(this,
-//					  Translator.localize(
-//					      "UMLMenu",
-//					      "tooltip.nav-stereo"),
-//					  getStereotypeBox()));
         addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
         addField(Translator.localize("label.namespace"),
