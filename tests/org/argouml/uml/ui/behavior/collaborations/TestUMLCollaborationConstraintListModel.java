@@ -24,8 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -54,7 +53,7 @@ public class TestUMLCollaborationConstraintListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CollaborationsFactory.getFactory().createCollaboration());
+        setElem(Model.getCollaborationsFactory().createCollaboration());
     }
 
     /**
@@ -70,7 +69,7 @@ public class TestUMLCollaborationConstraintListModel
     protected MBase[] fillModel() {
         MConstraint[] constraints = new MConstraint[10];
         for (int i = 0; i < constraints.length; i++) {
-            constraints[i] = CoreFactory.getFactory().createConstraint();
+            constraints[i] = Model.getCoreFactory().createConstraint();
             ((MCollaboration) getElem()).addConstrainingElement(constraints[i]);
         }
         return constraints;

@@ -54,7 +54,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -365,7 +364,7 @@ class TableModelTaggedValues extends AbstractTableModel
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv =
-		UmlFactory.getFactory()
+		Model.getUmlFactory()
 		    .getExtensionMechanisms().createTaggedValue();
 	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
 	    if (columnIndex == 1) {

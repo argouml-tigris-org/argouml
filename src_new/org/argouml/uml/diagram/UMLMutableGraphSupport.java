@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,10 +30,9 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlException;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.UmlException;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Mode;
@@ -197,11 +196,13 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             // Create the UML connection of the given type between the
             // given model elements.
 	    // default aggregation (none)
-            connection = UmlFactory.getFactory().buildConnection(
-                    edgeClass, fromPort,
-                    style, toPort,
-                    null, unidirectional,
-                    ProjectManager.getManager().getCurrentProject().getModel());
+            connection =
+		Model.getUmlFactory().buildConnection(
+		        edgeClass, fromPort,
+		        style, toPort,
+		        null, unidirectional,
+		        ProjectManager.getManager().getCurrentProject()
+		        	.getModel());
         } catch (UmlException ex) {
             // fail silently as we expect users to accidentally drop
             // on to wrong component
@@ -243,8 +244,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (edge == null) {
             return false;
         }
-       return UmlFactory.getFactory().isConnectionValid(edge.getClass(),
-               UmlHelper.getHelper().getSource(edge),
-               UmlHelper.getHelper().getDestination(edge));
+       return Model.getUmlFactory().isConnectionValid(edge.getClass(),
+               Model.getUmlHelper().getSource(edge),
+               Model.getUmlHelper().getDestination(edge));
     }
 }

@@ -24,12 +24,11 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import javax.swing.text.BadLocationException;
+
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
-
-import javax.swing.text.BadLocationException;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -57,7 +56,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = UseCasesFactory.getFactory().createExtensionPoint();
+        elem = Model.getUseCasesFactory().createExtensionPoint();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE); 
         model = new UMLExtensionPointLocationDocument();
@@ -69,7 +68,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         elem = null;
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;

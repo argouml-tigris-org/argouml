@@ -30,8 +30,8 @@ import javax.swing.Action;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -106,7 +106,7 @@ public class PropPanelSignal extends PropPanelModelElement {
             if (ModelFacade.isASignal(target)) {
                 Object ns = ModelFacade.getNamespace(target);
                 if (ns != null) {
-                    Object newSig = UmlFactory.getFactory().getCommonBehavior()
+                    Object newSig = Model.getUmlFactory().getCommonBehavior()
                         .createSignal(); 
                     ModelFacade.addOwnedElement(ns, newSig);
                     TargetManager.getInstance().setTarget(newSig);

@@ -26,10 +26,8 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CommonBehaviorFactory;
-import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -59,7 +57,7 @@ public class TestUMLMessageActionListModel
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CollaborationsFactory.getFactory().createMessage();
+        elem = Model.getCollaborationsFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);      
         model = new UMLMessageActionListModel();
@@ -71,7 +69,7 @@ public class TestUMLMessageActionListModel
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -80,7 +78,7 @@ public class TestUMLMessageActionListModel
      * Test setAction().
      */
     public void testSetAction() {
-        Object action = CommonBehaviorFactory.getFactory().createAction();
+        Object action = Model.getCommonBehaviorFactory().createAction();
         ModelFacade.setAction(elem, action);
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
@@ -90,7 +88,7 @@ public class TestUMLMessageActionListModel
      * Test setAction() for removing.
      */
     public void testRemoveAction() {
-        Object action = CommonBehaviorFactory.getFactory().createAction();
+        Object action = Model.getCommonBehaviorFactory().createAction();
         ModelFacade.setAction(elem, action);
         ModelFacade.setAction(elem, null);
         assertEquals(0, model.getSize());

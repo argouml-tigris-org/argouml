@@ -29,6 +29,7 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -54,24 +55,24 @@ public class TestExtensionMechanismsHelper extends TestCase {
      * isolating the project from the projectbrowser.
      */
     public void testGetAllPossibleStereotypes1() {
-        MNamespace ns = CoreFactory.getFactory().createNamespace();
-        Object clazz = CoreFactory.getFactory().buildClass(ns);
+        MNamespace ns = Model.getCoreFactory().createNamespace();
+        Object clazz = Model.getCoreFactory().buildClass(ns);
         Object model = ProjectManager.getManager().getCurrentProject().getModel();
         Collection models = ProjectManager.getManager().getCurrentProject().getModels();
         MStereotype stereo1 =
-	        ExtensionMechanismsFactory.getFactory().buildStereotype(
+	        Model.getExtensionMechanismsFactory().buildStereotype(
                 clazz,
                 "test1",
                 model,
                 models);
         MStereotype stereo2 =
-	        ExtensionMechanismsFactory.getFactory().buildStereotype(
+	        Model.getExtensionMechanismsFactory().buildStereotype(
                 clazz,
 		        "test2",
                 model,
                 models);
         Collection col =
-	    ExtensionMechanismsHelper.getHelper()
+	    Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, clazz);
         assertTrue("stereotype not in list of possible stereotypes",
 		   col.contains(stereo1));
@@ -84,7 +85,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
      */
     public void testGetMetaModelName() {
         CheckUMLModelHelper.metaModelNameCorrect(this,
-		ExtensionMechanismsFactory.getFactory(),
+		Model.getExtensionMechanismsFactory(),
 		TestExtensionMechanismsFactory.getAllModelElements());
     }
 
@@ -93,7 +94,7 @@ public class TestExtensionMechanismsHelper extends TestCase {
      */
     public void testIsValidStereoType() {
         CheckUMLModelHelper.isValidStereoType(this,
-		ExtensionMechanismsFactory.getFactory(),
+		Model.getExtensionMechanismsFactory(),
                 TestExtensionMechanismsFactory.getAllModelElements());
     }
 }

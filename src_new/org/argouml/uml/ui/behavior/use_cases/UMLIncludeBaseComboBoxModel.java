@@ -26,9 +26,9 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.ModelManagementHelper;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -57,7 +57,7 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
         if (inc == null) return;
         List list = new ArrayList();
         Object ns = ModelFacade.getNamespace(inc);
-        list.addAll(ModelManagementHelper.getHelper()
+        list.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(ns, ModelFacade.USE_CASE));
         list.remove(ModelFacade.getAddition(inc));
         addAll(list);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,22 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ParseState.java
-// Classes: ParseState
-// Original Author: Marcus Andersson andersson@users.sourceforge.net
-
 package org.argouml.uml.reveng.java;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 
 /**
-   The parse state keep control of data during parsing.
-*/
-class ParseState
-{
+ * The parse state keep control of data during parsing.
+ *
+ * @author Marcus Andersson
+ */
+class ParseState {
     /** When the classifier parse is finished, these features will be
 	removed from the model. */
     private Vector obsoleteFeatures;
@@ -223,7 +223,7 @@ class ParseState
 	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    Object element = i.next();
 	    if (ModelFacade.isAClassifier(element)) {
-		CoreFactory.getFactory().deleteClassifier(element);
+		Model.getCoreFactory().deleteClassifier(element);
 	    }
 	}
     }

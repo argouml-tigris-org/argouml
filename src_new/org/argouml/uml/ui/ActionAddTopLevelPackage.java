@@ -28,8 +28,8 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 /** @stereotype singleton
  */
 public class ActionAddTopLevelPackage extends UMLAction {
@@ -66,7 +66,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
         Object/*MModel*/ model =
-	    UmlFactory.getFactory().getModelManagement().createModel();
+	    Model.getUmlFactory().getModelManagement().createModel();
         ModelFacade.setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);

@@ -27,6 +27,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -50,7 +51,7 @@ public class TestCollaborationsHelper extends TestCase {
     public void testGetMetaModelName() {
 	CheckUMLModelHelper.metaModelNameCorrect(
 			 this,
-			 CollaborationsFactory.getFactory(),
+			 Model.getCollaborationsFactory(),
 			 TestCollaborationsFactory.getAllModelElements());
     }
 
@@ -60,7 +61,7 @@ public class TestCollaborationsHelper extends TestCase {
     public void testIsValidStereoType() {
 	CheckUMLModelHelper.isValidStereoType(
 		      this,
-		      CollaborationsFactory.getFactory(),
+		      Model.getCollaborationsFactory(),
 		      TestCollaborationsFactory.getAllModelElements());
     }
 }

@@ -24,6 +24,9 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.Model;
+import org.argouml.model.UmlFactory;
+
 import junit.framework.TestCase;
 
 
@@ -47,7 +50,7 @@ public class TestUmlFactory extends TestCase {
      * deleted.
      */
     public void testDelete() {
-	UmlFactory fy = UmlFactory.getFactory();
+	UmlFactory fy = Model.getUmlFactory();
 
 	//	fy.delete(fy.getCore().
 	fy.delete(fy.getCore().createAbstraction());

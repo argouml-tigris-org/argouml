@@ -31,10 +31,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
 /** Well-formedness rule [2] for association end. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -65,7 +66,7 @@ public class CrConflictingComposites extends CrUML {
 	Iterator assocEnds = conns.iterator();
 	while (assocEnds.hasNext()) {
             Object myEnd = assocEnds.next();
-	    if (UmlHelper.getHelper().getCore()
+	    if (Model.getUmlHelper().getCore()
                 .equalsAggregationKind(myEnd, "composite")) {
 		continue;
 	    }
@@ -74,7 +75,7 @@ public class CrConflictingComposites extends CrUML {
 	    }
 	    Object asc = ModelFacade.getAssociation(myEnd);
 	    if (asc != null
-		&& UmlHelper.getHelper().getCore().hasCompositeEnd(asc)) {
+		&& Model.getUmlHelper().getCore().hasCompositeEnd(asc)) {
 		compositeCount++;
             }
 	}

@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -76,8 +77,8 @@ public class TestCommonBehaviorFactory extends TestCase {
      * Test if the factory is really a singleton.
      */
     public void testSingleton() {
-	Object o1 = CommonBehaviorFactory.getFactory();
-	Object o2 = CommonBehaviorFactory.getFactory();
+	Object o1 = Model.getCommonBehaviorFactory();
+	Object o2 = Model.getCommonBehaviorFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
@@ -114,7 +115,7 @@ public class TestCommonBehaviorFactory extends TestCase {
 
 	CheckUMLModelHelper.createAndRelease(
 					     this,
-					     CommonBehaviorFactory.getFactory(),
+					     Model.getCommonBehaviorFactory(),
 					     objs);
 
     }
@@ -125,7 +126,7 @@ public class TestCommonBehaviorFactory extends TestCase {
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 					   this,
-					   CommonBehaviorFactory.getFactory(),
+					   Model.getCommonBehaviorFactory(),
 					   allModelElements);
     }
 

@@ -30,8 +30,7 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -78,11 +77,11 @@ public class TestParserDisplay extends TestCase {
     public void testClassifierRoleName() {
 	MClassifierRole cr;
 
-	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
+	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
 	checkName(cr, clro01, "roname");
 	checkName(cr, clro02, "roname2");
 
-	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
+	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
 	checkName(cr, clro03, "roname");
     }
 
@@ -101,12 +100,12 @@ public class TestParserDisplay extends TestCase {
 	    "float", "long"
 	};
 
-	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
+	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
 	checkBases(cr, clro01, res1);
 	checkBases(cr, clro02, res2);
 	checkBases(cr, clro03, res3);
 
-	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
+	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
 	checkBases(cr, clro03, res3);
     }
 
@@ -116,7 +115,7 @@ public class TestParserDisplay extends TestCase {
     public void testClassifierRoleThrows() {
 	MClassifierRole cr;
 
-	cr = UmlFactory.getFactory().getCollaborations().createClassifierRole();
+	cr = Model.getUmlFactory().getCollaborations().createClassifierRole();
 	checkThrows(cr, nclro01, true, false, false);
 	checkThrows(cr, nclro02, true, false, false);
 	checkThrows(cr, nclro03, true, false, false);
@@ -178,7 +177,7 @@ public class TestParserDisplay extends TestCase {
 	try {
 	    ParserDisplay.SINGLETON.parseOperation(text, op);
 	    Collection ret =
-		UmlHelper.getHelper().getCore().getReturnParameters(op);
+		Model.getUmlHelper().getCore().getReturnParameters(op);
 	    Iterator it = ret.iterator();
 	    assertTrue(
 		       text + " gave extra return value",

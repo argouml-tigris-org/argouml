@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.DataTypesFactory;
 
 /**
  * 
@@ -63,7 +63,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#newExpression()
      */
     public Object newExpression() {
-        return DataTypesFactory.getFactory().createActionExpression("", "");
+        return Model.getDataTypesFactory().createActionExpression("", "");
     }
 
 }

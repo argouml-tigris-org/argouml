@@ -39,12 +39,12 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
-import org.argouml.uml.UUIDHelper;
 
 import tudresden.ocl.parser.node.AConstraintBody;
 
@@ -333,7 +333,7 @@ public class GeneratorCSharp extends Generator2
 	    s += generateVisibility (op);
 	}
 	// pick out return type
-	Object rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
+	Object rp = Model.getUmlHelper().getCore().getReturnParameter(op);
 	if (rp != null) {
 	    Object returnType = ModelFacade.getType(rp);
 
@@ -650,7 +650,7 @@ public class GeneratorCSharp extends Generator2
 	}
 
 	// TODO: constructors
-	Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+	Collection behs = Model.getUmlHelper().getCore().getOperations(cls);
 	if (behs != null) {
 	    sb.append ('\n');
 	    sb.append (INDENT).append ("// Operations\n");
@@ -1208,7 +1208,7 @@ public class GeneratorCSharp extends Generator2
 
     /**
      * TODO: Once the {@link 
-     * org.argouml.model.uml.CoreHelper#getRealizedInterfaces(
+     * org.argouml.model.uml.CoreHelperImpl#getRealizedInterfaces(
      * ru.novosoft.uml.foundation.core.MClassifier)} can be called without
      * using NSUML interfaces, this class can be NSUML-free.
      * 
@@ -1220,7 +1220,7 @@ public class GeneratorCSharp extends Generator2
 	//s += cls.getName();
 	
 	Collection realizations =
-	    UmlHelper.getHelper().getCore().getRealizedInterfaces(cls);
+	    Model.getUmlHelper().getCore().getRealizedInterfaces(cls);
 	if (realizations == null) {
 	    return "";
 	}
@@ -1593,7 +1593,7 @@ public class GeneratorCSharp extends Generator2
 
                     // check the return parameter types
                     it =
-                        UmlHelper.getHelper()
+                        Model.getUmlHelper()
 			    .getCore()
 			        .getReturnParameters(/*(MOperation)*/mFeature)
 			            .iterator();

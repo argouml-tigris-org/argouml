@@ -29,7 +29,7 @@ import java.util.Vector;
 import junit.framework.TestCase;
 
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -51,7 +51,7 @@ public class TestResolvedCritic extends TestCase {
      * Test the constructors.
      */
     public void testConstructors() {
-        Object testmc = CoreFactory.getFactory().buildClass();
+        Object testmc = Model.getCoreFactory().buildClass();
         Critic c = new Critic();
         String crString = "class org.argouml.cognitive.critics.Critic";
         ResolvedCritic rc;

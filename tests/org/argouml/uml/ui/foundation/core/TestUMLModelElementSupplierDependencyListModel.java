@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -51,7 +51,7 @@ public class TestUMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CoreFactory.getFactory().createClass());
+        setElem(Model.getCoreFactory().createClass());
     }
 
     /**
@@ -67,7 +67,7 @@ public class TestUMLModelElementSupplierDependencyListModel
     protected MBase[] fillModel() {
         MDependency[] ext = new MDependency[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = CoreFactory.getFactory().createDependency();
+            ext[i] = Model.getCoreFactory().createDependency();
             ((MModelElement) getElem()).addSupplierDependency(ext[i]);
         }
         return ext;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,9 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-// File: CrUtilityViolated.java
-// Classes: CrUtilityViolated
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.cognitive.critics;
 
@@ -32,19 +29,20 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
 
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses). This is done by checking that there
- *  are no instance operations or attributes in the class itself
- *  or in any of the realized interfaces or inherited classes.
+/**
+ * A critic to detect when a class can never have instances (of
+ * itself of any subclasses). This is done by checking that there
+ * are no instance operations or attributes in the class itself
+ * or in any of the realized interfaces or inherited classes.
+ *
+ * @author jrobbins
  */
 public class CrUtilityViolated extends CrUML {
-    
     /**
      * The constructor.
-     * 
      */
     public CrUtilityViolated() {
         setHeadline("Remove instance variables from Utility Class");
@@ -54,23 +52,25 @@ public class CrUtilityViolated extends CrUML {
         addTrigger("stereotype");
         addTrigger("behavioralFeature");
     }
-    
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        // we could check for base class of the stereotype but the 
+        // we could check for base class of the stereotype but the
 	// condition normally covers it all.
-        if (!(ModelFacade.isAClassifier(dm)))
+        if (!(ModelFacade.isAClassifier(dm))) {
+            return NO_PROBLEM;
+        }
+	if (!(ModelFacade.isUtility(dm))) {
 	    return NO_PROBLEM;
-	if (!(ModelFacade.isUtility(dm)))
-	    return NO_PROBLEM;
+	}
 
 	Collection classesToCheck = new ArrayList();
-	classesToCheck.addAll(CoreHelper.getHelper().getSupertypes(dm));
+	classesToCheck.addAll(Model.getCoreHelper().getSupertypes(dm));
 	classesToCheck.addAll(
-	    CoreHelper.getHelper().getAllRealizedInterfaces(dm));
+	    Model.getCoreHelper().getAllRealizedInterfaces(dm));
 	classesToCheck.add(dm);
 	Iterator it = classesToCheck.iterator();
 	while (it.hasNext()) {
@@ -92,5 +92,4 @@ public class CrUtilityViolated extends CrUML {
 	}
         return NO_PROBLEM;
     }
-    
 } /* end class CrUtilityViolated */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -42,9 +42,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -196,7 +195,7 @@ public class Project implements java.io.Serializable, TargetListener {
                     "Tried to make a non-empty project "
                     + "to an untitled project");
         Object model =
-            UmlFactory.getFactory().getModelManagement().createModel();
+            Model.getUmlFactory().getModelManagement().createModel();
         ModelFacade.setName(model, "untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
@@ -590,12 +589,12 @@ public class Project implements java.io.Serializable, TargetListener {
         cls = findTypeInModel(s, defaultModel);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
-            cls = ModelManagementHelper.
-                getHelper().getCorrespondingElement(cls, getRoot());
+            cls = Model.
+                getModelManagementHelper().getCorrespondingElement(cls, getRoot());
         }
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
-            cls = UmlFactory.getFactory().getCore()
+            cls = Model.getUmlFactory().getCore()
         		  .buildClass(getCurrentNamespace());
             ModelFacade.setName(cls, s);
         }
@@ -640,7 +639,7 @@ public class Project implements java.io.Serializable, TargetListener {
     	}
         
         Collection allClassifiers =
-            ModelManagementHelper.getHelper()
+            Model.getModelManagementHelper()
 	        .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
         
         Object[] classifiers = allClassifiers.toArray();
@@ -908,7 +907,7 @@ public class Project implements java.io.Serializable, TargetListener {
             ProjectBrowser.getInstance().getEditorPane()
         		.removePresentationFor(obj, getDiagrams());
 
-            UmlFactory.getFactory().delete(obj);
+            Model.getUmlFactory().delete(obj);
 
             if (obj instanceof ProjectMember
                     && members.contains(obj)) {

@@ -30,10 +30,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -67,8 +64,8 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         super.setUp();
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLModelElementStereotypeComboBoxModel();
-        elem = CoreFactory.getFactory().createClass();
-        MModel m = ModelManagementFactory.getFactory().createModel();
+        elem = Model.getCoreFactory().createClass();
+        MModel m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
         elem.setNamespace(m);
         stereotypes = new MStereotype[10];
@@ -77,7 +74,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         for (int i = 0; i < 10; i++) {
-            stereotypes[i] = ExtensionMechanismsFactory.getFactory()
+            stereotypes[i] = Model.getExtensionMechanismsFactory()
                 .buildStereotype(elem, "test" + i, theModel, models);
         }
         oldEventPolicy = MFactoryImpl.getEventPolicy();
@@ -91,7 +88,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -125,7 +122,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test deletion.
      */
     public void testRemoveBase() {
-        UmlFactory.getFactory().delete(stereotypes[9]);
+        Model.getUmlFactory().delete(stereotypes[9]);
         assertTrue(!model.contains(stereotypes[9]));
     }
 }

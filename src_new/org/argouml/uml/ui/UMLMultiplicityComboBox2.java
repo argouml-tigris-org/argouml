@@ -25,8 +25,8 @@
 // $Id$
 package org.argouml.uml.ui;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * An editable and searchable combobox to edit the multiplicity attribute of
@@ -58,7 +58,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
         String text = (String) item;
         Object/*MMultiplicity*/ multi = null;
         try {
-            multi = UmlFactory.getFactory().getDataTypes()
+            multi = Model.getUmlFactory().getDataTypes()
                 .createMultiplicity(text); //new MMultiplicity(text);
         }
         catch (IllegalArgumentException e) {

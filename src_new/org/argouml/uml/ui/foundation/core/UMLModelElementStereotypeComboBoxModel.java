@@ -32,9 +32,8 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -61,7 +60,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidElement(Object o) {
         return org.argouml.model.ModelFacade.isAStereotype(o) 
-            && ExtensionMechanismsHelper.getHelper().isValidStereoType(
+            && Model.getExtensionMechanismsHelper().isValidStereoType(
 		   /*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
     }
 
@@ -79,7 +78,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 
 	while (it2.hasNext()) {
 	    Object obj = it2.next();
-	    Object path = ModelManagementHelper.getHelper().getPath(obj);
+	    Object path = Model.getModelManagementHelper().getPath(obj);
 	    if (!paths.contains(path)) {
 	        paths.add(path);
 	        elements.add(obj);
@@ -116,9 +115,9 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 	addAllUniqueModelElementsFrom(
 	    elements,
 	    paths,
-	    ExtensionMechanismsHelper.getHelper()
+	    Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, elem));
-        setElements( ExtensionMechanismsHelper.getHelper()
+        setElements( Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, elem));
     }   
 

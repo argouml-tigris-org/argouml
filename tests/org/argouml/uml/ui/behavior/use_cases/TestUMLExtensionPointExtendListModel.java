@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -51,7 +51,7 @@ public class TestUMLExtensionPointExtendListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(UseCasesFactory.getFactory().createExtensionPoint());
+        setElem(Model.getUseCasesFactory().createExtensionPoint());
     }
 
     /**
@@ -67,7 +67,7 @@ public class TestUMLExtensionPointExtendListModel
     protected MBase[] fillModel() {
         MExtend[] ext = new MExtend[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = UseCasesFactory.getFactory().createExtend();
+            ext[i] = Model.getUseCasesFactory().createExtend();
             ((MExtensionPoint) getElem()).addExtend(ext[i]);
         }
         return ext;

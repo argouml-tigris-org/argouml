@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,8 +30,8 @@ import java.util.Iterator;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
 import tudresden.ocl.check.OclTypeException;
 import tudresden.ocl.check.types.Any;
@@ -152,7 +152,7 @@ class ArgoAny implements Any, Type2 {
 
 	// first search for appropriate attributes
 	java.util.Collection attributes =
-	    UmlHelper.getHelper().getCore().getAttributesInh(classifier);
+	    Model.getUmlHelper().getCore().getAttributesInh(classifier);
 	Iterator iter = attributes.iterator();
 	while (iter.hasNext() && foundAttribType == null) {
 	    Object attr = iter.next();
@@ -163,7 +163,7 @@ class ArgoAny implements Any, Type2 {
 
 	// look for associations
 	java.util.Collection associationEnds =
-	    UmlHelper.getHelper().getCore().getAssociateEndsInh(classifier);
+	    Model.getUmlHelper().getCore().getAssociateEndsInh(classifier);
 	Iterator asciter = associationEnds.iterator();
 	while (asciter.hasNext() && foundAssocType == null) {
 	    Object ae = asciter.next(); //MAssociationEnd
@@ -306,7 +306,7 @@ class ArgoAny implements Any, Type2 {
 	}
 
 	Object rp =
-	    UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
+	    Model.getUmlHelper().getCore().getReturnParameter(foundOp);
 
 	if (rp == null || ModelFacade.getType(rp) == null) {
 	    LOG.warn("WARNING: supposing return type void!");
@@ -324,7 +324,7 @@ class ArgoAny implements Any, Type2 {
 	if (type instanceof ArgoAny) {
 	    ArgoAny other = (ArgoAny) type;
 	    return equals(type)
-		|| UmlHelper.getHelper().getCore()
+		|| Model.getUmlHelper().getCore()
 		    .getAllSupertypes(classifier).contains(other.classifier);
 	} else {
 	    return false;

@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -52,7 +52,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         Object inc = /*(MInclude)*/ getTarget();
         if (inc == null) return;
         Object ns = ModelFacade.getNamespace(inc);
-        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, 
+        addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(ns, 
                 ModelFacade.USE_CASE));
         if (contains(ModelFacade.getAddition(inc)))
             removeElement(ModelFacade.getAddition(inc));

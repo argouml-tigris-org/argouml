@@ -27,8 +27,8 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -73,7 +73,7 @@ public class ActionSetParameterType extends UMLAction {
         if (newClassifier != null 
                 && newClassifier != oldClassifier 
                 && para != null) {
-            newClassifier = /*(MClassifier)*/ ModelManagementHelper.getHelper()
+            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
                 .getCorrespondingElement(
 				      newClassifier,
 				      ModelFacade.getModel(para));

@@ -26,8 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
@@ -57,7 +56,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CollaborationsFactory.getFactory().createInteraction();
+        elem = Model.getCollaborationsFactory().createInteraction();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLInteractionContextListModel();
@@ -69,7 +68,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -79,7 +78,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
      */
     public void testSetContext() {
         MCollaboration col =
-	    CollaborationsFactory.getFactory().createCollaboration();
+	    Model.getCollaborationsFactory().createCollaboration();
         elem.setContext(col);
         assertEquals(1, model.getSize());
         assertEquals(col, model.getElementAt(0));
@@ -90,7 +89,7 @@ public class TestUMLInteractionCollaborationListModel extends TestCase {
      */
     public void testRemoveContext() {
         MCollaboration col =
-	    CollaborationsFactory.getFactory().createCollaboration();
+	    Model.getCollaborationsFactory().createCollaboration();
         elem.setContext(col);
         elem.setContext(null);
         assertEquals(0, model.getSize());

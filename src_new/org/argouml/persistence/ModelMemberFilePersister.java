@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.Model;
 import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -100,7 +100,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         // the NSUML XMIReader.  When Argo XMIReader is used
         // consistently, it can be responsible for loading
         // the listener.  Until then, do it here.
-        UmlHelper.getHelper().addListenersToModel(mmodel);
+        Model.getUmlHelper().addListenersToModel(mmodel);
 
         project.addMember(mmodel);
 

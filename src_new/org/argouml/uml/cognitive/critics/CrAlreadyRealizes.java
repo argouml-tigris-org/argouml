@@ -22,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrAlreadyRealizes.java
-// Classes: CrAlreadyRealizes.java
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -37,15 +30,19 @@ import java.util.Set;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
 
-/** Critic to detect whether a class implements unneedded realizations through
- *  inheritance.
+/**
+ * Critic to detect whether a class implements unneedded realizations through
+ * inheritance.
+ *
+ * @author jrobbins
  */
 public class CrAlreadyRealizes extends CrUML {
-    
-    /** Constructor
+
+    /**
+     * Constructor.
      */
     public CrAlreadyRealizes() {
 	setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
@@ -54,7 +51,7 @@ public class CrAlreadyRealizes extends CrUML {
 	addTrigger("genealization");
 	addTrigger("realization");
     }
-						  
+
     /**
      * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
      * java.lang.Object, org.argouml.cognitive.Designer)
@@ -63,12 +60,11 @@ public class CrAlreadyRealizes extends CrUML {
 	boolean problem = NO_PROBLEM;
 	if (ModelFacade.isAClass(dm)) {
 	    Collection col =
-		CoreHelper.getHelper().getAllRealizedInterfaces(dm);
-	    int size = col.size();
+		Model.getCoreHelper().getAllRealizedInterfaces(dm);
 	    Set set = new HashSet();
 	    set.addAll(col);
 	    if (set.size() < col.size()) {
-		problem = PROBLEM_FOUND; 
+		problem = PROBLEM_FOUND;
 	    }
 	}
 	return problem;

@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -51,7 +51,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
         if (org.argouml.model.ModelFacade.isAReception(target)) {
             Object rec = /*(MReception)*/ target;
             removeAllElements();
-            setElements(ModelManagementHelper.getHelper()
+            setElements(Model.getModelManagementHelper()
                     .getAllModelElementsOfKind((Class) ModelFacade.SIGNAL));
             setSelectedItem(ModelFacade.getSignal(rec));      
         }

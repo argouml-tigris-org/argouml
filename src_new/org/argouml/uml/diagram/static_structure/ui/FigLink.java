@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,20 +21,15 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-  
-// File: FigLink.java
-// Classes: FigLink
-// Original Author: your email address here
-
-// $Id$
 
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 
-import org.argouml.model.uml.CommonBehaviorHelper;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.presentation.Fig;
+
 /**
  * Class to display graphics for a UML Link in a diagram.
  *
@@ -45,7 +40,7 @@ public class FigLink extends FigEdgeModelElement {
     // constructors
 
     /**
-     * Constructor
+     * Constructor.
      */
     public FigLink() {
 	_fig.setLineColor(Color.black);
@@ -53,8 +48,8 @@ public class FigLink extends FigEdgeModelElement {
     }
 
     /**
-     * Constructor that hooks the Fig to a UML element
-     * 
+     * Constructor that hooks the Fig to a UML element.
+     *
      * @param edge the UML element
      */
     public FigLink(Object edge) {
@@ -64,7 +59,7 @@ public class FigLink extends FigEdgeModelElement {
 
     /**
      * TODO: should edit something...
-     * 
+     *
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#canEdit(org.tigris.gef.presentation.Fig)
      */
     protected boolean canEdit(Fig f) { return false; }
@@ -75,7 +70,7 @@ public class FigLink extends FigEdgeModelElement {
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper()
+            return Model.getCommonBehaviorHelper()
 		.getDestination(/*(MLink)*/ getOwner());
         }
         return null;
@@ -86,7 +81,7 @@ public class FigLink extends FigEdgeModelElement {
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return CommonBehaviorHelper.getHelper()
+            return Model.getCommonBehaviorHelper()
 		.getSource(/*(MLink)*/ getOwner());
         }
         return null;

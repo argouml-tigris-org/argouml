@@ -31,13 +31,11 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.tigris.gef.presentation.Fig;
-
-import ru.novosoft.uml.model_management.MModel;
 
 
 /**
@@ -63,7 +61,7 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
         if (t instanceof Fig) t = ((Fig) t).getOwner();
         Object model = ProjectManager.getManager().getCurrentProject().getModel();
         Collection models = ProjectManager.getManager().getCurrentProject().getModels();
-        Object newStereo = ExtensionMechanismsFactory.getFactory()
+        Object newStereo = Model.getExtensionMechanismsFactory()
             .buildStereotype(
                     ModelFacade.isAModelElement(t) ? t : null,
                     (String) null,

@@ -28,8 +28,8 @@ import java.util.Collection;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 
 /**
  * Rule for Package->Class.
@@ -40,17 +40,17 @@ public class GoPackageToClass extends AbstractPerspectiveRule {
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
-    public String getRuleName() { 
-        return Translator.localize ("misc.package.class");
+    public String getRuleName() {
+        return Translator.localize("misc.package.class");
     }
-  
+
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
 	if (ModelFacade.isAPackage(parent)) {
-	    return ModelManagementHelper.getHelper()
-                .getAllModelElementsOfKind(parent, (Class) ModelFacade.CLASS);
+	    return Model.getModelManagementHelper()
+                .getAllModelElementsOfKind(parent, ModelFacade.CLASS);
 	}
 	return null;
     }

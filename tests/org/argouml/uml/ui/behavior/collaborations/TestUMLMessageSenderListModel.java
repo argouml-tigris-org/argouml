@@ -26,8 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -58,7 +57,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CollaborationsFactory.getFactory().createMessage();
+        elem = Model.getCollaborationsFactory().createMessage();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = 
@@ -74,7 +73,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -84,7 +83,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
      */
     public void testSetSender() {
         MClassifierRole role = 
-            CollaborationsFactory.getFactory().createClassifierRole();
+            Model.getCollaborationsFactory().createClassifierRole();
         elem.setSender(role);
         assertEquals(1, model.getSize());
         assertEquals(role, model.getElementAt(0));
@@ -95,7 +94,7 @@ public class TestUMLMessageSenderListModel extends TestCase {
      */
     public void testRemoveReceiver() {
         MClassifierRole role = 
-            CollaborationsFactory.getFactory().createClassifierRole();
+            Model.getCollaborationsFactory().createClassifierRole();
         elem.setSender(role);
         elem.setSender(null);
         assertEquals(0, model.getSize());

@@ -34,9 +34,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -132,7 +131,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                 Object model = ProjectManager.getManager().getCurrentProject().getModel();
                 Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
                 Object newOper = 
-                    UmlFactory.getFactory().getCore().buildOperation(target, model, voidType, propertyChangeListeners);
+                    Model.getUmlFactory().getCore().buildOperation(target, model, voidType, propertyChangeListeners);
                 // due to Well Defined rule [2.5.3.12/1]
                 ModelFacade.setQuery(newOper, true);
                 TargetManager.getInstance().setTarget(newOper);
@@ -190,7 +189,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                                 }
                             }
                             if (!match) {
-                                stereo = UmlFactory.getFactory()
+                                stereo = Model.getUmlFactory()
                                     .getExtensionMechanisms()
                                         .createStereotype();
                                 ModelFacade.setName(stereo, "enumeration");
@@ -205,7 +204,7 @@ public class PropPanelDataType extends PropPanelClassifier {
                     ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
                 Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
                 Object model = ProjectManager.getManager().getCurrentProject().getModel();
-                Object attr = CoreFactory.getFactory().buildAttribute(target, model, intType, propertyChangeListeners);
+                Object attr = Model.getCoreFactory().buildAttribute(target, model, intType, propertyChangeListeners);
                 ModelFacade.setChangeable(attr, false);
                 TargetManager.getInstance().setTarget(attr);
                 super.actionPerformed(e);

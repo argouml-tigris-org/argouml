@@ -30,8 +30,9 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactoryImpl;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -63,7 +64,7 @@ class ActionNewActor extends AbstractActionNewModelElement {
             Object model =
                 ProjectManager.getManager().getCurrentProject().getModel();
             TargetManager.getInstance().setTarget(
-                    UseCasesFactory.getFactory().buildActor(target, model));
+                    Model.getUseCasesFactory().buildActor(target, model));
             super.actionPerformed(e);
         }
     }

@@ -24,8 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -52,7 +51,7 @@ public class TestUMLClassifierRoleBaseListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CollaborationsFactory.getFactory().createClassifierRole());
+        setElem(Model.getCollaborationsFactory().createClassifierRole());
     }
 
     /**
@@ -68,7 +67,7 @@ public class TestUMLClassifierRoleBaseListModel
     protected MBase[] fillModel() {
         MClassifier[] bases = new MClassifier[10];
         for (int i = 0; i < bases.length; i++) {
-            bases[i] = CoreFactory.getFactory().createClass();
+            bases[i] = Model.getCoreFactory().createClass();
             ((MClassifierRole) getElem()).addBase(bases[i]);
         }
         return bases;

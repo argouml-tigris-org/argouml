@@ -27,9 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -61,17 +59,17 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = UseCasesFactory.getFactory().createExtend();
+        elem = Model.getUseCasesFactory().createExtend();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLExtendExtensionComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0], 
                 new Object[] {elem}));
         extensions = new MUseCase[10];
-        MModel m = ModelManagementFactory.getFactory().createModel();
+        MModel m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         for (int i = 0; i < 10; i++) {
-            extensions[i] = UseCasesFactory.getFactory().createUseCase();
+            extensions[i] = Model.getUseCasesFactory().createUseCase();
             m.addOwnedElement(extensions[i]);
         }
     }
@@ -81,9 +79,9 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         for (int i = 0; i < 10; i++) {
-            UmlFactory.getFactory().delete(extensions[i]);
+            Model.getUmlFactory().delete(extensions[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
@@ -119,7 +117,7 @@ public class TestUMLExtendExtensionComboBoxModel extends TestCase {
      * Test delete().
      */
     public void testRemoveBase() {
-        UmlFactory.getFactory().delete(extensions[9]);
+        Model.getUmlFactory().delete(extensions[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(extensions[9]));
     } 

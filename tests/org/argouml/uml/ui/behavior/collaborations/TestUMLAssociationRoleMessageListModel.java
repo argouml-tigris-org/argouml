@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.uml.CollaborationsFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -52,7 +52,7 @@ public class TestUMLAssociationRoleMessageListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CollaborationsFactory.getFactory().createAssociationRole());
+        setElem(Model.getCollaborationsFactory().createAssociationRole());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLAssociationRoleMessageListModel
     protected MBase[] fillModel() {
         MMessage[] messages = new MMessage[10];
         for (int i = 0; i < messages.length; i++) {
-            messages[i] = CollaborationsFactory.getFactory().createMessage();
+            messages[i] = Model.getCollaborationsFactory().createMessage();
             ((MAssociationRole) getElem()).addMessage(messages[i]);
         }   
         return messages;

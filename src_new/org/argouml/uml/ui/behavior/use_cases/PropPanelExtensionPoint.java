@@ -32,8 +32,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.uml.UseCasesFactoryImpl;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -151,7 +152,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
             Object target = TargetManager.getInstance().getModelTarget();
             if (ModelFacade.isAExtensionPoint(target)) {
                 TargetManager.getInstance().setTarget(
-                    UseCasesFactory.getFactory().buildExtensionPoint(
+                    Model.getUseCasesFactory().buildExtensionPoint(
                             ModelFacade.getUseCase(target)));
                 super.actionPerformed(e);
             }

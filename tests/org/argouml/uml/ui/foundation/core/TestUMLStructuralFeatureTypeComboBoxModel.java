@@ -27,9 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -61,18 +59,18 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CoreFactory.getFactory().createAttribute();
+        elem = Model.getCoreFactory().createAttribute();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0], 
                 new Object[] {elem}));
         types = new MClassifier[10];
-        MModel m = ModelManagementFactory.getFactory().createModel();
+        MModel m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         elem.setNamespace(m);
         for (int i = 0; i < 10; i++) {
-            types[i] = CoreFactory.getFactory().createClassifier();
+            types[i] = Model.getCoreFactory().createClassifier();
             m.addOwnedElement(types[i]);
         }      
         elem.setType(types[0]);
@@ -83,9 +81,9 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         for (int i = 0; i < 10; i++) {
-            UmlFactory.getFactory().delete(types[i]);
+            Model.getUmlFactory().delete(types[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
@@ -123,7 +121,7 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      * The test for removing types.
      */
     public void testRemoveType() {
-        UmlFactory.getFactory().delete(types[9]);
+        Model.getUmlFactory().delete(types[9]);
         assertTrue(!model.contains(types[9]));
     } 
 

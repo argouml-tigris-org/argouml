@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2004 The Regents of the University of California. All
+// Copyright (c) 2002-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,7 +27,7 @@ package org.argouml.cognitive;
 // Diagrams
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
@@ -117,7 +117,7 @@ public class TestItemUID extends TestCase {
      * Test assigning IDs to objects.
      */
     public void testAssignIDsToObjects() {
-        Object testmc = CoreFactory.getFactory().buildClass();
+        Object testmc = Model.getCoreFactory().buildClass();
         UMLActivityDiagram actdiag = new UMLActivityDiagram();
         UMLClassDiagram classdiag = new UMLClassDiagram();
         UMLCollaborationDiagram colldiag = new UMLCollaborationDiagram();
@@ -125,12 +125,12 @@ public class TestItemUID extends TestCase {
         UMLSequenceDiagram seqdiag = new UMLSequenceDiagram();
         UMLStateDiagram statediag = new UMLStateDiagram();
         UMLUseCaseDiagram ucdiag = new UMLUseCaseDiagram();
-        
+
         FigActionState figactionstate = new FigActionState();
-        
+
         // FigAssociationRole figassociationrole = new FigAssociationRole();
         FigClassifierRole figclassifierrole = new FigClassifierRole();
-        
+
         FigComponent figcomponent = new FigComponent();
         FigComponentInstance figcomponentinstance = new FigComponentInstance();
         FigMNode figmnode = new FigMNode();

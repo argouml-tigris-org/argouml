@@ -1,0 +1,234 @@
+// $Id$
+// Copyright (c) 2005 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.model;
+
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
+
+/**
+ * The interface for the factory for Uml.<p>
+ *
+ * Created from the old UmlFactory.
+ */
+public interface UmlFactory {
+    /**
+     * @return boolean to indicate if the JMI Reflective Proxy
+     * over NSUML is created.
+     */
+    boolean isJmiProxyCreated();
+
+    /**
+     * @param arg true to cause the JMI Reflective proxy over NSUML to be used.
+     */
+    void setJmiProxyCreated(boolean arg);
+
+    /**
+     * @param connectionType the UML object type of the connection
+     * @param fromElement    the UML object for the "from" element
+     * @param fromStyle      the aggregationkind for the connection
+     *                       in case of an association
+     * @param toElement      the UML object for the "to" element
+     * @param toStyle        the aggregationkind for the connection
+     *                       in case of an association
+     * @param unidirectional for association and associationrole
+     * @param namespace      the namespace to use if it can't be determined
+     * @return               the newly build connection (UML object)
+     * @throws IllegalModelElementConnectionException if the connection is not
+     *                                                a valid thing to do
+     */
+    Object buildConnection(Object connectionType, Object fromElement,
+            Object fromStyle, Object toElement, Object toStyle,
+            Object unidirectional, Object namespace)
+    	throws IllegalModelElementConnectionException;
+
+    /**
+     * Checks if some type of connection is valid between two elements.
+     *
+     * @param connectionType  the UML object type of the connection
+     * @param fromElement     the UML object type of the "from"
+     * @param toElement       the UML object type of the "to"
+     * @return true if valid
+     */
+    boolean isConnectionValid(Object connectionType, Object fromElement,
+            Object toElement);
+
+    /**
+     * Returns the package factory for the UML
+     * package Foundation::ExtensionMechanisms.
+     *
+     * @return the ExtensionMechanisms factory instance.
+     */
+    ExtensionMechanismsFactory getExtensionMechanisms();
+
+    /**
+     * Returns the package factory for the UML
+     * package Foundation::DataTypes.
+     *
+     * @return the DataTypes factory instance.
+     */
+    DataTypesFactory getDataTypes();
+
+    /**
+     * Returns the package factory for the UML
+     * package Foundation::Core.
+     *
+     * @return the Core factory instance.
+     */
+    CoreFactory getCore();
+
+    /**
+     * Returns the package factory for the UML
+     * package BehavioralElements::CommonBehavior.
+     *
+     * @return the CommonBehavior factory instance.
+     */
+    CommonBehaviorFactory getCommonBehavior();
+
+    /**
+     * Returns the package factory for the UML
+     * package BehavioralElements::UseCases.
+     *
+     * @return the UseCases factory instance.
+     */
+    UseCasesFactory getUseCases();
+
+    /**
+     * Returns the package factory for the UML
+     * package BehavioralElements::StateMachines.
+     *
+     * @return the StateMachines factory instance.
+     */
+    StateMachinesFactory getStateMachines();
+
+    /**
+     * Returns the package factory for the UML
+     * package BehavioralElements::Collaborations.
+     *
+     * @return the Collaborations factory instance.
+     */
+    CollaborationsFactory getCollaborations();
+
+    /**
+     * Returns the package factory for the UML
+     * package BehavioralElements::ActivityGraphs.
+     *
+     * @return the ActivityGraphs factory instance.
+     */
+    ActivityGraphsFactory getActivityGraphs();
+
+    /**
+     * Returns the package factory for the UML
+     * package ModelManagement.
+     *
+     * @return the ModelManagement factory instance.
+     */
+    ModelManagementFactory getModelManagement();
+
+    /**
+     * Deletes a modelelement. It calls the remove method of the
+     * modelelement but also does 'cascading deletes' that are not
+     * provided for in the remove method of the modelelement
+     * itself. For example: this delete method also removes the binary
+     * associations that a class has if the class is deleted. In this
+     * way, it is not longer possible that illegal states exist in the
+     * model.<p>
+     *
+     * The actual deletion is delegated to delete methods in the rest of the
+     * factories. For example: a method deleteClass exists on CoreHelper.
+     * Delete methods as deleteClass should only do those extra actions that are
+     * necessary for the deletion of the modelelement itself. I.e. deleteClass
+     * should only take care of things specific to MClass.<p>
+     *
+     * The delete methods in the UML Factories should not be called directly
+     * throughout the code! Calls should allways refer to this method and never
+     * call the deleteXXX method on XXXFactory directly. The reason that it is
+     * possible to call the deleteXXX methods directly is a pure implementation
+     * detail.<p>
+     *
+     * The implementation of this method uses a quite complicate if then else
+     * tree. This is done to provide optimal performance and full compliance to
+     * the UML 1.3 model. The last remark refers to the fact that the UML 1.3
+     * model knows multiple inheritance in several places. This has to be taken
+     * into account.<p>
+     *
+     * Extensions and its children are not taken into account
+     * here. They do not require extra cleanup actions. Not in the
+     * form of a call to the remove method as is normal for all
+     * children of MBase and not in the form of other behaviour we
+     * want to implement via this operation.
+     * @param elem The element to be deleted
+     */
+    void delete(Object elem);
+
+    /**
+     * The Project may check if a certain MBase has been removed.
+     *
+     * @param o the object to be checked
+     * @return true if removed
+     */
+    boolean isRemoved(Object o);
+
+    /**
+     * Create an empty but initialized instance of a UML ActionExpression.
+     * NSUML does not have a factory method for this.
+     *
+     * @return an initialized UML ActionExpression instance.
+     */
+    MActionExpression createActionExpression();
+
+    /**
+     * Create a UML object from the implementation name.
+     *
+     * This will allow abstraction of the create mechanism at a single point.
+     *
+     * @param entity name to create - must be implemented in
+     * {@link org.argouml.model.uml.Uml}.
+     *
+     * @return the entity requested or null if unable to create
+     */
+    Object create(String entity);
+
+    /**
+     * Create a UML object from the implementation.
+     *
+     * This will allow abstraction of the create mechanism at a single point.
+     *
+     * @param entity Class to create - must implement
+     *        {@link UmlModelEntity}
+     * @return the created entity or null if unable to create
+     */
+    Object create(UmlModelEntity entity);
+
+    /**
+     * Adds all interested (and centralized) listeners to the given
+     * modelelement handle.
+     *
+     * TODO: Why is this method needed? Isn't this implementation creaping out?
+     *       It is currently only used from
+     *       {@link org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode}.
+     *
+     * @param handle the modelelement the listeners are interested in
+     */
+    void addListenersToModelElement(Object handle);
+}

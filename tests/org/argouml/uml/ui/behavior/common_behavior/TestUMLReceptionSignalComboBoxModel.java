@@ -28,9 +28,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CommonBehaviorFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -63,15 +61,15 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         Project p = ProjectManager.getManager().getCurrentProject();
-        elem = CommonBehaviorFactory.getFactory().createReception();
+        elem = Model.getCommonBehaviorFactory().createReception();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         signals = new MSignal[10];
-        MModel m = ModelManagementFactory.getFactory().createModel();
+        MModel m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
         elem.setNamespace(m);
         for (int i = 0; i < 10; i++) {
-            signals[i] = CommonBehaviorFactory.getFactory().createSignal();
+            signals[i] = Model.getCommonBehaviorFactory().createSignal();
             m.addOwnedElement(signals[i]);
         }      
         model = new UMLReceptionSignalComboBoxModel();
@@ -84,9 +82,9 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         for (int i = 0; i < 10; i++) {
-            UmlFactory.getFactory().delete(signals[i]);
+            Model.getUmlFactory().delete(signals[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
@@ -123,7 +121,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      * Test removing signals.
      */
     public void testRemoveSignal() {
-        UmlFactory.getFactory().delete(signals[9]);
+        Model.getUmlFactory().delete(signals[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(signals[9]));
     } 

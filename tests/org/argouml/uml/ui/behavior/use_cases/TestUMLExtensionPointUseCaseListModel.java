@@ -26,8 +26,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -57,7 +56,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = UseCasesFactory.getFactory().createExtensionPoint();
+        elem = Model.getUseCasesFactory().createExtensionPoint();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLExtensionPointUseCaseListModel();
@@ -69,7 +68,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -78,7 +77,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      * Test setUseCase().
      */
     public void testSetUseCase() {
-        MUseCase usecase = UseCasesFactory.getFactory().createUseCase();
+        MUseCase usecase = Model.getUseCasesFactory().createUseCase();
         elem.setUseCase(usecase);
         assertEquals(1, model.getSize());
         assertEquals(usecase, model.getElementAt(0));
@@ -88,7 +87,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      * Test setUseCase() with null argument.
      */
     public void testRemoveUseCase() {
-        MUseCase usecase = UseCasesFactory.getFactory().createUseCase();
+        MUseCase usecase = Model.getUseCasesFactory().createUseCase();
         elem.setUseCase(usecase);
         elem.setUseCase(null);
         assertEquals(0, model.getSize());

@@ -26,8 +26,8 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * An action which can be used to create arbritary tagged values which hold
@@ -76,7 +76,7 @@ public class ActionBooleanTaggedValue extends UMLAction {
 
         Object taggedValue = ModelFacade.getTaggedValue(obj, tagName);
         if (taggedValue == null) {
-            taggedValue = UmlFactory.getFactory().getExtensionMechanisms()
+            taggedValue = Model.getUmlFactory().getExtensionMechanisms()
                     .createTaggedValue();
             ModelFacade.setTag(taggedValue, tagName);
             ModelFacade.addTaggedValue(obj, taggedValue);

@@ -33,9 +33,9 @@ import junit.framework.TestSuite;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
-import org.argouml.model.uml.ModelManagementFactory;
 
 /**
  * Tests for GeneratorCpp file generation functionalities, i.e., generateFile2 
@@ -89,7 +89,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     protected void setUp() {
         super.setUp();
         String packageName = "pack";
-        Object aPackage = ModelManagementFactory.getFactory().
+        Object aPackage = Model.getModelManagementFactory().
             buildPackage(packageName, UUIDManager.getInstance().getNewUUID());
         ModelFacade.setNamespace(getAClass(), aPackage);
 

@@ -32,8 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
@@ -125,7 +125,7 @@ public class PropPanelOperation extends PropPanelFeature {
         Object target = getTarget();
         if (ModelFacade.isAOperation(target)) {
             Object oper = /* (MOperation) */target;
-            Object newSignal = UmlFactory.getFactory().getCommonBehavior()
+            Object newSignal = Model.getUmlFactory().getCommonBehavior()
                     .createSignal(); 
                     //((MOperation)oper).getFactory().createSignal();
             

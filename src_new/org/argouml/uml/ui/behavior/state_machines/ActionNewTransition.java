@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -70,10 +70,10 @@ public class ActionNewTransition extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         if (getValue(SOURCE) == null || getValue(DESTINATION) == null) {
-            StateMachinesFactory.getFactory()
+            Model.getStateMachinesFactory()
                 .buildInternalTransition(getTarget());
         } else {
-            StateMachinesFactory.getFactory()
+            Model.getStateMachinesFactory()
                 .buildTransition(getValue(SOURCE), getValue(DESTINATION));
         }            
     }

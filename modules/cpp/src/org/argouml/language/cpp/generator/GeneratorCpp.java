@@ -44,12 +44,12 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
-import org.argouml.uml.UUIDHelper;
 
 /**
  * Generator2 subclass to generate text for display in diagrams in in
@@ -1018,7 +1018,7 @@ public class GeneratorCpp extends Generator2
             .append(generateOperationPrefix(op));
 
         // pick out return type
-        Object rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
+        Object rp = Model.getUmlHelper().getCore().getReturnParameter(op);
         if (rp != null) {
             Object returnType = ModelFacade.getType(rp);
             if (returnType == null && !constructor) {
@@ -1667,7 +1667,7 @@ public class GeneratorCpp extends Generator2
      */
     private void generateClassifierBodyOperations(Object cls,
             StringBuffer sb) {
-        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+        Collection behs = Model.getUmlHelper().getCore().getOperations(cls);
         if (behs.isEmpty()) return;
         String tv = null; // helper for tagged values
         //
@@ -1913,7 +1913,7 @@ public class GeneratorCpp extends Generator2
             if (!methodFound) {
                 // pick out return type as default method body
                 Object rp =
-                    UmlHelper.getHelper().getCore().getReturnParameter(op);
+                    Model.getUmlHelper().getCore().getReturnParameter(op);
                 if (rp != null) {
                     Object returnType = ModelFacade.getType(rp);
                     sb.append(generateDefaultReturnStatement(returnType));

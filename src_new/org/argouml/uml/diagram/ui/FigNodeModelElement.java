@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -74,17 +74,14 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
-import org.argouml.model.uml.ModelManagementHelper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
-import org.argouml.uml.UUIDHelper;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -655,9 +652,9 @@ public abstract class FigNodeModelElement
             }
             if (owningModelelement != null
 		&& getOwner() != null
-		&& (!ModelManagementHelper.getHelper()
+		&& (!Model.getModelManagementHelper()
 		    .isCyclicOwnership(owningModelelement, getOwner()))
-		&& ((CoreHelper.getHelper()
+		&& ((Model.getCoreHelper()
 			.isValidNamespace(getOwner(),
 					  owningModelelement)))) {
                 ModelFacade.setModelElementContainer(getOwner(), 
@@ -1203,7 +1200,7 @@ public abstract class FigNodeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(own, null);
             if (ModelFacade.isAModelElement(own)) {
-                UmlFactory.getFactory().delete(own);
+                Model.getUmlFactory().delete(own);
             }
         }
         Iterator it = getFigs(null).iterator();

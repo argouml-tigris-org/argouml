@@ -29,7 +29,8 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
+import org.argouml.model.UmlFactory;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -60,7 +61,7 @@ public class GUITestParseMessage extends TestCase {
         MMessage m;
         Iterator it;
 
-        UmlFactory fact = UmlFactory.getFactory();
+        UmlFactory fact = Model.getUmlFactory();
 
         MCollaboration coll = fact.getCollaborations().createCollaboration();
         MInteraction inter = fact.getCollaborations().buildInteraction(coll);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,9 +29,8 @@ import java.util.Hashtable;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
@@ -56,13 +55,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
      * but that's plain misuse.
      */
     public UMLSequenceDiagram() {
-        this(CollaborationsFactory.getFactory().buildCollaboration(
+        this(Model.getCollaborationsFactory().buildCollaboration(
 		 ProjectManager.getManager().getCurrentProject().getRoot()));
     }
 
     /**
      * The constructor.
-     * 
+     *
      * @param collaboration the collaboration
      */
     public UMLSequenceDiagram(Object collaboration) {
@@ -83,8 +82,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
     }
 
     /**
-     * Returns the owner of this diagram. In the case of sequencediagrams it's 
-     * allways the root model. 
+     * Returns the owner of this diagram. In the case of sequencediagrams it's
+     * allways the root model.
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getOwner()
      */
@@ -107,14 +106,14 @@ public class UMLSequenceDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.sequence-diagram");
     }
-    
+
     /**
      * Must return an array of actions via which the model can be
      * manipulated. To use the 'nested actions' feature (like the
@@ -137,7 +136,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
         if (actions == null) {
             actions = new Object[5];
             actions[0] =
-                new CmdCreateNode((Class) ModelFacade.OBJECT, "Object");
+                new CmdCreateNode(ModelFacade.OBJECT, "Object");
 	    int offset = 1;
 
 	    Object[][] actionList = {
@@ -149,7 +148,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
 	    for (int i = 0; i < actionList.length; i++) {
 		Hashtable args = new Hashtable();
-		args.put("edgeClass", (Class) ModelFacade.LINK);
+		args.put("edgeClass", ModelFacade.LINK);
 		args.put("action", actionList[i][0]);
 		actions[i + offset] =
 		    new RadioAction(new CmdSetMode(ModeCreateLink.class, args,
@@ -167,7 +166,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
             SequenceDiagramGraphModel model =
                 new SequenceDiagramGraphModel(
-                    CollaborationsFactory.getFactory().buildCollaboration(
+                    Model.getCollaborationsFactory().buildCollaboration(
                         ProjectManager.getManager().getCurrentProject()
                             .getRoot()));
             SequenceDiagramLayout lay =
@@ -187,12 +186,12 @@ public class UMLSequenceDiagram extends UMLDiagram {
      *
      * @see org.argouml.uml.diagram.ui.UMLDiagram#setNamespace(Object)
      */
-    public void setNamespace(Object ns) throws UnsupportedOperationException {
+    public void setNamespace(Object ns) {
         if (getGraphModel() == null
             || !(getGraphModel() instanceof SequenceDiagramGraphModel)) {
             SequenceDiagramGraphModel model =
                 new SequenceDiagramGraphModel(
-                    CollaborationsFactory.getFactory().buildCollaboration(
+                    Model.getCollaborationsFactory().buildCollaboration(
                         ProjectManager.getManager().getCurrentProject()
 			    .getRoot()));
             SequenceDiagramLayout lay =
@@ -215,7 +214,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public void cleanUp() {
         Object collab =
             ((SequenceDiagramGraphModel) getGraphModel()).getCollaboration();
-        UmlFactory.getFactory().delete(collab);
+        Model.getUmlFactory().delete(collab);
     }
 
 } /* end class UMLSequenceDiagram */

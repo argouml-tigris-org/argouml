@@ -38,7 +38,7 @@ import javax.swing.JTextField;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -182,7 +182,7 @@ public abstract class PropPanelModelElement extends PropPanel {
      */
     public void navigateUp() {
         TargetManager.getInstance().setTarget(
-                UmlHelper.getHelper().getOwner(getTarget()));
+                Model.getUmlHelper().getOwner(getTarget()));
     }
 
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,8 +29,8 @@ import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
@@ -198,7 +198,7 @@ public class FigGeneralization extends FigEdgeModelElement {
         Object dest = destFig.getOwner();
         if (ModelFacade.isAGeneralizableElement(source)
 	        && ModelFacade.isAGeneralizableElement(dest)) {
-            setOwner(CoreFactory.getFactory().buildGeneralization(source,
+            setOwner(Model.getCoreFactory().buildGeneralization(source,
 								  dest));
         }
     }

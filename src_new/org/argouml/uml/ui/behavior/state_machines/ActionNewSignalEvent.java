@@ -26,7 +26,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.Model;
 
 /**
  * @since Dec 15, 2002
@@ -50,7 +50,7 @@ public class ActionNewSignalEvent extends ActionNewEvent {
     protected Object createEvent() {
         Object model = ProjectManager.getManager()
             .getCurrentProject().getModel();
-        return StateMachinesFactory.getFactory().buildSignalEvent(model);
+        return Model.getStateMachinesFactory().buildSignalEvent(model);
     }
 
     /**

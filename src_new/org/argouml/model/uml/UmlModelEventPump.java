@@ -38,6 +38,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -202,7 +203,7 @@ public final class UmlModelEventPump implements MElementListener {
         // first register the listener for all elements allready in
         // the model modelClass = formatClass(modelClass);
         Collection col =
-            ModelManagementHelper.getHelper()
+            Model.getModelManagementHelper()
 	        .getAllModelElementsOfKind(modelClass);
 
         if (col == Collections.EMPTY_LIST) {
@@ -341,7 +342,7 @@ public final class UmlModelEventPump implements MElementListener {
         // modelClass
         //modelClass = formatClass(modelClass);
         Iterator it =
-            ModelManagementHelper.getHelper()
+            Model.getModelManagementHelper()
 	        .getAllModelElementsOfKind(modelClass)
 	            .iterator();
         while (it.hasNext()) {

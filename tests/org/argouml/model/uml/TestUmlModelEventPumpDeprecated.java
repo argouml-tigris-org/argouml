@@ -32,6 +32,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -119,7 +120,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = CoreFactory.getFactory().createClass();
+        elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();
         MModel model = (MModel) project.getRoot();
         model.addOwnedElement(elem);
@@ -133,7 +134,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        if (elem != null) UmlFactory.getFactory().delete(elem);
+        if (elem != null) Model.getUmlFactory().delete(elem);
         UmlModelEventPump.getPump().cleanUp();
         listener2 = null;
         listener = null;
@@ -226,7 +227,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      */
     public void testCreateDelete() {
         WeakReference ref = new WeakReference(elem);
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         elem = null;
         System.gc();
         assertNull(ref.get());
@@ -308,7 +309,7 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
      * be too sure :))
      */
     public void testFireNonRegistredListener() {
-        MClass elem2 = CoreFactory.getFactory().createClass();
+        MClass elem2 = Model.getCoreFactory().createClass();
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
     }

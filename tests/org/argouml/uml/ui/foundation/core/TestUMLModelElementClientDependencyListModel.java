@@ -26,10 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MDependency;
@@ -60,8 +58,8 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ns = ModelManagementFactory.getFactory().createModel();
-        elem = (MModelElement) CoreFactory.getFactory().buildClass(ns);
+        ns = Model.getModelManagementFactory().createModel();
+        elem = (MModelElement) Model.getCoreFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLModelElementClientDependencyListModel();
@@ -74,8 +72,8 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
-        UmlFactory.getFactory().delete(ns);
+        Model.getUmlFactory().delete(elem);
+        Model.getUmlFactory().delete(ns);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -88,9 +86,9 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         Object[] dependencies = new MDependency[10];
         for (int i = 0; i < 10; i++) {
             suppliers[i] = 
-                (MModelElement) CoreFactory.getFactory().buildClass(ns);
+                (MModelElement) Model.getCoreFactory().buildClass(ns);
             dependencies[i] = 
-                CoreFactory.getFactory().buildDependency(elem, suppliers[i]);
+                Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         assertEquals(10, model.getSize());
         assertEquals(model.getElementAt(5), dependencies[5]);
@@ -106,9 +104,9 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
         Object[] dependencies = new MDependency[10];
         for (int i = 0; i < 10; i++) {
             suppliers[i] = 
-                (MModelElement) CoreFactory.getFactory().buildClass(ns);
+                (MModelElement) Model.getCoreFactory().buildClass(ns);
             dependencies[i] = 
-                CoreFactory.getFactory().buildDependency(elem, suppliers[i]);
+                Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         for (int i = 0; i < 5; i++) {
             ModelFacade.removeClientDependency(elem, dependencies[i]);

@@ -26,8 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -57,7 +56,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CoreFactory.getFactory().createClass();
+        elem = Model.getCoreFactory().createClass();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
         model = new UMLModelElementNamespaceListModel();
@@ -70,7 +69,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -79,7 +78,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      * Test for setNameSpace.
      */
     public void testSetNamespace() {
-        MNamespace ns = CoreFactory.getFactory().createNamespace();
+        MNamespace ns = Model.getCoreFactory().createNamespace();
         elem.setNamespace(ns);
         assertEquals(1, model.getSize());
         assertEquals(ns, model.getElementAt(0));
@@ -89,7 +88,7 @@ public class TestUMLModelElementNamespaceListModel extends TestCase {
      * Test removing a namespace.
      */
     public void testRemoveNamespace() {
-        MNamespace ns = CoreFactory.getFactory().createNamespace();
+        MNamespace ns = Model.getCoreFactory().createNamespace();
         elem.setNamespace(ns);
         elem.setNamespace(null);
         assertEquals(0, model.getSize());

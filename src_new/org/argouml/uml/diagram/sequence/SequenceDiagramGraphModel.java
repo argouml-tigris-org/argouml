@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: SequenceDiagramGraphModel.java
-// Classes: SequenceDiagramGraphModel
-
 package org.argouml.uml.diagram.sequence;
 
 import java.beans.PropertyChangeEvent;
@@ -37,12 +34,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CollaborationsHelper;
-import org.argouml.model.uml.CommonBehaviorFactory;
-import org.argouml.model.uml.CommonBehaviorHelper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.sequence.ui.FigLink;
 import org.argouml.uml.diagram.sequence.ui.FigLinkPort;
@@ -54,19 +47,22 @@ import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.presentation.Fig;
 
-/** This class defines a bridge between the UML meta-model
- *  representation of the design and the GraphModel interface used by
- *  GEF.  This class handles only UML Sequence Digrams.
+/**
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.  This class handles only UML Sequence Digrams.
  *
- *  @author 5eichler@informatik.uni-hamburg.de
+ * @author 5eichler@informatik.uni-hamburg.de
  */
 public class SequenceDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener {
-
-    private static final Logger LOG = 
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
         Logger.getLogger(SequenceDiagramGraphModel.class);
-    
+
     private abstract class CanConnectCmd {
         private Object srcPort;
         private Object destPort;
@@ -426,7 +422,7 @@ public class SequenceDiagramGraphModel
     public SequenceDiagramGraphModel(Object c) {
         collaboration = c;
         interaction =
-            CollaborationsFactory.getFactory().buildInteraction(c);
+            Model.getCollaborationsFactory().buildInteraction(c);
     }
 
     /** 
@@ -546,7 +542,7 @@ public class SequenceDiagramGraphModel
     public Object getSourcePort(Object edge) {
         Object res = null;
         if (ModelFacade.isALink(edge)) {
-            res = CommonBehaviorHelper.getHelper().getSource(edge);
+            res = Model.getCommonBehaviorHelper().getSource(edge);
         }
         return res;
     }
@@ -559,7 +555,7 @@ public class SequenceDiagramGraphModel
     public Object getDestPort(Object edge) {
         Object res = null;
         if (ModelFacade.isALink(edge)) {
-            res = CommonBehaviorHelper.getHelper().getDestination(edge);
+            res = Model.getCommonBehaviorHelper().getDestination(edge);
         }
         return res;
     }
@@ -592,10 +588,10 @@ public class SequenceDiagramGraphModel
         Object end1 = null;
         if (org.argouml.model.ModelFacade.isALink(edge)) {
             end0 =
-		CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/
+		Model.getCommonBehaviorHelper().getSource(/*(MLink)*/
 							   edge);
             end1 =
-		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/
+		Model.getCommonBehaviorHelper().getDestination(/*(MLink)*/
 								edge);
         }
         if (end0 == null || end1 == null)
@@ -618,7 +614,7 @@ public class SequenceDiagramGraphModel
     public void addNode(Object node) {
         if (canAddNode(node)) {
             Object clasrole =
-                CollaborationsFactory.getFactory().buildClassifierRole(
+                Model.getCollaborationsFactory().buildClassifierRole(
                     collaboration);
             ModelFacade.addInstance(clasrole, node);
             fireNodeAdded(node);
@@ -704,7 +700,7 @@ public class SequenceDiagramGraphModel
         if (edgeClass == ModelFacade.LINK) {
             Editor curEditor = Globals.curEditor();
             ModeManager modeManager = curEditor.getModeManager();
-            Mode mode = (Mode) modeManager.top();
+            Mode mode = modeManager.top();
             Hashtable args = mode.getArgs();
             Class actionClass = (Class) args.get("action");
             if (actionClass == ModelFacade.CALL_ACTION) {
@@ -714,7 +710,7 @@ public class SequenceDiagramGraphModel
                     toObject = ((LinkPort) toPort).getObject();
 
                     action =
-                        UmlFactory.getFactory().getCommonBehavior()
+                        Model.getUmlFactory().getCommonBehavior()
                             .createCallAction();
                 }
             } else if (actionClass == ModelFacade.CREATE_ACTION) {
@@ -723,7 +719,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = toPort;
                     action =
-                        UmlFactory.getFactory().getCommonBehavior()
+                        Model.getUmlFactory().getCommonBehavior()
                             .createCreateAction();
                 }
             } else if (actionClass == ModelFacade.RETURN_ACTION) {
@@ -732,7 +728,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        UmlFactory.getFactory().getCommonBehavior()
+                        Model.getUmlFactory().getCommonBehavior()
                             .createReturnAction();
 
                 }
@@ -742,7 +738,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        UmlFactory.getFactory().getCommonBehavior()
+                        Model.getUmlFactory().getCommonBehavior()
                             .createDestroyAction();
                 }
             } else if (actionClass == ModelFacade.SEND_ACTION) {
@@ -753,7 +749,7 @@ public class SequenceDiagramGraphModel
         }
         if (fromObject != null && toObject != null && action != null) {
             Object link =
-                CommonBehaviorFactory.getFactory().buildLink(
+                Model.getCommonBehaviorFactory().buildLink(
                     fromObject,
                     toObject);
             Object classifierRoleFrom =
@@ -761,19 +757,19 @@ public class SequenceDiagramGraphModel
             Object classifierRoleTo =
                 ModelFacade.getClassifiers(toObject).iterator().next();
             Object associationRole =
-                CollaborationsHelper.getHelper().getAssocationRole(
+                Model.getCollaborationsHelper().getAssocationRole(
                     classifierRoleFrom,
                     classifierRoleTo);
             if (associationRole == null) {
                 associationRole =
-                    CollaborationsFactory.getFactory().buildAssociationRole(
+                    Model.getCollaborationsFactory().buildAssociationRole(
                         link);
             }
             Object stimulus = null;
             if (ModelFacade.getStimuli(link) == null
                 || ModelFacade.getStimuli(link).isEmpty()) {
                 stimulus =
-                    CommonBehaviorFactory.getFactory().buildStimulus(link);
+                    Model.getCommonBehaviorFactory().buildStimulus(link);
             } else {
                 // we need to find the right stimulus
                 Iterator it = ModelFacade.getStimuli(link).iterator();
@@ -789,13 +785,13 @@ public class SequenceDiagramGraphModel
                 }
                 if (stimulus == null) {
                     stimulus =
-                        CommonBehaviorFactory.getFactory().buildStimulus(link);
+                        Model.getCommonBehaviorFactory().buildStimulus(link);
                 }
             }
             ModelFacade.setDispatchAction(stimulus, action);
 
             Object message =
-                CollaborationsFactory.getFactory().buildMessage(
+                Model.getCollaborationsFactory().buildMessage(
                     getInteraction(),
                     associationRole);
             ModelFacade.setAction(message, action);
@@ -826,10 +822,12 @@ public class SequenceDiagramGraphModel
             Object me = ModelFacade.getModelElement(eo);
             if (oldOwned.contains(eo)) {
                 LOG.debug("model removed " + me);
-                if (ModelFacade.isAObject(me))
+                if (ModelFacade.isAObject(me)) {
                     removeNode(me);
-                if (ModelFacade.isAAssociation(me))
+                }
+                if (ModelFacade.isAAssociation(me)) {
                     removeEdge(me);
+                }
             } else {
                 LOG.debug("model added " + me);
             }
@@ -860,13 +858,11 @@ public class SequenceDiagramGraphModel
     private Object getInteraction() {
         if (interaction == null) {
             interaction =
-                CollaborationsFactory.getFactory().buildInteraction(
+                Model.getCollaborationsFactory().buildInteraction(
                     collaboration);
         }
         return interaction;
     }
-    
-    
 
     /**
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()

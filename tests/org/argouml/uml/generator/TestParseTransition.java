@@ -30,8 +30,8 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * Test ParserDisplay: parsing transitions.
@@ -59,17 +59,17 @@ public class TestParseTransition extends TestCase {
      */
     protected void setUp() {
         Object model =
-            UmlFactory.getFactory().getModelManagement().createModel();
-        aClass = UmlFactory.getFactory().getCore().buildClass(model);
+            Model.getUmlFactory().getModelManagement().createModel();
+        aClass = Model.getUmlFactory().getCore().buildClass(model);
         Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(aClass);
         Object mdl = ProjectManager.getManager().getCurrentProject().getModel();
         Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-        aOper = UmlFactory.getFactory().getCore()
+        aOper = Model.getUmlFactory().getCore()
             .buildOperation(aClass, mdl, voidType, "myOper", propertyChangeListeners);
-        aStateMachine = UmlFactory.getFactory().getStateMachines()
+        aStateMachine = Model.getUmlFactory().getStateMachines()
             .buildStateMachine(aClass);
         Object top = ModelFacade.getTop(aStateMachine);
-        aState = UmlFactory.getFactory().getStateMachines()
+        aState = Model.getUmlFactory().getStateMachines()
             .buildCompositeState(top);
     }
     
@@ -127,7 +127,7 @@ public class TestParseTransition extends TestCase {
      */
     private Object checkGenerated(Object st, String text, boolean trigger, 
             boolean guard, boolean effect, boolean exception) {
-        Object it = UmlFactory.getFactory().getStateMachines()
+        Object it = Model.getUmlFactory().getStateMachines()
             .buildInternalTransition(st);
         try {
             ParserDisplay.SINGLETON.parseTransition(it, text);

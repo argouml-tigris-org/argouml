@@ -26,11 +26,12 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 
 /**
- * Test the ActivityGraphsFactory class.
+ * Test the ActivityGraphsFactoryImpl class.
  *
  */
 public class TestActivityGraphsFactory extends TestCase {
@@ -56,11 +57,11 @@ public class TestActivityGraphsFactory extends TestCase {
     public TestActivityGraphsFactory(String n) { super(n); }
 
     /**
-     * Test the singleton pattern for the ActivityGraphsFactory class.
+     * Test the singleton pattern for the ActivityGraphsFactoryImpl class.
      */
     public void testSingleton() {
-	Object o1 = ActivityGraphsFactory.getFactory();
-	Object o2 = ActivityGraphsFactory.getFactory();
+	Object o1 = Model.getActivityGraphsFactory();
+	Object o2 = Model.getActivityGraphsFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
@@ -80,7 +81,7 @@ public class TestActivityGraphsFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(this,
-					     ActivityGraphsFactory.getFactory(),
+					     Model.getActivityGraphsFactory(),
 					     objs);
     }
 
@@ -89,7 +90,7 @@ public class TestActivityGraphsFactory extends TestCase {
      */
     public void testDeleteComplete() {
         CheckUMLModelHelper.deleteComplete(this,
-					   ActivityGraphsFactory.getFactory(),
+					   Model.getActivityGraphsFactory(),
 					   allModelElements);
     }
 

@@ -25,9 +25,8 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ActivityGraphsFactory;
-import org.argouml.model.uml.ActivityGraphsHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -64,7 +63,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
     public UMLDiagram createDiagram(Object ns) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MActivityGraph*/ graph =
-	    ActivityGraphsFactory.getFactory().buildActivityGraph(target);
+	    Model.getActivityGraphsFactory().buildActivityGraph(target);
         /*if (ModelFacade.isABehavioralFeature(target)) {
             ns = ModelFacade.getNamespace(target); 
             // this fails always, see issue 1817
@@ -84,7 +83,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
     public boolean shouldBeEnabled() {
         Object obj = TargetManager.getInstance().getModelTarget();
         return super.shouldBeEnabled() 
-            && ActivityGraphsHelper.getHelper()
+            && Model.getActivityGraphsHelper()
                 .isAddingActivityGraphAllowed(obj);
     }
 
@@ -99,7 +98,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        return ActivityGraphsHelper.getHelper()
+        return Model.getActivityGraphsHelper()
             .isAddingActivityGraphAllowed(handle);
     }
 

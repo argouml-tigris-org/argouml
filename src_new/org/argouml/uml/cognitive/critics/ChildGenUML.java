@@ -30,14 +30,13 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
-import org.apache.log4j.Logger;
-
 import java.util.Enumeration;
 import java.util.Vector;
-import org.argouml.kernel.Project;
-import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
+import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationComposite;
@@ -116,7 +115,7 @@ public class ChildGenUML implements ChildGenerator {
 	// // needed?
 	if (ModelFacade.isAStateMachine(o)) {
 	    EnumerationComposite res = new EnumerationComposite();
-	    Object top = UmlHelper.getHelper().getStateMachines().getTop(o);
+	    Object top = Model.getUmlHelper().getStateMachines().getTop(o);
 	    if (top != null) res.addSub(new EnumerationSingle(top));
 	    res.addSub(new Vector(ModelFacade.getTransitions(o)));
 	    return res;

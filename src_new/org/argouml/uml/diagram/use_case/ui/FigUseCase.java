@@ -41,8 +41,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
@@ -1303,7 +1303,7 @@ public class FigUseCase extends FigNodeModelElement {
         // fig's index as we go through the extension points.
 
         Collection eps =
-	    UmlHelper.getHelper().getUseCases().getExtensionPoints(useCase);
+	    Model.getUmlHelper().getUseCases().getExtensionPoints(useCase);
         int epCount = 1;
 
         if (eps != null) {

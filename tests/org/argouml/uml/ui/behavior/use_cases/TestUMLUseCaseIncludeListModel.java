@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.model.uml.UseCasesFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -51,7 +51,7 @@ public class TestUMLUseCaseIncludeListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(UseCasesFactory.getFactory().createUseCase());
+        setElem(Model.getUseCasesFactory().createUseCase());
     }
 
     /**
@@ -67,7 +67,7 @@ public class TestUMLUseCaseIncludeListModel
     protected MBase[] fillModel() {
         MInclude[] ext = new MInclude[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = UseCasesFactory.getFactory().createInclude();
+            ext[i] = Model.getUseCasesFactory().createInclude();
             ((MUseCase) getElem()).addInclude(ext[i]);
         }
         return ext;

@@ -29,17 +29,8 @@ import java.lang.reflect.Proxy;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CommonBehaviorFactory;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.DataTypesFactory;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
-import org.argouml.model.uml.ModelManagementFactory;
 import org.argouml.model.uml.RefBaseObjectProxy;
-import org.argouml.model.uml.StateMachinesFactory;
 import org.argouml.model.uml.Uml;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.NavigatorPane;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRoleImpl;
@@ -101,7 +92,7 @@ public class TestUmlObjectCreation extends TestCase {
 				      Object legacy,
 				      boolean runTest) {
 	// First test the traditional proxy
-	UmlFactory.getFactory().setJmiProxyCreated(useProxy);
+	Model.getUmlFactory().setJmiProxyCreated(useProxy);
 
 	assertTrue("Not a valid entity: " + c.getClass(),
 		   c instanceof UmlModelEntity);
@@ -157,131 +148,131 @@ public class TestUmlObjectCreation extends TestCase {
      */
     public void testObjectFactory() {
 	testObjectFactoryType(Uml.ABSTRACTION, MAbstractionImpl.class,
-			      CoreFactory.getFactory().createAbstraction(),
+			      Model.getCoreFactory().createAbstraction(),
 			      true);
 	testObjectFactoryType(Uml.ASSOCIATION, MAssociationImpl.class,
-			      CoreFactory.getFactory().createAssociation(),
+			      Model.getCoreFactory().createAssociation(),
 			      true);
 	testObjectFactoryType(Uml.ASSOCIATION_ROLE, MAssociationRoleImpl.class,
-			      CollaborationsFactory.getFactory()
+			      Model.getCollaborationsFactory()
 			          .createAssociationRole(),
 			      true);
 	testObjectFactoryType(Uml.DEPENDENCY, MDependencyImpl.class,
-			      CoreFactory.getFactory().createDependency(),
+			      Model.getCoreFactory().createDependency(),
 			      true);
 	testObjectFactoryType(Uml.EXTEND, MExtendImpl.class,
-			      UseCasesFactory.getFactory().createExtend(),
+			      Model.getUseCasesFactory().createExtend(),
 			      true);
 	testObjectFactoryType(Uml.GENERALIZATION, MGeneralizationImpl.class,
-			      CoreFactory.getFactory().createGeneralization(),
+			      Model.getCoreFactory().createGeneralization(),
 			      true);
 	testObjectFactoryType(Uml.INCLUDE, MIncludeImpl.class,
-			      UseCasesFactory.getFactory().createInclude(),
+			      Model.getUseCasesFactory().createInclude(),
 			      true);
 	testObjectFactoryType(Uml.LINK, MLinkImpl.class,
-			      CommonBehaviorFactory.getFactory().createLink(),
+			      Model.getCommonBehaviorFactory().createLink(),
 			      true);
 	testObjectFactoryType(Uml.PERMISSION, MPermissionImpl.class,
-			      CoreFactory.getFactory().createPermission(),
+			      Model.getCoreFactory().createPermission(),
 			      true);
 	testObjectFactoryType(Uml.USAGE, MUsageImpl.class,
-			      CoreFactory.getFactory().createUsage(),
+			      Model.getCoreFactory().createUsage(),
 			      true);
 	testObjectFactoryType(Uml.TRANSITION, MTransitionImpl.class,
-			      StateMachinesFactory.getFactory()
+			      Model.getStateMachinesFactory()
 			          .createTransition(),
 			      true);
 	testObjectFactoryType(Uml.ACTOR, MActorImpl.class,
-			      UseCasesFactory.getFactory().createActor(),
+			      Model.getUseCasesFactory().createActor(),
 			      true);
 	testObjectFactoryType(Uml.CLASS, MClassImpl.class,
-			      CoreFactory.getFactory().createClass(),
+			      Model.getCoreFactory().createClass(),
 			      true);
 	testObjectFactoryType(Uml.CLASSIFIER, MClassifierImpl.class,
-			      CoreFactory.getFactory().createClassifier(),
+			      Model.getCoreFactory().createClassifier(),
 			      true);
 	testObjectFactoryType(Uml.CLASSIFIER_ROLE, MClassifierRoleImpl.class,
-			      CollaborationsFactory.getFactory()
+			      Model.getCollaborationsFactory()
 			          .createClassifierRole(),
 			      true);
 	testObjectFactoryType(Uml.COMPONENT, MComponentImpl.class,
-			      CoreFactory.getFactory().createComponent(),
+			      Model.getCoreFactory().createComponent(),
 			      true);
 	testObjectFactoryType(Uml.INSTANCE, MInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory()
+			      Model.getCommonBehaviorFactory()
 			          .createInstance(),
 			      true);
 	testObjectFactoryType(Uml.INTERFACE, MInterfaceImpl.class,
-			      CoreFactory.getFactory().createInterface(),
+			      Model.getCoreFactory().createInterface(),
 			      true);
 	testObjectFactoryType(Uml.NODE, MNodeImpl.class,
-			      CoreFactory.getFactory().createNode(),
+			      Model.getCoreFactory().createNode(),
 			      true);
 	testObjectFactoryType(Uml.NODE_INSTANCE, MNodeInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory()
+			      Model.getCommonBehaviorFactory()
 			          .createNodeInstance(),
 			      true);
 	testObjectFactoryType(Uml.OBJECT, MObjectImpl.class,
-			      CommonBehaviorFactory.getFactory().createObject(),
+			      Model.getCommonBehaviorFactory().createObject(),
 			      true);
 	testObjectFactoryType(Uml.PACKAGE, MPackageImpl.class,
-			      ModelManagementFactory.getFactory()
+			      Model.getModelManagementFactory()
 			          .createPackage(),
 			      true);
 	testObjectFactoryType(Uml.STATE, MStateImpl.class,
-			      StateMachinesFactory.getFactory().createState(),
+			      Model.getStateMachinesFactory().createState(),
 			      true);
 	testObjectFactoryType(Uml.COMPOSITE_STATE, MCompositeStateImpl.class,
-			      StateMachinesFactory.getFactory()
+			      Model.getStateMachinesFactory()
 			          .createCompositeState(),
 			      true);
 	testObjectFactoryType(Uml.PSEUDOSTATE, MPseudostateImpl.class,
-			      StateMachinesFactory.getFactory()
+			      Model.getStateMachinesFactory()
 			          .createPseudostate(),
 			      true);
 	testObjectFactoryType(Uml.USE_CASE, MUseCaseImpl.class,
-			      UseCasesFactory.getFactory().createUseCase(),
+			      Model.getUseCasesFactory().createUseCase(),
 			      true);
 	testObjectFactoryType(Uml.ACTION, MActionImpl.class,
-			      CommonBehaviorFactory.getFactory().createAction(),
+			      Model.getCommonBehaviorFactory().createAction(),
 			      true);
 	testObjectFactoryType(Uml.ASSOCIATION_END, MAssociationEndImpl.class,
-			      CoreFactory.getFactory().createAssociationEnd(),
+			      Model.getCoreFactory().createAssociationEnd(),
 			      true);
 	testObjectFactoryType(Uml.CALL_ACTION, MCallActionImpl.class,
-			      CommonBehaviorFactory.getFactory()
+			      Model.getCommonBehaviorFactory()
 			          .createCallAction(),
 			      true);
 	testObjectFactoryType(Uml.NAMESPACE, MNamespaceImpl.class,
-			      CoreFactory.getFactory().createNamespace(),
+			      Model.getCoreFactory().createNamespace(),
 			      true);
 	testObjectFactoryType(Uml.RECEPTION, MReceptionImpl.class,
-			      CommonBehaviorFactory.getFactory()
+			      Model.getCommonBehaviorFactory()
 			          .createReception(),
 			      true);
 	testObjectFactoryType(Uml.STEREOTYPE, MStereotypeImpl.class,
-			      ExtensionMechanismsFactory.getFactory()
+			      Model.getExtensionMechanismsFactory()
 			          .createStereotype(),
 			      true);
 	testObjectFactoryType(Uml.ATTRIBUTE, MAttributeImpl.class,
-			      CoreFactory.getFactory().createAttribute(),
+			      Model.getCoreFactory().createAttribute(),
 			      true);
 	testObjectFactoryType(Uml.OPERATION, MOperationImpl.class,
-			      CoreFactory.getFactory().createOperation(),
+			      Model.getCoreFactory().createOperation(),
 			      true);
 	testObjectFactoryType(Uml.DATATYPE, MDataTypeImpl.class,
-			      CoreFactory.getFactory().createDataType(),
+			      Model.getCoreFactory().createDataType(),
 			      true);
 	testObjectFactoryType(Uml.ACTION_EXPRESSION, MActionExpression.class,
 			      null, true);
 	testObjectFactoryType(Uml.COMPONENT_INSTANCE, 
 	                      MComponentInstanceImpl.class,
-			      CommonBehaviorFactory.getFactory()
+			      Model.getCommonBehaviorFactory()
 			          .createComponentInstance(),
 			      true);
 	// NSUML cannot instantiate a State Vertex object
 	testObjectFactoryType(Uml.STATE_VERTEX, MStateVertexImpl.class,
-			      DataTypesFactory.getFactory(),
+			      Model.getDataTypesFactory(),
 			      false);
 	// NSUML cannot instantiate an Event object
 	testObjectFactoryType(Uml.EVENT, MEventImpl.class, null, false);

@@ -31,7 +31,7 @@ import javax.swing.JTabbedPane;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.presentation.FigText;
@@ -98,7 +98,7 @@ public class GUITestMultiEditorPane extends TestCase {
 				});
             pane.targetSet(e);
             assertEnabled(pane.getTabs(), shouldBeEnabled);
-            target = CoreFactory.getFactory().createClass();
+            target = Model.getCoreFactory().createClass();
             shouldBeEnabled = getShouldBeEnabled(target, tabs);
             e =
                 new TargetEvent(this,

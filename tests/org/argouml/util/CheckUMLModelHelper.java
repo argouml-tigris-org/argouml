@@ -30,11 +30,7 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.AbstractUmlModelFactory;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ExtensionMechanismsFactory;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -72,7 +68,7 @@ public class CheckUMLModelHelper {
 	TestCase.assertTrue("toString() corrupt in " + c, 
 		      mo.toString() instanceof String);
  
-	UmlFactory.getFactory().delete(mo);
+	Model.getUmlFactory().delete(mo);
 
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
@@ -107,7 +103,7 @@ public class CheckUMLModelHelper {
             "getUMLClassName() different from expected in " + c, 
 	    name.equals(mo.getUMLClassName()));
 
-	UmlFactory.getFactory().delete(mo);
+	Model.getUmlFactory().delete(mo);
 
 	WeakReference wo = new WeakReference(mo);
 	
@@ -127,7 +123,7 @@ public class CheckUMLModelHelper {
      * @param args the arguments of the UML elements
      */
     public static void createAndRelease(TestCase tc,
-					AbstractUmlModelFactory f,
+					Object f,
 					String [] names,
 					Object [] args) {
 	Class [] classes = new Class[args.length];
@@ -177,7 +173,7 @@ public class CheckUMLModelHelper {
      * @param names the UML elements to test
      */
     public static void createAndRelease(TestCase tc,
-					AbstractUmlModelFactory f,
+					Object f,
 					String [] names) {
 	Object[] noarguments = {
 	};
@@ -194,7 +190,7 @@ public class CheckUMLModelHelper {
      * @param names the names of the modelelements
      */
     public static void deleteComplete(TestCase tc, 
-				      AbstractUmlModelFactory f, 
+				      Object f, 
 				      String[] names) {
         Method[] methods = null;
         try {
@@ -231,7 +227,7 @@ public class CheckUMLModelHelper {
      * @param names the metamodel class names
      */
     public static void metaModelNameCorrect(TestCase tc, 
-            AbstractUmlModelFactory f, String[] names) {
+            Object f, String[] names) {
         try {
             for (int i = 0; i < names.length; i++) {
                 try {
@@ -241,7 +237,7 @@ public class CheckUMLModelHelper {
                     if (base instanceof MModelElement) {
                         TestCase.assertTrue(
                             "not a valid metaModelName " + names[i], 
-                            ExtensionMechanismsHelper.getHelper()
+                            Model.getExtensionMechanismsHelper()
                                 .getMetaModelName((MModelElement) base)
                                     .equals(names[i]));
                     }
@@ -268,12 +264,12 @@ public class CheckUMLModelHelper {
      */
     public static void isValidStereoType(
             TestCase tc, 
-            AbstractUmlModelFactory f, 
+            Object f, 
             String[] names) {
         try {
-            MNamespace ns = CoreFactory.getFactory().createNamespace();
-            Object clazz = CoreFactory.getFactory().buildClass(ns);
-            MStereotype stereo1 = ExtensionMechanismsFactory.getFactory()
+            MNamespace ns = Model.getCoreFactory().createNamespace();
+            Object clazz = Model.getCoreFactory().buildClass(ns);
+            MStereotype stereo1 = Model.getExtensionMechanismsFactory()
                     .buildStereotype(clazz, "test1", ns);
             for (int i = 0; i < names.length; i++) {
                 try {
@@ -282,31 +278,31 @@ public class CheckUMLModelHelper {
                     Object base = m.invoke(f, new Object[] {});
                     if (base instanceof MModelElement) {
                         MStereotype stereo2 = 
-                            ExtensionMechanismsFactory.getFactory()
+                            Model.getExtensionMechanismsFactory()
                                 .buildStereotype((MModelElement) base, 
                                                 "test2", 
                                                 ns);
                         TestCase.assertTrue(
                             "Unexpected invalid stereotype", 
-                            ExtensionMechanismsHelper.getHelper()
+                            Model.getExtensionMechanismsHelper()
                                 .isValidStereoType((MModelElement) base, 
                                                     stereo2));
                         if (!(base instanceof MClass)) {
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype", 
-                                !ExtensionMechanismsHelper.getHelper()
+                                !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType((MModelElement) base, 
                                                         stereo1));
                         } else {
                             MInterface inter = 
-                                CoreFactory.getFactory().createInterface();
-                            MStereotype stereo3 = ExtensionMechanismsFactory
-                                .getFactory().buildStereotype(inter, 
+                                Model.getCoreFactory().createInterface();
+                            MStereotype stereo3 = Model
+                                .getExtensionMechanismsFactory().buildStereotype(inter, 
                                                               "test3", 
                                                               ns);
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype", 
-                                !ExtensionMechanismsHelper.getHelper()
+                                !Model.getExtensionMechanismsHelper()
                                     .isValidStereoType((MModelElement) base, 
                                                         stereo3));
                         }

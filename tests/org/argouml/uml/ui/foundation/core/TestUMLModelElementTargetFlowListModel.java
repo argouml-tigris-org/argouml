@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -51,7 +51,7 @@ public class TestUMLModelElementTargetFlowListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CoreFactory.getFactory().createClass());
+        setElem(Model.getCoreFactory().createClass());
     }
 
     /**
@@ -67,7 +67,7 @@ public class TestUMLModelElementTargetFlowListModel
     protected MBase[] fillModel() {
         MFlow[] ext = new MFlow[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = CoreFactory.getFactory().createFlow();
+            ext[i] = Model.getCoreFactory().createFlow();
             ((MModelElement) getElem()).addTargetFlow(ext[i]);
         }
         return ext;

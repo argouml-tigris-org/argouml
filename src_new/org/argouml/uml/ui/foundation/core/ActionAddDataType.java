@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -69,7 +69,7 @@ public class ActionAddDataType extends AbstractActionNewModelElement {
         if (ModelFacade.isAClassifier(target)) 
             ns = ModelFacade.getNamespace(target);
         
-        Object newDt = CoreFactory.getFactory().buildDataType("", ns);
+        Object newDt = Model.getCoreFactory().buildDataType("", ns);
         TargetManager.getInstance().setTarget(newDt);
         super.actionPerformed(e);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ClassDiagramGraphModel.java
-// Classes: ClassDiagramGraphModel
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-
 package org.argouml.uml.diagram.static_structure;
 
 import java.beans.PropertyChangeEvent;
@@ -38,20 +32,23 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
-import org.argouml.model.uml.UmlHelper;
-
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-/** This class defines a bridge between the UML meta-model
- *  representation of the design and the GraphModel interface used by
- *  GEF.  This class handles only UML Class digrams.  */
-
+/**
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.  This class handles only UML Class digrams.
+ *
+ * @author jrobbins
+ */
 public class ClassDiagramGraphModel extends UMLMutableGraphSupport
-    implements VetoableChangeListener 
-{
+    implements VetoableChangeListener {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	Logger.getLogger(ClassDiagramGraphModel.class);
     ////////////////////////////////////////////////////////////////
@@ -77,7 +74,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param namespace the namespace to be set for this diagram
      */
     public void setNamespace(Object namespace) {
-        
         if (!ModelFacade.isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
@@ -94,11 +90,19 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return all ports on node or edge.
      */
     public List getPorts(Object nodeOrEdge) {
-	Vector res = new Vector();  //wasteful!
-	if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAModel(nodeOrEdge)) res.addElement(nodeOrEdge);
+	Vector res = new Vector();  // wasteful!
+	if (ModelFacade.isAClass(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
+	if (ModelFacade.isAInterface(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
+	if (ModelFacade.isAInstance(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
+	if (ModelFacade.isAModel(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
 	return res;
     }
 
@@ -119,9 +123,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Instances can't currently be added to a class diagram.
      */
     public List getInEdges(Object port) {
-      
+
 	Vector edges = new Vector();
-      
+
 	// top of the hierarchy is ME:
 	if (ModelFacade.isAModelElement(port)) {
 	    Iterator it = ModelFacade.getSupplierDependencies(port).iterator();
@@ -234,7 +238,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return one end of an edge.
      */
     public Object getSourcePort(Object edge) {
-        return UmlHelper.getHelper().getSource(edge);
+        return Model.getUmlHelper().getSource(edge);
     }
 
     /**
@@ -243,7 +247,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * Return the other end of an edge.
      */
     public Object getDestPort(Object edge) {
-        return UmlHelper.getHelper().getDestination(edge);
+        return Model.getUmlHelper().getDestination(edge);
     }
 
 
@@ -563,11 +567,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	if (isSource) {
 	    otherNode =
-		CoreHelper.getHelper().getDestination(/*(MRelationship)*/ edge);
+		Model.getCoreHelper().getDestination(/*(MRelationship)*/ edge);
 	}
 	else {
 	    otherNode =
-		CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+		Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
 	if (ModelFacade.isAInterface(newNode)

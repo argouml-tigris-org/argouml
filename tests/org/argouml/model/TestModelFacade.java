@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,7 +34,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.model.uml.Uml;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * Tests the accessor methods of the _facade.
@@ -76,7 +75,7 @@ public class TestModelFacade extends TestCase {
 	return suite;
     }
 
-    /** 
+    /**
      * Test a specific element.
      * @see junit.framework.TestCase#runTest()
      */
@@ -90,7 +89,7 @@ public class TestModelFacade extends TestCase {
 	Class[] classes = new Class[1];
 	classes[0] = Object.class;
 	Object[] args = new Object[1];
-	
+
 	Method methodIsA;
 	try {
 	    methodIsA =
@@ -99,14 +98,14 @@ public class TestModelFacade extends TestCase {
 	} catch (NoSuchMethodException e) {
 	    return;
 	}
-	
+
 	// Test with null
 	args[0] = null;
 	Boolean rc = (Boolean) methodIsA.invoke(facade, args);
 	assertNotNull("isA" + objectType + " called with null", rc);
 	assertTrue("isA" + objectType + " called with null",
 	           !rc.booleanValue());
-	
+
 	// Test with an object
 	args[0] = new Object();
 	rc = null;
@@ -114,7 +113,7 @@ public class TestModelFacade extends TestCase {
 	assertNotNull("isA" + objectType + " called with new Object()", rc);
 	assertTrue("isA" + objectType + " called with new Object()",
 	           !rc.booleanValue());
-	
+
 	if (umlClass.isCreatable()) {
 	    Object testObject = null;
 	    // TODO: Make sure MultiplicityRange works properly -
@@ -122,18 +121,18 @@ public class TestModelFacade extends TestCase {
 	    if (!"MultiplicityRange".equals(umlClass.getName())) {
 	        // Test after creating the class using create()
 	        // without proxy
-	        UmlFactory.getFactory().setJmiProxyCreated(false);
-	        testObject = UmlFactory.getFactory().create(umlClass);
+	        Model.getUmlFactory().setJmiProxyCreated(false);
+	        testObject = Model.getUmlFactory().create(umlClass);
 	        assertNotNull("Unable to create '" + umlClass + "'",
 	                      testObject);
 	        args[0] = testObject;
 	        rc = null;
 	        rc = (Boolean) methodIsA.invoke(facade, args);
-	        assertTrue("isA" + objectType 
+	        assertTrue("isA" + objectType
 	                   + " did not work with legacy create",
 	                   rc.booleanValue());
 	    }
-	    
+
 	    // TODO: Make sure ActionExpression and MultiplicityRange
 	    // work properly - currently it does not
 	    if ("ActionExpression".equals(umlClass.getName())
@@ -142,8 +141,8 @@ public class TestModelFacade extends TestCase {
 	    }
 
 	    // Test after creating the class using create() with proxy
-	    UmlFactory.getFactory().setJmiProxyCreated(true);
-	    testObject = UmlFactory.getFactory().create(umlClass);
+	    Model.getUmlFactory().setJmiProxyCreated(true);
+	    testObject = Model.getUmlFactory().create(umlClass);
 	    assertNotNull("Unable to create '" + umlClass + "'",
 	            	  testObject);
 	    args[0] = testObject;
@@ -157,15 +156,15 @@ public class TestModelFacade extends TestCase {
 	}
 
 	// Test after creating the class using create() without proxy
-	UmlFactory.getFactory().setJmiProxyCreated(false);
-	Object testObject = UmlFactory.getFactory().create(umlClass);
+	Model.getUmlFactory().setJmiProxyCreated(false);
+	Object testObject = Model.getUmlFactory().create(umlClass);
 	assertNull("Should not be able to create legacy '"
 	        + umlClass + "'",
 	        testObject);
-	
+
 	// Test after creating the class using create() with proxy
-	UmlFactory.getFactory().setJmiProxyCreated(true);
-	testObject = UmlFactory.getFactory().create(umlClass);
+	Model.getUmlFactory().setJmiProxyCreated(true);
+	testObject = Model.getUmlFactory().create(umlClass);
 	assertNull("Should not be able to create new '"
 	        + umlClass + "'",
 	        testObject);

@@ -34,35 +34,31 @@ package org.argouml.ui;
 // import java.awt.Image;
 // import java.awt.Graphics2D;
 import java.io.File;
-// import java.io.ByteArrayOutputStream;
-// import java.io.FileOutputStream;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.swing.JPanel;
-// only 1.4.x  import javax.imageio.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.util.EnumerationComposite;
-import org.tigris.gef.util.EnumerationEmpty;
-import org.tigris.gef.util.EnumerationSingle;
-import org.tigris.gef.util.ChildGenerator;
-
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
-
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.util.ChildGenerator;
+import org.tigris.gef.util.EnumerationComposite;
+import org.tigris.gef.util.EnumerationEmpty;
+import org.tigris.gef.util.EnumerationSingle;
 import org.tigris.swidgets.Horizontal;
 
 /**
@@ -147,7 +143,7 @@ public class GUITestPropertyPanels extends TestCase {
         p = persister.doLoad(testfile);
         ProjectManager.getManager().setCurrentProject(p);
         
-        Collection me = UmlHelper.getHelper().getModelManagement().
+        Collection me = Model.getUmlHelper().getModelManagement().
 	    getAllModelElementsOfKind((Class) ModelFacade.MODELELEMENT);
         
         Enumeration meEnum = getAllModelElements(p);
@@ -326,7 +322,7 @@ class ChildGenModelElements implements ChildGenerator {
         
         if (ModelFacade.isAStateMachine(o)) {
             EnumerationComposite res2 = new EnumerationComposite();
-            Object top = UmlHelper.getHelper().getStateMachines().getTop(o);
+            Object top = Model.getUmlHelper().getStateMachines().getTop(o);
             if (top != null) res2.addSub(new EnumerationSingle(top));
             res2.addSub(new Vector(ModelFacade.getTransitions(o)));
             res.addSub(res2);

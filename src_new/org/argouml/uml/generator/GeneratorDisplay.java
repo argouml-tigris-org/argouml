@@ -32,8 +32,8 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
 /**
  * Generator2 subclass to generate code for display in diagrams in
@@ -153,7 +153,7 @@ public class GeneratorDisplay extends Generator2 {
 	parameterStr.append("(").append(parameterListBuffer).append(")");
 
         // the returnparameters
-        coll = UmlHelper.getHelper().getCore().getReturnParameters(op);
+        coll = Model.getUmlHelper().getCore().getReturnParameters(op);
         StringBuffer returnParasSb = new StringBuffer();
         if (coll != null && coll.size() > 0) {
             returnParasSb.append(": ");

@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactoryImpl;
@@ -83,7 +83,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,8 +32,6 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
@@ -92,7 +90,7 @@ public class TestModelEventPump extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CoreFactory.getFactory().createClass();
+        elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();
         MModel model = (MModel) project.getRoot();
         model.addOwnedElement(elem);
@@ -106,7 +104,7 @@ public class TestModelEventPump extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         if (elem != null) {
-            UmlFactory.getFactory().delete(elem);
+            Model.getUmlFactory().delete(elem);
         }
         listener = null;
     }
@@ -118,7 +116,7 @@ public class TestModelEventPump extends TestCase {
      */
     public void testCreateDelete() {
         WeakReference ref = new WeakReference(elem);
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         elem = null;
         System.gc();
         assertNull(ref.get());
@@ -186,7 +184,7 @@ public class TestModelEventPump extends TestCase {
      * Tests if a non registred listener does not receive any events.
      */
     public void testFireNonRegistredListener() {
-        CoreFactory.getFactory().createClass();
+        Model.getCoreFactory().createClass();
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
     }

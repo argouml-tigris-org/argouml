@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,33 +32,30 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.ModelManagementHelper;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
 
 /**
- * A wizard to add a constructor to a classifier
+ * A wizard to add a constructor to a classifier.
  *
  * @author  d00mst (copied from WizAddOperation by mkl)
  * @since February 7, 2004, 12:35 AM
  */
 public class WizAddConstructor extends UMLWizard {
-    
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
     private String instructions =
 	"Please change the name of the offending model element.";
-    
+
     /**
-     * Creates a new instance of WizAddConstructor
+     * Creates a new instance of WizAddConstructor.
      */
     public WizAddConstructor() {
         super();
     }
-    
+
     /**
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
@@ -69,8 +66,9 @@ public class WizAddConstructor extends UMLWizard {
 	switch (oldStep) {
 	case 1:
 	    String newName = suggestion;
-	    if (step1 != null)
-		newName = step1.getText();
+	    if (step1 != null) {
+	        newName = step1.getText();
+	    }
 	    Object me = getModelElement();
 	    savedTargets = TargetManager.getInstance().getTargets();
 	    Collection propertyChangeListeners = ProjectManager.getManager()
@@ -79,7 +77,8 @@ public class WizAddConstructor extends UMLWizard {
 	        .getModel();
 	    Object voidType = ProjectManager.getManager().getCurrentProject()
 	        .findType("void");
-	    oper = UmlFactory.getFactory().getCore().buildOperation(me, model, 
+	    oper =
+	        Model.getUmlFactory().getCore().buildOperation(me, model, 
 	            voidType, newName, propertyChangeListeners);
 	    ModelFacade.setStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
@@ -87,7 +86,7 @@ public class WizAddConstructor extends UMLWizard {
     }
 
     /**
-     * Finds the <<create>> stereotype for an object. It is assumed to be
+     * Finds the create stereotype for an object. It is assumed to be
      * available from the java profile.
      *
      * @param obj is the object the stereotype should be applicable to.
@@ -102,12 +101,13 @@ public class WizAddConstructor extends UMLWizard {
 	while (iter.hasNext()) {
 	    Object stereo = iter.next();
 	    if (!ModelFacade.isAStereotype(stereo)
-		|| !"create".equals(ModelFacade.getName(stereo)))
-		continue;
+		|| !"create".equals(ModelFacade.getName(stereo))) {
+	        continue;
+	    }
 
-	    if (ExtensionMechanismsHelper.getHelper()
+	    if (Model.getExtensionMechanismsHelper()
 		    .isValidStereoType(obj, stereo)) {
-		return ModelManagementHelper.getHelper()
+		return Model.getModelManagementHelper()
 		    .getCorrespondingElement(stereo,
 					     ModelFacade.getModel(obj));
 	    }
@@ -115,15 +115,15 @@ public class WizAddConstructor extends UMLWizard {
 
 	return null;
     }
-    
+
     /**
      * @param s set a new instruction string
      */
     public void setInstructions(String s) {
 	instructions = s;
     }
-    
-    
+
+
     /**
      * Create a new panel for the given step.
      *

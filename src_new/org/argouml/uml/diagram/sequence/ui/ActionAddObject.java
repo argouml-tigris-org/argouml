@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,8 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.tigris.gef.base.Editor;
@@ -42,7 +42,6 @@ public class ActionAddObject extends CmdCreateNode {
 
     /**
      * The constructor.
-     * 
      */
     public ActionAddObject() {
         super(ModelFacade.OBJECT, false, "Object");
@@ -58,9 +57,9 @@ public class ActionAddObject extends CmdCreateNode {
         if (gm instanceof SequenceDiagramGraphModel) {
             SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel) gm;
             Object clasrole =
-                CollaborationsFactory.getFactory().buildClassifierRole(
+                Model.getCollaborationsFactory().buildClassifierRole(
                     sgm.getCollaboration());
-            ModelFacade.addInstance(clasrole, node);            
+            ModelFacade.addInstance(clasrole, node);
         } else {
             throw new IllegalStateException("Graphmodel is not a "
 					    + "sequence diagram graph model");

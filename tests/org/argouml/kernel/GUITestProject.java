@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,13 +28,8 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ActivityGraphsFactory;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.StateMachinesFactory;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.explorer.ExplorerTree;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -46,7 +41,6 @@ import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
  */
 public class GUITestProject extends TestCase {
 
-    private ExplorerTree exTree;
     /**
      * Constructor for TestProject.
      *
@@ -55,9 +49,7 @@ public class GUITestProject extends TestCase {
     public GUITestProject(String arg0) {
         super(arg0);
     }
-    
-    
-    
+
     /**
      * Test deleting a package that contains a Class diagram.
      * The diagram should be deleted, too.
@@ -67,16 +59,16 @@ public class GUITestProject extends TestCase {
         assertEquals(2, p.getDiagrams().size());
         assertEquals("untitledModel", ModelFacade.getName(p.getModel()));
         assertEquals(p.getRoot(), p.getModel());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object package2 = ModelManagementFactory.getFactory().buildPackage(
+        Object package2 = Model.getModelManagementFactory().buildPackage(
                 "test2", null);
-        
+
         UMLClassDiagram cDiag = new UMLClassDiagram(package2);
         p.addMember(cDiag);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
@@ -98,13 +90,13 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
         
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
         
         
         // try with Statediagram
-        Object machine = StateMachinesFactory.getFactory().buildStateMachine(
+        Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
         UMLStateDiagram d = new UMLStateDiagram(ModelFacade
                 .getNamespace(machine), machine);
@@ -129,13 +121,13 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
         
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
         
         
         // try with Statediagram
-        Object machine = StateMachinesFactory.getFactory().buildStateMachine(
+        Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
         UMLStateDiagram d = new UMLStateDiagram(ModelFacade
                 .getNamespace(machine), machine);
@@ -157,14 +149,14 @@ public class GUITestProject extends TestCase {
         assertEquals(2, p.getDiagrams().size());
         
         // test with a class and an inner class
-        Object aClass = CoreFactory.getFactory().buildClass("Test");
-        Object bClass = CoreFactory.getFactory().buildClass(aClass);
+        Object aClass = Model.getCoreFactory().buildClass("Test");
+        Object bClass = Model.getCoreFactory().buildClass(aClass);
 
         p.moveToTrash(aClass);
         
         assertTrue("Class not in trash", p.isInTrash(aClass));
         assertTrue("Inner Class not in trash", 
-                UmlFactory.getFactory().isRemoved(bClass));
+                Model.getUmlFactory().isRemoved(bClass));
     }
    
     /**
@@ -176,14 +168,14 @@ public class GUITestProject extends TestCase {
         assertEquals(2, p.getDiagrams().size());
         
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
 
         p.moveToTrash(package1);
         
         assertTrue("Class not in trash", 
-                UmlFactory.getFactory().isRemoved(aClass));
+                Model.getUmlFactory().isRemoved(aClass));
     }
 
     
@@ -199,13 +191,13 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
         
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
         
         
         // try with Statediagram
-        Object machine = StateMachinesFactory.getFactory().buildStateMachine(
+        Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 aClass);
         UMLStateDiagram d = new UMLStateDiagram(ModelFacade
                 .getNamespace(machine), machine);
@@ -214,9 +206,9 @@ public class GUITestProject extends TestCase {
         assertEquals(sizeMembers + 1, p.getMembers().size());
         p.moveToTrash(package1);
         assertTrue("Class not in trash", 
-                UmlFactory.getFactory().isRemoved(aClass));
+                Model.getUmlFactory().isRemoved(aClass));
         assertTrue("Statemachine not in trash", 
-                UmlFactory.getFactory().isRemoved(machine));
+                Model.getUmlFactory().isRemoved(machine));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
@@ -233,18 +225,18 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
         
         // test with a class and class diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
         
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object model = p.getModel();
         Object voidType = p.findType("void");
-        Object oper = UmlFactory.getFactory().getCore()
+        Object oper = Model.getUmlFactory().getCore()
             .buildOperation(aClass, model, voidType, propertyChangeListeners);
         
         // try with Statediagram
-        Object machine = StateMachinesFactory.getFactory().buildStateMachine(
+        Object machine = Model.getStateMachinesFactory().buildStateMachine(
                 oper);
         UMLStateDiagram d = new UMLStateDiagram(ModelFacade
                 .getNamespace(machine), machine);
@@ -256,7 +248,7 @@ public class GUITestProject extends TestCase {
         
         assertTrue("Operation not in trash", p.isInTrash(oper));
         assertTrue("Statemachine not in trash", 
-                UmlFactory.getFactory().isRemoved(machine));
+                Model.getUmlFactory().isRemoved(machine));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
@@ -274,12 +266,12 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
         
         // test with a package and a class and activity diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
+        Object package1 = Model.getModelManagementFactory().buildPackage(
                 "test1", null);
-        Object aClass = CoreFactory.getFactory().buildClass(package1);
+        Object aClass = Model.getCoreFactory().buildClass(package1);
       
         // build the Activity Diagram
-        Object actgrph = ActivityGraphsFactory.getFactory().buildActivityGraph(
+        Object actgrph = Model.getActivityGraphsFactory().buildActivityGraph(
                 aClass);
         UMLActivityDiagram d = new UMLActivityDiagram(ModelFacade
                 .getNamespace(actgrph), actgrph);
@@ -290,9 +282,9 @@ public class GUITestProject extends TestCase {
         p.moveToTrash(package1);
         
         assertTrue("Class not in trash", 
-                UmlFactory.getFactory().isRemoved(aClass));
+                Model.getUmlFactory().isRemoved(aClass));
         assertTrue("ActivityGraph not in trash", 
-                UmlFactory.getFactory().isRemoved(actgrph));
+                Model.getUmlFactory().isRemoved(actgrph));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
@@ -301,42 +293,41 @@ public class GUITestProject extends TestCase {
     /**
      * Test deleting a package with a package with a Activity diagram.
      * The diagram should be deleted, too.
-     */ 
+     */
     public void testDeletePackageWithPackageWithActivityDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        
+
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
-        
+
         // test with a package and a class and activity diagram
-        Object package1 = ModelManagementFactory.getFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         ModelFacade.setNamespace(package1, p.getModel());
-        Object package2 = ModelManagementFactory.getFactory().buildPackage(
-                "test2", null);
+        Object package2 =
+            Model.getModelManagementFactory().buildPackage("test2", null);
         ModelFacade.setNamespace(package2, package1);
-      
+
         // build the Activity Diagram
-        Object actgrph = ActivityGraphsFactory.getFactory().buildActivityGraph(
-                package2);
-        UMLActivityDiagram d = new UMLActivityDiagram(ModelFacade
-                .getNamespace(actgrph), actgrph);
+        Object actgrph =
+            Model.getActivityGraphsFactory().buildActivityGraph(package2);
+        UMLActivityDiagram d =
+            new UMLActivityDiagram(ModelFacade.getNamespace(actgrph), actgrph);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
-        
+
         p.moveToTrash(package1);
-        
-        assertTrue("Package 2 not in trash", 
-                UmlFactory.getFactory().isRemoved(package2));
-        assertTrue("ActivityGraph not in trash", 
-                UmlFactory.getFactory().isRemoved(actgrph));
+
+        assertTrue("Package 2 not in trash",
+                Model.getUmlFactory().isRemoved(package2));
+        assertTrue("ActivityGraph not in trash",
+                Model.getUmlFactory().isRemoved(actgrph));
         assertEquals(sizeDiagrams, p.getDiagrams().size());
         assertEquals(sizeMembers, p.getMembers().size());
     }
 
-    
     /**
      * @see junit.framework.TestCase#setUp()
      */

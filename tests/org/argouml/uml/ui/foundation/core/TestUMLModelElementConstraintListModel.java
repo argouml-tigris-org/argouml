@@ -26,9 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MConstraint;
@@ -59,8 +57,8 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ns = ModelManagementFactory.getFactory().createModel();
-        elem = (MModelElement) CoreFactory.getFactory().buildClass(ns);
+        ns = Model.getModelManagementFactory().createModel();
+        elem = (MModelElement) Model.getCoreFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLModelElementConstraintListModel();
@@ -73,8 +71,8 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
-        UmlFactory.getFactory().delete(ns);
+        Model.getUmlFactory().delete(elem);
+        Model.getUmlFactory().delete(ns);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
@@ -85,7 +83,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
     public void testAddMultiple() {  
         MConstraint[] constraints = new MConstraint[10];
         for (int i = 0; i < constraints.length; i++) {
-            constraints[i] = CoreFactory.getFactory().createConstraint();
+            constraints[i] = Model.getCoreFactory().createConstraint();
             elem.addConstraint(constraints[i]);
         }
         assertEquals(10, model.getSize());
@@ -100,7 +98,7 @@ public class TestUMLModelElementConstraintListModel extends TestCase {
     public void testRemoveMultiple() {
         MConstraint[] constraints = new MConstraint[10];
         for (int i = 0; i < constraints.length; i++) {
-            constraints[i] = CoreFactory.getFactory().createConstraint();
+            constraints[i] = Model.getCoreFactory().createConstraint();
             elem.addConstraint(constraints[i]);
         }
         for (int i = 0; i < 5; i++) {

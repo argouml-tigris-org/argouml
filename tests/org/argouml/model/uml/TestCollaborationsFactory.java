@@ -28,6 +28,7 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -70,9 +71,9 @@ public class TestCollaborationsFactory extends TestCase {
      */
     public void testSingleton() {
 
-        Object o1 = CollaborationsFactory.getFactory();
+        Object o1 = Model.getCollaborationsFactory();
 
-        Object o2 = CollaborationsFactory.getFactory();
+        Object o2 = Model.getCollaborationsFactory();
 
         assertTrue("Different singletons", o1 == o2);
 
@@ -95,7 +96,7 @@ public class TestCollaborationsFactory extends TestCase {
 
         CheckUMLModelHelper.createAndRelease(
             this,
-            CollaborationsFactory.getFactory(),
+            Model.getCollaborationsFactory(),
             objs);
 
     }
@@ -106,7 +107,7 @@ public class TestCollaborationsFactory extends TestCase {
     public void testDeleteComplete() {
         CheckUMLModelHelper.deleteComplete(
             this,
-            CollaborationsFactory.getFactory(),
+            Model.getCollaborationsFactory(),
             allModelElements);
     }
 
@@ -118,19 +119,19 @@ public class TestCollaborationsFactory extends TestCase {
      */
     public void testDeleteClassifierRole() {
 
-        MModel model = ModelManagementFactory.getFactory().createModel();
+        MModel model = Model.getModelManagementFactory().createModel();
         MCollaboration collab =
-            CollaborationsFactory.getFactory().buildCollaboration(model);
+            Model.getCollaborationsFactory().buildCollaboration(model);
         MClassifierRole cr1 =
-            CollaborationsFactory.getFactory().createClassifierRole();
+            Model.getCollaborationsFactory().createClassifierRole();
         MClassifierRole cr2 =
-            CollaborationsFactory.getFactory().createClassifierRole();
+            Model.getCollaborationsFactory().createClassifierRole();
         MAssociationRole role =
-            CollaborationsFactory.getFactory().buildAssociationRole(cr1, cr2);
+            Model.getCollaborationsFactory().buildAssociationRole(cr1, cr2);
         MInteraction inter =
-            CollaborationsFactory.getFactory().buildInteraction(collab);
+            Model.getCollaborationsFactory().buildInteraction(collab);
         MMessage mes =
-            (MMessage) CollaborationsFactory.getFactory().buildMessage(
+            (MMessage) Model.getCollaborationsFactory().buildMessage(
                 inter,
                 role);
 
@@ -139,7 +140,7 @@ public class TestCollaborationsFactory extends TestCase {
         WeakReference interwr = new WeakReference(inter);
         WeakReference meswr = new WeakReference(mes);
 
-        UmlFactory.getFactory().delete(cr1);
+        Model.getUmlFactory().delete(cr1);
         cr1 = null;
         role = null;
         inter = null;

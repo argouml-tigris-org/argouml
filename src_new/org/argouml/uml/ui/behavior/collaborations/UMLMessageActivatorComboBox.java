@@ -25,9 +25,11 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
+
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
@@ -58,7 +60,7 @@ public class UMLMessageActivatorComboBox extends UMLComboBox2 {
         Object activator = /*(MMessage)*/ o;
         Object mes = /*(MMessage)*/ getTarget();
         if (activator != ModelFacade.getActivator(mes)) {
-            CollaborationsHelper.getHelper().setActivator(mes, activator);
+            Model.getCollaborationsHelper().setActivator(mes, activator);
         }
     }
 

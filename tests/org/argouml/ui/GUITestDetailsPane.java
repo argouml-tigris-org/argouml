@@ -29,11 +29,10 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-
 import org.tigris.swidgets.Horizontal;
 
 /**
@@ -84,7 +83,7 @@ public class GUITestDetailsPane extends TestCase {
         pane.getTabs().setSelectedComponent(todoPane);
         pane.targetSet(e);
         assertEquals(propertyPane, pane.getTabs().getSelectedComponent());
-        Object clazz = CoreFactory.getFactory().createClass();
+        Object clazz = Model.getCoreFactory().createClass();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
 			    new Object[] {

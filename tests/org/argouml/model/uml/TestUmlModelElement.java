@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 
@@ -46,7 +47,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
      * Legacy test for ModelElement creation.
      */
     public void testModelElementLegacy() {
-	UmlFactory.getFactory().setJmiProxyCreated(false);
+	Model.getUmlFactory().setJmiProxyCreated(false);
 	Object me = ModelFacade.create(Uml.OBJECT);
 	assertNotNull("Didn't create object", me);
 	assertTrue("Should be a base", ModelFacade.isABase(me));
@@ -59,7 +60,7 @@ public class TestUmlModelElement extends GenericUmlObjectTestFixture
      * Test the creation of a ModelElement.
      */
     public void testModelElement() {
-	UmlFactory.getFactory().setJmiProxyCreated(true);
+	Model.getUmlFactory().setJmiProxyCreated(true);
 	Object me = ModelFacade.create(Uml.OBJECT);
 	assertNotNull("Didn't create object", me);
 	assertTrue("Should be a base", ModelFacade.isABase(me));

@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 
@@ -46,7 +47,7 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
      * Test creating a Namespace.
      */
     public void testNamespaceLegacy() {
-	UmlFactory.getFactory().setJmiProxyCreated(false);
+	Model.getUmlFactory().setJmiProxyCreated(false);
 	Object o = ModelFacade.create(Uml.NAMESPACE);
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));
@@ -58,7 +59,7 @@ public class TestUmlNamespace extends GenericUmlObjectTestFixture
      * Test creating a Namespace.
      */
     public void testNamespace() {
-	UmlFactory.getFactory().setJmiProxyCreated(true);
+	Model.getUmlFactory().setJmiProxyCreated(true);
 	Object o = ModelFacade.create(Uml.NAMESPACE);
 	assertNotNull("Didn't create object", o);
 	assertTrue("Should be a base", ModelFacade.isABase(o));

@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -64,8 +65,8 @@ public class TestUseCasesFactory extends TestCase {
      * Test if the UseCasesFactory is really a singleton.
      */
     public void testSingleton() {
-	Object o1 = UseCasesFactory.getFactory();
-	Object o2 = UseCasesFactory.getFactory();
+	Object o1 = Model.getUseCasesFactory();
+	Object o2 = Model.getUseCasesFactory();
 	assertTrue("Different singletons", o1 == o2);
     }
 
@@ -84,7 +85,7 @@ public class TestUseCasesFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(this,
-					     UseCasesFactory.getFactory(),
+					     Model.getUseCasesFactory(),
 					     objs);
     }
 
@@ -93,7 +94,7 @@ public class TestUseCasesFactory extends TestCase {
      */
     public void testDeleteComplete() {
         CheckUMLModelHelper.deleteComplete(this,
-					   UseCasesFactory.getFactory(),
+					   Model.getUseCasesFactory(),
 					   allModelElements);
     }
 
@@ -101,12 +102,12 @@ public class TestUseCasesFactory extends TestCase {
      * Test building extensions.
      */
     public void testBuildExtend1() {
-        MUseCase base = UseCasesFactory.getFactory().createUseCase();
-        MUseCase extension = UseCasesFactory.getFactory().createUseCase();
+        MUseCase base = Model.getUseCasesFactory().createUseCase();
+        MUseCase extension = Model.getUseCasesFactory().createUseCase();
         MExtensionPoint point =
-	    UseCasesFactory.getFactory().buildExtensionPoint(base);
+	    Model.getUseCasesFactory().buildExtensionPoint(base);
         MExtend extend =
-	    UseCasesFactory.getFactory().buildExtend(base, extension, point);
+	    Model.getUseCasesFactory().buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
 		   !base.getExtensionPoints().isEmpty());
         assertTrue("extend not added to base", !base.getExtends2().isEmpty());

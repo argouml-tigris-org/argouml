@@ -24,10 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CollaborationsHelper;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.MBase;
@@ -56,7 +53,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CollaborationsFactory.getFactory().createClassifierRole());
+        setElem(Model.getCollaborationsFactory().createClassifierRole());
     }
 
     /**
@@ -72,7 +69,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
     protected MBase[] fillModel() {
         MModelElement[] elements = new MModelElement[10];
         for (int i = 0; i < elements.length; i++) {
-            elements[i] = CoreFactory.getFactory().createClass();
+            elements[i] = Model.getCoreFactory().createClass();
             base.addOwnedElement(elements[i]);
         }
         return elements;
@@ -92,8 +89,8 @@ public class TestUMLClassifierRoleAvailableContentsListModel
      */
     protected void setUp() throws Exception {
         super.setUp();
-        base = CoreFactory.getFactory().createClass();
-        CollaborationsHelper.getHelper().addBase(getElem(), base);
+        base = Model.getCoreFactory().createClass();
+        Model.getCollaborationsHelper().addBase(getElem(), base);
     }
 
     /**
@@ -101,7 +98,7 @@ public class TestUMLClassifierRoleAvailableContentsListModel
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(base);
+        Model.getUmlFactory().delete(base);
     }
 
 }

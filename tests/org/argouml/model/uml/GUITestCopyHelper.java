@@ -26,6 +26,8 @@ package org.argouml.model.uml;
 
 import java.util.Iterator;
 
+import org.argouml.model.Model;
+
 import junit.framework.TestCase;
 
 import ru.novosoft.uml.MBase;
@@ -63,8 +65,8 @@ public class GUITestCopyHelper extends TestCase {
      * Testing the copying of a class.
      */
     public void testCopyClass() {
-	MModel m1 = ModelManagementFactory.getFactory().createModel();
-	MModel m2 = ModelManagementFactory.getFactory().createModel();
+	MModel m1 = Model.getModelManagementFactory().createModel();
+	MModel m2 = Model.getModelManagementFactory().createModel();
 	CopyHelper helper = CopyHelper.getHelper();
 
 	Object o;
@@ -73,11 +75,11 @@ public class GUITestCopyHelper extends TestCase {
 	MClass k;
 	MStereotype st;
 
-	k = CoreFactory.getFactory().createClass();
+	k = Model.getCoreFactory().createClass();
 	m1.addOwnedElement(k);
 
 	st =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	st.setName("clsStT");
 	st.setBaseClass("Class");
@@ -126,8 +128,8 @@ public class GUITestCopyHelper extends TestCase {
      * Testing the copying of a data type.
      */
     public void testCopyDataType() {
-	MModel m1 = ModelManagementFactory.getFactory().createModel();
-	MModel m2 = ModelManagementFactory.getFactory().createModel();
+	MModel m1 = Model.getModelManagementFactory().createModel();
+	MModel m2 = Model.getModelManagementFactory().createModel();
 	CopyHelper helper = CopyHelper.getHelper();
 
 	Object o;
@@ -136,11 +138,11 @@ public class GUITestCopyHelper extends TestCase {
 	MDataType d;
 	MStereotype st;
 
-	d = CoreFactory.getFactory().createDataType();
+	d = Model.getCoreFactory().createDataType();
 	m1.addOwnedElement(d);
 
 	st =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	st.setName("dttStT");
 	st.setBaseClass("DataType");
@@ -186,8 +188,8 @@ public class GUITestCopyHelper extends TestCase {
      * Testing the copying of an interface.
      */
     public void testCopyInterface() {
-	MModel m1 = ModelManagementFactory.getFactory().createModel();
-	MModel m2 = ModelManagementFactory.getFactory().createModel();
+	MModel m1 = Model.getModelManagementFactory().createModel();
+	MModel m2 = Model.getModelManagementFactory().createModel();
 	CopyHelper helper = CopyHelper.getHelper();
 
 	Object o;
@@ -196,11 +198,11 @@ public class GUITestCopyHelper extends TestCase {
 	MInterface i;
 	MStereotype st;
 
-	i = CoreFactory.getFactory().createInterface();
+	i = Model.getCoreFactory().createInterface();
 	m1.addOwnedElement(i);
 
 	st =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	st.setName("intStT");
 	st.setBaseClass("Interface");
@@ -246,8 +248,8 @@ public class GUITestCopyHelper extends TestCase {
      * Testing the copying of a package.
      */
     public void testCopyPackage() {
-	MModel m1 = ModelManagementFactory.getFactory().createModel();
-	MModel m2 = ModelManagementFactory.getFactory().createModel();
+	MModel m1 = Model.getModelManagementFactory().createModel();
+	MModel m2 = Model.getModelManagementFactory().createModel();
 	CopyHelper helper = CopyHelper.getHelper();
 
 	Object o;
@@ -256,11 +258,11 @@ public class GUITestCopyHelper extends TestCase {
 	MPackage p;
 	MStereotype st;
 
-	p = ModelManagementFactory.getFactory().createPackage();
+	p = Model.getModelManagementFactory().createPackage();
 	m1.addOwnedElement(p);
 
 	st =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	st.setName("pkgStT");
 	st.setBaseClass("Package");
@@ -306,8 +308,8 @@ public class GUITestCopyHelper extends TestCase {
      * Testing the copying of a stereotype.
      */
     public void testCopyStereotype() {
-	MModel m1 = ModelManagementFactory.getFactory().createModel();
-	MModel m2 = ModelManagementFactory.getFactory().createModel();
+	MModel m1 = Model.getModelManagementFactory().createModel();
+	MModel m2 = Model.getModelManagementFactory().createModel();
 	CopyHelper helper = CopyHelper.getHelper();
 
 	Object o;
@@ -317,12 +319,12 @@ public class GUITestCopyHelper extends TestCase {
 	MStereotype st;
 
 	s =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	m1.addOwnedElement(s);
 
 	st =
-	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	    (MStereotype) Model.getExtensionMechanismsFactory()
 	        .createStereotype();
 	st.setName("sttStT");
 	st.setBaseClass("Stereotype");

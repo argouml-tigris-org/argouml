@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -56,7 +56,7 @@ class ActionAddPackage extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         if (ModelFacade.isAPackage(target)) {
-            Object newPackage =  UmlFactory.getFactory()
+            Object newPackage =  Model.getUmlFactory()
                 .getModelManagement().createPackage();
             ModelFacade.addOwnedElement(target, newPackage);
             TargetManager.getInstance().setTarget(newPackage);

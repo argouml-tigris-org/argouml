@@ -28,6 +28,8 @@ import java.util.LinkedList;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.DataTypesFactory;
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -50,9 +52,9 @@ public class TestDataTypesFactory extends TestCase {
      */
     public void testSingleton() {
 
-	Object o1 = DataTypesFactory.getFactory();
+	Object o1 = Model.getDataTypesFactory();
 
-	Object o2 = DataTypesFactory.getFactory();
+	Object o2 = Model.getDataTypesFactory();
 
 	assertTrue("Different singletons", o1 == o2);
 
@@ -82,7 +84,7 @@ public class TestDataTypesFactory extends TestCase {
 	    null,
 	};
 
-	DataTypesFactory dtf = DataTypesFactory.getFactory();
+	DataTypesFactory dtf = Model.getDataTypesFactory();
 
 	CheckUMLModelHelper.createAndRelease(
 					     this,

@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
-import org.argouml.model.uml.ModelManagementHelper;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 /**
@@ -55,9 +55,9 @@ public class GoProjectToStateMachine extends AbstractPerspectiveRule {
 	if (parent instanceof Project) {
 	    Iterator it = ((Project) parent).getUserDefinedModels().iterator();
 	    while (it.hasNext()) {
-		col.addAll(ModelManagementHelper.getHelper()
+		col.addAll(Model.getModelManagementHelper()
 			   .getAllModelElementsOfKind(it.next(),
-					(Class) ModelFacade.STATEMACHINE));
+					ModelFacade.STATEMACHINE));
 	    }
 	}
 	return col;

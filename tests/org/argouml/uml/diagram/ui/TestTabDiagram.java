@@ -34,7 +34,7 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -137,7 +137,7 @@ public class TestTabDiagram extends TestCase {
                 UMLDiagram[] diagrams = new UMLDiagram[NUMBER_OF_DIAGRAMS];
                 Project project =
                     ProjectManager.getManager().getCurrentProject();
-                Object clazz = UmlFactory.getFactory().getCore().buildClass();
+                Object clazz = Model.getUmlFactory().getCore().buildClass();
                 for (int i = 0; i < NUMBER_OF_DIAGRAMS; i++) {
                     diagrams[i] = new UMLClassDiagram(project.getRoot());
                     diagrams[i].add(
@@ -151,7 +151,7 @@ public class TestTabDiagram extends TestCase {
                 Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(clazz);
                 Object model = ProjectManager.getManager().getCurrentProject().getModel();
                 Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
-                UmlFactory.getFactory().getCore().buildOperation(clazz, model, voidType, propertyChangeListeners);
+                Model.getUmlFactory().getCore().buildOperation(clazz, model, voidType, propertyChangeListeners);
                 System.out.println(
                     "Time needed for adding operation: "
                         + ((new Date()).getTime() - currentTime));

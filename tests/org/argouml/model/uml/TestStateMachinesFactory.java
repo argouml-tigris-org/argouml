@@ -26,6 +26,7 @@ package org.argouml.model.uml;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -71,9 +72,9 @@ public class TestStateMachinesFactory extends TestCase {
      */
     public void testSingleton() {
 
-	Object o1 = StateMachinesFactory.getFactory();
+	Object o1 = Model.getStateMachinesFactory();
 
-	Object o2 = StateMachinesFactory.getFactory();
+	Object o2 = Model.getStateMachinesFactory();
 
 	assertTrue("Different singletons", o1 == o2);
 
@@ -107,7 +108,7 @@ public class TestStateMachinesFactory extends TestCase {
 
 	CheckUMLModelHelper.createAndRelease(
 					     this,
-					     StateMachinesFactory.getFactory(),
+					     Model.getStateMachinesFactory(),
 					     objs);
     }
 
@@ -117,7 +118,7 @@ public class TestStateMachinesFactory extends TestCase {
     public void testDeleteComplete() {
 	CheckUMLModelHelper.deleteComplete(
 					   this,
-					   StateMachinesFactory.getFactory(),
+					   Model.getStateMachinesFactory(),
 					   allModelElements);
     }
 

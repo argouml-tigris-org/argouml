@@ -27,10 +27,8 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementFactory;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -64,18 +62,18 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = UseCasesFactory.getFactory().createInclude();
+        elem = Model.getUseCasesFactory().createInclude();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLIncludeBaseComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0], 
                 new Object[] {elem}));
         bases = new MUseCase[10];
-        MModel m = ModelManagementFactory.getFactory().createModel();
+        MModel m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
         elem.setNamespace(m);
         for (int i = 0; i < 10; i++) {
-            bases[i] = UseCasesFactory.getFactory().createUseCase();
+            bases[i] = Model.getUseCasesFactory().createUseCase();
             m.addOwnedElement(bases[i]);
         }      
     }
@@ -85,9 +83,9 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
+        Model.getUmlFactory().delete(elem);
         for (int i = 0; i < 10; i++) {
-            UmlFactory.getFactory().delete(bases[i]);
+            Model.getUmlFactory().delete(bases[i]);
         }
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
@@ -124,7 +122,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
      * Test deletion.
      */
     public void testRemoveBase() {
-        UmlFactory.getFactory().delete(bases[9]);
+        Model.getUmlFactory().delete(bases[9]);
         assertEquals(9, model.getSize());
         assertTrue(!model.contains(bases[9]));
     } 

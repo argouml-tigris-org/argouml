@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.uml.CollaborationsFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
@@ -52,7 +52,7 @@ public class TestUMLCollaborationInteractionListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#buildElement()
      */
     protected void buildElement() {
-        setElem(CollaborationsFactory.getFactory().createCollaboration());
+        setElem(Model.getCollaborationsFactory().createCollaboration());
     }
 
     /**
@@ -68,7 +68,7 @@ public class TestUMLCollaborationInteractionListModel
     protected MBase[] fillModel() {
         MInteraction[] inter = new MInteraction[10];
         for (int i = 0; i < 10; i++) {
-            inter[i] = CollaborationsFactory.getFactory().createInteraction();
+            inter[i] = Model.getCollaborationsFactory().createInteraction();
             inter[i].setContext((MCollaboration) getElem());
         }
         return inter;

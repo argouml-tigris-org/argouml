@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -58,7 +58,7 @@ class ActionNewInterface extends AbstractActionNewModelElement {
         Object target = TargetManager.getInstance().getModelTarget();
         if (org.argouml.model.ModelFacade.isAInterface(target)) {
             Object iface = /*(MInterface)*/ target;
-            Object newInterface = CoreFactory.getFactory()
+            Object newInterface = Model.getCoreFactory()
                 .createInterface();
             ModelFacade.addOwnedElement(ModelFacade.getNamespace(iface), 
                     newInterface);

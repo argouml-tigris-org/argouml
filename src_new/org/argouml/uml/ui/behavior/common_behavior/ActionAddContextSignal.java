@@ -27,8 +27,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -51,7 +51,7 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            ret.addAll(ModelManagementHelper.getHelper()
+            ret.addAll(Model.getModelManagementHelper()
                     .getAllBehavioralFeatures());
         }
         return ret;

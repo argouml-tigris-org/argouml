@@ -27,10 +27,6 @@ package org.argouml.model;
 import java.util.Collection;
 
 import junit.framework.TestCase;
-
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
-
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 
@@ -73,7 +69,7 @@ public class TestModelFacade2 extends TestCase {
      * Test that the correct error is thrown for a setName with illegal name.
      */
     public void testSetName() {
-        Object ob = CoreFactory.getFactory().buildClass("initial");
+        Object ob = Model.getCoreFactory().buildClass("initial");
         ModelFacade.setName(ob, "correct");
         ModelFacade.setName(ob, new String(new char[] {
             'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
@@ -88,7 +84,7 @@ public class TestModelFacade2 extends TestCase {
      * Test for setModelElementContainer.
      */
     public void testSetModelElementContainer() {
-	UmlFactory fy = UmlFactory.getFactory();
+	UmlFactory fy = Model.getUmlFactory();
 
 	MActivityGraph container =
 	    fy.getActivityGraphs().createActivityGraph();
@@ -104,7 +100,7 @@ public class TestModelFacade2 extends TestCase {
      * Test some Tagged Value functions.
      */
     public void testTaggedValue() {
-	UmlFactory fy = UmlFactory.getFactory();
+	UmlFactory fy = Model.getUmlFactory();
 	Object cls = fy.getCore().buildClass();
 
 	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
@@ -120,7 +116,7 @@ public class TestModelFacade2 extends TestCase {
      * Test the stereotypes.
      */
     public void testGetStereotypes() {
-	UmlFactory fy = UmlFactory.getFactory();
+	UmlFactory fy = Model.getUmlFactory();
 	Object cls = fy.getCore().buildClass();
 
 	Collection coll1 = ModelFacade.getStereotypes(cls);

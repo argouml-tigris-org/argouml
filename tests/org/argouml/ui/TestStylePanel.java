@@ -26,7 +26,7 @@ package org.argouml.ui;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.presentation.FigText;
@@ -100,7 +100,7 @@ public class TestStylePanel extends TestCase {
         pane.targetSet(e);
         // new target is of type UMLClassDiagram, refresh should not be called
         assertTrue(!((MockStylePanel) pane).isRefreshCalled());
-        target = CoreFactory.getFactory().createClass();
+        target = Model.getCoreFactory().createClass();
         e = new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
 			    new Object[] {

@@ -26,9 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
-import org.argouml.model.uml.CollaborationsFactory;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -65,10 +63,10 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = CollaborationsFactory.getFactory().createAssociationEndRole();
-        baseEnd = CoreFactory.getFactory().createAssociationEnd();
-        assocRole = CollaborationsFactory.getFactory().createAssociationRole();
-        baseAssoc = CoreFactory.getFactory().createAssociation();
+        elem = Model.getCollaborationsFactory().createAssociationEndRole();
+        baseEnd = Model.getCoreFactory().createAssociationEnd();
+        assocRole = Model.getCollaborationsFactory().createAssociationRole();
+        baseAssoc = Model.getCoreFactory().createAssociation();
         elem.setAssociation(assocRole);
         assocRole.setBase(baseAssoc);
         baseEnd.setAssociation(baseAssoc);
@@ -83,10 +81,10 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        UmlFactory.getFactory().delete(elem);
-        UmlFactory.getFactory().delete(assocRole);
-        UmlFactory.getFactory().delete(baseAssoc);
-        UmlFactory.getFactory().delete(baseEnd);
+        Model.getUmlFactory().delete(elem);
+        Model.getUmlFactory().delete(assocRole);
+        Model.getUmlFactory().delete(baseAssoc);
+        Model.getUmlFactory().delete(baseEnd);
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
