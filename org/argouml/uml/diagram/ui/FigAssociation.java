@@ -315,11 +315,11 @@ public class FigAssociation extends FigEdgeModelElement {
 
     static ArrowHead _NAV_AGGREGATE =
 	new ArrowHeadComposite(ArrowHeadDiamond.WhiteDiamond,
-			       ArrowHeadGreater.getInstance());
+			       new ArrowHeadGreater());
 
     static ArrowHead _NAV_COMP =
 	new ArrowHeadComposite(ArrowHeadDiamond.BlackDiamond,
-			       ArrowHeadGreater.getInstance());
+			       new ArrowHeadGreater());
 
     protected ArrowHead chooseArrowHead(Object ak, boolean nav) {
         
@@ -327,7 +327,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	if (nav) {
 	    if (ModelFacade.NONE_AGGREGATIONKIND.equals(ak) || (ak == null)) {
-		arrow = ArrowHeadGreater.getInstance();
+		arrow = new ArrowHeadGreater();
             } else if (ModelFacade.AGGREGATE_AGGREGATIONKIND.equals(ak)) {
 		arrow = _NAV_AGGREGATE;
             } else if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ak)) {

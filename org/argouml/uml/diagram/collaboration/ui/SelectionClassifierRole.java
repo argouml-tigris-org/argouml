@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -50,17 +50,25 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
 public class SelectionClassifierRole extends SelectionWButtons {
-    protected static Logger cat = 
+    /**
+     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
+     *             Use your own Logger!
+     */
+    protected static Logger cat =
         Logger.getLogger(SelectionClassifierRole.class);
+
+    private static final Logger LOG =
+        Logger.getLogger(SelectionClassifierRole.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon assocrole =
 	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	.lookupIconResource("AssociationRole");
+	    .lookupIconResource("AssociationRole");
 
     public static Icon selfassoc =
         ResourceLoaderWrapper.getResourceLoaderWrapper()
-	.lookupIconResource("SelfAssociation");
+	    .lookupIconResource("SelfAssociation");
 
     ////////////////////////////////////////////////////////////////
     // instance varables
@@ -70,7 +78,11 @@ public class SelectionClassifierRole extends SelectionWButtons {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionClassifierRole for the given Fig */
+    /**
+     * Construct a new SelectionClassifierRole for the given Fig.
+     *
+     * @param f The given Fig.
+     */
     public SelectionClassifierRole(Fig f) {
 	super(f);
     }
@@ -120,8 +132,9 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	}
     }
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * @see SelectionWButtons#paintButtons(Graphics)
+     */
     public void paintButtons(Graphics g) {
 	int cx = _content.getX();
 	int cy = _content.getY();
@@ -147,7 +160,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class)ModelFacade.CLASSIFIER_ROLE;
+	Class nodeClass = (Class) ModelFacade.CLASSIFIER_ROLE;
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -160,12 +173,12 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12 : //add outgoing
-	    edgeClass = (Class)ModelFacade.ASSOCIATION_ROLE;
+	    edgeClass = (Class) ModelFacade.ASSOCIATION_ROLE;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13 : // add incoming
-	    edgeClass = (Class)ModelFacade.ASSOCIATION_ROLE;
+	    edgeClass = (Class) ModelFacade.ASSOCIATION_ROLE;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
@@ -175,14 +188,14 @@ public class SelectionClassifierRole extends SelectionWButtons {
             break;
             
 	default :
-	    cat.warn("invalid handle number");
+	    LOG.warn("invalid handle number");
 	    break;
 	}
 	if (edgeClass != null && nodeClass != null) {
 	    ModeCreateEdgeAndNode m =
 		new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-	    ce.mode(m);
+	    ce.pushMode(m);
 	}
     }
 
@@ -195,52 +208,52 @@ public class SelectionClassifierRole extends SelectionWButtons {
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeAbove(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
 	return mgm.connect(newNode, _content.getOwner(),
-			   (Class)ModelFacade.ASSOCIATION_ROLE);
+			   (Class) ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeLeft(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-	return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.ASSOCIATION_ROLE);
+	return gm.connect(newNode, _content.getOwner(),
+			  (Class) ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeRight(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION_ROLE);
+	return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
      * To enable this we need to add an icon.
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
+     *
+     * @see SelectionWButtons#createEdgeToSelf(
+     *         org.tigris.gef.graph.MutableGraphModel)
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
 	return gm.connect(
 			  _content.getOwner(),
 			  _content.getOwner(),
-			  (Class)ModelFacade.ASSOCIATION_ROLE);
+			  (Class) ModelFacade.ASSOCIATION_ROLE);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeUnder(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-	return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.ASSOCIATION_ROLE);
+	return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.ASSOCIATION_ROLE);
     }
 
 } /* end class SelectionClassifierRole */

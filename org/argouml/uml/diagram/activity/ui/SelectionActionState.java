@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: SelectionActionState.java
-// Classes: SelectionState
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.uml.diagram.activity.ui;
 
@@ -52,17 +47,28 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
+/**
+ * @author jrobbins@ics.uci.edu
+ */
 public class SelectionActionState extends SelectionWButtons {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
+     *             Use your own logger!
+     */
     protected static Logger cat = 
         Logger.getLogger(SelectionActionState.class);
+
+    private static final Logger LOG = 
+        Logger.getLogger(SelectionActionState.class);
+
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon trans = 
 	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	.lookupIconResource("Transition");
+	    .lookupIconResource("Transition");
     public static Icon transDown = 
 	ResourceLoaderWrapper.getResourceLoaderWrapper()
-	.lookupIconResource("TransitionDown");
+	    .lookupIconResource("TransitionDown");
     
     ////////////////////////////////////////////////////////////////
     // instance varables
@@ -74,7 +80,11 @@ public class SelectionActionState extends SelectionWButtons {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionActionState for the given Fig */
+    /**
+     * Construct a new SelectionActionState for the given Fig.
+     *
+     * @param f The given Fig.
+     */
     public SelectionActionState(Fig f) { super(f); }
 
     ////////////////////////////////////////////////////////////////
@@ -148,8 +158,9 @@ public class SelectionActionState extends SelectionWButtons {
     }
 
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * @see SelectionWButtons#paintButtons(Graphics)
+     */
     public void paintButtons(Graphics g) {
 	int cx = _content.getX();
 	int cy = _content.getY();
@@ -178,7 +189,7 @@ public class SelectionActionState extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class)ModelFacade.ACTION_STATE;
+	Class nodeClass = (Class) ModelFacade.ACTION_STATE;
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -190,36 +201,36 @@ public class SelectionActionState extends SelectionWButtons {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 12: //add incoming
-	    edgeClass = (Class)ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.TRANSITION;
 	    by = cy + ch / 2;
 	    bx = cx + cw;
 	    break;
 	case 13: // add outgoing
-	    edgeClass = (Class)ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.TRANSITION;
 	    reverse = true;
 	    by = cy + ch / 2;
 	    bx = cx;
 	    break;
 	case 10: // add incoming on top
-	    edgeClass = (Class)ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.TRANSITION;
 	    reverse = true;
 	    by = cy;
 	    bx = cx + cw / 2;
 	    break;
 	case 11: // add outgoing below
-	    edgeClass = (Class)ModelFacade.TRANSITION;
+	    edgeClass = (Class) ModelFacade.TRANSITION;
 	    by = cy + ch;
 	    bx = cx + cw / 2;
 	    break;
 	default:
-	    cat.warn("invalid handle number");
+	    LOG.warn("invalid handle number");
 	    break;
 	}
 	if (edgeClass != null && nodeClass != null) {
 	    ModeCreateEdgeAndNode m = new
 		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-	    ce.mode(m);
+	    ce.pushMode(m);
 	}
     }
   
@@ -231,49 +242,50 @@ public class SelectionActionState extends SelectionWButtons {
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeAbove(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeAbove(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeAbove(MutableGraphModel mgm, Object newNode) {
-        return mgm.connect(newNode, _content.getOwner(), (Class)ModelFacade.TRANSITION);
+        return mgm.connect(newNode, _content.getOwner(),
+			   (Class) ModelFacade.TRANSITION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeLeft(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), (Class)ModelFacade.TRANSITION);
+        return gm.connect(newNode, _content.getOwner(),
+			  (Class) ModelFacade.TRANSITION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeRight(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.TRANSITION);
+        return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.TRANSITION);
     }
 
     /**
      * To enable this we need to add an icon.
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeToSelf(org.tigris.gef.graph.MutableGraphModel)
+     *
+     * @see SelectionWButtons#createEdgeToSelf(
+     *         org.tigris.gef.graph.MutableGraphModel)
      */
     protected Object createEdgeToSelf(MutableGraphModel gm) {
         return gm.connect(_content.getOwner(), _content.getOwner(),
-			  (Class)ModelFacade.TRANSITION);
+			  (Class) ModelFacade.TRANSITION);
     }
 
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeUnder(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(_content.getOwner(), newNode, (Class)ModelFacade.TRANSITION);
+        return gm.connect(_content.getOwner(), newNode,
+			  (Class) ModelFacade.TRANSITION);
     }
 
 } /* end class SelectionActionState */

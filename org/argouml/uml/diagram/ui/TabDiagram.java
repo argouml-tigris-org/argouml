@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.BorderLayout;
@@ -78,13 +76,13 @@ public class TabDiagram
     extends TabSpawnable
     implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
 
-    private Logger cat = Logger.getLogger(TabDiagram.class);
+    private static final Logger LOG = Logger.getLogger(TabDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
     /**
-     * the diagram object
+     * The diagram object.
      */
     protected UMLDiagram _target;
 
@@ -168,7 +166,7 @@ public class TabDiagram
             _shouldBeEnabled = false;
             // This is perfectly normal and happens among other things
             // within the call to setDiagram (below).
-            cat.debug("target is null in set target or "
+            LOG.debug("target is null in set target or "
 		      + "not an instance of UMLDiagram");
             return;
         }
@@ -246,7 +244,7 @@ public class TabDiagram
     }
 
     public void modeChange(ModeChangeEvent mce) {
-        cat.debug("TabDiagram got mode change event");
+        LOG.debug("TabDiagram got mode change event");
         if (!Globals.getSticky() && Globals.mode() instanceof ModeSelect) {
 //            if (_target instanceof UMLDiagram) {
 	    _target.deselectAllTools();
@@ -422,7 +420,7 @@ class ArgoEditor extends Editor {
         }
 	translateMouseEvent(me);
 	Globals.curEditor(this);
-	mode((FigModifyingMode) Globals.mode());
+	pushMode((FigModifyingMode) Globals.mode());
 	setUnderMouse(me);
 	_modeManager.mouseEntered(me);
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: SelectionInterface.java
-// Classes: SelectionInterface
-// Original Author: jrobbins@ics.uci.edu
 
 package org.argouml.uml.diagram.static_structure.ui;
 
@@ -50,8 +46,18 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
+/**
+ * @author jrobbins@ics.uci.edu
+ */
 public class SelectionInterface extends SelectionWButtons {
+    /**
+     * @deprecated by Linus Tolke as of 0.15.7. Will be removed.
+     *             Use your own Logger!
+     */
     protected static Logger cat = 
+        Logger.getLogger(SelectionInterface.class);
+
+    private static final Logger LOG =
         Logger.getLogger(SelectionInterface.class);
     ////////////////////////////////////////////////////////////////
     // constants
@@ -63,7 +69,11 @@ public class SelectionInterface extends SelectionWButtons {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    /** Construct a new SelectionInterface for the given Fig */
+    /**
+     * Construct a new SelectionInterface for the given Fig.
+     *
+     * @param f The given Fig.
+     */
     public SelectionInterface(Fig f) { super(f); }
 
     /** Return a handle ID for the handle under the mouse, or -1 if
@@ -103,8 +113,9 @@ public class SelectionInterface extends SelectionWButtons {
     }
 
 
-    /** Paint the handles at the four corners and midway along each edge
-     * of the bounding box.  */
+    /**
+     * @see SelectionWButtons#paintButtons(Graphics)
+     */
     public void paintButtons(Graphics g) {
 	int cx = _content.getX();
 	int cy = _content.getY();
@@ -126,7 +137,7 @@ public class SelectionInterface extends SelectionWButtons {
 	Dimension minSize = _content.getMinimumSize();
 	int minWidth = minSize.width, minHeight = minSize.height;
 	Class edgeClass = null;
-	Class nodeClass = (Class)ModelFacade.CLASS;
+	Class nodeClass = (Class) ModelFacade.CLASS;
 	int bx = mX, by = mY;
 	boolean reverse = false;
 	switch (hand.index) {
@@ -137,7 +148,7 @@ public class SelectionInterface extends SelectionWButtons {
 	    bx = cx + cw / 2;
 	    break;
 	default:
-	    cat.warn("invalid handle number");
+	    LOG.warn("invalid handle number");
 	    break;
 	}
 	if (edgeClass != null && nodeClass != null) {
@@ -145,7 +156,7 @@ public class SelectionInterface extends SelectionWButtons {
 	    ModeCreateEdgeAndNode m = new
 		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
-	    ce.mode(m);
+	    ce.pushMode(m);
 	}
 
     }
@@ -156,20 +167,21 @@ public class SelectionInterface extends SelectionWButtons {
     public Object addRealization(MutableGraphModel mgm, Object interf4ce,
 				 Object cl4ss) {
                                      
-        if(!ModelFacade.isAClass(cl4ss) ||
-           !ModelFacade.isAInterface(interf4ce))
+        if (!ModelFacade.isAClass(cl4ss)
+	        || !ModelFacade.isAInterface(interf4ce)) {
             throw new IllegalArgumentException();
+	}
                                      
 	return mgm.connect(cl4ss, interf4ce, (Class) ModelFacade.ABSTRACTION);
     }
 	
     /**
-     * @see
-     * org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeUnder(org.tigris.gef.graph.MutableGraphModel,
-     * java.lang.Object)
+     * @see SelectionWButtons#createEdgeUnder(
+     *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
      */
     protected Object createEdgeUnder(MutableGraphModel gm, Object newNode) {
-        return gm.connect(newNode, _content.getOwner(), (Class) ModelFacade.ABSTRACTION);
+        return gm.connect(newNode, _content.getOwner(),
+			  (Class) ModelFacade.ABSTRACTION);
     }
 
     /**

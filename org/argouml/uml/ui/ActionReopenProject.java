@@ -27,6 +27,7 @@ package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.*;
+import org.apache.log4j.Logger;
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.JOptionPane;
@@ -41,6 +42,8 @@ import java.text.MessageFormat;
  */
 
 public class ActionReopenProject extends UMLAction {
+    private static final Logger LOG =
+	Logger.getLogger(ActionReopenProject.class);
 
     String _filename;
     
@@ -49,6 +52,8 @@ public class ActionReopenProject extends UMLAction {
 
     /**
      * Constructor.
+     *
+     * @param filename The name of the file.
      */
     public ActionReopenProject(String filename) {
 	super("action.reopen-project");
@@ -59,7 +64,9 @@ public class ActionReopenProject extends UMLAction {
     // main methods
 
     /**
-     * returns the filename for comparing during menu creation
+     * Get the filename for comparing during menu creation.
+     *
+     * @return The filename.
      */
     public String getFilename() {
         return _filename;
@@ -123,7 +130,7 @@ public class ActionReopenProject extends UMLAction {
             openProjectHandler.loadProject(toOpen.toURL());
         }
         catch ( java.net.MalformedURLException ex) {
-            cat.error("got an URLException in ActionReopenProject", ex);
+            LOG.error("got an URLException in ActionReopenProject", ex);
         }
     }
 }

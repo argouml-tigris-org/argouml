@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
@@ -47,10 +48,10 @@ import org.tigris.gef.presentation.Fig;
  *
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.foundation.core.PropPanelClassifier#getAssociationEndScroll()},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ *             this class is part of the 'old'(pre 0.13.*) implementation
+ *             of proppanels that used reflection a lot.
  */
-abstract public class UMLBinaryRelationListModel
+public abstract class UMLBinaryRelationListModel
     extends UMLModelElementListModel {
 
     /**
@@ -92,7 +93,10 @@ abstract public class UMLBinaryRelationListModel
                     Object/*MModelElement*/ othermelement = it.next();
                     if (!selected.contains(othermelement)) {
                         ProjectBrowser pb = ProjectBrowser.getInstance();
-                        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
+			Project currentProject =
+			    ProjectManager.getManager().getCurrentProject();
+                        ArgoDiagram diagram =
+			    currentProject.getActiveDiagram();
                         Fig figfrom =
                             diagram.getLayer().presentationFor(melement);
                         Fig figto =
@@ -118,7 +122,7 @@ abstract public class UMLBinaryRelationListModel
                         Object pt = TargetManager.getInstance().getTarget();
                         TargetManager.getInstance().setTarget(connector);
                         ActionEvent event = new ActionEvent(this, 1, "delete");
-                        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+                        new ActionRemoveFromModel().actionPerformed(event);
                         TargetManager.getInstance().setTarget(pt);
                     }
                 }
@@ -134,11 +138,12 @@ abstract public class UMLBinaryRelationListModel
         if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             Object/*MModelElement*/ melement = target;
             Object/*MModelElement*/ othermelement = getModelElementAt(index);
-            Object/*MModelElement*/ relation = getRelation(melement, othermelement);
+            Object/*MModelElement*/ relation =
+		getRelation(melement, othermelement);
             Object pt = TargetManager.getInstance().getTarget();
             TargetManager.getInstance().setTarget(relation);
             ActionEvent event = new ActionEvent(this, 1, "delete");
-            ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+            new ActionRemoveFromModel().actionPerformed(event);
             TargetManager.getInstance().setTarget(pt);
             fireIntervalRemoved(this, index, index);
         }
@@ -149,41 +154,45 @@ abstract public class UMLBinaryRelationListModel
      * in UMLAddDialog)
      * @return Collection
      */
-    abstract protected Collection getChoices();
+    protected abstract Collection getChoices();
 
     /**
      * Gets the collection of modelelements that are allready selected before
      * the add method is called
      * @return Collection
      */
-    abstract protected Collection getSelected();
+    protected abstract Collection getSelected();
 
     /**
      * Returns the title of the add dialog
      * @return String
      */
-    abstract protected String getAddDialogTitle();
+    protected abstract String getAddDialogTitle();
 
     /**
-     * Connects two modelelements. The only implementation of this class could be
-     * something simple as gm.connect(from, to). This method is only abstract since
-     * in some cases gm.connect(to, from) may be necessary.
+     * Connects two modelelements. The only implementation of this
+     * class could be something simple as gm.connect(from, to). This
+     * method is only abstract since in some cases gm.connect(to,
+     * from) may be necessary.
+     *
      * @param from
      * @param to
      */
-    abstract protected void connect(
+    protected abstract void connect(
         MutableGraphModel gm,
         Object/*MModelElement*/ from,
         Object/*MModelElement*/ to);
 
     /**
-     * Builds a relation between two modelelements. A relation is for example
-     * an association or a generalization relationship. Only builds the modelelement,
-     * not the graphics.
+     * Builds a relation between two modelelements. A relation is for
+     * example an association or a generalization relationship. Only
+     * builds the modelelement, not the graphics.
+     *
      * @param from
      * @param to
      */
-    abstract protected void build(Object/*MModelElement*/ from, Object/*MModelElement*/ to);
+    protected abstract void build(Object/*MModelElement*/ from,
+				  Object/*MModelElement*/ to);
 
     /**
      * Gets the relation between two modelelements. Implementations should
@@ -192,12 +201,13 @@ abstract public class UMLBinaryRelationListModel
      * @param to
      * @return MModelElement
      */
-    abstract protected Object getRelation(
+    protected abstract Object getRelation(
         Object from,
         Object to);
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
+     * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(
+     *         JPopupMenu, int)
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
@@ -237,7 +247,8 @@ abstract public class UMLBinaryRelationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
      */
     protected Object getModelElementAt(int index) {
-        return elementAtUtil(getSelected(), index, (Class)ModelFacade.MODELELEMENT);
+        return elementAtUtil(getSelected(), index,
+			     (Class) ModelFacade.MODELELEMENT);
     }
 
     /**
@@ -253,19 +264,20 @@ abstract public class UMLBinaryRelationListModel
     }
 
     /**
-     * <p>
-     * The source of the relation to be layed out. For example, in an association
-     * this is one of the classifiers to be connected. Normally users of this class
-     * do not have to override this. Only when the target of the container is
-     * different then the source of the relation, this must be overriden.
-     * </p>
+     * The source of the relation to be layed out. For example, in an
+     * association this is one of the classifiers to be
+     * connected. Normally users of this class do not have to override
+     * this. Only when the target of the container is different then
+     * the source of the relation, this must be overriden.<p>
+     *
      * @return MModelElement
      */
     protected Object getSource() {
         if (ModelFacade.isAModelElement(getTarget())) {
             return getTarget();
         } else {
-            throw new IllegalStateException("In getSource: target is not a modelelement");
+            throw new IllegalStateException("In getSource: "
+					    + "target is not a modelelement");
         }
     }
 
