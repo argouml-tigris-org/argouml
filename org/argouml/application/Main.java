@@ -57,13 +57,14 @@ public class Main {
   private static Vector postLoadActions = new Vector();
 
     // this is also in AboutBox, but should help getting feedback here as well...
-    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","java.lang"};
+    static String packageList[] = new String[]{"org.argouml.application","ru.novosoft.uml","org.tigris.gef.base","org.xml.sax","java.lang"};
     static String getVersionInfo(String packageList[]) throws ClassNotFoundException
     {
 	// do some preloading...
 	Class cls = Class.forName("ru.novosoft.uml.MBase");
 	cls = Class.forName("org.tigris.gef.base.Editor");
 	cls = Class.forName("ru.novosoft.uml.MBase");
+	cls = Class.forName("org.xml.sax.AttributeList");
 
 
 	String in = "";
