@@ -196,32 +196,32 @@ public class ParserDisplay extends Parser {
         attributeSpecialStrings = new PropertySpecialString[2];
         attributeSpecialStrings[0] = new PropertySpecialString("frozen",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        if (ModelFacade.isAStructuralFeature(element)) {
-                            if ("false".equalsIgnoreCase(value)) {
-                                ModelFacade.setChangeability(element,
+                public void found(Object element, String value) {
+                    if (ModelFacade.isAStructuralFeature(element)) {
+                        if ("false".equalsIgnoreCase(value)) {
+                            ModelFacade.setChangeability(element,
                                         ModelFacade.CHANGEABLE_CHANGEABLEKIND);
-                            } else {
-                                ModelFacade.setChangeability(element,
+                        } else {
+                            ModelFacade.setChangeability(element,
                                         ModelFacade.FROZEN_CHANGEABLEKIND);
-                            }
                         }
                     }
-                });
+                }
+            });
         attributeSpecialStrings[1] = new PropertySpecialString("addonly",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        if (ModelFacade.isAStructuralFeature(element)) {
-                            if ("false".equalsIgnoreCase(value)) {
-                                ModelFacade.setChangeability(element,
+                public void found(Object element, String value) {
+                    if (ModelFacade.isAStructuralFeature(element)) {
+                        if ("false".equalsIgnoreCase(value)) {
+                            ModelFacade.setChangeability(element,
                                         ModelFacade.CHANGEABLE_CHANGEABLEKIND);
-                            } else {
-                                ModelFacade.setChangeability(element,
+                        } else {
+                            ModelFacade.setChangeability(element,
                                         ModelFacade.ADD_ONLY_CHANGEABLEKIND);
-                            }
                         }
                     }
-                });
+                }
+            });
         attributeCustomSep = new Vector();
         attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -230,89 +230,89 @@ public class ParserDisplay extends Parser {
         operationSpecialStrings = new PropertySpecialString[8];
         operationSpecialStrings[0] = new PropertySpecialString("sequential",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        if (ModelFacade.isAOperation(element)) {
-                            ModelFacade.setConcurrency(element,
+                public void found(Object element, String value) {
+                    if (ModelFacade.isAOperation(element)) {
+                        ModelFacade.setConcurrency(element,
                                     ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
-                        }
                     }
-                });
+                }
+            });
         operationSpecialStrings[1] = new PropertySpecialString("guarded",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
-                        if (value != null && value.equalsIgnoreCase("false"))
+                public void found(Object element, String value) {
+                    Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
+                    if (value != null && value.equalsIgnoreCase("false"))
                             kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                        if (ModelFacade.isAOperation(element))
+                    if (ModelFacade.isAOperation(element))
                             ModelFacade.setConcurrency(element, kind);
-                    }
-                });
+                }
+            });
         operationSpecialStrings[2] = new PropertySpecialString("concurrent",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
-                        if (value != null && value.equalsIgnoreCase("false"))
+                public void found(Object element, String value) {
+                    Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
+                    if (value != null && value.equalsIgnoreCase("false"))
                             kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                        if (ModelFacade.isAOperation(element))
+                    if (ModelFacade.isAOperation(element))
                             ModelFacade.setConcurrency(element, kind);
-                    }
-                });
+                }
+            });
         operationSpecialStrings[3] = new PropertySpecialString("concurrency",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        Object kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                        if ("guarded".equalsIgnoreCase(value))
+                public void found(Object element, String value) {
+                    Object kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    if ("guarded".equalsIgnoreCase(value))
                             kind = ModelFacade.GUARDED_CONCURRENCYKIND;
-                        else if ("concurrent".equalsIgnoreCase(value))
+                    else if ("concurrent".equalsIgnoreCase(value))
                             kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
-                        if (ModelFacade.isAOperation(element))
+                    if (ModelFacade.isAOperation(element))
                             ModelFacade.setConcurrency(element, kind);
-                    }
-                });
+                }
+            });
         operationSpecialStrings[4] = new PropertySpecialString("abstract",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isAbstract = true;
-                        if (value != null && value.equalsIgnoreCase("false")) {
-                            isAbstract = false;
-                        }
-                        if (ModelFacade.isAOperation(element)) {
-                            ModelFacade.setAbstract(element, isAbstract);
-                        }
+                public void found(Object element, String value) {
+                    boolean isAbstract = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isAbstract = false;
                     }
-                });
+                    if (ModelFacade.isAOperation(element)) {
+                        ModelFacade.setAbstract(element, isAbstract);
+                    }
+                }
+            });
         operationSpecialStrings[5] = new PropertySpecialString("leaf",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isLeaf = true;
-                        if (value != null && value.equalsIgnoreCase("false")) {
-                            isLeaf = false;
-                        }
-                        if (ModelFacade.isAOperation(element)) {
-                            ModelFacade.setLeaf(element, isLeaf);
-                        }
+                public void found(Object element, String value) {
+                    boolean isLeaf = true;
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        isLeaf = false;
                     }
-                });
+                    if (ModelFacade.isAOperation(element)) {
+                        ModelFacade.setLeaf(element, isLeaf);
+                    }
+                }
+            });
         operationSpecialStrings[6] = new PropertySpecialString("query",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isQuery = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
+                public void found(Object element, String value) {
+                    boolean isQuery = true;
+                    if (value != null && value.equalsIgnoreCase("false"))
                             isQuery = false;
-                        if (ModelFacade.isABehavioralFeature(element))
+                    if (ModelFacade.isABehavioralFeature(element))
                             ModelFacade.setQuery(element, isQuery);
-                    }
-                });
+                }
+            });
         operationSpecialStrings[7] = new PropertySpecialString("root",
                 new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isRoot = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
+                public void found(Object element, String value) {
+                    boolean isRoot = true;
+                    if (value != null && value.equalsIgnoreCase("false"))
                             isRoot = false;
-                        if (ModelFacade.isAOperation(element))
+                    if (ModelFacade.isAOperation(element))
                             ModelFacade.setRoot(element, isRoot);
-                    }
-                });
+                }
+            });
         operationCustomSep = new Vector();
         operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
         operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -773,7 +773,7 @@ public class ParserDisplay extends Parser {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      *
-     *  @see org.argouml.uml.generator.Parser#parseOperation(java.lang.String, java.lang.Object)
+     * @see org.argouml.uml.generator.Parser#parseOperation(java.lang.String, java.lang.Object)
      */
     public void parseOperation(String s, Object op) throws ParseException {
         MyTokenizer st;
@@ -1643,6 +1643,9 @@ public class ParserDisplay extends Parser {
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
      *             It is not used within core ArgoUML. d00mst.
+     * @param handle the object
+     * @param s the string to parse
+     * @return String
      */
     protected String parseOutProperties(Object handle, String s) {
         if (ModelFacade.isAAttribute(handle)) {
@@ -1807,8 +1810,8 @@ public class ParserDisplay extends Parser {
      * parameters must be the first string within the given string s. It must
      * start with ( and the end of the string containing the parameters is ).
      * 
-     * @param op
-     * @param s
+     * @param op the Object
+     * @param s the String to parse
      * @return String
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
@@ -1851,8 +1854,8 @@ public class ParserDisplay extends Parser {
      * Parses the name of modelelement me from some input string s. The name
      * must be the first word of the string.
      * 
-     * @param me
-     * @param s
+     * @param me the Object
+     * @param s the String to parse
      * @return String
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
@@ -1927,8 +1930,8 @@ public class ParserDisplay extends Parser {
     /**
      * Parses the return type for an operation.
      * 
-     * @param op
-     * @param s
+     * @param op the Object
+     * @param s the String to parse
      * @return String
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
@@ -1966,17 +1969,21 @@ public class ParserDisplay extends Parser {
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
      *             It is not used within core ArgoUML. d00mst.
+     * @param attr the Object
+     * @param s the String to parse
+     * @return String
      */
     protected String parseOutInitValue(Object/* MAttribute */attr, String s) {
         s = s.trim();
         int equalsIndex = s.indexOf("=");
         int braceIndex = s.indexOf("{");
         if (equalsIndex >= 0
-                && ((braceIndex >= 0 && braceIndex > equalsIndex) || (braceIndex < 0 && equalsIndex >= 0))) { // we
-                                                                                                              // have
-                                                                                                              // ourselves
-                                                                                                              // some
-                                                                                                              // init
+                && ((braceIndex >= 0 && braceIndex > equalsIndex) 
+                        || (braceIndex < 0 && equalsIndex >= 0))) { // we
+                                                                    // have
+                                                                    // ourselves
+                                                                    // some
+                                                                    // init
             // expression
             s = s.substring(equalsIndex, s.length());
             String initExprStr = s.substring(s.indexOf("=") + 1,
@@ -1995,6 +2002,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseParameter(java.lang.String)
      */
     public Object parseParameter(String s) {
         java.util.StringTokenizer st = new java.util.StringTokenizer(s,
@@ -2021,6 +2029,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseStereotype(java.lang.String)
      */
     public Object parseStereotype(String s) {
         return null;
@@ -2031,6 +2040,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseTaggedValue(java.lang.String)
      */
     public Object parseTaggedValue(String s) {
         return null;
@@ -2044,6 +2054,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseMultiplicity(java.lang.String)
      */
     public Object parseMultiplicity(String s) {
         return UmlFactory.getFactory().getDataTypes().createMultiplicity(s);
@@ -2054,6 +2065,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseState(java.lang.String)
      */
     public Object parseState(String s) {
         return null;
@@ -2205,6 +2217,7 @@ public class ParserDisplay extends Parser {
      * @param s
      *            The string to be parsed.
      * @return the transition object
+     * 
      * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object, java.lang.String)
      */
     public Object parseTransition(Object trans, String s) {
@@ -2248,6 +2261,11 @@ public class ParserDisplay extends Parser {
         }
         return trans;
 
+        
+        // //DO NOT DELETE!
+        // //MVW: I still need this to help me create 
+        // //the functionality that is now missing!
+        //
         //	// strip any trailing semi-colons
         //	s = s.trim();
         //	while (s.length() > 0 && s.charAt(s.length() - 1) == ';')
@@ -3792,6 +3810,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseEvent(java.lang.String)
      */
     public Object/* MEvent */parseEvent(String s) {
         Object ce = UmlFactory.getFactory().getStateMachines().buildCallEvent();
