@@ -404,8 +404,9 @@ abstract class NSUMLEventListener implements MElementListener {
      *         ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent arg0) {
-        fire(new PropertyChangeEvent(arg0.getSource(), arg0.getName(),
-                		     arg0.getOldValue(), arg0.getNewValue()));
+        fire(new PropertyChangeEvent(arg0.getSource(), 
+            /*arg0.getName()*/ "removed",
+	    arg0.getOldValue(), arg0.getNewValue()));
     }
 
     /**

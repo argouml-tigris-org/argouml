@@ -445,6 +445,9 @@ public abstract class FigEdgeModelElement
             textEdited((FigText) src);
             calcBounds();
             endTrans();
+        } else if (pName.equals("removed") && (pve.getSource() == getOwner())) {
+            ProjectManager.getManager().getCurrentProject()
+                .moveToTrash(getOwner());
         } else
             super.propertyChange(pve);
         if (Model.getFacade().isABase(src)) {
