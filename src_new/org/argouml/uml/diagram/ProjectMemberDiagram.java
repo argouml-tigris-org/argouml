@@ -55,8 +55,8 @@ public class ProjectMemberDiagram extends ProjectMember {
   // static variables
 
   public static OCLExpander expander = null;
-    private static Logger cat = 
-        Logger.getLogger(ProjectMemberDiagram.class);
+    private Logger _cat = 
+        Logger.getLogger(this.getClass());
 
   ////////////////////////////////////////////////////////////////
   // instance variables

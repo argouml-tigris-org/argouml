@@ -35,28 +35,30 @@ import javax.swing.*;
  *   @author Thierry Lach
  *   @since 0.9.4
  */
-public class NotationComboBox extends JComboBox
-implements ArgoNotationEventListener {
+public class NotationComboBox
+    extends JComboBox
+    implements ArgoNotationEventListener {
 
     private static NotationComboBox SINGLETON = null;
 
     public static NotationComboBox getInstance() {
         // Only instantiate when we need it.
-	if (SINGLETON == null) SINGLETON = new NotationComboBox();
+        if (SINGLETON == null)
+            SINGLETON = new NotationComboBox();
         return SINGLETON;
     }
 
     public NotationComboBox() {
         super();
-	setEditable(false);
-	setMaximumRowCount(6);
+        setEditable(false);
+        setMaximumRowCount(6);
 
-	Dimension d = getPreferredSize();
-	d.width = 200;
-	setMaximumSize(d);
+        Dimension d = getPreferredSize();
+        d.width = 200;
+        setMaximumSize(d);
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
-	refresh();
+        refresh();
     }
 
     public void notationChanged(ArgoNotationEvent event) {
@@ -67,29 +69,31 @@ implements ArgoNotationEventListener {
     public void notationAdded(ArgoNotationEvent event) {
         //Argo.log.info("NotationComboBox.notationAdded(" + event + ")");
         refresh();
-	}
-    public void notationRemoved(ArgoNotationEvent event) { }
-    public void notationProviderAdded(ArgoNotationEvent event) { }
-    public void notationProviderRemoved(ArgoNotationEvent event) { }
+    }
+    public void notationRemoved(ArgoNotationEvent event) {
+    }
+    public void notationProviderAdded(ArgoNotationEvent event) {
+    }
+    public void notationProviderRemoved(ArgoNotationEvent event) {
+    }
 
     public void refresh() {
         if (Configuration.getBoolean(Notation.KEY_UML_NOTATION_ONLY, false)) {
-	    setVisible(false);
-	}
-	else {
-	    removeAllItems();
-            ListIterator iterator = Notation.getAvailableNotations().listIterator();
+            setVisible(false);
+        } else {
+            removeAllItems();
+            ListIterator iterator =
+                Notation.getAvailableNotations().listIterator();
             while (iterator.hasNext()) {
-	        try {
+                try {
                     NotationName nn = (NotationName)iterator.next();
                     addItem(nn);
-	        }
-	        catch (Exception e) {
-	            Argo.log.error ("Unexpected exception", e);
-	        }
-	    }
-	    setVisible(true);
-	}
-	invalidate();
+                } catch (Exception e) {
+                    Argo.log.error("Unexpected exception", e);
+                }
+            }
+            setVisible(true);
+        }
+        invalidate();
     }
 }

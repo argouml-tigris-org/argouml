@@ -51,6 +51,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.ArgoEventListener;
+import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.ArgoVersion;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ProjectMemberTodoList;
@@ -1021,7 +1023,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
             if (_models.contains(obj)) {
                 _models.remove(obj);
-            }
+            }           
             needSave = true;
         } else {
             if (obj instanceof ArgoDiagram) {

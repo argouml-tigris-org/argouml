@@ -37,7 +37,9 @@ public class ArgoEventPump {
 
     final static ArgoEventPump SINGLETON = new ArgoEventPump();
 
-    public static ArgoEventPump getInstance() { return SINGLETON; }
+    public static ArgoEventPump getInstance() {
+        return SINGLETON;
+    }
 
     private ArgoEventPump() {
     }
@@ -59,97 +61,128 @@ public class ArgoEventPump {
     }
 
     protected void doAddListener(int event, ArgoEventListener listener) {
-        if (_listeners == null) _listeners = new ArrayList();
-	_listeners.add(new Pair(event, listener));
+        if (_listeners == null)
+            _listeners = new ArrayList();
+        _listeners.add(new Pair(event, listener));
     }
 
+    /**
+     * Removes a listener, eventtype pair from the listener list.
+     * @TODO replace the listener implementation with a EventListenerList for better performance
+     * @param event
+     * @param listener
+     */
     protected void doRemoveListener(int event, ArgoEventListener listener) {
-        if (_listeners == null) return;
+        if (_listeners == null)
+            return;
+        Iterator it = _listeners.iterator();
+        List removeList = new ArrayList();
+        if (event == ArgoEvent.ANY_EVENT) {
+
+            while (it.hasNext()) {
+                Pair p = (Pair)it.next();
+                if (p._listener == listener) {
+                    removeList.add(p);
+                }
+            }
+
+        } else {
+            Pair test = new Pair(event, listener);
+            while (it.hasNext()) {
+                Pair p = (Pair)it.next();
+                if (p.equals(test))
+                    removeList.add(p);
+            }
+        }
+        _listeners.removeAll(removeList);
     }
 
+    private void handleFireModuleEvent(
+        ArgoModuleEvent event,
+        ArgoModuleEventListener listener) {
+        switch (event.getEventType()) {
+            case ArgoEvent.MODULE_LOADED :
+                listener.moduleLoaded(event);
+                break;
 
-    private void handleFireModuleEvent(ArgoModuleEvent event,
-                                       ArgoModuleEventListener listener) {
-	switch (event.getEventType()) {
-	    case ArgoEvent.MODULE_LOADED:
-	        listener.moduleLoaded(event);
-		break;
+            case ArgoEvent.MODULE_UNLOADED :
+                listener.moduleUnloaded(event);
+                break;
 
-	    case ArgoEvent.MODULE_UNLOADED:
-	        listener.moduleUnloaded(event);
-		break;
+            case ArgoEvent.MODULE_ENABLED :
+                listener.moduleEnabled(event);
+                break;
 
-	    case ArgoEvent.MODULE_ENABLED:
-	        listener.moduleEnabled(event);
-		break;
+            case ArgoEvent.MODULE_DISABLED :
+                listener.moduleDisabled(event);
+                break;
 
-	    case ArgoEvent.MODULE_DISABLED:
-	        listener.moduleDisabled(event);
-		break;
-
-	    default:
-	        Argo.log.error("Invalid event:" + event.getEventType());
-		break;
-	}
+            default :
+                Argo.log.error("Invalid event:" + event.getEventType());
+                break;
+        }
     }
 
-    private void handleFireNotationEvent(ArgoNotationEvent event,
-                                       ArgoNotationEventListener listener) {
-	switch (event.getEventType()) {
-	    case ArgoEvent.NOTATION_CHANGED:
-	        listener.notationChanged(event);
-		break;
+    private void handleFireNotationEvent(
+        ArgoNotationEvent event,
+        ArgoNotationEventListener listener) {
+        switch (event.getEventType()) {
+            case ArgoEvent.NOTATION_CHANGED :
+                listener.notationChanged(event);
+                break;
 
-	    case ArgoEvent.NOTATION_ADDED:
-	        listener.notationAdded(event);
-		break;
+            case ArgoEvent.NOTATION_ADDED :
+                listener.notationAdded(event);
+                break;
 
-	    case ArgoEvent.NOTATION_REMOVED:
-	        listener.notationRemoved(event);
-		break;
+            case ArgoEvent.NOTATION_REMOVED :
+                listener.notationRemoved(event);
+                break;
 
-	    case ArgoEvent.NOTATION_PROVIDER_ADDED:
-	        listener.notationProviderAdded(event);
-		break;
+            case ArgoEvent.NOTATION_PROVIDER_ADDED :
+                listener.notationProviderAdded(event);
+                break;
 
-	    case ArgoEvent.NOTATION_PROVIDER_REMOVED:
-	        listener.notationProviderRemoved(event);
-		break;
+            case ArgoEvent.NOTATION_PROVIDER_REMOVED :
+                listener.notationProviderRemoved(event);
+                break;
 
-	    default:
-	        Argo.log.error("Invalid event:" + event.getEventType());
-		break;
-	}
+            default :
+                Argo.log.error("Invalid event:" + event.getEventType());
+                break;
+        }
     }
 
-    private void handleFireEvent(ArgoEvent event,
-                                 ArgoEventListener listener) {
-	if (event.getEventType() == ArgoEvent.ANY_EVENT) {
+    private void handleFireEvent(ArgoEvent event, ArgoEventListener listener) {
+        if (event.getEventType() == ArgoEvent.ANY_EVENT) {
             if (listener instanceof ArgoModuleEventListener) {
-	        handleFireModuleEvent((ArgoModuleEvent)event,
-	                              (ArgoModuleEventListener)listener);
+                handleFireModuleEvent(
+                    (ArgoModuleEvent)event,
+                    (ArgoModuleEventListener)listener);
             }
             if (listener instanceof ArgoNotationEventListener) {
-	        handleFireNotationEvent((ArgoNotationEvent)event,
-	                              (ArgoNotationEventListener)listener);
+                handleFireNotationEvent(
+                    (ArgoNotationEvent)event,
+                    (ArgoNotationEventListener)listener);
             }
-	}
-	else {
-	    if (event.getEventType() >= ArgoEvent.ANY_MODULE_EVENT &&
-	            event.getEventType() < ArgoEvent.ANY_MODULE_EVENT + 100) {
+        } else {
+            if (event.getEventType() >= ArgoEvent.ANY_MODULE_EVENT
+                && event.getEventType() < ArgoEvent.ANY_MODULE_EVENT + 100) {
                 if (listener instanceof ArgoModuleEventListener) {
-	            handleFireModuleEvent((ArgoModuleEvent)event,
-	                                  (ArgoModuleEventListener)listener);
+                    handleFireModuleEvent(
+                        (ArgoModuleEvent)event,
+                        (ArgoModuleEventListener)listener);
                 }
-	    }
-	    if (event.getEventType() >= ArgoEvent.ANY_NOTATION_EVENT &&
-	            event.getEventType() < ArgoEvent.ANY_NOTATION_EVENT + 100) {
+            }
+            if (event.getEventType() >= ArgoEvent.ANY_NOTATION_EVENT
+                && event.getEventType() < ArgoEvent.ANY_NOTATION_EVENT + 100) {
                 if (listener instanceof ArgoNotationEventListener) {
-	            handleFireNotationEvent((ArgoNotationEvent)event,
-	                                  (ArgoNotationEventListener)listener);
+                    handleFireNotationEvent(
+                        (ArgoNotationEvent)event,
+                        (ArgoNotationEventListener)listener);
                 }
-	    }
-	}
+            }
+        }
     }
 
     public static void fireEvent(ArgoEvent event) {
@@ -159,36 +192,49 @@ public class ArgoEventPump {
     protected void doFireEvent(ArgoEvent event) {
 
         if (_listeners == null) {
-	    return;
-	}
+            return;
+        }
 
         ListIterator iterator = _listeners.listIterator();
         while (iterator.hasNext()) {
-	     Pair pair = (Pair)iterator.next();
-	     if (pair.getEventType() == ArgoEvent.ANY_EVENT) {
-		 handleFireEvent(event, pair.getListener());
-	     }
-	     else if ((pair.getEventType() >= event.getEventStartRange()) &&
-	             (pair.getEventType() <= event.getEventEndRange())) {
-		 handleFireEvent(event, pair.getListener());
-	     }
+            Pair pair = (Pair)iterator.next();
+            if (pair.getEventType() == ArgoEvent.ANY_EVENT) {
+                handleFireEvent(event, pair.getListener());
+            } else if (
+                (pair.getEventType() >= event.getEventStartRange())
+                    && (pair.getEventType() <= event.getEventEndRange())) {
+                handleFireEvent(event, pair.getListener());
+            }
         }
 
     }
 
     class Pair {
         int _eventType;
-	ArgoEventListener _listener;
+        ArgoEventListener _listener;
         Pair(int eventType, ArgoEventListener listener) {
-	    _eventType = eventType;
-	    _listener = listener;
-	}
+            _eventType = eventType;
+            _listener = listener;
+        }
 
-	int getEventType() { return _eventType; }
-	ArgoEventListener getListener() { return _listener; }
+        int getEventType() {
+            return _eventType;
+        }
+        ArgoEventListener getListener() {
+            return _listener;
+        }
 
-	public String toString() {
-	    return "{Pair(" + _eventType + "," + _listener + ")}";
-	}
+        public String toString() {
+            return "{Pair(" + _eventType + "," + _listener + ")}";
+        }
+
+        public boolean equals(Object o) {
+            if (o instanceof Pair) {
+                Pair p = (Pair)o;
+                if (p._eventType == _eventType && p._listener == _listener)
+                    return true;
+            }
+            return false;
+        }
     }
 }
