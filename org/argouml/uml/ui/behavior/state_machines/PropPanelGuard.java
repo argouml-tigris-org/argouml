@@ -34,6 +34,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -94,8 +95,9 @@ public class PropPanelGuard extends PropPanelModelElement {
         //addField(Translator.localize("UMLMenu", "label.language"), 
         // new UMLExpressionLanguageField(expressionModel, true));
 
-	new PropPanelButton(this, getButtonPanel(), navUpIcon, Translator.localize(
-            "UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, getButtonPanel(), 
+            ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
+            Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
