@@ -65,7 +65,7 @@ public class PropPanelGuard extends PropPanelModelElement {
 
         JList transitionList = new UMLLinkedList(
                 new UMLGuardTransitionListModel());
-        // MVW: TODO: Why is this is list? There's only one!
+        transitionList.setVisibleRowCount(1);
         addField(Translator.localize("label.transition"),
                 new JScrollPane(transitionList));
 
