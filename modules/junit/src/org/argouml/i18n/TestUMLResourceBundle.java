@@ -34,6 +34,6 @@ public class TestUMLResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new UMLResourceBundle());
+						"org.argouml.i18n.UMLResourceBundle");
     }
 }

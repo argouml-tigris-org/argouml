@@ -34,6 +34,6 @@ public class TestUMLCognitiveResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new UMLCognitiveResourceBundle());
+						"org.argouml.i18n.UMLCognitiveResourceBundle");
     }
 }

@@ -34,6 +34,6 @@ public class TestDiagramResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new DiagramResourceBundle());
+						"org.argouml.i18n.DiagramResourceBundle");
     }
 }

@@ -34,6 +34,6 @@ public class TestMenuResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new MenuResourceBundle());
+						"org.argouml.i18n.MenuResourceBundle");
     }
 }

@@ -34,6 +34,6 @@ public class TestTreeResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new TreeResourceBundle());
+						"org.argouml.i18n.TreeResourceBundle");
     }
 }

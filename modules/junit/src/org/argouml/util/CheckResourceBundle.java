@@ -125,12 +125,76 @@ public class CheckResourceBundle {
     /**
      * Localizations that we do.
      */
-    private static final String[] supportedLanguages = { 
-	"fr",
-	"de",
-	"en_GB",
-	"es", 
+    private static final String[][] supportedLanguages = { 
+	{ "fr", "", "" },
+	{ "de", "", "" },
+	{ "en", "GB", "" },
+	{ "es", "", "" },
 	null };
+    /**
+     * Returns a Vector of Locales modified from list of supported languages.
+     * Lift up the current locales (actually copying them to the start).
+     * This means that it is possible to control what language you are
+     * interested in using the -Duser.language=bla and -Duser.country=bla
+     * Otherwise it would be a pain to use this since it only reports one
+     * error.
+     */
+    private static final Vector getModifiedSupportedLanguages() {
+	Vector el = new Vector();
+
+	if (System.getProperty("user.language") != null
+	    && System.getProperty("user.country") != null
+	    && System.getProperty("user.variant") != null)
+	    el.add(new Locale(System.getProperty("user.language"),
+			      System.getProperty("user.country"),
+			      System.getProperty("user.variant")));
+	if (System.getProperty("user.language") != null
+	    && System.getProperty("user.region") != null
+	    && System.getProperty("user.variant") != null)
+	    el.add(new Locale(System.getProperty("user.language"),
+			      System.getProperty("user.region"),
+			      System.getProperty("user.variant")));
+
+	if (System.getProperty("user.language") != null
+	    && System.getProperty("user.country") != null)
+	    el.add(new Locale(System.getProperty("user.language"),
+			      System.getProperty("user.country"),
+			      ""));
+	if (System.getProperty("user.language") != null
+	    && System.getProperty("user.region") != null)
+	    el.add(new Locale(System.getProperty("user.language"),
+			      System.getProperty("user.region"),
+			      ""));
+
+	if (System.getProperty("user.language") != null)
+	    el.add(new Locale(System.getProperty("user.language"), 
+			      "", ""));
+
+	Vector v = new Vector();
+	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
+	    Locale elel = (Locale)ele.nextElement();
+	    for (int j = 0; j < supportedLanguages.length; j++) {
+		if (supportedLanguages[j] == null)
+		    continue;
+		if (elel.equals(new Locale(supportedLanguages[j][0],
+					   supportedLanguages[j][1],
+					   supportedLanguages[j][2]))) {
+		    v.add(elel);
+		    break;
+		}
+	    }
+	}
+	for (int j = 0; j < supportedLanguages.length; j++) {
+	    if (supportedLanguages[j] == null)
+		continue;
+	    v.add(new Locale(supportedLanguages[j][0],
+			     supportedLanguages[j][1],
+			     supportedLanguages[j][2]));
+	}
+	return v;
+    }
+
+
     /**
      * Checks that:
      *
@@ -146,106 +210,28 @@ public class CheckResourceBundle {
      *			leave it empty.
      */
     public static void checkResourceBundle(TestCase tc,
-					   ListResourceBundle b,
+					   String bname,
 					   String[] tags) {
+	ResourceBundle b = ResourceBundle.getBundle(bname, 
+						    new Locale("", "", ""));
+
 	checkContainsAllFrom(tc, b, tags);
 	checkNoDuplicates(tc, b);
 
 	// Check the localized parts.
 
-	// Lift up the current locales (actually copying them to the start).
-	// This means that it is possible to control what language you are
-	// interested in using the -Duser.language=bla and -Duser.country=bla
-	// Otherwise it would be a pain to use this since it only reports one
-	// error.
-
-	Vector el = new Vector();
-
-	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.country") != null
-	    && System.getProperty("user.variant") != null)
-	    el.add(new Locale(System.getProperty("user.language"),
-			      System.getProperty("user.country"),
-			      System.getProperty("user.variant")).toString());
-	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.region") != null
-	    && System.getProperty("user.variant") != null)
-	    el.add(new Locale(System.getProperty("user.language"),
-			      System.getProperty("user.region"),
-			      System.getProperty("user.variant")).toString());
-
-	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.country") != null)
-	    el.add(new Locale(System.getProperty("user.language"),
-			      System.getProperty("user.country"),
-			      "").toString());
-	if (System.getProperty("user.language") != null
-	    && System.getProperty("user.region") != null)
-	    el.add(new Locale(System.getProperty("user.language"),
-			      System.getProperty("user.region"),
-			      "").toString());
-
-	if (System.getProperty("user.language") != null)
-	    el.add(new Locale(System.getProperty("user.language"), 
-			      "", "").toString());
-
-	Vector v = new Vector();
-	for (Enumeration ele = el.elements(); ele.hasMoreElements(); ) {
-	    String elel = (String)ele.nextElement();
-	    for (int j = 0; j < supportedLanguages.length; j++) {
-		if (elel.equals(supportedLanguages[j])) {
-		    v.add(elel);
-		    break;
-		}
-	    }
-	}
-	for (int j = 0; j < supportedLanguages.length; j++) {
-	    v.add(supportedLanguages[j]);
-	}
+	Vector v = getModifiedSupportedLanguages();
 
 	for (Enumeration en = v.elements(); en.hasMoreElements(); ) {
-	    String l = (String)en.nextElement();
+	    Locale l = (Locale)en.nextElement();
 
-	    if (l == null)
-		continue;
+	    ResourceBundle locb = ResourceBundle.getBundle(bname, l);
 
-	    Class locclass;
-	    String newClassName = b.getClass().getName() 
-		+ "_" 
-		+ l;
-	    try {
-		locclass = Class.forName(newClassName);
-	    }
-	    catch (ClassNotFoundException n) {
-		tc.assert("Class "
-			  + newClassName
-			  + " does not exist for " 
-			  + l,
-			  false);
-		return;
-	    };
-
-	    ResourceBundle locb;
-	    try {
-		locb = (ResourceBundle)locclass.newInstance();
-	    }
-	    catch (InstantiationException e) {
-		tc.assert("Class "
-			  + newClassName
-			  + " cannot be instantiated for " 
-			  + l,
-			  false);
-		return;
-	    }
-	    catch (IllegalAccessException e) {
-		tc.assert("Class "
-			  + newClassName
-			  + " cannot be instantiated "
-			  + "(IllegalAccessException) for " 
-			  + l,
-			  false);
-		return;
-	    }
+	    tc.assert("Resource bundle "
+		      + bname
+		      + " does not exist for " 
+		      + l.toString(),
+		      locb != null);
 
 	    checkContainsAllFrom(tc, locb, tags);
 	    checkNoDuplicates(tc, locb);
@@ -255,8 +241,8 @@ public class CheckResourceBundle {
     }
 
     public static void checkResourceBundle(TestCase tc,
-					   ListResourceBundle b) {
+					   String bname) {
 	String[] n = { };
-	checkResourceBundle(tc, b, n);
+	checkResourceBundle(tc, bname, n);
     }
 }

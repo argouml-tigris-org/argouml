@@ -34,6 +34,6 @@ public class TestSettingsResourceBundle extends TestCase {
 
     public void testMain() {
 	CheckResourceBundle.checkResourceBundle(this, 
-						new SettingsResourceBundle());
+						"org.argouml.i18n.SettingsResourceBundle");
     }
 }
