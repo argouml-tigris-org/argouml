@@ -212,17 +212,26 @@ public abstract class UMLComboBoxModel2
      * at once.
      * @param elements
      */
-    protected void setElements(Collection elements) {
-        if (elements != null) {
-            removeAllElements();
-            addAll(elements);
-            if (_clearable && !elements.contains("")) {
-                addElement("");
-            }
-        } else
-            throw new IllegalArgumentException("In setElements: may not set " +
-                "elements to null collection");
-    }
+	protected void setElements(Collection elements) {
+		if (elements != null) {
+			//removeAllElements();
+			if (!_objects.isEmpty()) {
+				fireIntervalRemoved(this, 0, _objects.size()-1);
+			}
+			//addAll(elements);
+			_objects = Collections.synchronizedList(new ArrayList(elements));
+			if (!_objects.isEmpty()) {
+				fireIntervalAdded(this, 0, _objects.size()-1);
+			}
+			_selectedObject = null;
+			if (_clearable && !elements.contains("")) {
+				addElement("");
+			}
+		} else
+			throw new IllegalArgumentException("In setElements: may not set " 
++
+				"elements to null collection");
+	}
     
     /**
      * Utility method to get the target. Sets the _target if the _target is null
