@@ -138,11 +138,10 @@ public class ExtensionMechanismsHelper {
     }
 
     /**
-     * Searches the given stereotype in all models in the current project.
-     * TODO: MVW: If we have the stereotype, then why are we looking for it? 
-     *       What is the purpose of this function? Maybe it is meant to look 
-     *       for duplicates? Then why does it retuirn only one, and not the 
-     *       whole collection of duplicates?
+     * Searches for a stereotype just like the given stereotype in all models 
+     * in the current project.
+     * The given stereotype can not have its namespace set yet; 
+     * otherwise it will be returned itself!
      *
      * @param stereo is the given stereotype
      * @return MStereotype
@@ -223,14 +222,12 @@ public class ExtensionMechanismsHelper {
     /**
      * This function answers the question: 
      * Can we apply the given stereotype to the given class?
-     * TODO: Why not simply: return ModelFacade.IsAModelElement(clazz);
-     *       instead of this recursive complex way?
      * 
      * @param clazz the class we want to apply the stereotype to 
      * @param stereo the given stereotype
      * @return true if the stereotype may be applied
      */
-    protected boolean isValidStereoType(Class clazz, Object stereo) {
+    private boolean isValidStereoType(Class clazz, Object stereo) {
         if (clazz == null || stereo == null) return false;
         if (getMetaModelName(clazz).equals(ModelFacade.getBaseClass(stereo)))
             return true;
@@ -245,13 +242,14 @@ public class ExtensionMechanismsHelper {
      * equals the baseclass of the given modelelement or one of the
      * superclasses of the given modelelement.
      *
-     * @param m is the model element
-     * @param stereo is the stereotype
+     * @param theModelElement is the model element
+     * @param theStereotype   is the stereotype
      * @return boolean
      */
-    public boolean isValidStereoType(Object m, Object stereo) {
-        if (m == null) return false;
-	return isValidStereoType(m.getClass(), stereo);
+    public boolean isValidStereoType(Object theModelElement, 
+            Object theStereotype) {
+        if (theModelElement == null) return false;
+	return isValidStereoType(theModelElement.getClass(), theStereotype);
     }
 
     /**
