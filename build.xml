@@ -222,7 +222,6 @@ Property files to be searched:
       <pathelement location="${antlrall.jar.path}" />
       <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
-      <pathelement location="${saxon.jar.path}" />
     </path>
 
     <path id="argo.runtime.classpath">
@@ -234,6 +233,41 @@ Property files to be searched:
       <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
     </path>
+
+    <!-- In order to use ant optional tasks which use jars that are not -->
+    <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
+
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/optional.jar" />
+      <pathelement location="${junit.jar.path}" />
+      <pathelement location="${jdepend.jar.path}" />
+      <pathelement location="${xerces.jar.path}" />
+      <pathelement location="${xalan.jar.path}" />
+      <pathelement location="${bsf.jar.path}" />
+    </path>
+
+    <taskdef name="junit"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef name="junitreport"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef name="jdepend"
+             classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <!-- End of support section for ant optional tasks                  -->
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
@@ -479,7 +513,7 @@ ${Name} Build file
 
     <javac srcdir="${argo.src.dir}"
            destdir="${argo.build.classes}"
-           excludes="*.txt,*.bat,*.xml,*.sh"
+	   includes="org/argouml/**/*.java"
            debug="${debug}"
            deprecation="${deprecation}"
            optimize="${optimize}">
@@ -511,7 +545,6 @@ ${Name} Build file
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
     <copy file="${ocl-argo.jar.path}" tofile="${argo.build.dir}/ocl-argo.jar" />
     <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
-    <copy file="${saxon.jar.path}" tofile="${argo.build.dir}/saxon.jar" />
     <copy file="${argo.src.dir}/README.txt" tofile="${argo.build.dir}/README.txt" />
     <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}" />
   </target>
@@ -590,8 +623,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar saxon.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar saxon.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar" basedir="${argo.build.dir}" includes="${gef.jar.name} log4j.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt">
     <!--
       <tarfileset mode="555">
 	<include name="argouml.sh">
@@ -619,8 +652,8 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="dist-lib" depends="init">
     <echo message="Building the library distribution files (zip,tar)"/>
-    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/saxon.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
-    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/saxon.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" basedir="${argo.lib.dir}/.." includes="lib/${gef.jar.name} lib/log4j.jar lib/nsuml.jar lib/xerces.jar lib/ocl-argo.jar lib/antlrall.jar" />
     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz" src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
     <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
   </target>
@@ -678,6 +711,7 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="clean" depends="init">
 
+    <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
     <delete dir="${argo.build.dir}/classes"/>
     <delete dir="${argo.build.dir}/bin"/>
@@ -737,6 +771,156 @@ ${Name} Build file
 	    <include name="argouml.sh"/>
         </fileset>
     </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialize for the junit tests.                                     -->
+  <!-- =================================================================== -->
+  <target name="junit-init" depends="init">
+
+     <property name="011202.xml" value="tests/testmodels/01-12-02.xml"/>
+     <property name="991015.dtd" value="tests/testmodels/Model.dtd"/>
+
+     <available file="${011202.xml}" property="011202.xml.available"/>
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 dtd if necessary                                    -->
+  <!-- =================================================================== -->
+  <target name="junit-get-991015-dtd" depends="junit-init"
+          unless="991015.dtd.available">
+
+    <get src="http://cgi.omg.org/docs/ad/99-10-15.dtd"
+         dest="${991015.dtd}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model if necessary                                  -->
+  <!-- =================================================================== -->
+  <target name="junit-get-011202-xml"
+          depends="junit-init, junit-get-991015-dtd"
+          unless="011202.xml.available">
+
+    <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+         dest="${011202.xml}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${011202.xml}" property="011202.xml.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests                                                  -->
+  <!-- =================================================================== -->
+
+  <target name="compile-tests" depends="prepare"> 
+
+    <echo message="Compiling the tests"/>
+
+    <!-- create directories -->
+    <mkdir dir="${argo.tests.classes}"/>
+    <echo message="argo.tests.src=${argo.tests.src}"/>
+
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac srcdir="${argo.tests.src}"
+           destdir="${argo.tests.classes}"
+           debug="true"
+           deprecation="true"
+           optimize="false">
+        <classpath>
+            <pathelement location="${argo.build.classes}" />
+            <pathelement location="${xerces.jar.path}" />
+            <pathelement location="${nsuml.jar.path}" />
+            <pathelement location="${ocl-argo.jar.path}" />
+            <pathelement location="${gef.jar.path}" />
+            <pathelement location="${antlrall.jar.path}" />
+            <pathelement location="${log4j.jar.path}" />
+            <pathelement location="${jh.jar.path}" />
+        </classpath>
+     </javac>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare for the junit tests.                                        -->
+  <!-- =================================================================== -->
+  <target name="junit-setup" depends="compile-tests,
+                                      junit-get-011202-xml,
+                                      junit-get-991015-dtd"/>
+
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="tests" depends="compile,junit-setup">
+    <mkdir dir="${argo.tests.reports}/junit/output"/>
+    <mkdir dir="${argo.tests.reports}/junit/output/html"/>
+    <delete>
+        <fileset dir="${argo.tests.reports}/junit/output">
+           <include name="TEST-*.xml"/>
+           <include name="TEST-*.txt"/>
+        </fileset>
+    </delete>
+
+    <!-- ant 1.4 uses printsummary="true"                          -->
+    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
+    <!-- This should never be committed as "withOutAndErr", but    -->
+    <!-- this comment is in case it gets committed by accident.    -->
+
+    <!-- TODO:  This should be contained in default.properties     -->
+    <!--        and overridable in build.properties so that        -->
+    <!--        individual users can set as wanted.                -->
+    <!--        That is part of issue 579.                         -->
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           fork="yes">
+		<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+        <classpath>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <pathelement location="${junit.jar.path}" />
+            <pathelement location="${xerces.jar.path}" />
+            <pathelement location="${nsuml.jar.path}" />
+            <pathelement location="${ocl-argo.jar.path}" />
+            <pathelement location="${gef.jar.path}" />
+            <pathelement location="${antlrall.jar.path}" />
+            <pathelement location="${log4j.jar.path}" />
+            <pathelement location="${jh.jar.path}" />
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/model/**/Test*.java" />
+        </fileset>
+      </batchtest>
+<!--
+      <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
+            todir="${argo.tests.reports}/junit/output"
+            if="011202.xml.available">
+      </test>
+-->
+    </junit>
+ 
+ 
+    <junitreport todir="${argo.tests.reports}/junit/output">
+  		<fileset dir="${argo.tests.reports}/junit/output">
+    		<include name="TEST-*.xml"/>
+  		</fileset>
+  		<report format="frames" todir="${argo.tests.reports}/junit/output/html"/>
+
+	</junitreport>
+
+
   </target>
 
   <!-- =================================================================== -->
