@@ -92,6 +92,8 @@ public class PropPanelPackage extends PropPanelNamespace implements PluggablePro
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceVisibilityPanel());
+
         // TODO: facilitate importedElements.
         // TODO: facilitate the fact that Package is a generalizable element.
         add(LabelledLayout.getSeperator());
