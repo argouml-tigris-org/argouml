@@ -98,7 +98,7 @@ public class ProjectBrowser
      * @deprecated As of ArgoUml version 0.13.5, replaced by
      *             {@link org.argouml.ui.ProjectBrowser#getInstance()}
      */
-    public static ProjectBrowser TheInstance;
+    private static ProjectBrowser TheInstance;
 
     private static String _Title = "ArgoUML";
     private static boolean _Splash = false;
