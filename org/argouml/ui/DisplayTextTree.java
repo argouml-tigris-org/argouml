@@ -67,11 +67,15 @@ public class DisplayTextTree extends JTree implements MElementListener {
 
     Hashtable _expandedPathsInModel = new Hashtable();
     boolean _reexpanding = false;
+    
+    private boolean showStereotype;
 
     public DisplayTextTree() {
         setCellRenderer(new UMLTreeCellRenderer());
         putClientProperty("JTree.lineStyle", "Angled");
         //setEditable(true);
+        showStereotype = Configuration
+                .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
     }
 
     public String convertValueToText(
@@ -81,8 +85,35 @@ public class DisplayTextTree extends JTree implements MElementListener {
         boolean leaf,
         int row,
         boolean hasFocus) {
-        if (value == null)
-            return "(null)";
+        
+        // do model elements first
+        if (value instanceof MModelElement){
+            
+            String name=null;
+            
+            if (value instanceof MTransition || value instanceof MExtensionPoint) { // Jeremy Bennett patch
+                name = GeneratorDisplay.Generate(value);
+            }
+            else{
+                name = ((MModelElement)value).getName();
+            }
+            
+            if (name == null || name.equals("")){
+                
+                name = "(anon " + ((MModelElement)value).getUMLClassName() + ")";
+            }
+            
+            // Look for stereotype
+            if (showStereotype) {
+                MStereotype st = ((MModelElement) value).getStereotype();
+                    if (st != null) {
+                        name += " " + GeneratorDisplay.Generate(st);
+                }
+            }
+            
+            return name;
+        }
+        
         if (value instanceof ToDoItem) {
             return ((ToDoItem) value).getHeadline();
         }
@@ -95,38 +126,11 @@ public class DisplayTextTree extends JTree implements MElementListener {
                 tagName = "(anon)";
             return ("1-" + tagName);
         }
-        if ((value instanceof MElement)
-            && (!(value instanceof MTaggedValue))) {
-            // original
-            MElement e = (MElement) value;
-            String ocl = "";
-            if (e instanceof MModelElement)
-                ocl = ((MModelElement) e).getUMLClassName();
-            String name = ((MModelElement) e).getName();
-            if (e instanceof MTransition) {
-                name = GeneratorDisplay.Generate((MTransition) e);
-            }
-            if (e instanceof MExtensionPoint) { // Jeremy Bennett patch
-                name = GeneratorDisplay.Generate((MExtensionPoint) e);
-            }
-            if (name == null || name.equals(""))
-                name = "(anon " + ocl + ")";
 
-            // Look for stereotype
-            if (Configuration
-                .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false)) {
-                if (e instanceof MModelElement) {
-                    MStereotype st = ((MModelElement) e).getStereotype();
-                    if (st != null) {
-                        name += " " + GeneratorDisplay.Generate(st);
-                    }
-                }
-            }
-            return name;
-        }
         if (value instanceof Diagram) {
             return ((Diagram) value).getName();
         }
+        
         return value.toString();
     }
 
@@ -140,6 +144,12 @@ public class DisplayTextTree extends JTree implements MElementListener {
         return res;
     }
 
+    public void fireTreeWillExpand(TreePath path) {
+        
+        showStereotype = Configuration
+                .getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
+    }
+    
     /**
      * Tree MModel Expansion notification.
      *
