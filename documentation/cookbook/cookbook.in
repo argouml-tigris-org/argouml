@@ -490,7 +490,7 @@ Example:
       <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="GIF"/>
 	  </imageobject>
         </mediaobject>
 </para>
@@ -650,7 +650,7 @@ Every other component can use the classes available with the JRE.
     <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Layer0.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Layer0.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -744,7 +744,7 @@ The Help System Component is described in detail in
     <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Layer1.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Layer1.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -867,7 +867,7 @@ The Module Loader Component is described in detail in
       <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Layer2.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Layer2.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -880,7 +880,7 @@ The Application component is  described in detail in
       <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Application.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Application.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -960,7 +960,7 @@ The OCL Component is described in detail in
     <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Layer3.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Layer3.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -1415,7 +1415,7 @@ Java class files has only reverse engineering.
     <para>
         <mediaobject>
 	  <imageobject>
-	    <imagedata fileref="images/cookbook/Languages.gif" format="gif"/>
+	    <imagedata fileref="images/cookbook/Languages.gif" format="GIF"/>
 	  </imageobject>
 	</mediaobject>
 </para>
@@ -2099,25 +2099,25 @@ as the package root.
     If you need to install the jar "the hard way",
     try the following steps.
     <itemizedlist>
-      <listitem>
+      <listitem><para>
          Start up ArgoUML.
-      </listitem>
-      <listitem>
+      </para></listitem>
+      <listitem><para>
          Go to the menu <command>Edit->Settings</command>
 	 and look at the <command>Environment</command> tab.
 	 Find the entry labelled <literal>${argo.ext.dir}</literal>.
          Create that directory if it does not already exist.
-      </listitem>
-      <listitem>
+      </para></listitem>
+      <listitem><para>
          Copy the plugin jar
 	 and any other jars required by it
 	 into that directory.
-      </listitem>
-      <listitem>
+      </para></listitem>
+      <listitem><para>
          Start up ArgoUML again,
 	 and you should see the plugin's startup banner
 	 (if it has one, of course).
-      </listitem>
+      </para></listitem>
 
     </itemizedlist>
 
