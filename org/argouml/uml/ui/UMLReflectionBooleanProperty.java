@@ -28,10 +28,10 @@
 
 package org.argouml.uml.ui;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
 
-import org.apache.log4j.Logger;
-import org.argouml.kernel.*;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -40,32 +40,37 @@ import org.argouml.kernel.*;
  * that used reflection a lot.
  */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
-    private Method _getMethod;
-    private Method _setMethod;
-    private static final Object[] _noArg = {};
-    private static final Object[] _trueArg = {
+    private Method theGetMethod;
+    private Method theSetMethod;
+    private static final Object[] NOARG = {};
+    private static final Object[] TRUEARG = {
 	new Boolean(true) 
     };
-    private static final Object[] _falseArg = {
+    private static final Object[] FALSEARG = {
 	new Boolean(false) 
     };
     
     /**
      * Creates new BooleanChangeListener.<p>
+     *
+     * @param propertyName the property name
+     * @param elementClass the class
+     * @param gm the getter method
+     * @param sm the setter method
      */
     public UMLReflectionBooleanProperty(String propertyName,
 					Class elementClass,
-					String getMethod, String setMethod) {
+					String gm, String sm) {
         super(propertyName);
 
         Class[] noClass = {};
         try {
-            _getMethod = elementClass.getMethod(getMethod, noClass);
+            theGetMethod = elementClass.getMethod(gm, noClass);
         }
         catch (Exception e) {
             cat.error(e.toString()
 		      + " in UMLReflectionBooleanProperty(): "
-		      + getMethod,
+		      + gm,
 		      e);
             cat.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
@@ -75,12 +80,12 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
 	    boolean.class 
 	};
         try {
-            _setMethod = elementClass.getMethod(setMethod, boolClass);
+            theSetMethod = elementClass.getMethod(sm, boolClass);
         }
         catch (Exception e) {
             cat.error(e.toString()
 		      + " in UMLReflectionBooleanProperty(): "
-		      + setMethod,
+		      + sm,
 		      e);
 	    cat.error("Going to rethrow as RuntimeException");
 	    // need to throw exception again for unit testing!
@@ -89,8 +94,12 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
     }
     
     
+    /**
+     * @see org.argouml.uml.ui.UMLBooleanProperty#setProperty(
+     * java.lang.Object, boolean)
+     */
     public void setProperty(Object element, boolean newState) {
-        if (_setMethod != null && element != null) {
+        if (theSetMethod != null && element != null) {
             try {
                 //
                 //   this allows enumerations to work properly
@@ -99,10 +108,10 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
                 boolean oldState = getProperty(element);
                 if (newState != oldState) {
                     if (newState) {
-                        _setMethod.invoke(element, _trueArg);
+                        theSetMethod.invoke(element, TRUEARG);
                     }
                     else {
-                        _setMethod.invoke(element, _falseArg);
+                        theSetMethod.invoke(element, FALSEARG);
                     }
                     
                     // Having set a property, mark as needing saving
@@ -119,11 +128,14 @@ public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
         }
     }
     
+    /**
+     * @see org.argouml.uml.ui.UMLBooleanProperty#getProperty(java.lang.Object)
+     */
     public boolean getProperty(Object element) {
         boolean state = false;
-        if (_getMethod != null && element != null) {
+        if (theGetMethod != null && element != null) {
             try {
-                Object retval = _getMethod.invoke(element, _noArg);
+                Object retval = theGetMethod.invoke(element, NOARG);
                 if (retval != null && retval instanceof Boolean) {
                     state = ((Boolean) retval).booleanValue();
                 }

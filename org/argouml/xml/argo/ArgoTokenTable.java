@@ -33,51 +33,63 @@ import org.argouml.xml.XMLTokenTableBase;
 
 public class ArgoTokenTable extends XMLTokenTableBase {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     public ArgoTokenTable() {
 	super(32);
     }
 
     ////////////////////////////////////////////////////////////////
     // constants
-    public static final String STRING_argo                   = "argo";
+    private static final String STRING_ARGO                   = "argo";
     /** doesn't work
      */  
-    public static final String STRING_authorname             = "authorname";
-    public static final String STRING_version                = "version";
-    public static final String STRING_description            = "description";
-    public static final String STRING_searchpath             = "searchpath";
-    public static final String STRING_member                 = "member";
-    public static final String STRING_historyfile            = "historyfile";
-    public static final String STRING_documentation          = "documentation";
+    private static final String STRING_AUTHORNAME            = "authorname";
+    private static final String STRING_VERSION               = "version";
+    private static final String STRING_DESCRIPTION           = "description";
+    private static final String STRING_SEARCHPATH            = "searchpath";
+    private static final String STRING_MEMBER                = "member";
+    private static final String STRING_HISTORYFILE           = "historyfile";
+    private static final String STRING_DOCUMENTATION         = "documentation";
 
-    public static final int    TOKEN_argo                    = 1;
-    public static final int    TOKEN_authorname              = 2;
-    public static final int    TOKEN_version                 = 3;
-    public static final int    TOKEN_description             = 4;
-    public static final int    TOKEN_searchpath              = 5;
-    public static final int    TOKEN_member                  = 6;
-    public static final int    TOKEN_historyfile             = 7;
+    /** The token for argo. */
+    public static final int    TOKEN_ARGO                    = 1;
+    /** The token for authroname. */
+    public static final int    TOKEN_AUTHORNAME              = 2;
+    /** The token for version. */
+    public static final int    TOKEN_VERSION                 = 3;
+    /** The token for description. */
+    public static final int    TOKEN_DESCRIPTION             = 4;
+    /** The token for search path. */
+    public static final int    TOKEN_SEARCHPATH              = 5;
+    /** The token for member. */
+    public static final int    TOKEN_MEMBER                  = 6;
+    /** The token for history file. */
+    public static final int    TOKEN_HISTORYFILE             = 7;
     /** This can be saved successfully however there is no
-     * way to output this information.
-     */  
-    public static final int    TOKEN_documentation           = 8;
-    public static final int    TOKEN_undefined               = 9;
+     * way to output this information.   
+     * The token for argo. */
+    public static final int    TOKEN_DOCUMENTATION           = 8;
+    /** The token for undefined. */
+    public static final int    TOKEN_UNDEFINED               = 9;
 
     ////////////////////////////////////////////////////////////////
     // protected methods
 
+    /**
+     * @see org.argouml.xml.XMLTokenTableBase#setupTokens()
+     */
     protected void setupTokens()
     {
-	addToken(STRING_argo, new Integer(TOKEN_argo));
-	addToken(STRING_authorname, new Integer(TOKEN_authorname));
-	addToken(STRING_version, new Integer(TOKEN_version));
-	addToken(STRING_description, new Integer(TOKEN_description));
-	addToken(STRING_searchpath, new Integer(TOKEN_searchpath));
-	addToken(STRING_member, new Integer(TOKEN_member));
-	addToken(STRING_historyfile, new Integer(TOKEN_historyfile));
+	addToken(STRING_ARGO, new Integer(TOKEN_ARGO));
+	addToken(STRING_AUTHORNAME, new Integer(TOKEN_AUTHORNAME));
+	addToken(STRING_VERSION, new Integer(TOKEN_VERSION));
+	addToken(STRING_DESCRIPTION, new Integer(TOKEN_DESCRIPTION));
+	addToken(STRING_SEARCHPATH, new Integer(TOKEN_SEARCHPATH));
+	addToken(STRING_MEMBER, new Integer(TOKEN_MEMBER));
+	addToken(STRING_HISTORYFILE, new Integer(TOKEN_HISTORYFILE));
     }
 
 } /* end class ArgoTokenTable */

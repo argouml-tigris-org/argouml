@@ -33,63 +33,87 @@ import org.apache.log4j.Logger;
  */
 
 public abstract class XMLTokenTableBase {
-    protected static Logger cat = Logger.getLogger(XMLTokenTableBase.class);
+    private static final Logger LOG = Logger.getLogger(XMLTokenTableBase.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected  Hashtable _tokens       = null;
-    protected  boolean   _dbg          = false;
-    protected  String    _openTags[]   = new String[100];
-    protected  int       _openTokens[] = new int[100];
-    protected  int       _numOpen      = 0;
+    private  Hashtable tokens       = null;
+    private  boolean   dbg          = false;
+    private  String    openTags[]   = new String[100];
+    private  int       openTokens[] = new int[100];
+    private  int       numOpen      = 0;
 
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The constructor.
+     * 
+     * @param tableSize the size of the table
+     */
     public XMLTokenTableBase(int tableSize) {
-	_tokens = new Hashtable(tableSize);
+	tokens = new Hashtable(tableSize);
 	setupTokens();
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @param s the string
+     * @param push
+     * @return
+     */
     public final int toToken(String s, boolean push) {
-	if (push) _openTags[++_numOpen] = s;
-	else if (s.equals(_openTags[_numOpen])) {
-	    cat.debug("matched: " + s);
-	    return _openTokens[_numOpen--];
+	if (push) openTags[++numOpen] = s;
+	else if (s.equals(openTags[numOpen])) {
+	    LOG.debug("matched: " + s);
+	    return openTokens[numOpen--];
 	}
-	Integer i = (Integer) _tokens.get(s);
+	Integer i = (Integer) tokens.get(s);
 	if (i != null) {
-	    _openTokens[_numOpen] = i.intValue();
-	    return _openTokens[_numOpen];
+	    openTokens[numOpen] = i.intValue();
+	    return openTokens[numOpen];
 	}
 	else return -1;
     }
 
-    public void    setDbg(boolean dbg)     { _dbg = dbg; }
-    public boolean getDbg()                { return _dbg; }
+    /**
+     * @param d true if debugging
+     */
+    public void    setDbg(boolean d)       { dbg = d; }
+    
+    /**
+     * @return true if debugging is turned on
+     */
+    public boolean getDbg()                { return dbg; }
 
     ////////////////////////////////////////////////////////////////
     // class methods
 
+    /**
+     * @param s the string represented by the token number
+     * @param i the token number
+     */
     protected void addToken(String s, Integer i) {
 	boolean error = false;
-	if (_dbg) {
-	    if (_tokens.contains(i) || _tokens.containsKey(s)) {
-		cat.error("ERROR: token table already contains " + s);
+	if (dbg) {
+	    if (tokens.contains(i) || tokens.containsKey(s)) {
+		LOG.error("ERROR: token table already contains " + s);
 		error = true;
 	    }
 	}
-	_tokens.put(s, i);
-	if (_dbg && !error) {
-	    cat.debug("NOTE: added '" + s + "' to token table");
+	tokens.put(s, i);
+	if (dbg && !error) {
+	    LOG.debug("NOTE: added '" + s + "' to token table");
 	}
     }
 
+    /**
+     * This function shall set up all the tokens with the addToken function.
+     */
     protected abstract void setupTokens();
 
 } /* end class XMLTokenTableBase */

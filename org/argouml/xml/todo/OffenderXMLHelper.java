@@ -36,20 +36,20 @@ package org.argouml.xml.todo;
 public class OffenderXMLHelper
 {
     /** A description of the offender */
-    protected final String _item;
+    private final String item;
 
     /**
      * Creates a new OffenderXMLHelper describing the offender
      * described by item.
      *
-     * @param	item	A description of an offender.
+     * @param	offender	A description of an offender.
      * @throws	NullPointerException if item is null.
      */
-    public OffenderXMLHelper(String item)
+    public OffenderXMLHelper(String offender)
     {
-	if (item == null)
+	if (offender == null)
 	    throw new NullPointerException();
-	_item = item;
+	item = offender;
     }
 
     /**
@@ -59,7 +59,7 @@ public class OffenderXMLHelper
      */
     public String getOffender()
     {
-	return TodoParser.encode(_item);
+	return TodoParser.encode(item);
     }
 }
 

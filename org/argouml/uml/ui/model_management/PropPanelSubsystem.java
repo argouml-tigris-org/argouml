@@ -39,12 +39,18 @@ import org.argouml.util.ConfigLoader;
 /** A property panel for UML subsystems. */
 public class PropPanelSubsystem extends PropPanelPackage {
 
-    private JScrollPane _featureScroll;
+    private JScrollPane featureScroll;
 
-    private static UMLClassifierFeatureListModel featureListModel = new UMLClassifierFeatureListModel();
+    private static UMLClassifierFeatureListModel featureListModel = 
+        new UMLClassifierFeatureListModel();
 
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelSubsystem() {
-        super("Subsystem", _subsystemIcon, ConfigLoader.getTabPropsOrientation());
+        super("Subsystem", _subsystemIcon, 
+                ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.available-features"),
                 getFeatureScroll());
@@ -54,6 +60,9 @@ public class PropPanelSubsystem extends PropPanelPackage {
     }
 
   
+    /**
+     * Add a new operation to this classifier.
+     */
     public void addOperation() {
         Object target = getTarget();
         if (ModelFacade.isAClassifier(target)) {
@@ -69,11 +78,11 @@ public class PropPanelSubsystem extends PropPanelPackage {
      * @return JScrollPane
      */
     public JScrollPane getFeatureScroll() {
-        if (_featureScroll == null) {
+        if (featureScroll == null) {
             JList list = new UMLLinkedList(featureListModel);
-            _featureScroll = new JScrollPane(list);
+            featureScroll = new JScrollPane(list);
         }
-        return _featureScroll;
+        return featureScroll;
     }
 
 } /* end class PropPanelSubsystem */

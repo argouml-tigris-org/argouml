@@ -34,59 +34,78 @@ import org.argouml.xml.XMLTokenTableBase;
  */
 public class TodoTokenTable extends XMLTokenTableBase {
 
-    public static final String STRING_todo                   = "todo";
-    public static final String STRING_todolist               = "todolist";
-    public static final String STRING_todoitem               = "todoitem";
-    public static final String STRING_headline               = "headline";
-    public static final String STRING_description            = "description";
-    public static final String STRING_priority               = "priority";
-    public static final String STRING_moreinfourl            = "moreinfourl";
+    private static final String STRING_TO_DO                = "todo";
+    private static final String STRING_TO_DO_LIST           = "todolist";
+    private static final String STRING_TO_DO_ITEM           = "todoitem";
+    private static final String STRING_HEADLINE             = "headline";
+    private static final String STRING_DESCRIPTION          = "description";
+    private static final String STRING_PRIORITY             = "priority";
+    private static final String STRING_MOREINFOURL          = "moreinfourl";
 
-    public static final String STRING_resolvedcritics        = "resolvedcritics";
-    public static final String STRING_issue                  = "issue";
-    public static final String STRING_poster                 = "poster";
-    public static final String STRING_offender               = "offender";
+    private static final String STRING_RESOLVEDCRITICS      = "resolvedcritics";
+    private static final String STRING_ISSUE                = "issue";
+    private static final String STRING_POSTER               = "poster";
+    private static final String STRING_OFFENDER             = "offender";
 
     /** The String to use for High Priority. */
-    public static final String STRING_prio_high              = "high";
+    public static final String STRING_PRIO_HIGH            = "high";
     /** The String to use for Medium Priority. */
-    public static final String STRING_prio_med               = "medium";
+    public static final String STRING_PRIO_MED             = "medium";
     /** The String to use for Low Priority. */
-    public static final String STRING_prio_low               = "low";
+    public static final String STRING_PRIO_LOW             = "low";
 
-    public static final int    TOKEN_todo                    = 1;
-    public static final int    TOKEN_todolist                = 2;
-    public static final int    TOKEN_todoitem                = 3;
-    public static final int    TOKEN_headline                = 4;
-    public static final int    TOKEN_description             = 5;
-    public static final int    TOKEN_priority                = 6;
-    public static final int    TOKEN_moreinfourl             = 7;
+    /** The token for todo. */
+    public static final int    TOKEN_TO_DO                 = 1;
+    /** The token for todo list. */
+    public static final int    TOKEN_TO_DO_LIST            = 2;
+    /** The token for todoitem. */
+    public static final int    TOKEN_TO_DO_ITEM            = 3;
+    /** The token for headline. */
+    public static final int    TOKEN_HEADLINE              = 4;
+    /** The token for description. */
+    public static final int    TOKEN_DESCRIPTION           = 5;
+    /** The token for priority. */
+    public static final int    TOKEN_PRIORITY              = 6;
+    /** The token for moreinfourl. */
+    public static final int    TOKEN_MOREINFOURL           = 7;
 
-    public static final int    TOKEN_resolvedcritics         = 8;
-    public static final int    TOKEN_issue                   = 9;
-    public static final int    TOKEN_poster                  = 10;
-    public static final int    TOKEN_offender                = 11;
+    /** The token for resolvedcritics. */
+    public static final int    TOKEN_RESOLVEDCRITICS       = 8;
+    /** The token for issue. */
+    public static final int    TOKEN_ISSUE                 = 9;
+    /** The token for poster. */
+    public static final int    TOKEN_POSTER                = 10;
+    /** The token for offender. */
+    public static final int    TOKEN_OFFENDER              = 11;
 
-    public static final int    TOKEN_undefined               = 12;
+    /** The token for undefined. */
+    public static final int    TOKEN_UNDEFINED             = 12;
 
+    /**
+     * The constructor.
+     * 
+     */
     public TodoTokenTable() {
 	super(32);
     }
 
+    /**
+     * @see org.argouml.xml.XMLTokenTableBase#setupTokens()
+     */
     protected void setupTokens()
     {
-	addToken(STRING_todo, new Integer(TOKEN_todo));
-	addToken(STRING_todolist, new Integer(TOKEN_todolist));
-	addToken(STRING_todoitem, new Integer(TOKEN_todoitem));
-	addToken(STRING_headline, new Integer(TOKEN_headline));
-	addToken(STRING_description, new Integer(TOKEN_description));
-	addToken(STRING_priority, new Integer(TOKEN_priority));
-	addToken(STRING_moreinfourl, new Integer(TOKEN_moreinfourl));
+	addToken(STRING_TO_DO, new Integer(TOKEN_TO_DO));
+	addToken(STRING_TO_DO_LIST, new Integer(TOKEN_TO_DO_LIST));
+	addToken(STRING_TO_DO_ITEM, new Integer(TOKEN_TO_DO_ITEM));
+	addToken(STRING_HEADLINE, new Integer(TOKEN_HEADLINE));
+	addToken(STRING_DESCRIPTION, new Integer(TOKEN_DESCRIPTION));
+	addToken(STRING_PRIORITY, new Integer(TOKEN_PRIORITY));
+	addToken(STRING_MOREINFOURL, new Integer(TOKEN_MOREINFOURL));
 
-	addToken(STRING_resolvedcritics, new Integer(TOKEN_resolvedcritics));
-	addToken(STRING_issue, new Integer(TOKEN_issue));
-	addToken(STRING_poster, new Integer(TOKEN_poster));
-	addToken(STRING_offender, new Integer(TOKEN_offender));
+	addToken(STRING_RESOLVEDCRITICS, new Integer(TOKEN_RESOLVEDCRITICS));
+	addToken(STRING_ISSUE, new Integer(TOKEN_ISSUE));
+	addToken(STRING_POSTER, new Integer(TOKEN_POSTER));
+	addToken(STRING_OFFENDER, new Integer(TOKEN_OFFENDER));
     }
 }
 

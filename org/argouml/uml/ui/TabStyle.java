@@ -116,11 +116,11 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
      * The constructor.
      * 
      * @param tabName the name of the tab
-     * @param stylePanelNames
+     * @param spn style panel names
      */
-    public TabStyle(String tabName, String[] stylePanelNames) {
+    public TabStyle(String tabName, String[] spn) {
         super(tabName);
-        this.stylePanelNames = stylePanelNames;
+        this.stylePanelNames = spn;
         setLayout(new BorderLayout());
         initPanels();
     }
@@ -323,6 +323,9 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         return null;
     }
 
+    /**
+     * @return the style panel names
+     */
     protected String[] getStylePanelNames() {
         return stylePanelNames;
     }

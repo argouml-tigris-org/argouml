@@ -30,52 +30,94 @@ import org.xml.sax.helpers.AttributesImpl;
 /**
  * @author Jim Holt
  */
-
 public class XMLElement {
+    
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
+    private String        name       = null;
+    private StringBuffer  text       = new StringBuffer(100);
+    private Attributes    attributes = null;
+    
     /**
      * Constructor.
      * 
-     * @param name The name of the element.
-     * @param attributes The attributes.
+     * @param n The name of the element.
+     * @param a The attributes.
      */
-    public XMLElement(String name, Attributes attributes) {
-	_name = name;
-	_attributes = new AttributesImpl(attributes);
+    public XMLElement(String n, Attributes a) {
+	name = n;
+	attributes = new AttributesImpl(a);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public String getName()            { return _name; }
-    public void   setName(String name) { _name = name; }
+    /**
+     * @return the name of this element
+     */
+    public String getName()            { return name; }
+    /**
+     * @param n the name of this element
+     */
+    public void   setName(String n) { name = n; }
 
-    public void   addText(String text) { _text = _text.append(text); }
-    public void   setText(String text) { _text = new StringBuffer(text); }
-    public void   resetText()          { _text.setLength(0); }
-    public String getText()            { return _text.toString(); }
+    /**
+     * @param t the text to be appended
+     */
+    public void   addText(String t) { text = text.append(t); }
+    
+    /**
+     * @param t the new text
+     */
+    public void   setText(String t) { text = new StringBuffer(t); }
+    
+    /**
+     * Erase the text of this element.
+     */
+    public void   resetText()          { text.setLength(0); }
+    
+    /**
+     * @return the text of this element
+     */
+    public String getText()            { return text.toString(); }
 
     /**
      * Change the attributes for this element.
      * 
-     * @param attributes The new list of attributes.
+     * @param a The new list of attributes.
      */
-    public void   setAttributes(Attributes attributes) {
-	_attributes = new AttributesImpl(attributes);
+    public void   setAttributes(Attributes a) {
+	attributes = new AttributesImpl(a);
     }
 
+    /**
+     * @param attribute the attribute name
+     * @return the attribute value
+     */
     public String getAttribute(String attribute) {
-	return _attributes.getValue(attribute);
+	return attributes.getValue(attribute);
     }
-    public String getAttributeName(int i) { return _attributes.getLocalName(i); }
-    public String getAttributeValue(int i) { return _attributes.getValue(i); }
-    public int    getNumAttributes() { return _attributes.getLength(); }
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    private String        _name       = null;
-    private StringBuffer  _text       = new StringBuffer(100);
-    private Attributes    _attributes = null;
+    
+    /**
+     * @param i the index for the list of attributes
+     * @return the attribute name for the attribute at the given index
+     */
+    public String getAttributeName(int i) { 
+        return attributes.getLocalName(i); 
+    }
+    
+    /**
+     * @param i the index for the list of attributes
+     * @return the attribute value for the attribute at the given index
+     */
+    public String getAttributeValue(int i) { 
+        return attributes.getValue(i); 
+    }
+    
+    /**
+     * @return the number of attributes
+     */
+    public int    getNumAttributes() { return attributes.getLength(); }
 
 } /* end class XMLElement */

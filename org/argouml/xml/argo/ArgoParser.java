@@ -55,7 +55,7 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    private Project _proj = null;
+    private Project proj = null;
 
     private ArgoTokenTable tokens = new ArgoTokenTable();
 
@@ -84,21 +84,44 @@ public class ArgoParser extends SAXParserBase {
     // TODO: should be able to merge an existing project into
     // the current one.
 
+    /**
+     * @param theUrl the url of the project to read
+     * @throws IOException for a file problem
+     * @throws ParserConfigurationException in case of a parser problem
+     * @throws SAXException when parsing xml
+     */
     public synchronized void readProject(URL theUrl) throws IOException,
             ParserConfigurationException, SAXException {
         readProject(theUrl, true);
     }
 
+    /**
+     * @param theUrl the url of the project to read
+     * @param addTheMembers true if the members are to be added
+     * @throws IOException for a file problem
+     * @throws ParserConfigurationException in case of a parser problem
+     * @throws SAXException when parsing xml
+     */
     public synchronized void readProject(URL theUrl, boolean addTheMembers)
         throws IOException, ParserConfigurationException, SAXException {
         this.url = theUrl;
         readProject(this.url.openStream(), addTheMembers);
     }
 
+    /**
+     * @param theUrl the url
+     */
     public void setURL(URL theUrl) {
         this.url = theUrl;
     }
 
+    /**
+     * @param is the inputstream of the project to read
+     * @param addTheMembers true if the members are to be added
+     * @throws IOException for a file problem
+     * @throws ParserConfigurationException in case of a parser problem
+     * @throws SAXException when parsing xml
+     */
     public synchronized void readProject(InputStream is, 
             boolean addTheMembers)
         throws IOException, SAXException, ParserConfigurationException {
@@ -117,7 +140,7 @@ public class ArgoParser extends SAXParserBase {
         try {
             LOG.info("=======================================");
             LOG.info("== READING PROJECT " + url);
-            _proj = new Project(url);
+            proj = new Project(url);
             parse(is);
         } catch (SAXException saxEx) {
             lastLoadStatus = false;
@@ -141,13 +164,19 @@ public class ArgoParser extends SAXParserBase {
         }
     }
 
+    /**
+     * @return the project
+     */
     public Project getProject() {
-        Project returnValue = _proj;
-        return _proj;
+        Project returnValue = proj;
+        return proj;
     }
 
+    /**
+     * @param newProj the project
+     */
     public void setProject(Project newProj) {
-        _proj = newProj;
+        proj = newProj;
     }
 
     /**
@@ -158,10 +187,10 @@ public class ArgoParser extends SAXParserBase {
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (tokens.toToken(e.getName(), true)) {
-            case ArgoTokenTable.TOKEN_argo:
+            case ArgoTokenTable.TOKEN_ARGO:
                 handleArgo(e);
                 break;
-            case ArgoTokenTable.TOKEN_documentation:
+            case ArgoTokenTable.TOKEN_DOCUMENTATION:
                 handleDocumentation(e);
                 break;
             default:
@@ -182,22 +211,22 @@ public class ArgoParser extends SAXParserBase {
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         try {
             switch (tokens.toToken(e.getName(), false)) {
-            case ArgoTokenTable.TOKEN_authorname:
+            case ArgoTokenTable.TOKEN_AUTHORNAME:
                 handleAuthorname(e);
                 break;
-            case ArgoTokenTable.TOKEN_version:
+            case ArgoTokenTable.TOKEN_VERSION:
                 handleVersion(e);
                 break;
-            case ArgoTokenTable.TOKEN_description:
+            case ArgoTokenTable.TOKEN_DESCRIPTION:
                 handleDescription(e);
                 break;
-            case ArgoTokenTable.TOKEN_searchpath:
+            case ArgoTokenTable.TOKEN_SEARCHPATH:
                 handleSearchpath(e);
                 break;
-            case ArgoTokenTable.TOKEN_member:
+            case ArgoTokenTable.TOKEN_MEMBER:
                 handleMember(e);
                 break;
-            case ArgoTokenTable.TOKEN_historyfile:
+            case ArgoTokenTable.TOKEN_HISTORYFILE:
                 handleHistoryfile(e);
                 break;
             default:
@@ -210,51 +239,75 @@ public class ArgoParser extends SAXParserBase {
         }
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleArgo(XMLElement e) {
         /* do nothing */
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleDocumentation(XMLElement e) {
         /* do nothing */
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleAuthorname(XMLElement e) {
         String authorname = e.getText().trim();
-        _proj.setAuthorname(authorname);
+        proj.setAuthorname(authorname);
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleVersion(XMLElement e) {
         String version = e.getText().trim();
-        _proj.setVersion(version);
+        proj.setVersion(version);
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleDescription(XMLElement e) {
         String description = e.getText().trim();
-        _proj.setDescription(description);
+        proj.setDescription(description);
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleSearchpath(XMLElement e) {
         String searchpath = e.getAttribute("href").trim();
-        _proj.addSearchPath(searchpath);
+        proj.addSearchPath(searchpath);
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleMember(XMLElement e) {
         if (addMembers) {
             String name = e.getAttribute("name").trim();
             String type = e.getAttribute("type").trim();
-            _proj.addMember(name, type);
+            proj.addMember(name, type);
         }
     }
 
+    /**
+     * @param e the element
+     */
     protected void handleHistoryfile(XMLElement e) {
         if (e.getAttribute("name") == null)
             return;
         String historyfile = e.getAttribute("name").trim();
-        _proj.setHistoryFile(historyfile);
+        proj.setHistoryFile(historyfile);
     }
 
     /**
-     * return the status of the last load attempt. Used for junit tests.
+     * @return the status of the last load attempt. Used for junit tests.
      */
     public boolean getLastLoadStatus() {
         return lastLoadStatus;

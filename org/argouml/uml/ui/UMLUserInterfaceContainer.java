@@ -37,31 +37,46 @@ import java.util.*;
  *    @see PropPanel
  */
 public interface UMLUserInterfaceContainer {
+
     /**
-     *   Returns the current target for the container, may be null.
+     * @return the current target for the container, may be null
      */
     public Object getTarget();
+
     /**
-     *   Returns the current target for the container if the target is a
-     *      MModelElement, otherwise null.
+     * @return the current target for the container if the target is a
+     *      MModelElement, otherwise null
      */
     public Object getModelElement();
+
     /**
-     *    Returns the current profile, may not be null.
+     * @return the current profile, may not be null
      */
     public Profile getProfile();
+    
     /**
-     *    Formats the specified model element.  Typically, deferred to the
-     *    profile.
+     * Formats the specified model element.  Typically, deferred to the
+     * profile.
+     *
+     * @param element the given element
+     * @return the formatted string
      */
     public String formatElement(/*MModelElement*/Object element);
+    
     /**
-     *    Formats a collection of model elements.  Typically, deferred to the
-     *    profile.
+     * Formats a collection of model elements.  Typically, deferred to the
+     * profile.
+     *
+     * @param iter an iterator into the collection of modelelements
+     * @return the formatted string
      */
     public String formatCollection(Iterator iter);
+    
     /**
-     *    Formats the model element as a namespace.
+     * Formats the model element as a namespace.
+     *
+     * @param ns the namespace
+     * @return the formatted string
      */
     public String formatNamespace(/*MNamespace*/Object ns);
 
