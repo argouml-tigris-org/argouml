@@ -237,16 +237,19 @@ class ActionGotoDiagram extends UMLAction {
     Project p = ProjectManager.getManager().getCurrentProject();
     //TODO: class TearOffHostFrame and TearOffManager.
     //idea: pop-up on tab that lists docking locations, new window.
-    JDialog f = new JDialog(pb, "Goto Diagram...");
-    f.getContentPane().setLayout(new BorderLayout());
+    ArgoDialog f = new ArgoDialog(pb, "Goto Diagram...", false);
+    JPanel mainPanel = new JPanel(new BorderLayout());
     JTabbedPane tabs = new JTabbedPane();
-    f.getContentPane().add(tabs, BorderLayout.CENTER);
+    mainPanel.add(tabs, BorderLayout.CENTER);
     TabResults allDiagrams = new TabResults(false); // no related
     allDiagrams.setResults(p.getDiagrams(), p.getDiagrams());
+    // TabResults has really large preferred height, so divide in half to reduce
+    // size of dialog which will be sized based on this preferred size.
+    allDiagrams.setPreferredSize(new Dimension(
+        allDiagrams.getPreferredSize().width, allDiagrams.getPreferredSize().height / 2));
     tabs.addTab("All Diagrams", allDiagrams);
+    f.setContent(mainPanel);
     //TODO: tabs for class, state, usecase, help
-    f.setSize(500, 300);
-    f.setLocation(pb.getLocation().x + 100, pb.getLocation().y + 100);
     f.setVisible(true);
   }
 } /* end class ActionGotoDiagram */
