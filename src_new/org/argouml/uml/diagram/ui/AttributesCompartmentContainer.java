@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.tigris.gef.presentation.FigGroup;
+
 /**
  * An interface to be implemented by any Fig that contains
  * a FigAttributesCompartment.
@@ -34,11 +36,17 @@ public interface AttributesCompartmentContainer {
      * Determine if the attributes compartment is visible.
      * @return true if the attributes compartment is visible.
      */
-    public boolean isAttributesVisible();
+    boolean isAttributesVisible();
     
     /**
      * Set the visibility of the attributes compartment.
      * @param visible the new visibility status.
      */
-    public void setAttributesVisible(boolean visible);
+    void setAttributesVisible(boolean visible);
+    
+    /**
+     * @return The vector of graphics for operations (if any). 
+     * First one is the rectangle for the entire attributes box.
+     */
+    FigGroup getAttributesFig(); 
 }

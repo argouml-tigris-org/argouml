@@ -24,6 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
+import org.tigris.gef.presentation.FigGroup;
+
 /**
  * An interface to be implemented by any Fig that contains
  * a FigOperationsCompartment.
@@ -34,11 +36,17 @@ public interface OperationsCompartmentContainer {
      * Determine if the operations compartment is visible.
      * @return true if the operations compartment is visible.
      */
-    public boolean isOperationsVisible();
+    boolean isOperationsVisible();
     
     /**
      * Set the visibility of the operations compartment.
      * @param visible the new visibility status.
      */
-    public void setOperationsVisible(boolean visible);
+    void setOperationsVisible(boolean visible);
+    
+    /**
+     * @return The vector of graphics for operations (if any). 
+     * First one is the rectangle for the entire operations box.
+     */
+    FigGroup getOperationsFig(); 
 }
