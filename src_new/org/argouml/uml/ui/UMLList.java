@@ -54,8 +54,7 @@ public class UMLList extends JList
         super(listModel);
         umlListModel = listModel;
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        setBackground(Color.green.brighter());
-
+        
         if (navigate) {
             addMouseListener(this);
         }

@@ -67,7 +67,6 @@ public class UMLInitialValueComboBox extends JComboBox
      */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
-        setBackground(Color.green.brighter());
         theContainer = container;
         
         for (int i = 0; i < listItems.length; i++) {

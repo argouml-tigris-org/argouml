@@ -53,7 +53,6 @@ public class UMLComboBox
     public UMLComboBox(UMLComboBoxModel model) {
         super(model);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
-        setBackground(Color.green.brighter());
         theModel = model;
 	addActionListener(theModel);
     }
