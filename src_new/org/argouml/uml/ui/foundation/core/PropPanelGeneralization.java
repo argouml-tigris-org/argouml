@@ -24,10 +24,14 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.BorderFactory;
+import javax.swing.border.BevelBorder;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Category;
+
 import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -37,6 +41,7 @@ import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLTextField;
 import org.argouml.uml.ui.UMLTextProperty;
+import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.behavior.use_cases.MActor;
@@ -55,50 +60,40 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      protected static Category cat = 
         Category.getInstance(PropPanelGeneralization.class);
 
-  private PropPanelButton _newButton;
+    private PropPanelButton _newButton;
 
-  public PropPanelGeneralization() {
-    super("Generalization",_generalizationIcon,2);
+    public PropPanelGeneralization() {
+        super("Generalization", ConfigLoader.getTabPropsOrientation());
+        Class mclass = MGeneralization.class;
 
-    Class mclass = MGeneralization.class;
+        Class[] namesToWatch = {MStereotype.class,MNamespace.class,MClassifier.class };
+        setNameEventListening(namesToWatch);
 
-    Class[] namesToWatch = {MStereotype.class,MNamespace.class,MClassifier.class };
-    setNameEventListening(namesToWatch);
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+        addField("Discriminator:", new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")));
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(getNameTextField(),1,0,0);
+        add(LabelledLayout.getSeperator());
+      
+        UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);
+        parentModel.setUpperBound(1);
+        UMLList umlParentList = new UMLList(parentModel,true);
+        umlParentList.setVisibleRowCount(1);
+        addLinkField("Parent:", new JScrollPane(umlParentList, JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),2,0,0);
+        UMLModelElementListModel childModel = new UMLReflectionListModel(this,"child",true,"getChild",null,null,null);
+        childModel.setUpperBound(1);
+        UMLList umlChildList = new UMLList(childModel,true);
+        umlChildList.setVisibleRowCount(1);
+        addLinkField("Child:", new JScrollPane(umlChildList, JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
-    addCaption("Discriminator:",3,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),3,0,0);
+        addField("Powertype:", new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON));
 
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-    addField(getNamespaceComboBox(),4,0,0);
-
-    addCaption("Parent:",0,1,0);
-    UMLModelElementListModel parentModel = new UMLReflectionListModel(this,"parent",true,"getParentElement",null,null,null);
-    parentModel.setUpperBound(1);
-    addLinkField(new JScrollPane(new UMLList(parentModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),0,1,0);
-
-    addCaption("Child:",1,1,0);
-    UMLModelElementListModel childModel = new UMLReflectionListModel(this,"child",true,"getChild",null,null,null);
-    childModel.setUpperBound(1);
-    addLinkField(new JScrollPane(new UMLList(childModel,true),JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),1,1,0);
-
-    addCaption("Powertype:",2,1,1);
-    /*
-    UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
-        "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),new UMLComboBox(powerModel)),2,1,0);
-    */
-    addField(new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON),2,1,0);
-
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete generalization"),"removeElement",null);
     }
 
 
