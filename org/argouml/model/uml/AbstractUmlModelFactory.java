@@ -26,7 +26,6 @@ package org.argouml.model.uml;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.uml.UUIDManager;
 
 import ru.novosoft.uml.MBase;
@@ -104,17 +103,13 @@ public abstract class AbstractUmlModelFactory {
      * handle.
      * @param handle the modelelement the listeners are interested in
      */
-    // TODO: The model shall not reference the ProjectBrowser!
     public void addListenersToModelElement(Object handle) {
         if (ModelFacade.isABase(handle)) {
             Object base = handle;
             UmlModelEventPump pump = UmlModelEventPump.getPump();
+            
             ((MBase)base).addMElementListener(pump);
-            if (guiEnabled) {
-                // TODO - we have the business layer with knowledge of GUI here
-                // must resolve this.
-                ((MBase)base).addMElementListener(NavigatorPane.getInstance());
-            }
+            pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),base);
             ((MBase)base).addMElementListener(UmlModelListener.getInstance());
         }
     }

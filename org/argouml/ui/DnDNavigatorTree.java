@@ -44,6 +44,7 @@ import javax.swing.tree.TreePath;
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
+import org.argouml.ui.explorer.ExplorerTree;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
@@ -53,7 +54,7 @@ import org.argouml.model.uml.UmlHelper;
  * @author  alexb
  * @since Created on 16 April 2003
  */
-public class DnDNavigatorTree extends DisplayTextTree
+public class DnDNavigatorTree extends ExplorerTree
     implements DragGestureListener,
 	       DragSourceListener
 {

@@ -24,7 +24,6 @@
 
 // File: DisplayTextTree.java
 // Classes: DisplayTextTree, DipslayTextTreeRun
-// Original Author: ?
 
 package org.argouml.ui;
 
@@ -56,7 +55,7 @@ import org.tigris.gef.presentation.Fig;
  * This is the JTree that is the gui component view of the model navigation and
  * todo list.
  */
-public class DisplayTextTree extends JTree implements TargetListener {
+public class DisplayTextTree extends JTree{
 
     protected static Logger cat = Logger.getLogger(DisplayTextTree.class);
 
@@ -72,9 +71,6 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
     /** needs documenting */
     private boolean _reexpanding;
-
-    /** holds state info about whether to display stereotypes in the nav pane.*/
-    private boolean showStereotype;
 
     /** Runnable to help avoid too many tree updates. */
     private DisplayTextTreeRun _doit;
@@ -92,8 +88,6 @@ public class DisplayTextTree extends JTree implements TargetListener {
 
         this.setRowHeight(18); 
 
-        showStereotype =
-            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
         _expandedPathsInModel = new Hashtable();
         _reexpanding = false;
         _doit = new DisplayTextTreeRun(cat, this);
@@ -104,7 +98,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
     /**
      * override default JTree implementation to display the
      * appropriate text for any object that will be displayed in
-     * the Nav pane or todo list.
+     * the todo list.
      */
     public String convertValueToText(
         Object value,
@@ -114,50 +108,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         int row,
         boolean hasFocus) {
 
-        //cat.debug("convertValueToText");
-
-        // do model elements first
-        if (ModelFacade.isAModelElement(value)) {
-
             String name = null;
-
-            // Jeremy Bennett patch
-            if (ModelFacade.isATransition(value) 
-                || ModelFacade.isAExtensionPoint(value)) {
-                name = GeneratorDisplay.Generate(value);
-            }
-            // changing the label in case of comments
-            // this is necessary since the name of the comment is the same as
-            // the content of the comment causing the total comment to be
-            // displayed in the navperspective
-            else if (ModelFacade.isAComment(value)) {
-                name = ModelFacade.getName(value);
-                if (name != null && name.length() > 10) {
-                    name = name.substring(0, 10) + "...";
-                }
-            } else {
-                name = ModelFacade.getName(value);
-            }
-
-            if (name == null || name.equals("")) {
-
-                name =
-                    "(anon " + ModelFacade.getUMLClassName(value) + ")";
-            }
-
-            // Look for stereotype
-            if (showStereotype) {
-                Object stereo = null;
-                if (ModelFacade.getStereotypes(value).size() > 0) {
-                    stereo = ModelFacade.getStereotypes(value).iterator().next();
-                }
-                if (stereo != null) {
-                    name += " " + GeneratorDisplay.Generate(stereo);
-                }
-            }
-
-            return name;
-        }
 
         if (value instanceof ToDoItem) {
             return ((ToDoItem) value).getHeadline();
@@ -165,27 +116,10 @@ public class DisplayTextTree extends JTree implements TargetListener {
         if (value instanceof ToDoList) {
             return "ToDoList";
         }
-        if (ModelFacade.isATaggedValue(value)) {
-            String tagName = ModelFacade.getTagOfTag(value);
-            if (tagName == null || tagName.equals(""))
-                tagName = "(anon)";
-            return ("1-" + tagName);
-        }
-
-        if (value instanceof Diagram) {
-            return ((Diagram) value).getName();
-        }
         if (value != null)
             return value.toString();
         else
             return "-";
-    }
-
-    /** specific to the Navigator tree */
-    public void fireTreeWillExpand(TreePath path) {
-
-        showStereotype =
-            Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
     }
 
     /**
@@ -364,96 +298,6 @@ public class DisplayTextTree extends JTree implements TargetListener {
             expandPath(path);
         }
         _reexpanding = false;
-    }
-
-    /**
-     * This methods sets the target of the treemodel to the given object. It's
-     * a means to set the target programmatically from within the setTarget
-     * method in the ProjectBrowser.
-     *
-     * <p>If the tree view shows the model element more than once,
-     * all such rows shall be selected.
-     *
-     * <p>This may take some time for a lot of rows... put the work on
-     * a worker thread perhaps?
-     *
-     * @param target a selected Fig or Model element.
-     */
-    public void setTarget(Object target) {
-
-        cat.debug("setTarget");
-        // specific to the Navigator tree
-        if (getModel() instanceof NavPerspective) {
-
-            if (target instanceof Fig) {
-                target = ((Fig) target).getOwner();
-            }
-
-        }
-
-        // clear the tree selection
-        this.clearSelection();
-
-        // add the any relevant rows
-        int rows = this.getRowCount();
-        for (int row = 0; row < rows; row++) {
-
-            TreePath path = this.getPathForRow(row);
-            Object rowItem = path.getLastPathComponent();
-
-            if (rowItem == target) {
-                this.addSelectionRow(row);
-                this.scrollRowToVisible(row);
-            }
-        }
-    }
-    private void setTargets(Object[] targets) {
-        if (getModel() instanceof NavPerspective) {
-            clearSelection();
-            int rowToSelect = 0;
-            for (int i = 0; i < targets.length; i++) {
-                Object target = targets[i];
-                target =
-                    target instanceof Fig ? ((Fig) target).getOwner() : target;
-                int rows = getRowCount();
-                for (int j = 0; j < rows; j++) {
-                    Object rowItem = getPathForRow(j).getLastPathComponent();
-                    if (rowItem == target) {
-                        addSelectionRow(j);
-                        if (rowToSelect == 0) {
-                            rowToSelect = j;
-                        }
-                    }
-                }
-                
-            }
-            scrollRowToVisible(rowToSelect);
-        }
-    }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        setTargets(e.getNewTargets());
-    }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        setTargets(e.getNewTargets());
-    }
-
-    /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        setTargets(e.getNewTargets());
-
     }
 
 } /* end class DisplayTextTree */
