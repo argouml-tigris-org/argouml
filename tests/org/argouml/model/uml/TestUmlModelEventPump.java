@@ -29,6 +29,7 @@ import java.util.Collection;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.ui.UMLModelElementCachedListModel;
 
@@ -37,6 +38,7 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MParameterImpl;
@@ -450,6 +452,14 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeModelEventListener(listener, elem, new String[] {"isRoot"});
         assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
+    }
+    
+    public void testListensDependencyToSuperClass() {
+        MClass elem2 = CoreFactory.getFactory().createClass();
+        MDependency dep = CoreFactory.getFactory().createDependency();
+        UmlModelEventPump.getPump().addClassModelEventListener(listener2, dep.getClass(), "behavior");
+        dep.addBehavior(StateMachinesFactory.getFactory().createStateMachine());
+        assertTrue(eventcalled);
     }
 }
 
