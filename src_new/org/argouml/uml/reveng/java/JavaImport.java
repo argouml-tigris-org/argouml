@@ -32,6 +32,9 @@ import org.argouml.uml.reveng.*;
 import ru.novosoft.uml.model_management.*;
 import org.tigris.gef.base.*;
 
+import javax.swing.*;
+import java.awt.*;
+
 /**
  * This is the main class for Java reverse engineering. It's based
  * on the Antlr Java example.
@@ -43,29 +46,111 @@ import org.tigris.gef.base.*;
  */
 public class JavaImport {
 
+    static private JPanel configPanel = null;
+
+    static private JRadioButton attribute;
+
+    static private JRadioButton datatype;
+
+    /**
+     * Get the panel that lets the user set reverse engineering
+     * parameters.
+     */
+    public static JComponent getConfigPanel() {
+
+	if(configPanel == null) {
+	    configPanel = new JPanel();
+	    configPanel.setLayout(new GridBagLayout());
+
+	    ButtonGroup group1 = new ButtonGroup();
+	    JRadioButton association =
+		new JRadioButton("Attributes modelled as associations.");
+	    association.setSelected(true);
+	    group1.add(association);
+	    configPanel.add(association,
+		      new GridBagConstraints(GridBagConstraints.RELATIVE,
+					     GridBagConstraints.RELATIVE,
+					     GridBagConstraints.REMAINDER,
+					     1,
+					     1.0, 0.0,
+					     GridBagConstraints.NORTHWEST,
+					     GridBagConstraints.NONE,
+					     new Insets(5, 5, 0, 5),
+					     0, 0));
+	    attribute =
+		new JRadioButton("Attributes modelled as attributes.");
+	    group1.add(attribute);
+	    configPanel.add(attribute,
+		      new GridBagConstraints(GridBagConstraints.RELATIVE,
+					     GridBagConstraints.RELATIVE,
+					     GridBagConstraints.REMAINDER,
+					     1,
+					     1.0, 0.0,
+					     GridBagConstraints.NORTHWEST,
+					     GridBagConstraints.NONE,
+					     new Insets(0, 5, 5, 5),
+					     0, 0));
+
+	    ButtonGroup group2 = new ButtonGroup();
+	    datatype =
+		new JRadioButton("Arrays modelled as datatypes.");
+	    datatype.setSelected(true);
+	    group2.add(datatype);
+	    configPanel.add(datatype,
+		      new GridBagConstraints(GridBagConstraints.RELATIVE,
+					     GridBagConstraints.RELATIVE,
+					     GridBagConstraints.REMAINDER,
+					     1,
+					     1.0, 0.0,
+					     GridBagConstraints.NORTHWEST,
+					     GridBagConstraints.NONE,
+					     new Insets(5, 5, 0, 5),
+					     0, 0));
+	    JRadioButton multi =
+		new JRadioButton("Arrays modelled with multiplicity 1..n.");
+	    group2.add(multi);
+	    configPanel.add(multi,
+		      new GridBagConstraints(GridBagConstraints.RELATIVE,
+					     GridBagConstraints.RELATIVE,
+					     GridBagConstraints.REMAINDER,
+					     GridBagConstraints.REMAINDER,
+					     1.0, 1.0,
+					     GridBagConstraints.NORTHWEST,
+					     GridBagConstraints.NONE,
+					     new Insets(0, 5, 5, 5),
+					     0, 0));
+	}
+	return configPanel;
+    }
+
     /**
      * This method parses 1 Java file.
      *
      * @param f The input file for the parser.
      * @exception Parser exception.
      */
-    public static void parseFile( Project p, File f, DiagramInterface diagram) throws Exception {
+    public static void parseFile( Project p, File f, DiagramInterface diagram)
+	throws Exception {
 	try {
 	    // Create a scanner that reads from the input stream passed to us
 	    JavaLexer lexer = new JavaLexer( new FileInputStream( f));
 
-	    // We use a special Argo token, that stores the preceding whitespaces.
+	    // We use a special Argo token, that stores the preceding
+	    // whitespaces.
 	    lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");     
 
 	    // Create a parser that reads from the scanner
 	    JavaRecognizer parser = new JavaRecognizer( lexer);
 
 	    // Create a modeller for the parser
-	    Modeller modeller = new Modeller((MModel)p.getModel(), diagram);   
+	    Modeller modeller = new Modeller((MModel)p.getModel(),
+					     diagram,
+					     attribute.isSelected(),
+					     datatype.isSelected());   
 
-	    // Print the name of the current file, so we can associate exceptions
-	    // to the file.
-	    System.out.println("Starting java parser for file: " + f.getAbsolutePath());
+	    // Print the name of the current file, so we can associate
+	    // exceptions to the file.
+	    System.out.println("Parsing " + f.getAbsolutePath());
 
 	    // start parsing at the compilationUnit rule
 	    parser.compilationUnit(modeller, lexer);
