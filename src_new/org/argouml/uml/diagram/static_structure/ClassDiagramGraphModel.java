@@ -49,6 +49,11 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
+    /**
+     * @deprecated visibility in vers 0.15.6
+     * Create your own logger in any subclass
+     * Bob Tarling 3 June 2004
+     */
     protected static Logger cat =
 	Logger.getLogger(ClassDiagramGraphModel.class);
     ////////////////////////////////////////////////////////////////
@@ -208,7 +213,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
 	}
-	cat.debug("TODO getSourcePort");
+	cat.error("TODO getSourcePort");
 	return null;
     }
 
@@ -217,7 +222,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getDestination(/*(MRelationship)*/edge);
 	}
-	cat.debug("TODO getSourcePort");
+	cat.error("TODO getSourcePort");
 	return null;
     }
 
