@@ -67,8 +67,7 @@ public class DBLoader
 	}
 
 	String dbURL = "jdbc:mysql://";
-	dbURL += props.getProperty("host") + ":";
-	dbURL += props.getProperty("port") + "/";
+	dbURL += props.getProperty("host") + "/";
 	dbURL += props.getProperty("db");
 	String dbUser = props.getProperty("user");
 	String dbPassword = props.getProperty("password");
@@ -170,7 +169,7 @@ public class DBLoader
 				readDataType(rs.getString("uuid"), rs.getString("name"));
 		}
 
-		// now add attributes and operations to classifiers
+		// now add attributes, operations and constraints to classifiers
 		Iterator iter = uuid2element.values().iterator();
 		while (iter.hasNext()) {
 			MClassifier cls = (MClassifier)iter.next();
@@ -344,6 +343,27 @@ public class DBLoader
 		}
 	}	
 
+	private void addConstraints(MClassifier me, String uuid) throws SQLException{
+		
+	    String query = "SELECT c.uuid, c.body, ";
+		query += "me.name, me.namespace ";
+		query += "FROM tConstraint t, tModelElement me ";
+		query += "WHERE t.constrainedElement = '" + uuid +"'";
+
+		Statement stmtCl = Conn.createStatement();
+		ResultSet constraints = stmtCl.executeQuery(query);
+		while (constraints.next()) {
+			MConstraint constraint = new MConstraintImpl();
+			constraint.setUUID(constraints.getString("uuid"));
+			if (! constraints.getString("body").equals(""))
+				constraint.setBody(new MBooleanExpression("OCL", constraints.getString("body")));
+			constraint.setName(constraints.getString("name"));
+			constraint.setNamespace((MNamespace)uuid2element.get(constraints.getString("namespace")));
+
+			me.addConstraint(constraint);
+		}
+	}
+
 	private void read(MGeneralizableElement me, String uuid) throws SQLException{
 		String query = "SELECT * FROM tGeneralizableElement WHERE uuid = '" + uuid +"'";
 		Statement stmtGE = Conn.createStatement();
@@ -492,7 +512,6 @@ public class DBLoader
 		dep.addClient(client);
 		dep.addSupplier(supplier);
 	}
-
 
 	/** Don't use main(), it's only for testing! */
     public static void main(String[] Args) throws Exception {

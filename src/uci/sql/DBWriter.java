@@ -64,8 +64,7 @@ public class DBWriter
 	}
 
 	String dbURL = "jdbc:mysql://";
-	dbURL += props.getProperty("host") + ":";
-	dbURL += props.getProperty("port") + "/";
+	dbURL += props.getProperty("host") + "/";
 	dbURL += props.getProperty("db");
 	String dbUser = props.getProperty("user");
 	String dbPassword = props.getProperty("password");
@@ -214,7 +213,28 @@ public class DBWriter
 
 		stmt.executeUpdate(stmtString);
 		if (hasStereotype) store((MStereotype)me.getStereotype(),stmt);
+
+		Iterator constraints = me.getConstraints().iterator();
+		while (constraints.hasNext()) {
+		    store((MConstraint)constraints.next(),stmt);
+		}
+
 	}
+
+
+    private void store(MConstraint me, Statement stmt) throws SQLException {
+		stmtString = "REPLACE INTO tConstraint (uuid, body, constrainedElement) VALUES ('";
+		stmtString += me.getUUID() + "','";
+		if (me.getBody() != null) stmtString += me.getBody() + "','";
+		else stmtString += "','";
+		if (me.getConstrainedElement(0) != null) stmtString += me.getConstrainedElement(0).getUUID() + "')";
+		else stmtString += "')";
+
+		stmt.executeUpdate(stmtString);
+
+		store((MModelElement)me,stmt);
+	}
+
 
     private void store(MClass cls, Statement stmt) throws SQLException {
 		String bool = "0";

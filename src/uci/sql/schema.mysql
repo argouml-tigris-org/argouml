@@ -1,4 +1,3 @@
-\u uml;
 # This is a database scheme to represent UML models in a relational
 # database. It is written for mySQL (www.mysql.com), but should work 
 # with any DB that understands ANSI sql. Maybe you have to change the
@@ -19,6 +18,8 @@
 # multiple relationships are handled in the direction 1-many, i.e. since
 # a ModelElement can have multiple features, there's no field "features"
 # in tModelElement, but a field "modelElement" in tFeature.
+
+\u uml;
 
 #----------------
 # data types
@@ -188,7 +189,7 @@ CREATE TABLE tModelElement(
     name VARCHAR(100),
     namespace VARCHAR(50), # REFERENCES tNamespace(uuid),
     stereotype VARCHAR(50), # REFERENCES tStereotype(uuid),
-    constraint VARCHAR(50), # REFERENCES tConstraint(uuid),
+    mconstraint VARCHAR(50), # REFERENCES tConstraint(uuid),
     package VARCHAR(50), # REFERENCES tPackage(uuid));
     UMLClassName VARCHAR(20)); # not in UML spec, this is for easier loading
 
