@@ -9,3 +9,6 @@ Fop.class
 documentation
 doc
 javadocs
+ant-test-*.sh
+ant-test-*.bat
+*.LICENSE.txt
