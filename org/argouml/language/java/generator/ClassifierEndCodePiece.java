@@ -35,7 +35,7 @@ import org.argouml.model.ModelFacade;
 /**
  * This code piece represents the end of a class or an interface.
  *
- * JavaRE - Code generation and reverse engineering for UML and Java´
+ * JavaRE - Code generation and reverse engineering for UML and Java
  *
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
