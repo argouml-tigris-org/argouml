@@ -331,7 +331,7 @@ public class MultiEditorPane
     /**
      * @return returns the upper right panel tabs (the diagram tabs)
      */
-    public JTabbedPane getTabs() {
+    protected JTabbedPane getTabs() {
         return tabs;
     }
 
