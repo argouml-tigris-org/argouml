@@ -37,10 +37,10 @@ Argo/UML.
 
   <caution>
     <para>
-In ArgoUML 0.14 the sequence diagrams are not available.
+In ArgoUML 0.18 the sequence diagrams are not available.
 They will be replaced by a new and improved version in the upcoming release.
-In the 0.12 release they were not working and in the 0.10 release
-that is described here
+In the 0.12, 0.14 and 0.16 releases they were not working 
+and in the 0.10 release that is described here
 they did not follow the UML specification correctly.
 </para>
     <para>

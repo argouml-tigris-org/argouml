@@ -2048,17 +2048,16 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-        <!--varlistentry>
-          <term><literal>Style</literal></term>
-          <listitem><para>Standard tab, but relating to the owning class,
-            rather than the operation. The tick boxes,
-            <literal>Attributes</literal> and <literal>Operations</literal>
-            allow the attributes and operations compartments of the class
-            to be shown (the default) or hidden. The
-            <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para></listitem>
-        </varlistentry-->
+        <!-- Entry for Presentation tab -->
+
+        <varlistentry>
+          <term><literal>Presentation</literal></term>
+          <listitem><para>Standard tab. 
+		  The <literal>Bounds:</literal> field does allow editing, 
+		  but the changes have no effect.
+		  <!-- TODO: It would better be downlighted. -->
+		  </para></listitem>
+        </varlistentry>
 
         <!-- Entry for Source tab -->
 
@@ -2123,6 +2122,16 @@ values defined.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for an Operation. 
+          </para></listitem>
+        </varlistentry>        
+        
       </variablelist>
     </sect2>
 
@@ -2172,13 +2181,13 @@ values defined.
             class.</para></tip></listitem>
         </varlistentry>
 
-        <!-- Entry for Add parameter -->
+        <!-- Entry for New parameter -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/parameter.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             parameter</literal></term>
 
           <listitem><para>This creates a new parameter for the operation,
@@ -2186,18 +2195,77 @@ values defined.
             parameter.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add raised signal -->
+        <!-- Entry for New raised signal -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/signal.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             raised signal</literal></term>
 
           <listitem><para>This creates a new raised signal for the operation,
             navigating immediately to the properties tab for that
             raised signal.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New datatype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/datatype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Datatype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Datatype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Datatype (see <xref
+              linkend="s1.ref.datatype"/>) 
+              in the namespace of the owner of the operation, 
+              navigating immediately to the properties tab
+              for that datatype.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected operation, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2215,7 +2283,7 @@ values defined.
             <emphasis>not</emphasis> just the diagram. 
             If desired the whole
             operation compartment can be hidden on the diagram using the
-            <emphasis>style</emphasis> tab (see <xref
+            <emphasis>presentation</emphasis> tab (see <xref
               linkend="s2.ref.operation_property_toolbar"/>) or the
             &button2; pop up menu for the class on the
             diagram.</para></warning></listitem>
@@ -2351,8 +2419,8 @@ of <literal>Abstraction</literal>).-->
 
             <para>Radio box, with entries
 <literal>public</literal>,
-<literal>protected</literal>, and
-<literal>private</literal>.
+<literal>private</literal>, and
+<literal>protected</literal>.
 </para>
 
           <itemizedlist>
@@ -2360,13 +2428,14 @@ of <literal>Abstraction</literal>).-->
               available to any artifact that can see the owning
               class.</para></listitem>
 
+            <listitem><para><literal>private</literal>. The operation is
+              available only to the owning class (and any inner
+              classes).</para></listitem>
+              
             <listitem><para><literal>protected</literal>. The operation is
               available only to the owning class, or artifacts that are
               subclasses of the owning class.</para></listitem>
 
-            <listitem><para><literal>private</literal>. The operation is
-              available only to the owning class (and any inner
-              classes).</para></listitem>
           </itemizedlist></listitem>
         </varlistentry>
 
@@ -2400,7 +2469,7 @@ of <literal>Abstraction</literal>).-->
             <important><para>Any class with an abstract operation must
               itself be declared abstract.</para></important></listitem>
 
-            <listitem><para><literal>leaf</literal>The implementation of
+            <listitem><para><literal>leaf</literal>. The implementation of
               this operation must not be overridden by any
               subclass.</para></listitem>
 
@@ -2441,25 +2510,17 @@ of <literal>Abstraction</literal>).-->
             </indexterm>
 
             <para>Radio box, with entries
-<literal>sequential</literal>,
-<literal>synchronized</literal>, and
+<literal>guarded</literal>,
+<literal>sequential</literal>, and
 <literal>concurrent</literal>.
 </para>
 
           <itemizedlist>
-            <listitem><para><literal>sequential</literal>. Only one call to
-              an instance (of the class with the operation) may be
-              outstanding at any one time. There is no protection, and no
-              guarantee of behavior if the system violates this
-              rule.</para></listitem>
-
             <listitem>
               <para><literal>guarded</literal>.
-
 Multiple calls from concurrent threads may occur simultaneously to one
 instance (on any guarded operation), but only one is allowed to
 commence.
-
 The others are blocked until the performance of the first
 operation is complete.
 </para>
@@ -2473,6 +2534,12 @@ operation is complete.
                   </para>
                 </caution>
               </listitem>
+
+            <listitem><para><literal>sequential</literal>. Only one call to
+              an instance (of the class with the operation) may be
+              outstanding at any one time. There is no protection, and no
+              guarantee of behavior if the system violates this
+              rule.</para></listitem>
 
             <listitem><para><literal>concurrent</literal>. Multiple calls
               to one instance may execute at the same time. The operation
@@ -2506,30 +2573,19 @@ operation.
 </para>
 
           <para>&Button1; double click on any of the parameters
-            <!-- TODO: Sometimes it is a single click... See issue ... -->
             navigates to that parameter. &Button2; click brings up a pop up
-            menu with four entries.</para>
+            menu with two entries.</para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected parameter.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Create a new parameter
-              and navigate to it.</para></listitem>
-
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more parameters, and the parameter selected is
-              not at the top. It is moved up one.
-              <!-- TODO: As a result, everything is deselected. So you'll have
-              to reselect the parameter! This is very annoying! 
-              See issue ... -->
+              not at the top. It is moved up one position.
             </para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more parameters listed, and the parameter
               selected is not at the bottom. It is moved down
-              one.
-              <!-- TODO: Idem. See issue ... -->
+              one position.
             </para></listitem> 
           </itemizedlist></listitem>
         </varlistentry>
@@ -2553,37 +2609,13 @@ with entries for all the signals (see <xref linkend="s1.ref.signal"/>)
 that can be raised by the operation.
 </para>
 
-          <caution><para>ArgoUML at present (V0.14) has limited support for
+          <caution><para>ArgoUML at present (V0.18) has limited support for
             signals. In particular they are not linked to signal events
             that could drive state machines.</para></caution>
 
-          <para>&Button1; click on any of the signals
-            <!-- TODO: Should in fact only select. Not navigate! 
-            See issue ... -->
-            navigates to that parameter. &Button2; click brings up a pop up
-            menu with four entries.</para>
+          <para>&Button1; double click on any of the signals
+            navigates to that parameter. </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected signal.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Create a new signal
-              and navigate to it.</para></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-              there are two or more signals, and the signal selected is not at
-              the top. It is moved up one.
-              <!-- TODO: As a result, everything is deselected. So you'll have
-              to reselect the parameter! This is very annoying! 
-              See issue ... -->
-              </para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-              there are two or more signals listed, and the signal selected is
-              not at the bottom. It is moved down one.
-              <!-- TODO: Idem. See issue ... -->
-              </para></listitem>
-            </itemizedlist>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -2663,18 +2695,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
-        <!--varlistentry>
-          <term><literal>Style</literal></term>
-          <listitem><para>Standard tab, but relating to the owning class,
-            rather than the parameter. The tick boxes,
-            <literal>Attributes</literal> and <literal>Operations</literal>
-            allow the attributes and operations compartments of the class
-            to be shown (the default) or hidden. The
-            <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para></listitem>
-        </varlistentry-->
-
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -2682,12 +2702,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
           <listitem><para>Standard tab. This contains a declaration for the
             parameter.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-          <listitem><para>&constraintssupport;</para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -2758,13 +2772,13 @@ standard tagged values defined.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add parameter -->
+        <!-- Entry for New parameter -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/parameter.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             parameter</literal></term>
 
           <listitem><para>This creates a new parameter for the for the same
@@ -2773,6 +2787,65 @@ standard tagged values defined.
 
           <tip><para>This is a convenient way to add a series of parameters
             for the same operation.</para></tip></listitem>
+        </varlistentry>
+
+        <!-- Entry for New datatype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/datatype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Datatype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Datatype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Datatype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Datatype (see <xref
+              linkend="s1.ref.datatype"/>) 
+              in the namespace of the owner of the operation of the parameter, 
+              navigating immediately to the properties tab
+              for that datatype.</para>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected parameter, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -2790,7 +2863,7 @@ standard tagged values defined.
             <emphasis>not</emphasis> just the diagram. 
             If desired the
             whole operation compartment can be hidden on the diagram using
-            the <emphasis>style</emphasis> tab or the
+            the <emphasis>presentation</emphasis> tab or the
             &button2; pop up menu for the class on the
             diagram.</para></warning></listitem>
         </varlistentry>
@@ -2879,12 +2952,8 @@ letter, with words separated by <quote>bumpy caps</quote>.
           <listitem><para>Text box. Records the operation which contains this
             parameter.</para>
 
-          <para>&Button1; click on the entry will navigate to the
-            <!-- TODO: Should be a double-click. See issue ...  -->
-            operation. &Button2; click provides a pop up menu with a single
-            entry, <literal>Open</literal>, which will also navigate to the
-            operation.
-            <!-- TODO: Remove this useless pop-up. See issue ... -->
+          <para>&Button1; double click on the entry will navigate to the
+            operation. 
           </para></listitem>
         </varlistentry>
 
@@ -2921,23 +2990,10 @@ make any sense.
             created parameter.</para></note></listitem>
         </varlistentry>
 
-        <!-- Entry for Navigate Type -->
-        <!--varlistentry>
-          <term><literal>Navigate Type</literal></term>
-          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
-              format="GIF" align="center"
-              fileref="images/icons/navigate_type.gif"/>
-            </imageobject></inlinemediaobject></guiicon> icon. This will
-            navigate to the property panel for the currently selected
-            type. (see <xref linkend="s1.ref.class_class"/>, <xref
-              linkend="s1.ref.datatype_class"/> and <xref
-              linkend="s1.ref.interface_class"/>).</para></listitem>
-        </varlistentry-->
-
-        <!-- Entry for Initial Value -->
+        <!-- Entry for Default Value -->
 
         <varlistentry>
-          <term><literal>Initial Value</literal></term>
+          <term><literal>Default Value</literal></term>
 
           <listitem>
             <indexterm>
@@ -2947,12 +3003,17 @@ make any sense.
               <primary>Initial Value</primary>
               <secondary>of Parameter</secondary>
             </indexterm>
+            <indexterm>
+              <primary>Parameter Default Value</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Default Value</primary>
+              <secondary>of Parameter</secondary>
+            </indexterm>
 
             <para>Text box with drop down.
-
 This allows you to set an initial value for the parameter if desired
 (this is optional).
-
 The drop down menu provides access to the common
 values
 <literal>0</literal>,
@@ -2982,26 +3043,24 @@ values
 
             <para>Radio box,
 with entries
+<literal>out</literal>,
 <literal>in/out</literal>,
-<literal>in</literal>,
-<literal>out</literal>, and
-<literal>return</literal>.
+<literal>return</literal>,
+and
+<literal>in</literal>.
 </para>
 
           <itemizedlist>
+            <listitem><para><literal>out</literal>. The parameter is used
+              only to pass values back from the
+              operation.</para></listitem>
+
             <listitem><para><literal>in/out</literal>. The parameter is
               used both to pass values in and to pass results back out of
               the operation.</para>
 
             <note><para>This is the default for any new
               parameter.</para></note></listitem>
-
-            <listitem><para><literal>in</literal>. The parameter is used
-              only to pass values in to the operation.</para></listitem>
-
-            <listitem><para><literal>out</literal>. The parameter is used
-              only to pass values back from the
-              operation.</para></listitem>
 
             <listitem><para><literal>return</literal>. The parameter is a
               return result from the call.</para>
@@ -3017,8 +3076,14 @@ with entries
               the diagram, but it is convenient to give it an appropriate
               name (such as the default <literal>return</literal> to
               identify it in the list of parameters on the operation
-              property tab.</para></tip></listitem>
-          </itemizedlist></listitem>
+              property tab.</para></tip>
+            </listitem>              
+  
+            <listitem><para><literal>in</literal>. The parameter is used
+              only to pass values in to the operation.</para></listitem>
+  
+            </itemizedlist>
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -3108,17 +3173,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             signal.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
-        </varlistentry>
-
         <!-- Entry for Tagged Values tab -->
 
         <varlistentry>
@@ -3201,45 +3255,51 @@ standard tagged values defined.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add signal -->
+        <!-- Entry for New signal -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/signal.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             signal</literal></term>
 
           <listitem><para>This creates a new signal, navigating immediately to
             the properties tab for that signal.</para>
 
           <caution><para>The signal is not associated with the same
-            operation as the original signal, so there appears no way to
-            use it in the model.
-            <!-- TODO: Check this out! -->
+            operation as the original signal, so 
+            this will have to be done afterwards.
             </para></caution></listitem>
         </varlistentry>
 
-        <!-- Entry for Add reception -->
+        <!-- Entry for New stereotype button -->
 
         <varlistentry>
-          <term>
-            <guiicon>
-              <inlinemediaobject>
-                <imageobject>
-                  <imagedata format="GIF" align="center"
-                             fileref="images/icons/reception.gif"/>
-                </imageobject>
-              </inlinemediaobject>
-            </guiicon>
-            <literal>Add reception</literal>
-          </term>
-
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
           <listitem>
-            <para>This creates a new reception, navigating immediately to
-              the properties tab for that reception.
-            </para>
-          </listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected signal, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -3330,9 +3390,8 @@ its parent in the UML meta-model,
         </varlistentry>
 
         <!-- Entry for Navigate Stereotype -->
-        <!-- TODO: This one is missing here. Strange, it is present everywhere
-        else! See issue ... -->
-        <!--varlistentry>
+
+        <varlistentry>
           <term><literal>Navigate Stereotype</literal></term>
 
           <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
@@ -3342,7 +3401,7 @@ its parent in the UML meta-model,
               stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype"/>).</para></listitem>
-        </varlistentry-->
+        </varlistentry>
 
         <!-- Entry for Extends -->
 
@@ -3690,30 +3749,22 @@ defined on this signal.
 
             <para>Text area.
 Lists all the contexts defined for this signal.
-
-&Button1; click navigates to the selected context,
-<!-- TODO: Should be a double click! See issue ... -->
-&button2; click brings up a pop up menu with three entries.
+&Button1; double click navigates to the selected context,
+&button2; click brings up a pop up menu with one entry.
 </para>
 
           <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              selected context.</para></listitem>
-
-            <listitem><para><literal>Delete</literal>. Removes the selected
-              context from the signal.</para></listitem>
-              
             <listitem>
               <para>
 <literal>Add</literal>.
 Add a new context.
-This opens the <emphasis>Add context</emphasis> dialog box (see figure
+This opens the <emphasis>Add/Remove Contexts</emphasis> dialog box (see figure
 below), which allows choosing between all possible operations, and
 adding them to the selected list.
 </para>
 
               <figure id="fig.ref.signal_add_context" float="1">
-                <title>The <quote>add context</quote> dialog box</title>
+                <title>The <quote>add/remove context</quote> dialog box</title>
                 <screenshot><mediaobject><imageobject>
                   <imagedata format="PNG" align="center"
                      fileref="images/reference/signal_add_context.png"/>
@@ -3729,7 +3780,7 @@ adding them to the selected list.
         
         <!-- Entry for Receptions -->
 
-        <varlistentry>
+        <!--varlistentry>
           <term><literal>Receptions</literal></term>
 
           <listitem>
@@ -3746,7 +3797,7 @@ adding them to the selected list.
 Lists all the receptions defined for this signal.
 
 &Button1; click navigates to the selected reception,
-<!-- TODO: Should be a double click!  See issue ... -->
+ TODO: Should be a double click!  See issue ... 
 &button2; click brings up a pop up menu with three entries.
 </para>
 
@@ -3768,7 +3819,7 @@ Lists all the receptions defined for this signal.
           </itemizedlist>
 
           </listitem>
-        </varlistentry>
+        </varlistentry-->
         
       </variablelist>
     </sect2>
@@ -3794,20 +3845,23 @@ Lists all the receptions defined for this signal.
     </indexterm>
 
     <para>An association on a class diagram represents a relationship between
-      classes, or between a class and an interface.</para>
+      classes, or between a class and an interface. 
+      On a usecase diagram, an association binds an actor to a usecase.
+    </para>
 
     <para>Within the UML metamodel, <literal>Association</literal> is a
       sub-class of both <literal>Relationship</literal> and
       <literal>GeneralizableElement</literal>.</para> 
 
-    <para>The association is represented as a line connecting actor and class
+    <para>The association is represented as a solid line connecting 
+      actor and usecase or class
       or interface (see <xref linkend="fig.ref.class_diagram"/>). The name of
       the association and any stereotype appear above the line.
     </para>
 
-    <caution><para>ArgoUML is restricted to binary associations at
-      present. See <xref linkend="s2.ref.association_multiway"/> for more on
-      this.</para></caution>
+    <para>ArgoUML is not restricted to binary associations. 
+      See <xref linkend="s2.ref.association_multiway"/> for more on
+      this.</para>
 
     <para>Associations are permitted between interfaces and classes, but
       UML&nbsp;1.3 specifies they must only be navigable toward the
@@ -3815,20 +3869,20 @@ Lists all the receptions defined for this signal.
       class. ArgoUML will draw such associations with the appropriate
       navigation.</para>
 
-    <para>Associations are often not named, since their meaning is obvious from
+    <para>Associations are often not named, when their meaning is obvious from
       the context.</para>
 
     <note>
       <para>ArgoUML provides no specific way of showing the direction of
 the association as described in the UML 1.3 standard.
-
 The naming should attempt to make this clear.
 <!-- TODO: We would be better than Rose if we would have this!
 See enhancement issue ... -->
 </para>
     </note>
 
-    <para>The association contains two ends, which may be navigated to via the
+    <para>The association contains at least two ends, 
+      which may be navigated to via the
       association property sheet. See <xref
       linkend="s1.ref.association_end_class"/> for more
       information.
@@ -3842,10 +3896,19 @@ See enhancement issue ... -->
       <para>UML&nbsp;1.3 provides for N-ary associations and
         associations that are governed by a third
         <emphasis>associative class</emphasis>. 
-        However, ArgoUML provides no support
-        for neither at this stage.
-        <!-- The association classes are requested by issue 393. -->
+        Both are supported by ArgoUML.
       </para>
+      
+      <para><emphasis>N-ary associations</emphasis> 
+        are created by drawing with the association tool
+        from an existing association to a third class. 
+        The current implementation of ArgoUML does not allow the inverse: 
+        drawing from a 3rd class towards an existing association 
+        is not possible.</para>
+        
+      <para>Association Classes are drawn exactly like a normal association, 
+        i.e. between two classes, but with a different dedicated 
+        tool from the diagram toolbar.</para>
     </sect2>
 
     <!-- The details tabs -->
@@ -3896,18 +3959,18 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. 
             </para>
 
-            <note><para>The values for the bounds of the Association appear
-              to have no meaning. Changing them has no effect on the
-              diagram. This is sensible behavior, given the association is
-              tied to a particular actor and use case.
+            <note><para>The values for the bounds of the Association 
+              have no meaning, since they are determined by the
+              location of the connected items.
+              Changing them has no effect on the diagram. 
               <!-- TODO: Yeah, but wouldn't they better be downlighted then? 
               See issue ... -->
           </para></note>
@@ -3923,17 +3986,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             code for an association, and any code entered here is ignored
             (it will have disappeared when you come back to the
             association.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -3980,6 +4032,11 @@ standard tagged values defined.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+        
+        <!-- TODO: There is one referring to a class, but should it? -->
+        
       </variablelist>
     </sect2>
 
@@ -4010,6 +4067,35 @@ standard tagged values defined.
           <listitem><para>Navigate up through the package structure of the
             model. For an association this will be the package containing
             the association.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected association, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -4099,7 +4185,7 @@ thus: <literal>salesHandling</literal>.
             <para>Drop down selector.
 
 Association is provided by default with the UML standard stereotype
-for Association ((<literal>implicit)</literal>)
+for Association (<literal>implicit</literal>)
 <!-- and the additional Association stereotypes for the Software
 Engineering Process and Business Modeling in the UML standard
 (<literal>communicate</literal> and
@@ -4153,24 +4239,24 @@ actor</literal>)-->.
         <!-- Entry for Association Ends -->
 
         <varlistentry>
-          <term><literal>Association Ends</literal></term>
+          <term><literal>Connections</literal></term>
 
           <listitem>
             <indexterm>
               <primary>Association Ends</primary>
               <secondary>of Association</secondary>
             </indexterm>
+            <indexterm>
+              <primary>Connections</primary>
+              <secondary>of Association</secondary>
+            </indexterm>
 
             <para>Text area.
-Lists the ends of this association.
-
-An association can have any number of ends, but in ArgoUML two is
-the only useful number (associative classes can lead to a third end on
-class diagrams, but this is not supported by ArgoUML).
-
-For more on association ends see
-<xref linkend="s1.ref.association_end_class"/>.
-</para>
+			  Lists the ends of this association.
+			  An association can have two or more ends.
+			  For more on association ends see
+		      <xref linkend="s1.ref.association_end_class"/>.
+			</para>
 
           <para>The names of the association ends are listed, 
             unless the association end has no
@@ -4181,8 +4267,7 @@ For more on association ends see
             diagram is that their name appears at the relevant end of the
             corresponding association. 
             <!--There is no way to access them from  the diagram.-->
-            <!-- MVW: Yes, there is: by button2 click! -->
-            </para></note>
+          </para></note>
 
           <para>
             &Button1; double click on an association end will navigate to that
@@ -4321,15 +4406,30 @@ a generalization.
         <!-- Entry for Association Roles -->
         <!-- TODO: To be completed. -->
 
+        <varlistentry>
+          <term><literal>Association Roles</literal></term>
+
+          <listitem><para>Text area. (To be written)
+            </para>
+          </listitem>
+        </varlistentry>
+        
         <!-- Entry for Links -->
         <!-- TODO: To be completed. -->
+
+        <varlistentry>
+          <term><literal>Links</literal></term>
+
+          <listitem><para>Text area. (To be written)
+            </para>
+          </listitem>
+        </varlistentry>
 
         </variablelist>
     </sect2>
   </sect1>
 
-  <!-- Association End artifact (sub-artifact of Association). Reference back
-       to Use Case -->
+  <!-- Association End artifact (sub-artifact of Association). -->
 
   <sect1 id="s1.ref.association_end_class">
     <title>Association End</title>
@@ -4339,14 +4439,16 @@ a generalization.
     </indexterm>
 
     <para>Two or more association ends are associated with each association
-      (see <xref linkend="s1.ref.association_use_case"/>), although for
-      ArgoUML, the number of ends can only be two.</para>
+      (see <xref linkend="s1.ref.association_use_case"/>).</para>
 
     <para>Within the UML metamodel, <literal>AssociationEnd</literal> is a
       sub-class of <literal>ModelElement</literal>.</para>
 
-    <para>The association end has no direct access on any diagram, although its
-      stereotype, name and multiplicity is shown at the relevant end of the
+    <para>The association end has no direct access on any diagram 
+      for binary associations. The ends of an N-ary association 
+      may be selected by clicking on the line in the diagram.
+      The stereotype, name and multiplicity are 
+      shown at the relevant end of the
       parent association (see <xref linkend="fig.ref.use_case_diagram"/>).
       Where shared or composite aggregation is selected for one association
       end, the opposite end is shown as a solid diamond (composite aggregation)
@@ -4413,6 +4515,18 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
+
+        <!-- Entry for Presentation tab -->
+
+        <varlistentry>
+          <term><literal>Presentation</literal></term>
+
+          <listitem>
+            <para>Standard tab.
+		    </para>
+          </listitem>
+        </varlistentry>
+
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -4422,17 +4536,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             declaration for the association end as an instance of the
             artifact to which it is connected.
             </para>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -4513,15 +4616,98 @@ following standard tagged values defined.
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/association_end.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go to other
-            end</literal></term>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go Opposite
+          </literal></term>
 
           <listitem><para>This navigates to the other end of the
             association.</para></listitem>
         </varlistentry>
         
-        <!-- TODO: In the V0.14 - V0.15.1 implementation, there is also a downlighted
-        "Delete" icon. This should be removed. See enhancement issue ... -->
+        <!-- Entry for New Qualifier button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/attribute.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Qualifier</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Qualifier</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Qualifier</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Qualifier</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Qualifier for the selected association-end, 
+              navigating immediately to the properties tab
+              for that qualifier.</para>
+              
+            <warning><para>
+              Qualifiers are only partly supported in ArgoUML V0.18.
+              Hence, activating this button creates a qualifier in the model, 
+              which is not shown on the diagram. Also, the properties panel 
+              for a qualifier equals that of a regular attribute.
+            </para></warning>
+		  </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected association-end, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
+        </varlistentry>
+                
+        <!-- Entry for Delete button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
+        
+          <listitem><para>This deletes the selected association-end from the
+            model.</para>
+
+            <note><para>
+              This button is downlighted for binary associations, since
+              an association needs at least <emphasis>two</emphasis> ends. 
+              Only for N-ary associations, this button is accessable, 
+              and deletes just one end from the association. </para>
+	        </note>
+          </listitem>
+        </varlistentry>
+
       </variablelist>
     </sect2>
 
@@ -4558,15 +4744,10 @@ following standard tagged values defined.
 
 The name of the association end, which provides a <emphasis>role
 name</emphasis> for this end of the association.
-
 This role name can be used for navigation, and in an implementation
 context, provides a name by which the source end of an association can
 reference the target end.
 </para>
-
-          <!-- TODO: This thing doesn't work in the vPRE-0.15.2 version. 
-          It is the association that gets named, not the AssociationEnd.
-          Test this when V0.15.2 will be released. See issue ... -->
 
           <note><para>ArgoUML does not enforce any naming convention for
             association ends.</para></note></listitem>
@@ -4595,11 +4776,6 @@ stereotypes for AssociationEnd
  <literal>local</literal>,
  <literal>parameter</literal>,
  <literal>self</literal>).
-
-However ArgoUML does not provide any of these by default.
-
-Only the stereotype <literal>implicit</literal> is present.
-<!-- TODO: See enhancement issue ... -->
 </para>
           </listitem>
         </varlistentry>
@@ -4661,8 +4837,6 @@ current model.
               </para>
             </tip>
           </listitem>
-          <!-- TODO: This thing is empty in the vPRE-0.15.2 version. 
-          Test this when V0.15.2 will be released. See issue ... -->
         </varlistentry>
 
         <!-- Entry for Multiplicity -->
@@ -4724,7 +4898,6 @@ association.
                   <para>
 The UML 1.3 standard provides a number of options for
 how navigation is displayed on an association end.
-
 ArgoUML uses
 <!-- TODO: Check if this is true, and if it is good. -->
 option 3, which means that arrow heads are shown at the end of
@@ -4804,6 +4977,22 @@ and adding or removing them to the selected list.
           </listitem>
         </varlistentry>
 
+        <!-- Entry for Qualifiers -->
+        
+        <varlistentry>
+          <term><literal>Qualifiers</literal></term>
+
+          <listitem><para>Text box. Records the qualifiers for this
+            association end. &Button1; double click on
+            this entry will navigate to that qualifier. &Button2; click will
+            show a popup menu containing two items: 
+            <literal>Move Up</literal> 
+            and <literal>Move Down</literal>, 
+            which allow reordering the qualifiers.
+            </para>
+          </listitem>
+        </varlistentry>
+        
         <!-- Entry for Aggregation -->
 
         <varlistentry>
@@ -4859,14 +5048,14 @@ and adding or removing them to the selected list.
             </indexterm>
 
             <para>Radio box, with three entries
-<literal>changeable</literal>,
-<literal>add only</literal> and
+<literal>add only</literal>,
+<literal>changeable</literal> and
 <literal>frozen</literal>.
 
-Indicates whether instances of this end of the attributed may be:
-i) created and deleted by the source after the target instance is
-created;
-ii) created but not deleted after the target instance is created; or
+Indicates whether instances of this end of the association-end may be:
+i)  created but not deleted after the target instance is created; 
+ii) created and deleted by the source after the target instance is
+created; or
 iii) not created or deleted by the source after the target instance is
 created.
 </para>
@@ -4917,10 +5106,9 @@ iii) only the source classifier and its children.
     <para>Within the UML metamodel, <literal>Dependency</literal> is a
       sub-class of <literal>Relationship</literal>.</para>
 
-    <para>Dependency is represented as a dotted line with an open arrow head
-from the depending artifact to that which it is dependent upon
-(see <xref linkend="fig.ref.use_case_diagram"/>).
-</para>
+    <para>Dependency is represented as a dashed line with an open arrow head
+	  from the depending artifact to that which it is dependent upon.
+	</para>
 
     <!-- The details tabs -->
 
@@ -4936,9 +5124,6 @@ from the depending artifact to that which it is dependent upon
 
       <para>The details tabs that are active for dependencies are as
         follows.</para>
-
-      <note><para>There is no source tab, since there is no source code that
-        could be generated for a dependency relationship.</para></note>
 
       <variablelist>
 
@@ -4973,28 +5158,16 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab</para>
 
-          <note><para>The values for the bounds of the dependency appear to
-            have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the dependency is
-            tied to a particular use case.</para></note></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
-          </listitem>
+          <note><para>The values for the bounds of the dependency 
+            are downlighted, given the dependency is
+            tied to a particular modelelement.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -5043,6 +5216,35 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <listitem><para>Navigate up through the package structure of the
             model. For a dependency this will be the package containing
             the dependency.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected dependency, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -5177,13 +5379,14 @@ Records the namespace for the
             </indexterm>
 
             <para>Text area.
-Lists the <quote>depending</quote> ends
-            of the relationship, i.e. the end supplying what is needed by
-            the other end.</para>
+			  Lists the end of the relationship that is 
+			  supplying what is needed by
+              the other end.</para>
 
             <para>
-&Button1; Double Click on a client will navigate to that use case.
-</para>
+			  &Button1; double click on a supplier
+			  will navigate to that element.
+			</para>
 
           </listitem>
         </varlistentry>
@@ -5208,8 +5411,8 @@ Lists the <quote>depending</quote> ends
             </para>
 
             <para>
-&Button1; Double Click on a client will navigate to that use case.
-</para>
+			  &Button1; double click on a client will navigate to that element.
+			</para>
 
           </listitem>
         </varlistentry>
@@ -5291,15 +5494,15 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab. 
             The tick box <literal>Display Operations</literal> allows 
             the operation compartment to be shown (the default) or hidden. This
-            is a setting valid for all diagrams that show the interface.
+            is a setting valid for only the current diagram.
             The <literal>Bounds:</literal> field
             defines the bounding box for the package on the
             diagram.</para></listitem>
@@ -5313,16 +5516,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <listitem><para>Standard tab. This contains a template for the
             interface declaration and declarations of
             associated interfaces.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem><para>&constraintssupport;
-</para>
-          </listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -5371,6 +5564,16 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               the <emphasis>documentation tab</emphasis> under
               ArgoUML</para></note></listitem>
         </varlistentry>
+        
+        <!-- Entry for Checklist tab -->
+
+        <varlistentry>
+          <term><literal>Checklist</literal></term>
+
+          <listitem><para>Standard tab for an Interface. 
+          </para></listitem>
+        </varlistentry>        
+        
       </variablelist>
     </sect2>
 
@@ -5394,19 +5597,94 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Add operation button -->
+        <!-- Entry for New operation button -->
 
         <varlistentry>
           <term><guiicon><inlinemediaobject><imageobject><imagedata
             format="GIF" align="center"
             fileref="images/icons/operation.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Add
+          </imageobject></inlinemediaobject></guiicon> <literal>New
             operation</literal></term>
 
           <listitem><para>This creates a new operation (see <xref
               linkend="s1.ref.operation"/>) within the interface,
               navigating immediately to the properties tab for that
               operation.</para></listitem>
+        </varlistentry>
+
+        <!-- Entry for New reception -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/reception.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New reception</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new reception, navigating immediately to
+              the properties tab for that reception.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New Interface -->
+
+        <varlistentry>
+          <term>
+            <guiicon>
+              <inlinemediaobject>
+                <imageobject>
+                  <imagedata format="GIF" align="center"
+                             fileref="images/icons/interface.gif"/>
+                </imageobject>
+              </inlinemediaobject>
+            </guiicon>
+            <literal>New interface</literal>
+          </term>
+
+          <listitem>
+            <para>This creates a new interface 
+              in the same namespace as the selected interface, 
+              navigating immediately to
+              the properties tab for the new interface.
+            </para>
+          </listitem>
+        </varlistentry>
+
+        <!-- Entry for New stereotype button -->
+
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> 
+	        <literal>New Stereotype</literal>
+        </term>
+          <listitem>
+            <indexterm>
+              <primary>Add Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>New Stereotype</primary>
+            </indexterm>
+            <indexterm>
+              <primary>Create New</primary>
+              <secondary>Stereotype</secondary>
+            </indexterm>
+
+            <para>
+			  This creates a new Stereotype (see <xref
+              linkend="s1.ref.stereotype"/>) for the selected interface, 
+              navigating immediately to the properties tab
+              for that stereotype.</para>
+		  </listitem>
         </varlistentry>
 
         <!-- Entry for Delete button -->
@@ -5560,7 +5838,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <listitem><para>Text box. Lists any specialized interface (i.e. for
             which this interface is a generalization.</para>
 
-          <para>&button1; double click navigates to the generalization and opens
+          <para>&Button1; double click navigates to the generalization and opens
             its property tab.</para>
 
           </listitem>
@@ -5602,7 +5880,9 @@ connected to this interface.
               Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
               interface. &Button1; double click navigates to the selected
-              operation.
+              operation. &Button2; click will show a popup menu with two items: 
+              <literal>Move Up</literal> and <literal>Move Down</literal>,
+              which allow reordering the operations.
             </para>
 
             <caution>
@@ -5641,7 +5921,9 @@ connected to this interface.
 
     <caution><para>All other stereotypes of abstraction
       should be represented using an open arrow head, but this is not supported
-      by ArgoUML</para></caution>
+      by ArgoUML.
+      <!-- TODO: See issue ... -->
+    </para></caution>
 
     <!-- Abstraction details tabs -->
 
@@ -5683,16 +5965,15 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Style tab -->
+        <!-- Entry for Presentation tab -->
 
         <varlistentry>
-          <term><literal>Style</literal></term>
+          <term><literal>Presentation</literal></term>
 
           <listitem><para>Standard tab.</para>
 
-          <note><para>The values for the bounds of the abstraction appear
-            to have no meaning. Changing them has no effect on the
-            diagram. This is sensible behavior, given the association is
+          <note><para>The values for the bounds of the abstraction 
+            are downlighted, since the association is
             tied to particular artifacts.</para></note></listitem>
         </varlistentry>
 
@@ -5706,17 +5987,6 @@ See <xref linkend="s2.ref.documentation_tab"/>.
               downlighted text 
               <literal>N/A</literal>.
             </para>
-          </listitem>
-        </varlistentry>
-
-        <!-- Entry for Constraints tab -->
-
-        <varlistentry>
-          <term><literal>Constraints</literal></term>
-
-          <listitem>
-            <para>&constraintssupport;
-</para>
           </listitem>
         </varlistentry>
 
@@ -5872,7 +6142,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             providing the implementation).</para>
 
             <note><para> Although this is a text area there is no mechanism
-              for adding more than one supplier.</para></note>
+              for adding more than one supplier.
+              <!-- TODO: See issue ... -->
+            </para></note>
 
             <para>&Button1; double click navigates to the selected entry.
             </para>
@@ -5889,7 +6161,9 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             providing the specification).</para>
 
             <note><para> Although this is a text area there is no mechanism
-              for adding more than one client.</para></note>
+              for adding more than one client.
+              <!-- TODO: See issue ... -->
+		    </para></note>
 
             <para>&Button1; double click navigates to the selected entry.
             </para>
