@@ -2264,7 +2264,7 @@ public class ParserDisplay extends Parser {
     /**
      * Handle the Guard of a Transition.<p>
      *
-     * We can distinct between 4 cases:<ol>
+     * We can distinct between 4 cases:<ul>
      * <li>1. A guard is given. None exists yet.
      * <li>2. The expression of the guard was present, but is altered.
      * <li>3. A guard is not given. None exists yet.
@@ -2278,7 +2278,7 @@ public class ParserDisplay extends Parser {
      *     untouched. See also issue 2742.
      * <li>3. Nop.
      * <li>4. Unhook and erase the existing guard.
-     * </ol>
+     * </ul>
      *
      * @param trans the UML element transition
      * @param guard the string that represents the guard expression
@@ -2336,21 +2336,21 @@ public class ParserDisplay extends Parser {
     /**
      * Handle the Effect (Action) of a Transition.<p>
      *
-     * We can distinct between 4 cases:<ol>
+     * We can distinct between 4 cases:<ul>
      * <li>1. An effect is given. None exists yet.
      * <li>2. The expression of the effect was present, but is altered.
      * <li>3. An effect is not given. None exists yet.
      * <li>4. The expression of the effect was present, but is removed.
-     * </ol>
+     * </ul>
      *
-     * The reaction in these cases should be:<ol>
+     * The reaction in these cases should be:<ul>
      * <li>1. Create a new CallAction, set its name, language &
      * expression, and hook it to the transition.
      * <li>2. Change the effect's expression. Leave the actiontype, name
      * & language untouched.
      * <li>3. Nop.
      * <li>4. Unhook and erase the existing effect.
-     * </ol>
+     * </ul>
      *
      * @param actions the string to be parsed
      * @param trans the transition that causes the effect (actions)
