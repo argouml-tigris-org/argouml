@@ -33,6 +33,7 @@ import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -45,6 +46,8 @@ import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.uml.diagram.state.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.diagram.use_case.ui.*;
+import org.argouml.uml.diagram.sequence.ui.*;
+import org.argouml.uml.diagram.deployment.ui.*;
 
 public class DiagramInfo extends JComponent {
 
@@ -61,6 +64,7 @@ public class DiagramInfo extends JComponent {
     _diagram = d;
     //setBorder(new EtchedBorder());
     setLayout(new BorderLayout());
+    _name.setFont(MetalLookAndFeel.getSubTextFont());
     add(_name, BorderLayout.CENTER);
     updateName();
   }
@@ -80,10 +84,10 @@ public class DiagramInfo extends JComponent {
       type = "Activity Diagram";
     if (_diagram instanceof UMLCollaborationDiagram)
       type = "Collaboration Diagram";
-//     if (_diagram instanceof UMLSequenceDiagram)
-//       type = "Sequence Diagram";
-//     if (_diagram instanceof UMLDeploymentDiagram)
-//       type = "Deployment Diagram";
+    if (_diagram instanceof UMLSequenceDiagram)
+      type = "Sequence Diagram";
+    if (_diagram instanceof UMLDeploymentDiagram)
+      type = "Deployment Diagram";
     
     _name.setText(type + ": " + _diagram.getName());
   }
