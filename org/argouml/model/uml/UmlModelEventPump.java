@@ -167,13 +167,12 @@ public final class UmlModelEventPump implements MElementListener {
      * @param eventName
      */
     private synchronized void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
-        Set listenerList = (HashSet)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        String key = getKey(modelClass, eventName);
+        Set listenerList = (HashSet)_listenerClassModelEventsMap.get(key);
         if (listenerList == null) {
             listenerList = new HashSet();
-            _listenerClassModelEventsMap.put(getKey(modelClass, eventName), listenerList);
-        } else
-        if (listenerList.contains(listener))
-            throw new IllegalStateException("Tried to add a listener twice");
+            _listenerClassModelEventsMap.put(key, listenerList);
+        }
         listenerList.add(listener);
     }
     
@@ -227,11 +226,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private synchronized void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
-        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        String key = getKey(modelClass, eventName);
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(key);
         if (listenerList == null) return;
         listenerList.remove(listener);
         if (listenerList.isEmpty()) 
-            _listenerClassModelEventsMap.remove(getKey(modelClass, eventName));
+            _listenerClassModelEventsMap.remove(key);
     }
     
     /**
@@ -295,13 +295,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private synchronized void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
-        Set listenerList = (Set)_listenerModelEventsMap.get(getKey(modelelement, eventName));
+        String key = getKey(modelelement, eventName);
+        Set listenerList = (Set)_listenerModelEventsMap.get(key);
         if (listenerList == null) {
             listenerList = new HashSet();
-            _listenerModelEventsMap.put(getKey(modelelement, eventName), listenerList);
-        } else
-        if (listenerList.contains(listener)) 
-            throw new IllegalStateException("Tried to add listener twice");
+            _listenerModelEventsMap.put(key, listenerList);
+        }
         listenerList.add(listener);
     }
         
@@ -346,11 +345,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private synchronized void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
-        Set listenerList = (Set)_listenerModelEventsMap.get(getKey(elem, eventName));
+        String key = getKey(elem, eventName);
+        Set listenerList = (Set)_listenerModelEventsMap.get(key);
         if (listenerList != null) {   
             listenerList.remove(listener);
             if (listenerList.isEmpty())
-                _listenerModelEventsMap.remove(getKey(elem, eventName));
+                _listenerModelEventsMap.remove(key);
         }    
     }
     
@@ -375,11 +375,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleItemSet(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -418,11 +419,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassPropertySet(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -438,11 +440,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireObjectPropertySet(MElementEvent e) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        String keyNull = getKey((MBase)e.getSource(), null);
+        if (_listenerModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(keyNull));
         }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
@@ -461,11 +464,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRecovered(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -480,11 +484,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireObjectRecovered(MElementEvent e) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        String keyNull = getKey((MBase)e.getSource(), null);
+        if (_listenerModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(keyNull));
         }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
@@ -503,11 +508,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRemoved(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, REMOVE));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -522,11 +528,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireObjectRemoved(MElementEvent e) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), REMOVE));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        String keyNull = getKey((MBase)e.getSource(), null);
+        if (_listenerModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(keyNull));
         }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
@@ -545,11 +552,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleAdded(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -564,11 +572,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireObjectRoleAdded(MElementEvent e) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        String keyNull = getKey((MBase)e.getSource(), null);
+        if (_listenerModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(keyNull));
         }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
@@ -587,11 +596,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireClassRoleRemoved(Class clazz, MElementEvent e) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
-        if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
+        String keyNull = getKey(clazz, null);
+        if (_listenerClassModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(keyNull));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -606,11 +616,12 @@ public final class UmlModelEventPump implements MElementListener {
     
     private void fireObjectRoleRemoved(MElementEvent e) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
-        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+        String keyNull = getKey((MBase)e.getSource(), null);
+        if (_listenerModelEventsMap.get(keyNull) != null) {
             if (listenerList == null) 
-                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+                listenerList = (Set)_listenerModelEventsMap.get(keyNull);
             else 
-                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+                listenerList.addAll((Set)_listenerModelEventsMap.get(keyNull));
         }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();

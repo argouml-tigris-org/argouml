@@ -987,11 +987,11 @@ public class FigClass extends FigNodeModelElement {
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
                         MParameter param = (MParameter)it2.next();
-                        UmlModelEventPump.getPump().removeModelEventListener(this, param);
+                        // UmlModelEventPump.getPump().removeModelEventListener(this, param);
                         UmlModelEventPump.getPump().addModelEventListener(this, param);
                     }
                }
-               UmlModelEventPump.getPump().removeModelEventListener(this, feat);
+               // UmlModelEventPump.getPump().removeModelEventListener(this, feat);
                UmlModelEventPump.getPump().addModelEventListener(this, feat);
            }
        }

@@ -67,7 +67,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             MClassifier clazz = (MClassifier)getChangedElement(e);
             addAll(clazz.getFeatures());
-            UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "feature");
+            // UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "feature");
             UmlModelEventPump.getPump().addModelEventListener(this, clazz, "feature");
         } else
         if (e.getName().equals("feature") && ((MClassifierRole)getTarget()).getBases().contains(e.getSource())) {

@@ -623,7 +623,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       UmlModelEventPump.getPump().removeModelEventListener(this, (MModelElement)oldOwner);
     if (own instanceof MModelElement) {
 	MModelElement me = (MModelElement)own;
-        UmlModelEventPump.getPump().removeModelEventListener(this, me);
+       // UmlModelEventPump.getPump().removeModelEventListener(this, me);
         UmlModelEventPump.getPump().addModelEventListener(this, me);
 	if ( me.getUUID() == null)
 	    me.setUUID(UUIDManager.SINGLETON.getNewUUID());
