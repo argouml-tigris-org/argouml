@@ -29,9 +29,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackage;
-
 /** Action to trigger creation of new class diagram.
  *  @stereotype singleton
  */

@@ -409,7 +409,7 @@ public class ProjectBrowser
             cat.debug("setting project target = " + o);
 
             // _editorPane.setTarget(o);
-
+/*
             _target = o;
             if (o instanceof MNamespace) {
                 ProjectManager
@@ -451,6 +451,7 @@ public class ProjectBrowser
                             m);
                 }
             }
+            */
             getNavigatorPane().getTree().setTarget(o);
             
             
