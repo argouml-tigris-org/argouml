@@ -170,12 +170,12 @@ public class TestFigClonable extends TestCase {
 
     /** try to clone FigState in package diagram.state.ui.
      */
-    public void testStateClonable() {
+    public void testSimpleStateClonable() {
         try {
-            FigState fig = new FigState();
-            FigState figclone;
+            FigSimpleState fig = new FigSimpleState();
+            FigSimpleState figclone;
              
-            figclone = (FigState) fig.clone();
+            figclone = (FigSimpleState) fig.clone();
             assertTrue("FigState cloned", true);
         }
         catch(Exception e) {
