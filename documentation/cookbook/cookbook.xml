@@ -156,14 +156,18 @@ how.
 </para>
      <sect1 id="starting">
      <title>Getting started</title>
-     <para>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</para>
+      <para>
+In order to develop with ArgoUML it is absolutely mandatory to get get
+the CVS version of ArgoUML.
+How this is done is described in 
+<xref endterm="cvs_checkout_term" linkend="cvs_checkout"></xref>.
+</para>
      <para>
 <indexterm><primary>Libraries</primary><secondary>GEF</secondary></indexterm>
 <indexterm><primary>Libraries</primary><secondary>NSUML</secondary></indexterm>
 It is also recommended that you check out GEF from <ulink url="http://gef.tigris.org">gef.tigris.org</ulink> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</para>
      <para>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
  </para>
-
       <sect2>
 	<title>Which tools do I need to build ArgoUML?</title>
 	<itemizedlist>
@@ -201,21 +205,42 @@ Since the ant tool and the four libs are provided by in the cvs repository,
 a simple 'build package' should be sufficient to compile and build.
 </para>
       </sect2>
-      <sect2>
-	<title>Compiling failed. Any suggestions?</title>
-	<para>
-Most compiling problems arise from wrong versions: maybe ANT
-or JDK, but most often one of the four libs. A look on the error
-messages can help. Get the appropriate version (or, e.g. in the
-case of gef.jar, get the sources through CVS and build it on
-your own). Another reason for problems is an unclean local
-source tree: if yours is in doubt, remove it completely and
-get it all again through CVS. If nothing helps, ask the
-<ulink url="mailto:dev@argouml.tigris.org">experts</ulink>!
-</para>
-      </sect2>
 
  </sect1>
+    <sect1 id="cvs_checkout">
+      <title id="cvs_checkout_term">Download from the cvs repository</title>
+      <para>
+The cvs repository at Tigris is accessable using the pserver protocol.
+The cvs root is <filename>/cvs</filename> at cvs.tigris.org.
+You use your Tigris login and Tigris password.
+</para>
+      <para>
+This means that you will set the <varname>CVSROOT</varname>-variable to
+<parameter>:pserver:<replaceable>login</replaceable>@cvs.tigris.org:/cvs</parameter>
+where <replaceable>login</replaceable> is you Tigris login.
+This needs to be done for the first checkout.
+After that the root will be remembered by the checked out copy.
+</para>
+      <para>
+The next thing to do is to login. It is done using the command:
+<command>cvs login</command>.
+This only needs to be done once and then the account on your machine
+remembers this.
+</para>
+      <para>
+Then you do the actual checking out.
+<command>cvs checkout <replaceable>modulename</replaceable></command>.
+</para>
+      <para>
+The modules you need to check out to build ArgoUML are
+<parameter>argouml/lib</parameter> and
+<parameter>argouml/src_new</parameter>.
+If you don't give a module name all of ArgoUML is checked out.
+That is no problem except for the extra use of bandwidth and disk space
+but if you have plenty of both, get it all, and eventually you will
+see how everything is used for a purpose in the project.
+</para>
+    </sect1>
  <sect1 id="Build">
      <title id="Build_term">Build Process</title>
      <para>
@@ -565,6 +590,52 @@ contains all the required pictures for all the books.
 </para>
 	</sect3>
       </sect2>
+      <sect2>
+	<title>Troubleshooting the development build</title>
+	<sect3>
+	  <title>Compiling failed. Any suggestions?</title>
+	  <para>
+Most compiling problems arise from wrong versions:
+ANT or one of the four libs.
+This then means that the current version in cvs is not in sync
+with itself i.e. some other developer has screwed up.
+Look at the
+<ulink url="http://argouml.tigris.org/servlets/BrowseList?listName=dev">
+developers mailing list</ulink> is probably on fire.
+</para>
+	  <para>
+A look on the error messages can help.
+</para>
+	  <para>
+Another reason for problems is an unclean local source tree: if yours
+is in doubt, remove it completely and get it all again through CVS.
+</para>
+	  <para>
+Another reason is that you have an .ant.properties or
+.argo.ant.properties file that you have been working with earlier
+and that is doing something. If in doubt, remove those files.
+</para>
+	  <para>
+If nothing helps, ask the 
+<ulink url="mailto:dev@argouml.tigris.org">experts on the mailing list</ulink>!
+</para>
+	</sect3>
+	<sect3>
+	  <title>Can't commit my changes?</title>
+	  <para>
+You need to have a developer role in the ArgoUML project.
+</para>
+	  <para>
+Furthermore the checkout of your copy need to be done with that
+developer role. If you for some reason have earlier checked out
+a copy as guest and then made modifications, changed the CVSROOT
+variable you still cannot modify the repository since the
+checked out copy contains information on who checked out. 
+The best solution is to always checkout with your developer role.
+</para>
+	</sect3>
+      </sect2>
+
  </sect1>
  <sect1 id="mailing_lists">
      <title>Mailing Lists</title>
@@ -1275,6 +1346,16 @@ in just this way.
 Contact any of the active developers on the list and send them your
 updates. They're very nice about it the first few times.
 </para>
+	      <para>
+Supposing that you have checked out cvs as guest, then after you have
+mailed a diff or file to an active developer, and he has entered it in cvs
+your checked out copy contains the change but is not in sync and
+the next <command>cvs update</command> will result in an merge error.
+The simplest way to solve this is to do remove all files modified by you
+before doing the <command>cvs update</command>. 
+The <command>cvs update</command> will restore all the files from the 
+CVS repository and you can start with the next update.
+</para>
 	    </listitem>
 	    <listitem>
 	      <para>...get a list of the currently active working branches?</para>
@@ -1947,7 +2028,4 @@ the issues discussed recently in the user community.
       </tgroup>
     </table>
   </chapter>
-
 </book>
-
-
