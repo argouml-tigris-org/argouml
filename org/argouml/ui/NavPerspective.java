@@ -43,14 +43,10 @@ import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
-import org.argouml.kernel.ChildGenDMElements;
 import org.argouml.kernel.PredAND;
 import org.argouml.kernel.PredInstanceOf;
 import org.argouml.kernel.PredNotInstanceOf;
 import org.argouml.kernel.PredOR;
-import org.argouml.uml.cognitive.ChildGenFind;
-import org.argouml.uml.cognitive.ChildGenRelated;
-import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.uml.diagram.collaboration.ui.GoAssocRoleMessages;
 import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoCollaborationDiagram;
@@ -59,16 +55,16 @@ import org.argouml.uml.diagram.collaboration.ui.GoInteractionMessage;
 import org.argouml.uml.diagram.collaboration.ui.GoMessageAction;
 import org.argouml.uml.diagram.collaboration.ui.GoModelToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoOperationToCollaboration;
-import org.argouml.uml.diagram.collaboration.ui.GoProjectCollaboration;
+import org.argouml.uml.diagram.collaboration.ui.GoProjectToCollaboration;
 import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
 import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
-import org.argouml.uml.diagram.sequence.ui.GoStimulusAction;
+import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
 import org.argouml.uml.diagram.state.PredIsFinalState;
 import org.argouml.uml.diagram.state.PredIsStartState;
 import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
 import org.argouml.uml.diagram.state.ui.GoMachineToState;
 import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
-import org.argouml.uml.diagram.state.ui.GoProjectMachine;
+import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
 import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
 import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
 import org.argouml.uml.diagram.state.ui.GoStateToDownstream;
@@ -77,26 +73,18 @@ import org.argouml.uml.diagram.state.ui.GoStateToExit;
 import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
 import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
 import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
-import org.argouml.uml.diagram.state.ui.GoStateToSubstate;
-import org.argouml.uml.diagram.state.ui.GoStateToUpstream;
-import org.argouml.uml.diagram.state.ui.GoTransToSourceState;
-import org.argouml.uml.diagram.state.ui.GoTransToTargetState;
-import org.argouml.uml.diagram.static_structure.ui.GoAssocToSource;
-import org.argouml.uml.diagram.static_structure.ui.GoAssocToTarget;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToAggrClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToAssocdClass;
-import org.argouml.uml.diagram.static_structure.ui.GoClassToCompositeClass;
+import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
+import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
+import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
 import org.argouml.uml.diagram.static_structure.ui.GoClassToNavigableClass;
-import org.argouml.uml.diagram.static_structure.ui.GoModelToAssociation;
 import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
-import org.argouml.uml.diagram.ui.GoChildGenerator;
 import org.argouml.uml.diagram.ui.GoClassifierToBeh;
 import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
-import org.argouml.uml.diagram.ui.GoClassifierToStr;
+import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
 import org.argouml.uml.diagram.ui.GoDiagramToEdge;
-import org.argouml.uml.diagram.ui.GoElement2DependentElement;
 import org.argouml.uml.diagram.ui.GoFilteredChildren;
 import org.argouml.uml.diagram.ui.GoGenElementToDerived;
 import org.argouml.uml.diagram.ui.GoInteractionMessages;
@@ -104,10 +92,8 @@ import org.argouml.uml.diagram.ui.GoModelToBaseElements;
 import org.argouml.uml.diagram.ui.GoModelToDiagram;
 import org.argouml.uml.diagram.ui.GoModelToElements;
 import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
-import org.argouml.uml.diagram.ui.GoProjectDiagram;
-import org.argouml.uml.diagram.ui.GoProjectModel;
-import org.argouml.uml.diagram.use_case.ui.GoModelToActor;
-import org.argouml.uml.diagram.use_case.ui.GoModelToUseCase;
+import org.argouml.uml.diagram.ui.GoProjectToDiagram;
+import org.argouml.uml.diagram.ui.GoProjectToModel;
 import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
 import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
 import org.argouml.uml.ui.foundation.core.GoModelElementToComment;
@@ -159,9 +145,7 @@ public class NavPerspective
         NavPerspective classAssociation =
             new NavPerspective("combobox.item.class-associations");
         NavPerspective navAssociation =
-            new NavPerspective("combobox.item.navigable-associations");
-        NavPerspective associationCentric =
-            new NavPerspective("combobox.item.association-centric");
+            new NavPerspective("combobox.item.navigable-associations");       
         NavPerspective aggregateCentric =
             new NavPerspective("combobox.item.aggregate-centric");
         NavPerspective compositeCentric =
@@ -270,7 +254,7 @@ public class NavPerspective
                 new GoModelToElements(),
                 new PredInstanceOf(MNodeInstance.class));
 
-        packageCentric.addSubTreeModel(new GoProjectModel());
+        packageCentric.addSubTreeModel(new GoProjectToModel());
         packageCentric.addSubTreeModel(new GoModelToDiagram());
         packageCentric.addSubTreeModel(new GoModelElementToComment());
         packageCentric.addSubTreeModel(modelToPackages);
@@ -285,7 +269,7 @@ public class NavPerspective
         packageCentric.addSubTreeModel(modelToGeneralizations);
         packageCentric.addSubTreeModel(modelToDependencies);
         packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
-        packageCentric.addSubTreeModel(new GoClassifierToStr());
+        packageCentric.addSubTreeModel(new GoClassifierToStructuralFeature());
         packageCentric.addSubTreeModel(new GoClassifierToBeh());
         // packageCentric.addSubTreeModel(new GoAssocRoleMessages());
         packageCentric.addSubTreeModel(new GoCollaborationInteraction());
@@ -293,7 +277,7 @@ public class NavPerspective
         packageCentric.addSubTreeModel(new GoMessageAction());
         packageCentric.addSubTreeModel(new GoSignalToReception());
         packageCentric.addSubTreeModel(new GoLinkStimuli());
-        packageCentric.addSubTreeModel(new GoStimulusAction());
+        packageCentric.addSubTreeModel(new GoStimulusToAction());
         packageCentric.addSubTreeModel(new GoClassifierToCollaboration());
         packageCentric.addSubTreeModel(new GoOperationToCollaboration());
         packageCentric.addSubTreeModel(new GoOperationToCollaborationDiagram());
@@ -303,74 +287,60 @@ public class NavPerspective
         packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateDiagram());
         packageCentric.addSubTreeModel(new GoClassifierToStateMachine());
         packageCentric.addSubTreeModel(new GoMachineToState());
-        packageCentric.addSubTreeModel(new GoStateToSubstate());
+        packageCentric.addSubTreeModel(new GoCompositeStateToSubvertex());
         packageCentric.addSubTreeModel(new GoStateToInternalTrans());
         packageCentric.addSubTreeModel(new GoStateMachineToTransition());
         packageCentric.addSubTreeModel(new GoStateToDoActivity());
         packageCentric.addSubTreeModel(new GoStateToEntry());
         packageCentric.addSubTreeModel(new GoStateToExit());
 
-        diagramCentric.addSubTreeModel(new GoProjectDiagram());
+        diagramCentric.addSubTreeModel(new GoProjectToDiagram());
         diagramCentric.addSubTreeModel(new GoDiagramToNode());
         diagramCentric.addSubTreeModel(new GoDiagramToEdge());
         diagramCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
-        diagramCentric.addSubTreeModel(new GoClassifierToStr());
+        diagramCentric.addSubTreeModel(new GoClassifierToStructuralFeature());
         diagramCentric.addSubTreeModel(new GoClassifierToBeh());
 
-        inheritanceCentric.addSubTreeModel(new GoProjectModel());
+        inheritanceCentric.addSubTreeModel(new GoProjectToModel());
         inheritanceCentric.addSubTreeModel(new GoModelToBaseElements());
         inheritanceCentric.addSubTreeModel(new GoGenElementToDerived());
 
-        classAssociation.addSubTreeModel(new GoProjectModel());
+        classAssociation.addSubTreeModel(new GoProjectToModel());
         classAssociation.addSubTreeModel(new GoModelToDiagram());
         classAssociation.addSubTreeModel(new GoModelToClass());
         //classAssociation.addSubTreeModel(new GoClassifierToBeh());
-        //classAssociation.addSubTreeModel(new GoClassifierToStr());
-        classAssociation.addSubTreeModel(new GoClassToAssocdClass());
+        //classAssociation.addSubTreeModel(new GoClassifierToStructuralFeature());
+        classAssociation.addSubTreeModel(new GoClassToAssociatedClass());
 
-        navAssociation.addSubTreeModel(new GoProjectModel());
+        navAssociation.addSubTreeModel(new GoProjectToModel());
         navAssociation.addSubTreeModel(new GoModelToDiagram());
         navAssociation.addSubTreeModel(new GoModelToClass());
         //navAssociation.addSubTreeModel(new GoClassifierToBeh());
-        //navAssociation.addSubTreeModel(new GoClassifierToStr());
-        navAssociation.addSubTreeModel(new GoClassToNavigableClass());
+        //navAssociation.addSubTreeModel(new GoClassifierToStructuralFeature());
+        navAssociation.addSubTreeModel(new GoClassToNavigableClass());               
 
-        aggregateCentric.addSubTreeModel(new GoProjectModel());
-        aggregateCentric.addSubTreeModel(new GoModelToDiagram());
-        aggregateCentric.addSubTreeModel(new GoModelToClass());
-        aggregateCentric.addSubTreeModel(new GoClassToAggrClass());
+        
 
-        compositeCentric.addSubTreeModel(new GoProjectModel());
-        compositeCentric.addSubTreeModel(new GoModelToDiagram());
-        compositeCentric.addSubTreeModel(new GoModelToClass());
-        compositeCentric.addSubTreeModel(new GoClassToCompositeClass());
-
-        associationCentric.addSubTreeModel(new GoProjectModel());
-        associationCentric.addSubTreeModel(new GoModelToDiagram());
-        associationCentric.addSubTreeModel(new GoModelToAssociation());
-        associationCentric.addSubTreeModel(new GoAssocToSource());
-        associationCentric.addSubTreeModel(new GoAssocToTarget());
-
-        //     classStates.addSubTreeModel(new GoProjectModel());
+        //     classStates.addSubTreeModel(new GoProjectToModel());
         //     classStates.addSubTreeModel(new GoModelToDiagram());
         //     classStates.addSubTreeModel(new GoModelToClass());
         //     classStates.addSubTreeModel(new GoElementToMachine());
         //     classStates.addSubTreeModel(new GoMachineToState());
 
-        stateCentric.addSubTreeModel(new GoProjectMachine());
+        stateCentric.addSubTreeModel(new GoProjectToStateMachine());
         stateCentric.addSubTreeModel(new GoMachineDiagram());
         stateCentric.addSubTreeModel(new GoMachineToState());
-        stateCentric.addSubTreeModel(new GoStateToSubstate());
+        stateCentric.addSubTreeModel(new GoCompositeStateToSubvertex());
         stateCentric.addSubTreeModel(new GoStateToIncomingTrans());
         stateCentric.addSubTreeModel(new GoStateToOutgoingTrans());
 
-        transitionCentric.addSubTreeModel(new GoProjectMachine());
+        transitionCentric.addSubTreeModel(new GoProjectToStateMachine());
         transitionCentric.addSubTreeModel(new GoMachineDiagram());
         transitionCentric.addSubTreeModel(new GoMachineToTrans());
-        transitionCentric.addSubTreeModel(new GoTransToSourceState());
-        transitionCentric.addSubTreeModel(new GoTransToTargetState());
+        transitionCentric.addSubTreeModel(new GoTransitionToSource());
+        transitionCentric.addSubTreeModel(new GoTransitionToTarget());
 
-        transitionPaths.addSubTreeModel(new GoProjectMachine());
+        transitionPaths.addSubTreeModel(new GoProjectToStateMachine());
         transitionPaths.addSubTreeModel(new GoMachineDiagram());
 
         //transitionPaths.addSubTreeModel(new GoMachineToStartState());
@@ -389,45 +359,40 @@ public class NavPerspective
         GoFilteredChildren compositeToFinalStates =
             new GoFilteredChildren(
                 "misc.state.final-substates",
-                new GoStateToSubstate(),
+                new GoCompositeStateToSubvertex(),
                 PredIsFinalState.TheInstance);
         GoFilteredChildren compositeToInitialStates =
             new GoFilteredChildren(
                 "misc.state.initial-substates",
-                new GoStateToSubstate(),
+                new GoCompositeStateToSubvertex(),
                 PredIsStartState.TheInstance);
         transitionPaths.addSubTreeModel(compositeToInitialStates);
 
         transitionPaths.addSubTreeModel(new GoStateToDownstream());
         //     transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
-        //     transitionPaths.addSubTreeModel(new GoTransToTargetState());
+        //     transitionPaths.addSubTreeModel(new GoTransitionToTarget());
 
-        //     useCaseCentric.addSubTreeModel(new GoProjectModel());
+        //     useCaseCentric.addSubTreeModel(new GoProjectToModel());
         //     useCaseCentric.addSubTreeModel(new GoModelToDiagram());
         //     useCaseCentric.addSubTreeModel(new GoModelToUseCase());
         //     useCaseCentric.addSubTreeModel(new GoModelToActor());
 
-        collabCentric.addSubTreeModel(new GoProjectCollaboration());
+        collabCentric.addSubTreeModel(new GoProjectToCollaboration());
         collabCentric.addSubTreeModel(new GoCollaborationDiagram());
         collabCentric.addSubTreeModel(new GoModelToElements());
         collabCentric.addSubTreeModel(new GoAssocRoleMessages());
         collabCentric.addSubTreeModel(new GoCollaborationInteraction());
-        collabCentric.addSubTreeModel(new GoInteractionMessages());
-
-        depCentric.addSubTreeModel(new GoProjectModel());
-        depCentric.addSubTreeModel(new GoModelToDiagram());
-        depCentric.addSubTreeModel(new GoModelToElements());
-        depCentric.addSubTreeModel(new GoElement2DependentElement());
+        collabCentric.addSubTreeModel(new GoInteractionMessages());        
 
         useCaseToExtensionPoint.addSubTreeModel(
             new GoUseCaseToExtensionPoint());
 
-        classToBehStr.addSubTreeModel(new GoClassifierToStr());
+        classToBehStr.addSubTreeModel(new GoClassifierToStructuralFeature());
         classToBehStr.addSubTreeModel(new GoClassifierToBeh());
 
         classToBeh.addSubTreeModel(new GoClassifierToBeh());
 
-        classToStr.addSubTreeModel(new GoClassifierToStr());
+        classToStr.addSubTreeModel(new GoClassifierToStructuralFeature());
 
         machineToState.addSubTreeModel(new GoMachineToState());
 
@@ -438,7 +403,6 @@ public class NavPerspective
         registerPerspective(inheritanceCentric);
         registerPerspective(classAssociation);
         registerPerspective(navAssociation);
-        registerPerspective(associationCentric);
         //     registerPerspective(classStates);
         registerPerspective(stateCentric);
         registerPerspective(transitionCentric);
@@ -446,48 +410,39 @@ public class NavPerspective
         //registerPerspective(useCaseCentric);
         registerPerspective(collabCentric);
         registerPerspective(depCentric);
-
-        registerRule(new GoProjectModel());
+        
+        // probably registerRules can be removed
+        /*
+        registerRule(new GoProjectToModel());
         registerRule(new GoModelToDiagram());
         registerRule(new GoModelToElements());
         registerRule(new GoModelToClass());
         registerRule(new GoModelToAssociation());
         registerRule(new GoModelToBaseElements());
-        registerRule(new GoProjectDiagram());
+        registerRule(new GoProjectToDiagram());
         registerRule(new GoUseCaseToExtensionPoint());
         registerRule(new GoClassifierToBeh());
-        registerRule(new GoClassifierToStr());
+        registerRule(new GoClassifierToStructuralFeature());
         registerRule(new GoDiagramToNode());
         registerRule(new GoDiagramToEdge());
         registerRule(new GoGenElementToDerived());
-        registerRule(new GoClassToAssocdClass());
-        registerRule(new GoClassToAggrClass());
-        registerRule(new GoClassToCompositeClass());
+        registerRule(new GoClassToAssociatedClass());
         registerRule(new GoMachineToTrans());
         registerRule(new GoMachineToState());
         registerRule(machineToInitialState);
         registerRule(machineToFinalState);
-        registerRule(new GoStateToSubstate());
+        registerRule(new GoCompositeStateToSubvertex());
         registerRule(compositeToInitialStates);
         registerRule(compositeToFinalStates);
         registerRule(new GoStateToIncomingTrans());
         registerRule(new GoStateToOutgoingTrans());
         registerRule(new GoStateToDownstream());
         registerRule(new GoStateToUpstream());
-        registerRule(new GoTransToSourceState());
-        registerRule(new GoTransToTargetState());
+        registerRule(new GoTransitionToSource());
+        registerRule(new GoTransitionToTarget());
         registerRule(new GoModelToActor());
-        registerRule(new GoModelToUseCase());
-        registerRule(new GoAssocToTarget());
-        registerRule(new GoAssocToSource());
-        registerRule(
-            new GoChildGenerator(
-                new ChildGenDMElements(),
-                "ChildGenDMElements"));
-        registerRule(new GoChildGenerator(new ChildGenFind(), "ChildGenFind"));
-        registerRule(
-            new GoChildGenerator(new ChildGenRelated(), "ChildGenRelated"));
-        registerRule(new GoChildGenerator(new ChildGenUML(), "ChildGenUML"));
+        registerRule(new GoModelToUseCase());    
+        */
         // TODO: this list is not updated
     }
 

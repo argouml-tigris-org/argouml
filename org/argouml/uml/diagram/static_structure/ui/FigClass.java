@@ -965,7 +965,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _attrBigPort.getX();
         int ypos = _attrBigPort.getY();
         int acounter = 1;
-        Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
+        Collection strs = UmlHelper.getHelper().getCore().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
             Vector figs = _attrVec.getFigs();

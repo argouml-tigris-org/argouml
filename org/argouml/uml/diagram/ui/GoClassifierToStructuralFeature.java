@@ -23,63 +23,33 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.ui.AbstractGoRule;
 
-public class GoProjectDiagram extends AbstractGoRule {
+public class GoClassifierToStructuralFeature extends AbstractGoRule {
 
   public String getRuleName() {
-    return Argo.localize ("Tree", "misc.project.diagram");
+    return Argo.localize ("Tree", "misc.class.attribute");
   }
   
-  public Object getRoot() {
-    throw new UnsupportedOperationException("getRoot should never be called");
-  } 
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof Project) {
-      return ((Project)parent).getDiagrams().elementAt(index);
-    }
-    throw new UnsupportedOperationException("getChild should never get here");
-  }
 
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (ModelFacade.isAClassifier(parent)) {
+          return UmlHelper.getHelper().getCore().getStructuralFeatures(parent);
+      }
+      return null;
   }
   
-  public int getChildCount(Object parent) {
-    if (parent instanceof Project) {
-      return ((Project) parent).getDiagrams().size();
-    }
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof Project) {
-      Vector diagrams = ((Project)parent).getDiagrams();
-      if (diagrams.contains(child)) return diagrams.indexOf(child);
-    }
-    return -1;
-  }
-
+ 
 
   public boolean isLeaf(Object node) {
-    // only for now
-    return !(node instanceof Project && getChildCount(node) > 0);
+    return !(ModelFacade.isAClassifier(node) && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-
+ 
+  
 }

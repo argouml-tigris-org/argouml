@@ -23,67 +23,28 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.model_management.MPackage;
 
 public class GoModelToClass extends AbstractGoRule {
 
   public String getRuleName() { return "Package->Class"; }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    Vector children = new Vector(getChildren(parent));
-    if (children != null) return children.elementAt(index);
-    throw
-	new UnsupportedOperationException("getChild should never get here");
-  }
-
-  public int getChildCount(Object parent) {
-    Collection children = getChildren(parent);
-    if (children != null) return children.size();
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    Collection col = getChildren(parent);
-    if (col == null) return -1;
-    Vector children = new Vector(col);
-    if (children != null) return children.indexOf(child);
-    return -1;
-  }
-
-
   public Collection getChildren(Object parent) {
-    if (!(parent instanceof MPackage)) return null; 
-    Vector res = new Vector();
-    Vector oes = new Vector(((MPackage)parent).getOwnedElements());
-    if (oes == null) return null;
-    java.util.Enumeration enum = oes.elements();
-    while (enum.hasMoreElements()) {
-      MModelElement me = (MModelElement) enum.nextElement();
-      if (me instanceof MClass) res.addElement(me);
-    }
-    return res;
+      if (ModelFacade.isAPackage(parent)) {
+          return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
+      }
+      return null;
   }
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MPackage && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

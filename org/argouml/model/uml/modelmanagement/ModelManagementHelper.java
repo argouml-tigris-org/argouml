@@ -32,6 +32,7 @@ import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -54,11 +55,10 @@ public class ModelManagementHelper {
     private ModelManagementHelper() {
     }
 
-     /** Singleton instance.
-     */
+    /** Singleton instance.
+    */
     private static ModelManagementHelper SINGLETON =
-                   new ModelManagementHelper();
-
+        new ModelManagementHelper();
 
     /** Singleton instance access method.
      */
@@ -67,186 +67,194 @@ public class ModelManagementHelper {
     }
 
     /**
-	 * Returns all subsystems found in the projectbrowser model
-	 * @return Collection
-	 */
-	public Collection getAllSubSystems() {
-		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
-		return getAllSubSystems(model);
-	}
+     * Returns all subsystems found in the projectbrowser model
+     * @return Collection
+     */
+    public Collection getAllSubSystems() {
+        MNamespace model =
+            ProjectManager.getManager().getCurrentProject().getModel();
+        return getAllSubSystems(model);
+    }
 
-	/**
-	 * Returns all subsystems found in this namespace and in its children
-	 * @return Collection
-	 */
-	public Collection getAllSubSystems(MNamespace ns) {
-		if (ns == null) return new ArrayList();
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.addAll(getAllSubSystems((MNamespace)o));
-			}
-			if (o instanceof MSubsystem) {
-				list.add(o);
-			}
+    /**
+     * Returns all subsystems found in this namespace and in its children
+     * @return Collection
+     */
+    public Collection getAllSubSystems(MNamespace ns) {
+        if (ns == null)
+            return new ArrayList();
+        Iterator it = ns.getOwnedElements().iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MNamespace) {
+                list.addAll(getAllSubSystems((MNamespace)o));
+            }
+            if (o instanceof MSubsystem) {
+                list.add(o);
+            }
 
-		}
-		return list;
-	}
+        }
+        return list;
+    }
 
-	/**
-	 * Returns all namespaces found in the projectbrowser model
-	 * @return Collection
-	 */
-	public Collection getAllNamespaces() {
-		MNamespace model = ProjectManager.getManager().getCurrentProject().getModel();
-		return getAllNamespaces(model);
-	}
+    /**
+     * Returns all namespaces found in the projectbrowser model
+     * @return Collection
+     */
+    public Collection getAllNamespaces() {
+        MNamespace model =
+            ProjectManager.getManager().getCurrentProject().getModel();
+        return getAllNamespaces(model);
+    }
 
-	/**
-	 * Returns all namespaces found in this namespace and in its children
-	 * @return Collection
-	 */
-	public Collection getAllNamespaces(MNamespace ns) {
-		if (ns == null) return new ArrayList();
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.add(o);
-				list.addAll(getAllNamespaces((MNamespace)o));
-			}
-		}
-		return list;
-	}
+    /**
+     * Returns all namespaces found in this namespace and in its children
+     * @return Collection
+     */
+    public Collection getAllNamespaces(MNamespace ns) {
+        if (ns == null)
+            return new ArrayList();
+        Iterator it = ns.getOwnedElements().iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MNamespace) {
+                list.add(o);
+                list.addAll(getAllNamespaces((MNamespace)o));
+            }
+        }
+        return list;
+    }
 
-	/**
-	 * Returns all modelelements found in this namespace and its children
-	 * that are of some class kind n the projectbrowser model
-	 * @return Collection
-	 */
-	public Collection getAllModelElementsOfKind(Class kind) {
-		if (kind == null) return new ArrayList();
-                Project p = ProjectManager.getManager().getCurrentProject();
-		MNamespace model = p.getRoot();
-		return getAllModelElementsOfKind(model, kind);
-	}
+    /**
+     * Returns all modelelements found in this namespace and its children
+     * that are of some class kind n the projectbrowser model
+     * @return Collection
+     */
+    public Collection getAllModelElementsOfKind(Class kind) {
+        if (kind == null)
+            return new ArrayList();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        MNamespace model = p.getRoot();
+        return getAllModelElementsOfKind(model, kind);
+    }
 
-	/**
-	 * Returns all modelelements found in this namespace and its children
-	 * that are of some class kind.
-	 * @param ns
-	 * @param kind
-	 * @return Collection
-	 */
-	public Collection getAllModelElementsOfKind(MNamespace ns, Class kind) {
-		if (ns == null || kind == null) return new ArrayList();
-		Iterator it = ns.getOwnedElements().iterator();
-		List list = new ArrayList();
-		while (it.hasNext()) {
-			Object o = it.next();
-			if (o instanceof MNamespace) {
-				list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
-			}
-			if (kind.isAssignableFrom(o.getClass())) {
-				list.add(o);
-			}
-		}         
-		return list;
-        
-	}
+    /**
+     * Returns all modelelements found in this namespace and its children
+     * that are of some class kind.
+     * @param ns
+     * @param kind
+     * @return Collection
+     */
+    public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
+        if (nsa == null || kind == null)
+            return new ArrayList();
+        if (!ModelFacade.isANamespace(nsa))
+            throw new IllegalArgumentException(
+                "given argument " + nsa + " is not a namespace");
+        Iterator it = ModelFacade.getOwnedElements(nsa).iterator();
+        List list = new ArrayList();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MNamespace) {
+                list.addAll(getAllModelElementsOfKind((MNamespace)o, kind));
+            }
+            if (kind.isAssignableFrom(o.getClass())) {
+                list.add(o);
+            }
+        }
+        return list;
 
-	/**
-	 * Returns all surrounding namespaces of some namespace ns. See
-	 * section 2.5.3.24 of the UML 1.3 spec for a definition.
-	 * @param ns
-	 * @return Collection
-	 */
-	public Collection getAllSurroundingNamespaces(MNamespace ns) {
-		Set set = new HashSet();
-		set.add(ns);
-		if (ns.getNamespace() != null) {
-			set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
-		}
-		return set;
-	}
+    }
 
-	/**
-	 * Returns the name of a namespace.
-	 * @param namespace
-	 * @return name
-	 */
-	public String getNamespaceName(Object o) {
-		String name = null;
-		if (o instanceof MNamespace)
-		    name = ((MNamespace)o).getName();
-		return name;
-	}
+    /**
+     * Returns all surrounding namespaces of some namespace ns. See
+     * section 2.5.3.24 of the UML 1.3 spec for a definition.
+     * @param ns
+     * @return Collection
+     */
+    public Collection getAllSurroundingNamespaces(MNamespace ns) {
+        Set set = new HashSet();
+        set.add(ns);
+        if (ns.getNamespace() != null) {
+            set.addAll(getAllSurroundingNamespaces(ns.getNamespace()));
+        }
+        return set;
+    }
 
-	/**
-	 * Returns the namespace of a model element or another namespace.
-	 * @param object
-	 * @return namespace
-	 */
-	public Object getNamespace(Object o) {
-		if (o instanceof MModelElement)
-		    return ((MModelElement)o).getNamespace();
-		if (o instanceof MNamespace)
-		    return ((MNamespace)o).getNamespace();
-		return null;
-	}
+    /**
+     * Returns the name of a namespace.
+     * @param namespace
+     * @return name
+     */
+    public String getNamespaceName(Object o) {
+        String name = null;
+        if (o instanceof MNamespace)
+            name = ((MNamespace)o).getName();
+        return name;
+    }
 
-	/**
-	 * Returns the named model element in the namespace, null otherwise.
-	 * @param namespace
-	 * @param name of the model element
-	 * @return model element
-	 */
-	public Object lookupNamespaceFor(Object o, String name) {
-		if (o instanceof MNamespace)
-		    return ((MNamespace)o).lookup(name);
-		return null;
-	}
+    /**
+     * Returns the namespace of a model element or another namespace.
+     * @param object
+     * @return namespace
+     */
+    public Object getNamespace(Object o) {
+        if (o instanceof MModelElement)
+            return ((MModelElement)o).getNamespace();
+        if (o instanceof MNamespace)
+            return ((MNamespace)o).getNamespace();
+        return null;
+    }
 
-	/**
-	 * Move a modelelement to a new namespace. The way this is currently
-	 * implemented this means that ALL modelelements that share the same
-	 * namespace as the element to be moved are moved.
-	 * TODO: make this into a copy function
-	 * TODO: make this only move/copy the asked element
-	 * @param element
-	 * @param to
-	 */
-	public void moveElement(MModelElement element, MModel to) {
-	    MModel currentModel = element.getModel();
-	    if (currentModel != to) {
-	        if (element.getNamespace() != currentModel) { // handle packages
-	            moveElement(element.getNamespace(), to);
-	        } else {
-	            element.setNamespace(to);
-	        }
-	    }
-	}
+    /**
+     * Returns the named model element in the namespace, null otherwise.
+     * @param namespace
+     * @param name of the model element
+     * @return model element
+     */
+    public Object lookupNamespaceFor(Object o, String name) {
+        if (o instanceof MNamespace)
+            return ((MNamespace)o).lookup(name);
+        return null;
+    }
 
-	/**
-	 * Returns if the object is a model.
-	 * @param object
-	 * @return boolean
-	 */
-	public boolean isModel(Object o) {
-		return (o instanceof MModel);
-	}
+    /**
+     * Move a modelelement to a new namespace. The way this is currently
+     * implemented this means that ALL modelelements that share the same
+     * namespace as the element to be moved are moved.
+     * TODO: make this into a copy function
+     * TODO: make this only move/copy the asked element
+     * @param element
+     * @param to
+     */
+    public void moveElement(MModelElement element, MModel to) {
+        MModel currentModel = element.getModel();
+        if (currentModel != to) {
+            if (element.getNamespace() != currentModel) { // handle packages
+                moveElement(element.getNamespace(), to);
+            } else {
+                element.setNamespace(to);
+            }
+        }
+    }
 
-	/**
-	 * Returns if the object is a model element.
-	 * @param object
-	 * @return boolean
-	 */
-	public boolean isModelElement(Object o) {
-		return (o instanceof MModelElement);
-	}
+    /**
+     * Returns if the object is a model.
+     * @param object
+     * @return boolean
+     */
+    public boolean isModel(Object o) {
+        return (o instanceof MModel);
+    }
+
+    /**
+     * Returns if the object is a model element.
+     * @param object
+     * @return boolean
+     */
+    public boolean isModelElement(Object o) {
+        return (o instanceof MModelElement);
+    }
 }
-

@@ -39,32 +39,6 @@ public class GoMachineDiagram extends AbstractGoRule {
         return "Machine->Diagram";
     }
 
-    
-   
-
-    public Object getChild(Object parent, int index) {
-        Vector children = new Vector(getChildren(parent));
-        if (children != null)
-            return children.elementAt(index);
-        throw new UnsupportedOperationException("getChild should never be get here");
-    }
-
-    public int getChildCount(Object parent) {
-        Collection children = getChildren(parent);
-        if (children != null)
-            return children.size();
-        return 0;
-    }
-
-    public int getIndexOfChild(Object parent, Object child) {
-        if (!(parent instanceof MStateMachine))
-            return -1;
-        Vector children = new Vector(getChildren(parent));
-        if (children != null && children.contains(child))
-            return children.indexOf(child);
-        return -1;
-    }
-
     public Collection getChildren(Object parent) {
         Project p = ProjectManager.getManager().getCurrentProject();
         if (p == null)

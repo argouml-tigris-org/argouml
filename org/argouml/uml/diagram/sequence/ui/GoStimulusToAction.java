@@ -21,28 +21,41 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.state.ui;
+// $Id$
+
+package org.argouml.uml.diagram.sequence.ui;
 
 import java.util.Collection;
+import java.util.Vector;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
-public class GoStateToOutgoingTrans extends AbstractGoRule {
+public class GoStimulusToAction extends AbstractGoRule {
 
-  public String getRuleName() { return "State->Outgoing Transitions"; }
+    public Collection getChildren(Object parent) {
+        if (!(parent instanceof MStimulus))
+            return null;
+        MStimulus ms = (MStimulus) parent;
+        MAction action = ms.getDispatchAction();
+        Vector vector = new Vector();
+        vector.addElement(action);
+        return vector;
 
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
-          return ModelFacade.getOutgoings(parent);
-      }
-      return null;
-  }
+    }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStateVertex && getChildCount(node) > 0);
-  }
+    public boolean isLeaf(Object node) {
+        return !(node instanceof MStimulus && getChildCount(node) > 0);
 
-} /* end class GoStateToOutgoingTrans */
+    }
+
+    /**
+     * @see org.argouml.ui.AbstractGoRule#getRuleName()
+     */
+    public String getRuleName() {
+        return Argo.localize("Tree", "misc.stimulus.action");
+    }
+}

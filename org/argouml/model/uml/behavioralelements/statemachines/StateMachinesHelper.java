@@ -23,8 +23,11 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -241,6 +244,25 @@ public class StateMachinesHelper {
         if (sm == null)
         	return null;
         return sm.getTop();
+    }
+    
+    /**
+     * Gets all statevertices that are a target to transitions outgoing from the
+     * given statevertex.
+     * @param transition
+     * @return Collection
+     */
+    public Collection getOutgoingStates(Object ostatevertex) {
+        if (ModelFacade.isAStateVertex(ostatevertex)) {
+            MStateVertex statevertex = (MStateVertex)ostatevertex;
+            Collection col = new ArrayList();
+            Iterator it = statevertex.getOutgoings().iterator();
+            while (it.hasNext()) {
+                col.add(((MTransition)it.next()).getTarget());           
+            }
+            return col;
+        }
+        return null;
     }
     
     

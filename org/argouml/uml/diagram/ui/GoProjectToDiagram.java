@@ -24,67 +24,27 @@
 package org.argouml.uml.diagram.ui;
 
 import java.util.Collection;
-import java.util.Vector;
-
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.kernel.Project;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
-
-public class GoClassifierToStr extends AbstractGoRule {
+public class GoProjectToDiagram extends AbstractGoRule {
 
   public String getRuleName() {
-    return Argo.localize ("Tree", "misc.class.attribute");
+    return Argo.localize ("Tree", "misc.project.diagram");
   }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MClassifier) {
-      MClassifier cls = (MClassifier) parent;
-	  Collection behs = UmlHelper.getHelper().getCore().getAttributes(cls);
-	  Vector v = new Vector(behs);
-      return v.elementAt(index);
-	}
-    throw 
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
+      if (parent instanceof Project) {
+          return ((Project)parent).getDiagrams();
+      }
+      return null;
   }
-  
-  public int getChildCount(Object parent) {
-    if (parent instanceof MClassifier) {
-      Collection str = UmlHelper.getHelper().getCore().getAttributes((MClassifier) parent);
-      return (str == null) ? 0 : str.size();
-    }
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MClassifier) {
-      Vector str = new Vector(UmlHelper.getHelper().getCore().getAttributes((MClassifier)parent));
-      if (str.contains(child)) return str.indexOf(child);
-    }
-    return -1;
-  }
-
+    
   public boolean isLeaf(Object node) {
-    return !(node instanceof MClassifier && getChildCount(node) > 0);
+    // only for now
+    return !(node instanceof Project && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-  
 }

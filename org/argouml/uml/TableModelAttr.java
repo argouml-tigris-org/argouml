@@ -46,7 +46,7 @@ public class TableModelAttr extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof MClassifier)) return new Vector();
     MClassifier cls = (MClassifier) t;
-    Vector attr = new Vector( UmlHelper.getHelper().getCore().getAttributes(cls));
+    Vector attr = new Vector( UmlHelper.getHelper().getCore().getStructuralFeatures(cls));
     return attr;
   }
 

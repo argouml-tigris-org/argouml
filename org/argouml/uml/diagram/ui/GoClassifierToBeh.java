@@ -23,71 +23,31 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.*;
-import org.argouml.uml.MMUtil;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 public class GoClassifierToBeh extends AbstractGoRule {
 
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.operation");
   }
-  
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  } 
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MClassifier) {
-      MClassifier cls = (MClassifier) parent;
-	  Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
-	  Vector v = new Vector(behs);
-      return v.elementAt(index);
-    }
-    throw 
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
+   
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-  
-  public int getChildCount(Object parent) {
-    if (parent instanceof MClassifier) {
-      Collection beh = UmlHelper.getHelper().getCore().getOperations((MClassifier) parent);
-      return (beh == null) ? 0 : beh.size();
-    }
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MClassifier) {
-      MClassifier cls = (MClassifier) parent;
-	  Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
-	  Vector v = new Vector(behs);
-      if (v.contains(child)) return v.indexOf(child);
-    }
-    return -1;
-  }
+      if (ModelFacade.isAClassifier(parent)) {
+          return UmlHelper.getHelper().getCore().getOperations(parent);
+      }
+      return null;
+  }   
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MClassifier && getChildCount(node) > 0);
   }
 
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

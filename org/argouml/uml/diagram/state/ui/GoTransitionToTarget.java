@@ -23,59 +23,29 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 
-public class GoTransToTargetState extends AbstractGoRule {
+public class GoTransitionToTarget extends AbstractGoRule {
 
   public String getRuleName() { return "Transition->Target MState"; }
-  
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MTransition && index == 0) {
-      return ((MTransition)parent).getTarget();
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
 
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof MTransition) return 1;
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MTransition) {
-      if (((MTransition)parent).getTarget() == child)
-	return 0;
-    }
-    return -1;
+      if (ModelFacade.isATransition(parent)) {
+          Collection col = new ArrayList();
+          col.add(ModelFacade.getTransitions(parent));
+          return col;
+      }
+      return null;
   }
 
   public boolean isLeaf(Object node) {
     return !(node instanceof MTransition);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

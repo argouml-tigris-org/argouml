@@ -23,17 +23,11 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.AbstractGoRule;
 
 public class GoElementToMachine extends AbstractGoRule {
 
@@ -41,49 +35,16 @@ public class GoElementToMachine extends AbstractGoRule {
     return Argo.localize ("Tree", "misc.class.state-machine");
   }
   
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
-  }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MModelElement) {
-      Vector machines= new Vector(((MModelElement)parent).getBehaviors());
-      if (machines == null) return null;
-      return machines.elementAt(index);
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
+ 
   public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof MModelElement) {
-      Vector machines = new Vector(((MModelElement)parent).getBehaviors());
-      return (machines == null) ? 0 : machines.size();
-    }
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MModelElement) {
-      Vector machines = new Vector(((MModelElement)parent).getBehaviors());
-      return (machines == null) ? -1 : machines.indexOf(child);
-    }
-    return -1;
+      if (ModelFacade.isAModelElement(parent)) {
+          return ModelFacade.getBehaviors(parent);
+      }
+      return null;
   }
 
   public boolean isLeaf(Object node) {
-    return !(node instanceof MModelElement && getChildCount(node) > 0);
+    return !(ModelFacade.isAModelElement(node) && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
-
+  
 }

@@ -28,21 +28,19 @@ import java.util.Collection;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+public class GoCompositeStateToSubvertex extends AbstractGoRule {
 
-public class GoStateToOutgoingTrans extends AbstractGoRule {
+  public String getRuleName() { return "State->Substates"; }
 
-  public String getRuleName() { return "State->Outgoing Transitions"; }
+  public boolean isLeaf(Object node) {
+    return !(ModelFacade.isACompositeState(node) && getChildCount(node) > 0);
+  }
 
-  public Collection getChildren(Object parent) { 
-      if (ModelFacade.isAStateVertex(parent)) {
-          return ModelFacade.getOutgoings(parent);
+  public Collection getChildren(Object parent) {
+      if (ModelFacade.isACompositeState(parent)) {
+          return ModelFacade.getSubvertices(parent);
       }
       return null;
   }
 
-  public boolean isLeaf(Object node) {
-    return !(node instanceof MStateVertex && getChildCount(node) > 0);
-  }
-
-} /* end class GoStateToOutgoingTrans */
+}

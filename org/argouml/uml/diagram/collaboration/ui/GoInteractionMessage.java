@@ -1,13 +1,10 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.util.Collection;
-import java.util.Vector;
-import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
+
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 
 /**

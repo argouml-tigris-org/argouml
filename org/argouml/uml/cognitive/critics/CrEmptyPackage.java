@@ -58,7 +58,7 @@ public class CrEmptyPackage extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	cat.debug("predicate2 on " + dm);
 	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
-	Iterator enum = ModelFacade.getOwnedElements(dm);
+	Iterator enum = ModelFacade.getOwnedElements(dm).iterator();
 	if (!enum.hasNext()) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

@@ -21,61 +21,29 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.state.ui;
+package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.util.Collection;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.ui.AbstractGoRule;
 
-import org.argouml.ui.*;
+import ru.novosoft.uml.foundation.core.MClass;
 
-public class GoTransToSourceState extends AbstractGoRule {
+public class GoClassToAssociatedClass extends AbstractGoRule {
 
-  public String getRuleName() { return "Transition->Source MState"; }
-  
-  public Object getRoot() {
-      throw
-	  new UnsupportedOperationException("getRoot should never be called");
+  public String getRuleName() { return "Class->Associated Class"; }
+
+  public Collection getChildren(Object parent) {
+      if (ModelFacade.isAClass(parent)) {
+          return UmlHelper.getHelper().getCore().getAssociatedClasses(parent);
+      }
+      return null;
   }
-  public void setRoot(Object r) { }
-
-  public Object getChild(Object parent, int index) {
-    if (parent instanceof MTransition && index == 0) {
-      return ((MTransition)parent).getSource();
-    }
-    throw
-	new UnsupportedOperationException("getChild should never be get here");
-  }
-
-  public Collection getChildren(Object parent) { 
-      throw
-          new UnsupportedOperationException("getChildren should not be called");
-  }
-
-  public int getChildCount(Object parent) {
-    if (parent instanceof MTransition) return 1;
-    return 0;
-  }
-
-  public int getIndexOfChild(Object parent, Object child) {
-    if (parent instanceof MTransition) {
-      if (((MTransition)parent).getSource() == child)
-	return 0;
-    }
-    return -1;
-  }
-
+   
   public boolean isLeaf(Object node) {
-    return !(node instanceof MTransition);
+    return !(node instanceof MClass && getChildCount(node) > 0);
   }
-
-  public void valueForPathChanged(TreePath path, Object newValue) { }
-  public void addTreeModelListener(TreeModelListener l) { }
-  public void removeTreeModelListener(TreeModelListener l) { }
 
 }

@@ -32,20 +32,14 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
+import java.util.Collection;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.model.uml.UmlHelper;
-import org.argouml.ui.*;
-import org.argouml.uml.MMUtil;
+import org.argouml.ui.AbstractGoRule;
+
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MClassifier;
 
 
 /**

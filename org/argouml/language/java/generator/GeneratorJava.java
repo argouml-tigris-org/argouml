@@ -818,7 +818,7 @@ implements PluggableNotation, FileGenerator {
             String tv = null; // helper for tagged values
 
             // add attributes
-            Collection strs = UmlHelper.getHelper().getCore().getAttributes(cls);
+            Collection strs = UmlHelper.getHelper().getCore().getStructuralFeatures(cls);
             //
             // 2002-06-08
             // Jaap Branderhorst
