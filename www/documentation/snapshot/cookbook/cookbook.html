@@ -21,7 +21,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
  UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-             </p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="#Na4d">Introduction</a></dt><dd><dl><dt>1.1 <a href="#thanks">Thanks</a></dt><dt>1.2 <a href="#project">About the project</a></dt><dt>1.3 <a href="#Na6d">About this Cookbook...</a></dt><dd><dl><dt>1.3.1 <a href="#Na75">In this Cookbook, you will find...</a></dt><dt>1.3.2 <a href="#Na87">In this Cookbook, you will not find...</a></dt></dl></dd></dl></dd><dt>2 <a href="#Preliminaries">Preliminaries</a></dt><dd><dl><dt>2.1 <a href="#starting">Getting started</a></dt><dd><dl><dt>2.1.1 <a href="#Nac1">Which tools do I need to build ArgoUML?</a></dt><dt>2.1.2 <a href="#Naf9">Compiling failed. Any suggestions?</a></dt></dl></dd><dt>2.2 <a href="#Build">Build Process</a></dt><dd><dl><dt>2.2.1 <a href="#Nb36">How ant is run from the ArgoUML development environment</a></dt><dd><dl><dt>2.2.1.1 <a href="#Nb79">Compiling for Unix</a></dt><dt>2.2.1.2 <a href="#Nbe0">Compiling for Windows</a></dt></dl></dd><dt>2.2.2 <a href="#Nc33">How documentation is presented</a></dt><dd><dl><dt>2.2.2.1 <a href="#Nc3b">How the ArgoUML web site works</a></dt><dt>2.2.2.2 <a href="#Nc5e">The ArgoUML documentation</a></dt><dt>2.2.2.3 <a href="#Nd5f">Tools that does the generation</a></dt><dt>2.2.2.4 <a href="#Nd6e">How developers work with documentation</a></dt></dl></dd></dl></dd><dt>2.3 <a href="#mailing_lists">Mailing Lists</a></dt></dl></dd><dt>3 <a href="#components">ArgoUML Components</a></dt><dd><dl><dt>3.1 <a href="#Ne08">Argo Initialization</a></dt><dd><dl><dt>3.1.1 <a href="#Ne0d">Which sources are involved?</a></dt><dt>3.1.2 <a href="#Ne31">What is loaded/initialized?</a></dt></dl></dd><dt>3.2 <a href="#Ne3e">Which Objects live during a typical session?</a></dt><dt>3.3 <a href="#Ne47">What is their task?</a></dt><dt>3.4 <a href="#bigger_components">The bigger picture, ArgoUML and supporting libraries</a></dt><dt>3.5 <a href="#nsuml">NS-UML</a></dt><dt>3.6 <a href="#small">The smaller components, inside ArgoUML</a></dt></dl></dd><dt>4 <a href="#inside_components">Inside the components</a></dt><dd><dl><dt>4.1 <a href="#general">General information</a></dt><dd><dl><dt>4.1.1 <a href="#howdoi_general">How do I ...?</a></dt></dl></dd><dt>4.2 <a href="#critics">Critics</a></dt><dd><dl><dt>4.2.1 <a href="#howdoi_critics">How do I ...?</a></dt></dl></dd><dt>4.3 <a href="#notation">Notation</a></dt><dd><dl><dt>4.3.1 <a href="#howdoi_notation">How do I ...?</a></dt></dl></dd><dt>4.4 <a href="#diagrams">Diagrams</a></dt><dd><dl><dt>4.4.1 <a href="#howdoi_diagrams">How do I ...?</a></dt></dl></dd><dt>4.5 <a href="#reverse">Reverse Engineering</a></dt><dd><dl><dt>4.5.1 <a href="#howdoi_reverse">How do I ...?</a></dt><dt>4.5.2 <a href="#Nfb8">Which sources are involved?</a></dt><dt>4.5.3 <a href="#Nfc4">How is the grammar of the target language implemented?</a></dt><dt>4.5.4 <a href="#Nfd2">Which model/diagramm elements are generated?</a></dt><dt>4.5.5 <a href="#Nfdb">Which layout algorithm is used?</a></dt></dl></dd><dt>4.6 <a href="#help">Help System</a></dt><dd><dl><dt>4.6.1 <a href="#howdoi_help">How do I ...?</a></dt></dl></dd><dt>4.7 <a href="#internationalization">Internationalization</a></dt><dd><dl><dt>4.7.1 <a href="#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>4.8 <a href="#modules_and_plugins">Modules and PlugIns</a></dt><dd><dl><dt>4.8.1 <a href="#modules_vs_plugins">Differences between modules and plugins</a></dt><dt>4.8.2 <a href="#modules">Modules</a></dt><dd><dl><dt>4.8.2.1 <a href="#architecture_modules">Module Architecture</a></dt><dt>4.8.2.2 <a href="#using_modules">Using Modules</a></dt><dt>4.8.2.3 <a href="#howdoi_modules">How do I ...?</a></dt></dl></dd><dt>4.8.3 <a href="#plugins">Plugins</a></dt><dd><dl><dt>4.8.3.1 <a href="#architecture_plugins">Plugin Architecture</a></dt><dt>4.8.3.2 <a href="#using_plugins">Using Plugins</a></dt><dt>4.8.3.3 <a href="#howdoi_plugins">How do I ...?</a></dt></dl></dd></dl></dd><dt>4.9 <a href="#logging">Logging</a></dt><dd><dl><dt>4.9.1 <a href="#howdoi_logging">How do I ...?</a></dt></dl></dd><dt>4.10 <a href="#N13a0">The JUnit module</a></dt><dd><dl><dt>4.10.1 <a href="#N13ed">How to run the test cases</a></dt><dt>4.10.2 <a href="#N145d">How to write a test case</a></dt><dt>4.10.3 <a href="#N1492">The TestAll class</a></dt></dl></dd></dl></dd><dt>5 <a href="#cvs">Employed CVS standards</a></dt><dd><dl><dt>5.1 <a href="#branches">Creating and using branches</a></dt><dd><dl><dt>5.1.1 <a href="#howdoi_cvs">How do I ...?</a></dt></dl></dd></dl></dd><dt>6 <a href="#standards">Standards for coding in ArgoUML</a></dt><dt>7 <a href="#further_reading">Further Reading</a></dt><dd><dl><dt>7.1 <a href="#robbins">Jason Robbins Dissertation</a></dt><dd><dl><dt>7.1.1 <a href="#N167c">Abstract</a></dt><dt>7.1.2 <a href="#N1688">Where to find it</a></dt></dl></dd><dt>7.2 <a href="#skinner">Martin Skinners Dissertation</a></dt><dd><dl><dt>7.2.1 <a href="#N16a1">Abstract</a></dt><dt>7.2.2 <a href="#N16af">Where to find it</a></dt></dl></dd></dl></dd><dt>8 <a href="#N16bf">Screen Grabs</a></dt><dd><dl><dt>8.1 <a href="#N16c7">How to make Screen Grabs</a></dt><dd><dl><dt>8.1.1 <a href="#N16d2">MS Windows</a></dt><dt>8.1.2 <a href="#N16e7">Linux</a></dt></dl></dd><dt>8.2 <a href="#N16f1">Argouml\application\api class diagram screen grab</a></dt><dt>8.3 <a href="#N1703">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.4 <a href="#N1715">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.5 <a href="#N1727">org\Argouml\cognitive\critics class diagram screen grab</a></dt><dt>8.6 <a href="#N1739">org\Argouml\cognitive\critics\ui class diagram screen grab</a></dt><dt>8.7 <a href="#N1742">src_new\org\Argouml\kernel class diagram screen grab</a></dt><dt>8.8 <a href="#N1754">src_new\org\Argouml\ocl class diagram screen grab</a></dt></dl></dd></dl></div><div class="chapter" id="Na4d"><div class="titlepage"><div><h2 class="title"><a name="Na4d"></a>Chapter 1. Introduction</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1.1 <a href="#thanks">Thanks</a></dt><dt>1.2 <a href="#project">About the project</a></dt><dt>1.3 <a href="#Na6d">About this Cookbook...</a></dt><dd><dl><dt>1.3.1 <a href="#Na75">In this Cookbook, you will find...</a></dt><dt>1.3.2 <a href="#Na87">In this Cookbook, you will not find...</a></dt></dl></dd></dl></div><div class="sect1"><a name="thanks"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="thanks"></a>1.1. Thanks</h2></div></div><p>
+             </p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="#Na4d">Introduction</a></dt><dd><dl><dt>1.1 <a href="#thanks">Thanks</a></dt><dt>1.2 <a href="#project">About the project</a></dt><dt>1.3 <a href="#Na6d">About this Cookbook...</a></dt><dd><dl><dt>1.3.1 <a href="#Na75">In this Cookbook, you will find...</a></dt><dt>1.3.2 <a href="#Na87">In this Cookbook, you will not find...</a></dt></dl></dd></dl></dd><dt>2 <a href="#buildingandtools">Building and Tools</a></dt><dd><dl><dt>2.1 <a href="#starting">Getting started</a></dt><dd><dl><dt>2.1.1 <a href="#Nad8">Which tools do I need to build ArgoUML?</a></dt></dl></dd><dt>2.2 <a href="#cvs_checkout">Download from the cvs repository</a></dt><dt>2.3 <a href="#Build">Build Process</a></dt><dd><dl><dt>2.3.1 <a href="#Nb81">How ant is run from the ArgoUML development environment</a></dt><dt>2.3.2 <a href="#Nc93">How documentation is presented</a></dt><dt>2.3.3 <a href="#Ne2b">Troubleshooting the development build</a></dt></dl></dd><dt>2.4 <a href="#mailing_lists">Mailing Lists</a></dt></dl></dd><dt>3 <a href="#components">ArgoUML Components</a></dt><dd><dl><dt>3.1 <a href="#Ne99">Argo Initialization</a></dt><dd><dl><dt>3.1.1 <a href="#Ne9e">Which sources are involved?</a></dt><dt>3.1.2 <a href="#Nec2">What is loaded/initialized?</a></dt></dl></dd><dt>3.2 <a href="#Necf">Which Objects live during a typical session?</a></dt><dt>3.3 <a href="#Ned8">What is their task?</a></dt><dt>3.4 <a href="#bigger_components">The bigger picture, ArgoUML and supporting libraries</a></dt><dt>3.5 <a href="#small">The smaller components, inside ArgoUML</a></dt><dt>3.6 <a href="#Nf8f">Collaboration table between components</a></dt></dl></dd><dt>4 <a href="#inside_components">Inside the components</a></dt><dd><dl><dt>4.1 <a href="#general">General information</a></dt><dd><dl><dt>4.1.1 <a href="#howdoi_general">How do I ...?</a></dt></dl></dd><dt>4.2 <a href="#critics">Critics and other cognitive tools</a></dt><dd><dl><dt>4.2.1 <a href="#N12ab">Collaborations for Critics and cognitive tools</a></dt><dt>4.2.2 <a href="#N133b">Main classes</a></dt><dt>4.2.3 <a href="#howdoi_critics">How do I ...?</a></dt><dt>4.2.4 <a href="#N13c0">org.argouml.cognitive.critics.* class diagram</a></dt></dl></dd><dt>4.3 <a href="#notation">Notation</a></dt><dd><dl><dt>4.3.1 <a href="#howdoi_notation">How do I ...?</a></dt></dl></dd><dt>4.4 <a href="#diagrams">Diagrams</a></dt><dd><dl><dt>4.4.1 <a href="#howdoi_diagrams">How do I ...?</a></dt></dl></dd><dt>4.5 <a href="#reverse">Reverse Engineering</a></dt><dd><dl><dt>4.5.1 <a href="#howdoi_reverse">How do I ...?</a></dt><dt>4.5.2 <a href="#N1409">Which sources are involved?</a></dt><dt>4.5.3 <a href="#N1415">How is the grammar of the target language implemented?</a></dt><dt>4.5.4 <a href="#N1423">Which model/diagramm elements are generated?</a></dt><dt>4.5.5 <a href="#N142c">Which layout algorithm is used?</a></dt></dl></dd><dt>4.6 <a href="#detailspanel">Details Panel</a></dt><dd><dl><dt>4.6.1 <a href="#howdoi_detailspanel">How do I ...?</a></dt></dl></dd><dt>4.7 <a href="#help">Help System</a></dt><dd><dl><dt>4.7.1 <a href="#howdoi_help">How do I ...?</a></dt></dl></dd><dt>4.8 <a href="#internationalization">Internationalization</a></dt><dd><dl><dt>4.8.1 <a href="#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>4.9 <a href="#modules_and_plugins">Modules and PlugIns</a></dt><dd><dl><dt>4.9.1 <a href="#modules_vs_plugins">Differences between modules and plugins</a></dt><dt>4.9.2 <a href="#modules">Modules</a></dt><dt>4.9.3 <a href="#plugins">Plugins</a></dt></dl></dd><dt>4.10 <a href="#logging">Logging</a></dt><dd><dl><dt>4.10.1 <a href="#howdoi_logging">How do I ...?</a></dt></dl></dd><dt>4.11 <a href="#N183c">The JUnit module</a></dt><dd><dl><dt>4.11.1 <a href="#N1889">How to run the test cases</a></dt><dt>4.11.2 <a href="#N18f9">How to write a test case</a></dt><dt>4.11.3 <a href="#N192e">The TestAll class</a></dt></dl></dd></dl></dd><dt>5 <a href="#cvs">Employed CVS standards</a></dt><dd><dl><dt>5.1 <a href="#branches">Creating and using branches</a></dt><dd><dl><dt>5.1.1 <a href="#howdoi_cvs">How do I ...?</a></dt></dl></dd></dl></dd><dt>6 <a href="#standards">Standards for coding in ArgoUML</a></dt><dt>7 <a href="#further_reading">Further Reading</a></dt><dd><dl><dt>7.1 <a href="#robbins">Jason Robbins Dissertation</a></dt><dd><dl><dt>7.1.1 <a href="#N1b2a">Abstract</a></dt><dt>7.1.2 <a href="#N1b36">Where to find it</a></dt></dl></dd><dt>7.2 <a href="#skinner">Martin Skinners Dissertation</a></dt><dd><dl><dt>7.2.1 <a href="#N1b4f">Abstract</a></dt><dt>7.2.2 <a href="#N1b5d">Where to find it</a></dt></dl></dd></dl></dd><dt>8 <a href="#N1b6d">Screen Grabs</a></dt><dd><dl><dt>8.1 <a href="#N1b75">How to make Screen Grabs</a></dt><dd><dl><dt>8.1.1 <a href="#N1b80">MS Windows</a></dt><dt>8.1.2 <a href="#N1b95">Linux</a></dt></dl></dd><dt>8.2 <a href="#N1b9f">Argouml\application\api class diagram screen grab</a></dt><dt>8.3 <a href="#N1bb1">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.4 <a href="#N1bc3">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.5 <a href="#N1bd5">src_new\org\Argouml\kernel class diagram screen grab</a></dt><dt>8.6 <a href="#N1be7">src_new\org\Argouml\ocl class diagram screen grab</a></dt></dl></dd><dt>9 <a href="#N1bfa">Organisation of ArgoUML documentation</a></dt></dl></div><div class="chapter" id="Na4d"><div class="titlepage"><div><h2 class="title"><a name="Na4d"></a>Chapter 1. Introduction</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1.1 <a href="#thanks">Thanks</a></dt><dt>1.2 <a href="#project">About the project</a></dt><dt>1.3 <a href="#Na6d">About this Cookbook...</a></dt><dd><dl><dt>1.3.1 <a href="#Na75">In this Cookbook, you will find...</a></dt><dt>1.3.2 <a href="#Na87">In this Cookbook, you will not find...</a></dt></dl></dd></dl></div><div class="sect1"><a name="thanks"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="thanks"></a>1.1. Thanks</h2></div></div><p>
 We, the authors would like to take the opportunity to thank everyone
 involved in the creation of this documentation, and especially the
 people behind setting up the DocBook environment. In particular thanks
@@ -62,20 +62,46 @@ Information on how to install and use ArgoUML.
 </p><p>
 Information on what UML is and if/how you should use it in your project.
 How to convince your project to use ArgoUML as a modelling tool.
-</p></div></div></div><div class="chapter" id="Preliminaries"><div class="titlepage"><div><h2 class="title"><a name="Preliminaries"></a>Chapter 2. Preliminaries</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>2.1 <a href="#starting">Getting started</a></dt><dd><dl><dt>2.1.1 <a href="#Nac1">Which tools do I need to build ArgoUML?</a></dt><dt>2.1.2 <a href="#Naf9">Compiling failed. Any suggestions?</a></dt></dl></dd><dt>2.2 <a href="#Build">Build Process</a></dt><dd><dl><dt>2.2.1 <a href="#Nb36">How ant is run from the ArgoUML development environment</a></dt><dd><dl><dt>2.2.1.1 <a href="#Nb79">Compiling for Unix</a></dt><dt>2.2.1.2 <a href="#Nbe0">Compiling for Windows</a></dt></dl></dd><dt>2.2.2 <a href="#Nc33">How documentation is presented</a></dt><dd><dl><dt>2.2.2.1 <a href="#Nc3b">How the ArgoUML web site works</a></dt><dt>2.2.2.2 <a href="#Nc5e">The ArgoUML documentation</a></dt><dt>2.2.2.3 <a href="#Nd5f">Tools that does the generation</a></dt><dt>2.2.2.4 <a href="#Nd6e">How developers work with documentation</a></dt></dl></dd></dl></dd><dt>2.3 <a href="#mailing_lists">Mailing Lists</a></dt></dl></div><div class="sect1"><a name="starting"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="starting"></a>2.1. Getting started</h2></div></div><p>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</p><p>
-<a name="Naa8" class="indexterm"></a>
-<a name="Nab0" class="indexterm"></a>
+</p></div></div></div><div class="chapter" id="buildingandtools"><div class="titlepage"><div><h2 class="title"><a name="buildingandtools"></a>Chapter 2. Building and Tools</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>2.1 <a href="#starting">Getting started</a></dt><dd><dl><dt>2.1.1 <a href="#Nad8">Which tools do I need to build ArgoUML?</a></dt></dl></dd><dt>2.2 <a href="#cvs_checkout">Download from the cvs repository</a></dt><dt>2.3 <a href="#Build">Build Process</a></dt><dd><dl><dt>2.3.1 <a href="#Nb81">How ant is run from the ArgoUML development environment</a></dt><dt>2.3.2 <a href="#Nc93">How documentation is presented</a></dt><dt>2.3.3 <a href="#Ne2b">Troubleshooting the development build</a></dt></dl></dd><dt>2.4 <a href="#mailing_lists">Mailing Lists</a></dt></dl></div><p>
+If you are in a hurry:
+<pre class="programlisting">
+C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
+C:\Work&gt;cvs login   (use guest as password)
+C:\Work&gt;cvs checkout argouml/lib argouml/src_new
+C:\Work&gt;set JAVA_HOME=<i><tt>C:\Programs\jdkwhatever</tt></i>
+C:\Work&gt;set ANT_HOME=C:\Work\argouml
+C:\Work&gt;cd argouml\src_new
+C:\Work\argouml\src_new&gt;build run
+
+</pre>
+A window from the newly compiled ArgoUML opens after a while!
+</p><p>
+That was the compact version.
+(Note: jdk cannot be installed in a directory that contains space in its 
+name.)
+</p><p>
+If you don't understand this or it doesn't work read the rest of 
+the chapter that describes all the nitty details about why and
+how.
+</p><div class="sect1"><a name="starting"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="starting"></a>2.1. Getting started</h2></div></div><p>
+In order to develop with ArgoUML it is absolutely mandatory to get get
+the CVS version of ArgoUML.
+How this is done is described in 
+<a href="#cvs_checkout">Download from the cvs repository</a>.
+</p><p>
+<a name="Nabf" class="indexterm"></a>
+<a name="Nac7" class="indexterm"></a>
 It is also recommended that you check out GEF from <a href="http://gef.tigris.org" target="_top">gef.tigris.org</a> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</p><p>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
- </p><div class="sect2"><a name="Nac1"></a><div class="titlepage"><div><h3 class="title"><a name="Nac1"></a>2.1.1. Which tools do I need to build ArgoUML?</h3></div></div><div class="itemizedlist"><ul><li><p><a name="Nac8"></a>
+ </p><div class="sect2"><a name="Nad8"></a><div class="titlepage"><div><h3 class="title"><a name="Nad8"></a>2.1.1. Which tools do I need to build ArgoUML?</h3></div></div><div class="itemizedlist"><ul><li><p><a name="Nadf"></a>
 CVS for obtaining the latest files via internet
-</p></li><li><p><a name="Nace"></a>
+</p></li><li><p><a name="Nae5"></a>
 JDK, at least version 1.2.2 (includes the java compiler)
-</p></li><li><p><a name="Nad4"></a>
+</p></li><li><p><a name="Naeb"></a>
 ANT, the Java make tool to manage compiling and packaging.
 </p><p>
 This tool is provided when you check out
 <tt>argouml/lib</tt>.
-</p></li><li><p><a name="Nae4"></a>
+</p></li><li><p><a name="Nafb"></a>
 libs: nsuml.jar, ocl-argo.jar, gef.jar, antlrall.jar
 </p><p>
 These tools are also provided when you check out
@@ -83,16 +109,33 @@ These tools are also provided when you check out
 </p></li></ul></div><p>
 Since the ant tool and the four libs are provided by in the cvs repository,
 a simple 'build package' should be sufficient to compile and build.
-</p></div><div class="sect2"><a name="Naf9"></a><div class="titlepage"><div><h3 class="title"><a name="Naf9"></a>2.1.2. Compiling failed. Any suggestions?</h3></div></div><p>
-Most compiling problems arise from wrong versions: maybe ANT
-or JDK, but most often one of the four libs. A look on the error
-messages can help. Get the appropriate version (or, e.g. in the
-case of gef.jar, get the sources through CVS and build it on
-your own). Another reason for problems is an unclean local
-source tree: if yours is in doubt, remove it completely and
-get it all again through CVS. If nothing helps, ask the
-<a href="mailto:dev@argouml.tigris.org" target="_top">experts</a>!
-</p></div></div><div class="sect1"><a name="Build"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Build"></a>2.2. Build Process</h2></div></div><p>
+</p></div></div><div class="sect1"><a name="cvs_checkout"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="cvs_checkout"></a>2.2. Download from the cvs repository</h2></div></div><p>
+The cvs repository at Tigris is accessable using the pserver protocol.
+The cvs root is <tt>/cvs</tt> at cvs.tigris.org.
+You use your Tigris login and Tigris password.
+</p><p>
+This means that you will set the <tt>CVSROOT</tt>-variable to
+<i><tt>:pserver:<i><tt>login</tt></i>@cvs.tigris.org:/cvs</tt></i>
+where <i><tt>login</tt></i> is you Tigris login.
+This needs to be done for the first checkout.
+After that the root will be remembered by the checked out copy.
+</p><p>
+The next thing to do is to login. It is done using the command:
+<b>cvs login</b>.
+This only needs to be done once and then the account on your machine
+remembers this.
+</p><p>
+Then you do the actual checking out.
+<b>cvs checkout <i><tt>modulename</tt></i></b>.
+</p><p>
+The CVS modules you need to check out to build ArgoUML are
+<i><tt>argouml/lib</tt></i> and
+<i><tt>argouml/src_new</tt></i>.
+If you don't give a module name all of ArgoUML is checked out.
+That is no problem except for the extra use of bandwidth and disk space
+but if you have plenty of both, get it all, and eventually you will
+see how everything is used for a purpose in the project.
+</p></div><div class="sect1"><a name="Build"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Build"></a>2.3. Build Process</h2></div></div><p>
      The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
      </p><p>
 Ant is a tool written in java developed for Apache that reads an xml-file
@@ -104,7 +147,7 @@ There is one of those in every separately built directory
 (<tt>src_new</tt>,
 <tt>documentation</tt>, and
 <tt>modules/<i><tt>whatever</tt></i></tt>).
-</p><div class="sect2"><a name="Nb36"></a><div class="titlepage"><div><h3 class="title"><a name="Nb36"></a>2.2.1. How ant is run from the ArgoUML development environment</h3></div></div><p>
+</p><div class="sect2"><a name="Nb81"></a><div class="titlepage"><div><h3 class="title"><a name="Nb81"></a>2.3.1. How ant is run from the ArgoUML development environment</h3></div></div><p>
 For your convenience the ant tool of the correct version is present in the
 cvs repository of ArgoUML in the file 
 <tt>argouml/lib/ant.jar</tt>.
@@ -129,40 +172,44 @@ By setting ANT_HOME to different values you can at different times
 build with different versions of ant.
 This does however not work in the Windows case because of
 how <tt>build.bat</tt> is written.
-</p><div class="sect3"><a name="Nb79"></a><div class="titlepage"><div><h4 class="title"><a name="Nb79"></a>2.2.1.1. Compiling for Unix</h4></div></div><p>
+</p><div class="sect3"><a name="Nbc4"></a><div class="titlepage"><div><h4 class="title"><a name="Nbc4"></a>2.3.1.1. Compiling for Unix</h4></div></div><p>
 Here is what you need to do in order to compile and run 
 your checked out copy of ArgoUML under Unix.
-</p><div class="orderedlist"><ol type="1"><li><p><a name="Nb87"></a><b>JAVA_HOME=<i><tt>/where/you/have/installed/jdk</tt></i></b></p></li><li><p><a name="Nb92"></a><b>export JAVA_HOME</b></p><p>
+</p><div class="orderedlist"><ol type="1"><li><p><a name="Nbd2"></a><b>JAVA_HOME=<i><tt>/where/you/have/installed/jdk</tt></i></b></p></li><li><p><a name="Nbdd"></a><b>export JAVA_HOME</b></p><p>
 This is for sh-style shells like sh, ksh, zsh and bash. If you use
 csh-style shells like csh and tcsh you will instead have to write
 <b>setenv JAVA_HOME <i><tt>/where/you/have/installed/jdk</tt></i></b>.
-</p></li><li><p><a name="Nba5"></a>
+</p></li><li><p><a name="Nbf0"></a>
 Change the current directory to the directory you are building
 </p><p>
 <b>cd <i><tt>/your/checked/out/copy/of/argouml/src_new</tt></i></b>
-</p></li><li><p><a name="Nbb5"></a>
+</p></li><li><p><a name="Nc00"></a>
 Modify the beginning of the <tt>build.sh</tt> file 
 by setting ARGO_HOME and ANT_HOME to the name
 <i><tt>/your/checked/out/copy/of/argouml</tt></i>
-</p></li><li><p><a name="Nbc3"></a>Start ant using <b>./build.sh</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nbd0"></a>
+</p></li><li><p><a name="Nc0e"></a>Start ant using <b>./build.sh</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nc1b"></a>
 Compile and run Argouml using <b>./build.sh run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
-</p></li></ol></div></div><div class="sect3"><a name="Nbe0"></a><div class="titlepage"><div><h4 class="title"><a name="Nbe0"></a>2.2.1.2. Compiling for Windows</h4></div></div><div class="orderedlist"><ol type="1"><li><p><a name="Nbeb"></a>
+</p></li></ol></div></div><div class="sect3"><a name="Nc2b"></a><div class="titlepage"><div><h4 class="title"><a name="Nc2b"></a>2.3.1.2. Compiling for Windows</h4></div></div><div class="orderedlist"><ol type="1"><li><p><a name="Nc36"></a>
 <b>set JAVA_HOME=<i><tt>/where/you/have/installed/jdk</tt></i></b>
-</p></li><li><p><a name="Nbf8"></a>
+</p></li><li><p><a name="Nc43"></a>
 <b>set ANT_HOME=<i><tt>/your/checked/out/copy/of/argouml</tt></i></b>
-</p></li><li><p><a name="Nc05"></a>Change the current directory to the directory you are building</p><p>
+</p></li><li><p><a name="Nc50"></a>Change the current directory to the directory you are building</p><p>
 <b>chdir <i><tt>\your\checked\out\copy\of\argouml\src_new</tt></i></b>
-</p></li><li><p><a name="Nc15"></a>Start ant using <b>build</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nc22"></a>
+</p></li><li><p><a name="Nc60"></a>Start ant using <b>build</b></p><p>This gives you a list of targets with descriptions</p></li><li><p><a name="Nc6d"></a>
 Compile and run Argouml using <b>build run</b>
 </p><p>
 You can do this over and over again when you have modified something
 or want to compile and run again.
-</p></li></ol></div></div></div><div class="sect2"><a name="Nc33"></a><div class="titlepage"><div><h3 class="title"><a name="Nc33"></a>2.2.2. How documentation is presented</h3></div></div><p>
+</p></li></ol></div></div><div class="sect3"><a name="Nc7d"></a><div class="titlepage"><div><h4 class="title"><a name="Nc7d"></a>2.3.1.3. Building javadoc</h4></div></div><p>
+By running ant again using <b>build prepare-docs</b>
+the javadoc documentation is generated and put into
+<tt>argouml/build/doc</tt>.
+</p></div></div><div class="sect2"><a name="Nc93"></a><div class="titlepage"><div><h3 class="title"><a name="Nc93"></a>2.3.2. How documentation is presented</h3></div></div><p>
 This describes how the documentation arrives on the web site.
-</p><div class="sect3"><a name="Nc3b"></a><div class="titlepage"><div><h4 class="title"><a name="Nc3b"></a>2.2.2.1. How the ArgoUML web site works</h4></div></div><p>
+</p><div class="sect3"><a name="Nc9b"></a><div class="titlepage"><div><h4 class="title"><a name="Nc9b"></a>2.3.2.1. How the ArgoUML web site works</h4></div></div><p>
 Tigris provides the ArgoUML site to be edited through cvs. Everything
 that is checked in under <tt>argouml/www</tt>
 becomes immediatly available at the url 
@@ -174,7 +221,7 @@ available at
 <a href="http://argouml.tigris.org/project.html" target="_top">http://argouml.tigris.org/project.html</a>.
 </p><p>
 This is the way the site is maintained and updated.
-</p></div><div class="sect3"><a name="Nc5e"></a><div class="titlepage"><div><h4 class="title"><a name="Nc5e"></a>2.2.2.2. The ArgoUML documentation</h4></div></div><p>
+</p></div><div class="sect3"><a name="Ncbe"></a><div class="titlepage"><div><h4 class="title"><a name="Ncbe"></a>2.3.2.2. The ArgoUML documentation</h4></div></div><p>
 For the ArgoUML project the same documenation shall be available in both
 html, pdf and javahelp. To this end the documentation is written in
 docbook xml and generated into two versions of html 
@@ -198,7 +245,7 @@ Below I will reference this directory using
 </p><p>
 When a new version of the documentation is to be made available on the
 web site the responsible document release person does the following:
-</p><div class="orderedlist"><ol type="1"><li><p><a name="Nc99"></a>
+</p><div class="orderedlist"><ol type="1"><li><p><a name="Ncf9"></a>
 He checks out an updated copy of everything needed
 and a copy of the <tt>argouml/www</tt>.
 </p><p>
@@ -207,7 +254,7 @@ To be on the safe side, this could be the whole of ArgoUML.
 If wanted, the cvs repository could be tagged and then the tag
 can be checked out. This makes it possible to know exactly 
 how a certain version of the documentation was generated.
-</p></li><li><p><a name="Ncac"></a>
+</p></li><li><p><a name="Nd0c"></a>
 The documentation is generated using <b>build docs</b>.
 </p><p>
 This generates all four books and the result appears in 
@@ -218,12 +265,12 @@ This generates all four books and the result appears in
 This has been done several times before while preparing the release so
 no problems are expected. If there are problems then the preparations
 was not good enough and the process is best stopped right here.
-</p></li><li><p><a name="Ncd8"></a>
+</p></li><li><p><a name="Nd38"></a>
 All the old files are removed from the checked out copy of 
 <tt>argouml/www/documentation/defaulthtml/<i><tt>book</tt></i></tt>, 
 <tt>argouml/www/documentation/printablehtml/<i><tt>book</tt></i></tt>, and
 <tt>argouml/www/documentation/pdf/<i><tt>book</tt></i></tt>.
-</p></li><li><p><a name="Ncf9"></a>
+</p></li><li><p><a name="Nd59"></a>
 New files are copied into the checked out copy of www
 on top of the previous files there replacing them.
 </p><p>
@@ -232,7 +279,7 @@ All the files are copied from
 <tt>argouml/www/documentation/defaulthtml/<i><tt>book</tt></i></tt>. 
 The same for <tt>printablehtml</tt> and 
 <tt>pdf</tt>.
-</p></li><li><p><a name="Nd22"></a>
+</p></li><li><p><a name="Nd82"></a>
 No longer used files in 
 <tt>argouml/www/documentation</tt>
 are removed from cvs and new files are added.
@@ -251,11 +298,11 @@ either because that chapter does not exist anymore or that the tool
 generate filenames differently.
 The Unknown files are files with filenames that for the same reason
 appear from one version of the documentation to the next.
-</p></li><li><p><a name="Nd4f"></a>
+</p></li><li><p><a name="Ndaf"></a>
 Commit the changes thus publishing it on the web site.
 </p><p>
 <b>cvs commit -m'New version of the documentation published'</b>
-</p></li></ol></div></div><div class="sect3"><a name="Nd5f"></a><div class="titlepage"><div><h4 class="title"><a name="Nd5f"></a>2.2.2.3. Tools that does the generation</h4></div></div><p>
+</p></li></ol></div></div><div class="sect3"><a name="Ndbf"></a><div class="titlepage"><div><h4 class="title"><a name="Ndbf"></a>2.3.2.3. Tools that does the generation</h4></div></div><p>
 The tools and templates to do the conversion from docbook xml to html,
 pdf, and javahelp are developed by other open source projects and
 entered in the ArgoUML cvs repository as a convenience to the developer and
@@ -274,7 +321,7 @@ This means that ArgoUML cvs only contains released versions of that tool.
 If we find an unacceptable bug in any of these tools
 we either refrain from moving to that version or 
 revert to the previous version of the tool.
-</p></div><div class="sect3"><a name="Nd6e"></a><div class="titlepage"><div><h4 class="title"><a name="Nd6e"></a>2.2.2.4. How developers work with documentation</h4></div></div><p>
+</p></div><div class="sect3"><a name="Ndce"></a><div class="titlepage"><div><h4 class="title"><a name="Ndce"></a>2.3.2.4. How developers work with documentation</h4></div></div><p>
 Developers that work with the documentation or with the tools 
 to generate the documentation (or anyone else interested in this)
 can generate the documentation like described above and examine
@@ -308,19 +355,48 @@ It contains the xsl rules for all the generation.
 The subdirectory
 <tt>images</tt>
 contains all the required pictures for all the books.
-</p></div></div></div><div class="sect1"><a name="mailing_lists"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="mailing_lists"></a>2.3. Mailing Lists</h2></div></div><a name="Ndd3" class="indexterm"></a><a name="Ndd9" class="indexterm"></a><a name="Nde1" class="indexterm"></a><a name="Nde9" class="indexterm"></a><p>All developers <i>MUST</i> subscribe to the mailinglist for developers. Please find the details at: <a href="http://argouml.tigris.org/servlets/ProjectMailingListList" target="_top">http://argouml.tigris.org/servlets/ProjectMailingListList</a>
+</p></div></div><div class="sect2"><a name="Ne2b"></a><div class="titlepage"><div><h3 class="title"><a name="Ne2b"></a>2.3.3. Troubleshooting the development build</h3></div></div><div class="sect3"><a name="Ne30"></a><div class="titlepage"><div><h4 class="title"><a name="Ne30"></a>2.3.3.1. Compiling failed. Any suggestions?</h4></div></div><p>
+Most compiling problems arise from wrong versions:
+ANT or one of the four libs.
+This then means that the current version in cvs is not in sync
+with itself i.e. some other developer has screwed up.
+Look at the
+<a href="http://argouml.tigris.org/servlets/BrowseList?listName=dev" target="_top">
+developers mailing list</a> is probably on fire.
+</p><p>
+A look on the error messages can help.
+</p><p>
+Another reason for problems is an unclean local source tree: if yours
+is in doubt, remove it completely and get it all again through CVS.
+</p><p>
+Another reason is that you have an .ant.properties or
+.argo.ant.properties file that you have been working with earlier
+and that is doing something. If in doubt, remove those files.
+</p><p>
+If nothing helps, ask the 
+<a href="mailto:dev@argouml.tigris.org" target="_top">experts on the mailing list</a>!
+</p></div><div class="sect3"><a name="Ne4f"></a><div class="titlepage"><div><h4 class="title"><a name="Ne4f"></a>2.3.3.2. Can't commit my changes?</h4></div></div><p>
+You need to have a developer role in the ArgoUML project.
+</p><p>
+Furthermore the checkout of your copy need to be done with that
+developer role. If you for some reason have earlier checked out
+a copy as guest and then made modifications, changed the CVSROOT
+variable you still cannot modify the repository since the
+checked out copy contains information on who checked out. 
+The best solution is to always checkout with your developer role.
+</p></div></div></div><div class="sect1"><a name="mailing_lists"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="mailing_lists"></a>2.4. Mailing Lists</h2></div></div><a name="Ne64" class="indexterm"></a><a name="Ne6a" class="indexterm"></a><a name="Ne72" class="indexterm"></a><a name="Ne7a" class="indexterm"></a><p>All developers <i>MUST</i> subscribe to the mailinglist for developers. Please find the details at: <a href="http://argouml.tigris.org/servlets/ProjectMailingListList" target="_top">http://argouml.tigris.org/servlets/ProjectMailingListList</a>
      </p><p>It is also recommended to join the CVS and Issues mailinglists. Both have pretty low traffic, but it helps to see what is going on. Developers should also feel an obligation towards monitoring the Bug database.
-     </p></div></div><div class="chapter" id="components"><div class="titlepage"><div><h2 class="title"><a name="components"></a>Chapter 3. ArgoUML Components</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>3.1 <a href="#Ne08">Argo Initialization</a></dt><dd><dl><dt>3.1.1 <a href="#Ne0d">Which sources are involved?</a></dt><dt>3.1.2 <a href="#Ne31">What is loaded/initialized?</a></dt></dl></dd><dt>3.2 <a href="#Ne3e">Which Objects live during a typical session?</a></dt><dt>3.3 <a href="#Ne47">What is their task?</a></dt><dt>3.4 <a href="#bigger_components">The bigger picture, ArgoUML and supporting libraries</a></dt><dt>3.5 <a href="#nsuml">NS-UML</a></dt><dt>3.6 <a href="#small">The smaller components, inside ArgoUML</a></dt></dl></div><div class="sect1"><a name="Ne08"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ne08"></a>3.1. Argo Initialization</h2></div></div><div class="sect2"><a name="Ne0d"></a><div class="titlepage"><div><h3 class="title"><a name="Ne0d"></a>3.1.1. Which sources are involved?</h3></div></div><p>
+     </p></div></div><div class="chapter" id="components"><div class="titlepage"><div><h2 class="title"><a name="components"></a>Chapter 3. ArgoUML Components</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>3.1 <a href="#Ne99">Argo Initialization</a></dt><dd><dl><dt>3.1.1 <a href="#Ne9e">Which sources are involved?</a></dt><dt>3.1.2 <a href="#Nec2">What is loaded/initialized?</a></dt></dl></dd><dt>3.2 <a href="#Necf">Which Objects live during a typical session?</a></dt><dt>3.3 <a href="#Ned8">What is their task?</a></dt><dt>3.4 <a href="#bigger_components">The bigger picture, ArgoUML and supporting libraries</a></dt><dt>3.5 <a href="#small">The smaller components, inside ArgoUML</a></dt><dt>3.6 <a href="#Nf8f">Collaboration table between components</a></dt></dl></div><div class="sect1"><a name="Ne99"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ne99"></a>3.1. Argo Initialization</h2></div></div><div class="sect2"><a name="Ne9e"></a><div class="titlepage"><div><h3 class="title"><a name="Ne9e"></a>3.1.1. Which sources are involved?</h3></div></div><p>
 Relative to the directory org/argouml, they are mainly:
-</p><div class="itemizedlist"><ul><li><p><a name="Ne17"></a>
+</p><div class="itemizedlist"><ul><li><p><a name="Nea8"></a>
 application/Main.java,
-</p></li><li><p><a name="Ne1d"></a>
+</p></li><li><p><a name="Neae"></a>
 kernel/Project.java + xml/argo/ArgoParser.java,
-</p></li><li><p><a name="Ne23"></a>
+</p></li><li><p><a name="Neb4"></a>
 ui/{ProjectBrowser.java,*Pane.java},
-</p></li><li><p><a name="Ne29"></a>
+</p></li><li><p><a name="Neba"></a>
 cognitive/{Designer.java,ui/ToDoPane.java}.
-</p></li></ul></div></div><div class="sect2"><a name="Ne31"></a><div class="titlepage"><div><h3 class="title"><a name="Ne31"></a>3.1.2. What is loaded/initialized?</h3></div></div><p>
+</p></li></ul></div></div><div class="sect2"><a name="Nec2"></a><div class="titlepage"><div><h3 class="title"><a name="Nec2"></a>3.1.2. What is loaded/initialized?</h3></div></div><p>
 It all begins in org.argouml.application.Main: set up
 main application frame (org.argouml.ui.ProjectBrowser), the
 project (org.argouml.kernel.Project), numerous classes, and
@@ -337,32 +413,127 @@ project is set to either a read from file project
 (see ArgoParser.SINGLETON.readProject(URL) and
 ArgoParser.SINGLETON.getProject() in org.argouml.xml.argo.ArgoParser)
 or a newly generated project (see Project.makeEmptyProject()).
-</p></div></div><div class="sect1"><a name="Ne3e"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ne3e"></a>3.2. Which Objects live during a typical session?</h2></div></div><p>
+</p></div></div><div class="sect1"><a name="Necf"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Necf"></a>3.2. Which Objects live during a typical session?</h2></div></div><p>
 (Project, Designer, Globals, NavPane, ToDoPane, ...)
-</p></div><div class="sect1"><a name="Ne47"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ne47"></a>3.3. What is their task?</h2></div></div><p>
+</p></div><div class="sect1"><a name="Ned8"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Ned8"></a>3.3. What is their task?</h2></div></div><p>
 (visual component, model, controller, ...)
-</p></div><div class="sect1"><a name="bigger_components"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="bigger_components"></a>3.4. The bigger picture, ArgoUML and supporting libraries</h2></div></div><a name="Ne57" class="indexterm"></a><a name="Ne5d" class="indexterm"></a><p>
+</p></div><div class="sect1"><a name="bigger_components"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="bigger_components"></a>3.4. The bigger picture, ArgoUML and supporting libraries</h2></div></div><a name="Nee8" class="indexterm"></a><a name="Neee" class="indexterm"></a><p>
 <div class="mediaobject"><img src="images/cookbook/big.gif"></div>
-    <div class="itemizedlist"><ul><li><p><a name="Ne73"></a>Well, ArgoUML is obviously the main thing.</p></li><li><p><a name="Ne77"></a>GEF stands for <i>Graph Editing Framework</i>. It is the package which controls most of the graphical aspects of ArgoUML.</p></li><li><p><a name="Ne7e"></a>NSUML stands for <i>Novosoft UML</i>. This library gives ArgoUML all the components which are required to deal with UML objects and their relationships with each other. Normally you can recognize everything out of the NSUML packages very easily because the classes start with a capital M.</p></li></ul></div>
-</p></div><div class="sect1"><a name="nsuml"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="nsuml"></a>3.5. NS-UML</h2></div></div><p>
-<div class="mediaobject"><img src="images/cookbook/nsuml_foundation.png"></div>
-</p><p>
-<div class="mediaobject"><img src="images/cookbook/nsuml_behaviour.png"></div>
-</p></div><div class="sect1"><a name="small"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="small"></a>3.6. The smaller components, inside ArgoUML</h2></div></div><p>
+    <div class="itemizedlist"><ul><li><p><a name="Nf04"></a>Well, ArgoUML is obviously the main thing.</p></li><li><p><a name="Nf08"></a>GEF stands for <i>Graph Editing Framework</i>. It is the package which controls most of the graphical aspects of ArgoUML.</p></li><li><p><a name="Nf0f"></a>NSUML stands for <i>Novosoft UML</i>. This library gives ArgoUML all the components which are required to deal with UML objects and their relationships with each other. Normally you can recognize everything out of the NSUML packages very easily because the classes start with a capital M.</p></li></ul></div>
+</p></div><div class="sect1"><a name="small"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="small"></a>3.5. The smaller components, inside ArgoUML</h2></div></div><p>
 ArgoUML itself breaks down into several components. The graphic does not reflect the true package names, neither the true dependencies of the packages.
 <div class="mediaobject"><img src="images/cookbook/small.gif"></div>
-<div class="itemizedlist"><ul><li><p><a name="Nec6"></a>Critics</p></li><li><p><a name="Neca"></a>Diagrams</p></li><li><p><a name="Nece"></a>Notation</p></li><li><p><a name="Ned2"></a>Code Generation</p></li><li><p><a name="Ned6"></a>Reverse Engineering</p></li><li><p><a name="Neda"></a>Help System</p></li><li><p><a name="Nede"></a>Internationalization</p></li><li><p><a name="Nee2"></a>Plugin-Module API</p></li><li><p><a name="Nee6"></a>Logging</p></li></ul></div>
-</p></div></div><div class="chapter" id="inside_components"><div class="titlepage"><div><h2 class="title"><a name="inside_components"></a>Chapter 4. Inside the components</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>4.1 <a href="#general">General information</a></dt><dd><dl><dt>4.1.1 <a href="#howdoi_general">How do I ...?</a></dt></dl></dd><dt>4.2 <a href="#critics">Critics</a></dt><dd><dl><dt>4.2.1 <a href="#howdoi_critics">How do I ...?</a></dt></dl></dd><dt>4.3 <a href="#notation">Notation</a></dt><dd><dl><dt>4.3.1 <a href="#howdoi_notation">How do I ...?</a></dt></dl></dd><dt>4.4 <a href="#diagrams">Diagrams</a></dt><dd><dl><dt>4.4.1 <a href="#howdoi_diagrams">How do I ...?</a></dt></dl></dd><dt>4.5 <a href="#reverse">Reverse Engineering</a></dt><dd><dl><dt>4.5.1 <a href="#howdoi_reverse">How do I ...?</a></dt><dt>4.5.2 <a href="#Nfb8">Which sources are involved?</a></dt><dt>4.5.3 <a href="#Nfc4">How is the grammar of the target language implemented?</a></dt><dt>4.5.4 <a href="#Nfd2">Which model/diagramm elements are generated?</a></dt><dt>4.5.5 <a href="#Nfdb">Which layout algorithm is used?</a></dt></dl></dd><dt>4.6 <a href="#help">Help System</a></dt><dd><dl><dt>4.6.1 <a href="#howdoi_help">How do I ...?</a></dt></dl></dd><dt>4.7 <a href="#internationalization">Internationalization</a></dt><dd><dl><dt>4.7.1 <a href="#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>4.8 <a href="#modules_and_plugins">Modules and PlugIns</a></dt><dd><dl><dt>4.8.1 <a href="#modules_vs_plugins">Differences between modules and plugins</a></dt><dt>4.8.2 <a href="#modules">Modules</a></dt><dd><dl><dt>4.8.2.1 <a href="#architecture_modules">Module Architecture</a></dt><dt>4.8.2.2 <a href="#using_modules">Using Modules</a></dt><dt>4.8.2.3 <a href="#howdoi_modules">How do I ...?</a></dt></dl></dd><dt>4.8.3 <a href="#plugins">Plugins</a></dt><dd><dl><dt>4.8.3.1 <a href="#architecture_plugins">Plugin Architecture</a></dt><dt>4.8.3.2 <a href="#using_plugins">Using Plugins</a></dt><dt>4.8.3.3 <a href="#howdoi_plugins">How do I ...?</a></dt></dl></dd></dl></dd><dt>4.9 <a href="#logging">Logging</a></dt><dd><dl><dt>4.9.1 <a href="#howdoi_logging">How do I ...?</a></dt></dl></dd><dt>4.10 <a href="#N13a0">The JUnit module</a></dt><dd><dl><dt>4.10.1 <a href="#N13ed">How to run the test cases</a></dt><dt>4.10.2 <a href="#N145d">How to write a test case</a></dt><dt>4.10.3 <a href="#N1492">The TestAll class</a></dt></dl></dd></dl></div><p>...</p><div class="sect1"><a name="general"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="general"></a>4.1. General information</h2></div></div><p>This section explains some general concepts which come in handy, when 
+<div class="itemizedlist"><ul><li><p><a name="Nf33"></a>User Interface </p></li><li><p><a name="Nf38"></a>Diagrams (see <a href="#diagrams" title="4.4. Diagrams">Section 4.4</a>)</p></li><li><p><a name="Nf40"></a>GEF</p></li><li><p><a name="Nf44"></a>Model</p></li><li><p><a name="Nf48"></a>Saving/Loading</p></li><li><p><a name="Nf4c"></a>Notation (see <a href="#notation" title="4.3. Notation">Section 4.3</a>)</p></li><li><p><a name="Nf54"></a>Code Generation</p></li><li><p><a name="Nf58"></a>Reverse Engineering (see <a href="#reverse" title="4.5. Reverse Engineering">Section 4.5</a>)</p></li><li><p><a name="Nf60"></a>ocl</p></li><li><p><a name="Nf64"></a>Help System (see <a href="#help" title="4.7. Help System">Section 4.7</a>)</p></li><li><p><a name="Nf6c"></a>Internationalization (see <a href="#internationalization" title="4.8. Internationalization">Section 4.8</a>)</p></li><li><p><a name="Nf74"></a>Critics and other cognitive tools (see <a href="#critics" title="4.2. Critics and other cognitive tools">Section 4.2</a>)</p></li><li><p><a name="Nf7c"></a>Plugin-Module API (see <a href="#plugins" title="4.9.3. Plugins">Section 4.9.3</a>)</p></li><li><p><a name="Nf84"></a>Logging (see <a href="#logging" title="4.10. Logging">Section 4.10</a>)</p></li></ul></div>
+</p></div><div class="sect1"><a name="Nf8f"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="Nf8f"></a>3.6. Collaboration table between components</h2></div></div><p>
+Here is a table that lists all components within ArgoUML against each other
+so that you easily can find where that specific collaboration is described
+(if at all) in this cookbook.
+
+</p><div class="table"><p><a name="Nf99"></a><b>Table 3.1. Collaboration table</b></p><table summary="Collaboration table" border="1"><colgroup><col><col><col><col><col><col><col><col><col><col><col><col></colgroup><thead><tr><th>&nbsp;</th><th><a name="comp-ui"></a>User Interface</th><th><a name="comp-diagrams"></a>Diagram</th><th><a name="comp-gef"></a>GEF</th><th><a name="comp-model"></a>Model</th><th><a name="comp-saveload"></a>Saving and Loading</th><th><a name="comp-notation"></a>Notation</th><th><a name="comp-codegenreveng"></a>Code Generation and Reverse Engineering</th><th><a name="comp-ocl"></a>OCL-constraints</th><th><a name="comp-critics"></a>Cognitive</th><th><a name="comp-help"></a>Help system</th><th><a name="comp-internationalization"></a>Internationalization</th><th><a name="comp-logging"></a>Logging</th><th><a name="comp-plugins"></a>Plug in and Module API</th></tr></thead><tbody><tr><td>User Interface</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Diagram</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>GEF</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Model</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Saving and Loading</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Notation</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Code Generation and Reverse Engineering</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>OCL-constraints</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Cognitive</td><td>&nbsp;</td><td><a href="#comp-critics-to-comp-diagrams" title="4.2.1.1. Diagrams">Section 4.2.1.1</a></td><td>&nbsp;</td><td><a href="#comp-critics-to-comp-model" title="4.2.1.2. Model">Section 4.2.1.2</a></td><td><a href="#comp-critics-to-comp-saveload" title="4.2.1.3. Saving/Loading - not at all">Section 4.2.1.3</a></td><td><a href="#comp-critics-to-comp-notation" title="4.2.1.4. Notation">Section 4.2.1.4</a></td><td><a href="#comp-critics-to-comp-codegenreveng" title="4.2.1.5. Code Generation and Reverse Engineering">Section 4.2.1.5</a></td><td>&nbsp;</td><td> - </td><td><a href="#comp-critics-to-comp-help" title="4.2.1.6. Help System">Section 4.2.1.6</a></td><td><a href="#comp-critics-to-comp-internationalization" title="4.2.1.7. Internationalization">Section 4.2.1.7</a></td><td><a href="#comp-critics-to-comp-logging" title="4.2.1.9. Logging">Section 4.2.1.9</a></td><td><a href="#comp-critics-to-comp-plugins" title="4.2.1.8. Plugin-Module API - currently not">Section 4.2.1.8</a></td></tr><tr><td>Help system</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Internationalization</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>Logging</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td><td>&nbsp;</td></tr><tr><td>Plug in and Module API</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td><td> - </td></tr></tbody></table></div></div></div><div class="chapter" id="inside_components"><div class="titlepage"><div><h2 class="title"><a name="inside_components"></a>Chapter 4. Inside the components</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>4.1 <a href="#general">General information</a></dt><dd><dl><dt>4.1.1 <a href="#howdoi_general">How do I ...?</a></dt></dl></dd><dt>4.2 <a href="#critics">Critics and other cognitive tools</a></dt><dd><dl><dt>4.2.1 <a href="#N12ab">Collaborations for Critics and cognitive tools</a></dt><dt>4.2.2 <a href="#N133b">Main classes</a></dt><dt>4.2.3 <a href="#howdoi_critics">How do I ...?</a></dt><dt>4.2.4 <a href="#N13c0">org.argouml.cognitive.critics.* class diagram</a></dt></dl></dd><dt>4.3 <a href="#notation">Notation</a></dt><dd><dl><dt>4.3.1 <a href="#howdoi_notation">How do I ...?</a></dt></dl></dd><dt>4.4 <a href="#diagrams">Diagrams</a></dt><dd><dl><dt>4.4.1 <a href="#howdoi_diagrams">How do I ...?</a></dt></dl></dd><dt>4.5 <a href="#reverse">Reverse Engineering</a></dt><dd><dl><dt>4.5.1 <a href="#howdoi_reverse">How do I ...?</a></dt><dt>4.5.2 <a href="#N1409">Which sources are involved?</a></dt><dt>4.5.3 <a href="#N1415">How is the grammar of the target language implemented?</a></dt><dt>4.5.4 <a href="#N1423">Which model/diagramm elements are generated?</a></dt><dt>4.5.5 <a href="#N142c">Which layout algorithm is used?</a></dt></dl></dd><dt>4.6 <a href="#detailspanel">Details Panel</a></dt><dd><dl><dt>4.6.1 <a href="#howdoi_detailspanel">How do I ...?</a></dt></dl></dd><dt>4.7 <a href="#help">Help System</a></dt><dd><dl><dt>4.7.1 <a href="#howdoi_help">How do I ...?</a></dt></dl></dd><dt>4.8 <a href="#internationalization">Internationalization</a></dt><dd><dl><dt>4.8.1 <a href="#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>4.9 <a href="#modules_and_plugins">Modules and PlugIns</a></dt><dd><dl><dt>4.9.1 <a href="#modules_vs_plugins">Differences between modules and plugins</a></dt><dt>4.9.2 <a href="#modules">Modules</a></dt><dt>4.9.3 <a href="#plugins">Plugins</a></dt></dl></dd><dt>4.10 <a href="#logging">Logging</a></dt><dd><dl><dt>4.10.1 <a href="#howdoi_logging">How do I ...?</a></dt></dl></dd><dt>4.11 <a href="#N183c">The JUnit module</a></dt><dd><dl><dt>4.11.1 <a href="#N1889">How to run the test cases</a></dt><dt>4.11.2 <a href="#N18f9">How to write a test case</a></dt><dt>4.11.3 <a href="#N192e">The TestAll class</a></dt></dl></dd></dl></div><p>...</p><div class="sect1"><a name="general"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="general"></a>4.1. General information</h2></div></div><p>This section explains some general concepts which come in handy, when 
 programming in Argo/UML.
 </p><div class="sect2"><a name="howdoi_general"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_general"></a>4.1.1. How do I ...?</h3></div></div><p>
-<div class="itemizedlist"><ul><li><p><a name="Nf0d"></a>...get the according NS-UML element for a given FigXXX class?</p><p>each FigXXX implements the method getOwner() which returns the appropriate owner element which is responsible for this Fig element.
-</p></li><li><p><a name="Nf15"></a>...get the according Fig element for a given MModelElement?</p><p>for this one needs to iterate through all fig elements and invoke getOwner. Compare the result with the given MModelElement. Beware that there might be more than one Fig Element per MModelElement.</p></li></ul></div>
-</p></div></div><div class="sect1"><a name="critics"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="critics"></a>4.2. Critics</h2></div></div><p>Here is a small illustration</p><div class="mediaobject"><img src="images/cookbook/critics.gif"></div><p>Critics are currently located in:
-<div class="itemizedlist"><ul><li><p><a name="Nf3b"></a>org.argouml.cognitive.critics</p><p>These are basic critics, which are very general in nature. For example ArgoUML keeps nagging when Modelelements overlap, which makes the Diagram hard to read.</p></li><li><p><a name="Nf42"></a>org.argouml.uml.cognitive.critics</p><p>These are Critics which are directly related to UML issues (well, more or less). For example, it will nag when a class has two many operations, because that makes it hard to maintain the particular class.</p></li><li><p><a name="Nf49"></a>org.argouml.pattern.cognitive.critics</p><p>These are critics related to patterns. Currently they deal only with the Singleton pattern</p></li><li><p><a name="Nf51"></a>org.argouml.language.java.cognitive.critics</p><p>These are critics which deal with java specific issues. Currently this is only a warning agains modelling multiple inheritance.</p></li></ul></div>
-</p><div class="sect2"><a name="howdoi_critics"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_critics"></a>4.2.1. How do I ...?</h3></div></div><p>
-<div class="itemizedlist"><ul><li><p><a name="Nf66"></a>...add a critique?</p><p>Your best bet is to look for a critique, which does something similiar and copy what it does. The locations of the critics are mentioned above.
-</p></li><li><p><a name="Nf6e"></a>...fix a critique?</p><p>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</p></li><li><p><a name="Nf76"></a>...change the text of a critique?</p><p>The texts of the critics should be in the according localization files and resource bundles. Be careful: in some critics the text is still in the critic, but if yo change that, you will notice that it doesn't have any effect.</p></li></ul></div>
-</p></div></div><div class="sect1"><a name="notation"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="notation"></a>4.3. Notation</h2></div></div><div class="sect2"><a name="howdoi_notation"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_notation"></a>4.3.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="diagrams"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="diagrams"></a>4.4. Diagrams</h2></div></div><div class="sect2"><a name="howdoi_diagrams"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_diagrams"></a>4.4.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="reverse"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="reverse"></a>4.5. Reverse Engineering</h2></div></div><div class="sect2"><a name="howdoi_reverse"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_reverse"></a>4.5.1. How do I ...?</h3></div></div><p>...</p></div><div class="sect2"><a name="Nfb8"></a><div class="titlepage"><div><h3 class="title"><a name="Nfb8"></a>4.5.2. Which sources are involved?</h3></div></div><p>
+<div class="itemizedlist"><ul><li><p><a name="N126d"></a>...get the according NS-UML element for a given FigXXX class?</p><p>each FigXXX implements the method getOwner() which returns the appropriate owner element which is responsible for this Fig element.
+</p></li><li><p><a name="N1275"></a>...get the according Fig element for a given MModelElement?</p><p>for this one needs to iterate through all fig elements and invoke getOwner. Compare the result with the given MModelElement. Beware that there might be more than one Fig Element per MModelElement.</p></li></ul></div>
+</p></div></div><div class="sect1"><a name="critics"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="critics"></a>4.2. Critics and other cognitive tools</h2></div></div><p><a name="comp-critics-purpose"></a>
+Purpose - to provide cognitive help for the User.
+This help is based on the current model that the User works with.
+</p><p>
+This module contains the following main class types:
+</p><div class="itemizedlist"><ul><li><p><a name="N1292"></a>
+Critics provide help to find artifacts in
+the model that do not obey simple design "rules" or 
+"best practises".
+</p></li><li><p><a name="N1298"></a>
+Checklists provide help for the user to suggest and
+keep track of considerations that the user should make
+for each design element.
+Checklists are currently (0.9.5 and 0.9.6) turned off.
+</p></li><li><p><a name="N129e"></a>
+ToDoItems provide a way for the Critics to communicate
+its knowledge to the User and let the User start Wizards.
+</p></li><li><p><a name="N12a4"></a>
+Wizards are step by step instructions that fixes problems
+found by the Critics.
+</p></li></ul></div><div class="sect2"><a name="N12ab"></a><div class="titlepage"><div><h3 class="title"><a name="N12ab"></a>4.2.1. Collaborations for Critics and cognitive tools</h3></div></div><p>
+The module communicates with/uses the other parts of ArgoUML like this:
+</p><div class="sect3"><a name="comp-critics-to-comp-diagrams"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-diagrams"></a>4.2.1.1. Diagrams</h4></div></div><p>
+Stepping through the model and examining it using get-calls.
+Wizard could modify the model the using set-calls to Fig-objects.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-model"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-model"></a>4.2.1.2. Model</h4></div></div><p>
+Stepping through the model and examining it using get-calls.
+Wizard could modify the model the using set-calls to the model and 
+creating new model elements.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-saveload"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-saveload"></a>4.2.1.3. Saving/Loading - not at all</h4></div></div><p>
+Eventually the user created To Do Items needs to be saved as well as
+information on what Critiques that have been snoozed.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-notation"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-notation"></a>4.2.1.4. Notation</h4></div></div><p>Not at all</p></div><div class="sect3"><a name="comp-critics-to-comp-codegenreveng"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-codegenreveng"></a>4.2.1.5. Code Generation and Reverse Engineering</h4></div></div><p>Not at all</p></div><div class="sect3"><a name="comp-critics-to-comp-help"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-help"></a>4.2.1.6. Help System</h4></div></div><p>
+The help system is fired by the ToDoItems and Wizards when
+a longer explanation is required.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-internationalization"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-internationalization"></a>4.2.1.7. Internationalization</h4></div></div><p>
+<tt>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<i><tt>_ll_RR</tt></i></tt></p><p>
+Since the whole module contains a lot of texts describing
+things for the user there should be a lot of issues here.
+This area is however not clear to the author of 
+this part of the Cookbook at this time (Linus Tolke in January 2002).
+</p><p>
+From the file above I would guess that the intentions are that
+each package org.argouml.<i><tt>x</tt></i>.cognitive
+including all subpackages should have the set of classes
+<tt>org.argouml.<i><tt>x</tt></i>.cognitive.<i><tt>same x but capitalized</tt></i>CognitiveResourceBundle<i><tt>_ll_RR</tt></i></tt>.
+If so I would expect
+<tt>org.argouml.cognitive.CognitiveResourceBundle</tt>,
+<tt>org.argouml.language.java.cognitive.LanguageJavaCognitiveResourceBundled</tt>,
+and
+<tt>org.argouml.pattern.cognitive.PatternCognitiveResourceBundled</tt>
+with friends to be created futher down the road.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-plugins"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-plugins"></a>4.2.1.8. Plugin-Module API - currently not</h4></div></div><p>
+There is a <tt>PluggableCritic</tt> 
+the purpose of which is to add new Critics
+but that is not yet used.
+</p></div><div class="sect3"><a name="comp-critics-to-comp-logging"></a><div class="titlepage"><div><h4 class="title"><a name="comp-critics-to-comp-logging"></a>4.2.1.9. Logging</h4></div></div><p>
+Logging is made using instance org.argouml.cognitive.critics
+</p></div></div><div class="sect2"><a name="N133b"></a><div class="titlepage"><div><h3 class="title"><a name="N133b"></a>4.2.2. Main classes</h3></div></div><p>Here is an illustration of the main classes implementing critics</p><div class="mediaobject"><img src="images/cookbook/critics.gif"></div><p>Critics are currently located in:
+<div class="itemizedlist"><ul><li><p><a name="N1353"></a>org.argouml.cognitive.critics</p><p>
+These are basic critics, which are very general in nature. For example
+ArgoUML keeps nagging when Modelelements overlap, which makes the
+Diagram hard to read.
+</p><p>
+This package also contain the base classes for the handling.
+</p></li><li><p><a name="N135e"></a>org.argouml.uml.cognitive.critics</p><p>
+These are Critics which are directly related to UML issues (well, more
+or less). For example, it will nag when a class has two many
+operations, because that makes it hard to maintain the particular
+class.
+</p><p>
+This package also contains Wizards used by these Critiques.
+</p></li><li><p><a name="N1369"></a>org.argouml.pattern.cognitive.critics</p><p>These are critics related to patterns. Currently they deal only with the Singleton pattern</p></li><li><p><a name="N1371"></a>org.argouml.language.java.cognitive.critics</p><p>These are critics which deal with java specific issues. Currently this is only a warning agains modelling multiple inheritance.</p></li></ul></div>
+</p><p>
+Base classes for Wizards is <tt>org.argouml.kernel.Wizard</tt>.
+</p><p>
+Checklists are located in the package org.argouml.cognitive.checklist.
+</p><p>
+Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
+is located in the package org.argouml.cognitive.ui.
+</p></div><div class="sect2"><a name="howdoi_critics"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_critics"></a>4.2.3. How do I ...?</h3></div></div><p>
+<div class="itemizedlist"><ul><li><p><a name="N1393"></a>...add a critique?</p><p>Your best bet is to look for a critique, which does something similiar and copy what it does. The locations of the critics are mentioned above.
+</p></li><li><p><a name="N139b"></a>...fix a critique?</p><p>Locate the critique and insert some logging code. You should make sure that you understand all the implications of changes, therefore it is a good idea to see what makes the critic nag in the first place. But rest assured: some of the critics haven't been updated to reflect the latest changes in ArgoUML, so this is a procedure which is well worth digging into, since it gives you also some exposure to related NSUML elements.</p></li><li><p><a name="N13a3"></a>...write the test in a critique?</p><p>
+This is an idea for refactoring!
+</p><p>
+The critiques tests are essentially a combination of conditions 
+that are to be fulfilled.
+The conditions are often simple tests on simple model elements.
+Collect the simple tests as static methods in the class
+<tt>CriticsHelper</tt> inte the same package 
+as the critique.
+Do this moving to <tt>CriticsHelper</tt> at the latest
+when you have used the same test in two different Critics.
+</p></li><li><p><a name="N13b5"></a>...change the text of a critique?</p><p>
+The texts of the critics should be in the according localization files
+and resource bundles. Be careful: in some critics the text is still in
+the critic, but if you change that, you will notice that it doesn't
+have any effect.
+</p></li></ul></div>
+</p></div><div class="sect2"><a name="N13c0"></a><div class="titlepage"><div><h3 class="title"><a name="N13c0"></a>4.2.4. org.argouml.cognitive.critics.* class diagram</h3></div></div><div class="mediaobject"><img src="images/screenshots/argocogcritics.png"></div></div></div><div class="sect1"><a name="notation"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="notation"></a>4.3. Notation</h2></div></div><div class="sect2"><a name="howdoi_notation"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_notation"></a>4.3.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="diagrams"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="diagrams"></a>4.4. Diagrams</h2></div></div><div class="sect2"><a name="howdoi_diagrams"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_diagrams"></a>4.4.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="reverse"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="reverse"></a>4.5. Reverse Engineering</h2></div></div><div class="sect2"><a name="howdoi_reverse"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_reverse"></a>4.5.1. How do I ...?</h3></div></div><p>...</p></div><div class="sect2"><a name="N1409"></a><div class="titlepage"><div><h3 class="title"><a name="N1409"></a>4.5.2. Which sources are involved?</h3></div></div><p>
 The package org.argouml.uml.reveng is supposed to hold those classes
 that are common to all RE packages. At the moment this is the Import
 class which is mainly responsible to recognize directories, get their
@@ -375,7 +546,7 @@ metamodel objects then.
 The package org.argouml.uml.reveng.java holds the Java specific parts
 of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
 or so...
-</p></div><div class="sect2"><a name="Nfc4"></a><div class="titlepage"><div><h3 class="title"><a name="Nfc4"></a>4.5.3. How is the grammar of the target language implemented?</h3></div></div><p>
+</p></div><div class="sect2"><a name="N1415"></a><div class="titlepage"><div><h3 class="title"><a name="N1415"></a>4.5.3. How is the grammar of the target language implemented?</h3></div></div><p>
 It's a Antlr (<a href="http://www.antlr.org" target="_top">http://www.antlr.org</a>)
 grammar, based on the Antlr Java parser
 example. The main difference is the missing AST (Abstract Syntax Tree)
@@ -384,12 +555,12 @@ generation and treeparser. So the original example generates a AST
 ArgoUML code parses the source file and generates NSUML objects
 directly from the sources. This was done to avoid the memory usage
 of an AST and the frequent GC while parsing many source files.
-</p></div><div class="sect2"><a name="Nfd2"></a><div class="titlepage"><div><h3 class="title"><a name="Nfd2"></a>4.5.4. Which model/diagramm elements are generated?</h3></div></div><p>
+</p></div><div class="sect2"><a name="N1423"></a><div class="titlepage"><div><h3 class="title"><a name="N1423"></a>4.5.4. Which model/diagramm elements are generated?</h3></div></div><p>
 The *context classes hold the current context for a package, class
 etc. When the required information for a object is available, the
 corresponding NSUML object is created and passed to the DiagramInterface
 to visualize it.
-</p></div><div class="sect2"><a name="Nfdb"></a><div class="titlepage"><div><h3 class="title"><a name="Nfdb"></a>4.5.5. Which layout algorithm is used?</h3></div></div><p>
+</p></div><div class="sect2"><a name="N142c"></a><div class="titlepage"><div><h3 class="title"><a name="N142c"></a>4.5.5. Which layout algorithm is used?</h3></div></div><p>
 The classes in org.argouml.uml.diagram.static_structure.layout.* hold
 the Classdiagram layout code. No layout for other diagram types yet.
 It's based on a ranking scheme for classes and interfaces. The rank of
@@ -448,8 +619,24 @@ A B C
 (here are the links, but I can't hardly paint them as ASCIIs)
 </p><p>
 F E D
-</p></blockquote></div></div><div class="sect1"><a name="help"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="help"></a>4.6. Help System</h2></div></div><div class="sect2"><a name="howdoi_help"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_help"></a>4.6.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="internationalization"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="internationalization"></a>4.7. Internationalization</h2></div></div><div class="sect2"><a name="howdoi_internationalization"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_internationalization"></a>4.7.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="modules_and_plugins"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="modules_and_plugins"></a>4.8. Modules and PlugIns</h2></div></div><div class="sect2"><a name="modules_vs_plugins"></a><div class="titlepage"><div><h3 class="title"><a name="modules_vs_plugins"></a>4.8.1. Differences between modules and plugins</h3></div></div><p>
-<div class="itemizedlist"><ul><li><p><a name="N1092"></a>Modules</p><p>
+</p></blockquote></div></div><div class="sect1"><a name="detailspanel"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="detailspanel"></a>4.6. Details Panel</h2></div></div><div class="sect2"><a name="howdoi_detailspanel"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_detailspanel"></a>4.6.1. How do I ...?</h3></div></div><p>
+	  <div class="itemizedlist"><ul><li><p><a name="N14bd"></a>...add a tab in the Details Panel?</p><p>
+Create your <tt>TabXXX</tt> class in 
+<tt>org.argouml.uml.ui</tt> by
+copying from another <tt>TabYYY.java</tt>
+(e.g. <tt>TabSrc</tt>, <tt>TabStyle</tt>).
+Then register your <tt>TabXXX</tt> in
+<tt>org/argouml/argo.ini</tt>
+by adding a line like
+<pre class="programlisting">
+details: 	TabXXX
+</pre>
+</p></li><li><p><a name="N14e4"></a>...remove a tab from the Details Panel?</p><p>
+Remove the line for the tab from 
+<tt>org/argouml/argo.ini</tt>.
+</p></li></ul></div>
+</p></div></div><div class="sect1"><a name="help"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="help"></a>4.7. Help System</h2></div></div><div class="sect2"><a name="howdoi_help"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_help"></a>4.7.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="internationalization"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="internationalization"></a>4.8. Internationalization</h2></div></div><div class="sect2"><a name="howdoi_internationalization"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_internationalization"></a>4.8.1. How do I ...?</h3></div></div><p>...</p></div></div><div class="sect1"><a name="modules_and_plugins"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="modules_and_plugins"></a>4.9. Modules and PlugIns</h2></div></div><div class="sect2"><a name="modules_vs_plugins"></a><div class="titlepage"><div><h3 class="title"><a name="modules_vs_plugins"></a>4.9.1. Differences between modules and plugins</h3></div></div><p>
+<div class="itemizedlist"><ul><li><p><a name="N152e"></a>Modules</p><p>
 The ARGO open source UML tool provides a basis
 for UML design and potentially an executable architecture application.
 This module system proposes an extension capability to the ARGO UML tool. 
@@ -470,7 +657,7 @@ on menu popup items for the model contexts.
 This module interface is light with interface mechanisms
 to notify the extensions of user actions.
 The extensions then evaluate these actions and perform accordingly.  
-</p></li><li><p><a name="N109e"></a>Plugins</p><p>
+</p></li><li><p><a name="N153a"></a>Plugins</p><p>
 A plug-in in ArgoUML is a specific type of <tt>ArgoModule</tt>
 that implements the
 <tt>org.argouml.application.api.Pluggable</tt> interface.
@@ -480,7 +667,7 @@ application can query its existence and use its
 specific functionality.
 
 </p></li></ul></div>
-</p></div><div class="sect2"><a name="modules"></a><div class="titlepage"><div><h3 class="title"><a name="modules"></a>4.8.2. Modules</h3></div></div><div class="sect3"><a name="architecture_modules"></a><div class="titlepage"><div><h4 class="title"><a name="architecture_modules"></a>4.8.2.1. Module Architecture</h4></div></div><p>
+</p></div><div class="sect2"><a name="modules"></a><div class="titlepage"><div><h3 class="title"><a name="modules"></a>4.9.2. Modules</h3></div></div><div class="sect3"><a name="architecture_modules"></a><div class="titlepage"><div><h4 class="title"><a name="architecture_modules"></a>4.9.2.1. Module Architecture</h4></div></div><p>
 The controlling class of the module/plugin extension
 is <tt>org.argouml.application.modules.ModuleLoader</tt>.
 <tt>ModuleLoader</tt> is a singleton
@@ -489,24 +676,24 @@ created in the ARGO UML main initialization routine.
 </p><p>
 <tt>ModuleLoader</tt> will:
 
-<div class="itemizedlist"><ul><li><p><a name="N10d0"></a>read in the property file</p></li><li><p><a name="N10d6"></a>create the specified classes</p></li><li><p><a name="N10dc"></a>call initialize on these classes</p></li><li><p><a name="N10e2"></a>place the class objects into the
+<div class="itemizedlist"><ul><li><p><a name="N156c"></a>read in the property file</p></li><li><p><a name="N1572"></a>create the specified classes</p></li><li><p><a name="N1578"></a>call initialize on these classes</p></li><li><p><a name="N157e"></a>place the class objects into the
 internal <tt>ModuleLoader</tt> list</p></li></ul></div>
 </p><p>
 Each class must derive from the <tt>ArgoModule</tt> interface.
 This interface provides the following methods:
-<div class="itemizedlist"><ul><li><a name="N10f4"></a><div id="N10f6" class="funcsynopsis"><p></p><a name="N10f6"></a><p><code><code class="funcdef">
+<div class="itemizedlist"><ul><li><a name="N1590"></a><div id="N1592" class="funcsynopsis"><p></p><a name="N1592"></a><p><code><code class="funcdef">
 String <b class="fsfunc">getModuleName</b>
 </code>(void);</code></p><p></p></div><p>provides a display name for the ARGO module.  
-</p></li><li><a name="N110a"></a><div id="N110c" class="funcsynopsis"><p></p><a name="N110c"></a><p><code><code class="funcdef">
+</p></li><li><a name="N15a6"></a><div id="N15a8" class="funcsynopsis"><p></p><a name="N15a8"></a><p><code><code class="funcdef">
 String <b class="fsfunc">getModuleDescription</b>
 </code>(void);</code></p><p></p></div><p>provides a textual description for the ARGO module.  
-</p></li><li><a name="N1120"></a><div id="N1122" class="funcsynopsis"><p></p><a name="N1122"></a><p><code><code class="funcdef">
+</p></li><li><a name="N15bc"></a><div id="N15be" class="funcsynopsis"><p></p><a name="N15be"></a><p><code><code class="funcdef">
 String <b class="fsfunc">getModuleVersion</b>
 </code>(void);</code></p><p></p></div><p>provides the version of the ARGO module.
-</p></li><li><a name="N1136"></a><div id="N1138" class="funcsynopsis"><p></p><a name="N1138"></a><p><code><code class="funcdef">
+</p></li><li><a name="N15d2"></a><div id="N15d4" class="funcsynopsis"><p></p><a name="N15d4"></a><p><code><code class="funcdef">
 String <b class="fsfunc">getModuleAuthor</b>
 </code>(void);</code></p><p></p></div><p>provides the name of the module author(s).
-</p></li><li><a name="N114c"></a><div id="N114e" class="funcsynopsis"><p></p><a name="N114e"></a><p><code><code class="funcdef">
+</p></li><li><a name="N15e8"></a><div id="N15ea" class="funcsynopsis"><p></p><a name="N15ea"></a><p><code><code class="funcdef">
 boolean <b class="fsfunc">initializeModule</b>
 </code>(void);</code></p><p></p></div><p><tt>initializeModule</tt> is called
 when the class loader has created the module,
@@ -524,14 +711,14 @@ when the module initialization process is called.
 should return true
 if the initialization is successful
 (or if no initialization is necessary).
-</p></li><li><a name="N1179"></a><div id="N117b" class="funcsynopsis"><p></p><a name="N117b"></a><p><code><code class="funcdef">
+</p></li><li><a name="N1615"></a><div id="N1617" class="funcsynopsis"><p></p><a name="N1617"></a><p><code><code class="funcdef">
 void <b class="fsfunc">shutdownModule</b>
 </code>(void);</code></p><p></p></div><p>The <tt>shutdownModule</tt> method is called
 when the <tt>ModuleLoader</tt> is destroyed.
 <tt>shutdownModule</tt> provides each module the capability
 to clean up or save any required information
 before being cleared from memory.  
-</p></li><li><p><a name="N119c"></a>getPopUpActions</p><p>The getPopUpActions method is called
+</p></li><li><p><a name="N1638"></a>getPopUpActions</p><p>The getPopUpActions method is called
 when a user right clicks on a context item.
 The parameters passed into the pop-up actions method
 are the current list of menu items for the context
@@ -554,14 +741,14 @@ for the UML actions and add this menuaction to the pop-up vector.
 If that menu item is selected in the pop-up menu
 then the actionPerformed method within the UML action will be called.
 When the actionPerformed is called the module will do its work.
-</p></li><li><a name="N11ab"></a><div id="N11ad" class="funcsynopsis"><p></p><a name="N11ad"></a><p><code><code class="funcdef">
+</p></li><li><a name="N1647"></a><div id="N1649" class="funcsynopsis"><p></p><a name="N1649"></a><p><code><code class="funcdef">
 void <b class="fsfunc">setModuleEnabled</b>
-</code>(boolean <var class="pdparam">tf</var>);</code></p><p></p></div></li><li><a name="N11c5"></a><div id="N11c7" class="funcsynopsis"><p></p><a name="N11c7"></a><p><code><code class="funcdef">
+</code>(boolean <var class="pdparam">tf</var>);</code></p><p></p></div></li><li><a name="N1661"></a><div id="N1663" class="funcsynopsis"><p></p><a name="N1663"></a><p><code><code class="funcdef">
 boolean <b class="fsfunc">isModuleEnabled</b>
-</code>(void);</code></p><p></p></div></li><li><a name="N11d8"></a><div id="N11da" class="funcsynopsis"><p></p><a name="N11da"></a><p><code><code class="funcdef">
+</code>(void);</code></p><p></p></div></li><li><a name="N1674"></a><div id="N1676" class="funcsynopsis"><p></p><a name="N1676"></a><p><code><code class="funcdef">
 Vector <b class="fsfunc">getModulePopUpActions</b>
 </code>(void);</code></p><p></p></div><p>...
-</p></li><li><a name="N11ee"></a><div id="N11f0" class="funcsynopsis"><p></p><a name="N11f0"></a><p><code><code class="funcdef">
+</p></li><li><a name="N168a"></a><div id="N168c" class="funcsynopsis"><p></p><a name="N168c"></a><p><code><code class="funcdef">
 String <b class="fsfunc">getModuleKey</b>
 </code>(void);</code></p><p></p></div><p>Returns a string that identifies the module.
 </p></li></ul></div>
@@ -571,17 +758,17 @@ the ability to listen for a menu activity by context
 within the UML diagramming environment.
 When these events are fired,
 the extension models can respond accordingly.  
-</p></div><div class="sect3"><a name="using_modules"></a><div class="titlepage"><div><h4 class="title"><a name="using_modules"></a>4.8.2.2. Using Modules</h4></div></div><p>...</p></div><div class="sect3"><a name="howdoi_modules"></a><div class="titlepage"><div><h4 class="title"><a name="howdoi_modules"></a>4.8.2.3. How do I ...?</h4></div></div><p>
-<div class="itemizedlist"><ul><li><p><a name="N1220"></a>...create a module?</p><p>
-</p></li><li><p><a name="N1228"></a>...tell when a module is loaded?</p><p>
+</p></div><div class="sect3"><a name="using_modules"></a><div class="titlepage"><div><h4 class="title"><a name="using_modules"></a>4.9.2.2. Using Modules</h4></div></div><p>...</p></div><div class="sect3"><a name="howdoi_modules"></a><div class="titlepage"><div><h4 class="title"><a name="howdoi_modules"></a>4.9.2.3. How do I ...?</h4></div></div><p>
+<div class="itemizedlist"><ul><li><p><a name="N16bc"></a>...create a module?</p><p>
+</p></li><li><p><a name="N16c4"></a>...tell when a module is loaded?</p><p>
 </p></li></ul></div>
-</p></div></div><div class="sect2"><a name="plugins"></a><div class="titlepage"><div><h3 class="title"><a name="plugins"></a>4.8.3. Plugins</h3></div></div><div class="sect3"><a name="architecture_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="architecture_plugins"></a>4.8.3.1. Plugin Architecture</h4></div></div><p>
+</p></div></div><div class="sect2"><a name="plugins"></a><div class="titlepage"><div><h3 class="title"><a name="plugins"></a>4.9.3. Plugins</h3></div></div><div class="sect3"><a name="architecture_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="architecture_plugins"></a>4.9.3.1. Plugin Architecture</h4></div></div><p>
 Each class must derive from the <tt>Pluggable</tt> interface.
 In addition to the methods declared in <tt>ArgoModule</tt>,
 which <tt>Pluggable</tt> extends,
 the interface provides the following method:
 
-<div class="itemizedlist"><ul><li><a name="N124f"></a><div id="N1251" class="funcsynopsis"><p></p><a name="N1251"></a><p><code><code class="funcdef">
+<div class="itemizedlist"><ul><li><a name="N16eb"></a><div id="N16ed" class="funcsynopsis"><p></p><a name="N16ed"></a><p><code><code class="funcdef">
 boolean <b class="fsfunc">inContext</b>
 </code>(Object[] <var class="pdparam">context</var>);</code></p><p></p></div><p>
 <tt>inContext</tt> allows a plug-in to decide
@@ -599,7 +786,7 @@ so that the plugin can further decide.
 It is useful for those plugins which actually use context
 to provide a helper method
 
-<div id="N127a" class="funcsynopsis"><p></p><a name="N127a"></a><p><code><code class="funcdef">
+<div id="N1716" class="funcsynopsis"><p></p><a name="N1716"></a><p><code><code class="funcdef">
 Object[] <b class="fsfunc">buildContext</b>
 </code>(classtype1 <var class="pdparam">parameter1</var>, classtype2 <var class="pdparam">parameter2</var>);</code></p><p></p></div>
 which will serve two purposes.
@@ -624,17 +811,17 @@ which can be used as follows:
         ....
     }
 </pre>
-</p></div><div class="sect3"><a name="using_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="using_plugins"></a>4.8.3.2. Using Plugins</h4></div></div><p>...</p></div><div class="sect3"><a name="howdoi_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="howdoi_plugins"></a>4.8.3.3. How do I ...?</h4></div></div><p>
+</p></div><div class="sect3"><a name="using_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="using_plugins"></a>4.9.3.2. Using Plugins</h4></div></div><p>...</p></div><div class="sect3"><a name="howdoi_plugins"></a><div class="titlepage"><div><h4 class="title"><a name="howdoi_plugins"></a>4.9.3.3. How do I ...?</h4></div></div><p>
 
-<div class="itemizedlist"><ul><li><p><a name="N12c4"></a>...create a plugin project?</p><p>...</p></li><li><p><a name="N12cc"></a>...create a pluggable settings tab?</p><p>...</p></li><li><p><a name="N12d4"></a>...create a pluggable menu?</p><p>...</p></li><li><p><a name="N12dc"></a>...create a pluggable notation?</p><p>...</p></li><li><p><a name="N12e4"></a>...create a pluggable diagram?</p><p>...</p></li><li><p><a name="N12ec"></a>...create a pluggable resource bundle?</p><p>...</p></li><li><p><a name="N12f4"></a>...create a new pluggable type?</p><p>
-<div class="itemizedlist"><ul><li><p><a name="N12fc"></a>
+<div class="itemizedlist"><ul><li><p><a name="N1760"></a>...create a plugin project?</p><p>...</p></li><li><p><a name="N1768"></a>...create a pluggable settings tab?</p><p>...</p></li><li><p><a name="N1770"></a>...create a pluggable menu?</p><p>...</p></li><li><p><a name="N1778"></a>...create a pluggable notation?</p><p>...</p></li><li><p><a name="N1780"></a>...create a pluggable diagram?</p><p>...</p></li><li><p><a name="N1788"></a>...create a pluggable resource bundle?</p><p>...</p></li><li><p><a name="N1790"></a>...create a new pluggable type?</p><p>
+<div class="itemizedlist"><ul><li><p><a name="N1798"></a>
 Create the plug-ins interface
 </p><p>
 
 In the package org.argouml.application.api, create an
 interface that extends Pluggable (in the same package).
 The class name must begin with 'Pluggable'.
-<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/note.png"></td><th><a name="N1303"></a>Note</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+<div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/note.png"></td><th><a name="N179f"></a>Note</th></tr><tr><td valign="top" align="left" colspan="2"><p>
 This is done to ensure that all plugin APIs are defined within Argo itself.
 One of the main purposes of a plugin is
 to provide the capability to add an externally defined class
@@ -691,7 +878,7 @@ method that returns an JMenuItem object:
 
 The returned menu item will be added to the diagrams menu
 to allow to open a new diagram of this type.
-</p></li><li><p><a name="N1328"></a>
+</p></li><li><p><a name="N17c4"></a>
 Create implementation(s)
 </p><p>
 We do this by creating a helper class in the package
@@ -740,12 +927,12 @@ implements PluggableDiagram {
 The extension of ArgoDiagram is specific to this example;
 the plug-in will provide a new ArgoUML diagram.
 
-<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/important.png"></td><th><a name="N1334"></a>Important</th></tr><tr><td valign="top" align="left" colspan="2"><p>
+<div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td valign="top" align="center" rowspan="2" width="25"><img src="images/important.png"></td><th><a name="N17d0"></a>Important</th></tr><tr><td valign="top" align="left" colspan="2"><p>
 Don't forget to do the localization stuff, because the
 plug-in might be used in all languages ArgoUML offers!
 </p></td></tr></table></div>
 
-</p></li><li><p><a name="N133c"></a>
+</p></li><li><p><a name="N17d8"></a>
 Localization (not plug-in specific, but important)
 </p><p>
 As you can see we defines a constant DIAGRAM_BUNDLE with
@@ -780,8 +967,8 @@ additional classes should be added.
 
 </p></li></ul></div>
 
-</p></div></div></div><div class="sect1"><a name="logging"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="logging"></a>4.9. Logging</h2></div></div><div class="sect2"><a name="howdoi_logging"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_logging"></a>4.9.1. How do I ...?</h3></div></div><p>
-<div class="itemizedlist"><ul><li><p><a name="N1375"></a>... create logging entries?</p><p>ArgoUML uses the standard <a href="http://jakarta.apache.org/log4j/" target="_top">Log4j</a> logging procedures. This is not fully implemented yet at the time of writing. However in <i>org.argouml.resource</i> you will some example log configuration files. Modify these to your needs.</p><p>In order to invoke ArgoUML using one of the example logging configuration files, give it the command line parameter
+</p></div></div></div><div class="sect1"><a name="logging"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="logging"></a>4.10. Logging</h2></div></div><div class="sect2"><a name="howdoi_logging"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_logging"></a>4.10.1. How do I ...?</h3></div></div><p>
+<div class="itemizedlist"><ul><li><p><a name="N1811"></a>... create logging entries?</p><p>ArgoUML uses the standard <a href="http://jakarta.apache.org/log4j/" target="_top">Log4j</a> logging procedures. This is not fully implemented yet at the time of writing. However in <i>org.argouml.resource</i> you will some example log configuration files. Modify these to your needs.</p><p>In order to invoke ArgoUML using one of the example logging configuration files, give it the command line parameter
 <i>-Dlog4j.configuration=org/argouml/resource/<i>filename.lcf</i></i>.
 If you have created your own configuration file, give Argo the command line parameter
 <i>-Dlog4j.configuration=<i>url</i></i>
@@ -789,7 +976,7 @@ where <i><i>url</i></i> is the url of your configuration file,
 such as <i>file:/home/username/argodebug.lcf</i>.
 or <i>http://localhost/shared/argouml/argodebug.lcf</i>.
 </p></li></ul></div>
-</p></div></div><div class="sect1"><a name="N13a0"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N13a0"></a>4.10. The JUnit module</h2></div></div><p>
+</p></div></div><div class="sect1"><a name="N183c"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N183c"></a>4.11. The JUnit module</h2></div></div><p>
 The JUnit module is an ArgoUML module that is used to contain all 
 Unit Test Cases.
 The reason for it being a module is that the classes contained need
@@ -814,35 +1001,35 @@ should have a JUnit test case called
 stored in the file
 <tt>modules/junit/src/org/argouml/<i><tt>x/y</tt></i>/Test<i><tt>z</tt></i>.java</tt>
 containing all the Unit Test Cases for that class.
-</p><div class="sect2"><a name="N13ed"></a><div class="titlepage"><div><h3 class="title"><a name="N13ed"></a>4.10.1. How to run the test cases</h3></div></div><p>
+</p><div class="sect2"><a name="N1889"></a><div class="titlepage"><div><h3 class="title"><a name="N1889"></a>4.11.1. How to run the test cases</h3></div></div><p>
 This is a simple description on how to run the JUnit Test Cases.
-</p><div class="orderedlist"><ol type="1"><li><p><a name="N13fb"></a>
+</p><div class="orderedlist"><ol type="1"><li><p><a name="N1897"></a>
 Check out all you need to build ArgoUML and the modules/junit
 directory.
-</p></li><li><p><a name="N1401"></a>
+</p></li><li><p><a name="N189d"></a>
 Build ArgoUML in src_new as described in the
 <a href="#Build">Build Process</a>
-</p></li><li><p><a name="N140d"></a>
+</p></li><li><p><a name="N18a9"></a>
 Change directory to
 <tt>../modules/junit</tt>
-</p></li><li><p><a name="N141a"></a>
+</p></li><li><p><a name="N18b6"></a>
 Run ant with the argument run.
-</p></li><li><p><a name="N1420"></a>
+</p></li><li><p><a name="N18bc"></a>
 ArgoUML starts up just with the splash screen and then the normal
 window.
-</p></li><li><p><a name="N1426"></a>
+</p></li><li><p><a name="N18c2"></a>
 Observe that the Tools menu now is enabled (i.e. not greyed out).
-</p></li><li><p><a name="N142c"></a>
+</p></li><li><p><a name="N18c8"></a>
 Under the Tools menu, select the item Test Panel....
-</p></li><li><p><a name="N1432"></a>
+</p></li><li><p><a name="N18ce"></a>
 The JUnit panel called Run Test Suite opens on top of ArgoUML.
-</p></li><li><p><a name="N1438"></a>
+</p></li><li><p><a name="N18d4"></a>
 Enter the word <tt>TestAll</tt> in the field 
 "Enter the name of the Test class:" to run all tests.
-</p></li><li><p><a name="N1441"></a>
+</p></li><li><p><a name="N18dd"></a>
 Press the "Run"-button and watch the "Progess"-bar turn all green
 (hopefully).
-</p></li><li><p><a name="N1447"></a>
+</p></li><li><p><a name="N18e3"></a>
 Verify that all the tests are Run and that there are 
 no "Errors" and no "Failures".
 </p><p>
@@ -853,7 +1040,7 @@ If you only want to run one of your newly written test cases and not
 all the test cases, give the class name of your test case instead of
 "TestAll" like
 <tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>.
-</p></div><div class="sect2"><a name="N145d"></a><div class="titlepage"><div><h3 class="title"><a name="N145d"></a>4.10.2. How to write a test case</h3></div></div><p>
+</p></div><div class="sect2"><a name="N18f9"></a><div class="titlepage"><div><h3 class="title"><a name="N18f9"></a>4.11.2. How to write a test case</h3></div></div><p>
 Now this will make all you java-enthusiasts go nuts!
 We have both classnames and method names that need to have a special
 syntax.
@@ -890,7 +1077,7 @@ They serve as a guarantee that the public interface of a class will
 ever loose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
-</p><div class="example"><p><a name="N1483"></a><b>Example 4.1. A complete example</b></p><p>
+</p><div class="example"><p><a name="N191f"></a><b>Example 4.1. A complete example</b></p><p>
 <pre class="programlisting">
 package org.argouml.uml.ui;
 import junit.framework.*;
@@ -940,7 +1127,7 @@ public class TestUMLAction extends TestCase {
     }
 }
 </pre>
-</p></div></div><div class="sect2"><a name="N1492"></a><div class="titlepage"><div><h3 class="title"><a name="N1492"></a>4.10.3. The TestAll class</h3></div></div><p>
+</p></div></div><div class="sect2"><a name="N192e"></a><div class="titlepage"><div><h3 class="title"><a name="N192e"></a>4.11.3. The TestAll class</h3></div></div><p>
 The TestAll class goes through all directories under 
 <tt>modules/junit/build/classes</tt>
 and finds all class-files beginning with "Test".
@@ -960,81 +1147,90 @@ I hope and think that this will never be a problem since most of the
 times the test cases are run by a person with all the source available
 in just this way.
 </p></div></div></div><div class="chapter" id="cvs"><div class="titlepage"><div><h2 class="title"><a name="cvs"></a>Chapter 5. Employed CVS standards</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>5.1 <a href="#branches">Creating and using branches</a></dt><dd><dl><dt>5.1.1 <a href="#howdoi_cvs">How do I ...?</a></dt></dl></dd></dl></div><div class="sect1"><a name="branches"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="branches"></a>5.1. Creating and using branches</h2></div></div><p>We use the following standards in Argo/UML:
-<div class="itemizedlist"><ul><li><p><a name="N14c6"></a>Released versions get the tag <i>VERSION_X_X_X</i></p></li><li><p><a name="N14cc"></a>Versions which are considered stable in between official releases get build numbers assigned to them: <i>VERSION_X_X_X_BLDYYY</i></p></li><li><p><a name="N14d2"></a>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <i>work_explanation_owner</i>, where 
-            <div class="itemizedlist"><ul><li><p><a name="N14da"></a>work is a literal</p></li><li><p><a name="N14de"></a>explanation is something like javahelp, propertypanel, cppcodegeneration</p></li><li><p><a name="N14e2"></a>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</p></li></ul></div>
+<div class="itemizedlist"><ul><li><p><a name="N1962"></a>Released versions get the tag <i>VERSION_X_X_X</i></p></li><li><p><a name="N1968"></a>Versions which are considered stable in between official releases get build numbers assigned to them: <i>VERSION_X_X_X_BLDYYY</i></p></li><li><p><a name="N196e"></a>Developers working on code, with an unspecified due date are requested to put the code into a branch if it is deemed useful that the code can be shared. Developer branches follow the scheme: <i>work_explanation_owner</i>, where 
+            <div class="itemizedlist"><ul><li><p><a name="N1976"></a>work is a literal</p></li><li><p><a name="N197a"></a>explanation is something like javahelp, propertypanel, cppcodegeneration</p></li><li><p><a name="N197e"></a>owner is a self explaining code for the owner of the branch, e.g. tlach (Thierry Lach) or mklink (Markus Klink).</p></li></ul></div>
 </p></li></ul></div>
 </p><p>Merging branches together is causing some work. So please use them sparingly and announce your attention before on the mailinglist.
 </p><div class="sect2"><a name="howdoi_cvs"></a><div class="titlepage"><div><h3 class="title"><a name="howdoi_cvs"></a>5.1.1. How do I ...?</h3></div></div><p>
-	  <div class="itemizedlist"><ul><li><p><a name="N14f9"></a>
+	  <div class="itemizedlist"><ul><li><p><a name="N1995"></a>
 ...get my update or patch into cvs if I don't have cvs write rights?
 </p><p>
 Contact any of the active developers on the list and send them your
 updates. They're very nice about it the first few times.
-</p></li><li><p><a name="N1502"></a>...get a list of the currently active working branches?</p><p>
+</p><p>
+Supposing that you have checked out cvs as guest, then after you have
+mailed a diff or file to an active developer, and he has entered it in cvs
+your checked out copy contains the change but is not in sync and
+the next <b>cvs update</b> will result in an merge error.
+The simplest way to solve this is to do remove all files modified by you
+before doing the <b>cvs update</b>. 
+The <b>cvs update</b> will restore all the files from the 
+CVS repository and you can start with the next update.
+</p></li><li><p><a name="N19b0"></a>...get a list of the currently active working branches?</p><p>
 You can't from cvs. You need to follow the announcements of created
 and discontinued branches on the mailing list to know what branches are
 interesting.
-	      </p></li><li><p><a name="N150b"></a>
+	      </p></li><li><p><a name="N19b9"></a>
 ...create a branch for my work on <i><tt>xxxyyy</tt></i> 
 and start work on that branch?</p><p>
 This assumes that you have a checked out copy of argouml
-	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N151c"></a>Change directory to the directory where argouml is checked out.</p></li><li><p><a name="N1522"></a>
+	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N19ca"></a>Change directory to the directory where argouml is checked out.</p></li><li><p><a name="N19d0"></a>
 Enter the argouml directory:
 <b>cd argouml</b> or <b>chdir argouml</b>
-		  </p></li><li><p><a name="N1532"></a>
+		  </p></li><li><p><a name="N19e0"></a>
 Create your branch: 
 <b>cvs tag -b <i><tt>work_xxxyyy_myname</tt></i></b>
 		  </p><p>
 <i><tt>myname</tt></i> is is a self explaining code for you
 (your Tigris login).
-		  </p></li><li><p><a name="N1545"></a>
+		  </p></li><li><p><a name="N19f3"></a>
 Change your checked out copy to be on the branch:
 <b>cvs update -r <i><tt>work_xxxyyy_myname</tt></i></b>
-		  </p></li><li><p><a name="N1552"></a>Do your work!</p></li><li><p><a name="N1558"></a>
+		  </p></li><li><p><a name="N1a00"></a>Do your work!</p></li><li><p><a name="N1a06"></a>
 Check in your changes in the branch:
 <b>cvs commit -m'<i><tt>Blablabla</tt></i>' [file]</b>
-		  </p></li><li><p><a name="N1568"></a>Continue working and checking in!</p></li></ol></div></li><li><p><a name="N1570"></a>...move my work from my working branch into the release?</p><p>
+		  </p></li><li><p><a name="N1a16"></a>Continue working and checking in!</p></li></ol></div></li><li><p><a name="N1a1e"></a>...move my work from my working branch into the release?</p><p>
 This is done when your work with the feature xxxyyy is finished and you have
 decided/received clearance to enter it in the main branch.
-	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N157e"></a>
+	      </p><div class="orderedlist"><ol type="1"><li><p><a name="N1a2c"></a>
 Change directory to the directory where argouml is checked out.
 		  </p><p>
 If you are just working on one feature at a time this is the place where you
 have a checked out copy on the branch in question. If not, this could be any
 checked out copy of the source that does not contain any uncommited changes.
-		  </p></li><li><p><a name="N1587"></a>
+		  </p></li><li><p><a name="N1a35"></a>
 Enter the argouml directory:
 <b>cd argouml</b> or <b>chdir argouml</b>
-		  </p></li><li><p><a name="N1597"></a>
+		  </p></li><li><p><a name="N1a45"></a>
 Move the checked out copy that you are working on to the main branch:
 <b>cvs update -A</b>
-		  </p></li><li><p><a name="N15a2"></a>
+		  </p></li><li><p><a name="N1a50"></a>
 Merge the changes from the branch into you checked out copy:
 <b>cvs update -j <i><tt>work_xxxyyy_myname</tt></i></b>
-		  </p></li><li><p><a name="N15af"></a>
+		  </p></li><li><p><a name="N1a5d"></a>
 Compile and run all your tests again.
 		  </p><p>
 This is to verify that the merge was all right, noone else had done any changes
 that in the meantime that has in any way modified the work made in the branch.
-		  </p></li><li><p><a name="N15b8"></a>
+		  </p></li><li><p><a name="N1a66"></a>
 Commit your changes in the main branch:
 <b>cvs commit -m'<i><tt>xxxyyy entered in the main branch</tt></i></b>
-		  </p></li><li><p><a name="N15c5"></a>
+		  </p></li><li><p><a name="N1a73"></a>
 Discontinue your branch!
 		  </p><p>
 From this point on it is important that you do not reuse your branch for 
 any work. Only check it out for the purpose of examining how things were
 in the branch. Make sure that all other developers that have been looking
 at your branch also knows that it is discontinued.
-		  </p></li></ol></div></li><li><p><a name="N15d0"></a>...look at someone else's work in a branch?</p><p>
+		  </p></li></ol></div></li><li><p><a name="N1a7e"></a>...look at someone else's work in a branch?</p><p>
 You need the name of the branch, i.e. the 
 <i><tt>work_xxxyyy_hisname</tt></i>.
 	      </p><p>
 There are two alternatives:
-		<div class="itemizedlist"><ul><li><p><a name="N15df"></a>
+		<div class="itemizedlist"><ul><li><p><a name="N1a8d"></a>
 Check out argouml or part of it on that branch:
 <b>cvs co -r <i><tt>work_xxxyyy_hisname</tt></i> argouml</b>
-		    </p></li><li><p><a name="N15ed"></a>
+		    </p></li><li><p><a name="N1a9b"></a>
 Update your copy of argouml to be on that branch:
 <b>cvs update -r <i><tt>work_xxxyyy_hisname</tt></i></b>
 		    </p><p>
@@ -1046,10 +1242,10 @@ code works also with the additions on that branch.
 	      </p></li></ul></div>
 	</p></div></div></div><div class="chapter" id="standards"><div class="titlepage"><div><h2 class="title"><a name="standards"></a>Chapter 6. Standards for coding in ArgoUML</h2></div></div><p>
 The coding style for ArgoUML is the following
-</p><div class="itemizedlist"><ul><li><p><a name="N1611"></a>
+</p><div class="itemizedlist"><ul><li><p><a name="N1abf"></a>
 Each file starts with some header info: file, classes in this file,
 original author's email address, and version control info.
-</p></li><li><p><a name="N1617"></a>
+</p></li><li><p><a name="N1ac5"></a>
 I am using the 
 <pre class="programlisting">
 import ...*;
@@ -1061,7 +1257,7 @@ cannot be changed to the package-name-only style.
 (Note: This means that if you make a zip file for use in your
 CLASSPATH, you must use a version of the zip tool that includes
 directory entries.)
-</p></li><li><p><a name="N1622"></a>
+</p></li><li><p><a name="N1ad0"></a>
 All instance variables are protected and their names begin with an underscore.
 If the variable should be accessible then add public or protected
 accessor methods with the same name as the variable without the
@@ -1070,20 +1266,20 @@ For example:
 <tt>_lineWidth</tt>, 
 <tt>setLineWidth()</tt>, and 
 <tt>getLineWidth()</tt>.
-</p></li><li><p><a name="N1631"></a>
+</p></li><li><p><a name="N1adf"></a>
 In general, write short code.
 If a method will fit comfortably on one line, then put it on one line.
-</p></li><li><p><a name="N1637"></a>
+</p></li><li><p><a name="N1ae5"></a>
 Use javadoc for each class, instance variable, and method. 
 In general do not put comments in the body of a method. 
 If you are doing something complex enough to need a comment, consider
 breaking it out into its own commented method.
-</p></li><li><p><a name="N163d"></a>
+</p></li><li><p><a name="N1aeb"></a>
 Indicate places of future modifications with 
 <pre class="programlisting">
 // Needs-More-Work: reason
 </pre>
-</p></li><li><p><a name="N1648"></a>
+</p></li><li><p><a name="N1af6"></a>
 Name all classes with an initial uppercase letter, and all variables
 and methods with a lowercase one. 
 I use the <tt>allTogetherWithCaps</tt> naming style.
@@ -1091,7 +1287,7 @@ Name static variables with an underscore and an inital capital letter,
 e.g., <tt>_PossibleLanguages</tt>.
 Name constants with all upper case and underscores, e.g., 
 <tt>GRIP_MARGIN</tt>.
-</p></li><li><p><a name="N1657"></a>
+</p></li><li><p><a name="N1b05"></a>
 To emphasize clusters of classes I am using what I call the binomial
 naming style (I am sure others have thought of this also): 
 The root class of the cluster has a short name (e.g., Layer), 
@@ -1102,13 +1298,13 @@ having to look at a class inheritance diagram.
 It is also very nice when you have to look at an alphabetical list
 of classes. I try to name class clusters so that they are not lexigraphically close others (e.g., the Net cluster
 used to be named Model, but that lexigraphically overlapped the Mode cluster).
-</p></li><li><p><a name="N165d"></a>
+</p></li><li><p><a name="N1b0b"></a>
 When in doubt, follow Sun java style conventions.
-</p></li></ul></div></div><div class="chapter" id="further_reading"><div class="titlepage"><div><h2 class="title"><a name="further_reading"></a>Chapter 7. Further Reading</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>7.1 <a href="#robbins">Jason Robbins Dissertation</a></dt><dd><dl><dt>7.1.1 <a href="#N167c">Abstract</a></dt><dt>7.1.2 <a href="#N1688">Where to find it</a></dt></dl></dd><dt>7.2 <a href="#skinner">Martin Skinners Dissertation</a></dt><dd><dl><dt>7.2.1 <a href="#N16a1">Abstract</a></dt><dt>7.2.2 <a href="#N16af">Where to find it</a></dt></dl></dd></dl></div><div class="sect1"><a name="robbins"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="robbins"></a>7.1. Jason Robbins Dissertation</h2></div></div><p>
+</p></li></ul></div></div><div class="chapter" id="further_reading"><div class="titlepage"><div><h2 class="title"><a name="further_reading"></a>Chapter 7. Further Reading</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>7.1 <a href="#robbins">Jason Robbins Dissertation</a></dt><dd><dl><dt>7.1.1 <a href="#N1b2a">Abstract</a></dt><dt>7.1.2 <a href="#N1b36">Where to find it</a></dt></dl></dd><dt>7.2 <a href="#skinner">Martin Skinners Dissertation</a></dt><dd><dl><dt>7.2.1 <a href="#N1b4f">Abstract</a></dt><dt>7.2.2 <a href="#N1b5d">Where to find it</a></dt></dl></dd></dl></div><div class="sect1"><a name="robbins"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="robbins"></a>7.1. Jason Robbins Dissertation</h2></div></div><p>
 Cognitive Support Features for Software Development Tools
 </p><p>
 The dissertation of Jason Robbins is a <i>MUST READ</i> for everyone concerned about ArgoUML. Be careful though, since it is based on an old version of ArgoUML, but many of the concepts remain intact.
-</p><div class="sect2"><a name="N167c"></a><div class="titlepage"><div><h3 class="title"><a name="N167c"></a>7.1.1. Abstract</h3></div></div><p>
+</p><div class="sect2"><a name="N1b2a"></a><div class="titlepage"><div><h3 class="title"><a name="N1b2a"></a>7.1.1. Abstract</h3></div></div><p>
 Software design is a cognitively challenging task. Most software
 design tools provide support for editing, viewing, storing, sharing,
 and transforming designs, but lack support for the essential and
@@ -1130,10 +1326,10 @@ features that address the identified cognitive needs of software
 designers. Each feature is explained with respect to the cognitive
 theories that inspired it and the set of features is evaluated with a
 combination of heuristic and empirical techniques.
-</p></div><div class="sect2"><a name="N1688"></a><div class="titlepage"><div><h3 class="title"><a name="N1688"></a>7.1.2. Where to find it</h3></div></div><p>LINK: <a href="http://argouml.tigris.org/docs/robbins_dissertation/" target="_top">Robbins Dissertation</a>
+</p></div><div class="sect2"><a name="N1b36"></a><div class="titlepage"><div><h3 class="title"><a name="N1b36"></a>7.1.2. Where to find it</h3></div></div><p>LINK: <a href="http://argouml.tigris.org/docs/robbins_dissertation/" target="_top">Robbins Dissertation</a>
 </p></div></div><div class="sect1"><a name="skinner"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="skinner"></a>7.2. Martin Skinners Dissertation</h2></div></div><p>
 Enhancing a UML Modelling Tool with Context-Based Constraints for Components
-</p><div class="sect2"><a name="N16a1"></a><div class="titlepage"><div><h3 class="title"><a name="N16a1"></a>7.2.1. Abstract</h3></div></div><p>
+</p><div class="sect2"><a name="N1b4f"></a><div class="titlepage"><div><h3 class="title"><a name="N1b4f"></a>7.2.1. Abstract</h3></div></div><p>
 Noch vor der Erstellung eines detaillierten Entwurfs hilft ein
 Spezifiationmodell eines komponenten-basierten Systems dabei, Probleme
 so fr&uuml;h im Entwicklungsproze&szlig; wie m&ouml;glich zu entdecken. Die Sprache
@@ -1159,10 +1355,100 @@ there is no tool to integrate the component specification model into
 the development process. The goal of this master's thesis was to
 design such a tool, thereby supporting the Continuous Software
 Engineering (CSE) philosophy.
-</p></div><div class="sect2"><a name="N16af"></a><div class="titlepage"><div><h3 class="title"><a name="N16af"></a>7.2.2. Where to find it</h3></div></div><p>
+</p></div><div class="sect2"><a name="N1b5d"></a><div class="titlepage"><div><h3 class="title"><a name="N1b5d"></a>7.2.2. Where to find it</h3></div></div><p>
 LINK: <a href="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf" target="_top">Martin Skinners dissertation</a>
-</p></div></div></div><div class="chapter" id="N16bf"><div class="titlepage"><div><h2 class="title"><a name="N16bf"></a>Chapter 8. Screen Grabs</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>8.1 <a href="#N16c7">How to make Screen Grabs</a></dt><dd><dl><dt>8.1.1 <a href="#N16d2">MS Windows</a></dt><dt>8.1.2 <a href="#N16e7">Linux</a></dt></dl></dd><dt>8.2 <a href="#N16f1">Argouml\application\api class diagram screen grab</a></dt><dt>8.3 <a href="#N1703">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.4 <a href="#N1715">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.5 <a href="#N1727">org\Argouml\cognitive\critics class diagram screen grab</a></dt><dt>8.6 <a href="#N1739">org\Argouml\cognitive\critics\ui class diagram screen grab</a></dt><dt>8.7 <a href="#N1742">src_new\org\Argouml\kernel class diagram screen grab</a></dt><dt>8.8 <a href="#N1754">src_new\org\Argouml\ocl class diagram screen grab</a></dt></dl></div><p>
+</p></div></div></div><div class="chapter" id="N1b6d"><div class="titlepage"><div><h2 class="title"><a name="N1b6d"></a>Chapter 8. Screen Grabs</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>8.1 <a href="#N1b75">How to make Screen Grabs</a></dt><dd><dl><dt>8.1.1 <a href="#N1b80">MS Windows</a></dt><dt>8.1.2 <a href="#N1b95">Linux</a></dt></dl></dd><dt>8.2 <a href="#N1b9f">Argouml\application\api class diagram screen grab</a></dt><dt>8.3 <a href="#N1bb1">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.4 <a href="#N1bc3">org\Argouml\application\configuration class diagram screen grab</a></dt><dt>8.5 <a href="#N1bd5">src_new\org\Argouml\kernel class diagram screen grab</a></dt><dt>8.6 <a href="#N1be7">src_new\org\Argouml\ocl class diagram screen grab</a></dt></dl></div><p>
 The following chapters are moved here from the User FAQ. They need rework.
-</p><div class="sect1"><a name="N16c7"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N16c7"></a>8.1. How to make Screen Grabs</h2></div></div><p>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</p><p>Make screen grabs as you go! And here's how...</p><div class="sect2"><a name="N16d2"></a><div class="titlepage"><div><h3 class="title"><a name="N16d2"></a>8.1.1. MS Windows</h3></div></div><p>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</p><p>To capture a single window instead of the entire screen, use Alt-PrintScreen.</p><p>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</p><p>Thanks to Derek for that little tip!</p><p>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</p></div><div class="sect2"><a name="N16e7"></a><div class="titlepage"><div><h3 class="title"><a name="N16e7"></a>8.1.2. Linux</h3></div></div><p>There's a number of screen shots apps under Linux though they escape me now!</p></div></div><div class="sect1"><a name="N16f1"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N16f1"></a>8.2. Argouml\application\api class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoapi.png"></div></div><div class="sect1"><a name="N1703"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1703"></a>8.3. org\Argouml\application\configuration class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoconfig.png"></div></div><div class="sect1"><a name="N1715"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1715"></a>8.4. org\Argouml\application\configuration class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argocogchklist.png"></div></div><div class="sect1"><a name="N1727"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1727"></a>8.5. org\Argouml\cognitive\critics class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argocogcritics.png"></div></div><div class="sect1"><a name="N1739"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1739"></a>8.6. org\Argouml\cognitive\critics\ui class diagram screen grab</h2></div></div><p>
-Could anyone add this one?
-</p></div><div class="sect1"><a name="N1742"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1742"></a>8.7. src_new\org\Argouml\kernel class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argokernel.png"></div></div><div class="sect1"><a name="N1754"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1754"></a>8.8. src_new\org\Argouml\ocl class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoocl.png"></div></div></div></div></body></html>
+</p><div class="sect1"><a name="N1b75"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1b75"></a>8.1. How to make Screen Grabs</h2></div></div><p>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</p><p>Make screen grabs as you go! And here's how...</p><div class="sect2"><a name="N1b80"></a><div class="titlepage"><div><h3 class="title"><a name="N1b80"></a>8.1.1. MS Windows</h3></div></div><p>You can use the PrintScreen key to copy the screen to the clipboard (as a bitmap), and then you can paste it into another application (such as MS Word, PowerPoint, etc. (maybe Paint, too)) using the Paste function (ctrl-v). MS Word may (depending on your version) allow you to save the document as an HTML page, which creates an html source file and gif files for all the embedded images (i.e. your pasted screen shot).</p><p>To capture a single window instead of the entire screen, use Alt-PrintScreen.</p><p>Image resolution is determined by screen size, for best results: 256 colors by 800X600 is good for a full screen capture.</p><p>Thanks to Derek for that little tip!</p><p>Do a search on any of your favorite freeware sites for more elaborate applications. Snagit from techsmith has been recommended</p></div><div class="sect2"><a name="N1b95"></a><div class="titlepage"><div><h3 class="title"><a name="N1b95"></a>8.1.2. Linux</h3></div></div><p>There's a number of screen shots apps under Linux though they escape me now!</p></div></div><div class="sect1"><a name="N1b9f"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1b9f"></a>8.2. Argouml\application\api class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoapi.png"></div></div><div class="sect1"><a name="N1bb1"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1bb1"></a>8.3. org\Argouml\application\configuration class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoconfig.png"></div></div><div class="sect1"><a name="N1bc3"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1bc3"></a>8.4. org\Argouml\application\configuration class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argocogchklist.png"></div></div><div class="sect1"><a name="N1bd5"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1bd5"></a>8.5. src_new\org\Argouml\kernel class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argokernel.png"></div></div><div class="sect1"><a name="N1be7"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N1be7"></a>8.6. src_new\org\Argouml\ocl class diagram screen grab</h2></div></div><div class="mediaobject"><img src="images/screenshots/argoocl.png"></div></div></div><div class="chapter" id="N1bfa"><div class="titlepage"><div><h2 class="title"><a name="N1bfa"></a>Chapter 9. Organisation of ArgoUML documentation</h2></div><div><h3 class="author">Linus Tolke</h3></div><div><div class="abstract"><p><a name="N1bfe"></a><b>Abstract</b></p><p>
+This chapter contains written down ideas on what goes into what
+part of the documentation. These ideas are formulated by Linus Tolke.
+</p></div></div></div><p>
+There are seven significantly different bits of documentation in the 
+ArgoUML project.
+By documentation I mean some information of the product that is 
+developed alongside the product and that has a persistant value.
+</p><div class="orderedlist"><ol type="1"><li><p><a name="N1c1d"></a>The code, variablenames, class names</p></li><li><p><a name="N1c23"></a>The javadoc</p></li><li><p><a name="N1c29"></a>The cookbook</p></li><li><p><a name="N1c2f"></a>The web site in cvs</p></li><li><p><a name="N1c35"></a>The manual and quick-guide</p></li><li><p><a name="N1c3b"></a>Help texts within the running ArgoUML</p></li><li><p><a name="N1c41"></a>The FAQ</p></li></ol></div><p>
+These different bits have all different purpose and audience and 
+the purpose of this chapter is to try to define that.
+</p><div class="table"><p><a name="N1c4b"></a><b>Table 9.1. Bits of documentation</b></p><table summary="Bits of documentation" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>Bit</th><th>Audience</th><th>Main purpose</th><th>Contains</th></tr></thead><tbody><tr><td>The code</td><td><div class="orderedlist"><ol type="1"><li><p><a name="N1c79"></a>
+Other developers that will maintain and improve on the code.
+</p></li><li><p><a name="N1c7f"></a>
+The compiler.
+</p></li></ol></div></td><td>
+Implement ArgoUML in a maintainable and understandable way.
+</td><td>
+See <a href="#standards" title="Chapter 6. Standards for coding in ArgoUML">Chapter 6. Standards for coding in ArgoUML</a> for more information.
+</td></tr><tr><td>The javadoc</td><td>
+Developers writing code that communicates or in other ways interact
+with this class.
+</td><td>
+Make it easy to see what the functions of every class are and how
+to use them.
+</td><td>
+Description of the functions of all classes, 
+all public and protected methods, variables, and constants.
+</td></tr><tr><td>The cookbook</td><td>
+Developers writing code, maintaining the documentation or the web site.
+</td><td>
+Make it easy to learn how ArgoUML works and how to extend it.
+Be a collection of knowledge around how everything is set up.
+Be a store of the agreed solution around fundamental design decisions
+i.e. design decisions that are so big that it is meaningless to
+store them in the javadoc.
+Be a collection of knowledge around how and why the project makes
+certain decisions.
+</td><td>
+Instructions on how to add new functions and behaviour.
+Instructions on how to do the chores around maintenance 
+(build a release, publish a release, 
+build the documentation part of the release,
+test ArgoUML, test the documentation, ...).
+Agreed project rules like what level of quality is aimed for and
+description of processes that achieves that level.
+</td></tr><tr><td>The web site in cvs</td><td>
+Everyone, i.e. developers in the project, users of the product,
+people searching for UML tools for the purpose of trying, testing,
+evaluating, and using the tools.
+</td><td>
+Be an entry point for the other parts of the documentation.
+Be the main download area for the ArgoUML product.
+Be the central point of the ArgoUML user community.
+Be the central point of the ArgoUML development project.
+</td><td>
+References to all the other parts of the documentation.
+Current project information like the contents of the upcoming releases
+and the plan for the nearest future.
+Easy access illustration for users to be.
+Some illustrations that does not work well in the other 
+parts of the documentation. 
+This is done as a complement to the other parts. 
+Examples, tours and viewlets.
+</td></tr><tr><td>The manual and quick-guide</td><td>
+Users of ArgoUML.
+Persons that want to evaluate ArgoUML for the purpose of starting to use it.
+Persons that are training to use UML and ArgoUML.
+</td><td>
+Describe how ArgoUML is installed and used.
+Describe how UML is used with ArgoUML.
+</td><td>
+Complete installation instructions for all supported installation schemes.
+Complete description on how to use ArgoUML in your project.
+Complete reference on how to use ArgoUML.
+</td></tr><tr><td>Help texts within the running ArgoUML</td><td>
+Users of ArgoUML.
+</td><td>
+Give a quick help with a specific feature or button.
+Give short explanations of all commands and actions.
+</td><td>
+A complete set of quick help and explanations.
+</td></tr><tr><td>The FAQ</td><td>
+Users of ArgoUML.
+Members of the users mailing list.
+</td><td>
+Cope for shortcomings in ArgoUML, the help text, 
+the Manual and quick-guide and the web site.
+</td><td>
+A list of issues that are not addressed in the other part of the documentation.
+It is written in questions-answers-format and the contents is governed by
+the issues discussed recently in the user community.
+</td></tr></tbody></table></div></div></div></body></html>
