@@ -52,7 +52,7 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLVisibilityButto
         if (ModelFacade.isPrivate(getTarget())) {
             getPrivateButton().setSelected(true);
         } else {
-	    if (ModelFacade.isPrivate(getTarget())) {
+	    if (ModelFacade.isProtected(getTarget())) {
 		getProtectedButton().setSelected(true);
 	    } else {
 		getPublicButton().setSelected(true);
