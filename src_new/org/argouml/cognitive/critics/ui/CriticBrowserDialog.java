@@ -87,16 +87,14 @@ public class CriticBrowserDialog extends ArgoDialog
 
     ////////////////////////////////////////////////////////////////
     // constants
-    private static final String BUNDLE = "Cognitive";
-
     private static final String DESC_WIDTH_TEXT = 
 	"This is Sample Text for determining Column Width";
   
     private static final int NUM_COLUMNS = 25;
 
-    static final String high = Translator.localize(BUNDLE, "level.high");
-    static final String medium = Translator.localize(BUNDLE, "level.medium");
-    static final String low = Translator.localize(BUNDLE, "level.low");
+    static final String high = Translator.localize("misc.level.high");
+    static final String medium = Translator.localize("misc.level.medium");
+    static final String low = Translator.localize("misc.level.low");
 
     public static final String PRIORITIES[] = {
 	high, medium, low 
