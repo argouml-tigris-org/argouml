@@ -2232,7 +2232,6 @@ public class ParserDisplay extends Parser {
 		}
 	    } else {
                 // case 2   
-		// Beware: the language should not be reset to "Java" or lost.
 		
 		/* TODO: This does not work! Why not? (MVW)
 	        Object expr = ModelFacade.getExpression(g);
@@ -2268,28 +2267,26 @@ public class ParserDisplay extends Parser {
         4. The expression of the effect was present, but is removed.
         The reaction in these cases should be:
         1. Create a new CallAction, set its name, language & expression, 
-       and hook it to the transition.
+        and hook it to the transition.
         2. Change the effect's expression. Leave the actiontype, name & 
 	language untouched.
         3. Nop.
         4. Unhook and erase the existing effect.
         */
-	/* TODO: If the effect is not a CallAction, then it is reset 
-	to a CallAction (case 2). */
-	/* TODO: The name and language are reset when the expression is 
-	altered (case 2). */
 	Object effect = ModelFacade.getEffect(trans);
 	if (actions.length() > 0) {
 	    if (effect == null) {  // case 1
-	        effect = UmlFactory.getFactory().getCommonBehavior().createCallAction();
-	        ModelFacade.setScript(effect, UmlFactory.getFactory().getDataTypes()
-                                            .createActionExpression("Java", actions));
+	        effect = UmlFactory.getFactory().getCommonBehavior()
+		    .createCallAction();
+	        ModelFacade.setScript(effect, UmlFactory.getFactory()
+		    .getDataTypes().createActionExpression("Java", actions));
 	        ModelFacade.setName(effect, "anon");
 	        ModelFacade.setEffect(trans, effect);
 	    } else {  // case 2
-                String language = ModelFacade.getLanguage(ModelFacade.getExpression(g));
-                ModelFacade.setScript(effect, UmlFactory.getFactory().getDataTypes()
-                        .createActionExpression(language, actions));
+                String language = ModelFacade.getLanguage(ModelFacade
+		    .getScript(effect));
+                ModelFacade.setScript(effect, UmlFactory.getFactory()
+		    .getDataTypes().createActionExpression(language, actions));
 	    }
 	} else {  // case 3 & 4
 	    ModelFacade.setEffect(trans, null);
