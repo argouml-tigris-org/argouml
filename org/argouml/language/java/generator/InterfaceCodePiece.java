@@ -124,7 +124,7 @@ public class InterfaceCodePiece extends NamedCodePiece
     writer.write (sbText.toString());
   }
 
-/*	if((new CodeGenerator()).generateJavadoc(mInterface, writer)) {
+/*	if(GeneratorJava.generateConstraintEnrichedDocComment(mInterface, writer)) {
 	    for(int k=0; k<column; k++) {
 		writer.write(" ");
 	    }

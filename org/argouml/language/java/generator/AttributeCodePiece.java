@@ -141,11 +141,13 @@ public class AttributeCodePiece extends NamedCodePiece
 		    parseState.newFeature(mFeature);
 		    MAttribute mAttribute = (MAttribute)mFeature;
 
-		    if((new CodeGenerator()).
-		       generateJavadoc(mAttribute, writer)) {
-			for(int k=0; k<column; k++) {
+		    String docComment = GeneratorJava.generateConstraintEnrichedDocComment(mAttribute);
+		    if(docComment != null) {
+              writer.write (docComment);
+              writer.write ("\n");
+			  for(int k=0; k<column; k++) {
 			    writer.write(" ");
-			}
+			  }
 		    }
 
 		    if(mAttribute.getChangeability() ==

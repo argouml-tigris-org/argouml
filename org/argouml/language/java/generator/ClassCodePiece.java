@@ -123,7 +123,7 @@ public class ClassCodePiece extends NamedCodePiece
   if (sbText != null) {
     writer.write (sbText.toString());
   }
-/*	if((new CodeGenerator()).generateJavadoc(mClass, writer)) {
+/*	if(GeneratorJava.generateConstraintEnrichedDocComment(mClass, writer)) {
 	    for(int k=0; k<column; k++) {
 		writer.write(" ");
 	    }
