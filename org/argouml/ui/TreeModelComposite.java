@@ -23,14 +23,10 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.Argo;
-import org.argouml.cognitive.ToDoItem;
 
 /**
  * This class is the TreeModel for the navigator and todo list panels.
@@ -41,10 +37,8 @@ import org.argouml.cognitive.ToDoItem;
  *
  * <p>$Id$
  */
-public class TreeModelComposite extends TreeModelSupport
-    implements
-        TreeModel{
-    
+public class TreeModelComposite extends TreeModelSupport implements TreeModel {
+
     private static Category cat =
         Category.getInstance(TreeModelComposite.class);
 
@@ -53,19 +47,21 @@ public class TreeModelComposite extends TreeModelSupport
 
     ////////////////////////////////////////////////////////////////
     // contructors
-    
+
     /** needs documenting */
     public TreeModelComposite(String name) {
-        
+
         super(name);
     }
-    
+
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
-    
+
     /** needs documenting */
-    public Object getRoot() { return _root; }
-    
+    public Object getRoot() {
+        return _root;
+    }
+
     /**
      * Finds the each of the children of a parent in the tree.
      *
@@ -74,46 +70,60 @@ public class TreeModelComposite extends TreeModelSupport
      * @return the child found at index. Null if index is out of bounds.
      */
     public Object getChild(Object parent, int index) {
-        
+
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _goRules.elementAt(i);
+            TreeModel tm = (TreeModel)_goRules.elementAt(i);
+            if (tm instanceof AbstractGoRule) {
+                ((AbstractGoRule)tm).setCacheable(parent, true);
+            }
             int childCount = tm.getChildCount(parent);
-            if (index < childCount) return tm.getChild(parent, index);
+            if (index < childCount)
+                return tm.getChild(parent, index);
+            if (tm instanceof AbstractGoRule) {
+                ((AbstractGoRule)tm).setCacheable(parent, false);
+            }
             index -= childCount;
         }
         return null;
     }
-    
+
     /** needs documenting */
     public int getChildCount(Object parent) {
-        
+
         int childCount = 0;
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _goRules.elementAt(i);
+            TreeModel tm = (TreeModel)_goRules.elementAt(i);
             childCount += tm.getChildCount(parent);
         }
         return childCount;
     }
-    
+
     /** needs documenting */
     public int getIndexOfChild(Object parent, Object child) {
-        
+
         int childCount = 0;
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _goRules.elementAt(i);
+            TreeModel tm = (TreeModel)_goRules.elementAt(i);
+            if (tm instanceof AbstractGoRule) {
+                ((AbstractGoRule)tm).setCacheable(parent, true);
+            }
             int childIndex = tm.getIndexOfChild(parent, child);
-            if (childIndex != -1) return childIndex + childCount;
+            if (childIndex != -1)
+                return childIndex + childCount;
             childCount += tm.getChildCount(parent);
+            if (tm instanceof AbstractGoRule) {
+                ((AbstractGoRule)tm).setCacheable(parent, false);
+            }
         }
         cat.debug("child not found!");
-        
+
         //The child is sometimes not found when the tree is being updated
         return -1;
     }
-    
+
     /**
      * Returns true if <I>node</I> is a leaf.  It is possible for this method
      * to return false even if <I>node</I> has no children.  A directory in a
@@ -128,12 +138,13 @@ public class TreeModelComposite extends TreeModelSupport
     public boolean isLeaf(Object node) {
         int nSubs = _goRules.size();
         for (int i = 0; i < nSubs; i++) {
-            TreeModel tm = (TreeModel) _goRules.elementAt(i);
-            if (!tm.isLeaf(node)) return false;
+            TreeModel tm = (TreeModel)_goRules.elementAt(i);
+            if (!tm.isLeaf(node))
+                return false;
         }
         return true;
     }
-    
+
     /**
      * Empty implementation - not used.
      *
@@ -146,11 +157,13 @@ public class TreeModelComposite extends TreeModelSupport
      * @param newValue the new value from the TreeCellEditor.
      */
     public void valueForPathChanged(TreePath path, Object newValue) {}
-    
+
     ////////////////////////////////////////////////////////////////
     // other methods
-    
+
     /** needs documenting */
-    public void setRoot(Object r) { _root = r; }
-    
+    public void setRoot(Object r) {
+        _root = r;
+    }
+
 } /* end class TreeModelComposite */

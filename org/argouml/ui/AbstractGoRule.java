@@ -1,12 +1,11 @@
 package org.argouml.ui;
 
 import java.util.Collection;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Vector;
-import javax.swing.event.TreeModelListener;
+import java.util.Map;
+
 import javax.swing.tree.TreeModel;
-import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Category;
 
@@ -24,64 +23,69 @@ import org.apache.log4j.Category;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class AbstractGoRule implements TreeModel {
-    
-    private static Category cat = Category.getInstance(org.argouml.ui.AbstractGoRule.class);
-    
+
+    private static Category cat =
+        Category.getInstance(org.argouml.ui.AbstractGoRule.class);
+
+    private boolean _cacheable = false;
+
+    private Map _cache = new HashMap();
+
     // ----------- TreeModel helpers -----------
-    
+
     /**
      * @see javax.swing.tree.TreeModel#getChild(Object, int)
      */
     public Object getChild(Object parent, int index) {
 
         int count = 0;
-        Collection col = getChildren(parent);
-        if(col != null){
+        Collection col = getCachedChildren(parent);
+        if (col != null) {
             Iterator it = col.iterator();
-            while(it.hasNext()){
-            
-            Object candidate = it.next();
-            if(count == index)
-                return candidate;
-            count++;
-        }
+            while (it.hasNext()) {
+
+                Object candidate = it.next();
+                if (count == index)
+                    return candidate;
+                count++;
+            }
         }
         return null;
     }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#getChildCount(Object)
      */
     public int getChildCount(Object parent) {
-        Collection c = getChildren(parent);
-        
+        Collection c = getCachedChildren(parent);
+
         if (c == null)
             return 0;
-        
+
         return c.size();
     }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#isLeaf(Object)
      */
-    public final boolean isLeaf(Object node){
-        
-        return ( getChildCount(node) < 1);
+    public final boolean isLeaf(Object node) {
+
+        return (getChildCount(node) < 1);
     }
-    
+
     /**
      * @see javax.swing.tree.TreeModel#getIndexOfChild(Object, Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
-        
+
         int index = 0;
-        Collection col = getChildren(parent);
-        if(col != null){
+        Collection col = getCachedChildren(parent);
+        if (col != null) {
             Iterator it = col.iterator();
-            while(it.hasNext()){
-                
+            while (it.hasNext()) {
+
                 Object candidate = it.next();
-                if(candidate == child)
+                if (candidate == child)
                     return index;
                 index++;
             }
@@ -89,44 +93,73 @@ public abstract class AbstractGoRule implements TreeModel {
         return -1;
     }
 
-    
     // -------------- other helper methods --------------------
-    
+
     /**
      * this is the method that should be overridden by GoRules
      */
     public abstract Collection getChildren(Object parent);
-    
+
     /** return the name of the rule as it is displayed in
      *  the nav perspective edit pane. Returns for example
      *  "State->Substates".
      *  @see #toString()
      */
     public abstract String getRuleName();
-    
+
     /** wrapper around getRuleName()
      */
-    public String toString() { return getRuleName(); }
-    
-    // ------------- not used TreeModel methods -------------
-    
-    public void addTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
+    public String toString() {
+        return getRuleName();
+    }
+
+    /**
+     * Gets the cached children.
+     * @param parent The parent of which the children are wanted
+     * @return the children
+     */
+    private Collection getCachedChildren(Object parent) {
+        Collection children = null;
+        if (_cacheable) {
+            children = (Collection)_cache.get(parent);
+            if (children == null) {
+                children = getChildren(parent);
+                _cache.put(parent, children);
+            }
+        } else {
+            children = getChildren(parent);
+        }
+        return children;
     }
     
+    public void setCacheable(Object parent, boolean cacheable) {
+        if (!cacheable) {
+            _cache.remove(parent);
+        }
+        _cacheable = cacheable;
+    }
+    
+    public boolean isCacheable(Object parent) {
+        return _cacheable;
+    }
+
+    // ------------- not used TreeModel methods -------------
+
+    public void addTreeModelListener(
+        javax.swing.event.TreeModelListener treeModelListener) {
+        }
+
     public Object getRoot() {
         return null;
     }
-    
-    public void removeTreeModelListener(javax.swing.event.TreeModelListener treeModelListener) {
-    }
-    
-    public void valueForPathChanged(javax.swing.tree.TreePath treePath, Object obj) {
-    }
+
+    public void removeTreeModelListener(
+        javax.swing.event.TreeModelListener treeModelListener) {
+        }
+
+    public void valueForPathChanged(
+        javax.swing.tree.TreePath treePath,
+        Object obj) {
+        }
 
 }
-
-
-
-
-
-
