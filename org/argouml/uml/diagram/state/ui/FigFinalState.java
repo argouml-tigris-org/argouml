@@ -29,6 +29,7 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
@@ -71,7 +72,9 @@ public class FigFinalState extends FigStateVertex {
 	public FigFinalState() {
 		super();
 		Color handleColor = Globals.getPrefs().getHandleColor();
-		_bigPort = new FigRect(0, 0, width, height);
+		x = 45;
+		y = 0;
+		_bigPort = new FigRect(x, y, width, height);
 		_bigPort.setLineWidth(0);
 		_bigPort.setFilled(false);
 		_outCircle =
@@ -88,14 +91,14 @@ public class FigFinalState extends FigStateVertex {
 		_outCircle.setLineWidth(1);
 		_inCircle.setLineWidth(0);
 
-		_name = new FigText(-45 + width / 2, 20, 90, 21, true);
+		_name = new FigText(x+10, y+22, 0, 21, true);
 		_name.setFilled(false);
 		_name.setLineWidth(0);
 		_name.setFont(LABEL_FONT);
 		_name.setTextColor(Color.black);
 		_name.setMultiLine(false);
 		_name.setAllowsTab(false);
-		_name.setLineColor(new Color(1, 1, 1));
+		_name.setJustifciaionByName("center");
 		
 		addFig(_bigPort);
 		addFig(_outCircle);
@@ -133,7 +136,7 @@ public class FigFinalState extends FigStateVertex {
 				sel = new SelectionActionState(this);
 				((SelectionActionState) sel).setOutgoingButtonEnabled(false);
 			} else {
-				sel = new SelectionFinalState(this);
+				sel = new SelectionState(this);
 				((SelectionState) sel).setOutgoingButtonEnabled(false);
 			}
 		}
@@ -214,6 +217,26 @@ public class FigFinalState extends FigStateVertex {
 	 */
 	public FigCircle getOutCircle() {
 		return _outCircle;
+	}
+
+	/**
+	 * Makes sure that edges stick to the outer circle and not to the name or
+	 * stereobox.
+	 * @see org.tigris.gef.presentation.Fig#getGravityPoints()
+	 */
+	public Vector getGravityPoints() {
+		Vector ret = new Vector();
+		int cx = _outCircle.center().x;
+		int cy = _outCircle.center().y;
+		int radius = Math.round(_outCircle.getWidth()/2)+1;
+		int MAXPOINTS = 20;
+		Point point = null;
+		for (int i = 0; i < MAXPOINTS; i++) {
+			point = new Point((int)(cx + Math.cos(2*Math.PI/MAXPOINTS*i)*radius), (int)(cy + Math.sin(2*Math.PI/MAXPOINTS*i)*radius));
+			ret.add(point);
+		}
+		return ret;
+		
 	}
 
 } /* end class FigFinalState */
