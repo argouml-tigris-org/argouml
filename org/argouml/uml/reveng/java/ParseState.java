@@ -253,6 +253,24 @@ class ParseState
     }
 
     /**
+       Get a features from the current classifier not yet modeled.
+
+       @param name The name of the feature.
+       @return The collection of found features
+     */
+    public Collection getFeatures(String name)
+    {
+    	ArrayList list = new ArrayList();
+	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+	    Object mFeature = i.next();
+	    if (name.equals(ModelFacade.getName(mFeature))) {
+		list.add(mFeature);
+	    }
+	}
+	return list;
+    }
+
+    /**
        Get a method from the current classifier not yet modeled.
 
        @param name The name of the method.
