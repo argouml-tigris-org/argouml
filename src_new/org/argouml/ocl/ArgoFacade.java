@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -56,7 +57,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
     public MClassifier target;
 
     public ArgoFacade(Object target) {
-	if (target instanceof MClassifier)
+	if (org.argouml.model.ModelFacade.isAClassifier(target))
 	    this.target = (MClassifier) target;
     }
 
@@ -381,6 +382,5 @@ class ArgoAny implements Any, Type2 {
 	return true;
     }
 }
-
 
 

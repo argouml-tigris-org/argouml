@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,7 +45,7 @@ public class GoClassifierToStateMachine extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MClassifier) 
+	if (org.argouml.model.ModelFacade.isAClassifier(parent)) 
 	    return ((MClassifier) parent).getBehaviors();
 	return null;
     }

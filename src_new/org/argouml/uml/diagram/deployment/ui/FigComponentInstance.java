@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -93,7 +94,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     public FigComponentInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (node instanceof MClassifier
+        if (org.argouml.model.ModelFacade.isAClassifier(node)
             && (((MClassifier) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
         updateBounds();
@@ -195,7 +196,7 @@ public class FigComponentInstance extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 
         if (encloser != null
-            && encloser.getOwner() instanceof MNodeInstance
+            && org.argouml.model.ModelFacade.isANodeInstance(encloser.getOwner())
             && getOwner() != null) {
             MNodeInstance node = (MNodeInstance) encloser.getOwner();
             MComponentInstance comp = (MComponentInstance) getOwner();

@@ -1,3 +1,7 @@
+
+
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -72,7 +76,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 
     public MNamespace getNamespace() { return _collab; }
     public void setNamespace(MNamespace m) {
-        if (!(m instanceof MCollaboration)) {
+        if (!(org.argouml.model.ModelFacade.isACollaboration(m))) {
             throw new IllegalArgumentException("invalid namespace");
         }
         _collab = (MCollaboration) m;
@@ -86,7 +90,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all ports on node or edge */
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
-	if (nodeOrEdge instanceof MClassifierRole) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAClassifierRole(nodeOrEdge)) res.addElement(nodeOrEdge);
 	return res;
     }
 
@@ -98,7 +102,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
-	if (port instanceof MClassifierRole) {
+	if (org.argouml.model.ModelFacade.isAClassifierRole(port)) {
 	    MClassifierRole cr = (MClassifierRole) port;
 	    Collection ends = cr.getAssociationEnds();
 	    if (ends == null) return res; // empty Vector
@@ -118,7 +122,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-	if (edge instanceof MRelationship) {
+	if (org.argouml.model.ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getSource((MRelationship) edge);
 	}
 	cat.debug("TODO getSourcePort");
@@ -127,7 +131,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
-	if (edge instanceof MRelationship) {
+	if (org.argouml.model.ModelFacade.isARelationship(edge)) {
 	    return CoreHelper.getHelper().getDestination((MRelationship) edge);
 	}
 	cat.debug("TODO getDestPort");
@@ -142,7 +146,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (_nodes.contains(node)) return false;
-	return (node instanceof MClassifierRole || node instanceof MMessage);
+	return (org.argouml.model.ModelFacade.isAClassifierRole(node) || org.argouml.model.ModelFacade.isAMessage(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -150,7 +154,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
-	if (edge instanceof MAssociationRole) {
+	if (org.argouml.model.ModelFacade.isAAssociationRole(edge)) {
 	    List conns = ((MAssociationRole) edge).getConnections();
 	    if (conns.size() < 2) return false;
 	    MAssociationEndRole ae0 = (MAssociationEndRole) conns.get(0);
@@ -159,12 +163,12 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = ae0.getType();
 	    end1 = ae1.getType();
 	}
-	if (edge instanceof MGeneralization) {
+	if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
 	    MGeneralization gen = (MGeneralization) edge;
 	    end0 = gen.getParent();
 	    end1 = gen.getChild();
 	}
-	if (edge instanceof MDependency) {
+	if (org.argouml.model.ModelFacade.isADependency(edge)) {
 	    Collection clients = ((MDependency) edge).getClients();
 	    Collection suppliers = ((MDependency) edge).getSuppliers();
 	    if (clients == null || suppliers == null) return false;
@@ -184,7 +188,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddNode(node)) return;
 	_nodes.addElement(node);
 	// TODO: assumes public, user pref for default visibility?
-	if (node instanceof MClassifier) {
+	if (org.argouml.model.ModelFacade.isAClassifier(node)) {
 	    _collab.addOwnedElement((MClassifier) node);
 	    // ((MClassifier)node).setNamespace(_collab.getNamespace());
 	}
@@ -198,7 +202,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         if (!canAddEdge(edge)) return;
         _edges.addElement(edge);
         // TODO: assumes public
-        if (edge instanceof MModelElement
+        if (org.argouml.model.ModelFacade.isAModelElement(edge)
 	    && ((MModelElement) edge).getNamespace() == null)
 	{
             _collab.addOwnedElement((MModelElement) edge);
@@ -207,7 +211,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     public void addNodeRelatedEdges(Object node) {
-	if ( node instanceof MClassifier ) {
+	if ( org.argouml.model.ModelFacade.isAClassifier(node) ) {
 	    Collection ends = ((MClassifier) node).getAssociationEnds();
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -216,7 +220,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 		    addEdge(ae.getAssociation());
 	    }
 	}
-	if ( node instanceof MGeneralizableElement ) {
+	if ( org.argouml.model.ModelFacade.isAGeneralizableElement(node) ) {
 	    Collection gn = ((MGeneralizableElement) node).getGeneralizations();
 	    Iterator iter = gn.iterator();
 	    while (iter.hasNext()) {
@@ -236,7 +240,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-	if ( node instanceof MModelElement ) {
+	if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
 	    Vector specs =
 		new Vector(((MModelElement) node).getClientDependencies());
 	    specs.addAll(((MModelElement) node).getSupplierDependencies());
@@ -255,8 +259,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. */
     public boolean canConnect(Object fromP, Object toP) {
-	if ((fromP instanceof MClassifierRole)
-	    && (toP instanceof MClassifierRole))
+	if ((org.argouml.model.ModelFacade.isAClassifierRole(fromP))
+	    && (org.argouml.model.ModelFacade.isAClassifierRole(toP)))
 	    return true;
 	return false;
     }
@@ -273,9 +277,9 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    MModelElement me = eo.getModelElement();
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
-		if (me instanceof MClassifier) removeNode(me);
-		if (me instanceof MMessage) removeNode(me);
-		if (me instanceof MAssociation) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isAClassifier(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAMessage(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAAssociation(me)) removeEdge(me);
 	    }
 	    else {
 		cat.debug("model added " + me);
@@ -284,4 +288,3 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     }
 
 } /* end class CollabDiagramGraphModel */
-

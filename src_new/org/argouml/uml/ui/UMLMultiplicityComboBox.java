@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -147,7 +148,7 @@ public class UMLMultiplicityComboBox
         try {
          
 	    Object obj = _getMethod.invoke(_container.getTarget(), _noArg);
-            if (obj instanceof MMultiplicity) {
+            if (org.argouml.model.ModelFacade.isAMultiplicity(obj)) {
                 MMultiplicity mult = (MMultiplicity) obj;
                 lower = mult.getLower();
                 upper = mult.getUpper();
@@ -308,4 +309,3 @@ public class UMLMultiplicityComboBox
     }
 
 }
-

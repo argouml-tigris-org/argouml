@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -298,7 +299,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public MClassifier getReturnType() {
         MClassifier type = null;
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             java.util.List params = ((MOperation) target).getParameters();
             if (params != null) {
                 Iterator iter = params.iterator();
@@ -317,7 +318,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void setReturnType(MClassifier type) {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             MOperation oper = (MOperation) target;
             Collection params = oper.getParameters();
             MParameter param;
@@ -363,7 +364,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public java.util.List getParameters() {
         java.util.List params = null;
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             params = ((MOperation) target).getParameters();
         }
         return params;
@@ -371,7 +372,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void setParameters(Collection newParams) {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             if (newParams instanceof java.util.List) {
                 ((MOperation) target).setParameters((java.util.List) newParams);
             } else {
@@ -387,7 +388,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public Object getOwner() {
         Object owner = null;
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             owner = ((MOperation) target).getOwner();
         }
         return owner;
@@ -396,7 +397,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public Collection getRaisedSignals() {
         Collection signals = null;
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             signals = ((MOperation) target).getRaisedSignals();
         }
         return signals;
@@ -404,14 +405,14 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void setRaisedSignals(Collection signals) {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             ((MOperation) target).setRaisedSignals(signals);
         }
     }
 
     public void addRaisedSignal(Integer index) {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             MOperation oper = (MOperation) target;
             MSignal newSignal = oper.getFactory().createSignal();
             oper.getOwner().getNamespace().addOwnedElement(newSignal);
@@ -422,7 +423,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void buttonAddParameter() {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             MParameter param =
                 CoreFactory.getFactory().buildParameter((MOperation) target);
             TargetManager.getInstance().setTarget(param);
@@ -438,7 +439,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void buttonAddOperation() {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             MOperation oper = (MOperation) target;
             MClassifier owner = oper.getOwner();
             if (owner != null) {
@@ -452,7 +453,7 @@ public class PropPanelOperation extends PropPanelModelElement {
 
     public void buttonAddRaisedSignal() {
         Object target = getTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             addRaisedSignal(new Integer(1));
         }
     }
@@ -464,7 +465,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     protected MNamespace getDisplayNamespace() {
         MNamespace ns = null;
         Object target = getTarget();
-        if (target instanceof MAttribute) {
+        if (org.argouml.model.ModelFacade.isAAttribute(target)) {
             MAttribute attr = ((MAttribute) target);
             MClassifier owner = attr.getOwner();
             if (owner != null) {

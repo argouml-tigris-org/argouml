@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     
     public void setProperty(Object obj, boolean newState) {
-        if (obj instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
             MModelElement element = (MModelElement) obj;
             Collection taggedValues = element.getTaggedValues();
             boolean found = false;
@@ -92,7 +93,7 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     public boolean getProperty(Object obj) {
         boolean state = false;
-        if (obj instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
             MModelElement element = (MModelElement) obj;
             Collection taggedValues = element.getTaggedValues();
             if (taggedValues != null) {
@@ -114,5 +115,4 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     }
     
 }
-
 

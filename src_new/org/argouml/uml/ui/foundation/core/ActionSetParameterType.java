@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -65,12 +67,12 @@ public class ActionSetParameterType extends UMLChangeAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = ((UMLComboBox2) source);
             Object o = box.getTarget();
-            if (o instanceof MParameter) {
+            if (org.argouml.model.ModelFacade.isAParameter(o)) {
                 para = (MParameter) o;
                 oldClassifier = para.getType();
             }
             o = box.getSelectedItem();
-            if (o instanceof MClassifier) {
+            if (org.argouml.model.ModelFacade.isAClassifier(o)) {
                 newClassifier = (MClassifier) o;
             }
         }

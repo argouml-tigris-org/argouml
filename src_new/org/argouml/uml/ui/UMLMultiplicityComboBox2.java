@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -60,7 +61,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
         }
         catch (IllegalArgumentException e) {
             Object o = search(text);
-            if (o != null && o instanceof MMultiplicity) {
+            if (o != null && org.argouml.model.ModelFacade.isAMultiplicity(o)) {
                 multi = (MMultiplicity) o;
             }
         }

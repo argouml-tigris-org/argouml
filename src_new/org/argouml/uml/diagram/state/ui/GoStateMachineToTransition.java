@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -45,7 +46,7 @@ public class GoStateMachineToTransition extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MStateMachine) {
+	if (org.argouml.model.ModelFacade.isAStateMachine(parent)) {
 	    return ((MStateMachine) parent).getTransitions();
 	}
 	return null;

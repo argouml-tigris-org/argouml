@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,7 +52,7 @@ public class CrMissingAttrName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MAttribute)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
 	MAttribute attr = (MAttribute) dm;
 	String myName = attr.getName();
 	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
@@ -65,7 +66,7 @@ public class CrMissingAttrName extends CrUML {
 	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";
-	    if (me instanceof MAttribute) {
+	    if (org.argouml.model.ModelFacade.isAAttribute(me)) {
 		MAttribute a = (MAttribute) me;
 		int count = 1;
 		if (a.getOwner() != null)
@@ -79,4 +80,3 @@ public class CrMissingAttrName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingAttrName */
-

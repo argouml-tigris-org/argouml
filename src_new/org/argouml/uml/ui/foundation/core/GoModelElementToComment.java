@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -43,7 +44,7 @@ public class GoModelElementToComment extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(parent)) {
             return ((MModelElement) parent).getComments();
         }
         return null;

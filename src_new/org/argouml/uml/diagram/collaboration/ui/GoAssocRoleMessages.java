@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +36,7 @@ public class GoAssocRoleMessages extends AbstractGoRule {
     public String getRuleName() { return "AssociationRole->Messages"; }
 
     public Collection getChildren(Object parent) {
-	if (!(parent instanceof MAssociationRole)) return null;
+	if (!(org.argouml.model.ModelFacade.isAAssociationRole(parent))) return null;
 	return ((MAssociationRole) parent).getMessages();
     }
 

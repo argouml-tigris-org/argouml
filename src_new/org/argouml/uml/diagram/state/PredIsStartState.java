@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,7 +37,7 @@ public class PredIsStartState implements Predicate {
     private PredIsStartState() { }
 
     public boolean predicate(Object obj) {
-	return (obj instanceof MPseudostate) &&
+	return (org.argouml.model.ModelFacade.isAPseudostate(obj)) &&
 	    (MPseudostateKind.INITIAL.equals(((MPseudostate) obj).getKind()));
     }
   

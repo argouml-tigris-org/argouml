@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -54,7 +55,7 @@ public class CrIllegalGeneralization extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MGeneralization)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAGeneralization(dm))) return NO_PROBLEM;
 	MGeneralization gen = (MGeneralization) dm;
 	Object cls1 = gen.getParent();
 	Object cls2 = gen.getChild();
@@ -66,4 +67,3 @@ public class CrIllegalGeneralization extends CrUML {
     }
 
 } /* end class CrIllegalGeneralization.java */
-

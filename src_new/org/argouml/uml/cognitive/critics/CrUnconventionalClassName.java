@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class CrUnconventionalClassName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MClass) && !(dm instanceof MInterface))
+	if (!(org.argouml.model.ModelFacade.isAClass(dm)) && !(org.argouml.model.ModelFacade.isAInterface(dm)))
 	    return NO_PROBLEM;
 	MClassifier cls = (MClassifier) dm;
 	String myName = cls.getName();
@@ -83,4 +84,3 @@ public class CrUnconventionalClassName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrUnconventionalClassName */
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -119,7 +120,7 @@ public class PropPanelSignal extends PropPanelModelElement {
     public Collection getContexts() {
     	Collection contexts = new Vector();
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
+    	if (org.argouml.model.ModelFacade.isASignal(target)) {
 	    contexts = ((MSignal) target).getContexts();
     	}
     	return contexts;
@@ -132,7 +133,7 @@ public class PropPanelSignal extends PropPanelModelElement {
      */
     public void addContext(Integer index) {
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
+    	if (org.argouml.model.ModelFacade.isASignal(target)) {
 	    MSignal signal = (MSignal) target;
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
@@ -152,7 +153,7 @@ public class PropPanelSignal extends PropPanelModelElement {
      */
     public void deleteContext(Integer index) {
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
+    	if (org.argouml.model.ModelFacade.isASignal(target)) {
 	    MSignal signal = (MSignal) target;
 	    MBehavioralFeature feature = (MBehavioralFeature) UMLModelElementListModel.elementAtUtil(signal.getContexts(), index.intValue(), null);
 	    signal.removeContext(feature);
@@ -187,7 +188,7 @@ public class PropPanelSignal extends PropPanelModelElement {
      */
     public void deleteReception(Integer index) {
     	Object target = getTarget();
-    	if (target instanceof MSignal) {
+    	if (org.argouml.model.ModelFacade.isASignal(target)) {
 	    MSignal signal = (MSignal) target;
 	    MReception reception = (MReception) UMLModelElementListModel.elementAtUtil(signal.getReceptions(), index.intValue(), null);
 	    signal.removeReception(reception);
@@ -200,4 +201,3 @@ public class PropPanelSignal extends PropPanelModelElement {
 
 
 } /* end class PropPanelSignal */
-

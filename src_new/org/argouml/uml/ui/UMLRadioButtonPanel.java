@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -206,14 +207,14 @@ public abstract class UMLRadioButtonPanel
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (_target instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(_target)) {
             UmlModelEventPump.getPump().removeModelEventListener(
 								 this,
 								 (MBase) _target,
 								 _propertySetName);
         }
         _target = target;
-        if (_target instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(_target)) {
             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
             UmlModelEventPump.getPump().addModelEventListener(
 							      this,

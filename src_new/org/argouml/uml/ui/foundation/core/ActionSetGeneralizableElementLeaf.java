@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,7 +59,7 @@ public class ActionSetGeneralizableElementLeaf extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (target instanceof MGeneralizableElement) {
+            if (org.argouml.model.ModelFacade.isAGeneralizableElement(target)) {
                 MGeneralizableElement m = (MGeneralizableElement) target;
                 m.setLeaf(source.isSelected());                
             }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,11 +54,10 @@ public class TableModelUseCaseByProps extends TableModelComposite {
 	int size = nodes.size();
 	for (int i = 0; i < size; i++) {
 	    Object node = nodes.elementAt(i);
-	    if (node instanceof MUseCase) res.addElement(node);
+	    if (org.argouml.model.ModelFacade.isAUseCase(node)) res.addElement(node);
 	}
 	return res;
     }
 
     public String toString() { return "Use Cases vs. Properties"; }
 } /* end class TableModelUseCaseByProps */
-

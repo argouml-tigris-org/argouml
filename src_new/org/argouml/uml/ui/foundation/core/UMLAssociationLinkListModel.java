@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,7 +59,7 @@ public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {  
-        return o instanceof MLink && ((MAssociation) getTarget()).getLinks().contains(o);
+        return org.argouml.model.ModelFacade.isALink(o) && ((MAssociation) getTarget()).getLinks().contains(o);
     }
 
 }

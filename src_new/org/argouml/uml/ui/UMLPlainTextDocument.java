@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -133,7 +134,7 @@ public abstract class UMLPlainTextDocument
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
 
-            if (target instanceof MBase) {
+            if (org.argouml.model.ModelFacade.isABase(target)) {
                 if (_target != null)
                     UmlModelEventPump.getPump().removeModelEventListener(
 									 this,

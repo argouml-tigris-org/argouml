@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -57,7 +58,7 @@ public class UMLInteractionContextListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return elem instanceof MCollaboration && 
+        return org.argouml.model.ModelFacade.isACollaboration(elem) && 
             ((MCollaboration) elem).getInteractions().contains(getTarget());
     }
 

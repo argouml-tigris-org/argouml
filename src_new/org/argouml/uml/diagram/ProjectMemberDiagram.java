@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -80,7 +81,7 @@ public class ProjectMemberDiagram extends ProjectMember {
         // be able to match them after a save-load cycle.
         if (d instanceof UMLDiagram) {
             UMLDiagram u = (UMLDiagram) d;
-            if (u.getNamespace() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(u.getNamespace())) {
                 MModelElement me = (MModelElement) u.getNamespace();
                 // if (me.getUUID() == null)
                 //   me.setUUID(UUIDManager.SINGLETON.getNewUUID());

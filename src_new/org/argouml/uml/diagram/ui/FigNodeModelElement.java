@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -218,7 +220,7 @@ public abstract class FigNodeModelElement
 
     /** Reply text to be shown while placing node in diagram */
     public String placeString() {
-        if (getOwner() instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
             MModelElement me = (MModelElement) getOwner();
             String placeString = me.getName();
             if (placeString == null)
@@ -551,7 +553,7 @@ public abstract class FigNodeModelElement
      *  initiate direct text editing. */
     public void mouseClicked(MouseEvent me) {
         if (!_readyToEdit) {
-            if (getOwner() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 MModelElement own = (MModelElement) getOwner();
                 own.setName("");
                 _readyToEdit = true;
@@ -586,7 +588,7 @@ public abstract class FigNodeModelElement
 
     public void keyPressed(KeyEvent ke) {
         if (!_readyToEdit) {
-            if (getOwner() instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 MModelElement me = (MModelElement) getOwner();
                 me.setName("");
                 _readyToEdit = true;
@@ -716,7 +718,7 @@ public abstract class FigNodeModelElement
         Object own = getOwner();
         if (own != null) {
             Trash.SINGLETON.addItemFrom(own, null);
-            if (own instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(own)) {
                 UmlFactory.getFactory().delete((MModelElement) own);
             }
         }
@@ -731,7 +733,7 @@ public abstract class FigNodeModelElement
         Object oldOwner = getOwner();
         updateListeners(own);
         super.setOwner(own);
-        if (own instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(own)) {
             MModelElement me = (MModelElement) own;
             if (me.getUUID() == null)
                 me.setUUID(UUIDManager.SINGLETON.getNewUUID());
@@ -909,12 +911,12 @@ public abstract class FigNodeModelElement
         }
 
         Object own = getOwner();
-        if (own instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(own)) {
             MClassifier cls = (MClassifier) own;
             Iterator it = cls.getFeatures().iterator();
             while (it.hasNext()) {
                 MFeature feature = (MFeature) it.next();
-                if (feature instanceof MOperation) {
+                if (org.argouml.model.ModelFacade.isAOperation(feature)) {
                     MOperation oper = (MOperation) feature;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
@@ -928,7 +930,7 @@ public abstract class FigNodeModelElement
 								     feature);
             }
         }
-        if (own instanceof MBase) {
+        if (org.argouml.model.ModelFacade.isABase(own)) {
             UmlModelEventPump.getPump().removeModelEventListener(
 								 this,
 								 (MBase) own);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -384,9 +385,9 @@ public class GeneratorDisplay extends Generator {
     public String generateClassifier(MClassifier cls) {
         String generatedName = generateName(cls.getName());
         String classifierKeyword;
-        if (cls instanceof MClass)
+        if (org.argouml.model.ModelFacade.isAClass(cls))
             classifierKeyword = "class";
-        else if (cls instanceof MInterface)
+        else if (org.argouml.model.ModelFacade.isAInterface(cls))
             classifierKeyword = "interface";
         else
             return ""; // actors and use cases
@@ -443,7 +444,7 @@ public class GeneratorDisplay extends Generator {
             s += INDENT + "// Operations\n";
             Iterator behEnum = behs.iterator();
             String terminator = " {\n" + INDENT + "}";
-            if (cls instanceof MInterface)
+            if (org.argouml.model.ModelFacade.isAInterface(cls))
                 terminator = ";";
             while (behEnum.hasNext())
                 s += INDENT + generate(behEnum.next()) + terminator + "\n";
@@ -756,10 +757,10 @@ public class GeneratorDisplay extends Generator {
             // assert ge != null
             if (ge != null) {
                 if (impl) {
-                    if (ge instanceof MInterface)
+                    if (org.argouml.model.ModelFacade.isAInterface(ge))
                         classes.add(ge);
                 } else {
-                    if (!(ge instanceof MInterface))
+                    if (!(org.argouml.model.ModelFacade.isAInterface(ge)))
                         classes.add(ge);
                 }
             }

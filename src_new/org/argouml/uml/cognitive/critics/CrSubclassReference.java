@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -54,7 +55,7 @@ public class CrSubclassReference extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MClass)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAClass(dm))) return NO_PROBLEM;
 	MClass cls = (MClass) dm;
 	VectorSet offs = computeOffenders(cls);
 	if (offs != null) return PROBLEM_FOUND;
@@ -114,4 +115,3 @@ public class CrSubclassReference extends CrUML {
     }
 
 } /* end class CrSubclassReference */
-

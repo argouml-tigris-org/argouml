@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -99,10 +100,10 @@ public class UseCaseDiagramRenderer
 
         // Create a new version of the relevant fig
 
-        if (node instanceof MActor) {
+        if (org.argouml.model.ModelFacade.isAActor(node)) {
             return new FigActor(gm, node);
         }
-        else if (node instanceof MUseCase) {
+        else if (org.argouml.model.ModelFacade.isAUseCase(node)) {
             return new FigUseCase(gm, node);
         }
 
@@ -138,7 +139,7 @@ public class UseCaseDiagramRenderer
 
         // If the edge is an association, we'll need a FigAssociation
 
-        if (edge instanceof MAssociation) {
+        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
             MAssociation   asc         = (MAssociation) edge;
             FigAssociation ascFig      = new FigAssociation(asc, lay);
 
@@ -147,7 +148,7 @@ public class UseCaseDiagramRenderer
 
         // Generalization needs a FigGeneralization
 
-        else if (edge instanceof MGeneralization) {
+        else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
             MGeneralization   gen    = (MGeneralization) edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             return genFig;
@@ -155,7 +156,7 @@ public class UseCaseDiagramRenderer
 
         // Extend relationship
 
-        else if (edge instanceof MExtend) {
+        else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
             MExtend   ext    = (MExtend) edge;
             FigExtend extFig = new FigExtend(ext);
 
@@ -184,7 +185,7 @@ public class UseCaseDiagramRenderer
         // Include relationship is very like extend. Watch out for the NSUML
         // bug here.
 
-        else if (edge instanceof MInclude) {
+        else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
             MInclude   inc    = (MInclude) edge;
             FigInclude incFig = new FigInclude(inc);
 
@@ -212,7 +213,7 @@ public class UseCaseDiagramRenderer
 
         // Dependency needs a FigDependency
 
-        else if (edge instanceof MDependency) {
+        else if (org.argouml.model.ModelFacade.isADependency(edge)) {
             MDependency   dep    = (MDependency) edge;
             FigDependency depFig = new FigDependency(dep);
 

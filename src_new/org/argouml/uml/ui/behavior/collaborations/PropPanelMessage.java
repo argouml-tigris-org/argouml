@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -136,7 +137,7 @@ public class PropPanelMessage extends PropPanelModelElement {
     public MCallAction addAction() {
     	MCallAction action = null;
         Object target = getTarget();
-        if (target instanceof MMessage) {
+        if (org.argouml.model.ModelFacade.isAMessage(target)) {
             action =
 		(MCallAction) CommonBehaviorFactory.getFactory().buildAction((MMessage) target);
         }
@@ -144,12 +145,12 @@ public class PropPanelMessage extends PropPanelModelElement {
     }
 
     public boolean isAddActionEnabled() {
-    	return (getTarget() instanceof MMessage) && (((MMessage) getTarget()).getAction() == null);
+    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) && (((MMessage) getTarget()).getAction() == null);
     }
 
     public void navigateInteraction() {
     	Object target = getTarget();
-        if (target instanceof MMessage) {
+        if (org.argouml.model.ModelFacade.isAMessage(target)) {
             TargetManager.getInstance().setTarget(((MMessage) target).getInteraction());
         }
     }

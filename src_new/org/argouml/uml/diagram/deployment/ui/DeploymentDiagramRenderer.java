@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -47,17 +48,17 @@ public class DeploymentDiagramRenderer
     /** Return a Fig that can be used to represent the given node */
 
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (node instanceof MNode) return new FigMNode(gm, node);
-	else if (node instanceof MNodeInstance)
+	if (org.argouml.model.ModelFacade.isANode(node)) return new FigMNode(gm, node);
+	else if (org.argouml.model.ModelFacade.isANodeInstance(node))
 	    return new FigMNodeInstance(gm, node);
-	else if (node instanceof MComponent)
+	else if (org.argouml.model.ModelFacade.isAComponent(node))
 	    return new FigComponent(gm, node); 
-	else if (node instanceof MComponentInstance)
+	else if (org.argouml.model.ModelFacade.isAComponentInstance(node))
 	    return new FigComponentInstance(gm, node);
-	else if (node instanceof MClass) return new FigClass(gm, node); 
-	else if (node instanceof MInterface)
+	else if (org.argouml.model.ModelFacade.isAClass(node)) return new FigClass(gm, node); 
+	else if (org.argouml.model.ModelFacade.isAInterface(node))
 	    return new FigInterface(gm, node); 
-	else if (node instanceof MObject) return new FigObject(gm, node);
+	else if (org.argouml.model.ModelFacade.isAObject(node)) return new FigObject(gm, node);
 	cat.debug("TODO DeploymentDiagramRenderer getFigNodeFor");
 	return null;
     }
@@ -65,12 +66,12 @@ public class DeploymentDiagramRenderer
     /** Return a Fig that can be used to represent the given edge */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 
-	if (edge instanceof MAssociation) {
+	if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
 	    MAssociation asc = (MAssociation) edge;
 	    FigAssociation ascFig = new FigAssociation(asc, lay);
 	    return ascFig;
 	}
-	if (edge instanceof MLink) {
+	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    MLink lnk = (MLink) edge;
 	    FigLink lnkFig = new FigLink(lnk);
 	    Collection linkEnds = lnk.getConnections();
@@ -88,7 +89,7 @@ public class DeploymentDiagramRenderer
 	    lnkFig.setDestFigNode(toFN);
 	    return lnkFig;
 	}
-	if (edge instanceof MDependency) {
+	if (org.argouml.model.ModelFacade.isADependency(edge)) {
 	    MDependency dep = (MDependency) edge;
 	    FigDependency depFig = new FigDependency(dep);
 

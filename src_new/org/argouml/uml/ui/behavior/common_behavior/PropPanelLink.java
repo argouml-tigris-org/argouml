@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -64,7 +65,7 @@ public class PropPanelLink extends PropPanelModelElement {
 
     public void navigateNamespace() {
         Object target = getTarget();
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
             if (ns != null) {
@@ -81,6 +82,5 @@ public class PropPanelLink extends PropPanelModelElement {
 	if (newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }
 } /* end class PropPanelLink */
-
 
 

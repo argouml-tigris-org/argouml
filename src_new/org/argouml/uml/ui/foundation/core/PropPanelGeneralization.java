@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -98,7 +99,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     private void updateButton() {
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement child = gen.getChild();
@@ -108,17 +109,17 @@ public class PropPanelGeneralization extends PropPanelModelElement {
             if (parent != null ^ child != null) {
                 if (parent == null) parent = child;
 
-                if (parent instanceof MClass) {
+                if (org.argouml.model.ModelFacade.isAClass(parent)) {
                     _newButton.setIcon(_classIcon);
                     _newButton.setToolTipText("Add new class");
                 }
                 else {
-                    if (parent instanceof MInterface) {
+                    if (org.argouml.model.ModelFacade.isAInterface(parent)) {
                         _newButton.setIcon(_interfaceIcon);
                         _newButton.setToolTipText("Add new interface");
                     }
                     else {
-                        if (parent instanceof MPackage) {
+                        if (org.argouml.model.ModelFacade.isAPackage(parent)) {
                             _newButton.setIcon(_packageIcon);
                             _newButton.setToolTipText("Add new package");
                         }
@@ -136,7 +137,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MGeneralizableElement getParentElement() {
         MGeneralizableElement parent = null;
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             parent = ((MGeneralization) target).getParent();
         }
         return parent;
@@ -144,7 +145,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setParentElement(MGeneralizableElement parent) {
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement child = gen.getChild();
             MGeneralizableElement oldParent = gen.getParent();
@@ -165,7 +166,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MGeneralizableElement getChild() {
         MGeneralizableElement child = null;
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             child = ((MGeneralization) target).getChild();
         }
         return child;
@@ -173,7 +174,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setChild(MGeneralizableElement child) {
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement oldChild = gen.getChild();
@@ -191,7 +192,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     public MClassifier getPowertype() {
         MClassifier ptype = null;
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             ptype = ((MGeneralization) target).getPowertype();
         }
         return ptype;
@@ -199,7 +200,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void setPowertype(MClassifier ptype) {
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             MGeneralization gen = (MGeneralization) target;
             MClassifier oldPtype = gen.getPowertype();
             if (ptype != oldPtype) {
@@ -211,7 +212,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void newModelElement() {
         Object target = getTarget();
-        if (target instanceof MGeneralization) {
+        if (org.argouml.model.ModelFacade.isAGeneralization(target)) {
             MGeneralization gen = (MGeneralization) target;
             MGeneralizableElement parent = gen.getParent();
             MGeneralizableElement child = gen.getChild();
@@ -243,7 +244,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
     public void navigateUp() {
         Object target = getTarget();
-        if (target instanceof MModelElement) {
+        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
             MNamespace ns = ((MModelElement) target).getNamespace();
             if (ns != null) {
                 TargetManager.getInstance().setTarget(ns);
@@ -272,7 +273,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
     }
 
     public boolean isAcceptiblePowertype(MModelElement element) {
-        return element instanceof MClassifier;
+        return org.argouml.model.ModelFacade.isAClassifier(element);
     }
 
 } /* end class PropPanelGeneralization */

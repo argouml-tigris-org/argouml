@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -286,7 +288,7 @@ public class FigClass extends FigNodeModelElement {
         this();
         enableSizeChecking(true);
         setOwner(node);
-        if ((node instanceof MClassifier)
+        if ((org.argouml.model.ModelFacade.isAClassifier(node))
 	    && (((MClassifier) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
     }
@@ -762,7 +764,7 @@ public class FigClass extends FigNodeModelElement {
         MClass cls = (MClass) getOwner();
         // attributes
         if (mee == null
-	    || mee.getSource() instanceof MAttribute
+	    || org.argouml.model.ModelFacade.isAAttribute(mee.getSource())
 	    || (mee.getSource() == getOwner()
 		&& mee.getName().equals("feature")))
 	{
@@ -771,8 +773,8 @@ public class FigClass extends FigNodeModelElement {
         }
         // operations
         if (mee == null
-	    || mee.getSource() instanceof MOperation
-	    || mee.getSource() instanceof MParameter
+	    || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
+	    || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
 	    || (mee.getSource() == getOwner()
 		&& mee.getName().equals("feature")))
 	{
@@ -1222,7 +1224,7 @@ public class FigClass extends FigNodeModelElement {
             Iterator it = cl.getFeatures().iterator();
             while (it.hasNext()) {
                 MFeature feat = (MFeature) it.next();
-                if (feat instanceof MOperation) {
+                if (org.argouml.model.ModelFacade.isAOperation(feat)) {
                     MOperation oper = (MOperation) feat;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {
@@ -1238,7 +1240,7 @@ public class FigClass extends FigNodeModelElement {
             Iterator it = cl.getFeatures().iterator();
             while (it.hasNext()) {
                 MFeature feat = (MFeature) it.next();
-                if (feat instanceof MOperation) {
+                if (org.argouml.model.ModelFacade.isAOperation(feat)) {
                     MOperation oper = (MOperation) feat;
                     Iterator it2 = oper.getParameters().iterator();
                     while (it2.hasNext()) {

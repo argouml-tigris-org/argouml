@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -96,28 +98,28 @@ public class UUIDManager {
 
 	while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
-            if (me instanceof MModel ||
+            if (org.argouml.model.ModelFacade.isAModel(me) ||
                 // me instanceof MNamespace ||
-                me instanceof MClassifier ||
-                me instanceof MFeature ||
-                me instanceof MStateVertex ||
-		me instanceof MStateMachine ||
-                me instanceof MTransition ||
-                me instanceof MCollaboration ||
-		me instanceof MMessage ||
-                me instanceof MAssociation ||
-                me instanceof MAssociationEnd ||
-                me instanceof MGeneralization ||
-                me instanceof MDependency ||
-                me instanceof MStereotype ||
-		me instanceof MUseCase) {
+                org.argouml.model.ModelFacade.isAClassifier(me) ||
+                org.argouml.model.ModelFacade.isAFeature(me) ||
+                org.argouml.model.ModelFacade.isAStateVertex(me) ||
+		org.argouml.model.ModelFacade.isAStateMachine(me) ||
+                org.argouml.model.ModelFacade.isATransition(me) ||
+                org.argouml.model.ModelFacade.isACollaboration(me) ||
+		org.argouml.model.ModelFacade.isAMessage(me) ||
+                org.argouml.model.ModelFacade.isAAssociation(me) ||
+                org.argouml.model.ModelFacade.isAAssociationEnd(me) ||
+                org.argouml.model.ModelFacade.isAGeneralization(me) ||
+                org.argouml.model.ModelFacade.isADependency(me) ||
+                org.argouml.model.ModelFacade.isAStereotype(me) ||
+		org.argouml.model.ModelFacade.isAUseCase(me)) {
                 uuid = me.getUUID();
                 if (uuid == null) {
                     me.setUUID(getNewUUID());
                 }
             }
 	    //recursive handling of namespaces, needed for Collaborations
-	    if (me instanceof MNamespace) {
+	    if (org.argouml.model.ModelFacade.isANamespace(me)) {
 		cat.debug("Found another namespace: " + me);
 		createModelUUIDS((MNamespace) me);
 	    }
@@ -126,4 +128,3 @@ public class UUIDManager {
   
 
 } /* end class UUIDManager */
-

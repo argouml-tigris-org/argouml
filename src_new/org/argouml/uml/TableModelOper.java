@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -46,7 +47,7 @@ public class TableModelOper extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof MClassifier)) return new Vector();
+	if (!(org.argouml.model.ModelFacade.isAClassifier(t))) return new Vector();
 	MClassifier cls = (MClassifier) t;
 	Collection oper = ModelFacade.getOperations(cls);
 	return new Vector(oper);
@@ -54,4 +55,3 @@ public class TableModelOper extends TableModelComposite {
 
     public String toString() { return "Operations vs. Properties"; }
 } /* end class TableModelOper */
-

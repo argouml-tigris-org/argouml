@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,7 +52,7 @@ public class CrMissingOperName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MOperation)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAOperation(dm))) return NO_PROBLEM;
 	MOperation oper = (MOperation) dm;
 	String myName = oper.getName();
 	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
@@ -65,7 +66,7 @@ public class CrMissingOperName extends CrUML {
 	    MModelElement me = (MModelElement) item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";
-	    if (me instanceof MOperation) {
+	    if (org.argouml.model.ModelFacade.isAOperation(me)) {
 		MOperation a = (MOperation) me;
 		int count = 1;
 		if (a.getOwner() != null)
@@ -79,4 +80,3 @@ public class CrMissingOperName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingOperName */
-

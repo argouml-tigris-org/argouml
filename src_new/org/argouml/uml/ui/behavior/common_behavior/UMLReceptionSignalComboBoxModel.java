@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (target instanceof MReception) {
+        if (org.argouml.model.ModelFacade.isAReception(target)) {
             MReception rec = (MReception) target;
             removeAllElements();
             setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind(MSignal.class));

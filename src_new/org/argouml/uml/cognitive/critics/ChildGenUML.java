@@ -1,3 +1,6 @@
+
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -64,25 +67,25 @@ public class ChildGenUML implements ChildGenerator {
 	    if (figs != null) return figs.elements();
 	}
 
-	if (o instanceof MPackage) {
+	if (org.argouml.model.ModelFacade.isAPackage(o)) {
 	    Vector ownedElements =
 		new Vector(((MPackage) o).getOwnedElements());
 	    if (ownedElements != null) return ownedElements.elements();
 	}
 
-	if (o instanceof MElementImport) {
+	if (org.argouml.model.ModelFacade.isAElementImport(o)) {
 	    MModelElement me = ((MElementImport) o).getModelElement();
 	    return new EnumerationSingle(me);  //wasteful!
 	}
 
-	if (o instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
 	    Vector behavior = new Vector(((MModelElement) o).getBehaviors());
 	    if (behavior != null) behavior.elements();
 	}
 
 	// TODO: associationclasses fit both of the next 2 cases
 
-	if (o instanceof MClassifier) {
+	if (org.argouml.model.ModelFacade.isAClassifier(o)) {
 	    MClassifier cls = (MClassifier) o;
 	    EnumerationComposite res = new EnumerationComposite();
 	    res.addSub(new Vector(cls.getFeatures()));
@@ -95,7 +98,7 @@ public class ChildGenUML implements ChildGenerator {
 	    return res;
 	}
 
-	if (o instanceof MAssociation) {
+	if (org.argouml.model.ModelFacade.isAAssociation(o)) {
 	    MAssociation asc = (MAssociation) o;
 	    Vector assocEnds = new Vector(asc.getConnections());
 	    if (assocEnds != null) return assocEnds.elements();
@@ -107,7 +110,7 @@ public class ChildGenUML implements ChildGenerator {
 
 
 	// // needed?
-	if (o instanceof MStateMachine) {
+	if (org.argouml.model.ModelFacade.isAStateMachine(o)) {
 	    MStateMachine sm = (MStateMachine) o;
 	    EnumerationComposite res = new EnumerationComposite();
 	    MState top = sm.getTop();
@@ -117,7 +120,7 @@ public class ChildGenUML implements ChildGenerator {
 	}
 
 	// needed?
-	if (o instanceof MCompositeState) {
+	if (org.argouml.model.ModelFacade.isACompositeState(o)) {
 	    MCompositeState cs = (MCompositeState) o;
 	    Vector substates = new Vector(cs.getSubvertices());
 	    if (substates != null) return substates.elements();
@@ -128,4 +131,3 @@ public class ChildGenUML implements ChildGenerator {
 	return EnumerationEmpty.theInstance();
     }
 } /* end class ChildGenUML */
-

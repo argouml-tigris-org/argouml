@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -250,7 +251,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 	    PropPanel propPanel = (PropPanel) _container;
             Object target = propPanel.getTarget();
 
-            if (target instanceof MBase) {
+            if (org.argouml.model.ModelFacade.isABase(target)) {
             	
             	// 2002-07-15
             	// Jaap Branderhorst
@@ -326,4 +327,3 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
         }
     }
 }
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -48,7 +49,7 @@ public class GoModelToCollaboration extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (parent instanceof MModel) {
+	if (org.argouml.model.ModelFacade.isAModel(parent)) {
             MModel model = (MModel) parent;
             Collection col = ModelManagementHelper.getHelper()
 		.getAllModelElementsOfKind(model, MCollaboration.class);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -189,7 +190,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         Collection includes = null;
         Object     target   = getTarget();
 
-        if (target instanceof MUseCase) {
+        if (org.argouml.model.ModelFacade.isAUseCase(target)) {
             MUseCase useCase = (MUseCase) target;
 
             includes = useCase.getIncludes();
@@ -229,7 +230,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
         // Note that we cope with the NSUML bug by using the getBase() accessor
         // rather than the getAddition() accessor to reverse the problem.
 
-        if (element instanceof MInclude) {
+        if (org.argouml.model.ModelFacade.isAInclude(element)) {
             MInclude include = (MInclude) element;
             MUseCase target  = include.getBase();
 
@@ -268,7 +269,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
     public void add(int index) {
     	Object target = getTarget();
-    	if (target instanceof MUseCase) {
+    	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
 	    MUseCase usecase = (MUseCase) target;	
 	    Vector choices = new Vector();
 	    Vector selected = new Vector();
@@ -339,7 +340,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
     public void delete(int index) {
     	Object target = getTarget();
-    	if (target instanceof MUseCase) {
+    	if (org.argouml.model.ModelFacade.isAUseCase(target)) {
 	    MUseCase usecase = (MUseCase) target;
 	    MUseCase includedusecase = (MUseCase) UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
 	    MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
@@ -436,7 +437,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         Object target = getTarget();
 
-        if (!(target instanceof MUseCase)) {
+        if (!(org.argouml.model.ModelFacade.isAUseCase(target))) {
             return;
         }
 
@@ -478,7 +479,7 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
         Object target = getTarget();
 
-        if (!(target instanceof MUseCase)) {
+        if (!(org.argouml.model.ModelFacade.isAUseCase(target))) {
             return;
         }
 
@@ -520,7 +521,6 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 
 
 } /* End of class UMLIncludeListModel */
-
 
 
 

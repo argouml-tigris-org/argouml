@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -49,9 +51,9 @@ public class CollabDiagramRenderer
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-	if (node instanceof MClassifierRole)
+	if (org.argouml.model.ModelFacade.isAClassifierRole(node))
 	    return new FigClassifierRole(gm, lay, node);
-	if (node instanceof MMessage)
+	if (org.argouml.model.ModelFacade.isAMessage(node))
 	    return new FigMessage(gm, lay, node);
 	cat.debug("TODO CollabDiagramRenderer getFigNodeFor");
 	return null;
@@ -61,16 +63,16 @@ public class CollabDiagramRenderer
     /** Generally the same code as for the ClassDiagram, since its
 	very related to it. */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-	if (edge instanceof MAssociationRole) {
+	if (org.argouml.model.ModelFacade.isAAssociationRole(edge)) {
 	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
 	    return asrFig;
 	} else 
-	    if (edge instanceof MGeneralization) {
+	    if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
 		MGeneralization   gen    = (MGeneralization) edge;
 		FigGeneralization genFig = new FigGeneralization(gen, lay);
 		return genFig;
 	    }
-	if (edge instanceof MDependency) {
+	if (org.argouml.model.ModelFacade.isADependency(edge)) {
 	    MDependency dep = (MDependency) edge;
 	    FigDependency depFig = new FigDependency(dep , lay);
 	    return depFig;

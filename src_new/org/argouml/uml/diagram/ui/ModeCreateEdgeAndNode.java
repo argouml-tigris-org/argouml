@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -382,7 +383,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     // internal methods
 
     public void postProcessEdge() {
-        if (_newEdge instanceof MAssociation) {
+        if (org.argouml.model.ModelFacade.isAAssociation(_newEdge)) {
             java.util.List conn = ((MAssociation) _newEdge).getConnections();
             MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
             ae0.setAggregation(MAggregationKind.COMPOSITE);

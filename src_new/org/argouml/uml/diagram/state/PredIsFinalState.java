@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,8 +37,7 @@ public class PredIsFinalState implements Predicate {
     private PredIsFinalState() { }
 
     public boolean predicate(Object obj) {
-	return (obj instanceof MFinalState);
+	return (org.argouml.model.ModelFacade.isAFinalState(obj));
     }
 
 } /* end class PredIsFinalState */
-

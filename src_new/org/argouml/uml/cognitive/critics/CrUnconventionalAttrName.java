@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -66,7 +67,7 @@ public class CrUnconventionalAttrName extends CrUML {
 
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MAttribute)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
 	MAttribute attr = (MAttribute) dm;
 	String myName = attr.getName();
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
@@ -146,4 +147,3 @@ public class CrUnconventionalAttrName extends CrUML {
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrUnconventionalAttrName */
-

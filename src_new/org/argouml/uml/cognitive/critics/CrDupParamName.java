@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -54,7 +55,7 @@ public class CrDupParamName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isABehavioralFeature(dm))) return NO_PROBLEM;
 	MBehavioralFeature bf = (MBehavioralFeature) dm;
 	Vector params = new Vector(bf.getParameters());
 	params.remove(UmlHelper.getHelper().getCore()
@@ -74,4 +75,3 @@ public class CrDupParamName extends CrUML {
     }
 
 } /* end class CrDupParamName.java */
-

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class CrIllegalName extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MModelElement)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
 	MModelElement me = (MModelElement) dm;
 	String meName = me.getName();
 	if (meName == null || meName.equals("")) return NO_PROBLEM;
@@ -64,7 +65,7 @@ public class CrIllegalName extends CrUML {
 	for (int i = 0; i < len; i++) {
 	    char c = nameStr.charAt(i);
 	    if (!(Character.isLetterOrDigit(c) || c == '_' ||
-		  (c == ' ' && me instanceof MStateVertex)))
+		  (c == ' ' && org.argouml.model.ModelFacade.isAStateVertex(me))))
 		return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
@@ -75,4 +76,3 @@ public class CrIllegalName extends CrUML {
     }
 
 } /* end class CrIllegalName */
-

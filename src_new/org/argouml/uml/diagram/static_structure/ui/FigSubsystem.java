@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -76,7 +77,7 @@ public class FigSubsystem extends FigPackage {
         // Don't know if this should rather be done in one of the super
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (node instanceof MSubsystem && (((MSubsystem) node).getName() != null))
+        if (org.argouml.model.ModelFacade.isASubsystem(node) && (((MSubsystem) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
     }
 

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -90,8 +91,8 @@ public class UMLGeneralizationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#build(MModelElement, MModelElement)
      */
     protected void build(MModelElement from, MModelElement to) {
-	if (from instanceof MGeneralizableElement 
-	    && to instanceof MGeneralizableElement) {
+	if (org.argouml.model.ModelFacade.isAGeneralizableElement(from) 
+	    && org.argouml.model.ModelFacade.isAGeneralizableElement(to)) {
 	    CoreFactory.getFactory().buildGeneralization((MGeneralizableElement) from, (MGeneralizableElement) to);
 	}
 	else
@@ -134,7 +135,7 @@ public class UMLGeneralizationListModel
      */
     protected Collection getSelected() {
 	if (getTarget() == null) return new ArrayList();
-	if (getTarget() instanceof MGeneralizableElement) {
+	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
 	    return CoreHelper.getHelper().getExtendedClassifiers((MGeneralizableElement) getTarget());
 	} else
 	    throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -68,7 +69,7 @@ public class FigTransition extends FigEdgeModelElement {
   
     public FigTransition(Object edge, Layer lay) {
 	this();
-	if (edge instanceof MTransition) {
+	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    MTransition tr = (MTransition) edge;
 	    MStateVertex sourceSV = tr.getSource();
 	    MStateVertex destSV = tr.getTarget();

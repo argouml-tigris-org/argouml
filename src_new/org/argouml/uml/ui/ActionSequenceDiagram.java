@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -71,29 +73,29 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         MNamespace ns = (MNamespace) handle;
         MCollaboration c = null;
         Object target = TargetManager.getInstance().getModelTarget();
-        if (target instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(target)) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
             c.setRepresentedOperation((MOperation) target);
-        } else if (target instanceof MClassifier) {
+        } else if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     ns);
             c.setRepresentedClassifier((MClassifier) target);
-        } else if (target instanceof MModel) {
+        } else if (org.argouml.model.ModelFacade.isAModel(target)) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(
                     (MModel) target);
-        } else if (target instanceof MInteraction) {
+        } else if (org.argouml.model.ModelFacade.isAInteraction(target)) {
             c = ((MInteraction) target).getContext();
         } else if (target instanceof UMLSequenceDiagram) {
             Object o = ((UMLSequenceDiagram) target).getOwner();
-            if (o instanceof MCollaboration) {
+            if (org.argouml.model.ModelFacade.isACollaboration(o)) {
                 //preventing backward compat problems
                 c = (MCollaboration) o;
             }
-        } else if (target instanceof MCollaboration) {
+        } else if (org.argouml.model.ModelFacade.isACollaboration(target)) {
             c = (MCollaboration) target;
         } else {
             c =
@@ -116,11 +118,11 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         }
         MNamespace ns = (MNamespace) handle;
         return (
-            ns instanceof MCollaboration
-                || ns instanceof MClassifier
+            org.argouml.model.ModelFacade.isACollaboration(ns)
+                || org.argouml.model.ModelFacade.isAClassifier(ns)
                 || ns
                     == ProjectManager.getManager().getCurrentProject().getModel() ||
-                    ns instanceof MPackage);
+                    org.argouml.model.ModelFacade.isAPackage(ns));
     }
     
     /**

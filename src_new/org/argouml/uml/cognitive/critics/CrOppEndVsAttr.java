@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -55,7 +57,7 @@ public class CrOppEndVsAttr extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(dm instanceof MClassifier))
+        if (!(org.argouml.model.ModelFacade.isAClassifier(dm)))
             return NO_PROBLEM;
         MClassifier cls = (MClassifier) dm;
         Vector namesSeen = new Vector();
@@ -67,7 +69,7 @@ public class CrOppEndVsAttr extends CrUML {
         while (enum.hasNext()) {
             Object o = enum.next();
 
-            if (!(o instanceof MStructuralFeature))
+            if (!(org.argouml.model.ModelFacade.isAStructuralFeature(o)))
                 continue;
 
             MStructuralFeature sf = (MStructuralFeature) o;
@@ -93,7 +95,7 @@ public class CrOppEndVsAttr extends CrUML {
             MAssociation asc = (MAssociation) myAe.getAssociation();
             Collection conn = asc.getConnections();
 
-            if (asc instanceof MAssociationRole)
+            if (org.argouml.model.ModelFacade.isAAssociationRole(asc))
                 conn = ((MAssociationRole) asc).getConnections();
             if (conn == null)
                 continue;

@@ -1,3 +1,10 @@
+
+
+
+
+
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -183,15 +190,15 @@ class ColumnName extends ColumnDescriptor {
     ColumnName() { super("Name", String.class, true); }
 
     public boolean isEditable(Object rowObj) {
-	return super.isEditable(rowObj) && !(rowObj instanceof MPseudostate); 
+	return super.isEditable(rowObj) && !(org.argouml.model.ModelFacade.isAPseudostate(rowObj)); 
     }
 
   
     public Object getValueFor(Object target) {
-	if (target instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(target)) {
 	    String res = ((MModelElement) target).getName();
 	    String ocl = "";
-	    if (target instanceof MElement)
+	    if (org.argouml.model.ModelFacade.isAElement(target))
 		ocl = ((MElement) target).getUMLClassName();
 	    if (res == null || res.length() == 0) res = "(anon " + ocl + ")";
 	    return res;
@@ -203,7 +210,7 @@ class ColumnName extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MModelElement)) return;
+	if (!(org.argouml.model.ModelFacade.isAModelElement(target))) return;
 	if (!(value instanceof String)) return;
 	MModelElement e = (MModelElement) target;
 	String s = (String) value;
@@ -217,7 +224,7 @@ class ColumnVisibility extends ColumnDescriptor {
     ColumnVisibility() { super("Visibility", MVisibilityKind.class, true); }
   
     public Object getValueFor(Object target) {
-	if (target instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(target)) {
 	    MVisibilityKind vk = ((MModelElement) target).getVisibility();
 	    if (vk == null || vk.getName() == null) return "N/A";
 	    return vk.getName();
@@ -226,8 +233,8 @@ class ColumnVisibility extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MModelElement)
-	    || !(value instanceof MVisibilityKind))
+	if (!(org.argouml.model.ModelFacade.isAModelElement(target))
+	    || !(org.argouml.model.ModelFacade.isAVisibilityKind(value)))
 	    return;
 	((MModelElement) target).setVisibility((MVisibilityKind) value);
     }  
@@ -238,7 +245,7 @@ class ColumnFeatureVis extends ColumnDescriptor {
     ColumnFeatureVis() { super("Visibility", MVisibilityKind.class, true); }
   
     public Object getValueFor(Object target) {
-	if (target instanceof MFeature) {
+	if (org.argouml.model.ModelFacade.isAFeature(target)) {
 	    MVisibilityKind vk = ((MFeature) target).getVisibility();
 	    if (vk != null)
 		return vk.toString();
@@ -247,8 +254,8 @@ class ColumnFeatureVis extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MFeature)) return;
-	if (!(value instanceof MVisibilityKind)) return;
+	if (!(org.argouml.model.ModelFacade.isAFeature(target))) return;
+	if (!(org.argouml.model.ModelFacade.isAVisibilityKind(value))) return;
 	((MFeature) target).setVisibility((MVisibilityKind) value);
     }  
 } /* end class ColumnFeatureVis */
@@ -258,7 +265,7 @@ class ColumnStereotype extends ColumnDescriptor {
     ColumnStereotype() { super("Stereotype", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (target instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(target)) {
 	    MStereotype st = ((MModelElement) target).getStereotype();
 	    if (st != null && st.getName() != null)
 		return st.getName();
@@ -267,7 +274,7 @@ class ColumnStereotype extends ColumnDescriptor {
     }
 	
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MModelElement)) return;
+	if (!(org.argouml.model.ModelFacade.isAModelElement(target))) return;
 	if (!(value instanceof String)) return;
 	String stereoName = (String) value;
 	MStereotype s =
@@ -498,7 +505,7 @@ class ColumnSupplier extends ColumnDescriptor {
     ColumnSupplier() { super("Supplier", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MDependency)) return "N/A";
+	if (!(org.argouml.model.ModelFacade.isADependency(target))) return "N/A";
 	String name = "";
 	Collection conns = ((MDependency) target).getSuppliers();
 	if (conns != null && (conns.size() == 1)) {
@@ -521,7 +528,7 @@ class ColumnClient extends ColumnDescriptor {
     ColumnClient() { super("Client", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MDependency)) return "N/A";
+	if (!(org.argouml.model.ModelFacade.isADependency(target))) return "N/A";
 	String name = "";
 	Collection conns = ((MDependency) target).getClients();
 	if (conns != null && (conns.size() == 1)) {
@@ -544,7 +551,7 @@ class ColumnSrcLinkType extends ColumnDescriptor {
     ColumnSrcLinkType() { super("SrcType", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MLink)) return "N/A";
+	if (!(org.argouml.model.ModelFacade.isALink(target))) return "N/A";
 	String name = "";
 	Vector conns = new Vector(((MLink) target).getConnections());
 	if (conns.size() == 2) {
@@ -567,7 +574,7 @@ class ColumnDstLinkType extends ColumnDescriptor {
     ColumnDstLinkType() { super("DstType", String.class, false); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MLink)) return "N/A";
+	if (!(org.argouml.model.ModelFacade.isALink(target))) return "N/A";
 	String name = "";
 	Vector conns = new Vector(((MLink) target).getConnections());
 	if (conns.size() == 2) {
@@ -590,14 +597,14 @@ class ColumnAbstract extends ColumnDescriptor {
     ColumnAbstract() { super("Abstract", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
 	MGeneralizableElement ge = (MGeneralizableElement) target;
 	boolean abs = ge.isAbstract();
 	return abs ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MGeneralizableElement)) return;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
 	MGeneralizableElement ge = (MGeneralizableElement) target;
@@ -610,14 +617,14 @@ class ColumnRoot extends ColumnDescriptor {
     ColumnRoot() { super("Root", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
 	MGeneralizableElement ge = (MGeneralizableElement) target;
 	boolean root = ge.isRoot();
 	return root ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MGeneralizableElement)) return;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
 	MGeneralizableElement ge = (MGeneralizableElement) target;
@@ -630,14 +637,14 @@ class ColumnLeaf extends ColumnDescriptor {
     ColumnLeaf() { super("Leaf", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MGeneralizableElement)) return Boolean.FALSE;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return Boolean.FALSE;
 	MGeneralizableElement ge = (MGeneralizableElement) target;
 	boolean leaf = ge.isLeaf();
 	return leaf ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MGeneralizableElement)) return;
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
 	MGeneralizableElement ge = (MGeneralizableElement) target;
@@ -652,13 +659,13 @@ class ColumnClassVisibility extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MClassifier)) return null;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return null;
 	MClassifier cls = (MClassifier) target;
 	return MMClassVisibility.VisibilityFor(cls);
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MClassifier)) return;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
 	if (!(value instanceof MMClassVisibility)) return;
 	MMClassVisibility cv = (MMClassVisibility) value;
 	MClassifier cls = (MClassifier) target;
@@ -673,13 +680,13 @@ class ColumnClassKeyword extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MClassifier)) return null;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return null;
 	MClassifier cls = (MClassifier) target;
 	return MMClassKeyword.KeywordFor(cls);
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MClassifier)) return;
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target))) return;
 	if (!(value instanceof MMClassKeyword)) return;
 	MMClassKeyword ck = (MMClassKeyword) value;
 	MClassifier cls = (MClassifier) target;
@@ -694,7 +701,7 @@ class ColumnExtends extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MGeneralizableElement)) return "";
+	if (!(org.argouml.model.ModelFacade.isAGeneralizableElement(target))) return "";
 	MGeneralizableElement cls = (MGeneralizableElement) target;
 	Vector gen = new Vector(cls.getGeneralizations());
 	String res = "";
@@ -747,7 +754,7 @@ class ColumnEntry extends ColumnDescriptor {
     }
 	
     public Object getValueFor(Object target) {
-	if (!(target instanceof MState)) return "";
+	if (!(org.argouml.model.ModelFacade.isAState(target))) return "";
 	MState st = (MState) target;
 	if (st.getEntry() != null) {
 	    Object acts = ModelFacade.getEntry(st);
@@ -757,7 +764,7 @@ class ColumnEntry extends ColumnDescriptor {
     }
 	
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MState)) return;
+	if (!(org.argouml.model.ModelFacade.isAState(target))) return;
 	if (!(value instanceof String)) return;
 
 
@@ -775,7 +782,7 @@ class ColumnExit extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MState)) return "";
+	if (!(org.argouml.model.ModelFacade.isAState(target))) return "";
 	MState st = (MState) target;
 	if (ModelFacade.getExit(st) != null) {
 	    Object acts = ModelFacade.getExit(st);
@@ -785,7 +792,7 @@ class ColumnExit extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MState)) return;
+	if (!(org.argouml.model.ModelFacade.isAState(target))) return;
 	if (!(value instanceof String)) return;
 	MState st = (MState) target;
 	String s = (String) value;
@@ -801,7 +808,7 @@ class ColumnParent extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MStateVertex)) return "";
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(target))) return "";
 	MStateVertex sv = (MStateVertex) target;
 	if (sv.getContainer() != null) {
 	    MCompositeState cs = sv.getContainer();
@@ -824,7 +831,7 @@ class ColumnSource extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MTransition)) return "";
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return "";
 	MTransition t = (MTransition) target;
 	if (t.getSource() != null) {
 	    MStateVertex sv = t.getSource();
@@ -843,7 +850,7 @@ class ColumnTarget extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MTransition)) return "";
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return "";
 	MTransition t = (MTransition) target;
 	if (t.getTarget() != null) {
 	    MStateVertex sv = t.getTarget();
@@ -863,7 +870,7 @@ class ColumnTrigger extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MTransition)) return "";
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return "";
 	MTransition t = (MTransition) target;
 	MEvent trigger = t.getTrigger();
 	if (trigger == null) return "";
@@ -871,7 +878,7 @@ class ColumnTrigger extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MTransition)) return;
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
 	MTransition tr = (MTransition) target;
 	String s = (String) value;
@@ -888,7 +895,7 @@ class ColumnGuard extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MTransition)) return "";
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return "";
 	MTransition t = (MTransition) target;
 	MGuard guard = t.getGuard();
 	if (guard == null) return "";
@@ -896,7 +903,7 @@ class ColumnGuard extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MTransition)) return;
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
 	MTransition tr = (MTransition) target;
 	String s = (String) value;
@@ -912,7 +919,7 @@ class ColumnEffect extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MTransition)) return "";
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return "";
 	MTransition t = (MTransition) target;
 	Object effect = ModelFacade.getEffect(t);
 	if (effect == null) return "";
@@ -920,7 +927,7 @@ class ColumnEffect extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MTransition)) return;
+	if (!(org.argouml.model.ModelFacade.isATransition(target))) return;
 	if (!(value instanceof String)) return;
 	MTransition tr = (MTransition) target;
 	String s = (String) value;
@@ -936,7 +943,7 @@ class ColumnReturn extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MOperation)) return "";
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return "";
 	MOperation op = (MOperation) target;
 	MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(op);
 	if (rp != null && rp.getType() != null) {
@@ -948,7 +955,7 @@ class ColumnReturn extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MOperation)) return;
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof String)) return;
 	MOperation op = (MOperation) target;
 	String s = (String) value;
@@ -967,13 +974,13 @@ class ColumnOperKeyword extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MOperation)) return null;
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return null;
 	MOperation oper = (MOperation) target;
 	return org.argouml.uml.OperKeyword.KeywordFor(oper);
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MOperation)) return;
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof OperKeyword)) return;
 	OperKeyword ok = (OperKeyword) value;
 	MOperation oper = (MOperation) target;
@@ -986,14 +993,14 @@ class ColumnQuery extends ColumnDescriptor {
     ColumnQuery() { super("Query", Boolean.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MOperation)) return Boolean.FALSE;
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return Boolean.FALSE;
 	MOperation oper = (MOperation) target;
 	boolean query = oper.isQuery();
 	return query ? Boolean.TRUE : Boolean.FALSE;
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MOperation)) return;
+	if (!(org.argouml.model.ModelFacade.isAOperation(target))) return;
 	if (!(value instanceof Boolean)) return;
 	boolean b = ((Boolean) value).booleanValue();
 	MOperation oper = (MOperation) target;
@@ -1009,7 +1016,7 @@ class ColumnType extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAttribute)) return null;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(target))) return null;
 	MAttribute op = (MAttribute) target;
 	MClassifier type = op.getType();
 	GeneratorDisplay gd = GeneratorDisplay.getInstance();
@@ -1017,7 +1024,7 @@ class ColumnType extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAttribute)) return;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(target))) return;
 	if (!(value instanceof String)) return;
 	MAttribute op = (MAttribute) target;
 	String s = (String) value;
@@ -1038,13 +1045,13 @@ class ColumnAttrKeyword extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MAttribute)) return null;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(target))) return null;
 	MAttribute attr = (MAttribute) target;
 	return org.argouml.uml.AttrKeyword.KeywordFor(attr);
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MAttribute)) return;
+	if (!(org.argouml.model.ModelFacade.isAAttribute(target))) return;
 	if (!(value instanceof AttrKeyword)) return;
 	AttrKeyword ak = (AttrKeyword) value;
 	MAttribute attr = (MAttribute) target;
@@ -1056,7 +1063,7 @@ class ColumnCompNode extends ColumnDescriptor {
     ColumnCompNode() { super("DeploymentLocation", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MComponent)) return null;
+	if (!(org.argouml.model.ModelFacade.isAComponent(target))) return null;
 	MComponent co = (MComponent) target;
 	Collection nodes = co.getDeploymentLocations();  
 	MNode node = null;
@@ -1083,7 +1090,7 @@ class ColumnCompNodeInstance extends ColumnDescriptor {
     ColumnCompNodeInstance() { super("NodeInstance", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MComponentInstance)) return null;
+	if (!(org.argouml.model.ModelFacade.isAComponentInstance(target))) return null;
 	MComponentInstance co = (MComponentInstance) target;
 	MNodeInstance node = co.getNodeInstance();
 	String name = "";
@@ -1104,10 +1111,10 @@ class ColumnImplLocation extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MClassifier || target instanceof MObject))
+	if (!(org.argouml.model.ModelFacade.isAClassifier(target) || org.argouml.model.ModelFacade.isAObject(target)))
 	    return null;
 	String name = "";
-	if (target instanceof MClassifier) {
+	if (org.argouml.model.ModelFacade.isAClassifier(target)) {
 	    MClassifier co = (MClassifier) target;
 	    Collection residences = co.getElementResidences();  
 	    if (residences != null) {
@@ -1123,7 +1130,7 @@ class ColumnImplLocation extends ColumnDescriptor {
 		}
 	    }
 	}
-	else if (target instanceof MObject) {
+	else if (org.argouml.model.ModelFacade.isAObject(target)) {
 	    MObject obj = (MObject) target;
 	    Collection residences = obj.getElementResidences();  
 	    if (residences != null) {
@@ -1154,7 +1161,7 @@ class ColumnComponentInstance extends ColumnDescriptor {
     }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MObject)) return null;
+	if (!(org.argouml.model.ModelFacade.isAObject(target))) return null;
 	MObject co = (MObject) target;
 	String name = "";
 	MComponentInstance comp = co.getComponentInstance();
@@ -1173,7 +1180,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
     ColumnBaseForObject() { super("Base", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MInstance)) return null;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return null;
 	MInstance in = (MInstance) target;
 	String instance_base = "";
 	Collection col = in.getClassifiers();
@@ -1191,7 +1198,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MInstance)) return;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
 	MObject tt = (MObject) target;
 	String _value = (String) value;
@@ -1213,7 +1220,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
 	for (int i = 0; i < size; i++) {
 	    Object o = diagrams.elementAt(i);
 	    if (!(o instanceof Diagram)) continue;
-	    if (o instanceof MModel) continue;
+	    if (org.argouml.model.ModelFacade.isAModel(o)) continue;
 	    Diagram d = (Diagram) o;
 	    model = d.getGraphModel(); 
 
@@ -1225,7 +1232,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
 		MModelElement node = (MModelElement) nodes.elementAt(j);
-		if (node != null && (node instanceof MClass)) {
+		if (node != null && (org.argouml.model.ModelFacade.isAClass(node))) {
 		    MClass mclass = (MClass) node;
 		    if (mclass.getNamespace() != tt.getNamespace()) continue;
 		    String class_name = mclass.getName();
@@ -1250,7 +1257,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
     ColumnBaseForComponentInstance() { super("Base", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MInstance)) return null;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return null;
 	MInstance in = (MInstance) target;
 	String instance_base = "";
 	Collection col = in.getClassifiers();
@@ -1268,7 +1275,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MInstance)) return;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
 	MComponentInstance tt = (MComponentInstance) target;
 	String _value = (String) value;
@@ -1291,7 +1298,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
 	for (int i = 0; i < size; i++) {
 	    Object o = diagrams.elementAt(i);
 	    if (!(o instanceof Diagram)) continue;
-	    if (o instanceof MModel) continue;
+	    if (org.argouml.model.ModelFacade.isAModel(o)) continue;
 	    Diagram d = (Diagram) o;
 	    model = d.getGraphModel(); 
 
@@ -1301,7 +1308,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
 		MModelElement node = (MModelElement) nodes.elementAt(j);
-		if (node != null && (node instanceof MComponent)) {
+		if (node != null && (org.argouml.model.ModelFacade.isAComponent(node))) {
 		    MComponent mcomp = (MComponent) node;
 		    if (mcomp.getNamespace() != tt.getNamespace()) continue;
 		    String comp_name = mcomp.getName();
@@ -1327,7 +1334,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
     ColumnBaseForNodeInstance() { super("Base", String.class, true); }
   
     public Object getValueFor(Object target) {
-	if (!(target instanceof MInstance)) return null;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return null;
 	MInstance in = (MInstance) target;
 	String instance_base = "";
 	Collection col = in.getClassifiers();
@@ -1345,7 +1352,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MInstance)) return;
+	if (!(org.argouml.model.ModelFacade.isAInstance(target))) return;
 	if (!(value instanceof String)) return;
 	MNodeInstance tt = (MNodeInstance) target;
 	String _value = (String) value;
@@ -1367,7 +1374,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
 	for (int i = 0; i < size; i++) {
 	    Object o = diagrams.elementAt(i);
 	    if (!(o instanceof Diagram)) continue;
-	    if (o instanceof MModel) continue;
+	    if (org.argouml.model.ModelFacade.isAModel(o)) continue;
 	    Diagram d = (Diagram) o;
 	    model = d.getGraphModel(); 
 
@@ -1377,7 +1384,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
 	    int s = nodes.size();
 	    for (int j = 0; j < s; j++) {
 		MModelElement node = (MModelElement) nodes.elementAt(j);
-		if (node != null && (node instanceof MNode)) {
+		if (node != null && (org.argouml.model.ModelFacade.isANode(node))) {
 		    MNode mnode = (MNode) node;
 		    if (mnode.getNamespace() != tt.getNamespace()) continue;
 		    String node_name = mnode.getName();
@@ -1423,11 +1430,11 @@ class ColumnActionType extends ColumnDescriptor {
 	if (!(ModelFacade.isAAction(target))) return null;
 	Object act = target;
 	String type = "";
-	if (act instanceof MCallAction) type = "Call";
-	else if (act instanceof MSendAction) type = "Send";
-	else if (act instanceof MCreateAction) type = "Create";
-	else if (act instanceof MReturnAction) type = "Return";
-	else if (act instanceof MDestroyAction) type = "Destroy";
+	if (org.argouml.model.ModelFacade.isACallAction(act)) type = "Call";
+	else if (org.argouml.model.ModelFacade.isASendAction(act)) type = "Send";
+	else if (org.argouml.model.ModelFacade.isACreateAction(act)) type = "Create";
+	else if (org.argouml.model.ModelFacade.isAReturnAction(act)) type = "Return";
+	else if (org.argouml.model.ModelFacade.isADestroyAction(act)) type = "Destroy";
 	return type;
     }
 
@@ -1440,7 +1447,7 @@ class ColumnAction extends ColumnDescriptor {
     ColumnAction() { super("Action", String.class, true); }
 
     public Object getValueFor(Object target) {
-	if (!(target instanceof MStimulus)) return null;
+	if (!(org.argouml.model.ModelFacade.isAStimulus(target))) return null;
 	MStimulus sti = (MStimulus) target;
 	String action = "";
 	if (sti.getDispatchAction() != null
@@ -1450,7 +1457,7 @@ class ColumnAction extends ColumnDescriptor {
     }
 
     public void setValueFor(Object target, Object value) {
-	if (!(target instanceof MStimulus)) return;
+	if (!(org.argouml.model.ModelFacade.isAStimulus(target))) return;
 	if (!(value instanceof String)) return;
 	MStimulus sti = (MStimulus) target;
 	String _value = (String) value;
@@ -1461,4 +1468,3 @@ class ColumnAction extends ColumnDescriptor {
     }
 
 } /* end class ColumnAction */
-

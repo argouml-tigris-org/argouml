@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -66,7 +67,7 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
             JRadioButton source = (JRadioButton) e.getSource();
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (target instanceof MModelElement) {
+            if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 MModelElement m = (MModelElement) target;
                 MVisibilityKind kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {

@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -48,15 +50,15 @@ public class CrNoOutgoingTransitions extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MStateVertex)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(dm))) return NO_PROBLEM;
 	MStateVertex sv = (MStateVertex) dm;
-	if (sv instanceof MState) {
+	if (org.argouml.model.ModelFacade.isAState(sv)) {
 	    MStateMachine sm = ((MState) sv).getStateMachine();
 	    if (sm != null && sm.getTop() == sv) return NO_PROBLEM;
 	}
 	Collection outgoing = sv.getOutgoings();
 	boolean needsOutgoing = outgoing == null || outgoing.size() == 0;
-	if (sv instanceof MFinalState) {
+	if (org.argouml.model.ModelFacade.isAFinalState(sv)) {
 	    needsOutgoing = false;
 	}
 	if (needsOutgoing) return PROBLEM_FOUND;
@@ -64,4 +66,3 @@ public class CrNoOutgoingTransitions extends CrUML {
     }
 
 } /* end class CrNoOutgoingTransitions */
-

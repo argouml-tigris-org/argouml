@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -107,7 +108,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
     /** add a package to the current package. */
     public void addPackage() {
         Object target = getTarget();
-        if (target instanceof MPackage) {
+        if (org.argouml.model.ModelFacade.isAPackage(target)) {
             MPackage newPackage =  UmlFactory.getFactory().
                 getModelManagement().createPackage();
             MPackage currentPackage = (MPackage) target;

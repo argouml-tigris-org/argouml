@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -60,7 +61,7 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object element) {
-        return element instanceof MMultiplicity;
+        return org.argouml.model.ModelFacade.isAMultiplicity(element);
     }
 
     /**
@@ -87,7 +88,7 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
      * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
      */
     public void setSelectedItem(Object anItem) {        
-        if (!contains(anItem) && anItem instanceof MMultiplicity) {
+        if (!contains(anItem) && org.argouml.model.ModelFacade.isAMultiplicity(anItem)) {
             addElement(anItem);
         }        
         super.setSelectedItem(anItem);        

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -129,7 +130,7 @@ public class OperationCodePiece extends NamedCodePiece
         for (Iterator j = features.iterator(); j.hasNext() && !found; ) {
             MFeature feature = (MFeature) j.next();
             if (feature.getName().equals(name)
-		&& feature instanceof MOperation) 
+		&& org.argouml.model.ModelFacade.isAOperation(feature)) 
 	    {
                 found = true;
                 parseState.newFeature(feature);

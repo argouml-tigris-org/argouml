@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -88,7 +89,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
         // may only occur as child of the model or in a package
         return (
 		ns == ProjectManager.getManager().getCurrentProject().getModel()
-                || ns instanceof MPackage);
+                || org.argouml.model.ModelFacade.isAPackage(ns));
     }
 
 } /* end class ActionDeploymentDiagram */

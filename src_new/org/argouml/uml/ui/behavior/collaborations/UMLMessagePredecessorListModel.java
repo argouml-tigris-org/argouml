@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -63,7 +64,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase elem) {
-        return elem instanceof MMessage && 
+        return org.argouml.model.ModelFacade.isAMessage(elem) && 
             ((MMessage) elem).getInteraction() == ((MMessage) getTarget()).getInteraction() &&
             ((MMessage) elem).getActivator() == ((MMessage) getTarget()).getActivator();
     }

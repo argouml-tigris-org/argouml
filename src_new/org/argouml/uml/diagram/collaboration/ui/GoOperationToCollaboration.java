@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,7 +45,7 @@ public class GoOperationToCollaboration extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (parent instanceof MOperation) {
+        if (org.argouml.model.ModelFacade.isAOperation(parent)) {
             return ((MOperation) parent).getCollaborations();
         }
         return null;

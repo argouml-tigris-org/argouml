@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -50,7 +52,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() instanceof MMessage) {
+        if (org.argouml.model.ModelFacade.isAMessage(getTarget())) {
             removeAllElements();
             addElement(((MMessage) getTarget()).getInteraction());
         }
@@ -60,7 +62,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element instanceof MInteraction && ((MMessage) getTarget()).getInteraction() == element;
+        return org.argouml.model.ModelFacade.isAInteraction(element) && ((MMessage) getTarget()).getInteraction() == element;
     }
 
 }

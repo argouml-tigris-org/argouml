@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -36,7 +37,7 @@ import ru.novosoft.uml.behavior.common_behavior.MLink;
 public class GoLinkStimuli extends AbstractGoRule {
     
     public Collection getChildren(Object parent) {
-	if (!(parent instanceof MLink)) return null;
+	if (!(org.argouml.model.ModelFacade.isALink(parent))) return null;
 	return ((MLink) parent).getStimuli();
     }
 

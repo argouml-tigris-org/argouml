@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -94,8 +96,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all ports on node or edge */
     public Vector getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
-	if (nodeOrEdge instanceof MState) res.addElement(nodeOrEdge);
-	if (nodeOrEdge instanceof MPseudostate) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAState(nodeOrEdge)) res.addElement(nodeOrEdge);
+	if (org.argouml.model.ModelFacade.isAPseudostate(nodeOrEdge)) res.addElement(nodeOrEdge);
 	return res;
     }
 
@@ -106,7 +108,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
-	if (port instanceof MStateVertex) {
+	if (org.argouml.model.ModelFacade.isAStateVertex(port)) {
 	    return new Vector(((MStateVertex) port).getIncomings());
 	}
 	cat.debug("TODO getInEdges of MState");
@@ -115,7 +117,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return all edges going from given port */
     public Vector getOutEdges(Object port) {
-	if (port instanceof MStateVertex) {
+	if (org.argouml.model.ModelFacade.isAStateVertex(port)) {
 	    return new Vector(((MStateVertex) port).getOutgoings());
 	}
 	cat.debug("TODO getOutEdges of MState");
@@ -124,7 +126,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-	if (edge instanceof MTransition) {
+	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    return StateMachinesHelper.getHelper()
 		.getSource((MTransition) edge);
 	}
@@ -134,7 +136,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
-	if (edge instanceof MTransition) {
+	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    return StateMachinesHelper.getHelper()
 		.getDestination((MTransition) edge);
 	}
@@ -150,7 +152,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (_nodes.contains(node)) return false;
-	return (node instanceof MStateVertex);
+	return (org.argouml.model.ModelFacade.isAStateVertex(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -158,7 +160,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
-	if (edge instanceof MTransition) {
+	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    MTransition tr = (MTransition) edge;
 	    end0 = tr.getSource();
 	    end1 = tr.getTarget();
@@ -176,7 +178,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     public void addNode(Object node) {
 	cat.debug("adding state diagram node: " + node);
 	if (!canAddNode(node)) return;
-	if (!(node instanceof MStateVertex)) {
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(node))) {
 	    cat.error("internal error: got past canAddNode");
 	    return;
 	}
@@ -209,7 +211,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     public void addNodeRelatedEdges(Object node) {
-	if ( node instanceof MStateVertex ) {
+	if ( org.argouml.model.ModelFacade.isAStateVertex(node) ) {
 	    Vector transen = new Vector(((MStateVertex) node).getOutgoings());
 	    transen.addAll(((MStateVertex) node).getIncomings());
 	    Iterator iter = transen.iterator();
@@ -226,19 +228,19 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. */
     public boolean canConnect(Object fromPort, Object toPort) {
-	if (!(fromPort instanceof MStateVertex)) {
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(fromPort))) {
 	    cat.error("internal error not from sv");
 	    return false;
 	}
-	if (!(toPort instanceof MStateVertex)) {
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(toPort))) {
 	    cat.error("internal error not to sv");
 	    return false;
 	}
 	MStateVertex fromSV = (MStateVertex) fromPort;
 	MStateVertex toSV = (MStateVertex) toPort;
 
-	if (fromSV instanceof MFinalState)	return false;
-	if (toSV instanceof MPseudostate)
+	if (org.argouml.model.ModelFacade.isAFinalState(fromSV))	return false;
+	if (org.argouml.model.ModelFacade.isAPseudostate(toSV))
 	    if (MPseudostateKind.INITIAL
 		.equals(((MPseudostate) toSV).getKind()))
 		return false;
@@ -251,20 +253,20 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 			  java.lang.Class edgeClass)
     {
 	//    try {
-	if (!(fromPort instanceof MStateVertex)) {
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(fromPort))) {
 	    cat.error("internal error not from sv");
 	    return null;
 	}
-	if (!(toPort instanceof MStateVertex)) {
+	if (!(org.argouml.model.ModelFacade.isAStateVertex(toPort))) {
 	    cat.error("internal error not to sv");
 	    return null;
 	}
 	MStateVertex fromSV = (MStateVertex) fromPort;
 	MStateVertex toSV = (MStateVertex) toPort;
 
-	if (fromSV instanceof MFinalState)
+	if (org.argouml.model.ModelFacade.isAFinalState(fromSV))
 	    return null;
-	if (toSV instanceof MPseudostate)
+	if (org.argouml.model.ModelFacade.isAPseudostate(toSV))
 	    if (MPseudostateKind.INITIAL
 		.equals(((MPseudostate) toSV).getKind()))
 		return null;
@@ -297,9 +299,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    MModelElement me = eo.getModelElement();
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
-		if (me instanceof MState) removeNode(me);
-		if (me instanceof MPseudostate) removeNode(me);
-		if (me instanceof MTransition) removeEdge(me);
+		if (org.argouml.model.ModelFacade.isAState(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isAPseudostate(me)) removeNode(me);
+		if (org.argouml.model.ModelFacade.isATransition(me)) removeEdge(me);
 	    }
 	    else {
 		cat.debug("model added " + me);
@@ -324,9 +326,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    return false;
             
 	// check parameter types:
-	if ( !(newNode instanceof MState ||
-	       oldNode instanceof MState ||
-	       edge instanceof MTransition ) )
+	if ( !(org.argouml.model.ModelFacade.isAState(newNode) ||
+	       org.argouml.model.ModelFacade.isAState(oldNode) ||
+	       org.argouml.model.ModelFacade.isATransition(edge) ) )
 	    return false;
             
 	return true;
@@ -353,4 +355,3 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     }
   
 } /* end class StateDiagramGraphModel */
-

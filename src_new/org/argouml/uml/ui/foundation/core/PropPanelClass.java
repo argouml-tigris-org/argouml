@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -103,7 +104,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     public void addInnerClass() {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier classifier = (MClassifier) target;
             MClass inner = CoreFactory.getFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);
@@ -112,7 +113,7 @@ public class PropPanelClass extends PropPanelClassifier {
 
     public void newClass() {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MClassifier classifier = (MClassifier) target;
             MNamespace ns = classifier.getNamespace();
             if (ns != null) {

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -243,18 +244,18 @@ public class TablePanelUMLDeploymentDiagram extends TablePanel {
 
     public void objectSelected(Object sel) {
 	super.objectSelected(sel);
-	if (sel instanceof MComponent) {
+	if (org.argouml.model.ModelFacade.isAComponent(sel)) {
 	    _tableModelClass_in_DeplByProps.setTarget((MComponent) sel);
 	    _tableModelInterface_in_DeplByProps.setTarget((MComponent) sel);
 	    _tableModelObjectByProps.setTarget((MComponent) sel);
 	}
-	else if (sel instanceof MComponentInstance) {
+	else if (org.argouml.model.ModelFacade.isAComponentInstance(sel)) {
 	    _tableModelObjectByProps.setTarget((MComponentInstance) sel);
 	}
-	else if (sel instanceof MNode) {
+	else if (org.argouml.model.ModelFacade.isANode(sel)) {
 	    _tableModelComponentByProps.setTarget((MNode) sel);
 	}
-	else if (sel instanceof MNodeInstance) {
+	else if (org.argouml.model.ModelFacade.isANodeInstance(sel)) {
 	    _tableModelCompInstanceByProps.setTarget((MNodeInstance) sel);
 	}  
     }

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -84,7 +85,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     public void newInterface() {
 	Object target = getTarget();
-	if (target instanceof MInterface) {
+	if (org.argouml.model.ModelFacade.isAInterface(target)) {
 	    MInterface iface = (MInterface) target;
 	    MInterface newInterface = CoreFactory.getFactory().createInterface();
 	    iface.getNamespace().addOwnedElement(newInterface);
@@ -93,4 +94,3 @@ public class PropPanelInterface extends PropPanelClassifier {
     }
 
 } /* end class PropPanelInterface */
-

@@ -1,3 +1,5 @@
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -98,8 +100,8 @@ public class CrCallWithoutReturn extends CrUML {
 		    Iterator it = col.iterator();
 		    while (it.hasNext()) {
 			MStimulus ms = (MStimulus) it.next();
-			if (ms.getDispatchAction() instanceof MCallAction
-			    || ms.getDispatchAction() instanceof MSendAction)
+			if (org.argouml.model.ModelFacade.isACallAction(ms.getDispatchAction())
+			    || org.argouml.model.ModelFacade.isASendAction(ms.getDispatchAction()))
 			{
 			    found = true;
 			    Vector edges =
@@ -114,8 +116,7 @@ public class CrCallWithoutReturn extends CrUML {
 				    Iterator it2 = col2.iterator();
 				    while (it2.hasNext()) {
 					MStimulus ms2 = (MStimulus) it2.next();
-					if ((ms2.getDispatchAction()
-					     instanceof MReturnAction)
+					if ((org.argouml.model.ModelFacade.isAReturnAction(ms2.getDispatchAction()))
 					    && (second.getPortNumber(figs)
 						> fsl.getPortNumber(figs))
 					    && (ms.getSender()
@@ -144,4 +145,3 @@ public class CrCallWithoutReturn extends CrUML {
     } 
 
 } /* end class CrCallWithoutReturn.java */
-

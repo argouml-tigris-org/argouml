@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -40,7 +41,7 @@ public class DocumentationManager {
 	 */
 	String sResult = defaultFor(o, indent);
 
-	if (o instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
 	    Collection tValues = ((MModelElement) o).getTaggedValues();
 	    if (!tValues.isEmpty()) {
 		Iterator iter = tValues.iterator();
@@ -100,7 +101,7 @@ public class DocumentationManager {
      *
      */
     public static boolean hasDocs (Object o) {
-	if (o instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
 	    Collection tValues = ((MModelElement) o).getTaggedValues();
 
 	    if (!tValues.isEmpty()) {
@@ -122,7 +123,7 @@ public class DocumentationManager {
     // default documentation
 
     public static String defaultFor(Object o, String indent) {
-	if (o instanceof MClass) {
+	if (org.argouml.model.ModelFacade.isAClass(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -140,7 +141,7 @@ public class DocumentationManager {
 		indent + " @see OtherClasses\n" +
 		indent + " @author your_name_here";
 	}
-	if (o instanceof MAttribute) {
+	if (org.argouml.model.ModelFacade.isAAttribute(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -154,7 +155,7 @@ public class DocumentationManager {
 	    return " An attribute that represents ...";
 	}
 
-	if (o instanceof MOperation) {
+	if (org.argouml.model.ModelFacade.isAOperation(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -170,7 +171,7 @@ public class DocumentationManager {
 	    return " An operation that does...\n\n" +
 		indent + " @param firstParam a description of this parameter";
 	}
-	if (o instanceof MInterface) {
+	if (org.argouml.model.ModelFacade.isAInterface(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -188,7 +189,7 @@ public class DocumentationManager {
 		indent + " @see OtherClasses\n" +
 		indent + " @author your_name_here";
 	}
-	if (o instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -223,7 +224,7 @@ public class DocumentationManager {
     public static String getComments(Object o) {
 	StringBuffer result = new StringBuffer();
 
-	if (o instanceof MModelElement) {
+	if (org.argouml.model.ModelFacade.isAModelElement(o)) {
 	    Collection comments = ((MModelElement) o).getComments();
 	    if (!comments.isEmpty()) {
 		for (Iterator iter = comments.iterator(); iter.hasNext(); ) {
@@ -261,7 +262,6 @@ public class DocumentationManager {
     }
 
 } /* end class DocumentationManager */
-
 
 
 

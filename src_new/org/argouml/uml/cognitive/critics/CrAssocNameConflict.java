@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -52,7 +53,7 @@ public class CrAssocNameConflict extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MNamespace)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isANamespace(dm))) return NO_PROBLEM;
 	MNamespace ns = (MNamespace) dm;
 	Collection oes = ns.getOwnedElements();
 	if (oes == null) return NO_PROBLEM;
@@ -60,11 +61,10 @@ public class CrAssocNameConflict extends CrUML {
 	Iterator enum = oes.iterator();
 	while (enum.hasNext()) {
 	    MModelElement me = (MModelElement) enum.next();
-	    if (!(me instanceof MAssociation)) continue;
+	    if (!(org.argouml.model.ModelFacade.isAAssociation(me))) continue;
 	    // TODO: not implemented yet
 	}
 	return NO_PROBLEM;
     }
 
 } /* end class CrAssocNameConflict.java */
-

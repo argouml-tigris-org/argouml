@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -62,12 +63,12 @@ public abstract class FigStateVertex extends FigNodeModelElement {
 	 */
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
-        if (!(getOwner() instanceof MStateVertex))
+        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner())))
             return;
         MStateVertex sv = (MStateVertex) getOwner();
         MCompositeState m = null;
         if (encloser != null
-	    && (encloser.getOwner() instanceof MCompositeState))
+	    && (org.argouml.model.ModelFacade.isACompositeState(encloser.getOwner())))
 	{
             m = (MCompositeState) encloser.getOwner();
         } else {

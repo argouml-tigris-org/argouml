@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class ActionSetAssociationEndOrdering extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (target instanceof MAssociationEnd) {
+            if (org.argouml.model.ModelFacade.isAAssociationEnd(target)) {
                 MAssociationEnd m = (MAssociationEnd) target;
                 m.setOrdering(source.isSelected() ? MOrderingKind.ORDERED : MOrderingKind.UNORDERED);               
             }

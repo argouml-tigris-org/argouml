@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -53,7 +54,7 @@ public class CrInterfaceAllPublic extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(dm instanceof MInterface)) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAInterface(dm))) return NO_PROBLEM;
 	MInterface inf = (MInterface) dm;
 	Collection bf = inf.getFeatures();
 	if (bf == null) return NO_PROBLEM;
@@ -68,4 +69,3 @@ public class CrInterfaceAllPublic extends CrUML {
     }
 
 } /* end class CrInterfaceAllPublic.java */
-

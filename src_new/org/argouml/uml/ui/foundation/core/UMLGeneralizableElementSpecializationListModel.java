@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class UMLGeneralizableElementSpecializationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element instanceof MGeneralization && ((MGeneralizableElement) getTarget()).getSpecializations().contains(element);
+        return org.argouml.model.ModelFacade.isAGeneralization(element) && ((MGeneralizableElement) getTarget()).getSpecializations().contains(element);
     }
 
 }

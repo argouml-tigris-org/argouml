@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -63,7 +64,7 @@ public class PredicateFind implements Predicate {
     }
 
     public boolean predicate(Object o) {
-	if (!(o instanceof MModelElement)) return false;
+	if (!(org.argouml.model.ModelFacade.isAModelElement(o))) return false;
 	MModelElement me = (MModelElement) o;
 	return _type.predicate(me) && _specific.predicate(me) &&
 	    _elementName.predicate(me.getName());

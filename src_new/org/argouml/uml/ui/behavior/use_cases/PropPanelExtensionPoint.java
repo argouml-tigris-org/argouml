@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -119,7 +120,7 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Only works for extension points
 
-        if (!(target instanceof MExtensionPoint)) {
+        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) {
             return;
         }
 

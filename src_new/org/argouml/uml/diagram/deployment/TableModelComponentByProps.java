@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -51,7 +52,7 @@ public class TableModelComponentByProps extends TableModelComposite {
     }
 
     public Vector rowObjectsFor(Object t) {
-	if (!(t instanceof UMLDeploymentDiagram || t instanceof MNode))
+	if (!(t instanceof UMLDeploymentDiagram || org.argouml.model.ModelFacade.isANode(t)))
 	    return new Vector();
 	if (t instanceof UMLDeploymentDiagram) {
 	    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
@@ -60,7 +61,7 @@ public class TableModelComponentByProps extends TableModelComposite {
 	    int size = nodes.size();
 	    for (int i = 0; i < size; i++) {
 		Object node = nodes.elementAt(i);
-		if (node instanceof MComponent) res.addElement(node);
+		if (org.argouml.model.ModelFacade.isAComponent(node)) res.addElement(node);
 	    }
 	    return res;
 	}
@@ -71,7 +72,7 @@ public class TableModelComponentByProps extends TableModelComposite {
 	    Iterator it = residences.iterator();
 	    while (it.hasNext()) {
 		MClassifier cls = (MClassifier) it.next();
-		if (cls instanceof MComponent) res.addElement(cls);
+		if (org.argouml.model.ModelFacade.isAComponent(cls)) res.addElement(cls);
 	    }
 	    return res;
 	}
@@ -79,4 +80,3 @@ public class TableModelComponentByProps extends TableModelComposite {
 
     public String toString() { return "Components vs. Properties"; }
 } /* end class TableModelComponentByProps */
-

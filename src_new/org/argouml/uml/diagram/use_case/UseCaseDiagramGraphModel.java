@@ -1,3 +1,6 @@
+
+
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -147,10 +150,10 @@ public class UseCaseDiagramGraphModel
     public Vector getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
 
-        if (nodeOrEdge instanceof MActor) {
+        if (org.argouml.model.ModelFacade.isAActor(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
-        else if (nodeOrEdge instanceof MUseCase) {
+        else if (org.argouml.model.ModelFacade.isAUseCase(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
 
@@ -190,7 +193,7 @@ public class UseCaseDiagramGraphModel
 
         // The actor case
 
-        if (port instanceof MActor) {
+        if (org.argouml.model.ModelFacade.isAActor(port)) {
             MActor act  = (MActor) port;
             Vector ends = new Vector(act.getAssociationEnds());
 
@@ -212,7 +215,7 @@ public class UseCaseDiagramGraphModel
 
         // The use case
 
-        else if (port instanceof MUseCase) {
+        else if (org.argouml.model.ModelFacade.isAUseCase(port)) {
             MUseCase use  = (MUseCase) port;
             Vector   ends = new Vector(use.getAssociationEnds());
 
@@ -271,7 +274,7 @@ public class UseCaseDiagramGraphModel
 
     public Object getSourcePort(Object edge) {
         
-        if (edge instanceof MRelationship) {
+        if (org.argouml.model.ModelFacade.isARelationship(edge)) {
             return CoreHelper.getHelper().getSource((MRelationship) edge);
 	}
 
@@ -302,7 +305,7 @@ public class UseCaseDiagramGraphModel
 
         // Know what to do for an association
 
-        if (edge instanceof MAssociation) {
+        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
             MAssociation assoc = (MAssociation) edge;
             Vector       conns = new Vector(assoc.getConnections());
 
@@ -341,7 +344,7 @@ public class UseCaseDiagramGraphModel
 
     public boolean canAddNode(Object node) {
         if (_nodes.contains(node)) return false;
-        return (node instanceof MActor) || (node instanceof MUseCase);
+        return (org.argouml.model.ModelFacade.isAActor(node)) || (org.argouml.model.ModelFacade.isAUseCase(node));
     }
 
 
@@ -375,7 +378,7 @@ public class UseCaseDiagramGraphModel
         Object end0 = null;
         Object end1 = null;
 
-        if (edge instanceof MAssociation) {
+        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
 
             // Only allow binary associations
 
@@ -397,15 +400,15 @@ public class UseCaseDiagramGraphModel
             end0 = ae0.getType();
             end1 = ae1.getType();
         }
-        else if (edge instanceof MGeneralization) {
+        else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
             end0 = ((MGeneralization) edge).getChild();
             end1 = ((MGeneralization) edge).getParent();
         }
-        else if (edge instanceof MExtend) {
+        else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
             end0 = ((MExtend) edge).getBase();
             end1 = ((MExtend) edge).getExtension();
         }
-        else if (edge instanceof MInclude) {
+        else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
 
             // There is a bug in NSUML which gets the addition and base
             // relationships back to front for include relationships. Solve
@@ -414,7 +417,7 @@ public class UseCaseDiagramGraphModel
             end0 = ((MInclude) edge).getAddition();
             end1 = ((MInclude) edge).getBase();
         }
-        else if (edge instanceof MDependency) {
+        else if (org.argouml.model.ModelFacade.isADependency(edge)) {
 
             // A dependency potentially has many clients and suppliers. We only
             // consider the first of each (not clear that we should really
@@ -492,7 +495,7 @@ public class UseCaseDiagramGraphModel
          
          * NEW CODE:
          */
-	if (((node instanceof MActor) || (node instanceof MUseCase)) && 
+	if (((org.argouml.model.ModelFacade.isAActor(node)) || (org.argouml.model.ModelFacade.isAUseCase(node))) && 
 	    (((MModelElement) node).getNamespace() == null)) {
 	    // end NEW CODE
             cat.debug("setting namespace " + _model +
@@ -556,7 +559,7 @@ public class UseCaseDiagramGraphModel
         // relationships of which the use case is either end and iterate to see
         // if they can be added.
 
-        if (node instanceof MUseCase) {
+        if (org.argouml.model.ModelFacade.isAUseCase(node)) {
             Vector ends = new Vector();
 
             // Collect all the includes at either end.
@@ -580,7 +583,7 @@ public class UseCaseDiagramGraphModel
         // Associations for classifiers. Iterate over all the association ends
         // to find the associations.
 
-        if (node instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(node)) {
             Collection ends = ((MClassifier) node).getAssociationEnds();
             Iterator   iter = ends.iterator();
 
@@ -596,7 +599,7 @@ public class UseCaseDiagramGraphModel
         // Generalizations and specializations for generalizable
         // elements. Iterate over each set in turn
 
-        if (node instanceof MGeneralizableElement) {
+        if (org.argouml.model.ModelFacade.isAGeneralizableElement(node)) {
 
             // The generalizations
 
@@ -630,7 +633,7 @@ public class UseCaseDiagramGraphModel
         // Dependencies for model elements. Iterate over client and suppliers
         // together.
 
-        if ( node instanceof MModelElement ) {
+        if ( org.argouml.model.ModelFacade.isAModelElement(node) ) {
             Vector specs =
                 new Vector(((MModelElement) node).getClientDependencies());
 
@@ -673,7 +676,7 @@ public class UseCaseDiagramGraphModel
         // Suggest that actors may not connect (see JavaDoc comment about
         // this).
 
-        if ((fromP instanceof MActor) && (toP instanceof MActor)) {
+        if ((org.argouml.model.ModelFacade.isAActor(fromP)) && (org.argouml.model.ModelFacade.isAActor(toP))) {
             return false;
         }
 
@@ -725,19 +728,19 @@ public class UseCaseDiagramGraphModel
 
                 // Remove a node
 
-                if ((me instanceof MActor) ||
-                    (me instanceof MUseCase)) {
+                if ((org.argouml.model.ModelFacade.isAActor(me)) ||
+                    (org.argouml.model.ModelFacade.isAUseCase(me))) {
 
                     removeNode(me);
                 }
 
                 // Remove an edge
 
-                else if ((me instanceof MAssociation) ||
-                         (me instanceof MGeneralization) ||
-                         (me instanceof MExtend) ||
-                         (me instanceof MInclude) ||
-                         (me instanceof MDependency)) {
+                else if ((org.argouml.model.ModelFacade.isAAssociation(me)) ||
+                         (org.argouml.model.ModelFacade.isAGeneralization(me)) ||
+                         (org.argouml.model.ModelFacade.isAExtend(me)) ||
+                         (org.argouml.model.ModelFacade.isAInclude(me)) ||
+                         (org.argouml.model.ModelFacade.isADependency(me))) {
 
                     removeEdge(me);
                 }
@@ -753,4 +756,3 @@ public class UseCaseDiagramGraphModel
     static final long serialVersionUID = -8516841965639203796L;
 
 } /* end class UseCaseDiagramGraphModel */
-

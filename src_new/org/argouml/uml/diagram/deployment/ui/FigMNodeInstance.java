@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -87,7 +88,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
     public FigMNodeInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (node instanceof MClassifier
+        if (org.argouml.model.ModelFacade.isAClassifier(node)
             && (((MClassifier) node).getName() != null))
             _name.setText(((MModelElement) node).getName());
     }

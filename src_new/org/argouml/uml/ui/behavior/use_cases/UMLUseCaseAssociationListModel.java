@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -73,7 +74,7 @@ public class UMLUseCaseAssociationListModel
 	    Iterator it = choices.iterator();
 	    while (it.hasNext()) {
 		MClassifier choice = (MClassifier) it.next();
-		if (choice instanceof MUseCase) {
+		if (org.argouml.model.ModelFacade.isAUseCase(choice)) {
 		    Collection specpath2 = UseCasesHelper.getHelper().getSpecificationPath((MUseCase) choice);
 		    if (!specpath.equals(specpath2)) choices2.add(choice);
 		} else

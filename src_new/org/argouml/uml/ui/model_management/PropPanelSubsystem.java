@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -73,7 +74,7 @@ public class PropPanelSubsystem extends PropPanelPackage
     
     public void addOperation() {
         Object target = getTarget();
-        if (target instanceof MClassifier) {
+        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             MOperation newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
                                                                  (MClassifier) target);

@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -59,7 +60,7 @@ public class UMLAssociationEndRoleBaseListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase m) {
-        return m instanceof MAssociationEnd && 
+        return org.argouml.model.ModelFacade.isAAssociationEnd(m) && 
             ((MAssociationRole) ((MAssociationEndRole) getTarget()).getAssociation()).getBase().getConnections().contains(m);
     }
 

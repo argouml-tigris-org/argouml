@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -62,7 +63,7 @@ public class ActionSetIncludeAddition extends UMLChangeAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
             newAddition = (MUseCase) combo.getSelectedItem();
-            if (combo.getTarget() instanceof MInclude) {
+            if (org.argouml.model.ModelFacade.isAInclude(combo.getTarget())) {
                 inc = (MInclude) combo.getTarget();
             }
         }

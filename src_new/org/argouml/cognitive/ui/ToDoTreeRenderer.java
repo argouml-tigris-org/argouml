@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -101,7 +102,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 	    else if (value instanceof KnowledgeTypeNode) {
 		lab.setIcon(MetalIconFactory.getTreeFolderIcon());
 	    }
-	    else if (value instanceof MModelElement) {
+	    else if (org.argouml.model.ModelFacade.isAModelElement(value)) {
 		return _navRenderer.getTreeCellRendererComponent(tree,
 								 value,
 								 sel,
