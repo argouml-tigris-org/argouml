@@ -31,20 +31,15 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
-import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -55,10 +50,6 @@ public class PropPanelClass extends PropPanelClassifier {
 
     private JScrollPane _attributeScroll;
     private JScrollPane _operationScroll;
-    
-
-    
-    
 
     private static UMLClassAttributeListModel attributeListModel =
         new UMLClassAttributeListModel();
@@ -77,7 +68,7 @@ public class PropPanelClass extends PropPanelClassifier {
 	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 	_modifiersPanel.add(new UMLClassActiveCheckBox());
-	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+	add(_modifiersPanel);
 	addField(Translator.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
 
 	addSeperator();
