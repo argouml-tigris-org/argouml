@@ -179,7 +179,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="debug" value="off"/>
     <property name="optimize" value="on"/>
-    <property name="deprecation" value="off"/>
+    <property name="deprecation" value="on"/>
     <property name="developer.lib.dir" value="${argo.build.dir}"/>
 
   </target>
