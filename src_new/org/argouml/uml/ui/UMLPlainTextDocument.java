@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
 import javax.swing.text.AttributeSet;
@@ -45,6 +43,7 @@ import ru.novosoft.uml.MElementListener;
  * its goal and will perform better therefore. Furthermore, it only reacts to 
  * events that are meant for this model which improves maintainability and 
  * performance. 
+ *
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -71,8 +70,8 @@ public abstract class UMLPlainTextDocument
     private Object _target = null;
 
     /**
-     * The name of the property set event that will change the property this document
-     * shows.
+     * The name of the property set event that will change the
+     * property this document shows.
      */
     private String _eventName = null;
 
@@ -134,17 +133,20 @@ public abstract class UMLPlainTextDocument
         if (ModelFacade.isABase(target)) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
             if (_target != null) {
-                eventPump.removeModelEventListener(this,_target, getEventName());
+                eventPump.removeModelEventListener(this, _target,
+						   getEventName());
             }
             _target = target;
-            // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, getEventName());
+            // UmlModelEventPump.getPump().removeModelEventListener(this,
+            // (MBase)_target, getEventName());
             eventPump.addModelEventListener(this, _target, getEventName());
             handleEvent();
         }
     }
 
     /**
-     * @see javax.swing.text.Document#insertString(int, java.lang.String, javax.swing.text.AttributeSet)
+     * @see javax.swing.text.Document#insertString(
+     *         int, java.lang.String, javax.swing.text.AttributeSet)
      */
     public void insertString(int offset, String str, AttributeSet a)
         throws BadLocationException {

@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: CrCircularComposition.java
-// Classes: CrCircularComposition
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
@@ -43,7 +35,9 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.GenCompositeClasses;
 import org.tigris.gef.util.VectorSet;
 
-/**  */
+/**
+ * @author jrobbins@ics.uci.edu
+ */
 public class CrCircularComposition extends CrUML {
     protected static Logger cat =
 	Logger.getLogger(CrCircularComposition.class);
@@ -89,9 +83,9 @@ public class CrCircularComposition extends CrUML {
 	if (!predicate(dm, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
-	cat.debug("offs=" + offs.toString() +
-		  " newOffs=" + newOffs.toString() +
-		  " res = " + res);
+	cat.debug("offs=" + offs.toString()
+		  + " newOffs=" + newOffs.toString()
+		  + " res = " + res);
 	return res;
     }
 									  

@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigDependency.java
-// Classes: FigDependency
-// Original Author: ics 125b course, spring 1998
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
@@ -44,6 +39,9 @@ import org.tigris.gef.presentation.FigNode;
 
 import ru.novosoft.uml.MElementEvent;
 
+/**
+ * @author ics 125b course, spring 1998
+ */
 public class FigDependency extends FigEdgeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -56,7 +54,8 @@ public class FigDependency extends FigEdgeModelElement {
         endArrow.setFillColor(Color.red);
         setDestArrowHead(endArrow);
         setBetweenNearestPoints(true);
-        setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+        setLayer(ProjectManager.getManager()
+		 .getCurrentProject().getActiveDiagram().getLayer());
         getFig().setDashed(true);
     }
 
@@ -76,7 +75,7 @@ public class FigDependency extends FigEdgeModelElement {
         super.setOwner(own);
 
         if (org.argouml.model.ModelFacade.isADependency(own)) {
-            Object newDep = own;//MDependency
+            Object newDep = own; //MDependency
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             Iterator it = ModelFacade.getSuppliers(newDep).iterator();
             while (it.hasNext()) {
@@ -92,10 +91,10 @@ public class FigDependency extends FigEdgeModelElement {
             }
             pump.removeModelEventListener(this, newDep);
             pump.addModelEventListener(this, newDep);
-            Object supplier =
-                ((ModelFacade.getSuppliers(newDep).toArray())[0]);//MModelElement
-            Object client =
-                ((ModelFacade.getClients(newDep).toArray())[0]);//MModelElement
+            Object supplier =	// MModelElement
+                (ModelFacade.getSuppliers(newDep).toArray())[0];
+            Object client =	// MModelElement
+                (ModelFacade.getClients(newDep).toArray())[0];
 
             FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
             FigNode cliFN = (FigNode) getLayer().presentationFor(client);

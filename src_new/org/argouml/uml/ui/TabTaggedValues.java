@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,8 +61,8 @@ public class TabTaggedValues extends TabSpawnable
     implements TabModelTarget {
     ////////////////////////////////////////////////////////////////
     // constants
-    public final static String DEFAULT_NAME = "tag";
-    public final static String DEFAULT_VALUE = "value";
+    public static final String DEFAULT_NAME = "tag";
+    public static final String DEFAULT_VALUE = "value";
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -138,7 +137,9 @@ public class TabTaggedValues extends TabSpawnable
         Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
         _tableModel.setTarget(_target);
         if (_target != null) {
-            _titleLabel.setText("Target: " + ModelFacade.getUMLClassName(_target) + " (" + ModelFacade.getName(_target) + ")");
+            _titleLabel.setText("Target: "
+				+ ModelFacade.getUMLClassName(_target)
+				+ " (" + ModelFacade.getName(_target) + ")");
         }
         else {
             _titleLabel.setText("none");
@@ -162,22 +163,25 @@ public class TabTaggedValues extends TabSpawnable
         }
     }
 
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
     }
 
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
         setTarget(e.getNewTarget());
 
     }
 
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTarget());
@@ -197,7 +201,7 @@ class TableModelTaggedValues extends AbstractTableModel
 
     ////////////////
     // instance varables
-    Object _target;// ModelElement
+    Object _target;		// ModelElement
     TabTaggedValues _tab = null;
 
     ////////////////
@@ -208,7 +212,7 @@ class TableModelTaggedValues extends AbstractTableModel
     // accessors
     public void setTarget(Object t) {
         
-        if(!ModelFacade.isAModelElement(t))
+        if (!ModelFacade.isAModelElement(t))
             throw new IllegalArgumentException();
         
 	if (_target != null)
@@ -271,21 +275,27 @@ class TableModelTaggedValues extends AbstractTableModel
         
 	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(_target));
 	if (tvs.size() <= rowIndex) {
-	    Object tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+	    Object tv =
+		UmlFactory.getFactory()
+		    .getExtensionMechanisms().createTaggedValue();
 	    if (columnIndex == 0) ModelFacade.setTag(tv, aValue);
 	    if (columnIndex == 1) {
-		ModelFacade.setTag(tv,"");
+		ModelFacade.setTag(tv, "");
 		ModelFacade.setValue(tv, aValue);
 	    }
 	    tvs.addElement(tv);
 
-	    mEvent = new TableModelEvent(this, tvs.size(), tvs.size(),
-					 TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
+	    mEvent =
+		new TableModelEvent(this, tvs.size(), tvs.size(),
+				    TableModelEvent.ALL_COLUMNS,
+				    TableModelEvent.INSERT);
 	}
 	else if ("".equals(aValue) && columnIndex == 0) {
 	    tvs.removeElementAt(rowIndex);
-	    mEvent = new TableModelEvent(this, rowIndex, rowIndex,
-					 TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
+	    mEvent =
+		new TableModelEvent(this, rowIndex, rowIndex,
+				    TableModelEvent.ALL_COLUMNS,
+				    TableModelEvent.DELETE);
 	}
 	else {
 	    Object tv = tvs.elementAt(rowIndex);
@@ -295,7 +305,7 @@ class TableModelTaggedValues extends AbstractTableModel
             }
 	    mEvent = new TableModelEvent(this, rowIndex);
 	}
-	ModelFacade.setTaggedValues(_target,tvs);
+	ModelFacade.setTaggedValues(_target, tvs);
 	if (mEvent != null)
 	    fireTableChanged(mEvent);
 	_tab.resizeColumns();

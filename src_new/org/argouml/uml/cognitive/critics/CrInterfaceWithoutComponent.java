@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CrInterfaceWithoutComponent.java
-// Classes: CrInterfaceWithoutComponent
-// Original Author: 5eichler@informatik.uni-hamburg.de
-// $Id$
-
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
@@ -38,16 +32,15 @@ import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.VectorSet;
-
-
-
 
 /**
  * A critic to detect when a interface in a deployment-diagram
- * is not inside a component
- **/
-
+ * is not inside a component.
+ *
+ * @author 5eichler@informatik.uni-hamburg.de
+ */
 public class CrInterfaceWithoutComponent extends CrUML {
 
     public CrInterfaceWithoutComponent() {
@@ -94,9 +87,9 @@ public class CrInterfaceWithoutComponent extends CrUML {
 	    Object obj = figIter.next();
 	    if (!(obj instanceof FigInterface)) continue;
 	    FigInterface fi = (FigInterface) obj;
-	    if (fi.getEnclosingFig() == null
-		|| (!(ModelFacade.isAComponent(fi.getEnclosingFig().getOwner()))))
-	    {
+	    Fig enclosing = fi.getEnclosingFig();
+	    if (enclosing == null
+		    || (!(ModelFacade.isAComponent(enclosing.getOwner())))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
