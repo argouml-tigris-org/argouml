@@ -240,6 +240,8 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
 	public void removed(MElementEvent mee) {
 	}
 	public void roleAdded(MElementEvent mee) {
+	    if ("taggedValue".equals(mee.getName()))
+		fireTableChanged(new TableModelEvent(this));
 	}
 	public void roleRemoved(MElementEvent mee) {
 	}
