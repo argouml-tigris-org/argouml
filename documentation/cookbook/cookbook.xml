@@ -787,7 +787,13 @@ The Property Panels Component is described in detail in
 	  </listitem>
 
 	  <listitem>
-	    <para>Navigator Tree</para>
+	    <para>Explorer</para>
+	    <indexterm>
+	      <primary>Explorer</primary>
+	    </indexterm>
+	    <indexterm>
+	      <primary>Object Explorer</primary>
+	    </indexterm>
 	    <indexterm>
 	      <primary>Navigator Tree</primary>
 	    </indexterm>
@@ -795,8 +801,8 @@ The Property Panels Component is described in detail in
 This is the tree view of the model.
 </para>
 	    <para>
-The Navigator Tree Component is described in detail in 
-<xref linkend="navigatortree"></xref>.
+The Explorer Component is described in detail in 
+<xref linkend="explorer"></xref>.
 </para>
 	  </listitem>
 
@@ -1442,7 +1448,7 @@ This is implemented directly on top of Swing and Java2.
 The GUI has (currently) a menu and four panes. The panes are:
 <itemizedlist>
 	  <listitem>
-	    <para>Navigator pane</para>
+	    <para>Explorer pane (Navigator pane)</para>
 	    <para>Upper left.</para>
 	    <para>Contains a tree of the model.</para>
 	  </listitem>
@@ -1655,18 +1661,18 @@ and the property panels for the other object are in
     </sect1>
 
 
-    <sect1 id="navigatortree">
-      <title>Navigator tree</title>
+    <sect1 id="explorer">
+      <title>Explorer</title>
       <para>
 Purpose - to provide tree views of the model elements, 
 diagrams and other objects.
 </para>
       <para>
-The Navigator tree will be located in 
-<classname>org.argouml.ui.navigator</classname>.
+The Explorer will be located in 
+<classname>org.argouml.ui.navigator ??</classname>.
 </para>
       <para>
-The Navigator tree is a Layer 2 component. See <xref linkend="layer2"></xref>.
+The Explorer is a Layer 2 component. See <xref linkend="layer2"></xref>.
 </para>
       <para>
 Several tree views are provided by means of Perspectives.
@@ -1678,12 +1684,12 @@ profiles,
 groupings of model elements etc.).
 </para>
       <para>
-The Navigator tree is currently shown in the Navigator Pane - 
+The Explorer is currently shown in the Explorer Pane - 
 the upper left hand pane of ArgoUML.
 (See <xref linkend="guiframework"></xref>.)
 </para>
       <para>
-There is also a Navigator Configurator dialog, which allows the user
+There is also a Explorer Configurator dialog, which allows the user
 to tailor the existing perspectives and create new perspectives 
 to their needs 
 (although the settings are not persisted).
@@ -1695,24 +1701,27 @@ Some of the classes are actually reused by the other tree view,
 i.e. the todo/critics list.
 </para>
 	<para>
-The Navigator Tree provides some 'history' capability 
+The Explorer provides some 'history' capability 
 (although this is disabled presently and should problably be factored out)
 to navigate back to previously selected model elements. 
 </para>
 	<para>
-Currently the Navigator pane is mixed with the GUI framework and actions
+Currently the Explorer Pane is mixed with the GUI framework and actions
 in <classname>org.argouml.ui</classname>.
-The navigator tree is also dependant on "go rules", 
+The Explorer is also dependant on "go rules", 
 which are rules that help identify children nodes for and particular parent.
 "Go rules" are mixed with Diagrams and Property panels 
 under <classname>org.argouml.uml.diagram.ui</classname> and 
 <classname>org.argouml.uml.diagram.<replaceable>diagram</replaceable>.ui</classname>.
 </para>
+        <para>
+Explorer was previously called Navigator Tree or Navigator Pane.
+</para>
       </sect2>
       <sect2>
 	<title>Requirements</title>
 	<para>
-The Navigator must react to user and application events.
+The Explorer must react to user and application events.
 </para>
 	<para>
 User events include
@@ -1768,7 +1777,7 @@ and name changes in the model.
       <sect2>
 	<title>Key Classes</title>
 	<para>
-The Navigator Tree contains Swing components, and there is currently
+The Explorer contains Swing components, and there is currently
 no abstraction layer (to help implement a IDE plugin for example.
 </para>
 	<para>
