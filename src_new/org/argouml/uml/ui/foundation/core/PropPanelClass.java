@@ -39,9 +39,6 @@ import org.argouml.util.ConfigLoader;
 
 /**
  * The properties panel for a Class.
- * 
- * TODO: this property panel needs refactoring to remove dependency on old gui
- * components.
  */
 public class PropPanelClass extends PropPanelClassifier {
 
