@@ -28,7 +28,6 @@
 
 // $Id$
 
-
 package org.argouml.uml.diagram.state.ui;
 
 import java.beans.PropertyVetoException;
@@ -72,13 +71,17 @@ public class UMLStateDiagram extends UMLDiagram {
 
     // start state, end state, forks, joins, etc.
     protected static Action _actionStartPseudoState =
-        new ActionCreatePseudostate(ModelFacade.INITIAL_PSEUDOSTATEKIND, "Initial");
+        new ActionCreatePseudostate(
+            ModelFacade.INITIAL_PSEUDOSTATEKIND,
+            "Initial");
 
     protected static Action _actionFinalPseudoState =
         new CmdCreateNode((Class)ModelFacade.FINALSTATE, "FinalState");
 
     protected static Action _actionBranchPseudoState =
-        new ActionCreatePseudostate(ModelFacade.BRANCH_PSEUDOSTATEKIND, "Branch");
+        new ActionCreatePseudostate(
+            ModelFacade.BRANCH_PSEUDOSTATEKIND,
+            "Branch");
 
     protected static Action _actionForkPseudoState =
         new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, "Fork");
@@ -87,19 +90,21 @@ public class UMLStateDiagram extends UMLDiagram {
         new ActionCreatePseudostate(ModelFacade.JOIN_PSEUDOSTATEKIND, "Join");
 
     protected static Action _actionShallowHistoryPseudoState =
-        new ActionCreatePseudostate(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
-				    "ShallowHistory");
+        new ActionCreatePseudostate(
+            ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND,
+            "ShallowHistory");
 
     protected static Action _actionDeepHistoryPseudoState =
-        new ActionCreatePseudostate(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
-				    "DeepHistory");
+        new ActionCreatePseudostate(
+            ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND,
+            "DeepHistory");
 
     protected static Action _actionTransition =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.TRANSITION,
-		       "Transition");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.TRANSITION,
+            "Transition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -113,16 +118,15 @@ public class UMLStateDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {
-        }
+        } catch (PropertyVetoException pve) {}
     }
 
     public UMLStateDiagram(Object namespace, Object sm) {
         this();
-        
-        if(!ModelFacade.isAStateMachine(sm))
+
+        if (!ModelFacade.isAStateMachine(sm))
             throw new IllegalArgumentException();
-        
+
         if (sm != null && namespace == null) {
             Object context = ModelFacade.getContext(sm);
             if (ModelFacade.isAClassifier(context)) {
@@ -133,16 +137,16 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         if (namespace != null && ModelFacade.getName(namespace) != null) {
             String name = null, diag_name = ModelFacade.getName(namespace);
-            Object[] args = {name};
-            int number = (ModelFacade.getBehaviors(namespace)) == null
-                ? 0 
-                : ModelFacade.getBehaviors(namespace).size();
+            Object[] args = { name };
+            int number =
+                (ModelFacade.getBehaviors(namespace)) == null
+                    ? 0
+                    : ModelFacade.getBehaviors(namespace).size();
             name = diag_name + " " + (number++);
             Argo.log.info("UMLStateDiagram constructor: String name = " + name);
             try {
                 setName(name);
-            } catch (PropertyVetoException pve) {
-            }
+            } catch (PropertyVetoException pve) {}
         }
         if (namespace != null) {
             setup(namespace, sm);
@@ -153,7 +157,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * The owner of a statediagram is the statediagram it's showing.
      */
     public Object getOwner() {
-        StateDiagramGraphModel gm = (StateDiagramGraphModel) getGraphModel();
+        StateDiagramGraphModel gm = (StateDiagramGraphModel)getGraphModel();
         return gm.getMachine();
     }
 
@@ -165,7 +169,8 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void initialize(Object o) {
         if (ModelFacade.isAStateMachine(o)) {
-            Object sm = /*(MStateMachine)*/ o;
+            Object sm = /*(MStateMachine)*/
+            o;
             Object context = ModelFacade.getContext(sm);
             Object contextNamespace = null;
             if (ModelFacade.isAClassifier(context)) {
@@ -178,9 +183,10 @@ public class UMLStateDiagram extends UMLDiagram {
                 setup(contextNamespace, sm);
             }
         } else {
-            throw new IllegalStateException("Cannot find context namespace "
-					    + "while initializing "
-					    + "statediagram");
+            throw new IllegalStateException(
+                "Cannot find context namespace "
+                    + "while initializing "
+                    + "statediagram");
         }
     }
 
@@ -201,7 +207,8 @@ public class UMLStateDiagram extends UMLDiagram {
      *
      * @author psager@tigris.org Jan. 24, 2oo2
      */
-    public void setup(Object namespace, Object/*MStateMachine*/ sm) {
+    public void setup(Object namespace, Object /*MStateMachine*/
+    sm) {
         setNamespace(namespace);
 
         // add the diagram as a listener to the statemachine so
@@ -213,16 +220,19 @@ public class UMLStateDiagram extends UMLDiagram {
         gm.setNamespace(namespace);
         if (sm != null)
             gm.setMachine(sm);
-        setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(namespace), gm);
-        setLayer(lay);
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
+
+        LayerPerspective lay =
+            new LayerPerspectiveMutable(ModelFacade.getName(namespace), gm);
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
+        setLayer(lay);
+
     }
 
     public Object getStateMachine() {
-        return /*(MStateMachine)*/((StateDiagramGraphModel) getGraphModel()).getMachine();
+        return /*(MStateMachine)*/
+         ((StateDiagramGraphModel)getGraphModel()).getMachine();
     }
 
     /**
@@ -230,11 +240,11 @@ public class UMLStateDiagram extends UMLDiagram {
      * @param m
      */
     public void setStateMachine(Object sm) {
-        
-        if(!ModelFacade.isAStateMachine(sm))
+
+        if (!ModelFacade.isAStateMachine(sm))
             throw new IllegalArgumentException();
-        
-        ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
+
+        ((StateDiagramGraphModel)getGraphModel()).setMachine(sm);
     }
 
     /**
@@ -242,21 +252,22 @@ public class UMLStateDiagram extends UMLDiagram {
      * graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionState,
-            _actionCompositeState,
-            _actionTransition, null,
-            _actionStartPseudoState,
-            _actionFinalPseudoState,
-            _actionBranchPseudoState,
-            _actionForkPseudoState,
-            _actionJoinPseudoState,
-            _actionShallowHistoryPseudoState,
-            _actionDeepHistoryPseudoState,
-            null,
-            ActionAddNote.SINGLETON,
-            null
-        };
+        Object actions[] =
+            {
+                _actionState,
+                _actionCompositeState,
+                _actionTransition,
+                null,
+                _actionStartPseudoState,
+                _actionFinalPseudoState,
+                _actionBranchPseudoState,
+                _actionForkPseudoState,
+                _actionJoinPseudoState,
+                _actionShallowHistoryPseudoState,
+                _actionDeepHistoryPseudoState,
+                null,
+                ActionAddNote.SINGLETON,
+                null };
         return actions;
     }
 
@@ -264,8 +275,10 @@ public class UMLStateDiagram extends UMLDiagram {
         String name = null;
         name = "State Diagram " + _StateDiagramSerial;
         _StateDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject()
-                .isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
@@ -279,10 +292,9 @@ public class UMLStateDiagram extends UMLDiagram {
     public void removed(MElementEvent e) {
 
         UmlModelEventPump.getPump().removeModelEventListener(
-							     this,
-							     theStateMachine);
+            this,
+            theStateMachine);
         super.removed(e);
     }
 
 } /* end class UMLStateDiagram */
-

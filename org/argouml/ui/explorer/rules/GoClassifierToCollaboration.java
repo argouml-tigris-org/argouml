@@ -26,9 +26,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
+import org.argouml.model.ModelFacade;
 /**
  * Go rule for navigation in the navpane from a classifier to the collaboration
  * representing it.

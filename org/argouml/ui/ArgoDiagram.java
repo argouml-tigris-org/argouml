@@ -48,7 +48,9 @@ public class ArgoDiagram extends Diagram {
     // constructors
 
     public ArgoDiagram() { 
-  	super();    
+  	  super();
+  	  // really dirty hack to remove unwanted listeners
+  	  _lay.getGraphModel().removeGraphEventListener(_lay);    
     }
 
     public ArgoDiagram(String diagramName ) {

@@ -29,31 +29,34 @@ import java.util.Vector;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.AbstractGoRule;
-
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 
 public class GoCollaborationDiagram implements PerspectiveRule {
 
-    public String getRuleName() { return "Collaboration->Diagram"; }
+    public String getRuleName() {
+        return "Collaboration->Diagram";
+    }
 
     public Collection getChildren(Object parent) {
-    
-	if (!(org.argouml.model.ModelFacade.isACollaboration(parent))) return null;
-	Project p = ProjectManager.getManager().getCurrentProject();
-	if (p == null) return null;
-    
-	Vector res = new Vector();
-	Vector diagrams = p.getDiagrams();
-	if (diagrams == null) return null;
-	java.util.Enumeration enum = diagrams.elements();
-	while (enum.hasMoreElements()) {
-	    Object d = enum.nextElement();
-	    if (d instanceof UMLCollaborationDiagram &&
-		((UMLCollaborationDiagram) d).getNamespace() == parent)
-		res.addElement(d);
-	}
-	return res;
+
+        if (!(org.argouml.model.ModelFacade.isACollaboration(parent)))
+            return null;
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p == null)
+            return null;
+
+        Vector res = new Vector();
+        Vector diagrams = p.getDiagrams();
+        if (diagrams == null)
+            return null;
+        java.util.Enumeration enum = diagrams.elements();
+        while (enum.hasMoreElements()) {
+            Object d = enum.nextElement();
+            if (d instanceof UMLCollaborationDiagram
+                && ((UMLCollaborationDiagram)d).getNamespace() == parent)
+                res.addElement(d);
+        }
+        return res;
     }
 
 }

@@ -47,8 +47,7 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 public class UMLDeploymentDiagram extends UMLDiagram {
-    protected static Logger cat =
-        Logger.getLogger(UMLDeploymentDiagram.class);
+    protected static Logger cat = Logger.getLogger(UMLDeploymentDiagram.class);
 
     ////////////////
     // actions for toolbar
@@ -63,7 +62,9 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         new CmdCreateNode((Class)ModelFacade.COMPONENT, "Component");
 
     protected static Action _actionMComponentInstance =
-        new CmdCreateNode((Class)ModelFacade.COMPONENT_INSTANCE, "ComponentInstance");
+        new CmdCreateNode(
+            (Class)ModelFacade.COMPONENT_INSTANCE,
+            "ComponentInstance");
 
     protected static Action _actionMClass =
         new CmdCreateNode((Class)ModelFacade.CLASS, "Class");
@@ -76,45 +77,55 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
     protected static Action _actionMDependency =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.DEPENDENCY,
-		       "Dependency");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.DEPENDENCY,
+            "Dependency");
 
     protected static Action _actionMAssociation =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.ASSOCIATION,
-		       "Association");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.ASSOCIATION,
+            "Association");
 
     protected static Action _actionMLink =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.LINK,
-		       "Link");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.LINK,
+            "Link");
 
     protected static Action _actionAssociation =
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, false, "Association");
+        new ActionAddAssociation(
+            ModelFacade.NONE_AGGREGATIONKIND,
+            false,
+            "Association");
     protected static Action _actionAggregation =
-        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
-				 false,
-				 "Aggregation");
+        new ActionAddAssociation(
+            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+            false,
+            "Aggregation");
     protected static Action _actionComposition =
-        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND,
-				 false,
-				 "Composition");
+        new ActionAddAssociation(
+            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+            false,
+            "Composition");
     protected static Action _actionUniAssociation =
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, true, "UniAssociation");
+        new ActionAddAssociation(
+            ModelFacade.NONE_AGGREGATIONKIND,
+            true,
+            "UniAssociation");
     protected static Action _actionUniAggregation =
-        new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
-				 true,
-				 "UniAggregation");
+        new ActionAddAssociation(
+            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+            true,
+            "UniAggregation");
     protected static Action _actionUniComposition =
-        new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND,
-				 true,
-				 "UniComposition");
+        new ActionAddAssociation(
+            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+            true,
+            "UniComposition");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -124,8 +135,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {
-        }
+        } catch (PropertyVetoException pve) {}
     }
 
     public UMLDeploymentDiagram(Object namespace) {
@@ -150,23 +160,25 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      */
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-            cat.error("Illegal argument. Object " + handle
-		      + " is not a namespace");
-            throw new IllegalArgumentException("Illegal argument. Object "
-					       + handle
-					       + " is not a namespace");
+            cat.error(
+                "Illegal argument. Object " + handle + " is not a namespace");
+            throw new IllegalArgumentException(
+                "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/ handle;
+        Object m = /*(MNamespace)*/
+        handle;
         super.setNamespace(m);
         DeploymentDiagramGraphModel gm = new DeploymentDiagramGraphModel();
         gm.setNamespace(m);
-        setGraphModel(gm);
-        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
-        setLayer(lay);
+        LayerPerspective lay =
+            new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
         DeploymentDiagramRenderer rend = new DeploymentDiagramRenderer();
-        // singleton
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
+        setLayer(lay);
+
+        // singleton
+
     }
 
     /**
@@ -174,31 +186,29 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      * graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionMNode,
-            _actionMNodeInstance,
-            _actionMComponent,
-            _actionMComponentInstance,
-            _actionMDependency,
-            getAssociationActions(),
-            _actionMObject,
-            _actionMLink,
-            null,
-            ActionAddNote.SINGLETON
-        };
+        Object actions[] =
+            {
+                _actionMNode,
+                _actionMNodeInstance,
+                _actionMComponent,
+                _actionMComponentInstance,
+                _actionMDependency,
+                getAssociationActions(),
+                _actionMObject,
+                _actionMLink,
+                null,
+                ActionAddNote.SINGLETON };
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = {
-        {_actionAssociation, _actionUniAssociation},
-	{_actionAggregation, _actionUniAggregation},
-	{_actionComposition, _actionUniComposition}
+        Object actions[][] = { { _actionAssociation, _actionUniAssociation }, {
+                _actionAggregation, _actionUniAggregation }, {
+                _actionComposition, _actionUniComposition }
         };
 
         return actions;
     }
-    
 
     static final long serialVersionUID = -375918274062198744L;
 
@@ -210,8 +220,10 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         String name = null;
         name = "Deployment Diagram " + _DeploymentDiagramSerial;
         _DeploymentDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject()
-                .isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;
