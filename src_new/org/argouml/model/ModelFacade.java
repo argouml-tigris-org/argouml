@@ -82,7 +82,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
-
+import ru.novosoft.uml.model_management.MSubsystem;
 /**
  * Facade object for the Model component in ArgoUML.<p>
  *
@@ -154,6 +154,8 @@ public class ModelFacade {
     public static final Object NODE_INSTANCE      = MNodeInstance.class;
     public static final Object OBJECT             = MObject.class;
     public static final Object PACKAGE            = MPackage.class;
+    public static final Object MODEL              = MModel.class;
+    public static final Object SUBSYSTEM          = MSubsystem.class;
     public static final Object STATE              = MState.class;
     public static final Object COMPOSITESTATE     = MCompositeState.class;
     public static final Object STATEVERTEX        = MStateVertex.class;
@@ -175,7 +177,7 @@ public class ModelFacade {
     public static final Object OPERATION          = MOperation.class;
     
     public static final Object MODELELEMENT       = MModelElement.class;
-    public static final Object MODEL              = MModel.class;
+    
     
     /** Constructor that forbids instantiation.
      */
@@ -2180,6 +2182,7 @@ public class ModelFacade {
     public static void setDispatchAction(Object handle, Object value) {
         if (handle instanceof MStimulus && value instanceof MAction) {
             ((MStimulus)handle).setDispatchAction((MAction)value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }
@@ -2191,7 +2194,8 @@ public class ModelFacade {
      */
     public static void setDoActivity(Object handle, Object value) {
         if (handle instanceof MState && value instanceof MAction) {
-            ((MState)handle).setDoActivity((MAction)value);            
+            ((MState)handle).setDoActivity((MAction)value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }
@@ -2204,6 +2208,7 @@ public class ModelFacade {
     public static void setEffect(Object handle, Object value) {
         if (handle instanceof MTransition && value instanceof MAction) {
             ((MTransition)handle).setEffect((MAction)value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }
@@ -2216,6 +2221,7 @@ public class ModelFacade {
     public static void setEntry(Object handle, Object value) {
         if (handle instanceof MState && value instanceof MAction) {
             ((MState)handle).setEntry((MAction)value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }
@@ -2228,6 +2234,7 @@ public class ModelFacade {
     public static void setExit(Object handle, Object value) {
         if (handle instanceof MState && value instanceof MAction) {
             ((MState)handle).setExit((MAction)value);
+            return;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle + " or " + value);
     }
