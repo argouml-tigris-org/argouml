@@ -198,7 +198,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of the attribute's visibility.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeVisibility()
 	throws ParseException
@@ -249,7 +249,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an attribute's property.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeProperty()
 	throws ParseException
@@ -287,7 +287,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test parsing an attribute's multiplicity.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeMultiplicity()
 	throws ParseException
@@ -316,7 +316,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test that the parser throws the correct exceptions.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeParseExceptions()
 	throws ParseException
@@ -347,7 +347,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an attribute's value.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeValue()
 	throws ParseException
@@ -420,7 +420,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an attribute's stereotype.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testAttributeStereotype()
 	throws ParseException
@@ -456,7 +456,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's name.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationName()
 	throws ParseException
@@ -482,7 +482,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's type.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationType()
 	throws ParseException
@@ -509,7 +509,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's visibility.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationVisibility()
 	throws ParseException
@@ -539,7 +539,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's parameters.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationParameters()
 	throws ParseException
@@ -582,7 +582,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's properties.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationProperties()
 	throws ParseException
@@ -618,7 +618,7 @@ public class GUITestParserDisplay extends TestCase {
     /**
      * Test the parsing of an operation's stereotype.
      *
-     * @throws ParseException
+     * @throws ParseException if the parsing fails.
      */
     public void testOperationStereotype()
 	throws ParseException
