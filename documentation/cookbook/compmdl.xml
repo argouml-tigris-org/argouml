@@ -540,6 +540,18 @@ MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
 </entry>
 	  </row>
 	  <row>
+	    <entry>Delete a model element</entry>
+	    <entry>
+
+		</entry>
+	    <entry>
+
+		</entry>
+	    <entry>
+			UmlFactory.getFactory().delete(<replaceable>object</replaceable>)
+		</entry>
+	  </row>
+	  <row>
 	    <entry>
 Register for notification that a model element Object o has changed:
 </entry>
