@@ -113,6 +113,7 @@ public class ParserDisplay extends Parser {
     _attributeCustomSep = new Vector();
     _attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
     _attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+    _attributeCustomSep.add(MyTokenizer.PAREN_EXPR_SEPARATOR);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -475,7 +476,8 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 	while (st.hasMoreTokens()) {
 	    token = st.nextToken();
 	    if (" ".equals(token) || "\t".equals(token) || ",".equals(token)) {
-		; // Do nothing
+		if (hasEq)
+		    value += token;
 	    } else if ("<<".equals(token)) {
 		if (stereotype != null)
 		    throw new ParseException("Attribute cannot have two stereotypes", st.getTokenIndex());
@@ -487,15 +489,19 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		    stereotype += token;
 		}
 	    } else if ("[".equals(token)) {
-		if (multiplicity != null)
-		    throw new ParseException("Attribute cannot have two multiplicities", st.getTokenIndex());
-		multiplicity = "";
-		multindex = st.getTokenIndex() + 1;
-		while (true) {
-		    token = st.nextToken();
-		    if ("]".equals(token))
-			break;
-		    multiplicity += token;
+		if (hasEq) {
+		    value += token;
+		} else {
+		    if (multiplicity != null)
+			throw new ParseException("Attribute cannot have two multiplicities", st.getTokenIndex());
+		    multiplicity = "";
+		    multindex = st.getTokenIndex() + 1;
+		    while (true) {
+			token = st.nextToken();
+			if ("]".equals(token))
+			    break;
+			multiplicity += token;
+		    }
 		}
 	    } else if ("{".equals(token)) {
 		String propname = "";
@@ -534,20 +540,29 @@ protected String parseOutMultiplicity(MAttribute f, String s) {
 		hasColon = true;
 		hasEq = false;
 	    } else if ("=".equals(token)) {
+		if (value != null)
+		    throw new ParseException("Attribute cannot have two default values", st.getTokenIndex());
+		value = "";
 		hasColon = false;
 		hasEq = true;
 	    } else {
 		if (hasColon) {
 		    if (type != null)
 			throw new ParseException("Attribute cannot have two types", st.getTokenIndex());
+		    if (token.length() > 0 && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+			throw new ParseException("Type cannot be quoted", st.getTokenIndex());
+		    if (token.length() > 0 && token.charAt(0) == '(')
+			throw new ParseException("Type cannot be an expression", st.getTokenIndex());
 		    type = token;
 		} else if (hasEq) {
-		    if (value != null)
-			throw new ParseException("Attribute cannot have two default values", st.getTokenIndex());
-		    value = token;
+		    value += token;
 		} else {
 		    if (name != null && visibility != null)
 			throw new ParseException("Extra text in Attribute", st.getTokenIndex());
+		    if (token.length() > 0 && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+			throw new ParseException("Name or visibility cannot be quoted", st.getTokenIndex());
+		    if (token.length() > 0 && token.charAt(0) == '(')
+			throw new ParseException("Name or visibility cannot be an expression", st.getTokenIndex());
 		    if (name != null) {
 			visibility = name;
 			name = token;
