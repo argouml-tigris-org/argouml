@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,19 +34,19 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.apache.log4j.Logger;
-import org.xml.sax.AttributeList;
-import org.xml.sax.HandlerBase;
+import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Jim Holt
  */
 
-public abstract class SAXParserBase extends HandlerBase {
+public abstract class SAXParserBase extends DefaultHandler {
     
     /** logger */
-    private static Logger cat = Logger.getLogger(SAXParserBase.class);
+    private static final Logger LOG = Logger.getLogger(SAXParserBase.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -110,20 +110,20 @@ public abstract class SAXParserBase extends HandlerBase {
 	    end = System.currentTimeMillis();
 	    _parseTime = end - start;
 	    if (_stats) {
-		cat.info("Elapsed time: " + (end - start) + " ms");
+		LOG.info("Elapsed time: " + (end - start) + " ms");
 	    }
 	}
 	catch (ParserConfigurationException e) {
-	    cat.error("Parser not configured correctly.");
-	    cat.error(e);
+	    LOG.error("Parser not configured correctly.");
+	    LOG.error(e);
 	    throw e;
 	}
 	catch (SAXException saxEx) {
-	    cat.error(saxEx);
+	    LOG.error(saxEx);
 	    throw saxEx;
 	}
 	catch (IOException e) {
-	    cat.error(e);
+	    LOG.error(e);
 	    throw e;
 	}
     }
@@ -137,7 +137,7 @@ public abstract class SAXParserBase extends HandlerBase {
     ////////////////////////////////////////////////////////////////
     // non-abstract methods
 
-    public void startElement(String name, AttributeList atts)
+    public void startElement(String name, Attributes atts)
 	throws SAXException {
 	_startElement = true;
 	XMLElement e = null;
@@ -149,14 +149,14 @@ public abstract class SAXParserBase extends HandlerBase {
 	}
 	else e = new XMLElement(name, atts);
 
-	if (cat.isDebugEnabled()) {
+	if (LOG.isDebugEnabled()) {
 	    StringBuffer buf = new StringBuffer();
 	    buf.append("START: " + name + " " + e);
 	    for (int i = 0; i < atts.getLength(); i++) {
-		buf.append("   ATT: " + atts.getName(i) + " " +
+		buf.append("   ATT: " + atts.getLocalName(i) + " " +
 			   atts.getValue(i));
 	    }
-	    cat.debug(buf.toString());
+	    LOG.debug(buf.toString());
 	}
         
     
@@ -168,7 +168,7 @@ public abstract class SAXParserBase extends HandlerBase {
 
     public void endElement(String name) throws SAXException {
 	XMLElement e = _elements[--_nElements];
-	if (cat.isDebugEnabled()) {
+	if (LOG.isDebugEnabled()) {
 	    StringBuffer buf = new StringBuffer();
 	    buf.append("END: " + e.getName() + " [" +
 		       e.getText() + "] " + e + "\n");
@@ -176,7 +176,7 @@ public abstract class SAXParserBase extends HandlerBase {
 		buf.append("   ATT: " + e.getAttributeName(i) + " " +
 			   e.getAttributeValue(i) + "\n");
 	    }
-	    cat.debug(buf);
+	    LOG.debug(buf);
 	}     
 	handleEndElement(e);
 	_freeElements[_nFreeElements++] = e;
@@ -199,7 +199,7 @@ public abstract class SAXParserBase extends HandlerBase {
 	    InputSource s = new InputSource(testIt.openStream());
 	    return s;
 	} catch (Exception e) {
-	    cat.info("NOTE: Could not open DTD " + systemId + " due to exception");
+	    LOG.info("NOTE: Could not open DTD " + systemId + " due to exception");
      
 	    String dtdName = systemId.substring(systemId.lastIndexOf('/') + 1);
 	    String dtdPath = "/org/argouml/xml/dtd/" + dtdName;
@@ -237,10 +237,10 @@ public abstract class SAXParserBase extends HandlerBase {
     // convenience methods
 
     public void ignoreElement(XMLElement e) {
-	cat.debug("NOTE: ignoring tag:" + e.getName());
+	LOG.debug("NOTE: ignoring tag:" + e.getName());
     }
 
     public void notImplemented(XMLElement e) {
-	cat.debug("NOTE: element not implemented: " + e.getName());
+	LOG.debug("NOTE: element not implemented: " + e.getName());
     }
 } /* end class SAXParserBase */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,8 +24,8 @@
 
 package org.argouml.xml;
 
-import org.xml.sax.AttributeList;
-import org.xml.sax.helpers.AttributeListImpl;
+import org.xml.sax.Attributes;
+import org.xml.sax.helpers.AttributesImpl;
 
 /**
  * @author Jim Holt
@@ -33,12 +33,15 @@ import org.xml.sax.helpers.AttributeListImpl;
 
 public class XMLElement {
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    public XMLElement(String name, AttributeList attributes) {
+    /**
+     * Constructor.
+     * 
+     * @param name The name of the element.
+     * @param attributes The attributes.
+     */
+    public XMLElement(String name, Attributes attributes) {
 	_name = name;
-	_attributes = new AttributeListImpl(attributes);
+	_attributes = new AttributesImpl(attributes);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -52,13 +55,19 @@ public class XMLElement {
     public void   resetText()          { _text.setLength(0); }
     public String getText()            { return _text.toString(); }
 
-    public void   setAttributes(AttributeList attributes) {
-	_attributes = new AttributeListImpl(attributes);
+    /**
+     * Change the attributes for this element.
+     * 
+     * @param attributes The new list of attributes.
+     */
+    public void   setAttributes(Attributes attributes) {
+	_attributes = new AttributesImpl(attributes);
     }
+
     public String getAttribute(String attribute) {
 	return _attributes.getValue(attribute);
     }
-    public String getAttributeName(int i) { return _attributes.getName(i); }
+    public String getAttributeName(int i) { return _attributes.getLocalName(i); }
     public String getAttributeValue(int i) { return _attributes.getValue(i); }
     public int    getNumAttributes() { return _attributes.getLength(); }
 
@@ -67,6 +76,6 @@ public class XMLElement {
 
     private String        _name       = null;
     private StringBuffer  _text       = new StringBuffer(100);
-    private AttributeList _attributes = null;
+    private Attributes    _attributes = null;
 
 } /* end class XMLElement */
