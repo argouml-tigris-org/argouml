@@ -34,10 +34,19 @@ import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 import org.tigris.gef.util.VectorSet;
 
-public class ToDoByOffender extends ToDoPerspective implements ToDoListListener {
+/**
+ * Represents a perspective for ToDo items: grouping by offender type.
+ *
+ */
+public class ToDoByOffender extends ToDoPerspective 
+        implements ToDoListListener {
 
-    protected static Logger cat = Logger.getLogger(ToDoByOffender.class);
+    private static final Logger LOG = Logger.getLogger(ToDoByOffender.class);
 
+    /**
+     * The constructor.
+     * 
+     */
     public ToDoByOffender() {
         super("combobox.todo-perspective-offender");
         addSubTreeModel(new GoListToOffenderToItem());
@@ -46,8 +55,11 @@ public class ToDoByOffender extends ToDoPerspective implements ToDoListListener 
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsChanged(ToDoListEvent tde) {
-        cat.debug("toDoItemsChanged");
+        LOG.debug("toDoItemsChanged");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
@@ -82,8 +94,11 @@ public class ToDoByOffender extends ToDoPerspective implements ToDoListListener 
         }
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsAdded(ToDoListEvent tde) {
-        cat.debug("toDoItemAdded");
+        LOG.debug("toDoItemAdded");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
@@ -118,8 +133,11 @@ public class ToDoByOffender extends ToDoPerspective implements ToDoListListener 
         }
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-        cat.debug("toDoItemRemoved");
+        LOG.debug("toDoItemRemoved");
         Vector items = tde.getToDoItems();
         int nItems = items.size();
         Object path[] = new Object[2];
@@ -138,13 +156,16 @@ public class ToDoByOffender extends ToDoPerspective implements ToDoListListener 
             //       }
             //       if (!anyInOff) continue;
 
-            cat.debug("toDoItemRemoved updating PriorityNode");
+            LOG.debug("toDoItemRemoved updating PriorityNode");
             path[1] = off;
             //fireTreeNodesChanged(this, path, childIndices, children);
             fireTreeStructureChanged(path);
         }
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoListChanged(ToDoListEvent tde) {
     }
 

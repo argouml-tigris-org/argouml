@@ -35,13 +35,21 @@ import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ToDoListEvent;
 import org.argouml.cognitive.ToDoListListener;
 
+/**
+ * Represents a perspective for ToDo items: grouping by goal type.
+ *
+ */
 public class ToDoByGoal extends ToDoPerspective
     implements ToDoListListener
 {
-    protected static Logger cat = 
+    private static final Logger LOG = 
         Logger.getLogger(ToDoByGoal.class);
 
 
+    /**
+     * The constructor.
+     * 
+     */
     public ToDoByGoal() {
 	super("combobox.todo-perspective-goal");
 	addSubTreeModel(new GoListToGoalsToItems());
@@ -50,8 +58,11 @@ public class ToDoByGoal extends ToDoPerspective
     ////////////////////////////////////////////////////////////////
     // ToDoListListener implementation
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsChanged(ToDoListEvent tde) {
-	cat.debug("toDoItemsChanged");
+	LOG.debug("toDoItemsChanged");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -83,8 +94,11 @@ public class ToDoByGoal extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsAdded(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsAdded(ToDoListEvent tde) {
-	cat.debug("toDoItemAdded");
+	LOG.debug("toDoItemAdded");
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
 	Object path[] = new Object[2];
@@ -116,8 +130,11 @@ public class ToDoByGoal extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoItemsRemoved(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoItemsRemoved(ToDoListEvent tde) {
-	cat.debug("toDoItemAdded");
+	LOG.debug("toDoItemAdded");
 	ToDoList list = Designer.TheDesigner.getToDoList(); //source?
 	Vector items = tde.getToDoItems();
 	int nItems = items.size();
@@ -128,7 +145,7 @@ public class ToDoByGoal extends ToDoPerspective
 	Enumeration elems = goals.elements();
 	while (elems.hasMoreElements()) {
 	    Goal g = (Goal) elems.nextElement();
-	    cat.debug("toDoItemRemoved updating decision node!");
+	    LOG.debug("toDoItemRemoved updating decision node!");
 	    boolean anyInGoal = false;
 	    for (int i = 0; i < nItems; i++) {
 		ToDoItem item = (ToDoItem) items.elementAt(i);
@@ -141,6 +158,9 @@ public class ToDoByGoal extends ToDoPerspective
 	}
     }
 
+    /**
+     * @see org.argouml.cognitive.ToDoListListener#toDoListChanged(org.argouml.cognitive.ToDoListEvent)
+     */
     public void toDoListChanged(ToDoListEvent tde) { }
 
 
