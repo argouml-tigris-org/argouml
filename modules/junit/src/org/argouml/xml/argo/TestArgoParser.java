@@ -24,15 +24,17 @@
 
 package org.argouml.xml.argo;
 
+import java.io.File;
 import java.net.URL;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ZargoFilePersister;
+import org.argouml.persistence.LastLoadInfo;
+import org.argouml.persistence.OpenException;
+import org.argouml.persistence.ZargoFilePersister;
 
 /** Testcase to load projects without exception. */
 public class TestArgoParser extends TestCase {
@@ -67,18 +69,12 @@ public class TestArgoParser extends TestCase {
      * @param filename of the project file to load
      * @throws Exception if something goes wrong.
      */
-    private void loadProject(String filename) throws Exception {
-        URL url;
-        try {
-            url = new URL(filename);
-            ZargoFilePersister persister = new ZargoFilePersister();
-            Project p = persister.loadProject(url);
-            assertTrue("Load Status for " + filename + ".",
-                   LastLoadInfo.getInstance().getLastLoadStatus());
-        } catch (java.net.MalformedURLException e) {
-            assertTrue("Incorrect test case, malformed filename: " 
-                   + filename + ".", false);
-        }	
+    private void loadProject(String filename) throws OpenException {
+        File file= new File(filename);
+        ZargoFilePersister persister = new ZargoFilePersister();
+        Project p = persister.doLoad(file);
+        assertTrue("Load Status for " + filename + ".",
+               LastLoadInfo.getInstance().getLastLoadStatus());
     }
 
     /**
@@ -107,7 +103,7 @@ public class TestArgoParser extends TestCase {
         try {
             url = new URL("file:testmodels/Garbage.zargo");
             ZargoFilePersister persister = new ZargoFilePersister();
-            Project p = persister.loadProject(url);
+            Project p = persister.doLoad(url);
             assertTrue("Load Status", 
                     !LastLoadInfo.getInstance().getLastLoadStatus());
         } catch (java.net.MalformedURLException e) {
