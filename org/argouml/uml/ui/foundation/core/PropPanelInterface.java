@@ -59,7 +59,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 	  modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.root-uc"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 	*/
 	add( _modifiersPanel);
-	addField(Translator.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
+	add(getNamespaceVisibilityPanel());
 
 	addSeperator();
 

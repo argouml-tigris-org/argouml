@@ -30,8 +30,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
-import org.argouml.uml.ui.UMLButtonPanel;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLLinkedList;
 
@@ -121,9 +121,8 @@ public abstract class PropPanelFeature extends PropPanelModelElement {
     
     protected JPanel getVisibilityPanel() {
         if (visibilityPanel == null) {
-            visibilityPanel =
-		new UMLButtonPanel(
-			new UMLElementOwnershipVisibilityButtonGroup(this));
+            visibilityPanel = new UMLModelElementVisibilityRadioButtonPanel(
+                    Translator.localize("UMLMenu", "label.visibility"), true);
         }
         return visibilityPanel;
     }
