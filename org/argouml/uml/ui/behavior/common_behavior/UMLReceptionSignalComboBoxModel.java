@@ -57,7 +57,8 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             setElements(Model.getModelManagementHelper()
-                    .getAllModelElementsOfKindWithModel(model, ModelFacade.SIGNAL));
+                    .getAllModelElementsOfKindWithModel(model, 
+                            ModelFacade.SIGNAL));
             setSelectedItem(ModelFacade.getSignal(rec));
         }
 

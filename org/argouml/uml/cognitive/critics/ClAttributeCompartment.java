@@ -34,7 +34,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
 import org.argouml.uml.diagram.ui.AttributesCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 
 /**
  * Class that represents the clarifier (red wavy line)

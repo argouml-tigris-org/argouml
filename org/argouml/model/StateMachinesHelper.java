@@ -104,7 +104,8 @@ public interface StateMachinesHelper {
      * statemachines for.
      * @return Collection The collection with found statemachines.
      */
-    Collection getAllPossibleStatemachines(Object model, Object oSubmachineState);
+    Collection getAllPossibleStatemachines(Object model, 
+            Object oSubmachineState);
 
     /**
      * Connects a given statemachine to a submachinestate as being the

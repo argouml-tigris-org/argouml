@@ -232,8 +232,8 @@ public class SelectionClass extends SelectionWButtons {
         }
         if (edgeClass != null && nodeClass != null) {
             Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m =
-                new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, useComposite);
+            ModeCreateEdgeAndNode m = new ModeCreateEdgeAndNode(ce, 
+                    edgeClass, nodeClass, useComposite);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.pushMode(m);
         }

@@ -33,7 +33,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.Clarifier;
 import org.argouml.uml.diagram.ui.OperationsCompartmentContainer;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigGroup;
 
 
 

@@ -807,8 +807,14 @@ public class Designer
      */
     public void setExpertEmail(String addr) { emailAddr = addr; }
 
+    /**
+     * @see org.argouml.cognitive.Poster#snooze()
+     */
     public void snooze() { /* do nothing */ }
 
+    /**
+     * @see org.argouml.cognitive.Poster#unsnooze()
+     */
     public void unsnooze() { /* do nothing */ }
 
     /**

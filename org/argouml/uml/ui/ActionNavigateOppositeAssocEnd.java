@@ -48,6 +48,9 @@ public class ActionNavigateOppositeAssocEnd extends AbstractActionNavigate {
         return ModelFacade.getOppositeEnd(source);
     }
 
+    /**
+     * @see javax.swing.Action#isEnabled()
+     */
     public boolean isEnabled() {
         return false;
     }

@@ -525,8 +525,8 @@ public abstract class DesignMaterial extends Observable
     /**
      * @see org.tigris.gef.ui.Highlightable#addPropertyChangeListener(java.beans.PropertyChangeListener)
      */
-    public synchronized
-	void addPropertyChangeListener(PropertyChangeListener listener) {
+    public synchronized void addPropertyChangeListener(
+            PropertyChangeListener listener) {
 	if (propertyListeners == null) {
 	    propertyListeners = new Vector();
 	}
@@ -537,8 +537,8 @@ public abstract class DesignMaterial extends Observable
     /**
      * @see org.tigris.gef.ui.Highlightable#removePropertyChangeListener(java.beans.PropertyChangeListener)
      */
-    public synchronized
-	void removePropertyChangeListener(PropertyChangeListener listener) {
+    public synchronized void removePropertyChangeListener(
+            PropertyChangeListener listener) {
 	if (propertyListeners == null) {
 	    return;
 	}

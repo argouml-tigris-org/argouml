@@ -65,6 +65,9 @@ public class FigNodeAssociation extends FigNodeModelElement {
     private FigDiamond head;
 
 
+    /**
+     * The constructor.
+     */
     public FigNodeAssociation() {
         setBigPort(new FigDiamond(0, 0, 70, 70, Color.cyan, Color.cyan));
         head = new FigDiamond(0, 0, 70, 70, Color.black, Color.white);
@@ -94,6 +97,12 @@ public class FigNodeAssociation extends FigNodeModelElement {
         setResizable(true);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param gm the graphmodel
+     * @param node the owner (UML association)
+     */
     public FigNodeAssociation(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -116,7 +125,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
     /**
      * Used when a n-ary association becomes a binary association.
      *
-     * @param mee
+     * @param mee the event
      */
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
@@ -238,6 +247,9 @@ public class FigNodeAssociation extends FigNodeModelElement {
         return head.getLineWidth();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
     public void setBounds(int x, int y, int w, int h) {
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);

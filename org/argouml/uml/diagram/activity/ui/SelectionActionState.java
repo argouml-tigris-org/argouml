@@ -161,7 +161,8 @@ public class SelectionActionState extends SelectionWButtons {
 	} else if (showIncomingLeft && hitRight(cx, cy + ch / 2, iw, ih, r)) {
 	    h.index = 13;
 	    h.instructions = "Add an incoming transition";
-	} else if (showOutgoingBelow && hitAbove(cx + cw / 2, cy, iwd, ihd, r)) {
+	} else if (showOutgoingBelow 
+            && hitAbove(cx + cw / 2, cy, iwd, ihd, r)) {
 	    h.index = 10;
 	    h.instructions = "Add an incoming transaction";
 	} else if (showIncomingAbove

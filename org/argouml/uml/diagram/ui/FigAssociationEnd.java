@@ -54,6 +54,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
     private FigText srcMult, srcRole;
     private FigText srcOrdering;
 
+    /**
+     * The constructor.
+     */
     public FigAssociationEnd() {
         super();
 
@@ -97,6 +100,12 @@ public class FigAssociationEnd extends FigEdgeModelElement {
 
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param edge the UML object: association-end
+     * @param lay the layer that contains this Fig
+     */
     public FigAssociationEnd(Object edge, Layer lay) {
         this();
         setLayer(lay);
@@ -182,6 +191,9 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         }
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
     protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
         updateEnd(srcMult, srcRole, srcOrdering);

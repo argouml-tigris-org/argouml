@@ -138,7 +138,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     private String associationLabel;
 
-    private PropPanelButton2 oppositeEndButton = new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
+    private PropPanelButton2 oppositeEndButton = 
+        new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
             lookupIcon("AssociationEnd"));
 
     /**
