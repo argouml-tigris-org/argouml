@@ -42,8 +42,8 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
  */
 public class ActionSetExtendBase extends UMLChangeAction {
 
-
-    public static final ActionSetExtendBase SINGLETON = new ActionSetExtendBase();
+    public static final ActionSetExtendBase SINGLETON =
+        new ActionSetExtendBase();
 
     /**
      * Constructor for ActionSetExtendBase.
@@ -53,7 +53,6 @@ public class ActionSetExtendBase extends UMLChangeAction {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
-   
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
@@ -61,19 +60,29 @@ public class ActionSetExtendBase extends UMLChangeAction {
         super.actionPerformed(e);
         Object source = e.getSource();
         MUseCase newBase = null;
+        MUseCase oldBase = null;
         MExtend extend = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2)source;
             newBase = (MUseCase)combo.getSelectedItem();
-            if (combo.getTarget() instanceof MExtend) {
-                extend = (MExtend)combo.getTarget();
+            Object o = combo.getTarget();
+            if (o instanceof MExtend) {
+                extend = (MExtend)o;
+                o = combo.getSelectedItem();
+                if (o instanceof MUseCase) {
+                    newBase = (MUseCase)o;
+                    oldBase = extend.getBase();
+                    if (newBase != oldBase) {
+                        extend.setBase(newBase);
+                    }
+                } else {
+                    if (o != null && o.equals("")) {
+                        extend.setBase(null);
+                    }
+                }
+
             }
-        }
-        MUseCase oldBase = extend.getBase();
-        if (newBase == null) throw new IllegalStateException("Base of extend is null!");
-        if (oldBase != newBase) {
-            UseCasesHelper.getHelper().setBase(extend, newBase);
+
         }
     }
-
 }
