@@ -24,6 +24,9 @@
 
 package org.argouml.uml.diagram.ui;
 
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.util.Iterator;
 
 import org.tigris.gef.presentation.Fig;
@@ -37,7 +40,7 @@ import org.tigris.gef.presentation.FigText;
  * 
  * @author jaap.branderhorst@xs4all.nl
  */
-public class FigTextGroup extends FigGroup {
+public class FigTextGroup extends FigGroup implements MouseListener {
 
     public final static int ROWHEIGHT = 17;
     protected boolean supressCalcBounds = false;
@@ -131,4 +134,31 @@ public class FigTextGroup extends FigGroup {
         super.dispose();
     }
 
+    ////////////////////////////////////////////////////////////////
+    // event handlers - MouseListener implementation
+
+    public void mousePressed(MouseEvent me) {
+    }
+    public void mouseReleased(MouseEvent me) {
+    }
+    public void mouseEntered(MouseEvent me) {
+    }
+    public void mouseExited(MouseEvent me) {
+    }
+
+    /**
+     * If the user double clicks on anu part of this FigGroup, pass it
+     * down to one of the internal Figs.  This allows the user to
+     * initiate direct text editing.
+     */
+    public void mouseClicked(MouseEvent me) {
+        if (me.isConsumed())
+            return;
+        if (me.getClickCount() >= 2) {
+            Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
+            if (f instanceof MouseListener)
+		((MouseListener) f).mouseClicked(me);
+        }
+        me.consume();
+    }
 }
