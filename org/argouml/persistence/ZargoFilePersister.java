@@ -251,7 +251,7 @@ public class ZargoFilePersister extends UmlFilePersister {
      */
     public Project doLoad(URL url) throws OpenException {
         try {
-            File file = File.createTempFile("xxx", ".uml");
+            File file = File.createTempFile("combinedzargo_", ".uml");
             LOG.info(
                 "Combining old style zargo sub files into new style uml file "
                     + file.getAbsolutePath());
