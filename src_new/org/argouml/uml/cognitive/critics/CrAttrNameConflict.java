@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,18 +31,29 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.*;
 import javax.swing.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import java.util.Vector;
+import java.util.Iterator;
 
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-/** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
- *  Semantics. OMG document ad/97-08-04. */
+// Using Model through Facade
+import org.argouml.model.ModelFacade;
 
+
+/** Check the:
+ *  Well-formedness rule [2] for MClassifier. 
+ *  See page 29 of UML 1.1, Semantics. OMG document ad/97-08-04.
+ *  See page 2-49 in UML V1.3
+ *
+ *  <p>In the process of modifying this to use the new Facade object 
+ *  (Jan 2003) this was changed to no longer detect StructuralFeatures 
+ *  with the same name but instead attributes with the same name.
+ *  This is in fact a more to the letter adherance to the UML 
+ *  well-formedness rule but it is however a change.
+ */
 public class CrAttrNameConflict extends CrUML {
 
   public CrAttrNameConflict() {
@@ -54,28 +66,29 @@ public class CrAttrNameConflict extends CrUML {
     addTrigger("feature_name");
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    Collection str = cls.getFeatures();
-    if (str == null) return NO_PROBLEM;
-    Iterator enum = str.iterator();
-    Vector namesSeen = new Vector();
-    // warn about inheritied name conflicts, different critic?
-    while (enum.hasNext()) {
-      MFeature f = (MFeature) enum.next();
-      if (!(f instanceof MStructuralFeature))
-        continue;
-      MStructuralFeature sf = (MStructuralFeature) f;
-      String sfName = sf.getName();
-      if (sfName == null || sfName.length() == 0) continue;
-      String nameStr = sfName;
-      if (nameStr.length() == 0) continue;
-      if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
-      namesSeen.addElement(nameStr);
+    /**
+     * Examines the classifier and tells if we have two attributes
+     * with the same name. Comparison is done with equals (contains).
+     *
+     * @param dm is the classifier
+     * @param dsgr is not used.
+     * @returns true if there are two with the same name.
+     */
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+
+	Vector namesSeen = new Vector();
+
+	Iterator enum = ModelFacade.getAttributes(dm);
+	while (enum.hasNext()) {
+	    String name = ModelFacade.getName(enum.next());
+	    if (name == null || name.length() == 0) continue;
+
+	    if (namesSeen.contains(name)) return PROBLEM_FOUND;
+	    namesSeen.addElement(name);
+	}
+	return NO_PROBLEM;
     }
-    return NO_PROBLEM;
-  }
 
   public Icon getClarifier() {
     return ClAttributeCompartment.TheInstance;
