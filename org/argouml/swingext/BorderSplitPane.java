@@ -37,7 +37,7 @@ import java.awt.*;
  * by a positional splitterbar.<p>
  *
  * The compass points have been expanded from those available in
- * <code>BorderLayout</code> to the diaganal compass points,
+ * <code>BorderLayout</code> to the diagonal compass points,
  * NORTHWEST, NORTHEAST, SOUTHEAST, SOUTHWEST.
  *
  * @author Bob Tarling
