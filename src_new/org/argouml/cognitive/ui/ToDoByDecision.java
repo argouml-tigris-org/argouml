@@ -24,10 +24,16 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-
+import java.util.Enumeration;
+import java.util.Vector;
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ToDoListEvent;
+import org.argouml.cognitive.ToDoListListener;
 
 public class ToDoByDecision extends ToDoPerspective
     implements ToDoListListener
@@ -57,7 +63,7 @@ public class ToDoByDecision extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector decs = Designer.TheDesigner.getDecisions();
-	java.util.Enumeration enum = decs.elements();
+	Enumeration enum = decs.elements();
 	while (enum.hasMoreElements()) {
 	    Decision dec = (Decision) enum.nextElement();
 	    int nMatchingItems = 0;
@@ -90,7 +96,7 @@ public class ToDoByDecision extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector decs = Designer.TheDesigner.getDecisions();
-	java.util.Enumeration enum = decs.elements();
+	Enumeration enum = decs.elements();
 	while (enum.hasMoreElements()) {
 	    Decision dec = (Decision) enum.nextElement();
 	    int nMatchingItems = 0;
@@ -124,7 +130,7 @@ public class ToDoByDecision extends ToDoPerspective
 	path[0] = Designer.TheDesigner.getToDoList();
 
 	Vector decs = Designer.TheDesigner.getDecisions();
-	java.util.Enumeration enum = decs.elements();
+	Enumeration enum = decs.elements();
 	while (enum.hasMoreElements()) {
 	    Decision dec = (Decision) enum.nextElement();
 	    cat.debug("toDoItemRemoved updating decision node!");

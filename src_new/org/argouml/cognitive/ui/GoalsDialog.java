@@ -25,13 +25,18 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Vector;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.GoalModel;
 
-import org.argouml.cognitive.*;
 
 public class GoalsDialog extends JDialog
     implements ActionListener, ChangeListener
@@ -143,7 +148,7 @@ public class GoalsDialog extends JDialog
 
 
 	c.gridy = 1;
-	java.util.Enumeration enum = goals.elements();
+	Enumeration enum = goals.elements();
 	while (enum.hasMoreElements()) {
 	    Goal d = (Goal) enum.nextElement();
 	    JLabel decLabel = new JLabel(d.getName());

@@ -24,13 +24,13 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
 
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
 
 public class GoListToPriorityToItem implements TreeModel {
   

@@ -31,7 +31,9 @@
 
 package org.argouml.cognitive.checklist;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Vector;
 
 /** A Checklist is basically a list of CheckItems.  It also provides
  *  some convience functions for adding trivial CheckItems (ones that
@@ -42,7 +44,7 @@ import java.util.*;
  *  @see org.argouml.cognitive.checklist.ui.TabChecklist
  */
 
-public class Checklist implements java.io.Serializable {
+public class Checklist implements Serializable {
 
     ////////////////////////////////////////////////////////////////
     // instance variables

@@ -24,12 +24,9 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-
-import org.argouml.cognitive.*;
-
-import org.argouml.application.api.*;
-
+import java.util.Vector;
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.ToDoItem;
 
 public class PriorityNode {
     // Private members.

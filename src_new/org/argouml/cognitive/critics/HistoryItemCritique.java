@@ -24,8 +24,8 @@
 
 package org.argouml.cognitive.critics;
 
-import org.argouml.kernel.*;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.kernel.HistoryItem;
 
 // TODO: how can this possibly be persistent?
 // TODO: provide accessors

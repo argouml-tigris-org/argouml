@@ -31,9 +31,10 @@
 
 package org.argouml.cognitive.checklist;
 
-import java.util.*;
+import java.io.Serializable;
+import org.tigris.gef.util.Predicate;
+import org.tigris.gef.util.PredicateTrue;
 
-import org.tigris.gef.util.*;
 
 /** This class defines an item that can be placed on a Checklist.
  *  This is a short piece of text to prompt the designer to think of a
@@ -56,7 +57,7 @@ import org.tigris.gef.util.*;
  * @see CheckManager
  */
 
-public class CheckItem implements java.io.Serializable {
+public class CheckItem implements Serializable {
     ////////////////////////////////////////////////////////////////
     // instance variables
 

@@ -29,18 +29,22 @@
 
 package org.argouml.cognitive.critics;
 
-import java.util.*;
-import java.awt.*;
+import java.awt.Rectangle;
+import java.util.Vector;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.cognitive.critics.CrUML;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.util.VectorSet;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.util.*;
 
-import org.argouml.cognitive.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.cognitive.critics.*;
 
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses). */
@@ -68,7 +72,7 @@ public class CrNodesOverlap extends CrUML {
 	// fixes bug #669. Sequencediagrams always overlap, so there is 
 	// always a problem
 	if (dm 
-	    instanceof org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram)
+	    instanceof UMLSequenceDiagram)
 	    return NO_PROBLEM;
 
 	VectorSet offs = computeOffenders(d);

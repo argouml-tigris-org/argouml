@@ -29,7 +29,9 @@
 
 package org.argouml.cognitive;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.Vector;
 
 /** A composite DesignMaterial that contains other
  *  DesignMaterial's. */

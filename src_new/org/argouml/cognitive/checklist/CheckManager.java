@@ -31,14 +31,15 @@
 
 package org.argouml.cognitive.checklist;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Hashtable;
 
 /** The CheckManager keeps track of whcih Checklists should be
  *  presented for a given design material.  CheckManager also keeps
  *  track of which CheckItem's are checked off for a given design
  *  element.  */
 
-public class CheckManager implements java.io.Serializable {
+public class CheckManager implements Serializable {
 
     ////////////////////////////////////////////////////////////////
     // static variables

@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 
 public class Goal {
     

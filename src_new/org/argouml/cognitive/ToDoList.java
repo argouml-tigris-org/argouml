@@ -29,14 +29,17 @@
 
 package org.argouml.cognitive;
 
-import java.util.*;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Observable;
+import java.util.Vector;
 import javax.swing.event.EventListenerList;
-
-import org.tigris.gef.util.*;
-
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;
 import org.argouml.cognitive.critics.Critic;
+
+
+import org.argouml.kernel.History;
+import org.tigris.gef.util.VectorSet;
 
 /** Implements a list of ToDoItem's.
  *
@@ -72,10 +75,7 @@ import org.argouml.cognitive.critics.Critic;
  *
  * @see Designer#nondisruptivelyWarn
  */
-public class ToDoList
-    extends Observable
-    implements Runnable, // TODO refactor per issue 1024
-               java.io.Serializable {
+public class ToDoList extends Observable implements Runnable, Serializable {
     
     protected static Category cat = Category.getInstance(ToDoList.class);
     

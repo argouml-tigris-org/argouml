@@ -33,7 +33,8 @@
 
 package org.argouml.cognitive.critics;
 
-import org.argouml.cognitive.*;
+import java.io.Serializable;
+import org.argouml.cognitive.Designer;
 
 /** A ControlMech determines when a Critic should be active.  New
  *  ControlMech's can be added to add value to existing Critic's.  Each
@@ -41,7 +42,7 @@ import org.argouml.cognitive.*;
  *  given critic is relevant to a given Designer at the current
  *  time. */
 
-public abstract class ControlMech implements java.io.Serializable {
+public abstract class ControlMech implements Serializable {
 
     public ControlMech() { }
     public boolean isRelevant(Critic c, Designer d) {

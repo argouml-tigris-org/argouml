@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: DesignMaterial.java
 // Classes: DesignMaterial
 // Original Author: jrobbins@ics.uci.edu
@@ -31,13 +29,19 @@
 
 package org.argouml.cognitive;
 
-import java.util.*;
-import java.beans.*;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.io.Serializable;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.Vector;
 
-import org.tigris.gef.ui.*;
-import org.tigris.gef.util.*;
+import org.tigris.gef.ui.Highlightable;
+import org.tigris.gef.util.EnumerationEmpty;
 
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.critics.Agency;
 
 /** Abstract class to represent the materials being used in
  *  design. The nature of these materials is domain-dependent.  For
@@ -66,8 +70,7 @@ import org.argouml.cognitive.critics.*;
  */
 
 
-public abstract class DesignMaterial extends Observable
-    implements Highlightable, java.io.Serializable 
+public abstract class DesignMaterial extends Observable implements Highlightable, Serializable 
 {
     /*
      * @see jargo.softarch.C2BrickDM
