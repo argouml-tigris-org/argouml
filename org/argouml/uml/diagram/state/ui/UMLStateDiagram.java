@@ -59,6 +59,7 @@ public class UMLStateDiagram extends UMLDiagram {
     // actions for toolbar
 
     private Action actionState;
+    private Action actionSynchState;
     private Action actionCompositeState;
     private Action actionStartPseudoState;
     private Action actionFinalPseudoState;
@@ -233,6 +234,7 @@ public class UMLStateDiagram extends UMLDiagram {
             getActionState(),
 	    getActionCompositeState(),
 	    getActionTransition(),
+	    getActionSynchState(),
 	    null,
 	    getActionStartPseudoState(),
 	    getActionFinalPseudoState(),
@@ -388,6 +390,18 @@ public class UMLStateDiagram extends UMLDiagram {
         }
         return actionState;
     }
+
+    /**
+     * @return Returns the actionSynchState.
+     */
+    protected Action getActionSynchState() {
+        if (actionSynchState == null) {
+            actionSynchState = new RadioAction(
+                    new CmdCreateNode(ModelFacade.SYNCHSTATE, "SynchState"));
+        }
+        return actionSynchState;
+    }
+
     /**
      * @return Returns the actionTransition.
      */

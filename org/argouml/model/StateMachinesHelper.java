@@ -175,6 +175,17 @@ public interface StateMachinesHelper {
     void addSubvertex(Object handle, Object subvertex);
 
     /**
+     * Sets the Bound of some SynchState.
+     * 
+     * @param handle Synch State
+     * @param bound A positive integer or the value “unlimited” specifying 
+     *              the maximal count of the SynchState. The count is the 
+     *              difference between the number of times the incoming 
+     *              and outgoing transitions of the synch state are fired.
+     */
+    public void setBound(Object handle, int bound);
+
+    /**
      * Makes a Composite State concurrent.
      *
      * @param handle the CompositState

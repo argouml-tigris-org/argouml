@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004-2005 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,42 +24,57 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.i18n.Translator;
-import org.argouml.util.ConfigLoader;
-import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLPlainTextDocument;
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.BadLocationException;
 
 /**
- * The properties panel for a SynchState.
- *
- * @author mvw@tigris.org
+ * @author pepargouml@yahoo.es
  */
-public class PropPanelSynchState extends PropPanelStateVertex {
 
-    private static UMLSynchStateBoundDocument boundDocument =
-            new UMLSynchStateBoundDocument();
+public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
 
     /**
-     * The constructor.
+     * Constructor for UMLSynchStateBoundDocument.
      */
-    public PropPanelSynchState() {
-        super("Synch State", lookupIcon("SyncState"),
-                ConfigLoader.getTabPropsOrientation());
+    public UMLSynchStateBoundDocument() {
+        super("bound");
+    }
 
-        addField(Translator.localize("label.name"),
-                getNameTextField());
-        addField(Translator.localize("label.stereotype"),
-                getStereotypeBox());
-        addField(Translator.localize("label.container"),
-                getContainerScroll());
-        addField(Translator.localize("label.bound"),
-                new UMLTextField2(boundDocument));
+    /**
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#setProperty(java.lang.String)
+     */
+    protected void setProperty(String text) {
+        if (text.equals(""))
+            Model.getStateMachinesHelper().setBound(getTarget(), 0);
+        else
+            Model.getStateMachinesHelper()
+                    .setBound(getTarget(), Integer.valueOf(text).intValue());
+    }
 
-        addSeperator();
+    /**
+     * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
+     */
+    protected String getProperty() {
+        int bound = ModelFacade.getBound(getTarget());
+        if (bound <= 0)
+            return "*";
+        else
+            return String.valueOf(bound);
+    }
 
-        addField(Translator.localize("label.incoming"),
-                getIncomingScroll());
-        addField(Translator.localize("label.outgoing"),
-                getOutgoingScroll());
+    public void insertString(int offset, String str, AttributeSet a)
+            throws BadLocationException {
+        try {
+            //If it is not entered a digit, an exception must be thrown
+            int aux = Integer.parseInt(str);
+            super.insertString(offset, str, a);
+        } catch (Exception e) {
+        }
+
     }
 
 }

@@ -27,19 +27,14 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
-
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -54,13 +49,14 @@ import org.tigris.gef.presentation.FigNode;
  *  ActionState        ---  FigActionState
  *  FinalState         ---  FigFinalState
  *  Pseudostate        ---  FigPseudostate
- *    Inititial         ---  FigInitialState
- *    Branch (Choice)   ---  FigBranchState
- *    Junction          ---  FigJunctionState
- *    Fork              ---  FigForkState
- *    Join              ---  FigJoinState
- *    DeepHistory       ---  FigDeepHistoryState
- *    ShallowHistory    ---  FigShallowistoryState
+ *    Inititial        ---  FigInitialState
+ *    Branch (Choice)  ---  FigBranchState
+ *    Junction         ---  FigJunctionState
+ *    Fork             ---  FigForkState
+ *    Join             ---  FigJoinState
+ *    DeepHistory      ---  FigDeepHistoryState
+ *    ShallowHistory   ---  FigShallowistoryState
+ *  SynchState         ---  FigSynchState
  *  Transition         ---  FigTransition
  *  more...
  *  </pre>
@@ -75,16 +71,19 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
      * Return a Fig that can be used to represent the given node
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, 
+            Map styleAttributes) {
         if (ModelFacade.isAActionState(node)) {
             return new FigActionState(gm, node);
         } else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
             return new FigFinalState(gm, node);
         } else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
             return new FigCompositeState(gm, node);
+        } else if (org.argouml.model.ModelFacade.isASynchState(node)) {
+            return new FigSynchState(gm, node);
         } else if (org.argouml.model.ModelFacade.isAState(node)) {
             return new FigSimpleState(gm, node);
         } else if (ModelFacade.isAComment(node)) {
@@ -105,7 +104,8 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
                 return new FigForkState(gm, node);
             } else if (kind.equals(ModelFacade.JOIN_PSEUDOSTATEKIND)) {
                 return new FigJoinState(gm, node);
-            } else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND)) {
+            } else if (kind.equals(ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND))
+            {
                 return new FigShallowHistoryState(gm, node);
             } else if (kind.equals(ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND)) {
                 return new FigDeepHistoryState(gm, node);
@@ -118,11 +118,13 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
     }
 
     /** Return a Fig that can be used to represent the given edge
+     * 
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, 
+            Map styleAttributes) {
         LOG.debug("making figedge for " + edge);
         if (org.argouml.model.ModelFacade.isATransition(edge)) {
             FigTransition trFig = new FigTransition(edge, lay);
