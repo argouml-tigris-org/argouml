@@ -231,7 +231,7 @@ public class CollaborationsHelper {
     public boolean hasAsActivator(MMessage message, MMessage activator) {
     	if (message.getActivator() == null) return false;
     	if (message.getActivator() == activator
-        	    || message.getActivator().getPredecessors().contains(activator)) {
+            || message.getActivator().getPredecessors().contains(activator)) {
     	    return true;
         }
         return hasAsActivator(message.getActivator(), activator);
