@@ -24,7 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.foundation.data_types.MActionExpression;
 
 /**
  * The interface for the factory for Uml.<p>
@@ -195,7 +194,7 @@ public interface UmlFactory {
      *
      * @return an initialized UML ActionExpression instance.
      */
-    MActionExpression createActionExpression();
+    Object createActionExpression();
 
     /**
      * Create a UML object from the implementation name.
