@@ -543,29 +543,31 @@ Property files to be searched:
   <!-- =================================================================== -->
   <!-- Prepares the docs                                                   -->
   <!-- =================================================================== -->
-  <target name="prepare-docs" depends="init, javadocs"
+  <target name="prepare-docs" depends="init, javadocs, javadocs-api"
           description="Build javadocs.">
   </target>
 
   <target name="javadocs" depends="init">
     <mkdir dir="${argo.javadocs.dir}"/>
 
-    <!-- Links allow reference to external classes from within Argo javadocs
-      -->
     <javadoc author="${javadoc.author}" 
-             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2003 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Project Home&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
-             destdir="${argo.javadocs.dir}" 
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;25%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2004 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/dev.html&apos; target=&apos;_blank&apos;&gt;ArgoUML Developers' page&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;25%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             destdir="${argo.javadocs.dir}"
              maxmemory="128M"
-             overview="org/argouml/overview-argo.html" 
-             packagenames="${packages}" 
-             private="${javadoc.private}"
+             overview="org/argouml/overview-argo.html"
+             packagenames="${packages}"
+             private="true"
              sourcepath="${argo.src.dir}"
-             splitindex="${javadoc.splitindex}" 
-             use="${javadoc.use}" 
-             windowtitle="ArgoUML Documentation">
+             splitindex="${javadoc.splitindex}"
+             use="${javadoc.use}"
+             windowtitle="ArgoUML Javadoc for internal use">
       <classpath>
 	  <path refid="argo.compile.classpath"/>
       </classpath>
+
+      <!-- Links allow reference to external classes from within
+           Argo javadocs
+        -->
       <link href="${jdk.javadoc.link}" offline="true"
             packagelistLoc="${jdk.javadoc.packagelist}"/>
       <link href="${log4j.javadoc.link}" offline="true"
@@ -574,11 +576,57 @@ Property files to be searched:
             packagelistLoc="${xerces.javadoc.packagelist}"/>
       <link href="${jmi.javadoc.link}" offline="true"
             packagelistLoc="${jmi.javadoc.packagelist}"/>
+      <!-- Rest of the packages -->
 
     </javadoc>
 
     <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
       <fileset dir="${argo.src.dir}/org/argouml/doc-files" excludes="CVS/**" includes="**/**"/>
+    </copy>
+
+  </target>
+
+
+  <target name="javadocs-api" depends="init">
+    <mkdir dir="${argo.api.dir}"/>
+
+    <!-- The package name list shall be the list of all the main packages for
+         all subsystems that are available for modules.
+      -->
+    <javadoc author="${javadoc.author}"
+             bottom="&lt;table width=&apos;100%&apos;&gt;&lt;tr&gt;&lt;td width=&apos;33%&apos; align=&apos;left&apos;&gt;ArgoUML &amp;copy; 1996-2004 (${DSTAMP})&lt;/td&gt;&lt;td width=&apos;34%&apos; align=&apos;center&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/&apos; target=&apos;_blank&apos;&gt;ArgoUML Homepage&lt;/a&gt;&lt;/td&gt;&lt;td width=&apos;33%&apos; align=&apos;right&apos;&gt;&lt;a href=&apos;http://argouml.tigris.org/documentation/defaulthtml/cookbook/&apos; target=&apos;_blank&apos;&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;"
+             destdir="${argo.api.dir}"
+             maxmemory="128M"
+             overview="org/argouml/overview-api.html"
+             packagenames="org.argouml.model,org.argouml.moduleloader,org.argouml.cognitive,org.argouml.uml.reveng,org.argouml.application,org.argouml.i18n,org.argouml.ui.explorer,org.argouml.application.api,org.argouml.application.modules,org.argouml.ocl"
+             private="false"
+             sourcepath="${argo.src.dir}"
+             splitindex="${javadoc.splitindex}"
+             use="${javadoc.use}"
+             windowtitle="ArgoUML Javadoc for ArgoUML Module Developers">
+      <classpath>
+	  <path refid="argo.compile.classpath"/>
+      </classpath>
+
+      <!-- Links allow reference to external classes from within
+           Argo javadocs
+        -->
+      <link href="${jdk.javadoc.link}" offline="true"
+            packagelistLoc="${jdk.javadoc.packagelist}"/>
+      <link href="${log4j.javadoc.link}" offline="true"
+            packagelistLoc="${log4j.javadoc.packagelist}"/>
+      <link href="${xerces.javadoc.link}" offline="true"
+            packagelistLoc="${xerces.javadoc.packagelist}"/>
+      <link href="${jmi.javadoc.link}" offline="true"
+            packagelistLoc="${jmi.javadoc.packagelist}"/>
+      <!-- Rest of the packages -->
+
+    </javadoc>
+
+    <copy todir="${argo.api.dir}/org/argouml/doc-files">
+      <fileset dir="${argo.src.dir}/org/argouml/doc-files"
+               excludes="CVS/**"
+	       includes="**/**"/>
     </copy>
 
   </target>
