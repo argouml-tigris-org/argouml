@@ -855,7 +855,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
           </para>
         </listitem>
       </itemizedlist>  
-      <caution>
+      <warning>
         <para>
           The behavior of the <literal>Select Next</literal> 
           and <literal>Select Previous</literal> menu functions can be very
@@ -864,7 +864,7 @@ it should match the invoking command, in casu: "Print".  See issue 2465. -->
           <!-- TODO: This feature should best be removed from the menu. See
           issue 2470. -->
         </para>
-      </caution>
+      </warning>
 
     </sect2>
 
@@ -1121,10 +1121,10 @@ on to the current diagram in the drawing pane.
             default). If enabled usage statistics are reported on the
             console.</para>
 
-          <caution><para>In the V0.14 version of &argouml; there is only a
+          <warning><para>In the V0.14 version of &argouml; there is only a
 <!-- TODO: Check if this is true. Does it indeed apply to V0.14? -->
             very small amount of information, which may be missed amongst the
-            other console output.</para></caution></listitem>
+            other console output.</para></warning></listitem>
 
           <listitem><para><literal>Report on Load Times</literal> (clear by
             default). If enabled load times at start up for the various phases
@@ -1412,12 +1412,12 @@ guillemots? -->
         editing the model for easy navigation.
       </para>
       
-      <caution><para>
+      <warning><para>
         But the V0.14 imlementation of
         &argouml; does not inmediately update the dialog box with changes made 
         to diagrams: change of name, addition of diagrams, deletion of diagrams.
         <!-- TODO: See issue 2475. -->
-      </para></caution>
+      </para></warning>
     </sect2>
 
     <!-- Find an artifact -->
@@ -1556,12 +1556,12 @@ but not on any diagram. See issue ... -->
           it shows
           <literal>N/A</literal>.</para>
 
-        <caution><para>The behavior of &argouml; V0.14 
+        <warning><para>The behavior of &argouml; V0.14 
           when an item is on more than one diagram
           is not completely correct.
           <!-- TODO: It lists all diagrams, 
           not only the ones that contain the item. See issue ... -->
-        </para></caution></listitem>
+        </para></warning></listitem>
 
         <listitem><para><literal>Description</literal>. Contains a description
           of the element (artifact). In &argouml; V0.14 this seems to be restricted to
@@ -1589,14 +1589,14 @@ but not on any diagram. See issue ... -->
         but the border between these 2 areas can not be moved. 
         See issue ... -->
         
-      <caution><para>
+      <warning><para>
         This dialog box is not modal, which allows it to remain open while
         editing the model for easy navigation. But the V0.14 imlementation of
         &argouml; does not inmediately update the dialog box with changes made 
         to the found artifacts: change of artifact name, change of diagram name.
         Deletion of a diagram does not stop the possibility to navigate to it.
         <!-- TODO: See issue ... -->
-      </para></caution>
+      </para></warning>
 
     </sect2>
 
@@ -1826,10 +1826,10 @@ the editing pane.</para>
       <para>This toggles whether page breaks are shown on the diagram (as white
         dotted lines).</para>
 
-      <caution><para>This menu-item is incorrectly implemented in the V0.14
+      <warning><para>This menu-item is incorrectly implemented in the V0.14
         version of &argouml;, since it 
         should be a tick box toggle<!--labeled
-        <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></caution>
+        <literal>Page&nbsp;Breaks&nbsp;Visible</literal-->.</para></warning>
         <!-- TODO: Change the menuitem into tick box. See issue ... -->
         <!-- TODO: Changing the page size (e.g. from A4 to A5) does not move the
         lines. Why not? -->
@@ -2099,12 +2099,12 @@ the editing pane.</para>
         </imageobject></inlinemediaobject></guiicon> Sequence
         Diagram</title> 
 
-      <caution>
+      <warning>
         <para>
           Sequence diagrams are not supported in &argouml; V0.14. hence this
           menuitem is downlighted all the time.
         </para>
-      </caution>
+      </warning>
       <!--para>This menu entry creates a blank sequence diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
         sequence diagram will be created within that package, it will be shown
@@ -2356,8 +2356,8 @@ the editing pane.</para>
           <para><literal>Incremental</literal>. Incremental layout.
           </para>
           <!-- TODO: What should this menu-item do? -->
-          <caution><para>In V0.14 of &argouml;, this menu entry is always
-            grayed out and unavailable.</para></caution>
+          <warning><para>In V0.14 of &argouml;, this menu entry is always
+            grayed out and unavailable.</para></warning>
         </listitem>
       </itemizedlist>
 
@@ -2377,10 +2377,10 @@ the editing pane.</para>
       of Java. &argouml; V0.14 supports the following languages by plugin: 
       C#, C++, php.</para></note>
 
-    <caution><para>Code generation is still very much a work in progress. The current
+    <warning><para>Code generation is still very much a work in progress. The current
       version of &argouml; will generate a structural template for your code,
       but is not able to handle behavioral specifications to generate code for
-      the dynamic behavior of the model.</para></caution>
+      the dynamic behavior of the model.</para></warning>
 
     <!-- Generate code for selected classes -->
 
@@ -2653,11 +2653,11 @@ the editing pane.</para>
         <!-- TODO: See if that is still true. -->
         </para></note>
 
-      <caution><para>In the V0.14 release of &argouml; all critics trigger at
+      <warning><para>In the V0.14 release of &argouml; all critics trigger at
         priority 1, so any higher values of the slider make no
         difference.
         <!-- TODO: See if that is still true. -->
-      </para></caution>
+      </para></warning>
     </sect2>
 
     <!-- Critics for design goals -->
@@ -2708,12 +2708,12 @@ Inconsistent! See issue ... -->
         critics according to the outcomes of &ooad; rather than grouping
         according to the structure of UML.</para></tip>
 
-      <caution><para>The V0.14 version of &argouml; provides a single design
+      <warning><para>The V0.14 version of &argouml; provides a single design
         goal, <literal>Unspecified</literal>, with its slider set by default to
         priority 1. However it contains no critics and so has no
         effect.
         <!-- TODO: So, what do we do about it? -->
-      </para></caution>
+      </para></warning>
     </sect2>
 
     <!-- Browse critics -->
@@ -3193,13 +3193,13 @@ See issue ... -->
         contains a URL pointing to further information with a button to the
         right labeled <literal>Go</literal> to navigate to that URL.</para>
 
-      <caution><para>In the V0.14 release of &argouml; there is no further
+      <warning><para>In the V0.14 release of &argouml; there is no further
         information available, 
         <!-- TODO: See issue ... --> 
         and the <literal>Go</literal> button is always
         grayed out and disabled.
         <!-- TODO: See issue ... -->
-      </para></caution>
+      </para></warning>
 
       <para>The next field is labeled <literal>Description:</literal> and is a
         text area with a detailed explanation of what this critic means. If the
@@ -3324,12 +3324,12 @@ The original
         </mediaobject></screenshot>
       </figure>
 
-      <caution>
+      <warning>
         <para>The <quote>.xmi</quote> extension is not added automatically. 
         You have to enter it with the  filename.
         <!-- TODO: See issue ... -->
         </para>
-      </caution>
+      </warning>
     </sect2>
   </sect1>
 
