@@ -31,14 +31,14 @@ import java.awt.Color;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
 import org.tigris.gef.presentation.FigEdgeLine;
 
+/**
+ * This class is not used at all.
+ *
+ */
 public class FigTrace extends FigEdgeLine {
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
 
     /**
      * The constructor.
-     * 
      */
     public FigTrace() {
 	_fig.setLineColor(Color.red);

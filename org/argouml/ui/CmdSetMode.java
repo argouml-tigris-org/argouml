@@ -43,10 +43,20 @@ public class CmdSetMode extends org.tigris.gef.base.CmdSetMode {
 
     private static final String ACTION_PREFIX_KEY = "action.new";
 
+    /**
+     * The constructor.
+     * 
+     * @param args arguments
+     */
     public CmdSetMode(Properties args) {
         super(args);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param modeClass the mode
+     */
     public CmdSetMode(Class modeClass) {
         super(modeClass);
     }

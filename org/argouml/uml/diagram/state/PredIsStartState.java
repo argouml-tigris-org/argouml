@@ -28,12 +28,16 @@ import org.tigris.gef.util.Predicate;
 
 import org.argouml.model.ModelFacade;
 
+/**
+ * Predicate to test if this is a start state.
+ *
+ */
 public class PredIsStartState implements Predicate {
 
     /**
      * theInstance is the singleton
      */
-    public static PredIsStartState theInstance = new PredIsStartState();
+    private static PredIsStartState theInstance = new PredIsStartState();
 
     private PredIsStartState() { }
 
@@ -44,6 +48,13 @@ public class PredIsStartState implements Predicate {
 	return (org.argouml.model.ModelFacade.isAPseudostate(obj)) 
 	    && (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(
                 ModelFacade.getKind(obj)));
+    }
+
+    /**
+     * @return the instance
+     */
+    public static PredIsStartState getTheInstance() {
+        return theInstance;
     }
   
 } /* end class PredIsStartpackage */

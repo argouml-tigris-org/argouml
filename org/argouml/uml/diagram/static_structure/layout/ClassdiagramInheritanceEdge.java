@@ -36,7 +36,7 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
     private static final Logger LOG = 
         Logger.getLogger(ClassdiagramInheritanceEdge.class);
     
-    Fig high, low;
+    private Fig high, low;
     
     /**
      * Constructor.
@@ -70,11 +70,17 @@ public abstract class ClassdiagramInheritanceEdge extends ClassdiagramEdge {
      */
     public abstract int getVerticalOffset();
         
+    /**
+     * @return the center of the high node
+     */
     public int getCenterHigh() {
         return (int) 
 	    (high.getLocation().getX() + high.getSize().getWidth() / 2);
     }
     
+    /**
+     * @return the center of the low node
+     */
     public int getCenterLow() {
         return (int) (low.getLocation().getX() + low.getSize().getWidth() / 2);
     }

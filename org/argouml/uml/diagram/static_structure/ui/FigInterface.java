@@ -99,10 +99,10 @@ public class FigInterface extends FigNodeModelElement
 
     /**
      * Manages residency of an interface within a component on a deployment
-     * diagram. Not clear why it is public, or even why it is an instance
+     * diagram. Not clear why it is an instance
      * variable (rather than local to the method).<p>
      */
-    public Object resident =
+    private Object resident =
         UmlFactory.getFactory().getCore().createElementResidence();
 
     /**

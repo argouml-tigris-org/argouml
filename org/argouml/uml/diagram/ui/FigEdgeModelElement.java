@@ -328,6 +328,13 @@ public abstract class FigEdgeModelElement
         }
     }
 
+    /**
+     * The user clicked on the clarifier.
+     * 
+     * @param x the x of the point clicked
+     * @param y the y of the point clicked
+     * @return the todo item clicked
+     */
     public ToDoItem hitClarifier(int x, int y) {
         int iconPos = 25, xOff = -4, yOff = -4;
         Point p = new Point();

@@ -39,6 +39,10 @@ import org.argouml.uml.ui.TabModelTarget;
 
 import org.tigris.gef.presentation.FigText;
 
+/**
+ * The properties panel for a simple text / string.
+ *
+ */
 public class PropPanelString
     extends TabSpawnable
     implements TabModelTarget, PropertyChangeListener, DocumentListener
