@@ -113,25 +113,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     setOwner(edge);
   }
 
-  public void setDestFigNode(FigNode fn ) {
-    super.setDestFigNode(fn);
 
-  }
-
-  public void setDestPortFig(Fig fig ) {
-    super.setDestPortFig(fig);
-
-  }
-
-   public void setSourceFigNode(FigNode fn ) {
-    super.setSourceFigNode(fn);
-
-  }
-
-  public void setSourcePortFig(Fig fig ) {
-    super.setSourcePortFig(fig);
-
-  }
 
 
    public String ownerName() {
@@ -283,17 +265,36 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     // If this is the case, a new Stimulus and Action of the given type
     // will be created and associated to the link. After this, the
     // figure of the Stimulus will be created and added to the layer
-    
+
     Editor curEditor = Globals.curEditor();
     LayerPerspective lay = (LayerPerspective)getLayer();
     GraphNodeRenderer renderer = lay.getGraphNodeRenderer();
     GraphModel gm = lay.getGraphModel();
-    
-  
+
+
+    if (lay == null ) {
+      lay = (LayerPerspective)curEditor.getLayerManager().getActiveLayer();
+      System.out.println("lay=null");
+    }
+
+
+
     MLink link = (MLink) getOwner();
     if (link.getStimuli()==null || link.getStimuli().size() == 0) {
+
+      // new link
+      // bring the objects in front, to keep them selectable (needs more work)
+      if (lay instanceof SequenceDiagramLayout) {
+        Vector v = ((SequenceDiagramLayout)lay).getFigSeqObjects();
+        for (int i=0; i<v.size(); i++) {
+          FigSeqObject f = (FigSeqObject)v.elementAt(i);
+          lay.bringToFront(f);
+        }
+      }
+
+
       ModeManager modeManager = curEditor.getModeManager();
-     
+
       Mode mode = (Mode)modeManager.top();
       Hashtable args = mode.getArgs();
 
@@ -327,7 +328,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
             MObject objDst = (MObject)le2.getInstance();
             stimulus.setSender(objSrc);
             stimulus.setReceiver(objDst);
-            // set action type           
+            // set action type
             stimulus.setDispatchAction(action);
             // add stimulus to link
             link.addStimulus(stimulus);
@@ -337,7 +338,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
             ns.addOwnedElement(action);
 
             if (lay.presentationFor(stimulus) == null ) {
-            
+
               Point center = this.center();
               FigNode pers = renderer.getFigNodeFor(gm, lay, stimulus);
               Collection stimuli = link.getStimuli();
@@ -347,7 +348,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
               this.addPathItem(pers, new PathConvPercent(this, percent, 10));
               this.updatePathItemLocations();
               lay.add(pers);
-            
+
             }
 	    
           }
