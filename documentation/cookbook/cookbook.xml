@@ -221,6 +221,41 @@ your pace.
 This allows you to do commits on your own and you can now increase
 the pace in which you are working.
 </para>
+	    <para>
+There are a lot of special requirements on you to get this granted.
+	      <footnote>
+		<para>
+Noted here for Linus to keep track on what to verify.
+</para>
+		<itemizedlist>
+		  <listitem>
+		    <para>
+Understanding and accepting the goals.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>
+Understanding where we are in the development process.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>
+Understanding the terminology used in the project.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>
+Good knowledge of CVS.
+</para>
+		  </listitem>
+		  <listitem>
+		    <para>
+Understanding the set of tools (ant, junit) and how to use them.
+</para>
+		  </listitem>
+		</itemizedlist>
+	      </footnote>
+</para>
 	    </listitem>
 	    <listitem>
 	      <para>Focus your work in a specific area.</para>
@@ -1976,6 +2011,7 @@ Each component has:
 	    <para>A single directory/java package where it resides</para>
 	    <para>
 Subparts of the component can reside in subdirectories of this directory.
+Auxiliary parts of the components can reside somewhere else.
 </para>
 	  </listitem>
 	</itemizedlist>
@@ -2008,6 +2044,13 @@ The interface is also in component package and it is called
 Example:
 <classname>ModelDiagramInterface</classname>,
 <classname>ModelTypeInterface</classname>.
+</para>
+      <para>
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="gif"/>
+	  </imageobject>
+        </mediaobject>
 </para>
     </sect1>
 
@@ -2085,7 +2128,11 @@ Every other component can use the classes available with the JRE.
 
       </itemizedlist>
     <para>
-TODO: Insert UML diagram listing all layer 0 components.
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Layer0.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
 </para>
 
     </sect1>
@@ -2163,8 +2210,11 @@ to present some help for the user.
 	</itemizedlist>
 </para>
     <para>
-TODO: Insert UML diagram listing all layer 1 components with relations
-to layer 0 components.
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Layer1.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
 </para>
     </sect1>
 
@@ -2223,8 +2273,11 @@ other modules into ArgoUML.
 	</itemizedlist>
 </para>
     <para>
-TODO: Insert UML diagram listing all layer 2 components with relations
-to layer 0 and 1 components.
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Layer2.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
 </para>
     </sect1>
 
@@ -2292,8 +2345,11 @@ This is the editing of the OCL strings.
 	</itemizedlist>
 </para>
     <para>
-TODO: Insert UML diagram listing all layer 3 components with relations
-to layer 0, 1 or 2 components.
+        <mediaobject>
+	  <imageobject>
+	    <imagedata fileref="images/cookbook/Layer3.gif" format="gif"/>
+	  </imageobject>
+	</mediaobject>
 </para>
     </sect1>
 
