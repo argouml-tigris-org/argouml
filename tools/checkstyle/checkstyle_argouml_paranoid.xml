@@ -24,7 +24,7 @@
         </module>
         <module name="DoubleCheckedLocking"/>
         <module name="EmptyBlock">
-	  <!-- All except catch and for. -->
+          <!-- All except catch and for. -->
           <property name="tokens" value="LITERAL_DO,LITERAL_ELSE,LITERAL_FINALLY,LITERAL_IF,LITERAL_TRY,LITERAL_WHILE,STATIC_INIT"/>
         </module>
 
@@ -47,7 +47,7 @@
           <property name="format" value="@todo"/>
         </module>
         <module name="GenericIllegalRegexp">
-          <property name="format" value="TODO[^:]"/>
+          <property name="format" value="TODO "/>
         </module>
         <module name="GenericIllegalRegexp">
           <property name="format" value="[Nn]eeds?-?more-?work"/>
@@ -58,13 +58,13 @@
 
         <module name="GenericIllegalRegexp">
           <property 
-		name="format"
+                name="format"
                 value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
         </module>
 
         <module name="GenericIllegalRegexp">
           <property 
-		name="format"
+                name="format"
                 value="(public|protected).*Logger"/>
           <property
 	        name="message"
@@ -72,7 +72,7 @@
         </module>
         <module name="GenericIllegalRegexp">
           <property 
-		name="format"
+                name="format"
                 value="^[^/*]*Logger[ \t][ \t]*([^L]|L[^O]|LO[^G]|LOG[^ \t])"/>
           <property
 	        name="message"
@@ -81,7 +81,7 @@
 
         <module name="GenericIllegalRegexp">
           <property name="format" value="^//\s*File:"/>
-	  <property name="message"
+          <property name="message"
 	            value="Remove line from old style header format. Get filename from your editor."/>
         </module>
 
@@ -122,18 +122,18 @@
             <property name="scope" value="private"/>
             <property name="allowUndeclaredRTE" value="true"/>
         </module>
-	<module name="JavadocStyle"/>
+        <module name="JavadocStyle"/>
         <module name="JavadocVariable">
             <property name="scope" value="private"/>
-	</module>
+        </module>
 
         <module name="JUnitTestCase"/>
         <module name="LeftCurly"/>
 
         <module name="LineLength">
-	  <property name="ignorePattern"
+           <property name="ignorePattern"
 	            value="^( *\* @see |import |// [$]Id:.*[$])[^ ]*$"/>
-	</module>
+        </module>
 
         <module name="LocalFinalVariableName"/>
         <module name="LocalVariableName"/>
