@@ -478,12 +478,24 @@ public class Modeller
           multiplicity = "1_N";
       } else
           multiplicity = "1_1";
-
+      
+      // the attribute type
+      Object mClassifier=null;
       try {
-          Object mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
-          Object mAttribute = getAttribute(name, initializer, mClassifier);
+        // get the attribute type
+        mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
+      }catch(ClassifierNotFoundException e) {
+        _exception = e;
+        // if we can't find the attribute type then
+        // we can't add the attribute.
+        return;
+      }
+          
+      // if we want to create a UML attribute:
+      if(noAssociations || ModelFacade.isADataType(mClassifier)){
+      
+            Object mAttribute = getAttribute(name, initializer, mClassifier);
 
-          if(mAttribute != null) {
             parseState.feature(mAttribute);
 
             setOwnerScope(mAttribute, modifiers);
@@ -503,8 +515,10 @@ public class Modeller
                 ModelFacade.setChangeable(mAttribute, true);
             }
             addDocumentationTag(mAttribute, javadoc);
-          }
-          else {
+        }
+        // we want to create a UML association from the java attribute
+        else {
+            
             Object mAssociationEnd = getAssociationEnd(name, mClassifier);
             setTargetScope(mAssociationEnd, modifiers);
             setVisibility(mAssociationEnd, modifiers);
@@ -516,11 +530,7 @@ public class Modeller
             }
             ModelFacade.setNavigable(mAssociationEnd, true);
             addDocumentationTag(mAssociationEnd, javadoc);
-          }
-      }
-      catch(ClassifierNotFoundException e) {
-          _exception = e;
-      }
+       }
     }
 
     /**
@@ -684,9 +694,7 @@ public class Modeller
                                 Object mClassifier)
     {
         Object mAttribute = parseState.getFeature(name);
-        if(mAttribute == null &&
-           noAssociations &&
-           getAssociationEnd(name, mClassifier) == null) {
+        if(mAttribute == null) {
             mAttribute = UmlFactory.getFactory().getCore().buildAttribute(name);
             ModelFacade.addFeature(parseState.getClassifier(),mAttribute);
         }
