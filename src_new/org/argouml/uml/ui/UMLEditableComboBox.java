@@ -166,7 +166,7 @@ public abstract class UMLEditableComboBox extends UMLComboBox2 {
             if (((UMLComboBoxModel2) getModel()).contains(anObject)) {
                 editor.setText(((UMLListCellRenderer2) getRenderer()).makeText(anObject));
                 if (_showIcon)
-                    _panel.setIcon(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(anObject));
+                    _panel.setIcon(ResourceLoaderWrapper.getInstance().lookupIcon(anObject));
             } else
                 super.setItem(anObject);
 

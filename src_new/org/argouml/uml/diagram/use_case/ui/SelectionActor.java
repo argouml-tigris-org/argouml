@@ -61,7 +61,7 @@ public class SelectionActor extends SelectionWButtons {
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon assoc =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("Association");
 
 

@@ -99,7 +99,7 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                         .getBorder("List.focusCellHighlightBorder")
                         : noFocusBorder);
                 // --------------------------------------------------------
-                setIcon(ResourceLoaderWrapper.getResourceLoaderWrapper()
+                setIcon(ResourceLoaderWrapper.getInstance()
                         .lookupIcon(value));
             } else {
                 // hack to make sure that the right hight is

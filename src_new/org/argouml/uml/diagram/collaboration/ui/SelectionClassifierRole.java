@@ -63,11 +63,11 @@ public class SelectionClassifierRole extends SelectionWButtons {
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon assocrole =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("AssociationRole");
 
     public static Icon selfassoc =
-        ResourceLoaderWrapper.getResourceLoaderWrapper()
+        ResourceLoaderWrapper
 	    .lookupIconResource("SelfAssociation");
 
     ////////////////////////////////////////////////////////////////
