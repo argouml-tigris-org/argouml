@@ -33,6 +33,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
@@ -154,10 +156,10 @@ public class FigMNode extends FigNodeModelElement {
 
 	if (getLayer() != null) {
 	    // elementOrdering(figures);
-	    Vector contents = getLayer().getContents();
-	    int contentsSize = contents.size();
-	    for (int j = 0; j < contentsSize; j++) {
-		Object o = contents.elementAt(j);
+	    Collection contents = getLayer().getContents(null);
+	    Iterator it = contents.iterator();
+	    while (it.hasNext()) {
+		Object o = it.next();
 		if (o instanceof FigEdgeModelElement) {
 		    FigEdgeModelElement figedge = (FigEdgeModelElement) o;
 		    figedge.getLayer().bringToFront(figedge);

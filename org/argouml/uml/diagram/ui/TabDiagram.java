@@ -313,11 +313,14 @@ public class TabDiagram
         Vector figList = new Vector();
         for (int i = 0; i < targets.length; i++) {
             if (targets[i] != null) {
-                Object target =
-                    (targets[i] instanceof Fig
-		     && manager.getContents().contains(targets[i]))
-		    ? targets[i]
-		    : manager.presentationFor(targets[i]);
+                Object target = null;
+                if (targets[i] instanceof Fig
+		        && manager.getContents(null).contains(targets[i])) {
+		    target = targets[i];
+                } else {
+		    target = manager.presentationFor(targets[i]);
+                }
+
                 if (target != null) {
                     figList.add(target);
                 }
@@ -387,12 +390,20 @@ class ArgoEditor extends Editor {
         
     public ArgoEditor(Diagram d) {
 	super(d);
-    setupRenderingHints();
+        setupRenderingHints();
     }
         
+    /**
+     * @deprecated in 0.16 in favour of ArgoEditor(GraphModel gm, JComponent c)
+     */
     public ArgoEditor(GraphModel gm, Component c) {
+	super(gm, (JComponent)c);
+        setupRenderingHints();
+    }
+
+    public ArgoEditor(GraphModel gm, JComponent c) {
 	super(gm, c);
-    setupRenderingHints();
+        setupRenderingHints();
     }
 
     /**

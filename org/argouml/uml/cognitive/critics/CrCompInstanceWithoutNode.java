@@ -29,6 +29,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -82,34 +84,39 @@ public class CrCompInstanceWithoutNode extends CrUML {
      * are the UMLDeploymentDiagram and all FigComponentInstances with no
      * enclosing FigMNodeInstance
      **/
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
+    public VectorSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) { 
 
-	Vector figs = dd.getLayer().getContents();
+	Collection figs = deploymentDiagram.getLayer().getContents(null);
 	VectorSet offs = null;
-	int size = figs.size();
 	boolean isNode = false;
-	for (int j = 0; j < size; j++) {
-	    Object obj = figs.elementAt(j);
-	    if (obj instanceof FigMNodeInstance) isNode = true;
+        Iterator it = figs.iterator();
+        Object obj = null;
+	while (it.hasNext()) {
+	    obj = it.next();
+	    if (obj instanceof FigMNodeInstance) {
+                isNode = true;
+            }
 	}
-	for (int i = 0; i < size; i++) {
-	    Object obj = figs.elementAt(i);
-	    if (!(obj instanceof FigComponentInstance)) continue;
+        it = figs.iterator();
+	while (it.hasNext()) {
+	    obj = it.next();
+	    if (!(obj instanceof FigComponentInstance)) {
+                continue;
+            }
 	    FigComponentInstance fc = (FigComponentInstance) obj;
 	    if (fc.getEnclosingFig() == null && isNode == true) {
 		if (offs == null) {
 		    offs = new VectorSet();
-		    offs.addElement(dd);
+		    offs.addElement(deploymentDiagram);
 		}
 		offs.addElement(fc);
-	    }
-	    else if (fc.getEnclosingFig() != null
+	    } else if (fc.getEnclosingFig() != null
 		     && ((ModelFacade.getNodeInstance(fc.getOwner()))
 			 == null))
 	    {
 		if (offs == null) {
 		    offs = new VectorSet();
-		    offs.addElement(dd);
+		    offs.addElement(deploymentDiagram);
 		}
 		offs.addElement(fc);
 	    }

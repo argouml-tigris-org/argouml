@@ -29,6 +29,8 @@
 
 package org.argouml.uml.cognitive.critics;
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -85,16 +87,17 @@ public class CrComponentWithoutNode extends CrUML {
      **/
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 
-	Vector figs = dd.getLayer().getContents();
+	Collection figs = dd.getLayer().getContents(null);
 	VectorSet offs = null;
-	int size = figs.size();
+	Iterator figIter = figs.iterator();
 	boolean isNode = false;
-	for (int j = 0; j < size; j++) {
-	    Object obj = figs.elementAt(j);
+	while (figIter.hasNext()) {
+	    Object obj = figIter.next();
 	    if (obj instanceof FigMNode) isNode = true;
 	}
-	for (int i = 0; i < size; i++) {
-	    Object obj = figs.elementAt(i);
+	figIter = figs.iterator();
+	while (figIter.hasNext()) {
+	    Object obj = figIter.next();
 	    if (!(obj instanceof FigComponent)) continue;
 	    FigComponent fc = (FigComponent) obj;
 	    if (fc.getEnclosingFig() == null && isNode == true) {

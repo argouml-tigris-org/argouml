@@ -84,16 +84,18 @@ public class CrWrongLinkEnds extends CrUML {
      * all FigLinks with this characteristic and their FigObjects
      * described over the links MLinkEnds
      **/
-    public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
-	Vector figs = dd.getLayer().getContents();
+    public VectorSet computeOffenders(UMLDeploymentDiagram deploymentDiagram) { 
+	Collection figs = deploymentDiagram.getLayer().getContents(null);
 	VectorSet offs = null;
-	int size = figs.size();
-	for (int i = 0; i < size; i++) {
-	    Object obj = figs.elementAt(i);
-	    if (!(obj instanceof FigLink)) continue;
-	    FigLink fl = (FigLink) obj;
-	    if (!(ModelFacade.isALink(fl.getOwner()))) continue;
-	    Object link = /*(MLink)*/ fl.getOwner();
+        Iterator figIter = figs.iterator();
+	while (figIter.hasNext()) {
+	    Object obj = figIter.next();
+	    if (!(obj instanceof FigLink)) {
+                continue;
+            }
+	    FigLink figLink = (FigLink) obj;
+	    if (!(ModelFacade.isALink(figLink.getOwner()))) continue;
+	    Object link = figLink.getOwner();
 	    Collection ends = ModelFacade.getConnections(link);
 	    if (ends != null && (ends.size() > 0)) {
 		int count = 0;
@@ -112,11 +114,11 @@ public class CrWrongLinkEnds extends CrUML {
 		if (count == 3) {
 		    if (offs == null) {
 			offs = new VectorSet();
-			offs.addElement(dd);
+			offs.addElement(deploymentDiagram);
 		    }
-		    offs.addElement(fl);
-		    offs.addElement(fl.getSourcePortFig()); 
-		    offs.addElement(fl.getDestPortFig()); 
+		    offs.addElement(figLink);
+		    offs.addElement(figLink.getSourcePortFig()); 
+		    offs.addElement(figLink.getDestPortFig()); 
 		}
 	    }
 	}
