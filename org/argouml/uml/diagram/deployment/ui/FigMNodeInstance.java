@@ -29,10 +29,7 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyVetoException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
+import java.util.*;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
@@ -92,9 +89,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
         this();
         setOwner(node);
         if (Model.getFacade().isAClassifier(node)
-	        && (Model.getFacade().getName(node) != null)) {
+                && (Model.getFacade().getName(node) != null)) {
             getNameFig().setText(Model.getFacade().getName(node));
-	}
+        }
     }
 
     /**
@@ -158,7 +155,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
     public void setBounds(int x, int y, int w, int h) {
         if (getNameFig() == null) {
             return;
-	}
+        }
 
         Rectangle oldBounds = getBounds();
         getBigPort().setBounds(x, y, w, h);
@@ -167,7 +164,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
         Dimension stereoDim = getStereotypeFig().getMinimumSize();
         Dimension nameDim = getNameFig().getMinimumSize();
         getNameFig().setBounds(x + 1, y + stereoDim.height + 1,
-			       w - 1, nameDim.height);
+                w - 1, nameDim.height);
         getStereotypeFig().setBounds(x + 1, y + 1, w - 2, stereoDim.height);
         _x = x;
         _y = y;
@@ -184,15 +181,15 @@ public class FigMNodeInstance extends FigNodeModelElement {
         Object me = /*(MModelElement)*/ getOwner();
         if (me == null)
             return;
-	Object stereo = null;
-	if (Model.getFacade().getStereotypes(me).size() > 0) {
+        Object stereo = null;
+        if (Model.getFacade().getStereotypes(me).size() > 0) {
             stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
         if (stereo == null
                 || Model.getFacade().getName(stereo) == null
                 || Model.getFacade().getName(stereo).length() == 0) {
             setStereotype("");
-	} else {
+        } else {
             setStereotype(Notation.generateStereotype(this, stereo));
         }
     }
@@ -212,26 +209,42 @@ public class FigMNodeInstance extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
      */
     public void setEnclosingFig(Fig encloser) {
-        super.setEnclosingFig(encloser);
+        if (getOwner() != null) {
+            Object nod = /*(MNodeInstance)*/ getOwner();
+            if (encloser != null) {
+                Object comp = /*(MComponentInstance)*/ encloser.getOwner();
+                if (Model.getFacade().isAComponentInstance(comp)) {
+                    if (Model.getFacade().getComponentInstance(nod) != comp) {
+                        Model.getCommonBehaviorHelper()
+                                .setComponentInstance(nod, comp);
+                        super.setEnclosingFig(encloser);
+                    }
+                }
+                else if (Model.getFacade().isANode(comp)) {
+                    super.setEnclosingFig(encloser);
+                }
+            }
+            else if (encloser == null) {
+                if (Model.getFacade().getComponentInstance(nod) != null) {
+                    Model.getCommonBehaviorHelper()
+                            .setComponentInstance(nod, null);
+                    super.setEnclosingFig(encloser);
+                }
+            }
+        }
+
         Vector figures = getEnclosedFigs();
 
         if (getLayer() != null) {
             // elementOrdering(figures);
-            Collection contents = getLayer().getContents(null);
-            Collection bringToFrontList = new ArrayList();
+            List contents = getLayer().getContents();
             Iterator it = contents.iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 if (o instanceof FigEdgeModelElement) {
-                    bringToFrontList.add(o);
-
+                    FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+                    figedge.getLayer().bringToFront(figedge);
                 }
-            }
-            Iterator bringToFrontIter = bringToFrontList.iterator();
-            while (bringToFrontIter.hasNext()) {
-                FigEdgeModelElement figEdge =
-                    (FigEdgeModelElement) bringToFrontIter.next();
-                figEdge.getLayer().bringToFront(figEdge);
             }
         }
     }
@@ -286,9 +299,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
         if (isReadyToEdit()) {
             if ((nameStr.length() == 0) && (baseStr.length() == 0)) {
                 getNameFig().setText("");
-	    } else {
+            } else {
                 getNameFig().setText(nameStr.trim() + " : " + baseStr);
-	    }
+            }
         }
         Dimension nameMin = getNameFig().getMinimumSize();
         Rectangle r = getBounds();

@@ -28,8 +28,11 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
+
+import javax.swing.*;
 
 /**
  * PropPanel for a UML component.<p>
@@ -46,75 +49,79 @@ public class PropPanelComponent extends PropPanelClassifier {
      *
      */
     public PropPanelComponent() {
-	super("Component", ConfigLoader.getTabPropsOrientation());
-	addField(Translator.localize("label.name"),
-            getNameTextField());
-	addField(Translator.localize("label.stereotype"),
-            getStereotypeBox());
-	addField(Translator.localize("label.namespace"),
-            getNamespaceComboBox());
-	add(getModifiersPanel());
+        super("Component", ConfigLoader.getTabPropsOrientation());
+        addField(Translator.localize("label.name"),
+                getNameTextField());
+        addField(Translator.localize("label.stereotype"),
+                getStereotypeBox());
+        addField(Translator.localize("label.namespace"),
+                getNamespaceComboBox());
+        add(getModifiersPanel());
 
-	addSeperator();
+        addSeperator();
 
-	addField(Translator.localize("label.generalizations"),
-            getGeneralizationScroll());
-	addField(Translator.localize("label.specializations"),
-            getSpecializationScroll());
+        addField(Translator.localize("label.generalizations"),
+                getGeneralizationScroll());
+        addField(Translator.localize("label.specializations"),
+                getSpecializationScroll());
 
-	addSeperator();
+        addSeperator();
 
-	addField(Translator.localize("label.client-dependencies"),
-            getClientDependencyScroll());
-	addField(Translator.localize("label.supplier-dependencies"),
-            getSupplierDependencyScroll());
+        addField(Translator.localize("label.client-dependencies"),
+                getClientDependencyScroll());
+        addField(Translator.localize("label.supplier-dependencies"),
+                getSupplierDependencyScroll());
+
+        JList resList = new UMLLinkedList(new UMLComponentResidentListModel());
+        addField(Translator.localize("label.residents"),
+                new JScrollPane(resList));
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
-	addButton(new PropPanelButton2(getActionNewReception(),
+        addButton(new PropPanelButton2(getActionNewReception(),
                 lookupIcon("Reception")));
-	addButton(new PropPanelButton2(new ActionNewStereotype(),
-	        lookupIcon("Stereotype")));
-	addButton(new PropPanelButton2(new ActionRemoveFromModel(),
+        addButton(new PropPanelButton2(new ActionNewStereotype(),
+                lookupIcon("Stereotype")));
+        addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
 
-	//    addCaption(Translator.localize("label.name"),1,0,0);
-	//    addField(getNameTextField(),1,0,0);
-	//
-	//    addCaption(Translator.localize("label.stereotype"),
+        //    addCaption(Translator.localize("label.name"),1,0,0);
+        //    addField(getNameTextField(),1,0,0);
+        //
+        //    addCaption(Translator.localize("label.stereotype"),
         //        2,0,0);
-	//    addField(getStereotypeBox(),2,0,0);
-	//
-	//    addCaption(Translator.localize("label.namespace"),
+        //    addField(getStereotypeBox(),2,0,0);
+        //
+        //    addCaption(Translator.localize("label.namespace"),
         //        3,0,0);
-	//    addField(getNamespaceComboBox(),3,0,0);
-	//
-	//    addCaption(Translator.localize("label.modifiers"),
+        //    addField(getNamespaceComboBox(),3,0,0);
+        //
+        //    addCaption(Translator.localize("label.modifiers"),
         //        4,0,1);
-	//    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-	//    modifiersPanel.add(new UMLCheckBox(Translator.localize(
+        //    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+        //    modifiersPanel.add(new UMLCheckBox(Translator.localize(
         //        "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty(
         //        "isAbstract",Model.getFacade().COMPONENT,"isAbstract",
-	//        "setAbstract")));
-	//    modifiersPanel.add(new UMLCheckBox(Translator.localize(
+        //        "setAbstract")));
+        //    modifiersPanel.add(new UMLCheckBox(Translator.localize(
         //        "checkbox.final-lc"),this,new UMLReflectionBooleanProperty(
         //        "isLeaf",Model.getFacade().COMPONENT,"isLeaf","setLeaf")));
-	//    modifiersPanel.add(new UMLCheckBox(localize("root"),this,
+        //    modifiersPanel.add(new UMLCheckBox(localize("root"),this,
         //        new UMLReflectionBooleanProperty("isRoot",
-	//                                         Model.getFacade().COMPONENT,
-	//                                         "isRoot",
+        //                                         Model.getFacade().COMPONENT,
+        //                                         "isRoot",
         //                                         "setRoot")));
-	//    addField(modifiersPanel,4,0,0);
-	//
-	//    addCaption("Generalizations:",0,1,1);
-	//    addField(getGeneralizationScroll(),0,1,1);
-	//
-	//    addCaption("Specializations:",1,1,1);
-	//    addField(getSpecializationScroll(),1,1,1);
-	//
-	//    new PropPanelButton(this,buttonPanel,_navUpIcon,
+        //    addField(modifiersPanel,4,0,0);
+        //
+        //    addCaption("Generalizations:",0,1,1);
+        //    addField(getGeneralizationScroll(),0,1,1);
+        //
+        //    addCaption("Specializations:",1,1,1);
+        //    addField(getSpecializationScroll(),1,1,1);
+        //
+        //    new PropPanelButton(this,buttonPanel,_navUpIcon,
         //        Translator.localize("button.go-up"),
         //        "navigateUp",null);
-	//    new PropPanelButton(this,buttonPanel,_deleteIcon,localize(
+        //    new PropPanelButton(this,buttonPanel,_deleteIcon,localize(
         //        "Delete component"),"removeElement",null);
     }
 

@@ -100,7 +100,7 @@ public class FigInterface extends FigNodeModelElement
      * variable (rather than local to the method).<p>
      */
     private Object resident =
-        Model.getCoreFactory().createElementResidence();
+            Model.getCoreFactory().createElementResidence();
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -145,15 +145,15 @@ public class FigInterface extends FigNodeModelElement
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
 
-        operVec =
-            new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
+        operVec = new FigOperationsCompartment(
+                10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
         setStereotype(NotationHelper.getLeftGuillemot()
-		      + "Interface" + NotationHelper.getRightGuillemot());
+                + "Interface" + NotationHelper.getRightGuillemot());
         getStereotypeFigText().setExpandOnly(true);
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(1);
@@ -167,8 +167,8 @@ public class FigInterface extends FigNodeModelElement
         // thickness, so the rectangle does not need to be filled. Whether to
         // display is linked to whether to display the stereotype.
         stereoLineBlinder =
-	    new FigRect(11, 10 + STEREOHEIGHT, 58, 2,
-			Color.white, Color.white);
+                new FigRect(11, 10 + STEREOHEIGHT, 58, 2,
+                        Color.white, Color.white);
         stereoLineBlinder.setLineWidth(1);
         stereoLineBlinder.setVisible(true);
 
@@ -207,9 +207,9 @@ public class FigInterface extends FigNodeModelElement
         setOwner(node);
         enableSizeChecking(true);
         if (Model.getFacade().isAInterface(node)
-	        && (Model.getFacade().getName(node) != null)) {
+                && (Model.getFacade().getName(node) != null)) {
             getNameFig().setText(Model.getFacade().getName(node));
-	}
+        }
     }
 
     /**
@@ -258,7 +258,7 @@ public class FigInterface extends FigNodeModelElement
         addMenu.add(new ActionAddOperation());
         addMenu.add(new ActionAddNote());
         popUpActions.insertElementAt(addMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
@@ -268,7 +268,7 @@ public class FigInterface extends FigNodeModelElement
             showMenu.add(ActionCompartmentDisplay.showOperCompartment());
         }
         popUpActions.insertElementAt(showMenu,
-            popUpActions.size() - POPUP_ADD_OFFSET);
+                popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
@@ -313,17 +313,17 @@ public class FigInterface extends FigNodeModelElement
     public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
-	    isCheckSize()
-	    ? ((ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 2)
-	       * rect.height
-	       / getMinimumSize().height)
-	    : 0;
+                isCheckSize()
+                ? ((ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 2)
+                * rect.height
+                / getMinimumSize().height)
+                : 0;
         if (operVec.isVisible()) {
             if (!isVisible) {
                 damage();
                 Iterator it = operVec.getFigs().iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setVisible(false);
+                    ((Fig) (it.next())).setVisible(false);
                 }
                 operVec.setVisible(false);
                 setBounds(rect.x, rect.y, rect.width, rect.height - h);
@@ -332,7 +332,7 @@ public class FigInterface extends FigNodeModelElement
             if (isVisible) {
                 Iterator it = operVec.getFigs().iterator();
                 while (it.hasNext()) {
-		    ((Fig) (it.next())).setVisible(true);
+                    ((Fig) (it.next())).setVisible(true);
                 }
                 operVec.setVisible(true);
                 setBounds(rect.x, rect.y, rect.width, rect.height + h);
@@ -364,8 +364,8 @@ public class FigInterface extends FigNodeModelElement
 
         if (getStereotypeFig().isVisible()) {
             aSize.width =
-		Math.max(aSize.width,
-			 getStereotypeFig().getMinimumSize().width);
+                    Math.max(aSize.width,
+                            getStereotypeFig().getMinimumSize().width);
             aSize.height += STEREOHEIGHT;
         }
 
@@ -381,11 +381,11 @@ public class FigInterface extends FigNodeModelElement
 
             while (it.hasNext()) {
                 int elemWidth =
-		    ((FigText) it.next()).getMinimumSize().width + 2;
+                        ((FigText) it.next()).getMinimumSize().width + 2;
                 aSize.width = Math.max(aSize.width, elemWidth);
             }
             aSize.height +=
-		ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 1;
+                    ROWHEIGHT * Math.max(1, operVec.getFigs().size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for Interfaces
@@ -432,9 +432,9 @@ public class FigInterface extends FigNodeModelElement
      */
     public void mouseClicked(MouseEvent me) {
         super.mouseClicked(me);
-	if (me.isShiftDown()
+        if (me.isShiftDown()
                 && TargetManager.getInstance().getTargets().size() > 0) {
-	    return;
+            return;
         }
 
         int i = 0;
@@ -451,8 +451,8 @@ public class FigInterface extends FigNodeModelElement
             // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(operVec.getFigs());
             i = (v.size() - 1)
-		* (me.getY() - f.getY() - 3)
-		/ operVec.getHeight();
+                    * (me.getY() - f.getY() - 3)
+                    / operVec.getHeight();
             if (i >= 0 && i < v.size() - 1) {
                 me.consume();
                 f = (Fig) v.elementAt(i + 1);
@@ -484,12 +484,12 @@ public class FigInterface extends FigNodeModelElement
                 if (i != -1) {
                     if (key == KeyEvent.VK_UP) {
                         ft =
-			    (CompartmentFigText)
-			    getPreviousVisibleFeature(ft, i);
+                                (CompartmentFigText)
+                                getPreviousVisibleFeature(ft, i);
                     } else {
                         ft =
-			    (CompartmentFigText)
-			    getNextVisibleFeature(ft, i);
+                                (CompartmentFigText)
+                                getNextVisibleFeature(ft, i);
                     }
                     if (ft != null) {
                         ft.setHighlighted(true);
@@ -511,11 +511,16 @@ public class FigInterface extends FigNodeModelElement
      */
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
-        super.setEnclosingFig(encloser);
+
+        if (encloser == null
+                || (encloser != null
+                && !Model.getFacade().isAInstance(encloser.getOwner()))) {
+            super.setEnclosingFig(encloser);
+        }
         if (!(Model.getFacade().isAModelElement(getOwner())))
             return;
-        /* If this fig is not visible, do not adapt the UML model! 
-         * This is used for deleting. See issue 3042. */
+        /* If this fig is not visible, do not adapt the UML model!
+        * This is used for deleting. See issue 3042. */
         if  (!isVisible())
             return; 
         Object me = /*(MModelElement)*/ getOwner();
@@ -527,28 +532,28 @@ public class FigInterface extends FigNodeModelElement
                     && oldEncloser != encloser
                     && Model.getFacade().isAPackage(encloser.getOwner())) {
                 Model.getCoreHelper().setNamespace(me,
-					 /*(MNamespace)*/ encloser.getOwner());
+                        /*(MNamespace)*/ encloser.getOwner());
             }
 
             // If default Namespace is not already set
             if (Model.getFacade().getNamespace(me) == null
-		    && (TargetManager.getInstance().getTarget()
-		       instanceof UMLDiagram)) {
+                    && (TargetManager.getInstance().getTarget()
+                    instanceof UMLDiagram)) {
                 m = /*(MNamespace)*/
-		    ((UMLDiagram) TargetManager.getInstance().getTarget())
-		    .getNamespace();
+                        ((UMLDiagram) TargetManager.getInstance().getTarget())
+                        .getNamespace();
                 Model.getCoreHelper().setNamespace(me, m);
             }
         } catch (Exception e) {
             LOG.error("could not set package due to:" + e
-		      + "' at " + encloser, e);
+                    + "' at " + encloser, e);
         }
 
         // The next if-clause is important for the Deployment-diagram
         // it detects if the enclosing fig is a component, in this case
         // the ImplementationLocation will be set for the owning MInterface
         if (encloser != null
-	        && (Model.getFacade().isAComponent(encloser.getOwner()))) {
+                && (Model.getFacade().isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
             Model.getCoreHelper().setImplementationLocation(resident,
@@ -579,15 +584,15 @@ public class FigInterface extends FigNodeModelElement
             highlightedFigText.setHighlighted(true);
             try {
                 ParserDisplay.SINGLETON
-		    .parseOperationFig(cls,
-				       /*(MOperation)*/
-				       highlightedFigText.getOwner(),
-				       highlightedFigText.getText().trim());
+                        .parseOperationFig(cls,
+                                /*(MOperation)*/
+                                highlightedFigText.getOwner(),
+                                highlightedFigText.getText().trim());
                 ProjectBrowser.getInstance().getStatusBar().showStatus("");
             } catch (ParseException pe) {
                 String msg = "statusmsg.bar.error.parsing.operation";
-                Object[] args = {pe.getLocalizedMessage(), 
-                    new Integer(pe.getErrorOffset())};
+                Object[] args = {pe.getLocalizedMessage(),
+                                 new Integer(pe.getErrorOffset())};
                 ProjectBrowser.getInstance().getStatusBar().showStatus(
                         Translator.messageFormat(msg, args));
             }
@@ -657,12 +662,12 @@ public class FigInterface extends FigNodeModelElement
      */
     public String classNameAndBounds() {
         return super.classNameAndBounds()
-            + "operationsVisible=" + isOperationsVisible();
+                + "operationsVisible=" + isOperationsVisible();
     }
 
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
-     *         org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
+     * org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
      */
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         Object cls = /*(MClassifier)*/ getOwner();
@@ -672,7 +677,7 @@ public class FigInterface extends FigNodeModelElement
         new ActionAddOperation().actionPerformed(null);
         // TODO: in future version of GEF call getFigs returning array
         CompartmentFigText ft =
-            (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
+                (CompartmentFigText) new Vector(fg.getFigs()).lastElement();
         if (ft != null) {
             ft.startTextEditor(ie);
             ft.setHighlighted(true);
@@ -713,7 +718,7 @@ public class FigInterface extends FigNodeModelElement
                 || Model.getFacade().isAOperation(mee.getSource())
                 || Model.getFacade().isAParameter(mee.getSource())
                 || (mee.getSource() == getOwner()
-		&& mee.getPropertyName().equals("feature"))) {
+                && mee.getPropertyName().equals("feature"))) {
             updateOperations();
             damage();
         }
@@ -764,7 +769,7 @@ public class FigInterface extends FigNodeModelElement
 
         Rectangle oldBounds = getBounds();
         Dimension aSize =
-	    isCheckSize() ? getMinimumSize() : new Dimension(w, h);
+                isCheckSize() ? getMinimumSize() : new Dimension(w, h);
 
         int newW = Math.max(w, aSize.width);
         int newH = h;
@@ -796,7 +801,7 @@ public class FigInterface extends FigNodeModelElement
 
             extraEach = (newH - aSize.height) / displayedFigs;
             heightCorrection =
-		(newH - aSize.height) - (extraEach * displayedFigs);
+                    (newH - aSize.height) - (extraEach * displayedFigs);
         }
 
         // Now resize all sub-figs, including not displayed figs. Start by the
@@ -837,8 +842,8 @@ public class FigInterface extends FigNodeModelElement
         // Finally update the bounds of the operations box
 
         aSize =
-	    updateFigGroupSize(operVec, x, currentY,
-			       newW, newH + y - currentY);
+                updateFigGroupSize(operVec, x, currentY,
+                        newW, newH + y - currentY);
 
         // set bounds of big box
 
@@ -864,8 +869,8 @@ public class FigInterface extends FigNodeModelElement
             return;
         }
 
-        Fig operPort =
-            ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN)).getBigPort();
+        Fig operPort = ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN))
+            .getBigPort();
 
         int xpos = operPort.getX();
         int ypos = operPort.getY();
@@ -877,52 +882,52 @@ public class FigInterface extends FigNodeModelElement
             Vector figs = new Vector(operVec.getFigs());
             CompartmentFigText oper;
             while (iter.hasNext()) {
-        	Object behavioralFeature =
-        	    /*(MBehavioralFeature)*/ iter.next();
-        	// update the listeners
-        	Model.getPump().removeModelEventListener(this,
-                    behavioralFeature);
-        	Model.getPump().addModelEventListener(this,
-                    behavioralFeature);
-        	if (figs.size() <= ocounter) {
-        	    oper =
-        		new FigFeature(xpos + 1,
-        			       ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-        			       0,
-        			       ROWHEIGHT - 2,
-        			       operPort);
-        	    // bounds not relevant here
-        	    oper.setFilled(false);
-        	    oper.setLineWidth(0);
-        	    oper.setFont(getLabelFont());
-        	    oper.setTextColor(Color.black);
-        	    oper.setJustification(FigText.JUSTIFY_LEFT);
-        	    oper.setMultiLine(false);
-        	    operVec.addFig(oper);
-        	} else {
-        	    oper = (CompartmentFigText) figs.elementAt(ocounter);
-        	}
-        	oper.setText(Notation.generate(this, behavioralFeature));
-        	oper.setOwner(behavioralFeature);
-        	// underline, if static
-        	oper.setUnderline(Model.getScopeKind().getClassifier()
-        			  .equals(Model.getFacade()
-        				  .getOwnerScope(behavioralFeature)));
-        	// italics, if abstract
-        	//oper.setItalic(((MOperation)bf).isAbstract());
-        	//// does not properly work (GEF bug?)
-        	if (Model.getFacade().isAbstract(behavioralFeature)) {
-        	    oper.setFont(getItalicLabelFont());
-        	} else {
-        	    oper.setFont(getLabelFont());
-        	}
-        	ocounter++;
+                Object behavioralFeature =
+                        /*(MBehavioralFeature)*/ iter.next();
+                // update the listeners
+                Model.getPump().removeModelEventListener(this,
+                        behavioralFeature);
+                Model.getPump().addModelEventListener(this,
+                        behavioralFeature);
+                if (figs.size() <= ocounter) {
+                    oper =
+                            new FigFeature(xpos + 1,
+                                    ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+                                    0,
+                                    ROWHEIGHT - 2,
+                                    operPort);
+                    // bounds not relevant here
+                    oper.setFilled(false);
+                    oper.setLineWidth(0);
+                    oper.setFont(getLabelFont());
+                    oper.setTextColor(Color.black);
+                    oper.setJustification(FigText.JUSTIFY_LEFT);
+                    oper.setMultiLine(false);
+                    operVec.addFig(oper);
+                } else {
+                    oper = (CompartmentFigText) figs.elementAt(ocounter);
+                }
+                oper.setText(Notation.generate(this, behavioralFeature));
+                oper.setOwner(behavioralFeature);
+                // underline, if static
+                oper.setUnderline(Model.getScopeKind().getClassifier()
+                        .equals(Model.getFacade()
+                        .getOwnerScope(behavioralFeature)));
+                // italics, if abstract
+                //oper.setItalic(((MOperation)bf).isAbstract());
+                //// does not properly work (GEF bug?)
+                if (Model.getFacade().isAbstract(behavioralFeature)) {
+                    oper.setFont(getItalicLabelFont());
+                } else {
+                    oper.setFont(getLabelFont());
+                }
+                ocounter++;
             }
             if (figs.size() > ocounter) {
-        	//cleanup of unused operation FigText's
-        	for (int i = figs.size() - 1; i >= ocounter; i--) {
-        	    operVec.removeFig((Fig) figs.elementAt(i));
-        	}
+                //cleanup of unused operation FigText's
+                for (int i = figs.size() - 1; i >= ocounter; i--) {
+                    operVec.removeFig((Fig) figs.elementAt(i));
+                }
             }
         }
         Rectangle rect = getBounds();
@@ -940,8 +945,8 @@ public class FigInterface extends FigNodeModelElement
     protected void updateStereotypeText() {
         Rectangle rect = getBounds();
         setStereotype(NotationHelper.getLeftGuillemot()
-		      + "Interface"
-		      + NotationHelper.getRightGuillemot());
+                + "Interface"
+                + NotationHelper.getRightGuillemot());
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
 

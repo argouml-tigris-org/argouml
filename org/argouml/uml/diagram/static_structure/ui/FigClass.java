@@ -110,6 +110,12 @@ public class FigClass extends FigNodeModelElement
      */
     private boolean newlyCreated = false;
 
+    /**
+     * <p>Manages residency of a class within a component on a deployment
+     *   diagram.</p>
+     */
+    private Object resident =
+            Model.getCoreFactory().createElementResidence();
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -912,6 +918,31 @@ public class FigClass extends FigNodeModelElement
         // Whatever happened we are no longer newly created, so clear the
         // flag. Then set the bounds for the rectangle we have defined.
         newlyCreated = false;
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setEnclosingFig(Fig encloser) {
+        if (encloser == null
+                || (encloser != null
+                && !Model.getFacade().isAInstance(encloser.getOwner()))) {
+            super.setEnclosingFig(encloser);
+        }
+        if (!(Model.getFacade().isAModelElement(getOwner())))
+            return;
+        if (encloser != null
+                && (Model.getFacade().isAComponent(encloser.getOwner()))) {
+            Object component = /*(MComponent)*/ encloser.getOwner();
+            Object in = /*(MInterface)*/ getOwner();
+            Model.getCoreHelper()
+                    .setImplementationLocation(resident, component);
+            Model.getCoreHelper().setResident(resident, in);
+        } else {
+            Model.getCoreHelper().setImplementationLocation(resident, null);
+            Model.getCoreHelper().setResident(resident, null);
+        }
+
     }
 
     /**

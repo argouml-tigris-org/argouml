@@ -3329,4 +3329,18 @@ class CoreHelperImpl implements CoreHelper {
         throw new IllegalArgumentException("handle: " + handle
                 + " or visibility: " + visibility);
     }
+
+    /**
+     * @param handle Component
+     * @param node Node
+     */
+    public void removeDeploymentLocation(Object handle, Object node) {
+        if (handle instanceof MComponent && node instanceof MNode) {
+            ((MComponent) handle).removeDeploymentLocation((MNode) node);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or node: " + node);
+    }
+
 }

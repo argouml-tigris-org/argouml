@@ -1174,4 +1174,10 @@ public interface CoreHelper {
      * @param visibility is the visibility
      */
     void setVisibility(Object handle, Object visibility);
+
+    /**
+     * @param handle Component
+     * @param node Node
+     */
+    public void removeDeploymentLocation(Object handle, Object node);
 }
