@@ -53,13 +53,14 @@ import org.argouml.application.security.ArgoJarClassLoader;
  */
 public class ModuleLoader {
 
+    /** Class file suffix */
     public static final String CLASS_SUFFIX = ".class";
 
     // String mModulePropertyFile=null;
     private static ModuleLoader SINGLETON = null;
 
-    private ArrayList mModuleClasses = null;
-    private Vector mMenuActionList = null;
+    private ArrayList _moduleClasses = null;
+    private Vector _menuActionList = null;
     private static Hashtable _singletons = null;
     private static String argoRoot = null;
     private static String argoHome = null;
@@ -68,8 +69,8 @@ public class ModuleLoader {
      */
     private ModuleLoader() {
         _singletons = new Hashtable();
-        mModuleClasses = new ArrayList();
-        mMenuActionList = new Vector();
+        _moduleClasses = new ArrayList();
+        _menuActionList = new Vector();
 
 	// Use a little trick to find out where Argo is being loaded from.
         String extForm = 
@@ -107,6 +108,10 @@ public class ModuleLoader {
 	}
     }
 
+    /** Get the singleton instance
+     * 
+     * @return the module loader singleton
+     */
     public static ModuleLoader getInstance() {
         if (SINGLETON == null) {
             SINGLETON = new ModuleLoader();
@@ -135,20 +140,18 @@ public class ModuleLoader {
     public void loadModulesFromPredefinedLists() {
         String fs = System.getProperty("file.separator");
 
-	String[] path = {
-	    System.getProperty("user.dir") + fs + ArgoModule.MODULEFILENAME,
-	    System.getProperty("user.dir") + fs
-	    + ArgoModule.MODULEFILENAME_ALTERNATE,
-
-	    System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME,
-	    System.getProperty("user.home") + fs 
-	    + ArgoModule.MODULEFILENAME_ALTERNATE,
-
-	    System.getProperty("java.home") + fs + "lib" + fs
-	    + ArgoModule.MODULEFILENAME,
-	    System.getProperty("java.home") + fs + "lib" + fs
-	    + ArgoModule.MODULEFILENAME_ALTERNATE
-	};
+        String[] path =
+        {
+            System.getProperty("user.dir") + fs + ArgoModule.MODULEFILENAME,
+            System.getProperty("user.dir") + fs
+                + ArgoModule.MODULEFILENAME_ALTERNATE,
+            System.getProperty("user.home") + fs + ArgoModule.MODULEFILENAME,
+            System.getProperty("user.home") + fs
+                + ArgoModule.MODULEFILENAME_ALTERNATE,
+            System.getProperty("java.home") + fs + "lib" + fs
+                + ArgoModule.MODULEFILENAME,
+            System.getProperty("java.home") + fs + "lib" + fs
+                + ArgoModule.MODULEFILENAME_ALTERNATE };
 
 	// Get all of the file paths.  Check if the file exists,
 	// is a file (not a directory), and is readable.
@@ -286,12 +289,18 @@ public class ModuleLoader {
 	}
     }
 
+    /** Load modules from a jar file
+     * 
+     * @param filename jar file name to load from
+     */
     public void loadModulesFromJar(String filename) {
 	if (filename.toLowerCase().endsWith(".jar")) {
 	    processJarFile(getClass().getClassLoader(), new File(filename));
 	}
     }
 
+    /** Load modules from jars in the class path
+     */
     public void loadModulesFromClassPathJars() {
 	StringTokenizer st;
 	st = new StringTokenizer(System.getProperty("java.class.path"),
@@ -310,15 +319,26 @@ public class ModuleLoader {
     }
 
     /** Load modules listed in Argo resources.
+     * 
+     * @param loaderClass class to retrieve classloader from
+     * @param rsrcName resource name to load
+     * @return false if the resource is not found
      */
-    public boolean loadInternalModules(Class fromClass, String rsrcName) {
+    public boolean loadInternalModules(Class loaderClass, String rsrcName) {
 	ArgoModule.cat.info("Loading modules from " + rsrcName);
 	// Load the internal modules
 	InputStream is =
-	    fromClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
+	    loaderClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
 	return (is == null) ? false : loadModules(is, rsrcName);
     }
 
+    /** Load modules from a property file.
+     * 
+     * The load may be successful even if no modules are loaded.
+     * 
+     * @param moduleFile name of file
+     * @return false if the load succeeded
+     */
     public boolean loadModulesFromFile(String moduleFile) {
 	Argo.log.info("Loading modules from " + moduleFile);
         try {
@@ -331,7 +351,7 @@ public class ModuleLoader {
     }
 
     private boolean keyAlreadyLoaded(String key) {
-        ListIterator iterator = mModuleClasses.listIterator();
+        ListIterator iterator = _moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
@@ -373,7 +393,7 @@ public class ModuleLoader {
                 if (aModule.initializeModule()) {
                     Argo.log.info("Loaded Module: " +
 				  aModule.getModuleName());
-                    mModuleClasses.add(aModule);
+                    _moduleClasses.add(aModule);
 		    fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    if (aModule instanceof ArgoSingletonModule) {
 			ArgoSingletonModule sModule =
@@ -398,6 +418,15 @@ public class ModuleLoader {
         }
     }
 
+    /** Load modules from an input stream.
+     * 
+     * The load may be successful even if no modules are loaded.
+     * 
+     * @param is input stream in property file format
+     * @param filename the input stream is from (for reporting purposes)
+     * 
+     * @return false if the load succeeded
+     */
     public boolean loadModules(InputStream is, String filename) {
         try {
 	    LineNumberReader lnr =
@@ -444,9 +473,10 @@ public class ModuleLoader {
         return false;
     }
 
+    /** Shut down all modules */
     public void shutdown() {
         try {
-            ListIterator iterator = mModuleClasses.listIterator();
+            ListIterator iterator = _moduleClasses.listIterator();
             while (iterator.hasNext()) {
                 Object obj = iterator.next();
                 if (obj instanceof ArgoModule) {
@@ -463,9 +493,15 @@ public class ModuleLoader {
 
     }
 
+    /** Process all of the modules to add popup actions for the
+     * given context.
+     * 
+     * @param popUpActions vector of actions
+     * @param context to filter by
+     */
     public void addModuleAction(Vector popUpActions, Object context) {
         try {
-            ListIterator iterator = mModuleClasses.listIterator();
+            ListIterator iterator = _moduleClasses.listIterator();
             while (iterator.hasNext()) {
                 Object obj = iterator.next();
                 if (obj instanceof ArgoModule) {
@@ -481,12 +517,22 @@ public class ModuleLoader {
         }
     }
 
+    /** Get the list of modules
+     * 
+     * @return the list of modules.
+     */
     public ArrayList getModules() {
-	return mModuleClasses;
+        // TODO change signature to return Collection
+	return _moduleClasses;
     }
 
+    /** Locates a module by key.
+     * 
+     * @param key module identifier to find
+     * @return a module object or null if not found.
+     */
     public Object getModule(String key) {
-        ListIterator iterator = mModuleClasses.listIterator();
+        ListIterator iterator = _moduleClasses.listIterator();
         while (iterator.hasNext()) {
             Object obj = iterator.next();
             if (obj instanceof ArgoModule)
@@ -497,8 +543,9 @@ public class ModuleLoader {
     }
 
     /** Activate a loaded module.
-     *  @return true if the module was activated,
-     *          false if not or if it was already active.
+     * @param module to activate
+     * @return true if the module was activated,
+     *         false if not or if it was already active.
      */
     public boolean activateModule(ArgoModule module) {
         return false;
@@ -506,6 +553,7 @@ public class ModuleLoader {
 
     /** Gets the current singleton of the module type requested.
      *
+     * @param moduleClass the class of the module singleton
      * @return null if there is some problem.
      */
     public static ArgoModule getCurrentSingleton(Class moduleClass) {
@@ -523,6 +571,10 @@ public class ModuleLoader {
      *  Singletons may refuse to be activated.  In this case,
      *  requestNewSingleton returns false and does not deactivate the
      *  current singleton.
+     * 
+     * @param modClass class which identifies the singleton
+     * @param moduleInstance the module to make the singleton
+     * @return true if the singleton is activated
      */
     public static boolean requestNewSingleton(Class modClass,
 					      ArgoSingletonModule
@@ -721,8 +773,16 @@ public class ModuleLoader {
 	return results;
     }
 
+    /** Returns argo home
+     * 
+     * @return the argo home directory
+     */
     public String getArgoHome() { return argoHome; }
 
+    /** Returns argo root
+     * 
+     * @return the argo root directory
+     */
     public String getArgoRoot() { return argoRoot; }
 
     private boolean classImplements(Object implementor, Class implemented) {
