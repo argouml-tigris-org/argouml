@@ -111,6 +111,9 @@ public class CrConsiderSingleton extends CrUML {
         // ... and not incompletely imported
         if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
 
+        	// abstract classes are hardly ever singletons
+        if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
+        
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
