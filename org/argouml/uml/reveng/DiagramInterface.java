@@ -154,6 +154,15 @@ public class DiagramInterface {
 	    }
 	}
     }
+    
+    /**
+     *Check if this diagram already exists in the project.
+     *@param diagram name
+     *@return true if diagram exists in project
+     */
+    public boolean isDiagramInProject(String name) {
+	return ((ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml")) != null);
+    }
 
     /**
      * Create a diagram name from a package name
@@ -185,7 +194,8 @@ public class DiagramInterface {
 
 	// Check if this diagram already exists in the project
 	ProjectMember m;
-	if((m = ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
+	if( isDiagramInProject(name) ) {
+	    m = ProjectManager.getManager().getCurrentProject().findMemberByName( getDiagramName(name) + ".pgml");
 
 	    // The diagram already exists in this project. Select it as the current target.
 	    // Andreas: These lines did cost me a few hours of debugging.
