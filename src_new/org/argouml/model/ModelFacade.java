@@ -518,6 +518,10 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+    
+    public static boolean isTop(Object handle) {
+        return isACompositeState(handle) && ((MCompositeState)handle).getStateMachine() != null;
+    }
 
     /** Recognizer for type.
      *
@@ -691,15 +695,8 @@ public class ModelFacade {
      * @returns the namespace (or null)
      */
     public static Object getNamespace(Object handle) {
-        if (handle == null)
-            return null;
-        if (handle instanceof MModel)
-            return handle;
-        if (handle instanceof MSubsystem)
-            return handle;
         if (handle instanceof MModelElement)
-            return getNamespace(((MModelElement)handle).getNamespace());
-
+            return ((MModelElement)handle).getNamespace();
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
