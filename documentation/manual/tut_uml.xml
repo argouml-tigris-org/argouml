@@ -893,14 +893,18 @@ link on the &argouml;
         </mediaobject></screenshot>
       </figure>
 
-      <para>At the top of screen is a <emphasis>menu bar</emphasis>. The bulk
+      <para>
+At the top of screen is a <emphasis>menu bar</emphasis>.
+Under that there are Toolbars.
+Then the bulk
         of the window comprises four sub-windows or
         <emphasis>Panes</emphasis>. Clockwise from top left these are the
         <emphasis>Explorer</emphasis>, <emphasis>Editing
         Pane</emphasis>, <emphasis>Details Pane</emphasis> and
 <emphasis>To-Do Pane</emphasis>.
-At the top of the Editing Pane is a
-        <emphasis>tool bar</emphasis>. Finally at the bottom of the window is
+At the top of the Editing Pane is another <emphasis>toolbar</emphasis>
+called the Edit Pane Toolbar.
+Finally at the bottom of the window is
         a <emphasis>status bar</emphasis>.</para>
 
       <!-- Subsection describing the Explorer -->
@@ -908,22 +912,26 @@ At the top of the Editing Pane is a
       <sect3>
         <title>The Explorer</title>
 
-        <para><xref linkend="fig.tut.navoverview"/> shows the Explorer.</para>
+        <para>
+<xref linkend="fig.tut.exploreroverview"/> shows the Explorer.
+</para>
 
-        <figure id="fig.tut.navoverview" float="1">
+        <figure id="fig.tut.exploreroverview" float="1">
           <title>Overview of the Explorer</title>
 
           <screenshot><mediaobject>
             <imageobject>
               <imagedata format="GIF" align="center"
-                         fileref="images/tutorial/navoverview.gif"/>
+                         fileref="images/tutorial/exploreroverview.gif"/>
             </imageobject>
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the explorer, where you can navigate through your
-          model. This pane list all the classes, interfaces and data types of
-          your model as a tree view.</para>
+        <para>
+This is the explorer, where we can navigate through our model.
+This pane list all the classes, interfaces and data types of
+our model as a tree view.
+</para>
       </sect3>
 
       <!-- Subsection describing the Editing Pane -->
@@ -945,9 +953,10 @@ At the top of the Editing Pane is a
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the Editing Pane, where you can edit your
-          diagram. This pane lets the user edit the diagram in a graphical
-          way.</para>
+        <para>
+This is the Editing Pane, where we can edit our diagram in 
+a graphical way.
+</para>
       </sect3>
 
       <!-- Subsection describing the Details Pane -->
@@ -969,9 +978,10 @@ At the top of the Editing Pane is a
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the Details Pane, that allows you to edit various details
-          of your model. The Details Pane lets the user edit various details of
-          the model.</para>
+        <para>
+This is the Details Pane, 
+that allows us to edit various details of our model.
+</para>
       </sect3>
 
       <!-- Subsection describing the To-Do Pane -->
@@ -1004,62 +1014,170 @@ of the tree.
       <!-- More about the Menu Bar -->
 
       <sect3>
-        <title>The Menu Bar</title>
+        <title>The Menu Bar and Toolbars</title>
+	<indexterm>
+	  <primary>Menu Bar</primary>
+	</indexterm>
+	<indexterm>
+	  <primary>Toolbars</primary>
+	</indexterm>
 
-        <para>The menu bar gives access to all the main features of
-          &argouml;. As is conventional, menu options that are not available
+        <para>
+The menu bar and toolbars gives access to all the main features of
+&argouml;. 
+As is conventional, menu options and toolbar options that are not available
           are grayed out and menu items that invoke a dialog box are followed
           by an ellipsis (&hellip;).</para>
 
         <itemizedlist>
-          <listitem><para><emphasis>File</emphasis> menu. This allows you to
+          <listitem>
+	    <indexterm>
+	      <primary>File menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>File</emphasis> menu. 
+This allows you to
             create a new project, save and open projects, import sources from
             elsewhere, load and save the model to and from a database, print
             the model, save the graphics of the model, save the configuration
             of the model and exit &argouml;</para></listitem>
 
-          <listitem><para><emphasis>Edit</emphasis> menu. This allows you to
+          <listitem>
+	    <indexterm>
+	      <primary>Edit menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Edit</emphasis> menu. 
+This allows you to
             select one or more UML items on a diagram, undo and redo edits,
             remove items from diagrams or the whole model, empty the trash and
             change settings.</para></listitem>
 
-          <listitem><para><emphasis>View</emphasis> menu. This allows you to
+          <listitem>
+	    <indexterm>
+	      <primary>View menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>View</emphasis> menu. 
+This allows you to
             switch between diagrams, find artifacts in the model, zoom in a
             diagram, select a particular diagram representation (although at
             present there is only one), select a particular tab in the details
             menu, adjust the grid, view buttons on a selection, and switch
             between UML and Java notation.</para></listitem>
 
-          <listitem><para><emphasis>Create Diagram</emphasis> menu. This allows
+          <listitem>
+	    <indexterm>
+	      <primary>Create Diagram menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Create Diagram</emphasis> menu. 
+This allows
             you to create any one of the seven UML diagram types (class, use
             case, state, activity, collaboration, deployment and sequence)
             supported by &argouml;.</para>
 
-          <warning><para>State and activity diagrams can only be created when
+	    <para>
+State and activity diagrams can only be created when
             a class or actor is selected, even though the relevant menu entries
             are <emphasis>not</emphasis> grayed out if this has not been done
             (nothing will happen under this
-            circumstance).</para></warning></listitem>
+circumstance).
+</para>
+	  </listitem>
 
-          <listitem><para><emphasis>Arrange</emphasis> menu. This allows you to
+          <listitem>
+	    <indexterm>
+	      <primary>Arrange menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Arrange</emphasis> menu.
+This allows you to
             align, distribute, reorder and nudge artifacts on a diagram and set
             the layout strategy for the diagram.</para></listitem>
 
-          <listitem><para><emphasis>Generation</emphasis> menu. This allows you
+          <listitem>
+	    <indexterm>
+	      <primary>Generation menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Generation</emphasis> menu. 
+This allows you
             to generate Java code for selected classes or all
             classes.</para></listitem>
 
-          <listitem><para><emphasis>Critique</emphasis> menu. This allows you
+          <listitem>
+	    <indexterm>
+	      <primary>Critique menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Critique</emphasis> menu. 
+This allows you
             to toggle the auto-critique on and off, set the level of importance
             of design issues and design goals and browse the critics
             available.</para></listitem>
 
-          <listitem><para><emphasis>Tools</emphasis> menu. This menu appears to
-            be permanently grayed out.</para></listitem>
+          <listitem>
+	    <indexterm>
+	      <primary>Tools menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Tools</emphasis> menu. 
+This menu is permanently grayed out unless there is some tool available
+in your version of &argouml;.
+</para>
+	  </listitem>
 
-          <listitem><para><emphasis>Help</emphasis> menu. This menu gives
+          <listitem>
+	    <indexterm>
+	      <primary>Help menu</primary>
+	    </indexterm>
+	    <para>
+<emphasis>Help</emphasis> menu. 
+This menu gives
             access to details of those who authored the system, and where
             additional help may be found.</para></listitem>
+
+	  <listitem>
+	    <indexterm>
+	      <primary>File Toolbar</primary>
+	    </indexterm>
+	    <para>
+File Toolbar.
+This toolbar contains some of the tools from the File menu.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <indexterm>
+	      <primary>Edit Toolbar</primary>
+	    </indexterm>
+	    <para>
+Edit Toolbar.
+This toolbar contains some of the tools from the Edit menu.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <indexterm>
+	      <primary>View Toolbar</primary>
+	    </indexterm>
+	    <para>
+View Toolbar.
+This toolbar contains some of the tools from the View menu.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <indexterm>
+	      <primary>Create Diagram Toolbar</primary>
+	    </indexterm>
+	    <para>
+Create Diagram Toolbar.
+This toolbar contains some of the tools from the Create Diagram menu.
+</para>
+	  </listitem>
+
         </itemizedlist>
       </sect3>
 
@@ -1086,7 +1204,8 @@ of the tree.
             the item is an artifact in the explorer or the editing pane it
             will be highlighted.</para>
 
-          <para>In the case of the tool bar of the editing pane, that artifact is
+          <para>
+In the case of the Edit Pane Toolbar, that artifact is
             selected as the next to be added to the diagram (but only
             once&mdash;see double clicking for adding multiple artifacts). The
             adding to the diagram is achieved by moving the mouse to the
@@ -1094,7 +1213,8 @@ of the tree.
 
           <listitem><para><emphasis>&Button1; double click</emphasis>. This
             action is identical to a single click <emphasis>except</emphasis>,
-            when it is used with the editing pane tool bar. Under these
+when it is used with the edit pane toolbar. 
+Under these
             circumstances the selected artifact will be added multiple times to
             the drawing area, once for each further button click, until the
             tool is again selected or another tool chosen.</para></listitem>
@@ -1137,7 +1257,8 @@ of the tree.
       <sect3>
         <title>Drawing Diagrams</title>
 
-        <para>In general diagrams are drawn by using the editing pane tool bar
+        <para>
+In general diagrams are drawn by using the edit pane toolbar
           to select the artifact desired and clicking in the diagram at the
           position required as described in <xref linkend="s3.tut.mouse"/>. That
           section also explains the use of the mouse for re-sizing
@@ -1149,7 +1270,8 @@ of the tree.
           menu (&button2;) over that artifact, and then clicking
           &button1; at the desired location on the diagram.</para>
 
-        <para>As well as UML artifacts, the tool bar provides for general drawing
+        <para>
+As well as UML artifacts, the Edit pane toolbar provides for general drawing
           artifacts (rectangles, circles, lines, polygons, curves, text) to
           provide supplementary information on diagrams.</para>
 
@@ -1175,12 +1297,14 @@ of the tree.
               faster.</para>
           </sect5>
 
-          <!-- Using the tool bar -->
+          <!-- Using the toolbar -->
 
           <sect5>
-            <title>Using the Tool bar</title>
+            <title>Using the Edit Pane Toolbar</title>
 
-            <para>Click on the broom button on the tool bar. Move your mouse to
+            <para>
+Click on the broom button on the toolbar. 
+Move your mouse to
              the diagram pane, right click and hold. Now moving your mouse will
              align elements.</para>
           </sect5>
@@ -1220,23 +1344,29 @@ of the tree.
             </mediaobject></screenshot>
           </figure>
 
-          <para>The main window's client area, below the menu bar, is
+          <para>
+The main window's client area, below the menu and toolbar, is
             subdivided into four panes. Starting at the leftmost top pane, and
             working around the clock, you can see the Explorer, showing
-            an explorer-like tree view of your UML model, the Editing Pane with
-            its tool bar, two scroll bars and gray drawing area, the Details
+a tree view of your UML model, 
+the Editing Pane with its toolbar, 
+two scroll bars and gray drawing area, 
+the Details
             Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
             view of the to do items, 
 ranked in various ways selected via the drop down list 
 at the top of the pane.
 </para>
 
+<!-- The title bar does not seem to contain the project name anymore.
+     Where is it? Issue: 493
           <para>Notice that the title bar says
             <literal>&argouml;&nbsp;-&nbsp;Untitled</literal>. The
             <quote>Untitled</quote> means that the current project has not yet
             been saved. After saving the current project, the
             <quote>Untitled</quote> will be replaced by the file name of the
             current project.</para>
+ -->
 
           <para>Each time &argouml; is started up without a project file as an
             argument, a new blank project is created. This project contains a
@@ -1257,7 +1387,7 @@ at the top of the pane.
         </sect4>
 
         <sect4>
-          <title>Saving a project - the file menu </title>
+          <title>Saving a project - The File Menu</title>
 
           <para>First, let's save the model in it's current (empty and unnamed)
             state. On the menu bar, click on <literal>File</literal>, then on
@@ -1282,7 +1412,8 @@ at the top of the pane.
           <para>Please notice that the File menu contains the usual options for
             creating a new project, for opening an existing project, for saving
             a project under a new name, for printing the currently displayed
-            diagram (which of course is empty at this moment), for saving the
+diagram,
+for saving the
             currently displayed diagram as a file, and for program Exit.</para>
 
           <para>Some of these menu commands can be invoked by pressing key
@@ -1297,17 +1428,6 @@ at the top of the pane.
             limitations, even for modeling quite large and complex
             systems.</para>
 
-          <para>Also take notice of a number of disabled commands, grayed out
-            on the drop-down menu. First, the
-            <literal>Save&nbsp;Project</literal> command (Ctrl-S), which
-            obviously cannot be executed since we haven't entered a file name
-            yet to store our project. Second, you can see the two commands
-            <literal>Load&nbsp;model&nbsp;from&nbsp;DB</literal> and
-            <literal>Store&nbsp;model&nbsp;to&nbsp;DB</literal>. This is a
-            unique feature of &argouml; that allows you to save and retrieve
-            your model into a relational database. Currently, the only database
-            supported is MySQL, but support for other database engines will
-            undoubtedly be introduced in the future.</para>
         </sect4>
 
         <!-- Choosing the file to save as -->
@@ -1339,7 +1459,11 @@ at the top of the pane.
           <para>The main, outstanding feature, is the scrollable folders list
             in the center of the dialog. By using the scroll bar on the right,
             you can move up and down in the list of folders contained inside
-            the currently selected folder.</para>
+the currently selected folder.
+If it is scrollable or not depends on the amount of files and folders shown 
+and also how they are shown.
+If everything fits the window is not scrollable as seen in the picture.
+</para>
 
           <para>Double-clicking on one of the displayed folders navigates you
             into that folder, allowing you to quickly navigate down into the
@@ -1348,8 +1472,9 @@ at the top of the pane.
           <para>Notice that only folder names, and no file names are displayed
             in the scrollable area. Indeed, the dialog is currently set up in
             order to show only &argouml; project files with an extension of
-            <literal>.argo</literal>, as can be seen on the lower drop-down
-            control labeled <literal>Files&nbsp;of&nbsp;type:</literal>.</para>
+<literal>.zargo</literal>, as can be seen on the lower drop-down
+control labeled <literal>Files&nbsp;of&nbsp;Type:</literal>.
+</para>
 
           <para>Also notice that the currently selected folder's name is
             displayed in the upper drop-down control labeled
@@ -1369,87 +1494,61 @@ at the top of the pane.
               down-arrow displays a tree view of the folder hierarchy,
               allowing you to navigate quickly up the hierarchy, and at
               the same time to quickly determine where in the hierarchy
-              you are currently positioned.</para></listitem>
+we are currently positioned.
+</para>
+	    </listitem>
 
             <listitem><para>
               <guiicon>
                 <inlinegraphic format="GIF"
                   fileref="images/tutorial/guifolderupicon.gif"/>
-              </guiicon> The Folder-Up icon. Clicking on this icon will bring
-              you to the parent folder of the current folder.</para></listitem>
+              </guiicon>
+The Folder-Up icon. 
+Clicking on this icon will bring us to 
+the parent folder of the current folder.
+</para>
+	    </listitem>
 
             <listitem><para>
               <guiicon>
                 <inlinegraphic format="GIF"
                   fileref="images/tutorial/guihomefoldericon.gif"/>
               </guiicon> The Home Folder icon. Clicking on this icon will bring
-              you to your home directory</para></listitem>
+us to our home directory.
+</para>
+	    </listitem>
 
             <listitem><para>
               <guiicon>
                 <inlinegraphic format="GIF"
                   fileref="images/tutorial/guinewfoldericon.gif"/>
               </guiicon> The New Folder icon. Clicking on this icon will create
-                a new folder called "New Folder" under the current folder. (I
-                haven't been able to create a folder with a specific name,
-                using this button. This forces me to use my file manager to
-                rename the newly created folder. Any suggestions on how this
-                can be done would be welcome)</para></listitem>
+a new folder called "New Folder" under the current folder.
+After the folder is created selecting it an clicking in the name
+allows us to select the name of our choice.
+</para>
+	    </listitem>
 
             <listitem><para>
               <guiicon>
                 <inlinegraphic format="GIF"
                   fileref="images/tutorial/guifolderspresentationicon.gif"/>
-                </guiicon> The Folders Presentation Icon. This button is not
-                functional at this time.</para></listitem>
+                </guiicon>
+The Folders Presentation Icon.
+</para>
+	    </listitem>
           </itemizedlist>
 
-          <para>OK, now navigate to the directory where you want to save your
+          <para>
+OK, now we navigate to the directory where we want to save our
             &argouml; project, fill in the <literal>File&nbsp;name:</literal>
             with an appropriate name, such as <quote>FirstProject</quote> and
             click on the <literal>Save</literal> button.</para>
-        </sect4>
-
-        <!-- A little bit about file formats -->
-
-        <sect4>
-          <title>File formats used by &argouml;</title>
-
-          <para>Notice that the file name of your project
-            (<literal>FirstProject.argo</literal>) is now reflected in the
-            title bar of &argouml;. If you select the java console, you will
-            notice that three files have been written to the hard disk.</para>
-
-          <itemizedlist>
-            <listitem><para>A file <literal>FirstProject.xmi</literal>. This is
-            a representation of your (still empty) model in <emphasis>XML
-            Metadata Interchange (XMI)</emphasis> format. If you want to know
-            more about XMI, you can start at the following
-            <ulink url="http://www.oasis-open.org/cover/xmi.html">rather
-              extensive XMI page</ulink>. In short, XMI allows your models
-            created with &argouml; to be used by other applications. That is,
-            only the contents of your model, without the graphic representation
-            of the diagrams.</para></listitem>
-
-            <listitem><para>A file
-              <literal>FirstProject_classdiagram1.pgml</literal>, containing
-              the graphical representation of the (still empty) class diagram
-              <literal>classdiagram1</literal> in Precision Graphics Markup
-              Language (PGML) format. PGML is probably the first proposal for
-              sending vector graphics over the Web. You can find more
-              information at the
-              <ulink url="http://www.w3.org/TR/1998/NOTE-PGML">PGML
-                specification page</ulink>.</para></listitem>
-
-            <listitem><para>A file
-              <literal>FirstProject_usecasediagram1.pgml</literal>, containing
-              a graphical representation of the (still empty) use case diagram
-              <literal>usecasediagram1</literal>.</para></listitem>
-          </itemizedlist>
 
           <para>You have now an active project called
             <literal>FirstProject</literal>, connected to the file
-            <literal>FirstProject.argo</literal>.</para>
+<literal>FirstProject.zargo</literal>.
+</para>
         </sect4>
       </sect3>
     </sect2>
@@ -1482,9 +1581,16 @@ at the top of the pane.
             file using any old generic <application>ZIP</application>
             application. Give it a try and look into the magic of Argo.</para>
 
-          <warning><para>Be aware that double clicking will launch a
-            <literal>ZIP utility</literal>, if one is installed, and NOT
-            Argo.</para></warning>
+          <warning>
+	    <!-- This is not an issue for ArgoUML but 
+	    for the windows explorer.
+	    -->
+	    <para>
+Be aware that double clicking will launch a
+<literal>ZIP utility</literal>, if one is installed, and NOT
+Argo.
+</para>
+	  </warning>
         </sect4>
       </sect3>
 
@@ -1536,8 +1642,8 @@ Like ArgoUML it is an open source project available via
             Consortium.</para>  
 
           <para>Currently there are no other tools that we know of working on
-            PGML. We will move to SVG soon. And <emphasis>that</emphasis> will
-            be read by many tools.</para>
+PGML.
+</para>
         </sect4>
 
         <!-- Printing Diagrams -->
@@ -1579,10 +1685,7 @@ Like ArgoUML it is an open source project available via
             <listitem><para>Type the name of the file as you like with the
               <literal>.svg</literal> tag at the end. Example
               <literal>myumldiagram.svg</literal></para>
-
-              <warning><para>&argouml; does not do this automatically. See the
-                to-do list in <xref linkend="ch.ref.entities"/>.
-            </para></warning></listitem>
+	    </listitem>
           </orderedlist>
 
           <para> Et viola! SVG! Give it a try and zoom around a little&hellip;
@@ -1611,10 +1714,9 @@ Like ArgoUML it is an open source project available via
 
         <para>There is now a tool available which supports various dialects of
           XMI and their interconversion. This should make portability of
-          different models in to ArgoUML considerably easier. For more
-          information, see <ulink
-          url="http://umltool.d-a-t.com/">http://umltool.d-a-t.com</ulink>. Any
-          work on using this with &argouml; would be much appreciated.</para>
+different models in to ArgoUML considerably easier.
+Any work on using this with &argouml; would be much appreciated.
+</para>
 
         <para>There is also a tool that converts XMI to HTML. For more
           information, see <ulink
@@ -1639,7 +1741,7 @@ Like ArgoUML it is an open source project available via
         <!-- Using Gentleware XMI -->
 
         <sect4>
-          <title>Using models created by Gentleware</title>
+          <title>Using Models Created by Gentleware</title>
 
           <para>Gentleware is a commercial development based on &argouml;. It
             diverged a little while ago and the XMI representations are no
@@ -1659,8 +1761,9 @@ Like ArgoUML it is an open source project available via
             </para></listitem>
 
             <listitem><para>Then try reading and then saving the project with
-              <ulink url="http://umltool.d-a-t.com">
-                http://umltool.d-a-t.com</ulink>.</para></listitem>
+UMLTool (Contact Eugenio Alvarez to get this tool).
+</para>
+	    </listitem>
 
             <listitem><para>Repackage the project. For example
               <literal>zip&nbsp;NewProject.zargo&nbsp;*.xmi&nbsp;*.pgml&nbsp;*.argo</literal>
@@ -1676,7 +1779,8 @@ Like ArgoUML it is an open source project available via
 
         <sect4>
           <title>XMI Interchangeability between &argouml; 0.8.1a and
-            0.9.x</title>
+0.10, 0.12, and 0.14
+</title>
 
           <para>
 This depends on the version of NSUML 
@@ -1712,8 +1816,11 @@ be interchangeable.
         <sect4>
           <title>Generating XMI Format</title>
 
-          <para>Unzip the <literal>.zargo</literal> file. Open it and Viola!
-            It's tucked inside.</para>
+          <para>
+Select the command 
+<literal>Tools</literal>&rarr;<literal>Export&nbsp;as&nbsp;XMI</literal>
+and choose a filename.
+</para>
         </sect4>
       </sect3>
 
@@ -1725,7 +1832,7 @@ be interchangeable.
         <!-- What sort of code is generated -->
 
         <sect4>
-          <title>Code generated by &argouml;</title>
+          <title>Code Generated by &argouml;</title>
 
           <para>It is possible to compile your generated code with &argouml;,
             you still need to implement method bodies, though, to get usable
@@ -1765,7 +1872,7 @@ be interchangeable.
         <!-- A figure of the Argo/UML window having saved the project. -->
 
         <figure id="fig.tut.critstart" float="1">
-          <title>&argouml; window having save
+          <title>&argouml; window having saved
             <literal>FirstProject.argo</literal></title>
 
           <screenshot><mediaobject>
@@ -1776,8 +1883,11 @@ be interchangeable.
           </mediaobject></screenshot>
         </figure>
 
-        <para>The project filename is displayed in the title bar, the project
-          contains a top-level package, called
+	<para>
+<!--
+The project filename is displayed in the title bar, 
+-->
+The project contains a top-level package, called
           <literal>untitledModel</literal>, which contains a class diagram and
           a use case diagram.</para>
 
@@ -1895,17 +2005,10 @@ be interchangeable.
           parallel. This can cause delays of a few seconds before the
           information gets updated on the screen.</para>
 
-        <para>Normally, the package name change should also be reflected in the
+        <para>
+The package name change should also be reflected in the
           explorer, in the top left corner of your &argouml;
           window.</para>
-
-        <para>Actually, that doesn't happen until you click on one of the items
-          in the explorer. This is also a small bug in &argouml; that
-          will need to be fixed in following versions.</para>
-
-        <para>Don't let this discourage you, but remember that &argouml; is
-          still pretty much <quote>work in progress</quote>, and that still
-          quite a bit can be done to improve the user interface.</para>
 
         <para>We are now ready to create our first UML diagram, a Use Case
         diagram, but first let's save what we've done so far.</para>
