@@ -539,7 +539,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     public void deleteInstance(MInstance elem) {
 
         if (elem != null) {
-            Collection col = ((MInstance) elem).getLinkEnds();
+            Collection col = elem.getLinkEnds();
             Iterator it = col.iterator();
             while (it.hasNext()) {
                 UmlFactory.getFactory().delete(it.next());

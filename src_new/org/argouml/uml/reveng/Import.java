@@ -389,7 +389,7 @@ public class Import {
             importLevel = 0;
 
         // we always start with a level 0 import
-	setAttribute("level", new Integer(0));
+        setAttribute("level", new Integer(0));
 
         diagramInterface = getCurrentDiagram();
 
@@ -627,7 +627,7 @@ public class Import {
                                 + " created in the model\n");
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new java.io.PrintWriter( sw );
-                        ((Exception) e1).printStackTrace( pw );
+                        e1.printStackTrace( pw );
                         sb.append(sw.getBuffer());
                         LOG.error(sb.toString(), e1);
                     }
@@ -639,7 +639,7 @@ public class Import {
                                 + "created in the model\n");
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new java.io.PrintWriter( sw );
-                        ((Exception) e1).printStackTrace( pw );
+                        e1.printStackTrace( pw );
                         sb.append(sw.getBuffer());
                         LOG.warn(sb.toString(), e1);
                     }
