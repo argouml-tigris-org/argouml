@@ -85,4 +85,28 @@ public class UMLElementOwnershipVisibilityButtonGroup extends UMLButtonGroup {
             
     }
 
+    /**
+     * Returns the privateButton.
+     * @return JRadioButton
+     */
+    public JRadioButton getPrivateButton() {
+        return _privateButton;
+    }
+
+    /**
+     * Returns the protectedButton.
+     * @return JRadioButton
+     */
+    public JRadioButton getProtectedButton() {
+        return _protectedButton;
+    }
+
+    /**
+     * Returns the publicButton.
+     * @return JRadioButton
+     */
+    public JRadioButton getPublicButton() {
+        return _publicButton;
+    }
+
 }
