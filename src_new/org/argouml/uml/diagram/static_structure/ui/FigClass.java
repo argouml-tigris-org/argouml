@@ -1271,7 +1271,7 @@ public class FigClass extends FigNodeModelElement {
     public void postLoad() {      
         super.postLoad();
         Object owner = getOwner();
-        if (ModelFacade.isAbstract(owner)) {
+        if (owner != null && ModelFacade.isAbstract(owner)) {
             Font font = _name.getFont();              
             _name.setFont(font.deriveFont(Font.ITALIC));
         }
