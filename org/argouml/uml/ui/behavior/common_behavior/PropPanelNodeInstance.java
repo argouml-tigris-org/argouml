@@ -75,7 +75,7 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         
         addSeperator();
         AbstractActionAddModelElement a = 
-            new ActionAddInstanceClassifier((Class) ModelFacade.NODE);
+            new ActionAddInstanceClassifier(ModelFacade.NODE);
         JScrollPane classifierScroll = 
                 new JScrollPane(new UMLMutableLinkedList(
 	                new UMLInstanceClassifierListModel(), 

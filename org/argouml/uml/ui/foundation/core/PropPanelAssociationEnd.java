@@ -142,16 +142,15 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public PropPanelAssociationEnd() {
         super("AssociationEnd", ConfigLoader.getTabPropsOrientation());
         associationLabel = Translator.localize("label.association");
-        Class mclass = (Class) ModelFacade.ASSOCIATION_END;
-        createControls(mclass);
+        createControls();
         positionStandardControls();
         positionControls();
     }
 
     /**
-     * @param mclass (not used) the association end
+     * Create the controls specific to an AssociationEnd
      */
-    protected void createControls(Class mclass) {
+    protected void createControls() {
         typeCombobox = new UMLComboBox2(
                 new UMLAssociationEndTypeComboBoxModel(),
                 ActionSetAssociationEndType.getInstance(), true);
