@@ -89,13 +89,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * Constructor.
      */
     public UMLCollaborationDiagram() {
-
         try {
             setName(getNewDiagramName());
         } catch (PropertyVetoException pve) { }
     }
 
     /**
+     * The constructor.
+     * 
      * @param namespace the namespace for the diagram
      */
     private UMLCollaborationDiagram(Object namespace) {
