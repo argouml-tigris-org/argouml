@@ -80,7 +80,7 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
 /** update() updates both the Collection (by setText()) and the drawing (using 
  *  the if statements and code blocks). The code forces FigClass to update the
  *  drawing as information is typed into the text boxes in the property panes.
- *  @author modifies psager@tigris.org Aug. 27, 2001 */    
+ *  @author modified by psager@tigris.org Aug. 27, 2001 */    
     private void update() {
         String oldText = getText();
         String newText = _property.getProperty(_container);
@@ -121,4 +121,5 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
     public void insertUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
     }
-}
+    
+} //...end of class UMLTextField...
