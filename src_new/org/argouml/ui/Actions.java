@@ -40,6 +40,7 @@ import javax.swing.filechooser.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 import ru.novosoft.uml.behavior.state_machines.*;

@@ -58,7 +58,7 @@ public class PropPanelDependency extends PropPanel {
         JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
         suppliersList.setForeground(Color.blue);
         suppliersList.setVisibleRowCount(1);
-        addField(new JScrollPane(suppliersList),1,1,0.5);
+        addField(new JScrollPane(suppliersList),0,1,0.5);
 
         addCaption("Clients:",1,1,0.5);
         JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
