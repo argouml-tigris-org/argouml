@@ -31,6 +31,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
+import javax.swing.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -42,6 +43,17 @@ import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
+
+/** Critic to detect whether an attribute name obeys to certain rules.
+ *  <p>
+ *  Checks for:
+ *  <ul>
+ *  <li> all lower case or
+ *  <li> all upper case
+ *  </ul>
+ *  where trailing underscores are removed, and
+ *  constants are not nagged at.
+ */
 public class CrUnconventionalAttrName extends CrUML {
 
   public CrUnconventionalAttrName() {
@@ -59,13 +71,27 @@ public class CrUnconventionalAttrName extends CrUML {
     if (myName == null || myName.equals("")) return NO_PROBLEM;
     String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
+    // remove trailing underscores, if
+    // remaining string is of zero length obviously this is a problem.
     while (nameStr.startsWith("_")) nameStr = nameStr.substring(1);
-    if (nameStr.length() == 0) return NO_PROBLEM;
-    // TODO: should check for all underscores
+    if (nameStr.length() == 0) return PROBLEM_FOUND;
+
+    // check for all uppercase and/or mixed with underspores
     char initalChar = nameStr.charAt(0);
+    boolean allCapitals = true;
+    for (int i = 0; i < nameStr.length() && allCapitals; i++) {
+        if (!(Character.isUpperCase(nameStr.charAt(i)) || 
+              nameStr.charAt(i)=='_')) {
+            allCapitals = false;
+            continue;
+        }
+    }
+    if (allCapitals) return NO_PROBLEM;
+
+    // check whether constant, constants are often weird and thus not a
+    // problem
     MChangeableKind ck = attr.getChangeability();
     if (MChangeableKind.FROZEN.equals(ck)) return NO_PROBLEM;
-    // TODO: should check for all caps constants
     if (!Character.isLowerCase(initalChar)) {
       return PROBLEM_FOUND;
     }
@@ -82,6 +108,10 @@ public class CrUnconventionalAttrName extends CrUML {
     VectorSet offs = new VectorSet(dm);
     offs.addElement(dm.getOwner());
     return offs;
+  }
+
+  public Icon getClarifier() {
+      return ClAttributeCompartment.TheInstance;
   }
 
   public boolean stillValid(ToDoItem i, Designer dsgr) {
