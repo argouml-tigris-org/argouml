@@ -179,6 +179,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (node == null) return false;
     if (_nodes.contains(node)) return false;
     return (node instanceof MNode) || (node instanceof MComponent) || 
            (node instanceof MClass) || (node instanceof MInterface) ||
@@ -188,6 +189,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if (edge == null) return false;
 if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
     if (edge instanceof MRelationship) {
@@ -214,7 +216,7 @@ if(_edges.contains(edge)) return false;
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     cat.debug("adding class node!!");
-    if (_nodes.contains(node)) return;
+    if (!canAddNode(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
@@ -228,7 +230,7 @@ if(_edges.contains(edge)) return false;
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     cat.debug("adding class edge!!!!!!");
-    if (_edges.contains(edge)) return;
+    if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
       if (edge instanceof MModelElement) {

@@ -177,6 +177,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if (edge == null) return false;
     if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
     if (edge instanceof MAssociation) {
@@ -223,7 +224,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     cat.debug("adding class node!!");
-    if (_nodes.contains(node)) return;
+    if (!canAddNode(node)) return;
     _nodes.addElement(node);
     if (node instanceof MModelElement &&
 	((MModelElement)node).getNamespace() == null) {
@@ -242,7 +243,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     cat.debug("adding class edge!!!!!!");
-    if (_edges.contains(edge)) return;
+    if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
     if (edge instanceof MModelElement &&
@@ -333,7 +334,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           if (edgeClass == MGeneralization.class) {
               MGeneralization gen = 
                   UmlFactory.getFactory().getCore().buildGeneralization(fromCls, toCls);
-              addEdge(gen);
+              if (gen != null) addEdge(gen);
               return gen;
           }
           else if (edgeClass == MAssociation.class) {

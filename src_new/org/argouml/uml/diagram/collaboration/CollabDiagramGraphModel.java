@@ -147,12 +147,14 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (node == null) return false;
     if (_nodes.contains(node)) return false;
     return (node instanceof MClassifierRole || node instanceof MMessage);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if (edge == null) return false;
     if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
     if (edge instanceof MAssociationRole) {
@@ -185,7 +187,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     cat.debug("adding MClassifierRole node!!");
-    if (_nodes.contains(node)) return;
+    if (!canAddNode(node)) return;
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
       if (node instanceof MClassifier) {
@@ -199,7 +201,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     cat.debug("adding class edge!!!!!!");
-    if (_edges.contains(edge)) return;
+    if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
        if (edge instanceof MModelElement &&

@@ -151,12 +151,14 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (node == null) return false;
     if (_nodes.contains(node)) return false;
     return (node instanceof MStateVertex);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if (edge == null) return false;
     if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
     if (edge instanceof MTransition) {
@@ -181,6 +183,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Add the given node to the graph, if valid. */
   public void addNode(Object node) {
     cat.debug("adding state diagram node: " + node);
+    if (!canAddNode(node)) return;
     if (!(node instanceof MStateVertex)) {
       cat.error("internal error: got past canAddNode");
       return;
@@ -204,8 +207,9 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   /** Add the given edge to the graph, if valid. */
   public void addEdge(Object edge) {
     cat.debug("adding state diagram edge!!!!!!");
-    MTransition tr = (MTransition) edge;
-    if (_edges.contains(tr)) return;
+   
+    if (!canAddEdge(edge)) return;
+     MTransition tr = (MTransition) edge;
     _edges.addElement(tr);
     fireEdgeAdded(edge);
   }

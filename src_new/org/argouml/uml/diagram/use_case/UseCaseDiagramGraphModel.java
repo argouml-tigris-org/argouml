@@ -392,7 +392,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
     public boolean canAddEdge(Object edge)  {
 
         // Give up if we are already on the graph
-
+        if (edge == null) return false;
         if (_edges.contains(edge)) {
             return false;
         }
@@ -518,9 +518,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // Give up if we are already on the graph. This is a bit inconistent
         // with canAddNode above.
 
-        if (_nodes.contains(node)) {
-            return;
-        }
+        if (!canAddNode(node)) return;
 
         // Add the node, check that it is an actor or use case and add it to
         // the model namespace.
@@ -575,9 +573,7 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         
         // Give up if we are already on the graph.
 
-        if (_edges.contains(edge)) {
-            return;
-        }
+        if (!canAddEdge(edge)) return;
 
         // Add the element and place it in the namespace of the model
 
