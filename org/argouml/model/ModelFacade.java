@@ -2935,6 +2935,13 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    public static Collection getSources(Object handle) {
+        if (handle instanceof MFlow) {
+            return ((MFlow) handle).getSources();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Returns the sourceflows of a model element
      * @param handle
@@ -3696,6 +3703,15 @@ public class ModelFacade {
 					   + " or " + predecessor);
     }
 
+    public static void addRaisedSignal(Object target, Object sig) {
+        if (target instanceof MMessage && sig instanceof MSignal) {
+            ((MBehavioralFeature)target).addRaisedSignal((MSignal)sig);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + sig);
+    }
+
     /**
      * Adds a stimulus to a action or link
      * @param target the action or link
@@ -4381,6 +4397,15 @@ public class ModelFacade {
 					   + " or " + operation);
     }
 
+    public static void setOrdering(Object handle, Object ok) {
+        if (handle instanceof MAssociationEnd && ok instanceof MOrderingKind) {
+            ((MAssociationEnd)handle).setOrdering((MOrderingKind)ok);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + ok);
+    }
+
     /**
      * Set the owner scope of some feature.
      * @param feature
@@ -4719,6 +4744,22 @@ public class ModelFacade {
         }
     }
 
+    public static void setChangeability(Object o, Object ck) {
+        if (ck == null || ck instanceof MChangeableKind) {
+            if (o instanceof MStructuralFeature) {
+                ((MStructuralFeature) o).setChangeability((MChangeableKind)ck);
+                return;
+            }
+            if (o instanceof MAssociationEnd) {
+                ((MAssociationEnd) o).setChangeability((MChangeableKind)ck);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + o
+					   + " or " + ck);
+    }
+
+
     /**
      * Set the changeability of some feature.
      * @param feature
@@ -4740,6 +4781,14 @@ public class ModelFacade {
             else
 		ae.setChangeability(MChangeableKind.FROZEN);
         }
+    }
+
+    public static void setChild(Object target, Object child) {
+        if (target instanceof MGeneralization) {
+            ((MGeneralization)target).setChild((MGeneralizableElement)child);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + child);
     }
 
 
@@ -5004,6 +5053,22 @@ public class ModelFacade {
 					   + " or " + state);
     }
 
+    public static void setSources(Object target, Collection specifications) {
+        if (target instanceof MFlow) {
+            ((MFlow)target).setSources(specifications);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
+    }
+    
+    public static void setSpecification(Object target, boolean specification) {
+        if (target instanceof MModelElement) {
+            ((MModelElement)target).setSpecification(specification);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target);
+    }
+    
     /**
      * Sets the specifications of some association end.
      * @param target the association end
@@ -5086,6 +5151,15 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + target
 					   + " or " + parent);
+    }
+
+    public static void setPowertype(Object target, Object pt) {
+        if (target instanceof MGeneralization && pt instanceof MClassifier) {
+            ((MGeneralization)target).setPowertype((MClassifier)pt);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + pt);
     }
 
     public static void setPredecessors(Object target, Collection predecessors) {
@@ -5238,6 +5312,15 @@ public class ModelFacade {
         }
         throw new IllegalArgumentException("Unrecognized object " + handle
 					   + " or " + node);
+    }
+
+    public static void addExtendedElement(Object target, Object extendedElement) {
+        if (target instanceof MStereotype && extendedElement instanceof MExtensionPoint) {
+            ((MStereotype)target).addExtendedElement((MModelElement)extendedElement);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + extendedElement);
     }
 
     /**
