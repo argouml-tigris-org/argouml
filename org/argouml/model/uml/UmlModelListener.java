@@ -24,22 +24,23 @@
 
 package org.argouml.model.uml;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
+import org.argouml.model.Model;
 
 /**
- * A single listener that listens to all Model Element events and change
+ * A single listener that listens to all UML ModelElement events and change
  * the NeedsSave information on the project.
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
  * @stereotype singleton
  */
-public class UmlModelListener implements MElementListener {
+public class UmlModelListener implements PropertyChangeListener {
 
     /**
      * Log4j logging category.
@@ -67,82 +68,18 @@ public class UmlModelListener implements MElementListener {
     }
 
     /**
-     * Handle the event.
-     *
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void listRoleItemSet(MElementEvent mee) {
-        LOG.debug("listRoleItemSet(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
-    }
-
-    /**
-     * Handle the event.
-     * Provides a model change notification only if the property
-     * values differ.
-     *
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
-     */
-    public void propertySet(MElementEvent mee) {
-	notifyModelChanged(mee);
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent mee) {
-        LOG.debug("recovered(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
-    }
-
-    /**
-     * Handle the event.
-     *
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent mee) {
-        LOG.debug("removed(" + mee + ")");
-	// TODO:  Do we need to model change notify here?
-	// yes since we need to update the GUI
-	notifyModelChanged(mee);
-    }
-
-    /**
-     * Handle the event.
-     * Provides a model change notification.
-     *
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent mee) {
-        LOG.debug("roleAdded(" + mee + ")");
-	notifyModelChanged(mee);
-    }
-
-    /**
-     * Handle the event.
-     * Provides a model change notification.
-     *
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent mee) {
-        LOG.debug("roleRemoved(" + mee + ")");
-        
-	notifyModelChanged(mee);
+    public void propertyChange(PropertyChangeEvent evt) {
+        notifyModelChanged(evt);
     }
 
     /**
      * Common model change notification process.
      */
-    private void notifyModelChanged(MElementEvent mee) {
-        // TODO: Change the project dirty flag outside this package
-        //       using an event listener.
-
-        if (mee.getAddedValue() != null
-            || mee.getRemovedValue() != null
-            || (mee.getNewValue() != null
-            && !mee.getNewValue().equals(mee.getOldValue())))
+    private void notifyModelChanged(PropertyChangeEvent pce) {
+        if (pce.getNewValue() != null
+            && !pce.getNewValue().equals(pce.getOldValue()))
         {
             Project cp = ProjectManager.getManager().getCurrentProject();
 
@@ -150,6 +87,16 @@ public class UmlModelListener implements MElementListener {
                 cp.setNeedsSave(true);
         }
     
+    }
+    
+    /**
+     * For every new ModelElement that has been created, we want 
+     * to register for updation events.
+     * 
+     * @param elm the UML modelelement that has been created
+     */
+    public void newElement(Object elm) {
+        Model.getPump().addModelEventListener(this, elm);
     }
 }
 
