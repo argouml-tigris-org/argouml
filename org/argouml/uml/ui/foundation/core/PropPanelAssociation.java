@@ -25,11 +25,13 @@
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 
 import org.argouml.swingext.Orientation;
+import org.argouml.swingext.GridLayout2;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -53,14 +55,18 @@ public class PropPanelAssociation extends PropPanelRelationship {
      * Ths scrollpane with the links that implement this association.
      */
     protected JScrollPane _linksScroll;
+    
+    /** Panel for abstract/leaf/root 
+     */
+    protected JPanel _modifiersPanel;
+
 
     public PropPanelAssociation() {
 	this("Association", ConfigLoader.getTabPropsOrientation());
-
-
 	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
 	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
 
 	addSeperator();
 
@@ -80,6 +86,7 @@ public class PropPanelAssociation extends PropPanelRelationship {
 
     protected PropPanelAssociation(String title, Orientation orientation) {
 	super(title, orientation);
+        initialize();
 	JList assocEndList = new UMLLinkedList(new UMLAssociationConnectionListModel());
 	_assocEndScroll = new JScrollPane(assocEndList);
 	JList baseList = new UMLLinkedList(new UMLAssociationAssociationRoleListModel());
@@ -88,6 +95,19 @@ public class PropPanelAssociation extends PropPanelRelationship {
 	_linksScroll = new JScrollPane(linkList);
 
 	// TODO: implement the multiple inheritance of an Association (Generalizable element)
+
+    }
+    
+    private void initialize() { 
+
+        _modifiersPanel =
+            new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));          
+        _modifiersPanel.add(
+            new UMLGeneralizableElementAbstractCheckBox());
+        _modifiersPanel.add(
+            new UMLGeneralizableElementLeafCheckBox());
+        _modifiersPanel.add(
+            new UMLGeneralizableElementRootCheckBox());
 
     }
 
