@@ -246,6 +246,9 @@ Property files to be searched:
     </path>
 
     <path id="argo.compile.classpath">
+      <pathelement location="${argouml.api.jar.path}" />
+      <pathelement location="${argouml.diagram.jar.path}" />
+      <pathelement location="${argouml.model.jar.path}" />
       <pathelement location="${xerces.jar.path}" />
       <pathelement location="${nsuml.jar.path}" />
       <pathelement location="${ocl-argo.jar.path}" />
@@ -609,10 +612,12 @@ ${Name} Build file
           tofile="${argo.build.dir}/argouml-api.jar" />
     <copy file="${jmi.jar.path}"
           tofile="${argo.build.dir}/jmi.jar" />
-    <copy file="${argouml.uml.jar.path}"
-          tofile="${argo.build.dir}/argouml-uml.jar" />
+    <copy file="${argouml.api.jar.path}"
+          tofile="${argo.build.dir}/argouml-api.jar" />
     <copy file="${argouml.model.jar.path}"
           tofile="${argo.build.dir}/argouml-model.jar" />
+    <copy file="${argouml.diagram.jar.path}"
+          tofile="${argo.build.dir}/argouml-diagram.jar" />
     <!-- End of name synch area in this file. -->
 
     <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
