@@ -239,6 +239,7 @@ Property files to be searched:
       <pathelement location="${xerces.jar.path}" />
       <pathelement location="${xalan.jar.path}" />
       <pathelement location="${bsf.jar.path}" />
+      <pathelement location="${javasrc.jar.path}" />
     </path>
 
     <taskdef name="junit"
@@ -976,6 +977,39 @@ For details see http://www.clarkware.com/software/JDepend.html.
       <classpath>
 	<path refid="ant.optional.classpath"/>
       </classpath>
+    </java>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Perform javasrc to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="javasrc" depends="init">
+    <java classname="javasrc.app.Pass1" 
+          fork="true"
+          failonerror="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+        <pathelement location="${antlrall.jar.path}" />
+      </classpath>
+      <arg value="."/>
+    </java>
+    <java classname="javasrc.app.Pass2" 
+          fork="true"
+          failonerror="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+	<pathelement location="${antlrall.jar.path}"/>
+      </classpath>
+      <arg value="../build/javasrc"/>
     </java>
   </target>
 
