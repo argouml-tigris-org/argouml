@@ -87,7 +87,7 @@ public class CrNoInstanceVariables extends CrUML {
      *
      * @param handle the classifier to examine
      * @param number of levels searched
-     * @returns true if an attribute can be found in this class
+     * @return true if an attribute can be found in this class
      *		or in any of its generalizations.
      */
     private boolean findChangeableInstanceAttributeInInherited(Object dm,

@@ -103,7 +103,7 @@ public final class ResourceLoaderWrapper {
      *
      * @param classname The look and feel classname
      * @param element The en part of the path.
-     * @returns the complete path.
+     * @return the complete path.
      */
     private static String lookAndFeelPath(String classname, String element) {
 	return "/org/argouml/Images/plaf/"

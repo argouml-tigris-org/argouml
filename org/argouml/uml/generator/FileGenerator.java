@@ -39,7 +39,7 @@ public interface FileGenerator {
      * TODO:
      * This will only work for languages that have each node
      * in a separate files (one or more).
-     * @returns filename
+     * @return filename
      */
     public String GenerateFile(Object node, String path);
 }

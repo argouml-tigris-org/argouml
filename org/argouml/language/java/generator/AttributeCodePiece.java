@@ -209,7 +209,7 @@ public class AttributeCodePiece extends NamedCodePiece
     /**
      * Get the generator.
      *
-     * @returns the generator.
+     * @return the generator.
      */
     private GeneratorJava generator() {
 	return GeneratorJava.getInstance();

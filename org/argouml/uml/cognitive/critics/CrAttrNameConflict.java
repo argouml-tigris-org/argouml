@@ -72,7 +72,7 @@ public class CrAttrNameConflict extends CrUML {
      *
      * @param dm is the classifier
      * @param dsgr is not used.
-     * @returns true if there are two with the same name.
+     * @return true if there are two with the same name.
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;

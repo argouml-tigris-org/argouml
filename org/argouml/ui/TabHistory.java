@@ -84,7 +84,7 @@ public class TabHistory extends TabSpawnable
     /** Get the ImageIcon.
      *
      * @param tag of the icon.
-     * @returns the ImageIcon of the tag.
+     * @return the ImageIcon of the tag.
      */
     private static ImageIcon lookupIconResource(String tag) {
 	return ResourceLoaderWrapper.getResourceLoaderWrapper()
