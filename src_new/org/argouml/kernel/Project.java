@@ -81,6 +81,7 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
 import org.argouml.uml.UMLChangeRegistry;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
@@ -921,6 +922,9 @@ public class Project implements java.io.Serializable, TargetListener {
             UMLStateDiagram statediagram = (UMLStateDiagram) d;
             ProjectManager.getManager().getCurrentProject()
 		.moveToTrash(statediagram.getStateMachine());
+        } else
+        if (d instanceof UMLSequenceDiagram) {
+            
         }
         d.removeChangeRegistryAsListener(_saveRegistry);
         setNeedsSave(true);

@@ -30,53 +30,47 @@
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.beans.PropertyVetoException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
-import javax.swing.Action;
-
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.CmdCreateNode;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
-import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
-import ru.novosoft.uml.behavior.common_behavior.MSendAction;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
+/**
+ * The diagram for sequence diagrams. 
+ * Totally rewritten for release 0.16
+ * @author jaap.branderhorst@xs4all.nl
+ * Aug 3, 2003
+ */
 public class UMLSequenceDiagram extends UMLDiagram {
-    protected static Category cat =
-        Category.getInstance(UMLSequenceDiagram.class);
-
-    ////////////////
-    // actions for toolbar
-
-    protected static Action _actionObject =
-        new CmdCreateNode(MObject.class, "Object");
-
-    protected static Action _actionLinkWithStimulusCall =
-        new ActionAddLink(MCallAction.class, "StimulusCall");
-
-    protected static Action _actionLinkWithStimulusCreate =
-        new ActionAddLink(MCreateAction.class, "StimulusCreate");
-
-    protected static Action _actionLinkWithStimulusDestroy =
-        new ActionAddLink(MDestroyAction.class, "StimulusDestroy");
-
-    protected static Action _actionLinkWithStimulusSend =
-        new ActionAddLink(MSendAction.class, "StimulusSend");
-
-    protected static Action _actionLinkWithStimulusReturn =
-        new ActionAddLink(MReturnAction.class, "StimulusReturn");
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
     protected static int _SequenceDiagramSerial = 1;
+    
+    private Logger _log = Logger.getLogger(this.getClass());
+    
+    /**
+     * The interaction that's shown on this sequence diagram.
+     * By default, the interaction is owned by a dummy collaboration that
+     * can be retrieved by calling getCollaboration. See 
+     * the constructor.
+     */
+    private Object _interaction;
+    
+    /**
+     * Flag to indicate if this sequence diagram was derived from some collaboration
+     * or not.
+     */
+    private boolean _isDerivedFromCollaboration = false;
 
     /**
      * Constructs a new sequence diagram with a default name and NO namespace.
@@ -95,6 +89,9 @@ public class UMLSequenceDiagram extends UMLDiagram {
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
         lay.setGraphEdgeRenderer(rend);
         lay.setGraphNodeRenderer(rend);        
+        Object rootModel = ProjectManager.getManager().getCurrentProject().getRoot();
+        Object collaboration = CollaborationsFactory.getFactory().buildCollaboration(rootModel);
+        _interaction = CollaborationsFactory.getFactory().buildInteraction(collaboration);
     }
     
     /**
@@ -163,5 +160,45 @@ public class UMLSequenceDiagram extends UMLDiagram {
     public void setNamespace(Object ns) throws UnsupportedOperationException {
         throw new UnsupportedOperationException("Sequence diagram does not have a namespace");
     }
+    
+    /**
+     * Method called by Project.removeDiagram to cleanUp the mess in this diagram 
+     * when the diagram is removed.
+     */
+    public void cleanUp() {        
+       Iterator it = getObjects().iterator();
+       while (it.hasNext()) {
+           UmlFactory.getFactory().delete(it.next()); 
+       }
+       if (!_isDerivedFromCollaboration) {
+           UmlFactory.getFactory().delete(getCollaboration());
+       }
+    }
+    
+    /**
+     * Utility method to retreive the collaboration. 
+     * @return the collaboration that owns the interaction shown on this diagram
+     */
+    public Object getCollaboration() {
+        return ModelFacade.getContext(_interaction);
+    }
+    
+    /**
+     * Utility method to retrieve all objects (the modelelement Object, not all figs)
+     * on this sequence diagram.
+     * @return
+     */
+    public Collection getObjects() {
+        Iterator it = getGraphModel().getNodes().iterator();
+        List objects = new ArrayList();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (ModelFacade.isAObject(o)) {
+                objects.add(o);
+            }
+        }
+        return objects;
+    }
+    
 
 } /* end class UMLSequenceDiagram */
