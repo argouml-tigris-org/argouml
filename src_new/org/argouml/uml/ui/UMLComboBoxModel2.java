@@ -132,10 +132,12 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName)
             && e.getSource() == getTarget()
-            && (contains(getChangedElement(e)) 
-		|| getChangedElement(e) == null))
+	    && (_clearable || getChangedElement(e) != null))
 	{
-            setSelectedItem(getChangedElement(e));
+	    Object elem = getChangedElement(e);
+	    if (!contains(elem))
+		addElement(elem);
+            setSelectedItem(elem);
         }
     }
 

@@ -70,6 +70,9 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         setElements(multiplicityList);
+	Object t = getTarget();
+	if (ModelFacade.isAModelElement(t))
+	    addElement(ModelFacade.getMultiplicity(t));
     }    
 
     /**
