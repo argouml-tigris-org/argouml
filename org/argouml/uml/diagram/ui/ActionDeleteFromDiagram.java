@@ -37,6 +37,8 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.presentation.Connecter;
 import org.tigris.gef.presentation.Fig;
 
 
@@ -115,13 +117,18 @@ public class ActionDeleteFromDiagram extends UMLAction {
      */
     public void actionPerformed(ActionEvent ae) {
         int size = 0;
+        Editor ce = Globals.curEditor();
+        MutableGraphSupport graph = (MutableGraphSupport)ce.getGraphModel();
         try {
-            Editor ce = Globals.curEditor();
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
             for (int i = 0; i < size; i++) {
-                Fig f = (Fig) figs.elementAt(i);                
-                f.removeFromDiagram();
+                Fig f = (Fig) figs.elementAt(i);
+                if (f instanceof Connecter) {
+                    f.removeFromDiagram();
+                } else {
+                    graph.removeFig(f);
+                }
                 TargetManager.getInstance().removeHistoryElement(f);
             }
         } catch (Exception ex) {
