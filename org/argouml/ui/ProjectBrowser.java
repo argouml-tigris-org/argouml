@@ -118,7 +118,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    * zoom!!! this should be activated as a right click command.
    * editor tabs/details tabs/ adjust grid etc.*
    */  
-  protected Menu _view = null;
+  protected ArgoJMenu _view = null;
   /** Toolbar:create diagram
    */  
   protected JMenu _createDiagrams = null;
@@ -136,7 +136,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   protected JMenu _arrange = null;
   /** currently undergoing significant testing
    */  
-  protected Menu _critique = null;
+  protected ArgoJMenu _critique = null;
   /** It needs it. Currently there is only an
    * about text. hyperlinking to online docs at
    * argouml.org considered basic improvement.
@@ -353,7 +353,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _edit.addSeparator();
     _edit.add(ActionSettings.getInstance());
 
-    _view = (Menu) _menuBar.add(new Menu(menuLocalize("View")));
+    _view = (ArgoJMenu) _menuBar.add(new ArgoJMenu(menuLocalize("View")));
     // maybe should be Navigate instead of view
     setMnemonic(_view,"View",'V');
 
@@ -458,7 +458,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     //generate.add(Actions.GenerateWeb);
     appendPluggableMenus(_generate, "Generate");
 
-    _critique = (Menu) _menuBar.add(new Menu(menuLocalize("Critique")));
+    _critique = (ArgoJMenu) _menuBar.add(new ArgoJMenu(menuLocalize("Critique")));
     setMnemonic(_critique,"Critique",'R');
     _critique.addCheckItem(Actions.AutoCritique);
     _critique.addSeparator();
