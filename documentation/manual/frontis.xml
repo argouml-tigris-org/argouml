@@ -22,6 +22,8 @@ Modifications
 
 13 Mar 2002:  Jeremy Bennett. Updated for issue 0.9.7.
 
+14 Mar 2002:  Jeremy Bennett. First draft (A) for 0.9.8.
+
 -->
 
 <bookinfo>
@@ -94,6 +96,20 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.8, draft A</revnumber> <date>19 Mar 2002</date>
+      <revdescription><para>Update taking on board some proof-reading
+        comments and making more suitable for PDF. The reference part of the
+        manual (chapters 7 through 22) is now completed. In addition chapter 1
+        (introduction), tutorial chapter 2 (UML based &ooad;) are now largely
+        complete.</para>
+
+      <para>Explicit references to version 0.9.6 replaced where
+        appropriate. Tables replaced by variablelists in reference
+        chapters. Supplementary text descriptions of diagrams
+        scrapped.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.7</revnumber> <date>13 Mar 2002</date>
       <revdescription><para>Full issue for release 0.9.7. Update with minor

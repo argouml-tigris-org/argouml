@@ -38,15 +38,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/editing_pane.png"/>
         </imageobject>
-
-        <textobject>
-          <para>The &argouml; editing pane. A rectangular pane, with a tool bar
-            at the top, and a single tab labeled
-            <literal>As&nbsp;Diagram</literal> at the bottom. At the right
-            end of the tool bar is the type and name of the diagram being
-            edited. The main part of the pane shows the UML graphical items
-            being edited.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 

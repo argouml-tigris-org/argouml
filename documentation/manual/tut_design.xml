@@ -314,11 +314,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                            fileref="images/tutorial/iftool.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>A picture of the Editing Pane, showing the tool bar, with
-                  the Inteface tool highlighted.</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -335,11 +330,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                   fileref="images/tutorial/if.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>A picture of the Editing Pane, showing an interface with
-                  its (empty) name field highlighted.</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -362,11 +352,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                   fileref="images/tutorial/generalize.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>A picture of the Editing Pane, showing two Interfaces and
-                the Generalization tool highlighted.</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -386,11 +371,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                   fileref="images/tutorial/ifgen.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>A picture of the Editing Pane, showing two Interfaces and
-                  with a Generalization from the lower to the upper.</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 

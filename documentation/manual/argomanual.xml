@@ -61,6 +61,7 @@ Modifications
   <!-- Text substitution ENTITIES -->
 
   <!ENTITY argouml          "ArgoUML">
+  <!ENTITY argoversion      "0.9.8">
   <!ENTITY ooad             "OOA&amp;D">
   <!ENTITY button1          "button&nbsp;1">
   <!ENTITY Button1          "Button&nbsp;1">

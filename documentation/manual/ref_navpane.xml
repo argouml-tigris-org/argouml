@@ -40,16 +40,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/navigator_pane.png"/>
         </imageobject>
-
-        <textobject>
-          <para>The ArgoUML navigation pane. A rectangular pane, with a bar at
-            the top, in which a drop down selection indicates this is a
-            <literal>Package-centric</literal> view. To the right of this are
-            three buttons with icons for <literal>Go Back</literal>,
-            <literal>Go Forward</literal> and <literal>NavConfig</literal>. The
-            remainder of the pane shows a hierarchical listing. A scroll bar
-            appears on the right.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -313,25 +303,6 @@ Modifications
             <imagedata format="PNG" align="center"
               fileref="images/reference/navigator_pane_perspectives.png"/>
           </imageobject>
-
-          <textobject>
-            <para>The ArgoUML navigation pane perspectives dialog. A rectangular
-              pane with two tabs labeled <literal>Perspectives</literal>
-              (currently selected) and <literal>Panes</literal>. The top half
-              contains a text area with a list of all the currently defined
-              perspectives and to the right three buttons stacked vertically,
-              labeled <literal>New</literal>, <literal>Remove</literal> and
-              <literal>Duplicate</literal>. The second half contains two text
-              areas. The one on the left is labeled
-              <literal>Rules&nbsp;Library</literal> and contains a list of
-              possible perspective rules. The one on the right is labeled
-              <literal>Selected&nbsp;Rules</literal> and contains the rule list
-              for the currently selected perspective (empty if no perspective
-              is selected). Between these two areas are two buttons stacked
-              vertically labeled <literal>&gt;&gt;</literal> and
-              <literal>&lt;&lt;</literal>. At the very bottom right is a button
-              labeled <literal>OK</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -410,26 +381,6 @@ Modifications
             <imagedata format="PNG" align="center"
               fileref="images/reference/navigator_pane_panes.png"/>
           </imageobject>
-
-          <textobject>
-            <para>The ArgoUML navigation pane panes dialog. A rectangular pane
-              with two tabs labeled <literal>Perspectives</literal> and
-              <literal>Panes</literal> (currently selected). The dialog is
-              divided into three boxes stacked vertically. The top box is
-              labeled <literal>Panel&nbsp;One</literal> and is a radio box with
-              options <literal>Not&nbsp;Shown</literal> and
-              <literal>Rooted&nbsp;at&nbsp;Project</literal>. The next box is
-              labeled <literal>Panel&nbsp;Two</literal> and is a radio box with
-              options <literal>Not&nbsp;Shown</literal>,
-              <literal>Most&nbsp;Recently&nbsp;Used</literal> and
-              <literal>Rooted&nbsp;at&nbsp;Pane&nbsp;One&nbsp;Selection</literal>.
-              The final box is labeled <literal>Panel&nbsp;Three</literal> and
-              is a radio box with options <literal>Not&nbsp;Shown</literal>,
-              <literal>Most&nbsp;Recently&nbsp;Used</literal> and
-              <literal>Rooted&nbsp;at&nbsp;Pane&nbsp;Two&nbsp;Selection</literal>.
-              At the very bottom left is a button labeled
-              <literal>OK</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 

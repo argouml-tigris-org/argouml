@@ -1144,7 +1144,7 @@ Modifications
       <title>Remove Circular Composition</title>
 
       <para>Suggestion that there is a series of composition relationships
-        (associations with black diagrams) that form a cycle, which is not
+        (associations with black diamonds) that form a cycle, which is not
         permitted.</para>
     </sect2>
 

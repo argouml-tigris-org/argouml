@@ -49,20 +49,6 @@ Modifications
             <imagedata format="GIF" align="center"
                        fileref="images/reference/entclasshier.gif"/>
           </imageobject>
-
-          <textobject>
-            <para>A package diagram showing a package hierarchy. At the top is
-              the model itself. Beneath this is the subpackage
-              <literal>java</literal>. Beneath <literal>java</literal> are four
-              subpackages, from left to right <literal>lang></literal>,
-              <literal>math</literal>, <literal>net</literal> and
-              <literal>util</literal>. All four have their own subpackage
-              <literal>classes</literal> beneath them. In addition
-              <literal>lang</literal> has a subpackage,
-              <literal>datatypes</literal> beneath it, and
-              <literal>util</literal> has a subpackage
-              <literal>interfaces</literal> beneath it.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
     </sect2>

@@ -33,14 +33,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/todo_pane.png"/>
         </imageobject>
-
-        <textobject>
-          <para>The ArgoUML To-Do Pane. A rectangular pane, with a bar at the
-            top containing from left-to-right, a drop-down selection box
-            labeled <literal>By&nbsp;Priority</literal>, a button and a
-            yellow highlighted count of items. The body of the Pane shows a
-            hierarchy of To-Do items.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 

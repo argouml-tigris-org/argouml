@@ -13,6 +13,9 @@ Modifications
 
 19 Feb 2002:  Jeremy Bennett. Chapter written.
 
+19 Mar 2002:  Jeremy Bennett. Changed all tables to variablelists to fix
+              problems with generating PDF.
+
 -->
 
 <chapter id="ch.ref.entactiv">
@@ -53,14 +56,6 @@ Modifications
           <imagedata format="GIF" align="center"
                      fileref="images/reference/activity_diagram.gif"/>
         </imageobject>
-
-        <textobject>
-          <para>An activity diagram, showing (from top to bottom and left to
-            right) an initial pseudostate, transition, action state, transition
-            with guard and action, action state, fork, two transitions, two
-            action states, two transitions, join, transition, branch, two
-            transitions with guards and a final state.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
   </sect1>
@@ -96,376 +91,318 @@ Modifications
     <sect2>
       <title>Action State Details Tabs</title>
 
-      <para>The details tabs that are active for action states are described in
-        <xref linkend="tab.ref.action_state_details_tabs"/>.</para>
+      <para>The details tabs that are active for action states are as
+        follows.</para>
 
-      <table id="tab.ref.action_state_details_tabs" frame="all" colsep="1"
-             rowsep="1" pgwide="1">
-        <title>Details tabs for action state</title>
+      <variablelist>
 
-        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="3*"/>
-          <colspec align="left" colwidth="9*"/>
-          <thead>
-            <row>
-              <entry align="left">Tab</entry>
-              <entry align="left">Meaning</entry>
-            </row>
-          </thead>
+        <!-- Entry for ToDoItem tab -->
 
-          <tbody valign="top">
+        <varlistentry>
+          <term><literal>ToDoItem</literal></term>
 
-            <!-- Entry for ToDoItem tab -->
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
 
-            <row>
-              <entry>ToDoItem</entry>
+        <!-- Entry for Properties tab -->
 
-              <entry><para>Standard tab.</para></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Properties</literal></term>
 
-            <!-- Entry for Properties tab -->
+          <listitem><para>See <xref
+              linkend="s2.ref.action_state_property_toolbar"/> and <xref
+              linkend="s2.ref.action_state_property_fields"/>
+            below.</para></listitem>
+        </varlistentry>
 
-            <row>
-              <entry>Properties</entry>
+        <!-- Entry for Documentation tab -->
 
-              <entry><para>See <xref
-                  linkend="tab.ref.action_state_property_toolbar"/> and <xref
-                  linkend="tab.ref.action_state_property_fields"/>
-                below.</para></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Documentation</literal></term>
 
-            <!-- Entry for Documentation tab -->
+          <listitem><para>Standard tab.</para></listitem>
+        </varlistentry>
 
-            <row>
-              <entry>Documentation</entry>
+        <!-- Entry for Style tab -->
 
-              <entry><para>Standard tab.</para></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Style</literal></term>
 
-            <!-- Entry for Style tab -->
+          <listitem><para>Standard tab. The values for the bounds of the
+            action state define the bounding box of the action
+            state.</para>
 
-            <row>
-              <entry>Style</entry>
+          <caution><para>In the current release of &argouml; there are
+            known problems with typing in the <literal>Bounds</literal>
+            box, with the cursor jumping about. Take care that you enter
+            the changes you intend when changing
+            values</para></caution>
 
-              <entry><para>Standard tab. The values for the bounds of the
-                action state define the bounding box of the action
-                state.</para>
+          <caution><para>The <literal>Shadow</literal> field has no
+            effect&mdash; in the current release of &argouml;. There are no
+            shadow effects provided for action states on the
+            diagram.</para></caution></listitem>
+        </varlistentry>
 
-              <caution><para>In the current release of &argouml; there are
-                known problems with typing in the <literal>Bounds</literal>
-                box, with the cursor jumping about. Take care that you enter
-                the changes you intend when changing
-                values</para></caution>
+        <!-- Entry for Source tab -->
 
-              <caution><para>The <literal>Shadow</literal> field has no
-                effect&mdash; in the current release of &argouml;. There are no
-                shadow effects provided for action states on the
-                diagram.</para></caution></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Source</literal></term>
 
-            <!-- Entry for Source tab -->
+          <listitem><para>Standard tab that is empty.</para>
 
-            <row>
-              <entry>Source</entry>
+          <note><para>In the fullness of time this tab will contain code to
+            implement the action state (code for actions will be associated
+            with the particular actions). This is not implemented in the
+            current release of &argouml;.</para></note></listitem>
+        </varlistentry>
 
-              <entry><para>Standard tab that is empty.</para>
+        <!-- Entry for Constraints tab -->
 
-              <note><para>In the fullness of time this tab will contain code to
-                implement the action state (code for actions will be associated
-                with the particular actions). This is not implemented in the
-                current release of &argouml;.</para></note></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Constraints</literal></term>
 
-            <!-- Entry for Constraints tab -->
+          <listitem><para>Standard tab. There are no standard constraints
+            defined for <literal>ActionState</literal> within the UML
+            metamodel.</para></listitem>
+        </varlistentry>
 
-            <row>
-              <entry>Constraints</entry>
+        <!-- Entry for Tagged Values tab -->
 
-              <entry><para>Standard tab. There are no standard constraints
-                defined for <literal>ActionState</literal> within the UML
-                metamodel.</para></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Tagged Values</literal></term>
 
-            <!-- Entry for Tagged Values tab -->
+          <listitem><para>Standard tab. In the UML metamodel,
+            <literal>ActionState</literal> has the following standard
+            tagged values defined.</para>
 
-            <row>
-              <entry>Tagged Values</entry>
+            <itemizedlist>
+              <listitem><para><literal>derived</literal> (from the
+                superclass, <literal>ModelElement</literal>). Values
+                <literal>true</literal>, meaning the action state is
+                redundant&mdash;it can be formally derived from other
+                elements, or <literal>false</literal> meaning it
+                cannot.</para>
 
-              <entry><para>Standard tab. In the UML metamodel,
-                <literal>ActionState</literal> has the following standard
-                tagged values defined.</para>
+              <note><para>Derived action states still have their value in
+                analysis and design to introduce useful names or concepts,
+                and in design to avoid
+                re-computation.</para></note></listitem>
+            </itemizedlist>
 
-                <itemizedlist>
-                  <listitem><para><literal>derived</literal> (from the
-                    superclass, <literal>ModelElement</literal>). Values
-                    <literal>true</literal>, meaning the action state is
-                    redundant&mdash;it can be formally derived from other
-                    elements, or <literal>false</literal> meaning it
-                    cannot.</para>
-
-                  <note><para>Derived action states still have their value in
-                    analysis and design to introduce useful names or concepts,
-                    and in design to avoid
-                    re-computation.</para></note></listitem>
-                </itemizedlist>
-
-                <note><para>The UML <literal>Element</literal> metaclass from
-                  which all other artifacts are derived includes the tagged
-                  element <literal>documentation</literal> which is handled by
-                  the <emphasis>documentation tab</emphasis> under
-                  &argouml;</para></note></entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+            <note><para>The UML <literal>Element</literal> metaclass from
+              which all other artifacts are derived includes the tagged
+              element <literal>documentation</literal> which is handled by
+              the <emphasis>documentation tab</emphasis> under
+              &argouml;</para></note></listitem>
+        </varlistentry>
+      </variablelist>
     </sect2>
 
-    <!-- Action state properties -->
+    <!-- Action state property toolbar -->
 
-    <sect2>
-      <title>Action State Properties</title>
+    <sect2 id="s2.ref.action_state_property_toolbar">
+      <title>Action State Property ToolBar</title>
 
-      <!-- The properties tool bar -->
+      <variablelist>
 
-      <para>The property tab tool bar for action states is described in
-        <xref linkend="tab.ref.action_state_property_toolbar"/>.</para>
+        <!-- Entry for Go up button -->
 
-      <table id="tab.ref.action_state_property_toolbar" frame="all" colsep="1"
-             rowsep="1" pgwide="1">
-        <title>Property tool bar for action state</title>
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_up.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            up</literal></term>
 
-        <tgroup cols='3' colsep='0' rowsep='0'>
-          <colspec align="left"   colwidth="2*"/>
-          <colspec align="center" colwidth="1*"/>
-          <colspec align="left"   colwidth="9*"/>
-          <thead>
-            <row>
-              <entry align="left">Button</entry>
-              <entry align="center">Icon</entry>
-              <entry align="left">Meaning</entry>
-            </row>
-          </thead>
+          <listitem><para>Navigate up through the package
+            structure.</para></listitem>
+        </varlistentry>
 
-          <tbody valign="top">
+        <!-- Entry for Go back button -->
 
-            <!-- Entry for Go up button -->
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_back.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            back</literal></term>
 
-            <row>
-              <entry>Go up</entry>
+          <listitem><para>Navigate back to the previous
+            artifact.</para>
 
-              <entry><guiicon><inlinemediaobject><imageobject><imagedata
-                format="GIF" align="center"
-                fileref="images/icons/navigate_up.gif"/>
-              </imageobject></inlinemediaobject></guiicon></entry>
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
 
-              <entry><para>Navigate up through the package
-                structure.</para></entry>
-            </row>
+        <!-- Entry for Go forward button -->
 
-            <!-- Entry for Go back button -->
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/navigate_forward.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Go
+            forward</literal></term>
 
-            <row>
-              <entry>Go back</entry>
+          <listitem><para>Navigate forward to the next
+            artifact.</para>
 
-              <entry><guiicon><inlinemediaobject><imageobject><imagedata
-                format="GIF" align="center"
-                fileref="images/icons/navigate_back.gif"/>
-              </imageobject></inlinemediaobject></guiicon></entry>
+          <warning><para>This feature is currently broken within &argouml;
+            and there is no guarantee where (if anywhere) this button will
+            take you.</para></warning></listitem>
+        </varlistentry>
 
-              <entry><para>Navigate back to the previous
-                artifact.</para>
+        <!-- Entry for Delete button -->
 
-              <warning><para>This feature is currently broken within &argouml;
-                and there is no guarantee where (if anywhere) this button will
-                take you.</para></warning></entry>
-            </row>
+        <varlistentry>
+          <term><guiicon><inlinemediaobject><imageobject><imagedata
+            format="GIF" align="center"
+            fileref="images/icons/property_delete.gif"/>
+          </imageobject></inlinemediaobject></guiicon>
+            <literal>Delete</literal></term>
 
-            <!-- Entry for Go forward button -->
+          <listitem><para>This deletes the action state from the model</para>
 
-            <row>
-              <entry>Go forward</entry>
-
-              <entry><guiicon><inlinemediaobject><imageobject><imagedata
-                format="GIF" align="center"
-                fileref="images/icons/navigate_forward.gif"/>
-              </imageobject></inlinemediaobject></guiicon></entry>
-
-              <entry><para>Navigate forward to the next
-                artifact.</para>
-
-              <warning><para>This feature is currently broken within &argouml;
-                and there is no guarantee where (if anywhere) this button will
-                take you.</para></warning></entry>
-            </row>
-
-            <!-- Entry for Delete button -->
-
-            <row>
-              <entry>Delete</entry>
-
-              <entry><guiicon><inlinemediaobject><imageobject><imagedata
-                format="GIF" align="center"
-                fileref="images/icons/property_delete.gif"/>
-              </imageobject></inlinemediaobject></guiicon></entry>
-
-              <entry><para>This deletes the action state from the model</para>
-
-              <warning><para>This is a deletion from the model
-                <emphasis>not</emphasis> just the diagram. To delete an
-                action state from the diagram, but keep it within the model, use
-                the main menu <literal>Edit/Remove From Diagram</literal>
-                (Ctrl-R).</para></warning></entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+          <warning><para>This is a deletion from the model
+            <emphasis>not</emphasis> just the diagram. To delete an
+            action state from the diagram, but keep it within the model, use
+            the main menu <literal>Edit/Remove From Diagram</literal>
+            (Ctrl-R).</para></warning></listitem>
+        </varlistentry>
+      </variablelist>
+    </sect2>
   
       <!-- Fields in the properties tab -->
 
-      <para>The fields on the property tab for action states are described in
-        <xref linkend="tab.ref.action_state_property_fields"/>.</para>
+    <sect2 id="s2.ref.action_state_property_fields" >
+      <title>Property fields for action state</title>
 
-      <table id="tab.ref.action_state_property_fields" frame="all" colsep="1"
-             rowsep="1" pgwide="1">
-        <title>Property fields for action state</title>
+      <variablelist>
 
-        <tgroup cols='2' align='left' colsep='0' rowsep='0'>
-          <colspec align="left" colwidth="3*"/>
-          <colspec align="left" colwidth="9*"/>
-          <thead>
-            <row>
-              <entry align="left">Field</entry>
-              <entry align="left">Meaning</entry>
-            </row>
-          </thead>
+        <!-- Entry for Name -->
 
-          <tbody valign="top">
+        <varlistentry>
+          <term><literal>Name</literal></term>
 
-            <!-- Entry for Name -->
+          <listitem><para>Text box. The name of the action state. By
+            convention action state names start with a lower case letter
+            and use bumpy caps to divide words within the name.</para>
 
-            <row>
-              <entry>Name</entry>
+          <note><para>&argouml; does not enforce this naming
+            convention.</para></note></listitem>
+        </varlistentry>
 
-              <entry><para>Text box. The name of the action state. By
-                convention action state names start with a lower case letter
-                and use bumpy caps to divide words within the name.</para>
+        <!-- Entry for Stereotype -->
 
-              <note><para>&argouml; does not enforce this naming
-                convention.</para></note></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Stereotype</literal></term>
 
-            <!-- Entry for Stereotype -->
+          <listitem><para>Drop down selector. Action state has no stereotypes
+            by default in the UML standard, but &argouml; provides the
+            stereotypes, <literal>machine</literal>,
+            <literal>organization</literal> and
+            <literal>person</literal>.</para>
 
-            <row>
-              <entry>Stereotype</entry>
+          <caution><para>&argouml; also provides the stereotype
+            <literal>realize</literal> for action states. This appears to
+            be an error, since this stereotype properly belongs to the
+            <literal>Abstraction</literal>
+            metaclass.</para></caution></listitem>
+        </varlistentry>
 
-              <entry><para>Drop down selector. Action state has no stereotypes
-                by default in the UML standard, but &argouml; provides the
-                stereotypes, <literal>machine</literal>,
-                <literal>organization</literal> and
-                <literal>person</literal>.</para>
+        <!-- Entry for NavStereo -->
 
-              <caution><para>&argouml; also provides the stereotype
-                <literal>realize</literal> for action states. This appears to
-                be an error, since this stereotype properly belongs to the
-                <literal>Abstraction</literal>
-                metaclass.</para></caution></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Navigate Stereotype</literal></term>
 
-            <!-- Entry for NavStereo -->
+          <listitem><para><guiicon><inlinemediaobject><imageobject><imagedata
+              format="GIF" align="center"
+              fileref="images/icons/navigate_stereotype.gif"/>
+            </imageobject></inlinemediaobject></guiicon> icon. If a
+              stereotype has been selected, this will navigate you to the
+              stereotype property panel (see <xref
+                linkend="s1.ref.stereotype_class"/>).</para></listitem>
+        </varlistentry>
 
-            <row>
-              <entry>Navigate Stereotype</entry>
+        <!-- Entry for Entry Action -->
 
-              <entry><para><guiicon><inlinemediaobject><imageobject><imagedata
-                  format="GIF" align="center"
-                  fileref="images/icons/navigate_stereotype.gif"/>
-                </imageobject></inlinemediaobject></guiicon> icon. If a
-                  stereotype has been selected, this will navigate you to the
-                  stereotype property panel (see <xref
-                    linkend="s1.ref.stereotype_class"/>).</para></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Entry-Action</literal></term>
 
-            <!-- Entry for Entry Action -->
+          <listitem><para>Text box. Lists the action (if any) to be invoked on
+            entry to this action state.</para>
 
-            <row>
-              <entry>Entry-Action</entry>
+          <para>&Button1; click takes you to the selected entry, &button2;
+            gives a pop up menu with three entries.</para>
 
-              <entry><para>Text box. Lists the action (if any) to be invoked on
-                entry to this action state.</para>
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected action.</para></listitem>
 
-              <para>&Button1; click takes you to the selected entry, &button2;
-                gives a pop up menu with three entries.</para>
+            <listitem><para><literal>Delete</literal>. Delete the selected
+              action.</para></listitem>
 
-              <itemizedlist>
-                <listitem><para><literal>Open</literal>. Navigate to the
-                  selected action.</para></listitem>
+            <listitem><para><literal>Add</literal>. Add a new
+              action.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
 
-                <listitem><para><literal>Delete</literal>. Delete the selected
-                  action.</para></listitem>
+        <!-- Entry for Modifiers -->
 
-                <listitem><para><literal>Add</literal>. Add a new
-                  action.</para></listitem>
-              </itemizedlist></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Modifiers</literal></term>
 
-            <!-- Entry for Modifiers -->
+          <listitem><para>Check box. Indicates whether the action state's
+            actions may be executed concurrently if there are parallel
+            executions invoked.</para>
 
-            <row>
-              <entry>Modifiers</entry>
+          <caution><para>This field is of limited value in the current
+            release of &argouml; in the absence of fields specifying
+            dynamic arguments and dynamic
+            multiplicity.</para></caution></listitem>
+        </varlistentry>
 
-              <entry><para>Check box. Indicates whether the action state's
-                actions may be executed concurrently if there are parallel
-                executions invoked.</para>
+        <!-- Entry for Incoming -->
 
-              <caution><para>This field is of limited value in the current
-                release of &argouml; in the absence of fields specifying
-                dynamic arguments and dynamic
-                multiplicity.</para></caution></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Incoming</literal></term>
 
-            <!-- Entry for Incoming -->
+          <listitem><para>Text area. Lists the transitions that enter this
+            action state.</para>
 
-            <row>
-              <entry>Incoming</entry>
+          <note><para>Unlike an ordinary state, internal transitions are
+            not permitted for action states.</para></note>
 
-              <entry><para>Text area. Lists the transitions that enter this
-                action state.</para>
+          <para>&Button1; click takes you to the selected entry, &button2;
+            gives a pop up menu with one entry.</para>
 
-              <note><para>Unlike an ordinary state, internal transitions are
-                not permitted for action states.</para></note>
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected transition.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
 
-              <para>&Button1; click takes you to the selected entry, &button2;
-                gives a pop up menu with one entry.</para>
+        <!-- Entry for Outgoing -->
 
-              <itemizedlist>
-                <listitem><para><literal>Open</literal>. Navigate to the
-                  selected transition.</para></listitem>
-              </itemizedlist></entry>
-            </row>
+        <varlistentry>
+          <term><literal>Outgoing</literal></term>
 
-            <!-- Entry for Outgoing -->
+          <listitem><para>Text area. Lists the transitions that leave this
+            action state.</para>
 
-            <row>
-              <entry>Outgoing</entry>
+          <note><para>Unlike an ordinary state, internal transitions are
+            not permitted for action states.</para></note>
 
-              <entry><para>Text area. Lists the transitions that leave this
-                action state.</para>
+          <para>&Button1; click takes you to the selected action, &button2;
+            gives a pop up menu with one entry.</para>
 
-              <note><para>Unlike an ordinary state, internal transitions are
-                not permitted for action states.</para></note>
-
-              <para>&Button1; click takes you to the selected action, &button2;
-                gives a pop up menu with one entry.</para>
-
-              <itemizedlist>
-                <listitem><para><literal>Open</literal>. Navigate to the
-                  selected transition.</para></listitem>
-              </itemizedlist></entry>
-            </row>
-          </tbody>
-        </tgroup>
-      </table>
+          <itemizedlist>
+            <listitem><para><literal>Open</literal>. Navigate to the
+              selected transition.</para></listitem>
+          </itemizedlist></listitem>
+        </varlistentry>
+      </variablelist>
     </sect2>
   </sect1>
 

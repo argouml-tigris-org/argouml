@@ -50,15 +50,6 @@ Modifications
           <imagedata format="GIF" align="center"
                      fileref="images/reference/guioverview.gif"/>
         </imageobject>
-
-        <textobject>
-          <para>A display of the &argouml; window, showing at the top the menu
-            bar, in the main area four sub-windows and at the bottom a status
-            bar. The four sub-windows are arranged two by two, and named,
-            clockwise from top left as: navigator pane, editing pane, details
-            pane and to-do pane. at the top of the editing pane is a horizontal
-            tool bar.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 

@@ -36,18 +36,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_pane.png"/>
         </imageobject>
-
-        <textobject>
-          <para>The &argouml; details pane. A rectangular pane, with a series
-            of eight tabs along the top, labeled from left to right
-            <literal>To&nbsp;Do&nbsp;Item</literal>,
-            <literal>Properties</literal>, <literal>Documentation</literal>,
-            <literal>Style</literal>, <literal>Source</literal>,
-            <literal>Constraints</literal>, <literal>Tagged Values</literal>
-            and <literal>Checklist</literal>. The body of a pane is a menu of
-            items to be checked, selected or entered specific to the
-            particular tab selected.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -175,16 +163,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_to_do.png"/>
         </imageobject>
-
-        <textobject>
-          <para>The <literal>To&nbsp;Do&nbsp;Item</literal> tab on the details
-            pane. A rectangular pane, with four icons in a vertical column on
-            the left and four buttons at the bottom labeled from left to right
-            <literal>Back</literal>, <literal>Next</literal>,
-            <literal>Finish</literal> and <literal>Help</literal>. The body of
-            the tab is a description of the problem found by the critic and how
-            it may be fixed.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -217,21 +195,6 @@ Modifications
             <imagedata format="PNG" align="center"
                        fileref="images/reference/details_new_to_do.png"/>
           </imageobject>
-
-          <textobject>
-            <para>Dialog box for
-              <literal>New&nbsp;To&nbsp;Do&nbsp;Item&hellip;</literal>. At the
-              top is a text box where a one line headline can be
-              entered. Beneath that is a drop-down selector where the priority
-              of the to-do item can be selected (<literal>High</literal>
-              (default), <literal>Medium</literal> or
-              <literal>Low</literal>). Beneath this is a text box for a URL
-              where further information can be found. The main body of the
-              dialog is then a text area for the detailed description of the
-              to-do item. Finally at the bottom are two buttons, labeled from
-              left to right <literal>Add</literal> and
-              <literal>Cancel</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -263,19 +226,6 @@ Modifications
             <imagedata format="PNG" align="center"
                        fileref="images/reference/details_resolve_to_do.png"/>
           </imageobject>
-
-          <textobject>
-            <para>Dialog box for
-              <literal>Resolve&nbsp;To&nbsp;Do&nbsp;Item&hellip;</literal>.At
-              the top is a title <literal>This item should be removed
-              because</literal> below which are three buttons stacked
-              vertically, labeled <literal>It is not relevant to my
-              goals</literal>, <literal>It is not of concern at the
-              moment</literal> and <literal>Reason given below</literal>. Below
-              these buttons is a text area taking up the remainder of the
-              dialog in which the reason for dismissing the to-do item may be
-              written.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -410,16 +360,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_properties.png"/>
         </imageobject>
-
-        <textobject>
-          <para>A typical properties tab, showing the icon and name of the type
-            of artifact (class in this case), with to the right a toolbar of
-            icons relevant to this artifact. The rest of the tab comprises
-            fields that may be set with labels to the left. The fields may be
-            text boxes, text areas, drop down selectors, radio boxes and check
-            boxes. For some of the text areas scroll bars are available when
-            needed.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -496,15 +436,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_documentation.png"/>
         </imageobject>
-
-        <textobject>
-          <para>A typical documentation tab, with on the left title
-          <literal>Documentation</literal>, and below text boxes
-          <literal>Author:</literal>, <literal>Version:</literal> and
-          <literal>Since:</literal>, a check box <literal>Deprecated:</literal>
-          and a text area <literal>See:</literal>. To the right is a single
-          text area <literal>Documentation:</literal>.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -565,15 +496,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_style.png"/>
         </imageobject>
-
-        <textobject>
-          <para>A typical style tab, showing four vertical fields. The first,
-          labeled <literal>Bounds:</literal>, is a text box defining the
-          corners of 2D objects. The remaining three are selector boxes for
-          fill color (<literal>Fill:</literal>), line color
-          (<literal>Line:</literal>) and shadow thickness
-          (<literal>Shadow:</literal>).</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -671,22 +593,6 @@ Modifications
           <imagedata format="PNG" align="center"
                      fileref="images/reference/details_constraints.png"/>
         </imageobject>
-
-        <textobject>
-          <para>A typical constraints tab. Along the top from the left are
-            icons for creating a new constraint, deleting a constraint, editing
-            an existing constraint, validating a constraint and altering the
-            OCL parameters. To the right of these is a tick box for the
-            <literal>Syntax&nbsp;Assistant</literal>. Beneath to the left is a
-            panel titled <literal>Constraint Name</literal> (partially
-            obscured) with beneath it a list of constraints (two in this
-            example). Two small arrows the upper pointing left and the lower
-            pointing right are to the right of this panel. The upper arrow
-            shrinks the panel to nothing, the lower expands it to the whole
-            tab. Finally to the right is a panel titled
-            <literal>Preview</literal> containing the text of the
-            constraint.</para>
-        </textobject>
       </mediaobject></screenshot>
     </figure>
 
@@ -764,18 +670,6 @@ Modifications
             <imagedata format="PNG" align="center"
               fileref="images/reference/details_constraints_dialog.png"/>
           </imageobject>
-
-          <textobject>
-            <para>Dialog box for configuring constraints. The main body has a
-              title, <literal>Options</literal>, and contains two check boxes
-              one above the other (both checked by default) labeled
-              respectively <literal>Check type conformance of OCL
-              constraints</literal> and <literal>AutoSplit: Automatically split
-              apart multiple constraints entered as a single text</literal>. At
-              the bottom left are two buttons, labeled from left to right
-              <literal>OK</literal> and <literal>Cancel</literal>
-              respectively.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -864,21 +758,6 @@ Modifications
             <imagedata format="PNG" align="center"
               fileref="images/reference/details_constraint_editor.png"/>
           </imageobject>
-
-          <textobject>
-            <para>The constraint editor. Along the top from the left are icons
-            for creating a new constraint (grayed out), deleting a constraint
-            (grayed out), exiting the editor without saving changes, validating
-            a constraint and altering the OCL parameters. To the right of these
-            is a tick box for the
-            <literal>Syntax&nbsp;Assistant</literal>. Beneath this is a row of
-            six drop down menus, labeled from left to right
-            <literal>General</literal>, <literal>Basic Operators</literal>,
-            <literal>Numbers</literal>, <literal>Strings</literal>,
-            <literal>Booleans</literal> and <literal>Collections</literal>. The
-            remainder of the screen is a text area labeled
-            <literal>Edit&nbsp;constraint</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 

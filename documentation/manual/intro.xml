@@ -60,8 +60,8 @@ Modifications
         Oriented <emphasis>analysis</emphasis> and <emphasis>design</emphasis>
         that moved this approach into the mainstream. When coupled with the
         ability to design systems at a very high level, a tool based &ooad;
-        approach has enabled the implementation of more complex than previously
-        possible.</para>
+        approach has enabled the implementation of more complex systems than
+        previously possible.</para>
 
      <para>The final driver that has propelled &ooad; has been its suitability
         for modeling graphical user interfaces. The popularity of object based
@@ -230,20 +230,19 @@ Modifications
       <title>Scope</title>
 
       <para>The intention is that this document will provide a comprehensive
-        guide, enabling designers to use &argouml; to its full extent.</para>
+        guide, enabling designers to use &argouml; to its full extent. It is in
+        two parts.</para>
 
       <itemizedlist>
-        <listitem><para>Downloading, installing and starting
-          &argouml;.</para></listitem>
+        <listitem><para>A tutorial manual, showing how to work with
+          &argouml;</para></listitem>
 
-        <listitem><para>Working with &argouml;</para></listitem>
-
-        <listitem><para>A complete reference of everything you can do with
-          &argouml;.</para></listitem>
+        <listitem><para>A complete reference manual, recording everything you
+          can do with &argouml;.</para></listitem>
       </itemizedlist>
 
-      <para>Not all of this will be achieved in the current version of this
-        document.</para>
+      <para>The current version of the document has achieved the second of
+        these.</para>
 
       <para>In this guide there are some things you will not find</para>
 
@@ -308,6 +307,10 @@ Modifications
         <xref linkend="ch.ref.menu"/> describe each of the sub-windows of the
         user interface, known as <emphasis>Panes</emphasis>, and the menu
         bar.</para>
+
+      <para><xref linkend="ch.ref.critics"/> gives details of all the cognitive
+        critics within the system. Eventually &argouml; will link directly to
+        this manual when giving advice on critics.</para>
 
       <para><xref linkend="ch.ref.entities"/> is an overview of the artifacts
         with &argouml;. The following chapters (<xref

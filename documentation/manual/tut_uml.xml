@@ -44,7 +44,7 @@ Modifications
 
       <listitem><para>The development of powerful workstations, and with them
         the emergence into the mainstream of windowing operating user
-        environments. Graphical User Interfaces (GUI) have an inherently object
+        environments. Graphical User Interfaces (GUI) have an inherent object
         structure.</para></listitem>
 
       <listitem><para>A number of very public major project failures,
@@ -123,6 +123,13 @@ Modifications
         software engineering. There are others, but they are less widely
         used.</para>
 
+      <para>In recent years there has also been a move to reduce the effort
+        required in developing software. This has led to the development of a
+        number of lightweight variants of processes (often known as
+        <emphasis>agile computing</emphasis> or <emphasis>extreme
+        programming</emphasis>) that are suited to very small teams of
+        engineers.</para>
+
       <sect3>
         <title>The Waterfall Process</title>
 
@@ -141,13 +148,6 @@ Modifications
               <imagedata format="PNG" align="center"
                          fileref="images/tutorial/waterfallsteps.png"/>
             </imageobject>
-
-            <textobject>
-              <para>A diagram showing the steps of the waterfall
-              process&mdash;requirements, analysis, design, code and test in a
-              diagonal line from top left to bottom right, with an arrow
-              linking each to the next down the diagonal.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -180,12 +180,6 @@ Modifications
               <imagedata format="PNG" align="center"
                          fileref="images/tutorial/waterfall.png"/>
             </imageobject>
-
-            <textobject>
-              <para>A diagram showing the steps of the waterfall
-              process&mdash;requirements, analysis, design, code and test as a
-              pyramid from top to bottom.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -215,9 +209,9 @@ Modifications
           construct a product with a step up in functionality. Again further
           feedback can be applied to the requirements.</para>
 
-        <para>The process is repeated more times, until eventually all
-          requirements have been implemented and the product is complete. It is
-          this <emphasis>iteration</emphasis> that gives these processes their
+        <para>The process is repeated, until eventually all requirements have
+          been implemented and the product is complete. It is this
+          <emphasis>iteration</emphasis> that gives these processes their
           name. <xref linkend="fig.iterative"/> shows how this process compares
           to the pyramid structure of the Waterfall Process.</para>
 
@@ -231,13 +225,6 @@ Modifications
               <imagedata format="PNG" align="center"
                          fileref="images/tutorial/iterative.png"/>
             </imageobject>
-
-            <textobject>
-              <para>A diagram showing the steps of the iterative
-              process&mdash;requirements, analysis, design, code and test as a
-              pyramid from top to bottom, but taken in stages, a slice at a
-              time.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -251,7 +238,7 @@ Modifications
 
           <para>Perhaps the best known Iterative Process is the Rational
             Unified Process (RUP) from Rational Software (<ulink
-              url="http://www.rational.com">www.rational.com</ulink>.</para>
+              url="http://www.rational.com">www.rational.com</ulink>).</para>
 
           <para>This process recognizes that our pyramid view of even slices of
             the waterfall is not realistic. In practice the early iterations
@@ -326,7 +313,7 @@ Modifications
             engineering (some time before). The time is then divided into
             iterations, and as much of the product as can be built in that time
             developed. The iterative process is very effective where time to
-            market is more important that the exact functionality.</para>
+            market is more important than the exact functionality.</para>
         </sect4>
       </sect3>
 
@@ -488,7 +475,7 @@ Modifications
 
           <para>A theory within cognitive psychology suggesting that although
             designers plan and describe their work in an ordered, hierarchical
-            fashion, in actuality, they choose successive tasks based on the
+            fashion, in reality, they choose successive tasks based on the
             criteria of cognitive cost.</para>
 
           <para>Simply stated, designers do not follow even their own plans in
@@ -611,11 +598,10 @@ Modifications
           data that is based on vectors (i.e. lines) rather than
           bitmaps.</para>
 
-        <para>For now &argouml; uses an earlier proposed standard,
-          <emphasis>Portable Graphics Markup Language (PGML)</emphasis>. For
-          now &argouml; saves graphical information in PGML format. However it
-          has the option to export graphical data as SVG for those who can make
-          use of it.</para>
+        <para>For now &argouml; saves diagrams using an earlier proposed
+          standard, <emphasis>Portable Graphics Markup Language
+          (PGML)</emphasis>. However it has the option to export graphical data
+          as SVG for those who can make use of it.</para>
       </sect3>
 
       <!-- OCL -->
@@ -627,9 +613,8 @@ Modifications
           UML standard for expressing constraints within diagrams that express
           the dynamic behavior of a design.</para>
 
-        <para>As yet OCL is not widely used anywhere. However as part of the
-          future development of OCL, &argouml; will implement this
-          language.</para>
+        <para>At present OCL is quite new and not widely available. &argouml;
+          is one of the few CASE tools to provide comprehensive support.</para>
       </sect3>
     </sect2>
 
@@ -702,9 +687,8 @@ Modifications
   <sect1>
     <title>&argouml; Basics</title>
 
-    <para>The aim of this section is to get you up and running with
-      &argouml;. It takes you through obtaining the code and getting it
-      running.</para>
+    <para>The aim of this section is to get you started with &argouml;. It
+      takes you through obtaining the code and getting it running.</para>
 
     <sect2>
       <title>Getting Started</title>
@@ -730,28 +714,20 @@ Modifications
         <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>.
       </para>
 
-      <para>If you choose to download binary, you will have a choice of
+      <para>If you choose to download the binary, you will have a choice of
         downloading the latest stable version of the code (which will be more
         reliable, but not have all the latest features), or the current version
         (which will be less reliable, but have more features). Choose according
-        to your own situation</para>
+        to your own situation.</para>
 
-      <para>If you are intending using &argouml; for a commercial product, you
-        may want greater support than is guaranteed under an open source
-        project. There is a commercial version of &argouml;,
-        <emphasis>Poseidon</emphasis> developed by Gentleware. It can be
-        obtained from their website,
-        <ulink url="http://www.gentleware.com">www.gentleware.com</ulink>.
-      </para>
-
-      <para>This documentation was produced using &argouml; 0.9.6, which at the
-        time of writing was the latest stable version.</para>
+      <para>This documentation was produced using &argouml; &argoversion;,
+        which at the time of writing was the version about to be issued.</para>
 
       <warning><para>The previous paragraph is a statement of
-        <quote>anticipation</quote>. The preparation of 0.9.6 and the writing
-        of this edition of the User Manual are running in
-        parallel. So this manual really reflects the current (unstable) 0.9.5
-        development today!</para></warning>
+        <quote>anticipation</quote>. The preparation of &argoversion; and the
+        writing of this edition of the User Manual are running in parallel. So
+        this manual really reflects the current (unstable) development of the
+        previous version!</para></warning>
 
       <!-- Using Java WebStart (JWS) -->
 
@@ -770,8 +746,8 @@ Modifications
             page</ulink>.</para></listitem>
 
           <listitem><para>Click on the
-            <literal>Launch&nbsp;&argouml;&nbsp;0.9.5</literal> link on the
-            &argouml; <ulink url="http://argouml.tigris.org">home
+            <literal>Launch&nbsp;&argouml;&nbsp;&argoversion;</literal> link on
+            the &argouml; <ulink url="http://argouml.tigris.org">home
             page</ulink>.</para></listitem>
         </orderedlist>
 
@@ -883,8 +859,8 @@ Modifications
             successful download. Most common issue is not having a new enough
             Java Runtime Environment (it must be 1.2 or later).</para>
 
-          <para>If you can' solve the problem. Try the users' mailing list (see
-            <xref linkend="s4.probsolving"/></para>
+          <para>If you can't solve the problem. Try the users' mailing list
+            (see <xref linkend="s4.probsolving"/>).</para>
         </sect4>
       </sect3>
     </sect2>
@@ -909,15 +885,6 @@ Modifications
             <imagedata format="GIF" align="center"
                        fileref="images/tutorial/guioverview.gif"/>
           </imageobject>
-
-          <textobject>
-            <para>A display of the &argouml; window, showing at the top the
-              menu bar, in the main area four sub-windows and at the bottom a
-              status bar. The four sub-windows are arranged two by two, and
-              named, clockwise from top left as: Navigator Pane, Editing
-              Pane, Details Pane and To-Do Pane. At the top of the diagram
-              Pane is a horizontal tool bar.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -946,18 +913,6 @@ Modifications
               <imagedata format="GIF" align="center"
                          fileref="images/tutorial/navoverview.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The ArgoUML Navigator Pane. A rectangular pane, with a
-                bar at the top, in which a drop down selection indicates this
-                is a <literal>Package-centric</literal> view. The remainder
-                of the pane shows a hierarchical listing. The first item is
-                <literal>untitledModel</literal>, and beneath it are two
-                children, <literal>class&nbsp;diagram&nbsp;1</literal> and
-                <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>. A
-                scroll bar appears on the right should the view be to large
-                for the Pane (not shown in this example).</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -982,15 +937,6 @@ Modifications
               <imagedata format="GIF" align="center"
                          fileref="images/tutorial/editoverview.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The ArgoUML Editing Pane. A rectangular pane, with a
-                tool bar at the top, and a single tab labeled
-                <literal>As&nbsp;Diagram</literal> at the bottom. At the right
-                end of the tool bar is the type and name of the diagram being
-                edited. The main part of the Pane shows the UML graphical items
-                being edited.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -1015,19 +961,6 @@ Modifications
               <imagedata format="GIF" align="center"
                           fileref="images/tutorial/detailsoverview.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The ArgoUML Details Pane. A rectangular pane, with a series
-                of eight tabs along the top, labeled from left to right
-                <literal>To&nbsp;Do&nbsp;Item</literal>,
-                <literal>Properties</literal>,
-                <literal>Documentation</literal>, <literal>Style</literal>,
-                <literal>Source</literal>, <literal>Constraints</literal>,
-                <literal>Tagged Values</literal> and
-                <literal>Checklist</literal>. The body of a pane is a menu of
-                items to be checked, selected or entered specific to the
-                particular tab selected.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -1052,14 +985,6 @@ Modifications
               <imagedata format="GIF" align="center"
                          fileref="images/tutorial/todooverview.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The ArgoUML To-Do Pane. A rectangular pane, with a bar at
-                the top containing from left-to-right, a drop-down selection
-                box labeled <literal>By&nbsp;Priority</literal>, a button and
-                a yellow highlighted count of items. The body of the Pane shows
-                a hierarchy of To-Do items.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -1283,18 +1208,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                            fileref="images/tutorial/startup.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>The main window's client area, below the menu bar, is
-                  subdivided into four panes. Starting at the leftmost top
-                  pane, and working around the clock, you can see the
-                  Navigation Pane, showing an explorer-like tree view of your
-                  UML model, the Editing Pane with its tool bar, two scroll bars
-                  and gray drawing area, the Details Pane with the ToDoItem tab
-                  selected, and the To-do pane with a tree view of the to do
-                  items, ranked into three priority levels (High, Medium and
-                  Low).</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -1352,13 +1265,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                            fileref="images/tutorial/saveas.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>The &argouml; window showing the <literal>File</literal>
-                  drop down menu with
-                  <literal>Save&nbsp;Project&nbsp;As&hellip;</literal>
-                  selected.</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -1413,19 +1319,6 @@ Modifications
                 <imagedata format="GIF" align="center"
                            fileref="images/tutorial/filechoose.gif"/>
               </imageobject>
-
-              <textobject>
-                <para>The file chooser window for &argouml;. At the top we have
-                  a drop down menu showing the currently chosen directory and
-                  alongside buttons to go up a directory, to the home directory
-                  to create a new directory and to change between styles for
-                  viewing directories. The main window shows the files
-                  available in the chosen directory with a scroll bar to the
-                  right. At the bottom we have a text box to enter the file
-                  name, and below that a drop down selector of file types. To
-                  the right of these last two are two buttons, Save (above) and
-                  Close (below).</para>
-              </textobject>
             </mediaobject></screenshot>
           </figure>
 
@@ -1702,17 +1595,31 @@ Modifications
       <sect3 id="s3.tut.xmi">
         <title>XMI</title>
 
+        <para>There is now a tool available which supports various dialects of
+          XMI and their interconversion. This should make portability of
+          different models in to ArgoUML considerably easier. For more
+          information, see <ulink
+          url="http://umltool.d-a-t.com/">http://umltool.d-a-t.com</ulink>. Any
+          work on using this with &argouml; would be much appreciated.</para>
+
+        <para>There is also a tool that converts XMI to HTML. For more
+          information, see <ulink
+          url="http://www.objectsbydesign.com/projects/xmi_to_html_2.html">
+          http://www.objectsbydesign.com/projects/xmi_to_html_2.html</ulink>.
+        </para>
+
         <!-- Using Rational Rose XMI -->
 
         <sect4>
           <title>Using XMI from Rational Rose</title>
 
           <para>It is probably not possible to take a model generated by
-            Rational Rose in XMI format and put it into &argouml;</para>
+            Rational Rose in XMI format and put it into &argouml;
+            directly.</para>
 
-          <para>If you want to take on the task of writing an XSLT that
-          transposes the Rose XMI to &argouml; XMI you'd make a lot of friends
-          in a hurry!</para> 
+          <para>The conversion tool identified above will probably solve the
+            problem. If you can document how this is done, you'd make a lot of
+            friends in a hurry!</para>
         </sect4>
 
         <!-- Interchangeability of Argo/UML XMI between versions -->
@@ -1812,16 +1719,6 @@ Modifications
               <imagedata format="GIF" align="center"
                 fileref="images/tutorial/critstart.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The &argouml; screen after saving as project
-                <literal>FirstProject.argo</literal>. The name of the project is
-                shown in the title bar, and the Panes have nothing other than
-                the default diagrams
-                (<literal>class&nbsp;diagram&nbsp;1</literal> and
-                <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>)
-                displayed. The Details Pane shows the ToDoItem Tab.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -1879,14 +1776,6 @@ Modifications
               <imagedata format="GIF" align="center"
                 fileref="images/tutorial/critrevname.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The &argouml; screen showing the To-Do Pane expanded with
-                <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
-                </literal> highlighted as a medium priority To-Do item. The
-                Details Pane shows the ToDoItem Tab containing the text from the
-                Critic.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -1939,14 +1828,6 @@ Modifications
               <imagedata format="GIF" align="center"
                 fileref="images/tutorial/critwiz.gif"/>
             </imageobject>
-
-            <textobject>
-              <para>The &argouml; screen showing the To-Do Pane expanded with
-                <literal>Revise&nbsp;Package&nbsp;Name&nbsp;UntitledModel
-                </literal> highlighted as a medium priority To-Do item. The
-                Details Pane shows the ToDoItem Tab containing  Rename Package
-                wizard.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 

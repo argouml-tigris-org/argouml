@@ -170,14 +170,6 @@ Modifications
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_open_project.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A file selection diagram showing directory selector; buttons
-            to move up a directory, go to home directory, create a new
-            director, change between list and details representations; filtered
-            directory contents; filename text box; filename filter; and buttons
-            to open and cancel.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -338,15 +330,6 @@ Modifications
               <imagedata format="PNG" align="center"
                          fileref="images/reference/menu_import_sources.png"/>
             </imageobject>
-
-            <textobject>
-              <para>A file selection diagram for importing sources showing
-                directory selector; buttons to move up a directory, go to home
-                directory, create a new directory, change between list and
-                details representations; filtered directory contents; tabs for
-                general and Java specific information; filename text box;
-                filename filter; and buttons to open and cancel.</para>
-            </textobject>
           </mediaobject></screenshot>
         </figure>
 
@@ -700,14 +683,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_settings.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for editing user settings, showing: four tabs
-            (<literal>Preferences</literal>, <literal>Environment</literal>,
-            <literal>User</literal> and <literal>Notation</literal>) in the
-            main body and beneath them three buttons, <literal>OK</literal>,
-            <literal>Cancel</literal> and <literal>Apply</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -892,16 +867,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_goto_diagram.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for Goto Diagram. It shows a single tab labeled
-              <literal>All&nbsp;Diagrams</literal> containing a table with four
-              columns and one row for each diagram in the current project, with
-              a scroll bar to the right. The four columns are labeled from
-              left to right <literal>Type</literal>, <literal>Name</literal>,
-              <literal>In&nbsp;Diagram</literal> and
-              <literal>Description</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -960,39 +925,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_find.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for Find. It shows four tabs labeled
-            <literal>Name&nbsp;and&nbsp;Location</literal>,
-            <literal>Last&nbsp;Modified</literal>,
-            <literal>Tagged&nbsp;Values</literal> and
-            <literal>Constraints</literal>. Of these all but the first are
-            grayed out. There are then two edit boxes with drop-downs labeled
-            <literal>Element&nbsp;Name:</literal> and
-            <literal>In&nbsp;Diagram:</literal>, both with the default entry
-            <literal>*</literal>. Below these two is a selection box labeled
-            <literal>Search&nbsp;In:</literal> and with the default selection
-            <literal>Entire Project</literal>. To the right is a selection box
-            labeled <literal>Element&nbsp;Type</literal> with the default
-            selection <literal>Any&nbsp;Type</literal>. There are then two
-            buttons labeled <literal>Clear&nbsp;Tabs</literal> and
-            <literal>Search</literal>. The lower two thirds of the screen shows
-            a number of tabs, the first labeled <literal>Help</literal>. In
-            the diagram two are shown, with the second selected, labeled
-            <literal>*&nbsp;in&nbsp;*</literal> reflecting a search for any
-            element name in any diagram. The top half of the tab is labeled
-            <literal>Search&nbsp;Results:&nbsp;1&nbsp;items</literal> and
-            contains a table with four columns labeled
-            <literal>Type</literal>,
-            <literal>Name</literal>. <literal>In&nbsp;Diagram</literal> and
-            <literal>Description</literal>. A single row is shown in this table
-            with the four columns containing respectively
-            <literal>Model</literal>, <literal>diagrams</literal>,
-            <literal>N/A</literal> and <literal>docs</literal>. The lower half
-            of the tab is labeled <literal>Related&nbsp;Elements:</literal>
-            and contains a table with the same four columns, but with no
-            data.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -1824,21 +1756,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_generate_dialog.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for
-            <literal>Generate&nbsp;Selected&nbsp;Classes</literal>. Below a
-            label <literal>Generate&nbsp;Classes:</literal> it lists each of
-            the selected classes by name with a check box to the left. At the
-            bottom is a text box labeled
-            <literal>Output&nbsp;Directory:</literal> containing the directory
-            in which code is generated with a drop down selector giving access
-            to previously selected output directories. Beneath this is a check
-            box labeled <literal>compile generated source</literal>. At the
-            bottom of the dialog box are two buttons, labeled from left to
-            right <literal>Generate</literal> and
-            <literal>Cancel</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -1945,16 +1862,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_design_issues.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for
-            <literal>Design&nbsp;Issues&hellip;</literal>. The body of the box
-            contains a list with the name of a design issue to the left and a
-            slider to the right labeled <literal>5</literal> at its left hand
-            end. A scroll bar gives access to items of the list not displayed
-            in the box. At the very bottom right is a button labeled
-            <literal>OK</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -2083,15 +1990,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_design_goals.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for
-              <literal>Design&nbsp;Goals&hellip;</literal>. The body of the box
-              contains a list (in this example with only one entry) with the
-              name of a design goal to the left and a slider to the right
-              labeled <literal>5</literal> at its left hand end. At the very
-              bottom right is a button labeled <literal>OK</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -2143,34 +2041,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_browse_critics.png"/>
           </imageobject>
-
-          <textobject>
-            <para>A dialog box for
-              <literal>Browse&nbsp;Critics&hellip;</literal>. The left half of
-              the dialog is a list titled <literal>Critics</literal> with one
-              row for each critic. Each row has three columns,
-              <literal>X</literal>, <literal>Headline</literal> and
-              <literal>Active</literal>. A scroll bar to the right of the list
-              gives access to parts of the list that are not visible. The right
-              half of the dialog is a series of fields under the title
-              <literal>Critic Class:</literal>. First is a text box labeled
-              <literal>Headline:</literal> containing the headline text of the
-              critic. Below that is a drop-down labeled
-              <literal>Priority</literal> containing the priority of any to-do
-              items generated by this critic. Next is a text box labeled
-              <literal>MoreInfo:</literal> containing the URL that contains
-              more information, and to its right a button (always grayed out)
-              labeled <literal>Go</literal>. Beneath this is a text area
-              labeled <literal>Description</literal> containing a detailed
-              explanation of what the critic means, with a scroll bar to the
-              right if the text is too big to fit in the box. Below this is a
-              drop-down labeled <literal>Use Clarifier</literal> with three
-              options available. Beneath this are three buttons in a row
-              labeled from left to right <literal>Wake</literal>,
-              <literal>Configure</literal> and
-              <literal>Edit&nbsp;Network</literal>. Finally at the bottom left
-              is a button labeled <literal>OK</literal>.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
@@ -2752,15 +2622,6 @@ v           new datatypes in their own right (the default) or as their base
             <imagedata format="PNG" align="center"
                        fileref="images/reference/menu_help.png"/>
           </imageobject>
-
-          <textobject>
-            <para>The help window for &argouml;. There are five tabs along the
-              top labeled <literal>Splash</literal>,
-              <literal>Version</literal>, <literal>Credits</literal>,
-              <literal>Contact&nbsp;Info</literal> and
-              <literal>Legal</literal>. The <literal>Splash</literal> window is
-              shown with the start up picture for &argouml; displayed.</para>
-          </textobject>
         </mediaobject></screenshot>
       </figure>
 
