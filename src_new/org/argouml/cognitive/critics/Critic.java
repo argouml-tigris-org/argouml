@@ -254,8 +254,6 @@ public class Critic implements Poster, Serializable {
     private ListSet knowledgeTypes = new ListSet();
     private long triggerMask = 0L;
 
-    private static int numCriticsFired = 0;
-
     ////////////////////////////////////////////////////////////////
     // constructor
 
@@ -392,7 +390,6 @@ public class Critic implements Poster, Serializable {
 	// LOG.debug("applying critic: " + _headline);
 	if (predicate(dm, dsgr)) {
 	    // LOG.debug("predicate() returned true, creating ToDoItem");
-	    numCriticsFired++;
 	    ToDoItem item = toDoItem(dm, dsgr);
 	    postItem(item, dm, dsgr);
 	}
