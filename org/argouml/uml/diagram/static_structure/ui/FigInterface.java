@@ -1,7 +1,3 @@
-
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -829,7 +825,7 @@ public class FigInterface extends FigNodeModelElement {
                     // italics, if abstract
                     //oper.setItalic(((MOperation)bf).isAbstract());
                     //// does not properly work (GEF bug?)
-                    if (((MOperation) bf).isAbstract())
+                    if (ModelFacade.isAbstract(bf))
                         oper.setFont(ITALIC_LABEL_FONT);
                     else
                         oper.setFont(LABEL_FONT);

@@ -25,10 +25,9 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
-
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
 /**
  * @since Dec 14, 2002
@@ -53,7 +52,7 @@ public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(((MCompositeState) getTarget()).isConcurent());
+        setSelected(ModelFacade.isConcurent(getTarget()));
     }
 
 }

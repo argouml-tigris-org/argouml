@@ -25,10 +25,9 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
-
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 /**
  * 
@@ -53,7 +52,7 @@ public class UMLAssociationEndNavigableCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
         if (getTarget() != null)
-            setSelected(((MAssociationEnd) getTarget()).isNavigable());
+            setSelected(ModelFacade.isNavigable(getTarget()));
             
     }
 

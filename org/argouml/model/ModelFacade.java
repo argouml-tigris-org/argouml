@@ -1089,6 +1089,18 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Recognizer for concurent composite state.
+     *
+     * @param handle composite state
+     * @returns true if concurent.
+     */
+    public static boolean isConcurent(Object handle) {
+        if (handle instanceof MCompositeState) {
+            return ((MCompositeState) handle).isConcurent();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Recognizer for constructor.
      *
      * @param handle candidate
@@ -1182,7 +1194,41 @@ public class ModelFacade {
         if (handle instanceof MOperation) {
             return ((MOperation) handle).isLeaf();
         }
-        // ...
+        if (handle instanceof MReception) {
+            return ((MReception) handle).isLeaf();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Recognizer for roots
+     *
+     * @param handle candidate GeneralizableElement
+     * @returns true if handle is a leaf
+     */
+    public static boolean isRoot(Object handle) {
+
+        if (handle instanceof MGeneralizableElement) {
+            return ((MGeneralizableElement) handle).isRoot();
+        }
+        if (handle instanceof MOperation) {
+            return ((MOperation) handle).isRoot();
+        }
+        if (handle instanceof MReception) {
+            return ((MReception) handle).isRoot();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** Recognizer for specifications
+     *
+     * @param handle candidate ModelElement
+     * @returns true if handle is a specification
+     */
+    public static boolean isSpecification(Object handle) {
+
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).isSpecification();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
