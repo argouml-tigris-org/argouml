@@ -24,21 +24,28 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
+import java.awt.Color;
+import java.awt.GridLayout;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
+import javax.swing.JComboBox;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
-import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLGeneralizationListModel;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLMetaclassComboBox;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLSpecializationListModel;
+import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
+
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelStereotype extends PropPanelModelElement {
 
@@ -52,14 +59,14 @@ public class PropPanelStereotype extends PropPanelModelElement {
         Class mclass = MStereotype.class;
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.base-class"),2,0,0);
         JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
         addField(baseClass,2,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-        addField(namespaceComboBox,3,0,0);
+        addField(getNamespaceComboBox(),3,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
         JPanel modifiersPanel = new JPanel(new GridLayout(0,3));

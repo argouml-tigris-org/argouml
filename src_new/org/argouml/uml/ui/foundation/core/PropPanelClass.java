@@ -31,22 +31,19 @@
 package org.argouml.uml.ui.foundation.core;
 
 
-import java.awt.*;
-import java.util.Vector;
-
-import javax.swing.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLCheckBox;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLReflectionBooleanProperty;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
+
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class PropPanelClass extends PropPanelClassifier {
 
@@ -57,9 +54,9 @@ public class PropPanelClass extends PropPanelClassifier {
     super("Class",_classIcon, ConfigLoader.getTabPropsOrientation());
     Class mclass = MClass.class;
     
-    addField(Argo.localize("UMLMenu", "label.name"), nameField);
-    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-    addField(Argo.localize("UMLMenu", "label.namespace"), namespaceComboBox);
+    addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+    addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
+    addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
     addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
     // addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilitypanel);

@@ -219,7 +219,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @param target
      */
     public void setTarget(Object target) {
-        if (target == _target) return;
+        if (target == _target && target != null) return;
         if (_eventName == null || _eventName.equals("")) 
             throw new IllegalStateException("eventName not set!");
         if (_target instanceof MBase) {
@@ -316,7 +316,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
      */
     public void targetChanged(Object newTarget) {
-        if ((_target != null) && (newTarget != null) && (newTarget.getClass().equals(_target.getClass())))
+        if (_target != newTarget)
             setTarget(newTarget);
     }
 

@@ -41,7 +41,10 @@ import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLModelElementListModel;
 import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
+
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
@@ -58,14 +61,14 @@ public class PropPanelSignal extends PropPanelModelElement {
         Class mclass = MSignal.class;
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
 
 
         addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(stereotypeBox,2,0,0);
+        addField(getStereotypeBox(),2,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(namespaceComboBox,3,0,0);
+        addField(getNamespaceComboBox(),3,0,0);
         
         addCaption(Argo.localize("UMLMenu", "label.contexts"), 1,1,0);
         JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);

@@ -31,7 +31,9 @@ import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
@@ -39,8 +41,8 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
     public PropPanelAssociationEndRole() {
         super("AssociationEndRole", ConfigLoader.getTabPropsOrientation());
         
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
         
         JList baseList = new UMLLinkedList(new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);

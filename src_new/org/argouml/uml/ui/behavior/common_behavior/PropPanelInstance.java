@@ -31,16 +31,23 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.*;
-import javax.swing.*;
-import java.util.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import javax.swing.JTree;
+
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLClassifierComboBoxModel;
+import org.argouml.uml.ui.UMLComboBox;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
+
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class PropPanelInstance extends PropPanelModelElement {
 
@@ -51,7 +58,7 @@ public class PropPanelInstance extends PropPanelModelElement {
 	Class mclass = MInstance.class;
    
 	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-	addField(nameField,1,0,0);
+	addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
       
 	addCaption("Classifier:",2,0,0);
    	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
@@ -60,10 +67,10 @@ public class PropPanelInstance extends PropPanelModelElement {
 
 
 	addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),3,0,0);
+	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()),3,0,0);
 
 	addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,0);
-	addLinkField(namespaceComboBox,4,0,0);
+	addLinkField(getNamespaceComboBox(),4,0,0);
 
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);

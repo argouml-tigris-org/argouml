@@ -34,8 +34,11 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLTextArea;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.UMLTextProperty;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
+
 import ru.novosoft.uml.behavior.common_behavior.MReception;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDataType;
@@ -57,13 +60,13 @@ public class PropPanelReception extends PropPanelModelElement {
 		Class mclass = MReception.class;
 		 
 		addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(stereotypeBox,2,0,0);
+        addField(getStereotypeBox(),2,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-        addField(namespaceComboBox,3,0,0);
+        addField(getNamespaceComboBox(),3,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
         JPanel modPanel = new JPanel(new GridLayout(0,3));

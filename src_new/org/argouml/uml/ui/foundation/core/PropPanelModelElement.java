@@ -24,9 +24,7 @@
 // 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Icons for extend and
 // include relationships added.
 
-
 package org.argouml.uml.ui.foundation.core;
-
 
 import java.util.Vector;
 
@@ -36,7 +34,6 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
@@ -52,6 +49,7 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
+
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -109,22 +107,21 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected static ImageIcon _flowIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Flow");
     protected static ImageIcon _stateMachineIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("StateMachine");
 
-    protected JScrollPane namespaceScroll;
-    protected JComboBox namespaceComboBox;
-    protected JTextField nameField;
-    protected JComboBox stereotypeBox;    
-    protected JScrollPane supplierDependencyScroll;
-    protected JScrollPane clientDependencyScroll;
-    protected JScrollPane targetFlowScroll;
-    protected JScrollPane sourceFlowScroll;
-    protected JScrollPane constraintScroll;
-    protected JPanel namespaceVisibilityPanel;
-    protected JCheckBox specializationCheckBox;
-    protected JScrollPane elementResidenceScroll;
-    
+    private JScrollPane namespaceScroll;
+    private JComboBox namespaceComboBox;
+    private JComboBox stereotypeBox;
+    private JScrollPane supplierDependencyScroll;
+    private JScrollPane clientDependencyScroll;
+    private JScrollPane targetFlowScroll;
+    private JScrollPane sourceFlowScroll;
+    private JScrollPane constraintScroll;
+    private JPanel namespaceVisibilityPanel;
+    private JCheckBox specializationCheckBox;
+    private JScrollPane elementResidenceScroll;
+
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
     private UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
-    
+
     /**
      *    Constructs the PropPanel.
      *    @param title Title of panel
@@ -133,64 +130,60 @@ abstract public class PropPanelModelElement extends PropPanel {
      *    specifying orientation instead.
      */
     public PropPanelModelElement(String name, int columns) {
-        this(name,null,columns);
+        this(name, null, columns);
     }
 
     public PropPanelModelElement(String name, ImageIcon icon, Orientation orientation) {
         super(name, icon, orientation);
-        initialize();
     }
-    
+
     public PropPanelModelElement(String name, Orientation orientation) {
         super(name, orientation);
-        initialize();
     }
-    
+
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
-        super(name,icon,columns);
-        initialize();
+        super(name, icon, columns);
     }
-    
+
     /**
      * Constructor that is used if no other proppanel can be found for a modelelement
      * of some kind. Since this is the default
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Argo.localize("UMLMenu", "label.name"), nameField);
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
-        
+        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+
         add(LabelledLayout.getSeperator());
-        
-        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), supplierDependencyScroll);
-        addField(Argo.localize("UMLMenu", "label.client-dependencies"), clientDependencyScroll);
-        addField(Argo.localize("UMLMenu", "label.source-flows"), sourceFlowScroll);
-        addField(Argo.localize("UMLMenu", "label.target-flows"), targetFlowScroll);
-        
+
+        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
+        addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
+        addField(Argo.localize("UMLMenu", "label.source-flows"), getSourceFlowScroll());
+        addField(Argo.localize("UMLMenu", "label.target-flows"), getTargetFlowScroll());
+
         add(LabelledLayout.getSeperator());
-        
-        addField(Argo.localize("UMLMenu", "label.constraints"), constraintScroll);
-        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), namespaceVisibilityPanel);
+
+        addField(Argo.localize("UMLMenu", "label.constraints"), getConstraintScroll());
+        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
     }
 
     public void navigateUp() {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MNamespace namespace = ((MModelElement) target).getNamespace();
-            if(namespace != null) {
+            if (namespace != null) {
                 navigateTo(namespace);
             }
         }
     }
 
-   
     public void navigateNamespace() {
         Object target = getTarget();
-        if(target instanceof MModelElement) {
+        if (target instanceof MModelElement) {
             MModelElement elem = (MModelElement) target;
             MNamespace ns = elem.getNamespace();
-            if(ns != null) {
+            if (ns != null) {
                 navigateTo(ns);
             }
         }
@@ -202,57 +195,112 @@ abstract public class PropPanelModelElement extends PropPanel {
     // THIS CLASS MUST NOT IMPLEMENT PluggablePropertyPanel.  These
     // are present to provide default implementations for any
     // property panel that extends this class.
-    public PropPanel getPropertyPanel() { return this; }
-    public boolean isModuleEnabled() { return true; }
-    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-    public boolean shutdownModule() { return true; }
+    public PropPanel getPropertyPanel() {
+        return this;
+    }
+    public boolean isModuleEnabled() {
+        return true;
+    }
+    public Vector getModulePopUpActions(Vector v, Object o) {
+        return null;
+    }
+    public boolean shutdownModule() {
+        return true;
+    }
     public boolean initializeModule() {
         ArgoModule.cat.debug("initializeModule()");
         return true;
     }
-    public void setModuleEnabled(boolean enabled) { }
-    public boolean inContext(Object[] o) { return true; }
-    
-     
-    /**
-     * Initializes the fields in this proppanel. The fields are used by the children
-     * of this proppanel. 
-     */
-    private void initialize() {
-        nameField = new UMLTextField2(new UMLModelElementNameDocument());
-        stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
-        namespaceComboBox = new UMLSearchableComboBox(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
-        JList namespaceList = new UMLLinkedList(new UMLModelElementNamespaceListModel());
-        namespaceList.setVisibleRowCount(1);
-        namespaceScroll = new JScrollPane(namespaceList);
-        
-        // supplierDependencyList and clientDependencyList are not mutable atm
-        // reason for this is that users would have an enormous choice if they 
-        // are implemented as mutable
-        JList supplierDependencyList = new UMLLinkedList(new UMLModelElementSupplierDependencyListModel());
-        supplierDependencyScroll = new JScrollPane(supplierDependencyList);
-        JList clientDependencyList = new UMLLinkedList(new UMLModelElementClientDependencyListModel());
-        clientDependencyScroll = new JScrollPane(clientDependencyList);
-        
-        // 2002-11-10 flows are not supported yet by the rest of argouml but 
-        // included here for future compliance. For the same reason as
-        // supplierDependency not mutable
-        JList sourceFlowList = new UMLLinkedList(new UMLModelElementSourceFlowListModel());
-        sourceFlowScroll = new JScrollPane(sourceFlowList);
-        JList targetFlowList = new UMLLinkedList(new UMLModelElementTargetFlowListModel());
-        targetFlowScroll = new JScrollPane(targetFlowList);
-        JList constraintList = new UMLMutableLinkedList(new UMLModelElementConstraintListModel(), null, ActionNewModelElementConstraint.SINGLETON);
-        constraintScroll = new JScrollPane(constraintList);
-        namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
-        
-        specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox();
-        
-        // NSUML implements the association class element residence as a connecting class 
-        // between a component and the modelelement
-        JList elementResidenceList = new UMLLinkedList(new UMLModelElementElementResidenceListModel());
-        elementResidenceScroll = new JScrollPane(elementResidenceList);
-        // no support yet for templateParameters
-        // TODO support templateparameters
+    public void setModuleEnabled(boolean enabled) {
+    }
+    public boolean inContext(Object[] o) {
+        return true;
+    }
+
+    protected JScrollPane getNamespaceScroll() {
+        if (namespaceScroll == null) {
+            JList namespaceList = new UMLLinkedList(new UMLModelElementNamespaceListModel());
+            namespaceList.setVisibleRowCount(1);
+            namespaceScroll = new JScrollPane(namespaceList);
+        }
+        return namespaceScroll;
+    }
+
+    protected JComboBox getNamespaceComboBox() {
+        if (namespaceComboBox == null) {
+            namespaceComboBox = new UMLSearchableComboBox(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
+        }
+        return namespaceComboBox;
+
+    }
+
+    protected JComboBox getStereotypeBox() {
+        if (stereotypeBox == null) {
+            stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
+        }
+        return stereotypeBox;
+    }
+
+    protected JScrollPane getSupplierDependencyScroll() {
+        if (supplierDependencyScroll == null) {
+            JList supplierDependencyList = new UMLLinkedList(new UMLModelElementSupplierDependencyListModel());
+            supplierDependencyScroll = new JScrollPane(supplierDependencyList);
+        }
+        return supplierDependencyScroll;
+    }
+
+    protected JScrollPane getClientDependencyScroll() {
+        if (clientDependencyScroll == null) {
+            JList clientDependencyList = new UMLLinkedList(new UMLModelElementClientDependencyListModel());
+            clientDependencyScroll = new JScrollPane(clientDependencyList);
+        }
+        return clientDependencyScroll;
+    }
+
+    protected JScrollPane getTargetFlowScroll() {
+        if (targetFlowScroll == null) {
+            JList targetFlowList = new UMLLinkedList(new UMLModelElementTargetFlowListModel());
+            targetFlowScroll = new JScrollPane(targetFlowList);
+        }
+        return targetFlowScroll;
+    }
+
+    protected JScrollPane getSourceFlowScroll() {
+        if (sourceFlowScroll == null) {
+            JList sourceFlowList = new UMLLinkedList(new UMLModelElementSourceFlowListModel());
+            sourceFlowScroll = new JScrollPane(sourceFlowList);
+        }
+        return sourceFlowScroll;
+    }
+
+    protected JScrollPane getConstraintScroll() {
+        if (constraintScroll == null) {
+            JList constraintList = new UMLMutableLinkedList(new UMLModelElementConstraintListModel(), null, ActionNewModelElementConstraint.SINGLETON);
+            constraintScroll = new JScrollPane(constraintList);
+        }
+        return constraintScroll;
+    }
+
+    protected JPanel getNamespaceVisibilityPanel() {
+        if (namespaceVisibilityPanel == null) {
+            namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
+        }
+        return namespaceVisibilityPanel;
+    }
+
+    protected JCheckBox getSpecializationCheckBox() {
+        if (specializationCheckBox == null) {
+            specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox();
+        }
+        return specializationCheckBox;
+    }
+
+    protected JScrollPane getElementResidenceScroll() {
+        if (elementResidenceScroll == null) {
+            JList elementResidenceList = new UMLLinkedList(new UMLModelElementElementResidenceListModel());
+            elementResidenceScroll = new JScrollPane(elementResidenceList);
+        }
+        return elementResidenceScroll;
     }
 
 }

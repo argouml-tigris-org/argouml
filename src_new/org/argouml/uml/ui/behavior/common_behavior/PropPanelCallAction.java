@@ -26,19 +26,20 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JScrollPane;
 
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLExpressionBodyField;
+import org.argouml.uml.ui.UMLExpressionLanguageField;
+import org.argouml.uml.ui.UMLExpressionModel;
+import org.argouml.uml.ui.UMLTextField2;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
 
 public class PropPanelCallAction extends PropPanelModelElement {
 
@@ -50,7 +51,7 @@ public class PropPanelCallAction extends PropPanelModelElement {
         Class mclass = MCallAction.class;
 
 	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
 
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MAction.class,"script",
             MActionExpression.class,"getScript","setScript");

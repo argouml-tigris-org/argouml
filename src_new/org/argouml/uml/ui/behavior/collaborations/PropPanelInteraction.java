@@ -31,7 +31,9 @@ import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -45,9 +47,9 @@ public class PropPanelInteraction extends PropPanelModelElement {
     public PropPanelInteraction() {
         super("Interaction", _interactionIcon, ConfigLoader.getTabPropsOrientation());
 	
-    	addField(Argo.localize("UMLMenu", "label.name"), nameField);  	
-    	addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
-        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+    	addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));  	
+    	addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
+        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
         
         JList contextList = new UMLLinkedList(new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
