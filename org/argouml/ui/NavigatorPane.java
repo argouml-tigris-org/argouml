@@ -150,11 +150,31 @@ public class NavigatorPane
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private static NavigatorPane INSTANCE = new NavigatorPane();
+    private static NavigatorPane INSTANCE = null;
+
+	private static boolean instanceSet = false;
     
-    public static NavigatorPane getInstance() {
-        return INSTANCE;
-    }
+    /** Don't automatically instantiate the instance.
+     * 
+     * @return the singleton
+     */
+	public static NavigatorPane getInstance() {
+		if (! instanceSet) {
+			INSTANCE = new NavigatorPane();
+		}
+		return INSTANCE;
+	}
+    
+	/** Allow setting of the navigator pane instance.
+	 * Currently this is only applicable for unit tests.
+	 * 
+	 * @param pane
+	 * @deprecated without replacement - this is a temporary hack until the model is cleaned up
+	 */
+	public static void setInstance(NavigatorPane pane) {
+		INSTANCE = pane;
+		instanceSet = true;
+	}
     
     /**
      * Constructs a new navigator panel.
