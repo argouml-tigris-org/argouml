@@ -324,6 +324,8 @@ public class GeneratorJava extends Generator {
   public String generateMethodBody(MOperation op) {
     // pick out return type
     MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
+    if (rp == null)
+	return generateDefaultReturnStatement(null);
     MClassifier returnType = rp.getType();
       return generateDefaultReturnStatement(returnType);
   }
