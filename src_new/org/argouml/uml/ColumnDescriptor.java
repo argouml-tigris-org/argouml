@@ -493,7 +493,7 @@ class ColumnSupplier extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isADependency(target))) return "N/A";
 	String name = "";
-	Collection conns = ((MDependency) target).getSuppliers();
+	Collection conns = ModelFacade.getSuppliers(target);
 	if (conns != null && (conns.size() == 1)) {
 	    Iterator it = conns.iterator();
 	    while (it.hasNext()) {
@@ -516,7 +516,7 @@ class ColumnClient extends ColumnDescriptor {
     public Object getValueFor(Object target) {
 	if (!(ModelFacade.isADependency(target))) return "N/A";
 	String name = "";
-	Collection conns = ((MDependency) target).getClients();
+	Collection conns = ModelFacade.getClients(target);
 	if (conns != null && (conns.size() == 1)) {
 	    Iterator it = conns.iterator();
 	    while (it.hasNext()) {

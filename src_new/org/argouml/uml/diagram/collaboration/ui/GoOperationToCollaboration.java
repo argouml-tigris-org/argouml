@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,10 +26,9 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.util.Collection;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
-import ru.novosoft.uml.foundation.core.MOperation;
-
 /**
  * Go rule for navigation in the navpane from an operation to the collaboration
  * representing it.
@@ -45,8 +43,8 @@ public class GoOperationToCollaboration extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (org.argouml.model.ModelFacade.isAOperation(parent)) {
-            return ((MOperation) parent).getCollaborations();
+        if (ModelFacade.isAOperation(parent)) {
+            return ModelFacade.getCollaborations(parent);
         }
         return null;
     }
