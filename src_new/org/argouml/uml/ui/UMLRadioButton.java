@@ -49,6 +49,9 @@ public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUse
     public void targetChanged() {
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

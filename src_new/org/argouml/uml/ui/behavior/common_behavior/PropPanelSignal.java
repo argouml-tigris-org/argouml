@@ -86,35 +86,57 @@ public class PropPanelSignal extends PropPanelClassifier {
         JScrollPane derivedScroll = new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         addField(derivedScroll,6,0,1);
 
-        addCaption(new JLabel("Operations:"),0,1,0.25);
+        addCaption(new JLabel("Operations:"),0,1,0.33);
         JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
         opsList.setForeground(Color.blue);
         opsList.setVisibleRowCount(1);
         JScrollPane opsScroll = new JScrollPane(opsList);
-        addField(opsScroll,0,1,0.25);
+        addField(opsScroll,0,1,0.33);
 
-        addCaption(new JLabel("Attributes:"),1,1,0.25);
+        addCaption(new JLabel("Attributes:"),1,1,0.33);
         JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
         attrList.setForeground(Color.blue);
         attrList.setVisibleRowCount(1);
         JScrollPane attrScroll= new JScrollPane(attrList);
-        addField(attrScroll,1,1,0.25);
+        addField(attrScroll,1,1,0.33);
 
-        addCaption(new JLabel("Associations:"),2,1,0.25);
+        addCaption(new JLabel("Associations:"),2,1,0.33);
         JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
         connectList.setForeground(Color.blue);
         connectList.setVisibleRowCount(1);
-        addField(new JScrollPane(connectList),2,1,0.25);
+        addField(new JScrollPane(connectList),2,1,0.33);
 
 
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+    
+    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add attribute","addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_addAssocIcon,"Add association","addAssociation",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete actor","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    new PropPanelButton(this,buttonPanel,_classIcon,"New signal","newSignal",null);
 
-        addCaption(new JLabel("Inner Classes:"),3,1,0.25);
-        JList innerList = new UMLList(new UMLClassifierListModel(this,"ownedElement",true,MClass.class,MClassImpl.class),true);
-        innerList.setForeground(Color.blue);
-        innerList.setVisibleRowCount(1);
-        addField(new JScrollPane(innerList),3,1,0.25);
 
         
+    }
+    
+    public void newSignal() {
+        Object target = getTarget();
+        if(target instanceof MSignal) {
+            MNamespace ns = ((MSignal) target).getNamespace();
+            if(ns != null) {
+                MSignal newSig = ns.getFactory().createSignal();
+                ns.addOwnedElement(newSig);
+                navigateTo(newSig);
+            }
+        }
     }
 
 } /* end class PropPanelSignal */

@@ -49,6 +49,9 @@ public class UMLCheckBox extends JCheckBox implements ItemListener, UMLUserInter
     public void targetChanged() {
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

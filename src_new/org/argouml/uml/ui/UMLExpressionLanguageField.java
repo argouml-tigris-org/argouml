@@ -49,6 +49,9 @@ public class UMLExpressionLanguageField extends JTextField implements DocumentLi
         if(_notifyModel) _model.targetChanged();
         update();
     }
+
+    public void targetReasserted() {
+    }
     
     public void roleAdded(final MElementEvent p1) {
     }

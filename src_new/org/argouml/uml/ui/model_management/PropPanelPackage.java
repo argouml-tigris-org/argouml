@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.*;
 import org.argouml.uml.ui.foundation.core.*;
+import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.tigris.gef.util.Util;
 
@@ -46,6 +47,13 @@ public class PropPanelPackage extends PropPanelNamespace {
   private static ImageIcon _dataTypeIcon = Util.loadIconResource("DataType");
   private static ImageIcon _packageIcon = Util.loadIconResource("Package");
   private static ImageIcon _stereotypeIcon = Util.loadIconResource("Stereotype");
+  private static ImageIcon _actorIcon = Util.loadIconResource("Actor");
+  private static ImageIcon _useCaseIcon = Util.loadIconResource("UseCase");
+  protected static ImageIcon _associationIcon = Util.loadIconResource("Association");
+  protected static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
+  protected static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
+
+
 //  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
 //  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
 
@@ -102,37 +110,43 @@ public class PropPanelPackage extends PropPanelNamespace {
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,6,0,1);
     
-    double ygrowth = 0.2;
-    addCaption(new JLabel("Packages:"),0,1,ygrowth);
-    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedElement",true),true);
-    packList.setForeground(Color.blue);
-    packList.setVisibleRowCount(1);
-    addField(new JScrollPane(packList),0,1,ygrowth);
+//    double ygrowth = 0.2;
+//    addCaption(new JLabel("Packages:"),0,1,ygrowth);
+//    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedElement",true),true);
+//    packList.setForeground(Color.blue);
+//    packList.setVisibleRowCount(1);
+//    addField(new JScrollPane(packList),0,1,ygrowth);
 
-    addCaption(new JLabel("Classifiers:"),1,1,ygrowth);
-    JList classList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
-    classList.setForeground(Color.blue);
-    classList.setVisibleRowCount(1);
-    addField(new JScrollPane(classList),1,1,ygrowth);
+//    addCaption(new JLabel("Classifiers:"),1,1,ygrowth);
+//    JList classList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
+//    classList.setForeground(Color.blue);
+//    classList.setVisibleRowCount(1);
+//    addField(new JScrollPane(classList),1,1,ygrowth);
 
-    addCaption(new JLabel("Associations:"),2,1,ygrowth);
-    JList assocList = new UMLList(new UMLAssociationsListModel(this,"ownedElement",true),true);
-    assocList.setForeground(Color.blue);
-    assocList.setVisibleRowCount(1);
-    addField(new JScrollPane(assocList),2,1,ygrowth);
+//    addCaption(new JLabel("Associations:"),2,1,ygrowth);
+//    JList assocList = new UMLList(new UMLAssociationsListModel(this,"ownedElement",true),true);
+//    assocList.setForeground(Color.blue);
+//    assocList.setVisibleRowCount(1);
+//    addField(new JScrollPane(assocList),2,1,ygrowth);
 
-    addCaption(new JLabel("Generalizations:"),3,1,ygrowth);
-    JList genList = new UMLList(new UMLGeneralizationsListModel(this,"ownedElement",true),true);
-    genList.setForeground(Color.blue);
-    genList.setVisibleRowCount(1);
-    addField(new JScrollPane(genList),3,1,ygrowth);
+//    addCaption(new JLabel("Generalizations:"),3,1,ygrowth);
+//    JList genList = new UMLList(new UMLGeneralizationsListModel(this,"ownedElement",true),true);
+//    genList.setForeground(Color.blue);
+//    genList.setVisibleRowCount(1);
+//    addField(new JScrollPane(genList),3,1,ygrowth);
     
-    addCaption(new JLabel("Stereotypes:"),4,1,ygrowth);
-    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedElement",true),true);
-    stereoList.setForeground(Color.blue);
-    stereoList.setVisibleRowCount(1);
-    addField(new JScrollPane(stereoList),4,1,ygrowth);
+//    addCaption(new JLabel("Stereotypes:"),4,1,ygrowth);
+//    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedElement",true),true);
+//    stereoList.setForeground(Color.blue);
+//    stereoList.setVisibleRowCount(1);
+//    addField(new JScrollPane(stereoList),4,1,ygrowth);
 
+    addCaption(new JLabel("Owned Elements"),0,1,1);
+    UMLOwnedElementRootNode root = new UMLOwnedElementRootNode(this,"ownedElement",false);    
+    UMLTreeModel model = new UMLTreeModel(this,root);
+    root.setModel(model);
+    addField(new UMLTree(this,model,true),0,1,1);
+    
     JPanel buttonBorder = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
@@ -148,7 +162,13 @@ public class PropPanelPackage extends PropPanelNamespace {
     _stereotypeButton.setEnabled(false);
     
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete package","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_actorIcon,"Add actor","addActor",null);
+    new PropPanelButton(this,buttonPanel,_useCaseIcon,"Add use case","addUseCase",null);
     new PropPanelButton(this,buttonPanel,_packageIcon,"Add subpackage","addPackage",null);
+    new PropPanelButton(this,buttonPanel,_associationIcon,"Add association","addAssociation",null);
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    
 //    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
 //    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
     
@@ -165,5 +185,107 @@ public class PropPanelPackage extends PropPanelNamespace {
         }
     }
     
+    public void addActor() {
+        Object target = getTarget();
+        if(target instanceof MPackage) {
+            MPackage pkg = (MPackage) target;
+            MActor actor = pkg.getFactory().createActor();
+            pkg.addOwnedElement(actor);
+            navigateTo(actor);
+        }
+    }
+    
+    public void addUseCase() {
+        Object target = getTarget();
+        if(target instanceof MPackage) {
+            MPackage pkg = (MPackage) target;
+            MUseCase useCase = pkg.getFactory().createUseCase();
+            pkg.addOwnedElement(useCase);
+            navigateTo(useCase);
+        }
+    }
+    
+    public void addGeneralization() {
+        Object target = getTarget();
+        if(target instanceof MPackage) {
+            MPackage pkg = (MPackage) target;
+            MModelElement element = pkg.getFactory().createGeneralization();
+            pkg.addOwnedElement(element);
+            navigateTo(element);
+        }
+    }
+    
+
+        public void addAssociation() {
+        Object target = getTarget();
+        if(target instanceof MPackage) {
+            MPackage pkg = (MPackage) target;
+            MModelElement element = pkg.getFactory().createAssociation();
+            pkg.addOwnedElement(element);
+            navigateTo(element);
+        }
+    }
+
+    
+    public String formatElement(MModelElement element) {
+        String formatted = null;
+        Object target = getTarget();
+        MNamespace ns = null;
+        if(target instanceof MNamespace) {
+            ns = (MNamespace) target;
+        }
+        return getProfile().formatElement(element,ns);
+    }
+    
+    public void addPackage(MModelElement element) {
+        addPackage();
+    }
   
+    public void addDataType(MModelElement element) {
+        addDataType();
+    }
+    
+    public void addActor(MModelElement element) {
+        addActor();
+    }
+    
+    public void addInterface(MModelElement element) {
+        addInterface();
+    }
+    
+    public void addUseCase(MModelElement element) {
+        addUseCase();
+    }
+    
+    public void addAssociation(MModelElement element) {
+        addAssociation();
+    }
+    
+    public void deleteElement(MModelElement element) {
+        element.remove();
+    }
+    
+    public void addStereotype(MModelElement element) {
+        addStereotype();
+    }
+    
+    public void openElement(MModelElement element) {
+    }
+    
+    public void navigateElement(MModelElement element) {
+        navigateTo(element);
+    }
+    
+    public void addClass(MModelElement element) {
+        addClass();
+    }
+    
+    public void addGeneralization(MModelElement element) {
+        addGeneralization();
+    }
+    
+    public void addRealization(MModelElement element) {
+        addRealization();
+    }
+    
 } /* end class PropPanelPackage */

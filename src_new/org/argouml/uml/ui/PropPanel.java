@@ -221,6 +221,11 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             //
             SwingUtilities.invokeLater(new UMLChangeDispatch(this,-1));
         }
+        else {
+            UMLChangeDispatch dispatch = new UMLChangeDispatch(this,-1);
+            dispatch.targetReasserted();
+            SwingUtilities.invokeLater(dispatch);
+        }
     }
 
     public Object getTarget() { return _target; }

@@ -35,12 +35,6 @@ import org.tigris.gef.util.Util;
 
 public class PropPanelClass extends PropPanelClassifier {
 
-  private static ImageIcon _addOpIcon = Util.loadIconResource("AddOperation");
-  private static ImageIcon _addAttrIcon = Util.loadIconResource("AddAttribute");
-  private static ImageIcon _addAssocIcon = Util.loadIconResource("Association");
-  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
-  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
-  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -136,7 +130,8 @@ public class PropPanelClass extends PropPanelClassifier {
     new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete class","removeElement",null);
     new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    new PropPanelButton(this,buttonPanel,_classIcon,"Add inner class","addInnerClass",null);
+    new PropPanelButton(this,buttonPanel,_classIcon,"New class","newClass",null);
+    new PropPanelButton(this,buttonPanel,_innerClassIcon,"Add inner class","addInnerClass",null);
 
   }
 
@@ -147,6 +142,19 @@ public class PropPanelClass extends PropPanelClassifier {
             MClassifier inner = classifier.getFactory().createClass();
             classifier.addOwnedElement(inner);
             navigateTo(inner);
+        }
+    }
+    
+    public void newClass() {
+        Object target = getTarget();
+        if(target instanceof MClassifier) {
+            MClassifier classifier = (MClassifier) target;
+            MNamespace ns = classifier.getNamespace();
+            if(ns != null) {
+                MClassifier peer = classifier.getFactory().createClass();
+                ns.addOwnedElement(peer);
+                navigateTo(peer);
+            }
         }
     }
 

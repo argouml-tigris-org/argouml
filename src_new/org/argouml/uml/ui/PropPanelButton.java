@@ -70,7 +70,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     }
             
     
-    public void targetChanged() {
+    public void targetReasserted() {
         boolean enabled = false;
         Object target = _propPanel.getTarget();        
         if(target != null && _actionMethod != null) {
@@ -85,6 +85,10 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
             }
         }
         setEnabled(enabled);
+    }
+
+    public void targetChanged() {
+        targetReasserted();
     }
     
     public void roleAdded(final MElementEvent p1) {

@@ -165,6 +165,8 @@ implements IStatusBar, NavigationListener {
 
   protected JSplitPane _mainSplit, _topSplit, _botSplit;
 
+  private NavigationHistory _history = new NavigationHistory();
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -588,6 +590,7 @@ implements IStatusBar, NavigationListener {
      *    navigate to a model element has been received.
      */
     public void navigateTo(Object element) {
+        _history.navigateTo(element);
         setTarget(element);
     }
 
@@ -598,19 +601,35 @@ implements IStatusBar, NavigationListener {
     }
     
     public boolean navigateBack(boolean attempt) {
-        return false;
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateBack(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
     }
     
     public boolean navigateForward(boolean attempt) {
-        return false;
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateForward(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
     }
 
     public boolean isNavigateBackEnabled() {
-        return false;
+        return _history.isNavigateBackEnabled();
     }
 
     public boolean isNavigateForwardEnabled() {
-        return false;
+        return _history.isNavigateForwardEnabled();
     }
     
 
