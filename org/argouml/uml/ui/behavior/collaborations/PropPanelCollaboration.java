@@ -59,12 +59,12 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         
         UMLLinkedList classifierList = new UMLLinkedList(new UMLCollaborationRepresentedClassifierListModel());
         classifierList.setVisibleRowCount(1);   
-        addField(Argo.localize("UMLMenu", "label.representedClassifier"), 
+        addField(Argo.localize("UMLMenu", "label.represented-classifier"), 
             new JScrollPane(classifierList));
         
         UMLLinkedList operationList = new UMLLinkedList(new UMLCollaborationRepresentedOperationListModel());
         operationList.setVisibleRowCount(1);
-        addField(Argo.localize("UMLMenu", "label.representedOperation"), 
+        addField(Argo.localize("UMLMenu", "label.represented-operation"), 
             new JScrollPane(operationList));
          
         add(LabelledLayout.getSeperator());
