@@ -29,7 +29,6 @@ import org.xml.sax.helpers.*;
 import java.util.Stack;
 import java.net.URL;
 import java.io.*;
-import org.xml.sax.*;
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
 
@@ -92,6 +91,7 @@ public abstract class SAXParserBase extends HandlerBase {
     try {
       SAXParser parser = factory.newSAXParser();
       InputSource input = new InputSource(is);
+      input.setSystemId(getJarResource("org.argouml.kernel.Project"));
 
       // what is this for?
       // input.setSystemId(url.toString());
@@ -102,12 +102,12 @@ public abstract class SAXParserBase extends HandlerBase {
       if (_stats) {
 	Argo.log.info("Elapsed time: " + (end - start) + " ms");
       }
-    } 
+    }
     catch(SAXException saxEx) {
         //
         //  a SAX exception could have been generated
         //    because of another exception.
-        //    Get the initial exception to display the 
+        //    Get the initial exception to display the
         //    location of the true error
         Exception ex = saxEx.getException();
         if(ex == null) {
@@ -202,6 +202,24 @@ public abstract class SAXParserBase extends HandlerBase {
       }
       return new InputSource(is);
     }
+  }
+
+  public String getJarResource(String cls) {
+  	// e.g:  org.argouml.uml.generator.ui.ClassGenerationDialog -> poseidon.jar
+        String jarFile = "";
+        String fileSep = System.getProperty("file.separator");
+        String classFile = cls.replace('.', fileSep.charAt(0)) + ".class";
+        ClassLoader thisClassLoader = this.getClass().getClassLoader();
+        URL url = thisClassLoader.getResource(classFile);
+        if ( url != null ) {
+          	String urlString = url.getFile();
+          	int idBegin = urlString.indexOf("file:");
+          	int idEnd = urlString.indexOf("!");
+          	if (idBegin>-1 && idEnd>-1 && idEnd>idBegin)
+                        jarFile = urlString.substring(idBegin+5,idEnd);
+      	}
+
+      	return jarFile;
   }
 
   ////////////////////////////////////////////////////////////////
