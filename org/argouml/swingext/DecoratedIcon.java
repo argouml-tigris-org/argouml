@@ -21,8 +21,9 @@ import javax.swing.ImageIcon;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
 /**
- *
- * @author  Administrator
+ * The base class for adding simple decorations to existing icons.
+ * This should be extended for each decoration style.
+ * @author Bob Tarling
  */
 abstract public class DecoratedIcon extends ImageIcon {
     
@@ -38,8 +39,9 @@ abstract public class DecoratedIcon extends ImageIcon {
 
     private ImageIcon _imageIcon;
     
-    /** Construct an dropdown icon pointing in the given direction
-     * @param direction the direction the arrow will point, this being one of the constants NORTH, SOUTH, EAST, WEST
+    /** Construct a decorated icon made up of the given icon and decorated with
+     * the icon defined in the descendant class.
+     * @param The icon to decorate
      */        
     DecoratedIcon(ImageIcon imageIcon) {
         _imageIcon = imageIcon;
@@ -49,9 +51,8 @@ abstract public class DecoratedIcon extends ImageIcon {
         _buffer = buffer;
         _popupIconWidth = _buffer[0].length;
         _popupIconHeight = _buffer.length;
-        BufferedImage mergedImage = new BufferedImage(_imageIcon != null ? _imageIcon.getIconWidth() : 0 + _popupIconOffset + _popupIconWidth, _imageIcon != null ? _imageIcon.getIconHeight() : _popupIconHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage mergedImage = new BufferedImage(_imageIcon.getIconWidth() + _popupIconOffset + _popupIconWidth, _imageIcon.getIconHeight(), BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2 = mergedImage.createGraphics();
-        if (_imageIcon != null)
         g2.drawImage(_imageIcon.getImage(), null, null);
         setImage(mergedImage);
     }
