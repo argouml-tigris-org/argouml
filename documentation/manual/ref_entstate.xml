@@ -48,22 +48,34 @@ Description of all the artifacts associated with Statechart Diagrams within Argo
 
     <!-- A diagram to show all things visible on the diagram -->
 
-    <para><xref linkend="fig.ref.state_diagram"/> shows a statechart diagram with
-      all possible artifacts displayed.</para>
+    <para><xref linkend="fig.ref.state_diagram"/>
+    and <xref linkend="fig.ref.state_diagram2"/> show statechart diagrams with
+      most possible artifacts displayed.</para>
 
-    <!-- A statechart diagram showing just about everything. -->
+    <!-- Statechart diagrams showing just about everything. -->
 
     <figure id="fig.ref.state_diagram" float="1">
-      <title>Possible artifacts on a statechart diagram.</title>
+      <title>Statechart diagram artifacts 1.</title>
 
       <screenshot><mediaobject>
         <imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/reference/state_diagram.gif"/>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/state_diagram_artifacts1.png"/>
         </imageobject>
       </mediaobject></screenshot>
     </figure>
 
+    <figure id="fig.ref.state_diagram2" float="1">
+      <title>Statechart diagram artifacts 2.</title>
+
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/build_house.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+    
     <!-- Limitations in ArgoUML relating to support for events and code
          generation. -->
 
