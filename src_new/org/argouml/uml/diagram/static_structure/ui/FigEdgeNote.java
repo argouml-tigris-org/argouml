@@ -71,6 +71,7 @@ public class FigEdgeNote
 	setBetweenNearestPoints(true);
 	((FigPoly) _fig).setRectilinear(false);
 	setDashed(true);
+	allowRemoveFromDiagram(false);
     }
 
     /**

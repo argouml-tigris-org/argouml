@@ -235,6 +235,12 @@ public abstract class FigNodeModelElement
     private ItemUID itemUid;
 
     /**
+     * Set the removeFromDiagram to false if this edge may not 
+     * be removed from the diagram.
+     */
+    private boolean removeFromDiagram = true;
+    
+    /**
      * The main constructor.
      *
      */
@@ -413,7 +419,9 @@ public abstract class FigNodeModelElement
         // POPUP_ADD_OFFSET should be equal to the number of items added here:
         popUpActions.addElement(new JSeparator());
         popUpActions.addElement(ActionProperties.getSingleton());
-        popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+        if (removeFromDiagram) {
+            popUpActions.addElement(ActionDeleteFromDiagram.getSingleton());
+        }
         return popUpActions;
     }
 
@@ -1676,5 +1684,11 @@ public abstract class FigNodeModelElement
     }
 
 
+    /**
+     * @param allowed true if the function RemoveFromDiagram is allowed
+     */
+    protected void allowRemoveFromDiagram(boolean allowed) {
+        this.removeFromDiagram = allowed;
+    }
 } /* end class FigNodeModelElement */
 
