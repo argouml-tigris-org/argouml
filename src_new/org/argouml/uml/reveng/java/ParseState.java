@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 
 /**
@@ -37,6 +38,12 @@ import org.argouml.model.Model;
  * @author Marcus Andersson
  */
 class ParseState {
+    
+    /**
+     * Logger.<p>
+     */
+    private static final Logger LOG = Logger.getLogger(ParseState.class);
+    
     /**
      * When the classifier parse is finished, these features will be
      * removed from the model.
@@ -99,6 +106,9 @@ class ParseState {
     public ParseState(ParseState previousState,
                       Object mClassifier,
                       Object currentPackage) {
+        
+        LOG.info("Parsing the state of " + mClassifier);
+        
 	classnamePrefix =
 	    previousState.classnamePrefix
 	    + Model.getFacade().getName(mClassifier)
@@ -302,11 +312,13 @@ class ParseState {
      * @return The found operation, null if not found.
      */
     public Object getOperation(String name) {
+        LOG.info("Searching through obsolete features for " + name);
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
-	    Object mFeature = i.next();
-	    if (Model.getFacade().isAOperation(mFeature)
-		&& name.equals(Model.getFacade().getName(mFeature))) {
-		return mFeature;
+	    Object feature = i.next();
+            LOG.info("Checking feature " + feature);
+	    if (Model.getFacade().isAOperation(feature)
+                    && name.equals(Model.getFacade().getName(feature))) {
+		return feature;
 	    }
 	}
 	return null;

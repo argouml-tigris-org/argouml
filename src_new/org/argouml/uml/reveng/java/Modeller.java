@@ -565,28 +565,31 @@ public class Modeller {
 	Object mClassifier;
 	Object mNamespace;
 
-        // the new classifier is a java inner class
 	if (parseState.getClassifier() != null) {
+            // the new classifier is a java inner class
 	    mClassifier =
 		Model.getFacade().lookupIn(parseState.getClassifier(), name);
 	    mNamespace = parseState.getClassifier();
-	}
-        // the new classifier is a top level java class
-	else {
+	} else {
+            // the new classifier is a top level java class
 	    parseState.outerClassifier();
 	    mClassifier = Model.getFacade().lookupIn(currentPackage, name);
 	    mNamespace = currentPackage;
 	}
-        // if the classifier could not be could in the model
+    
+    
 	if (mClassifier == null) {
+            // if the classifier could not be could in the model
+            LOG.info("Created new classifier for " + name);
 	    mClassifier = newClassifier;
 	    Model.getCoreHelper().setName(mClassifier, name);
 	    Model.getCoreHelper().setNamespace(mClassifier, mNamespace);
-	}
-        // it was found and we delete andy existing tagged values.
-	else {
+	} else {
+            // it was found and we delete any existing tagged values.
+            LOG.info("Found existing classifier for " + name);
 	    cleanModelElement(mClassifier);
 	}
+    
 	parseState.innerClassifier(mClassifier);
 
         // set up the component residency (only for top level classes)
@@ -1143,7 +1146,10 @@ public class Modeller {
     */
     private Object getOperation(String name) {
         Object mOperation = parseState.getOperation(name);
-        if (mOperation == null) {
+        if (mOperation != null) {
+            LOG.info("Getting the existing operation " + name);
+        } else {
+            LOG.info("Creating a new operation " + name);
             Object cls = parseState.getClassifier();
             Collection propertyChangeListeners = ProjectManager.getManager()
                 .getCurrentProject().findFigsForMember(cls);
@@ -1184,14 +1190,17 @@ public class Modeller {
        @return The method found or created.
     */
     private Object getMethod(String name) {
-        Object mMethod = parseState.getMethod(name);
-        if (mMethod == null) {
-            mMethod = Model.getCoreFactory().buildMethod(name);
+        Object method = parseState.getMethod(name);
+        if (method != null) {
+            LOG.info("Getting the existing method " + name);
+        } else {
+            LOG.info("Creating a new method " + name);
+            method = Model.getCoreFactory().buildMethod(name);
             Model.getCoreHelper().addFeature(
                     parseState.getClassifier(),
-                    mMethod);
+                    method);
         }
-        return mMethod;
+        return method;
     }
 
     /**
