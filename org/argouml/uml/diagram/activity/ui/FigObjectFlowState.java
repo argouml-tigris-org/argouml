@@ -38,6 +38,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.generator.ParserDisplay;
 
 
 /** Class to display graphics for a UML ObjectFlowState in a diagram. 
@@ -232,11 +233,13 @@ public class FigObjectFlowState extends FigNodeModelElement {
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        /*if (ft == getNameFig() && this.getOwner() != null) {
-            //TODO: Write this function in ParserDisplay. Uncomment then. 
-            ParserDisplay.SINGLETON.parseObjectFlowState(ft.getText(), 
+        if (ft == getNameFig() && this.getOwner() != null) {  
+            ParserDisplay.SINGLETON.parseObjectFlowState1(ft.getText(), 
                     this.getOwner());
-        } else*/
+        } else if (ft == state && this.getOwner() != null) {  
+            ParserDisplay.SINGLETON.parseObjectFlowState2(state.getText(), 
+                    this.getOwner());
+        }
         super.textEdited(ft);
     } 
 

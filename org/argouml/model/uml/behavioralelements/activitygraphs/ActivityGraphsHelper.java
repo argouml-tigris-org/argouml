@@ -24,6 +24,15 @@
 
 package org.argouml.model.uml.behavioralelements.activitygraphs;
 
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+
+import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
+import ru.novosoft.uml.foundation.core.MModelElement;
+
 /**
  * Helper class for UML BehavioralElements::ActivityGraphs Package.
  *
@@ -51,6 +60,40 @@ public class ActivityGraphsHelper {
      */
     public static ActivityGraphsHelper getHelper() {
         return singleton;
+    }
+    
+    /**
+     * Finds the Classifier to which a given ObjectFlowState 
+     * refers by its given name. This function may be used for when the user 
+     * types the name of a classifier in the diagram, in an ObjectFlowState.
+     * 
+     * @author MVW
+     * @param ofs the given ObjectFlowState
+     * @param s   the given String that represents 
+     *            the name of the "type" Classifier
+     * @return    the found classifier or null
+     */
+    public Object findClassifierByName(Object ofs, String s) {
+        if (!(ofs instanceof MObjectFlowState)) 
+            throw new IllegalArgumentException();
+        Object cs = ModelFacade.getContainer(ofs); // the composite state
+        Object sm = ModelFacade.getStateMachine(cs); // the statemachine
+        Object ns = ModelFacade.getContext(sm); // the namespace
+        if (!ModelFacade.isANamespace(ns)) 
+            ns = ModelFacade.getNamespace(ns);
+        if (ns != null) {
+            Collection c = ModelManagementHelper.getHelper()
+                .getAllModelElementsOfKind(ns, (Class) ModelFacade.CLASSIFIER);
+            Iterator i = c.iterator();
+            while (i.hasNext()) { 
+                Object classifier = i.next();
+                String cn = ((MModelElement) classifier).getName();
+                if (cn.equals(s))
+                    return classifier;
+            }
+        } else
+            throw new IllegalArgumentException();
+        return null;
     }
 }
 
