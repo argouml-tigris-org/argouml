@@ -42,6 +42,9 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -73,11 +76,34 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), "removeElement", null);
     }
 
-    public boolean isAcceptibleClassifier(Object classifier) {
+    /**
+     * Callback method from UMLComboBoxModel.
+     *
+     * Note: UMLComboBoxModel uses reflection to find this one so when 
+     * changing it is not enough that the compiler accepts this. All test
+     * cases must also accept this.
+     * Linus has sofar changed the parameter type back from Object to 
+     * MModelElement twice in order to get it to work again.
+     *
+     * @param classifier The classifier to test.
+     * @return <tt>true</tt> if acceptible.
+     */
+    public boolean isAcceptibleClassifier(MModelElement classifier) {
         return ModelFacade.isAClassifier(classifier);
     }
 
-    public void setClassifier(/*MClassifier*/Object element) {
+    /**
+     * Callback method from UMLComboBoxModel.
+     *
+     * Note: UMLComboBoxModel uses reflection to find this one so when 
+     * changing it is not enough that the compiler accepts this. All test
+     * cases must also accept this.
+     * Linus has sofar changed the parameter type back from Object to 
+     * MClassifier twice in order to get it to work again.
+     *
+     * @param element The classifier to test.
+     */
+    public void setClassifier(MClassifier element) {
         Object target = getTarget();
 
         if (org.argouml.model.ModelFacade.isAInstance(target)) {
