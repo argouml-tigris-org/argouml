@@ -24,9 +24,6 @@
 
 package org.argouml.model.uml;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.argouml.model.ActivityGraphsFactory;
 import org.argouml.model.ActivityGraphsHelper;
 import org.argouml.model.CollaborationsFactory;
@@ -54,107 +51,188 @@ import org.argouml.model.UseCasesHelper;
  * The handle to find all helper and factories.
  */
 public class NSUMLModelImplementation implements ModelImplementation {
-    /**
-     * Map with already created factories, helpers and other objects.
-     */
-    private Map alreadyCreated = new HashMap();
+    private ActivityGraphsFactory theActivityGraphsFactory =
+        new ActivityGraphsFactoryImpl();
+    private ActivityGraphsHelper theActivityGraphsHelper =
+        new ActivityGraphsHelperImpl();
+    private CollaborationsFactory theCollaborationsFactory =
+        new CollaborationsFactoryImpl();
+    private CollaborationsHelper theCollaborationsHelper =
+        new CollaborationsHelperImpl();
+    private CommonBehaviorFactory theCommonBehaviorFactory =
+        new CommonBehaviorFactoryImpl();
+    private CommonBehaviorHelper theCommonBehaviorHelper =
+        new CommonBehaviorHelperImpl();
+    private CoreFactory theCoreFactory = new CoreFactoryImpl();
+    private CoreHelper theCoreHelper = new CoreHelperImpl();
+    private DataTypesFactory theDataTypesFactory = new DataTypesFactoryImpl();
+    private DataTypesHelper theDataTypesHelper = new DataTypesHelperImpl();
+    private ExtensionMechanismsFactory theExtensionMechanismsFactory =
+        new ExtensionMechanismsFactoryImpl();
+    private ExtensionMechanismsHelper theExtensionMechanismsHelper =
+        new ExtensionMechanismsHelperImpl();
+    private ModelManagementFactory theModelManagementFactory =
+        new ModelManagementFactoryImpl();
+    private ModelManagementHelper theModelManagementHelper =
+        new ModelManagementHelperImpl();
+    private StateMachinesFactory theStateMachinesFactory =
+        new StateMachinesFactoryImpl();
+    private StateMachinesHelper theStateMachinesHelper =
+        new StateMachinesHelperImpl();
+    private UmlFactory theUmlFactory;
+    private UmlHelper theUmlHelper = new UmlHelperImpl();
+    private UseCasesFactory theUseCasesFactory = new UseCasesFactoryImpl();
+    private UseCasesHelper theUseCasesHelper = new UseCasesHelperImpl();
+    private ModelEventPump theModelEventPump = new NSUMLModelEventPump();
 
     /**
-     * @see org.argouml.model.ModelImplementation#find(java.lang.Class)
+     * @see org.argouml.model.ModelImplementation#getModelEventPump()
      */
-    public Object find(Class intf) {
-        Object found = alreadyCreated.get(intf);
-        if (found == null) {
-            found = findCreate(intf);
-            alreadyCreated.put(intf, found);
-        }
-        return found;
+    public ModelEventPump getModelEventPump() {
+        return theModelEventPump;
     }
 
     /**
-     * Create a new object for a class.
-     *
-     * @param intf The interface to create the object for.
-     * @return The object.
+     * @see org.argouml.model.ModelImplementation#getActivityGraphsFactory()
      */
-    private Object findCreate(Class intf) {
-        if (intf == ActivityGraphsFactory.class) {
-            return new ActivityGraphsFactoryImpl();
-        }
-        if (intf == ActivityGraphsHelper.class) {
-            return new ActivityGraphsHelperImpl();
-        }
-
-        if (intf == CollaborationsFactory.class) {
-            return new CollaborationsFactoryImpl();
-        }
-        if (intf == CollaborationsHelper.class) {
-            return new CollaborationsHelperImpl();
-        }
-
-        if (intf == CommonBehaviorFactory.class) {
-            return new CommonBehaviorFactoryImpl();
-        }
-        if (intf == CommonBehaviorHelper.class) {
-            return new CommonBehaviorHelperImpl();
-        }
-
-        if (intf == CoreFactory.class) {
-            return new CoreFactoryImpl();
-        }
-        if (intf == CoreHelper.class) {
-            return new CoreHelperImpl();
-        }
-
-
-        if (intf == DataTypesFactory.class) {
-            return new DataTypesFactoryImpl();
-        }
-        if (intf == DataTypesHelper.class) {
-            return new DataTypesHelperImpl();
-        }
-
-        if (intf == ExtensionMechanismsFactory.class) {
-            return new ExtensionMechanismsFactoryImpl();
-        }
-        if (intf == ExtensionMechanismsHelper.class) {
-            return new ExtensionMechanismsHelperImpl();
-        }
-
-        if (intf == ModelManagementFactory.class) {
-            return new ModelManagementFactoryImpl();
-        }
-        if (intf == ModelManagementHelper.class) {
-            return new ModelManagementHelperImpl();
-        }
-
-        if (intf == StateMachinesFactory.class) {
-            return new StateMachinesFactoryImpl();
-        }
-        if (intf == StateMachinesHelper.class) {
-            return new StateMachinesHelperImpl();
-        }
-
-        if (intf == UmlFactory.class) {
-            return new UmlFactoryImpl();
-        }
-        if (intf == UmlHelper.class) {
-            return new UmlHelperImpl();
-        }
-
-        if (intf == UseCasesFactory.class) {
-            return new UseCasesFactoryImpl();
-        }
-        if (intf == UseCasesHelper.class) {
-            return new UseCasesHelperImpl();
-        }
-
-        if (intf == ModelEventPump.class) {
-            return new NSUMLModelEventPump();
-        }
-
-        return null;
+    public ActivityGraphsFactory getActivityGraphsFactory() {
+        return theActivityGraphsFactory;
     }
 
+    /**
+     * @see org.argouml.model.ModelImplementation#getActivityGraphsHelper()
+     */
+    public ActivityGraphsHelper getActivityGraphsHelper() {
+        return theActivityGraphsHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCollaborationsFactory()
+     */
+    public CollaborationsFactory getCollaborationsFactory() {
+        return theCollaborationsFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCollaborationsHelper()
+     */
+    public CollaborationsHelper getCollaborationsHelper() {
+        return theCollaborationsHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCommonBehaviorFactory()
+     */
+    public CommonBehaviorFactory getCommonBehaviorFactory() {
+        return theCommonBehaviorFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCommonBehaviorHelper()
+     */
+    public CommonBehaviorHelper getCommonBehaviorHelper() {
+        return theCommonBehaviorHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCoreFactory()
+     */
+    public CoreFactory getCoreFactory() {
+        return theCoreFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getCoreHelper()
+     */
+    public CoreHelper getCoreHelper() {
+        return theCoreHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getDataTypesFactory()
+     */
+    public DataTypesFactory getDataTypesFactory() {
+        return theDataTypesFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getDataTypesHelper()
+     */
+    public DataTypesHelper getDataTypesHelper() {
+        return theDataTypesHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getExtensionMechanismsFactory()
+     */
+    public ExtensionMechanismsFactory getExtensionMechanismsFactory() {
+        return theExtensionMechanismsFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getExtensionMechanismsHelper()
+     */
+    public ExtensionMechanismsHelper getExtensionMechanismsHelper() {
+        return theExtensionMechanismsHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getModelManagementFactory()
+     */
+    public ModelManagementFactory getModelManagementFactory() {
+        return theModelManagementFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getModelManagementHelper()
+     */
+    public ModelManagementHelper getModelManagementHelper() {
+        return theModelManagementHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getStateMachinesFactory()
+     */
+    public StateMachinesFactory getStateMachinesFactory() {
+        return theStateMachinesFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getStateMachinesHelper()
+     */
+    public StateMachinesHelper getStateMachinesHelper() {
+        return theStateMachinesHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getUmlFactory()
+     */
+    public synchronized UmlFactory getUmlFactory() {
+        if (theUmlFactory == null) {
+            theUmlFactory = new UmlFactoryImpl();
+        }
+        return theUmlFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getUmlHelper()
+     */
+    public UmlHelper getUmlHelper() {
+        return theUmlHelper;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getUseCasesFactory()
+     */
+    public UseCasesFactory getUseCasesFactory() {
+        return theUseCasesFactory;
+    }
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getUseCasesHelper()
+     */
+    public UseCasesHelper getUseCasesHelper() {
+        return theUseCasesHelper;
+    }
 }
 

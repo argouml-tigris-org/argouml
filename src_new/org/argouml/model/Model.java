@@ -24,7 +24,7 @@
 
 package org.argouml.model;
 
-import org.argouml.model.uml.NSUMLModelImplementation;
+import org.argouml.model.uml.DefaultModelImplementation;
 
 /**
  * This is the root class of the Model subsystem. All other subsystems
@@ -50,15 +50,26 @@ public final class Model {
     /**
      * The object used to get objects of the implementation.
      */
-    private static ModelImplementation theImplementation;
+    private static ModelImplementation impl =
+        new DefaultModelImplementation();
 
+    /**
+     * Selects the implementation.
+     *
+     * @param newImpl The ModelImplementation object of the selected 
+     * 		      implementation.
+     */
+    public static void setImplementation(ModelImplementation newImpl) {
+        impl = newImpl;
+    }
+    
     /**
      * Get the event pump.
      *
      * @return the current ModelEventPump.
      */
     public static ModelEventPump getPump() {
-        return (ModelEventPump) get(ModelEventPump.class);
+        return impl.getModelEventPump();
     }
 
     /**
@@ -67,7 +78,7 @@ public final class Model {
      * @return the factory
      */
     public static ActivityGraphsFactory getActivityGraphsFactory() {
-        return (ActivityGraphsFactory) get(ActivityGraphsFactory.class);
+        return impl.getActivityGraphsFactory();
     }
 
     /**
@@ -76,7 +87,7 @@ public final class Model {
      * @return the instance of the helper
      */
     public static ActivityGraphsHelper getActivityGraphsHelper() {
-        return (ActivityGraphsHelper) get(ActivityGraphsHelper.class);
+        return impl.getActivityGraphsHelper();
     }
 
     /**
@@ -85,7 +96,7 @@ public final class Model {
      * @return the factory
      */
     public static CollaborationsFactory getCollaborationsFactory() {
-        return (CollaborationsFactory) get(CollaborationsFactory.class);
+        return impl.getCollaborationsFactory();
     }
 
     /**
@@ -94,7 +105,7 @@ public final class Model {
      * @return the helper
      */
     public static CollaborationsHelper getCollaborationsHelper() {
-        return (CollaborationsHelper) get(CollaborationsHelper.class);
+        return impl.getCollaborationsHelper();
     }
 
     /**
@@ -103,7 +114,7 @@ public final class Model {
      * @return the factory
      */
     public static CommonBehaviorFactory getCommonBehaviorFactory() {
-        return (CommonBehaviorFactory) get(CommonBehaviorFactory.class);
+        return impl.getCommonBehaviorFactory();
     }
 
     /**
@@ -112,7 +123,7 @@ public final class Model {
      * @return the helper
      */
     public static CommonBehaviorHelper getCommonBehaviorHelper() {
-        return (CommonBehaviorHelper) get(CommonBehaviorHelper.class);
+        return impl.getCommonBehaviorHelper();
     }
 
     /**
@@ -121,7 +132,7 @@ public final class Model {
      * @return the factory
      */
     public static CoreFactory getCoreFactory() {
-        return (CoreFactory) get(CoreFactory.class);
+        return impl.getCoreFactory();
     }
 
     /**
@@ -130,7 +141,7 @@ public final class Model {
      * @return The helper.
      */
     public static CoreHelper getCoreHelper() {
-        return (CoreHelper) get(CoreHelper.class);
+        return impl.getCoreHelper();
     }
 
     /**
@@ -139,7 +150,7 @@ public final class Model {
      * @return the factory
      */
     public static DataTypesFactory getDataTypesFactory() {
-        return (DataTypesFactory) get(DataTypesFactory.class);
+        return impl.getDataTypesFactory();
     }
 
     /**
@@ -148,7 +159,7 @@ public final class Model {
      * @return the helper.
      */
     public static DataTypesHelper getDataTypesHelper() {
-        return (DataTypesHelper) get(DataTypesHelper.class);
+        return impl.getDataTypesHelper();
     }
 
     /**
@@ -157,9 +168,7 @@ public final class Model {
      * @return the factory instance.
      */
     public static ExtensionMechanismsFactory getExtensionMechanismsFactory() {
-        return
-            (ExtensionMechanismsFactory)
-            	get(ExtensionMechanismsFactory.class);
+        return impl.getExtensionMechanismsFactory();
     }
 
     /**
@@ -168,7 +177,7 @@ public final class Model {
      * @return the helper
      */
     public static ExtensionMechanismsHelper getExtensionMechanismsHelper() {
-        return (ExtensionMechanismsHelper) get(ExtensionMechanismsHelper.class);
+        return impl.getExtensionMechanismsHelper();
     }
 
     /**
@@ -177,7 +186,7 @@ public final class Model {
      * @return the factory
      */
     public static ModelManagementFactory getModelManagementFactory() {
-        return (ModelManagementFactory) get(ModelManagementFactory.class);
+        return impl.getModelManagementFactory();
     }
 
     /**
@@ -186,7 +195,7 @@ public final class Model {
      * @return The model management helper.
      */
     public static ModelManagementHelper getModelManagementHelper() {
-        return (ModelManagementHelper) get(ModelManagementHelper.class);
+        return impl.getModelManagementHelper();
     }
 
     /**
@@ -195,7 +204,7 @@ public final class Model {
      * @return the factory
      */
     public static StateMachinesFactory getStateMachinesFactory() {
-        return (StateMachinesFactory) get(StateMachinesFactory.class);
+        return impl.getStateMachinesFactory();
     }
 
     /**
@@ -204,7 +213,7 @@ public final class Model {
      * @return the helper
      */
     public static StateMachinesHelper getStateMachinesHelper() {
-        return (StateMachinesHelper) get(StateMachinesHelper.class);
+        return impl.getStateMachinesHelper();
     }
 
     /**
@@ -213,7 +222,7 @@ public final class Model {
      * @return the factory
      */
     public static UmlFactory getUmlFactory() {
-        return (UmlFactory) get(UmlFactory.class);
+        return impl.getUmlFactory();
     }
 
     /**
@@ -222,7 +231,7 @@ public final class Model {
      * @return the helper
      */
     public static UmlHelper getUmlHelper() {
-        return (UmlHelper) get(UmlHelper.class);
+        return impl.getUmlHelper();;
     }
 
     /**
@@ -231,7 +240,7 @@ public final class Model {
      * @return the factory
      */
     public static UseCasesFactory getUseCasesFactory() {
-        return (UseCasesFactory) get(UseCasesFactory.class);
+        return impl.getUseCasesFactory();
     }
 
     /**
@@ -240,27 +249,6 @@ public final class Model {
      * @return the helper
      */
     public static UseCasesHelper getUseCasesHelper() {
-        return (UseCasesHelper) get(UseCasesHelper.class);
+        return impl.getUseCasesHelper();
     }
-
-    /**
-     * Finds the correct implementation for a given interface.
-     *
-     * @param intf The interface to find the object for.
-     * @return The implementation object.
-     */
-    private static synchronized Object get(Class intf) {
-        return getImplementation().find(intf);
-    }
-
-    /**
-     * @return The current implementation.
-     */
-    private static synchronized ModelImplementation getImplementation() {
-        if (theImplementation == null) {
-            theImplementation = new NSUMLModelImplementation();
-        }
-        return theImplementation;
-    }
-
 }
