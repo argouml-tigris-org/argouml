@@ -65,7 +65,7 @@ public class Toolbar extends JToolBar implements MouseListener {
      * @param title The title to display in the titlebar when toolbar is floating
      */
     public Toolbar(String title) {
-        this(title, false);
+        this(title, true);
     }
 
     /** Creates a new instance of Toolbar
