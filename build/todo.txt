@@ -1,4 +1,5 @@
 (Not necessarily in priority sequence)
+
 1.   Make sure that there are no references to MThingImpl's anywhere.
 
      Some places say "instanceof MThingImpl", these should
@@ -36,6 +37,10 @@
      Not necessary for merge into cvs mainstream.
 
 8.   Completed.
+
+9.   Create junit tests.
+
+     Necessary for merge into cvs mainstream.
 
 Completed:
 
