@@ -279,34 +279,43 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
      * @param anactivator the given activator
      */
     public void setActivator(Object ames, Object anactivator) {
+	if (ames == null) {
+	    throw new IllegalArgumentException("message is null");
+	}
+	if (!(ames instanceof MMessage)) {
+	    throw new IllegalArgumentException("message");
+	}
+	if (anactivator != null && !(anactivator instanceof MMessage)) {
+	    throw new IllegalArgumentException("activator");
+	}
         MMessage mes = (MMessage) ames;
         MMessage activator = (MMessage) anactivator;
-	if (mes == null || activator == null) {
-	    throw new IllegalArgumentException("In setActivator: either "
-					       + "message or activator "
-					       + "is null");
-	}
 	if (mes == activator) {
 	    throw new IllegalArgumentException("In setActivator: message may "
 					       + "not be equal to activator");
 	}
-	if (mes.getInteraction() != activator.getInteraction()) {
-	    throw new IllegalArgumentException("In setActivator: interaction "
-					       + "of message should equal "
-					       + "interaction of activator");
-	}
-	if (mes.getPredecessors().contains(activator)) {
-	    throw new IllegalArgumentException("In setActivator: the "
-					       + "predecessors of the message "
-					       + "may not contain the "
-					       + "activator");
-	}
-	// we must find out if the activator itself does not have
-	// message as it's activator
-	if (hasAsActivator(activator, mes)) {
-	    throw new IllegalArgumentException("In setActivator: message may "
-					       + "not be the activator for "
-					       + "the original activator");
+
+	if (activator != null) {
+	    if (mes.getInteraction() != activator.getInteraction()) {
+	        throw new IllegalArgumentException(
+	                "In setActivator: interaction "
+	                + "of message should equal "
+	                + "interaction of activator");
+	    }
+	    if (mes.getPredecessors().contains(activator)) {
+	        throw new IllegalArgumentException("In setActivator: the "
+	                + "predecessors of the message "
+	                + "may not contain the "
+	                + "activator");
+	    }
+	    // we must find out if the activator itself does not have
+	    // message as it's activator
+	    if (hasAsActivator(activator, mes)) {
+	        throw new IllegalArgumentException(
+	                "In setActivator: message may "
+	                + "not be the activator for "
+	                + "the original activator");
+	    }
 	}
 	List listToChange = new ArrayList();
 	Collection predecessors = mes.getPredecessors();
@@ -725,8 +734,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                     (MModelElement) constraint);
             return;
         }
-    
-        throw new IllegalArgumentException("handle: " + handle + " or constraint: " + constraint);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or constraint: " + constraint);
     }
 
     /**
@@ -747,7 +758,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MAssociationRole) handle).removeMessage((MMessage) message);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle + " or message: " + message);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or message: " + message);
     }
 
     /**
@@ -761,7 +774,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).removeMessage3((MMessage) mess);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or mess: " + mess);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or mess: " + mess);
     }
 
     /**
@@ -775,7 +791,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).removePredecessor((MMessage) message);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or message: " + message);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or message: " + message);
     }
 
     /**
@@ -792,8 +811,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                     (MModelElement) constraint);
             return;
         }
-    
-        throw new IllegalArgumentException("handle: " + handle + " or constraint: " + constraint);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or constraint: " + constraint);
     }
 
     /**
@@ -809,7 +830,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             clr.addInstance((MInstance) instance);
             return;
         }
-        throw new IllegalArgumentException("classifierRole: " + classifierRole + " or instance: " + instance);
+        throw new IllegalArgumentException(
+                "classifierRole: " + classifierRole
+                + " or instance: " + instance);
     }
 
     /**
@@ -829,7 +852,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MAssociationRole) handle).addMessage((MMessage) elem);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle + " or elem: " + elem);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or elem: " + elem);
     }
 
     /**
@@ -843,7 +868,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).addMessage3((MMessage) mess);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or mess: " + mess);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or mess: " + mess);
     }
 
     /**
@@ -860,7 +887,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).addPredecessor((MMessage) predecessor);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or predecessor: " + predecessor);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or predecessor: " + predecessor);
     }
 
     /**
@@ -875,7 +905,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).setAction((MAction) action);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or action: " + action);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or action: " + action);
     }
 
     /**
@@ -891,7 +924,10 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MInteraction) handle).setContext((MCollaboration) col);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle + " or col: " + col);
+
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or col: " + col);
     }
 
     /**
@@ -919,7 +955,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MMessage) handle).setPredecessors(predecessors);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or predecessors: " + predecessors);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or predecessors: " + predecessors);
     }
 
     /**
@@ -937,7 +975,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                 (MClassifier) classifier);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or classifier: " + classifier);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or classifier: " + classifier);
     }
 
     /**
@@ -955,7 +995,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
                 (MOperation) operation);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or operation: " + operation);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or operation: " + operation);
     }
 
     /**
@@ -975,7 +1017,9 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             ((MStimulus) handle).setSender((MInstance) sender);
             return;
         }
-        throw new IllegalArgumentException("handle: " + handle + " or sender: " + sender);
+        throw new IllegalArgumentException(
+                "handle: " + handle
+                + " or sender: " + sender);
     }
 }
 

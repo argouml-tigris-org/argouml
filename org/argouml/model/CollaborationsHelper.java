@@ -101,7 +101,7 @@ public interface CollaborationsHelper {
     /**
      * Sets the activator of some given message mes. Checks the
      * wellformednessrules as defined in the UML 1.3 spec in section
-     * 2.10.3.6, will throw an illegalargumentexception if the
+     * 2.10.3.6, will throw an IllegalArgumentException if the
      * wellformednessrules are not met.  Not only sets the activator
      * for the given message mes but also for the predecessors of
      * mes. This is done since it can not be the case that a list of
@@ -109,7 +109,7 @@ public interface CollaborationsHelper {
      * activator.<p>
      *
      * @param ames the given message
-     * @param anactivator the given activator
+     * @param anactivator the given activator or null.
      */
     void setActivator(Object ames, Object anactivator);
 
