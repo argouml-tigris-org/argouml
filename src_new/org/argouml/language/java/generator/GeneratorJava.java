@@ -566,9 +566,10 @@ public class GeneratorJava
         }
 
         // add additional modifiers
-        if (ModelFacade.getTaggedValue(cls, "src_modifiers") != null) {
+	Object smod = ModelFacade.getTaggedValue(cls, "src_modifiers");
+        if (smod != null && ModelFacade.getValue(smod) != null) {
             sb.append(" ");
-	    sb.append(ModelFacade.getTaggedValue(cls, "src_modifiers"));
+	    sb.append(ModelFacade.getValue(smod));
 	    sb.append(" ");
 	}
 
@@ -1545,15 +1546,18 @@ public class GeneratorJava
      */
     public String generateVisibility(Object o) {
 	if (ModelFacade.isAFeature(o)) {
-            String _tagged =
-		(String) ModelFacade.getTaggedValue(o, "src_visibility");
-            if (_tagged != null) {
-                if (_tagged.trim().equals("")
-		             || _tagged.trim().toLowerCase().equals("package")
-		             || _tagged.trim().toLowerCase().equals("default"))
-                    return "";
-                else
-                    return _tagged + " ";
+	    Object tv = ModelFacade.getTaggedValue(o, "src_visibility");
+	    if (tv != null) {
+		String tagged = (String) ModelFacade.getValue(tv);
+		if (tagged != null) {
+		    if (tagged.trim().equals("")
+			|| tagged.trim().toLowerCase().equals("package")
+			|| tagged.trim().toLowerCase().equals("default")) {
+			return "";
+		    } else {
+			return tagged + " ";
+		    }
+		}
             }
         }
         if (ModelFacade.isAModelElement(o)) {
