@@ -38,18 +38,26 @@ public class PropPanelAbstraction extends PropPanelDependency {
     public PropPanelAbstraction() {
         super("Abstraction", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", 
+        // "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.suppliers"), _supplierScroll);
-        addField(Translator.localize("UMLMenu", "label.clients"), _clientScroll);
+        addField(Translator.localize("UMLMenu", "label.suppliers"), 
+                _supplierScroll);
+        addField(Translator.localize("UMLMenu", "label.clients"), 
+                _clientScroll);
 
         // TODO: add Mapping
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, navUpIcon, Translator.localize(
+                "UMLMenu", "button.go-up"), "navigateUp", null);
         buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }

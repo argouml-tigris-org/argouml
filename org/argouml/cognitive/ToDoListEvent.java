@@ -29,11 +29,23 @@ import java.util.Vector;
 
 public class ToDoListEvent {
 
-    protected Vector _items;
+    private Vector items;
 
-    public ToDoListEvent() { _items = null; }
-    public ToDoListEvent(Vector items) { _items = items; }
+    /**
+     * The constructor.
+     * 
+     */
+    public ToDoListEvent() { items = null; }
+    /**
+     * The constructor.
+     * 
+     * @param i the todo list events
+     */
+    public ToDoListEvent(Vector i) { items = i; }
 
-    public Vector getToDoItems() { return _items; }
+    /**
+     * @return the todo list events
+     */
+    public Vector getToDoItems() { return items; }
 
 } /* end class ToDoListEvent */

@@ -47,7 +47,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -94,18 +93,19 @@ public class ClassDiagramRenderer
         } else if (ModelFacade.isAComment(node)) {
             return new FigComment(gm, node);
         }
-        LOG.error("TODO ClassDiagramRenderer getFigNodeFor " + node);
+        LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
 
     /**
-     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     *         org.tigris.gef.graph.GraphModel, 
-     *         org.tigris.gef.base.Layer, java.lang.Object)
-     *
      * Return a Fig that can be used to represent the given edge.
-     * @throws IllegalArgumentException if the edge is not of an expected type.
-     * @throws IllegalStateException if the edge generated has no source or dest port.
+     * Throws IllegalArgumentException if the edge is not of an expected type.
+     * Throws IllegalStateException if the edge generated has no source 
+     *                               or dest port.
+     *
+     * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
+     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, 
+     * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
         if (LOG.isDebugEnabled() ) {
@@ -186,18 +186,23 @@ public class ClassDiagramRenderer
             newEdge = new FigEdgeNote(edge, lay);
         }
         if (newEdge == null) {
-            throw new IllegalArgumentException("Don't know how to create FigEdge for model type " + edge.getClass().getName());
+            throw new IllegalArgumentException(
+                    "Don't know how to create FigEdge for model type " 
+                    + edge.getClass().getName());
         } else {
             if (newEdge.getSourcePortFig() == null) {
-                setSourcePort(newEdge, (FigNode)lay.presentationFor(UmlHelper.getHelper().getSource(edge)));
+                setSourcePort(newEdge, (FigNode) lay.presentationFor(
+                        UmlHelper.getHelper().getSource(edge)));
             }
             if (newEdge.getDestPortFig() == null) {
-                setDestPort(newEdge, (FigNode)lay.presentationFor(UmlHelper.getHelper().getDestination(edge)));
+                setDestPort(newEdge, (FigNode) lay.presentationFor(
+                        UmlHelper.getHelper().getDestination(edge)));
             }
-            if (newEdge.getSourcePortFig() == null || 
-                    newEdge.getDestPortFig() == null ) {
+            if (newEdge.getSourcePortFig() == null 
+                    || newEdge.getDestPortFig() == null ) {
                 throw new IllegalStateException("Edge of type "
-                                            + newEdge.getClass().getName() + " created with no source or destination port");
+                    + newEdge.getClass().getName() 
+                    + " created with no source or destination port");
             }
         }
         return newEdge;

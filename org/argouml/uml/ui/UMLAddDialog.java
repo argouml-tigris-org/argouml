@@ -70,63 +70,63 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     /**
      * The choices a user has
      */
-    protected Vector _choices = null;
+    private Vector choices = null;
     /**
      * The preselected choices
      */
-    protected Vector _preSelected = null;
+    private Vector preSelected = null;
     /**
      * The selected choices.
      */
-    protected Vector _selected = null;
+    private Vector selected = null;
 	
     /**
      * The GUI list for the choices
      */
-    protected JList _choicesList = null;
+    private JList choicesList = null;
     /**
      * The GUI list for the selected choices
      */
-    protected JList _selectedList = null;
-    protected JButton _addButton = null;
-    protected JButton _removeButton = null;
-    protected JButton _okButton = null;
-    protected JButton _cancelButton = null;
+    private JList selectedList = null;
+    private JButton addButton = null;
+    private JButton removeButton = null;
+    private JButton okButton = null;
+    private JButton cancelButton = null;
 	
-    protected JDialog _dialog = null;
-    protected String _title = null;
+    private JDialog dialog = null;
+    private String title = null;
 
     /**
      * The returnvalue of the method showDialog. Returnvalue can be
      * either JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
      */
-    protected int _returnValue;
+    private int returnValue;
 	
     /**
      * Constructs a UMLAddDialog with a
      * UMLListCellRenderer. Modelelements are represented with their
      * names in the choices list and the selected list.
      *
-     * @param choices A vector with the choices a user has.
-     * @param selected A vector with allready preselected choices
-     * @param title The title of the dialog
+     * @param theChoices A vector with the choices a user has.
+     * @param preselected A vector with already preselected choices
+     * @param theTitle The title of the dialog
      * @param multiselectAllowed True if the user may select multiple choices
      * @param exclusive True if choices in the selected list may not
      *                  appear in the choices list. If true preselected
      *                  choices are removed from the choices list.
      */
-    public UMLAddDialog(Vector choices, Vector selected, String title,
+    public UMLAddDialog(Vector theChoices, Vector preselected, String theTitle,
 			boolean multiselectAllowed, boolean exclusive) {
-	this(choices, selected, title, new UMLListCellRenderer2(true),
+	this(theChoices, preselected, theTitle, new UMLListCellRenderer2(true),
 	     multiselectAllowed, exclusive);
     }	
 	
     /**
      * Constructs a UMLAddDialog with a given UMLListCellRenderer. 
      *
-     * @param choices A vector with the choices a user has.
-     * @param selected A vector with allready preselected choices
-     * @param title The title of the dialog
+     * @param theChoices A vector with the choices a user has.
+     * @param preselected A vector with already preselected choices
+     * @param theTitle The title of the dialog
      * @param renderer The cellrenderer of the choices list and the
      * selected list
      * @param multiselectAllowed True if the user may select multiple choices
@@ -134,25 +134,26 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * appear in the choices list. If true preselected choices are
      * removed from the choices list.
      */
-    public UMLAddDialog(Vector choices, Vector selected, String title,
+    public UMLAddDialog(Vector theChoices, Vector preselected, String theTitle,
 			ListCellRenderer renderer,
 			boolean multiselectAllowed, boolean exclusive) {
-	if (choices == null) {
-	    throw new IllegalArgumentException("There should allways be choices in UMLAddDialog");
+	if (theChoices == null) {
+	    throw new IllegalArgumentException(
+                "There should allways be choices in UMLAddDialog");
 	}
-	if (exclusive && selected != null && !selected.isEmpty()) {
-	    choices.removeAll(selected);
+	if (exclusive && preselected != null && !preselected.isEmpty()) {
+	    theChoices.removeAll(preselected);
 	}
-	_choices = choices;
-	_preSelected = selected;
-	_selected = new Vector();
-	if (title != null) {
-	    _title = title;
+	choices = theChoices;
+	preSelected = preselected;
+	selected = new Vector();
+	if (theTitle != null) {
+	    title = theTitle;
 	} else {
-	    _title = "";
+	    title = "";
 	}
-	if (selected != null) {
-	    _selected.addAll(selected);
+	if (preselected != null) {
+	    selected.addAll(preselected);
 	}
 		
 	setLayout(new BorderLayout());
@@ -162,40 +163,46 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	JPanel panelSelected = new JPanel(new BorderLayout());
 		
 		
-	_choicesList = new JList(constructListModel(choices));
-	_choicesList.setMinimumSize(new Dimension(150,300));
+	choicesList = new JList(constructListModel(theChoices));
+	choicesList.setMinimumSize(new Dimension(150, 300));
 	if (renderer != null) {
-	    _choicesList.setCellRenderer(renderer);
+	    choicesList.setCellRenderer(renderer);
 	}
 	if (multiselectAllowed) {
-	    _choicesList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+	    choicesList.setSelectionMode(ListSelectionModel
+                .MULTIPLE_INTERVAL_SELECTION);
 	} else {
-	    _choicesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+	    choicesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	}
-	_choicesList.setVisibleRowCount(15);
-	JScrollPane choicesScroll = new JScrollPane(_choicesList);
-	panelChoices.add(new JLabel(Translator.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
+	choicesList.setVisibleRowCount(15);
+	JScrollPane choicesScroll = new JScrollPane(choicesList);
+	panelChoices.add(new JLabel(Translator.localize(
+            "UMLMenu", "label.choices")), BorderLayout.NORTH);
 	panelChoices.add(choicesScroll, BorderLayout.CENTER);
 		
-	_addButton = new JButton(ResourceLoaderWrapper.lookupIconResource("NavigateForward"));
-	_addButton.addActionListener(this);
-	_removeButton = new JButton(ResourceLoaderWrapper.lookupIconResource("NavigateBack"));
-	_removeButton.addActionListener(this);
+	addButton = new JButton(ResourceLoaderWrapper.lookupIconResource(
+            "NavigateForward"));
+	addButton.addActionListener(this);
+	removeButton = new JButton(ResourceLoaderWrapper.lookupIconResource(
+            "NavigateBack"));
+	removeButton.addActionListener(this);
 	Box buttonBox = Box.createVerticalBox();
 	// buttonBox.add(Box.createRigidArea(new Dimension(0, 20)));
-	buttonBox.add(_addButton);
+	buttonBox.add(addButton);
 	buttonBox.add(Box.createRigidArea(new Dimension(0, 5)));
-	buttonBox.add(_removeButton);
+	buttonBox.add(removeButton);
 		
-	_selectedList = new JList(constructListModel(_selected));	
-	_selectedList.setMinimumSize(new Dimension(150,300));
+	selectedList = new JList(constructListModel(selected));	
+	selectedList.setMinimumSize(new Dimension(150, 300));
 	if (renderer != null) {
-	    _selectedList.setCellRenderer(renderer);
+	    selectedList.setCellRenderer(renderer);
 	}
-	_selectedList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-	_selectedList.setVisibleRowCount(15);
-	JScrollPane selectedScroll = new JScrollPane(_selectedList);
-	panelSelected.add(new JLabel(Translator.localize("UMLMenu", "label.selected")), BorderLayout.NORTH);
+	selectedList.setSelectionMode(ListSelectionModel
+            .MULTIPLE_INTERVAL_SELECTION);
+	selectedList.setVisibleRowCount(15);
+	JScrollPane selectedScroll = new JScrollPane(selectedList);
+	panelSelected.add(new JLabel(Translator.localize(
+            "UMLMenu", "label.selected")), BorderLayout.NORTH);
 	panelSelected.add(selectedScroll, BorderLayout.CENTER);
 		
 	upperPanel.add(panelChoices);	
@@ -210,13 +217,13 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 	JPanel okCancelPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		
-	_okButton = new JButton(Translator.localize("UMLMenu", "button.ok"));
-	_okButton.addActionListener(this);
-	_cancelButton =
+	okButton = new JButton(Translator.localize("UMLMenu", "button.ok"));
+	okButton.addActionListener(this);
+	cancelButton =
 	    new JButton(Translator.localize("UMLMenu", "button.cancel"));
-	_cancelButton.addActionListener(this);		
-	okCancelPanel.add(_okButton);
-	okCancelPanel.add(_cancelButton);
+	cancelButton.addActionListener(this);		
+	okCancelPanel.add(okButton);
+	okCancelPanel.add(cancelButton);
 	okCancelPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 10));
 		
 	add(okCancelPanel, BorderLayout.SOUTH);
@@ -229,18 +236,18 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      */
     public void actionPerformed(ActionEvent e) {
 	Object source = e.getSource(); 
-	if (source.equals(_addButton)) {
+	if (source.equals(addButton)) {
 	    addSelection();
 	    update();
 	}
-	if (source.equals(_removeButton)) {
+	if (source.equals(removeButton)) {
 	    removeSelection();
 	    update();
 	}
-	if (source.equals(_okButton)) {
+	if (source.equals(okButton)) {
 	    ok();
 	}
-	if (source.equals(_cancelButton)) {
+	if (source.equals(cancelButton)) {
 	    cancel();
 	}
     }
@@ -250,21 +257,21 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * enabled/disabled). Called whenever the model is changed.
      */
     public void update() {
-	if (_choices.size() == 0) {
-	    _addButton.setEnabled(false);
+	if (choices.size() == 0) {
+	    addButton.setEnabled(false);
 	} else {
-	    _addButton.setEnabled(true);
+	    addButton.setEnabled(true);
 	}
-	if (_selected.size() == 0) {
-	    _removeButton.setEnabled(false);
+	if (selected.size() == 0) {
+	    removeButton.setEnabled(false);
 	} else {
-	    _removeButton.setEnabled(true);
+	    removeButton.setEnabled(true);
 	}
     }
 	
     /**
      * Utility method to construct a DefaultListModel from a Vector
-     * @param vec
+     * @param vec the given list
      * @return DefaultListModel
      */
     protected DefaultListModel constructListModel(Vector vec) {
@@ -293,23 +300,23 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 
 	// String title = getUI().getDialogTitle(this);
 
-        _dialog = new JDialog(frame, _title, true);
-        Container contentPane = _dialog.getContentPane();
+        dialog = new JDialog(frame, title, true);
+        Container contentPane = dialog.getContentPane();
         contentPane.setLayout(new BorderLayout());
         contentPane.add(this, BorderLayout.CENTER);
  
-	_dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-	_dialog.addWindowListener(new WindowAdapter() {
+	dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+	dialog.addWindowListener(new WindowAdapter() {
     	    public void windowClosing(WindowEvent we) {
 		cancel();
 	    }
 	});
 
-        _dialog.pack();
-        _dialog.setLocationRelativeTo(parent);
+        dialog.pack();
+        dialog.setLocationRelativeTo(parent);
  
-        _dialog.show();
-	return _returnValue;
+        dialog.show();
+	return returnValue;
     }
 	
     /**
@@ -317,10 +324,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * @return Vector
      */
     public Vector getChoices() {
-	int[] indices = _choicesList.getSelectedIndices();
+	int[] indices = choicesList.getSelectedIndices();
 	Vector returnVector = new Vector();
 	for (int i = 0; i < indices.length; i++) {
-	    returnVector.add(_choices.get(indices[i]));
+	    returnVector.add(choices.get(indices[i]));
 	}
 	return returnVector;
     }
@@ -331,10 +338,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      */
     public Vector getSelectedChoices() {
 	Vector returnVector = new Vector();
-	if (_selectedList != null && _selected != null) {
-	    int[] indices = _selectedList.getSelectedIndices();			
+	if (selectedList != null && selected != null) {
+	    int[] indices = selectedList.getSelectedIndices();			
 	    for (int i = 0; i < indices.length; i++) {
-		returnVector.add(_selected.get(indices[i]));
+		returnVector.add(selected.get(indices[i]));
 	    }
 	}
 	return returnVector;
@@ -347,7 +354,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * @return Vector
      */
     public Vector getSelected() {
-	return _selected;
+	return selected;
     }
 	
     /**
@@ -355,14 +362,16 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * list. Updates the GUI too.
      */
     public void addSelection() {
-	Vector choices = getChoices();
-	_choices.removeAll(choices);
-	for (int i = 0; i < choices.size(); i++) {
-	    ((DefaultListModel) _choicesList.getModel()).removeElement(choices.get(i));
+	Vector theChoices = getChoices();
+	choices.removeAll(theChoices);
+	for (int i = 0; i < theChoices.size(); i++) {
+	    ((DefaultListModel) choicesList.getModel())
+	        .removeElement(theChoices.get(i));
 	}
-	_selected.addAll(choices);
-	for (int i = 0; i < choices.size(); i++) {
-	    ((DefaultListModel) _selectedList.getModel()).addElement(choices.get(i));
+	selected.addAll(theChoices);
+	for (int i = 0; i < theChoices.size(); i++) {
+	    ((DefaultListModel) selectedList.getModel())
+	        .addElement(theChoices.get(i));
 	}
     }
 	
@@ -371,14 +380,16 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * them to the choices list. Updates the GUI too.
      */
     public void removeSelection() {
-	Vector choices = getSelectedChoices();
-	_selected.removeAll(choices);
-	for (int i = 0; i < choices.size(); i++) {
-	    ((DefaultListModel) _selectedList.getModel()).removeElement(choices.get(i));
+	Vector theChoices = getSelectedChoices();
+	selected.removeAll(theChoices);
+	for (int i = 0; i < theChoices.size(); i++) {
+	    ((DefaultListModel) selectedList.getModel())
+	        .removeElement(theChoices.get(i));
 	}
-	_choices.addAll(choices);
-	for (int i = 0; i < choices.size(); i++) {
-	    ((DefaultListModel) _choicesList.getModel()).addElement(choices.get(i));
+	choices.addAll(theChoices);
+	for (int i = 0; i < theChoices.size(); i++) {
+	    ((DefaultListModel) choicesList.getModel())
+	        .addElement(theChoices.get(i));
 	}
     }
 	
@@ -387,9 +398,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * sets the returnvalue to JOptionPane.OK_OPTION.
      */
     public void ok() {
-	if (_dialog != null) {
-	    _dialog.setVisible(false);
-	    _returnValue = JOptionPane.OK_OPTION;
+	if (dialog != null) {
+	    dialog.setVisible(false);
+	    returnValue = JOptionPane.OK_OPTION;
 	}
     }
 	
@@ -400,13 +411,13 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      * one. Otherwise the selected list is emptied.
      */
     public void cancel() {
-	_selected.removeAllElements();
-	if (_preSelected != null) {
-	    _selected.addAll(_preSelected);
+	selected.removeAllElements();
+	if (preSelected != null) {
+	    selected.addAll(preSelected);
 	}
-	if (_dialog != null) {
-	    _dialog.setVisible(false);
-	    _returnValue = JOptionPane.CANCEL_OPTION;
+	if (dialog != null) {
+	    dialog.setVisible(false);
+	    returnValue = JOptionPane.CANCEL_OPTION;
 	}
     }
 }

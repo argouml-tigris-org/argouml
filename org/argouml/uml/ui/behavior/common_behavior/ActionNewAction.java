@@ -37,35 +37,38 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 public abstract class ActionNewAction extends AbstractActionNewModelElement {
     
     /**
-     * The constant defining the role the action to be created plays for its parent. 
-     * For example, if one wishes to create an entry action for a state, this is 
-     * filled with "entry". The values are defined in the interface Roles
+     * The constant defining the role the action 
+     * to be created plays for its parent. 
+     * For example, if one wishes to create 
+     * an entry action for a state, this is 
+     * filled with "entry". The values are defined 
+     * in the interface Roles
      */
-    public final static String ROLE = "role";
+    public static final String ROLE = "role";
     
     public static interface Roles {
         
         /**
          * The entry activity for some state
          */
-        public final static String ENTRY = "entry";
+        public static final String ENTRY = "entry";
         /**
          * The exit activity for some state
          */
-        public final static String EXIT = "exit";
+        public static final String EXIT = "exit";
         /**
          * The doactivity with some state
          */
-        public final static String DO = "do"; 
+        public static final String DO = "do"; 
         /**
          * The action with some message
          */
-        public final static String ACTION = "action";
+        public static final String ACTION = "action";
         
         /**
          * The effect of some transition
          */
-        public final static String EFFECT = "effect";
+        public static final String EFFECT = "effect";
     }    
     
     /**
@@ -76,7 +79,8 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
     }
     
     /**
-     * Implementors should create a concrete action like a CallAction in this method.
+     * Implementors should create a concrete action like 
+     * a CallAction in this method.
      * @return Object
      */
     protected abstract Object createAction();

@@ -84,10 +84,12 @@ import org.tigris.gef.presentation.FigText;
  * panel. On change of target, the property panel in TabProps is changed. 
  * </p>
  * <p>
- * With the introduction of the TargetManager, this class holds its original power
+ * With the introduction of the TargetManager, 
+ * this class holds its original power
  * of controlling its target. The property panels (subclasses of PropPanel) for
  * which this class is the container are being registrated as TargetListeners in
- * the setTarget method of this class. They are not registrated with TargetManager
+ * the setTarget method of this class. 
+ * They are not registrated with TargetManager
  * but with this class to prevent race-conditions while firing TargetEvents from
  * TargetManager.
  *</p>
@@ -96,34 +98,43 @@ import org.tigris.gef.presentation.FigText;
 public class TabProps
     extends TabSpawnable
     implements TabModelTarget, ArgoModuleEventListener {
-    protected static Logger cat = Logger.getLogger(TabProps.class);
+    private static final Logger LOG = Logger.getLogger(TabProps.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected boolean _shouldBeEnabled = false;
-    protected JPanel _blankPanel = new JPanel();
-    protected Hashtable _panels = new Hashtable();
-    protected JPanel _lastPanel = null;
-    protected String _panelClassBaseName = "";
+    private boolean shouldBeEnabled = false;
+    private JPanel blankPanel = new JPanel();
+    private Hashtable panels = new Hashtable();
+    private JPanel lastPanel = null;
+    private String panelClassBaseName = "";
 
-    private Object _target;
+    private Object target;
 
     /**
-     * The list with targetlisteners, this are the property panels managed by TabProps
+     * The list with targetlisteners, these are the property panels 
+     * managed by TabProps.
      * It should only contain one listener at a time.
      */
-    private EventListenerList _listenerList = new EventListenerList();
+    private EventListenerList listenerList = new EventListenerList();
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public TabProps() {
         this("tab.properties", "ui.PropPanel");
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param tabName the name of the tab
+     * @param panelClassBase 
+     */
     public TabProps(String tabName, String panelClassBase) {
         super(tabName);
         TargetManager.getInstance().addTarget(this);
         setOrientation(ConfigLoader.getTabPropsOrientation());
-        _panelClassBaseName = panelClassBase;
+        panelClassBaseName = panelClassBase;
         setLayout(new BorderLayout());
         //setFont(new Font("Dialog", Font.PLAIN, 10));
 
@@ -132,7 +143,7 @@ public class TabProps
         while (iterator.hasNext()) {
             Object o = iterator.next();
             PluggablePropertyPanel ppp = (PluggablePropertyPanel) o;
-            _panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel());
+            panels.put(ppp.getClassForPanel(), ppp.getPropertyPanel());
         }
 
         ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
@@ -140,17 +151,20 @@ public class TabProps
         initPanels();
     }
 
+    /**
+     * @see java.lang.Object#finalize()
+     */
     public void finalize() {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
     }
 
-    /*
+    /**
      * Set the orientation of the property panel
      * @param orientation the new orientation for this preoprty panel
      */
     public void setOrientation(Orientation orientation) {
         super.setOrientation(orientation);
-        Enumeration pps = _panels.elements();
+        Enumeration pps = panels.elements();
         while (pps.hasMoreElements()) {
             Object o = pps.nextElement();
             if (o instanceof Orientable) {
@@ -164,8 +178,8 @@ public class TabProps
      *  few seconds after the tool is launched. */
     protected void initPanels() {
 
-        _panels.put(ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
-        _panels.put(ArgoDiagram.class, new PropPanelDiagram());
+        panels.put(ModelFacade.CLASS/*MClassImpl.class*/, new PropPanelClass());
+        panels.put(ArgoDiagram.class, new PropPanelDiagram());
 
         // Put all the diagram PropPanels here explicitly. They would eventually
         // pick up their superclass ArgoDiagram, but in the meantime
@@ -173,48 +187,65 @@ public class TabProps
 
         // Note that state digrams do actually have a diagram property panel!
 
-        _panels.put(UMLActivityDiagram.class, new PropPanelUMLActivityDiagram());
-        _panels.put(UMLClassDiagram.class, new PropPanelUMLClassDiagram());
-        _panels.put(UMLCollaborationDiagram.class, new PropPanelUMLCollaborationDiagram());
-        _panels.put(UMLDeploymentDiagram.class, new PropPanelUMLDeploymentDiagram());
-        _panels.put(UMLSequenceDiagram.class, new PropPanelUMLSequenceDiagram());
-        _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
-        _panels.put(UMLUseCaseDiagram.class, new PropPanelUMLUseCaseDiagram());
+        panels.put(UMLActivityDiagram.class, 
+                new PropPanelUMLActivityDiagram());
+        panels.put(UMLClassDiagram.class, 
+                new PropPanelUMLClassDiagram());
+        panels.put(UMLCollaborationDiagram.class, 
+                new PropPanelUMLCollaborationDiagram());
+        panels.put(UMLDeploymentDiagram.class, 
+                new PropPanelUMLDeploymentDiagram());
+        panels.put(UMLSequenceDiagram.class, 
+                new PropPanelUMLSequenceDiagram());
+        panels.put(UMLStateDiagram.class, 
+                new PropPanelUMLStateDiagram());
+        panels.put(UMLUseCaseDiagram.class, 
+                new PropPanelUMLUseCaseDiagram());
 
         // FigText has no owner, so we do it directly
-        _panels.put(FigText.class, new PropPanelString());
+        panels.put(FigText.class, new PropPanelString());
         // now a plugin
         // _panels.put(MModelImpl.class, new PropPanelModel());
-        //_panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, new PropPanelUseCase());
-        //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
+        //_panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/, 
+        //                 new PropPanelUseCase());
+        //important: MStateImpl corresponds to PropPanelSimpleState 
+        //               not to PropPanelState!!
         //otherwise, spawing will not ne successful!!
-        _panels.put(ModelFacade.STATEIMPL/*MStateImpl.class*/, new PropPanelSimpleState());       
+        panels.put(ModelFacade.STATEIMPL/*MStateImpl.class*/, 
+                new PropPanelSimpleState());       
     }
 
-    /** Adds a property panel to the internal list. This allows a plugin to
-     *  add a register a new property panel an run-time. This property panel will then
-     *  be displayed in the detatils pane whenever an element of the given metaclass is
-     *  selected.
+    /** 
+     * Adds a property panel to the internal list. This allows a plugin to
+     * add a register a new property panel an run-time. 
+     * This property panel will then
+     * be displayed in the detatils pane whenever an element 
+     * of the given metaclass is selected.
      *
-     * @param c the metaclass whose details show be displayed in the property panel p
+     * @param c the metaclass whose details show be displayed 
+     *          in the property panel p
      * @param p an instance of the property panel for the metaclass m
      *
      */
     public void addPanel(Class c, PropPanel p) {
-        _panels.put(c, p);
+        panels.put(c, p);
     }
 
    
     ////////////////////////////////////////////////////////////////
     // accessors
     /**
-     * Sets the target of the property panel. The given target t may either be a 
-     * Diagram or a modelelement. If the target given is a Fig, a check is made if the fig has an owning modelelement and occurs on
-     * the current diagram. If so, that modelelement is the target.
+     * Sets the target of the property panel. The given target t 
+     * may either be a Diagram or a modelelement. If the target 
+     * given is a Fig, a check is made if the fig has an owning 
+     * modelelement and occurs on the current diagram. 
+     * If so, that modelelement is the target.
      *
      * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     *         the visibility of this method will change in the future,
+     *         replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
+     *
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams 
@@ -222,18 +253,18 @@ public class TabProps
         if (!(t == null || ModelFacade.isABase(t) || t instanceof ArgoDiagram))
             return;
 
-        if (_lastPanel != null) {
-            remove(_lastPanel);
-            if (_lastPanel instanceof TargetListener)
-                removeTargetListener((TargetListener) _lastPanel);
+        if (lastPanel != null) {
+            remove(lastPanel);
+            if (lastPanel instanceof TargetListener)
+                removeTargetListener((TargetListener) lastPanel);
         }
-        _target = t;
+        target = t;
         if (t == null) {
-            add(_blankPanel, BorderLayout.CENTER);
-            _shouldBeEnabled = false;
-            _lastPanel = _blankPanel;
+            add(blankPanel, BorderLayout.CENTER);
+            shouldBeEnabled = false;
+            lastPanel = blankPanel;
         } else {
-            _shouldBeEnabled = true;
+            shouldBeEnabled = true;
             TabModelTarget newPanel = null;
             Class targetClass = t.getClass();
             while (newPanel == null) {
@@ -247,50 +278,58 @@ public class TabProps
             }
             if (newPanel instanceof JPanel) {
                 add((JPanel) newPanel, BorderLayout.CENTER);
-                _shouldBeEnabled = true;
-                _lastPanel = (JPanel) newPanel;
+                shouldBeEnabled = true;
+                lastPanel = (JPanel) newPanel;
             } else {
-                add(_blankPanel, BorderLayout.CENTER);
-                _shouldBeEnabled = false;
-                _lastPanel = _blankPanel;
+                add(blankPanel, BorderLayout.CENTER);
+                shouldBeEnabled = false;
+                lastPanel = blankPanel;
             }
 
         }
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
         setTarget(TargetManager.getInstance().getTarget());
     }
 
+    /**
+     * @param targetClass the target class
+     * @return the tab model target
+     */
     public TabModelTarget findPanelFor(Class targetClass) {
-        TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
-        cat.info("Getting prop panel for:" + targetClass + ", found (in cache?) " + p);
+        TabModelTarget p = (TabModelTarget) panels.get(targetClass);
+        LOG.info("Getting prop panel for:" + targetClass + ", " 
+                + "found (in cache?) " + p);
         if (p == null) {
             Class panelClass = panelClassFor(targetClass);
             if (panelClass == null)
                 return null;
-            cat.info("panelClass for found: " + panelClass);
+            LOG.info("panelClass for found: " + panelClass);
             try {
                 // if a class is abstract we do not need to try
                 // to instantiate it.
                 if (Modifier.isAbstract(panelClass.getModifiers()))
                     return null;
                 p = (TabModelTarget) panelClass.newInstance();
-                // moved next line inside try block to avoid filling the hashmap with
-                // bogus values. 
-                _panels.put(targetClass, p);
+                // moved next line inside try block to avoid filling 
+                // the hashmap with bogus values. 
+                panels.put(targetClass, p);
             }
             // doubtfull if the next ones must be ignored.
             catch (IllegalAccessException ignore) {
-                cat.error(ignore);
+                LOG.error(ignore);
                 return null;
             } catch (InstantiationException ignore) {
-                cat.error(ignore);
+                LOG.error(ignore);
                 return null;
             }
 
         } else
-            cat.info("found props for " + targetClass.getName());
+            LOG.info("found props for " + targetClass.getName());
         return p;
     }
 
@@ -300,7 +339,7 @@ public class TabProps
         String base = "";
 
         String targetClassName = targetClass.getName();
-        cat.info("Trying to locate panel for: " + targetClassName);
+        LOG.info("Trying to locate panel for: " + targetClassName);
         int lastDot = targetClassName.lastIndexOf(".");
 
         //remove "ru.novosoft.uml"
@@ -326,61 +365,80 @@ public class TabProps
         try {
             panelClassName =
                 pack + ".ui." + base + "PropPanel" + targetClassName;
-            cat.info("Looking for: " + panelClassName);
+            LOG.info("Looking for: " + panelClassName);
             return Class.forName(panelClassName);
         } catch (ClassNotFoundException ignore) {
-            cat.error(
+            LOG.error(
 		      "Class " + panelClassName + " for Panel not found!",
 		      ignore);
         }
         return null;
     }
 
+    /**
+     * @return the name
+     */
     protected String getClassBaseName() {
-        return _panelClassBaseName;
+        return panelClassBaseName;
     }
 
     /**
      * Returns the current target.
      * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
+     * the visibility of this method will change in the future, replaced by 
+     * {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
+     *
+     * @see org.argouml.ui.TabTarget#getTarget()
      */
     public Object getTarget() {
-        return _target;
+        return target;
     }
 
     /**
      * Determines if the property panel should be enabled. Returns true if it
      * should be enabled. The property panel should allways be enabled if the
-     * target is an instance of a modelelement or an argodiagram. If the target given
-     * is a Fig, a check is made if the fig has an owning modelelement and occurs on
+     * target is an instance of a modelelement or an argodiagram. 
+     * If the target given is a Fig, a check is made if the fig 
+     * has an owning modelelement and occurs on
      * the current diagram. If so, that modelelement is the target.
+     * 
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
      */
-    public boolean shouldBeEnabled(Object target) {
-        target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isADiagram(target) || ModelFacade.isABase(target)) {
-            _shouldBeEnabled = true;
+    public boolean shouldBeEnabled(Object t) {
+        t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
+        if (ModelFacade.isADiagram(t) || ModelFacade.isABase(t)) {
+            shouldBeEnabled = true;
         } else {
-            _shouldBeEnabled = false;
+            shouldBeEnabled = false;
         }
 
-        return _shouldBeEnabled;
+        return shouldBeEnabled;
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleLoaded(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleLoaded(ArgoModuleEvent event) {
         if (event.getSource() instanceof PluggablePropertyPanel) {
             PluggablePropertyPanel p =
                 (PluggablePropertyPanel) event.getSource();
-            _panels.put(p.getClassForPanel(), p.getPropertyPanel());            
+            panels.put(p.getClassForPanel(), p.getPropertyPanel());            
 
         }
     }
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleUnloaded(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleUnloaded(ArgoModuleEvent event) {
     }
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleEnabled(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleEnabled(ArgoModuleEvent event) {
     }
+    /**
+     * @see org.argouml.application.events.ArgoModuleEventListener#moduleDisabled(org.argouml.application.events.ArgoModuleEvent)
+     */
     public void moduleDisabled(ArgoModuleEvent event) {
     }
 
@@ -390,7 +448,7 @@ public class TabProps
     public void targetAdded(TargetEvent e) {
         setTarget(e.getNewTarget());
         fireTargetAdded(e);
-        if (_listenerList.getListenerCount() > 0) {
+        if (listenerList.getListenerCount() > 0) {
             validate();
             repaint();
         }
@@ -422,7 +480,7 @@ public class TabProps
      * @param listener the listener to add
      */
     private void addTargetListener(TargetListener listener) {
-        _listenerList.add(TargetListener.class, listener);
+        listenerList.add(TargetListener.class, listener);
     }
 
     /**
@@ -430,12 +488,12 @@ public class TabProps
      * @param listener the listener to remove
      */
     private void removeTargetListener(TargetListener listener) {
-        _listenerList.remove(TargetListener.class, listener);
+        listenerList.remove(TargetListener.class, listener);
     }
 
     private void fireTargetSet(TargetEvent targetEvent) {
         //      Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     
@@ -446,7 +504,7 @@ public class TabProps
 
     private void fireTargetAdded(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
 
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
@@ -458,7 +516,7 @@ public class TabProps
 
     private void fireTargetRemoved(TargetEvent targetEvent) {
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == TargetListener.class) {
                 // Lazily create the event:                     

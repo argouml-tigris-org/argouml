@@ -59,11 +59,13 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Stores all the nodes which will be layouted.
      */
-    Collection nodes;
+    private Collection nodes;
 
     /**
      * This constructor is mainly for convenience, so we don't have add every
      * node manually to the layouter.
+     *
+     * @param theDiagram the diagram to layout
      */
     public ClassdiagramLayouter(UMLDiagram theDiagram) {
 
@@ -216,12 +218,15 @@ public class ClassdiagramLayouter implements Layouter {
                                         Iterator iter3 = suppliers.iterator();
                                         while (iter3.hasNext()) {
                                             Object me2 = iter3.next();
-                                            if (ModelFacade.isAClassifier(me2)) {
-                                                ClassdiagramNode superNode = getClassdiagramNode4owner(me2);
+                                            if (ModelFacade.isAClassifier(me2))
+                                            {
+                                                ClassdiagramNode superNode = 
+                                                    getClassdiagramNode4owner(
+                                                            me2);
 
                                                 if (superNode != null) {
                                                     classdiagramNode
-                                                            .addUplink(superNode);
+                                                        .addUplink(superNode);
                                                 }
                                             }
                                         }
@@ -231,8 +236,8 @@ public class ClassdiagramLayouter implements Layouter {
                                 // Or the implemented interface?
                                 Collection suppliers = ModelFacade
                                         .getSuppliers(abstr);
-                                for (Iterator iter2 = suppliers.iterator(); iter2
-                                        .hasNext();) {
+                                for (Iterator iter2 = suppliers.iterator(); 
+                                    iter2.hasNext();) {
                                     Object me =
                                     /* (MModelElement) */iter2.next();
                                     if (node == me) {
@@ -240,12 +245,15 @@ public class ClassdiagramLayouter implements Layouter {
                                         for (Iterator iter3 = clients
                                                 .iterator(); iter3.hasNext();) {
                                             Object me2 = iter3.next();
-                                            if (ModelFacade.isAClassifier(me2)) {
-                                                ClassdiagramNode subNode = getClassdiagramNode4owner(me2);
+                                            if (ModelFacade.isAClassifier(me2))
+                                            {
+                                                ClassdiagramNode subNode = 
+                                                    getClassdiagramNode4owner(
+                                                            me2);
 
                                                 if (subNode != null) {
                                                     classdiagramNode
-                                                            .addDownlink(subNode);
+                                                        .addDownlink(subNode);
                                                 }
                                             }
                                         }
@@ -262,8 +270,8 @@ public class ClassdiagramLayouter implements Layouter {
 
                     while (iter.hasNext()) {
                         Object g = iter.next();
-                        ClassdiagramNode superNode = getClassdiagramNode4owner(ModelFacade
-                                .getParent(g));
+                        ClassdiagramNode superNode = 
+                            getClassdiagramNode4owner(ModelFacade.getParent(g));
 
                         if (superNode != null) {
                             classdiagramNode.addUplink(superNode);
@@ -273,8 +281,8 @@ public class ClassdiagramLayouter implements Layouter {
                     iter = ModelFacade.getSpecializations(node).iterator();
                     while (iter.hasNext()) {
                         Object s = iter.next();
-                        ClassdiagramNode subNode = getClassdiagramNode4owner(ModelFacade
-                                .getChild(s));
+                        ClassdiagramNode subNode = 
+                            getClassdiagramNode4owner(ModelFacade.getChild(s));
 
                         if (subNode != null) {
                             classdiagramNode.addDownlink(subNode);
@@ -352,12 +360,14 @@ public class ClassdiagramLayouter implements Layouter {
                     Iterator iter = assocClasses.iterator();
                     while (iter.hasNext()) {
                         Object me = iter.next();
-                        ClassdiagramNode curNode = getClassdiagramNode4owner(me);
+                        ClassdiagramNode curNode = 
+                            getClassdiagramNode4owner(me);
                         if (curNode != null && curNode != node
                                 && curNode.isMovable()) {
                             LOG.debug("Moving:" + me);
-                            int rank = (curNode.getRealRank() == ClassdiagramNode.NORANK) ? node
-                                    .getRank()
+                            int rank = (curNode.getRealRank() 
+                                    == ClassdiagramNode.NORANK) 
+                                    ? node.getRank()
                                     : curNode.getRank();
                             LOG.debug("rank: " + rank);
                             curNode.setRank((rank + node.getRank() + 1) / 2);
@@ -570,8 +580,8 @@ public class ClassdiagramLayouter implements Layouter {
     private ClassdiagramNode getClassdiagramNode4owner(Object m) {
         for (int i = 0; i < layoutedClassNodes.size(); i++) {
             if (layoutedClassNodes.elementAt(i) instanceof ClassdiagramNode)
-                    if (getClassdiagramNode(i).getFigure().getOwner() == m)
-                            return getClassdiagramNode(i);
+                if (getClassdiagramNode(i).getFigure().getOwner() == m)
+                    return getClassdiagramNode(i);
         }
         return null;
     }
@@ -588,11 +598,13 @@ public class ClassdiagramLayouter implements Layouter {
         for (int i = 0; i < layoutedObjects.size(); i++) {
             ClassdiagramNode node = getClassdiagramNode(i);
 
-            if ((node.getLocation().x + node.getSize().getWidth() + getHGap() / 2) >= width)
+            if ((node.getLocation().x + node.getSize().getWidth() + getHGap() 
+                    / 2) >= width)
                     width = (int) (node.getLocation().x
                             + node.getSize().getWidth() + getHGap() / 2);
 
-            if ((node.getLocation().y + node.getSize().getHeight() + getVGap() / 2) >= height)
+            if ((node.getLocation().y + node.getSize().getHeight() + getVGap() 
+                    / 2) >= height)
                     height = (int) (node.getLocation().y
                             + node.getSize().getHeight() + getVGap() / 2);
         }
