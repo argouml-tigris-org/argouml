@@ -36,19 +36,20 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import javax.swing.JPanel;
-import org.apache.log4j.Logger;
 
+import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
-import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.tigris.gef.util.VectorSet;
 /** A non-modal wizard to help the user change select an association
  *  to make non-aggregate. */
 
-public class WizBreakCircularComp extends Wizard {
+public class WizBreakCircularComp extends UMLWizard {
     private static final Logger LOG =
 	Logger.getLogger(WizBreakCircularComp.class);
 						      
@@ -89,7 +90,8 @@ public class WizBreakCircularComp extends Wizard {
     protected Vector getOptions1() {
 	Vector res = new Vector();
 	if (getToDoItem() != null) {
-	    VectorSet offs = getToDoItem().getOffenders();
+	    ToDoItem item = (ToDoItem) getToDoItem();
+	    VectorSet offs = item.getOffenders();
 	    int size = offs.size();
 	    for (int i = 0; i < size; i++) {
 		Object me = /*(MModelElement)*/ offs.elementAt(i);
@@ -173,7 +175,8 @@ public class WizBreakCircularComp extends Wizard {
     public void doAction(int oldStep) {
 	LOG.debug("doAction " + oldStep);
 	int choice = -1;
-	VectorSet offs = getToDoItem().getOffenders();
+	ToDoItem item = (ToDoItem) getToDoItem();
+	VectorSet offs = item.getOffenders();
 	switch (oldStep) {
 	case 1:
 	    if (step1 != null) choice = step1.getSelectedIndex();

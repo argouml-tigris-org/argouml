@@ -152,7 +152,7 @@ public class CrConstructorNeeded extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddConstructor) {
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem)w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of the new constructor.";
 	    String sug = null;

@@ -84,7 +84,7 @@ public class CrUnconventionalPackName extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Change the name of this package.";
 	    String nameStr = ModelFacade.getName(me);

@@ -32,14 +32,17 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Vector;
-import javax.swing.JPanel;
-import org.argouml.cognitive.ui.WizStepCue;
-import org.argouml.kernel.Wizard;
-import org.tigris.gef.util.VectorSet;
-/** A non-modal wizard to help the user change navigability
- *  of an association. */
 
-public class WizCueCards extends Wizard {
+import javax.swing.JPanel;
+
+import org.argouml.cognitive.ui.WizStepCue;
+
+/**
+ *  A cue card wizard presents the user with a deck of instructions.
+ * 
+ * @see org.argouml.cognitive.ui.WizStepCue
+ */
+public class WizCueCards extends UMLWizard {
 
     private Vector cues = new Vector();
     private WizStepCue steps[] = null;
@@ -53,20 +56,6 @@ public class WizCueCards extends Wizard {
      * @see org.argouml.kernel.Wizard#getNumSteps()
      */
     public int getNumSteps() { return cues.size(); }
-
-    /**
-     * @return the offending modelelement
-     */
-    public Object getModelElement() {
-	if (getToDoItem() != null) {
-	    VectorSet offs = getToDoItem().getOffenders();
-	    if (offs.size() >= 1) {
-		Object me = /*(MModelElement)*/ offs.elementAt(0);
-		return me;
-	    }
-	}
-	return null;
-    }
 
     /**
      * @param s the text for the wizard step

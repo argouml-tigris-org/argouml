@@ -33,17 +33,16 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.ArrayList;
 import java.util.Vector;
-import javax.swing.JPanel;
-import org.apache.log4j.Logger;
 
+import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
-import org.argouml.kernel.Wizard;
 import org.argouml.model.ModelFacade;
-import org.tigris.gef.util.VectorSet;
 /** A non-modal wizard to help the user change navigability
  *  of an association. */
 
-public class WizNavigable extends Wizard {
+public class WizNavigable extends UMLWizard {
     private static final Logger LOG = Logger.getLogger(WizNavigable.class);
 					      
     private String instructions =
@@ -60,25 +59,7 @@ public class WizNavigable extends Wizard {
      */
     public WizNavigable() { }
 								      
-    /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
-     */
-    public int getNumSteps() { return 1; }
-									  
-    /**
-     * @return the offending modelelement
-     */
-    public Object getModelElement() {
-	if (getToDoItem() != null) {
-	    VectorSet offs = getToDoItem().getOffenders();
-	    if (offs.size() >= 1) {
-		Object me = /*(MModelElement)*/ offs.elementAt(0);
-		return me;
-	    }
-	}
-	return null;
-    }
-									      
+									  									      
     /**
      * @return the options
      */

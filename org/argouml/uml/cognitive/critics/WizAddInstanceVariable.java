@@ -24,14 +24,12 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.tigris.gef.util.VectorSet;
 import javax.swing.JPanel;
 
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.kernel.Wizard;
 
 /**
  * A wizard to add attributes to a classifier
@@ -39,14 +37,13 @@ import org.argouml.kernel.Wizard;
  * @author  d00mst (copied from WizAddOperation by mkl)
  * @since February 6, 2004, 11:40 PM
  */
-public class WizAddInstanceVariable extends Wizard {
+public class WizAddInstanceVariable extends UMLWizard {
     
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
     private String instructions =
 	"Please change the name of the offending model element.";
-    private String suggestion = "suggestion";
-
+ 
     /**
      * Creates a new instance of WizAddInstanceVariable
      */
@@ -71,46 +68,6 @@ public class WizAddInstanceVariable extends Wizard {
 	}
     }
     
-    /**
-     * @see org.argouml.kernel.Wizard#getNumSteps()
-     */
-    public int getNumSteps() {
-        return 1;
-    }
-    
-    /**
-     * @return get the offending modelelement
-     */
-    public Object getModelElement() {
-        if (getToDoItem() != null) {
-            VectorSet offs = getToDoItem().getOffenders();
-            if (offs.size() >= 1) {
-                Object me = /*(MModelElement)*/ offs.elementAt(0);
-                return me;
-            }
-        }
-        return null;
-    }
-    
-    /**
-     * @return get the suggestion string
-     */
-    public String getSuggestion() {
-        if (suggestion != null) return suggestion;
-        Object me = getModelElement();
-        if (me != null) {
-            String n = ModelFacade.getName(me);
-            return n;
-        }
-        return "";
-    }
-
-    /**
-     * @param s set a new suggestion string
-     */
-    public void setSuggestion(String s) {
-	suggestion = s;
-    }
     
     /**
      * @param s set a new instruction string

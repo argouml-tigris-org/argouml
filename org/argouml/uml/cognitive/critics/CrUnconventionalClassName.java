@@ -82,7 +82,7 @@ public class CrUnconventionalClassName extends CrUML {
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
-	    ToDoItem item = w.getToDoItem();
+	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String sug = ModelFacade.getName(me);
 	    sug = sug.substring(0, 1).toUpperCase() + sug.substring(1);
