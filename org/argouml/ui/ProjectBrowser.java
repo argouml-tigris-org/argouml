@@ -49,7 +49,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-import org.argouml.application.api.PluggableMenu;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
@@ -227,24 +226,6 @@ public class ProjectBrowser
         return Locale.getDefault();
     }
 
-    /** Scans through all loaded modules to see if it has an item to add
-     * in this diagram.
-     *
-     * @param menuitem The menuitem which this menuitem would attach to.
-     * @param key Non-localized string that tells the module where we are.
-     */
-    private void appendPluggableMenus(JMenuItem menuitem, String key) {
-        Object[] context = {
-	    menuitem, key 
-	};
-        ArrayList arraylist = Argo.getPlugins(PluggableMenu.class, context);
-        ListIterator iterator = arraylist.listIterator();
-        while (iterator.hasNext()) {
-            PluggableMenu module = (PluggableMenu) iterator.next();
-            menuitem.add(module.getMenuItem(context));
-            menuitem.setEnabled(true);
-        }
-    }
 
     /**
      * Creates the panels in the working area
