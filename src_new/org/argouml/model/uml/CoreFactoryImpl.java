@@ -1430,7 +1430,7 @@ public class CoreFactoryImpl
      * @param clnt is the client
      * @param spplr is the supplier
      * @param model the namespace to use if client and
-     * supplier are of different namespace
+     *              supplier are of different namespace
      * @return Object the created abstraction
      */
     public Object buildRealization(
@@ -1452,7 +1452,7 @@ public class CoreFactoryImpl
 	if (nsc.equals(nss)) {
 	    ns = nsc;
 	} else {
-	    ns = (MModel) model;
+	    ns = (MNamespace) model;
 	}
 	nsmodel.getExtensionMechanismsFactory().buildStereotype(realization,
 								"realize", ns);
