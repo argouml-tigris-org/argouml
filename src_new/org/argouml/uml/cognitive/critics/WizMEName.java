@@ -71,7 +71,7 @@ public class WizMEName extends UMLWizard {
     /** 
      * Create a new panel for the given step.
      * 
-     * @see org.argouml.kernel.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
 	switch (newStep) {
@@ -95,7 +95,7 @@ public class WizMEName extends UMLWizard {
      * Return false if the user has not edited the text and they were required
      * to.
      * 
-     * @see org.argouml.kernel.Wizard#canGoNext()
+     * @see org.argouml.cognitive.ui.Wizard#canGoNext()
      */
     public boolean canGoNext() {
 	if (!super.canGoNext()) return false;
@@ -113,7 +113,7 @@ public class WizMEName extends UMLWizard {
      * they do along, as soon as possible, they should not wait until
      * the final step. 
      * 
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
 	LOG.debug("doAction " + oldStep);

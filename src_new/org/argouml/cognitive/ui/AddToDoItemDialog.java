@@ -35,17 +35,16 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListCellRenderer;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
+import org.argouml.cognitive.Translator;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.uml.ui.UMLListCellRenderer2;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -73,10 +72,12 @@ public class AddToDoItemDialog extends ArgoDialog {
     private JList offenderList;
     private JTextArea  descriptionTextArea;
 
+    
     /**
      * Create a new AddToDoItemDialog
+     * @param renderer the ListCellRenderer to use in order to display the offenders
      */
-    public AddToDoItemDialog() {
+    public AddToDoItemDialog(ListCellRenderer renderer) {
         super(ProjectBrowser.getInstance(), 
 	      Translator.localize("dialog.title.add-todo-item"), 
 	      ArgoDialog.OK_CANCEL_OPTION, true);
@@ -96,7 +97,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         }
         
         offenderList = new JList(dlm);
-        offenderList.setCellRenderer(new UMLListCellRenderer2(true));
+        offenderList.setCellRenderer(renderer);
         JScrollPane offenderScroll = new JScrollPane(offenderList);
         offenderScroll.setOpaque(true);
 
@@ -181,7 +182,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         }  
         item.setOffenders(newOffenders);
         designer.getToDoList().addElement(item); //? inform()
-        ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
+        Designer.firePropertyChange(Designer.MODEL_TODOITEM_ADDED, null, item);
     }
 } /* end class AddToDoItemDialog */
 

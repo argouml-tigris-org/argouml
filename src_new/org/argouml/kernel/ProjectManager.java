@@ -31,6 +31,7 @@ import java.util.Vector;
 import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.Designer;
 import org.argouml.ui.ArgoDiagram;
 
 /**
@@ -47,7 +48,7 @@ import org.argouml.ui.ArgoDiagram;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public final class ProjectManager {
+public final class ProjectManager implements PropertyChangeListener {
 
     /**
      * The name of the property that defines the current project.
@@ -244,5 +245,18 @@ public final class ProjectManager {
         }
         
         oldProject.remove();
+    }
+
+    /* react to PropertyChangeEvents, e.g. send by the Designer.
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+        if (pce.getPropertyName().equals(Designer.MODEL_TODOITEM_ADDED)) {
+            getCurrentProject().setNeedsSave(true);
+        }
+        else if (pce.getPropertyName().equals(Designer.MODEL_TODOITEM_DISMISSED)) {
+            getCurrentProject().setNeedsSave(true);
+        }
+        
     }
 }

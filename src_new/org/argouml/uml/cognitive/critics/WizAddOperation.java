@@ -50,7 +50,7 @@ public class WizAddOperation extends UMLWizard {
     }
     
     /**
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
         switch (oldStep) {
@@ -78,7 +78,7 @@ public class WizAddOperation extends UMLWizard {
     /** 
      * Create a new panel for the given step.
      * 
-     * @see org.argouml.kernel.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
         switch (newStep) {

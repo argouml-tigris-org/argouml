@@ -29,6 +29,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -50,10 +51,12 @@ public class StartCritics
         org.argouml.uml.cognitive.critics.Init.init();
         org.argouml.uml.cognitive.checklist.Init.init();
         Project p = ProjectManager.getManager().getCurrentProject();
+        dsgr.addListener(ProjectManager.getManager());
         // set the icon for this poster
         dsgr.setClarifier(ResourceLoaderWrapper.
             lookupIconResource("PostItD0"));
-        dsgr.setDesignerName(Configuration.getString(Argo.KEY_USER_FULLNAME));
+        Object[] msgArgs = { Configuration.getString(Argo.KEY_USER_FULLNAME) };
+        dsgr.setDesignerName(Translator.messageFormat("misc.designer.name", msgArgs));
         dsgr.spawnCritiquer(p);
         dsgr.setChildGenerator(new ChildGenUML());
         java.util.Enumeration models = (p.getUserDefinedModels()).elements();

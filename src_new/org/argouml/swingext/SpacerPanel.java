@@ -22,33 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+package org.argouml.swingext;
 
-import java.beans.PropertyChangeEvent;
+import java.awt.Dimension;
+import javax.swing.JPanel;
 
-/**
- * This appears to be a gui specific class, therefore it does not belong in
- * the Kernel.
+/** A Swing panel that displays nothing, but takes up a specified
+ *  amount of space.  Used to make panels with GridBagLayouts look
+ *  better. 
  */
-public class DelayedChangeNotify implements Runnable {
-    private DelayedVChangeListener listener;
-    private PropertyChangeEvent pce;
-
+public class SpacerPanel extends JPanel {
+    
+    private int w = 10, h = 10;
+    
     /**
      * The constructor.
      * 
-     * @param l the listener
-     * @param p the event
      */
-    public DelayedChangeNotify(DelayedVChangeListener l,
-			       PropertyChangeEvent p) {
-	listener = l;
-	pce = p;
-    }
-  
+    public SpacerPanel() { }
+    
     /**
-     * @see java.lang.Runnable#run()
+     * The constructor.
+     * 
+     * @param width the width
+     * @param height the height
      */
-    public void run() { listener.delayedVetoableChange(pce); }
-
-} /* end class DelayedChangeNotify */
+    public SpacerPanel(int width, int height) { w = width; h = height; }
+    
+    /**
+     * @see java.awt.Component#getMinimumSize()
+     */
+    public Dimension getMinimumSize() { return new Dimension(w, h); }
+    
+    /**
+     * @see java.awt.Component#getPreferredSize()
+     */
+    public Dimension getPreferredSize() { return new Dimension(w, h); }
+    
+    /**
+     * @see java.awt.Component#getSize()
+     */
+    public Dimension getSize() { return new Dimension(w, h); }
+} /* end class SpacerPanel */

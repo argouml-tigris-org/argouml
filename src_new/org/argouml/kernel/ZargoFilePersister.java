@@ -41,9 +41,9 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.cognitive.ProjectMemberTodoList;
 import org.argouml.util.FileConstants;
 import org.argouml.util.SubInputStream;
 import org.argouml.xml.argo.ArgoParser;

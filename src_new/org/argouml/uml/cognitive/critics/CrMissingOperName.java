@@ -34,7 +34,7 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 
 /** A critic to detect whether an operation has a name.

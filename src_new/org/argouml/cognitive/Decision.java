@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 
 /** This is where the class makes the decision
  * to to fire critic.

@@ -96,7 +96,7 @@ public class WizNavigable extends UMLWizard {
     /** 
      * Create a new panel for the given step.
      * 
-     * @see org.argouml.kernel.Wizard#makePanel(int)
+     * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
 	switch (newStep) {
@@ -117,7 +117,7 @@ public class WizNavigable extends UMLWizard {
      * they do along, as soon as possible, they should not wait until
      * the final step. 
      * 
-     * @see org.argouml.kernel.Wizard#doAction(int)
+     * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
 	LOG.debug("doAction " + oldStep);
@@ -144,7 +144,7 @@ public class WizNavigable extends UMLWizard {
     }
  
     /**
-     * @see org.argouml.kernel.Wizard#canFinish()
+     * @see org.argouml.cognitive.ui.Wizard#canFinish()
      */
     public boolean canFinish() {
 	if (!super.canFinish()) return false;

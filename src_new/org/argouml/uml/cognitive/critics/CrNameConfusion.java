@@ -38,7 +38,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.VectorSet;
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1

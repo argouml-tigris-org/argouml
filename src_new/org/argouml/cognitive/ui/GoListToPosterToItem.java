@@ -26,9 +26,10 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
@@ -41,22 +42,10 @@ import org.tigris.gef.util.VectorSet;
  * Rule for sorting the ToDo list: Poster -> Item.
  *
  */
-public class GoListToPosterToItem implements TreeModel {
+public class GoListToPosterToItem extends AbstractGoList {
   
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
-  
-    /**
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
-    public Object getRoot() {
-	throw new UnsupportedOperationException();
-    } 
-    
-    /**
-     * @param r ignored
-     */
-    public void setRoot(Object r) { }
 
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)

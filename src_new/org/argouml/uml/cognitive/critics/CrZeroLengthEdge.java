@@ -22,33 +22,53 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+// File: CrZeroLengthEdge.java
+// Classes: CrZeroLengthEdge
+// Original Author: jrobbins@ics.uci.edu
+// $Id$
 
-import java.beans.PropertyChangeEvent;
+package org.argouml.uml.cognitive.critics;
 
-/**
- * This appears to be a gui specific class, therefore it does not belong in
- * the Kernel.
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.critics.Critic;
+import org.tigris.gef.presentation.FigEdge;
+
+/** A critic to detect when an edge is very short in order to suggest to
+ *  improve the layout of the diagram.
  */
-public class DelayedChangeNotify implements Runnable {
-    private DelayedVChangeListener listener;
-    private PropertyChangeEvent pce;
+public class CrZeroLengthEdge extends CrUML {
+    ////////////////////////////////////////////////////////////////
+    // constants
+    private static final int THRESHOLD = 20;
 
     /**
      * The constructor.
      * 
-     * @param l the listener
-     * @param p the event
      */
-    public DelayedChangeNotify(DelayedVChangeListener l,
-			       PropertyChangeEvent p) {
-	listener = l;
-	pce = p;
+    public CrZeroLengthEdge() {
+	// TODO: {name} is not expanded for diagram objects
+	setHeadline("Make Edge More Visible");
+	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
+	addSupportedDecision(CrUML.DEC_INHERITANCE);
+	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
+	setKnowledgeTypes(Critic.KT_PRESENTATION);    
     }
-  
-    /**
-     * @see java.lang.Runnable#run()
-     */
-    public void run() { listener.delayedVetoableChange(pce); }
 
-} /* end class DelayedChangeNotify */
+    ////////////////////////////////////////////////////////////////
+    // critiquing API
+    
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(dm instanceof FigEdge)) return NO_PROBLEM;
+	FigEdge fe = (FigEdge) dm;
+	int length = fe.getPerimeterLength();
+	if (length > THRESHOLD) return NO_PROBLEM;
+	return PROBLEM_FOUND;
+    }
+
+
+} /* end class CrZeroLengthEdge */
+

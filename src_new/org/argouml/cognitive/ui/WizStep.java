@@ -31,6 +31,7 @@ import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -40,10 +41,10 @@ import javax.swing.event.DocumentListener;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.i18n.Translator;
-import org.argouml.kernel.Wizard;
+import org.argouml.cognitive.Translator;
+import org.argouml.swingext.SpacerPanel;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.ui.SpacerPanel;
+import org.argouml.ui.cmd.ActionOpenBrowser;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.util.osdep.StartBrowser;
@@ -54,7 +55,7 @@ import org.argouml.util.osdep.StartBrowser;
  *  "sticky note" icon in ToDo tree pane.
  *
  * @see org.argouml.cognitive.critics.Critic
- * @see org.argouml.kernel.Wizard
+ * @see org.argouml.cognitive.ui.Wizard
  */
 
 public class WizStep extends JPanel
@@ -113,11 +114,18 @@ public class WizStep extends JPanel
 	}
     }   
 
+    
+    public WizStep() {
+        this(new ActionOpenBrowser());
+    }
     /**
      * The constructor.
+     * @param helpAction 
+     *      an action which does the needful, 
+     *      e.g. open a browser, display help, when the according button had been pressed.
      * 
      */
-    public WizStep() {
+    public WizStep(Action helpAction) {
 	setMnemonic(backButton, "mnemonic.button.back");
 	setMnemonic(nextButton, "mnemonic.button.next");
 	setMnemonic(finishButton, "mnemonic.button.finish");
@@ -145,7 +153,7 @@ public class WizStep extends JPanel
 	backButton.addActionListener(this);
 	nextButton.addActionListener(this);
 	finishButton.addActionListener(this);
-	helpButton.addActionListener(this);
+	helpButton.addActionListener(helpAction);
     }
 
     ////////////////////////////////////////////////////////////////

@@ -26,9 +26,10 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.event.TreeModelListener;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
@@ -38,22 +39,11 @@ import org.argouml.cognitive.ToDoList;
  * Rule for sorting the ToDo list: Type -> Item.
  *
  */
-public class GoListToTypeToItem implements TreeModel {
+public class GoListToTypeToItem extends AbstractGoList {
   
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
   
-    /**
-     * @see javax.swing.tree.TreeModel#getRoot()
-     */
-    public Object getRoot() {
-	throw new UnsupportedOperationException();
-    } 
-    
-    /**
-     * @param r ignored
-     */
-    public void setRoot(Object r) { }
 
     /**
      * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)

@@ -24,7 +24,7 @@
 
 package org.argouml.cognitive;
 
-import org.argouml.i18n.Translator;
+import org.argouml.cognitive.Translator;
 
 /**
  * This class models a goal of a designer.

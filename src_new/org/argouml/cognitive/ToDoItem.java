@@ -35,8 +35,8 @@ import java.io.Serializable;
 import java.util.Enumeration;
 import javax.swing.Icon;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.kernel.Wizard;
-import org.argouml.kernel.WizardItem;
+import org.argouml.cognitive.ui.Wizard;
+import org.argouml.cognitive.ui.WizardItem;
 import org.tigris.gef.ui.Highlightable;
 
 import org.tigris.gef.util.VectorSet;

@@ -110,7 +110,9 @@ public class Main {
         org.tigris.gef.base.Globals.setLastDirectory(directory);
 
         // load i18n bundles
+        Translator trans = new org.argouml.i18n.Translator();
         Translator.init();
+        org.argouml.cognitive.Translator.setTranslator(trans);
 
         // then, print out some version info for debuggers...
         org.argouml.util.Tools.logVersionInfo();
@@ -678,7 +680,7 @@ class PreloadClasses implements Runnable {
         c = java.lang.reflect.Modifier.class;
         c = java.util.TooManyListenersException.class;
         c = org.argouml.kernel.DelayedChangeNotify.class;
-        c = org.argouml.kernel.Wizard.class;
+        c = org.argouml.cognitive.ui.Wizard.class;
         c = org.argouml.ui.Clarifier.class;
         c = org.argouml.ui.StylePanelFigNodeModelElement.class;
         c = org.argouml.uml.GenCompositeClasses.class;
