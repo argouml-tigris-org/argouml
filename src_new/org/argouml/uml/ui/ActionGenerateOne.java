@@ -146,7 +146,7 @@ public class ActionGenerateOne extends UMLAction {
     /**
      * @return Returns the SINGLETON.
      */
-    public static ActionGenerateOne getSingleton() {
+    public static ActionGenerateOne getInstance() {
         return SINGLETON;
     }
 } /* end class ActionGenerateOne */

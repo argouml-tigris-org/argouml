@@ -139,7 +139,7 @@ public class ActionGenerateProjectCode extends UMLAction {
     /**
      * @return Returns the SINGLETON.
      */
-    public static ActionGenerateProjectCode getSingleton() {
+    public static ActionGenerateProjectCode getInstance() {
         return SINGLETON;
     }
 

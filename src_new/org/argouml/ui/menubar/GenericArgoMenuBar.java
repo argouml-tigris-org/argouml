@@ -405,7 +405,7 @@ public class GenericArgoMenuBar extends JMenuBar
         //appendPluggableMenus(_import,
         //PluggableMenu.KEY_FILE_IMPORT);
         JMenuItem importFromSources =
-	    file.add(ActionImportFromSources.getSingleton());
+	    file.add(ActionImportFromSources.getInstance());
         setMnemonic(importFromSources, "Import");
         file.addSeparator();
     
@@ -680,17 +680,17 @@ public class GenericArgoMenuBar extends JMenuBar
         
         generate = add(new JMenu(menuLocalize("Generation")));
         setMnemonic(generate, "Generation");
-        JMenuItem genOne = generate.add(ActionGenerateOne.getSingleton());
+        JMenuItem genOne = generate.add(ActionGenerateOne.getInstance());
         setMnemonic(genOne, "Generate Selected Classes");
         JMenuItem genAllItem = generate.add(new ActionGenerateAll());
         setMnemonic(genAllItem, "Generate all classes");
         setAccelerator(genAllItem, f7);
         generate.addSeparator();
         JMenuItem genProject = 
-            generate.add(ActionGenerateProjectCode.getSingleton());
+            generate.add(ActionGenerateProjectCode.getInstance());
         setMnemonic(genProject, "Generate code for project");
         JMenuItem generationSettings = 
-            generate.add(ActionGenerationSettings.getSingleton());
+            generate.add(ActionGenerationSettings.getInstance());
         setMnemonic(generationSettings, "Settings for project code generation");
         //generate.add(Actions.GenerateWeb);
         appendPluggableMenus(generate, PluggableMenu.KEY_GENERATE);
