@@ -113,6 +113,11 @@ public class ChildGenUML implements ChildGenerator {
 	    if (substates != null) return substates.elements();
 	}
 
+        if (ModelFacade.isAOperation(o)) {
+            Vector params = new Vector(ModelFacade.getParameters(o));
+            if (params != null) return params.elements();
+        }
+        
         if (ModelFacade.isAModelElement(o)) {
 	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
 	    if (behavior != null) return behavior.elements();
