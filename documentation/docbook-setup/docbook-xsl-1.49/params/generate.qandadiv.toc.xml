@@ -1,0 +1,21 @@
+<refentry id="generate.qandadiv.toc">
+<refmeta>
+<refentrytitle>generate.qandadiv.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.qandadiv.toc</refname>
+<refpurpose>Is a Table of Contents created for QandADivs?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.qandadiv.toc.frag'><xsl:param name="generate.qandadiv.toc">0</xsl:param></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>If true (non-zero), a ToC is constructed for QandADivs.
+</para>
+
+</refsect1>
+</refentry>

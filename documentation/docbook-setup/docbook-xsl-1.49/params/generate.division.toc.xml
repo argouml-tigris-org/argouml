@@ -1,0 +1,21 @@
+<refentry id="generate.division.toc">
+<refmeta>
+<refentrytitle>generate.division.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.division.toc</refname>
+<refpurpose>Should TOCs be genereated in divisions (Books, Parts, etc.)?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.division.toc.frag'><xsl:param name="generate.division.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>If true (non-zero), they are.
+</para>
+
+</refsect1>
+</refentry>

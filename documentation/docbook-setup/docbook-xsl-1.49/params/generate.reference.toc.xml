@@ -1,0 +1,22 @@
+<refentry id="generate.reference.toc">
+<refmeta>
+<refentrytitle>generate.reference.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.reference.toc</refname>
+<refpurpose>Do you want a list of references?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.reference.toc.frag'><xsl:param name="generate.reference.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify if a list of references should be generated, similar to
+a table of contents, but for all <sgmltag>reference</sgmltag> elements.
+</para>
+
+</refsect1>
+</refentry>

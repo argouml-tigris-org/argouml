@@ -1,0 +1,20 @@
+<refentry id="generate.chapter.toc">
+<refmeta>
+<refentrytitle>generate.chapter.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.chapter.toc</refname>
+<refpurpose>Do you want a table of contents for chapters?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.chapter.toc.frag'><xsl:param name="generate.chapter.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify if a table of contents should be generated for each chapter.</para>
+
+</refsect1>
+</refentry>

@@ -1,0 +1,24 @@
+<refentry id="using.chunker">
+<refmeta>
+<refentrytitle>using.chunker</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>using.chunker</refname>
+<refpurpose>Will the output be chunked?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='using.chunker.frag'><xsl:param name="using.chunker" select="0"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>In addition to providing chunking, the chunker can cleanup a
+number of XML to HTML issues. If the chunker is not being used, the
+stylesheets try to avoid producing results that will not appear properly
+in browsers.
+</para>
+
+</refsect1>
+</refentry>

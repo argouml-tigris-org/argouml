@@ -1,0 +1,20 @@
+<refentry id="generate.book.toc">
+<refmeta>
+<refentrytitle>generate.book.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.book.toc</refname>
+<refpurpose>Do you want a table of contents in the book?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.book.toc.frag'><xsl:param name="generate.book.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify if a table of contents is required in the book.</para>
+
+</refsect1>
+</refentry>

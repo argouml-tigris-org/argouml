@@ -1,0 +1,20 @@
+<refentry id="generate.article.toc">
+<refmeta>
+<refentrytitle>generate.article.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.article.toc</refname>
+<refpurpose>Specify if a toc is wanted for an article.</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.article.toc.frag'><xsl:param name="generate.article.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify whether a table of contents is required for an article.</para>
+
+</refsect1>
+</refentry>

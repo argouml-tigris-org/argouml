@@ -1,0 +1,14 @@
+2001-11-27  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* javahelp-common.xsl, javahelp.xsl, xtjavahelp.xsl: Removed obsolete XT support; added support for rootid parameter
+
+	* javahelp.xsl: Fixed simple select typo
+
+2001-05-20  Jirka Kosek <kosek@users.sourceforge.net>
+
+	* javahelp-common.xsl: Fixed bug #425149, colphons and articles inside book are now handled
+
+2001-04-04  Norman Walsh <nwalsh@users.sourceforge.net>
+
+	* javahelp-common.xsl, javahelp.xsl, xtjavahelp.xsl: New file.
+

@@ -1,0 +1,21 @@
+<refentry id="generate.division.table.lot">
+<refmeta>
+<refentrytitle>generate.division.table.lot</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.division.table.lot</refname>
+<refpurpose>Generate a list of titles for Tables?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.division.table.lot.frag'><xsl:param name="generate.division.table.lot" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>If non-zero, a list of titles is generated for Tables.
+</para>
+
+</refsect1>
+</refentry>

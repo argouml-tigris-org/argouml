@@ -1,0 +1,21 @@
+<refentry id="generate.component.toc">
+<refmeta>
+<refentrytitle>generate.component.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.component.toc</refname>
+<refpurpose>Should TOCs be genereated in components (Chapters, Appendixes, etc.)?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.component.toc.frag'><xsl:param name="generate.component.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>If true (non-zero), they are.
+</para>
+
+</refsect1>
+</refentry>

@@ -1,0 +1,21 @@
+<refentry id="generate.division.example.lot">
+<refmeta>
+<refentrytitle>generate.division.example.lot</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.division.example.lot</refname>
+<refpurpose>Generate a list of titles for Examples?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.division.example.lot.frag'><xsl:param name="generate.division.example.lot" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>If non-zero, a list of titles is generated for Examples.
+</para>
+
+</refsect1>
+</refentry>

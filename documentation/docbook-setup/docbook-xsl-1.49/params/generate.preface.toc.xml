@@ -1,0 +1,20 @@
+<refentry id="generate.preface.toc">
+<refmeta>
+<refentrytitle>generate.preface.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.preface.toc</refname>
+<refpurpose>Do you want a table of contents for the preface?</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.preface.toc.frag'><xsl:param name="generate.preface.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify if a table of contents should be generated for the preface</para>
+
+</refsect1>
+</refentry>

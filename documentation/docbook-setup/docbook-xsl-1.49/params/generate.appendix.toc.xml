@@ -1,0 +1,20 @@
+<refentry id="generate.appendix.toc">
+<refmeta>
+<refentrytitle>generate.appendix.toc</refentrytitle>
+<refmiscinfo role="type">boolean</refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>generate.appendix.toc</refname>
+<refpurpose>Specify if a table of contents is required for an appendix</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='generate.appendix.toc.frag'><xsl:param name="generate.appendix.toc" select="1"/></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>Specify whether you want a table of contents in each appendix. </para>
+
+</refsect1>
+</refentry>

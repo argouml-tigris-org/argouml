@@ -1,0 +1,23 @@
+<refentry id="shade.verbatim.style">
+<refmeta>
+<refentrytitle>shade.verbatim.style</refentrytitle>
+<refmiscinfo role="type"></refmiscinfo>
+</refmeta>
+<refnamediv>
+<refname>shade.verbatim.style</refname>
+<refpurpose>Properties that specify the style of shaded verbatim listings</refpurpose>
+</refnamediv>
+
+<refsynopsisdiv>
+<src:fragment id='shade.verbatim.style.frag'><xsl:attribute-set name="shade.verbatim.style">
+  <xsl:attribute name="border">0</xsl:attribute>
+  <xsl:attribute name="bgcolor">#E0E0E0</xsl:attribute>
+</xsl:attribute-set></src:fragment>
+</refsynopsisdiv>
+
+<refsect1><title>Description</title>
+
+<para>FIXME:</para>
+
+</refsect1>
+</refentry>
