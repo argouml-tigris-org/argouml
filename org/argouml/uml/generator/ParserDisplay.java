@@ -2021,6 +2021,9 @@ public class ParserDisplay extends Parser {
 
     /** Parse user input for state bodies and assign the individual
      *  lines to according actions or transistions.
+     *  The user input consists of multiple lines like:
+     *      action-label / action-expression
+     *  or the format of a regulat transition - see parseTransition().
      *  The words "entry", "do" and "exit" are case-independent.
      *  @param  st       The State object.
      *  @param  s        The string to parse.
