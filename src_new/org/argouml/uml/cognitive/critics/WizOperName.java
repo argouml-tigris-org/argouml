@@ -61,7 +61,7 @@ import org.argouml.model.Model;
  * </pre>
  */
 public class WizOperName extends WizMEName {
-    private static final Logger LOG = Logger.getLogger(WizMEName.class);
+    private static final Logger LOG = Logger.getLogger(WizOperName.class);
 
     private boolean possibleConstructor = false;
 
@@ -235,7 +235,7 @@ public class WizOperName extends WizMEName {
                 if (theStereotype == null) {
                     theStereotype =
                         Model.getExtensionMechanismsFactory()
-                        	.createStereotype();
+                        	.buildStereotype("create");
                     Model.getCoreHelper().setName(theStereotype, "create");
                     // theStereotype.setStereotype(???);
                     Model.getExtensionMechanismsHelper()

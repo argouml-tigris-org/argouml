@@ -86,8 +86,7 @@ public class GUITestCopyHelper extends TestCase {
 
 	st =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
-	st.setName("clsStT");
+	        .buildStereotype("clsStT");
 	st.setBaseClass("Class");
 	m1.addOwnedElement(st);
 
@@ -149,8 +148,7 @@ public class GUITestCopyHelper extends TestCase {
 
 	st =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
-	st.setName("dttStT");
+	        .buildStereotype("dttStT");
 	st.setBaseClass("DataType");
 	m1.addOwnedElement(st);
 
@@ -209,8 +207,7 @@ public class GUITestCopyHelper extends TestCase {
 
 	st =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
-	st.setName("intStT");
+	        .buildStereotype("intStT");
 	st.setBaseClass("Interface");
 	m1.addOwnedElement(st);
 
@@ -269,8 +266,7 @@ public class GUITestCopyHelper extends TestCase {
 
 	st =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
-	st.setName("pkgStT");
+	        .buildStereotype("pkgStT");
 	st.setBaseClass("Package");
 	m1.addOwnedElement(st);
 
@@ -326,13 +322,12 @@ public class GUITestCopyHelper extends TestCase {
 
 	s =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
+	        .buildStereotype(null);
 	m1.addOwnedElement(s);
 
 	st =
 	    (MStereotype) Model.getExtensionMechanismsFactory()
-	        .createStereotype();
-	st.setName("sttStT");
+	        .buildStereotype("sttStT");
 	st.setBaseClass("Stereotype");
 	m1.addOwnedElement(st);
 

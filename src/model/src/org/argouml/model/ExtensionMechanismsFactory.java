@@ -37,7 +37,7 @@ public interface ExtensionMechanismsFactory {
      *
      * @return an initialized UML Stereotype instance.
      */
-    Object createStereotype();
+    //Object createStereotype();
 
     /**
      * Create an empty but initialized instance of a UML TaggedValue.
@@ -80,6 +80,28 @@ public interface ExtensionMechanismsFactory {
      */
     Object buildStereotype(Object theModelElementObject, String theName,
             Object model, Collection models);
+
+    /**
+     * Create an empty but initialized instance of a UML Stereotype.
+     *
+     * @return an initialized UML Stereotype instance.
+     * @deprecated this is not used in the code but removing it currently
+     * breaks tests ran by (grrr) reflection.
+     * We do not want a public method that will create an un-named
+     * stereotype with no namespace.
+     */
+    public Object createStereotype();
+    
+    /**
+     * Builds an initialized stereotype with no namespace.
+     * @deprecated Bob Tarling 28/2/2005 Presumably a stereotype
+     * must have a namespace so this method is unsafe. Use
+     * buildStereotype(String, Onject).
+     *
+     * @param text is the name of the stereotype
+     * @return an initialized stereotype.
+     */
+    Object buildStereotype(String text);
 
     /**
      * Builds an initialized stereotype.
