@@ -31,6 +31,7 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -40,10 +41,17 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
+import org.argouml.cognitive.ProjectMemberTodoList;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.ui.ArgoDiagram;
 import org.argouml.util.FileConstants;
+import org.argouml.util.SubInputStream;
 import org.argouml.xml.argo.ArgoParser;
+import org.argouml.xml.pgml.PGMLParser;
+import org.argouml.xml.xmi.XMIReader;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
+import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -237,7 +245,7 @@ public class ZargoFilePersister extends AbstractFilePersister {
                 LOG.error(e);
                 throw e;
             }
-            p.loadZippedProjectMembers(url);
+            loadProjectMembers(p, url);
             p.postLoad();
             return p;
         } catch (IOException e) {
@@ -257,13 +265,167 @@ public class ZargoFilePersister extends AbstractFilePersister {
      * @return the zip stream positioned at the required location.
      */
     private ZipInputStream openZipStreamAt(URL url, String ext)
-        throws IOException {
+            throws IOException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
         ZipEntry entry = zis.getNextEntry();
-        while (entry != null
-                && !entry.getName().endsWith(FileConstants.PROJECT_FILE_EXT)) {
+        while (entry != null && !entry.getName().endsWith(ext)) {
             entry = zis.getNextEntry();
         }
         return zis;
+    }
+    
+    /**
+     * Loads all the members from a zipped input stream.
+     *
+     * @param theUrl The URL to the input stream.
+     * @throws IOException if there is something wrong with the zipped archive
+     *                     or with the model.
+     * @throws ParserConfigurationException if the parser is misconfigured.
+     * @throws SAXException if the input is not correctly formatted XML.
+     */
+    protected void loadProjectMembers(Project project, URL theUrl) throws OpenException {
+
+        try {
+            loadModel(project, theUrl);
+
+            // now close again, reopen and read the Diagrams.
+
+            PGMLParser.getSingleton().setOwnerRegistry(project.getUUIDRefs());
+
+            //zis.close();
+            ZipInputStream zis = new ZipInputStream(theUrl.openStream());
+            SubInputStream sub = new SubInputStream(zis);
+
+            ZipEntry currentEntry = null;
+            while ((currentEntry = sub.getNextEntry()) != null) {
+                if (currentEntry.getName().endsWith(".pgml")) {
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Now going to load "
+                                 + currentEntry.getName()
+                                 + " from ZipInputStream");
+                    }
+
+                    // "false" means the stream shall not be closed,
+                    // but it doesn't seem to matter...
+                    ArgoDiagram d =
+                        (ArgoDiagram) PGMLParser.getSingleton().readDiagram(
+                                      sub,
+                                      false);
+                    if (d != null) {
+                        project.addMember(d);
+                    }
+                    else {
+                        LOG.error("An error occurred while loading " 
+                            + currentEntry.getName());
+                    }
+                    // sub.closeEntry();
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Finished loading " + currentEntry.getName());
+                    }
+                }
+                if (currentEntry.getName().endsWith(".todo")) {
+                    ProjectMemberTodoList pm =
+                        new ProjectMemberTodoList(currentEntry.getName(), project);
+                    pm.load(sub);
+                    project.addMember(pm);
+                }
+            }
+            zis.close();
+
+    } catch (SAXException e) {
+        throw new OpenException(e);
+    } catch (ParserConfigurationException e) {
+        throw new OpenException(e);
+    } catch (IOException e) {
+            ArgoParser.SINGLETON.setLastLoadStatus(false);
+            ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
+            LOG.error("Failure in Project.loadProjectMembers()", e);
+            throw new OpenException(e);
+        }
+    }
+    
+    /**
+     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.
+     * 
+     * If there is a problem with the xmi file, an error is set in the
+     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
+     * examined by the calling function.
+     *
+     * @param theUrl The url with the .zargo file
+     * @return The model loaded
+     * @throws IOException Thrown if the model or the .zargo file is corrupted.
+     * @throws SAXException If the parser template is syntactically incorrect. 
+     * @throws ParserConfigurationException If the initialization of 
+     *         the parser fails.
+     */
+    protected Object loadModel(Project project, URL theUrl)
+            throws IOException, SAXException, ParserConfigurationException {
+        if (LOG.isInfoEnabled()) {
+            LOG.info("Loading Model from " + theUrl);
+        }
+        ZipInputStream zis = openZipStreamAt(theUrl, ".xmi");
+        InputSource source = new InputSource(zis);
+        return loadModel(project, source);
+    }
+
+    /**
+     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
+     * method has a side effect. It sets _UUIDREFS to the model.
+     * 
+     * If there is a problem with the xmi file, an error is set in the
+     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
+     * examined by the calling function.
+     *
+     * @param theUrl The url with the .zargo file
+     * @return The model loaded
+     * @throws IOException Thrown if the model or the .zargo file is corrupted.
+     * @throws SAXException If the parser template is syntactically incorrect. 
+     * @throws ParserConfigurationException If the initialization of 
+     *         the parser fails.
+     */
+    protected Object loadModel(Project project, InputSource source)
+            throws IOException, SAXException, ParserConfigurationException {
+        // 2002-07-18
+        // Jaap Branderhorst
+        // changed the loading of the projectfiles to solve hanging 
+        // of argouml if a project is corrupted. Issue 913
+        // Created xmireader with method getErrors to check if parsing went well
+        XMIReader xmiReader = null;
+        try {
+            xmiReader = new XMIReader();
+        } catch (SAXException se) { // duh, this must be caught and handled
+            LOG.error("SAXException caught", se);
+            throw se;
+        } catch (ParserConfigurationException pc) { 
+            // duh, this must be caught and handled
+            LOG.error("ParserConfigurationException caught", pc);
+            throw pc;
+        }
+        Object mmodel = null;
+
+        source.setEncoding("UTF-8");
+        mmodel = xmiReader.parseToModel(source);        
+        if (xmiReader.getErrors()) {
+            ArgoParser.SINGLETON.setLastLoadStatus(false);
+            ArgoParser.SINGLETON.setLastLoadMessage(
+                    "XMI file could not be parsed.");
+            LOG.error("XMI file could not be parsed.");
+            throw new SAXException(
+                    "XMI file could not be parsed.");
+        }
+
+        // This should probably be inside xmiReader.parse
+        // but there is another place in this source
+        // where XMIReader is used, but it appears to be
+        // the NSUML XMIReader.  When Argo XMIReader is used
+        // consistently, it can be responsible for loading
+        // the listener.  Until then, do it here.
+        UmlHelper.getHelper().addListenersToModel(mmodel);
+
+        project.addMember(mmodel);
+
+        project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
+        return mmodel;
     }
 }

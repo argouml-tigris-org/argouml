@@ -31,7 +31,11 @@ import java.net.URL;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
+import org.argouml.uml.ProjectMemberModel;
+import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
 import org.xml.sax.SAXException;
@@ -182,61 +186,60 @@ public class ArgoParser extends SAXParserBase {
     /**
      * @see org.argouml.xml.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
      */
-    public void handleStartElement(XMLElement e) {
-        if (dbg)
+    public void handleStartElement(XMLElement e) throws SAXException {
+        if (dbg) {
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
-        try {
-            switch (tokens.toToken(e.getName(), true)) {
-            case ArgoTokenTable.TOKEN_ARGO:
-                handleArgo(e);
-                break;
-            case ArgoTokenTable.TOKEN_DOCUMENTATION:
-                handleDocumentation(e);
-                break;
-            default:
-                if (dbg)
-                    LOG.warn("WARNING: unknown tag:" + e.getName());
-                break;
+        }
+        switch (tokens.toToken(e.getName(), true)) {
+        case ArgoTokenTable.TOKEN_ARGO:
+            handleArgo(e);
+            break;
+        case ArgoTokenTable.TOKEN_DOCUMENTATION:
+            handleDocumentation(e);
+            break;
+        default:
+            if (dbg) {
+                LOG.warn("WARNING: unknown tag:" + e.getName());
             }
-        } catch (Exception ex) {
-            LOG.error(ex);
+            break;
         }
     }
 
     /**
      * @see org.argouml.xml.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
      */
-    public void handleEndElement(XMLElement e) {
-        if (dbg)
+    public void handleEndElement(XMLElement e) throws SAXException {
+        if (dbg) {
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
-        try {
-            switch (tokens.toToken(e.getName(), false)) {
-            case ArgoTokenTable.TOKEN_AUTHORNAME:
-                handleAuthorname(e);
-                break;
-            case ArgoTokenTable.TOKEN_VERSION:
-                handleVersion(e);
-                break;
-            case ArgoTokenTable.TOKEN_DESCRIPTION:
-                handleDescription(e);
-                break;
-            case ArgoTokenTable.TOKEN_SEARCHPATH:
-                handleSearchpath(e);
-                break;
-            case ArgoTokenTable.TOKEN_MEMBER:
-                handleMember(e);
-                break;
-            case ArgoTokenTable.TOKEN_HISTORYFILE:
-                handleHistoryfile(e);
-                break;
-            default:
-                if (dbg)
-                    LOG.warn("WARNING: unknown end tag:" + e.getName());
-                break;
-            }
-        } catch (Exception ex) {
-            ex.printStackTrace();
         }
+        switch (tokens.toToken(e.getName(), false)) {
+        case ArgoTokenTable.TOKEN_AUTHORNAME:
+            handleAuthorname(e);
+            break;
+        case ArgoTokenTable.TOKEN_VERSION:
+            handleVersion(e);
+            break;
+        case ArgoTokenTable.TOKEN_DESCRIPTION:
+            handleDescription(e);
+            break;
+        case ArgoTokenTable.TOKEN_SEARCHPATH:
+            handleSearchpath(e);
+            break;
+        case ArgoTokenTable.TOKEN_MEMBER:
+            handleMember(e);
+            break;
+        case ArgoTokenTable.TOKEN_HISTORYFILE:
+            handleHistoryfile(e);
+            break;
+        default:
+            if (dbg) {
+                LOG.warn("WARNING: unknown end tag:" + e.getName());
+            }
+        }
+    }
+    
+    protected boolean isElementOfInterest(String name) {
+        return tokens.contains(name);
     }
 
     /**
@@ -292,10 +295,42 @@ public class ArgoParser extends SAXParserBase {
         if (addMembers) {
             String name = e.getAttribute("name").trim();
             String type = e.getAttribute("type").trim();
-            proj.addMember(name, type);
+            createProjectMember(name, type);
         }
     }
 
+    /**
+     * Add a member to this project.
+     * 
+     * @param name The name of the member.
+     * @param type The type of the member. 
+     *         One of <tt>"pgml"</tt>, <tt>"xmi"</tt> or <tt>"todo"</tt>.
+     */
+    private void createProjectMember(String name, String type) {
+        
+        URL memberURL = proj.findMemberURLInSearchPath(name);
+        if (memberURL == null) {
+            LOG.debug("null memberURL");
+            return;
+        } else {
+            LOG.debug("memberURL = " + memberURL);
+        }
+        ProjectMember pm = proj.findMemberByName(name);
+        if (pm != null) {
+            return;
+        }
+        if ("pgml".equals(type)) {
+            pm = new ProjectMemberDiagram(name, proj);
+        } else if ("xmi".equals(type)) {
+            pm = new ProjectMemberModel(name, proj);
+        } else if ("todo".equals(type)) {
+            pm = new ProjectMemberTodoList(name, proj);
+        } else {
+            throw new IllegalArgumentException("Unknown member type " + type);
+        }
+        proj.addMember(pm);
+    }
+    
     /**
      * @param e the element
      */

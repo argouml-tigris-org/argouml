@@ -251,146 +251,6 @@ public class Project implements java.io.Serializable, TargetListener {
     }
     
     /**
-     * Loads a model (XMI only) from a .zargo file. BE ADVISED this
-     * method has a side effect. It sets _UUIDREFS to the model.
-     * 
-     * If there is a problem with the xmi file, an error is set in the
-     * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
-     * examined by the calling function.
-     *
-     * @param theUrl The url with the .zargo file
-     * @return MModel The model loaded
-     * @throws IOException Thrown if the model or the .zargo file is corrupted.
-     * @throws SAXException If the parser template is syntactically incorrect. 
-     * @throws ParserConfigurationException If the initialization of 
-     *         the parser fails.
-     */
-    protected Object loadModelFromXMI(URL theUrl)
-        throws IOException, SAXException, ParserConfigurationException {
-        ZipInputStream zis = new ZipInputStream(theUrl.openStream());
-
-        String name = zis.getNextEntry().getName();
-        while (!name.endsWith(".xmi")) {
-            name = zis.getNextEntry().getName();
-        }
-        
-        if (LOG.isInfoEnabled()) {
-            LOG.info("Loading Model from " + theUrl);
-        }
-        // 2002-07-18
-        // Jaap Branderhorst
-        // changed the loading of the projectfiles to solve hanging 
-        // of argouml if a project is corrupted. Issue 913
-        // Created xmireader with method getErrors to check if parsing went well
-        XMIReader xmiReader = null;
-        try {
-            xmiReader = new XMIReader();
-        } catch (SAXException se) { // duh, this must be caught and handled
-            LOG.error("SAXException caught", se);
-            throw se;
-        } catch (ParserConfigurationException pc) { 
-	        // duh, this must be caught and handled
-            LOG.error("ParserConfigurationException caught", pc);
-            throw pc;
-        }
-        Object mmodel = null;
-
-        InputSource source = new InputSource(zis);
-        source.setEncoding("UTF-8");
-        mmodel = xmiReader.parseToModel(source);        
-        if (xmiReader.getErrors()) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage("XMI file " + theUrl
-						    + " could not be parsed.");
-            LOG.error("XMI file " + theUrl + " could not be parsed.");
-            throw new SAXException(
-                    "XMI file " + theUrl + " could not be parsed.");
-        }
-
-        // This should probably be inside xmiReader.parse
-        // but there is another place in this source
-        // where XMIReader is used, but it appears to be
-        // the NSUML XMIReader.  When Argo XMIReader is used
-        // consistently, it can be responsible for loading
-        // the listener.  Until then, do it here.
-        UmlHelper.getHelper().addListenersToModel(mmodel);
-
-        addMember(mmodel);
-
-        uuidRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
-        return mmodel;
-    }
-
-    /**
-     * Loads all the members from a zipped input stream.
-     *
-     * @param theUrl The URL to the input stream.
-     * @throws IOException if there is something wrong with the zipped archive
-     *                     or with the model.
-     * @throws ParserConfigurationException if the parser is misconfigured.
-     * @throws SAXException if the input is not correctly formatted XML.
-     */
-    protected void loadZippedProjectMembers(URL theUrl)
-        throws IOException, ParserConfigurationException, SAXException {
-
-        loadModelFromXMI(theUrl); // throws a IOException if things go wrong
-        // user interface has to handle that one
-        try {
-
-            // now close again, reopen and read the Diagrams.
-
-            PGMLParser.getSingleton().setOwnerRegistry(uuidRefs);
-
-            //zis.close();
-            ZipInputStream zis = new ZipInputStream(theUrl.openStream());
-            SubInputStream sub = new SubInputStream(zis);
-
-            ZipEntry currentEntry = null;
-            while ((currentEntry = sub.getNextEntry()) != null) {
-                if (currentEntry.getName().endsWith(".pgml")) {
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Now going to load "
-                                 + currentEntry.getName()
-                                 + " from ZipInputStream");
-                    }
-
-                    // "false" means the stream shall not be closed,
-                    // but it doesn't seem to matter...
-                    ArgoDiagram d =
-                        (ArgoDiagram) PGMLParser.getSingleton().readDiagram(
-								      sub,
-								      false);
-                    if (d != null) {                  
-                        addMember(d);
-                    }
-                    else {
-                        LOG.error("An error occurred while loading " 
-                            + currentEntry.getName());
-                    }
-                    // sub.closeEntry();
-                    if (LOG.isInfoEnabled()) {
-                        LOG.info("Finished loading " + currentEntry.getName());
-                    }
-                }
-                if (currentEntry.getName().endsWith(".todo")) {
-                    ProjectMemberTodoList pm =
-                        new ProjectMemberTodoList(currentEntry.getName(), this);
-                    pm.load(sub);
-                    addMember(pm);
-                }
-            }
-            zis.close();
-
-	} catch (IOException e) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
-            LOG.error("Something went wrong in " 
-		              + "Project.loadZippedProjectMembers()", e);
-            throw e;
-        }
-    }
-
-    /**
      * Find the base name of this project.<p>
      * 
      * Previous javadoc comment that Linus don't understand:
@@ -530,33 +390,6 @@ public class Project implements java.io.Serializable, TargetListener {
         return members;
     }
 
-    /**
-     * Add a member to this project.
-     * 
-     * @param name The name of the member.
-     * @param type The type of the member. 
-     * 		   One of <tt>"pgml"</tt> or <tt>"xmi"</tt>.
-     */
-    public void addMember(String name, String type) {
-        
-        URL memberURL = findMemberURLInSearchPath(name);
-        if (memberURL == null) {
-            LOG.debug("null memberURL");
-            return;
-        } else
-            LOG.debug("memberURL = " + memberURL);
-        ProjectMember pm = findMemberByName(name);
-        if (pm != null)
-            return;
-        if ("pgml".equals(type))
-            pm = new ProjectMemberDiagram(name, this);
-        else if ("xmi".equals(type))
-            pm = new ProjectMemberModel(name, this);
-        else
-            throw new RuntimeException("Unknown member type " + type);
-        members.addElement(pm);
-    }
-
     public void addMember(ArgoDiagram d) {
         ProjectMember pm = new ProjectMemberDiagram(d, this);
         addDiagram(d);
@@ -581,8 +414,8 @@ public class Project implements java.io.Serializable, TargetListener {
     public void addMember(Object m) {
         
         if (!ModelFacade.isAModel(m)) {
-            throw new IllegalArgumentException();
-	}
+            throw new IllegalArgumentException("The member must be a UML model. It is " + m.getClass().getName());
+        }
         
         Iterator iter = members.iterator();
         Object currentMember = null;

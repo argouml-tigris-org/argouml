@@ -233,7 +233,6 @@ public class ActionOpenProject
 					 }));
         } catch (OpenException ex) {
             LOG.error("Exception while loading project", ex);
-            ex.printStackTrace();
             showErrorPane(
 			  "Could not load the project "
 			  + url.toString()

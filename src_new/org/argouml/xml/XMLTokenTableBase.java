@@ -98,7 +98,7 @@ public abstract class XMLTokenTableBase {
      * @param i the token number
      */
     protected void addToken(String s, Integer i) {
-	boolean error = false;
+        boolean error = false;
 	if (dbg) {
 	    if (tokens.contains(i) || tokens.containsKey(s)) {
 		LOG.error("ERROR: token table already contains " + s);
@@ -107,8 +107,12 @@ public abstract class XMLTokenTableBase {
 	}
 	tokens.put(s, i);
 	if (dbg && !error) {
-	    LOG.debug("NOTE: added '" + s + "' to token table");
-	}
+            LOG.debug("NOTE: added '" + s + "' to token table");
+        }
+    }
+    
+    public boolean contains(String token) {
+        return tokens.containsKey(token);
     }
 
     /**
