@@ -58,6 +58,7 @@ public class Modeller
 
     /** The package which the currentClassifier belongs to. */
     private Object currentPackage;
+    private String currentPackageName;
 
     /** Keeps the data that varies during parsing. */
     private ParseState parseState;
@@ -111,21 +112,22 @@ public class Modeller
 	// since I need diagrams for all the packages.
 	String ownerPackageName, currentName = name;
 	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
-	    if(getDiagram() != null) getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
-	    if(getDiagram() != null) getDiagram().addPackage(getPackage(currentName));
+	    if(getDiagram() != null && getDiagram().isDiagramInProject(ownerPackageName)) {
+                getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
+                getDiagram().addPackage(getPackage(currentName));
+            }
 	    currentName = ownerPackageName;
 	}
 
 	// Find or create a MPackage NSUML object for this package.
 	Object mPackage = getPackage(name);
+        currentPackageName = name;
 
 	// Set the current package for the following source code.
 	currentPackage = mPackage;
 	parseState.addPackageContext(mPackage);
 
-	// Select the class diagram for the current package,
-	// so all succeeding objects are added to it.
-	if(getDiagram() != null) getDiagram().selectClassDiagram(mPackage, name);
+        // Delay diagram creation until any classifier (class or interface) will be found
     }
 
     /**
@@ -348,6 +350,10 @@ public class Modeller
     */
     public void popClassifier()
     {
+        // now create diagram if it doesn't exists in project
+	if (getDiagram() != null) {
+           getDiagram().selectClassDiagram(currentPackage, currentPackageName);
+        }
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if(ModelFacade.isAInterface(classifier)) {
