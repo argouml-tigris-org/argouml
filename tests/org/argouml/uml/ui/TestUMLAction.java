@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,7 +23,8 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import junit.framework.*;
+
+import junit.framework.TestCase;
 
 /**
  * Test the UMLAction class.
@@ -41,7 +42,7 @@ public class TestUMLAction extends TestCase {
 
     /**
      * The constructor.
-     * 
+     *
      * @param name the test name
      */
     public TestUMLAction(String name) {
@@ -49,8 +50,7 @@ public class TestUMLAction extends TestCase {
     }
 
     /**
-     * Testing all three constructors.
-     * 
+     * Testing constructor.
      */
     public void testCreate1() {
 	UMLAction to = new UMLAction(new String("hejsan"), true);
@@ -58,26 +58,24 @@ public class TestUMLAction extends TestCase {
     }
 
     /**
-     * Testing all three constructors.
-     * 
+     * Testing constructor.
      */
     public void testCreate2() {
 	UMLAction to = new UMLAction(new String("hejsan"), true);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
-    
+
     /**
-     * Testing all three constructors.
-     * 
+     * Testing constructor.
      */
     public void testCreate3() {
 	UMLAction to = new UMLAction(new String("hejsan"), UMLAction.NO_ICON);
 	assertTrue("Disabled", to.shouldBeEnabled());
     }
-	
 
-    /** Function never actually called. Provided in order to make
-     *  sure that the static interface has not changed.
+    /**
+     * Function never actually called. Provided in order to make
+     * sure that the static interface has not changed.
      */
     private void compileTestStatics() {
 	boolean t1 = UMLAction.HAS_ICON;
@@ -85,12 +83,16 @@ public class TestUMLAction extends TestCase {
 	UMLAction.getMnemonic(new String());
     }
 
+    /**
+     * Test constructors.
+     */
     private void compileTestConstructors() {
-	new UMLAction(new String(), true);
-	new UMLAction(new String(), true);
 	new UMLAction(new String(), true);
     }
 
+    /**
+     * Test methods.
+     */
     private void compileTestMethods() {
 	UMLAction to = new UMLAction(new String(), true);
 
@@ -101,4 +103,3 @@ public class TestUMLAction extends TestCase {
 	to.shouldBeEnabled();
     }
 }
- 
