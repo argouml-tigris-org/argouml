@@ -34,7 +34,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
@@ -45,13 +44,13 @@ import ru.novosoft.uml.model_management.MModel;
 /**
  * This test case is initially very much a copy of the applicable parts
  * of the TestUmlModelEventPump test case.
- * 
- * TODO: For the proof of concept purpose it would be valuable if this 
+ *
+ * TODO: For the proof of concept purpose it would be valuable if this
  * test case could be rewritten without importing any of the ru.novosoft
  * things.
- * 
+ *
  * TODO: We have not documented exactly what events arrive and when.
- * 
+ *
  * @author Linus Tolke
  */
 public class TestModelEventPump extends TestCase {
@@ -67,13 +66,13 @@ public class TestModelEventPump extends TestCase {
          * @see PropertyChangeListener#propertyChange(PropertyChangeEvent)
          */
         public void propertyChange(PropertyChangeEvent e) {
-            // TODO: This log entry tells us what events actually arrive 
-            // to the listener. I (Linus) suggest we let it in there until 
+            // TODO: This log entry tells us what events actually arrive
+            // to the listener. I (Linus) suggest we let it in there until
             // all event types and contents are fully documented.
             System.out.println("Received event " + e.getSource()
-                    	       + "[" + e.getSource().getClass() + "], " 
-                    	       + e.getPropertyName() + ", " 
-                    	       + e.getOldValue() + ", " 
+                    	       + "[" + e.getSource().getClass() + "], "
+                    	       + e.getPropertyName() + ", "
+                    	       + e.getOldValue() + ", "
                     	       + e.getNewValue());
             eventcalled = true;
         }
@@ -133,7 +132,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "isRoot" 
+						       "isRoot",
         					   });
         elem.setRoot(true);
         assertTrue(eventcalled);
@@ -147,7 +146,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "remove" 
+						       "remove",
         					   });
         elem.remove();
         assertTrue(eventcalled);
@@ -161,7 +160,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "parameter" 
+						       "parameter",
         					   });
         elem.addParameter(new MParameterImpl());
         assertTrue(eventcalled);
@@ -177,14 +176,14 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "parameter" 
+						       "parameter",
         					   });
         elem.removeParameter(param);
         assertTrue(eventcalled);
     }
 
     /**
-     * Tests if a non registred listener does not receive any events. 
+     * Tests if a non registred listener does not receive any events.
      */
     public void testFireNonRegistredListener() {
         CoreFactory.getFactory().createClass();
@@ -201,7 +200,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "feature" 
+                				  "feature",
         				      });
         elem.setFeature(0, new MOperationImpl());
         assertTrue(eventcalled);
@@ -215,7 +214,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "isRoot" 
+                				  "isRoot",
         				      });
         elem.setRoot(true);
         assertTrue(eventcalled);
@@ -229,7 +228,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-				       		  UmlModelEventPump.REMOVE 
+				       		  "remove",
 				   	      });
         elem.remove();
         assertTrue(eventcalled);
@@ -243,7 +242,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "parameter" 
+                				  "parameter",
         				      });
         elem.addParameter(new MParameterImpl());
         assertTrue(eventcalled);
@@ -259,7 +258,7 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
-                				  "parameter" 
+                				  "parameter",
         				      });
         elem.removeParameter(param);
         assertTrue(eventcalled);
@@ -273,12 +272,12 @@ public class TestModelEventPump extends TestCase {
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
-						       "isRoot" 
+						       "isRoot",
         					   });
         Model.getPump().removeClassModelEventListener(listener,
                 				      elem.getClass(),
                 				      new String[] {
-					       		  "isRoot"
+					       		  "isRoot",
         					      });
         elem.addParameter(new MParameterImpl());
         assertTrue(!eventcalled);
@@ -290,8 +289,8 @@ public class TestModelEventPump extends TestCase {
      */
     public void testRemoveLegalListener() {
         String[] map = new String[] {
-            "isRoot" 
-        }; 
+            "isRoot",
+        };
         Model.getPump().addModelEventListener(listener, elem, map);
         Model.getPump().removeModelEventListener(listener, elem, map);
         elem.addParameter(new MParameterImpl());
