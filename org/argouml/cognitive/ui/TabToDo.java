@@ -65,12 +65,7 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    //JButton _newButton = new JButton("New");
-    //JButton _resolveButton = new JButton("Resolve");
-    //JButton _fixItButton = new JButton("FixIt");  //html
-    //JButton _emailExpertButton = new JButton("Email Expert"); //html
-    //JButton _snoozeButton = new JButton("Snooze");
-    //JTextArea _description = new JTextArea();
+
     private WizDescription description = new WizDescription();
     private JPanel lastPanel = null;
     private BorderSplitPane splitPane;
@@ -158,8 +153,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     /**
      * Sets the target of the TabToDo
      * @deprecated As of ArgoUml version 0.13.5,
-     *             the visibility of this method will change in the future,
-     *             replaced by
+     *             the visibility of this method will change to private 
+     *             in the future, replaced by
      *             {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param item the new target
      */
