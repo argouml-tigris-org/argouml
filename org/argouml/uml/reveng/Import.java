@@ -32,6 +32,7 @@ import org.tigris.gef.base.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.util.*;
 import java.lang.*;
 
@@ -44,11 +45,14 @@ import org.apache.log4j.Category;
 /**
  * This is the main class for all import classes.
  *
- * Supports recursive search in folder for all .java classes.
+ * <p>It provides JPanels for tailoring the import run in the FileChooser.
  *
- * $Revision$
- * $Date$
-
+ * <p>The Import run is started by calling doFile(Project, File)
+ *
+ * <p>Supports recursive search in folder for all .java classes.
+ *
+ * <p>$Revision$
+ * <p>$Date$
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
  */
@@ -101,7 +105,10 @@ public class Import {
 
 
     /**
-     * The method that for all parsing actions. It calls the
+     *  <p> This method is called by ActionImportFromSources to
+     * start the import run.
+     *
+     * <p>The method that for all parsing actions. It calls the
      * actual parser methods depending on the type of the
      * file.
      *
@@ -111,7 +118,9 @@ public class Import {
     public static void doFile(Project p, File f) {
 	Vector files = listDirectoryRecursively(f);
 
-	ImportStatusScreen iss = new ImportStatusScreen("Importing",
+	ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+        
+        ImportStatusScreen iss = new ImportStatusScreen("Importing",
 							"Splash");
 
 	SwingUtilities.invokeLater(new ImportRun(iss, p, _diagram, files));
@@ -120,8 +129,10 @@ public class Import {
     }
 
     /**
-     * This method does all the actual importing. Normally it runs in another
-     * thread.
+     * <p>This method is no longer used.
+     *
+     * <p>old notes [This method does all the actual importing. Normally it runs in another
+     * thread.]
      *
      * @param iss is the status screen that is called for updates.
      * @param p is the project
@@ -207,9 +218,10 @@ public class Import {
     }
 
     /**
-     * This method returns a Vector with files to import.
+     * <p>This method returns a Vector with files to import.
      *
-     * The result depends on the descend settings.
+     * <p>Processing each file in turn is equivalent to a breadth first
+     * search through the directory structure.
      *
      * @param f The directory or a file.
      */
@@ -268,7 +280,7 @@ public class Import {
 
 
     /**
-     * Parse 1 file.
+     * <p>Parse 1 Java file, using JavaImport.
      *
      * @param f The file to parse.
      * @exception Parser exception.
@@ -282,7 +294,7 @@ public class Import {
     }
 
     /**
-     * Tells if the file is parseable or not.
+     * Tells if the file is (Java) parseable or not.
      * Must match with files that are actually parseable.
      *
      * @see #parseFile
@@ -312,7 +324,13 @@ public class Import {
     }
 }
 
-
+/**
+ * This class parses each file in turn and allows the GUI to refresh
+ * itself by performing the run() once for each file.
+ *
+ * <p> this class also listens for a "Stop" message from the ImportStatusScreen,
+ * in order to cancel long import runs.
+ */
 class ImportRun implements Runnable {
     ImportStatusScreen _iss;
     Project _project;
@@ -322,6 +340,7 @@ class ImportRun implements Runnable {
     int _countFilesThisPass;
     Vector _nextPassFiles;
     SimpleTimer _st;
+    boolean cancelled;
 
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.ImportRun.class);
@@ -329,6 +348,12 @@ class ImportRun implements Runnable {
     public ImportRun(ImportStatusScreen iss, Project p, DiagramInterface d,
 		     Vector f) {
 	_iss = iss;
+        
+        _iss.addCancelButtonListener(new ActionListener(){
+            public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
+                cancel();
+            }});
+        
 	_project = p;
 	_diagram = d;
 	_filesLeft = f;
@@ -337,8 +362,15 @@ class ImportRun implements Runnable {
 	_nextPassFiles = new Vector();
 	_st = new SimpleTimer("ImportRun");
 	_st.mark("start");
+        cancelled=false;
     }
 
+    /**
+     * called once for each file to be parsed.
+     *
+     * <p>to refresh the GUI it calls itself again using the SwingUtilities.invokeLater(...)
+     * method.
+     */
     public void run() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 
@@ -374,8 +406,9 @@ class ImportRun implements Runnable {
                 e1.printStackTrace();
 	    }
 
-	    SwingUtilities.invokeLater(this);
-	    return;
+            if(!isCancelled()){
+                SwingUtilities.invokeLater(this);
+	    return;}
 	}
 
 	if (_nextPassFiles.size() > 0
@@ -414,28 +447,43 @@ class ImportRun implements Runnable {
 	}
 
 	_iss.done();
+        ProjectBrowser.TheInstance.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
 
 	Argo.log.info(_st);
 	pb.getStatusBar().showProgress(0);
     }
+    
+    private void cancel(){cancelled=true;}
+    
+    private boolean isCancelled(){return cancelled;}
 }
 
+/**
+ * The statusbar showing the progress of the Import run.
+ */
 class ImportStatusBar extends StatusBar {
     public void setMaximum(int i) { _progress.setMaximum(i); }
     public void setValue(int i) { _progress.setValue(i); }
 }
 
+/**
+ * A window that shows the progress bar and a cancel button.
+ */
 class ImportStatusScreen extends JDialog {
     protected ImportStatusBar _statusBar = new ImportStatusBar();
+    
+    private JButton cancelButton;
 
     public ImportStatusScreen(String title, String iconName) {
 	super();
 	if (title != null) setTitle(title);
 	Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
-	setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 	getContentPane().setLayout(new BorderLayout(0, 0));
-	getContentPane().add(_statusBar, BorderLayout.SOUTH);
-	Dimension contentPaneSize = getContentPane().getPreferredSize();
+        
+        getContentPane().add(_statusBar, BorderLayout.NORTH);
+	getContentPane().add(cancelButton = new JButton("Stop"), BorderLayout.SOUTH);
+        
+        Dimension contentPaneSize = getContentPane().getPreferredSize();
 	setSize(contentPaneSize.width, contentPaneSize.height);
 	setLocation(scrSize.width/2 - contentPaneSize.width/2,
 		    scrSize.height/2 - contentPaneSize.height/2);
@@ -446,6 +494,10 @@ class ImportStatusScreen extends JDialog {
     public void setValue(int i) {
 	_statusBar.setValue(i);
 	repaint();
+    }
+    
+    public void addCancelButtonListener(ActionListener al){
+        cancelButton.addActionListener(al);
     }
 
     public void done() { hide(); dispose(); }
