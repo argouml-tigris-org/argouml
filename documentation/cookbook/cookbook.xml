@@ -129,8 +129,31 @@ How to convince your project to use ArgoUML as a modelling tool.
     </sect1>
   </chapter>
 
-     <chapter id="Preliminaries">
-     <title>Preliminaries</title>
+     <chapter id="buildingandtools">
+     <title>Building and Tools</title>
+    <para>
+If you are in a hurry:
+<programlisting>
+C:\Work>set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
+C:\Work>cvs login   (use guest as password)
+C:\Work>cvs checkout argouml/lib argouml/src_new
+C:\Work>set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
+C:\Work>set ANT_HOME=C:\Work\argouml
+C:\Work>cd argouml\src_new
+C:\Work\argouml\src_new>build run
+</programlisting>
+A window from the newly compiled ArgoUML opens after a while!
+</para>
+    <para>
+That was the compact version.
+(Note: jdk cannot be installed in a directory that contains space in its 
+name.)
+</para>
+    <para>
+If you don't understand this or it doesn't work read the rest of 
+the chapter that describes all the nitty details about why and
+how.
+</para>
      <sect1 id="starting">
      <title>Getting started</title>
      <para>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</para>
@@ -324,6 +347,14 @@ or want to compile and run again.
 </para>
 	    </listitem>
 	  </orderedlist>
+	</sect3>
+	<sect3>
+	  <title>Building javadoc</title>
+	  <para>
+By running ant again using <command>build prepare-docs</command>
+the javadoc documentation is generated and put into
+<filename class="directory">argouml/build/doc</filename>.
+</para>
 	</sect3>
       </sect2>
       <sect2>
