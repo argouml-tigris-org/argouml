@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml.behavioralelements.activitygraphs;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 
@@ -36,6 +37,7 @@ import ru.novosoft.uml.behavior.activity_graphs.MPartition;
 import ru.novosoft.uml.behavior.activity_graphs.MSubactivityState;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MSimpleState;
+import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -150,9 +152,9 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      * Builds an activity graph owned by the given context.<p>
      *
      * @param theContext is a ModelElement that will own the graph.
-     * @return the new MActivityGraph
+     * @return the new MActivityGraph as Object
      */
-    public MActivityGraph buildActivityGraph(Object theContext) {
+    public Object buildActivityGraph(Object theContext) {
         MModelElement context = (MModelElement) theContext;
     	if (context != null
 	    && (context instanceof MBehavioralFeature
@@ -182,9 +184,9 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
      *
      * @author MVW
      * @param compositeState the given compositestate
-     * @return MObjectFlowState the newly build objectflow state 
+     * @return Object the newly build objectflow state 
      */
-    public MObjectFlowState buildObjectFlowState(Object compositeState) {
+    public Object buildObjectFlowState(Object compositeState) {
         if (compositeState instanceof MCompositeState) {
             MObjectFlowState state = createObjectFlowState();           
             state.setContainer((MCompositeState) compositeState);
@@ -193,6 +195,23 @@ public class ActivityGraphsFactory extends AbstractUmlModelFactory {
         return null;
     }
 
+    /**
+     * Builds a ClassifierInState. Links it to the 2 required objects: 
+     * the classifier that forms the type of this classifierInState, 
+     * and the state.
+     * @param classifier the classifier (type)
+     * @param state the state (inState)
+     * @return the newly build classifierInState
+     */
+    public Object buildClassifierInState(Object classifier, Object state) {
+        if (classifier instanceof MClassifier && state instanceof MState) {
+            MClassifierInState c = createClassifierInState();
+            ModelFacade.setType(c, classifier);
+            ModelFacade.addInState(c, state);
+        }
+        return null;
+    }
+    
     
     /**
      * @param elem the ActionState to be deleted
