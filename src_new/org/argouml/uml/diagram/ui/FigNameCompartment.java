@@ -32,4 +32,11 @@ public class FigNameCompartment extends FigCompartment {
     public String getName() {
         return name.getText();
     }
+    
+    public Object clone() {
+        FigNameCompartment clone = (FigNameCompartment)super.clone();
+        clone.stereotype = (FigStereotype)clone.getFigAt(0);
+        clone.name = (FigName)clone.getFigAt(1);
+        return clone;
+    }
 }
