@@ -86,7 +86,8 @@ created.
 Downlighting is context dependend, since these functions work on the selected modelelement.
         </para></listitem>
         <listitem><para>
-The <emphasis>Arrange</emphasis> menu is only for layout changes in a diagram, which is not the same as the items in the View menu. 
+The <emphasis>Arrange</emphasis> menu allows layout changes in the current 
+diagram, which is not the same as the items in the View menu. 
 Functions here can not alter the UML model.
         </para></listitem>
         <listitem><para>
@@ -94,8 +95,8 @@ The <emphasis>Generation</emphasis> menu is for Code Generation.
 The functions here work either on the selected modelelements, or on the whole project.
         </para></listitem>
         <listitem><para>
-The <emphasis>Critique</emphasis> menu is specific for this function, 
-it contains settings for the project.
+The <emphasis>Critique</emphasis> menu is specific for settings related to critics, 
+which apply for all projects.
         </para></listitem>
         <listitem><para>
 The <emphasis>Tools</emphasis> menu currently contains the "Export as XMI" item. 
@@ -220,9 +221,10 @@ The <emphasis>Help</emphasis> menu contains the usual "information" and "about".
         a class diagram and a use case diagram.</para>
 
       <caution><para><literal>untitledModel</literal> is not a conventional
-        model name (most processes suggest models should start with an upper
-        case letter). &argouml; permits you to use a lower case letter, but
-<!-- TODO: The critic suggests to use lowercase only! 
+        model name (most processes suggest models should be build from lower
+        case letters). &argouml; permits you to use any case letters, but
+<!-- TODO: The original text said that the name should start with 
+an upper case letter. However, the critic suggests to use lowercase only! 
 So, who is right? - the critic, or the description here? -->
         a critic will trigger to warn that this is not conventional. See <xref
         linkend="s1.ref.model"/> for a discussion of this.</para></caution>

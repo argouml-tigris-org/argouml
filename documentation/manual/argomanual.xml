@@ -68,14 +68,14 @@
 <!ENTITY argoversion "@VERSION@">
 <!ENTITY notupdatedfor016disclaimer "<caution>
       <para>
-This chapter is not fully gone through and updated to fit the 0.16
+This chapter is not fully gone through and updated to fit the 0.18
 release of &argouml; but describes the version 0.14 instead.
 This means that some of the functions might not work exactly
 as described and icons and screen-shots does not look exactly like
-in the 0.16 version.
+in the 0.18 version.
 </para>
     </caution>">
-<!ENTITY minimumjavaversion "1.3">
+<!ENTITY minimumjavaversion "1.4">
 <!ENTITY constraintssupport "Standard tab.
 &argouml; only supports constraints on Classes and Features (Attributes,
 Operations, Receptions, and Methods),
