@@ -147,7 +147,7 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         { "CrOppEndConflict_head" ,
                 "Renombra los roles MAssociation" },
         { "CrOppEndConflict_desc" ,
-                "Two roles of <ocl>self</ocl> have the same name. Roles must have distinct names.  This may because of an inherited attribute. \n\nClear and unambiguous names are key to code generation and producing an understandable and maintainable design.\n\nPara arreglar esto, usa el bot\u00F3n \"Next>\", o selecciona manualmente the one of the conflicting roles at the far end of an association from this class and change its name." },
+                "Two roles of <ocl>self</ocl> have the same name. Roles must have distinct names.\n\nClear and unambiguous names are key to code generation and producing an understandable and maintainable design.\n\nPara arreglar esto, usa el bot\u00F3n \"Next>\", o selecciona manualmente the one of the conflicting roles at the far end of an association from this class and change its name." },
         { "CrParamTypeNotImported_head" ,
                 "Importa el tipo MParameter en la clase" },
         { "CrParamTypeNotImported_desc" ,
@@ -295,7 +295,7 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         { "CrWrongLinkEnds_head" ,
                 "LinkEnds have not the same locations" },
         { "CrWrongLinkEnds_desc" ,
-                " In deployment-diagrams objects can reside either on components\n or on component-instances. So it is not possible to have two objects\n connected with a Link, while one object resides on an component and\n an the other obejct on a component-instance.\n\n\n To fix this remove one object of the two connected objects from its location to an element that has the\n same type as the location of the other object" },
+                " In deployment-diagrams objects can reside either on components\n or on component-instances. So it is not possible to have two objects\n connected with a Link, while one object resides on an component and\n an the other object on a component-instance.\n\n\n To fix this remove one object of the two connected objects from its location to an element that has the\n same type as the location of the other object" },
         { "CrInstanceWithoutClassifier_head" ,
                 "Set classifier" },
         { "CrInstanceWithoutClassifier_desc" ,
@@ -319,7 +319,7 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         { "CrStimulusWithWrongPosition_head" ,
                 "Wrong position of these stimuli" },
         { "CrStimulusWithWrongPosition_desc" ,
-                "In sequence-diagrams the sender-side oh the communication-connections oh these\nstimuli are connected at the beginning of an activation. To be a sender an object must\nhave a focus-of-control first." },
+                "In sequence-diagrams the sender-side of the communication-connections of these\nstimuli are connected at the beginning of an activation. To be a sender an object must\nhave a focus-of-control first." },
         { "CrUnconventionalOperName_head" ,
                 "Choose a Better MOperation Name" },
         { "CrUnconventionalOperName_desc" ,
@@ -355,15 +355,15 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         { "CrConsiderSingleton_head" ,
                 "Considera el uso del patr\u00F3n Singelton" },
         { "CrConsiderSingleton_desc" ,
-                "Esta clase no tiene atributos ni asociaciones que sean navegables fuera de la instancias de esta clase.  Esto significa que cada instancia de esta clase sera igual a cualquier otra debido a que no habr\u00E1 variables de instancia para diferenciarlas. If this not your intent, you should define some attributes or associations that will represent differences bewteen instances. If there are no attributes or associations that differentiate instances, the you shoudld consider having exatly one instance of this class, as in the Singleton Pattern.\n\nDefining the multiplicity of instances is needed to complete the information representation part of your design.  Using the Singleton Pattern can save time and memory space.\n\nTo automatically apply the Singleton Pattern, pulsa el bot\u00F3n \"Next>\"; or manually (1) mark the class with the Singlton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
+                "Esta clase no tiene atributos ni asociaciones que sean navegables fuera de la instancias de esta clase.  Esto significa que cada instancia de esta clase sera igual a cualquier otra debido a que no habr\u00E1 variables de instancia para diferenciarlas. If this not your intent, you should define some attributes or associations that will represent differences bewteen instances. If there are no attributes or associations that differentiate instances, the you shoudld consider having exatly one instance of this class, as in the Singleton Pattern.\n\nDefining the multiplicity of instances is needed to complete the information representation part of your design.  Using the Singleton Pattern can save time and memory space.\n\nTo automatically apply the Singleton Pattern, pulsa el bot\u00F3n \"Next>\"; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrSingletonViolated_head" ,
                 "Singleton MStereotype Violated" },
         { "CrSingletonViolated_desc" ,
-                "This class is marked with the Singleton stereotype, but it does not satisfy the constraints imposed on singletons.  A singleton class can have at most one instance.  This means that the class must have (1) a static variable holding the instance, (2) only private constructors so that new instances cannot be made by other code, and (3) there must be at least one constructor to override the default constructor.\n\nWhenever you mark a class with a stereotype, the class should satisfy all constraints of the stereotype.  This is an important part of making a self-consistent and understangle design. Using the Singleton Pattern can save time and memory space.\n\nIf you no longer want this class to be a Singleton, remove the Singleton stereotype by clicking on the class and deleting Singleton from the Props tab. \nTo automatically apply the Singleton Pattern, pulsa el bot\u00F3n \"Next>\"; or manually (1) mark the class with the Singlton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
+                "This class is marked with the Singleton stereotype, but it does not satisfy the constraints imposed on singletons.  A singleton class can have at most one instance.  This means that the class must have (1) a static variable holding the instance, (2) only private constructors so that new instances cannot be made by other code, and (3) there must be at least one constructor to override the default constructor.\n\nWhenever you mark a class with a stereotype, the class should satisfy all constraints of the stereotype.  This is an important part of making a self-consistent and understangle design. Using the Singleton Pattern can save time and memory space.\n\nIf you no longer want this class to be a Singleton, remove the Singleton stereotype by clicking on the class and deleting Singleton from the Props tab. \nTo automatically apply the Singleton Pattern, pulsa el bot\u00F3n \"Next>\"; or manually (1) mark the class with the Singleton stereotype, (2) add a static variable that holds one instance of this class, (3) and make all constructors private.\n\nTo learn more about the Singleton Pattern, press the MoreInfo icon." },
         { "CrNodesOverlap_head" ,
                 "Clean Up Diagram" },
         { "CrNodesOverlap_desc" ,
-                "Some of the objects in this diagram overlap and obscure each other. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of class diagrams is an important part of your design. \n\nPara arreglar esto, move the highlighted nodes in the digragm." },
+                "Some of the objects in this diagram overlap and obscure each other. This may hide important information and make it difficult for humans to understand. A neat appearance may also make your diagrams more influencial on other designers, implementors, and decision makers.\n\nConstructing an understandable set of class diagrams is an important part of your design. \n\nPara arreglar esto, move the highlighted nodes in the diagram." },
         { "CrZeroLengthEdge_head" ,
                 "Make Edge More Visible" },
         { "CrZeroLengthEdge_desc" ,
@@ -385,7 +385,7 @@ public class UMLCognitiveResourceBundle_es extends ListResourceBundle {
         //
         //   The following blocks define the UML related
         //      Checklists.  The key is the name of
-        //      the non-deprecated implmenting class,
+        //      the non-deprecated implementing class,
         //      the value is an array of categories which
         //      are each an array of Strings.  The first
         //      string in each category is the name of the
