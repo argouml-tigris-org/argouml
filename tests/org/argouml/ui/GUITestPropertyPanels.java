@@ -42,7 +42,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JPanel;
-import javax.imageio.*;
+// only 1.4.x  import javax.imageio.*;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -201,15 +201,17 @@ public class GUITestPropertyPanels extends TestCase {
         
         // currently this is in this try block as it does not work
         // _propertyPanel always has size 0,0
-        try {
+        /*
+          try {
             saveImageAsJPEG((BufferedImage)createImageFromComponent(_propertyPane), 
                 1000000, "/Users/mkl/argoimg/"+this.getName() + ".jpg");
         }
         catch (Exception ex) {
            // System.out.println(ex);
         }
+         */
     }
-    
+    /*
     public static Image createImageFromComponent(Component comp) {
         BufferedImage image = new BufferedImage(comp.getWidth(),
         comp.getHeight(), BufferedImage.TYPE_INT_BGR);
@@ -233,7 +235,7 @@ public class GUITestPropertyPanels extends TestCase {
         catch (Exception e) {
             System.out.println(e); }
     }
-    
+    */
 }
 
 class ChildGenModelElements implements ChildGenerator {
