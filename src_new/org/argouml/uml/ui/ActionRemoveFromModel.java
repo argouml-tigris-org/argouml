@@ -94,7 +94,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         } catch (Exception e) {
         }
         if (size > 0) return true;
-        Object target = ProjectBrowser.getInstance().getTarget();                
+        Object target = TargetManager.getInstance().getTarget();                
         if (target instanceof Diagram) { // we cannot delete the last diagram
             return ProjectManager.getManager().getCurrentProject().getDiagrams().size() > 1;
         }
@@ -235,12 +235,15 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     }
     
     protected Object[] getTargets() {
+        /*
         Vector figs = null;
         try {
             Editor ce = Globals.curEditor();
             figs = ce.getSelectionManager().getFigs();
         } catch (Exception e) {
         }
-        return figs.size() > 0 ? figs.toArray() : new Object[] {ProjectBrowser.getInstance().getTarget()};        
+        return figs.size() > 0 ? figs.toArray() : new Object[] {TargetManager.getInstance().getTarget()};
+        */
+        return TargetManager.getInstance().getTargets().toArray();        
     }
 } /* end class ActionRemoveFromModel */

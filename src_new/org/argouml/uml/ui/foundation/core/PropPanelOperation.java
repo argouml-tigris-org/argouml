@@ -293,19 +293,7 @@ public class PropPanelOperation extends PropPanelModelElement {
            addRaisedSignal(new Integer(1));
         }
     }
-/*
-    public void navigateUp() {
-        
-        Object target = getTarget();
-        if(target instanceof MOperation) {
-            MOperation oper = (MOperation) target;
-            MClassifier owner = oper.getOwner();
-            if(owner != null) {
-                navigateTo(owner);
-            }
-        }
-    }
-*/
+
     /**
      *   Appropriate namespace is the namespace of our class,
      *      not the class itself

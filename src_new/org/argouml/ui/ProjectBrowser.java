@@ -452,7 +452,7 @@ public class ProjectBrowser
                 }
             }
             */
-            getNavigatorPane().getTree().setTarget(o);
+            // getNavigatorPane().getTree().setTarget(o);
             
             
         }
@@ -461,9 +461,13 @@ public class ProjectBrowser
         selectionTransactionEnded();
     }
 
-    /** return the current target in the editor pane */
+    /** 
+     * return the current target in the editor pane
+     * @deprecated use TargetManager.getInstance().getTarget() now 
+     */
+    
     public Object getTarget() {
-        return _target;
+        return TargetManager.getInstance().getTarget();
     }
 
     /**
