@@ -577,39 +577,7 @@ public class CoreHelper {
         }
         return list;
     }
-    /**
-     * Returns the realization (abstraction) between some class and some interface
-     *
-     * @param source
-     * @param clazz
-     * @return MAbstraction
-     */
-    public MAbstraction getRealization(MInterface source, MClassifier clazz) {
-        if (source == null || clazz == null)
-            return null;
-        Iterator it = clazz.getClientDependencies().iterator();
-        MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
-        MStereotype stereo =
-            ExtensionMechanismsFactory.getFactory().buildStereotype(
-                new MAbstractionImpl(),
-                "realize",
-                model);
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof MAbstraction
-                && ((MAbstraction)o).getStereotype().equals(stereo)) {
-                Iterator it2 = ((MAbstraction)o).getSuppliers().iterator();
-                while (it2.hasNext()) {
-                    Object o2 = it2.next();
-                    if (o2.equals(source)) {
-                        return (MAbstraction)o;
-                    }
-                }
-            }
-        }
-        return null;
-    }
+    
     /**
      * Returns all classes some generalizable element clazz extends.
      * @param clazz
