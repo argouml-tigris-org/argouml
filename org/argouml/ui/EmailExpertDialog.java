@@ -31,15 +31,39 @@ import javax.swing.event.*;
 
 import org.argouml.cognitive.*;
 
+/** The email expert dialog does not work and is in
+ * desperate need of some attention.
+ *
+ * Ideally, this would allow users to directly
+ * contact the developers responsible for a piece
+ * of code.
+ *
+ * Enabling this feature would go along way
+ * to developing a fully collaborative environment
+ * within argo.
+ */
 public class EmailExpertDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
+    /** This field sets the email of the recipient.
+     * As yet this doesn not work, nor can the
+     * user access a list of contributors to a
+     * particular argo project.
+     */    
   protected JTextField _to = new JTextField();
   protected JTextField _cc = new JTextField();
+  /** The subject line should be automatically
+   * generated based on the class or the
+   * diagram.
+   */  
   protected JTextField _subject = new JTextField();
   protected JTextArea  _body = new JTextArea();
+  /** Does not work.
+   */  
   protected JButton _sendButton = new JButton("Send");
+  /**
+   */  
   protected JButton _cancelButton = new JButton("Cancel");
   protected ToDoItem _target;
 
