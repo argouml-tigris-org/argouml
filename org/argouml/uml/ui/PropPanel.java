@@ -221,7 +221,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     public Profile getProfile() {
         if(_profile == null) {
-            _profile = new ProfileJava();
+            _profile = ProfileJava.getInstance();
         }
         return _profile;
     }
