@@ -30,6 +30,7 @@ import javax.jmi.reflect.RefBaseObject;
 
 import junit.framework.TestCase;
 
+import org.argouml.api.FacadeManager;
 import org.argouml.api.InvalidObjectRequestException;
 import org.argouml.api.ObjectFactoryManager;
 import org.argouml.api.model.uml.Uml;
@@ -135,4 +136,22 @@ public class NsumlObjectFactoryTest extends TestCase {
 
 
     }
+
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#setUp()
+	 */
+	protected void setUp() throws Exception {
+		super.setUp();
+		System.setProperty(FacadeManager.DIAGRAM_FACADE_PROPERTY,
+						   NsumlObjectFactory.class.getName());
+	}
+
+	/* (non-Javadoc)
+	 * @see junit.framework.TestCase#tearDown()
+	 */
+	protected void tearDown() throws Exception {
+		// TODO Auto-generated method stub
+		super.tearDown();
+	}
+
 }

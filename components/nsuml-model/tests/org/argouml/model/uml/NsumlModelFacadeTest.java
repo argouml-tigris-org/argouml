@@ -54,6 +54,8 @@ public class NsumlModelFacadeTest extends TestCase
 	protected void setUp() throws Exception
 	{
 		super.setUp();
+ 	    System.setProperty(FacadeManager.UML_MODEL_FACADE_PROPERTY,
+						   NsumlModelFacade.class.getName());
 
 		Object o = FacadeManager.getUmlFacade();
 		assertNotNull("Unable to get UML Model facade", o);
