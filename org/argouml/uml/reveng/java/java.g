@@ -308,7 +308,7 @@ importDefinition
 	options {defaultErrorHandler = true;}
 {String name=null;}
 	:	"import" name=identifierStar SEMI
- 		{getModeller().addImport(name);}    
+ 		{getModeller().addImport(name);}
 	;
 
 // A type definition in a file is either a class or interface definition.
@@ -539,7 +539,11 @@ classVariableDefinitions[String javadoc, short modifiers, String returnType]
 classVariableDeclarator[String javadoc, short modifiers, String varType]
 {String initializer=null; String b=null;}
 	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
-		{getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);}
+		{
+		if (!isInCompoundStatement()) {
+		getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);
+		}
+		}
 	;
 
 variableDefinitions[String javadoc, short modifiers, String returnType]
