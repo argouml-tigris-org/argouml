@@ -26,10 +26,8 @@
 package org.argouml.application.configuration;
 import org.argouml.application.api.*;
 import java.io.*;
-import java.awt.event.*;
 import java.util.*;
 import java.net.*;
-import javax.swing.*;
 
 /**
  *  This class provides a user configuration based upon properties files.
@@ -96,12 +94,26 @@ public class ConfigurationProperties extends ConfigurationHandler {
     public boolean loadFile(File file) {
 	try {
 	    _properties.load(new FileInputStream(file));
-	    Argo.log.info ("Configuration loaded from " + file + "\n");
+	    Argo.log.info ("Configuration loaded from " + file);
 	    return true;
 	}
 	catch (Exception e) {
-	    if (_canComplain)
-		Argo.log.warn ("Unable to load configuration " + file + "\n");
+	    if (_canComplain) {
+			Argo.log.warn ("Unable to load configuration " + file);
+	    }
+		// Try to create an empty file.
+		try {
+			file.createNewFile();
+			if (file.exists() && file.isFile()) {
+	    		Argo.log.info ("New configuration created as " + file);
+				// Pretend we loaded the file correctly
+				return true;
+			}
+		}
+		catch (IOException e1) {
+			// Ignore an error here
+			Argo.log.warn ("Unable to create configuration " + file, e1);
+		}
 	    _canComplain = false;
 	}
 
