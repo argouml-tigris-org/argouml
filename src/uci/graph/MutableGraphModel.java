@@ -45,6 +45,9 @@ import java.util.Enumeration;
  * @see uci.graph.demo.WordTransforms */
 
 public interface MutableGraphModel extends GraphModel {
+  /** Return true if the given object is present as a node in the graph */
+  boolean containsNode(Object node);
+
   /** Return true if the given object is a valid node in this graph */
   boolean canAddNode(Object node);
 
@@ -56,6 +59,9 @@ public interface MutableGraphModel extends GraphModel {
 
   /** Add the given node to the graph, if valid. Sends a notification. */
   void addNode(Object node);
+
+  /** Return true if the given object is present as a edge in the graph */
+  boolean containsEdge(Object edge);
 
   /** Add the given edge to the graph, if valid. Sends a notification. */
   void addEdge(Object edge);
