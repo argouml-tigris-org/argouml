@@ -156,16 +156,6 @@ public class FigInclude extends FigEdgeModelElement {
     //
     ///////////////////////////////////////////////////////////////////////////
 
-    /**
-     * <p>This is called aftern any part of the UML MModelElement has
-     *   changed. This method automatically updates things specific to this
-     *   fig. Subclasses should override and update other parts.</p>
-     *
-     * <p>This implementation does nothing.</p>
-     */
-
-    protected void modelChanged(MElementEvent e) { }
-
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);

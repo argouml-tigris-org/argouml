@@ -55,19 +55,29 @@ public class ActionSetIncludeBase extends UMLChangeAction {
         super.actionPerformed(e);
         Object source = e.getSource();
         Object newBase = null;
-        Object inc = null;
+        Object oldBase = null;
+        Object include = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
             newBase = /*(MUseCase)*/ combo.getSelectedItem();
-            if (org.argouml.model.ModelFacade.isAInclude(combo.getTarget())) {
-                inc = /*(MInclude)*/ combo.getTarget();
+            Object o = combo.getTarget();
+            if (org.argouml.model.ModelFacade.isAInclude(o)) {
+                include = /*(MInclude)*/ o;
+                o = combo.getSelectedItem();
+                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
+                    newBase = /*(MUseCase)*/ o;
+                    oldBase = ModelFacade.getBase(include);
+                    if (newBase != oldBase) {
+                        ModelFacade.setBase(include, newBase);
+                    }
+                } else {
+                    if (o != null && o.equals("")) {
+                        ModelFacade.setBase(include, null);
+                    }
+                }
+
             }
-        }
-        Object oldBase = ModelFacade.getBase(inc);
-        // oldbase can never be null
-        if (oldBase == null || newBase == null) throw new IllegalStateException("Base of include is null!");
-        if (oldBase != newBase) {
-            ModelFacade.setBase(inc, newBase);
+
         }
     }
 

@@ -32,6 +32,7 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
+ * Abstract action to create new events.
  * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */

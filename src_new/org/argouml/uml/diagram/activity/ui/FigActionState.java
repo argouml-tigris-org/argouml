@@ -33,10 +33,15 @@ import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.util.Iterator;
 
+import org.argouml.application.api.Notation;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigText;
+
+import ru.novosoft.uml.MElementEvent;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
@@ -68,7 +73,9 @@ public class FigActionState extends FigStateVertex {
     public FigActionState() {
         _bigPort = new FigRRect(10 + 1, 10 + 1, 90 - 2, 25 - 2, Color.cyan,
                 Color.cyan);
+        _bigPort.setCornerRadius(_bigPort.getHalfHeight());
         _cover = new FigRRect(10, 10, 90, 25, Color.black, Color.white);
+        _cover.setCornerRadius(_cover.getHalfHeight());
 
         _bigPort.setLineWidth(0);
         getNameFig().setLineWidth(0);
@@ -166,5 +173,37 @@ public class FigActionState extends FigStateVertex {
     public int getLineWidth() {
         return _cover.getLineWidth();
     }
+    
+    
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {        
+        super.modelChanged(mee);
+        if (mee.getSource() == getOwner() && mee.getName().equals("entry")) {
+            if (mee.getNewValue() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, mee.getNewValue(), "script");
+            } else
+            if (mee.getRemovedValue() != null) {
+                UmlModelEventPump.getPump().removeModelEventListener(this, mee.getRemovedValue(), "script");
+            }
+            updateNameText();
+            damage();
+        } else
+        if (ModelFacade.getEntry(getOwner()) == mee.getSource()) {            
+            updateNameText();
+            damage();
+        } 
+        
+    }
+    
+    
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        if (getOwner() != null)
+            getNameFig().setText(Notation.generate(this, getOwner()));
+    }
 } /* end class FigActionState */

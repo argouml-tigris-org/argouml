@@ -81,10 +81,11 @@ public class PropPanelObject extends PropPanelModelElement {
 			 Translator.localize("tooltip.nav-class"),
 			 clsComboBox));
 
-	addField(Translator.localize("label.stereotype"),
-		 new UMLComboBoxNavigator(this,
-			 Translator.localize("tooltip.nav-stereo"),
-			 getStereotypeBox()));
+//	addField(Translator.localize("label.stereotype"),
+//		 new UMLComboBoxNavigator(this,
+//			 Translator.localize("tooltip.nav-stereo"),
+//			 getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
 	addLinkField(Translator.localize("label.namespace"),
 		     getNamespaceComboBox());

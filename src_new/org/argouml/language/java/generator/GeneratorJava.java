@@ -2036,5 +2036,12 @@ public class GeneratorJava
     }
 
     public boolean isModuleEnabled() { return true; }
+    
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {       
+        return generateState(actionState);
+    }
 
 }

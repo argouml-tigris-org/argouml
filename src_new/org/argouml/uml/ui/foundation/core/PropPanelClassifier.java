@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import javax.swing.Action;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -34,12 +35,19 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.GridLayout2;
 import org.argouml.swingext.Orientation;
+import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
 
 abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     protected JPanel _modifiersPanel;
+    
+    /**
+     * The action used to add a reception to the classifier.
+     */
+    protected ActionNewReception _actionNewReception = new ActionNewReception();
 
     private JScrollPane _generalizationScroll;
     private JScrollPane _specializationScroll;
@@ -108,7 +116,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
                     /*(MClassifier)*/ target);
             TargetManager.getInstance().setTarget(newOper);
         }
-    }
+    }       
 
     public void addAttribute() {
         Object target = getTarget();
@@ -299,6 +307,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         }
         return _specializationScroll;
     }
+        
+    protected ActionNewReception getActionNewReception() {
+        return _actionNewReception;
+    }
 
     /**
      * Returns the structuralFeatureScroll.
@@ -311,5 +323,15 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
         }
         return _structuralFeatureScroll;
     }
+    
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {       
+        super.targetSet(e);       
+        Object target = TargetManager.getInstance().getModelTarget();
+        getActionNewReception().putValue(ActionNewReception.CLASSIFIER, target);
+    }
+    
 
 } /* end class PropPanelClassifier */

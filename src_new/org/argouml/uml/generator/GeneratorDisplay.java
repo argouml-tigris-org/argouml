@@ -311,15 +311,31 @@ public class GeneratorDisplay extends Generator2 {
         return sb.toString().trim();
 
     }
-
+    
+    /**
+     * Generates the representation of a parameter on the display (diagram). The string to be returned
+     * will have the following syntax:
+     * <p>
+     * kind name : type-expression = default-value
+     * </p>
+     * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
+     */
     public String generateParameter(Object parameter) {
-        String s = "";
-        //TODO: qualifiers (e.g., const)
-        //TODO: stereotypes...
-        s += generateName(ModelFacade.getName(parameter)) + ": ";
-        s += generateClassifierRef(ModelFacade.getType(parameter));
-        //TODO: initial value
-        return s;
+        StringBuffer s = new StringBuffer();
+        s.append(generateKind(ModelFacade.getKind(parameter)));
+        s.append(" ");
+        s.append(generateName(ModelFacade.getName(parameter)));        
+        String classRef = generateClassifierRef(ModelFacade.getType(parameter));
+        if (classRef.length() > 0) {
+            s.append(" : ");
+            s.append(classRef);
+        }
+        String defaultValue = generateExpression(ModelFacade.getDefaultValue(parameter));
+        if (defaultValue.length() > 0) {
+            s.append(" = ");
+            s.append(defaultValue);
+        }
+        return s.toString();
     }
 
     public String generatePackage(Object p) {
@@ -444,6 +460,24 @@ public class GeneratorDisplay extends Generator2 {
         MsgPtr ptr = new MsgPtr();
         int pos = recCountPredecessors(m, ptr) + 1;
         return generateMessageNumber(m, ptr.message, pos);
+    }
+    
+    private String generateKind(Object /*Parameter etc.*/ kind) {
+        StringBuffer s = new StringBuffer();
+        if (kind == null || kind == ModelFacade.IN_PARAMETERDIRECTIONKIND) {
+            s.append("in");
+        } else 
+        if (kind == ModelFacade.INOUT_PARAMETERDIRECTIONKIND) {
+            s.append("inout");
+        } else
+        if (kind == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
+            // return nothing
+        } else
+        if (kind == ModelFacade.OUT_PARAMETERDIRECTIONKIND) {
+            s.append("out");
+        }
+        return s.toString();
+             
     }
 
     private String generateMessageNumber(
@@ -902,19 +936,15 @@ public class GeneratorDisplay extends Generator2 {
         return s.toString();
     }
 
-    public String generateTransition(Object m) {
-        String s = generate(ModelFacade.getName(m));
+    public String generateTransition(Object m) {       
         String t = generate(ModelFacade.getTrigger(m));
         String g = generate(ModelFacade.getGuard(m));
         String e = generate(ModelFacade.getEffect(m));
-        if (s.length() > 0)
-            s += ": ";
-        s += t;
         if (g.length() > 0)
-            s += " [" + g + "]";
+            t += " [" + g + "]";
         if (e.length() > 0)
-            s += " / " + e;
-        return s;
+            t += " / " + e;
+        return t;
     }
 
     public String generateAction(Object m) {
@@ -973,22 +1003,105 @@ public class GeneratorDisplay extends Generator2 {
      * @param m Object of any MEvent kind
      */
     public String generateEvent(Object m) {
-        if (ModelFacade.isAChangeEvent(m))
-            return "when(" 
-                + generateExpression(ModelFacade.getExpression(m)) 
-                + ")";
-        if (ModelFacade.isATimeEvent(m))
-            return "after(" 
-                + generateExpression(ModelFacade.getExpression(m)) 
-                + ")";
-        if (ModelFacade.isASignalEvent(m))
-            return generateName(ModelFacade.getName(m));
-        if (ModelFacade.isACallEvent(m))
-            return generateName(ModelFacade.getName(m));
-        return "";
+        StringBuffer event = new StringBuffer();
+        if (ModelFacade.isAChangeEvent(m)) {
+            event.append("when(");
+            event.append(generateExpression(ModelFacade.getExpression(m)));
+            event.append(")");           
+        } else
+        if (ModelFacade.isATimeEvent(m)) {
+            event.append("after(");
+            event.append(generateExpression(ModelFacade.getExpression(m)));
+            event.append(")");                   
+        } else 
+        if (ModelFacade.isASignalEvent(m)) {
+            event.append(generateName(ModelFacade.getName(m)));         
+        } else
+        if (ModelFacade.isACallEvent(m)) {
+            event.append(generateName(ModelFacade.getName(m)));     
+            event.append(generateParameterList(m));           
+        }
+        return event.toString();
     }
+    
+    /**
+     * Generates a list of parameters. The parameters belong to the given object o. 
+     * The returned string will have the following syntax:
+     * <p>
+     * (param1, param2, param3, ..., paramN)
+     * </p>
+     * @param o the 'owner' of the parameters
+     * @return the generated parameter list
+     */
+    private String generateParameterList(Object parameterListOwner) {
+        Iterator it = ModelFacade.getParameters(parameterListOwner).iterator();
+        StringBuffer list = new StringBuffer();
+        if (it.hasNext()) {
+            list.append("(");
+            while (it.hasNext()) {
+                Object param = it.next();
+                list.append(generateParameter(param));
+                if (it.hasNext()) {
+                    list.append(", ");
+                }
+            }
+            list.append(")");
+        }        
+        return list.toString();
+    }
+    
+    
 
     
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {
+        String ret = "";
+        Object action = ModelFacade.getEntry(actionState);
+        if (action != null) {
+            Object expression = ModelFacade.getScript(action);
+            if (expression != null)
+                ret = generateExpression(expression);
+        }
+        return ret;
+    }
+    
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        // TODO Auto-generated method stub
+        return super.hashCode();
+    }
+    /**
+     * @see java.lang.Object#finalize()
+     */
+    protected void finalize() throws Throwable {
+        // TODO Auto-generated method stub
+        super.finalize();
+    }
+    /**
+     * @see java.lang.Object#clone()
+     */
+    protected Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
+    }
+    /**
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    public boolean equals(Object obj) {
+        // TODO Auto-generated method stub
+        return super.equals(obj);
+    }
+    /**
+     * @see java.lang.Object#toString()
+     */
+    public String toString() {
+        // TODO Auto-generated method stub
+        return super.toString();
+    }
     // public NotationName getNotation() {
     // return Notation.NOTATION_ARGO;
     // }
@@ -1027,5 +1140,6 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
     public boolean isModuleEnabled() { return true; }
-
+    
+    
 } /* end class GeneratorDisplay */

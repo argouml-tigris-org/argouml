@@ -49,24 +49,18 @@ public class PropPanelActionState extends PropPanelState {
 	      ConfigLoader.getTabPropsOrientation());
 
         addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"),
-		 new UMLComboBoxNavigator(this,
-					  Translator.localize("UMLMenu",
-							"tooltip.nav-stereo"),
-					  getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.namespace"),
-		 getNamespaceScroll());
+//        addField(Translator.localize("UMLMenu", "label.stereotype"),
+//		 new UMLComboBoxNavigator(this,
+//					  Translator.localize("UMLMenu",
+//							"tooltip.nav-stereo"),
+//					  getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 
-        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);
-        addField(Translator.localize("UMLMenu", "label.exit"), exitScroll);
-        addField(Translator.localize("UMLMenu", "label.do-activity"), doScroll);
-
+        addField(Translator.localize("UMLMenu", "label.entry"), entryScroll);       
         addSeperator();
 
         addField(Translator.localize("UMLMenu", "label.incoming"), incomingScroll);
-        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);
-        addField(Translator.localize("UMLMenu", "label.internal-transitions"),
-		 internalTransitionsScroll);
+        addField(Translator.localize("UMLMenu", "label.outgoing"), outgoingScroll);        
 
     }
 

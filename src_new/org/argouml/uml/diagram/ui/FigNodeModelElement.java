@@ -840,6 +840,12 @@ public abstract class FigNodeModelElement
         }
         if ((mee.getSource() == getOwner()
 	     && mee.getName().equals("stereotype"))) {
+            if (mee.getOldValue() != null) {
+                UmlModelEventPump.getPump().removeModelEventListener(this, mee.getRemovedValue(), "name");
+            }
+            if (mee.getNewValue() != null) {
+                UmlModelEventPump.getPump().addModelEventListener(this, mee.getNewValue(), "name");
+            }
             updateStereotypeText();
             damage();
         }

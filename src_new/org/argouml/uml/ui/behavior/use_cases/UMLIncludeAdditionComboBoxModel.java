@@ -39,7 +39,8 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * Constructor for UMLIncludeAdditionComboBoxModel.
      */
     public UMLIncludeAdditionComboBoxModel() {
-        super("addition", false);
+//      there is a bug in NSUML so this model listens for base modelevents
+        super("base", false);
         UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
     }
 
@@ -51,8 +52,8 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         if (inc == null) return;
         Object ns = ModelFacade.getNamespace(inc);
         addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
-        if (contains(ModelFacade.getBase(inc)))
-            removeElement(ModelFacade.getBase(inc));
+        if (contains(ModelFacade.getAddition(inc)))
+            removeElement(ModelFacade.getAddition(inc));
     }
 
     /**

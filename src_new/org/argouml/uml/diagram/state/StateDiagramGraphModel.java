@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -167,7 +168,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public boolean canAddNode(Object node) {
         if (node == null) return false;
         if (_nodes.contains(node)) return false;
-        return (ModelFacade.isAStateVertex(node));
+        return (ModelFacade.isAStateVertex(node) || ModelFacade.isAPartition(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
@@ -180,6 +181,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             state = ModelFacade.getState(edge);
             end0 = ModelFacade.getSource(edge);
             end1 = ModelFacade.getTarget(edge);
+            // it's not allowed to directly draw a transition from a composite state to
+            // one of it's substates.
+            if (ModelFacade.isACompositeState(end0) && StateMachinesHelper.getHelper().getAllSubStates(end0).contains(end1)) {
+                return false;
+            }
         }
 
         if (end0 == null || end1 == null) return false;
@@ -187,6 +193,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if ((state == end0) && (state == end1)) return false;
         if (!_nodes.contains(end0)) return false;
         if (!_nodes.contains(end1)) return false;
+        
         return true;
     }
 
@@ -259,8 +266,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (ModelFacade.isAPseudostate(toSV)) {
             if ((ModelFacade.INITIAL_PSEUDOSTATEKIND).equals(ModelFacade
                     .getKind(toSV))) { return false; }
-        }
-
+        }        
         return true;
     }
 
@@ -294,7 +300,12 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             Object comp = ModelFacade.getContainer(fromSV);
             tr = StateMachinesFactory.getFactory()
                     .buildTransition(fromSV, toSV);
-            addEdge(tr);
+            if (canAddEdge(tr)) {
+                addEdge(tr);
+            } else {
+                ProjectManager.getManager().getCurrentProject().moveToTrash(tr);
+                tr = null;
+            }
             return tr;
         } else {
             cat.debug("wrong kind of edge in StateDiagram connect3 "

@@ -48,7 +48,8 @@ public class PropPanelComponent extends PropPanelClassifier {
 	Class mclass = (Class)ModelFacade.COMPONENT;
 
 	addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	// addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+	addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
 	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 	addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
 
@@ -63,6 +64,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 	addField(Translator.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _receptionIcon, Translator.localize("UMLMenu", "button.new-reception"), getActionNewReception());
 	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);
 
 

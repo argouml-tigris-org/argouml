@@ -44,7 +44,7 @@ public class UMLStateExitList extends UMLMutableLinkedList {
      */
     public UMLStateExitList(
         UMLModelElementListModel2 dataModel) {
-        super(dataModel, null);
+        super(dataModel);
     }
 
     /**

@@ -57,7 +57,7 @@ public class ActionRemoveModelElement extends AbstractActionRemoveElement {
         super.actionPerformed(e);
         Project p = ProjectManager.getManager().getCurrentProject();
         if (getObjectToRemove() != null && ActionRemoveFromModel.sureRemove(getObjectToRemove()))
-            p.moveToTrash(getTarget());
+            p.moveToTrash(getObjectToRemove());
         setObjectToRemove(null);
     }
 

@@ -42,7 +42,7 @@ public class UMLTransitionTriggerList extends UMLMutableLinkedList {
      */
     public UMLTransitionTriggerList(
         UMLModelElementListModel2 dataModel) {
-        super(dataModel, null);
+        super(dataModel);
     }
 
     /**

@@ -50,7 +50,7 @@ public class ActionNewGuard extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        StateMachinesFactory.getFactory().buildGuard(getTarget());
+        StateMachinesFactory.getFactory().buildGuard(getTarget());        
     }
 
 }
