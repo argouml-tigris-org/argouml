@@ -30,6 +30,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.ActionReopenProject;
+import java.io.File;
 
 /**
  * menu extension for last recently used files menu
@@ -40,6 +41,8 @@ import org.argouml.uml.ui.ActionReopenProject;
  * the add entry method adds a specific filename to the list, ensures that it
  * bubbles at top of list if it is already member of list
  * typically called by SaveFile method
+ * LRU is added at the specific position at creation time
+ * and all entries are going to be inserted or deletied
  *
  * @author  Frank Jelinek
  * @since 9. November 2003 (0.15.2)
@@ -67,7 +70,12 @@ public class LastRecentlyUsedMenuList {
     private int _maxCount = _maxCountDefault;
 
     /**
-     * menuitems actually created and added to menu
+     * index where the menu entries should be inserted
+     * -1 to be sure (adds at end)
+     */
+    private int _menuIndex = -1;
+    
+    /**     * menuitems actually created and added to menu
      */
     private JMenuItem[] _menuItems = new JMenuItem[_maxCount];
 
@@ -79,10 +87,20 @@ public class LastRecentlyUsedMenuList {
     /**
      * Adds the eventhandler to the menu and renames the entry
      */
-    private JMenuItem addEventHandler( String filename) {
-        JMenuItem item = _fileMenu.add(new ActionReopenProject());
+    private JMenuItem addEventHandler( String filename, int addAt) {
         // the text is used by the event handler for opening the project
-        item.setText(filename);
+        File f = new File( filename);
+        //JMenuItem item = _fileMenu.add(new ActionReopenProject(filename));
+        JMenuItem item = _fileMenu.insert(new ActionReopenProject(filename), addAt);
+
+        // set maximum length of menu entry
+        String entryName = f.getName();
+        if( entryName.length()>40) entryName = entryName.substring(0, 40) + "...";
+
+        // text is short, tooltip is long
+        item.setText(entryName);
+        item.setToolTipText(filename);
+        
         return item;
     }
 
@@ -100,6 +118,7 @@ public class LastRecentlyUsedMenuList {
         // holds file menu
         _fileMenu = filemenu;
         _lruCount = 0;
+        _menuIndex = filemenu.getItemCount();
         
         // init from config
         // read number, write result as new default and prepare keys
@@ -122,10 +141,7 @@ public class LastRecentlyUsedMenuList {
         while (i < _maxCount && readOK) {
             newName = Configuration.getString(_confKeys[i], "");
             if (newName.length() > 0) {
-                if (i == 0)
-                    _fileMenu.addSeparator(); // just for first line!
-                
-                _menuItems[i] = addEventHandler(newName);
+                _menuItems[i] = addEventHandler(newName, _menuIndex+i);
                 i++;
             }
             else
@@ -144,21 +160,21 @@ public class LastRecentlyUsedMenuList {
      * _and_ reopen the file
      */
     public void addEntry( String filename) {
-        // add separator only the first time we are adding an entry
-        if (0 == _lruCount)
-            _fileMenu.addSeparator();
+        // get already existing names from menu actions
+        // real file names, not action names !
 
-        // get already existing names
         String tempNames[] = new String[_maxCount];
-        for (int i = 0; i < _lruCount; i++)
-            tempNames[i] = _menuItems[i].getText();
+        for (int i = 0; i < _lruCount; i++) {
+            ActionReopenProject action = (ActionReopenProject)_menuItems[i].getAction();
+            tempNames[i] = action.getFilename();
+        }
         
         // delete all existing entries
         for (int i = 0; i < _lruCount; i++)
             _fileMenu.remove(_menuItems[i]);
         
         // add new entry as first entry
-        _menuItems[0] = addEventHandler(filename);
+        _menuItems[0] = addEventHandler(filename, _menuIndex);
 
         // add other existing entries, but filter the just added one
         int i, j;
@@ -166,7 +182,7 @@ public class LastRecentlyUsedMenuList {
 	j = 1;
         while ( i < _lruCount && j < _maxCount) {
             if ( !(tempNames[i].equals(filename))) {
-                _menuItems[j] = addEventHandler(tempNames[i]);
+                _menuItems[j] = addEventHandler(tempNames[i], _menuIndex+j);
                 j++;
             }
             i++;
@@ -177,7 +193,8 @@ public class LastRecentlyUsedMenuList {
         
         // and store configuration props
         for ( int k = 0; k < _lruCount; k++) {
-            Configuration.setString(_confKeys[k], _menuItems[k].getText());
+            ActionReopenProject action = (ActionReopenProject)_menuItems[k].getAction();
+            Configuration.setString(_confKeys[k], action.getFilename());
         }
     }
 }
