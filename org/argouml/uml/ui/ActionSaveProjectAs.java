@@ -33,6 +33,7 @@ import javax.swing.filechooser.FileFilter;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.AbstractFilePersister;
+import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
@@ -53,9 +54,6 @@ public class ActionSaveProjectAs extends ActionSaveProject {
      */
     public static final ActionSaveProjectAs SINGLETON = 
         new ActionSaveProjectAs();
-
-    //public static final String separator = "/";
-    //System.getProperty("file.separator");
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -98,6 +96,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     protected File getNewFile() {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
+        PersisterManager pm = new PersisterManager();
 
         JFileChooser chooser = null;
         URL url = p.getURL();
@@ -119,10 +118,7 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         FileFilter allFiles = chooser.getFileFilter();
         chooser.removeChoosableFileFilter(allFiles);
         
-        chooser.addChoosableFileFilter(zargoPersister);
-        chooser.addChoosableFileFilter(argoPersister);
-        chooser.addChoosableFileFilter(xmiPersister);
-        chooser.setFileFilter(zargoPersister);
+        pm.setFileChooserFilters(chooser);
         
         int retval = chooser.showSaveDialog(pb);
         if (retval == JFileChooser.APPROVE_OPTION) {

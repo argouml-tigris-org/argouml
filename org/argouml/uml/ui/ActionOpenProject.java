@@ -39,13 +39,11 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.AbstractFilePersister;
-import org.argouml.kernel.ArgoFilePersister;
 import org.argouml.kernel.OpenException;
+import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectFilePersister;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.XmiFilePersister;
-import org.argouml.kernel.ZargoFilePersister;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.cmd.GenericArgoMenuBar;
 import org.argouml.util.osdep.OsUtil;
@@ -66,10 +64,6 @@ public class ActionOpenProject
     private static final Logger LOG =
         Logger.getLogger(ActionOpenProject.class);
     
-    private AbstractFilePersister zargoPersister = new ZargoFilePersister();
-    private AbstractFilePersister argoPersister  = new ArgoFilePersister();
-    private AbstractFilePersister xmiPersister  = new XmiFilePersister();
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -83,32 +77,29 @@ public class ActionOpenProject
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /** Performs the action.
-     *
-     * @param e an event
+    /**
+     * If the current project is dirty (needs saving) then this function will
+     * ask confirmation from the user. 
+     * If the user indicates that saving is needed, then saving is attempted.
+     *  
+     * @return true if we can continue with opening
      */
-    public void actionPerformed(ActionEvent e) {
+    protected boolean askConfirmationAndSave() {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        if (p != null && p.needsSave()) {
-            String t =
-                MessageFormat.format(
-                        Translator.localize(
-				"optionpane.open-project-save-changes-to"),
-			new Object[] {
-			    p.getName()
-			});
 
-            int response =
-                JOptionPane.showConfirmDialog(pb,
-					      t,
-					      t,
-					      JOptionPane.YES_NO_CANCEL_OPTION);
+        if (p != null && p.needsSave()) {
+            String t = MessageFormat.format(Translator.localize(
+                        "optionpane.open-project-save-changes-to"),
+                        new Object[] {p.getName()});
+
+            int response = JOptionPane.showConfirmDialog(pb, t, t, 
+                    JOptionPane.YES_NO_CANCEL_OPTION);
 
             if (response == JOptionPane.CANCEL_OPTION 
                     || response == JOptionPane.CLOSED_OPTION) {
-                return;
+                return false;
             }
             if (response == JOptionPane.YES_OPTION) {
                 boolean safe = false;
@@ -120,11 +111,25 @@ public class ActionOpenProject
                     safe = ActionSaveProjectAs.SINGLETON.trySave(false);
                 }
                 if (!safe) {
-                    return;
+                    return false;
                 }
             }
         }
-
+        return true;
+    }
+    
+    /** 
+     * Performs the action of opening a project.
+     *
+     * @param e an event
+     */
+    public void actionPerformed(ActionEvent e) {
+        ProjectBrowser pb = ProjectBrowser.getInstance();
+        Project p = ProjectManager.getManager().getCurrentProject();
+        PersisterManager pm = new PersisterManager();
+        
+        if (!askConfirmationAndSave()) return;
+        
         try {
             // next line does give user.home back but this is not
             // compliant with how the project.url works and therefore
@@ -151,11 +156,7 @@ public class ActionOpenProject
             FileFilter allFiles = chooser.getFileFilter();
             chooser.removeChoosableFileFilter(allFiles);
             
-            chooser.addChoosableFileFilter(zargoPersister);
-            chooser.addChoosableFileFilter(argoPersister);
-            chooser.addChoosableFileFilter(xmiPersister);
-            chooser.setFileFilter(zargoPersister);
-            
+            pm.setFileChooserFilters(chooser);
 
             int retval = chooser.showOpenDialog(pb);
             if (retval == 0) {
@@ -191,7 +192,7 @@ public class ActionOpenProject
      * @param url the url to open.
      */
     public void loadProject(URL url) {
-
+        PersisterManager pm = new PersisterManager();
         Project oldProject = ProjectManager.getManager().getCurrentProject();
 
 	// TODO:
@@ -207,18 +208,11 @@ public class ActionOpenProject
 
         Project p = null;
         try {
-            AbstractFilePersister persister = null;
-            String file = url.getFile();
-            if (file.endsWith("." + zargoPersister.getExtension())) {
-                persister = zargoPersister;
-            } else if (file.endsWith("." + argoPersister.getExtension())) {
-                persister = argoPersister;
-            } else if (file.endsWith("." + xmiPersister.getExtension())) {
-                persister = xmiPersister;
-            } else {
-                throw new IllegalStateException("Filename " + url.getFile()  
-                                + " is not of a known file type");
-            }
+            ProjectFilePersister persister = 
+                pm.getPersisterFromFileName(url.getFile());
+            if (persister == null)
+                throw new IllegalStateException("Filename " + url.getFile() 
+                        + " is not of a known file type");
             
             p = persister.loadProject(url);
 
