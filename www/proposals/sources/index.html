@@ -15,10 +15,6 @@ files are prefixed with a minus (-).
 <br/>
 Files and directories followed by an asterisk
 are not included in CVS.
-<br/>
-Files and directories followed by a pound sign (#)
-would only be contained in CVS as branches,
-and would no longer be part of the CVS base.
 
 <p/>
 <pre>
@@ -35,10 +31,7 @@ and would no longer be part of the CVS base.
                           /dist *
                           /documentation *
                           /runtime *
-                                  -argoapi.jar *
-                                  -argocore.jar *
                                   -argouml.jar *
-                                  -argojava.jar *
 			          /bin *
                                       -argouml.sh *
                                       -argouml.bat *
@@ -62,7 +55,7 @@ and would no longer be part of the CVS base.
              /lib
                  -antlrall.jar
                  -gef-0.9.5.jar
-                 -jh.jar
+                 -jh-1.1.jar
                  -log4j-1.1.3.jar
                  -nsuml-0.4.19.jar
                  -ocl-argo.jar
@@ -101,50 +94,39 @@ and would no longer be part of the CVS base.
                          -build.sh
                          /lib
                          /src
-             /src #
-             /src_new #
-             /source
-                    -build.xml
-                    /argoappl 
-                            -build.xml
-                            /org
-                                /argouml
+             /src_new
+	             -build.xml
+	             -build.bat
+	             -build.bat
+	             /org
+		         /argouml
              /tools
                    /ant-1.4.1
                              /bin
-                                 +ant
-                                 +ant.bat
-                                 +lcp.bat
+                                 -ant
+                                 -ant.bat
+                                 -lcp.bat
                              /lib
-                                 +ant.jar
-                                 +crimson.jar
-                                 +jaxp.jar
-                                 +optional.jar
+                                 -ant.jar
+                                 -crimson.jar
+                                 -jaxp.jar
+                                 -optional.jar
                    /docbook (moved from argouml/documentation/docbook-setup)
                    /fop-0.20.3
                               /build
-                                    +fop.jar
-                                    +fop-0.20.3-with-jimi.jar
+                                    -fop.jar
+                                    -fop-0.20.3-with-jimi.jar
                               /lib
-                                    +avalon-framework-4.0.jar
-                                    +batik-1.1.jar
-                                    +logkit-1.0.jar
-                                    +xalan-2.0.0.jar
-                                    +xalanj1compat.jar
-                                    +avalon-framework-4.0.jar
+                                    -avalon-framework-4.0.jar
+                                    -batik-1.1.jar
+                                    -logkit-1.0.jar
+                                    -xalan-2.0.0.jar
+                                    -xalanj1compat.jar
                    /lib
              /www (unchanged)
 </pre>
 
 <p/>
-<hr/>
-Restructuring of the source would improve the compartmentalization of ArgoUML.
-Breaking the source into smaller components should allow simpler maintenance ant quality control.
-<p/>
-Adding an additional directory level under the sources
-would facilitate splitting the source files into smaller components
-in the same manner as <i>NetBeans</i> or <i>Eclipse</i>.
-<center>
        </td>
      </tr>
    </table>
