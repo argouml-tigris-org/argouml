@@ -26,6 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
 
@@ -36,6 +37,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.AbstractWellformednessRule;
+import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
+import org.argouml.model.uml.foundation.core.AssociationEndNamespaceWellformednessRule;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -130,6 +134,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     orderingGroup.add(sorted);
     orderingPanel.add(sorted);
     addField(orderingPanel,1,1,0);
+    
+    AbstractWellformednessRule[] wellformednessrules = new AbstractWellformednessRule[] {new AssociationEndAggregationWellformednessRule()};
+   
 
     addCaption("Aggregation:",2,1,1);
     JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
@@ -137,20 +144,20 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     UMLRadioButton none = new UMLRadioButton(localize("none"),this,
       new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null),true);
+        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null,wellformednessrules),true);
 
     aggregationGroup.add(none);
     aggregationPanel.add(none);
 
     UMLRadioButton aggregation = new UMLRadioButton(localize("aggregation"),this,
       new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null));
+        "setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null, wellformednessrules));
     aggregationGroup.add(aggregation);
     aggregationPanel.add(aggregation);
 
     UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,
       new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null));
+        "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null, wellformednessrules));
     aggregationGroup.add(composite);
     aggregationPanel.add(composite);
     addField(aggregationPanel,2,1,0);
@@ -282,7 +289,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public boolean isAcceptibleType(MModelElement type) {
     	boolean wellformed = false;
     	if (type instanceof MClassifier) {
-    		wellformed = CoreHelper.getHelper().welformedAssociationEndNamespace((MAssociationEnd)getTarget(), ((MClassifier)type).getNamespace());
+    		wellformed = new AssociationEndNamespaceWellformednessRule().isWellformed((MAssociationEnd)getTarget(), ((MClassifier)type).getNamespace());
     	}
         return (type instanceof MClassifier) &&
             !(type instanceof MDataType) && wellformed;

@@ -36,6 +36,7 @@ import org.argouml.uml.diagram.ui.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import java.awt.event.*;
+import java.beans.PropertyVetoException;
 import java.util.*;
 
 import ru.novosoft.uml.model_management.*;
@@ -252,7 +253,10 @@ public class ActionModifier extends UMLAction {
 	  * To perform the action of changing a modifier
 	  */
     public void actionPerformed(ActionEvent ae) {
+    	try {
 		_property.setProperty(object, !_property.getProperty(object));
+    	}
+    	catch (PropertyVetoException ve) {}
     }
 
     /**

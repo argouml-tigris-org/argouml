@@ -383,7 +383,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MAssociation assoc = UmlFactory.getFactory().getCore().createAssociation();
         assoc.setName("");
         assoc.setNamespace(c1.getNamespace());
-        if (CoreHelper.getHelper().welformedAssociationNamespace(assoc, c2)) {
+        if (new AssociationNamespaceWellformednessRule().isWellformed(assoc, c2)) {
         	buildAssociationEnd(assoc, null, c1,null, null, nav1, null, null, null, null, null);
         	buildAssociationEnd(assoc, null, c2,null, null, nav2, null, null, null, null, null);
         	return assoc;
@@ -450,7 +450,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MAssociationEnd end = UmlFactory.getFactory().getCore().createAssociationEnd();
         if (assoc != null && type != null) {
         	end.setAssociation(assoc);
-        	if (UmlHelper.getHelper().getCore().welformedAssociationEndNamespace(end, type.getNamespace())) {
+        	if (new AssociationEndNamespaceWellformednessRule().isWellformed(end, type.getNamespace())) {
 	            end.setAssociation(assoc);
 	            assoc.addConnection(end);
 	            end.setType(type);
@@ -473,7 +473,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         }   
         String tempname = name;
         int counter = 0;
-        while (!UmlHelper.getHelper().getCore().welformedAssociationEndName(end, tempname)) {
+        while (!(new AssociationEndNameWellformednessRule().isWellformed(end, tempname))) {
         	tempname = name + counter;
         	counter++;
         }
@@ -494,7 +494,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             end.setOrdering(MOrderingKind.UNORDERED);
         }
         if (aggregation != null) {
-        	if (UmlHelper.getHelper().getCore().welformedAssociationEndAggregation(end, aggregation)) {
+        	if (new AssociationEndAggregationWellformednessRule().isWellformed(end, aggregation)) {
             	end.setAggregation(aggregation);
         	} else {
         		end.remove();
