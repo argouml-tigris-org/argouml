@@ -409,6 +409,18 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 	      || ModelFacade.isATransition(edge))) {
 	    return false;
 	}
+        
+        // it's not allowed to move a transition
+        // so that it will go from a composite to its substate 
+        // nor vice versa. See issue 2865.
+        Object otherSideNode = ModelFacade.getSource(edge);
+        if (otherSideNode == oldNode) 
+            otherSideNode = ModelFacade.getTarget(edge);
+        if (ModelFacade.isACompositeState(newNode)
+                && Model.getStateMachinesHelper().getAllSubStates(newNode)
+                                                    .contains(otherSideNode)) {
+            return false;
+        }
 
         return true;
     }
