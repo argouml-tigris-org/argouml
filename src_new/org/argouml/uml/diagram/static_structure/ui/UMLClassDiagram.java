@@ -34,7 +34,6 @@ import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.diagram.ui.ActionAddOperation;
 import org.tigris.gef.base.LayerPerspective;
@@ -164,7 +163,8 @@ public class UMLClassDiagram extends UMLDiagram {
             _actionRealize, null,
             ActionAddAttribute.SINGLETON,
             ActionAddOperation.SINGLETON, null,
-            ActionAddNote.SINGLETON
+            _actionComment,
+            _actionCommentLink
         };
 
         return actions;

@@ -196,7 +196,8 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 	    _actionGeneralize,
 	    _actionDepend,
 	    null,
-	    ActionAddNote.SINGLETON };
+	    _actionComment,
+            _actionCommentLink};
         return actions;
     }
 

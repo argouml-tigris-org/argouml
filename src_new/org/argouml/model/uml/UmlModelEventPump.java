@@ -39,6 +39,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -120,10 +121,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void addClassModelEventListener(MElementListener listener,
 					   Class modelClass,
 					   String[] eventNames) {
+//      We don't support non-NSUML modeleventlisteners yet, so we return without addition.
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            return;
         if (listener == null
             || modelClass == null
-            || eventNames == null
-            || !MBase.class.isAssignableFrom(modelClass)
+            || eventNames == null           
             || eventNames.length == 0)
             throw new IllegalArgumentException("Tried to add illegal class"
 					       + " modeleventlistener to "
@@ -148,10 +151,12 @@ public final class UmlModelEventPump implements MElementListener {
 					   MElementListener listener,
 					   Class modelClass,
 					   String eventName) {
+        // We don't support non-NSUML modeleventlisteners yet, so we return without addition.
+        if (!MBase.class.isAssignableFrom(modelClass)) 
+            return;
         if (listener == null
             || modelClass == null
             || eventName == null
-            || !MBase.class.isAssignableFrom(modelClass)
             || eventName.equals(""))
             throw new IllegalArgumentException();
         executeAddClassModelEventListener(listener, modelClass, eventName);
@@ -233,13 +238,19 @@ public final class UmlModelEventPump implements MElementListener {
     public void removeClassModelEventListener(
 					      MElementListener listener,
 					      Class modelClass,
+	
 					      String[] eventNames) {
+//      we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
+        if (!MBase.class.isAssignableFrom(modelClass))
+            // throw new IllegalArgumentException();
+            return;
         if (listener == null
             || modelClass == null
             || eventNames == null
-            || !MBase.class.isAssignableFrom(modelClass)
             || eventNames.length == 0)
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Tried to remove invalid listener");	       
         for (int i = 0; i < eventNames.length; i++) {
             executeRemoveClassModelEventListener(
 						 listener,
@@ -261,11 +272,16 @@ public final class UmlModelEventPump implements MElementListener {
 					      MElementListener listener,
 					      Class modelClass,
 					      String eventName) {
+//      we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
+        if (!MBase.class.isAssignableFrom(modelClass))
+            // throw new IllegalArgumentException();
+            return;
         if (listener == null
             || modelClass == null
-            || eventName == null
-            || !MBase.class.isAssignableFrom(modelClass))
-            throw new IllegalArgumentException();
+            || eventName == null)
+            throw new IllegalArgumentException("Tried to remove invalid listener");	
         executeRemoveClassModelEventListener(listener, modelClass, eventName);
     }
 
@@ -279,9 +295,14 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void removeClassModelEventListener(MElementListener listener,
 					      Class modelClass) {
+//      we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
+        if (!MBase.class.isAssignableFrom(modelClass))
+            // throw new IllegalArgumentException();
+            return;
         if (listener == null
-            || modelClass == null
-            || !MBase.class.isAssignableFrom(modelClass))
+            || modelClass == null)
             throw new IllegalArgumentException("Tried to remove null listener "
 					       + "from null class");
         executeRemoveClassModelEventListener(listener, modelClass, null);
@@ -335,7 +356,8 @@ public final class UmlModelEventPump implements MElementListener {
 				      Object listener,
 				      Object modelelement,
 				      String[] eventNames) {
-        if (modelelement == null)
+        // we just return if the modelelement is not a base. we don't support non-nsuml elements yet.
+        if (modelelement == null || !ModelFacade.isABase(modelelement))
             return;
         if (listener == null
             || eventNames == null
@@ -373,7 +395,15 @@ public final class UmlModelEventPump implements MElementListener {
      */
     public void addModelEventListener(Object listener,
 				      Object modelelement,
-				      String eventName) {        
+				      String eventName) {    
+        
+//      we just return if the modelelement to add is not a NSUML class. we don't support other event listeners yet.
+        if (modelelement == null || !ModelFacade.isABase(modelelement))
+            return;
+        if (listener == null          
+            || !(listener instanceof MElementListener)
+            || eventName == null)
+            throw new IllegalArgumentException();
         EventKey[] keys =
             _definition.getEventTypes(modelelement.getClass(), eventName);
         for (int i = 0; i < keys.length; i++) {
@@ -397,12 +427,12 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelelement is the model element
      */
     public void addModelEventListener(Object listener, Object modelelement) {
-        if (modelelement == null)
+        // we just return if the modelelement to add is not a NSUML class. we don't support other event listeners yet.
+        if (modelelement == null || !ModelFacade.isABase(modelelement))
             return;
         if (listener == null
             || modelelement == null
-            || !(listener instanceof MElementListener)
-            || !(modelelement instanceof MBase))
+            || !(listener instanceof MElementListener))
             throw new IllegalArgumentException();
         EventKey[] keys = _definition.getEventTypes(modelelement.getClass());
         for (int i = 0; i < keys.length; i++) {
@@ -433,8 +463,12 @@ public final class UmlModelEventPump implements MElementListener {
 					 String[] eventNames) {
         if (handle == null)
             return;
+        // we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
         if (!(handle instanceof MBase))
-            throw new IllegalArgumentException();
+            // throw new IllegalArgumentException();
+            return;
         MBase modelElement = (MBase) handle;
         if (listener == null
             || !(listener instanceof MElementListener)
@@ -467,8 +501,12 @@ public final class UmlModelEventPump implements MElementListener {
     {
         if (handle == null)
             return;
+        // we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
         if (!(handle instanceof MBase))
-            throw new IllegalArgumentException();
+            // throw new IllegalArgumentException();
+            return;
 
 	MBase modelElement = (MBase) handle;
         if (listener == null
@@ -501,8 +539,12 @@ public final class UmlModelEventPump implements MElementListener {
     {
         if (handle == null)
             return;
+        // we don't support eventlisteners other then NSUML ModelEventListener.
+        // to be forward compatible with other ModelEventListeners, we do not throw an exception but
+        // simply return.
         if (!(handle instanceof MBase))
-            throw new IllegalArgumentException("Handle is not valid");
+            // throw new IllegalArgumentException();
+            return;
         MBase modelElement = (MBase) handle;
         if (listener == null
 	    || modelElement == null

@@ -315,6 +315,7 @@ public class UseCaseDiagramGraphModel
      *              this graph, <code>false</code> otherwise.
      */
     public boolean canAddNode(Object node) {
+        if (super.canAddNode(node)) return true;
         if (_nodes.contains(node)) {
 	    return false;
 	}
@@ -339,6 +340,9 @@ public class UseCaseDiagramGraphModel
      *              this graph, <code>false</code> otherwise.
      */
     public boolean canAddEdge(Object edge)  {
+        if (super.canAddEdge(edge)) {
+            return true;
+        }
 
         // Give up if we are already on the graph
         if (edge == null) return false;
@@ -504,7 +508,7 @@ public class UseCaseDiagramGraphModel
         // Add the element and place it in the namespace of the model
         _edges.addElement(edge);
 
-        if (ModelFacade.getNamespace(edge) == null) {
+        if (ModelFacade.isAModelElement(edge) && ModelFacade.getNamespace(edge) == null) {
             ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ edge);
         }
 

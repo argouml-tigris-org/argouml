@@ -32,18 +32,26 @@ import java.beans.VetoableChangeListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.UUIDManager;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 
+import ru.novosoft.uml.MElementEvent;
+
 
 /** 
  * Class to display a UML note connection to a
  * annotated model element.<p>
+ * <p>
+ * The owner of this fig is allways CommentEdge
+ * </p>
  *
  * @author Andreas Rueckert <a_rueckert@gmx.net>
+ * @author jaap.branderhorst@xs4all.nl
  */
 public class FigEdgeNote
     extends FigEdgeModelElement
@@ -53,21 +61,23 @@ public class FigEdgeNote
 	       KeyListener,
 	       PropertyChangeListener
 {
+    private Object _owner;
 
-    ////////////////////////////////////////////////////////////////     
-    // constants
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
     
     /** 
      * Construct a new note connection. Use the same layout as for
      * other edges.
      */
     public FigEdgeNote() {
+        super();
 	setBetweenNearestPoints(true);
 	((FigPoly) _fig).setRectilinear(false);
-	setDashed(true);
+	setDashed(true);	
+    }      
+    
+    public FigEdgeNote(Object owner, Layer layer) {
+        this(((CommentEdge)owner).getSource(), ((CommentEdge)owner).getDestination());
+        setOwner(owner);
     }
     
     /**
@@ -109,5 +119,46 @@ public class FigEdgeNote
     public String toString() {
         return Translator.localize("misc.comment-edge");
     }
+    
+    
+    
+    
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent e) {        
+    }
+    /**
+     * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)
+     */
+    public void setOwner(Object newOwner) {
+        // hack to avoid loading problems since we cannot store the whole model yet in XMI
+        if (newOwner == null) {
+            newOwner = new CommentEdge(getSourceFigNode(), getDestFigNode());
+        }
+       _owner = newOwner;
+       if (ModelFacade.getUUID(newOwner) == null) {
+           ModelFacade.setUUID(newOwner,
+				UUIDManager.getInstance().getNewUUID());
+	}
+    }
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#getOwner()
+     */
+    public Object getOwner() {
+        return _owner;
+    }
+    
+    
+    /**
+     * @see org.tigris.gef.presentation.Fig#postLoad()
+     */
+    public void postLoad() {       
+        super.postLoad();
+        CommentEdge owner = (CommentEdge)getOwner();
+        owner.setDestination(getDestFigNode().getOwner());
+        owner.setSource(getSourceFigNode().getOwner());
+    }
 } /* end class FigEdgeNote */

@@ -37,6 +37,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -1070,13 +1071,15 @@ public class CoreHelper {
      * destination the end.<p>
      *
      * This method also works to get the source of a Link.<p>
+     * <p>This method also works for CommentEdge</p>
+     * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
      * @return Object
      */
     public Object getSource(Object relationship) {        
         if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship))) {
+	    && !(ModelFacade.isALink(relationship)) && !(relationship instanceof CommentEdge)) {
 
             throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
@@ -1089,41 +1092,43 @@ public class CoreHelper {
 	    } else {
 		return null;
 	    }
-        }
-        MRelationship relation = (MRelationship) relationship;
-        
-        if (relation instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) relation;
+        }       
+        if (relationship instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) relationship;
             List conns = assoc.getConnections();
             if (conns == null || conns.isEmpty())
                 return null;
             return ((MAssociationEnd) conns.get(0)).getType();
         }
-        if (relation instanceof MGeneralization) {
-            MGeneralization gen = (MGeneralization) relation;
+        if (relationship instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) relationship;
             return gen.getChild();
         }
-        if (relation instanceof MDependency) {
-            MDependency dep = (MDependency) relation;
+        if (relationship instanceof MDependency) {
+            MDependency dep = (MDependency) relationship;
             Collection col = dep.getClients();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
-        if (relation instanceof MFlow) {
-            MFlow flow = (MFlow) relation;
+        if (relationship instanceof MFlow) {
+            MFlow flow = (MFlow) relationship;
             Collection col = flow.getSources();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
-        if (relation instanceof MExtend) {
-            MExtend extend = (MExtend) relation;
+        if (relationship instanceof MExtend) {
+            MExtend extend = (MExtend) relationship;
             return extend.getExtension(); // we have to follow the arrows..
         }
-        if (relation instanceof MInclude) {
-            MInclude include = (MInclude) relation;
+        if (relationship instanceof MInclude) {
+            MInclude include = (MInclude) relationship;
+            // we use modelfacade here to cover up for a messup in NSUML
             return ModelFacade.getBase(include);
+        }
+        if (relationship instanceof CommentEdge) {
+            return ((CommentEdge)relationship).getSource();
         }
         return null;
     }
@@ -1140,6 +1145,8 @@ public class CoreHelper {
      * the connections list.<p>
      *
      * This method also works for links.<p>
+     * <p>This method also works for CommentEdge</p>
+     * TODO: move this method to a generic ModelHelper
      *
      * @param relationship is the relation
      * @return object
@@ -1147,7 +1154,7 @@ public class CoreHelper {
     public Object getDestination(Object relationship) {
         
 	if (!(relationship instanceof MRelationship)
-	    && !(ModelFacade.isALink(relationship))) {
+	    && !(ModelFacade.isALink(relationship)) && !(relationship instanceof CommentEdge)) {
 	    throw new IllegalArgumentException("Argument is not "
 					       + "a relationship");
 	}
@@ -1163,41 +1170,43 @@ public class CoreHelper {
 	    } else
 		return null;        
 	}
+              
         
-        MRelationship relation = (MRelationship) relationship;
-        
-        if (relation instanceof MAssociation) {
-            MAssociation assoc = (MAssociation) relation;
+        if (relationship instanceof MAssociation) {
+            MAssociation assoc = (MAssociation) relationship;
             List conns = assoc.getConnections();
             if (conns.size() <= 1)
                 return null;
             return ((MAssociationEnd) conns.get(1)).getType();
         }
-        if (relation instanceof MGeneralization) {
-            MGeneralization gen = (MGeneralization) relation;
+        if (relationship instanceof MGeneralization) {
+            MGeneralization gen = (MGeneralization) relationship;
             return gen.getParent();
         }
-        if (relation instanceof MDependency) {
-            MDependency dep = (MDependency) relation;
+        if (relationship instanceof MDependency) {
+            MDependency dep = (MDependency) relationship;
             Collection col = dep.getSuppliers();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
-        if (relation instanceof MFlow) {
-            MFlow flow = (MFlow) relation;
+        if (relationship instanceof MFlow) {
+            MFlow flow = (MFlow) relationship;
             Collection col = flow.getTargets();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
         }
-        if (relation instanceof MExtend) {
-            MExtend extend = (MExtend) relation;
+        if (relationship instanceof MExtend) {
+            MExtend extend = (MExtend) relationship;
             return extend.getBase();
         }
-        if (relation instanceof MInclude) {
-            MInclude include = (MInclude) relation;
+        if (relationship instanceof MInclude) {
+            MInclude include = (MInclude) relationship;
             return ModelFacade.getAddition(include);
+        }
+        if (relationship instanceof CommentEdge) {
+            return ((CommentEdge)relationship).getDestination();
         }
         return null;
     }

@@ -1847,4 +1847,11 @@ public class GeneratorPHP4
 
         return null;
     }
+    
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {       
+        return generateState(actionState);
+    }
 }

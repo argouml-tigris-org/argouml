@@ -374,9 +374,7 @@ public class ClassfileImport extends FileImportSupport {
     public boolean initializeModule() {
 
 	// Advertise a little
-	Argo.log.info ("+---------------------------------------+");
-	Argo.log.info ("| Java classfile import module enabled! |");
-	Argo.log.info ("+---------------------------------------+");
+	
 
         return true;
     }

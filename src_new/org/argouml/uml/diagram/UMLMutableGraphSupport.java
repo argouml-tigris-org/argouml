@@ -24,8 +24,14 @@
 
 package org.argouml.uml.diagram;
 
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlException;
+import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
+import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -34,9 +40,13 @@ import org.apache.log4j.Logger;
 
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphSupport;
+import org.tigris.gef.presentation.Fig;
+
+import sun.security.action.GetLongAction;
 
 
 /**
@@ -118,10 +128,12 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     /** The connect method without specifying a connection
      * type is unavailable by default
      */
-    public Object connect(Object fromPort, Object toPort) {
+    public Object connect(Object fromPort, Object toPort) {        
         throw new UnsupportedOperationException("The connect method is "
 						+ "not supported");
     }
+    
+    public abstract Object getNamespace();
 
     /** Contruct and add a new edge of the given kind and connect
      * the given ports.
@@ -175,5 +187,25 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 		  + " made between a " + fromPort.getClass().getName()
 		  + " and a " + toPort.getClass().getName());
         return connection;
+    }
+    
+    
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
+     */
+    public boolean canAddNode(Object node) {
+        if (ModelFacade.isAComment(node)) return true;
+        return false;
+    }
+    
+    
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
+     */
+    public boolean canAddEdge(Object edge) {   
+        if (edge == null) {
+            return false;
+        }
+       return (UmlFactory.getFactory().isConnectionValid(edge.getClass(), CoreHelper.getHelper().getSource(edge), CoreHelper.getHelper().getDestination(edge)));
     }
 }

@@ -197,7 +197,8 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 	    _actionMObject,
 	    _actionMLink,
 	    null,
-	    ActionAddNote.SINGLETON };
+	    _actionComment,
+            _actionCommentLink};
         return actions;
     }
 

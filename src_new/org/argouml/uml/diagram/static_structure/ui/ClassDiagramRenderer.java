@@ -82,6 +82,9 @@ public class ClassDiagramRenderer
         else if (ModelFacade.isAModel(node)) return new FigModel(gm, node);
         else if (ModelFacade.isASubsystem(node)) return new FigSubsystem(gm, node);
         else if (ModelFacade.isAPackage(node)) return new FigPackage(gm, node);
+        else if (ModelFacade.isAComment(node)) {
+            return new FigComment(gm, node);
+        }
         cat.error("TODO ClassDiagramRenderer getFigNodeFor " + node);
         return null;
     }
@@ -162,7 +165,10 @@ public class ClassDiagramRenderer
                 FigDependency depFig = new FigDependency(edge, lay);
                 return depFig;
             }
-        }
+        } else 
+            if (edge instanceof CommentEdge) {
+                return new FigEdgeNote(edge, lay);
+            }
         cat.error("TODO ClassDiagramRenderer getFigEdgeFor");
         return null;
     }

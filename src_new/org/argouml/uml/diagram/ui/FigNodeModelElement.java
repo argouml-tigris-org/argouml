@@ -431,8 +431,7 @@ public abstract class FigNodeModelElement
 		&& getOwner() != null
 		&& (!ModelManagementHelper.getHelper()
 		    .isCyclicOwnership(owningModelelement, getOwner()))
-		&& (!ModelFacade.isANamespace(owningModelelement)
-		    || (CoreHelper.getHelper()
+		&& ((CoreHelper.getHelper()
 			.isValidNamespace(getOwner(),
 					  owningModelelement)))) {
                 ModelFacade.setModelElementContainer(getOwner(), 

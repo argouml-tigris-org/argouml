@@ -285,7 +285,8 @@ public class UMLStateDiagram extends UMLDiagram {
 	    _actionShallowHistoryPseudoState,
 	    _actionDeepHistoryPseudoState,
 	    null,
-	    ActionAddNote.SINGLETON,
+	    _actionComment,
+            _actionCommentLink,
 	    null,
 	};
         return actions;

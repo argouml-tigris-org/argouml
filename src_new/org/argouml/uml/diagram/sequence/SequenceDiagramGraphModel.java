@@ -811,5 +811,13 @@ public class SequenceDiagramGraphModel
         }
         return _interaction;
     }
+    
+    
 
+    /**
+     * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
+     */
+    public Object getNamespace() {
+        return _collaboration;
+    }
 }

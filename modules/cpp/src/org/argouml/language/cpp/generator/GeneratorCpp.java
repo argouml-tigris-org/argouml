@@ -3073,7 +3073,14 @@ public class GeneratorCpp extends Generator2
     {
         this._verboseDocs = verbose;
     }
+    
 
 
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {       
+        return generateState(actionState);
+    }
 } /* end class GeneratorCpp */
 

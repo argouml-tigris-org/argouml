@@ -35,9 +35,12 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**
  * This class defines a bridge between the UML meta-model representation of the
@@ -168,11 +171,14 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public boolean canAddNode(Object node) {
         if (node == null) return false;
         if (_nodes.contains(node)) return false;
-        return (ModelFacade.isAStateVertex(node) || ModelFacade.isAPartition(node));
+        return (ModelFacade.isAStateVertex(node) || ModelFacade.isAPartition(node) || ModelFacade.isAComment(node));
     }
 
     /** Return true if the given object is a valid edge in this graph */
     public boolean canAddEdge(Object edge) {
+        if (super.canAddEdge(edge)) {
+            return true;
+        }
         if (edge == null) return false;
         if (_edges.contains(edge)) return false;
         Object end0 = null, end1 = null, state = null;
@@ -273,15 +279,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     /** Contruct and add a new edge of the given kind */
     public Object connect(Object fromPort, Object toPort,
 			  Class edgeClass) {
-        //    try {
-        if (!(ModelFacade.isAStateVertex(fromPort))) {
-            cat.error("internal error not from sv");
-            return null;
-        }
-        if (!(ModelFacade.isAStateVertex(toPort))) {
-            cat.error("internal error not to sv");
-            return null;
-        }
+       
+      
         Object fromSV = /* (MStateVertex) */fromPort;
         Object toSV = /* (MStateVertex) */toPort;
 
@@ -307,7 +306,20 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
                 tr = null;
             }
             return tr;
-        } else {
+        } else
+        if (edgeClass == CommentEdge.class) {
+            try {
+                Object connection = UmlFactory.getFactory().buildConnection(edgeClass, fromPort, null, toPort, null, null);
+                addEdge(connection);
+                return connection;
+            }
+            catch (Exception ex) {
+                // fail silently                
+            }
+            return null;
+        }
+        
+        else {
             cat.debug("wrong kind of edge in StateDiagram connect3 "
                     + edgeClass);
             return null;

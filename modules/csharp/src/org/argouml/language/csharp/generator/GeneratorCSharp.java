@@ -1394,6 +1394,13 @@ public class GeneratorCSharp extends Generator2
     public String getModuleAuthor() { return "Mike Lipkie"; }
     public String getModuleVersion() { return "0.1.0"; }
     public String getModuleKey() { return "module.language.csharp.generator"; }
+    
+    /**
+     * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
+     */
+    public String generateActionState(Object actionState) {       
+        return generateState(actionState);
+    }
 
 
 } /* end class GeneratorCSharp */

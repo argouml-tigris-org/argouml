@@ -280,6 +280,7 @@ public abstract class PropPanel
     /**
        This method (and addMElementListener) can be overriden if the
        prop panel wants to monitor additional objects.
+       ONLY use it if the target is a NSUML modelelement
 
        @param target target of prop panel
 

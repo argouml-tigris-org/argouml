@@ -41,6 +41,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
@@ -232,6 +233,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return true if the given object is a valid node in this graph */
     public boolean canAddNode(Object node) {
+        if (super.canAddNode(node) && !_nodes.contains(node)) return true;
 	if (_nodes.contains(node)) return false;
         // TODO This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
@@ -243,7 +245,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     }
 
     /** Return true if the given object is a valid edge in this graph */
-    public boolean canAddEdge(Object edge)  {
+    public boolean canAddEdge(Object edge)  {        
 	if (edge == null) return false;
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
@@ -274,10 +276,14 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    if (linkEnd0 == null || linkEnd1 == null) return false;
 	    end0 = ModelFacade.getInstance(linkEnd0);
 	    end1 = ModelFacade.getInstance(linkEnd1);
+	} else if (edge instanceof CommentEdge) {
+	    end0 = ((CommentEdge)edge).getSource();
+	    end1 = ((CommentEdge)edge).getDestination();
 	}
-	if (end0 == null || end1 == null) return false;
+	if (end0 == null || end1 == null) return false;	
 	if (!_nodes.contains(end0)) return false;
-	if (!_nodes.contains(end1)) return false;
+	if (!_nodes.contains(end1)) return false;	
+        
 	return true;
     }
 

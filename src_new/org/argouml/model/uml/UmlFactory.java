@@ -44,6 +44,7 @@ import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.datatypes.DataTypesFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
@@ -246,7 +247,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	{ModelFacade.EXTEND,           ModelFacade.USE_CASE},
 	{ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
 	{ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
-	{ModelFacade.LINK,             ModelFacade.OBJECT}
+	{ModelFacade.LINK,             ModelFacade.OBJECT},
+	{CommentEdge.class,            ModelFacade.MODELELEMENT,
+	 ModelFacade.COMMENT},
+	{CommentEdge.class,            ModelFacade.COMMENT,
+         ModelFacade.MODELELEMENT},
+        {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX}
     };
 
     /** Singleton instance.
@@ -548,6 +554,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
             connection = getUseCases().buildExtend(toElement, fromElement);
         } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude(fromElement, toElement);
+        } else if (connectionType == CommentEdge.class) {
+            connection = getCore().buildCommentConnection(fromElement, toElement);
         }
     
         if (connection == null) {
@@ -561,6 +569,13 @@ public class UmlFactory extends AbstractUmlModelFactory {
         return connection;
     }
     
+    /**
+     * Checks if some type of connection is valid between two elements
+     * @param connectionType
+     * @param fromElement
+     * @param toElement
+     * @return
+     */
     public boolean isConnectionValid(Object connectionType,
                      Object fromElement, Object toElement)
     {

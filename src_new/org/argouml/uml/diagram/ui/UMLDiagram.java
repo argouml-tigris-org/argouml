@@ -38,8 +38,10 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.ModeBroom;
 import org.tigris.gef.base.ModeCreateFigCircle;
 import org.tigris.gef.base.ModeCreateFigInk;
@@ -49,6 +51,7 @@ import org.tigris.gef.base.ModeCreateFigRRect;
 import org.tigris.gef.base.ModeCreateFigRect;
 import org.tigris.gef.base.ModeCreateFigSpline;
 import org.tigris.gef.base.ModeCreateFigText;
+import org.tigris.gef.base.ModeCreatePolyEdge;
 import org.tigris.gef.base.ModeSelect;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.toolbar.ToolBarFactory;
@@ -76,6 +79,24 @@ public abstract class UMLDiagram
 
     ////////////////////////////////////////////////////////////////
     // actions for toolbar
+    
+    /**
+     * Tool to add a comment node.<p>
+     */
+    protected static Action _actionComment =
+	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
+
+    /**
+     * Tool to create an relationship between a comment node and some other node
+     * using a polyedge.<p>
+     */
+    protected static Action _actionCommentLink = new RadioAction(
+        new CmdSetMode(
+            ModeCreatePolyEdge.class,  
+            "edgeClass",
+            CommentEdge.class,
+            "CommentLink"));
+
 
     protected static Action _actionSelect =
         new CmdSetMode(ModeSelect.class, "Select");
