@@ -361,6 +361,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
             new ObjectCreateInfo(MActor.class, factory, "createActor"));
         elements.put(Uml.CLASS,
             new ObjectCreateInfo(MClass.class, factory, "createClass"));
+        elements.put(Uml.EXCEPTION,
+            new ObjectCreateInfo(MException.class,
+                factory,
+                "createException"));
         elements.put(Uml.CLASSIFIER,
             new ObjectCreateInfo(
                 MClassifier.class,
