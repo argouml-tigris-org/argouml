@@ -27,9 +27,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.net.URL;
 import java.util.Hashtable;
 
@@ -38,6 +38,10 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.xml.argo.ArgoParser;
+import org.argouml.xml.argo.DiagramMemberFilePersister;
+import org.argouml.xml.argo.ModelMemberFilePersister;
+import org.argouml.xml.argo.TodoListMemberFilePersister;
+import org.argouml.xml.argo.XmlInputStream;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -48,10 +52,10 @@ import org.xml.sax.SAXException;
  * 
  * @author Bob Tarling
  */
-public class ArgoFilePersister extends AbstractFilePersister {
+public class UmlFilePersister extends AbstractFilePersister {
     
     private static final Logger LOG = 
-        Logger.getLogger(ArgoFilePersister.class);
+        Logger.getLogger(UmlFilePersister.class);
     
     private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo2.tee";
 
@@ -59,21 +63,21 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * The constructor.
      *  
      */
-    public ArgoFilePersister() {
+    public UmlFilePersister() {
     }
     
     /**
      * @see org.argouml.kernel.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
-        return "argo";
+        return "uml";
     }
     
     /**
      * @see org.argouml.kernel.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
-        return "Argo project file";
+        return "ArgoUML project file";
     }
     
     /**
@@ -98,7 +102,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
             tempFile.delete();
         }
         
-        Writer writer = null;
+        PrintWriter writer = null;
         try {
             if (file.exists()) {
                 copyFile(tempFile, file);
@@ -114,15 +118,50 @@ public class ArgoFilePersister extends AbstractFilePersister {
             writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
                         stream, "UTF-8")));
-    
+            
+            Integer indent = new Integer(4);
+
+            writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
+            // Write out header section
             try {
                 Hashtable templates = TemplateReader.getInstance()
                     .read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
-                expander.expand(writer, project, "", "");
+                expander.expand(writer, project, "  ", "");
             } catch (ExpansionException e) {
                 throw new SaveException(e);
             }
+
+            // Write out non xmi sections
+            int size = project.getMembers().size();
+            for (int i = 0; i < size; i++) {
+                ProjectMember projectMember = 
+                    (ProjectMember) project.getMembers().elementAt(i);
+                if (projectMember.getType().equalsIgnoreCase("xmi")) {
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Saving member of type: "
+                              + ((ProjectMember) project.getMembers()
+                                    .elementAt(i)).getType());
+                    }
+                    projectMember.save(writer, indent);
+                }
+            }
+            
+            for (int i = 0; i < size; i++) {
+                ProjectMember projectMember = 
+                    (ProjectMember) project.getMembers().elementAt(i);
+                if (!projectMember.getType().equalsIgnoreCase("xmi")) {
+                    if (LOG.isInfoEnabled()) {
+                        LOG.info("Saving member of type: "
+                              + ((ProjectMember) project.getMembers()
+                                    .elementAt(i)).getType());
+                    }
+                    projectMember.save(writer, indent);
+                }
+            }
+            
+            writer.println("</uml>");
+            
             writer.flush();
             
             stream.close();
@@ -146,9 +185,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
             }
         } catch (Exception e) {
             LOG.error("Exception occured during save attempt", e);
-            try {
-                writer.close();
-            } catch (IOException ex) { }
+            writer.close();
             
             // frank: in case of exception 
             // delete name and mv name+"#" back to name if name+"#" exists
@@ -159,11 +196,7 @@ public class ArgoFilePersister extends AbstractFilePersister {
             throw new SaveException(e);
         }
 
-        try {
-            writer.close();
-        } catch (IOException ex) {
-            LOG.error("Failed to close save output writer", ex);
-        }
+        writer.close();
     }
     
     /**
@@ -171,12 +204,31 @@ public class ArgoFilePersister extends AbstractFilePersister {
      */
     public Project loadProject(URL url) throws OpenException {
         try {
-            // read the argo 
-            // the "true" means that members should be added.
+            InputStream inputStream =
+                        new XmlInputStream(url.openStream(), "argo");
+
             ArgoParser parser = new ArgoParser();
-            parser.readProject(url, true);
+            parser.readProject(url, inputStream, false);
+            int diagramCount = parser.getDiagramCount();
             Project p = parser.getProject();
+            
             parser.setProject(null); // clear up project refs
+
+            LOG.info(diagramCount + " diagram models in argo section");
+            ModelMemberFilePersister modelPersister
+                = new ModelMemberFilePersister(url, p);
+            modelPersister.load(0);
+            
+            for (int i = 0; i < diagramCount; ++i) {
+                DiagramMemberFilePersister diagramPersister
+                    = new DiagramMemberFilePersister(url, p);
+                diagramPersister.load(i);
+            }
+            
+            TodoListMemberFilePersister todoPersister
+                = new TodoListMemberFilePersister(url, p);
+            todoPersister.load(0);
+        
             p.postLoad();
             return p;
         } catch (IOException e) {

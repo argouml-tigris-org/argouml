@@ -27,11 +27,11 @@ package org.argouml.xml.argo;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
@@ -48,11 +48,11 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    /**
-     * The singleton for this class.
-     */
-    private static final ArgoParser INSTANCE = new ArgoParser();
-
+//    /**
+//     * The singleton for this class.
+//     */
+//    private static final ArgoParser INSTANCE = new ArgoParser();
+//
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -63,23 +63,20 @@ public class ArgoParser extends SAXParserBase {
     private boolean addMembers = true;
 
     private URL url;
+    private int diagramCount;
 
-    private boolean lastLoadStatus = true;
-
-    private String lastLoadMessage;
-
-    /**
-     * @return the singleton
-     */
-    public static final ArgoParser getInstance() {
-        return INSTANCE;   
-    }
+//    /**
+//     * @return the singleton
+//     */
+//    public static final ArgoParser getInstance() {
+//        return INSTANCE;   
+//    }
     
     /**
      * The constructor.
      * 
      */
-    private ArgoParser() {
+    public ArgoParser() {
         super();
     }
 
@@ -141,8 +138,8 @@ public class ArgoParser extends SAXParserBase {
 
         url = theUrl;
 
-        lastLoadStatus = true;
-        lastLoadMessage = "OK";
+        LastLoadInfo.getInstance().setLastLoadMessage("OK");
+        LastLoadInfo.getInstance().setLastLoadStatus(true);
 
         try {
             LOG.info("=======================================");
@@ -150,22 +147,22 @@ public class ArgoParser extends SAXParserBase {
             project = new Project(url);
             parse(is);
         } catch (SAXException e) {
-            lastLoadStatus = false;
+            LastLoadInfo.getInstance().setLastLoadStatus(false);
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
-            lastLoadMessage = e.toString();
+            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
             throw e;
         } catch (IOException e) {
-            lastLoadStatus = false;
+            LastLoadInfo.getInstance().setLastLoadStatus(false);
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
-            lastLoadMessage = e.toString();
+            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
             throw e;
         } catch (ParserConfigurationException e) {
-            lastLoadStatus = false;
+            LastLoadInfo.getInstance().setLastLoadStatus(false);
             LOG.error("Exception reading project================");
             LOG.error(is.toString());
-            lastLoadMessage = e.toString();
+            LastLoadInfo.getInstance().setLastLoadMessage(e.toString());
             throw e;
         }
     }
@@ -194,9 +191,6 @@ public class ArgoParser extends SAXParserBase {
             LOG.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         }
         switch (tokens.toToken(e.getName(), true)) {
-        case ArgoTokenTable.TOKEN_MEMBER:
-            handleMember(e);
-            break;
         case ArgoTokenTable.TOKEN_ARGO:
             handleArgo(e);
             break;
@@ -219,6 +213,9 @@ public class ArgoParser extends SAXParserBase {
             LOG.debug("NOTE: ArgoParser handleEndTag:" + e.getName() + ".");
         }
         switch (tokens.toToken(e.getName(), false)) {
+        case ArgoTokenTable.TOKEN_MEMBER:
+            handleMember(e);
+            break;
         case ArgoTokenTable.TOKEN_AUTHORNAME:
             handleAuthorname(e);
             break;
@@ -300,6 +297,9 @@ public class ArgoParser extends SAXParserBase {
      */
     protected void handleMember(XMLElement e) throws SAXException {
         LOG.info("Handle member");
+        if (e.getAttribute("type").equals("pgml")) {
+            ++diagramCount;
+        }
         if (addMembers) {
             loadProjectMember(e);
         }
@@ -316,40 +316,6 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @return the status of the last load attempt. Used for junit tests.
-     */
-    public boolean getLastLoadStatus() {
-        return lastLoadStatus;
-    }
-
-    /**
-     * Set the status of the last load attempt. Used for junit tests.
-     *
-     * @param status the status of the last load attempt
-     */
-    public void setLastLoadStatus(boolean status) {
-        lastLoadStatus = status;
-    }
-
-    /**
-     * Get the last message which caused loading to fail. Used for junit tests.
-     *
-     * @return the last message which caused loading to fail
-     */
-    public String getLastLoadMessage() {
-        return lastLoadMessage;
-    }
-
-    /**
-     * Set the last load message. Used for junit tests.
-     *
-     * @param msg the last load message
-     */
-    public void setLastLoadMessage(String msg) {
-        lastLoadMessage = msg;
-    }
-
-    /**
      * @param project the project to load into
      * @param theUrl the URL to load from
      * @throws OpenException if opening the URL fails
@@ -362,22 +328,26 @@ public class ArgoParser extends SAXParserBase {
         
         MemberFilePersister memberParser = null;
         
-        HashMap attributeMap = new HashMap();
         if (type.equals("xmi")) {
             LOG.info("Creating XML loader");
             memberParser = new ModelMemberFilePersister(url, project);
         } else if (type.equals("pgml")) {
             LOG.info("Creating PGML loader");
-            attributeMap.put("name", name);
-            attributeMap.put("type", "pgml");
             memberParser = new DiagramMemberFilePersister(url, project);
         } else if (type.equals("todo")) {
             LOG.info("Creating todo loader");
-            memberParser = new TodoListMemberFilePersister();
+            memberParser = new TodoListMemberFilePersister(url, project);
         }
         LOG.info("Loading member");
-        memberParser.load(attributeMap);
+        //memberParser.load(attributeMap);
         LOG.info("Member loaded");
     }
 
+    /**
+     * Get the numer of diagram members read.
+     * @return the numer of diagram members read.
+     */
+    public int getDiagramCount() {
+        return diagramCount;
+    }
 } /* end class ArgoParser */

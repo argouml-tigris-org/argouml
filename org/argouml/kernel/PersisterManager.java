@@ -55,7 +55,7 @@ public class PersisterManager {
     public PersisterManager() {
         // These are the file formats I know about:
         defaultPersister = new ZargoFilePersister();
-        otherPersisters.add(new ArgoFilePersister());
+        otherPersisters.add(new UmlFilePersister());
         otherPersisters.add(new XmiFilePersister());
     }
 

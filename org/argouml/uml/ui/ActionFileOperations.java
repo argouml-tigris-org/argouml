@@ -33,13 +33,13 @@ import javax.swing.JOptionPane;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.OpenException;
 import org.argouml.kernel.PersisterManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectFilePersister;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.xml.argo.ArgoParser;
 
 /**
  * This class provides common functions for all FileOperations 
@@ -182,7 +182,7 @@ public abstract class ActionFileOperations extends UMLAction {
                         + "requirements of argouml and how to install it.");
                 p = oldProject;
             } finally {
-                if (!ArgoParser.getInstance().getLastLoadStatus()) {
+                if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
                     p = oldProject;
                     success = false;
                     showErrorPane(
@@ -192,7 +192,7 @@ public abstract class ActionFileOperations extends UMLAction {
                             + "Project file probably corrupt from "
                             + "an earlier version or ArgoUML.\n"
                             + "Error message:\n"
-                            + ArgoParser.getInstance().getLastLoadMessage()
+                            + LastLoadInfo.getInstance().getLastLoadMessage()
                             + "\n"
                             + "Since the project was incorrectly "
                             + "saved some things might be missing "
