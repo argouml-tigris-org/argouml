@@ -290,7 +290,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
     /**
      * Sorts the child nodes of node using the current ordering.
      *
-     * Note that UserObject are only available from descendants of
+     * <p>Note: UserObject is only available from descendants of
      * DefaultMutableTreeNode, so any other children couldn't be sorted.
      * Thus these are currently forbidden. But currently no such node is
      * ever inserted into the tree.
@@ -359,7 +359,7 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * Collects the set of children modelElement should have at this point in
      * time. The children are added to newChildren
      *
-     * Note that both newChildren and deps are modified by this function, it
+     * <p>Note: Both newChildren and deps are modified by this function, it
      * is in fact it's primary purpose to modify these collections. It is your
      * responsibility to make sure that they are empty when it is called, or
      * to know what you are doing if they are not.
@@ -418,9 +418,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
      * to only contain the children not already in children and not subsumed
      * by any WeakExplorerNode in children.
      *
-     * Note: newChildren will be modified by this call.
+     * <p>Note: newChildren will be modified by this call.
      *
-     * Note: It is expected that a WeakExplorerNode will not be reused and
+     * <p>Note: It is expected that a WeakExplorerNode will not be reused and
      * thus they will always initially be slated for removal, and only those
      * nodes are in fact used to check subsumption of new nodes. New nodes
      * are not checked among themselves for subsumtion.
