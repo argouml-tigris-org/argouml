@@ -77,10 +77,10 @@ public class LinkedHashMap extends java.util.HashMap {
      * 
      * @param initialCapacity the initial capacity
      * @param loadFactor the load factor
-     * @param accessOrder ignored TODO: Is this intentional?
+     * @param ao (original name: accessOrder) ignored TODO: Is this intentional?
      */
     public LinkedHashMap(int initialCapacity, float loadFactor,
-			 boolean accessOrder) {
+			 boolean ao) {
         super(initialCapacity, loadFactor);
     }
     
@@ -175,12 +175,12 @@ public class LinkedHashMap extends java.util.HashMap {
     }
     
     private static class Entry implements Map.Entry {
-	Object key;
-	Object value;
+	private Object key;
+	private Object value;
 
-	Entry(Object key, Object value) {
-	    this.key = key;
-	    this.value = value;
+	Entry(Object k, Object v) {
+	    this.key = k;
+	    this.value = v;
 	}
 
 	protected Object clone() {
@@ -195,9 +195,12 @@ public class LinkedHashMap extends java.util.HashMap {
 	    return value;
 	}
 
-	public Object setValue(Object value) {
+	/**
+	 * @see java.util.Map.Entry#setValue(java.lang.Object)
+	 */
+	public Object setValue(Object v) {
 	    Object oldValue = this.value;
-	    this.value = value;
+	    this.value = v;
 	    return oldValue;
 	}
 
@@ -227,13 +230,17 @@ public class LinkedHashMap extends java.util.HashMap {
     
     private class LhmSet extends LinkedHashSet {
         
-        int modCount = 0;
+        private int modCount = 0;
         
         public LhmSet() {
             super();
             //list = new LinkedList();
         }
 
+        void incrementModCount() {
+            modCount++;
+        }
+        
         LhmSet(Collection c) {
             super(c);
             //list = new LinkedList(c);
@@ -270,8 +277,8 @@ public class LinkedHashMap extends java.util.HashMap {
 
             private int expectedModCount = modCount;
             
-            SetIterator(Iterator listIterator) {
-                this.listIterator = listIterator;
+            SetIterator(Iterator listit) {
+                this.listIterator = listit;
             }
 
             public boolean hasNext() {
@@ -307,7 +314,7 @@ public class LinkedHashMap extends java.util.HashMap {
             int index = indexOf(o);
             boolean changed = super.remove(o);
             if (changed) {
-                ++modCount;
+                incrementModCount();
                 entrySet.remove(index);
                 values.remove(index);
             }
@@ -324,7 +331,7 @@ public class LinkedHashMap extends java.util.HashMap {
             int index = indexOf(o);
             boolean changed = super.remove(o);
             if (changed) {
-                ++modCount;
+                incrementModCount();
                 keySet.remove(index);
                 values.remove(index);
             }
@@ -375,8 +382,8 @@ public class LinkedHashMap extends java.util.HashMap {
             
             private int expectedModCount = modCount;
         
-            ValuesIterator(Iterator listIterator) {
-                this.listIterator = listIterator;
+            ValuesIterator(Iterator listit) {
+                this.listIterator = listit;
             }
 
             public boolean hasNext() {

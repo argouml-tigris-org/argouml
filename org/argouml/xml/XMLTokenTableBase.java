@@ -63,8 +63,8 @@ public abstract class XMLTokenTableBase {
 
     /**
      * @param s the string
-     * @param push
-     * @return
+     * @param push 
+     * @return the token
      */
     public final int toToken(String s, boolean push) {
 	if (push) openTags[++numOpen] = s;
@@ -111,6 +111,10 @@ public abstract class XMLTokenTableBase {
         }
     }
     
+    /**
+     * @param token the given token
+     * @return true if the token is present
+     */
     public boolean contains(String token) {
         return tokens.containsKey(token);
     }

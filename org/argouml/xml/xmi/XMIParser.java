@@ -60,35 +60,54 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected Object _curModel = null;
-    protected Project _proj = null;
-    protected HashMap _UUIDRefs = null;
+    private Object curModel = null;
+    private Project proj = null;
+    private HashMap uUIDRefs = null;
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
+    /**
+     * The constructor.
+     * 
+     */
     protected XMIParser() { /* super(); */
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return the current model
+     */
     public Object/*MModel*/ getCurModel() {
-        return _curModel;
+        return curModel;
     }
+    
+    /**
+     * @param p the project
+     */
     public void setProject(Project p) {
-        _proj = p;
+        proj = p;
     }
+    
+    /**
+     * @return the UUID 
+     */
     public HashMap getUUIDRefs() {
-        return _UUIDRefs;
+        return uUIDRefs;
     }
 
     ////////////////////////////////////////////////////////////////
     // main parsing methods
 
+    /**
+     * The main parsing method.
+     * 
+     * @param p the project
+     * @param url the URL
+     * @throws IOException when there is an IO error
+     */
     public synchronized void readModels(Project p, URL url) throws IOException {
 
-        _proj = p;
+        proj = p;
 
         LOG.info("=======================================");
         LOG.info("== READING MODEL " + url);
@@ -96,12 +115,12 @@ public class XMIParser {
             XMIReader reader = new XMIReader();
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
-            _curModel = reader.parseToModel(source);
+            curModel = reader.parseToModel(source);
             if (reader.getErrors()) {
             	throw new IOException("XMI file " + url.toString() 
                         + " could not be parsed.");
             }
-            _UUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
+            uUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
 
         }
         catch (SAXException saxEx) {
@@ -124,10 +143,10 @@ public class XMIParser {
         LOG.info("=======================================");
 
         
-	_proj.addModel(_curModel);
+	proj.addModel(curModel);
         
 
-        Collection ownedElements = ModelFacade.getOwnedElements(_curModel);
+        Collection ownedElements = ModelFacade.getOwnedElements(curModel);
         Iterator oeIterator = ownedElements.iterator();
 
         while (oeIterator.hasNext()) {

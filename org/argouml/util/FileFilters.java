@@ -43,56 +43,59 @@ public class FileFilters {
     /**
      * This is a filter for uncompressed project format.
      */
-    public static final SuffixFilter UncompressedFileFilter = new
+    public static final SuffixFilter UNCOMPRESSED_FILE_FILTER = new
         SuffixFilter(FileConstants.UNCOMPRESSED_FILE_EXT.substring(1), 
                      "Argo uncompressed project file");
   
     /**
      * This is a filter for compressed project format.
      */
-    public static final SuffixFilter CompressedFileFilter = new
+    public static final SuffixFilter COMPRESSED_FILE_FILTER = new
         SuffixFilter(FileConstants.COMPRESSED_FILE_EXT.substring(1), 
                      "Argo compressed project file");
   
     /**
      * This is a filter for xmi files.
      */
-    public static final SuffixFilter XMIFilter = new
+    public static final SuffixFilter XMI_FILTER = new
         SuffixFilter("xmi", "XML Metadata Interchange");
   
     /** This is for Precision Graphics Markup Language
      * a very old and now mostly dead standard.
      * see W3C.org for more info
      */  
-    public static final SuffixFilter PGMLFilter = new
+    public static final SuffixFilter PGML_FILTER = new
         SuffixFilter("pgml", "Argo diagram");
 
     /** This should read or write a config file
      * but as yet not fully implemented.
      */  
-    public static final SuffixFilter ConfigFilter = new
+    public static final SuffixFilter CONFIG_FILTER = new
         SuffixFilter("config", "Argo configutation file");
 
     /** History Filter...Argo has trouble with remembering
      * things at times. Maybe this filter helps.
      * status is unknown. last reveiwed 8 months ago.
      */  
-    public static final SuffixFilter HistFilter = new
+    public static final SuffixFilter HIST_FILTER = new
         SuffixFilter("hist", "Argo history file");
 
-    public static final SuffixFilter LogFilter = new
+    /**
+     * Log file filter.
+     */
+    public static final SuffixFilter LOG_FILTER = new
         SuffixFilter("log", "Argo usage log");
 
     /** Java Source File Filter */
-    public static final SuffixFilter JavaFilter = new
+    public static final SuffixFilter JAVA_FILE_FILTER = new
         SuffixFilter("java", "Java Source File");
 
     /** Java Class File Filter */
-    public static final SuffixFilter JavaClassFilter = new
+    public static final SuffixFilter JAVA_CLASS_FILTER = new
         SuffixFilter("class", "Java Class File");
 
     /** Java JAR File Filter */
-    public static final SuffixFilter JavaJarFilter = new
+    public static final SuffixFilter JAVA_JAR_FILTER = new
         SuffixFilter("jar", "Java JAR File");
 
     /** This writes the GIF file, known issues
@@ -100,13 +103,19 @@ public class FileFilters {
      * http://argouml.tigris.org/issues/show_bug.cgi?id=407
      *
      */  
-    public static final SuffixFilter GIFFilter = new
+    public static final SuffixFilter GIF_FILTER = new
         SuffixFilter("gif", "GIF image");
 
-    public static final SuffixFilter PSFilter = new
+    /**
+     * This writes a Postscript file.
+     */
+    public static final SuffixFilter PS_FILTER = new
         SuffixFilter("ps", "PostScript file");
 
-    public static final SuffixFilter EPSFilter = new
+    /**
+     * This writes an E-Postscript file.
+     */
+    public static final SuffixFilter EPS_FILTER = new
         SuffixFilter("eps", "Encapsulated PostScript file");
 
     /** SVG is the standard set by the W3C re vector graphics
@@ -129,11 +138,11 @@ public class FileFilters {
      * behaviors of a class for example in state or
      * sequence diagrams.
      */  
-    public static final SuffixFilter SVGFilter = new
+    public static final SuffixFilter SVG_FILTER = new
         SuffixFilter("svg", "Scalable Vector Graphics file");
   
     /** Filter for IDL files */
-    public static final SuffixFilter IDLFilter = new
+    public static final SuffixFilter IDL_FILTER = new
 		SuffixFilter("idl", "Interface Definition Language file");
     
     /**

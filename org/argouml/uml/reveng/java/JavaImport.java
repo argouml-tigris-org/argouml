@@ -101,7 +101,7 @@ public class JavaImport extends FileImportSupport {
      * @return SuffixFilter[] files with these suffixes will be processed.
      */
     public SuffixFilter[] getSuffixFilters() {
-	SuffixFilter[] result = {FileFilters.JavaFilter};
+	SuffixFilter[] result = {FileFilters.JAVA_FILE_FILTER};
 	return result;
     }
 	
