@@ -306,36 +306,6 @@ public class NavigatorPane
         _navPerspectivesChanged++;
     }
     
-    /** called when the user clicks once on an item in the tree.
-     * used only to gather stats.
-     */
-    private void mySingleClick(int row, TreePath path) {
-System.out.println("mySingleClick");
-        mouseClick(row, path);
-        _clicksInNavPane++;
-    }
-    
-    /** needs documenting */
-    private void mouseClick(int row, TreePath path) {
-        System.out.println("mouseClick");
-        Object sel = getSelectedObject();
-        if (sel == null)
-            return;
-        addToHistory(sel);
-        ProjectBrowser.TheInstance.setTarget(sel);
-        repaint();
-    }
-    
-    /** called when the user clicks twice on an item in the tree.
-     * used only to gather stats.
-     */
-    private void myDoubleClick(int row, TreePath path) {
-System.out.println("myDoubleClick");
-        mouseClick(row, path);
-        _clicksInNavPane += 2;
-        repaint();
-    }
-    
     // ------------- history methods --------------------
     
     /** history method - to be moved into some HistoryManager
