@@ -48,7 +48,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 public class CrNoInstanceVariables extends CrUML {
 
   public CrNoInstanceVariables() {
-    setHeadline("Add MInstance Variables to <ocl>self</ocl>");
+    setHeadline("Add Instance Variables to <ocl>self</ocl>");
     sd("You have not yet specified instance variables for <ocl>self</ocl>. "+
        "Normally classes have instance variables that store state "+
        "information for each instance. Classes that provide only "+
