@@ -83,7 +83,8 @@ interface PropertyOperation {
  *         new PropertyOperation() {
  *             public void found(Object element, String value) {
  *                 if (ModelFacade.isAStructuralFeature(element))
- *                     ModelFacade.setChangeable(element, (value != null &amp;&amp; value
+ *                     ModelFacade.setChangeable(element, 
+ *                          (value != null &amp;&amp; value
  *                             .equalsIgnoreCase(&quot;false&quot;)));
  *             }
  *         });
@@ -162,35 +163,28 @@ public class ParserDisplay extends Parser {
 
     /**
      * The standard error etc. logger
-     * 
-     * @deprecated since V0.15.4. Replaced by the private LOG.
-     */
-    protected static final Logger _cat = Logger.getLogger(ParserDisplay.class);
-
-    /**
-     * The standard error etc. logger
      */
     private static final Logger LOG = Logger.getLogger(ParserDisplay.class);
 
     /** The array of special properties for attributes */
-    private PropertySpecialString _attributeSpecialStrings[];
+    private PropertySpecialString attributeSpecialStrings[];
 
     /** The vector of CustomSeparators to use when tokenizing attributes */
-    private Vector _attributeCustomSep;
+    private Vector attributeCustomSep;
 
     /** The array of special properties for operations */
-    private PropertySpecialString _operationSpecialStrings[];
+    private PropertySpecialString operationSpecialStrings[];
 
     /** The vector of CustomSeparators to use when tokenizing attributes */
-    private Vector _operationCustomSep;
+    private Vector operationCustomSep;
 
     /** The vector of CustomSeparators to use when tokenizing parameters */
-    private Vector _parameterCustomSep;
+    private Vector parameterCustomSep;
 
     /**
      * The character with a meaning as a visibility at the start of an attribute
      */
-    private static final String visibilityChars = "+#-";
+    private static final String VISIBILITYCHARS = "+#-";
 
     /**
      * Constructs the object contained in SINGLETON and initializes some
@@ -199,8 +193,8 @@ public class ParserDisplay extends Parser {
      * @see SINGLETON
      */
     private ParserDisplay() {
-        _attributeSpecialStrings = new PropertySpecialString[2];
-        _attributeSpecialStrings[0] = new PropertySpecialString("frozen",
+        attributeSpecialStrings = new PropertySpecialString[2];
+        attributeSpecialStrings[0] = new PropertySpecialString("frozen",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         if (ModelFacade.isAStructuralFeature(element)) {
@@ -214,7 +208,7 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 });
-        _attributeSpecialStrings[1] = new PropertySpecialString("addonly",
+        attributeSpecialStrings[1] = new PropertySpecialString("addonly",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         if (ModelFacade.isAStructuralFeature(element)) {
@@ -228,13 +222,13 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 });
-        _attributeCustomSep = new Vector();
-        _attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-        _attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-        _attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+        attributeCustomSep = new Vector();
+        attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
-        _operationSpecialStrings = new PropertySpecialString[8];
-        _operationSpecialStrings[0] = new PropertySpecialString("sequential",
+        operationSpecialStrings = new PropertySpecialString[8];
+        operationSpecialStrings[0] = new PropertySpecialString("sequential",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         if (ModelFacade.isAOperation(element)) {
@@ -243,7 +237,7 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 });
-        _operationSpecialStrings[1] = new PropertySpecialString("guarded",
+        operationSpecialStrings[1] = new PropertySpecialString("guarded",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
@@ -253,7 +247,7 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setConcurrency(element, kind);
                     }
                 });
-        _operationSpecialStrings[2] = new PropertySpecialString("concurrent",
+        operationSpecialStrings[2] = new PropertySpecialString("concurrent",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
@@ -263,7 +257,7 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setConcurrency(element, kind);
                     }
                 });
-        _operationSpecialStrings[3] = new PropertySpecialString("concurrency",
+        operationSpecialStrings[3] = new PropertySpecialString("concurrency",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         Object kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
@@ -275,7 +269,7 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setConcurrency(element, kind);
                     }
                 });
-        _operationSpecialStrings[4] = new PropertySpecialString("abstract",
+        operationSpecialStrings[4] = new PropertySpecialString("abstract",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         boolean isAbstract = true;
@@ -287,7 +281,7 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 });
-        _operationSpecialStrings[5] = new PropertySpecialString("leaf",
+        operationSpecialStrings[5] = new PropertySpecialString("leaf",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         boolean isLeaf = true;
@@ -299,7 +293,7 @@ public class ParserDisplay extends Parser {
                         }
                     }
                 });
-        _operationSpecialStrings[6] = new PropertySpecialString("query",
+        operationSpecialStrings[6] = new PropertySpecialString("query",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         boolean isQuery = true;
@@ -309,7 +303,7 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setQuery(element, isQuery);
                     }
                 });
-        _operationSpecialStrings[7] = new PropertySpecialString("root",
+        operationSpecialStrings[7] = new PropertySpecialString("root",
                 new PropertyOperation() {
                     public void found(Object element, String value) {
                         boolean isRoot = true;
@@ -319,15 +313,15 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setRoot(element, isRoot);
                     }
                 });
-        _operationCustomSep = new Vector();
-        _operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-        _operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-        _operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+        operationCustomSep = new Vector();
+        operationCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        operationCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        operationCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
-        _parameterCustomSep = new Vector();
-        _parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
-        _parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
-        _parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
+        parameterCustomSep = new Vector();
+        parameterCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
+        parameterCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
+        parameterCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -393,7 +387,7 @@ public class ParserDisplay extends Parser {
      *             ParseError.getErrorOffset().
      */
     public void parseModelElement(Object/* MModelElement */me, String text)
-            throws ParseException {
+        throws ParseException {
         MyTokenizer st;
 
         Vector path = null;
@@ -441,7 +435,8 @@ public class ParserDisplay extends Parser {
                 }
             }
         } catch (NoSuchElementException nsee) {
-            throw new ParseException("Unexpected end of element", text.length());
+            throw new ParseException("Unexpected end of element", 
+                    text.length());
         } catch (ParseException pre) {
             throw pre;
         }
@@ -514,9 +509,10 @@ public class ParserDisplay extends Parser {
      *            MOperation The operation on which the editing happened
      * @param text
      *            The string to parse
+     * @throws ParseException 
      */
     public void parseOperationFig(Object cls, Object op, String text)
-            throws ParseException {
+        throws ParseException {
         if (cls == null || op == null) {
             return;
         }
@@ -579,9 +575,10 @@ public class ParserDisplay extends Parser {
      *            MAttribute The attribute on which the editing happened
      * @param text
      *            The string to parse
+     * @throws ParseException
      */
     public void parseAttributeFig(Object cls, Object at, String text)
-            throws ParseException {
+        throws ParseException {
         if (cls == null || at == null) {
             return;
         }
@@ -775,6 +772,8 @@ public class ParserDisplay extends Parser {
      * @throws java.text.ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
+     *
+     *  @see org.argouml.uml.generator.Parser#parseOperation(java.lang.String, java.lang.Object)
      */
     public void parseOperation(String s, Object op) throws ParseException {
         MyTokenizer st;
@@ -790,14 +789,14 @@ public class ParserDisplay extends Parser {
 
         s = s.trim();
 
-        if (s.length() > 0 && visibilityChars.indexOf(s.charAt(0)) >= 0) {
+        if (s.length() > 0 && VISIBILITYCHARS.indexOf(s.charAt(0)) >= 0) {
             visibility = s.substring(0, 1);
             s = s.substring(1);
         }
 
         try {
             st = new MyTokenizer(s, " ,\t,<<,>>,:,=,{,},\\,",
-                    _operationCustomSep);
+                    operationCustomSep);
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)
@@ -866,7 +865,8 @@ public class ParserDisplay extends Parser {
                                     + "two types", st.getTokenIndex());
 
                         if (token.length() > 0
-                                && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+                                && (token.charAt(0) == '\"' 
+                                    || token.charAt(0) == '\''))
                             throw new ParseException("Type cannot be quoted",
                                     st.getTokenIndex());
 
@@ -881,7 +881,8 @@ public class ParserDisplay extends Parser {
                                     st.getTokenIndex());
 
                         if (token.length() > 0
-                                && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+                                && (token.charAt(0) == '\"' 
+                                    || token.charAt(0) == '\''))
                             throw new ParseException(
                                     "Name or visibility cannot" + " be quoted",
                                     st.getTokenIndex());
@@ -895,7 +896,8 @@ public class ParserDisplay extends Parser {
                         if (name == null
                                 && visibility == null
                                 && token.length() > 1
-                                && visibilityChars.indexOf(token.charAt(0)) >= 0) {
+                                && VISIBILITYCHARS.indexOf(token.charAt(0)) 
+                                                    >= 0) {
                             visibility = token.substring(0, 1);
                             token = token.substring(1);
                         }
@@ -950,7 +952,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (properties != null)
-            setProperties(op, properties, _operationSpecialStrings);
+            setProperties(op, properties, operationSpecialStrings);
 
         if (stereotype != null) {
             stereotype = stereotype.trim();
@@ -995,9 +997,9 @@ public class ParserDisplay extends Parser {
      *             ParseError.getErrorOffset().
      */
     private void parseParamList(Object op, String param, int paramOffset)
-            throws ParseException {
+        throws ParseException {
         MyTokenizer st = new MyTokenizer(param, " ,\t,:,=,\\,",
-                _parameterCustomSep);
+                parameterCustomSep);
         Collection origParam = ModelFacade.getParameters(op);
         Object ns = ModelFacade.getModel(op);
         if (ModelFacade.isAOperation(op)) {
@@ -1151,7 +1153,7 @@ public class ParserDisplay extends Parser {
      * 
      * @param f
      *            MAttribute
-     * @param s
+     * @param s the string to be parsed
      * @return String
      * @deprecated Since 0.15.1, was probably part of the old parsing strategy
      *             which arguably wasn't a strategy and using it is a bad idea.
@@ -1226,6 +1228,8 @@ public class ParserDisplay extends Parser {
      * @throws java.text.ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
+     * 
+     * @see org.argouml.uml.generator.Parser#parseAttribute(java.lang.String, java.lang.Object)
      */
     public void parseAttribute(String s, Object attr) throws ParseException {
 
@@ -1243,14 +1247,14 @@ public class ParserDisplay extends Parser {
         MyTokenizer st;
 
         s = s.trim();
-        if (s.length() > 0 && visibilityChars.indexOf(s.charAt(0)) >= 0) {
+        if (s.length() > 0 && VISIBILITYCHARS.indexOf(s.charAt(0)) >= 0) {
             visibility = s.substring(0, 1);
             s = s.substring(1);
         }
 
         try {
             st = new MyTokenizer(s, " ,\t,<<,>>,[,],:,=,{,},\\,",
-                    _attributeCustomSep);
+                    attributeCustomSep);
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
                 if (" ".equals(token) || "\t".equals(token)
@@ -1343,7 +1347,8 @@ public class ParserDisplay extends Parser {
                                     "Attribute cannot have two" + " types", st
                                             .getTokenIndex());
                         if (token.length() > 0
-                                && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+                                && (token.charAt(0) == '\"' 
+                                    || token.charAt(0) == '\''))
                             throw new ParseException("Type cannot be quoted",
                                     st.getTokenIndex());
                         if (token.length() > 0 && token.charAt(0) == '(')
@@ -1357,7 +1362,8 @@ public class ParserDisplay extends Parser {
                             throw new ParseException("Extra text in Attribute",
                                     st.getTokenIndex());
                         if (token.length() > 0
-                                && (token.charAt(0) == '\"' || token.charAt(0) == '\''))
+                                && (token.charAt(0) == '\"' 
+                                    || token.charAt(0) == '\''))
                             throw new ParseException(
                                     "Name or visibility cannot" + " be quoted",
                                     st.getTokenIndex());
@@ -1370,7 +1376,8 @@ public class ParserDisplay extends Parser {
                         if (name == null
                                 && visibility == null
                                 && token.length() > 1
-                                && visibilityChars.indexOf(token.charAt(0)) >= 0) {
+                                && VISIBILITYCHARS.indexOf(token.charAt(0)) 
+                                                        >= 0) {
                             visibility = token.substring(0, 1);
                             token = token.substring(1);
                         }
@@ -1442,7 +1449,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (properties != null)
-            setProperties(attr, properties, _attributeSpecialStrings);
+            setProperties(attr, properties, attributeSpecialStrings);
 
         if (stereotype != null) {
             stereotype = stereotype.trim();
@@ -1474,7 +1481,7 @@ public class ParserDisplay extends Parser {
         }
         if (ModelFacade.getModel(type) != p.getModel()
                 && !ModelManagementHelper.getHelper().getAllNamespaces(
-                        p.getModel()).contains(ModelFacade.getNamespace(type))) {
+                       p.getModel()).contains(ModelFacade.getNamespace(type))) {
             type = ModelManagementHelper.getHelper().getCorrespondingElement(
                     type, ModelFacade.getModel(defaultSpace));
         }
@@ -1518,7 +1525,8 @@ public class ParserDisplay extends Parser {
         String value;
         int i, j;
 
-        nextProp: for (i = 0; i + 1 < prop.size(); i += 2) {
+    nextProp: 
+        for (i = 0; i + 1 < prop.size(); i += 2) {
             name = (String) prop.get(i);
             value = (String) prop.get(i + 1);
 
@@ -2113,7 +2121,8 @@ public class ParserDisplay extends Parser {
         }
 
         Vector internals = new Vector(ModelFacade.getInternalTransitions(st));
-        Vector oldinternals = new Vector(ModelFacade.getInternalTransitions(st));
+        Vector oldinternals = new Vector(ModelFacade
+                .getInternalTransitions(st));
         internals.removeAll(oldinternals); //now the vector is empty
 
         // don't forget to remove old internals!
@@ -2196,6 +2205,7 @@ public class ParserDisplay extends Parser {
      * @param s
      *            The string to be parsed.
      * @return the transition object
+     * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object, java.lang.String)
      */
     public Object parseTransition(Object trans, String s) {
         s = s.trim();
@@ -2206,15 +2216,15 @@ public class ParserDisplay extends Parser {
         while (tokenizer.hasMoreTokens()) {
             String nextToken = tokenizer.nextToken();
             if (nextToken.endsWith("]")) {
-                guardCondition = nextToken.substring(0, nextToken.length() -1);
+                guardCondition = nextToken.substring(0, nextToken.length() - 1);
             } else {
                 if (s.startsWith(nextToken)) {
                     eventSignature = nextToken;
                 }
                 else
-                if (s.endsWith(nextToken)) {
-                    actionExpression = nextToken;
-                }
+                    if (s.endsWith(nextToken)) {
+                        actionExpression = nextToken;
+                    }
             }
         }
            
@@ -2222,7 +2232,7 @@ public class ParserDisplay extends Parser {
             try {
                 parseEventSignature(trans, eventSignature);
             } catch (ParseException e) {
-                _cat.warn(e);
+                LOG.warn(e);
             }
         }
       
@@ -2535,7 +2545,8 @@ public class ParserDisplay extends Parser {
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
-    public void parseClassifierRole(Object cls, String s) throws ParseException {
+    public void parseClassifierRole(Object cls, String s) 
+        throws ParseException {
         String name = null;
         String token;
         String role = null;
@@ -2639,7 +2650,8 @@ public class ParserDisplay extends Parser {
             }
 
             it = bases.iterator();
-            addBases: while (it.hasNext()) {
+        addBases: 
+            while (it.hasNext()) {
                 String d = ((String) it.next()).trim();
 
                 Iterator it2 = b.iterator();
@@ -2783,8 +2795,8 @@ public class ParserDisplay extends Parser {
 
                     if (currentseq != null) {
                         if (currentseq.size() > 2
-                                && currentseq.get(currentseq.size() - 2) == null
-                                && currentseq.get(currentseq.size() - 1) == null) {
+                            && currentseq.get(currentseq.size() - 2) == null
+                            && currentseq.get(currentseq.size() - 1) == null) {
                             currentseq.remove(currentseq.size() - 1);
                             currentseq.remove(currentseq.size() - 1);
                         }
@@ -2846,15 +2858,15 @@ public class ParserDisplay extends Parser {
                         mustBePre = true;
 
                         if (currentseq.size() > 2
-                                && currentseq.get(currentseq.size() - 2) == null
-                                && currentseq.get(currentseq.size() - 1) == null) {
+                             && currentseq.get(currentseq.size() - 2) == null
+                             && currentseq.get(currentseq.size() - 1) == null) {
 
                             currentseq.remove(currentseq.size() - 1);
                             currentseq.remove(currentseq.size() - 1);
                         }
 
                         if (currentseq.get(currentseq.size() - 2) != null
-                                || currentseq.get(currentseq.size() - 1) != null) {
+                            || currentseq.get(currentseq.size() - 1) != null) {
 
                             predecessors.add(currentseq);
 
@@ -2905,8 +2917,10 @@ public class ParserDisplay extends Parser {
                                 + ")", st.getTokenIndex());
                     }
                 } else {
-                    boolean hasVal = currentseq.get(currentseq.size() - 2) != null;
-                    boolean hasOrd = currentseq.get(currentseq.size() - 1) != null;
+                    boolean hasVal = 
+                        currentseq.get(currentseq.size() - 2) != null;
+                    boolean hasOrd = 
+                        currentseq.get(currentseq.size() - 1) != null;
                     boolean assigned = false;
                     int bp = findMsgOrderBreak(token);
 
@@ -2915,7 +2929,7 @@ public class ParserDisplay extends Parser {
                             currentseq.set(currentseq.size() - 2, new Integer(
                                     token));
                             assigned = true;
-                        } catch (NumberFormatException nfe) {}
+                        } catch (NumberFormatException nfe) { }
                     }
 
                     if (!hasOrd && !assigned && bp == 0) {
@@ -2923,7 +2937,7 @@ public class ParserDisplay extends Parser {
                             currentseq.set(currentseq.size() - 1, new Integer(
                                     parseMsgOrder(token)));
                             assigned = true;
-                        } catch (NumberFormatException nfe) {}
+                        } catch (NumberFormatException nfe) { }
                     }
 
                     if (!hasVal && !hasOrd && !assigned && bp > 0
@@ -2936,7 +2950,7 @@ public class ParserDisplay extends Parser {
                             currentseq.set(currentseq.size() - 2, nbr);
                             currentseq.set(currentseq.size() - 1, ord);
                             assigned = true;
-                        } catch (NumberFormatException nfe) {}
+                        } catch (NumberFormatException nfe) { }
                     }
 
                     if (!assigned) {
@@ -2953,7 +2967,7 @@ public class ParserDisplay extends Parser {
 
         if (paramExpr != null) {
             MyTokenizer st = new MyTokenizer(paramExpr, "\\,",
-                    _parameterCustomSep);
+                    parameterCustomSep);
             args = new Vector();
             while (st.hasMoreTokens()) {
                 token = st.nextToken();
@@ -3032,7 +3046,8 @@ public class ParserDisplay extends Parser {
 
         if (fname == null) {
             if (!mayDeleteExpr
-                    && ModelFacade.getScript(ModelFacade.getAction(mes)) != null) {
+                    && ModelFacade.getScript(ModelFacade.getAction(mes)) 
+                                            != null) {
                 String body = (String) ModelFacade.getBody(ModelFacade
                         .getScript(ModelFacade.getAction(mes)));
 
@@ -3052,7 +3067,8 @@ public class ParserDisplay extends Parser {
 
         if (varname == null) {
             if (!mayDeleteExpr
-                    && ModelFacade.getScript(ModelFacade.getAction(mes)) != null) {
+                    && ModelFacade.getScript(ModelFacade.getAction(mes)) 
+                                            != null) {
                 String body = (String) ModelFacade.getBody(ModelFacade
                         .getScript(ModelFacade.getAction(mes)));
                 int idx = body.indexOf(":=");
@@ -3100,7 +3116,7 @@ public class ParserDisplay extends Parser {
                 }
                 if (ModelFacade.getValue(arg) == null
                         || !args.get(i).equals(
-                                ModelFacade.getBody(ModelFacade.getValue(arg)))) {
+                              ModelFacade.getBody(ModelFacade.getValue(arg)))) {
                     String value = (args.get(i) != null ? (String) args.get(i)
                             : "");
                     Object e = UmlFactory.getFactory().getDataTypes()
@@ -3268,10 +3284,11 @@ public class ParserDisplay extends Parser {
                     .getMessages(ModelFacade.getInteraction(mes)), null, null);
             Vector pre = new Vector();
             Iterator it;
-            predfor: for (i = 0; i < predecessors.size(); i++) {
+        predfor: 
+            for (i = 0; i < predecessors.size(); i++) {
                 it = roots.iterator();
                 while (it.hasNext()) {
-                    Object/* MMessage */msg = walkTree(/* (MMessage) */it.next(),
+                    Object/* MMessage */msg = walkTree(/*(MMessage)*/it.next(),
                             (Vector) predecessors.get(i));
                     if (msg != null && msg != mes) {
                         if (isBadPreMsg(mes, msg)) {
@@ -3285,7 +3302,8 @@ public class ParserDisplay extends Parser {
                 }
                 throw new ParseException("Could not find predecessor", 0);
             }
-            GeneratorDisplay.MsgPtr ptr = GeneratorDisplay.getInstance().new MsgPtr();
+            GeneratorDisplay.MsgPtr ptr = 
+                GeneratorDisplay.getInstance().new MsgPtr();
             GeneratorDisplay.getInstance().recCountPredecessors(mes, ptr);
             if (ptr.message != null && !pre.contains(ptr.message))
                 pre.add(ptr.message);
@@ -3479,7 +3497,7 @@ public class ParserDisplay extends Parser {
     /**
      * Finds the messages in Collection c that has message a as activator.
      */
-    private Collection filterWithActivator(Collection c, Object/* MMessage */a) {
+    private Collection filterWithActivator(Collection c, Object/*MMessage*/a) {
         Iterator it = c.iterator();
         Vector v = new Vector();
         while (it.hasNext()) {
@@ -3742,6 +3760,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea that the parser is editing preexisting
      *             objects, which is bad. It is not used within core ArgoUML.
      *             d00mst.
+     * @see org.argouml.uml.generator.Parser#parseAction(java.lang.String)
      */
     public Object parseAction(String s) {
         Object a = UmlFactory.getFactory().getCommonBehavior()
@@ -3758,6 +3777,7 @@ public class ParserDisplay extends Parser {
      *             breaks the idea the idea that the parser is editing
      *             preexisting objects, which is bad. It is not used within core
      *             ArgoUML. d00mst.
+     * @see org.argouml.uml.generator.Parser#parseGuard(java.lang.String)
      */
     public Object parseGuard(String s) {
         Object g = UmlFactory.getFactory().getStateMachines().createGuard();
@@ -3806,9 +3826,11 @@ public class ParserDisplay extends Parser {
      * @return
      */
     private void parseEventSignature(Object transition, String s)
-            throws ParseException {
+        throws ParseException {
         Object currentEvent = ModelFacade.getTrigger(transition);
-        if (currentEvent != null && !(ModelFacade.getTransitions(currentEvent).size() > 1 || ModelFacade.getStates(currentEvent).size() > 0)) {
+        if (currentEvent != null 
+                && !(ModelFacade.getTransitions(currentEvent).size() > 1 
+                        || ModelFacade.getStates(currentEvent).size() > 0)) {
             Project p = ProjectManager.getManager().getCurrentProject();
             p.moveToTrash(currentEvent);
         }
