@@ -132,6 +132,16 @@ public abstract class FigNodeModelElement
     protected static final int STEREOHEIGHT = 18;
     protected boolean checkSize = true;
     // Needed for loading. Warning: if false, a too small size might look bad!
+    
+    /**
+     * The intensity value of the shadow color.
+    **/
+    protected static final float SHADOW_COLOR_VALUE = 0.1f;
+    
+    /**
+     * The transparency value of the shadow color.
+    **/    
+    protected static final float SHADOW_COLOR_ALPHA = 0.5f;
 
     static {
         LABEL_FONT =
@@ -169,33 +179,7 @@ public abstract class FigNodeModelElement
     public FigNodeModelElement() {
         // this rectangle marks the whole interface figure; everything
         // is inside it:
-        _bigPort = new FigRect(10, 10, 0, 0, Color.cyan, Color.cyan) 
-	    {
-		public void paint(Graphics g) {
-		    super.paint(g);
-                
-		    // Draw the shadow                
-		    if (_shadowSize > 0) {
-			for (int i = 0; i < _shadowSize; ++i) {
-			    Color shadow = new Color(0.1f, 0.1f, 0.1f, 
-						     0.5f * (((float) _shadowSize - i) / (float) _shadowSize));                        
-			    g.setColor(shadow);
-
-			    g.drawLine(
-				       _x + _shadowSize,
-				       _y + _h + i,
-				       _x + _w + i,
-				       _y + _h + i);
-
-			    g.drawLine(
-				       _x + _w + i,
-				       _y + _shadowSize,
-				       _x + _w + i,
-				       _y + _h + i - 1);                        
-			}
-		    }
-		}
-	    };
+        _bigPort = new ShadowRect(10, 10, 0, 0, Color.cyan, Color.cyan);
 
         _name = new FigText(10, 10, 90, 21, true);
         _name.setFont(LABEL_FONT);
@@ -985,5 +969,51 @@ public abstract class FigNodeModelElement
             }
         }
     }
+
+    /**
+     * A FigRect that is drawn with a shadow using the current figure's
+     * shadow size.
+    **/
+    protected class ShadowRect extends FigRect {
+        public ShadowRect(int x, int y, int w, int h) {
+            super(x, y, w, h);
+        }
+
+        public ShadowRect(
+            int x,
+            int y,
+            int w,
+            int h,
+            Color lColor,
+            Color fColor) {
+            super(x, y, w, h, lColor, fColor);
+        }
+
+        public void paint(Graphics g) {
+            super.paint(g);
+            if (_shadowSize > 0) {
+                for (int i = 0; i < _shadowSize; ++i) {
+                    Color shadow = new Color(
+                        SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
+                        SHADOW_COLOR_ALPHA
+                            * (((float) _shadowSize - i)
+                            / (float) _shadowSize));
+                    g.setColor(shadow);
+        
+                    g.drawLine(
+                           _x + _shadowSize,
+                           _y + _h + i,
+                           _x + _w + i,
+                           _y + _h + i);
+        
+                    g.drawLine(
+                           _x + _w + i,
+                           _y + _shadowSize,
+                           _x + _w + i,
+                           _y + _h + i - 1);                        
+                }
+            }
+        }
+    };
 
 } /* end class FigNodeModelElement */
