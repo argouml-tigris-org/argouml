@@ -103,7 +103,7 @@ public class FigAssociation extends FigEdgeModelElement {
         addPathItem(middleGroup, new PathConvPercent(this, 50, 25));
     
         srcMult = new FigText(10, 10, 90, 20);
-        srcMult.setFont(LABEL_FONT);
+        srcMult.setFont(getLabelFont());
         srcMult.setTextColor(Color.black);
         srcMult.setTextFilled(false);
         srcMult.setFilled(false);
@@ -112,7 +112,7 @@ public class FigAssociation extends FigEdgeModelElement {
         srcMult.setJustification(FigText.JUSTIFY_CENTER);
 
         srcRole = new FigText(10, 10, 90, 20);
-        srcRole.setFont(LABEL_FONT);
+        srcRole.setFont(getLabelFont());
         srcRole.setTextColor(Color.black);
         srcRole.setTextFilled(false);
         srcRole.setFilled(false);
@@ -121,7 +121,7 @@ public class FigAssociation extends FigEdgeModelElement {
         srcRole.setJustification(FigText.JUSTIFY_CENTER);
 
         srcOrdering = new FigText(10, 10, 90, 20);
-        srcOrdering.setFont(LABEL_FONT);
+        srcOrdering.setFont(getLabelFont());
         srcOrdering.setTextColor(Color.black);
         srcOrdering.setTextFilled(false);
         srcOrdering.setFilled(false);
@@ -135,7 +135,7 @@ public class FigAssociation extends FigEdgeModelElement {
         addPathItem(srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
    
         destMult = new FigText(10, 10, 90, 20);
-        destMult.setFont(LABEL_FONT);
+        destMult.setFont(getLabelFont());
         destMult.setTextColor(Color.black);
         destMult.setTextFilled(false);
         destMult.setFilled(false);
@@ -144,7 +144,7 @@ public class FigAssociation extends FigEdgeModelElement {
         destMult.setJustification(FigText.JUSTIFY_CENTER);
 
         destRole = new FigText(0, 0, 90, 20);
-        destRole.setFont(LABEL_FONT);
+        destRole.setFont(getLabelFont());
         destRole.setTextColor(Color.black);
         destRole.setTextFilled(false);
         destRole.setFilled(false);
@@ -153,7 +153,7 @@ public class FigAssociation extends FigEdgeModelElement {
         destRole.setJustification(FigText.JUSTIFY_CENTER);
 
         destOrdering = new FigText(0, 0, 90, 20);
-        destOrdering.setFont(LABEL_FONT);
+        destOrdering.setFont(getLabelFont());
         destOrdering.setTextColor(Color.black);
         destOrdering.setTextFilled(false);
         destOrdering.setFilled(false);
@@ -492,9 +492,9 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         Object assoc =  getOwner();
         if (ModelFacade.isAbstract(assoc))
-            getNameFig().setFont(ITALIC_LABEL_FONT);
+            getNameFig().setFont(getItalicLabelFont());
         else
-            getNameFig().setFont(LABEL_FONT);
+            getNameFig().setFont(getLabelFont());
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }

@@ -109,13 +109,16 @@ public abstract class FigEdgeModelElement
     private static final Logger LOG =
         Logger.getLogger(FigEdgeModelElement.class);
         
+    /**
+     * <code>BUNDLE</code>
+     */
     protected static final String BUNDLE = "UMLMenu";
         
     ////////////////////////////////////////////////////////////////
     // constants
 
-    public static final Font LABEL_FONT;
-    public static final Font ITALIC_LABEL_FONT;
+    private static final Font LABEL_FONT;
+    private static final Font ITALIC_LABEL_FONT;
 
     static {
         LABEL_FONT = new Font("Dialog", Font.PLAIN, 10);
@@ -123,7 +126,7 @@ public abstract class FigEdgeModelElement
             new Font(LABEL_FONT.getFamily(), Font.ITALIC, LABEL_FONT.getSize());
     }
 
-    public static final int MARGIN = 2;
+    //public static final int MARGIN = 2;
 
     /**
      * Offset from the end of the set of popup actions at which new items
@@ -136,24 +139,22 @@ public abstract class FigEdgeModelElement
 
     /**
      * The Fig that displays the name of this model element.
-     * @deprecated in 0.17.1 by Bob Tarling, this will become private.
      * Use getNameFig(), no setter should be required.
      */
-    protected FigText _name;
+    private FigText name;
     /**
      * The Fig that displays the stereotype of this model element.
-     * @deprecated in 0.17.1 by Bob Tarling, this will become private.
      * Use getStereotypeFig(), no setter should be required.
      */
-    protected FigText _stereo = new FigText(10, 30, 90, 20);
+    private FigText stereo = new FigText(10, 30, 90, 20);
     
-    private ItemUID _id;
+    private ItemUID id;
     
     /**
      * The current notation for this fig. The notation is for example
      * UML 1.3 or Java
      */
-    private NotationName _currentNotationName;
+    private NotationName currentNotationName;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -162,36 +163,44 @@ public abstract class FigEdgeModelElement
      *  _name element that holds the name of the model element and adds
      *  itself as a listener. */
     public FigEdgeModelElement() {
-        _name = new FigText(10, 30, 90, 20);
-        _name.setFont(LABEL_FONT);
-        _name.setTextColor(Color.black);
-        _name.setTextFilled(false);
-        _name.setFilled(false);
-        _name.setLineWidth(0);
-        _name.setExpandOnly(false);
-        _name.setMultiLine(false);
-        _name.setAllowsTab(false);
+        name = new FigText(10, 30, 90, 20);
+        name.setFont(LABEL_FONT);
+        name.setTextColor(Color.black);
+        name.setTextFilled(false);
+        name.setFilled(false);
+        name.setLineWidth(0);
+        name.setExpandOnly(false);
+        name.setMultiLine(false);
+        name.setAllowsTab(false);
 
-        _stereo.setFont(LABEL_FONT);
-        _stereo.setTextColor(Color.black);
-        _stereo.setTextFilled(false);
-        _stereo.setFilled(false);
-        _stereo.setLineWidth(0);
-        _stereo.setExpandOnly(false);
-        _stereo.setMultiLine(false);
-        _stereo.setAllowsTab(false);
+        stereo.setFont(LABEL_FONT);
+        stereo.setTextColor(Color.black);
+        stereo.setTextFilled(false);
+        stereo.setFilled(false);
+        stereo.setLineWidth(0);
+        stereo.setExpandOnly(false);
+        stereo.setMultiLine(false);
+        stereo.setAllowsTab(false);
 
         setBetweenNearestPoints(true);
         ((FigPoly) _fig).setRectilinear(false);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
+    /**
+     * the constructor that hooks the Fig into the UML model element
+     * 
+     * @param edge the UML element 
+     */
     public FigEdgeModelElement(Object edge) {
         this();
         setOwner(edge);
         ArgoEventPump.addListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
 
+    /**
+     * @see java.lang.Object#finalize()
+     */
     public void finalize() {
         ArgoEventPump.removeListener(ArgoEvent.ANY_NOTATION_EVENT, this);
     }
@@ -199,12 +208,20 @@ public abstract class FigEdgeModelElement
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public void setItemUID(ItemUID id) {
-        _id = id;
+    /**
+     * Setter for the UID
+     * @param newId the new UID
+     */
+    public void setItemUID(ItemUID newId) {
+        id = newId;
     }
 
+    /**
+     * Getter for the UID
+     * @return the UID
+     */
     public ItemUID getItemUID() {
-        return _id;
+        return id;
     }
 
     /**
@@ -256,7 +273,14 @@ public abstract class FigEdgeModelElement
         return popUpActions;
     }
 
-    // distance formula: (x-h)^2 + (y-k)^2 = distance^2
+    
+    /**
+     * distance formula: (x-h)^2 + (y-k)^2 = distance^2
+     * 
+     * @param p1 point
+     * @param p2 point
+     * @return the square of the distance
+     */
     public int getSquaredDistance(Point p1, Point p2) {
         int xSquared = p2.x - p1.x;
         xSquared *= xSquared;
@@ -265,6 +289,9 @@ public abstract class FigEdgeModelElement
         return xSquared + ySquared;
     }
 
+    /**
+     * @param g the <code>Graphics</code> object
+     */
     public void paintClarifiers(Graphics g) {
         int iconPos = 25, gap = 1, xOff = -4, yOff = -4;
         Point p = new Point();
@@ -368,11 +395,20 @@ public abstract class FigEdgeModelElement
         return new SelectionRerouteEdge(this);
     }
 
+    /**
+     * Getter for name, the name Fig
+     * @return the nameFig
+     */
     public FigText getNameFig() {
-        return _name;
+        return name;
     }
+    
+    /**
+     * Getter for stereo, the stereotype Fig
+     * @return the stereo Fig
+     */
     public FigText getStereotypeFig() {
-        return _stereo;
+        return stereo;
     }
 
     /**
@@ -387,6 +423,9 @@ public abstract class FigEdgeModelElement
         }
     }
 
+    /**
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         // update any text, colors, fonts, etc.
         modelChanged(null);
@@ -417,15 +456,21 @@ public abstract class FigEdgeModelElement
      * field that is in the FigEdgeModelElement.  Determine which field
      * and update the model.  This class handles the name, subclasses
      * should override to handle other text elements.
+     *
+     * @param ft the text Fig that has been edited
      */
     protected void textEdited(FigText ft) {
-        if (ft == _name) {
+        if (ft == name) {
             if (getOwner() == null)
                 return;
             ModelFacade.setName(getOwner(), ft.getText());
         }
     }
 
+    /**
+     * @param f the Fig
+     * @return true if editable
+     */
     protected boolean canEdit(Fig f) {
         return true;
     }
@@ -461,6 +506,8 @@ public abstract class FigEdgeModelElement
      * If the user double clicks on anu part of this FigNode, pass it
      * down to one of the internal Figs.  This allows the user to
      * initiate direct text editing.
+     *
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
         if (me.isConsumed())
@@ -479,8 +526,8 @@ public abstract class FigEdgeModelElement
     public void keyPressed(KeyEvent ke) {
         if (ke.isConsumed())
             return;
-        if (_name != null && canEdit(_name))
-            _name.keyPressed(ke);
+        if (name != null && canEdit(name))
+            name.keyPressed(ke);
     }
 
     /**
@@ -501,9 +548,11 @@ public abstract class FigEdgeModelElement
     // internal methods
 
     /**
-     * This is called aftern any part of the UML MModelElement has
+     * This is called after any part of the UML MModelElement has
      * changed. This method automatically updates the name FigText.
      * Subclasses should override and update other parts.<p>
+     *
+     * @param e the event
      */
     protected void modelChanged(MElementEvent e) {
         if (e == null
@@ -521,17 +570,23 @@ public abstract class FigEdgeModelElement
             return;
     }
 
+    /**
+     * generate the notation for the modelelement and stuff it into the text Fig
+     */
     protected void updateNameText() {
         
         if (getOwner() == null)
             return;
         String nameStr =
 	    Notation.generate(this, ModelFacade.getName(getOwner()));
-        _name.setText(nameStr);
+        name.setText(nameStr);
         calcBounds();
         setBounds(getBounds());
     }
 
+    /**
+     * generate the notation for the stereotype and stuff it into the text Fig
+     */
     protected void updateStereotypeText() {
         if (getOwner() == null) {
             return;
@@ -542,14 +597,14 @@ public abstract class FigEdgeModelElement
 		ModelFacade.getStereotypes(getOwner()).iterator().next();
         }
         if (stereotype == null) {
-            _stereo.setText("");
+            stereo.setText("");
             return;
         }
         String stereoStr = ModelFacade.getName(stereotype);
         if (stereoStr.length() == 0)
-            _stereo.setText("");
+            stereo.setText("");
         else {
-            _stereo.setText(Notation.generateStereotype(this, stereotype));
+            stereo.setText(Notation.generateStereotype(this, stereotype));
         }
     }
 
@@ -656,15 +711,20 @@ public abstract class FigEdgeModelElement
 
     /**
      * This default implementation simply requests the default notation.
+     *
+     * @see org.argouml.application.api.NotationContext#getContextNotation()
      */
     public NotationName getContextNotation() {
-        return _currentNotationName;
+        return currentNotationName;
     }
 
+    /**
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationChanged(ArgoNotationEvent event) {
         PropertyChangeEvent changeEvent =
 	    (PropertyChangeEvent) event.getSource();
-	_currentNotationName =
+	currentNotationName =
 	    Notation.findNotation((String) changeEvent.getNewValue());
         renderingChanged();
         damage();
@@ -907,6 +967,20 @@ public abstract class FigEdgeModelElement
         if (p != null) {      
             p.setNeedsSave(true);
         }
+    }
+
+    /**
+     * @return Returns the lABEL_FONT.
+     */
+    public static Font getLabelFont() {
+        return LABEL_FONT;
+    }
+
+    /**
+     * @return Returns the iTALIC_LABEL_FONT.
+     */
+    public static Font getItalicLabelFont() {
+        return ITALIC_LABEL_FONT;
     }
 
 } /* end class FigEdgeModelElement */

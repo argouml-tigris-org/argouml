@@ -42,8 +42,6 @@ import org.tigris.gef.presentation.ArrowHeadGreater;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MElementEvent;
-
 
 /**
  * <p>A fig for use with include relationships on use case diagrams.</p>
@@ -74,7 +72,7 @@ public class FigInclude extends FigEdgeModelElement {
 
         label = new FigText(10, 30, 90, 20);
 
-        label.setFont(LABEL_FONT);
+        label.setFont(getLabelFont());
         label.setTextColor(Color.black);
         label.setTextFilled(false);
         label.setFilled(false);
@@ -156,6 +154,9 @@ public class FigInclude extends FigEdgeModelElement {
     //
     ///////////////////////////////////////////////////////////////////////////
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
+     */
     public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
