@@ -38,9 +38,16 @@ public class ActionActivityDiagram extends ActionStateDiagram {
 
     public static ActionActivityDiagram SINGLETON = new ActionActivityDiagram();
 
+    /**
+     * @deprecated since V0.15.5. Make your own logger instead.
+     */
     protected static Logger cat =
 	Logger.getLogger(org.argouml.uml.ui.ActionActivityDiagram.class);
 
+    /**
+     * Constructor
+     *
+     */
     private ActionActivityDiagram() {
         super("action.activity-diagram");
     }
@@ -53,7 +60,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
         Object/*MActivityGraph*/ graph =
 	    ActivityGraphsFactory.getFactory().buildActivityGraph(target);
         /*if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
-            ns = ModelFacade.getNamespace(target); // this fails always, see issue 1817
+            ns = ModelFacade.getNamespace(target); 
+            // this fails always, see issue 1817
         }*/
         UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
         return d;
@@ -64,7 +72,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      */
     public boolean shouldBeEnabled() {
         return super.shouldBeEnabled()
-	    || org.argouml.model.ModelFacade.isAPackage(TargetManager.getInstance().getModelTarget());
+	    || org.argouml.model.ModelFacade.isAPackage(TargetManager
+                .getInstance().getModelTarget());
     }
 
     /**
