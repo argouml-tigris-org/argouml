@@ -152,10 +152,17 @@ public class ParserDisplay extends Parser {
     public static ParserDisplay SINGLETON = new ParserDisplay();
     /**
      * The standard error etc. logger
+     * @deprecated since V0.15.4. Replaced by the private LOG.
      */
     protected static final Logger _cat =
 	Logger.getLogger(ParserDisplay.class);
 
+    /**
+     * The standard error etc. logger
+     */
+    private static final Logger LOG = 
+        Logger.getLogger(ParserDisplay.class);
+    
     /** The array of special properties for attributes */
     private PropertySpecialString _attributeSpecialStrings[];
 
@@ -1354,14 +1361,14 @@ public class ParserDisplay extends Parser {
 	    throw pre;
 	}
 
-	_cat.debug("ParseAttribute [name: " + name + " visibility: " 
+	LOG.debug("ParseAttribute [name: " + name + " visibility: " 
 		   + visibility + " type: " + type + " value: " + value
 		   + " stereo: " 
 		   + stereotype + " mult: " + multiplicity);
 
 	if (properties != null) {
 	    for (int i = 0; i + 1 < properties.size(); i += 2) {
-		_cat.debug("\tProperty [name: " + properties.get(i)
+		LOG.debug("\tProperty [name: " + properties.get(i)
 			  + " = " + properties.get(i + 1) + "]");
 	    }
 	}
@@ -1529,7 +1536,7 @@ public class ParserDisplay extends Parser {
                                                     /*(MStereotype)*/ root))
 		return root;
 	    else
-		_cat.debug("Missed stereotype " 
+		LOG.debug("Missed stereotype " 
                                 + ModelFacade.getBaseClass(root));
 	}
 
@@ -1822,7 +1829,7 @@ public class ParserDisplay extends Parser {
 	// any of these indicate that name is to an end.
 	java.util.StringTokenizer st = new java.util.StringTokenizer(s, delim);
 	if (!st.hasMoreTokens()) {
-	    _cat.debug("name not parsed");
+	    LOG.debug("name not parsed");
 	    return s;
 	}
 	String nameStr = st.nextToken();
@@ -2041,7 +2048,7 @@ public class ParserDisplay extends Parser {
 				    line);
 
 		if (t == null) continue;
-		_cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
+		LOG.debug("just parsed:" + GeneratorDisplay.Generate(t));
 		ModelFacade.setStateMachine(t, ModelFacade.getStateMachine(st));
 		ModelFacade.setTarget(t, st);
 		ModelFacade.setSource(t, st);
@@ -2143,10 +2150,10 @@ public class ParserDisplay extends Parser {
         // and the remainder is the trigger
 	trigger = s;
 
-	_cat.debug("name=|" + name + "|");
-	_cat.debug("trigger=|" + trigger + "|");
-	_cat.debug("guard=|" + guard + "|");
-	_cat.debug("actions=|" + actions + "|");
+	LOG.debug("name=|" + name + "|");
+	LOG.debug("trigger=|" + trigger + "|");
+	LOG.debug("guard=|" + guard + "|");
+	LOG.debug("actions=|" + actions + "|");
 
         // use the name we found to (re)name the transition
 	ModelFacade.setName(trans, name);
@@ -2342,7 +2349,7 @@ public class ParserDisplay extends Parser {
 	} catch (NoSuchElementException nsee) {
 	    throw new ParseException("Unexpected end of attribute", s.length());
 	} catch (ParseException pre) {
-	    _cat.error("parseexception", pre);
+	    LOG.error("parseexception", pre);
 
 	    throw pre;
 	}
@@ -2723,7 +2730,7 @@ public class ParserDisplay extends Parser {
 	    args = new Vector();
 	}
 
-	if (_cat.isDebugEnabled()) {
+	if (LOG.isDebugEnabled()) {
 	    StringBuffer buf = new StringBuffer();
 	    buf.append("ParseMessage: " + s + "\n");
 	    buf.append("Message: ");
@@ -2749,7 +2756,7 @@ public class ParserDisplay extends Parser {
 		       + "\n");
 	    buf.append(varname + " := " + fname + " ( " + paramExpr + " )"
 		       + "\n");
-	    _cat.debug(buf);
+	    LOG.debug(buf);
 	}
 
 
@@ -3383,7 +3390,7 @@ public class ParserDisplay extends Parser {
 	    try {
 		parseOperation(expr, op);
 	    } catch (ParseException pe) {
-		_cat.error("Unexpected ParseException in getOperation: " + pe,
+		LOG.error("Unexpected ParseException in getOperation: " + pe,
 			   pe);
 
 	    }
