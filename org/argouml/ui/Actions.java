@@ -23,63 +23,32 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.util.zip.*;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.OutputStreamWriter;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.FileNotFoundException;
-import java.net.URL;
-import java.beans.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.filechooser.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.AbstractAction;
+import javax.swing.JDialog;
+import javax.swing.JFrame;
+import javax.swing.JTabbedPane;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.util.*;
-
-import org.argouml.kernel.*;
-import org.argouml.persistence.*;
-import org.argouml.cognitive.*;
-import org.argouml.cognitive.ui.*;
-import org.argouml.cognitive.critics.ui.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.critics.ui.CriticBrowserDialog;
+import org.argouml.cognitive.ui.AddToDoItemDialog;
+import org.argouml.cognitive.ui.DesignIssuesDialog;
+import org.argouml.cognitive.ui.DismissToDoItemDialog;
+import org.argouml.cognitive.ui.GoalsDialog;
+import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.ActionUtilities;
-
-//
-//   Template reader, has nothing to do with OCL
-//
-import org.tigris.gef.ocl.*;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.generator.ui.*;
-import org.argouml.uml.reveng.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.activity.ui.*;
-import org.argouml.uml.diagram.collaboration.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
-import org.argouml.uml.diagram.sequence.ui.*;
-import org.argouml.util.*;
-import org.argouml.xml.argo.ArgoParser;
+import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.CmdPrint;
+import org.tigris.gef.base.Diagram;
 
 public class Actions {
 
@@ -403,7 +372,10 @@ class ToDoItemAction extends UMLAction {
   }
 
   public void updateEnabled(Object target) {
-    if (target == null) return;
+    if (target == null) {
+        setEnabled(false);
+        return;
+    }
     _target = target;
     setEnabled(shouldBeEnabled(target));
   }
@@ -429,6 +401,13 @@ class ActionEmailExpert extends ToDoItemAction {
     dialog.setTarget(_target);
     dialog.show();
   }
+    /**
+     * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
+     */
+    public boolean shouldBeEnabled(Object target) {
+        return _target != null;
+    }
+
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
