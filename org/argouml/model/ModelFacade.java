@@ -501,8 +501,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).isAsynchronous();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -517,8 +516,7 @@ public class ModelFacade {
         if (handle instanceof MGeneralizableElement)
             return ((MGeneralizableElement) handle).isAbstract();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
     
     
@@ -535,7 +533,7 @@ public class ModelFacade {
 
     /**
      * Recognizer for bases. A base is an object that is some form of
-     *  an element in the model. MBase in Novosoft terms.
+     * an element in the model. MBase in Novosoft terms.
      *
      * @param handle candidate
      * @return true if handle is a base.
@@ -669,8 +667,7 @@ public class ModelFacade {
         if (handle instanceof MClass) {
             return ((MClass) handle).isActive();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -905,10 +902,10 @@ public class ModelFacade {
 
     /**
      * Recognizer for LinkEnd
-    	 *
-    	 * @param handle candidate
-    	 * @return true if handle is a LinkEnd
-    	 */
+     *
+     * @param handle candidate
+     * @return true if handle is a LinkEnd
+     */
     public static boolean isALinkEnd(Object handle) {
         return handle instanceof MLinkEnd;
     }
@@ -1068,8 +1065,7 @@ public class ModelFacade {
         if (handle instanceof MPseudostate) {
             return ((MPseudostate) handle).getKind();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1084,8 +1080,7 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getReceiver();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getKind(Object handle) {
@@ -1095,16 +1090,14 @@ public class ModelFacade {
         if (handle instanceof MParameter) {
             return ((MParameter) handle).getKind();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getLink(Object handle) {
         if (handle instanceof MLinkEnd) {
             return ((MLinkEnd) handle).getLink();
         }
-        throw new IllegalArgumentException("Unrecognized handle " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1118,8 +1111,7 @@ public class ModelFacade {
         if (isAPseudostateKind(ps1)) {
             return ((MPseudostateKind) ps1).equals(ps2);
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(ps1));
+	return illegalArgumentBoolean(ps1);
     }
 
     /**
@@ -1310,8 +1302,7 @@ public class ModelFacade {
             return MChangeableKind.CHANGEABLE.equals(changeability);
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1326,8 +1317,7 @@ public class ModelFacade {
             return MScopeKind.CLASSIFIER.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1340,8 +1330,7 @@ public class ModelFacade {
         if (handle instanceof MCompositeState) {
             return ((MCompositeState) handle).isConcurent();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1375,8 +1364,7 @@ public class ModelFacade {
             }
             return false;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     public static boolean isFrozen(Object handle) {
@@ -1384,8 +1372,7 @@ public class ModelFacade {
             MChangeableKind ck = (MChangeableKind) handle;
             return MChangeableKind.FROZEN.equals(ck);
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1402,8 +1389,7 @@ public class ModelFacade {
                 composite = true;
             return composite;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1420,8 +1406,7 @@ public class ModelFacade {
                 composite = true;
             return composite;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1442,8 +1427,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1458,8 +1442,7 @@ public class ModelFacade {
             return MScopeKind.INSTANCE.equals(a.getOwnerScope());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1479,8 +1462,7 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception) handle).isLeaf();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1500,8 +1482,7 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception) handle).isRoot();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1515,8 +1496,7 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).isSpecification();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1531,8 +1511,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1558,8 +1537,7 @@ public class ModelFacade {
             return true;
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1574,8 +1552,7 @@ public class ModelFacade {
             return MVisibilityKind.PRIVATE.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1590,8 +1567,7 @@ public class ModelFacade {
             return MVisibilityKind.PUBLIC.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1602,12 +1578,11 @@ public class ModelFacade {
      */
     public static boolean isQuery(Object handle) {
 
-        if (!(handle instanceof MBehavioralFeature)) {
-            throw new IllegalArgumentException("Unrecognized object " +
-					       getClassNull(handle));
+        if (handle instanceof MBehavioralFeature) {
+	    return ((MBehavioralFeature) handle).isQuery();
         }
 
-        return ((MBehavioralFeature) handle).isQuery();
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1622,8 +1597,7 @@ public class ModelFacade {
             return MVisibilityKind.PROTECTED.equals(element.getVisibility());
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1649,8 +1623,7 @@ public class ModelFacade {
 
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1686,15 +1659,14 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentBoolean(handle);
     }
 
     public static boolean isTop(Object handle) {
-	if (isACompositeState(handle))
+	if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getStateMachine() != null;
-	throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -1734,43 +1706,45 @@ public class ModelFacade {
     // Getters for the UML model (in alphabetic order)
 
     /**
-     * Returns the association end between some classifier and some
-     * associaton or the association belonging to the given link.
+     * Returns the association connected to an association end or 
+     * the association belonging to the given link.
      *
-     * @param end is the link
+     * @param handle is the link
      * @return association end
      */
-    public static Object getAssociation(Object end) {
+    public static Object getAssociation(Object handle) {
 
-        if (end instanceof MAssociationEnd) {
-            return ((MAssociationEnd) end).getAssociation();
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd) handle).getAssociation();
         }
-        if (end instanceof MLink) {
-        	return ((MLink) end).getAssociation();
+        if (handle instanceof MLink) {
+        	return ((MLink) handle).getAssociation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + end);
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Returns the association end between some classifier and some associaton.
      *
-     * @param type is the classifier
+     * @param handle is the classifier
      * @param assoc is the association
      * @return association end
      */
-    public static Object getAssociationEnd(Object type, Object assoc) {
-        if (!(type instanceof MClassifier
-            && assoc instanceof MAssociation))
-            throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(type) + " or " +
-                                           getClassNull(assoc));
-        Iterator it = ((MClassifier) type).getAssociationEnds().iterator();
-        while (it.hasNext()) {
-            MAssociationEnd end = (MAssociationEnd) it.next();
-            if (((MAssociation) assoc).getConnections().contains(end))
-                return end;
-        }
-        return null;
+    public static Object getAssociationEnd(Object handle, Object assoc) {
+        if (handle instanceof MClassifier
+	        && assoc instanceof MAssociation) {
+	    MClassifier classifier = (MClassifier) handle;
+
+	    Iterator it = classifier.getAssociationEnds().iterator();
+	    while (it.hasNext()) {
+		MAssociationEnd end = (MAssociationEnd) it.next();
+		if (((MAssociation) assoc).getConnections().contains(end))
+		    return end;
+	    }
+	    return null;
+	}
+
+	return illegalArgumentObject(handle, assoc);
     }
 
     /**
@@ -1786,8 +1760,7 @@ public class ModelFacade {
         }
 
         //...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1800,8 +1773,7 @@ public class ModelFacade {
         if (handle instanceof MAssociation) {
             return ((MAssociation) handle).getAssociationRoles();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1821,8 +1793,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1834,8 +1805,7 @@ public class ModelFacade {
         if (isAStereotype(handle)) {
             return ((MStereotype) handle).getBaseClass();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1853,8 +1823,7 @@ public class ModelFacade {
         } else if (handle instanceof MInclude) {
             return ((MInclude) handle).getBase();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1865,10 +1834,10 @@ public class ModelFacade {
      * @return the bases.
      */
     public static Collection getBases(Object handle) {
-        if (handle instanceof MClassifierRole)
+        if (handle instanceof MClassifierRole) {
             return ((MClassifierRole) handle).getBases();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1881,8 +1850,7 @@ public class ModelFacade {
     public static Collection getBehaviors(Object handle) {
         if (isAModelElement(handle))
             return ((MModelElement) handle).getBehaviors();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1894,8 +1862,7 @@ public class ModelFacade {
     public static Object getBehavioralFeature(Object handle) {
         if (handle instanceof MParameter)
             return ((MParameter) handle).getBehavioralFeature();
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1912,8 +1879,7 @@ public class ModelFacade {
             return ((MConstraint) handle).getBody();
         if (handle instanceof MExpression)
             return ((MExpression) handle).getBody();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getChangeability(Object handle) {
@@ -1923,8 +1889,7 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getChangeability();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1939,8 +1904,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -1953,8 +1917,7 @@ public class ModelFacade {
         if (isAGeneralizableElement(handle)) {
             return ((MGeneralizableElement) handle).getChildren();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1969,8 +1932,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getClassifierRoles();
         }       
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1982,8 +1944,7 @@ public class ModelFacade {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getClassifiers();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -1998,8 +1959,7 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getClassifiersInState();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2011,8 +1971,7 @@ public class ModelFacade {
         if (isADependency(handle)) {
             return ((MDependency) handle).getClients();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2026,48 +1985,46 @@ public class ModelFacade {
             Collection c = ((MModelElement) handle).getClientDependencies();
             return c;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Get the condition of an extend.
      *
-     * @param o extend
+     * @param handle The extend.
      * @return the condition
      */
-    public static Object getCondition(Object o) {
-        if (o != null && o instanceof MExtend) {
-            return ((MExtend) o).getCondition();
+    public static Object getCondition(Object handle) {
+        if (handle instanceof MExtend) {
+            return ((MExtend) handle).getCondition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(o));
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Get the concurrency of an operation.
      *
-     * @param o operation.
+     * @param handle The operation.
      * @return the concurrency.
      */
-    public static Object getConcurrency(Object o) {
-        if (o != null && o instanceof MOperation) {
-            return ((MOperation) o).getConcurrency();
+    public static Object getConcurrency(Object handle) {
+        if (handle instanceof MOperation) {
+            return ((MOperation) handle).getConcurrency();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(o));
+	return illegalArgumentObject(handle);
     }
 
-    //    public static short getConcurrency(Object o) {
-    //        if (o != null && o instanceof MOperation) {
-    //            return ((MOperation) o).getConcurrency()
+    //    public static short getConcurrency(Object handle) {
+    //        if (handle != null && handle instanceof MOperation) {
+    //            return ((MOperation) handle).getConcurrency()
     //                == MCallConcurrencyKind.GUARDED
     //                ? GUARDED
     //                : SEQUENTIAL;
     //        }
-    //        throw new IllegalArgumentException("Unrecognized object " + o);
+    //        illegalArgument(handle);
+    //        return (short) 0;
     //    }
-    //
+
     /**
      * The list of connections to an association or link.
      *
@@ -2081,26 +2038,24 @@ public class ModelFacade {
         if (handle instanceof MLink) {
             return ((MLink) handle).getConnections();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Determine if a model element contains a connection.
      *
-     * @param element is the model element
+     * @param handle is the model element
      * @param connection is the connection that is searched for.
      * @return true if the model element contains a connection
      */
-    public boolean containsConnection(Object element, Object connection) {
-        if (element instanceof MAssociation) {
-            return ((MAssociation) element).getConnections().contains(
+    public boolean containsConnection(Object handle, Object connection) {
+        if (handle instanceof MAssociation) {
+            return ((MAssociation) handle).getConnections().contains(
                 connection);
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(element));
+	return illegalArgumentBoolean(handle);
     }
 
     /**
@@ -2108,6 +2063,8 @@ public class ModelFacade {
      *
      * @param handle to the association.
      * @return an Iterator with all connections.
+     * @deprecated by Linus Tolke as of 0.15.5. Use 
+     * {@link #getConnections()}.size() instead.
      */
     public static int getConnectionCount(Object handle) {
         if (handle instanceof MAssociation) {
@@ -2115,8 +2072,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(handle));
+	illegalArgument(handle);
+	return 0;
     }
 
     /**
@@ -2129,8 +2086,7 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition) handle).getEffect();
         }
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2143,16 +2099,14 @@ public class ModelFacade {
         if (handle instanceof MModelElement)
             return ((MModelElement) handle).getElementResidences();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getElementImports2(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getElementImports2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2165,8 +2119,7 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getEntry();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2179,17 +2132,14 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getExit();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getExpression(Object handle) {
-        if (handle instanceof MGuard)
+        if (handle instanceof MGuard) {
             return ((MGuard) handle).getExpression();
-        
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
-        
+	}
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2205,8 +2155,7 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint) handle).getExtends();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2219,8 +2168,7 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase) handle).getExtends2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2230,18 +2178,17 @@ public class ModelFacade {
      * @return The extension
      */
     public static Object getExtension(Object handle) {
-        if (handle instanceof MExtend)
+        if (handle instanceof MExtend) {
             return ((MExtend) handle).getExtension();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentObject(handle);
     }
 
     public static Object getExtensionPoint(Object handle, int index) {
         if (handle instanceof MExtend) {
             return ((MExtend) handle).getExtensionPoint(index);
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2257,8 +2204,7 @@ public class ModelFacade {
         if (handle instanceof MExtend) {
             return ((MExtend) handle).getExtensionPoints();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2268,34 +2214,34 @@ public class ModelFacade {
      * @return Collection with Features
      */
     public static Collection getFeatures(Object handle) {
-        if (handle != null && handle instanceof MClassifier)
+        if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getFeatures();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Gets the generalization between two generalizable elements.
      * Returns null if there is none.
      *
-     * @param child is the child
+     * @param handle is the child
      * @param parent is the parent
      * @return The generalization
      */
-    public static Object getGeneralization(Object child, Object parent) {
-        if (!(child instanceof MGeneralizableElement
-             && parent instanceof MGeneralizableElement))
-            throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(child) + " or " +
-                                           getClassNull(parent));
-        Iterator it = getGeneralizations(child).iterator();
-        while (it.hasNext()) {
-            MGeneralization gen = (MGeneralization) it.next();
-            if (gen.getParent() == parent) {
-                return gen;
-            }
-        }
-        return null;
+    public static Object getGeneralization(Object handle, Object parent) {
+        if (handle instanceof MGeneralizableElement
+	        && parent instanceof MGeneralizableElement) {
+	    Iterator it = getGeneralizations(handle).iterator();
+	    while (it.hasNext()) {
+		MGeneralization gen = (MGeneralization) it.next();
+		if (gen.getParent() == parent) {
+		    return gen;
+		}
+	    }
+	    return null;
+	}
+
+	return illegalArgumentObject(handle, parent);
     }
 
     /**
@@ -2309,8 +2255,7 @@ public class ModelFacade {
             MGeneralizableElement ge = (MGeneralizableElement) handle;
             return ge.getGeneralizations();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2323,16 +2268,14 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition) handle).getGuard();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getIcon(Object handle) {
         if (handle instanceof MStereotype) {
             return ((MStereotype) handle).getIcon();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2345,8 +2288,7 @@ public class ModelFacade {
         if (handle instanceof MElementResidence) {
             return ((MElementResidence) handle).getImplementationLocation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2359,8 +2301,7 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase) handle).getIncludes();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2373,8 +2314,7 @@ public class ModelFacade {
         if (handle instanceof MUseCase) {
             return ((MUseCase) handle).getIncludes();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2387,8 +2327,7 @@ public class ModelFacade {
         if (isAStateVertex(handle)) {
             return ((MStateVertex) handle).getIncomings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2401,8 +2340,7 @@ public class ModelFacade {
         if (handle instanceof MAttribute) {
             return ((MAttribute) handle).getInitialValue();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2418,8 +2356,7 @@ public class ModelFacade {
         if (handle instanceof MLinkEnd) {
             return ((MLinkEnd) handle).getInstance();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2432,8 +2369,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getInstances();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2446,8 +2382,7 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getInteraction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2460,8 +2395,7 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration) handle).getInteractions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2474,8 +2408,7 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getInternalTransitions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2494,8 +2427,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).getMessages();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2508,16 +2440,14 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getMessages3();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getMessages4(Object handle) {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getMessages4();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2530,16 +2460,14 @@ public class ModelFacade {
         if (handle instanceof MClassifierRole) {
             return ((MClassifierRole) handle).getMessages1();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getMessages2(Object handle) {
         if (handle instanceof MClassifierRole) {
             return ((MClassifierRole) handle).getMessages2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2553,20 +2481,18 @@ public class ModelFacade {
             MModel m = ((MModelElement) handle).getModel();
             return m;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
-     * @param elemImport an Element Import.
+     * @param handle an Element Import.
      * @return the model element
      */
-    public static Object getModelElement(Object elemImport) {
-        if (!(elemImport instanceof MElementImport))
-            throw new IllegalArgumentException("Unrecognized object " +
-					       getClassNull(elemImport));
-
-        return ((MElementImport) elemImport).getModelElement();
+    public static Object getModelElement(Object handle) {
+        if (handle instanceof MElementImport) {
+	    return ((MElementImport) handle).getModelElement();
+	}
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2576,16 +2502,19 @@ public class ModelFacade {
      * @return multiplicity
      */
     public static Object getMultiplicity(Object handle) {
-        if ((handle instanceof MAssociationEnd))
+        if ((handle instanceof MAssociationEnd)) {
             return ((MAssociationEnd) handle).getMultiplicity();
-        if ((handle instanceof MAssociationRole))
+	}
+        if ((handle instanceof MAssociationRole)) {
             return ((MAssociationRole) handle).getMultiplicity();
-        if ((handle instanceof MClassifierRole))
+	}
+        if ((handle instanceof MClassifierRole)) {
             return ((MClassifierRole) handle).getMultiplicity();
-        if ((handle instanceof MStructuralFeature))
+	}
+        if ((handle instanceof MStructuralFeature)) {
             return ((MStructuralFeature) handle).getMultiplicity();
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2595,11 +2524,11 @@ public class ModelFacade {
      * @return the comment (or null)
      */
     public static Collection getComments(Object handle) {
-        if (handle instanceof MModelElement)
+        if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getComments();
+	}
         // ...
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2610,11 +2539,11 @@ public class ModelFacade {
      * @return the communication connection
      */
     public static Object getCommunicationConnection(Object handle) {
-        if (handle instanceof MMessage)
+        if (handle instanceof MMessage) {
             return ((MMessage) handle).getCommunicationConnection();
+	}
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2624,27 +2553,29 @@ public class ModelFacade {
      * @return the communication link
      */
     public static Object getCommunicationLink(Object handle) {
-        if (handle instanceof MStimulus)
+        if (handle instanceof MStimulus) {
             return ((MStimulus) handle).getCommunicationLink();
+	}
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Get the collaborations of an element.
      *
-     * @param handle the model element that we are getting the collaborations of
+     * @param handle the model element that we are getting the
+     * collaborations of.
      * @return the collaborations
      */
     public static Collection getCollaborations(Object handle) {
-        if (handle instanceof MOperation)
+        if (handle instanceof MOperation) {
             return ((MOperation) handle).getCollaborations();
-        if (handle instanceof MClassifier)
+	}
+        if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getCollaborations();
+	}
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2658,8 +2589,7 @@ public class ModelFacade {
             ((MModelElement) element).addComment((MComment) comment);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(element));
+	illegalArgument(element);
     }
 
     /**
@@ -2669,27 +2599,25 @@ public class ModelFacade {
      * @return the component instance
      */
     public static Object getComponentInstance(Object handle) {
-        if (handle instanceof MInstance)
+        if (handle instanceof MInstance) {
             return ((MInstance) handle).getComponentInstance();
+	}
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Collection getConstrainingElements(Object handle) {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration) handle).getConstrainingElements();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getConstraints(Object handle) {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getConstraints();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2707,16 +2635,14 @@ public class ModelFacade {
         if (handle instanceof MBase) {
             return ((MBase) handle).getModelElementContainer();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getContainer(Object handle) {
         if (handle instanceof MStateVertex) {
             return ((MStateVertex) handle).getContainer();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2734,24 +2660,21 @@ public class ModelFacade {
         if (isAInteraction(handle)) {
             return ((MInteraction) handle).getContext();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Collection getContexts(Object handle) {
         if (handle instanceof MSignal) {
             return ((MSignal) handle).getContexts();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getCreateActions(Object handle) {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getCreateActions();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2764,8 +2687,7 @@ public class ModelFacade {
         if (handle instanceof MParameter) {
             return ((MParameter) handle).getDefaultValue();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2778,8 +2700,7 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getDeferrableEvents();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2793,8 +2714,7 @@ public class ModelFacade {
         if (isAComponent(handle)) {
             return ((MComponent) handle).getDeploymentLocations();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2807,8 +2727,7 @@ public class ModelFacade {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization) handle).getDiscriminator();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2821,8 +2740,7 @@ public class ModelFacade {
         if (handle instanceof MStimulus) {
             return ((MStimulus) handle).getDispatchAction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2835,16 +2753,14 @@ public class ModelFacade {
         if (handle instanceof MState) {
             return ((MState) handle).getDoActivity();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Collection getLinks(Object handle) {
         if (handle instanceof MAssociation) {
             return ((MAssociation) handle).getLinks();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getLinkEnds(Object handle) {
@@ -2854,12 +2770,12 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getLinkEnds();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Gets a location of some extension point.
+     *
      * @param handle extension point
      * @return the location
      */
@@ -2867,8 +2783,7 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint) handle).getLocation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentString(handle);
     }
 
     /**
@@ -2881,8 +2796,7 @@ public class ModelFacade {
         if (handle instanceof MModelElement)
             return ((MModelElement) handle).getNamespace();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2895,8 +2809,7 @@ public class ModelFacade {
         if (handle instanceof MComponentInstance)
             return ((MComponentInstance) handle).getNodeInstance();
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2909,8 +2822,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getObjectFlowStates();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2927,8 +2839,7 @@ public class ModelFacade {
             return ((MCallEvent) handle).getOperation();
         }
         // ...
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2944,8 +2855,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -2964,8 +2874,8 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
+	return null;
     }
 
     /**
@@ -2978,8 +2888,7 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getOppositeEnd();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -2993,8 +2902,7 @@ public class ModelFacade {
             return ((MAssociationEnd) handle).getOrdering();
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3007,8 +2915,7 @@ public class ModelFacade {
         if (ModelFacade.isAStateVertex(handle)) {
             return ((MStateVertex) handle).getOutgoings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3036,8 +2943,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3052,8 +2958,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3066,8 +2971,7 @@ public class ModelFacade {
         if (handle instanceof MFeature) {
             return ((MFeature) handle).getOwnerScope();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3080,8 +2984,7 @@ public class ModelFacade {
         if (handle instanceof MGeneralization) {
             return ((MGeneralization) handle).getPowertype();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3094,8 +2997,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getPowertypeRanges();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3108,31 +3010,28 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getPredecessors();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Determine if the passed parameter has a RETURN direction kind
      *
      * @return true if it is a return direction kind
-     * @param o is the object
+     * @param handle is the parameter
      */
-    public static boolean hasReturnParameterDirectionKind(Object o) {
-        if (!(o instanceof MParameter))
-            throw new IllegalArgumentException("Unrecognized object " +
-                getClassNull(o));
-        
-        MParameter parameter = (MParameter) o;
-        return (MParameterDirectionKind.RETURN.equals(parameter.getKind()));
+    public static boolean hasReturnParameterDirectionKind(Object handle) {
+        if (handle instanceof MParameter) {
+	    MParameter parameter = (MParameter) handle;
+	    return (MParameterDirectionKind.RETURN.equals(parameter.getKind()));
+	}
+	return illegalArgumentBoolean(handle);
     }
 
     public static Object getPackage(Object handle) {
         if (handle instanceof MElementImport) {
             return ((MElementImport) handle).getPackage();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3143,12 +3042,10 @@ public class ModelFacade {
      * @return parameter.
      */
     public static Object getParameter(Object handle, int n) {
-        if (handle instanceof MBehavioralFeature)
+        if (handle instanceof MBehavioralFeature) {
             return ((MBehavioralFeature) handle).getParameter(n);
-
-        // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	}
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3170,8 +3067,7 @@ public class ModelFacade {
         if (handle instanceof MClassifier) {
             return ((MClassifier) handle).getParameters();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3188,8 +3084,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3202,8 +3097,7 @@ public class ModelFacade {
         if (handle instanceof MOperation) {
             return ((MOperation) handle).getRaisedSignals();
         }
-        throw new IllegalArgumentException("Unrecognized handle: " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3216,8 +3110,7 @@ public class ModelFacade {
         if (handle instanceof MSignal) {
             return ((MSignal) handle).getReceptions();
         }
-        throw new IllegalArgumentException("Unrecognized handle: " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3230,8 +3123,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).getRecurrence();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3244,8 +3136,7 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration) handle).getRepresentedClassifier();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3258,8 +3149,7 @@ public class ModelFacade {
         if (handle instanceof MCollaboration) {
             return ((MCollaboration) handle).getRepresentedOperation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3272,8 +3162,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).getScript();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3289,8 +3178,7 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getSender();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3310,8 +3198,7 @@ public class ModelFacade {
         if (handle instanceof MReception) {
             return ((MReception) handle).getSignal();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3324,16 +3211,14 @@ public class ModelFacade {
         if (handle instanceof MElementResidence) {
             return ((MElementResidence) handle).getResident();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Collection getResidentElements(Object handle) {
         if (handle instanceof MComponent) {
             return ((MComponent) handle).getResidentElements();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3347,8 +3232,7 @@ public class ModelFacade {
         if (isANode(handle)) {
             return ((MNode) handle).getResidents();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3361,16 +3245,14 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition) handle).getSource();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Collection getSources(Object handle) {
         if (handle instanceof MFlow) {
             return ((MFlow) handle).getSources();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3383,8 +3265,7 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getSourceFlows();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3400,8 +3281,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3417,8 +3297,7 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition) handle).getStateMachine();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3431,8 +3310,7 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition) handle).getState();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3446,8 +3324,7 @@ public class ModelFacade {
         if (isAModelElement(handle)) {
             return ((MModelElement) handle).getStereotype();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3464,8 +3341,7 @@ public class ModelFacade {
             list.add(((MModelElement) handle).getStereotype());
             return list;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3478,24 +3354,21 @@ public class ModelFacade {
         if (isALink(handle)) {
             return ((MLink) handle).getStimuli();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getStimuli2(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getStimuli2();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     public static Collection getStimuli3(Object handle) {
         if (handle instanceof MInstance) {
             return ((MInstance) handle).getStimuli3();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3509,8 +3382,7 @@ public class ModelFacade {
         if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getSubvertices();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3523,8 +3395,7 @@ public class ModelFacade {
         if (handle instanceof MSubmachineState) {
             return ((MSubmachineState) handle).getStateMachine();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3537,8 +3408,7 @@ public class ModelFacade {
         if (handle instanceof MStateMachine) {
             return ((MStateMachine) handle).getSubmachineStates();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3554,8 +3424,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3570,8 +3439,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3587,8 +3455,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).getTransition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3601,8 +3468,7 @@ public class ModelFacade {
         if (handle instanceof MTransition) {
             return ((MTransition) handle).getTrigger();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3623,8 +3489,7 @@ public class ModelFacade {
         }
 
         // ...
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3637,8 +3502,7 @@ public class ModelFacade {
         if (isATransition(handle)) {
             return ((MTransition) handle).getTarget();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3654,8 +3518,7 @@ public class ModelFacade {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getTargetScope();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3668,8 +3531,7 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             return ((MModelElement) handle).getTargetFlows();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3691,8 +3553,8 @@ public class ModelFacade {
 	    MMultiplicity up = (MMultiplicity) handle;
 	    return up.getUpper();
 	}
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
+	return 0;
     }
 
     /**
@@ -3705,8 +3567,7 @@ public class ModelFacade {
         if (handle instanceof MExtensionPoint) {
             return ((MExtensionPoint) handle).getUseCase();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3728,8 +3589,8 @@ public class ModelFacade {
 	    MMultiplicity low = (MMultiplicity) handle;
 	    return low.getLower();
 	}
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
+	return 0; 
     }
 
     /**
@@ -3748,20 +3609,19 @@ public class ModelFacade {
         } else if (isACompositeState(handle)) {
             return ((MCompositeState) handle).getInternalTransitions();
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * This method returns all attributes of a given Classifier.
      *
-     * @param classifier the classifier you want to have the attributes for
+     * @param handle is the classifier you want to have the attributes for.
      * @return a collection of the attributes
      */
-    public static Collection getStructuralFeatures(Object classifier) {
+    public static Collection getStructuralFeatures(Object handle) {
         Collection result = new ArrayList();
-        if (ModelFacade.isAClassifier(classifier)) {
-            MClassifier mclassifier = (MClassifier) classifier;
+        if (ModelFacade.isAClassifier(handle)) {
+            MClassifier mclassifier = (MClassifier) handle;
 
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
@@ -3771,8 +3631,7 @@ public class ModelFacade {
             }
             return result;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(classifier));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3794,16 +3653,17 @@ public class ModelFacade {
 
     /**
      * Returns all Interfaces of which this class is a realization.
-     * @param cls  the class you want to have the interfaces for
+     *
+     * @param handle  the class you want to have the interfaces for
      * @return a collection of the Interfaces
      */
-    public static Collection getSpecifications(Object cls) {
+    public static Collection getSpecifications(Object handle) {
         Collection result = new Vector();
-        if (cls instanceof MAssociationEnd) {
-            return ((MAssociationEnd) cls).getSpecifications();
+        if (handle instanceof MAssociationEnd) {
+            return ((MAssociationEnd) handle).getSpecifications();
         }
-        if (cls instanceof MClassifier) {
-            Collection deps = ((MClassifier) cls).getClientDependencies();
+        if (handle instanceof MClassifier) {
+            Collection deps = ((MClassifier) handle).getClientDependencies();
             Iterator depIterator = deps.iterator();
             while (depIterator.hasNext()) {
                 MDependency dep = (MDependency) depIterator.next();
@@ -3818,8 +3678,7 @@ public class ModelFacade {
             }
             return result;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(cls));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3832,8 +3691,7 @@ public class ModelFacade {
         if (handle instanceof MDependency) {
             return ((MDependency) handle).getSuppliers();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3846,8 +3704,7 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getAction();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3860,8 +3717,7 @@ public class ModelFacade {
         if (handle instanceof MMessage) {
             return ((MMessage) handle).getActivator();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3874,8 +3730,7 @@ public class ModelFacade {
         if (handle instanceof MAction) {
             return ((MAction) handle).getActualArguments();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentCollection(handle);
     }
 
     /**
@@ -3888,31 +3743,29 @@ public class ModelFacade {
         if (handle instanceof MInclude) {
             return ((MInclude) handle).getAddition();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     public static Object getAggregation(Object handle) {
         if (handle instanceof MAssociationEnd) {
             return ((MAssociationEnd) handle).getAggregation();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
-     * Returns all associated classes for some given classifier. Returns an
-     * empty collection if the given argument o is not a classifier. The given
-     * parameter is included in the returned collection if it has a self-
-     * referencing association.
+     * Returns all associated classes for some given classifier.
+     * Returns an empty collection if the given argument handle is not
+     * a classifier.  The given parameter is included in the returned
+     * collection if it has a self-referencing association.
      *
-     * @param o is the classifier
+     * @param handle is the classifier
      * @return Collection
      */
-    public static Collection getAssociatedClasses(Object o) {
+    public static Collection getAssociatedClasses(Object handle) {
         Collection col = new ArrayList();
-        if (o instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) o;
+        if (handle instanceof MClassifier) {
+            MClassifier classifier = (MClassifier) handle;
             Collection ends = classifier.getAssociationEnds();
             Iterator it = ends.iterator();
             Set associations = new HashSet();
@@ -3932,8 +3785,7 @@ public class ModelFacade {
             }
             return col;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+	return illegalArgumentCollection(handle);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -3958,22 +3810,21 @@ public class ModelFacade {
         if (handle instanceof MAggregationKind) {
             return ((MAggregationKind) handle).getName();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
+	return "";
     }
 
     /**
      * Return the owner of a feature.
      *
-     * @param f is the feature
+     * @param handle is the feature
      * @return classifier
      */
-    public static Object getOwner(Object f) {
-        if (f instanceof MFeature) {
-            return ((MFeature) f).getOwner();
+    public static Object getOwner(Object handle) {
+        if (handle instanceof MFeature) {
+            return ((MFeature) handle).getOwner();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(f));
+	return illegalArgumentObject(handle);
     }
 
     /**
@@ -3986,42 +3837,40 @@ public class ModelFacade {
         if (handle instanceof MTaggedValue) {
             return ((MTaggedValue) handle).getTag();
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Return the tagged values iterator of a model element.
      *
-     * @param modelElement The tagged values belong to this.
+     * @param handle The tagged values belong to this.
      * @return The tagged values iterator
      */
-    public static Iterator getTaggedValues(Object modelElement) {
-        if (modelElement != null && modelElement instanceof MModelElement) {
-            return ((MModelElement) modelElement).getTaggedValues().iterator();
+    public static Iterator getTaggedValues(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getTaggedValues().iterator();
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(modelElement));
+	illegalArgument(handle);
+	return null;
     }
 
-    public static Collection getTaggedValuesCollection(Object modelElement) {
-        if (modelElement != null && modelElement instanceof MModelElement) {
-            return ((MModelElement) modelElement).getTaggedValues();
+    public static Collection getTaggedValuesCollection(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getTaggedValues();
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(modelElement));
+	return illegalArgumentCollection(handle);
     }
 
     /**
      * Return the tagged value with a specific tag.
      *
-     * @param modelElement The tagged value belongs to this.
+     * @param handle The tagged value belongs to this.
      * @param name The tag.
      * @return The found tag, null if not found
      */
-    public static Object getTaggedValue(Object modelElement, String name) {
-        if (modelElement != null && modelElement instanceof MModelElement) {
-            MModelElement me = ((MModelElement) modelElement);
+    public static Object getTaggedValue(Object handle, String name) {
+        if (handle instanceof MModelElement) {
+            MModelElement me = ((MModelElement) handle);
             Iterator i = me.getTaggedValues().iterator();
             while (i.hasNext()) {
                 MTaggedValue tv = (MTaggedValue) i.next();
@@ -4031,25 +3880,21 @@ public class ModelFacade {
             }
 	    return null;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(modelElement));
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Return the key (tag) of some tagged value.
      *
-     * @param tv The tagged value.
+     * @param handle The tagged value.
      * @return The found value, null if not found
      */
-    public static String getTagOfTag(Object tv) {
-        if (tv instanceof MTaggedValue) {
-	    if (tv != null) {
-            return ((MTaggedValue) tv).getTag();
-	    }
-	    return null;
+    public static String getTagOfTag(Object handle) {
+        if (handle instanceof MTaggedValue) {
+            return ((MTaggedValue) handle).getTag();
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(tv));
+	illegalArgument(handle);
+	return "";
     }
 
     public static Object getValue(Object handle) {
@@ -4092,22 +3937,20 @@ public class ModelFacade {
         if (handle instanceof MCallConcurrencyKind) {
             return new Integer(((MCallConcurrencyKind) handle).getValue());
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	return illegalArgumentObject(handle);
     }
 
     /**
      * Return the value of some tagged value.
      *
-     * @param tv The tagged value.
+     * @param handle The tagged value.
      * @return The found value, null if not found
      */
-    public static String getValueOfTag(Object tv) {
-        if (tv != null && tv instanceof MTaggedValue) {
-            return ((MTaggedValue) tv).getValue();
+    public static String getValueOfTag(Object handle) {
+        if (handle instanceof MTaggedValue) {
+            return ((MTaggedValue) handle).getValue();
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(tv));
+	return illegalArgumentString(handle);
     }
 
     /**
@@ -4121,22 +3964,21 @@ public class ModelFacade {
             return ((MBase) base).getUUID();
         }
         //
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(base));
+	illegalArgument(base);
+	return "";
     }
 
     /**
      *  Return the visibility of this element
-     *  @param element an nsuml model element
+     *  @param handle an nsuml model element
      *  @return visibility
      */
-    public static Object getVisibility(Object element) {
-        if (element instanceof MModelElement) {
-            return ((MModelElement) element).getVisibility();
+    public static Object getVisibility(Object handle) {
+        if (handle instanceof MModelElement) {
+            return ((MModelElement) handle).getVisibility();
         }
         //
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(element));
+	return illegalArgumentObject(handle);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -4145,19 +3987,18 @@ public class ModelFacade {
     /**
      * Returns a named object in the given object by calling it's lookup method.
      *
-     * @param o the object that we search through
+     * @param handle the object that we search through
      * @param name of the model element
      * @return found object, null otherwise
      */
-    public static Object lookupIn(Object o, String name) {
-        if (o instanceof MModel)
-            return ((MModel) o).lookup(name);
-        if (o instanceof MNamespace)
-            return ((MNamespace) o).lookup(name);
-        if (o instanceof MClassifier)
-            return ((MClassifier) o).lookup(name);
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+    public static Object lookupIn(Object handle, String name) {
+        if (handle instanceof MModel)
+            return ((MModel) handle).lookup(name);
+        if (handle instanceof MNamespace)
+            return ((MNamespace) handle).lookup(name);
+        if (handle instanceof MClassifier)
+            return ((MClassifier) handle).lookup(name);
+	return illegalArgumentObject(handle);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -4165,16 +4006,15 @@ public class ModelFacade {
 
     /**
      * Adds a feature to some classifier.
-     * @param cls classifier
+     * @param handle classifier
      * @param f feature
      */
-    public static void addFeature(Object cls, Object f) {
-        if (cls instanceof MClassifier && f instanceof MFeature) {
-            ((MClassifier) cls).addFeature((MFeature) f);
+    public static void addFeature(Object handle, Object f) {
+        if (handle instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier) handle).addFeature((MFeature) f);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(cls));
+	illegalArgument(handle);
     }
     
     /**
@@ -4190,36 +4030,31 @@ public class ModelFacade {
 	    clr.addInstance((MInstance) instance);
 	    return;
     	}
-	throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(classifierRole)
-					   + " or "
-					   + getClassNull(instance));
+	illegalArgument(classifierRole, instance);
     }
 
 
     /**
      * Adds a feature to some classifier.
      *
-     * @param cls classifier
+     * @param handle classifier
      * @param index position
      * @param f feature
      */
-    public static void addFeature(Object cls, int index, Object f) {
-        if (cls instanceof MClassifier && f instanceof MFeature) {
-            ((MClassifier) cls).addFeature(index, (MFeature) f);
+    public static void addFeature(Object handle, int index, Object f) {
+        if (handle instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier) handle).addFeature(index, (MFeature) f);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + cls
-					   + " or " + f);
+	illegalArgument(handle, f);
     }
     
-    public static void addLink(Object association, Object link) {
-	if (association instanceof MAssociation && link instanceof MLink) {
-	    ((MAssociation) association).addLink((MLink) link);
+    public static void addLink(Object handle, Object link) {
+	if (handle instanceof MAssociation && link instanceof MLink) {
+	    ((MAssociation) handle).addLink((MLink) link);
 	    return;
 	}
-	throw new IllegalArgumentException("Unrecognized object "
-					   + association + " or " + link);
+	illegalArgument(handle, link);
     }
 
     public static void addMessage3(Object handle, Object mess) {
@@ -4227,148 +4062,134 @@ public class ModelFacade {
             ((MMessage) handle).addMessage3((MMessage) mess);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle, mess);
     }
 
     /**
      * Adds a method to some operation and copies the op's attributes
      * to the method.
      *
-     * @param o is the operation
+     * @param handle is the operation
      * @param m is the method
      */
-    public static void addMethod(Object o, Object m) {
-        if (o instanceof MOperation
+    public static void addMethod(Object handle, Object m) {
+        if (handle instanceof MOperation
             && m instanceof MMethod) {
-            ((MMethod) m).setVisibility(((MOperation) o).getVisibility());
-            ((MMethod) m).setOwnerScope(((MOperation) o).getOwnerScope());
-            ((MOperation) o).addMethod((MMethod) m);
+            ((MMethod) m).setVisibility(((MOperation) handle).getVisibility());
+            ((MMethod) m).setOwnerScope(((MOperation) handle).getOwnerScope());
+            ((MOperation) handle).addMethod((MMethod) m);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o) + " or " + getClassNull(m));
+	illegalArgument(handle, m);
     }
 
     /**
      * Adds a model element to some namespace.
-     * @param ns namespace
+     * @param handle namespace
      * @param me model element
      */
-    public static void addOwnedElement(Object ns, Object me) {
-        if (ns instanceof MNamespace && me instanceof MModelElement) {
-            ((MNamespace) ns).addOwnedElement((MModelElement) me);
+    public static void addOwnedElement(Object handle, Object me) {
+        if (handle instanceof MNamespace && me instanceof MModelElement) {
+            ((MNamespace) handle).addOwnedElement((MModelElement) me);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object "
-					   + getClassNull(ns)
-					   + " or " + getClassNull(me));
+	illegalArgument(handle, me);
     }
 
-    public static void addParameter(Object target, Object parameter) {
+    public static void addParameter(Object handle, Object parameter) {
         if (parameter instanceof MParameter) {
-            if (target instanceof MObjectFlowState) {
-                ((MObjectFlowState) target).addParameter(
+            if (handle instanceof MObjectFlowState) {
+                ((MObjectFlowState) handle).addParameter(
 		         (MParameter) parameter);
                 return;
             }
-            if (target instanceof MEvent) {
-                ((MEvent) target).addParameter((MParameter) parameter);
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).addParameter((MParameter) parameter);
                 return;
             }
-            if (target instanceof MBehavioralFeature) {
-                ((MBehavioralFeature) target).addParameter(
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).addParameter(
                     (MParameter) parameter);
                 return;
             }
-            if (target instanceof MClassifier) {
-                ((MClassifier) target).addParameter((MParameter) parameter);
+            if (handle instanceof MClassifier) {
+                ((MClassifier) handle).addParameter((MParameter) parameter);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(parameter));
+	illegalArgument(handle, parameter);
     }
 
     public static void addParameter(
-        Object target,
+        Object handle,
         int index,
         Object parameter) {
         if (parameter instanceof MParameter) {
-            if (target instanceof MEvent) {
-                ((MEvent) target).addParameter(index, (MParameter) parameter);
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).addParameter(index, (MParameter) parameter);
                 return;
             }
-            if (target instanceof MBehavioralFeature) {
-                ((MBehavioralFeature) target).addParameter(
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).addParameter(
                         index,
                         (MParameter) parameter);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(parameter));
+	illegalArgument(handle, parameter);
     }
 
     /**
      * Adds a predecessor to a message.
      *
-     * @param target the message
+     * @param handle the message
      * @param predecessor is the predecessor
      */
-    public static void addPredecessor(Object target, Object predecessor) {
-        if (target != null
-            && target instanceof MMessage
+    public static void addPredecessor(Object handle, Object predecessor) {
+        if (handle != null
+            && handle instanceof MMessage
             && predecessor != null
             && predecessor instanceof MMessage) {
-            ((MMessage) target).addPredecessor((MMessage) predecessor);
+            ((MMessage) handle).addPredecessor((MMessage) predecessor);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(predecessor));
+	illegalArgument(handle, predecessor);
     }
 
-    public static void addRaisedSignal(Object target, Object sig) {
+    public static void addRaisedSignal(Object handle, Object sig) {
         if (sig instanceof MSignal) {
-            if (target instanceof MMessage) {
-                ((MBehavioralFeature) target).addRaisedSignal((MSignal) sig);  
+            if (handle instanceof MMessage) {
+                ((MBehavioralFeature) handle).addRaisedSignal((MSignal) sig);  
                 return;
             }
-            if (target instanceof MOperation) {
-                ((MOperation) target).addRaisedSignal((MSignal) sig);
+            if (handle instanceof MOperation) {
+                ((MOperation) handle).addRaisedSignal((MSignal) sig);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(sig));
+	illegalArgument(handle, sig);
     }
 
     /**
      * Adds a stimulus to a action or link
      *
-     * @param target the action or link
+     * @param handle the action or link
      * @param stimulus is the stimulus
      */
-    public static void addStimulus(Object target, Object stimulus) {
-        if (target != null
+    public static void addStimulus(Object handle, Object stimulus) {
+        if (handle != null
             && stimulus != null
             && stimulus instanceof MStimulus) {
-            if (target instanceof MAction) {
-                ((MAction) target).addStimulus((MStimulus) stimulus);
+            if (handle instanceof MAction) {
+                ((MAction) handle).addStimulus((MStimulus) stimulus);
                 return;
             }
-            if (target instanceof MLink) {
-                ((MLink) target).addStimulus((MStimulus) stimulus);
+            if (handle instanceof MLink) {
+                ((MLink) handle).addStimulus((MStimulus) stimulus);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(stimulus));
+	illegalArgument(handle, stimulus);
     }
 
     public static void addSubvertex(Object handle, Object subvertex) {
@@ -4377,26 +4198,22 @@ public class ModelFacade {
             ((MCompositeState) handle).addSubvertex((MStateVertex) subvertex);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle) + " or " +
-					   getClassNull(subvertex));
+	illegalArgument(handle, subvertex);
     }
 
     /**
      * Adds a supplier classifier to some abstraction.
-     * @param a abstraction
+     *
+     * @param handle abstraction
      * @param cls supplier classifier
      */
-    public static void addSupplier(Object a, Object cls) {
-        if (a != null
-            && cls != null
-            && a instanceof MAbstraction
+    public static void addSupplier(Object handle, Object cls) {
+        if (handle instanceof MAbstraction
             && cls instanceof MClassifier) {
-            ((MAbstraction) a).addSupplier((MClassifier) cls);
+            ((MAbstraction) handle).addSupplier((MClassifier) cls);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(a) + " or " + getClassNull(cls));
+	illegalArgument(handle, cls);
     }
 
     /**
@@ -4412,8 +4229,7 @@ public class ModelFacade {
             me.addSupplierDependency((MDependency) dependency);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(supplier) + " or " + getClassNull(dependency));
+	illegalArgument(supplier, dependency);
     }
 
     public static void addActualArgument(Object handle, Object argument) {
@@ -4421,26 +4237,22 @@ public class ModelFacade {
             ((MAction) handle).addActualArgument((MArgument) argument);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(argument));
+	illegalArgument(handle, argument);
     }
 
     /**
      * This method adds a classifier to a classifier role.
      *
-     * @param o is the classifier role
+     * @param handle is the classifier role
      * @param c is the classifier
      */
-    public static void addBase(Object o, Object c) {
-        if (o != null
-            && c != null
-            && o instanceof MClassifierRole
-            && c instanceof MClassifier) {
-            ((MClassifierRole) o).addBase((MClassifier) c);
+    public static void addBase(Object handle, Object c) {
+        if (handle instanceof MClassifierRole
+                && c instanceof MClassifier) {
+            ((MClassifierRole) handle).addBase((MClassifier) c);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o) + " or " + getClassNull(c));
+	illegalArgument(handle, c);
     }
 
     public static void addClassifier(Object handle, Object classifier) {
@@ -4448,53 +4260,46 @@ public class ModelFacade {
             ((MInstance) handle).addClassifier((MClassifier) classifier);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(classifier));
+	illegalArgument(handle, classifier);
     }
 
     /**
      * Adds a client classifier to some abstraction.
-     * @param a abstraction
+     *
+     * @param handle abstraction
      * @param cls client classifier
      */
-    public static void addClient(Object a, Object cls) {
-        if (a != null
-            && cls != null
-            && a instanceof MAbstraction
-            && cls instanceof MClassifier) {
-            ((MAbstraction) a).addClient((MClassifier) cls);
+    public static void addClient(Object handle, Object cls) {
+        if (handle instanceof MAbstraction
+                && cls instanceof MClassifier) {
+            ((MAbstraction) handle).addClient((MClassifier) cls);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(a) + " or " + getClassNull(cls));
+	illegalArgument(handle, cls);
     }
 
     /**
      * Adds a client dependency to some modelelement
+     *
      * @param handle the modelelement
      * @param dependency the dependency
      */
     public static void addClientDependency(Object handle, Object dependency) {
-        if (handle != null
-            && dependency != null
-            && isAModelElement(handle)
-            && isADependency(dependency)) {
+        if (isAModelElement(handle)
+                && isADependency(dependency)) {
             MModelElement me = (MModelElement) handle;
             me.addClientDependency((MDependency) dependency);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(dependency));
+	illegalArgument(handle, dependency);
     }
 
-    public static void addTaggedValue(Object target, Object taggedValue) {
-        if (isAModelElement(target) && isATaggedValue(taggedValue)) {
-            ((MModelElement) target).addTaggedValue((MTaggedValue) taggedValue);
+    public static void addTaggedValue(Object handle, Object taggedValue) {
+        if (isAModelElement(handle) && isATaggedValue(taggedValue)) {
+            ((MModelElement) handle).addTaggedValue((MTaggedValue) taggedValue);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(taggedValue));
+	illegalArgument(handle, taggedValue);
     }
 
     public static void removeActualArgument(Object handle, Object argument) {
@@ -4502,44 +4307,37 @@ public class ModelFacade {
             ((MAction) handle).removeActualArgument((MArgument) argument);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(argument));
+	illegalArgument(handle, argument);
     }
 
     /**
      * This method removes a classifier from a classifier role.
      *
-     * @param o is the classifier role
+     * @param handle is the classifier role
      * @param c is the classifier
      */
-    public static void removeBase(Object o, Object c) {
-        if (o != null
-            && c != null
-            && o instanceof MClassifierRole
-            && c instanceof MClassifier) {
-            ((MClassifierRole) o).removeBase((MClassifier) c);
+    public static void removeBase(Object handle, Object c) {
+        if (handle instanceof MClassifierRole
+                && c instanceof MClassifier) {
+            ((MClassifierRole) handle).removeBase((MClassifier) c);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o) + " or " + getClassNull(c));
+	illegalArgument(handle, c);
     }
 
     /**
      * This method removes a dependency from a model element.
      *
-     * @param o is the model element
+     * @param handle is the model element
      * @param dep is the dependency
      */
-    public static void removeClientDependency(Object o, Object dep) {
-        if (o != null
-            && dep != null
-            && o instanceof MModelElement
-            && dep instanceof MDependency) {
-            ((MModelElement) o).removeClientDependency((MDependency) dep);
+    public static void removeClientDependency(Object handle, Object dep) {
+        if (handle instanceof MModelElement
+                && dep instanceof MDependency) {
+            ((MModelElement) handle).removeClientDependency((MDependency) dep);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o) + " or " + getClassNull(dep));
+	illegalArgument(handle, dep);
     }
 
     public static void removeConstraint(Object handle, Object cons) {
@@ -4547,8 +4345,7 @@ public class ModelFacade {
             ((MModelElement) handle).removeConstraint((MConstraint) cons);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(cons));
+	illegalArgument(handle, cons);
     }
 
     public static void removeContext(Object handle, Object context) {
@@ -4557,8 +4354,7 @@ public class ModelFacade {
             ((MSignal) handle).removeContext((MBehavioralFeature) context);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(context));
+	illegalArgument(handle, context);
     }
 
     /**
@@ -4572,27 +4368,22 @@ public class ModelFacade {
             ((MInstance) handle).removeClassifier((MClassifier) classifier);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " +
-	    getClassNull(classifier));
+	illegalArgument(handle, classifier);
     }
 
     /**
      * This method removes a feature from a classifier.
      *
-     * @param cls is the classifier
+     * @param handle is the classifier
      * @param feature to remove
      */
-    public static void removeFeature(Object cls, Object feature) {
-        if (cls != null
-            && feature != null
-            && cls instanceof MClassifier
-            && feature instanceof MFeature) {
-            ((MClassifier) cls).removeFeature((MFeature) feature);
+    public static void removeFeature(Object handle, Object feature) {
+        if (handle instanceof MClassifier
+                && feature instanceof MFeature) {
+            ((MClassifier) handle).removeFeature((MFeature) feature);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(cls) + " or " + getClassNull(feature));
+	illegalArgument(handle, feature);
     }
 
     /**
@@ -4602,15 +4393,12 @@ public class ModelFacade {
      * @param ep is the extension point
      */
     public static void removeExtensionPoint(Object uc, Object ep) {
-        if (uc != null
-            && ep != null
-            && uc instanceof MUseCase
-            && ep instanceof MExtensionPoint) {
+        if (uc instanceof MUseCase
+                && ep instanceof MExtensionPoint) {
             ((MUseCase) uc).removeExtensionPoint((MExtensionPoint) ep);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(uc) + " or " + getClassNull(ep));
+	illegalArgument(uc, ep);
     }
 
     public static void removeMessage3(Object handle, Object mess) {
@@ -4618,8 +4406,7 @@ public class ModelFacade {
             ((MMessage) handle).removeMessage3((MMessage) mess);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle, mess);
     }
 
     /**
@@ -4629,34 +4416,27 @@ public class ModelFacade {
      * @param value is the model element
      */
     public static void removeOwnedElement(Object handle, Object value) {
-        if (handle != null
-            && value != null
-            && handle instanceof MNamespace
-            && value instanceof MModelElement) {
+        if (handle instanceof MNamespace
+                && value instanceof MModelElement) {
             ((MNamespace) handle).removeOwnedElement((MModelElement) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     /**
      * This method removes a parameter from an operation.
      *
-     * @param o is the operation
+     * @param handle is the operation
      * @param p is the parameter
      */
-    public static void removeParameter(Object o, Object p) {
-        if (o != null
-            && p != null
-            && o instanceof MOperation
+    public static void removeParameter(Object handle, Object p) {
+        if (handle instanceof MOperation
             && p instanceof MParameter) {
-            ((MOperation) o).removeParameter((MParameter) p);
+            ((MOperation) handle).removeParameter((MParameter) p);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o) + " or " + getClassNull(p));
+	illegalArgument(handle, p);
     }
 
     public static void removePredecessor(Object handle, Object message) {
@@ -4664,8 +4444,7 @@ public class ModelFacade {
             ((MMessage) handle).removePredecessor((MMessage) message);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(message));
+	illegalArgument(handle, message);
     }
 
     public static void removeReception(Object handle, Object reception) {
@@ -4673,9 +4452,7 @@ public class ModelFacade {
             ((MSignal) handle).removeReception((MReception) reception);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(reception));
+	illegalArgument(handle, reception);
     }
 
     public static void removeSubvertex(Object handle, Object subvertex) {
@@ -4685,43 +4462,40 @@ public class ModelFacade {
 		    (MStateVertex) subvertex);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-                       getClassNull(handle) + " or " +
-                       getClassNull(subvertex));
+	illegalArgument(handle, subvertex);
     }
     
     /**
-     * Set the base of some model element
+     * Set the base of some model element.
      *
-     * @param target is the model element
+     * @param handle is the model element
      * @param base is the base
      */
-    public static void setBase(Object target, Object base) {
-        if (target instanceof MAssociationRole
+    public static void setBase(Object handle, Object base) {
+        if (handle instanceof MAssociationRole
             && base instanceof MAssociation) {
-            ((MAssociationRole) target).setBase((MAssociation) base);
+            ((MAssociationRole) handle).setBase((MAssociation) base);
             return;
         }
-        if (target instanceof MAssociationEndRole
+        if (handle instanceof MAssociationEndRole
             && base instanceof MAssociationEnd) {
-            ((MAssociationEndRole) target).setBase((MAssociationEnd) base);
+            ((MAssociationEndRole) handle).setBase((MAssociationEnd) base);
             return;
         }
-        if (target instanceof MExtend && base instanceof MUseCase) {
-            ((MExtend) target).setBase((MUseCase) base);
+        if (handle instanceof MExtend && base instanceof MUseCase) {
+            ((MExtend) handle).setBase((MUseCase) base);
             return;
         }
-        if (target instanceof MInclude && base instanceof MUseCase) {
-            ((MInclude) target).setBase((MUseCase) base);
+        if (handle instanceof MInclude && base instanceof MUseCase) {
+            ((MInclude) handle).setBase((MUseCase) base);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(base));
+	illegalArgument(handle, base);
     }
 
     /**
-     * Set the baseclass of some stereotype
+     * Set the baseclass of some stereotype.
+     *
      * @param handle the stereotype
      * @param baseClass the baseclass
      */
@@ -4730,104 +4504,96 @@ public class ModelFacade {
             ((MStereotype) handle).setBaseClass((String) baseClass);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle, baseClass);
     }
 
     /**
      * Sets a body of some method or expression.
      *
-     * @param m is the method, expression
+     * @param handle is the method, expression
      * @param expr body
      */
-    public static void setBody(Object m, Object expr) {
-        if (m instanceof MMethod
+    public static void setBody(Object handle, Object expr) {
+        if (handle instanceof MMethod
             && (expr == null || expr instanceof MProcedureExpression)) {
-            ((MMethod) m).setBody((MProcedureExpression) expr);
+            ((MMethod) handle).setBody((MProcedureExpression) expr);
             return;
         }
 
-        if (m instanceof MConstraint
+        if (handle instanceof MConstraint
             && (expr == null || expr instanceof MBooleanExpression)) {
-            ((MConstraint) m).setBody((MBooleanExpression) expr);
+            ((MConstraint) handle).setBody((MBooleanExpression) expr);
             return;
         }
 
-        if (m instanceof MExpression) {
-            MExpression expression = (MExpression) m;
+        if (handle instanceof MExpression) {
+            MExpression expression = (MExpression) handle;
             MExpressionEditor expressionEditor =
 		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
-		.createExpressionEditor(m);
+		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
             expression = expressionEditor.toExpression();
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(m) + " or " + getClassNull(expr));
+	illegalArgument(handle, expr);
     }
 
     /**
      * Sets the language of an expression.
      *
-     * @param m is the expression
+     * @param handle is the expression
      * @param expr is the lang
      *
      * TODO: Rename the expr parameter to something a little less error-prone.
      */
-    public static void setLanguage(Object m, String expr) {
-        if (m instanceof MExpression) {
-            MExpression expression = (MExpression) m;
+    public static void setLanguage(Object handle, String expr) {
+        if (handle instanceof MExpression) {
+            MExpression expression = (MExpression) handle;
             MExpressionEditor expressionEditor = (MExpressionEditor)
                 UmlFactory.getFactory().getDataTypes().
-                    createExpressionEditor(m);
+                    createExpressionEditor(handle);
             expressionEditor.setLanguage(expr);
-            m = expressionEditor.toExpression();
+            handle = expressionEditor.toExpression();
            
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(m) + " or " + getClassNull(expr));
+	illegalArgument(handle, expr);
     }
     
-    public static String getLanguage(Object expr) {
-        if (expr instanceof MExpression) {
-            return ((MExpression) expr).getLanguage();
+    public static String getLanguage(Object handle) {
+        if (handle instanceof MExpression) {
+            return ((MExpression) handle).getLanguage();
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(expr));
+	return illegalArgumentString(handle);
     }
-    
+
     /**
      * Sets a default value of some parameter.
      *
-     * @param p is the parameter
+     * @param handle is the parameter
      * @param expr is the expression
      */
-    public static void setDefaultValue(Object p, Object expr) {
-        if (p instanceof MParameter && expr instanceof MExpression) {
-            ((MParameter) p).setDefaultValue((MExpression) expr);
+    public static void setDefaultValue(Object handle, Object expr) {
+        if (handle instanceof MParameter && expr instanceof MExpression) {
+            ((MParameter) handle).setDefaultValue((MExpression) expr);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(p) + " or " + getClassNull(expr));
+	illegalArgument(handle, expr);
     }
 
     /**
      * Sets the guard of a transition.
+     *
      * @param handle to the transition
-     * @param guard to be set
+     * @param guard to be set. Can be null.
      */
     public static void setGuard(Object handle, Object guard) {
         if (handle instanceof MTransition
-            && (guard == null || guard instanceof MGuard)) {
+                && (guard == null || guard instanceof MGuard)) {
             ((MTransition) handle).setGuard((MGuard) guard);
             return;
         }
-        throw new IllegalArgumentException(
-            "Object "
-	    + getClassNull(guard)
-	    + " cannot be owned by "
-	    + getClassNull(handle));
+	illegalArgument(handle, guard);
     }
 
     public static void setTransition(Object handle, Object trans) {
@@ -4841,8 +4607,7 @@ public class ModelFacade {
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Object " + trans + " cannot be owned by " + handle);
+	illegalArgument(handle, trans);
     }
 
     /**
@@ -4853,52 +4618,47 @@ public class ModelFacade {
      */
     public static void setTrigger(Object handle, Object event) {
         if (handle instanceof MTransition
-            && (event == null || event instanceof MEvent)) {
+                && (event == null || event instanceof MEvent)) {
             ((MTransition) handle).setTrigger((MEvent) event);
             return;
         }
-        throw new IllegalArgumentException(
-            "Object " + event + " cannot be owned by " + handle);
+	illegalArgument(handle, event);
     }
 
     public static void setIcon(Object handle, Object icon) {
         if (handle instanceof MStereotype
-            && (icon == null || icon instanceof String)) {
+                && (icon == null || icon instanceof String)) {
             ((MStereotype) handle).setIcon((String) icon);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(icon));
+	illegalArgument(handle, icon);
     }
 
     public static void setImplementationLocation(
         Object handle,
         Object component) {
         if (handle instanceof MElementResidence
-            && (component == null || component instanceof MComponent)) {
+                && (component == null || component instanceof MComponent)) {
             ((MElementResidence) handle).setImplementationLocation(
                 (MComponent) component);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(component));
+	illegalArgument(handle, component);
     }
 
-    public static void setIncludes(Object target, Collection includes) {
-        if (target instanceof MUseCase) {
-            ((MUseCase) target).setIncludes(includes);
+    public static void setIncludes(Object handle, Collection includes) {
+        if (handle instanceof MUseCase) {
+            ((MUseCase) handle).setIncludes(includes);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(includes));
+	illegalArgument(handle, includes);
     }
 
     /**
      * Sets an initial value.
      *
      * @param at attribute that we set the initial value of
-     * @param expr that is the value to set
+     * @param expr that is the value to set. Can be <tt>null</tt>.
      */
     public static void setInitialValue(Object at, Object expr) {
         if (at instanceof MAttribute
@@ -4906,8 +4666,7 @@ public class ModelFacade {
 	    ((MAttribute) at).setInitialValue((MExpression) expr);
 	    return;
 	}
-	throw new IllegalArgumentException("Unrecognized object " + at
-					   + " or " + expr);
+	illegalArgument(at, expr);
     }
 
     public static void setInstance(Object handle, Object inst) {
@@ -4921,21 +4680,21 @@ public class ModelFacade {
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(inst));
+	illegalArgument(handle, inst);
     }
 
+    /**
+     * @param handle is the target.
+     * @param intTrans is a collection of transitions.
+     */
     public static void setInternalTransitions(
-        Object target,
+        Object handle,
         Collection intTrans) {
-        if (target instanceof MState) {
-            ((MState) target).setInternalTransitions(intTrans);
+        if (handle instanceof MState) {
+            ((MState) handle).setInternalTransitions(intTrans);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(intTrans));
+	illegalArgument(handle);
     }
 
     public static void setMessages3(Object handle, Collection messages) {
@@ -4943,23 +4702,21 @@ public class ModelFacade {
             ((MMessage) handle).setMessages3(messages);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
      * Sets a location of some extension point.
      *
-     * @param ep is the extension point
+     * @param handle is the extension point
      * @param loc is the location
      */
-    public static void setLocation(Object ep, String loc) {
-        if (ep != null && ep instanceof MExtensionPoint) {
-            ((MExtensionPoint) ep).setLocation(loc);
+    public static void setLocation(Object handle, String loc) {
+        if (handle instanceof MExtensionPoint) {
+            ((MExtensionPoint) handle).setLocation(loc);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(ep));
+	illegalArgument(handle);
     }
 
     /**
@@ -4984,16 +4741,7 @@ public class ModelFacade {
      */
     public static void setModelElementContainer(
         Object handle,
-        Object container)
-        throws IllegalArgumentException {
-        if (handle == null || container == null) {
-            throw new IllegalArgumentException(
-                "Neither the modelelement to be "
-                    + "added as the container "
-                    + "nor the one to which "
-                    + "the modelelement is added "
-                    + "may be null");
-        }
+        Object container) {
         if (handle instanceof MPartition
             && container instanceof MActivityGraph) {
             ((MPartition) handle).setActivityGraph((MActivityGraph) container);
@@ -5060,82 +4808,79 @@ public class ModelFacade {
             handle instanceof MModelElement
                 && container instanceof MNamespace) {
             ((MModelElement) handle).setNamespace((MNamespace) container);
-        } else {
-            throw new IllegalArgumentException(
-                "Object "
-                    + handle.toString()
-                    + " cannot be owned by "
-                    + container.toString());
         }
+
+	illegalArgument(handle, container);
     }
 
     /**
      * Sets a multiplicity of some model element.
-     * @param target model element
-     * @param mult multiplicity as string OR multiplicity object
+     *
+     * @param handle model element
+     * @param arg multiplicity as string OR multiplicity object
      */
-    public static void setMultiplicity(Object target, Object mult) {
-        if (mult instanceof String) {
-            mult =
-                ("1_N".equals(mult)) ? MMultiplicity.M1_N : MMultiplicity.M1_1;
+    public static void setMultiplicity(Object handle, Object arg) {
+        if (arg instanceof String) {
+            arg =
+                ("1_N".equals(arg)) ? MMultiplicity.M1_N : MMultiplicity.M1_1;
         }
 
-        if (target instanceof MAssociationRole) {
-            ((MAssociationRole) target).setMultiplicity((MMultiplicity) mult);
-            return;
-        }
-        if (target instanceof MClassifierRole) {
-            ((MClassifierRole) target).setMultiplicity((MMultiplicity) mult);
-            return;
-        }
-        if (target instanceof MStructuralFeature) {
-            ((MStructuralFeature) target).setMultiplicity((MMultiplicity) mult);
-            return;
-        }
-        if (target instanceof MAssociationEnd) {
-            ((MAssociationEnd) target).setMultiplicity((MMultiplicity) mult);
-            return;
-        }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(mult));
+	if (arg instanceof MMultiplicity) {
+	    MMultiplicity mult = (MMultiplicity) arg;
+
+	    if (handle instanceof MAssociationRole) {
+		((MAssociationRole) handle).setMultiplicity(mult);
+		return;
+	    }
+	    if (handle instanceof MClassifierRole) {
+		((MClassifierRole) handle).setMultiplicity(mult);
+		return;
+	    }
+	    if (handle instanceof MStructuralFeature) {
+		((MStructuralFeature) handle).setMultiplicity(mult);
+		return;
+	    }
+	    if (handle instanceof MAssociationEnd) {
+		((MAssociationEnd) handle).setMultiplicity(mult);
+		return;
+	    }
+	}
+	illegalArgument(handle, arg);
     }
 
     /**
      * Sets the classifiers of some instance.
      *
-     * @param o is the instance
+     * @param handle is the instance
      * @param v is the classifier vector
      */
-    public static void setClassifiers(Object o, Vector v) {
-        if (o instanceof MInstance) {
-            ((MInstance) o).setClassifiers(v);
+    public static void setClassifiers(Object handle, Vector v) {
+        if (handle instanceof MInstance) {
+            ((MInstance) handle).setClassifiers(v);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
     /**
      * Sets a name of some modelelement.
      *
-     * @param o is the model element
+     * @param handle is the model element
      * @param name to set
      */
-    public static void setName(Object o, String name) {
-        if (o instanceof MModelElement) {
-            ((MModelElement) o).setName(name);
+    public static void setName(Object handle, String name) {
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setName(name);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
     /**
      * Sets a namespace of some modelelement.
      *
      * @param handle is the model element
-     * @param ns is the namespace
+     * @param ns is the namespace. Can be <tt>null</tt>.
      */
     public static void setNamespace(Object handle, Object ns) {
         if (handle instanceof MModelElement
@@ -5143,24 +4888,21 @@ public class ModelFacade {
             ((MModelElement) handle).setNamespace((MNamespace) ns);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(ns));
+	illegalArgument(handle, ns);
     }
 
     /**
      * Sets the navigability of some association end.
      *
-     * @param o is the association end
+     * @param handle is the association end
      * @param flag is the navigability flag
      */
-    public static void setNavigable(Object o, boolean flag) {
-        if (o != null && o instanceof MAssociationEnd) {
-            ((MAssociationEnd) o).setNavigable(flag);
+    public static void setNavigable(Object handle, boolean flag) {
+        if (handle instanceof MAssociationEnd) {
+            ((MAssociationEnd) handle).setNavigable(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
     public static void setValue(Object handle, Object value) {
@@ -5180,8 +4922,7 @@ public class ModelFacade {
             ((MTaggedValue) handle).setValue((String) value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
@@ -5208,40 +4949,39 @@ public class ModelFacade {
                     return;
             }
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(visibility));
+	illegalArgument(handle, visibility);
     }
 
     /**
      * Set the visibility of some modelelement.
      *
-     * @param o is the model element
+     * @param handle is the model element
      * @param v is the visibility
      */
-    public static void setVisibility(Object o, short v) {
-        if (o != null && o instanceof MModelElement) {
+    public static void setVisibility(Object handle, short v) {
+        if (handle instanceof MModelElement) {
+	    MModelElement me = (MModelElement) handle;
+
             if (v == ACC_PRIVATE) {
-                ((MModelElement) o).setVisibility(MVisibilityKind.PRIVATE);
+                me.setVisibility(MVisibilityKind.PRIVATE);
             } else if (v == ACC_PROTECTED) {
-                ((MModelElement) o).setVisibility(MVisibilityKind.PROTECTED);
+                me.setVisibility(MVisibilityKind.PROTECTED);
             } else if (v == ACC_PUBLIC) {
-                ((MModelElement) o).setVisibility(MVisibilityKind.PUBLIC);
+                me.setVisibility(MVisibilityKind.PUBLIC);
             }
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
     public static void setNodeInstance(Object handle, Object nodeInstance) {
-        if (handle instanceof MComponentInstance && 
-            nodeInstance instanceof MNodeInstance) {
+        if (handle instanceof MComponentInstance
+	    && nodeInstance instanceof MNodeInstance) {
             ((MComponentInstance) handle).setNodeInstance(
                 (MNodeInstance) nodeInstance);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(handle) + " or " + getClassNull(nodeInstance));
+	illegalArgument(handle, nodeInstance);
     }
 
     public static void setOwner(Object handle, Object owner) {
@@ -5250,9 +4990,7 @@ public class ModelFacade {
             ((MFeature) handle).setOwner((MClassifier) owner);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(owner));
+	illegalArgument(handle, owner);
     }
 
     public static void setOperation(Object handle, Object operation) {
@@ -5264,9 +5002,7 @@ public class ModelFacade {
             ((MCallEvent) handle).setOperation((MOperation) operation);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(operation));
+	illegalArgument(handle, operation);
     }
 
     public static void setOrdering(Object handle, Object ok) {
@@ -5274,73 +5010,67 @@ public class ModelFacade {
             ((MAssociationEnd) handle).setOrdering((MOrderingKind) ok);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(ok));
+	illegalArgument(handle, ok);
     }
 
     /**
      * Set the owner scope of some feature.
      *
-     * @param f is the feature
+     * @param handle is the feature
      * @param os is the owner scope
      */
-    public static void setOwnerScope(Object f, short os) {
-        if (f != null && f instanceof MFeature) {
+    public static void setOwnerScope(Object handle, short os) {
+        if (handle instanceof MFeature) {
             if (os == CLASSIFIER_SCOPE) {
-                ((MFeature) f).setOwnerScope(MScopeKind.CLASSIFIER);
+                ((MFeature) handle).setOwnerScope(MScopeKind.CLASSIFIER);
                 return;
             } else if (os == INSTANCE_SCOPE) {
-                ((MFeature) f).setOwnerScope(MScopeKind.INSTANCE);
+                ((MFeature) handle).setOwnerScope(MScopeKind.INSTANCE);
                 return;
             }
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(f));
+	illegalArgument(handle);
     }
 
-    public static void setOwnerScope(Object f, Object os) {
-        if (f instanceof MFeature
+    public static void setOwnerScope(Object handle, Object os) {
+        if (handle instanceof MFeature
             && (os == null || os instanceof MScopeKind)) {
-            ((MFeature) f).setOwnerScope((MScopeKind) os);
+            ((MFeature) handle).setOwnerScope((MScopeKind) os);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(f) + " or " + 
-	    getClassNull(os));
+	illegalArgument(handle, os);
     }
 
     /**
      * Sets the extension points of some use cases.
      *
-     * @param target the use case
+     * @param handle the use case
      * @param parameters is a Collection of extensionPoints
      */
-    public static void setParameters(Object target, Collection parameters) {
-        if (target instanceof MObjectFlowState) {
-            ((MObjectFlowState) target).setParameters(parameters);
+    public static void setParameters(Object handle, Collection parameters) {
+        if (handle instanceof MObjectFlowState) {
+            ((MObjectFlowState) handle).setParameters(parameters);
             return;
         }
-        if (target instanceof MClassifier) {
-            ((MClassifier) target).setParameters(parameters);
+        if (handle instanceof MClassifier) {
+            ((MClassifier) handle).setParameters(parameters);
             return;
         }
-        if (target instanceof MEvent && parameters instanceof List) {
-            ((MEvent) target).setParameters((List) parameters);
+        if (handle instanceof MEvent && parameters instanceof List) {
+            ((MEvent) handle).setParameters((List) parameters);
             return;
         }
-        if (target instanceof MBehavioralFeature
+        if (handle instanceof MBehavioralFeature
             && parameters instanceof List) {
-            ((MBehavioralFeature) target).setParameters((List) parameters);
+            ((MBehavioralFeature) handle).setParameters((List) parameters);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(parameters));
+	illegalArgument(handle, parameters);
     }
 
     /**
      * Sets the target of some action or transition.
+     *
      * @param handle the model element
      * @param element the target of the model elemnet
      */
@@ -5355,13 +5085,12 @@ public class ModelFacade {
             ((MTransition) handle).setTarget((MStateVertex) element);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(element));
+	illegalArgument(handle, element);
     }
 
     /**
-     * Set the target scope of some association end or structural feature
+     * Set the target scope of some association end or structural feature.
+     *
      * @param handle the model element
      * @param scopeKind the target scope
      */
@@ -5378,64 +5107,63 @@ public class ModelFacade {
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(scopeKind));
+	illegalArgument(handle, scopeKind);
     }
 
     /**
      * Set the target scope of some association end.
      *
-     * @param ae is the association end
+     * @param handle is the association end
      * @param ts is the target scope
      */
-    public static void setTargetScope(Object ae, short ts) {
-        if (ae != null && ae instanceof MAssociationEnd) {
+    public static void setTargetScope(Object handle, short ts) {
+        if (handle instanceof MAssociationEnd) {
+	    MAssociationEnd ae = (MAssociationEnd) handle;
+
             if (ts == CLASSIFIER_SCOPE) {
-                ((MAssociationEnd) ae).setTargetScope(MScopeKind.CLASSIFIER);
+		ae.setTargetScope(MScopeKind.CLASSIFIER);
                 return;
             } else if (ts == INSTANCE_SCOPE) {
-                ((MAssociationEnd) ae).setTargetScope(MScopeKind.INSTANCE);
+		ae.setTargetScope(MScopeKind.INSTANCE);
                 return;
             }
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " +
-            getClassNull(ae));
+	illegalArgument(handle);
     }
 
-    public static void setComponentInstance(Object o, Object c) {
-        if (o instanceof MInstance && c instanceof MComponentInstance) {
-            ((MInstance) o).setComponentInstance((MComponentInstance) c);
+    public static void setComponentInstance(Object handle, Object c) {
+        if (handle instanceof MInstance && c instanceof MComponentInstance) {
+            ((MInstance) handle).setComponentInstance((MComponentInstance) c);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(o) + " or " + getClassNull(c));
+	illegalArgument(handle, c);
     }
     
     /**
-     * Sets the communicationLink between a link c and a stimulus o.
-     * @param o the stimulus
+     * Sets the communicationLink between a link c and a stimulus handle.
+     *
+     * @param handle the stimulus
      * @param c the link
      */
-    public static void setCommunicationLink(Object o, Object c) {
-        if (o instanceof MStimulus && c instanceof MLink) {
-            ((MStimulus) o).setCommunicationLink((MLink) c);
+    public static void setCommunicationLink(Object handle, Object c) {
+        if (handle instanceof MStimulus && c instanceof MLink) {
+            ((MStimulus) handle).setCommunicationLink((MLink) c);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(o) + " or " + getClassNull(c));
+	illegalArgument(handle, c);
     }
 
     /**
      * Set the concurrency of some operation.
      *
-     * @param o is the operation
+     * @param handle is the operation
      * @param c is the concurrency
      */
-    public static void setConcurrency(Object o, short c) {
-        if (o instanceof MOperation) {
-            MOperation oper = (MOperation) o;
+    public static void setConcurrency(Object handle, short c) {
+        if (handle instanceof MOperation) {
+            MOperation oper = (MOperation) handle;
+
             if (c == GUARDED) {
                 oper.setConcurrency(MCallConcurrencyKind.GUARDED);
                 return;
@@ -5444,28 +5172,25 @@ public class ModelFacade {
             }
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
     /**
      * Set the concurrency of some operation.
      *
-     * @param operation is the operation
+     * @param handle is the operation
      * @param concurrencyKind is the concurrency
      */
     public static void setConcurrency(
-        Object operation,
+        Object handle,
         Object concurrencyKind) {
-        if (operation instanceof MOperation
+        if (handle instanceof MOperation
             && concurrencyKind instanceof MCallConcurrencyKind) {
-            ((MOperation) operation).setConcurrency(
+            ((MOperation) handle).setConcurrency(
                 (MCallConcurrencyKind) concurrencyKind);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(operation) + " or " + 
-	    getClassNull(concurrencyKind));
+	illegalArgument(handle, concurrencyKind);
     }
 
     public static void setConcurent(Object handle, boolean concurrent) {
@@ -5473,33 +5198,30 @@ public class ModelFacade {
             ((MCompositeState) handle).setConcurent(concurrent);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
      * Set the condition of an extend
      *
-     * @param extend is the extend
+     * @param handle is the extend
      * @param booleanExpression is the condition
      */
-    public static void setCondition(Object extend, Object booleanExpression) {
-        if (extend instanceof MExtend
+    public static void setCondition(Object handle, Object booleanExpression) {
+        if (handle instanceof MExtend
             && booleanExpression instanceof MBooleanExpression) {
-            ((MExtend) extend).setCondition(
+            ((MExtend) handle).setCondition(
                 (MBooleanExpression) booleanExpression);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(extend) + " or " + 
-	    getClassNull(booleanExpression));
+	illegalArgument(handle, booleanExpression);
     }
 
     /**
      * Set the container of a statevertex.
      *
      * @param handle is the stateVertex
-     * @param compositeState is the container
+     * @param compositeState is the container. Can be <tt>null</tt>.
      */
     public static void setContainer(Object handle, Object compositeState) {
         if (handle instanceof MStateVertex
@@ -5509,9 +5231,7 @@ public class ModelFacade {
                 (MCompositeState) compositeState);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(compositeState));
+	illegalArgument(handle, compositeState);
     }
 
     public static void setContexts(Object handle, Collection c) {
@@ -5519,14 +5239,14 @@ public class ModelFacade {
             ((MSignal) handle).setContexts(c);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
-     * Sets the dispatch action for some stimulus
+     * Sets the dispatch action for some stimulus.
+     *
      * @param handle the stimulus
-     * @param value the action
+     * @param value the action. Can be <tt>null</tt>.
      */
     public static void setDispatchAction(Object handle, Object value) {
         if (handle instanceof MStimulus
@@ -5534,16 +5254,14 @@ public class ModelFacade {
             ((MStimulus) handle).setDispatchAction((MAction) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     /**
      * Sets the do activity of a state
      *
      * @param handle is the state
-     * @param value the activity
+     * @param value the activity. Can be <tt>null</tt>.
      */
     public static void setDoActivity(Object handle, Object value) {
         if (handle instanceof MState
@@ -5551,16 +5269,14 @@ public class ModelFacade {
             ((MState) handle).setDoActivity((MAction) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     /**
      * Sets the effect of some transition
      *
      * @param handle is the transition
-     * @param value is the effect
+     * @param value is the effect. Can be <tt>null</tt>.
      */
     public static void setEffect(Object handle, Object value) {
         if (handle instanceof MTransition
@@ -5568,16 +5284,14 @@ public class ModelFacade {
             ((MTransition) handle).setEffect((MAction) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     /**
-     * Sets the entry action of some state
+     * Sets the entry action of some state.
      *
      * @param handle is the state
-     * @param value is the action
+     * @param value is the action. Can be <tt>null</tt>.
      */
     public static void setEntry(Object handle, Object value) {
         if (handle instanceof MState
@@ -5585,16 +5299,14 @@ public class ModelFacade {
             ((MState) handle).setEntry((MAction) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     /**
      * Sets the exit action of some state
      *
      * @param handle is the state
-     * @param value is the action
+     * @param value is the action. Can be <tt>null</tt>.
      */
     public static void setExit(Object handle, Object value) {
         if (handle instanceof MState
@@ -5602,9 +5314,7 @@ public class ModelFacade {
             ((MState) handle).setExit((MAction) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     public static void setExpression(Object handle, Object value) {
@@ -5613,9 +5323,7 @@ public class ModelFacade {
             ((MGuard) handle).setExpression((MBooleanExpression) value);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(value));
+	illegalArgument(handle, value);
     }
 
     public static void setExtension(Object handle, Object ext) {
@@ -5624,189 +5332,175 @@ public class ModelFacade {
             ((MExtend) handle).setExtension((MUseCase) ext);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(ext));
+	illegalArgument(handle, ext);
     }
 
     /**
      * Sets the extension points of some use cases.
      *
-     * @param target the use case
+     * @param handle the use case
      * @param extensionPoints is the extension points
      */
     public static void setExtensionPoints(
-        Object target,
+        Object handle,
         Collection extensionPoints) {
-        if (target instanceof MUseCase && extensionPoints instanceof List) {
-            ((MUseCase) target).setExtensionPoints(extensionPoints);
+        if (handle instanceof MUseCase && extensionPoints instanceof List) {
+            ((MUseCase) handle).setExtensionPoints(extensionPoints);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(extensionPoints));
+	illegalArgument(handle, extensionPoints);
     }
 
     /**
      * Sets the features of some model element.
-     * @param element the model element to set features to
+     *
+     * @param handle the model element to set features to
      * @param features the list of features
      */
-    public static void setFeatures(Object element, Collection features) {
-        if (element != null
-            && element instanceof MClassifier
+    public static void setFeatures(Object handle, Collection features) {
+        if (handle instanceof MClassifier
             && features instanceof List) {
-            ((MClassifier) element).setFeatures((List) features);
+            ((MClassifier) handle).setFeatures((List) features);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(element));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the aggregation of some model element.
      *
-     * @param element the model element to set aggregation
+     * @param handle the model element to set aggregation
      * @param aggregationKind the aggregation kind
      */
-    public static void setAggregation(Object element, Object aggregationKind) {
-        if (element instanceof MAssociationEnd
+    public static void setAggregation(Object handle, Object aggregationKind) {
+        if (handle instanceof MAssociationEnd
             && aggregationKind instanceof MAggregationKind) {
-            ((MAssociationEnd) element).setAggregation(
+            ((MAssociationEnd) handle).setAggregation(
                 (MAggregationKind) aggregationKind);
                 return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(element));
+	illegalArgument(handle, aggregationKind);
     }
 
     /**
      * Sets the association of some model element.
      *
-     * @param target the model element to set association
+     * @param handle the model element to set association
      * @param association is the association
      */
-    public static void setAssociation(Object target, Object association) {
+    public static void setAssociation(Object handle, Object association) {
         if (association instanceof MAssociation) {
-            if (target instanceof MAssociationEnd) {
-                ((MAssociationEnd) target).setAssociation(
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setAssociation(
                     (MAssociation) association);
                 return;
             }
-            if (target instanceof MLink) {
-                ((MLink) target).setAssociation((MAssociation) association);
+            if (handle instanceof MLink) {
+                ((MLink) handle).setAssociation((MAssociation) association);
                 return;
             }
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(target) + " or " + getClassNull(association));
+	illegalArgument(handle, association);
     }
 
-    public static void setChangeability(Object o, Object ck) {
+    public static void setChangeability(Object handle, Object ck) {
         if (ck == null || ck instanceof MChangeableKind) {
-            if (o instanceof MStructuralFeature) {
-                ((MStructuralFeature) o).setChangeability((MChangeableKind) ck);
+	    MChangeableKind changeableKind = (MChangeableKind) ck;
+
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature) handle).setChangeability(changeableKind);
                 return;
             }
-            if (o instanceof MAssociationEnd) {
-                ((MAssociationEnd) o).setChangeability((MChangeableKind) ck);
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setChangeability(changeableKind);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(o) + " or " + 
-	    getClassNull(ck));
+	illegalArgument(handle, ck);
     }
 
     /**
      * Set the changeability of some feature.
      *
-     * @param o is the feature
+     * @param handle is the feature
      * @param flag is the changeability flag
      */
-    public static void setChangeable(Object o, boolean flag) {
+    public static void setChangeable(Object handle, boolean flag) {
         // FIXME: the implementation is ugly, because I have no spec
         // at hand...
-        if (o instanceof MStructuralFeature) {
+        if (handle instanceof MStructuralFeature) {
             if (flag) {
-                ((MStructuralFeature) o).setChangeability(
+                ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.CHANGEABLE);
                     return;
             }
             else {
-                ((MStructuralFeature) o).setChangeability(
+                ((MStructuralFeature) handle).setChangeability(
                     MChangeableKind.FROZEN);
             return;
             }
-        } else if (o instanceof MAssociationEnd) {
-            MAssociationEnd ae = (MAssociationEnd) o;
+        } else if (handle instanceof MAssociationEnd) {
+            MAssociationEnd ae = (MAssociationEnd) handle;
             if (flag)
                 ae.setChangeability(MChangeableKind.CHANGEABLE);
             else
                 ae.setChangeability(MChangeableKind.FROZEN);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(o));
+	illegalArgument(handle);
     }
 
-    public static void setChild(Object target, Object child) {
-        if (target instanceof MGeneralization) {
-            ((MGeneralization) target).setChild((MGeneralizableElement) child);
+    public static void setChild(Object handle, Object child) {
+        if (handle instanceof MGeneralization) {
+            ((MGeneralization) handle).setChild((MGeneralizableElement) child);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(child));
+	illegalArgument(handle, child);
     }
 
     /**
      * Sets if of some model element is abstract.
      *
-     * @param target is the classifier
+     * @param handle is the classifier
      * @param flag is true if it should be abstract
      */
-    public static void setAbstract(Object target, boolean flag) {
+    public static void setAbstract(Object handle, boolean flag) {
         
-	if (target instanceof MGeneralizableElement) {
-	    ((MGeneralizableElement) target).setAbstract(flag);
+	if (handle instanceof MGeneralizableElement) {
+	    ((MGeneralizableElement) handle).setAbstract(flag);
 	    return;
 	}
-	if (target instanceof MOperation) {
-	    ((MOperation) target).setAbstract(flag);
+	if (handle instanceof MOperation) {
+	    ((MOperation) handle).setAbstract(flag);
 	    return;
 	}
-	if (target instanceof MReception) {
-	    ((MReception) target).setAbstarct(flag);
+	if (handle instanceof MReception) {
+	    ((MReception) handle).setAbstarct(flag);
 	}
-        throw new IllegalArgumentException("Unrecognized object : " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
-    public static void setAddition(Object target, Object useCase) {
-        if (target != null && target instanceof MInclude) {
-            ((MInclude) target).setAddition((MUseCase) useCase);
+    public static void setAddition(Object handle, Object useCase) {
+        if (handle instanceof MInclude) {
+            ((MInclude) handle).setAddition((MUseCase) useCase);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the action to a message
      *
-     * @param message is the message
+     * @param handle is the message
      * @param action is the action
      */
-    public static void setAction(Object message, Object action) {
-        if (message instanceof MMessage
+    public static void setAction(Object handle, Object action) {
+        if (handle instanceof MMessage
             && (action == null || action instanceof MAction)) {
-            ((MMessage) message).setAction((MAction) action);
+            ((MMessage) handle).setAction((MAction) action);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(message) + " or " + 
-	    getClassNull(action));
+	illegalArgument(handle, action);
     }
 
     public static void setActivator(Object handle, Object message) {
@@ -5815,9 +5509,7 @@ public class ModelFacade {
             ((MMessage) handle).setActivator((MMessage) message);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(message));
+	illegalArgument(handle, message);
     }
 
     public static void setActive(Object handle, boolean active) {
@@ -5825,8 +5517,7 @@ public class ModelFacade {
             ((MClass) handle).setActive(active);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
@@ -5840,118 +5531,108 @@ public class ModelFacade {
             ((MAction) handle).setAsynchronous(value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(handle));
+	illegalArgument(handle);
     }
 
     /**
      * Sets if some model element is a leaf.
      *
-     * @param target model element
+     * @param handle model element
      * @param flag is true if it is a leaf.
      */
-    public static void setLeaf(Object target, boolean flag) {
-        if (target instanceof MReception) {
-            ((MReception) target).setLeaf(flag);
+    public static void setLeaf(Object handle, boolean flag) {
+        if (handle instanceof MReception) {
+            ((MReception) handle).setLeaf(flag);
             return;
         }
-        if (target instanceof MOperation) {
-            ((MOperation) target).setLeaf(flag);
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setLeaf(flag);
             return;
         }
-        if (target instanceof MGeneralizableElement) {
-            ((MGeneralizableElement) target).setLeaf(flag);
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setLeaf(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the raised signals of some behavioural feature.
-     * @param target the behavioural feature
+     *
+     * @param handle the behavioural feature
      * @param raisedSignals the raised signals
      */
     public static void setRaisedSignals(
-        Object target,
+        Object handle,
         Collection raisedSignals) {
-        if (target instanceof MBehavioralFeature) {
-            ((MBehavioralFeature) target).setRaisedSignals(raisedSignals);
+        if (handle instanceof MBehavioralFeature) {
+            ((MBehavioralFeature) handle).setRaisedSignals(raisedSignals);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the receiver of some model element.
-     * @param target model element
+     * @param handle model element
      * @param receiver the receiver
      */
-    public static void setReceiver(Object target, Object receiver) {
-        if (target instanceof MMessage
+    public static void setReceiver(Object handle, Object receiver) {
+        if (handle instanceof MMessage
             && receiver instanceof MClassifierRole) {
-            ((MMessage) target).setReceiver((MClassifierRole) receiver);
+            ((MMessage) handle).setReceiver((MClassifierRole) receiver);
             return;
         }
-        if (target instanceof MStimulus && receiver instanceof MInstance) {
-            ((MStimulus) target).setReceiver((MInstance) receiver);
+        if (handle instanceof MStimulus && receiver instanceof MInstance) {
+            ((MStimulus) handle).setReceiver((MInstance) receiver);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(receiver));
+	illegalArgument(handle, receiver);
     }
 
-    public static void setRecurrence(Object target, Object expr) {
-        if (target instanceof MAction
+    public static void setRecurrence(Object handle, Object expr) {
+        if (handle instanceof MAction
             && expr instanceof MIterationExpression) {
-            ((MAction) target).setRecurrence((MIterationExpression) expr);
+            ((MAction) handle).setRecurrence((MIterationExpression) expr);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(expr));
+	illegalArgument(handle, expr);
     }
 
     /**
      * Sets the represented classifier of some collaboration
      *
-     * @param target the collaboration
+     * @param handle the collaboration
      * @param classifier is the classifier
      */
     public static void setRepresentedClassifier(
-        Object target,
+        Object handle,
         Object classifier) {
-        if (target instanceof MCollaboration
+        if (handle instanceof MCollaboration
             && classifier instanceof MClassifier) {
-            ((MCollaboration) target).setRepresentedClassifier(
+            ((MCollaboration) handle).setRepresentedClassifier(
                 (MClassifier) classifier);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(classifier));
+	illegalArgument(handle, classifier);
     }
 
     /**
      * Sets the represented operation of some collaboration
      *
-     * @param target the collaboration
+     * @param handle the collaboration
      * @param operation is the operation
      */
     public static void setRepresentedOperation(
-        Object target,
+        Object handle,
         Object operation) {
-        if (target instanceof MCollaboration
+        if (handle instanceof MCollaboration
             && operation instanceof MOperation) {
-            ((MCollaboration) target).setRepresentedOperation(
+            ((MCollaboration) handle).setRepresentedOperation(
                 (MOperation) operation);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(operation));
+	illegalArgument(handle, operation);
     }
 
     public static void setResident(Object handle, Object resident) {
@@ -5960,285 +5641,262 @@ public class ModelFacade {
             ((MElementResidence) handle).setResident((MModelElement) resident);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(resident));
+	illegalArgument(handle, resident);
     }
 
     /**
      * Sets the residents of some model element.
      *
-     * @param target the model element
+     * @param handle the model element
      * @param residents collection
      */
-    public static void setResidents(Object target, Collection residents) {
-        if (target instanceof MNodeInstance) {
-            ((MNodeInstance) target).setResidents(residents);
+    public static void setResidents(Object handle, Collection residents) {
+        if (handle instanceof MNodeInstance) {
+            ((MNodeInstance) handle).setResidents(residents);
             return;
         }
-        if (target instanceof MComponentInstance) {
-            ((MComponentInstance) target).setResidents(residents);
+        if (handle instanceof MComponentInstance) {
+            ((MComponentInstance) handle).setResidents(residents);
             return;
         }
-        if (target instanceof MNode) {
-            ((MNode) target).setResidents(residents);
+        if (handle instanceof MNode) {
+            ((MNode) handle).setResidents(residents);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Sets if some model element is a root.
      *
-     * @param target model element
+     * @param handle model element
      * @param flag is true if it is a root
      */
-    public static void setRoot(Object target, boolean flag) {
-        if (target instanceof MReception) {
-            ((MReception) target).setRoot(flag);
+    public static void setRoot(Object handle, boolean flag) {
+        if (handle instanceof MReception) {
+            ((MReception) handle).setRoot(flag);
             return;
         }
-        if (target instanceof MOperation) {
-            ((MOperation) target).setRoot(flag);
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setRoot(flag);
             return;
         }
-        if (target instanceof MGeneralizableElement) {
-            ((MGeneralizableElement) target).setRoot(flag);
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setRoot(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
-    public static void setScript(Object target, Object expr) {
-        if (target instanceof MAction
+    public static void setScript(Object handle, Object expr) {
+        if (handle instanceof MAction
             && (expr == null || expr instanceof MActionExpression)) {
-            ((MAction) target).setScript((MActionExpression) expr);
+            ((MAction) handle).setScript((MActionExpression) expr);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(expr));
+	illegalArgument(handle, expr);
     }
+
     /**
-     * Sets the sender of some model element.
-     * @param target model element
+     * Sets the sender of some model element.<p>
+     *
+     * @param handle model element
      * @param sender the sender
      */
-    public static void setSender(Object target, Object sender) {
-        if (target instanceof MMessage && sender instanceof MClassifierRole) {
-            ((MMessage) target).setSender((MClassifierRole) sender);
+    public static void setSender(Object handle, Object sender) {
+        if (handle instanceof MMessage && sender instanceof MClassifierRole) {
+            ((MMessage) handle).setSender((MClassifierRole) sender);
             return;
         }
-        if (target instanceof MStimulus && sender instanceof MInstance) {
-            ((MStimulus) target).setSender((MInstance) sender);
+        if (handle instanceof MStimulus && sender instanceof MInstance) {
+            ((MStimulus) handle).setSender((MInstance) sender);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(sender));
+	illegalArgument(handle, sender);
     }
 
-    public static void setSignal(Object target, Object signal) {
+    public static void setSignal(Object handle, Object signal) {
         if (signal == null || signal instanceof MSignal) {
-            if (target instanceof MSendAction) {
-                ((MSendAction) target).setSignal((MSignal) signal);
+            if (handle instanceof MSendAction) {
+                ((MSendAction) handle).setSignal((MSignal) signal);
                 return;
             }
-            if (target instanceof MReception) {
-                ((MReception) target).setSignal((MSignal) signal);
+            if (handle instanceof MReception) {
+                ((MReception) handle).setSignal((MSignal) signal);
                 return;
             }
-            if (target instanceof MSignalEvent) {
-                ((MSignalEvent) target).setSignal((MSignal) signal);
+            if (handle instanceof MSignalEvent) {
+                ((MSignalEvent) handle).setSignal((MSignal) signal);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(signal));
+	illegalArgument(handle, signal);
     }
 
     /**
      * Sets the source state of some message.
      *
-     * @param target the message
+     * @param handle the message
      * @param state the source state
      */
-    public static void setSource(Object target, Object state) {
-        if (target instanceof MMessage && state instanceof MClassifierRole) {
-            ((MTransition) target).setSource((MState) state);
+    public static void setSource(Object handle, Object state) {
+        if (handle instanceof MMessage && state instanceof MClassifierRole) {
+            ((MTransition) handle).setSource((MState) state);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(state));
+	illegalArgument(handle, state);
     }
 
-    public static void setSources(Object target, Collection specifications) {
-        if (target instanceof MFlow) {
-            ((MFlow) target).setSources(specifications);
+    public static void setSources(Object handle, Collection specifications) {
+        if (handle instanceof MFlow) {
+            ((MFlow) handle).setSources(specifications);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
-    public static void setSpecification(Object target, boolean specification) {
-        if (target instanceof MModelElement) {
-            ((MModelElement) target).setSpecification(specification);
+    public static void setSpecification(Object handle, boolean specification) {
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setSpecification(specification);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the specifications of some association end.
      *
-     * @param target the association end
+     * @param handle the association end
      * @param specifications collection
      */
     public static void setSpecifications(
-        Object target,
+        Object handle,
         Collection specifications) {
-        if (target instanceof MAssociationEnd) {
-            ((MAssociationEnd) target).setSpecifications(specifications);
+        if (handle instanceof MAssociationEnd) {
+            ((MAssociationEnd) handle).setSpecifications(specifications);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + 
-					   getClassNull(target));
+	illegalArgument(handle);
     }
 
     /**
      * Set some parameters kind.
      *
-     * @param target is the parameter
+     * @param handle is the parameter
      * @param kind is the directionkind
      */
-    public static void setKind(Object target, Object kind) {
-        if (target instanceof MParameter
+    public static void setKind(Object handle, Object kind) {
+        if (handle instanceof MParameter
             && kind instanceof MParameterDirectionKind) {
-            ((MParameter) target).setKind((MParameterDirectionKind) kind);
+            ((MParameter) handle).setKind((MParameterDirectionKind) kind);
             return;
         }
-        if (target instanceof MPseudostate
+        if (handle instanceof MPseudostate
             && kind instanceof MPseudostateKind) {
-            ((MPseudostate) target).setKind((MPseudostateKind) kind);
+            ((MPseudostate) handle).setKind((MPseudostateKind) kind);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(kind));
+	illegalArgument(handle, kind);
     }
 
     /**
      * Set some parameters kind to 'in'.
-     * @param p is the parameter
+     *
+     * @param handle is the parameter
      */
-    public static void setKindToIn(Object p) {
-        if (p != null && p instanceof MParameter) {
-	    ((MParameter) p).setKind(MParameterDirectionKind.IN);
+    public static void setKindToIn(Object handle) {
+        if (handle instanceof MParameter) {
+	    ((MParameter) handle).setKind(MParameterDirectionKind.IN);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(p));
+	illegalArgument(handle);
     }
 
     /**
      * Set some parameters kind to 'in/out'.
-     * @param p is the parameter
+     *
+     * @param handle is the parameter
      */
-    public static void setKindToInOut(Object p) {
-        if (p != null && p instanceof MParameter) {
-	    ((MParameter) p).setKind(MParameterDirectionKind.INOUT);
+    public static void setKindToInOut(Object handle) {
+        if (handle instanceof MParameter) {
+	    ((MParameter) handle).setKind(MParameterDirectionKind.INOUT);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(p));
+	illegalArgument(handle);
     }
 
     /**
      * Set some parameters kind to 'out'.
-     * @param p is the parameter
+     *
+     * @param handle is the parameter
      */
-    public static void setKindToOut(Object p) {
-        if (p != null && p instanceof MParameter) {
-	    ((MParameter) p).setKind(MParameterDirectionKind.OUT);
+    public static void setKindToOut(Object handle) {
+        if (handle instanceof MParameter) {
+	    ((MParameter) handle).setKind(MParameterDirectionKind.OUT);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(p));
+	illegalArgument(handle);
     }
 
     /**
      * Set some parameters kind to 'return'.
-     * @param p is the parameter
+     *
+     * @param handle is the parameter
      */
-    public static void setKindToReturn(Object p) {
-        if (p != null && p instanceof MParameter) {
-	    ((MParameter) p).setKind(MParameterDirectionKind.RETURN);
+    public static void setKindToReturn(Object handle) {
+        if (handle instanceof MParameter) {
+	    ((MParameter) handle).setKind(MParameterDirectionKind.RETURN);
 	    return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(p));
+	illegalArgument(handle);
     }
 
     /**
      * Sets the parent of a generalization.
      *
-     * @param target generalization
+     * @param handle generalization
      * @param parent generalizable element (parent)
      */
-    public static void setParent(Object target, Object parent) {
-        if (target instanceof MGeneralization
+    public static void setParent(Object handle, Object parent) {
+        if (handle instanceof MGeneralization
             && parent instanceof MGeneralizableElement) {
-            ((MGeneralization) target).setParent(
+            ((MGeneralization) handle).setParent(
 	            (MGeneralizableElement) parent);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(parent));
+	illegalArgument(handle, parent);
     }
 
-    public static void setPowertype(Object target, Object pt) {
-        if (target instanceof MGeneralization && pt instanceof MClassifier) {
-            ((MGeneralization) target).setPowertype((MClassifier) pt);
+    public static void setPowertype(Object handle, Object pt) {
+        if (handle instanceof MGeneralization && pt instanceof MClassifier) {
+            ((MGeneralization) handle).setPowertype((MClassifier) pt);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + 
-	    getClassNull(target) + " or " + 
-	    getClassNull(pt));
+	illegalArgument(handle, pt);
     }
 
     public static void setPredecessors(
-        Object target,
+        Object handle,
         Collection predecessors) {
-        if (target instanceof MMessage) {
-            ((MMessage) target).setPredecessors(predecessors);
+        if (handle instanceof MMessage) {
+            ((MMessage) handle).setPredecessors(predecessors);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(predecessors));
+	illegalArgument(handle, predecessors);
     }
 
     /**
      * Sets the query flag of a behavioral feature.
      *
-     * @param bf is the behavioral feature
+     * @param handle is the behavioral feature
      * @param flag is the query flag
      */
-    public static void setQuery(Object bf, boolean flag) {
-        if (bf instanceof MBehavioralFeature) {
-            ((MBehavioralFeature) bf).setQuery(flag);
+    public static void setQuery(Object handle, boolean flag) {
+        if (handle instanceof MBehavioralFeature) {
+            ((MBehavioralFeature) handle).setQuery(flag);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(bf));
+	illegalArgument(handle);
     }
 
     /**
@@ -6271,107 +5929,99 @@ public class ModelFacade {
 	    }
 	    
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(handle) + " or " + getClassNull(type));
+	illegalArgument(handle, type);
     }
 
     /**
      * Set the UUID of this element
      *
-     * @param base base element (MBase type)
+     * @param handle base element (MBase type)
      * @param uuid is the UUID
      */
-    public static void setUUID(Object base, String uuid) {
-        if (isABase(base)) {
-            ((MBase) base).setUUID(uuid);
+    public static void setUUID(Object handle, String uuid) {
+        if (isABase(handle)) {
+            ((MBase) handle).setUUID(uuid);
             return;
         } 
-        throw new IllegalArgumentException("Unrecognized object " + 
-					       getClassNull(base));
+	illegalArgument(handle);
     }
 
-    public static void setTag(Object target, Object tag) {
-        if (target instanceof MTaggedValue && tag instanceof String) {
-            ((MTaggedValue) target).setTag((String) tag);
+    public static void setTag(Object handle, Object tag) {
+        if (handle instanceof MTaggedValue && tag instanceof String) {
+            ((MTaggedValue) handle).setTag((String) tag);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(tag));
+	illegalArgument(handle, tag);
     }
 
     /**
      * Sets a tagged value of some modelelement.
      *
-     * @param target is the model element
+     * @param handle is the model element
      * @param tag is the tag name (a string)
      * @param value is the value
      */
     public static void setTaggedValue(
-        Object target,
+        Object handle,
         String tag,
         String value) {
-        if (target instanceof MModelElement) {
-	    ((MModelElement) target).setTaggedValue(tag, value);
+        if (handle instanceof MModelElement) {
+	    ((MModelElement) handle).setTaggedValue(tag, value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(target));
+	illegalArgument(handle);
     }
 
     public static void setTaggedValues(
-        Object target,
+        Object handle,
         Collection taggedValues) {
-        if (target instanceof MModelElement) {
-            ((MModelElement) target).setTaggedValues(taggedValues);
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setTaggedValues(taggedValues);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(taggedValues));
+	illegalArgument(handle);
     }
 
     /**
      * Sets a value of some taggedValue.
      *
-     * @param tv is the tagged value
+     * @param handle is the tagged value
      * @param value is the value
      */
-    public static void setValueOfTag(Object tv, String value) {
-        if (tv instanceof MTaggedValue) {
-            ((MTaggedValue) tv).setValue(value);
+    public static void setValueOfTag(Object handle, String value) {
+        if (handle instanceof MTaggedValue) {
+            ((MTaggedValue) handle).setValue(value);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(tv));
+	illegalArgument(handle);
     }
 
     /**
      * Sets a state machine of some state.
      *
-     * @param st is the state
+     * @param handle is the state
      * @param stm is the state machine
      */
-    public static void setStateMachine(Object st, Object stm) {
-        if (st != null
-            && st instanceof MState
+    public static void setStateMachine(Object handle, Object stm) {
+        if (handle instanceof MState
             && (stm == null || stm instanceof MStateMachine)) {
-            ((MState) st).setStateMachine((MStateMachine) stm);
+            ((MState) handle).setStateMachine((MStateMachine) stm);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(st) + " or " + getClassNull(stm));
+	illegalArgument(handle, stm);
     }
 
     /**
-     * Sets the stereotype of some modelelement. The method also copies a
-     * stereotype that is not a part of the current model to the current model.
-     * @param m model element
+     * Sets the stereotype of some modelelement. The method also
+     * copies a stereotype that is not a part of the current model to
+     * the current model.<p>
+     *
+     * @param handle model element
      * @param stereo stereotype
      */
-    public static void setStereotype(Object m, Object stereo) {
-        if (m != null && m instanceof MModelElement) {
-            MModelElement me = (MModelElement) m;
+    public static void setStereotype(Object handle, Object stereo) {
+        if (handle instanceof MModelElement) {
+            MModelElement me = (MModelElement) handle;
             if (stereo instanceof MStereotype
                 && me.getModel() != ((MStereotype) stereo).getModel()) {
                 ((MStereotype) stereo).setNamespace(me.getModel());
@@ -6382,8 +6032,7 @@ public class ModelFacade {
                 return;
             }
         }
-        throw new IllegalArgumentException("Unrecognized object : " + 
-            getClassNull(m) + " or " + getClassNull(stereo));
+	illegalArgument(handle, stereo);
     }
 
     public static void setSubvertices(Object handle, Collection subvertices) {
@@ -6391,9 +6040,7 @@ public class ModelFacade {
             ((MCompositeState) handle).setSubvertices(subvertices);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " +
-                       getClassNull(handle) + " or " +
-                       getClassNull(subvertices));
+	illegalArgument(handle, subvertices);
     }
     
     public static void addConnection(Object handle, Object connection) {
@@ -6407,24 +6054,21 @@ public class ModelFacade {
             ((MLink) handle).addConnection((MLinkEnd) connection);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(connection));
+	illegalArgument(handle, connection);
     }
 
     /**
      * Adds a constraint to some model element.
-     * @param me model element
+     *
+     * @param handle model element
      * @param mc constraint
      */
-    public static void addConstraint(Object me, Object mc) {
-        if (me instanceof MModelElement && mc instanceof MConstraint) {
-            ((MModelElement) me).addConstraint((MConstraint) mc);
+    public static void addConstraint(Object handle, Object mc) {
+        if (handle instanceof MModelElement && mc instanceof MConstraint) {
+            ((MModelElement) handle).addConstraint((MConstraint) mc);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(me) + " or " + 
-	    getClassNull(mc));
+	illegalArgument(handle, mc);
     }
 
     public static void addDeploymentLocation(Object handle, Object node) {
@@ -6432,56 +6076,48 @@ public class ModelFacade {
             ((MComponent) handle).addDeploymentLocation((MNode) node);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle) + " or " + 
-	    getClassNull(node));
+	illegalArgument(handle, node);
     }
 
     public static void addExtendedElement(
-        Object target,
+        Object handle,
         Object extendedElement) {
-        if (target instanceof MStereotype
+        if (handle instanceof MStereotype
             && extendedElement instanceof MExtensionPoint) {
-            ((MStereotype) target).addExtendedElement(
+            ((MStereotype) handle).addExtendedElement(
                 (MModelElement) extendedElement);
             return;
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(extendedElement));
+	illegalArgument(handle, extendedElement);
     }
 
     /**
      * Adds an extension point to some model element.
      *
-     * @param target is the model element
+     * @param handle is the model element
      * @param extensionPoint is the extension point
      */
     public static void addExtensionPoint(
-        Object target,
+        Object handle,
         Object extensionPoint) {
-        if (target != null
-            && extensionPoint != null
-            && extensionPoint instanceof MExtensionPoint) {
-            if (target instanceof MUseCase) {
-                ((MUseCase) target).addExtensionPoint(
+        if (extensionPoint instanceof MExtensionPoint) {
+            if (handle instanceof MUseCase) {
+                ((MUseCase) handle).addExtensionPoint(
                     (MExtensionPoint) extensionPoint);
                 return;
             }
-            if (target instanceof MExtend) {
-                ((MExtend) target).addExtensionPoint(
+            if (handle instanceof MExtend) {
+                ((MExtend) handle).addExtensionPoint(
                     (MExtensionPoint) extensionPoint);
                 return;
             }
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(target) + " or " + 
-	    getClassNull(extensionPoint));
+	illegalArgument(handle, extensionPoint);
     }
 
     /**
-     * getUMLClassName returns the name of the UML Model class, e.g. it
-     * it will return Class for an object of type MClass.
+     * Returns the name of the UML Model class, e.g. it it will return
+     * Class for an object of type MClass.
      *
      * @param handle MBase
      * @return classname of modelelement
@@ -6490,8 +6126,7 @@ public class ModelFacade {
         if (handle instanceof MBase) {
             return ((MBase) handle).getUMLClassName();
         }
-        throw new IllegalArgumentException(
-            "Unrecognized object " + getClassNull(handle));
+	return illegalArgumentString(handle);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -6512,5 +6147,92 @@ public class ModelFacade {
 	} else {
 	    return "[" + handle + "/" + handle.getClass() + "]";
 	}
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.
+     *
+     * @param arg is the incorrect argument.
+     */
+    private static void illegalArgument(Object arg) {
+	throw new IllegalArgumentException("Unrecognized object "
+					   + getClassNull(arg));
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return a boolean for use in the return statement.
+     */
+    private static boolean illegalArgumentBoolean(Object arg) {
+	illegalArgument(arg);
+	return false;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return Object for use in the return statement.
+     */
+    private static Object illegalArgumentObject(Object arg) {
+	illegalArgument(arg);
+	return null;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return Collection for use in the return statement.
+     */
+    private static Collection illegalArgumentCollection(Object arg) {
+	illegalArgument(arg);
+	return null;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called with
+     * an incorrect argument.<p>
+     *
+     * @param arg is the incorrect argument.
+     * @return String for use in the return statement.
+     */
+    private static String illegalArgumentString(Object arg) {
+	illegalArgument(arg);
+	return null;
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called
+     * with an incorrect argument. At least one of the arguments given
+     * is incorrect.<p>
+     *
+     * @param arg1 is one of the argument, possibly incorrect.
+     * @param arg2 is one of the argument, possibly incorrect.
+     */
+    private static Object illegalArgument(Object arg1, Object arg2) {
+	throw new IllegalArgumentException("Unrecognized object "
+					   + getClassNull(arg1) + " or "
+					   + getClassNull(arg2));
+    }
+
+    /**
+     * Method that throws an error when a ModelFacade method is called
+     * with an incorrect argument. At least one of the arguments given
+     * is incorrect.<p>
+     *
+     * @param arg1 is one of the argument, possibly incorrect.
+     * @param arg2 is one of the argument, possibly incorrect.
+     * @return Object for use in the return statement.
+     */
+    private static Object illegalArgumentObject(Object arg1, Object arg2) {
+	illegalArgument(arg1, arg2);
+	return null;
     }
 }
