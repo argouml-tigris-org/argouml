@@ -131,8 +131,11 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge{
             Class edgeClass = (Class) getArg("edgeClass");
             if (edgeClass != null && edgeClass.equals(ModelFacade.ASSOCIATION)) {
                 boolean isValid =
-                        Model.getUmlFactory()
-                        .isConnectionValid((Class)ModelFacade.ASSOCIATION_END, getStartPort(), association);
+                    Model.getUmlFactory()
+                        .isConnectionValid(
+                                ModelFacade.ASSOCIATION_END,
+                                getStartPort(),
+                                association);
                 if (isValid) {
                     GraphModel gm = (GraphModel)editor.getGraphModel();
                     GraphNodeRenderer renderer = editor.getGraphNodeRenderer();

@@ -43,6 +43,13 @@ public interface UmlFactory {
     void setJmiProxyCreated(boolean arg);
 
     /**
+     * Creates a UML model element of the given type and uses
+     * this to connect two other existing UML model elements.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram manage those items and not call this
+     * method.
+     *
      * @param connectionType the UML object type of the connection
      * @param fromElement    the UML object for the "from" element
      * @param fromStyle      the aggregationkind for the connection
@@ -62,7 +69,12 @@ public interface UmlFactory {
     	throws IllegalModelElementConnectionException;
 
     /**
-     * Checks if some type of connection is valid between two elements.
+     * Checks if some type of UML model element is valid to
+     * connect two other existing UML model elements.
+     * This only works for UML elements. If a diagram contains
+     * elements of another type then it is the responsibility
+     * of the diagram to filter those out before calling this
+     * method.
      *
      * @param connectionType  the UML object type of the connection
      * @param fromElement     the UML object type of the "from"
