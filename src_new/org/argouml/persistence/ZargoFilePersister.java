@@ -48,9 +48,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectMember;
-import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.util.FileConstants;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -316,8 +313,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             writer.println("</uml>");
             writer.close();
             LOG.info("Complated combining files");
-            Project p = 
-                super.doLoad(combinedFile);
+            Project p =  super.doLoad(file, combinedFile);
             p.setURL(file.toURL());
             return p;
         } catch (IOException e) {
