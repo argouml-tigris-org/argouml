@@ -82,7 +82,7 @@ interface PropertyOperation {
  * <b>Example: </b>
  * 
  * <pre>
- * _attributeSpecialStrings[0] = new PropertySpecialString(&quot;frozen&quot;,
+ * attributeSpecialStrings[0] = new PropertySpecialString(&quot;frozen&quot;,
  *         new PropertyOperation() {
  *             public void found(Object element, String value) {
  *                 if (ModelFacade.isAStructuralFeature(element))
@@ -1737,12 +1737,15 @@ public class ParserDisplay extends Parser {
 
     /**
      * Parse a transition description line of the form: "event-signature
-     * [guard-condition] / action-expression" If the last character of this line
-     * is a ";", then it is ignored. The "event-signature" may be one of the 4
-     * formats: 
-     *      ChangeEvent: "when(condition)" 
-     *      TimeEvent: "after(duration)"
-     *      CallEvent: "a(parameter-list)". 
+     * [guard-condition] / action-expression". <p> 
+     * 
+     * If the last character of this line
+     * is a ";", then it is ignored. 
+     * The "event-signature" may be one of the 4
+     * formats:<p> 
+     *      ChangeEvent: "when(condition)"   <br> 
+     *      TimeEvent: "after(duration)"     <br>
+     *      CallEvent: "a(parameter-list)".  <br>
      *      SignalEvent: TODO: Add support for signal events.
      * 
      * @param trans
@@ -1766,11 +1769,11 @@ public class ParserDisplay extends Parser {
             } else {
                 if (s.startsWith(nextToken)) {
                     eventSignature = nextToken;
-                }
-                else
+                } else {
                     if (s.endsWith(nextToken)) {
                         actionExpression = nextToken;
                     }
+                }
             }
         }
            
@@ -1783,9 +1786,8 @@ public class ParserDisplay extends Parser {
         }
       
         if (guardCondition != null) {
-            Object guard = parseGuard(guardCondition.substring(guardCondition
-                    .indexOf('[') + 1));
-            ModelFacade.setGuard(trans, guard);
+            parseGuard(trans, 
+                guardCondition.substring(guardCondition.indexOf('[') + 1));
         }
        
         if (actionExpression != null) {
@@ -1793,6 +1795,7 @@ public class ParserDisplay extends Parser {
             ModelFacade.setEffect(trans, action);
         }
         return trans;
+    }
 
         
         // //DO NOT DELETE!
@@ -1986,64 +1989,76 @@ public class ParserDisplay extends Parser {
         //            }
         //        }
         //
-        //	/* handle the Guard
-        //	We can distinct between 4 cases:
-        //        1. A guard is given. None exists yet.
-        //        2. The expression of the guard was present, but is altered.
-        //        3. A guard is not given. None exists yet.
-        //        4. The expression of the guard was present, but is removed.
-        //        The reaction in these cases should be:
-        //        1. Create a new guard, set its name, language & expression,
-        //	   and hook it to the transition.
-        //        2. Change the guard's expression. Leave the name & language
-        // untouched.
-        //        3. Nop.
-        //        4. Unhook and erase the existing guard.
-        //        */
-        //	Object g = ModelFacade.getGuard(trans);
-        //	if (guard.length() > 0) {
-        //	    if (g == null) {
-        //                // case 1
-        //	        /*TODO: In the next line, I should use buildGuard(),
-        //	         * but it doesn't show the guard on the diagram...
-        //	         * Why? (MVW)*/
-        //		g = UmlFactory.getFactory().getStateMachines()
-        //                  .createGuard();
-        //		if (g != null) {
-        //		    ModelFacade.setExpression(g, UmlFactory.getFactory()
-        //		    	.getDataTypes().createBooleanExpression(
-        //                                                   "Java", guard));
-        //		    ModelFacade.setName(g, "anon");
-        //		    ModelFacade.setTransition(g, trans);
-        //		    ModelFacade.setGuard(trans, g);
-        //		}
-        //	    } else {
-        //                // case 2
-        //		
-        //		/* TODO: This does not work! Why not? (MVW)
-        //	        Object expr = ModelFacade.getExpression(g);
-        //		ModelFacade.setBody(expr,guard);
-        //		ModelFacade.setExpression(g,expr); */
-        //	        
-        //	        //hence a less elegant workaround that works:
-        //	        String language = ModelFacade.getLanguage(
-        //                  ModelFacade.getExpression(g));
-        //	        ModelFacade.setExpression(g, UmlFactory.getFactory()
-        //                    .getDataTypes().createBooleanExpression(
-        //                                              language, guard));
-        //                /* TODO: In this case, the properties panel 
-        //                  is not updated
-        //		    with the changed expression! */
-        //	    }
-        //	} else {
-        //	    if (g == null) {
-        //                ;// case 3
-        //	    } else {
-        //                // case 4
-        //		UmlFactory.getFactory().delete(g); // erase it
-        //	    }
-        //	}
-        //
+
+    /** 
+     * Handle the Guard of a Transition.<p>
+     * 
+     * We can distinct between 4 cases: <br>
+     * 1. A guard is given. None exists yet. <br>
+     * 2. The expression of the guard was present, but is altered. <br>
+     * 3. A guard is not given. None exists yet. <br>
+     * 4. The expression of the guard was present, but is removed.<p>
+     * 
+     * The reaction in these cases should be: <br>
+     * 1. Create a new guard, set its name, language & expression,
+     *    and hook it to the transition. <br>
+     * 2. Change the guard's expression. Leave the name & language
+     *    untouched. See also issue 2742. <br>
+     * 3. Nop. <br>
+     * 4. Unhook and erase the existing guard.
+     *
+     * @param trans the UML element transition
+     * @param guard the string that represents the guard expression
+     */
+    public void parseGuard(Object trans, String guard) {
+        Object g = ModelFacade.getGuard(trans);
+        if (guard.length() > 0) {
+            if (g == null) {
+                // case 1
+                /*TODO: In the next line, I should use buildGuard(),
+                 * but it doesn't show the guard on the diagram...
+                 * Why? (MVW)*/
+                g = UmlFactory.getFactory().getStateMachines().createGuard();
+                if (g != null) {
+                    ModelFacade.setExpression(g, UmlFactory.getFactory()
+                            .getDataTypes().createBooleanExpression(
+                                    "", guard));
+                    ModelFacade.setName(g, "anon");
+                    ModelFacade.setTransition(g, trans);
+                    //ModelFacade.setGuard(trans, g); //NSUML does this (?)
+                }
+            } else {
+                // case 2
+                
+                /* TODO: This does not work! Why not? (MVW)
+                 Object expr = ModelFacade.getExpression(g);
+                 ModelFacade.setBody(expr,guard);
+                 ModelFacade.setExpression(g,expr); */
+                
+                //hence a less elegant workaround that works:
+                String language = ModelFacade.getLanguage(
+                        ModelFacade.getExpression(g));
+                ModelFacade.setExpression(g, UmlFactory.getFactory()
+                        .getDataTypes().createBooleanExpression(
+                                language, guard));
+                /* TODO: In this case, the properties panel 
+                 is not updated
+                 with the changed expression! */
+            }
+        } else {
+            if (g == null) {
+                ;// case 3
+            } else {
+                // case 4
+                UmlFactory.getFactory().delete(g); // erase it
+            }
+        }
+    }
+    
+    // //DO NOT DELETE!
+    // //MVW: I still need this to help me create 
+    // //the functionality that is now missing!
+    //
         //        /* handle the Effect (Action)
         //        We can distinct between 4 cases:
         //        1. An effect is given. None exists yet.
@@ -2085,7 +2100,7 @@ public class ParserDisplay extends Parser {
         //	}
         //
         //	return trans;
-    }
+
 
     /**
      * Parses a line on the form:
@@ -3336,26 +3351,6 @@ public class ParserDisplay extends Parser {
 
         return a;
     }
-
-    /**
-     * @deprecated Since 0.15.1, this is essentially a String constructor. It
-     *             breaks the idea the idea that the parser is editing
-     *             preexisting objects, which is bad. It is not used within core
-     *             ArgoUML. d00mst.
-     *             It is used in {@link #parseTransition(Object, String)}
-     *             above.
-     *
-     * @param s the string to parse
-     * @return the new guard
-     */
-    public Object parseGuard(String s) {
-        Object g = UmlFactory.getFactory().getStateMachines().createGuard();
-        ModelFacade.setExpression(g, UmlFactory.getFactory().getDataTypes()
-                .createBooleanExpression("", s));
-
-        return g;
-    }
-
 
     /**
      * Parses the event-signature. An event-signature has the following syntax:
