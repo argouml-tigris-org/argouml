@@ -62,7 +62,7 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
         buildModel(cont);
-        
+        elem.addMElementListener(model);
     }
 
     /**
