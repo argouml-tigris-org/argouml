@@ -24,10 +24,10 @@
 
 package org.argouml.kernel;
 
-import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeSupport;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Vector;
@@ -98,8 +99,21 @@ public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // constants
     
+    /**
+     * @deprecated by Linus Tolke as of 0.15.6. Will be removed.
+     *             Not currently used.
+     */
     public static final String TEMPLATES = "/org/argouml/templates/";
+    
+    /**
+     * @deprecated by Linus Tolke as of 0.15.6. Will become private.
+     */
     public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
+
+    /**
+     * Default name for a project.
+     * @deprecated by Linus Tolke as of 0.15.6. Will become private.
+     */
     public static final String UNTITLED_FILE = "Untitled";
 
     ////////////////////////////////////////////////////////////////
@@ -158,13 +172,22 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     private HashMap _defaultModelCache;
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
-
+    /**
+     * Constructor.
+     * 
+     * @param file File to read from.
+     * @throws MalformedURLException if the file name is incorrect.
+     * @throws IOException if we cannot read the file.
+     */
     public Project(File file) throws MalformedURLException, IOException {
         this(Util.fileToURL(file));
     }
 
+    /**
+     * Constructor.
+     *
+     * @param url Url to read the project from.
+     */
     public Project(URL url) {
         this();
         _url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
@@ -172,6 +195,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
     }
 
+    /**
+     * Constructor.
+     */
     public Project() {
         
         _authorname = "";
@@ -220,6 +246,11 @@ public class Project implements java.io.Serializable, TargetListener {
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
  
+    /**
+     * Constructor.
+     * 
+     * @param model The new model.
+     */
     public Project(Object model) {
         this();
         
@@ -243,15 +274,15 @@ public class Project implements java.io.Serializable, TargetListener {
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
      *
-     * @deprecated As of ArgoUml version 0.15.3,
-     * TODO: What is this replaced by?
      * @param url The url with the .zargo file
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file is corrupted.
+     * @throws SAXException If the parser template is syntactically incorrect. 
+     * @throws ParserConfigurationException If the initialization of 
+     *         the parser fails.
      */
     protected Object loadModelFromXMI(URL url)
-	throws IOException, SAXException, ParserConfigurationException
-    {
+	throws IOException, SAXException, ParserConfigurationException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
 
         String name = zis.getNextEntry().getName();
@@ -305,8 +336,11 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Loads all the members from a zipped input stream.
      *
+     * @param url The URL to the input stream.
      * @throws IOException if there is something wrong with the zipped archive
      *                     or with the model.
+     * @throws ParserConfigurationException if the parser is misconfigured.
+     * @throws SAXException if the input is not correctly formatted XML.
      */
     protected void loadZippedProjectMembers(URL url)
         throws IOException, ParserConfigurationException, SAXException {
@@ -371,7 +405,12 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
+     * Find the base name of this project.<p>
+     * 
+     * Previous javadoc comment that Linus don't understand:
      * Added Eugenio's patches to load 0.8.1 projects.
+     * 
+     * @return The name (a String).
      */
     public String getBaseName() {
         String n = getName();
@@ -398,8 +437,15 @@ public class Project implements java.io.Serializable, TargetListener {
         return name.substring(i + 1);
     }
 
+    /**
+     * Set the project URL.
+     * 
+     * @param n The new URL (as a String).
+     * @throws MalformedURLException if the argument cannot be converted to 
+     *         an URL.
+     */
     public void setName(String n)
-        throws PropertyVetoException, MalformedURLException {
+        throws MalformedURLException {
         String s = "";
         if (getURL() != null)
             s = getURL().toString();
@@ -407,10 +453,20 @@ public class Project implements java.io.Serializable, TargetListener {
         setURL(new URL(s));
     }
 
+    /**
+     * Get the URL for this project.
+     * 
+     * @return The URL.
+     */
     public URL getURL() {
         return _url;
     }
 
+    /**
+     * Set the URL for this project.
+     * 
+     * @param url The URL to set.
+     */
     public void setURL(URL url) {
         if (url != null) {
             url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
@@ -422,6 +478,13 @@ public class Project implements java.io.Serializable, TargetListener {
         _url = url;
     }
 
+    /**
+     * Set the project file.
+     * 
+     * This only works if it is possible to convert the File to an url.
+     *
+     * @param file File to set the project to.
+     */
     public void setFile(File file) {
         try {
             URL url = Util.fileToURL(file);
@@ -438,7 +501,6 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.error("problem in setFile:" + file, murle);
         } catch (IOException ex) {
             LOG.error("problem in setFile:" + file, ex);
-
         }
     }
 
@@ -468,10 +530,22 @@ public class Project implements java.io.Serializable, TargetListener {
         return url;
     }
 
+    /**
+     * Get all members of the project.
+     * 
+     * @return a Vector with all members.
+     */
     public Vector getMembers() {
         return _members;
     }
 
+    /**
+     * Add a member to this project.
+     * 
+     * @param name The name of the member.
+     * @param type The type of the member. 
+     * 		   One of <tt>"pgml"</tt> or <tt>"xmi"</tt>.
+     */
     public void addMember(String name, String type) {
         
         URL memberURL = findMemberURLInSearchPath(name);
@@ -626,13 +700,19 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     // frank: additional helper. Is there already another function doing this?
-    /**
-     * copies one file src to another, raising file exceptions
-     * if there are some problems
-     */
 
-    private File copyFile( File dest, File src)
-        throws java.io.FileNotFoundException, java.io.IOException {
+    /**
+     * Copies one file src to another, raising file exceptions
+     * if there are some problems.
+     * 
+     * @param dest The destination file.
+     * @param src The source file.
+     * @return The destination file after successful copying.
+     * @throws IOException if there is some problems with the files.
+     * @throws FileNotFoundException if any of the files cannot be found.
+     */
+    private File copyFile(File dest, File src)
+        throws FileNotFoundException, IOException {
         
         // first delete dest file
         if (dest.exists()) {
@@ -662,14 +742,19 @@ public class Project implements java.io.Serializable, TargetListener {
      * It is also being considered to save out individual
      * xmi's from individuals diagrams to make
      * it easier to modularize the output of Argo.
+     * 
+     * @param overwrite <tt>true</tt> if we are allowed to replace a file.
+     * @param file The file to write.
+     * @throws Exception if anything goes wrong.
+     * TODO: Replace the general Exception with specific Exceptions.
      */
     public void save(boolean overwrite, File file)
-        throws IOException, Exception {
+        throws Exception {
         setFile(file);
         setVersion(ArgoVersion.getVersion());
 
         if (expander == null) {
-            java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+            Hashtable templates = TemplateReader.readFile(ARGO_TEE);
             expander = new OCLExpander(templates);
         }
 
@@ -777,37 +862,91 @@ public class Project implements java.io.Serializable, TargetListener {
         postSave();
     }
 
+    /**
+     * Get the author name.
+     * 
+     * @return The author name.
+     */
     public String getAuthorname() {
         return _authorname;
     }
+    
+    /**
+     * Set the author name.
+     * 
+     * @param s The new author name.
+     */
     public void setAuthorname(String s) {
         _authorname = s;
     }
 
+    /**
+     * Get the version.
+     * 
+     * @return the version.
+     */
     public String getVersion() {
         return _version;
     }
+    
+    /**
+     * Set the new version.
+     * @param s The new version.
+     */
     public void setVersion(String s) {
         _version = s;
     }
 
+    /**
+     * Get the description.
+     * 
+     * @return the description.
+     */
     public String getDescription() {
         return _description;
     }
+
+    /**
+     * Set a new description.
+     *  
+     * @param s The new description.
+     */
     public void setDescription(String s) {
         _description = s;
     }
 
+    /**
+     * Get the history file.
+     * 
+     * @return The history file.
+     */
     public String getHistoryFile() {
         return _historyFile;
     }
+
+    /**
+     * Set the history file.
+     * 
+     * @param s The new history file.
+     */
     public void setHistoryFile(String s) {
         _historyFile = s;
     }
 
+    /**
+     * Set the needs-to-be-saved flag.
+     * 
+     * @param newValue The new value.
+     */
     public void setNeedsSave(boolean newValue) {
         _saveRegistry.setChangeFlag(newValue);
     }
+    
+    /**
+     * Test if the model needs to be saved.
+     * 
+     * @return <tt>true</tt> if the model needs to be saved.
+     */
     public boolean needsSave() {
         return _saveRegistry.hasChanged();
     }
@@ -815,7 +954,8 @@ public class Project implements java.io.Serializable, TargetListener {
     /**
      * Returns all models defined by the user. I.e. this does not return the
      * default model but all other models.
-     * @return Vector
+     * 
+     * @return A Vector of all user defined models.
      */
     public Vector getUserDefinedModels() {
         return _models;
@@ -823,7 +963,8 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Returns all models, including the default model (default.xmi).
-     * @return Collection
+     * 
+     * @return A Collection containing all models.
      */
     public Collection getModels() {
         Set ret = new HashSet();
@@ -832,6 +973,13 @@ public class Project implements java.io.Serializable, TargetListener {
         return ret;
     }
 
+    /**
+     * Return the model.<p>
+     * 
+     * If there isn't exactly one model, <tt>null</tt> is returned.
+     * 
+     * @return the model.
+     */
     public Object getModel() {
         if (_models.size() != 1)
             return null;
@@ -907,9 +1055,14 @@ public class Project implements java.io.Serializable, TargetListener {
         return figs;
     }
 
-    /** Will only return first classifier with the matching name
+    /** 
+     * Finds a classifier with a certain name.<p>
+     * 
+     * Will only return first classifier with the matching name.
      *
-     * @param s is short name
+     * @param s is short name.
+     * @param ns Namespace where we do the search.
+     * @return the found classifier (or <tt>null</tt> if not found).
      */
     public Object findTypeInModel(String s, Object ns) {
         
@@ -1084,7 +1237,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * object completely from the project
      *
      * @param obj The object to be deleted
-     * @see org.argouml.kernel.Project#trashInternal
+     * @see org.argouml.kernel.Project#trashInternal(Object)
      */
     ////////////////////////////////////////////////////////////////
     // trash related methos
@@ -1192,6 +1345,11 @@ public class Project implements java.io.Serializable, TargetListener {
 	_defaultModelCache = new HashMap();
     }
 
+    /**
+     * Get the default model.
+     * 
+     * @return A model.
+     */
     public Object getDefaultModel() {
         return _defaultModel;
     }
@@ -1439,7 +1597,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * prepare project for gc.
+     * Remove the project.
      */
     public void remove() {
         
