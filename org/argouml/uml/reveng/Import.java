@@ -76,6 +76,8 @@ public class Import {
 	
 	private JCheckBox create_diagrams;
     private JCheckBox minimise_figs;
+    
+    private JCheckBox layout_diagrams;
 
     // log4j logging
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
@@ -174,17 +176,25 @@ public class Import {
 	    descend.setSelected(true);
 	    general.add(descend);
             
+            
 		create_diagrams = new JCheckBox("Create diagrams from imported code", true);
 		general.add(create_diagrams);
                 
                 minimise_figs = new JCheckBox("Minimise Class icons in diagrams", true);
 		general.add(minimise_figs);
+                
+                layout_diagrams = new JCheckBox("Perform Automatic Diagram Layout", true);
+		general.add(layout_diagrams);
 
-                // de-selects the fig minimising if we are not creating diagrams
+                // de-selects the fig minimising & layout
+                // if we are not creating diagrams
                 create_diagrams.addActionListener(new ActionListener(){
                     public void actionPerformed(java.awt.event.ActionEvent actionEvent){
-                        if(!create_diagrams.isSelected())
-                            minimise_figs.setSelected(false);}});
+                        if(!create_diagrams.isSelected()){
+                            minimise_figs.setSelected(false);
+                            layout_diagrams.setSelected(false);
+                        }
+                    }});
                 
 	    tab.add(general, "General");
 	    tab.add(module.getConfigPanel(), module.getModuleName());
@@ -216,7 +226,7 @@ public class Import {
         boolean b = Designer.TheDesigner.getAutoCritique();
         if (b)  Designer.TheDesigner.setAutoCritique(false);
         iss = new ImportStatusScreen("Importing", "Splash");
-		SwingUtilities.invokeLater(new ImportRun(files, b));
+		SwingUtilities.invokeLater(new ImportRun(files, b, layout_diagrams.isSelected()));
 		iss.show();
     }
 
@@ -327,8 +337,10 @@ class ImportRun implements Runnable {
     boolean cancelled;
     
     boolean criticThreadWasOn;
+    
+    boolean doLayout;
 
-    public ImportRun(Vector f, boolean critic) {
+    public ImportRun(Vector f, boolean critic, boolean doLayout) {
     iss.addCancelButtonListener(new ActionListener(){
             public void actionPerformed(java.awt.event.ActionEvent actionEvent) {
                 cancel();
@@ -342,6 +354,7 @@ class ImportRun implements Runnable {
 	_st.mark("start");
         cancelled=false;
         criticThreadWasOn = critic;
+        this.doLayout = doLayout;
     }
 
     /**
@@ -411,8 +424,9 @@ class ImportRun implements Runnable {
 	pb.showStatus("Import done");
 
 	// Layout the modified diagrams.
-	_st.mark("layout");
-	if (_diagram != null) {
+        if(doLayout){
+	  _st.mark("layout");
+	  if (_diagram != null) {
 		for(int i=0; i < _diagram.getModifiedDiagrams().size(); i++) {
 			UMLDiagram diagram = (UMLDiagram)_diagram.getModifiedDiagrams().elementAt(i);
 	    	ClassdiagramLayouter layouter = module.getLayout(diagram);
@@ -421,7 +435,8 @@ class ImportRun implements Runnable {
 	    	// Resize the diagram???
 	    	iss.setValue(_countFiles +(i + 1)/10);
 		}
-	}
+	  }
+        }
 
 	iss.done();
     pb.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
