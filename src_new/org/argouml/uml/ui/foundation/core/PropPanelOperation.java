@@ -39,6 +39,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 
@@ -259,10 +260,6 @@ public class PropPanelOperation extends PropPanelModelElement {
             newParam.setKind(MParameterDirectionKind.INOUT);
             oper.addParameter(newParam);
             navigateTo(newParam);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -272,15 +269,11 @@ public class PropPanelOperation extends PropPanelModelElement {
             MOperation oper = (MOperation) target;
             MClassifier owner = oper.getOwner();
             if(owner != null) {
-		MOperation newOper = UmlFactory.getFactory().getCore().buildOperation(owner);
-		newOper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(owner)));
+				MOperation newOper = UmlFactory.getFactory().getCore().buildOperation(owner);
+				newOper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(owner)));
                 navigateTo(newOper);
                
             }
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 
@@ -288,14 +281,7 @@ public class PropPanelOperation extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MOperation) {
             MOperation oper = (MOperation) target;
-            MSignal newSignal = oper.getFactory().createSignal();
-	    oper.getNamespace().addOwnedElement(newSignal);
-            oper.addRaisedSignal(newSignal);
-            navigateTo(newSignal);
-             // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
+            MSignal newSignal = CommonBehaviorFactory.getFactory().buildSignal(oper);
         }
     }
 

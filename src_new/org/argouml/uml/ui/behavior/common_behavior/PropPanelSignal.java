@@ -35,6 +35,7 @@ import java.util.*;
 import javax.swing.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -44,7 +45,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.model_management.*;
 
-public class PropPanelSignal extends PropPanelClassifier {
+public class PropPanelSignal extends PropPanelModelElement {
 
 
     ////////////////////////////////////////////////////////////////
@@ -61,29 +62,23 @@ public class PropPanelSignal extends PropPanelClassifier {
         addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
         addField(stereotypeBox,2,0,0);
 
-        addCaption("Specializes:",3,0,0);
-	addField(extendsScroll,3,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
+        addField(namespaceScroll,3,0,0);
+        
+        addCaption(Argo.localize("UMLMenu", "label.contexts"), 1,1,0);
+        JList contextList = new UMLList(new UMLReflectionListModel(this,"contexts",false,"getContexts",null,"addContext","deleteContext"),true);
+ 		contextList.setBackground(getBackground());
+        contextList.setForeground(Color.blue);
+        JScrollPane contextScroll=new JScrollPane(contextList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        addField(contextScroll,1,1,0.5);
+        
+        addCaption(Argo.localize("UMLMenu", "label.receptions"), 2,1,0);
+        JList receiverList = new UMLList(new UMLReflectionListModel(this,"receivers",false,"getReceptions",null,"addReception","deleteReception"),true);
+ 		receiverList.setBackground(getBackground());
+        receiverList.setForeground(Color.blue);
+        JScrollPane receiverScroll=new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        addField(receiverScroll,2,1,0.5);
 
-        addCaption(Argo.localize("UMLMenu", "label.implements"),4,0,0);
-        addField(implementsScroll,4,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.modifiers"),5,0,0);
-        addField(_modifiersPanel,5,0,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"),6,0,0);
-        addField(namespaceScroll,6,0,0);
-
-        addCaption("Generalizes:",7,0,1);
-        addField(derivedScroll,7,0,1);
-
-        addCaption(Argo.localize("UMLMenu", "label.operations"),0,1,0.33);
-        addField(opsScroll,0,1,0.33);
-
-        addCaption(Argo.localize("UMLMenu", "label.attributes"),1,1,0.33);
-        addField(attrScroll,1,1,0.33);
-
-        addCaption(Argo.localize("UMLMenu", "label.associations"),2,1,0.33);
-        addField(connectScroll,2,1,0.33);
 
 
 	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
@@ -123,6 +118,84 @@ public class PropPanelSignal extends PropPanelClassifier {
             baseClass.equals("GeneralizableElement") ||
             baseClass.equals("Namespace");
     }
+    
+	/**
+	 * Gets all behavioralfeatures that form the contexts that can send the signal
+	 * @return Collection
+	 */
+    public Collection getContexts() {
+    	Collection contexts = new Vector();
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		contexts = ((MSignal)target).getContexts();
+    	}
+    	return contexts;
+    }
+    
+    
+	/**
+	 * Opens a new window where existing behavioral features can be added to the signal as context.
+	 * TODO: make the window and let it popup
+	 * @param index
+	 */
+    public void addContext(Integer index) {
+    	// this should not create a new one but raise a window to add existing ones
+    }
+    
+	/**
+	 * Deletes the context at index from the list with contexts.
+	 * @param index
+	 */
+    public void deleteContext(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		MSignal signal = (MSignal)target;
+    		MBehavioralFeature feature = (MBehavioralFeature)UMLModelElementListModel.elementAtUtil(signal.getContexts(), index.intValue(), null);
+    		signal.removeContext(feature);
+    	}
+    }
+    
+	/**
+	 * Returns all behavioral features that can recept this signal.
+	 * @return Collection
+	 */
+    public Collection getReceptions() {
+    	Collection receptions = new Vector();
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		receptions = ((MSignal)target).getReceptions();
+    	}
+    	return receptions;
+    }
+    
+    /**
+	 * Adds a new reception. The user has to fill in the classifier the reception
+	 * belongs too on the proppanel of the reception
+	 * @param index
+	 */
+    public void addReception(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		MSignal signal = (MSignal)target;
+    		MReception reception = CommonBehaviorFactory.getFactory().buildReception(signal);
+    		navigateTo(reception);
+    	}
+    }
+    
+    /**
+	 * Deletes the reception at index from the list with receptions.
+	 * @param index
+	 */
+    public void deleteReception(Integer index) {
+    	Object target = getTarget();
+    	if (target instanceof MSignal) {
+    		MSignal signal = (MSignal)target;
+    		MReception reception = (MReception)UMLModelElementListModel.elementAtUtil(signal.getReceptions(), index.intValue(), null);
+    		signal.removeReception(reception);
+    	}
+    }
+  
+    
 
 
 } /* end class PropPanelSignal */
