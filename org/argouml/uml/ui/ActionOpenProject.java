@@ -260,10 +260,14 @@ public class ActionOpenProject extends UMLAction {
 			      + "You can continue working with what "
 			      + "was actually loaded.\n");
             }
-            else if (oldProject != null){
+            else if (oldProject != null) {
+                // if p equals oldProject there was an exception and we do
+                // not have to gc the old project
+                if( !p.equals(oldProject)) {
                 
-                //prepare the old project for gc
-                ProjectManager.getManager().removeProject(oldProject);
+                	//prepare the old project for gc
+	                ProjectManager.getManager().removeProject(oldProject);
+                }
             }
             ProjectManager.getManager().setCurrentProject(p);
             Designer.enableCritiquing();
