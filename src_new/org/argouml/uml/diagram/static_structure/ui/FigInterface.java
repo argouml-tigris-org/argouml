@@ -47,6 +47,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.CompartmentFigText;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
+import org.argouml.uml.diagram.ui.FigOperationsCompartment;
+import org.argouml.uml.diagram.ui.HasOperationsCompartment;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.ui.ActionAddNote;
 import org.argouml.uml.generator.ParserDisplay;
@@ -67,12 +69,19 @@ import ru.novosoft.uml.MElementEvent;
 /** Class to display graphics for a UML Interface in a diagram. 
  * 
  */
-public class FigInterface extends FigNodeModelElement {
+public class FigInterface extends FigNodeModelElement 
+        implements HasOperationsCompartment {
+    
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
+    //These are the positions of child figs inside this fig
+    //They mst be added in the constructor in this order.
+    private static final int BLINDER_POSN = 3;
+    private static final int OPERATIONS_POSN = 4;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -80,12 +89,7 @@ public class FigInterface extends FigNodeModelElement {
      * The vector of graphics for operations (if any). First one is the
      * rectangle for the entire operations box.<p>
      */
-    private FigGroup operVec;
-
-    /**
-     * The rectangle for the entire operations box.<p>
-     */
-    private FigRect operBigPort;
+    private FigOperationsCompartment operVec;
 
     /**
      * A rectangle to blank out the line that would otherwise appear at the
@@ -99,7 +103,7 @@ public class FigInterface extends FigNodeModelElement {
      * variable (rather than local to the method).<p>
      */
     public Object resident =
-	UmlFactory.getFactory().getCore().createElementResidence();
+        UmlFactory.getFactory().getCore().createElementResidence();
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -144,18 +148,7 @@ public class FigInterface extends FigNodeModelElement {
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
 
-        // this rectangle marks the operation section; all operations
-        // are inside it:
-        operBigPort =
-	    new FigRect(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2,
-			Color.black, Color.white);
-        operBigPort.setFilled(true);
-        operBigPort.setLineWidth(1);
-
-        operVec = new FigGroup();
-        operVec.setFilled(true);
-        operVec.setLineWidth(1);
-        operVec.addFig(operBigPort);
+        operVec = new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
         // before, so it overlaps the name box, and the blanking takes out both
@@ -238,7 +231,7 @@ public class FigInterface extends FigNodeModelElement {
         figClone.setStereotypeFig((FigText) it.next());
         figClone.setNameFig((FigText) it.next());
         figClone.stereoLineBlinder = (FigRect) it.next();
-        figClone.operVec = (FigGroup) it.next();
+        figClone.operVec = (FigOperationsCompartment) it.next();
         return figClone;
     }
 
@@ -318,14 +311,14 @@ public class FigInterface extends FigNodeModelElement {
      * Returns the status of the operation field.
      * @return true if the operations are visible, false otherwise
      */
-    public boolean isOperationVisible() {
+    public boolean isOperationsVisible() {
         return operVec.isVisible();
     }
 
     /**
      * @param isVisible true will show the operations compartiment
      */
-    public void setOperationVisible(boolean isVisible) {
+    public void setOperationsVisible(boolean isVisible) {
         Rectangle rect = getBounds();
         int h =
 	    isCheckSize()
@@ -856,73 +849,76 @@ public class FigInterface extends FigNodeModelElement {
     protected void updateOperations() {
         Object cls = /*(MClassifier)*/ getOwner();
         if (cls == null) {
-	    return;
-	}
+            return;
+        }
 
-	int xpos = operBigPort.getX();
-	int ypos = operBigPort.getY();
-	int ocounter = 1;
-	Collection behs = ModelFacade.getOperations(cls);
-	if (behs != null) {
-	    Iterator iter = behs.iterator();
-	    // TODO: in future version of GEF call getFigs returning array
-	    Vector figs = new Vector(operVec.getFigs(null));
-	    CompartmentFigText oper;
-	    while (iter.hasNext()) {
-		Object behavioralFeature =
-		    /*(MBehavioralFeature)*/ iter.next();
-		// update the listeners
-		UmlModelEventPump.getPump()
-		    .removeModelEventListener(this, behavioralFeature);
-		UmlModelEventPump.getPump()
-		    .addModelEventListener(this, behavioralFeature);
-		if (figs.size() <= ocounter) {
-		    oper =
-			new FigFeature(xpos + 1,
-				       ypos + 1 + (ocounter - 1) * ROWHEIGHT,
-				       0,
-				       ROWHEIGHT - 2,
-				       operBigPort);
-		    // bounds not relevant here
-		    oper.setFilled(false);
-		    oper.setLineWidth(0);
-		    oper.setFont(getLabelFont());
-		    oper.setTextColor(Color.black);
-		    oper.setJustification(FigText.JUSTIFY_LEFT);
-		    oper.setMultiLine(false);
-		    operVec.addFig(oper);
-		} else {
-		    oper = (CompartmentFigText) figs.elementAt(ocounter);
-		}
-		oper.setText(Notation.generate(this, behavioralFeature));
-		oper.setOwner(behavioralFeature);
-		// underline, if static
-		oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
-				  .equals(ModelFacade
-					  .getOwnerScope(behavioralFeature)));
-		// italics, if abstract
-		//oper.setItalic(((MOperation)bf).isAbstract());
-		//// does not properly work (GEF bug?)
-		if (ModelFacade.isAbstract(behavioralFeature)) {
-		    oper.setFont(getItalicLabelFont());
-		} else {
-		    oper.setFont(getLabelFont());
-		}
-		ocounter++;
-	    }
-	    if (figs.size() > ocounter) {
-		//cleanup of unused operation FigText's
-		for (int i = figs.size() - 1; i >= ocounter; i--) {
-		    operVec.removeFig((Fig) figs.elementAt(i));
-		}
-	    }
-	}
-	Rectangle rect = getBounds();
-	updateFigGroupSize(operVec, xpos, ypos, 0, 0);
-	// ouch ugly but that's for a next refactoring
-	// TODO: make setBounds, calcBounds and updateBounds consistent
-	setBounds(rect.x, rect.y, rect.width, rect.height);
-	damage();
+        Fig operPort = 
+            ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN)).getBigPort();
+        
+        int xpos = operPort.getX();
+        int ypos = operPort.getY();
+        int ocounter = 1;
+        Collection behs = ModelFacade.getOperations(cls);
+        if (behs != null) {
+            Iterator iter = behs.iterator();
+            // TODO: in future version of GEF call getFigs returning array
+            Vector figs = new Vector(operVec.getFigs(null));
+            CompartmentFigText oper;
+            while (iter.hasNext()) {
+        	Object behavioralFeature =
+        	    /*(MBehavioralFeature)*/ iter.next();
+        	// update the listeners
+        	UmlModelEventPump.getPump()
+        	    .removeModelEventListener(this, behavioralFeature);
+        	UmlModelEventPump.getPump()
+        	    .addModelEventListener(this, behavioralFeature);
+        	if (figs.size() <= ocounter) {
+        	    oper =
+        		new FigFeature(xpos + 1,
+        			       ypos + 1 + (ocounter - 1) * ROWHEIGHT,
+        			       0,
+        			       ROWHEIGHT - 2,
+        			       operPort);
+        	    // bounds not relevant here
+        	    oper.setFilled(false);
+        	    oper.setLineWidth(0);
+        	    oper.setFont(getLabelFont());
+        	    oper.setTextColor(Color.black);
+        	    oper.setJustification(FigText.JUSTIFY_LEFT);
+        	    oper.setMultiLine(false);
+        	    operVec.addFig(oper);
+        	} else {
+        	    oper = (CompartmentFigText) figs.elementAt(ocounter);
+        	}
+        	oper.setText(Notation.generate(this, behavioralFeature));
+        	oper.setOwner(behavioralFeature);
+        	// underline, if static
+        	oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
+        			  .equals(ModelFacade
+        				  .getOwnerScope(behavioralFeature)));
+        	// italics, if abstract
+        	//oper.setItalic(((MOperation)bf).isAbstract());
+        	//// does not properly work (GEF bug?)
+        	if (ModelFacade.isAbstract(behavioralFeature)) {
+        	    oper.setFont(getItalicLabelFont());
+        	} else {
+        	    oper.setFont(getLabelFont());
+        	}
+        	ocounter++;
+            }
+            if (figs.size() > ocounter) {
+        	//cleanup of unused operation FigText's
+        	for (int i = figs.size() - 1; i >= ocounter; i--) {
+        	    operVec.removeFig((Fig) figs.elementAt(i));
+        	}
+            }
+        }
+        Rectangle rect = getBounds();
+        updateFigGroupSize(operVec, xpos, ypos, 0, 0);
+        // ouch ugly but that's for a next refactoring
+        // TODO: make setBounds, calcBounds and updateBounds consistent
+        setBounds(rect.x, rect.y, rect.width, rect.height);
+        damage();
     }
 
     /**

@@ -90,7 +90,7 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
         _refreshTransaction = true;
         super.refresh();
         FigInterface ti = (FigInterface) _target;
-        _operCheckBox.setSelected(ti.isOperationVisible());
+        _operCheckBox.setSelected(ti.isOperationsVisible());
         _refreshTransaction = false;
     }
 
@@ -110,7 +110,7 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
             Object src = e.getSource();
 
             if (src == _operCheckBox) {
-                ((FigInterface) _target).setOperationVisible(_operCheckBox
+                ((FigInterface) _target).setOperationsVisible(_operCheckBox
                         .isSelected());
                 markNeedsSave();
             } else

@@ -245,8 +245,8 @@ public class DiagramInterface {
             currentGM.addNode(newClass);
             currentLayer.putInPosition(newClassFig);
             
-            newClassFig.setAttributeVisible(!minimise);
-            newClassFig.setOperationVisible(!minimise);
+            newClassFig.setAttributesVisible(!minimise);
+            newClassFig.setOperationsVisible(!minimise);
             
             newClassFig.setSize(newClassFig.getMinimumSize());
         }
@@ -288,7 +288,7 @@ public class DiagramInterface {
             currentGM.addNode(newInterface);
             currentLayer.putInPosition(newInterfaceFig);
             
-            newInterfaceFig.setOperationVisible(!minimise);
+            newInterfaceFig.setOperationsVisible(!minimise);
             newInterfaceFig.setSize(newInterfaceFig.getMinimumSize());
         }
         // the class is in the diagram
