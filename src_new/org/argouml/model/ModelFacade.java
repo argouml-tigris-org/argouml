@@ -5715,6 +5715,25 @@ public class ModelFacade {
     }
 
     /**
+     * Sets the list of connections of the given association or link.
+     *
+     * @param handle the given association or link
+     * @param elems the list of association-ends or link-ends
+     */
+    public static void setConnections(Object handle, Collection elems) {
+        if (handle instanceof MAssociation && elems instanceof List) {
+            ((MAssociation) handle).setConnections((List) elems);
+            return;
+        }
+        if (handle instanceof MLink && elems instanceof List) {
+                ((MLink) handle).setConnections((List) elems);
+                return;
+            }
+        illegalArgument(handle);
+    }
+
+    
+    /**
      * Sets a name of some modelelement.
      *
      * @param handle is the model element
