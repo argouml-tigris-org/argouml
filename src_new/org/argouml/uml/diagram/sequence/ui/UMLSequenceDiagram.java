@@ -52,7 +52,6 @@ import org.argouml.uml.diagram.sequence.*;
 
 
 
-
 public class UMLSequenceDiagram extends UMLDiagram {
 
   ////////////////
@@ -63,19 +62,24 @@ public class UMLSequenceDiagram extends UMLDiagram {
   new CmdCreateNode(MObjectImpl.class, "Object");
 
   protected static Action _actionLinkWithStimulusCall =
-  new ActionAddLink(new MCallActionImpl(), "StimulusCall");
+  new ActionAddLink(MCallActionImpl.class, "StimulusCall");
+  //new ActionAddLink(new MCallActionImpl(), "StimulusCall");
 
   protected static Action _actionLinkWithStimulusCreate =
-  new ActionAddLink(new MCreateActionImpl(), "StimulusCreate");
+  new ActionAddLink(MCreateActionImpl.class, "StimulusCreate");
+  //new ActionAddLink(new MCreateActionImpl(), "StimulusCreate");
 
   protected static Action _actionLinkWithStimulusDestroy =
-  new ActionAddLink(new MDestroyActionImpl(), "StimulusDestroy");
+  new ActionAddLink(MDestroyActionImpl.class, "StimulusDestroy");
+  //new ActionAddLink(new MDestroyActionImpl(), "StimulusDestroy");
 
   protected static Action _actionLinkWithStimulusSend =
-  new ActionAddLink(new MSendActionImpl(), "StimulusSend");
+  new ActionAddLink(MSendActionImpl.class, "StimulusSend");
+  //new ActionAddLink(new MSendActionImpl(), "StimulusSend");
 
-   protected static Action _actionLinkWithStimulusReturn =
-   new ActionAddLink(new MReturnActionImpl(), "StimulusReturn");
+  protected static Action _actionLinkWithStimulusReturn =
+  new ActionAddLink(MReturnActionImpl.class, "StimulusReturn");
+   //new ActionAddLink(new MReturnActionImpl(), "StimulusReturn");
 
 
 
@@ -95,6 +99,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
     setNamespace(m);
   }
 
+
   public int getNumStimuluss() {
     Layer lay = getLayer();
     Vector figs = lay.getContents();
@@ -109,14 +114,17 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
   public void setNamespace(MNamespace m) {
     super.setNamespace(m);
+    
     SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
     gm.setNamespace(m);
     setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    //LayerPerspective lay = new LayerPerspective(m.getName(), gm);
+    SequenceDiagramLayout lay = new SequenceDiagramLayout(m.getName(), gm);
     setLayer(lay);
     SequenceDiagramRenderer rend = new SequenceDiagramRenderer(); // singleton
     lay.setGraphNodeRenderer(rend);
     lay.setGraphEdgeRenderer(rend);
+   
   }
 
   /** initialize the toolbar for this diagram type */
@@ -163,26 +171,38 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
     super.postLoad();
 
+
     Collection stimuli;
     Iterator stimuliIterator;
-    Collection ownedElements = getNamespace().getOwnedElements();
-    Iterator oeIterator = ownedElements.iterator();
+    Iterator oeIterator=null;
+    Collection ownedElements=null;
+    if ( getNamespace() != null) ownedElements = getNamespace().getOwnedElements();
+    if (ownedElements != null) oeIterator = ownedElements.iterator();
     Layer lay = getLayer();
+    if (oeIterator != null && lay != null) {
+     
 
-    while(oeIterator.hasNext()) {
-      MModelElement me = (MModelElement)oeIterator.next();
-      if (me instanceof MLink) {
-        stimuli = ((MLink) me).getStimuli();
-        stimuliIterator= stimuli.iterator();
-        while(stimuliIterator.hasNext()) {
-          MStimulus stimulus = (MStimulus)stimuliIterator.next();
-          FigSeqStimulus figStimulus = (FigSeqStimulus) lay.presentationFor(stimulus);
-          if ( figStimulus != null ) {
-            figStimulus.addPathItemToLink(lay);
+      while(oeIterator.hasNext()) {
+        MModelElement me = (MModelElement)oeIterator.next();
+   
+        if (me instanceof MLink) {
+          stimuli = ((MLink) me).getStimuli();
+          stimuliIterator= stimuli.iterator();
+          while(stimuliIterator.hasNext()) {
+            MStimulus stimulus = (MStimulus)stimuliIterator.next();
+            FigSeqStimulus figStimulus = (FigSeqStimulus) lay.presentationFor(stimulus);
+            if ( figStimulus != null ) {
+              figStimulus.addPathItemToLink(lay);
+            }
           }
         }
       }
     }
+
   }
+
+   
+     
+
 
 } /* end class UMLSequenceDiagram */

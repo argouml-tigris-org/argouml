@@ -51,6 +51,7 @@ import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.LayerPerspective;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
@@ -88,6 +89,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     _srcRole.setLineWidth(0);
     addPathItem(_srcRole, new PathConvPercentPlusConst(this, 0, 35, -15));
 
+
     _destMult = new FigText(10, 30, 90, 20);
     _destMult.setFont(LABEL_FONT);
     _destMult.setTextColor(Color.black);
@@ -109,6 +111,32 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   public FigSeqLink(Object edge) {
     this();
     setOwner(edge);
+  }
+
+  public void setDestFigNode(FigNode fn ) {
+    super.setDestFigNode(fn);
+
+  }
+
+  public void setDestPortFig(Fig fig ) {
+    super.setDestPortFig(fig);
+
+  }
+
+   public void setSourceFigNode(FigNode fn ) {
+    super.setSourceFigNode(fn);
+
+  }
+
+  public void setSourcePortFig(Fig fig ) {
+    super.setSourcePortFig(fig);
+
+  }
+
+
+   public String ownerName() {
+    if (getOwner() != null) { return ( (MLink)getOwner()).getName(); }
+    else return "null";
   }
 
   public void setOwner(Object node) {
@@ -133,7 +161,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   }
 
   protected void modelChanged() {
-    //System.out.println("FigSeqLink:modelChanged");
+
     MLink ml = (MLink) getOwner();
     if (ml == null) return;
 
@@ -162,14 +190,15 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
 
     setArrowHeads(ml, contents);
 
-
   }
+
 
   /** Takes the action of this link and then
    *    set the aroow-heads on both ends of
    *    this FigSeqLink. */
   public void setArrowHeads(MLink ml, Vector contents) {
-    //System.out.println("FigSeqLink:setArrowHeads");
+
+  if (ml != null ) {
     Collection col = ml.getStimuli();
     MStimulus stimulus = null;
     MAction action = null;
@@ -179,12 +208,12 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       action = (MAction) stimulus.getDispatchAction();
    }
 
-    //AK if - clause
+  
    // if (action != null ) {
 
     FigSeqObject dest = (FigSeqObject) getDestFigNode();
     FigSeqObject source = (FigSeqObject) getSourceFigNode();
-
+    if (dest != null && source != null) {
     if (action instanceof MCallAction) {
       if (action.isAsynchronous()) {
         setDestArrowHead(new ArrowHeadHalfTriangle());
@@ -240,91 +269,12 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       dest.setForDestroy(this, "Dest", true);
       //source.concatActivation(this, contents);
     }
-
+    }
     //}
   }
-
-  /** Moves the FigSeqLink into the right position. */
-  public void moveIntoPosition(Vector contents, int countEdges, int countPorts) {
-
-    int portNumber = getPortNumber(contents); 
-    int size = contents.size(); 
-    FigSeqObject sourcePort = (FigSeqObject) this.getSourceFigNode(); 
-    FigSeqObject destPort = (FigSeqObject) this.getDestFigNode(); 
- 
-    if (this.getSourcePortFig() == sourcePort._lifeline) { 
-      for (int i=0; i<size; i++) { 
-        if (contents.elementAt(i) instanceof FigSeqObject) { 
-          FigSeqObject fso = (FigSeqObject) contents.elementAt(i); 
-          Enumeration e = fso._ports.elements(); 
-          while (e.hasMoreElements()) { 
-            FigDynPort fsp = (FigDynPort) e.nextElement();  
-            int pos = fsp.getPosition(); 
-            if (pos >= portNumber) { 
-              fsp.setPosition(pos+1); 
-              int dynPos = fsp.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "b|"+fsp.getPosition(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString();               
-            } 
-          } 
-          if (fso._terminated && fso._terminateHeight >= portNumber) fso._terminateHeight++; 
-          if (fso._created && fso._createHeight >= portNumber) fso._createHeight++; 
- 
-          setActivations(fso, sourcePort, destPort, portNumber); 
-        } 
-      } 
-      FigDynPort _port1 = new FigDynPort(10, 10, 15, 5, Color.black, Color.white, portNumber); 
-      sourcePort._ports.addElement(_port1); 
-      sourcePort.addFig(_port1); 
-      sourcePort.bindPort(sourcePort.getOwner(), _port1); 
-      this.setSourcePortFig(_port1); 
-      String dynStr = "b|"+_port1.getPosition(); 
-      sourcePort._dynVector.addElement(dynStr); 
-      _port1.setDynVectorPos(sourcePort._dynVector.indexOf(dynStr)); 
-      sourcePort._dynObjects = sourcePort._dynVector.toString(); 
-      Rectangle sPr = sourcePort.getBounds(); 
-      sourcePort.setBounds(sPr.x, sPr.y, sPr.width, sPr.height, countEdges); 
-    } 
-    if (this.getDestPortFig() == destPort._lifeline) { 
-      FigDynPort _port2 = new FigDynPort(10, 10, 15, 5, Color.black, Color.white, portNumber); 
-      destPort._ports.addElement(_port2);; 
-      destPort.addFig(_port2); 
-      destPort.bindPort(destPort.getOwner(), _port2); 
-      this.setDestPortFig(_port2); 
-      String dynStr = "b|"+_port2.getPosition(); 
-      destPort._dynVector.addElement(dynStr); 
-      _port2.setDynVectorPos(destPort._dynVector.indexOf(dynStr)); 
-      destPort._dynObjects = destPort._dynVector.toString(); 
-      Rectangle dPr = destPort.getBounds(); 
-      destPort.setBounds(dPr.x, dPr.y, dPr.width, dPr.height, countEdges); 
-    } 
-    setEnclosingFig(destPort);
-
-   // AK bring the stimulus in front of this layer to keep it selectable
-    Collection col = ((MLink)getOwner()).getStimuli();
-    MStimulus stimulus = null;
-    Iterator it = col.iterator();
-    while (it.hasNext()) {
-      stimulus = (MStimulus) it.next();
-    }
-    if ( getLayer() != null && getLayer().presentationFor(stimulus) != null) {
-      getLayer().bringToFront(getLayer().presentationFor(stimulus) ); }
-
-
   }
 
 
-
-  public void mouseReleased(MouseEvent me) {
-
-    // AK
-    super.mouseReleased(me);
-
-    addStimulusWithAction();
-
-  }
 
   public void  addStimulusWithAction() {
 
@@ -333,67 +283,73 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     // If this is the case, a new Stimulus and Action of the given type
     // will be created and associated to the link. After this, the
     // figure of the Stimulus will be created and added to the layer
-
-    //System.out.println("addStimulusWithAction:");
-    // AK look for action arguments in the mode set in CmdSetMode
+    
     Editor curEditor = Globals.curEditor();
-    GraphModel gm = curEditor.getGraphModel();
-    GraphNodeRenderer renderer = curEditor.getGraphNodeRenderer();
-    GraphEdgeRenderer edgeRenderer = curEditor.getGraphEdgeRenderer();
-    Layer lay = curEditor.getLayerManager().getActiveLayer();
+    LayerPerspective lay = (LayerPerspective)getLayer();
+    GraphNodeRenderer renderer = lay.getGraphNodeRenderer();
+    GraphModel gm = lay.getGraphModel();
+    
+  
     MLink link = (MLink) getOwner();
     if (link.getStimuli()==null || link.getStimuli().size() == 0) {
       ModeManager modeManager = curEditor.getModeManager();
-      //System.out.println("top mode:");
+     
       Mode mode = (Mode)modeManager.top();
       Hashtable args = mode.getArgs();
 
       if ( args != null ) {
-        //System.out.println("args != null");
-        if ( args.get("action") != null && args.get("action") instanceof MAction) {
+        MAction action=null;
+        Class actionClass = (Class) args.get("action");
+        if (actionClass != null) {
+          try { action = (MAction) actionClass.newInstance(); }
+          catch (java.lang.IllegalAccessException ignore) { }
+          catch (java.lang.InstantiationException ignore) { }
+
+          if (action != null)  {
           // determine action type of arguments in mode
-          //System.out.println("instanciate Stimulus");
-          MAction action =  (MAction)args.get("action");
-          action.setName("new action");
-          if (action instanceof MSendAction || action instanceof MReturnAction) {
-            action.setAsynchronous(true);
-          } else {
-             action.setAsynchronous(false); }
 
-          // create stimulus
-          MStimulus stimulus = new MStimulusImpl();
-          stimulus.setName("");
-          //set sender and receiver
-          Collection liEnds = link.getConnections();
-          if (liEnds.size() != 2 ) return;
-          Iterator iter = liEnds.iterator();
-          MLinkEnd le1 = (MLinkEnd)iter.next();
-          MLinkEnd le2 = (MLinkEnd)iter.next();
-          MObject objSrc = (MObject)le1.getInstance();
-          MObject objDst = (MObject)le2.getInstance();
-          stimulus.setSender(objSrc);
-          stimulus.setReceiver(objDst);
-          // set action type
-          //System.out.println("ActionType: " + action.toString());
-          stimulus.setDispatchAction(action);
-          // add stimulus to link
-          link.addStimulus(stimulus);
-          // add new modelelements: stimulus and action to namesapce
-          MNamespace ns = (MNamespace) link.getNamespace();
-          ns.addOwnedElement(stimulus);
-          ns.addOwnedElement(action);
+            action.setName("new action");
+            if (action instanceof MSendAction || action instanceof MReturnAction) {
+              action.setAsynchronous(true);
+            } else {
+               action.setAsynchronous(false); }
 
-          if (lay.presentationFor(stimulus) == null ) {
-            //System.out.println("FigStimulus setzen");
-            Point center = this.center();
-            FigNode pers = renderer.getFigNodeFor(gm, lay, stimulus);
-            Collection stimuli = link.getStimuli();
-            int stiSize = stimuli.size();
-            int percent = 35 + stiSize*10;
-            if (percent > 100) percent = 100;
-            this.addPathItem(pers, new PathConvPercent(this, percent, 10));
-            this.updatePathItemLocations();
-            lay.add(pers);
+            // create stimulus
+            MStimulus stimulus = new MStimulusImpl();
+            stimulus.setName("");
+            //set sender and receiver
+            Collection liEnds = link.getConnections();
+            if (liEnds.size() != 2 ) return;
+            Iterator iter = liEnds.iterator();
+            MLinkEnd le1 = (MLinkEnd)iter.next();
+            MLinkEnd le2 = (MLinkEnd)iter.next();
+            MObject objSrc = (MObject)le1.getInstance();
+            MObject objDst = (MObject)le2.getInstance();
+            stimulus.setSender(objSrc);
+            stimulus.setReceiver(objDst);
+            // set action type           
+            stimulus.setDispatchAction(action);
+            // add stimulus to link
+            link.addStimulus(stimulus);
+            // add new modelelements: stimulus and action to namesapce
+            MNamespace ns = (MNamespace) link.getNamespace();
+            ns.addOwnedElement(stimulus);
+            ns.addOwnedElement(action);
+
+            if (lay.presentationFor(stimulus) == null ) {
+            
+              Point center = this.center();
+              FigNode pers = renderer.getFigNodeFor(gm, lay, stimulus);
+              Collection stimuli = link.getStimuli();
+              int stiSize = stimuli.size();
+              int percent = 35 + stiSize*10;
+              if (percent > 100) percent = 100;
+              this.addPathItem(pers, new PathConvPercent(this, percent, 10));
+              this.updatePathItemLocations();
+              lay.add(pers);
+            
+            }
+	    
           }
         }
       }
@@ -407,9 +363,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
    *    Every object must update its activations, when a FigSeqLink
    *    is moved into position. */
   public void setActivations(FigSeqObject fso, FigSeqObject sourcePort, FigSeqObject destPort, int portNumber) {
+    
     if (fso._activations != null && fso._activations.size() > 0) {
       int actSize = fso._activations.size();
       if ( (fso != sourcePort) && (fso != destPort) ) {
+	
         for (int j=0; j<actSize; j++) {
           FigActivation act = (FigActivation) fso._activations.elementAt(j);
           if (act.getFromPosition() >= portNumber) {
@@ -422,11 +380,13 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
           else if (act.getToPosition() < portNumber) {
             // do nothing
           }
-          int dynPos = act.getDynVectorPos(); 
-          fso._dynVector.removeElementAt(dynPos); 
-          String newDynStr = "a|"+act.getFromPosition()+"|"+act.getToPosition()+"|"+act.isFromTheBeg()+"|"+act.isEnd(); 
-          fso._dynVector.insertElementAt(newDynStr, dynPos); 
-          fso._dynObjects = fso._dynVector.toString();    
+          int dynPos = act.getDynVectorPos();
+         
+          fso._dynVector.removeElementAt(dynPos);
+          String newDynStr = "a|"+act.getFromPosition()+"|"+act.getToPosition()+"|"+act.isFromTheBeg()+"|"+act.isEnd();
+          fso._dynVector.insertElementAt(newDynStr, dynPos);
+          fso._dynObjects = fso._dynVector.toString();
+
         }
       }
       else if ( (fso == sourcePort) || (fso == destPort) ) {
@@ -495,10 +455,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         	  fso._activations.addElement(newAct);
         	  fso.addFig(newAct);
         	  fso.bindPort(fso.getOwner(), newAct);
-                  String dynStr = "a|"+newAct.getFromPosition()+"|"+newAct.getToPosition()+"|"+newAct.isFromTheBeg()+"|"+newAct.isEnd(); 
-                  fso._dynVector.addElement(dynStr); 
-                  newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr)); 
-                  fso._dynObjects = fso._dynVector.toString(); 
+                  String dynStr = "a|"+newAct.getFromPosition()+"|"+newAct.getToPosition()+"|"+newAct.isFromTheBeg()+"|"+newAct.isEnd();
+                  fso._dynVector.addElement(dynStr);
+                  newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr));
+                  fso._dynObjects = fso._dynVector.toString();
+
  	}
 	else {
 	  // do nothing
@@ -509,11 +470,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
               act.setToPosition(portNumber);
             }
           }
-          int dynPos = act.getDynVectorPos(); 
-          fso._dynVector.removeElementAt(dynPos); 
-          String newDynStr = "a|"+act.getFromPosition()+"|"+act.getToPosition()+"|"+act.isFromTheBeg()+"|"+act.isEnd(); 
-          fso._dynVector.insertElementAt(newDynStr, dynPos); 
-          fso._dynObjects = fso._dynVector.toString();               
+          int dynPos = act.getDynVectorPos();
+          fso._dynVector.removeElementAt(dynPos);
+          String newDynStr = "a|"+act.getFromPosition()+"|"+act.getToPosition()+"|"+act.isFromTheBeg()+"|"+act.isEnd();
+          fso._dynVector.insertElementAt(newDynStr, dynPos);
+          fso._dynObjects = fso._dynVector.toString();
         }
       }
     }
@@ -522,10 +483,11 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       fso._activations.addElement(newAct);
       fso.addFig(newAct);
       fso.bindPort(fso.getOwner(), newAct);
-      String dynStr = "a|"+newAct.getFromPosition()+"|"+newAct.getToPosition()+"|"+newAct.isFromTheBeg()+"|"+newAct.isEnd(); 
-      fso._dynVector.addElement(dynStr); 
-      newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr)); 
-      fso._dynObjects = fso._dynVector.toString(); 
+      String dynStr = "a|"+newAct.getFromPosition()+"|"+newAct.getToPosition()+"|"+newAct.isFromTheBeg()+"|"+newAct.isEnd();
+      fso._dynVector.addElement(dynStr);
+      newAct.setDynVectorPos(fso._dynVector.indexOf(dynStr));
+      fso._dynObjects = fso._dynVector.toString();
+
     }
   }
 
@@ -540,24 +502,27 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
     Rectangle rect = new Rectangle(0, 0, 1, 1);
     for (int i=0; i<size; i++) {
       if (contents.elementAt(i) instanceof FigSeqLink) {
+
         FigSeqLink fsl = (FigSeqLink) contents.elementAt(i);
+
         if (((fsl.getBounds()).y < getBounds().y) && ((fsl.getBounds()).y > rect.y)) {
+	   
           portObj = fsl;
           rect = fsl.getBounds();
         }
       }
     }
     if (portObj != null) {
-      FigSeqObject fso = (FigSeqObject) portObj.getSourceFigNode();
-      //System.out.println("(FigSeqObject) portObj.getSourceFigNode()");
-      FigRect port = (FigRect) portObj.getSourcePortFig();
-      // System.out.println("(FigRect) portObj.getSourceFig()");
 
-      if (port instanceof FigDynPort) { 
-        FigDynPort fsp = (FigDynPort) port; 
-        portNumber = fsp.getPosition()+1; 
-      }  
-    } 
+      FigSeqObject fso = (FigSeqObject) portObj.getSourceFigNode();
+      FigRect port = (FigRect) portObj.getSourcePortFig();
+   
+      if (port instanceof FigDynPort) {
+        FigDynPort fsp = (FigDynPort) port;
+         portNumber = fsp.getPosition()+1;
+        
+      }
+    }
     return portNumber;
   }
 
@@ -565,10 +530,16 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
    *    the diagram, is important because in sequence-
    *    diagrams often you have to update all figures */
   public Vector getContents() {
-    Editor _editor = Globals.curEditor();
-    Layer lay = _editor.getLayerManager().getActiveLayer();
-    Vector contents = lay.getContents();
-    return contents;
+    if (getLayer() != null ) {
+      return getLayer().getContents();
+    } else {  
+      Editor _editor = Globals.curEditor();
+      Layer lay = _editor.getLayerManager().getActiveLayer();
+      Vector contents = lay.getContents();
+      return contents;
+    }
+
+    
   }
 
   /** Deletes all path-items of this FigSeqLink,
@@ -596,224 +567,238 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
    *    updates the Vector _ports of all FigSeqObjects */
   public void updatePorts(FigSeqObject sourceObj, FigSeqObject destObj,
 			FigDynPort sourceFig, FigDynPort destFig, Vector contents, int size, int portNumber) {
-    if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
-    sourceObj._ports.remove(sourceFig); 
-    destObj._ports.remove(destFig); 
- 
-    int sourceDynPos = sourceFig.getDynVectorPos(); 
-    if (sourceObj._ports.size() == 0) { 
-      sourceObj._dynVector = new Vector(); 
-    } 
-    else { 
-      sourceObj._dynVector.removeElementAt(sourceDynPos); 
-      for (int i=0; i<sourceObj._ports.size(); i++) { 
-        FigDynPort fsp = (FigDynPort) sourceObj._ports.elementAt(i); 
-        if (fsp.getDynVectorPos() > sourceDynPos) { 
-          fsp.setDynVectorPos(fsp.getDynVectorPos()-1); 
-        } 
-      }   
-      for (int i=0; i<sourceObj._activations.size(); i++) { 
-        FigActivation fa = (FigActivation) sourceObj._activations.elementAt(i); 
-        if (fa.getDynVectorPos() > sourceDynPos) { 
-          fa.setDynVectorPos(fa.getDynVectorPos()-1); 
-        } 
-      } 
-    }   
-    sourceObj._dynObjects = sourceObj._dynVector.toString(); 
- 
-    int destDynPos = destFig.getDynVectorPos(); 
-    if (destObj._ports.size() == 0) { 
-      destObj._dynVector = new Vector(); 
-    } 
-    else { 
-      destObj._dynVector.removeElementAt(destDynPos); 
-      for (int i=0; i<destObj._ports.size(); i++) { 
-        FigDynPort fsp = (FigDynPort) destObj._ports.elementAt(i); 
-        if (fsp.getDynVectorPos() > destDynPos) { 
-          fsp.setDynVectorPos(fsp.getDynVectorPos()-1); 
-        } 
-      }  
-      for (int i=0; i<destObj._activations.size(); i++) { 
-        FigActivation fa = (FigActivation) destObj._activations.elementAt(i); 
-        if (fa.getDynVectorPos() > destDynPos) { 
-          fa.setDynVectorPos(fa.getDynVectorPos()-1); 
-        } 
-      } 
-    }   
-    destObj._dynObjects = destObj._dynVector.toString(); 
- 
-    sourceObj.removeFig(sourceFig); 
-    destObj.removeFig(destFig); 
-    for (int i=0; i<size; i++) { 
-      if (contents.elementAt(i) instanceof FigSeqObject) { 
-        FigSeqObject fso = (FigSeqObject) contents.elementAt(i); 
-        if (fso != sourceObj && fso != destObj) { 
-          int portsSize = fso._ports.size(); 
-          FigDynPort fsp = null; 
-         
-          for (int j=portsSize; j>0; j--) { 
-            Enumeration e2 = fso._ports.elements(); 
-            int key = 0; 
-            for (int k=0; k<j; k++) {  
-              fsp = (FigDynPort) e2.nextElement();  
-              key = fsp.getPosition(); 
-            } 
-         
-            if (key < portNumber) { 
-              // do nothing 
-            } 
-            else if (key > portNumber) { 
-              fsp.setPosition(key-1);  
-              int dynPos = fsp.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "b|"+fsp.getPosition(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString(); 
-            } 
-          } 
-        } 
-        else { 
-          int portsSize = fso._ports.size(); 
-          FigDynPort fsp = null; 
-         
-          for (int j=portsSize; j>0; j--) { 
-            Enumeration e2 = fso._ports.elements(); 
-            int key = 0; 
-            for (int k=0; k<j; k++) {  
-              fsp = (FigDynPort) e2.nextElement();  
-              key = fsp.getPosition(); 
-            } 
-         
-            if (key < portNumber) { 
-              // do nothing 
-            } 
-            else if (key > portNumber) { 
-              fsp.setPosition(key-1);  
-              int dynPos = fsp.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "b|"+fsp.getPosition(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString(); 
-            } 
-          }        
-        }    
-      } 
-    } 
-  } 
+
+
+   if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
+    sourceObj._ports.remove(sourceFig);
+    destObj._ports.remove(destFig);
+
+    int sourceDynPos = sourceFig.getDynVectorPos();
+    if (sourceObj._ports.size() == 0) {
+      sourceObj._dynVector = new Vector();
+    }
+    else {
+      sourceObj._dynVector.removeElementAt(sourceDynPos);
+      for (int i=0; i<sourceObj._ports.size(); i++) {
+        FigDynPort fsp = (FigDynPort) sourceObj._ports.elementAt(i);
+        if (fsp.getDynVectorPos() > sourceDynPos) {
+          fsp.setDynVectorPos(fsp.getDynVectorPos()-1);
+        }
+      }
+      for (int i=0; i<sourceObj._activations.size(); i++) {
+        FigActivation fa = (FigActivation) sourceObj._activations.elementAt(i);
+        if (fa.getDynVectorPos() > sourceDynPos) {
+          fa.setDynVectorPos(fa.getDynVectorPos()-1);
+        }
+      }
+    }
+    sourceObj._dynObjects = sourceObj._dynVector.toString();
+
+    int destDynPos = destFig.getDynVectorPos();
+    if (destObj._ports.size() == 0) {
+      destObj._dynVector = new Vector();
+    }
+    else {
+      destObj._dynVector.removeElementAt(destDynPos);
+      for (int i=0; i<destObj._ports.size(); i++) {
+        FigDynPort fsp = (FigDynPort) destObj._ports.elementAt(i);
+        if (fsp.getDynVectorPos() > destDynPos) {
+          fsp.setDynVectorPos(fsp.getDynVectorPos()-1);
+        }
+      }
+      for (int i=0; i<destObj._activations.size(); i++) {
+        FigActivation fa = (FigActivation) destObj._activations.elementAt(i);
+        if (fa.getDynVectorPos() > destDynPos) {
+          fa.setDynVectorPos(fa.getDynVectorPos()-1);
+        }
+      }
+    }
+    destObj._dynObjects = destObj._dynVector.toString();
+
+    sourceObj.removeFig(sourceFig);
+    destObj.removeFig(destFig);
+    for (int i=0; i<size; i++) {
+      if (contents.elementAt(i) instanceof FigSeqObject) {
+        FigSeqObject fso = (FigSeqObject) contents.elementAt(i);
+        if (fso != sourceObj && fso != destObj) {
+          int portsSize = fso._ports.size();
+          FigDynPort fsp = null;
+
+          for (int j=portsSize; j>0; j--) {
+            Enumeration e2 = fso._ports.elements();
+            int key = 0;
+            for (int k=0; k<j; k++) {
+              fsp = (FigDynPort) e2.nextElement();
+              key = fsp.getPosition();
+            }
+
+            if (key < portNumber) {
+              // do nothing
+            }
+            else if (key > portNumber) {
+              fsp.setPosition(key-1);
+              int dynPos = fsp.getDynVectorPos();
+              fso._dynVector.removeElementAt(dynPos);
+              String newDynStr = "b|"+fsp.getPosition();
+              fso._dynVector.insertElementAt(newDynStr, dynPos);
+              fso._dynObjects = fso._dynVector.toString();
+            }
+          }
+        }
+        else {
+          int portsSize = fso._ports.size();
+          FigDynPort fsp = null;
+
+          for (int j=portsSize; j>0; j--) {
+            Enumeration e2 = fso._ports.elements();
+            int key = 0;
+            for (int k=0; k<j; k++) {
+              fsp = (FigDynPort) e2.nextElement();
+              key = fsp.getPosition();
+            }
+
+            if (key < portNumber) {
+              // do nothing
+            }
+            else if (key > portNumber) {
+              fsp.setPosition(key-1);
+              int dynPos = fsp.getDynVectorPos();
+              fso._dynVector.removeElementAt(dynPos);
+              String newDynStr = "b|"+fsp.getPosition();
+              fso._dynVector.insertElementAt(newDynStr, dynPos);
+              fso._dynObjects = fso._dynVector.toString();
+            }
+          }
+        }
+      }
+    }
+  }
 
   /** Updates the Vector _activations of all FigSeqObjects */
   public void updateActivations(FigSeqObject sourceObj, FigSeqObject destObj,
 			FigRect sourceFig, FigRect destFig, Vector contents, int size, int portNumber) {
+   
     if (sourceFig == sourceObj._lifeline || destFig == destObj._lifeline) return;
     FigSeqObject fso = null;
-    for (int i=0; i<getContents().size(); i++) { 
-      if (getContents().elementAt(i) instanceof FigSeqObject) { 
-        fso = (FigSeqObject) getContents().elementAt(i); 
-        if (fso._terminated && fso._terminateHeight > portNumber) fso._terminateHeight--; 
-        if (fso._created && fso._createHeight > portNumber) fso._createHeight--; 
-        if (fso != getSourceFigNode() && fso != getDestFigNode()) { 
-          for (int j=0; j<fso._activations.size(); j++) { 
-            FigActivation fa = (FigActivation) fso._activations.elementAt(j); 
-            if (fa.getFromPosition() > portNumber && fa.getToPosition() > portNumber) { 
-              fa.setFromPosition(fa.getFromPosition()-1); 
-              fa.setToPosition(fa.getToPosition()-1); 
-              int dynPos = fa.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString(); 
-            } 
-            else if (fa.getFromPosition() <= portNumber && fa.getToPosition() >= portNumber) { 
-              fa.setToPosition(fa.getToPosition()-1); 
-              int dynPos = fa.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString(); 
-            } 
-            else if (fa.getFromPosition() < portNumber && fa.getToPosition() < portNumber) { 
-              // do nothing 
-            } 
-          } 
-        } 
-        else if (fso == getSourceFigNode() || fso == getDestFigNode()) {  
-          Vector edges = fso.getFigEdges(); 
-          Vector newActivations = (Vector) fso._activations.clone(); 
-          for (int j=0; j<fso._activations.size(); j++) { 
-            FigActivation fa = (FigActivation) fso._activations.elementAt(j); 
-            int from = fa.getFromPosition(); 
-            int to = fa.getToPosition(); 
-            boolean figActDeleted = false; 
-            if (from < portNumber && to < portNumber) { 
-              // do nothing 
-            } 
-            else if (from > portNumber && to > portNumber) { 
-              fa.setFromPosition(from-1); 
-              fa.setToPosition(to-1); 
-            } 
-            else if (from < portNumber && to > portNumber) { 
-              fa.setToPosition(to-1); 
-            } 
-            else if (from == portNumber && to > portNumber) { 
-              fa.setToPosition(to-1); 
-              int nextNumber = 10000; 
-              for (int k=0; k<edges.size(); k++) { 
-                FigSeqLink fsl = (FigSeqLink) edges.elementAt(k); 
-                int fslNumber = fsl.getPortNumber(contents); 
-                if (fslNumber < nextNumber && fslNumber >= portNumber) {  
-                  nextNumber = fslNumber; 
-                } 
-              }   
-              fa.setFromPosition(nextNumber); 
-            } 
-            else if (from < portNumber && to == portNumber) { 
-              int nextNumber = 0; 
-              for (int k=0; k<edges.size(); k++) { 
-                FigSeqLink fsl = (FigSeqLink) edges.elementAt(k); 
-                int fslNumber = fsl.getPortNumber(contents); 
-                if (fslNumber > nextNumber && fslNumber < portNumber) {  
-                  nextNumber = fslNumber; 
-                } 
-              }   
-              fa.setToPosition(nextNumber); 
-            } 
-            else if (from == portNumber && to == portNumber) { 
-              figActDeleted = true; 
-              newActivations.removeElement(fa); 
-              fso.removeFig(fa); 
-            } 
-            if (!figActDeleted) { 
-              int dynPos = fa.getDynVectorPos(); 
-              fso._dynVector.removeElementAt(dynPos); 
-              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd(); 
-              fso._dynVector.insertElementAt(newDynStr, dynPos); 
-              fso._dynObjects = fso._dynVector.toString(); 
-            } 
-            else if (figActDeleted) { 
-              int dynPos = fa.getDynVectorPos(); 
-              for (int l=0; l<fso._activations.size(); l++) { 
-                FigActivation figAct = (FigActivation) fso._activations.elementAt(l); 
-                if (figAct.getDynVectorPos() > dynPos) { 
-                  figAct.setDynVectorPos(figAct.getDynVectorPos()-1); 
-                } 
-              } 
-            }   
-          } 
-          fso._activations = newActivations;  
-          for (int j=0; j<edges.size(); j++) { 
-            FigSeqLink fsl = (FigSeqLink) edges.elementAt(j); 
-            fsl.modelChanged(); 
-          }            
+    for (int i=0; i<getContents().size(); i++) {
+      if (getContents().elementAt(i) instanceof FigSeqObject) {
+        fso = (FigSeqObject) getContents().elementAt(i);
+        if (fso._terminated && fso._terminateHeight > portNumber) fso._terminateHeight--;
+        if (fso._created && fso._createHeight > portNumber) {
+          fso._createHeight--;
+          // update create attributes in _dynVector of FigSeqObject
+          /*
+          fso._dynVector.removeElementAt(0);
+          String dynStr="c|" + "true" + "|" + fso._createHeight;
+          fso._dynVector.insertElementAt(dynStr,0);
+          fso._dynObjects = fso._dynVector.toString();
+          */
+        }
+
+
+        if (fso != getSourceFigNode() && fso != getDestFigNode()) {
+          for (int j=0; j<fso._activations.size(); j++) {
+            FigActivation fa = (FigActivation) fso._activations.elementAt(j);
+            if (fa.getFromPosition() > portNumber && fa.getToPosition() > portNumber) {
+              fa.setFromPosition(fa.getFromPosition()-1);
+              fa.setToPosition(fa.getToPosition()-1);
+              int dynPos = fa.getDynVectorPos();
+              fso._dynVector.removeElementAt(dynPos);
+              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd();
+              fso._dynVector.insertElementAt(newDynStr, dynPos);
+              fso._dynObjects = fso._dynVector.toString();
+            }
+            else if (fa.getFromPosition() <= portNumber && fa.getToPosition() >= portNumber) {
+              fa.setToPosition(fa.getToPosition()-1);
+              int dynPos = fa.getDynVectorPos();
+              fso._dynVector.removeElementAt(dynPos);
+              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd();
+              fso._dynVector.insertElementAt(newDynStr, dynPos);
+              fso._dynObjects = fso._dynVector.toString();
+            }
+            else if (fa.getFromPosition() < portNumber && fa.getToPosition() < portNumber) {
+              // do nothing
+            }
+          }
+        }
+        else if (fso == getSourceFigNode() || fso == getDestFigNode()) {
+          Vector edges = fso.getFigEdges();
+          Vector newActivations = (Vector) fso._activations.clone();
+          for (int j=0; j<fso._activations.size(); j++) {
+            FigActivation fa = (FigActivation) fso._activations.elementAt(j);
+            int from = fa.getFromPosition();
+            int to = fa.getToPosition();
+            boolean figActDeleted = false;
+            if (from < portNumber && to < portNumber) {
+              // do nothing
+            }
+            else if (from > portNumber && to > portNumber) {
+              fa.setFromPosition(from-1);
+              fa.setToPosition(to-1);
+            }
+            else if (from < portNumber && to > portNumber) {
+              fa.setToPosition(to-1);
+            }
+            else if (from == portNumber && to > portNumber) {
+              fa.setToPosition(to-1);
+              int nextNumber = 10000;
+              for (int k=0; k<edges.size(); k++) {
+                FigSeqLink fsl = (FigSeqLink) edges.elementAt(k);
+                int fslNumber = fsl.getPortNumber(contents);
+                if (fslNumber < nextNumber && fslNumber >= portNumber) {
+                  nextNumber = fslNumber;
+                }
+              }
+              fa.setFromPosition(nextNumber);
+            }
+            else if (from < portNumber && to == portNumber) {
+              int nextNumber = 0;
+              for (int k=0; k<edges.size(); k++) {
+                FigSeqLink fsl = (FigSeqLink) edges.elementAt(k);
+                int fslNumber = fsl.getPortNumber(contents);
+                if (fslNumber > nextNumber && fslNumber < portNumber) {
+                  nextNumber = fslNumber;
+                }
+              }
+              fa.setToPosition(nextNumber);
+            }
+            else if (from == portNumber && to == portNumber) {
+              figActDeleted = true;
+              newActivations.removeElement(fa);
+              fso.removeFig(fa);
+            }
+            if (!figActDeleted) {
+              int dynPos = fa.getDynVectorPos();
+              fso._dynVector.removeElementAt(dynPos);
+              String newDynStr = "a|"+fa.getFromPosition()+"|"+fa.getToPosition()+"|"+fa.isFromTheBeg()+"|"+fa.isEnd();
+              fso._dynVector.insertElementAt(newDynStr, dynPos);
+              fso._dynObjects = fso._dynVector.toString();
+            }
+            else if (figActDeleted) {
+              int dynPos = fa.getDynVectorPos();
+              for (int l=0; l<fso._activations.size(); l++) {
+                FigActivation figAct = (FigActivation) fso._activations.elementAt(l);
+                if (figAct.getDynVectorPos() > dynPos) {
+                  figAct.setDynVectorPos(figAct.getDynVectorPos()-1);
+                }
+              }
+            }
+          }
+          fso._activations = newActivations;
+          for (int j=0; j<edges.size(); j++) {
+            FigSeqLink fsl = (FigSeqLink) edges.elementAt(j);
+            fsl.modelChanged();
+          }
         }
       }
     }
-  } 
+  }
 
 
   /** If the action of this Link cannot be set, this
    *   default action will be created and set */
   public void setDefaultAction() {
-    System.out.println("setDefaulAction");
+    
     MLink ml = (MLink) getOwner();
     Collection col = ml.getStimuli();
     Iterator it = col.iterator();
@@ -840,16 +825,16 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
   }
 
   /** Deletes this FigSeqLink from the diagram*/
-  public void delete() {
-
+  public void delete() { 
+    
     FigSeqObject sourceObj = (FigSeqObject) getSourceFigNode();
     FigSeqObject destObj = (FigSeqObject) getDestFigNode();
-    FigDynPort sourceFig = (FigDynPort) getSourcePortFig(); 
-    FigDynPort destFig = (FigDynPort) getDestPortFig(); 
+    FigDynPort sourceFig = (FigDynPort) getSourcePortFig();
+    FigDynPort destFig = (FigDynPort) getDestPortFig();
     Vector contents = getContents();
     int size = contents.size();
     int portNumber = getPortNumber(contents);
-   Vector delOwners = deletePathItems();
+    Vector delOwners = deletePathItems();
 
     MObject mo1 = (MObject)destObj.getOwner();
     MObject mo2 = (MObject)sourceObj.getOwner();
@@ -863,16 +848,20 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
           MStimulus sti = (MStimulus)delOwners.elementAt(i);
           if (ms == sti) {
             delStimuli.addElement(ms);
-            if (ms.getDispatchAction() != null && ms.getDispatchAction() instanceof MCreateAction) {
-              destObj.setForCreate(this, "Dest", false);
-            }
-            // AK
-            // if stimulus is DestroyAction, the termination Symbol has to
-            // be removed at the receiver
-            if (ms.getDispatchAction() != null && ms.getDispatchAction() instanceof MDestroyAction) {
-              destObj.setForDestroy(this, "Dest", false);
-            }
-
+            MAction action = ms.getDispatchAction();
+            if (action != null ) {
+              if (action instanceof MCreateAction) {
+                destObj.setForCreate(this, "Dest", false);
+              }
+             
+              // if stimulus is DestroyAction, the termination Symbol has to
+              // be removed at the receiver
+              if (action instanceof MDestroyAction) {
+                destObj.setForDestroy(this, "Dest", false);
+              }
+              
+              ((MNamespace)action.getNamespace()).removeOwnedElement(action);
+            }           
           }
         }
       }
@@ -885,22 +874,28 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       }
     }
 
+   
+
     contents = getContents();
     size = contents.size();
+   
     updatePorts(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
 
     super.delete();
 
     contents = getContents();
+   
     size = contents.size();
+   
     updateActivations(sourceObj, destObj, sourceFig, destFig, contents, size, portNumber);
+    
   }
 
 ///////////////////////////////////////////////////////////////////////////////
 // EventListener
 
   public void mouseClicked(MouseEvent me) {
-    //System.out.println("FigSeqLink.mouseClicked");
+
     Vector contents = getContents();
     for (int i=0; i<contents.size(); i++) {
       if (contents.elementAt(i) instanceof FigSeqObject) {
@@ -908,10 +903,18 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
         fso.setEnclosingFig(fso);
       }
     }
+  
     super.mouseClicked(me);
   }
 
 
+  public void mouseReleased(MouseEvent me) {
+    super.mouseReleased(me);
+    addStimulusWithAction();
+   
+    if (getLayer() != null) ((SequenceDiagramLayout)getLayer()).placeAllFigures();
+
+  }
 
 
   public void removed(MElementEvent mee) {
@@ -924,8 +927,15 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
       if (contents.elementAt(j) instanceof FigSeqObject) {
         FigSeqObject fso = (FigSeqObject) contents.elementAt(j);
         fso.setEnclosingFig(fso);
+  
+      }
+      if (contents.elementAt(j) instanceof FigSeqLink) {
+        FigSeqLink fsl = (FigSeqLink) contents.elementAt(j);
+        MLink ml = (MLink) fsl.getOwner();
+        if (ml != null) fsl.setArrowHeads(ml, contents);
       }
     }
+   
   }
 
 

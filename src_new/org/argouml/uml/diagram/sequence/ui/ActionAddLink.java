@@ -5,7 +5,7 @@
  */
 
 // file: ActionAddLink.java 
-// author: 5kanzler@informatik.uni-hamburg.de) 
+// author: 5kanzler@informatik.uni-hamburg.de
  
 
 package org.argouml.uml.diagram.sequence.ui;
@@ -19,9 +19,9 @@ import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 public class ActionAddLink extends CmdSetMode {
-   public ActionAddLink(MAction action, String name) {
+   public ActionAddLink(Class actionClass, String name) {
     super(ModeCreatePolyEdge.class,"edgeClass", MLinkImpl.class,name);
-    _modeArgs.put("action", action);
+    _modeArgs.put("action", actionClass);
   }
 
 
