@@ -137,13 +137,14 @@ public class Actions {
 
 ////////////////////////////////////////////////////////////////
 // file menu actions
-
+/** print the current active diagram.
+ */
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }
 
   public void actionPerformed(ActionEvent ae) {
     CmdPrint cmd = new CmdPrint();
-    Object target = ProjectBrowser.TheInstance.getTarget();
+    Object target = ProjectBrowser.TheInstance.getActiveDiagram();
     if (target instanceof Diagram) {
       String n = ((Diagram)target).getName();
       cmd.setDiagramName(n);
