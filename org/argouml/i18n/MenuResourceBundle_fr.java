@@ -47,7 +47,6 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"action.import-sources", "Importer depuis les sources..."},
         {"Import", "Importer"},
         {"action.print", "Imprimer..." },
-        {"Save GIF...", "Enregistrer au Format GIF..." },
         {"action.save-graphics", "Enregistrer les Graphiques..." },
 	{"action.save-configuration", "Enregistrer la Configuration"},
         {"action.exit", "Quitter" },

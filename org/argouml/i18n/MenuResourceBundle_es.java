@@ -59,7 +59,6 @@ public class MenuResourceBundle_es extends ListResourceBundle {
         {"action.import-sources", "Importar fuentes..." },
         {"Import", "Importar" },
         {"action.print", "Imprimir..." },
-        {"Save GIF...", "Guardar GIF..." },
         {"action.save-graphics", "Guardar gr\u00e1ficos..." },
         {"action.save-configuration", "Guardar configuracion"},
         {"action.exit", "Salir" },
