@@ -29,77 +29,88 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 public class UMLComboBoxEntry implements Comparable {
-    private Object/*MModelElement*/ _element;
-    private String _shortName;
+    private Object/*MModelElement*/ element;
+    private String shortName;
     
     /** _longName is composed of an identifier and a name as in Class: String */
-    private String _longName;
-    private Profile _profile;
+    private String longName;
+    private Profile profile;
     
     /** _display name will be the same as shortName unless there 
      *  is a name collision */
-    private String _displayName;
+    private String displayName;
     
     /** i am not quite sure what _isPhantom means, it may be that it is an
      *  entry that is not in the model list...pjs */
-    private boolean _isPhantom;
+    private boolean thisIsAPhantom;
 
-    public UMLComboBoxEntry(Object/*MModelElement*/ element, Profile profile, boolean isPhantom) {
-        _element = element;
-        if (element != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
-            _shortName = profile.formatElement(element, ns);
+    /**
+     * The constructor.
+     * 
+     * @param modelElement the model element
+     * @param theProfile the profile
+     * @param isPhantom 
+     */
+    public UMLComboBoxEntry(Object/*MModelElement*/ modelElement, 
+            Profile theProfile, boolean isPhantom) {
+        element = modelElement;
+        if (modelElement != null) {
+            Object/*MNamespace*/ ns = ModelFacade.getNamespace(modelElement);
+            shortName = theProfile.formatElement(modelElement, ns);
         }
         else {
-            _shortName = "";
+            shortName = "";
         }
 
 
         //
         //   format the element in its own namespace
         //       should result in an name without packages
-        _profile = profile;
-        _longName = null;
-        _displayName = _shortName;
-        _isPhantom = isPhantom;
+        profile = theProfile;
+        longName = null;
+        displayName = shortName;
+        thisIsAPhantom = isPhantom;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
-        return _displayName;
+        return displayName;
     }
 
     public void updateName() {
-        if (_element != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(_element);
-            _shortName = _profile.formatElement(_element, ns);
+        if (element != null) {
+            Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
+            shortName = profile.formatElement(element, ns);
         }
     }
 
     public void checkCollision(String before, String after) {
-        boolean collision = (before != null && before.equals(_shortName)) ||
-                (after != null && after.equals(_shortName));
+        boolean collision = (before != null && before.equals(shortName)) 
+            || (after != null && after.equals(shortName));
         if (collision) {
-            if (_longName == null) {
-                _longName = getLongName();
+            if (longName == null) {
+                longName = getLongName();
             }
-            _displayName = _longName;
+            displayName = longName;
         }
     }
 
     public String getShortName() {
-        return _shortName;
+        return shortName;
     }
 
     public String getLongName() {
-        if (_longName == null) {
-            if (_element != null) {
-                _longName = _profile.formatElement(_element, null);
+        if (longName == null) {
+            if (element != null) {
+                longName = profile.formatElement(element, null);
             }
             else {
-                _longName = "void";
+                longName = "void";
             }
         }
-        return _longName;
+        return longName;
     }
 
     // Refactoring: static to denote that it doesn't use any class members.
@@ -107,7 +118,8 @@ public class UMLComboBoxEntry implements Comparable {
     // Idea to move this to MMUtil together with the same function from
     // org/argouml/uml/cognitive/critics/WizOperName.java
     // org/argouml/uml/generator/ParserDisplay.java
-    private static Object findNamespace(Object/*MNamespace*/ phantomNS, Object/*MModel*/ targetModel) {
+    private static Object findNamespace(Object/*MNamespace*/ phantomNS, 
+            Object/*MModel*/ targetModel) {
         Object/*MNamespace*/ ns = null;
         Object/*MNamespace*/ targetParentNS = null;
         Object/*MNamespace*/ parentNS = ModelFacade.getNamespace(phantomNS);
@@ -119,7 +131,8 @@ public class UMLComboBoxEntry implements Comparable {
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements = ModelFacade.getOwnedElements(targetParentNS);
+            Collection ownedElements = 
+                ModelFacade.getOwnedElements(targetParentNS);
             String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
@@ -137,7 +150,8 @@ public class UMLComboBoxEntry implements Comparable {
                 }
             }
             if (ns == null) {
-                ns = UmlFactory.getFactory().getModelManagement().createPackage();
+                ns = UmlFactory.getFactory().getModelManagement()
+                    .createPackage();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);
             }
@@ -150,35 +164,40 @@ public class UMLComboBoxEntry implements Comparable {
         //  if phantom then
         //    we need to possibly recreate the package structure
         //       in the target model
-        if (_isPhantom && targetModel != null) {
-            Object/*MNamespace*/ targetNS = findNamespace(ModelFacade.getNamespace(_element), targetModel);
+        if (thisIsAPhantom && targetModel != null) {
+            Object/*MNamespace*/ targetNS = 
+                findNamespace(ModelFacade.getNamespace(element), targetModel);
             Object/*MModelElement*/ clone = null;
             try {
-                clone = _element.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});
-                ModelFacade.setName(clone, ModelFacade.getName(_element));
+                clone = element.getClass().getConstructor(
+                        new Class[] {}).newInstance(new Object[] {});
+                ModelFacade.setName(clone, ModelFacade.getName(element));
                 Object stereo = null;
-                if (ModelFacade.getStereotypes(_element).size() > 0) {
-                    stereo = ModelFacade.getStereotypes(_element).iterator().next();
+                if (ModelFacade.getStereotypes(element).size() > 0) {
+                    stereo = 
+                        ModelFacade.getStereotypes(element).iterator().next();
                 }
                 ModelFacade.setStereotype(clone, stereo);
                 if (ModelFacade.isAStereotype(clone)) {
-                    ModelFacade.setBaseClass(clone, ModelFacade.getBaseClass(_element));
+                    ModelFacade.setBaseClass(clone, 
+                            ModelFacade.getBaseClass(element));
                 }
                 ModelFacade.addOwnedElement(targetNS, clone);
-                _element = clone;
+                element = clone;
             }
             catch (Exception ex) {
                 ex.printStackTrace();
             }
-            _isPhantom = false;
+            thisIsAPhantom = false;
         }
-        return _element;
+        return element;
     }
 
 
-    public void setElement(Object/*MModelElement*/ element, boolean isPhantom) {
-        _element = element;
-        _isPhantom = isPhantom;
+    public void setElement(Object/*MModelElement*/ modelElement, 
+            boolean isPhantom) {
+        element = modelElement;
+        thisIsAPhantom = isPhantom;
     }
 
     public int compareTo(final java.lang.Object other) {
@@ -190,7 +209,7 @@ public class UMLComboBoxEntry implements Comparable {
                 //
                 //  if this is a "void" entry it goes first
                 //
-                if (_element == null) {
+                if (element == null) {
                     compare = -1;
                 }
                 else {
@@ -204,12 +223,14 @@ public class UMLComboBoxEntry implements Comparable {
                         //
                         //   compare short names
                         //
-                        compare = getShortName().compareTo(otherEntry.getShortName());
+                        compare = getShortName()
+                            .compareTo(otherEntry.getShortName());
                         //
                         //   compare long names
                         //
                         if (compare == 0) {
-                            compare = getLongName().compareTo(otherEntry.getLongName());
+                            compare = getLongName()
+                                .compareTo(otherEntry.getLongName());
                         }
                     }
                 }
@@ -218,16 +239,16 @@ public class UMLComboBoxEntry implements Comparable {
         return compare;
     }
 
-    public void nameChanged(Object/*MModelElement*/ element) {
-        if (element == _element && _element != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(_element);
-            _shortName = _profile.formatElement(_element, ns);
-            _displayName = _shortName;
-            _longName = null;
+    public void nameChanged(Object/*MModelElement*/ modelElement) {
+        if (modelElement == element && element != null) {
+            Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
+            shortName = profile.formatElement(element, ns);
+            displayName = shortName;
+            longName = null;
         }
     }
 
     public boolean isPhantom() {
-        return _isPhantom;
+        return thisIsAPhantom;
     }
 }

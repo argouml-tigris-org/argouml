@@ -51,9 +51,9 @@ public class TabSrc
     implements ArgoNotationEventListener, NotationContext, ItemListener {
     ////////////////////////////////////////////////////////////////
     // constructor
-    private final Logger cat = Logger.getLogger(TabSrc.class);
+    private static final Logger LOG = Logger.getLogger(TabSrc.class);
 
-    private NotationName _notationName = null;
+    private NotationName notationName = null;
 
     /** Create a tab that contains a toolbar.
      *  Then add a notation selector onto it.
@@ -64,13 +64,16 @@ public class TabSrc
         //
         super("tab.source", true);
         // super("Source", false);
-        _notationName = null;
+        notationName = null;
         getToolbar().add(NotationComboBox.getInstance());
         NotationComboBox.getInstance().addItemListener(this);
         getToolbar().addSeparator();
         ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
     }
 
+    /**
+     * @see java.lang.Object#finalize()
+     */
     public void finalize() {
         ArgoEventPump.removeListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
         NotationComboBox.getInstance().removeItemListener(this);
@@ -78,24 +81,32 @@ public class TabSrc
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @see org.argouml.ui.TabText#genText(java.lang.Object)
+     */
     protected String genText(Object modelObject) {
-        modelObject = (modelObject instanceof Fig) ? ((Fig) modelObject).getOwner() : modelObject;       
+        modelObject = (modelObject instanceof Fig) 
+            ? ((Fig) modelObject).getOwner() : modelObject;       
         if (!ModelFacade.isAElement(modelObject))
             return null;
         
-        cat.debug("TabSrc getting src for " + modelObject);
+        LOG.debug("TabSrc getting src for " + modelObject);
         //return Notation.generate(this, modelObject, true);
         NotationName nn =
             (NotationName) (NotationComboBox.getInstance().getSelectedItem());
         String fileName = getSourceFileFor(modelObject, nn);
         if (fileName != null) {
-            // get file content, scroll to the line where modelObject begins, and set background color to white
+            ;// get file content, scroll to the line where modelObject begins, 
+            // and set background color to white
         }
         return Notation.generate(nn, modelObject, true);
     }
 
+    /**
+     * @see org.argouml.ui.TabText#parseText(java.lang.String)
+     */
     protected void parseText(String s) {
-        cat.debug("TabSrc   setting src for " + getTarget());
+        LOG.debug("TabSrc   setting src for " + getTarget());
         Object modelObject = getTarget();
         if (getTarget() instanceof FigNode)
             modelObject = ((FigNode) getTarget()).getOwner();
@@ -103,48 +114,52 @@ public class TabSrc
             modelObject = ((FigEdge) getTarget()).getOwner();
         if (modelObject == null)
             return;
-        cat.debug("TabSrc   setting src for " + modelObject);
+        LOG.debug("TabSrc   setting src for " + modelObject);
         //Parser.ParseAndUpdate(modelObject, s);
     }
 
     /**
      * Sets the target of this tab. 
+     *
+     * @see org.argouml.ui.TabTarget#setTarget(java.lang.Object)
      */
     public void setTarget(Object t) {
 
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
         super.setTarget(t);
-        _notationName = null;
+        notationName = null;
         setShouldBeEnabled(false);
         if (ModelFacade.isAModelElement(t))
             setShouldBeEnabled(true);
         // If the target is a notation context, use its notation.
         if (t instanceof NotationContext) {
-            _notationName = ((NotationContext) t).getContextNotation();
-            cat.debug(
+            notationName = ((NotationContext) t).getContextNotation();
+            LOG.debug(
                 "Target is notation context with notation name: "
-                    + _notationName);
+                    + notationName);
         } else {
             // TODO:  Get it from the combo box
-            cat.debug(
+            LOG.debug(
                 "ComboBox.getSelectedItem() '"
                     + NotationComboBox.getInstance().getSelectedItem()
                     + "'");
-            _notationName =
+            notationName =
                 (NotationName) (NotationComboBox
                     .getInstance()
                     .getSelectedItem());
             //_notationName = Notation.getDefaultNotation();
         }
-        cat.debug(
-            "Going to set target(" + t + "), notation name:" + _notationName);
+        LOG.debug(
+            "Going to set target(" + t + "), notation name:" + notationName);
         super.setTarget(t);
     }
 
     /**
      * Determines if the current tab should be enabled with the given target. 
-     * @return true if the given target is either a modelelement or is a fig with
-     * as owner a modelelement.
+     * Returns true if the given target is either 
+     * a modelelement or is a fig with as owner a modelelement.
+     *
+     * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
@@ -159,44 +174,72 @@ public class TabSrc
 
     /**
      * Invoked when any aspect of the notation has been changed.
+     *
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationChanged(org.argouml.application.events.ArgoNotationEvent)
      */
     public void notationChanged(ArgoNotationEvent e) {
         refresh();
     }
 
-    /** Ignored. */
+    /** 
+     * Ignored.
+     * 
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationAdded(ArgoNotationEvent e) {
     }
 
-    /** Ignored. */
+    /** 
+     * Ignored.
+     * 
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationRemoved(ArgoNotationEvent e) {
     }
 
-    /** Ignored. */
+    /** 
+     * Ignored.
+     * 
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderAdded(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderAdded(ArgoNotationEvent e) {
     }
 
-    /** Ignored. */
+    /** 
+     * Ignored.
+     * 
+     * @see org.argouml.application.events.ArgoNotationEventListener#notationProviderRemoved(org.argouml.application.events.ArgoNotationEvent)
+     */
     public void notationProviderRemoved(ArgoNotationEvent e) {
     }
 
+    /**
+     * @see java.awt.event.ItemListener#itemStateChanged(java.awt.event.ItemEvent)
+     */
     public void itemStateChanged(ItemEvent event) {
         if (event.getStateChange() == ItemEvent.SELECTED) {
             refresh();
         }
     }
 
+    /**
+     * @see org.argouml.ui.TabTarget#refresh()
+     */
     public void refresh() {
         setTarget(getTarget());
     }
 
+    /**
+     * @see org.argouml.application.api.NotationContext#getContextNotation()
+     */
     public NotationName getContextNotation() {
-        return _notationName;
+        return notationName;
     }
 
     private String getSourceFileFor(Object modelObject, NotationName nn) {
         //Project p = ProjectManager.getManager().getCurrentProject();
-        //_outputDirectoryComboBox.getModel().setSelectedItem(p.getGenerationPrefs().getOutputDir());
+        //_outputDirectoryComboBox.getModel().setSelectedItem(p
+        //                     .getGenerationPrefs().getOutputDir());
         return null;
     }
 

@@ -54,8 +54,8 @@ public class UMLClassifierRoleAvailableContentsListModel
      */
     protected void buildModelList() {
         setAllElements(
-		       CollaborationsHelper.getHelper().allAvailableContents(
-									     /*(MClassifierRole)*/ getTarget()));
+            CollaborationsHelper.getHelper().allAvailableContents(
+	       /*(MClassifierRole)*/ getTarget()));
     }
 
     /**
@@ -73,9 +73,9 @@ public class UMLClassifierRoleAvailableContentsListModel
 							      clazz,
 							      "ownedElement");
         } else if (
-		   e.getName().equals("ownedElement")
-		   && ModelFacade.getBases(getTarget()).contains(
-									 e.getSource())) {
+                e.getName().equals("ownedElement")
+                && ModelFacade.getBases(getTarget()).contains(
+                        e.getSource())) {
             addElement(getChangedElement(e));
         }
     }
@@ -93,14 +93,14 @@ public class UMLClassifierRoleAvailableContentsListModel
                 while (it.hasNext()) {
                     Object base = /*(MBase)*/ it.next();
                     UmlModelEventPump.getPump().removeModelEventListener(
-									 this,
-									 base,
-									 "ownedElement");
+                            this,
+                            base,
+                        "ownedElement");
                 }
                 UmlModelEventPump.getPump().removeModelEventListener(
-								     this,
-								     /*(MBase)*/ getTarget(),
-								     "base");
+                        this,
+                        /*(MBase)*/ getTarget(),
+                    "base");
             }
             _target = target;
             if (_target != null) {
@@ -109,15 +109,15 @@ public class UMLClassifierRoleAvailableContentsListModel
                 while (it.hasNext()) {
                     Object base = /*(MBase)*/ it.next();
                     UmlModelEventPump.getPump().addModelEventListener(
-								      this,
-								      base,
-								      "ownedElement");
+                            this,
+                            base,
+                        "ownedElement");
                 }
                 // make sure we know it when a classifier is added as a base
                 UmlModelEventPump.getPump().addModelEventListener(
-								  this,
-								  /*(MBase)*/ _target,
-								  "base");
+                        this,
+                        /*(MBase)*/ _target,
+                    "base");
             }
             if (_target != null) {
                 removeAllElements();
@@ -139,20 +139,19 @@ public class UMLClassifierRoleAvailableContentsListModel
     }
 
     /**
-     * @see
-     * ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             Object clazz = /*(MClassifier)*/ getChangedElement(e);
             UmlModelEventPump.getPump().removeModelEventListener(
-								 this,
-								 clazz,
-								 "ownedElement");
+                    this,
+                    clazz,
+                "ownedElement");
         } else if (
 		   e.getName().equals("ownedElement")
 		   && ModelFacade.getBases(getTarget()).contains(
-									 e.getSource())) {
+		           e.getSource())) {
             removeElement(getChangedElement(e));
         }
     }

@@ -48,8 +48,9 @@ import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
 /**
- * A property panel for Guards. Rewrote this class to comply to Bob Tarling's layout
- * mechanism and to include all valid properties as defined in the UML 1.3 spec.
+ * A property panel for Guards. Rewrote this class to comply to 
+ * Bob Tarling's layout mechanism and to include all valid 
+ * properties as defined in the UML 1.3 spec.
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  *
@@ -58,28 +59,46 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelGuard extends PropPanelModelElement {
 
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelGuard() {
         super("Guard", ConfigLoader.getTabPropsOrientation());
 
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        // addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        // addField(Translator.localize("UMLMenu", "label.stereotype"), 
+        // new UMLComboBoxNavigator(this, Translator.localize(
+        // "UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceScroll());
 
-        JList transitionList = new UMLLinkedList(new UMLGuardTransitionListModel());
-        addField(Translator.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
+        JList transitionList = new UMLLinkedList(
+                new UMLGuardTransitionListModel());
+        addField(Translator.localize("UMLMenu", "label.transition"), 
+                new JScrollPane(transitionList));
 
         addSeperator();
 
-        UMLExpressionModel expressionModel = new UMLExpressionModel(this, (Class)ModelFacade.GUARD, "expression",
-								    (Class)ModelFacade.BOOLEAN_EXPRESSION, "getExpression", "setExpression");
-        //UMLExpressionModel2 expressionModel = new UMLConditionExpressionModel(this, "expression")
-        //addField(Translator.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true), JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
-        //addField(Translator.localize("UMLMenu", "label.language"), new UMLExpressionLanguageField(expressionModel, true));
+        UMLExpressionModel expressionModel = new UMLExpressionModel(this, 
+                (Class) ModelFacade.GUARD, "expression",
+		(Class) ModelFacade.BOOLEAN_EXPRESSION, "getExpression", 
+                "setExpression");
+        //UMLExpressionModel2 expressionModel = 
+        //    new UMLConditionExpressionModel(this, "expression")
+        //addField(Translator.localize("UMLMenu", "label.expression"), 
+        //    new JScrollPane(new UMLExpressionBodyField(expressionModel, true),
+        //    JScrollPane.VERTICAL_SCROLLBAR_NEVER, 
+        // JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        
+        //addField(Translator.localize("UMLMenu", "label.language"), 
+        // new UMLExpressionLanguageField(expressionModel, true));
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, navUpIcon, Translator.localize(
+            "UMLMenu", "button.go-up"), "navigateUp", null);
 	buttonPanel
         .add(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }

@@ -70,16 +70,16 @@ import org.tigris.gef.util.VectorSet;
  * @author Jason Robbins
  */
 public class ToDoList extends Observable implements Runnable, Serializable {
-    private static Logger LOG = Logger.getLogger(ToDoList.class);
+    private static final Logger LOG = Logger.getLogger(ToDoList.class);
     
-    protected static Object _RecentOffender;
-    protected static Vector _RecentOffenderItems;
+    private static Object recentOffender;
+    private static Vector recentOffenderItems;
     
     ////////////////////////////////////////////////////////////////
     // instance variables
     
     /** Pending ToDoItems for the designer to consider. */
-    protected Vector _items;
+    private Vector items;
     
     /** These are computed when needed. */
     private VectorSet allOffenders;
@@ -92,23 +92,23 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      *
      * TODO: generalize into a design rationale logging facility.
      */
-    protected Vector _resolvedItems;
+    private Vector resolvedItems;
     
     /**
      * A Thread that keeps checking if the items on the list are
      * still valid. 
      */
-    protected Thread _validityChecker;
+    private Thread validityChecker;
     
     /**
      * The designer, used in determining if a ToDoItem is still valid.
      */
-    protected Designer _designer;
+    private Designer designer;
     
-    protected EventListenerList _listenerList;
+    private EventListenerList listenerList;
     
-    public static int _longestToDoList;
-    public static int _numNotValid;
+    private static int longestToDoList;
+    private static int numNotValid;
     
     /**
      * The ToDoList instance that is also the validity checking thread.
@@ -131,16 +131,18 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      */
     public ToDoList() {
     
-	_items = new Vector(100);
-	_resolvedItems = new Vector(100);
-	_listenerList = new EventListenerList();
-	_longestToDoList = 0;
-	_numNotValid = 0;
-	_RecentOffenderItems = new Vector();
+	items = new Vector(100);
+	resolvedItems = new Vector(100);
+	listenerList = new EventListenerList();
+	longestToDoList = 0;
+	numNotValid = 0;
+	recentOffenderItems = new Vector();
     }
     
     /**
      * Returns the validity checking thread instance.
+     *
+     * @return the validity checking thread instance
      */
     public static ToDoList getInstance() {
         
@@ -152,13 +154,15 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     
     /**
      * Start a Thread to delete old items from the ToDoList.
+     *
+     * @param d the designer
      */
     public void spawnValidityChecker(Designer d) {
-        _designer = d;
-        _validityChecker = new Thread(this, "ValidityCheckingThread");
-        _validityChecker.setDaemon(true);
-        _validityChecker.setPriority(Thread.MIN_PRIORITY);
-        _validityChecker.start();
+        designer = d;
+        validityChecker = new Thread(this, "ValidityCheckingThread");
+        validityChecker.setDaemon(true);
+        validityChecker.setPriority(Thread.MIN_PRIORITY);
+        validityChecker.start();
     }
     
     /**
@@ -188,6 +192,12 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         }
     }
     
+    /**
+     * Check each ToDoItem on the list to see if it is still valid.  If
+     * not, then remove that item.  This is called automatically by the
+     * ValidityCheckingThread, and it can be called by the user
+     * pressing a button via forceValidityCheck().
+     */
     public void forceValidityCheck() {
         Vector removes = new Vector();
         forceValidityCheck(removes);
@@ -201,14 +211,16 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      *
      * <b>Warning: Fragile code!<b> No method that this method calls can
      * synchronized the Designer, otherwise there will be deadlock.
+     *
+     * @param removes the items removed
      */
     protected synchronized void forceValidityCheck(Vector removes) {
         //Enumeration cur = _items.elements();
-        int size = _items.size();
+        int size = items.size();
         for (int i = 0; i < size; ++i) {
-            ToDoItem item = (ToDoItem) _items.elementAt(i);
+            ToDoItem item = (ToDoItem) items.elementAt(i);
             boolean valid;
-            try { valid = item.stillValid(_designer); }
+            try { valid = item.stillValid(designer); }
             catch (Exception ex) {
                 valid = false;
                 StringBuffer buf = 
@@ -218,7 +230,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
                 LOG.error(buf.toString(), ex);
             }
             if (!valid) {
-                _numNotValid++;
+                numNotValid++;
                 removes.addElement(item);
             }
         }
@@ -237,21 +249,31 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     }
     
     
+    /**
+     * Pause.
+     */
     public void pause() {
         isPaused = true;
     }
     
+    /**
+     * Resume.
+     */
     public synchronized void resume() {
         notifyAll();
     }
     
+    /**
+     * @return true is paused
+     */
     public boolean isPaused() {
         return isPaused;
     }
     
     /**
      * sets the pause state.
-     * if set to false, calls resume() also to start working.
+     * 
+     * @param paused if set to false, calls resume() also to start working 
      */
     public void setPaused(boolean paused) {
         isPaused = paused;
@@ -263,6 +285,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     ////////////////////////////////////////////////////////////////
     // Notifications and Updates
     
+    /**
+     * @param action the action
+     * @param arg the argument
+     */
     public void notifyObservers(String action, Object arg) {
         setChanged();
         Vector v = new Vector(2);
@@ -290,8 +316,15 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     ////////////////////////////////////////////////////////////////
     // accessors
     
-    public Vector getToDoItems() { return _items; }
-    public Vector getResolvedItems() { return _resolvedItems; }
+    /**
+     * @return the todo items
+     */
+    public Vector getToDoItems() { return items; }
+    
+    /**
+     * @return the resolved items
+     */
+    public Vector getResolvedItems() { return resolvedItems; }
     
     /**
      * @return the set of offenders
@@ -301,10 +334,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         // this method is running.
         VectorSet all = allOffenders;
         if (all == null) {
-            int size = _items.size();
+            int size = items.size();
             all = new VectorSet(size * 2);
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) _items.elementAt(i);
+                ToDoItem item = (ToDoItem) items.elementAt(i);
                 all.addAllElements(item.getOffenders());
             }
             allOffenders = all;
@@ -326,10 +359,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         // this method is running.
         VectorSet all = allPosters;
         if (all == null) {
-            int size = _items.size();
+            int size = items.size();
             all = new VectorSet();
             for (int i = 0; i < size; i++) {
-                ToDoItem item = (ToDoItem) _items.elementAt(i);
+                ToDoItem item = (ToDoItem) items.elementAt(i);
                 all.addElement(item.getPoster());
             }
             allPosters = all;
@@ -343,14 +376,20 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 	}
     }
     
+    /**
+     * @return the decisions
+     */
     public static Vector getDecisions() { return new Vector(); }
 
+    /**
+     * @return the goals
+     */
     public static Vector getGoals() { return new Vector(); }
     
     /** needs documenting, why synchronised? */
     private synchronized void addE(ToDoItem item) {
         /* remove any identical items already on the list */
-        if (_items.contains(item)) {
+        if (items.contains(item)) {
             return;
 	}
         
@@ -359,7 +398,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             try {
                 rc = new ResolvedCritic((Critic) item.getPoster(),
                                         item.getOffenders(), false);
-                Enumeration elems = _resolvedItems.elements();
+                Enumeration elems = resolvedItems.elements();
                 //cat.debug("Checking for inhibitors " + rc);
                 while (elems.hasMoreElements()) {
                     if (elems.nextElement().equals(rc)) {
@@ -371,8 +410,8 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             }
         }
         
-        _items.addElement(item);
-        _longestToDoList = Math.max(_longestToDoList, _items.size());
+        items.addElement(item);
+        longestToDoList = Math.max(longestToDoList, items.size());
         addOffenders(item.getOffenders());
         addPosters(item.getPoster());
 //        if (item.getPoster() instanceof Designer)
@@ -383,10 +422,16 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         fireToDoItemAdded(item);
     }
     
+    /**
+     * @param item the todo item to be added
+     */
     public synchronized void addElement(ToDoItem item) {
         addE(item);
     }
     
+    /**
+     * @param list the todo items to be added
+     */
     public synchronized void addAll(ToDoList list) {
         Enumeration cur = list.elements();
         while (cur.hasMoreElements()) {
@@ -396,6 +441,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         fireToDoListChanged();
     }
     
+    /**
+     * @param list the todo items to be removed
+     */
     public void removeAll(ToDoList list) {
         Enumeration cur = list.elements();
         while (cur.hasMoreElements()) {
@@ -407,11 +455,21 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         fireToDoItemsRemoved(list.getToDoItems());
     }
     
+    /**
+     * @param item the todo item to be removed
+     * @return <code>true</code> if the argument was a component of this
+     *          vector; <code>false</code> otherwise
+     */
     private synchronized boolean removeE(ToDoItem item) {
-        boolean res = _items.removeElement(item);
+        boolean res = items.removeElement(item);
         return res;
     }
     
+    /**
+     * @param item the todo item to be removed
+     * @return <code>true</code> if the argument was a component of this
+     *          vector; <code>false</code> otherwise
+     */
     public boolean removeElement(ToDoItem item) {
         boolean res = removeE(item);
         recomputeAllOffenders();
@@ -421,12 +479,24 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         return res;
     }
     
+    /**
+     * @param item the todo item to be resolved
+     * @return <code>true</code> if the argument was a component of this
+     *          vector; <code>false</code> otherwise
+     */
     public boolean resolve(ToDoItem item) {
         boolean res = removeE(item);
         fireToDoItemRemoved(item);
         return res;
     }
     
+    /**
+     * @param item the todo item
+     * @param reason the reason
+     * @return <code>true</code> if the argument was a component of this
+     *          vector; <code>false</code> otherwise
+     * @throws UnresolvableException unable to resolve
+     */
     public boolean explicitlyResolve(ToDoItem item, String reason) 
 	throws UnresolvableException {
           
@@ -445,14 +515,17 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         ResolvedCritic rc = new ResolvedCritic((Critic) item.getPoster(),
 					       item.getOffenders());
         boolean res = resolve(item);
-        _resolvedItems.addElement(rc);
+        resolvedItems.addElement(rc);
 //        History.TheHistory.addItemResolution(item, reason);
         return res;
     }
     
+    /**
+     * Remove all todo items.
+     */
     public synchronized void removeAllElements() {
         LOG.debug("removing all todo items");
-        Vector oldItems = (Vector) _items.clone();
+        Vector oldItems = (Vector) items.clone();
         int size = oldItems.size();
         for (int i = 0; i < size; i++) {
             removeE((ToDoItem) oldItems.elementAt(i));
@@ -464,37 +537,57 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         fireToDoItemsRemoved(oldItems);
     }
     
+    /**
+     * @param off the offender
+     * @return the todo tems for this offender
+     */
     public Vector elementsForOffender(Object off) {
-        if (off == _RecentOffender) {
-	    return _RecentOffenderItems;
+        if (off == recentOffender) {
+	    return recentOffenderItems;
 	}
-        _RecentOffender = off;
-        _RecentOffenderItems.removeAllElements();
-        synchronized (_items) {
-            for (int i = 0; i < _items.size(); i++) {
-                ToDoItem item = (ToDoItem) _items.elementAt(i);
+        recentOffender = off;
+        recentOffenderItems.removeAllElements();
+        synchronized (items) {
+            for (int i = 0; i < items.size(); i++) {
+                ToDoItem item = (ToDoItem) items.elementAt(i);
                 if (item.getOffenders().contains(off)) {
-                    _RecentOffenderItems.addElement(item);
+                    recentOffenderItems.addElement(item);
 		}
             }
         }
-        return _RecentOffenderItems;
+        return recentOffenderItems;
     }
     
-    public int size() { return _items.size(); }
+    /**
+     * @return the number of todo items
+     */
+    public int size() { return items.size(); }
     
+    /**
+     * @return the todo items
+     */
     public Enumeration elements() {
-        return _items.elements();
+        return items.elements();
     }
     
+    /**
+     * @param index an index into the todo items list
+     * @return the item at the index
+     */
     public ToDoItem elementAt(int index) {
-        return (ToDoItem) _items.elementAt(index);
+        return (ToDoItem) items.elementAt(index);
     }
     
+    /**
+     * Re-compute all offenders.
+     */
     protected void recomputeAllOffenders() {
         allOffenders = null;
     }
     
+    /**
+     * Reset all posters.
+     */
     protected void recomputeAllPosters() {
         allPosters = null;
     }
@@ -503,12 +596,18 @@ public class ToDoList extends Observable implements Runnable, Serializable {
     ////////////////////////////////////////////////////////////////
     // event related stuff
     
+    /**
+     * @param l the listener to be added
+     */
     public void addToDoListListener(ToDoListListener l) {
-        _listenerList.add(ToDoListListener.class, l);
+        listenerList.add(ToDoListListener.class, l);
     }
     
+    /**
+     * @param l the listener to be removed
+     */
     public void removeToDoListListener(ToDoListListener l) {
-        _listenerList.remove(ToDoListListener.class, l);
+        listenerList.remove(ToDoListListener.class, l);
     }
     
     /**
@@ -519,9 +618,9 @@ public class ToDoList extends Observable implements Runnable, Serializable {
      * @see EventListenerList
      */
     protected void fireToDoListChanged() {
-        _RecentOffender = null;
+        recentOffender = null;
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -536,8 +635,11 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         }
     }
     
+    /**
+     * @param item the todo item
+     */
     protected void fireToDoItemChanged(ToDoItem item) {
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -545,25 +647,31 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-                    Vector items = new Vector();
-                    items.addElement(item);
-                    e = new ToDoListEvent(items);
+                    Vector its = new Vector();
+                    its.addElement(item);
+                    e = new ToDoListEvent(its);
                 }
                 ((ToDoListListener) listeners[i + 1]).toDoItemsChanged(e);
             }
         }
     }
     
+    /**
+     * @param item the todo item
+     */
     protected void fireToDoItemAdded(ToDoItem item) {
         Vector v = new Vector();
         v.addElement(item);
         fireToDoItemsAdded(v);
     }
 
-    protected void fireToDoItemsAdded(Vector items) {
-        _RecentOffender = null;
+    /**
+     * @param theItems the todo items
+     */
+    protected void fireToDoItemsAdded(Vector theItems) {
+        recentOffender = null;
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -571,23 +679,29 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-		    e = new ToDoListEvent(items);
+		    e = new ToDoListEvent(theItems);
 		}
                 ((ToDoListListener) listeners[i + 1]).toDoItemsAdded(e);
             }
         }
     }
     
+    /**
+     * @param item the todo item
+     */
     protected void fireToDoItemRemoved(ToDoItem item) {
         Vector v = new Vector();
         v.addElement(item);
         fireToDoItemsRemoved(v);
     }
 
-    protected void fireToDoItemsRemoved(Vector items) {
-        _RecentOffender = null;
+    /**
+     * @param theItems the todo items
+     */
+    protected void fireToDoItemsRemoved(Vector theItems) {
+        recentOffender = null;
         // Guaranteed to return a non-null array
-        Object[] listeners = _listenerList.getListenerList();
+        Object[] listeners = listenerList.getListenerList();
         ToDoListEvent e = null;
         // Process the listeners last to first, notifying
         // those that are interested in this event
@@ -595,7 +709,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
             if (listeners[i] == ToDoListListener.class) {
                 // Lazily create the event:
                 if (e == null) {
-		    e = new ToDoListEvent(items);
+		    e = new ToDoListEvent(theItems);
 		}
                 ((ToDoListListener) listeners[i + 1]).toDoItemsRemoved(e);
             }

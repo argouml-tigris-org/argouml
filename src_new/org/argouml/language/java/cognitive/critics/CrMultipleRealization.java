@@ -42,6 +42,10 @@ import org.argouml.model.uml.UmlHelper;
  */
 public class CrMultipleRealization extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrMultipleRealization() {
 	setHeadline("Interface cannot realize another interface");
 	addSupportedDecision(CrUML.decINHERITANCE);
@@ -49,8 +53,13 @@ public class CrMultipleRealization extends CrUML {
 	addTrigger("generalization");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(org.argouml.model.ModelFacade.isAInterface(dm))) return NO_PROBLEM;
+	if (!(org.argouml.model.ModelFacade.isAInterface(dm))) 
+	    return NO_PROBLEM;
 	Object inter = /*(MInterface)*/ dm;
    
 	Collection realize =

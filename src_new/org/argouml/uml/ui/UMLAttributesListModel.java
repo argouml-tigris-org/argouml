@@ -43,39 +43,45 @@ import org.argouml.model.uml.UmlFactory;
  *   @see UMLModelElementListModel
  *   @see UMLList
  *
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
- *             replaced by {@link org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
- *             that used reflection a lot.
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003), replaced by 
+ * {@link org.argouml.uml.ui.foundation.core.UMLClassAttributeListModel},
+ * this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ * that used reflection a lot.
  */
 public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
 
-    final private static String _nullLabel = "null";
-    private java.util.List _attributes;
+    private static final String NULLLABEL = "null";
+    private java.util.List attributes;
 
     /**
      *   Creates a new attribute list model
-     *   @param container the container (typically a PropPanelClass or PropPanelInterface)
-     *                    that provides access to the target classifier.
-     *   @param property  a string that specifies the name of an event that should force a refresh
-     *                       of the list model.  A null value will cause all events to trigger a refresh.
-     *   @param showNone  if true, an element labelled "none" will be shown where there are
-     *                        no actual entries in the list.
+     *   @param container the container (typically a PropPanelClass or 
+     *                    PropPanelInterface) that provides access to 
+     *                    the target classifier.
+     *   @param property  a string that specifies the name of an event that 
+     *                    should force a refresh of the list model.  
+     *                    A null value will cause all events 
+     *                    to trigger a refresh.
+     *   @param showNone  if true, an element labelled "none" will be shown 
+     *                    where there are no actual entries in the list.
      */
-    public UMLAttributesListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+    public UMLAttributesListModel(UMLUserInterfaceContainer container, 
+            String property, boolean showNone) {
         super(container, property, showNone);
     }
     /**
-     *   Called to indicate that the cache of attributes may have become invalid.
+     * Called to indicate that the cache of 
+     * attributes may have become invalid.
      */
     protected void resetCache() {
-        _attributes = null;
+        attributes = null;
     }
     /**
-     *   Called to determine if a particular feauture of the underlying collection
-     *   should be in the cached list of model elements.
-     *   @param obj object to be considered.
-     *   @return true if object is appropriate for this list.
+     * Called to determine if a particular feauture 
+     * of the underlying collection
+     * should be in the cached list of model elements.
+     * @param obj object to be considered.
+     * @return true if object is appropriate for this list.
      */
     public boolean isProperClass(Object obj) {
         return org.argouml.model.ModelFacade.isAAttribute(obj);
@@ -95,21 +101,23 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         return raw;
     }
     /**
-     *    returns the cache of model elements, rebuilding the cache if invalidated.
-     *    @return cache of model elements
+     * Returns the cache of model elements, 
+     * rebuilding the cache if invalidated.
+     * @return cache of model elements
      */
     protected java.util.List getCache() {
-        if (_attributes == null) {
-            _attributes = buildCache();
+        if (attributes == null) {
+            attributes = buildCache();
         }
-        return _attributes;
+        return attributes;
     }
 
     /**
      *   Adds a new attribute, updating both the cache and underlying collection
      *   and navigating to new attribute.  Called by "Add" popup menu item.
      *   @param  index position of new attribute (zero-based) but only refers
-     *           to the index position in the particular list box, not the collection.
+     *           to the index position in the particular list box, 
+     *           not the collection.
      *   @author Phil Sager July 18, 2001
      *   Modified: Dec  06, 2001 - thn
   */
@@ -118,9 +126,11 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
-            Object/*MAttribute*/ newAttr = UmlFactory.getFactory().getCore().buildAttribute(classifier);
-            ModelFacade.setFeatures(classifier, addElement(oldFeatures, index, newAttr,
-                                   _attributes.isEmpty() ? null : _attributes.get(index)));
+            Object/*MAttribute*/ newAttr = 
+                UmlFactory.getFactory().getCore().buildAttribute(classifier);
+            ModelFacade.setFeatures(classifier, addElement(oldFeatures, 
+                index, newAttr, attributes.isEmpty() 
+                ? null : attributes.get(index)));
             fireContentsChanged(this, index - 1, index);
             navigateTo(newAttr);
         }
@@ -133,11 +143,12 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public void delete(int index) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target) && _attributes != null) {
-            Object attribute = _attributes.get(index);
+        if (org.argouml.model.ModelFacade.isAClassifier(target) 
+                && attributes != null) {
+            Object attribute = attributes.get(index);
             if (attribute != null) {
-		if (_attributes != null) {
-                    _attributes.remove(index);
+		if (attributes != null) {
+                    attributes.remove(index);
                 }
 
                 ModelFacade.removeFeature(target, attribute);
@@ -157,7 +168,8 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
-            ModelFacade.setFeatures(classifier, swap(oldFeatures, index - 1, _attributes.get(index - 1), _attributes.get(index)));
+            ModelFacade.setFeatures(classifier, swap(oldFeatures, index - 1, 
+                    attributes.get(index - 1), attributes.get(index)));
             fireContentsChanged(this, index - 1, index);
         }
     }
@@ -171,7 +183,8 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             Object/*MClassifier*/ classifier = target;
             Collection oldFeatures = ModelFacade.getFeatures(classifier);
-            ModelFacade.setFeatures(classifier, swap(oldFeatures, index, _attributes.get(index), _attributes.get(index + 1)));
+            ModelFacade.setFeatures(classifier, swap(oldFeatures, index, 
+                    attributes.get(index), attributes.get(index + 1)));
             fireContentsChanged(this, index, index + 1);
         }
     }
@@ -185,25 +198,30 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"), this, "open", index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"), this, "delete", index);
+        UMLListMenuItem open = new UMLListMenuItem(
+                container.localize("Open"), this, "open", index);
+        UMLListMenuItem delete = new UMLListMenuItem(
+                container.localize("Delete"), this, "delete", index);
         if (getModelElementSize() <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add = new UMLListMenuItem(container.localize("New"), this, "add", index);
+        UMLListMenuItem add = new UMLListMenuItem(
+                container.localize("New"), this, "add", index);
         if (_upper >= 0 && getModelElementSize() >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);
         popup.add(delete);
         /*
-        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize(
+            "Move Up"),this,"moveUp",index);
         if(index == 0) moveUp.setEnabled(false);
         popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize(
+            "Move Down"),this,"moveDown",index);
         if(index == getSize()-1) moveDown.setEnabled(false);
         popup.add(moveDown);
         */

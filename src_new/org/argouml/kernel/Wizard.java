@@ -69,8 +69,8 @@ public abstract class Wizard implements java.io.Serializable {
     protected int _step = 0;
 
     /** True when the wizard has done everything it can. */
-    protected boolean _finished = false;
-    protected boolean _started = false;
+    private boolean finished = false;
+    private boolean started = false;
 
     protected ToDoItem _item = null;
 
@@ -112,7 +112,7 @@ public abstract class Wizard implements java.io.Serializable {
 
     /** Get the exising panel at step s. Step 1 is the first wizard
      *  panel. 
-     *
+     * @param s the step
      * @return the panel for step s or null if none.
      */
     public JPanel getPanel(int s) {
@@ -131,17 +131,26 @@ public abstract class Wizard implements java.io.Serializable {
      */
     public boolean canGoNext() { return _step < getNumSteps(); }
 
+    /**
+     * The next step of the wizard. 
+     */
     public void next() {
 	doAction(_step);
 	_step++;
 	JPanel p = makePanel(_step);
 	if (p != null) _panels.addElement(p);
-	_started = true;
+	started = true;
 	if (_item != null) _item.changed();
     }
 
+    /**
+     * @return true if we can step back
+     */
     public boolean canGoBack() { return _step > 0; }
 
+    /**
+     * Step back.
+     */
     public void back() {
 	_step--;
 	if (_step < 0) _step = 0;
@@ -149,12 +158,26 @@ public abstract class Wizard implements java.io.Serializable {
 	if (_item != null) _item.changed();
     }
 
+    /**
+     * @return true if we can finish (i.e. the finish button is not downlighted)
+     */
     public boolean canFinish() { return true; }
-    public boolean isStarted() { return _started; }
-    public boolean isFinished() { return _finished; }
+    
+    /**
+     * @return true if the wizard is started
+     */
+    public boolean isStarted() { return started; }
+    
+    /**
+     * @return true if the wizard is finished
+     */
+    public boolean isFinished() { return finished; }
 
+    /**
+     * Finish the wizard.
+     */
     public void finish() {
-	_started = true;
+	started = true;
 	int numSteps = getNumSteps();
 	for (int i = _step; i <= numSteps; i++) {
 	    doAction(i);
@@ -162,7 +185,7 @@ public abstract class Wizard implements java.io.Serializable {
 	}
 	// TODO: do all following steps
 	// TODO: resolve item from ToDoList
-	_finished = true;
+	finished = true;
     }
 
     /** Create a new panel for the given step. For example, When the
@@ -186,9 +209,14 @@ public abstract class Wizard implements java.io.Serializable {
      *  the final step. Also, if the user pressed "Finish" doAction may
      *  be called for steps that never constructored or displayed their
      *  panels. 
+     *
+     * @param oldStep the given step
      */
     public abstract void doAction(int oldStep);
 
+    /**
+     * Do the action of this wizard.
+     */
     public void doAction() { doAction(_step); }
 
     /** Undo the action done after the given step. For example, when the
@@ -196,8 +224,13 @@ public abstract class Wizard implements java.io.Serializable {
      *  when the given step is 1, undo the first action.  Undo allows
      *  users to work part way through fixing a problem, see the partial
      *  result, and explore a different alternative. 
+     *
+     * @param oldStep the given step
      */
     public void undoAction(int oldStep) { }
 
+    /**
+     * Undo the action.
+     */
     public void undoAction() { undoAction(_step); }
 } /* end class Wizard */

@@ -146,6 +146,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
      *
      * @param name The name.
      * @return an initialized UML Abstraction instance.
+     * @param supplier the supplier of the abstraction
+     * @param client the client of the abstraction
      */
     public Object buildAbstraction(String name,
             Object supplier, 
@@ -153,14 +155,14 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (!(client instanceof MClassifier)
                 || !(supplier instanceof MClassifier)) {
             throw new IllegalArgumentException(
-                "The supplier and client of an abstration" +
-                "should be classifiers" );
+                "The supplier and client of an abstraction" 
+                + "should be classifiers" );
         }
-        MAbstraction abstraction = (MAbstraction)createAbstraction();
+        MAbstraction abstraction = (MAbstraction) createAbstraction();
         super.initialize(abstraction);
         ModelFacade.setName(abstraction, name);
-        abstraction.addClient((MClassifier)client);
-        abstraction.addSupplier((MClassifier)supplier);
+        abstraction.addClient((MClassifier) client);
+        abstraction.addSupplier((MClassifier) supplier);
         return abstraction;
     }
 
@@ -516,10 +518,10 @@ public class CoreFactory extends AbstractUmlModelFactory {
                 throw new IllegalArgumentException("one of "
         				       + "the classifiers to be "
         				       + "connected is null");
-        MClassifier from = (MClassifier)fromClassifier;
-        MClassifier to = (MClassifier)toClassifier;
-        MAggregationKind agg1 = (MAggregationKind)aggregationKind1;
-        MAggregationKind agg2 = (MAggregationKind)aggregationKind2;
+        MClassifier from = (MClassifier) fromClassifier;
+        MClassifier to = (MClassifier) toClassifier;
+        MAggregationKind agg1 = (MAggregationKind) aggregationKind1;
+        MAggregationKind agg2 = (MAggregationKind) aggregationKind2;
         
         MNamespace ns1 = from.getNamespace();
         MNamespace ns2 = to.getNamespace();
@@ -671,7 +673,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         				       + "was null or "
         				       + "was instanceof "
         				       + "MAssociationClass");
-        return buildAssociationClass((MClass)buildClass(), end1, end2);
+        return buildAssociationClass((MClass) buildClass(), end1, end2);
     }
 
     /**
@@ -895,8 +897,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
         MClassifier intType = (MClassifier) p.findType("int");
         if (p.getModel() != intType.getNamespace()
                 && !(ModelManagementHelper.getHelper()
-                 .getAllNamespaces(p.getModel())
-        	     .contains(intType.getNamespace()))) {
+                    .getAllNamespaces(p.getModel())
+        	        .contains(intType.getNamespace()))) {
             intType.setNamespace((MModel) p.getModel());
         }
         MAttribute attr = createAttribute();
@@ -924,7 +926,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @return attribute the newly build attribute
      */
     private MAttribute buildAttribute(String name) {
-        MAttribute attr = (MAttribute)buildAttribute();
+        MAttribute attr = (MAttribute) buildAttribute();
         if (attr != null)
             attr.setName(name);
         return attr;
@@ -943,7 +945,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
             return null;
         }
         MClassifier cls = (MClassifier) handle;
-        MAttribute attr = (MAttribute)buildAttribute();
+        MAttribute attr = (MAttribute) buildAttribute();
         cls.addFeature(attr);
         // we set the listeners to the figs here too
         // it would be better to do that in the figs themselves
@@ -1012,7 +1014,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a class with a given namespace.
      *
-     * @param owner
+     * @param owner the namespace
      * @return MClass
      * @see #buildClass()
      */
@@ -1026,7 +1028,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a class with a given name.
      *
-     * @param name
+     * @param name the given name
      * @return MClass
      * @see #buildClass()
      */
@@ -1039,8 +1041,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Builds a class with a given name and namespace.
      *
-     * @param name
-     * @param owner
+     * @param name the given name
+     * @param owner the namespace
      * @return MClass
      * @see #buildClass()
      */
@@ -1569,7 +1571,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * Builds a comment owned by the namespace of the active diagram or by the model if the active diagram
+     * Builds a comment owned by the namespace of the active diagram 
+     * or by the model if the active diagram
      * does not have a namespace.
      * @return The comment build
      */
@@ -1653,12 +1656,21 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	return con;
     }
 
+    /**
+     * @param elem the abstraction to be deleted
+     */
     public void deleteAbstraction(Object elem) {
     }
 
+    /**
+     * @param elem the association to be deleted
+     */
     public void deleteAssociation(MAssociation elem) {
     }
 
+    /**
+     * @param elem the a. to be deleted
+     */
     public void deleteAssociationClass(MAssociationClass elem) {
     }
 
@@ -1689,15 +1701,27 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
     }
 
+    /**
+     * @param elem the attribute to be deleted
+     */
     public void deleteAttribute(MAttribute elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteBehavioralFeature(MBehavioralFeature elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteBinding(MBinding elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteClass(MClass elem) {
     }
 
@@ -1728,33 +1752,63 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteComment(MComment elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteComponent(MComponent elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteConstraint(MConstraint elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteDataType(MDataType elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteDependency(MDependency elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteElement(MElement elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteElementResidence(MElementResidence elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteFeature(MFeature elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteFlow(MFlow elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteGeneralizableElement(MGeneralizableElement elem) {
 	Iterator it = elem.getGeneralizations().iterator();
 	while (it.hasNext()) {
@@ -1766,12 +1820,21 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteGeneralization(MGeneralization elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteInterface(MInterface elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteMethod(MMethod elem) {
     }
 
@@ -1831,30 +1894,57 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	}
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteNode(MNode elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteOperation(MOperation elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteParameter(MParameter elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deletePermission(MPermission elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deletePresentationElement(MPresentationElement elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteRelationship(MRelationship elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteStructuralFeature(MStructuralFeature elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteTemplateParameter(MTemplateParameter elem) {
     }
 
+    /**
+     * @param elem the element to be deleted
+     */
     public void deleteUsage(MUsage elem) {
     }
 
@@ -1912,6 +2002,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source the source class
+     * @param target the target class
      */
     public void doCopyClass(MClass source, MClass target) {
 	doCopyClassifier(source, target);
@@ -1922,6 +2015,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Used by the copy functions. Do not call this function directly.
      * TODO: actions? instances? collaborations etc?
+     *
+     * @param source the source classifier
+     * @param target the target classifier
      */
     public void doCopyClassifier(MClassifier source, MClassifier target) {
 	// TODO: how to merge multiple inheritance? Necessary?
@@ -1933,6 +2029,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source the source datatype
+     * @param target the target datatype
      */
     public void doCopyDataType(MDataType source, MDataType target) {
 	doCopyClassifier(source, target);
@@ -1941,6 +2040,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
     /**
      * Used by the copy functions. Do not call this function directly.
      * TODO: generalizations, specializations?
+     *
+     * @param source the source generalizable element
+     * @param target the target generalizable element
      */
     public void doCopyGeneralizableElement(MGeneralizableElement source,
 					   MGeneralizableElement target) {
@@ -1953,6 +2055,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source the source interface
+     * @param target the target interface
      */
     public void doCopyInterface(MInterface source, MInterface target) {
 	doCopyClassifier(source, target);
@@ -1964,6 +2069,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * TODO: constraining elements
      * TODO: flows, dependencies, comments, bindings, contexts ???
      * TODO: contents, residences ???
+     *
+     * @param source the source me
+     * @param target the target me
      */
     public void doCopyModelElement(MModelElement source, MModelElement target) {
 	// Set the name so that superclasses can find the newly
@@ -1990,6 +2098,9 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source the source namespace
+     * @param target the target namespace
      */
     public void doCopyNamespace(MNamespace source, MNamespace target) {
 	doCopyModelElement(source, target);

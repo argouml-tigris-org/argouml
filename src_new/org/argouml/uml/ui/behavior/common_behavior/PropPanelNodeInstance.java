@@ -61,8 +61,10 @@ public class PropPanelNodeInstance extends PropPanelInstance {
 
         addField(Translator.localize("label.name"), getNameTextField());
 
-        addField(Translator.localize("label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("label.namespace"), 
+                getNamespaceComboBox());
 
         addSeperator();
 
@@ -73,14 +75,18 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         addField("Stimuli received:", getStimuliReceiverScroll());
         
         JList resList = new UMLLinkedList(new UMLContainerResidentListModel());
-        addField(Translator.localize("UMLMenu", "label.residents"), new JScrollPane(resList));
+        addField(Translator.localize("UMLMenu", "label.residents"), 
+                new JScrollPane(resList));
         
         addSeperator();
-	AbstractActionAddModelElement _action = new ActionAddInstanceClassifier((Class)ModelFacade.NODE);
-	        JScrollPane _classifierScroll = new JScrollPane(new UMLMutableLinkedList(
+        AbstractActionAddModelElement a = 
+            new ActionAddInstanceClassifier((Class) ModelFacade.NODE);
+        JScrollPane classifierScroll = 
+                new JScrollPane(new UMLMutableLinkedList(
 	                new UMLInstanceClassifierListModel(), 
-	            _action, null, null, true));
-	        addField(Translator.localize("UMLMenu","label.classifiers"), _classifierScroll);
+	            a, null, null, true));
+	addField(Translator.localize("UMLMenu", "label.classifiers"), 
+                    classifierScroll);
 
 
         buttonPanel.add(new PropPanelButton2(this,
@@ -136,6 +142,9 @@ public class PropPanelNodeInstance extends PropPanelInstance {
         }
     }
 
+    /**
+     * @see org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance#getClassifier()
+     */
     public Object getClassifier() {
         Object classifier = null;
         Object target = getTarget();

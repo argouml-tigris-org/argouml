@@ -39,68 +39,85 @@ import ru.novosoft.uml.MElementEvent;
  *   indepently from the other panels.
  */
 
-public class PropPanelButton extends JButton implements ActionListener, UMLUserInterfaceComponent {
-    protected static Logger cat = 
+public class PropPanelButton extends JButton 
+    implements ActionListener, UMLUserInterfaceComponent {
+    
+    private static final Logger LOG = 
         Logger.getLogger(PropPanelButton.class);
 
-    private PropPanel _propPanel;
+    private PropPanel propPanel;
     /**
      * The action method to be executed.
      */
-    private Method _actionMethod;
+    private Method actionMethod;
     
     /**
-     * The action to be exectuted.  Either action or action method must be set but not both.
+     * The action to be exectuted.  Either action or action method 
+     * must be set but not both.
      */
-    private Action _action;
+    private Action action;
     
-    private Method _enabledMethod;
-    private static Object[] _noArgs = {};
+    private Method enabledMethod;
+    private static Object[] noArgs = {};
 
     /** Constructor for a new button in the propertypanel.
-     * @param propPanel the property panel to use (usually this)
+     * @param thePropPanel the property panel to use (usually this)
      * @param buttonPanel the button panel to use (usually buttonPanel)
-     * @param icon the icon of this button (choose one from PropPanelModelElement)
+     * @param icon the icon of this button (choose one 
+     *             from PropPanelModelElement)
      * @param toolTipText
-     * @param actionMethod string name of the actionMethod, found by reflection
-     * @param enabledMethod string name of the enableMethod, found by reflection
-     * @param action the action to be executed. Must be null if actionMethod is filled.
+     * @param theActionMethod string name of the actionMethod, 
+     *                        found by reflection
+     * @param theEnabledMethod string name of the enableMethod, 
+     *                         found by reflection
+     * @param theAction the action to be executed. Must be null 
+     *                  if actionMethod is filled.
+     * @param toolTipText the text for the tooltip
      */
     public PropPanelButton(
-            PropPanel propPanel,
+            PropPanel thePropPanel,
             JComponent buttonPanel,
             Icon icon,
             String toolTipText,
-            String actionMethod,
-            String enabledMethod,
-            Action action) {
+            String theActionMethod,
+            String theEnabledMethod,
+            Action theAction) {
 
         super(icon);
 
-        _propPanel = propPanel;
+        propPanel = thePropPanel;
 
-        //setPreferredSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
-	//setMaximumSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
-	//setMinimumSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
-	//setSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
+        //setPreferredSize(new Dimension(icon.getIconWidth()+6,
+        // icon.getIconHeight()+6));
+	//setMaximumSize(new Dimension(icon.getIconWidth()+6,
+        // icon.getIconHeight()+6));
+	//setMinimumSize(new Dimension(icon.getIconWidth()+6,
+        // icon.getIconHeight()+6));
+	//setSize(new Dimension(icon.getIconWidth()+6,
+        // icon.getIconHeight()+6));
         setToolTipText(toolTipText);
 
-        Class propPanelClass = propPanel.getClass();
+        Class propPanelClass = thePropPanel.getClass();
         Class[] noClass = {};
-        if (actionMethod != null) {
-        try {
-            _actionMethod = propPanelClass.getMethod(actionMethod, noClass);
-            if (enabledMethod != null) {
-                _enabledMethod = propPanelClass.getMethod(enabledMethod, noClass);
+        if (theActionMethod != null) {
+            try {
+                actionMethod = 
+                    propPanelClass.getMethod(theActionMethod, noClass);
+                if (theEnabledMethod != null) {
+                    enabledMethod = 
+                        propPanelClass.getMethod(theEnabledMethod, noClass);
+                }
+            } catch (Exception e) {
+                LOG.error(e.toString() + " in PropPanelButton(" 
+                        +  toolTipText + ")", e);
             }
-        } catch (Exception e) {
-            cat.error(e.toString() + " in PropPanelButton(" +  toolTipText + ")", e);
-        }
         } else
-        if (action != null) {
-            _action = action;
-        } else
-            throw new IllegalArgumentException("Either action method or action must be indicated. They are both null now.");
+            if (theAction != null) {
+                action = theAction;
+            } else
+                throw new IllegalArgumentException(
+                    "Either action method or action must be indicated."
+                    + " They are both null now.");
 
         setEnabled(false);
 
@@ -109,13 +126,8 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     }
     
     /**
-     * @deprecated as of 0.17.1 This constructor constructs a proppanel button using the old reflection method. 
-     * @param propPanel
-     * @param buttonPanel
-     * @param icon
-     * @param toolTipText
-     * @param actionMethod
-     * @param enabledMethod
+     * @deprecated as of 0.17.1. This constructor constructs 
+     *             a proppanel button using the old reflection method. 
      */
     public PropPanelButton( PropPanel propPanel,
             JComponent buttonPanel,
@@ -131,80 +143,114 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
             JComponent buttonPanel,
             Icon icon,
             String toolTipText,                        
-            Action action) { 
-        this (propPanel, buttonPanel, icon, toolTipText, null, null, action);
+            Action theAction) { 
+        this (propPanel, buttonPanel, icon, toolTipText, null, null, theAction);
         
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
         boolean enabled = false;
-        Object target = _propPanel.getTarget();
-        if (target != null && (_actionMethod != null || _action != null) && _propPanel != null) {
+        Object target = propPanel.getTarget();
+        if (target != null && (actionMethod != null || action != null) 
+                && propPanel != null) {
             enabled = true;
-            if (_enabledMethod != null) {
+            if (enabledMethod != null) {
                 try {
-                    enabled = ((Boolean) _enabledMethod.invoke(_propPanel, _noArgs)).booleanValue();
+                    enabled = ((Boolean) 
+                        enabledMethod.invoke(propPanel, noArgs)).booleanValue();
                 } catch (InvocationTargetException ex) {
-                    cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
-                    cat.error("Container: " + _propPanel.getClass().getName());
-                    cat.error("ActionMethod: " + _actionMethod.toString());
+                    LOG.error(ex.getTargetException().toString() 
+                        + " is InvocationTargetException in PropPanelButton", 
+                        ex.getTargetException());
+                    LOG.error("Container: " + propPanel.getClass().getName());
+                    LOG.error("ActionMethod: " + actionMethod.toString());
                 } catch (Exception e) {
-                    cat.error(e.toString() + " in PropPanelButton", e);
+                    LOG.error(e.toString() + " in PropPanelButton", e);
                 }
             } else 
-            if (_action != null) {
-                enabled = _action.isEnabled();
-            } 
+                if (action != null) {
+                    enabled = action.isEnabled();
+                } 
             
         }
 
         setEnabled(enabled);
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
         targetReasserted();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
 
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {
     }
 
     /** actionPerfomed invokes the defined action via reflection for this
      *  button.
+     *
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(final java.awt.event.ActionEvent event) {
 
-        if (_actionMethod != null && _propPanel != null) {
+        if (actionMethod != null && propPanel != null) {
             try {
-                _actionMethod.invoke(_propPanel, _noArgs);
+                actionMethod.invoke(propPanel, noArgs);
             } catch (InvocationTargetException ex) {
-                cat.error(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton", ex.getTargetException());
-                cat.error("Container: " + _propPanel.getClass().getName());
-                cat.error("ActionMethod: " + _actionMethod.toString());
+                LOG.error(ex.getTargetException().toString() 
+                        + " is InvocationTargetException in PropPanelButton", 
+                        ex.getTargetException());
+                LOG.error("Container: " + propPanel.getClass().getName());
+                LOG.error("ActionMethod: " + actionMethod.toString());
 	    } catch (Exception e) {
-                cat.error(e.toString() + " in PropPanelButton.actionPerformed", e);
-                cat.error("Container: " + _propPanel.getClass().getName());
-                cat.error("ActionMethod: " + _actionMethod.toString());
+                LOG.error(e.toString() + " in PropPanelButton.actionPerformed", 
+                        e);
+                LOG.error("Container: " + propPanel.getClass().getName());
+                LOG.error("ActionMethod: " + actionMethod.toString());
             }
         } else
-        if (_action != null) {
-            _action.actionPerformed(event);
-        } else
-            throw new IllegalStateException("No action or action method indicated");
+            if (action != null) {
+                action.actionPerformed(event);
+            } else
+                throw new IllegalStateException(
+                        "No action or action method indicated");
     }
 }

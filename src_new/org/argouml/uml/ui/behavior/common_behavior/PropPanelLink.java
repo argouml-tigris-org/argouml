@@ -46,24 +46,32 @@ import org.argouml.util.ConfigLoader;
 
 public class PropPanelLink extends PropPanelModelElement {
 
-
-    ////////////////////////////////////////////////////////////////
-    // contructors
+    /**
+     * The constructor.
+     * 
+     */
     public PropPanelLink() {
         super("Link", _linkIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.LINK;
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        Class mclass = (Class) ModelFacade.LINK;
+        addField(Translator.localize("UMLMenu", "label.name"), 
+                getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), 
+                getStereotypeBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), 
+                getNamespaceComboBox());
         addSeperator();
         
-        JList connectionList = new UMLLinkedList(new UMLLinkConnectionListModel());
+        JList connectionList = new UMLLinkedList(
+                new UMLLinkConnectionListModel());
         JScrollPane connectionScroll = new JScrollPane(connectionList);
-        addField(Translator.localize("UMLMenu", "label.connections"), connectionScroll);
+        addField(Translator.localize("UMLMenu", "label.connections"), 
+                connectionScroll);
 
-        buttonPanel.add(new PropPanelButton2(this, new ActionNavigateNamespace()));
-        buttonPanel.add(new PropPanelButton2(this, new ActionRemoveFromModel()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionNavigateNamespace()));
+        buttonPanel.add(new PropPanelButton2(this, 
+                new ActionRemoveFromModel()));
 	
     }
 
