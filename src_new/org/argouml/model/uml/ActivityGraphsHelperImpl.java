@@ -123,9 +123,10 @@ class ActivityGraphsHelperImpl implements ActivityGraphsHelper {
             throw new IllegalArgumentException();
         }
 
-        if ((s == "") || (s == null)) { // TODO: Shouldn't it be "".equals(s)?
+        if ((s == null) || (s.equals(""))) {
             return null;
         }
+
         Collection allStatemachines = ((MClassifier) c).getBehaviors();
         Iterator i = allStatemachines.iterator();
         while (i.hasNext()) {

@@ -56,16 +56,12 @@ public interface ExtensionMechanismsHelper {
     Object getStereotype(Object ns, Object stereo);
 
     /**
-     * Searches for a stereotype just like the given stereotype in all models
-     * in the current project.
+     * Searches for a stereotype just like the given stereotype in all
+     * given models.
      * The given stereotype can not have its namespace set yet;
      * otherwise it will be returned itself!
      *
      * TODO: Should it only search for stereotypes owned by the Model object?
-     *
-     * TODO: This function should get the project as parameter,
-     * and be independent of the ProjectManager.
-     * Or should it not even know what a project is?
      *
      * @param models a collection of models
      * @param stereo is the given stereotype
@@ -105,7 +101,9 @@ public interface ExtensionMechanismsHelper {
     boolean isValidStereoType(Object theModelElement, Object theStereotype);
 
     /**
-     * TODO: Should it only search for stereotypes owned by the Model objects?
+     * Get all stereotypes from all Models in the list.
+     *
+     * Finds only stereotypes owned by the Model objects themselves.
      *
      * @return the collection of stereotypes in all models
      *         in the current project

@@ -145,7 +145,7 @@ public class ExtensionMechanismsFactoryImpl
      */
     public Object buildStereotype(
             Object theModelElementObject,
-			String theName,
+            String theName,
             Object model,
             Collection models) {
         MModelElement me = (MModelElement) theModelElementObject;

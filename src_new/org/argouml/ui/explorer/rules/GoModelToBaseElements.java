@@ -24,8 +24,10 @@
 
 package org.argouml.ui.explorer.rules;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
@@ -49,7 +51,20 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (Model.getFacade().isAPackage(parent)) {
-	    return Model.getCoreHelper().getBaseClasses(parent);
+	    Collection col = new ArrayList();
+	    Iterator it =
+	        Model.getModelManagementHelper()
+	            .getAllModelElementsOfKind(
+	                    parent,
+	                    Model.getMetaTypes().getGeneralizableElement())
+	                .iterator();
+	    while (it.hasNext()) {
+	        Object gen = it.next();
+	        if (Model.getFacade().getGeneralizations(gen).isEmpty()) {
+	            col.add(gen);
+	        }
+	    }
+	    return col;
 	}
 	return null;
     }
