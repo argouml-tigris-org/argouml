@@ -37,7 +37,8 @@ public class GenerationPreferences implements java.io.Serializable {
 	if (System.getProperty("file.separator").equals("/") )
 	    _outputDir = "/tmp";
 	else
-	    _outputDir = "c:\\temp";
+	    //_outputDir = "c:\\temp"; //This does not even exist on many systems!
+            _outputDir = System.getProperty("java.io.tmpdir");
     }
 
     ////////////////////////////////////////////////////////////////
