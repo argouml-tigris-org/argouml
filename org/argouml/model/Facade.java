@@ -1160,7 +1160,7 @@ public interface Facade {
     boolean isUtility(Object handle);
 
     ////////////////////////////////////////////////////////////////
-    
+
     /**
      * Returns the association connected to an association end or
      * the association belonging to the given link.
@@ -1353,8 +1353,6 @@ public interface Facade {
      */
     Object getConcurrency(Object handle);
 
-    //    public short getConcurrency(Object handle) {
-    
     /**
      * The list of connections to an association or link.
      *
@@ -2449,7 +2447,7 @@ public interface Facade {
     Collection getAssociatedClasses(Object handle);
 
     ////////////////////////////////////////////////////////////////
-    
+
     /**
      * The name of a model element or some diagram part.
      *
@@ -2566,10 +2564,10 @@ public interface Facade {
      *  @param o Stub State
      *  @return referenced state
      */
-    public String getReferenceState(Object o);
+    String getReferenceState(Object o);
 
     ////////////////////////////////////////////////////////////////
-    
+
     /**
      * Returns a named object in the given object by calling it's lookup method.
      *

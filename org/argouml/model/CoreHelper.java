@@ -1179,5 +1179,5 @@ public interface CoreHelper {
      * @param handle Component
      * @param node Node
      */
-    public void removeDeploymentLocation(Object handle, Object node);
+    void removeDeploymentLocation(Object handle, Object node);
 }
