@@ -73,7 +73,8 @@ public class SimpleTimer {
 			    else
 				res.append(_labels.get(count - 1));
 			    res.append("                            ");
-			    res.setLength(18);
+			    res.append("                            ");
+			    res.setLength(60);
 			    res.append((((Long) _points.elementAt(count)).
 					longValue()
 					- ((Long) _points.elementAt(count - 1))
