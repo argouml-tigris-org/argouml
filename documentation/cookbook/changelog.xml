@@ -33,6 +33,19 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2004-07-28</entry>
+          <entry>
+Reorganized the description on how to use Eclipse 3.
+Added instructions on how to use the Eclipse JUnit test runner.
+(See <xref linkend="eclipse3"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <!-- When -->
           <entry>2004-07-25</entry>
 
