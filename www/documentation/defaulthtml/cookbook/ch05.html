@@ -1,7 +1,9 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>Chapter&nbsp;5.&nbsp;Inside the components</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch04s07.html" title="4.7.&nbsp;Layer 3 - Description of components"><link rel="next" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="inside_components"></a>Chapter&nbsp;5.&nbsp;Inside the components</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>5.1. <a href="ch05.html#model">Model</a></dt><dd><dl><dt>5.1.1. <a href="ch05.html#d0e2590">Factories</a></dt><dt>5.1.2. <a href="ch05.html#d0e2625">Helpers</a></dt><dt>5.1.3. <a href="ch05.html#d0e2645">The model event pump</a></dt><dt>5.1.4. <a href="ch05.html#howdoi_model">How do I...?</a></dt></dl></dd><dt>5.2. <a href="ch05s02.html">Critics and other cognitive tools</a></dt><dd><dl><dt>5.2.1. <a href="ch05s02.html#d0e2866">Main classes</a></dt><dt>5.2.2. <a href="ch05s02.html#howdoi_critics">How do I ...?</a></dt><dt>5.2.3. <a href="ch05s02.html#d0e3144">org.argouml.cognitive.critics.* class diagram</a></dt></dl></dd><dt>5.3. <a href="ch05s03.html">Diagrams</a></dt><dd><dl><dt>5.3.1. <a href="ch05s03.html#howdoi_diagrams">How do I add a new element to a diagram?</a></dt><dt>5.3.2. <a href="ch05s03.html#d0e3192">How to add a new Fig</a></dt></dl></dd><dt>5.4. <a href="ch05s04.html">Property panels</a></dt><dd><dl><dt>5.4.1. <a href="ch05s04.html#addingapropertypanel">Adding the property panel</a></dt></dl></dd><dt>5.5. <a href="ch05s05.html">Reverse Engineering Component</a></dt><dt>5.6. <a href="ch05s06.html">Code Generation Component</a></dt><dt>5.7. <a href="ch05s07.html">Java - Code generations and Reverse Engineering</a></dt><dd><dl><dt>5.7.1. <a href="ch05s07.html#howdoi_reverse">How do I ...?</a></dt><dt>5.7.2. <a href="ch05s07.html#d0e5076">Which sources are involved?</a></dt><dt>5.7.3. <a href="ch05s07.html#d0e5083">How is the grammar of the target language implemented?</a></dt><dt>5.7.4. <a href="ch05s07.html#d0e5091">Which model/diagram elements are generated?</a></dt><dt>5.7.5. <a href="ch05s07.html#d0e5096">Which layout algorithm is used?</a></dt></dl></dd><dt>5.8. <a href="ch05s08.html">Other languages</a></dt><dt>5.9. <a href="ch05s09.html">The GUI Framework</a></dt><dd><dl><dt>5.9.1. <a href="ch05s09.html#d0e5233">Multi editor pane</a></dt><dt>5.9.2. <a href="ch05s09.html#d0e5268">Details pane</a></dt></dl></dd><dt>5.10. <a href="ch05s10.html">Help System</a></dt><dt>5.11. <a href="ch05s11.html">Internationalization</a></dt><dd><dl><dt>5.11.1. <a href="ch05s11.html#d0e5389">Organizing translators</a></dt><dt>5.11.2. <a href="ch05s11.html#d0e5432">Ambitions for localization</a></dt><dt>5.11.3. <a href="ch05s11.html#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>5.12. <a href="ch05s12.html">Logging</a></dt><dd><dl><dt>5.12.1. <a href="ch05s12.html#d0e5665">What to Log in ArgoUML</a></dt><dt>5.12.2. <a href="ch05s12.html#d0e5693">How to Create Log Entries...</a></dt><dt>5.12.3. <a href="ch05s12.html#d0e5764">How to Enable Logging...</a></dt><dt>5.12.4. <a href="ch05s12.html#d0e5879">How to Customize Logging...</a></dt><dt>5.12.5. <a href="ch05s12.html#d0e5890">References</a></dt></dl></dd><dt>5.13. <a href="ch05s13.html">JRE with utils</a></dt><dt>5.14. <a href="ch05s14.html">To do items</a></dt><dt>5.15. <a href="ch05s15.html">Explorer</a></dt><dd><dl><dt>5.15.1. <a href="ch05s15.html#d0e5955">Details of current implementation</a></dt><dt>5.15.2. <a href="ch05s15.html#d0e5978">Requirements</a></dt><dt>5.15.3. <a href="ch05s15.html#d0e6012">Key Classes</a></dt><dt>5.15.4. <a href="ch05s15.html#d0e6065">How do I ...?</a></dt></dl></dd><dt>5.16. <a href="ch05s16.html">Module loader</a></dt><dd><dl><dt>5.16.1. <a href="ch05s16.html#d0e6137">What the ModuleLoader does</a></dt></dl></dd><dt>5.17. <a href="ch05s17.html">OCL</a></dt></dl></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+   <title>Chapter&nbsp;5.&nbsp;Inside the components</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="previous" href="ch04s07.html" title="4.7.&nbsp;Layer 3 - Description of components"><link rel="next" href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">&nbsp;</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s02.html">Next</a></td></tr></table><hr></div><div class="chapter" lang="en"><div class="titlepage"><div><div><h2 class="title"><a name="inside_components"></a>Chapter&nbsp;5.&nbsp;Inside the components</h2></div></div><div></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>5.1. <a href="ch05.html#model">Model</a></dt><dd><dl><dt>5.1.1. <a href="ch05.html#d0e2602">Factories</a></dt><dt>5.1.2. <a href="ch05.html#d0e2637">Helpers</a></dt><dt>5.1.3. <a href="ch05.html#d0e2657">The model event pump</a></dt><dt>5.1.4. <a href="ch05.html#d0e2798">How to work against the model</a></dt><dt>5.1.5. <a href="ch05.html#howdoi_model">How do I...?</a></dt></dl></dd><dt>5.2. <a href="ch05s02.html">Critics and other cognitive tools</a></dt><dd><dl><dt>5.2.1. <a href="ch05s02.html#d0e3004">Main classes</a></dt><dt>5.2.2. <a href="ch05s02.html#howdoi_critics">How do I ...?</a></dt><dt>5.2.3. <a href="ch05s02.html#d0e3282">org.argouml.cognitive.critics.* class diagram</a></dt></dl></dd><dt>5.3. <a href="ch05s03.html">Diagrams</a></dt><dd><dl><dt>5.3.1. <a href="ch05s03.html#d0e3309">Multi editor pane</a></dt><dt>5.3.2. <a href="ch05s03.html#howdoi_diagrams">How do I add a new element to a diagram?</a></dt><dt>5.3.3. <a href="ch05s03.html#d0e3365">How to add a new Fig</a></dt></dl></dd><dt>5.4. <a href="ch05s04.html">Property panels</a></dt><dd><dl><dt>5.4.1. <a href="ch05s04.html#addingapropertypanel">Adding the property panel</a></dt></dl></dd><dt>5.5. <a href="ch05s05.html">Reverse Engineering Component</a></dt><dt>5.6. <a href="ch05s06.html">Code Generation Component</a></dt><dt>5.7. <a href="ch05s07.html">Java - Code generations and Reverse Engineering</a></dt><dd><dl><dt>5.7.1. <a href="ch05s07.html#howdoi_reverse">How do I ...?</a></dt><dt>5.7.2. <a href="ch05s07.html#d0e5249">Which sources are involved?</a></dt><dt>5.7.3. <a href="ch05s07.html#d0e5256">How is the grammar of the target language implemented?</a></dt><dt>5.7.4. <a href="ch05s07.html#d0e5264">Which model/diagram elements are generated?</a></dt><dt>5.7.5. <a href="ch05s07.html#d0e5269">Which layout algorithm is used?</a></dt></dl></dd><dt>5.8. <a href="ch05s08.html">Other languages</a></dt><dt>5.9. <a href="ch05s09.html">The GUI Framework</a></dt><dt>5.10. <a href="ch05s10.html">Application</a></dt><dd><dl><dt>5.10.1. <a href="ch05s10.html#d0e5405">What is loaded/initialized?</a></dt><dt>5.10.2. <a href="ch05s10.html#d0e5412">Details pane</a></dt></dl></dd><dt>5.11. <a href="ch05s11.html">Help System</a></dt><dt>5.12. <a href="ch05s12.html">Internationalization</a></dt><dd><dl><dt>5.12.1. <a href="ch05s12.html#d0e5533">Organizing translators</a></dt><dt>5.12.2. <a href="ch05s12.html#d0e5576">Ambitions for localization</a></dt><dt>5.12.3. <a href="ch05s12.html#howdoi_internationalization">How do I ...?</a></dt></dl></dd><dt>5.13. <a href="ch05s13.html">Logging</a></dt><dd><dl><dt>5.13.1. <a href="ch05s13.html#d0e5809">What to Log in ArgoUML</a></dt><dt>5.13.2. <a href="ch05s13.html#d0e5837">How to Create Log Entries...</a></dt><dt>5.13.3. <a href="ch05s13.html#d0e5908">How to Enable Logging...</a></dt><dt>5.13.4. <a href="ch05s13.html#d0e6023">How to Customize Logging...</a></dt><dt>5.13.5. <a href="ch05s13.html#d0e6034">References</a></dt></dl></dd><dt>5.14. <a href="ch05s14.html">JRE with utils</a></dt><dt>5.15. <a href="ch05s15.html">To do items</a></dt><dt>5.16. <a href="ch05s16.html">Explorer</a></dt><dd><dl><dt>5.16.1. <a href="ch05s16.html#d0e6099">Details of current implementation</a></dt><dt>5.16.2. <a href="ch05s16.html#d0e6122">Requirements</a></dt><dt>5.16.3. <a href="ch05s16.html#d0e6156">Key Classes</a></dt><dt>5.16.4. <a href="ch05s16.html#d0e6209">How do I ...?</a></dt></dl></dd><dt>5.17. <a href="ch05s17.html">Module loader</a></dt><dd><dl><dt>5.17.1. <a href="ch05s17.html#d0e6281">What the ModuleLoader does</a></dt></dl></dd><dt>5.18. <a href="ch05s18.html">OCL</a></dt></dl></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
 This chapter is currently under rework with new component organization.
+</p><p>
+Things that are not actually in place are: TargetManager
 </p></td></tr></table></div><p>...</p><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="model"></a>5.1.&nbsp;Model</h2></div></div><div></div></div><p><a name="comp-model-purpose"></a>
 Purpose - to provide the data structures that keep track of the model
 and the diagrams. 
@@ -12,7 +14,14 @@ The Model is located in <tt class="classname">org.argouml.model</tt>.
 </p><p>
 The Model is a Layer 1 component. See <a href="ch04s05.html" title="4.5.&nbsp;Layer 1 - Description of components">Section&nbsp;4.5, &#8220;Layer 1 - Description of components&#8221;</a>.
 </p><p>
-This is implemented using NSUML to implement the UML model.
+This is currently implemented using NSUML internally to implement 
+the UML model.
+The plan is to replace NSUML with some JMI compliant model instead
+(probably MDR),
+and for that reason
+all interfaces to the Model component using NSUML objects are
+to be replaced by interfaces without NSUML object and
+eventually removed.
 </p><p>
 ArgoUML uses several factories and helperclasses to manipulate the NSUML
 model. 
@@ -36,7 +45,7 @@ Both helpers and factories are singletons.
 The static method to access them is
 <tt class="methodname">getFactory</tt> for the factory
 and <tt class="methodname">getHelper</tt> for the helper.
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2590"></a>5.1.1.&nbsp;Factories</h3></div></div><div></div></div><p>
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2602"></a>5.1.1.&nbsp;Factories</h3></div></div><div></div></div><p>
 The factories contain at least for each modelelement a create method.
 Example: <tt class="methodname">createClass</tt>
 resides in <tt class="classname">CoreFactory</tt> in the package
@@ -61,7 +70,7 @@ One reason for this is that the eventlisteners for
 the newly created modelelement are setup correctly.
 </p><p>
 TODO: Am I allowed to call the factories from any thread?
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2625"></a>5.1.2.&nbsp;Helpers</h3></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2637"></a>5.1.2.&nbsp;Helpers</h3></div></div><div></div></div><p>
 The helpers contain all utility methods for manipulating modelelements.
 For example, they contain methods to get all modelelements
 of a certain class out of the model
@@ -83,7 +92,7 @@ Then you have to look in both corresponding helpers and you
 will probably find what you are searching for.
 </p><p>
 TODO: Am I allowed to call the helpers from any thread?
-</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2645"></a>5.1.3.&nbsp;The model event pump</h3></div></div><div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2648"></a>5.1.3.1.&nbsp;Introduction</h4></div></div><div></div></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2657"></a>5.1.3.&nbsp;The model event pump</h3></div></div><div></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2660"></a>5.1.3.1.&nbsp;Introduction</h4></div></div><div></div></div><p>
 Late 2002, the ArgoUML community decided for the introduction of a clean
 interface between the NSUML model and the rest of ArgoUML.
 This interface consists of three parts:
@@ -124,7 +133,7 @@ events in the future.
 These mechanisms (like UMLChangeDispatch and ThirdPartyEventlisteners
 for those who are interested) are DEPRECATED.
 Do not use them therefore and do not use classes that use them.
-</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2684"></a>5.1.3.2.&nbsp;Public API</h4></div></div><div></div></div><p>
+</p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2696"></a>5.1.3.2.&nbsp;Public API</h4></div></div><div></div></div><p>
 You might wonder: how does this all work?
 Well, very simple in fact.
 </p><p>
@@ -238,7 +247,7 @@ class.
 </p><p>
 Of course you can remove your listeners from the event pump. 
 This works with methods starting with remove instead of add.
-</p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2755"></a>5.1.3.3.&nbsp;Tips</h4></div></div><div></div></div><div class="orderedlist"><ol type="1"><li><p>
+</p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2767"></a>5.1.3.3.&nbsp;Tips</h4></div></div><div></div></div><div class="orderedlist"><ol type="1"><li><p>
 Don't forget to remove your listener from the eventpump if it's not
 interested in some event any more.
 </p><p>
@@ -261,7 +270,7 @@ fired when event type 2 do arrive.
 This still happens at a lot of places in the code of ArgoUML, most
 notably in the modelChanged method of the children of
 FigEdgeModelElement.
-</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2774"></a>5.1.3.4.&nbsp;The future</h4></div></div><div></div></div><p>
+</p></li></ol></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e2786"></a>5.1.3.4.&nbsp;The future</h4></div></div><div></div></div><p>
 Some people might wonder if we cannot make a better interface between
 the model and the rest of ArgoUML if we use our own event types.
 
@@ -288,7 +297,81 @@ data structure that Swing uses for event registriation
 
 We are in the process of researching if it is a good thing to use this
 standard instead of our own implementation.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_model"></a>5.1.4.&nbsp;How do I...?</h3></div></div><div></div></div><div class="itemizedlist"><ul type="disc"><li><p>...add a new model element?</p><p>
+</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e2798"></a>5.1.4.&nbsp;How to work against the model</h3></div></div><div></div></div><p>
+NS-UML is used within the Model component to keep all data structures
+in place.
+Eventually we will change that to JMI/MDR that is newer and better and 
+will take us into UML 1.4, UML 1.5 and UML 2.0.
+Working directly against NS-UML or JMI/MDR will make changes in the
+NS-UML or JMI/MDR affect large portions of the code.
+For this reason we have in the Model component
+a set of classes that lay between the NS-UML and JMI/MDR that
+hides the apis of NS-UML or JMI/MDR between something that will not
+change while moving between them.
+This is the Facade classes of the Model component i.e. the ModelFacade.
+There are also other classes that hides the internals of NS-UML like the
+Factories and the UMLEventPump.
+</p><p>
+Here follows a list of how different things are done for the purpose
+of making the transition easy.
+The plan is to move everything in the Model component 
+(under <tt class="classname">org.argouml.model.*</tt>)
+from NS-UML to JMI/MDR and
+everything else within ArgoUML to the ModelFacade/ArgoUML solution.
+</p><div class="table"><a name="d0e2808"></a><p class="title"><b>Table&nbsp;5.1.&nbsp;How to work against the model</b></p><table summary="How to work against the model" border="1"><colgroup><col><col><col><col></colgroup><thead><tr><th>What</th><th>NS-UML</th><th>JMI/MDR</th><th>ModelFacade/ArgoUML</th></tr></thead><tbody><tr><td>Test that an Object o has a certain type</td><td>
+o instanceof M<i class="replaceable"><tt>modelelementtype</tt></i> &#8594; boolean
+</td><td>
+???CLASSNAME???.isInstanceOf(RefObject toTest, String className) &#8594; boolean
+</td><td>
+ModelFacade.isA<i class="replaceable"><tt>modelelementtype</tt></i>(o) &#8594; boolean
+</td></tr><tr><td>Get a single valued model element from an Object o</td><td>
+((M<i class="replaceable"><tt>modelelementtype</tt></i>) o).get<i class="replaceable"><tt>property</tt></i>()
+&#8594; model element
+</td><td>
+((RefFeatured) obj).refGetValue(String propName) &#8594; ???Type???
+</td><td>
+ModelFacade.get<i class="replaceable"><tt>property</tt></i>(o) &#8594; Object
+</td></tr><tr><td>Get a multi valued property from an Object o</td><td>
+((M<i class="replaceable"><tt>modelelementtype</tt></i>) o).get<i class="replaceable"><tt>property</tt></i>()
+&#8594; Collection
+</td><td>
+((RefFeatured) obj).refGetValue(String propName) &#8594; Collection
+</td><td>
+ModelFacade.get<i class="replaceable"><tt>property</tt></i>(o)
+&#8594; Iterator or Collection (total confusion!)
+</td></tr><tr><td>Create a new model element of type Type:</td><td>
+MFactory.getDefaultFactory().create<i class="replaceable"><tt>Type</tt></i>()
+</td><td>
+???CLASSNAME???.creatInstance(String "<i class="replaceable"><tt>Type</tt></i>", 
+                              List argument)
+&#8594; RefObject 
+</td><td><i class="replaceable"><tt>elementhierachyname</tt></i>Factory.getFactory().build<i class="replaceable"><tt>modelelementtype</tt></i>(args)
+</td></tr><tr><td>
+Register for notification that a model element Object o has changed:
+</td><td>
+((MBase) o).addMElementListener(MElementListener el)
+</td><td>
+((MDRChangeSource) obj).addChangeListener(???)
+</td><td>
+UmlEventPump.getPump().addModelEventListener((Object)MElementListener el,
+                                             Object o, String[] eventnames)
+</td></tr><tr><td>
+Register for notification on all model of a certain type Type:
+</td><td>
+Not possible!
+</td><td>
+((MDRChangeSource) obj.refClass()).addChangeListener(???)
+</td><td>
+UmlEventPump.getPump().addModelEventListener(MElementListener el,
+                                             Class M<i class="replaceable"><tt>Type</tt></i>.class,
+                                             String[] eventnames)
+</td></tr><tr><td>How do I get the model as XMI on the stream Stream:</td><td>
+(new XMIWriter(MModel m, Writer Stream)).gen()
+</td><td>
+new XMIWriter(???)
+</td><td>
+Not currently in any Facade.
+</td></tr></tbody></table><p></p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_model"></a>5.1.5.&nbsp;How do I...?</h3></div></div><div></div></div><div class="itemizedlist"><ul type="disc"><li><p>...add a new model element?</p><p>
 Make a parameterless build method for your NSUML modelelement in one of
 the UML Factories (for instance <tt class="classname">CoreFactory</tt>).
 Stick to the UML 1.3 spec to choose the correct Factory.
@@ -318,7 +401,7 @@ for example.
 Now you probably also need to create 
 a Property Panel
 and
-a Fig object (See <a href="ch05s03.html#howto_createnewfig_2" title="5.3.2.5.&nbsp;Creating a new Fig (explanation 2)">Section&nbsp;5.3.2.5, &#8220;Creating a new Fig (explanation 2)&#8221;</a>).
+a Fig object (See <a href="ch05s03.html#howto_createnewfig_2" title="5.3.3.5.&nbsp;Creating a new Fig (explanation 2)">Section&nbsp;5.3.3.5, &#8220;Creating a new Fig (explanation 2)&#8221;</a>).
 </p></li><li><p>...create a new create method?</p><p>
 Create it in the correct factory.
 </p></li><li><p>...create a new utility method?</p><p>

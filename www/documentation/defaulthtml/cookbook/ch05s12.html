@@ -1,230 +1,255 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.12.&nbsp;Logging</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s11.html" title="5.11.&nbsp;Internationalization"><link rel="next" href="ch05s13.html" title="5.13.&nbsp;JRE with utils"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.12.&nbsp;Logging</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="logging"></a>5.12.&nbsp;Logging</h2></div></div><div></div></div><p><a name="comp-logging-purpose"></a>
-Purpose - to provide an api for debug log and trace messages.
+   <title>5.12.&nbsp;Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s11.html" title="5.11.&nbsp;Help System"><link rel="next" href="ch05s13.html" title="5.13.&nbsp;Logging"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.12.&nbsp;Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="internationalization"></a>5.12.&nbsp;Internationalization</h2></div></div><div></div></div><a class="indexterm" name="d0e5498"></a><a class="indexterm" name="d0e5501"></a><a class="indexterm" name="d0e5504"></a><a class="indexterm" name="d0e5507"></a><a class="indexterm" name="d0e5510"></a><p>
+Purpose - to provide the infrastructure that the other components can
+use to translate strings;
+to provide the infrastructure that makes it possible to plug in
+new languages;
+to administer the default (English U.S.) language;
+to administer all supported languages.
 </p><p>
-The purpose of debug log and trace messages is:
-To provide a mechanism that allows the developer to
-enable output of minor events focused on a specific problem area
-and
-to follow what is going on inside ArgoUML.
+The Internationalization is located in <tt class="classname">org.argouml.i18n</tt>.
 </p><p>
-The Logging is located in <tt class="classname">org.argouml.???</tt>
+The Internationalization is a Layer 0 component. 
+See <a href="ch04s04.html" title="4.4.&nbsp;Layer 0 - Description of components">Section&nbsp;4.4, &#8220;Layer 0 - Description of components&#8221;</a>.
 </p><p>
-The Logging is a Layer 0 component.
+The internationalization is currently changing from ListResourceBundles
+to Property files. This chapter is not updated to fit the change.
+Please read carefully.
 </p><p>
-Logging is currently implemented using log4j.
+In ArgoUML internationalization (sometimes called i18n) is done using
+the ListResourceBundle-classes and parts of it is handled by the 
+GEF infrastructure.
 </p><p>
-        <span class="application">ArgoUML</span> uses the standard 
-        <a href="http://jakarta.apache.org/log4j/" target="_top">log4j</a>
-        logging facility. The following sections deal with the current
-        implementation in <span class="application">ArgoUML</span>. By
-        default, logging is turned off and only the version
-        information of all used libraries are shown on
-        the console.
-    </p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5665"></a>5.12.1.&nbsp;What to Log in ArgoUML</h3></div></div><div></div></div><p>
-            Logging entries in log4j
-            belong to exactly <span class="emphasis"><em>one</em></span> level.
-            </p><div class="itemizedlist"><ul type="disc"><li><p>
-                The FATAL level designates very severe error events that 
-                will presumably lead the application to abort.
-Everything known about the reasons for the abortion of the application
-shall be logged.
+There are several sets of Bundle files for different domains within ArgoUML.
+Each domain has a name and is handled by a file.
+This is set up in <tt class="classname">org.argouml.application.Main</tt>.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5533"></a>5.12.1.&nbsp;Organizing translators</h3></div></div><div></div></div><a class="indexterm" name="d0e5536"></a><a class="indexterm" name="d0e5539"></a><p>
+The problems with internationalization are not so much the technical
+problems as to how it works but more so the problems are with
+getting, keeping and coordinating the correct competences to do
+the job.
+This comes from the fact that by necessity the different
+persons working with internationalization have different native languages
+and that complicates the communications.
+</p><p>
+To handle this problem for GNU applications 
+there is a community set up around gettext with one language team
+per language working with all gettext applications.
+There are also tools to help the translator do his job
+delivered with gettext that are the same for all the applications.
+In each of these language teams discussions are held that ensure a
+consistant use of words over all these applications.
+</p><p>
+It is for me (Linus Tolke, May 2002) unclear if and how such a
+community exists for Open Source Java tools and ArgoUML cannot
+simply benefit from the gettext communities since we don't use
+gettext and cannot use the same tools.
+</p><p>
+To get things done, we organize our own Language Teams with ArgoUML.
+Each language teams are actually just one or several persons that
+know that language and are eager to work with translating ArgoUML.
+</p><p>
+The language team has the following responsibilities:
+</p><div class="orderedlist"><ol type="1"><li><p>
+All localized strings and resources shall be tranlated into the language.
+</p><p>
+This is a constant work with keeping up with the changes that
+will be made to the ArgoUML code since ArgoUML 
+is under fast development.
 </p></li><li><p>
-                The ERROR level designates error events that might still 
-                allow the application to continue running.
-Everything known about the reasons for this error condition shall be
-logged.
+The terminology used shall be correct.
+</p><p>
+This requires work in keeping up with the current literature in the
+domain of ArgoUML.
 </p></li><li><p>
-                The WARN level designates potentially harmful situations.
-This is if CG can't find all the information required 
-and has to make something up.
+Help with the improvements on ArgoUML by pin-pointing where ArgoUML
+needs to be modified to allow for localization.
+</p><p>
+As ArgoUML is originally built without localization we still have a
+big backlog of stuff in the GUI that is not localizable just by
+modifying the resource bundles. 
+Each such thing is a Defect and shall be corrected.
 </p></li><li><p>
-                The INFO level designates informational messages that 
-                highlight the progress of the application at coarse-grained 
-                level.
-This typically involves creating modules, components, and singletons,
-loading and saving of files, imported files, opening and closing files.
+See that the used libraries also provide their part in that language.
+</p><p>
+This is mostly GEF since GEF is central both when it comes to 
+the fact that it has localized strings of its own but also
+because it handles parts of the localization.
+</p><p>
+This means discussing with the teams developing the underlaying package
+as to how best to provide the localization for those parts. 
+Either by providing localization for that team to include in the
+package or by having ArgoUML overriding that package in that respect.
+</p></li></ol></div><p>
+</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5576"></a>5.12.2.&nbsp;Ambitions for localization</h3></div></div><div></div></div><p>
+Let me (Linus Tolke, May 2002) try to define the levels of
+ambition for us to try to make it possible to discuss where
+we are going.
+</p><div class="orderedlist"><ol type="1"><li><p>No translation</p><p>
+This is the lowest level of ambition that is a "do nothing"-level.
+This goes for all languages where we have not done anything like
+Swahili, Polish, South African English, ...
+</p></li><li><p>Tool translation</p><p>
+This is the basic level of ambition that each Language Team should
+aim for.
+It means that in ArgoUML all strings are localized so that ArgoUML
+is giving a complete appearance of being a tool for that language.
+</p><p>
+Setting this level of ambition for a language
+(or creating a team for the language) is pointless
+if there is no window system available for the language in questions.
+I mean, if neither the people working with 
+Windows, Linux (KDE or Gnome) or java has collected enough interest
+to do a translation of the basic infrastructure there is no point
+in doing so for ArgoUML.
+(My Windows 2k has 80 supported languages so I would think that this
+is a no-issue.)
+</p></li><li><p>User environment translation</p><p>
+This is the next level of ambition that can be set out by a 
+Language Team that works really well and has plenty of translation
+resources left.
+</p><p>
+It means that not only the ArgoUML tool should be translated but also
+everything around it that the user sees 
+i.e. the User Manual, the Quick Guide, the FAQ, 
+the Users' part of the ArgoUML Web site.
+</p><p>
+Setting this level of ambition for a language is pointless
+if the problem domain does not exist in that language.
+I mean, if the professionals that use UML or other 
+Software Engineering tools, in their every day work don't use 
+their native language to discuss UML concepts,
+then there is no use in translating these concepts to their language,
+they will not use the translation because they are more
+comfortable with the English concepts.
+Note that the UML Specification does only exist in English
+and a natural part of this level of ambition would probably
+be to translate that.
+</p></li><li><p>Development environment translation</p><p>
+Here I mean that everything that the developer of ArgoUML sees
+shall be translated.
+</p><p>
+This begins with this Cookbook, then the Developers' part of the
+ArgoUML web site and 
+also includes the javadoc comments in the code of ArgoUML and
+design documentation of included packages such as GEF, NSUML...
+</p><p>
+We don't do this in the ArgoUML project.
+</p></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="howdoi_internationalization"></a>5.12.3.&nbsp;How do I ...?</h3></div></div><div></div></div><p>
+</p><div class="itemizedlist"><ul type="disc"><li><p>...verify that all translations are up to date?</p><p>
+Run checkstyle. Search for comments on keys.
+</p></li><li><p>...start a new Language Team?</p><p>
+The Language Teams are loosely defined by
+the web page of language teams on the Tigris site.
+As soon as the language code and names (at least one) are in place
+the team is created.
+</p><p>
+From that point it is the Language Teams responsibility to 
+do a good job.
 </p></li><li><p>
-                The DEBUG Level designates fine-grained informational 
-                events that are most useful to debug an application.
-This could be everything happening within the application.
+...find the languages internationalization code for the language you 
+will add: en, es, en_GB,...
+</p><p>
+The one you are currently using is shown in the log when ArgoUML starts.
+Search for lines looking like:
+<tt class="computeroutput">
+Language: sh
+Country: unknown
+</tt>
+</p></li><li><p>...start the work?</p><p>
+Look at the files in
+<tt class="filename">org/argouml/i18n</tt>,
+under <tt class="filename">argouml/src_new</tt>.
+</p><p>
+Translate all the texts in each of these classes of files.
+</p><p>
+This is a lot of extremely qualified work including searching well-known
+litterature on UML and Software Engineering in order to get the correct
+terms for the domain.
+Discuss with other UML and Software Engineering professionals with the
+same native language to get it right.
+</p><p>
+Create the files with the translations and store them in
+<tt class="filename">argouml/src_new/org/argouml/i18n</tt>.
+They will have the names:
+<tt class="filename">UMLResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">UMLCognitiveResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">ActionResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">SettingsResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">MenuResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">DiagramResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>,
+<tt class="filename">TreeResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>, and
+<tt class="filename">NotationResourceBundle_<i class="replaceable"><tt>language code</tt></i>.java</tt>.
+</p><p>
+Add the language to the JUnit list of tested languages and run the JUnit tests.
+</p><p>
+The purpose of this is for you to get the simple JUnit tests to work for
+your language also.
+</p><p>
+This is in the file
+<tt class="filename">argouml/modules/junit/src/org/argouml/util/CheckResourceBundle.java</tt>.
+Search for the supportedLanguages-array.
+</p><p>
+Now you have completed the first iteration of the Tool translation
+ambition.
+The work will probably be more maintenance-like from here on.
+</p></li><li><p>...join an existing Language Team</p><p>
+Discuss with the Language Team on where the team is in its work
+and what you can do.
+</p></li><li><p>...add or modify code with localized things?</p><div class="orderedlist"><ol type="1"><li><p>
+Write your code using the same way of handling strings as the surrounding code.
+</p><p>
+This means that strings are denoted by "labels" or "tags" and then
+the resolution of the "tag" is in a 
+<tt class="filename"><i class="replaceable"><tt>Domain</tt></i>ResourceBundle.java</tt>-file.
+</p><p>
+The name for the domain is most often specified in a variable like
+</p><pre class="programlisting">
+    protected static final String BUNDLE = <i class="replaceable"><tt>Domain</tt></i>;
+</pre><p>
+or
+</p><pre class="programlisting">
+    protected static final String RESOURCE_BUNDLE = <i class="replaceable"><tt>Domain</tt></i>;
+</pre><p>
+in a base class to what you are doing and there is 
+a convenience method in the class
+<tt class="classname">org.argouml.application.api.Argo</tt>
+so normal strings are written
+</p><pre class="programlisting">
+import org.argouml.application.api.*;
+...
+    String localized = Argo.localize(BUNDLE, <i class="replaceable"><tt>tag</tt></i>);
+</pre><p>
+</p></li><li><p>
+Add your "tag" and resolution in English in the non-localized 
+<tt class="filename"><i class="replaceable"><tt>Domain</tt></i>ResourceBundle.java</tt>-file.
+</p><p>
+How do I choose the tag?
+Jean-Hugues de Raigniac has made a small investigation as to how this
+is done in the java world and found that there is no real consensus on
+how to do this.
+He suggests a hierarchical choice of tags like this:
+</p><pre class="programlisting">
+   {"docpane.label.since", "Since"},
+   {"docpane.label.deprecated", "Deprecated"},
+   {"docpane.label.see", "See"},
+
+   {"stylepane.label.bounds", "Bounds"},
+   {"stylepane.label.fill", "Fill"},
+   {"stylepane.label.no-fill", "No Fill"},
+</pre><p>
+</p></li><li><p>
+Contact all the language-teams so that they can update their files.
+</p></li></ol></div><p>
+Notice that if you somewhere change the meaning of a specific
+localized thing it would be a good idea to use a new "tag" for the
+new meaning.
+This will make it easier for the translation team to
+spot the modification.
+</p><p>
+There eledgedly are tools in the java world to spot this kind of changes.
+Until we have the tools and processes in place to handle them
+it is better to rely on this simpler mechanism to guarantee correctness.
 </p></li></ul></div><p>
-
-            This list is ordered according to the priority of these
-            logging entries i.e. if logging on level WARN is enabled
-            for a particular class/package,
-            all logging entries that belong to the above levels ERROR
-            and FATAL are logged as well.
-        </p>
-        For performance reasons, it is advised to do a check before all DEBUG
-        and INFO log4j messages (see <a href="ch05s12.html#example.log4j.speed" title="Example&nbsp;5.2.&nbsp;Improving on speed/performance">Example&nbsp;5.2</a>).
-The purpose of this test is to avoid the creation of the argument.
-    </div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5693"></a>5.12.2.&nbsp;How to Create Log Entries...</h3></div></div><div></div></div><p>
-                You should <span class="emphasis"><em>not</em></span> use
-                <tt class="function">System.out.println</tt> in 
-                <span class="application">ArgoUML</span> 
-                Java Code.
-The only exception of this rule is for output in non-GUI mode
-like to print the usage message in <tt class="filename">Main.java</tt>.
-            </p><p>
-            To make log entries from within your own classes, you just
-            need to follow the three steps below:
-            </p><div class="orderedlist"><ol type="1"><li>Import the org.apache.log4j.Logger package</li><li>Get a Logger</li><li>Start Logging...</li></ol></div><p>
-        </p><div class="example"><a name="d0e5720"></a><p class="title"><b>Example&nbsp;5.1.&nbsp;For log4j version 1.2.x</b></p><pre class="programlisting">
-import org.apache.log4j.Logger;
-...
-public class <i class="replaceable"><tt>theClass</tt></i> {
-...
-    private static Logger _cat = 
-        Logger.getLogger(<i class="replaceable"><tt>theClass</tt></i>.class.getName());
-
-...
-
-    public void anExample() {
-        _cat.debug("This is a debug message.");
-        _cat.info("This is a info message.");
-        _cat.warn("This is a warning.");
-        _cat.error("This is an error.");
-        _cat.fatal("This is fatal. The program stops now working...");
-    }
-            </pre><p></p></div>
-
-        For performance reasons, a check before the actual logging statement 
-        saves the overhead of all the concatenations, data conversions and
-        temporary objects that would be created otherwise. Even if logging 
-        is turned off for DEBUG and/or INFO level.
-        <div class="example"><a name="example.log4j.speed"></a><p class="title"><b>Example&nbsp;5.2.&nbsp;Improving on speed/performance</b></p><pre class="programlisting">
-    if (_cat.isDebugEnabled()) {
-        _cat.debug("Entry number: " + i + " is " + entry[i]);
-    }
-    if (_cat.isInfoEnabled()) {
-        _cat.info("Entry number: " + i + " is " + entry[i]);
-    }
-            </pre><p></p></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
-Since this has a big impact also on the readability, 
-only use it where it is really needed 
-(like places passed several times per second or hundreds of times
-for every key the user presses).
-</p></td></tr></table></div><p>
-            For more information go to the log4j homepage at
-            <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a>.
-        </p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5745"></a>5.12.2.1.&nbsp;Reasoning around the performance issues</h4></div></div><div></div></div><p>
-Most of the log statements passed in ArgoUML are passed with logging
-turned off.
-This means that the only thing log4j should do is to determine that
-logging is off and return.
-Log4j has a real quick algorithm to determine if logging is on for
-a certain level so that is not a problem.
-</p><p>
-The problem is instead explained by noticing
-the following log statement:
-	    </p><pre class="programlisting">
-        int i;
-...
-        _cat.debug("Entry number: " + i + " is " + entry[i]);
-	    </pre><p>
-It is quite innocent looking isn't it?
-Well that is because the java compiler is very helpful 
-when it comes to handling strings 
-and will convert it to the equivalent of:
-	    </p><pre class="programlisting">
-	StringBuffer sb = new StringBuffer();
-	sb.append("Entry number: ");
-	sb.append(i);
-	sb.append(" is ");
-	sb.append(entry[i].toString());
-        _cat.debug(sb.toString());
-	    </pre><p>
-If the entry[i] is some object with a lot of calculations 
-when toString() is called and the logging statement is passed
-often some action needs to be taken.
-If the toString() methods are simple you are still 
-stuck with the overhead of creating a <tt class="classname">StringBuffer</tt>
-(and a <tt class="classname">String</tt> from the sb.toString()-statement.
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5764"></a>5.12.3.&nbsp;How to Enable Logging...</h3></div></div><div></div></div><p>
-            log4j uses the command line parameter
-            <i class="parameter"><tt>-Dlog4j.configuration = URL</tt></i>
-            to configure itself where URL points to the location of
-            your log4j configuration file.
-        </p><div class="example"><a name="d0e5772"></a><p class="title"><b>Example&nbsp;5.3.&nbsp;Various URLs</b></p><div class="programlistingco"><pre class="programlisting">
-org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>              <a name="ex.url.package"></a><img src="images/callouts/1.png" alt="1" border="0">
-
-http://localhost/shared/argouml/<span class="emphasis"><em>filename.lcf</em></span>   <a name="ex.url.link"></a><img src="images/callouts/2.png" alt="2" border="0">
-
-file://home/username/<span class="emphasis"><em>filename.lcf</em></span>              <a name="ex.url.file"></a><img src="images/callouts/3.png" alt="3" border="0">
-                </pre><div class="calloutlist"><table border="0" summary="Callout list"><tr><td width="5%" valign="top" align="left"><a href="#ex.url.package"><img src="images/callouts/1.png" alt="1" border="0"></a> </td><td valign="top" align="left">
-                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span> 
-                        within argouml.jar.
-                    </td></tr><tr><td width="5%" valign="top" align="left"><a href="#ex.url.link"><img src="images/callouts/2.png" alt="2" border="0"></a> </td><td valign="top" align="left">
-                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span> 
-                        on a remote server/localhost.
-                    </td></tr><tr><td width="5%" valign="top" align="left"><a href="#ex.url.file"><img src="images/callouts/3.png" alt="3" border="0"></a> </td><td valign="top" align="left">
-                        Reference to a configuration file <span class="emphasis"><em>filename.lcf</em></span>
-                        on your localmachine.
-                    </td></tr></table></div></div><p></p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5809"></a>5.12.3.1.&nbsp;...when running ArgoUML from the command line</h4></div></div><div></div></div><p>
-                There are currently two possibilities of running
-                <span class="application">ArgoUML</span> from the command
-                line:
-                </p><div class="orderedlist"><ol type="1"><li>
-                        Run <span class="application">ArgoUML</span> using
-                        <tt class="filename">argouml.jar</tt></li><li>
-                        Run <span class="application">ArgoUML</span> using
-                        the ant script
-                    </li></ol></div><p>
-
-                In the first case, the configuration file is specified
-                directly on the command line, whereas in the latter
-                case this parameter is specified in the
-                <tt class="filename">build.xml</tt> (which in that case
-                needs to be modified).
-                <span class="application">ArgoUML</span> is then started as
-                usual with <b class="command">./build run</b>.
-             </p><div class="example"><a name="d0e5840"></a><p class="title"><b>Example&nbsp;5.4.&nbsp;Command Line for argouml.jar</b></p><pre class="programlisting">
-[localhost:~] billy% java -Dlog4j.configuration=URL -jar argouml.jar                        
-                </pre><p></p></div><div class="example"><a name="d0e5845"></a><p class="title"><b>Example&nbsp;5.5.&nbsp;Modification of build.xml</b></p><pre class="programlisting">
-&lt;!-- =================================================================== --&gt;
-&lt;!-- Run ArgoUML from compiled sources                                   --&gt;
-&lt;!-- =================================================================== --&gt;
-&lt;target name="run" depends="compile"&gt;
-    &lt;echo message="--- Executing ${Name} ---"/&gt;
-    &lt;!-- Uncomment the sysproperty and change the value if you want --&gt;
-    &lt;java classname="org.argouml.application.Main"
-          fork="yes"
-          classpath="${build.dest};${classpath}"&gt;
-          <span class="emphasis"><em>&lt; sysproperty key="log4j.configuration"
-                       value="org/argouml/resource/<span class="emphasis"><em>filename.lcf</em></span>"&gt;&lt;/sysproperty&gt;</em></span>
-    &lt;/java&gt;
-&lt;/target&gt;
-                </pre><p></p></div></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5856"></a>5.12.3.2.&nbsp;...when running ArgoUML from WebStart</h4></div></div><div></div></div><p>
-                To view the console output, the WebStart user has to
-                set <i class="parameter"><tt>Enable Java Console</tt></i> in the
-                Java WebStart preferences.  In the same dialog, there
-                is also an option to save the Console Output to a
-                file.
-            </p><p>
-                As you cannot provide any userspecific parameters to a
-                WebStart Application from within WebStart,
-it is currently not possible to choose log4j configuration
-when running ArgoUML from Java Web Start.
-            </p></div><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5866"></a>5.12.3.3.&nbsp;...when running ArgoUML from NetBeans</h4></div></div><div></div></div><p>
-                At the time of writing this paragraph, it is not possible to 
-                set the logging configuration file on a per project basis in
-                NetBeans.
-                Instead, the Global Options of 
-                [Debbuging and Execution/Execution Types/External 
-                Execution/External Process] need to be changed.
-            </p><div class="example"><a name="d0e5871"></a><p class="title"><b>Example&nbsp;5.6.&nbsp;External Execution Property (Arguments)</b></p><pre class="programlisting">
--cp {filesystems}{:}{classpath}{:}{library} <span class="emphasis"><em>-Dlog4j.configuration=URL</em></span>
-    {classname} {arguments}
-                </pre><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5879"></a>5.12.4.&nbsp;How to Customize Logging...</h3></div></div><div></div></div><p>
-            There are some sample configuration files provided in 
-            <i class="parameter"><tt>org.argouml.resource</tt></i>. Modify these according
-            to your needs.
-            Or alternatively, you can try <a href="http://www.japhy.de/configLog4j" target="_top">
-            configLog4j</a> to assist yourself in creating a log4j configuration file.
-        </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5890"></a>5.12.5.&nbsp;References</h3></div></div><div></div></div><div class="itemizedlist"><ul type="disc"><li>
-                The log4j project homepage at 
-                    <a href="http://jakarta.apache.org/log4j/" target="_top">http://jakarta.apache.org/log4j</a></li><li>
-                The configlog4j homepage at
-                    <a href="http://www.japhy.de/configLog4j/" target="_top">http://www.japhy.de/configLog4j</a></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.11.&nbsp;Internationalization&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.13.&nbsp;JRE with utils</td></tr></table></div></body></html>
+</p></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s11.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s13.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.11.&nbsp;Help System&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.13.&nbsp;Logging</td></tr></table></div></body></html>

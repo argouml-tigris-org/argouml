@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>5.9.&nbsp;The GUI Framework</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s08.html" title="5.8.&nbsp;Other languages"><link rel="next" href="ch05s10.html" title="5.10.&nbsp;Help System"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.9.&nbsp;The GUI Framework</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s10.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="guiframework"></a>5.9.&nbsp;The GUI Framework</h2></div></div><div></div></div><a class="indexterm" name="d0e5174"></a><a class="indexterm" name="d0e5177"></a><p>
+   <title>5.9.&nbsp;The GUI Framework</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch05.html" title="Chapter&nbsp;5.&nbsp;Inside the components"><link rel="previous" href="ch05s08.html" title="5.8.&nbsp;Other languages"><link rel="next" href="ch05s10.html" title="5.10.&nbsp;Application"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">5.9.&nbsp;The GUI Framework</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch05s08.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;5.&nbsp;Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05s10.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="guiframework"></a>5.9.&nbsp;The GUI Framework</h2></div></div><div></div></div><a class="indexterm" name="d0e5347"></a><a class="indexterm" name="d0e5350"></a><p>
 Purpose - Provide an infrastructure with menus, tabs and panes available
 for the other components to fill with actions and contents.
 </p><p>
@@ -12,85 +12,10 @@ The GUI Framework is a Layer 1 component. See <a href="ch04s05.html" title="4.5.
 </p><p>
 This is implemented directly on top of Swing and Java2.
 </p><p>
-The GUI has (currently) the following main parts
-</p><div class="itemizedlist"><ul type="disc"><li><p>The menu</p></li><li><p>The toolbar</p></li><li><p>Explorer pane (Navigator pane)</p><p>Upper left.</p><p>Contains a tree of the model.</p></li><li><p>Multi editor pane</p><p>Upper right.</p><p>
-Contains the diagrams (could eventually be something else).
-</p></li><li><p>To do pane</p><p>Lower left.</p><p>To do items, different views.</p></li><li><p>Details pane</p><p>Lower right.</p><p>
-Contains a wizard from a To do item, 
-a property panel of the current object,
-some other view of the current object.
+The GUI framework provides the following options
+</p><div class="itemizedlist"><ul type="disc"><li><p>The menu with actions</p></li><li><p>The toolbar with actions</p></li><li><p>Explorer (Navigator)</p><p>
+Contains trees with configurable perspectives.
+</p></li><li><p>Tabbed pane</p><p>
+Could contain several different panes.
 </p></li></ul></div><p>
-</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5233"></a>5.9.1.&nbsp;Multi editor pane</h3></div></div><div></div></div><p>
-The multieditorpane is the pane with the diagram editor in it.
-Normally it is placed in the upper right corner of the application.
-One of the feature requests is to make the pane dockable so maybe 
-it won't be there in the future.
-</p><p>
-The multieditorpane consists of tabs that hold editors as you can see
-in the classdiagram.
-        </p><div class="mediaobject"><img src="images/cookbook/multieditorpane.gif"></div><p>
-</p><p>
-At the moment there is only one editor tab in place.
-This is the TabDiagram that shows an UMLDiagram, the target.
-</p><p>
-The TabDiagram is spawnable.
-This means that the user can double click the tab and the diagram will
-spawn as a separate window.
-</p><p>
-The target of the MultiEditorPane is set via the setTarget method 
-of the pane.
-This method is called by the setTarget method of the ProjectBrowser.
-The pane's setTarget method will call each setTarget method of each
-tab that is an instance of TabModelTarget.
-Besides setting the target of the tabs, the setTarget method also
-calls MultiEditorPane.select(Object o).
-This selects the new target on a tab. This probably belongs in 
-the setTarget method of the individual tabs and diagrams but 
-that's how it's implemented at the moment.
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="d0e5250"></a>5.9.1.1.&nbsp;How do I ...?</h4></div></div><div></div></div><p>
-</p><div class="itemizedlist"><ul type="disc"><li><p>...add a new tab to the MultiEditorPane?</p><p>
-Create a new class that's a child of JPanel and put the following 
-line in argo.ini:
-</p><pre class="programlisting">
-multi:	<i class="replaceable"><tt>fully classified name of new tab class</tt></i>
-</pre><p>
-</p></li></ul></div><p>
-</p></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5268"></a>5.9.2.&nbsp;Details pane</h3></div></div><div></div></div><p>
-Currently (May 2003) the Details pane contains several tabs:
-Property Panels (See <a href="ch05s04.html" title="5.4.&nbsp;Property panels">Section&nbsp;5.4, &#8220;Property panels&#8221;</a>,
-Critics explanations and wizards (belonging to the Critics component)
-(See <a href="ch05s02.html" title="5.2.&nbsp;Critics and other cognitive tools">Section&nbsp;5.2, &#8220;Critics and other cognitive tools&#8221;</a>),
-Documentation,
-Style,
-Source,
-Constraints (an ocl view of the current object)
-(See <a href="ch05s17.html" title="5.17.&nbsp;OCL">Section&nbsp;5.17, &#8220;OCL&#8221;</a>), 
-and
-Tagged values.
-	</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>
-It is not clear in what component
-Documentation, 
-Style, 
-Source,
-and
-Tagged values
-belong.
-</p></td></tr></table></div><p>
-</p><div class="sect3" lang="en"><div class="titlepage"><div><div><h4 class="title"><a name="howdoi_detailspanel"></a>5.9.2.1.&nbsp;How do I ...?</h4></div></div><div></div></div><p>
-	  </p><div class="itemizedlist"><ul type="disc"><li><p>...add a tab in the Details Panel?</p><p>
-Create your <tt class="classname">TabXXX</tt> class in 
-<tt class="classname">org.argouml.uml.ui</tt> by
-copying from another <tt class="filename">TabYYY.java</tt>
-(e.g. <tt class="classname">TabSrc</tt>, <tt class="classname">TabStyle</tt>).
-Then register your <tt class="classname">TabXXX</tt> in
-<tt class="filename">org/argouml/argo.ini</tt>
-by adding a line giving the compass point to place the tab.
-Like - 
-</p><pre class="programlisting">
-south: 	TabXXX
-</pre><p>
-</p></li><li><p>...remove a tab from the Details Panel?</p><p>
-Remove the line for the tab from 
-<tt class="filename">org/argouml/argo.ini</tt>.
-</p></li></ul></div><p>
-</p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.8.&nbsp;Other languages&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.10.&nbsp;Help System</td></tr></table></div></body></html>
+</p></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch05s08.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch05.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch05s10.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">5.8.&nbsp;Other languages&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;5.10.&nbsp;Application</td></tr></table></div></body></html>
