@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,6 +26,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -69,7 +70,7 @@ public class UMLClassifierRoleAssociationRoleListModel
      */
     protected Collection getChoices() {
 	Object target = getTarget();
-	if (org.argouml.model.ModelFacade.isAClassifierRole(target)) {
+	if (ModelFacade.isAClassifierRole(target)) {
 	    Object role = /*(MClassifierRole)*/ target;
 	    List list = new ArrayList();
 	    Iterator it = ModelFacade.getBases(role).iterator();
@@ -78,8 +79,9 @@ public class UMLClassifierRoleAssociationRoleListModel
 		list.addAll(CoreHelper.getHelper().getAssociatedClassifiers(base));
 	    }
 	    return list;
-	} else
-	    throw new IllegalStateException("Target not an instanceof MClassifierRole");
+	}
+
+	return Collections.EMPTY_LIST;
     }
 
     /**

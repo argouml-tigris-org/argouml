@@ -164,12 +164,9 @@ public class TabDiagram
 
         if (!(t instanceof UMLDiagram)) {
             _shouldBeEnabled = false;
-            // This is perfectly normal and happens among other things
-            // within the call to setDiagram (below).
-            LOG.debug("target is null in set target or "
-		      + "not an instance of UMLDiagram");
             return;
         }
+
         if (_target != null) {
             _target.removeAsTarget();
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,8 +53,9 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @param text
      */
     protected void setProperty(String text) {
-        if (getTarget() != null)
-            ModelFacade.setTaggedValue(getTarget(), getEventName(), text);
+	if (ModelFacade.isAModelElement(getTarget())) {
+	    ModelFacade.setTaggedValue(getTarget(), getEventName(), text);
+	}
     }
 
     /**
@@ -62,6 +63,10 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
+        if (!ModelFacade.isAModelElement(getTarget())) {
+            return "";
+        }
+
         String property = null;
         String eventName = getEventName();
         Object taggedValue = ModelFacade.getTaggedValue(getTarget(), eventName);

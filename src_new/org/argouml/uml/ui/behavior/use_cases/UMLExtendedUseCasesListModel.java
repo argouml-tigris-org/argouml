@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.model.ModelFacade;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.argouml.i18n.Translator;
@@ -66,12 +67,13 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-        if (org.argouml.model.ModelFacade.isAExtensionPoint(getTarget())) {
+        if (ModelFacade.isAExtensionPoint(getTarget())) {
             Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.USE_CASE);
             col.remove(ModelFacade.getUseCase(getTarget()));
             return col;
-        } else
-            throw new IllegalStateException("In getChoices of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
+        }
+
+	return Collections.EMPTY_LIST;
     }
 
     /**
@@ -81,8 +83,9 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
         if (ModelFacade.isAExtensionPoint(getTarget())) {
             Object base = ModelFacade.getUseCase(getTarget());
             return UseCasesHelper.getHelper().getExtendingUseCases(base);
-        } else
-            throw new IllegalStateException("In getSelected of UMLExtendedUseCasesListModel: target is not an instance of MExtensionPoint");
+        }
+
+	return Collections.EMPTY_LIST;
     }
 
     /**
@@ -128,5 +131,4 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
     protected Object getSource() {
         return ModelFacade.getUseCase(getTarget());
     }
-
 }

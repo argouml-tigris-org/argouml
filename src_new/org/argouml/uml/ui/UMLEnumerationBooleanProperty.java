@@ -45,6 +45,7 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     private Object[] _trueArg = new Object[1];
     private Object[] _falseArg = new Object[1];
     private Object/*Class*/ _enumClass;
+    private Class _objectClass;
     
     /**
      * Log4j logging category.<p>
@@ -85,6 +86,7 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
 					     wellformednessRules) {
 	super(propertyName);
 	_enumClass = enumClass;
+	_objectClass = elementClass;
 	_trueArg[0] = trueValue;
 	_falseArg[0] = falseValue;
 	Class[] noClass = {};
@@ -165,7 +167,8 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
     
     public boolean getProperty(Object element) {
         boolean state = false;
-        if (_getMethod != null && element != null) {
+        if (_getMethod != null && element != null
+	    && _objectClass.isAssignableFrom(element.getClass())) {
             try {
                 Object retval = _getMethod.invoke(element, _noArg);
                 if (retval != null
@@ -182,6 +185,5 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
         }
         return state;
     }
-    
 }
 

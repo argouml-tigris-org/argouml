@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,7 +51,10 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Object inc = /*(MInclude)*/ getTarget();
-        if (inc == null) return;
+        if (!ModelFacade.isAInclude(inc)) {
+	    return;
+	}
+
         List list = new ArrayList();
         Object ns = ModelFacade.getNamespace(inc);
         list.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
@@ -63,17 +66,18 @@ public class UMLIncludeBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
-            return ModelFacade.getBase(getTarget());
-        }
-        return null;
+        return ModelFacade.isAInclude(getTarget())
+		? ModelFacade.getBase(getTarget())
+		: null;
     }
 
     /**
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return ModelFacade.isAUseCase(element) && ModelFacade.getNamespace(element) == ModelFacade.getNamespace(getTarget());
+        return ModelFacade.isAInclude(getTarget())
+		&& ModelFacade.isAUseCase(element)
+		&& ModelFacade.getNamespace(element) == ModelFacade.getNamespace(getTarget());
     }
 
 }

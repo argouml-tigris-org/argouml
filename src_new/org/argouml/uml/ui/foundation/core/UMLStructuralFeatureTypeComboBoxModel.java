@@ -60,7 +60,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return org.argouml.model.ModelFacade.isAClassifier(element);
+        return ModelFacade.isAClassifier(element);
     }
 
     /**
@@ -133,8 +133,8 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         Object o = null;
-        if (getTarget() != null) {
-            o = org.argouml.model.ModelFacade.getType(getTarget());
+        if (ModelFacade.isAStructuralFeature(getTarget())) {
+            o = ModelFacade.getType(getTarget());
         }
         if (o == null) {
             o = " ";

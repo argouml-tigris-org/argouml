@@ -129,13 +129,15 @@ public abstract class UMLPlainTextDocument
      * @param target The target to set
      */
     public final void setTarget(Object target) {
+	UmlModelEventPump eventPump = UmlModelEventPump.getPump();
+	if (ModelFacade.isABase(_target)) {
+	    eventPump.removeModelEventListener(this, _target,
+					       getEventName());
+	    _target = null;
+	}
+
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
-            UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-            if (_target != null) {
-                eventPump.removeModelEventListener(this, _target,
-						   getEventName());
-            }
             _target = target;
             // UmlModelEventPump.getPump().removeModelEventListener(this,
             // (MBase)_target, getEventName());
@@ -241,20 +243,22 @@ public abstract class UMLPlainTextDocument
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
-    public void targetAdded(TargetEvent e) { }
+    public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
+    }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
+	setTarget(e.getNewTarget());
     }
 
 }
