@@ -25,11 +25,13 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 
 public class ActionAddAttribute extends UMLChangeAction {
@@ -68,6 +70,10 @@ public class ActionAddAttribute extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
+	if (target instanceof MInterface) {
+		return Notation.getDefaultNotation().getName().equals("Java");
+	}
+	return super.shouldBeEnabled() && 
+		target instanceof MClassifier;		
     }
 } /* end class ActionAddAttribute */
