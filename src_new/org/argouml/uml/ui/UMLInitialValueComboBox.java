@@ -22,15 +22,16 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.application.api.*;
 
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
+
 import ru.novosoft.uml.*;
-import java.awt.event.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 
@@ -58,7 +59,6 @@ public class UMLInitialValueComboBox extends JComboBox
         for (int i = 0; i < listItems.length; i++){
             addItem(listItems[i]);
         }
-
 	setEditable(true);
 
 /** handles ActionEvents from the combobox. The action listener was not handling
@@ -93,7 +93,7 @@ public class UMLInitialValueComboBox extends JComboBox
 /** on change of target (when we display the Parameter or Attribute property panel)
  *  we set the initial value of the attribute into the UMLInitialValueComboBox.
  *
- *  If the target is a parameter and the parameter has no value, then clear the
+ *  If the attribute or the parameter has no value, then clear the
  *  initialValue combobox of residual junk..this is done to keep from setting
  *  residual values into the return parameter.
  *  @author psager@tigris.org Aug. 31, 2001. Modified Sept. 05, 2001
@@ -150,10 +150,9 @@ public class UMLInitialValueComboBox extends JComboBox
  */
     public void propertySet(final MElementEvent event) {
         String eventProp = event.getName();
-//      Argo.log.info("UMLInitialValueComboBox: " + eventProp);     //--pjs--        
+//        Argo.log.info(eventProp);
         if(eventProp.equals("type")) {
             updateDefaults();
-//            update();
         }
         // update for the name field is handled in UMLTextField.java
         else if(!eventProp.equals("name")){
@@ -167,9 +166,13 @@ public class UMLInitialValueComboBox extends JComboBox
  */    
     private void update() {
         Object target = _container.getTarget();
-        if (target == null) return;
         if (target instanceof MAttribute){
             MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
+            classifier.setFeatures(classifier.getFeatures());
+        }
+        else if (target instanceof MParameter){
+            MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
+            MClassifier classifier = (MClassifier) feature.getOwner();
             classifier.setFeatures(classifier.getFeatures());
         }
     }
@@ -178,7 +181,11 @@ public class UMLInitialValueComboBox extends JComboBox
     private void updateDefaults() {
         Object target = _container.getTarget();
         if(target instanceof MAttribute) {
-            Profile profile = _container.getProfile();
+//            Profile profile = _container.getProfile();
+            update();
+        }
+        if(target instanceof MParameter){
+            update();
         }
     }
 
