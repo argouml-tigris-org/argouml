@@ -27,20 +27,41 @@ package org.argouml.uml.ui.model_management;
 import org.argouml.application.api.*;
 import org.argouml.util.ConfigLoader;
 import org.argouml.application.ArgoVersion;
+import org.argouml.model.uml.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
 
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.core.*;
+
+import javax.swing.JScrollPane;
+import javax.swing.JList;
 
 /** A property panel for UML subsystems. */
 public class PropPanelSubsystem extends PropPanelPackage
-implements PluggablePropertyPanel {
-  ////////////////////////////////////////////////////////////////
-  // instance vars
+    implements PluggablePropertyPanel {
+    ////////////////////////////////////////////////////////////////
+    // instance vars
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelSubsystem() {
-      super("Subsystem", ConfigLoader.getTabPropsOrientation());
-  }
+    private JScrollPane _featureScroll;
+
+    private static UMLClassifierFeatureListModel featureListModel =
+        new UMLClassifierFeatureListModel();
+    ////////////////////////////////////////////////////////////////
+    // contructors
+    public PropPanelSubsystem() {
+        super("Subsystem", ConfigLoader.getTabPropsOrientation());
+
+        addField(Argo.localize("UMLMenu", "label.available-features"), getFeatureScroll());
+
+        new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"), "addOperation", null);
+    
+    }
 
     public Class getClassForPanel() {
         return MSubsystemImpl.class;
@@ -52,4 +73,29 @@ implements PluggablePropertyPanel {
     public String getModuleVersion() { return ArgoVersion.getVersion(); }
     public String getModuleKey() { return "module.propertypanel.model"; }
 
-} /* end class PropPanelModel */
+    
+    
+    public void addOperation() {
+        Object target = getTarget();
+        if (target instanceof MClassifier) {
+            MOperation newOper =
+                UmlFactory.getFactory().getCore().buildOperation(
+                                                                 (MClassifier) target);
+            TargetManager.getInstance().setTarget(newOper);
+        }
+    }
+    
+    /**
+     * Returns the featureScroll.
+     * @return JScrollPane
+     */
+    public JScrollPane getFeatureScroll() {
+        if (_featureScroll == null) {
+            JList list = new UMLLinkedList(featureListModel);
+            _featureScroll = new JScrollPane(list);
+        }
+        return _featureScroll;
+    }
+
+
+} /* end class PropPanelSubsystem */
