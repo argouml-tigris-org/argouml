@@ -101,7 +101,8 @@ public class TabSpawnable extends JPanel implements Cloneable, org.argouml.swing
      * @return a copy of the frame or null if not clone-able.
      */
   public TabSpawnable spawn() {
-    JFrame f = new JFrame();
+    // JFrame f = new JFrame();
+    JDialog f = new JDialog(ProjectBrowser.TheInstance);
     f.getContentPane().setLayout(new BorderLayout());
     f.setTitle(_title);
     TabSpawnable newPanel = (TabSpawnable) clone();
