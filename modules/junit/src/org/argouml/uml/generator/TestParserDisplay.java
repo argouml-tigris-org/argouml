@@ -28,6 +28,7 @@ import java.util.*;
 
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -224,12 +225,15 @@ public class TestParserDisplay extends TestCase {
 		MAttribute attr;
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(attr, attr01, null);
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(attr, attr10, "organization");
 
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
+		attr.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(attr, attr11, "machine");
 		checkStereotype(attr, attr01, "machine");
 	}
@@ -316,12 +320,15 @@ public class TestParserDisplay extends TestCase {
 		MOperation op;
 
 		op = UmlFactory.getFactory().getCore().buildOperation();
+		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper01, null);
 
 		op = UmlFactory.getFactory().getCore().buildOperation();
+		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper02, "create");
 
 		op = UmlFactory.getFactory().getCore().buildOperation();
+		op.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
 		checkStereotype(op, oper03, "destroy");
 		checkStereotype(op, oper01, "destroy");
 		checkStereotype(op, oper04, null);
