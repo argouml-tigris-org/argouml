@@ -75,8 +75,15 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 
-	JFileChooser chooser  = OsUtil.getFileChooser (p.getURL().getFile());
+        JFileChooser chooser = null;
 	URL url = p.getURL();
+        if ((url != null) && (url.getFile().length()>0)) {
+	    chooser  = OsUtil.getFileChooser (url.getFile());
+        }
+        if (chooser == null) {
+	    chooser  = OsUtil.getFileChooser ();
+        }
+        
 	if (url != null) {
 	    chooser.setSelectedFile(new File(url.getFile()));
 	}
