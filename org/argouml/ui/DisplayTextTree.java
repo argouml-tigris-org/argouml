@@ -96,9 +96,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
         setRootVisible(false);
         setShowsRootHandles(true);
 
-        // can save a significant amount of rendering time.
-        this.setLargeModel(true); // works for now.
-        //this.setRowHeight(18); // can't use this yet
+        this.setRowHeight(18); 
 
         showStereotype =
             Configuration.getBoolean(Notation.KEY_SHOW_STEREOTYPES, false);
