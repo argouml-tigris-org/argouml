@@ -47,7 +47,6 @@ import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.PropPanelModifiers;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
@@ -77,17 +76,11 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
     	addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-	PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class mclass = (Class) ModelFacade.USE_CASE;
-
-	// since when do we know abstract usecases?
-	//    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-	//               Translator.localize("UMLMenu", "checkbox.abstract-lc"), this);
-        mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
-                Translator.localize("UMLMenu", "checkbox.final-lc"), this);
-        mPanel.add("isRoot", mclass, "isRoot", "setRoot",
-                   localize("root"), this);
-	addField(Translator.localize("UMLMenu", "label.modifiers"), mPanel);
+	
+	// Modifiers
+        _modifiersPanel.remove(0);
+        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        
 
 	JList extensionPoints = new UMLMutableLinkedList(new UMLUseCaseExtensionPointListModel(), null, ActionNewUseCaseExtensionPoint.SINGLETON);
 	addField(Translator.localize("UMLMenu", "label.extension-points"),
