@@ -1,9 +1,7 @@
 #!/bin/sh
 # $Id$
 
-# The purpose of this shellscript is to make all the release work
-#
-# This will hopefully grow
+# The purpose of this shellscript is to make all the release work.
 
 # Check that JAVA_HOME is set.
 if test ! -x $JAVA_HOME/bin/javac
@@ -31,8 +29,10 @@ read freezetag
 mkdir "$freezetag" || exit 1;
 cd "$freezetag"
 echo "Give the tag name of the release tag (like VERSION_X_Y_Z):"
-read releasetag
-echo "Give the name of the release (like X.Y.Z):"
+releasetag=`echo $freezetag | sed 's/_F$//'`
+echo "Calculated the release tag to $releasetag" 
+echo "Give the name of the release (like X.Y.Z)."
+echo "This must match release number given in default.properties: "
 read releasename
 
 echo $BUILD Checking out
@@ -59,8 +59,14 @@ then
     read garbage
 fi
 
-echo "Copy the jimi file to tools/lib! and press return."
-read garbage
+JIMI=tools/lib/JimiProClasses.zip
+if test -f ../../../argouml/$JIMI
+then
+    cp ../../../argouml/$JIMI ../$JIMI
+else
+    echo "Copy the jimi file to tools/lib! and press return."
+    read garbage
+fi
 ( cd ../documentation && ../tools/ant-1.4.1/bin/ant pdf ) &
 
 # 4. Test the release!
