@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,31 +22,21 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: CrConsiderSingleton.java
 // Classes: CrConsiderSingleton
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 5 Feb 2002: Jeremy Bennett (mail@jeremybennett.com). Code factored by use of
-// static methods in central org.argouml.cognitive.critics.CriticUtils utility
-// class. <<singleton>> allowed as well as <<Singleton>> for consistency with
-// CrSingletonViolated.
-
 
 package org.argouml.pattern.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.critics.*;
+
+// Use Model through ModelFacade.
+import org.argouml.model.ModelFacade;
 
 /**
  * <p>A critic to detect when a class can never have more than one instance (of
@@ -106,8 +97,7 @@ public class CrConsiderSingleton extends CrUML {
     /**
      * <p>The trigger for the critic.</p>
      *
-     * <p>First check we are actually stereotyped "Singleton" (or we will
-     * accept "singleton").</p>
+     * <p>First check we are already a Singleton.</p>
      *
      * <p>Otherwise plausible candidates for the Singleton design pattern are
      * classes with no instance variables (i.e. non-static attributes) and no
@@ -128,32 +118,42 @@ public class CrConsiderSingleton extends CrUML {
 
         // Only look at classes
 
-        if (!(dm instanceof MClass)) {
+        if (!(ModelFacade.isAClass(dm))) {
             return NO_PROBLEM;
         }
 
-        // Now we know it is a class, handle the object as a class
-
-        MClass cls = (MClass) dm;
-	if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
+	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
-        if (CriticUtils.hasSingletonStereotype(cls)) {
+        if (ModelFacade.isSingleton(dm)) {
             return NO_PROBLEM;
         }
 
-        if (CriticUtils.hasInstanceVariables(cls)) {
-            return NO_PROBLEM;
-        }
+	// If there is an attribute with instance scope => no problem
+	Iterator iter = ModelFacade.getAttributes(dm);
 
-        if (CriticUtils.hasOutgoingAssociations(cls)) {
-            return NO_PROBLEM;
-        }
-        else {
-            return PROBLEM_FOUND;
-        }
+	while (iter.hasNext()) {
+	    if (ModelFacade.isInstanceScope(iter.next()))
+		return NO_PROBLEM;
+	}
+
+
+	// If there is an outgoing association => no problem
+	Iterator ends = ModelFacade.getAssociationEnds(dm);
+
+	while (ends.hasNext()) {
+	    Iterator otherends = 
+		ModelFacade.getOtherAssociationEnds(ends.next());
+
+	    while (otherends.hasNext()) {
+		if (ModelFacade.isNavigable(otherends.next()))
+		    return NO_PROBLEM;
+	    }
+	}
+
+	return PROBLEM_FOUND;
     }
 
 } /* end class CrConsiderSingleton */
