@@ -27,31 +27,41 @@
 
 <!--
 
-This is the final part of the tutorial. We show how code can be generated from
-the design
+This is the final part of the tutorial.
+We show how code can be generated from the design i.e. code generation.
+We also include the reverse engineering parts.
 
 -->
 
 <chapter id="ch.tut.build">
-  <title>Build (To be written)</title>
+  <title>
+Code Generation, Reverse Engineering, and
+Round Trip Engineering
+</title>
 
   <sect1>
     <title>Introduction</title>
 
     <para>
 We now have our design fully specified.
-With the right simulator we
-      could actually execute the design and see if it works. &argouml; does not
-      provide such functionality, but this functionality has been provided in
-      alternative tools.</para>
 
-    <para>&argouml; does allow you to generate code from the design. In the
-      Build Phase take the design we have and supplement it with code for the
-      detailed actions of the classes and their states.</para>
+With the right simulator we could actually execute the design
+and see if it works.
+(&argouml; does not provide such functionality, but this functionality
+has been provided in alternative tools.)
+</para>
 
-    <para>Central to this will be our System Architecture. It is this
-      specification that provides the framework against which all our code will
-      operate.</para>
+    <para>
+&argouml; does allow you to generate code from the design
+in several different programming languages.
+We, most likely, already in the design had a programming language in mind
+because some of the design considerations are to care for a specific language.
+</para>
+
+    <para>
+The output of this process is the set of files
+that constitute the program that solves the problem.
+</para>
 
     <para>Once again the <emphasis>recursive</emphasis>, and
       <emphasis>iterative</emphasis> nature of our process means we will come
@@ -60,93 +70,356 @@ Build phase many times in the future.
 </para>
 
     <para>
-This chapter is a little different from those that went before. 
-UML
-      itself is a notation for design. There is no new UML notation to
-      understand here.</para>
+There is also another side to this and that is the reverse engineering side.
+If we happen to have an old program that we would like to examine
+then we could take the files and reverse engineer them to create a design.
+This can be used when trying to understand some not so well documented
+program or as a quick start for the design work.
+</para>
+
+    <para>
+The process of going back and forth between doing changes in the design
+followed by a code generation
+and then doing changes in the code followed by a reverse engineering
+using for every change, the best possible perspective,
+is called Round-trip Engineering.
+</para>
+
   </sect1>
 
-  <!-- Take the reader through the build process. This will be quite high
+  <!-- Take the reader through the code generation. This will be quite high
        level in the current version of the document. -->
 
   <sect1>
-    <title>The Build Process (To be written)</title>
+    <title>Code Generation</title>
 
-    <remark>To be written&hellip;</remark>
+    <indexterm>
+      <primary>Code Generation</primary>
+    </indexterm>
+
+    <para>
+The output of the Code Generation is the completed program.
+Depending on the contents of the design, we could also generate
+Unit test cases.
+</para>
+
+    <!-- What documents do we need. Use Cases as basis for Verification and
+         User Documentation. -->
+
+    <para>
+To do the work we need the design model, containing both static and dynamic
+descriptions of the program.
+</para>
 
     <sect2>
-      <title>Output of the Build Process (To be written)</title>
+      <title>Generating Code from the Static Structure</title>
 
-      <remark>To be written&hellip;</remark>
+      <indexterm>
+        <primary>Generating Code</primary>
+        <secondary>from the Static Structure</secondary>
+      </indexterm>
 
-      <!-- The Code -->
+      <para>
+It is rather straightforward to do this generation, at least as long
+as we do it for an object-oriented language.
+This is some of the basic rules:
+<itemizedlist>
+          <listitem>
+            <para>
+A class will become a class.
+</para>
+            <para>
+In some target languages (like java, c++) they also become files
+and compilation units.
+</para>
+          </listitem>
 
-      <sect3>
-        <title>Code (To be written)</title>
+          <listitem>
+            <para>
+A generalization will become an inheritance.
+</para>
+            <para>
+If the target language does not support inheritance and we didn't 
+address this during the design,
+some special conversions are required to solve this.
+</para>
+          </listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+          <listitem>
+            <para>
+An attribute will become a member variable.
+</para>
+          </listitem>
 
-      <!-- What documents do we need. Use Cases as basis for Verification and
-           User Documentation. -->
+          <listitem>
+            <para>
+A navigable association will become a member variable.
+</para>
 
-      <sect3>
-        <title>Documents (To be written)</title>
+            <para>
+Depending on
+ the target language,
+ target platform, and
+ the association multiplicities
+this will be
+ a pointer,
+ a reference,
+ a collection class,
+ an entry in some table or map.
+</para>
+          </listitem>
 
-        <remark>To be written&hellip;</remark>
-      </sect3>
+          <listitem>
+            <para>
+A non-abstract operation in a class will become a method.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An abstract operation in a class will become an abstract method.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An in parameter in an operation will become a parameter in the method.
+</para>
+            <para>
+For simple types (int, boolean), this is the normal case.
+For C++, these will probably const classes.
+For Java, this cannot be enforced for classes.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An out or in/out parameter in an operation will become a
+referenced parameter in the method.
+</para>
+            <para>
+For C++, these will be referenced non-const parameters.
+For Java classes, this is the default.
+Simple types (int, boolean) must, in java, be converted to an object of a
+corresponding class (Integer, Boolean).
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+The visibilities of the attributes, associations, and operations
+will become visibilities on the member variables or methods.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+Packages will become directories, namespaces, or both.
+</para>
+          </listitem>
+
+        </itemizedlist>
+</para>
+    </sect2>
+
+
+    <sect2>
+      <title>Generating code from interactions and state machines</title>
+
+      <indexterm>
+        <primary>Generating Code</primary>
+        <secondary>from Sequence Diagrams</secondary>
+      </indexterm>
+
+      <indexterm>
+        <primary>Generating Code</primary>
+        <secondary>from Interactions</secondary>
+      </indexterm>
+ 
+      <indexterm>
+        <primary>Generating Code</primary>
+        <secondary>from Collaboration Diagrams</secondary>
+      </indexterm>
+
+      <indexterm>
+        <primary>Generating Code</primary>
+        <secondary>from Statechart Diagrams</secondary>
+      </indexterm>
+
+     <para>
+This conversion is not as straight-forward as the conversion of
+the static structure.
+It is much more depending on the target language and target platform.
+</para>
+
+      <para>
+In general it is only possible to say the following for interactions:
+<itemizedlist>
+          <listitem>
+            <para>
+A message is converted into a function call.
+</para>
+
+            <para>
+The class of the recipient will have to have a function
+with the correct name and signature.
+</para>
+            
+            <para>
+The sender function in the class of the sender
+will have a call to the function in the recipient.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An asynchronous message is converted to either
+posting a message to be handled by some other thread or
+a function call to a function that starts a new thread.
+</para>
+          </listitem>
+
+        </itemizedlist>
+</para>
+
+      <para>
+The following describes one possible way to generate state machines:
+
+<itemizedlist>
+
+          <listitem>
+            <para>
+A State Machine is generated to a set of member variables
+that each method in this class refer to when deciding behavior.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+A State is generated to a closed set of combination of values
+on these member variables.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An Event is generated as a call to a member method that
+can change the state.
+</para>
+
+            <para>
+These methods would then typically have one big switch statement
+splitting on the current state.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+A Guard is generated to an <symbol>if</symbol> statement in 
+the event member method in the branch for the correct state.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+A Transition is generated as an assignment of some state variable.
+</para>
+          </listitem>
+
+          <listitem>
+            <para>
+An Action is generated as a function call.
+</para>
+          </listitem>
+
+        </itemizedlist>
+</para>
     </sect2>
   </sect1>
 
-  <!-- Now show how to do in in Argo/UML. -->
+  <!-- Now show how to do in in ArgoUML. -->
 
   <sect1>
-    <title>Adding Code to &argouml; (To be written)</title>
+    <title>Code Generation in &argouml;</title>
 
     <!-- Code for classes -->
 
     <sect2>
-      <title>Classes (To be written)</title>
+      <title>Static Structure</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>
+Most of the generation can be done automatically
+by the provided language modules.
+Files are generated in a directory hierarchy
+that need to be filled in by the actual code.
+</para>
     </sect2>
 
     <!-- Code for Actions -->
 
     <sect2>
-      <title>Actions (To be written)</title>
+      <title>Interactions and state diagrams</title>
 
-      <remark>To be written&hellip;</remark>
+      <para>
+There is currently no support for this in &argouml;, not for any language.
+</para>
     </sect2>
   </sect1>
 
-  <!-- Now illustrate these techniques with the Case Study. -->
+  <!-- Reverse engineering. -->
 
   <sect1>
-    <title>Case Study (To be written)</title>
+    <title>Reverse Engineering</title>
 
-    <sect2>
-      <title>Coding for Classes (To be written)</title>
+    <indexterm>
+      <primary>Reverse Engineering</primary>
+    </indexterm>
 
-      <remark>To be written&hellip;</remark>
+    <para>
+Reverse Engineering is used for two main purposes:
 
-    </sect2>
+<orderedlist>
 
-    <sect2>
-      <title>Coding Actions (To be written)</title>
+        <listitem>
+          <para>
+To get previously developed classed into the model to build upon.
+</para>
+        </listitem>
 
-      <remark>To be written&hellip;</remark>
 
-    </sect2>
+        <listitem>
+          <para>
+To get a UML view of previously developed classes to understand how they work.
+</para>
+        </listitem>
+
+      </orderedlist>
+</para>
+
+    <para>
+Essentially this does the opposite of Code Generation.
+</para>
   </sect1>
 
-  <!-- And round off with a summary -->
-
   <sect1>
-    <title>Case Study (To be written)</title>
+    <title>Round-Trip Engineering</title>
 
-    <remark>To be written&hellip;</remark>
+    <indexterm>
+      <primary>Round-Trip Engineering</primary>
+    </indexterm>
 
+    <para>
+Round-Trip Engineering makes it possible to switch perspective
+while doing the design.
+Create some classes in a class diagram.
+Write some code for some of the operations or functions using your favorite
+editor.
+Move the operations from one class to another in the class diagram...
+</para>
+
+    <para>
+&argouml; currently does not support this for any language.
+</para>
   </sect1>
 
 </chapter>
