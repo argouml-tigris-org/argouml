@@ -23,18 +23,15 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 
-import org.tigris.gef.presentation.*;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.text.Document;
+
+import org.tigris.gef.presentation.FigRRect;
 
 public class StylePanelFigRRect extends StylePanelFig {
 

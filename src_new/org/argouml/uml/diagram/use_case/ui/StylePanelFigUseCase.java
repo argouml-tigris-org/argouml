@@ -32,20 +32,16 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
 
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import org.argouml.ui.StylePanelFig;
 
 /**
  * <p>A class to provide a style panel for use cases.</p>

@@ -23,21 +23,16 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ItemEvent;
 
-import org.tigris.gef.util.*;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.event.DocumentEvent;
 
-import org.argouml.ui.*;
+import org.argouml.ui.StylePanelFig;
+import org.tigris.gef.util.Converter;
 
 public class StylePanelFigMessage extends StylePanelFig {
 
