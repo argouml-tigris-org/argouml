@@ -45,8 +45,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigForkState extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigForkState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -60,15 +59,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The main label on this icon. */
-//  FigText _name;
-
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
   FigRect _bigPort;
-
-  // add other Figs here as needed
   FigRect _head;
 
   ////////////////////////////////////////////////////////////////
@@ -98,6 +89,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -118,50 +112,21 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());    
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
 
+  public void setLineColor(Color col) { _head.setLineColor(col); }
+  public Color getLineColor() { return _head.getLineColor(); }
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigForkState got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
+  public void setFillColor(Color col) { _head.setFillColor(col); }
+  public Color getFillColor() { return _head.getFillColor(); }
 
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigForkState got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-     // updateText();
-      // you may have to update more than just the text
-    }
-  }
+  public void setFilled(boolean f) { }
+  public boolean getFilled() { return true; }
 
-  /** Update the text labels */
-  protected void updateText() { }
-
-  public void dispose() {
-    //System.out.println("disposing FigForkState");
-    Element elmt = (Element) getOwner();
-    if (elmt == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    StateVertex sv = (StateVertex) getOwner();
-    try { sv.setParent(null); }
-    catch (PropertyVetoException pve) { }
-    super.dispose();
-  }
+  public void setLineWidth(int w) { _head.setLineWidth(w); }
+  public int getLineWidth() { return _head.getLineWidth(); }
 
   static final long serialVersionUID = 6702818473439087473L;
 

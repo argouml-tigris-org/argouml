@@ -53,7 +53,7 @@ implements Serializable, TreeModel, Cloneable {
 
   static {
     // this are meant for pane-1 of NavigatorPane, they all have
-    // Project as their only prerequiste.  Thesee trees tend to be 3
+    // Project as their only prerequiste.  These trees tend to be 3
     // to 5 levels deep and sometimes have recursion.
     NavPerspective packageCentric = new NavPerspective("Package-centric");
     NavPerspective diagramCentric = new NavPerspective("Diagram-centric");
@@ -83,14 +83,14 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoProjectModel());
     packageCentric.addSubTreeModel(new GoModelToDiagram());
     packageCentric.addSubTreeModel(new GoModelToElements());
-    packageCentric.addSubTreeModel(new GoClassifierToBeh());
     packageCentric.addSubTreeModel(new GoClassifierToStr());
+    packageCentric.addSubTreeModel(new GoClassifierToBeh());
 
     diagramCentric.addSubTreeModel(new GoProjectDiagram());
     diagramCentric.addSubTreeModel(new GoDiagramToNode());
     diagramCentric.addSubTreeModel(new GoDiagramToEdge());
-    diagramCentric.addSubTreeModel(new GoClassifierToBeh());
     diagramCentric.addSubTreeModel(new GoClassifierToStr());
+    diagramCentric.addSubTreeModel(new GoClassifierToBeh());
 
     inheritanceCentric.addSubTreeModel(new GoProjectModel());
     inheritanceCentric.addSubTreeModel(new GoModelToBaseElements());
@@ -138,6 +138,7 @@ implements Serializable, TreeModel, Cloneable {
     stateCentric.addSubTreeModel(new GoModelToClass());
     stateCentric.addSubTreeModel(new GoElementToMachine());
     stateCentric.addSubTreeModel(new GoMachineToState());
+    stateCentric.addSubTreeModel(new GoStateToSubstate());
     stateCentric.addSubTreeModel(new GoStateToIncomingTrans());
     stateCentric.addSubTreeModel(new GoStateToOutgoingTrans());
 

@@ -47,8 +47,11 @@ public abstract class StateVertex extends ModelElementImpl {
     if (_parent == x) return;
     fireVetoableChange("parent", _parent, x);
     CompositeState oldParent = _parent;
+    if (oldParent != null) {
+      _parent = null;
+      oldParent.removeSubstate(this);
+    }
     _parent = x;
-    if (oldParent != null) oldParent.removeSubstate(this);
     if (_parent != null) _parent.addSubstate(this);
   }
 
@@ -92,6 +95,30 @@ public abstract class StateVertex extends ModelElementImpl {
   public String dbgString() {
     String s = getClass().getName() + (getName() == null?"(anon)":getName().getBody());
     return s;
+  }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    setParent(null);
+    return super.prepareForTrash();
+    //needs-more-work
+  }
+
+  public Vector alsoTrash() {
+    Vector res = super.alsoTrash();
+    if (_incoming != null) {
+      for (int i = 0; i < _incoming.size(); i++)
+	res.addElement(_incoming.elementAt(i));
+    }
+    if (_outgoing != null) {
+      for (int i = 0; i < _outgoing.size(); i++)
+	res.addElement(_outgoing.elementAt(i));
+    }
+    return res;
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
   }
 
   static final long serialVersionUID = -8081077916116617988L;

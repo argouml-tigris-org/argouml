@@ -57,20 +57,6 @@ public class FigLink extends FigEdgeModelElement {
   // needs-more-work: should edit something...
   protected boolean canEdit(Fig f) { return false; }
 
-  public void dispose() {
-    Link l = (Link) getOwner();
-    if (l == null) return;
-//     try {
-//       // needs-more-work: remove from Instances
-//       l.setLinkEnd(new Vector());
-//     }
-//     catch (PropertyVetoException pve) {
-//       System.out.println("could not remove Link");
-//     }
-    super.dispose();
-  }
-
-
 
 } /* end class FigLink */
 

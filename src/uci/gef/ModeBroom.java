@@ -52,6 +52,7 @@ public class ModeBroom extends Mode {
   public final int EVEN_SPACE = 0;
   public final int PACK = 1;
   public final int SPREAD = 2;
+  public final int ORIG = 3;
 
   public final Font HINT_FONT = new Font("Dialog", Font.PLAIN, 9);
 
@@ -67,6 +68,7 @@ public class ModeBroom extends Mode {
 
   private int _dir = UNDEFINED;
   private boolean _magnetic = false;
+  private boolean _movable = true;
   private boolean _draw = false;
 
   private Fig _touched[] = new Fig[MAX_TOUCHED];
@@ -130,7 +132,6 @@ public class ModeBroom extends Mode {
   /** On mouse dragging, stretch the selection rectangle. */
   public void mouseDragged(MouseEvent me) {
     me.consume();
-    _magnetic = me.isShiftDown();
     Enumeration figs;
     _lastMX = me.getX();
     _lastMY = me.getY();
@@ -180,31 +181,40 @@ public class ModeBroom extends Mode {
 
     switch (_dir) {
     case UPWARD:
-      y1 = y2 = Math.min(y, _start.y);
-      if (_magnetic) y1 = y2 = y;
+      if (_movable) {
+	y1 = y2 = Math.min(y, _start.y);
+	if (_magnetic) y1 = y2 = y;
+      }
       x1 = Math.min(x1, _lastMX - _broomMargin / 2);
       x2 = Math.max(x2, _lastMX + _broomMargin / 2);
       break;
     case DOWNWARD:
+      if (_movable) {
 	y1 = y2 = Math.max(y, _start.y);
 	if (_magnetic) y1 = y2 = y;
-	x1 = Math.min(x1, _lastMX - _broomMargin / 2);
-	x2 = Math.max(x2, _lastMX + _broomMargin / 2);
-	break;
+      }
+      x1 = Math.min(x1, _lastMX - _broomMargin / 2);
+      x2 = Math.max(x2, _lastMX + _broomMargin / 2);
+      break;
     case RIGHTWARD:
-      x1 = x2 = Math.max(x, _start.x);
-      if (_magnetic) x1 = x2 = x;
+      if (_movable) {
+	x1 = x2 = Math.max(x, _start.x);
+	if (_magnetic) x1 = x2 = x;
+      }
       y1 = Math.min(y1, _lastMY - _broomMargin / 2);
       y2 = Math.max(y2, _lastMY + _broomMargin / 2);
       break;
     case LEFTWARD:
+      if (_movable) {
 	x1 = x2 = Math.min(x, _start.x);
 	if (_magnetic) x1 = x2 = x;
-	y1 = Math.min(y1, _lastMY - _broomMargin / 2);
-	y2 = Math.max(y2, _lastMY + _broomMargin / 2);
-	break;
+      }
+      y1 = Math.min(y1, _lastMY - _broomMargin / 2);
+      y2 = Math.max(y2, _lastMY + _broomMargin / 2);
+      break;
     }
 
+    if (_movable) {
     Vector nonMovingEdges = new Vector();
     Vector movingEdges = new Vector();
     for (i = 0; i < _nTouched; i++) {
@@ -254,7 +264,7 @@ public class ModeBroom extends Mode {
       Fig f = _touched[i];
       if (f instanceof FigNode) ((FigNode) f).updateEdges();
     }
-
+    }
     _selectRect.reshape(x1 - 4, y1 - 4, x2 - x1 + 8, y2 - y1 + 8);
     _editor.damaged(_selectRect);
     _hint = null;
@@ -304,22 +314,33 @@ public class ModeBroom extends Mode {
   public void keyPressed(KeyEvent ke) {
     super.keyPressed(ke);
     if (ke.isConsumed()) return;
-    if (KeyEvent.VK_SPACE == ke.getKeyCode()) {
-      doDistibute(false, ke.isAltDown());
-      ke.consume();
-      _bigDamageRect.setLocation(x1 - 200, y1 - 200);
-      _editor.damaged(_bigDamageRect);
-      _editor.damaged(_selectRect);
+    if (KeyEvent.VK_ENTER == ke.getKeyCode() ||
+	KeyEvent.VK_TAB == ke.getKeyCode()) {
+      _magnetic = !_magnetic;
     }
+    else if (KeyEvent.VK_SPACE == ke.getKeyCode()) {
+      doDistibute(false, ke.isShiftDown());
+      ke.consume();
+    }
+    else {
+      //System.out.println("key code is " + ke.getKeyCode());
+      return;
+    }
+    _bigDamageRect.setLocation(x1 - 200, y1 - 200);
+    _editor.damaged(_bigDamageRect);
+    _editor.damaged(_selectRect);
   }
 
   ////////////////////////////////////////////////////////////////
   // actions
 
   public void doDistibute(boolean alignToGrid, boolean doCentering) {
+    _movable = false;
     Vector figs = _LastTouched;
     if (figs == null) figs = touching();
     int request = 0;
+    int size = figs.size();
+
     if (_distributeMode == EVEN_SPACE || _distributeMode == SPREAD) {
       request = CmdDistribute.V_SPACING;
       if (_dir == UPWARD || _dir == DOWNWARD)
@@ -331,38 +352,55 @@ public class ModeBroom extends Mode {
 	request = CmdDistribute.H_PACK;
     }
 
-    CmdDistribute d = new CmdDistribute(request);
-    d.setArg("figs", figs);
-    if (_distributeMode == SPREAD) d.setArg("bbox", _selectRect);
-    else if (_distributeMode == EVEN_SPACE && _origBBox != null)
-      d.setArg("bbox", _origBBox);
-    d.doIt();
+//     if (_distributeMode == EVEN_SPACE && _origBBox == null) {
+//       for (int i = 0; i < size; i++) {
+// 	Fig f = (Fig) figs.elementAt(i);
+// 	_origLocation[i] = f.getLocation();
+//       }
+//     }
+    if (_distributeMode == ORIG) {
+      for (int i = 0; i < size; i++) {
+	Fig f = (Fig) figs.elementAt(i);
+	if (_dir == UPWARD || _dir == DOWNWARD)
+	  f.setLocation(_origX[i], f.getY());
+	else
+	  f.setLocation(f.getX(), _origY[i]);
+      }
+    }
+    else {
+      CmdDistribute d = new CmdDistribute(request);
+      d.setArg("figs", figs);
+      if (_distributeMode == SPREAD) d.setArg("bbox", _selectRect);
+      else if (_distributeMode == EVEN_SPACE && _origBBox != null)
+	d.setArg("bbox", _origBBox);
+      d.doIt();
 
-    if (doCentering) {
-      int centerRequest = CmdAlign.ALIGN_H_CENTERS;
-      if (_dir == UPWARD || _dir == DOWNWARD)
-	centerRequest = CmdAlign.ALIGN_V_CENTERS;
-      CmdAlign a = new CmdAlign(centerRequest);
-      a.setArg("figs", figs);
-      a.doIt();
+      if (doCentering) {
+	int centerRequest = CmdAlign.ALIGN_H_CENTERS;
+	if (_dir == UPWARD || _dir == DOWNWARD)
+	  centerRequest = CmdAlign.ALIGN_V_CENTERS;
+	CmdAlign a = new CmdAlign(centerRequest);
+	a.setArg("figs", figs);
+	a.doIt();
+      }
+
+      if (alignToGrid) {
+	CmdAlign a = new CmdAlign(CmdAlign.ALIGN_TO_GRID);
+	a.setArg("figs", figs);
+	a.doIt();
+      }
+      if (_distributeMode == EVEN_SPACE && _origBBox == null)
+	_origBBox = d.getLastBBox();
     }
 
-    if (alignToGrid) {
-      CmdAlign a = new CmdAlign(CmdAlign.ALIGN_TO_GRID);
-      a.setArg("figs", figs);
-      a.doIt();
-    }
-
-    if (_distributeMode == EVEN_SPACE && _origBBox == null)
-      _origBBox = d.getLastBBox();
     if (_distributeMode == EVEN_SPACE) _hint =  "Space evenly";
     else if (_distributeMode == PACK) _hint =   "Pack tightly";
     else if (_distributeMode == SPREAD) _hint = "Spread out";
+    else if (_distributeMode == ORIG) _hint =   "Original";
     else _hint = "(internal prog error)";
     if (doCentering) _hint += " + center";
     if (alignToGrid) _hint += " + snap";
-    _distributeMode = (_distributeMode + 1) % 3;
-
+    _distributeMode = (_distributeMode + 1) % 4;
   }
 
   public Vector touching() {
@@ -374,14 +412,14 @@ public class ModeBroom extends Mode {
     _LastTouched = figs;
     return figs;
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // user feedback methods
-  
+
   /** Reply a string of instructions that should be shown in the
    *  statusbar when this mode starts. */
   public String instructions() {
-    return "Push objects around. Shift key pulls.  Space key distributes.";
+    return "Push objects around. Retrun toggles pulling. Space key distributes.";
   }
 
   ////////////////////////////////////////////////////////////////
@@ -405,12 +443,12 @@ public class ModeBroom extends Mode {
       g.fillRect(x1, y1, x2-x1, y2-y1+4);
       g.drawLine(_lastMX - bm, y2+4, _lastMX - bm, y2+8);
       g.drawLine(_lastMX + bm-1, y2+4, _lastMX + bm-1, y2+8);
-      g.fillRect((x1 + x2)/2 -2, y1, 4, 14);
+      if (_movable) g.fillRect((x1 + x2)/2 -2, y1, 4, 14);
       if (_hint != null) g.drawString(_hint, (x1 + x2)/2 + 5, y1 + 15);
       break;
     case DOWNWARD:
       g.fillRect(x1, y1-4, x2-x1, y2-y1+4);
-      g.fillRect((x1 + x2)/2 -2, y1-14, 4, 14);
+      if (_movable) g.fillRect((x1 + x2)/2 -2, y1-14, 4, 14);
       g.drawLine(_lastMX - bm, y1-4, _lastMX - bm, y1-8);
       g.drawLine(_lastMX + bm-1, y1-4, _lastMX + bm-1, y1-8);
       if (_hint != null) g.drawString(_hint, (x1 + x2)/2 + 5, y1 - 8);
@@ -419,14 +457,14 @@ public class ModeBroom extends Mode {
       g.fillRect(x1-4, y1, x2-x1+4, y2-y1);
       g.drawLine(x1-4, _lastMY - bm, x1-8, _lastMY - bm);
       g.drawLine(x1-4, _lastMY + bm-1, x1-8, _lastMY + bm-1);
-      g.fillRect(x1 - 14, (y1 + y2)/2 - 2, 14, 4);
-      if (_hint != null) g.drawString(_hint, x1 - 100, (y1 + y2)/2 - 10);
+      if (_movable) g.fillRect(x1 - 14, (y1 + y2)/2 - 2, 14, 4);
+      if (_hint != null) g.drawString(_hint, x1 - 70, (y1 + y2)/2 - 10);
       break;
     case LEFTWARD:
       g.fillRect(x1, y1, x2-x1+4, y2-y1);
       g.drawLine(x2+4, _lastMY - bm, x2+8, _lastMY - bm);
       g.drawLine(x2+4, _lastMY + bm-1, x2+8, _lastMY + bm-1);
-      g.fillRect(x1, (y1 + y2)/2 - 2, 14, 4);
+      if (_movable) g.fillRect(x1, (y1 + y2)/2 - 2, 14, 4);
       if (_hint != null) g.drawString(_hint, x2 + 5, (y1 + y2)/2 - 10);
       break;
     }

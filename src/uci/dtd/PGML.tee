@@ -32,15 +32,18 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Rectangle">
 <![CDATA[
-x='<ocl>self.x</ocl>' y='<ocl>self.y</ocl>'
-w='<ocl>self.width</ocl>' h='<ocl>self.height</ocl>'
+x='<ocl>self.x</ocl>'
+y='<ocl>self.y</ocl>'
+w='<ocl>self.width</ocl>'
+h='<ocl>self.height</ocl>'
 ]]>
 </template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="java.awt.Point">
 <![CDATA[
-x='<ocl>self.x</ocl>' y='<ocl>self.y</ocl>'
+x='<ocl>self.x</ocl>'
+y='<ocl>self.y</ocl>'
 ]]>
 </template>
 
@@ -90,8 +93,10 @@ FILL_AND_STROKE
 <path
 FILL_AND_STROKE
 >
-  <moveto x='<ocl>self.x1</ocl>' y='<ocl>self.y1</ocl>'>
-  <lineto x='<ocl>self.x2</ocl>' y='<ocl>self.y2</ocl>'>
+  <moveto x='<ocl>self.x1</ocl>'
+          y='<ocl>self.y1</ocl>'>
+  <lineto x='<ocl>self.x2</ocl>'
+          y='<ocl>self.y2</ocl>'>
 </path>
 ]]>
 </template>
@@ -100,7 +105,8 @@ FILL_AND_STROKE
 <template class="uci.gef.FigPoly">
 <![CDATA[
 <path>
-  <moveto x='<ocl>self.x1</ocl>' y='<ocl>self.y1</ocl>'>
+  <moveto x='<ocl>self.x1</ocl>'
+          y='<ocl>self.y1</ocl>'>
   <lineto <ocl>self.points</ocl>>
 </path>
 ]]>

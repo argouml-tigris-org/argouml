@@ -189,14 +189,34 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** Start a transaction that damages all selected Fig's */
   public void startTrans() {
-    Enumeration ss = _selections.elements();
-    while (ss.hasMoreElements()) ((Selection)ss.nextElement()).startTrans();
+    Vector affected = new Vector();
+    int selSize = _selections.size();
+    for (int i =0; i < selSize; ++i) {
+      Selection s = (Selection) _selections.elementAt(i);
+      addEnclosed(affected, s.getContent());
+    }
+    int size = affected.size();
+    for (int i =0; i < size; ++i) {
+      Fig f = (Fig) affected.elementAt(i);
+      f.startTrans();
+      // lost Selection.startTrans()!
+    }
   }
 
   /** End a transaction that damages all selected Fig's */
   public void endTrans() {
-    Enumeration sels = _selections.elements();
-    while (sels.hasMoreElements()) ((Selection) sels.nextElement()).endTrans();
+    Vector affected = new Vector();
+    int selSize = _selections.size();
+    for (int i =0; i < selSize; ++i) {
+      Selection s = (Selection) _selections.elementAt(i);
+      addEnclosed(affected, s.getContent());
+    }
+    int size = affected.size();
+    for (int i =0; i < size; ++i) {
+      Fig f = (Fig) affected.elementAt(i);
+      f.endTrans();
+      // lost Selection.endTrans()!
+    }
   }
 
   /** Paint all selection objects */
@@ -280,16 +300,22 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
 
   /** When Manager selections are moved, each of them is moved */
   public void translate(int dx, int dy) {
+    Vector affected = new Vector();
     Vector nonMovingEdges = new Vector();
     Vector movingEdges = new Vector();
     Vector nodes = new Vector();
-    int size = _selections.size();
+    int selSize = _selections.size();
+    for (int i =0; i < selSize; ++i) {
+      Selection s = (Selection) _selections.elementAt(i);
+      addEnclosed(affected, s.getContent());
+    }
+    int size = affected.size();
     for (int i =0; i < size; ++i) {
-      Selection s = (Selection)_selections.elementAt(i);
-      if (!(s.getContent() instanceof FigNode))
-	s.translate(dx, dy);
+      Fig f = (Fig) affected.elementAt(i);
+      if (!(f instanceof FigNode))
+	f.translate(dx, dy); // lost selection.translate() !
       else {
-	FigNode fn = (FigNode) s.getContent();
+	FigNode fn = (FigNode) f;
 	nodes.addElement(fn);
 	fn.superTranslate(dx, dy);
 	Vector figEdges = fn.getFigEdges();
@@ -311,6 +337,18 @@ implements Serializable, KeyListener, MouseListener, MouseMotionListener {
     for (int i = 0; i < fnSize; i++) {
       FigNode fn = (FigNode) nodes.elementAt(i);
       fn.updateEdges();
+    }
+  }
+
+  protected void addEnclosed(Vector affected, Fig f) {
+    if (!affected.contains(f)) {
+      affected.addElement(f);
+      Vector enclosed = f.getEnclosedFigs();
+      if (enclosed != null) {
+	int size = enclosed.size();
+	for (int i = 0; i < size; ++i)
+	  addEnclosed(affected, (Fig) enclosed.elementAt(i));
+      }
     }
   }
 

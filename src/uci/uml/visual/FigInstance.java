@@ -92,6 +92,8 @@ public class FigInstance extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new Instance"; }
+
   public Object clone() {
     FigInstance figClone = (FigInstance) super.clone();
     Vector v = figClone.getFigs();

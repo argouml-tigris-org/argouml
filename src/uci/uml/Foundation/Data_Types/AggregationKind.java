@@ -28,10 +28,10 @@ import java.util.*;
 
 public class AggregationKind implements java.io.Serializable {
   public static final AggregationKind UNSPEC = new AggregationKind("unspec");
-  public static final AggregationKind AGG = new AggregationKind("Aggregate");
+  public static final AggregationKind AGG = new AggregationKind("aggregate");
   public static final AggregationKind COMPOSITE =
-  new AggregationKind("Composite"); 
-  public static final AggregationKind NONE = new AggregationKind("None");
+  new AggregationKind("composite");
+  public static final AggregationKind NONE = new AggregationKind("none");
 
   public static final AggregationKind[] POSSIBLE_AGGS = {
     UNSPEC, AGG, COMPOSITE, NONE };

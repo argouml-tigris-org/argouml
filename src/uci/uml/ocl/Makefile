@@ -32,11 +32,11 @@ include ../../Makefile.config
 GEN = 
 
 CLASSES = \
-	TemplateReader.class 
+	TemplateReader.class \
+	OCLEvaluator.class \
+	OCLExpander.class \
+	TemplateRecord.class 
 
-#OCLEvaluator.class \
-#TemplateExpander.class \
-#
 
 all: $(GEN) $(CLASSES)
 

@@ -36,6 +36,8 @@ public class ClassifierRole extends Classifier {
   public Multiplicity _multiplicity;
   public Vector _associationEndRole;
   public Vector _message;
+  public String _baseString = "";
+  public Classifier _base;
   public Vector _availableFeature;
   public Collaboration _collaboration;
 
@@ -47,6 +49,37 @@ public class ClassifierRole extends Classifier {
   public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
     fireVetoableChange("multiplicity", _multiplicity, x);
     _multiplicity = x;
+  }
+
+  public String getBaseString() { return _baseString; }
+  public void setBaseString(String s) throws PropertyVetoException {
+    fireVetoableChange("basestring", _baseString, s);
+    _baseString = s;
+  }
+
+  public Classifier getBase() { return _base; }
+  public void setBase(Classifier x) throws PropertyVetoException {
+    fireVetoableChange("base", _base, x);
+    _base = x;
+  }
+
+  public Vector getAssociationEnd() {
+    return getAssociationEndRole();
+  }
+  public void setAssociationEnd(Vector x) throws PropertyVetoException {
+    setAssociationEndRole(x);
+  }
+  public void addAssociationEnd(AssociationEnd ae) throws PropertyVetoException {
+    if (ae instanceof AssociationEndRole)
+      addAssociationEndRole((AssociationEndRole)ae);
+    else
+      super.addAssociationEnd(ae);
+  }
+  public void removeAssociationEnd(AssociationEnd ae) throws PropertyVetoException {
+    if (ae instanceof AssociationEndRole)
+      removeAssociationEndRole((AssociationEndRole)ae);
+    else
+      super.addAssociationEnd(ae);
   }
 
   public Vector getAssociationEndRole() {

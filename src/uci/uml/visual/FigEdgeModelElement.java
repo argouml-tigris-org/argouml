@@ -113,9 +113,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Stack getPopUpActions() {
-    Stack popUpActions = super.getPopUpActions();
-    popUpActions.push(new CmdUMLProperties());
+  public Vector getPopUpActions() {
+    Vector popUpActions = super.getPopUpActions();
+    popUpActions.addElement(new CmdUMLProperties());
     return popUpActions;
   }
 
@@ -164,8 +164,11 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
    *  and update the model.  This class handles the name, subclasses
    *  should override to handle other text elements. */
   protected void textEdited(FigText ft) throws PropertyVetoException {
-    if (ft == _name)
-      ((ModelElement)getOwner()).setName(new Name(ft.getText()));
+    if (ft == _name) {
+      ModelElement me = (ModelElement) getOwner();
+      if (me == null) return;
+      me.setName(new Name(ft.getText()));
+    }
   }
 
   protected boolean canEdit(Fig f) { return true; }
@@ -197,6 +200,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     if (_name != null && canEdit(_name)) _name.keyPressed(ke);
     //ke.consume();
 //     ModelElement me = (ModelElement) getOwner();
+//     if (me == null) return;
 //     try { me.setName(new Name(_name.getText())); }
 //     catch (PropertyVetoException pve) { }
   }
@@ -210,6 +214,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 //     _name.keyTyped(ke);
 //     //ke.consume();
 //     ModelElement me = (ModelElement) getOwner();
+//      if (me == null) return;
 //     try { me.setName(new Name(_name.getText())); }
 //     catch (PropertyVetoException pve) { }
   }
@@ -244,17 +249,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     String stereoStr = ((Stereotype) stereos.elementAt(0)).getName().getBody();
     if (stereoStr.length() == 0) _stereo.setText("");
     else _stereo.setText("<<" + stereoStr + ">>");
-  }
-
-  /** needs-more-work: When the user deletes a ModelElement, it is
-   *  moved to a special trash container. */
-  public void dispose() {
-    //System.out.println("disposing FigEdgeModelElement");
-    ModelElement me = (ModelElement) getOwner();
-    if (me == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(me);
-    super.dispose();
   }
 
   public void setOwner(Object own) {

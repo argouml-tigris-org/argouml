@@ -99,6 +99,8 @@ public class FigActor extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new Actor"; }
+
   public Object clone() {
     FigActor figClone = (FigActor) super.clone();
     Vector v = figClone.getFigs();
@@ -112,6 +114,9 @@ public class FigActor extends FigNodeModelElement {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -120,44 +125,37 @@ public class FigActor extends FigNodeModelElement {
   /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return false; }
 
+  public void setLineColor(Color col) {
+    _head.setLineColor(col);
+    _body.setLineColor(col);
+    _arms.setLineColor(col);
+    _leftLeg.setLineColor(col);
+    _rightLeg.setLineColor(col);
+  }
+  public Color getLineColor() { return _head.getLineColor(); }
 
+  public void setFillColor(Color col) { _head.setFillColor(col); }
+  public Color getFillColor() { return _head.getFillColor(); }
 
-//   /** If the UML meta-model object changes state. Update the Fig.  But
-//    *  we need to do it as a "DelayedVetoableChangeListener", so that
-//    *  model changes complete before we update the screen. */
-//   public void vetoableChange(PropertyChangeEvent pce) {
-//     // throws PropertyVetoException 
-//     System.out.println("FigActor got a change notification!");
-//     Object src = pce.getSource();
-//     if (src == getOwner()) {
-//       DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-//       SwingUtilities.invokeLater(delayedNotify);
-//     }
-//   }
+  public void setFilled(boolean f) { _head.setFilled(f); }
+  public boolean getFilled() { return _head.getFilled(); }
 
-//   /** The UML meta-model object changed. Now update the Fig to show
-//    *  its current  state. */
-//   public void delayedVetoableChange(PropertyChangeEvent pce) {
-//     // throws PropertyVetoException 
-//     System.out.println("FigActor got a delayed change notification!");
-//     Object src = pce.getSource();
-//     if (src == getOwner()) {
-//       updateText();
-//       // you may have to update more than just the text
-//     }
-//   }
+  public void setLineWidth(int w) {
+    _head.setLineWidth(w);
+    _body.setLineWidth(w);
+    _arms.setLineWidth(w);
+    _leftLeg.setLineWidth(w);
+    _rightLeg.setLineWidth(w);
+  }
+  public int getLineWidth() { return _head.getLineWidth(); }
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers
 
   /** Update the text labels */
   protected void modelChanged() {
     super.modelChanged();
   }
 
-//   public void dispose() {
-//     if (!(getOwner() instanceof Element)) return;
-//     Element elmt = (Element) getOwner();
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     p.moveToTrash(elmt);
-//     super.dispose();
-//   }
 
 } /* end class FigActor */

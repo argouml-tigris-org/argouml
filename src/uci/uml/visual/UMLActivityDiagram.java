@@ -58,7 +58,7 @@ public class UMLActivityDiagram extends UMLDiagram {
   new CmdSetMode(ModeBroom.class, "Broom");
 
   protected static Action _actionState =
-  new CmdCreateNode(uci.uml.Behavioral_Elements.State_Machines.ActionState.class, "ActionState");
+  new CmdCreateNode(ActionState.class, "ActionState");
 
   // start state, end state, forks, joins, etc.
   protected static Action _actionStartPseudoState =
@@ -75,6 +75,9 @@ public class UMLActivityDiagram extends UMLDiagram {
 
   protected static Action _actionJoinPseudoState =
   new ActionCreatePseudostate(PseudostateKind.JOIN, "Join");
+
+  protected static Action _actionHistoryPseudoState =
+  new ActionCreatePseudostate(PseudostateKind.SHALLOW_HISTORY, "History");
 
   protected static Action _actionTransition =
   new CmdSetMode(ModeCreatePolyEdge.class,
@@ -150,11 +153,14 @@ public class UMLActivityDiagram extends UMLDiagram {
 
     _toolBar.add(_actionState);
     _toolBar.add(_actionTransition);
+    _toolBar.addSeparator();
+
     _toolBar.add(_actionStartPseudoState);
     _toolBar.add(_actionFinalPseudoState);
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
+    _toolBar.add(_actionHistoryPseudoState);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.InternalTransition);

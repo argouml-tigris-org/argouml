@@ -4,7 +4,8 @@
   <!ELEMENT macro (#PCDATA)>
   <!ATTLIST macro name ID #REQUIRED>
   <!ELEMENT template (#PCDATA)>
-  <!ATTLIST template class CDATA #REQUIRED>
+  <!ATTLIST template class CDATA #REQUIRED
+                     guard CDATA #IMPLIED>
 ]>
 <!-- This is XMI.tee, for Argo/UML models to generate XMI -->
 <!-- files.  'tee' = Template with Embedded Expressions. -->
@@ -30,11 +31,11 @@
 <!DOCTYPE XMI SYSTEM 'uml.dtd' >
 <XMI>
   <XMI.header>
-    <XMI.metamodel name='uml' version='1.1'/>
     <XMI.documentation>
       <XMI.exporter>Argo/UML</XMI.exporter>
       <XMI.exporterVersion>0.6.0</XMI.exporterVersion> 
     </XMI.documentation>
+    <XMI.metamodel name='uml' version='1.1'/>
   </XMI.header>
   <XMI.content>
     <ocl>self.currentModel</ocl>
@@ -51,19 +52,20 @@
 <!-- ignored meta-classes and associations: provision, requirement,  -->
 <!-- templates, template parameters -->
 
+<!-- - - - - - - - Chapter 4   - - - - - - - - - -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelElementProperties">
 <![CDATA[
-  <name><ocl>self.name</ocl></name>
-  <visibility XMI.value = '<ocl>self.visibility</ocl>'/>
+<name><ocl>self.name.body</ocl></name>
+<visibility XMI.value = '<ocl>self.visibility</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelElementCompositions">
 <![CDATA[
-  <taggedValue> <ocl>self.taggedValue</ocl> </taggedValue>
+<taggedValue> <ocl>self.taggedValue</ocl> </taggedValue>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring behavior -->
@@ -71,7 +73,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelElementAssociations">
 <![CDATA[
-  <stereotype> <ocl>self.stereotype</ocl> </stereotype>
+<stereotype> <ocl>self.stereotype</ocl> </stereotype>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring a bunch of things -->
@@ -79,15 +81,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="FeatureProperties">
 <![CDATA[
-  ModelElementProperties
-  <ownerScope XMI.value='<ocl>self.ownerScope</ocl>'/>
+ModelElementProperties
+<ownerScope XMI.value='<ocl>self.ownerScope</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="FeatureAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 <!-- ignoring owner, it is clear from nesting -->
@@ -95,31 +97,31 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="FeatureCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="BehavioralFeatureProperties">
 <![CDATA[
-  FeatureProperties
-  <isQuery XMI.value='<ocl>self.isQuery</ocl>'/>
+FeatureProperties
+<isQuery XMI.value='<ocl>self.isQuery</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="BehavioralFeatureAssociations">
 <![CDATA[
-  FeatureAssociations
-  <raisedException> <XMI.reference target='<ocl>self.raisedException.id</ocl>'/> </raisedException>
+FeatureAssociations
+<raisedException> <XMI.reference target='<ocl>self.raisedException.id</ocl>'/> </raisedException>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="BehavioralFeatureCompositions">
 <![CDATA[
-  FeatureCompositions
-  <parameter> <ocl>self.parameter</ocl> </parameter>
+FeatureCompositions
+<ocl>self.parameter</ocl>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring statemachine and ActivityModel -->
@@ -127,42 +129,56 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="NamespaceProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="NamespaceAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="NamespaceCompositions">
 <![CDATA[
-  ModelElementCompositions
-  <ownedElement>
-    <ocl>self.modelElements</ocl>
-  </ownedElement>
+ModelElementCompositions
+<ocl>self.ownedElement</ocl>
 ]]>
 </macro>
-<!-- needs-more-work: bug: ownedElement tag should go around each ME -->
+
+<template class="uci.uml.Model_Management.ElementOwnership"
+          guard="self.modelElement.isLegalXMI">
+<![CDATA[
+<ownedElement>
+  <ocl>self.modelElement</ocl>
+</ownedElement>
+]]>
+</template>
+
+<template class="uci.uml.Model_Management.ElementOwnership"
+          guard="self.modelElement.isNotLegalXMI">
+<![CDATA[
+]]>
+</template>
+
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizableElementProperties">
 <![CDATA[
-      <isAbstract XMI.value='<ocl>self.isAbstract</ocl>'/>
-      <isLeaf XMI.value='<ocl>self.isLeaf</ocl>'/>
-      <isRoot XMI.value='<ocl>self.isRoot</ocl>'/>
+NamespaceProperties
+<isAbstract XMI.value='<ocl>self.isAbstract</ocl>'/>
+<isLeaf XMI.value='<ocl>self.isLeaf</ocl>'/>
+<isRoot XMI.value='<ocl>self.isRoot</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizableElementAssociations">
 <![CDATA[
-  NamespaceAssociations
+NamespaceAssociations
 ]]>
 </macro>
 <!-- ignoring generalizations and specializations.  I let -->
@@ -171,23 +187,25 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizableElementCompositions">
 <![CDATA[
-  NamespaceCompositions
+NamespaceCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierProperties">
 <![CDATA[
-  GeneralizableElementProperties
+GeneralizableElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierAssociations">
 <![CDATA[
-  GeneralizableElementAssociations
-  <realization> <xmi.reference target='<ocl>self.realization.subtype.id</ocl>'/> </realization>
-  <specialization> <xmi.reference target='<ocl>self.specialization.supertype.id</ocl>'/> </specialization>
+GeneralizableElementAssociations
+<realization> <XMI.reference target='<ocl>self.realization.subtype.id</ocl>'/> </realization>
+<!-- realizations is: <ocl>self.realization.subtype.name.body</ocl> -->
+<specification> <XMI.reference target='<ocl>self.specification.supertype.id</ocl>'/> </specification>
+<!-- specification is: <ocl>self.specification.supertype.name.body</ocl> -->
 ]]>
 </macro>
 <!-- needs-more-work: ignoring participant and associationEnd -->
@@ -195,9 +213,9 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierCompositions">
 <![CDATA[
-  GeneralizableElementCompositions
-  <feature> <ocl>self.behavioralFeature</ocl> </feature>
-  <feature> <ocl>self.structuralFeature</ocl> </feature>
+GeneralizableElementCompositions
+<ocl>self.behavioralFeature</ocl>
+<ocl>self.structuralFeature</ocl>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring method and reception -->
@@ -206,10 +224,10 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StructuralFeatureProperties">
 <![CDATA[
-  FeatureProperties
-  <changeable XMI.value='<ocl>self.changeable</ocl>'/>
-  <multiplicity><ocl>self.multiplicity</ocl></multiplicity>
-  <targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
+FeatureProperties
+<changeable XMI.value='<ocl>self.changeable</ocl>'/>
+<multiplicity><ocl>self.multiplicity</ocl></multiplicity>
+<targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
 ]]>
 </macro>
 <!-- needs-more-work: check feature multiplicity in parser -->
@@ -217,47 +235,43 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StructuralFeatureAssociations">
 <![CDATA[
-  FeatureAssociations
-  <type> <xmi.reference target='<ocl>self.type.id</ocl>'/> </type>
+FeatureAssociations
+<type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+<!-- Type is: <ocl>self.type.name.body</ocl> -->
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StructuralFeatureCompositions">
 <![CDATA[
-  FeatureCompositions
+FeatureCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationProperties">
 <![CDATA[
-  GeneralizableElementProperties
+GeneralizableElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationAssociations">
 <![CDATA[
-  GeneralizableElementAssociations
+GeneralizableElementAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationCompositions">
 <![CDATA[
-  GeneralizableElementCompositions
-  <associationEnds>
-    <connection>
-      <ocl>self.connection</ocl>
-    </connection>
-  </associationEnds>
+GeneralizableElementCompositions
+  <ocl>self.connection</ocl>
 ]]>
 </macro>
-<!-- needs-more-work: bug: connection tag should go around each assocEnd -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.Assocaiation">
+<template class="uci.uml.Foundation.Core.Association">
 <![CDATA[
 <Association XMI.id='<ocl>self.id</ocl>'>
   AssociationProperties
@@ -271,15 +285,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassProperties">
 <![CDATA[
-  ClassifierProperties
-  <isActive XMI.value = 'false'/>  
+ClassifierProperties
+<isActive XMI.value = 'false'/>  
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassAssociations">
 <![CDATA[
-  ClassifierAssociations
+ClassifierAssociations
 ]]>
 </macro>
 
@@ -305,31 +319,26 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationClassProperties">
 <![CDATA[
-  ClassifierProperties
-  <isActive XMI.value = 'false'/>  
+ClassifierProperties
+<isActive XMI.value = 'false'/>  
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationClassAssociations">
 <![CDATA[
-  ClassifierAssociations
-  <type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+ClassifierAssociations
+<type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationClassCompositions">
 <![CDATA[
-  ClassifierCompositions
-  <associationEnds>
-    <connection>
-      <ocl>self.connection</ocl>
-    </connection>
-  </associationEnds>
+ClassifierCompositions
+  <ocl>self.connection</ocl>
 ]]>
 </macro>
-<!-- needs-more-work: bug: connection tag should go around each assocEnd-->
 
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
@@ -348,21 +357,22 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndProperties">
 <![CDATA[
-  ModelElementProperties
-  <isNavigable XMI.value='<ocl>self.isNavigable</ocl>'/>
-  <isOrdered XMI.value='<ocl>self.isOrdered</ocl>'/>
-  <aggregation XMI.value='<ocl>self.aggregation</ocl>'/>
-  <multiplicity><ocl>self.multiplicity</ocl></multiplicity>
-  <changeable XMI.value='<ocl>self.changeable</ocl>'/>
-  <targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
+ModelElementProperties
+<isNavigable XMI.value='<ocl>self.isNavigable</ocl>'/>
+<isOrdered XMI.value='<ocl>self.isOrdered</ocl>'/>
+<aggregation XMI.value='<ocl>self.aggregation</ocl>'/>
+<multiplicity><ocl>self.multiplicity</ocl></multiplicity>
+<changeable XMI.value='<ocl>self.changeable</ocl>'/>
+<targetScope XMI.value='<ocl>self.targetScope</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+ModelElementAssociations
+<type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+<!-- Type is: <ocl>self.type.name.body</ocl> -->
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -370,19 +380,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndCompositions">
 <![CDATA[
-  ModelElementCompositions
-  <qualifier> <XMI.reference target='<ocl>self.qualifier.id</ocl>'/> </qualifier>
+ModelElementCompositions
+<qualifier> <XMI.reference target='<ocl>self.qualifier.id</ocl>'/> </qualifier>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.uml.Foundation.Core.AssociationEnd">
 <![CDATA[
-<AssociationEnd XMI.id = '<ocl>self.id</ocl>'>
-  AssociationEndProperties
-  AssociationEndAssociations
-  AssociationEndCompositions
-</AssociationEnd>
+<connection>
+  <AssociationEnd XMI.id = '<ocl>self.id</ocl>'>
+    AssociationEndProperties
+    AssociationEndAssociations
+    AssociationEndCompositions
+  </AssociationEnd>
+</connection>
 ]]>
 </template>
 
@@ -391,15 +403,17 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AttributeProperties">
 <![CDATA[
-  StructuralFeatureProperties
-  <initialValue><ocl>self.initialValue</ocl></initialValue>
+StructuralFeatureProperties
+<initialValue>
+  <ocl>self.initialValue.body.body</ocl>
+</initialValue>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AttributeAssociations">
 <![CDATA[
-  StructuralFeatureAssociations
+StructuralFeatureAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -407,18 +421,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AttributeCompositions">
 <![CDATA[
-  StructuralFeatureCompositions
+StructuralFeatureCompositions
 ]]>
 </macro>
+<!-- needs-more-work: ignoring qualifier -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.uml.Foundation.Core.Attribute">
 <![CDATA[
-<Attribute XMI.id = '<ocl>self.id</ocl>'>
-  AttributeProperties
-  AttributeAssociations
-  AttributeCompositions
-</Attribute>
+<feature>
+  <Attribute XMI.id = '<ocl>self.id</ocl>'>
+    AttributeProperties
+    AttributeAssociations
+    AttributeCompositions
+  </Attribute>
+</feature>
 ]]>
 </template>
 
@@ -426,15 +443,17 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ConstraintProperties">
 <![CDATA[
-  ModelElementProperties
-  <body><ocl>self.body</ocl></body>
+ModelElementProperties
+<body>
+  <ocl>self.body</ocl>
+</body>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ConstraintAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring constrained element, constrained stereotype -->
@@ -442,7 +461,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ConstraintCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
@@ -462,14 +481,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DataTypeProperties">
 <![CDATA[
-  ClassifierProperties
+ClassifierProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DataTypeAssociations">
 <![CDATA[
-  ClassifierAssociations
+ClassifierAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -477,7 +496,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DataTypeCompositions">
 <![CDATA[
-  ClassifierCompositions
+ClassifierCompositions
 ]]>
 </macro>
 
@@ -497,17 +516,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DependencyProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
+<description>
+</description>
 ]]>
 </macro>
-<!-- needs-more-work: ignoring description -->
+<!-- needs-more-work: subbing out description -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DependencyAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <client> <XMI.reference target='<ocl>self.client.id</ocl>'/></client>
-  <supplier> <XMI.reference target='<ocl>self.supplier.id</ocl>'/></supplier>
+ModelElementAssociations
+<client> <XMI.reference target='<ocl>self.client.id</ocl>'/></client>
+<!-- Client is: <ocl>self.client.name.body</ocl> -->
+<supplier> <XMI.reference target='<ocl>self.supplier.id</ocl>'/></supplier>
+<!-- Supplier is: <ocl>self.supplier.name.body</ocl> -->
 ]]>
 </macro>
 <!-- needs-more-work: ignoring owningDependency, subDependencies -->
@@ -515,7 +538,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="DependencyCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 <!-- needs-more-work: ignoring subDependencies -->
@@ -536,17 +559,22 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizationProperties">
 <![CDATA[
-  ModelElementProperties
-  <discriminator><ocl>self.discriminator.body</ocl></discriminator>
+ModelElementProperties
+<discriminator>
+  <ocl>self.discriminator.body</ocl>
+</discriminator>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizationAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <subtype> <XMI.reference target='<ocl>self.subtype.id</ocl>'/> </subtype>
-  <supertype> <XMI.reference target='<ocl>self.supertype.id</ocl>'/> </supertype>
+ModelElementAssociations
+<subtype> <XMI.reference target='<ocl>self.subtype.id</ocl>'/> </subtype>
+<!-- subtype is: <ocl>self.subtype.name.body</ocl> -->
+
+<supertype> <XMI.reference target='<ocl>self.supertype.id</ocl>'/> </supertype>
+<!-- supertype is: <ocl>self.supertype.name.body</ocl> -->
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -554,7 +582,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GeneralizationCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
@@ -574,14 +602,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InterfaceProperties">
 <![CDATA[
-  ClassifierProperties
+ClassifierProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InterfaceAssociations">
 <![CDATA[
-  ClassifierAssociations
+ClassifierAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -589,7 +617,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InterfaceCompositions">
 <![CDATA[
-  ClassifierCompositions
+ClassifierCompositions
 ]]>
 </macro>
 
@@ -610,19 +638,19 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="OperationProperties">
 <![CDATA[
-  BehavioralFeatureProperties
-  <concurrency XMI.value='<ocl>self.concurrency</ocl>'/>
-  <isPolymorphic XMI.value='<ocl>self.isPolymorphic</ocl>'/>
-  <operationSpecification>
-    <ocl>self.operationSpecification</ocl>
-  </operationSpecification>
+BehavioralFeatureProperties
+<concurrency XMI.value='<ocl>self.concurrency</ocl>'/>
+<isPolymorphic XMI.value='<ocl>self.isPolymorphic</ocl>'/>
+<operationSpecification>
+  <ocl>self.specification</ocl>
+</operationSpecification>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="OperationAssociations">
 <![CDATA[
-  BehavioralFeatureAssociations
+BehavioralFeatureAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring realization, occurence -->
@@ -637,11 +665,13 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.uml.Foundation.Core.Operation">
 <![CDATA[
-<Operation XMI.id = '<ocl>self.id</ocl>'>
-  OperationProperties
-  OperationAssociations
-  OperationCompositions
-</Operation>
+<feature>
+  <Operation XMI.id = '<ocl>self.id</ocl>'>
+    OperationProperties
+    OperationAssociations
+    OperationCompositions
+  </Operation>
+</feature>
 ]]>
 </template>
 
@@ -650,17 +680,20 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ParameterProperties">
 <![CDATA[
-  ModelElementProperties
-  <defaultValue><ocl>self.defaultValue</ocl></defaultValue>
-  <kind xmi.value='<ocl>self.kind</ocl>'/>
+ModelElementProperties
+<defaultValue>
+  <ocl>self.defaultValue</ocl>
+</defaultValue>
+<kind XMI.value='<ocl>self.kind</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ParameterAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+ModelElementAssociations
+<type> <XMI.reference target='<ocl>self.type.id</ocl>'/> </type>
+<!-- Type is: <ocl>self.type.name.body</ocl> -->
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -668,18 +701,20 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ParameterCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <template class="uci.uml.Foundation.Core.Parameter">
 <![CDATA[
-<Parameter XMI.id = '<ocl>self.id</ocl>'>
-  ParameterProperties
-  ParameterAssociations
-  ParameterCompositions
-</Parameter>
+<parameter>
+  <Parameter XMI.id = '<ocl>self.id</ocl>'>
+    ParameterProperties
+    ParameterAssociations
+    ParameterCompositions
+  </Parameter>
+</parameter>
 ]]>
 </template>
 
@@ -705,18 +740,20 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StereotypeProperties">
 <![CDATA[
-  GeneralizableElementProperties
-  <baseClass><ocl>self.baseClass.name</ocl></baseClass>
-  <icon/>
+GeneralizableElementProperties
+<baseClass>
+  <ocl>self.baseClass.body</ocl>
+</baseClass>
+<icon/>
 ]]>
 </macro>
-<!-- needs-more-work: ignoring icon -->
+<!-- needs-more-work: stubbing out icon -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StereotypeAssociations">
 <![CDATA[
-  GeneralizableElementAssociations
-  <stereotypeConstraint><ocl>self.stereotypeConstraint</ocl></stereotypeConstraint>
+GeneralizableElementAssociations
+<stereotypeConstraint><ocl>self.stereotypeConstraint</ocl></stereotypeConstraint>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring extendedElement -->
@@ -724,8 +761,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StereotypeCompositions">
 <![CDATA[
-  GeneralizableElementCompositions
-  <requiredTag><ocl>self.requiredTag</ocl></requiredTag>
+GeneralizableElementCompositions
+<requiredTag><ocl>self.requiredTag</ocl></requiredTag>
 ]]>
 </macro>
 
@@ -765,7 +802,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 <!-- needs-more-work: ignoring recurrence, target, isAsynchronous, script -->
@@ -773,8 +810,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <request> <XMI.reference target='<ocl>self.request.id</ocl>'/> </request>
+ModelElementAssociations
+<request> <XMI.reference target='<ocl>self.request.id</ocl>'/> </request>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -782,7 +819,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 <!-- needs-more-work: ignoring actualArgument -->
@@ -792,8 +829,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InstanceProperties">
 <![CDATA[
-  ModelElementProperties
-  <classifier> <XMI.reference target='<ocl>self.classifier.id</ocl>'/> </classifier>
+ModelElementProperties
+<classifier> <XMI.reference target='<ocl>self.classifier.id</ocl>'/> </classifier>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring linkEnd -->
@@ -801,7 +838,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InstanceAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -810,7 +847,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InstanceCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
@@ -822,27 +859,27 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionSequenceProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionSequenceAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionSequenceCompositions">
 <![CDATA[
-  ModelElementCompositions
-  <action><ocl>self.action</ocl></action>
+ModelElementCompositions
+<action><ocl>self.action</ocl></action>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.ActionSequence">
+<template class="uci.uml.Behavioral_Elements.Common_Behavior.ActionSequence">
 <![CDATA[
 <ActionSequence XMI.id = '<ocl>self.id</ocl>'>
   ActionSequenceProperties
@@ -857,12 +894,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ArgumentProperties">
 <![CDATA[
-  <argumentValue><ocl>self.argumentValue</ocl></argumentValue>
+<argumentValue>
+  <ocl>self.argumentValue</ocl>
+</argumentValue>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.Argument">
+<template class="uci.uml.Behavioral_Elements.Common_Behavior.Argument">
 <![CDATA[
 <Argument XMI.id = '<ocl>self.id</ocl>'>
   ArgumentProperties
@@ -883,15 +922,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="LinkProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="LinkAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <association> <XMI.reference target='<ocl>self.association.id</ocl>'/> </association>
+ModelElementAssociations
+<association> <XMI.reference target='<ocl>self.association.id</ocl>'/> </association>
 ]]>
 </macro>
 
@@ -899,7 +938,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="LinkCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 <!-- ignoring linkRole -->
@@ -920,26 +959,26 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ObjectProperties">
 <![CDATA[
-  InstanceProperties
+InstanceProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ObjectAssociations">
 <![CDATA[
-  InstanceAssociations
+InstanceAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ObjectCompositions">
 <![CDATA[
-  InstanceCompositions
+InstanceCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Behavioral_Elements.Common_Behavior.Object">
+<template class="uci.uml.Behavioral_Elements.Common_Behavior.MMObject">
 <![CDATA[
 <Object XMI.id = '<ocl>self.id</ocl>'>
   ObjectProperties
@@ -962,14 +1001,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UninterpretedActionProperties">
 <![CDATA[
-  ActionProperties
+ActionProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UninterpretedActionAssociations">
 <![CDATA[
-  ActionAssociations
+ActionAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -977,8 +1016,10 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UninterpretedActionCompositions">
 <![CDATA[
-  ActionCompositions
-  <body><ocl>self.body</ocl><body>
+ActionCompositions
+<body>
+  <ocl>self.body</ocl>
+</body>
 ]]>
 </macro>
 
@@ -1002,15 +1043,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndRoleProperties">
 <![CDATA[
-  AssociationEndProperties
+AssociationEndProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndRoleAssociations">
 <![CDATA[
-  AssociationEndAssociations
-  <base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
+AssociationEndAssociations
+<base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
 ]]>
 </macro>
 
@@ -1018,12 +1059,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationEndRoleCompositions">
 <![CDATA[
-  AssociationEndCompositions
+AssociationEndCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.AssociationEndRole">
+<template class="uci.uml.Behavioral_Elements.Collaborations.AssociationEndRole">
 <![CDATA[
 <AssociationEndRole XMI.id = '<ocl>self.id</ocl>'>
   AssociationEndRoleProperties
@@ -1038,7 +1079,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationRoleProperties">
 <![CDATA[
-  AssociationProperties
+AssociationProperties
 ]]>
 </macro>
 <!-- needs-more-work: ignoreing multiplicity -->
@@ -1046,8 +1087,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationRoleAssociations">
 <![CDATA[
-  AssociationAssociations
-  <base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
+AssociationAssociations
+<base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
 ]]>
 </macro>
 
@@ -1055,12 +1096,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="AssociationRoleCompositions">
 <![CDATA[
-  AssociationCompositions
+AssociationCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.AssociationRole">
+<template class="uci.uml.Behavioral_Elements.Collaborations.AssociationRole">
 <![CDATA[
 <AssociationRole XMI.id = '<ocl>self.id</ocl>'>
   AssociationRoleProperties
@@ -1075,7 +1116,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierRoleProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 <!-- needs-more-work: ignoring multiplicity -->
@@ -1083,8 +1124,8 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierRoleAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
+ModelElementAssociations
+<base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring availableFeature -->
@@ -1092,12 +1133,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ClassifierRoleCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.ClassifierRole">
+<template class="uci.uml.Behavioral_Elements.Collaborations.ClassifierRole">
 <![CDATA[
 <ClassifierRole XMI.id = '<ocl>self.id</ocl>'>
   ClassifierRoleProperties
@@ -1112,14 +1153,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CollaborationProperties">
 <![CDATA[
-  NamespaceProperties
+NamespaceProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CollaborationAssociations">
 <![CDATA[
-  NamespaceAssociations
+NamespaceAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring constrainingElement -->
@@ -1130,13 +1171,13 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CollaborationCompositions">
 <![CDATA[
-  NamespaceCompositions
-  <collaborationInteraction><ocl>self.interaction<.ocl></collaborationInteraction>
+NamespaceCompositions
+<collaborationInteraction><ocl>self.interaction<.ocl></collaborationInteraction>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.Collaboration">
+<template class="uci.uml.Behavioral_Elements.Collaborations.Collaboration">
 <![CDATA[
 <Collaboration XMI.id = '<ocl>self.id</ocl>'>
   CollaborationProperties
@@ -1151,16 +1192,16 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InteractionProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InteractionAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <context> <XMI.reference target='<ocl>self.context.id</ocl>'/> </context>
-  <message> <XMI.reference target='<ocl>self.message.id</ocl>'/> </message>
+ModelElementAssociations
+<context> <XMI.reference target='<ocl>self.context.id</ocl>'/> </context>
+<message> <XMI.reference target='<ocl>self.message.id</ocl>'/> </message>
 ]]>
 </macro>
 <!-- needs-more-work: look into context in java meta-model -->
@@ -1168,12 +1209,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="InteractionCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.Interaction">
+<template class="uci.uml.Behavioral_Elements.Collaborations.Interaction">
 <![CDATA[
 <Interaction XMI.id = '<ocl>self.id</ocl>'>
   InteractionProperties
@@ -1188,32 +1229,32 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="MessageProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="MessageAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <activator> <XMI.reference target='<ocl>self.activator.id</ocl>'/> </activator>
-  <base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
-  <receiver> <XMI.reference target='<ocl>self.receiver.id</ocl>'/> </receiver>
-  <predecessor> <XMI.reference target='<ocl>self.predecessor.id</ocl>'/> </predecessor>
-  <sender> <XMI.reference target='<ocl>self.sender.id</ocl>'/> </sender>
-  <messageAction> <XMI.reference target='<ocl>self.action.id</ocl>'/> </messageAction>
+ModelElementAssociations
+<activator> <XMI.reference target='<ocl>self.activator.id</ocl>'/> </activator>
+<base> <XMI.reference target='<ocl>self.base.id</ocl>'/> </base>
+<receiver> <XMI.reference target='<ocl>self.receiver.id</ocl>'/> </receiver>
+<predecessor> <XMI.reference target='<ocl>self.predecessor.id</ocl>'/> </predecessor>
+<sender> <XMI.reference target='<ocl>self.sender.id</ocl>'/> </sender>
+<messageAction> <XMI.reference target='<ocl>self.action.id</ocl>'/> </messageAction>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="MessageCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Foundation.Core.Message">
+<template class="uci.uml.Behavioral_Elements.Collaborations.Message">
 <![CDATA[
 <Message XMI.id = '<ocl>self.id</ocl>'>
   MessageProperties
@@ -1230,21 +1271,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActorProperties">
 <![CDATA[
-  ClassifierProperties
+ClassifierProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActorAssociations">
 <![CDATA[
-  ClassifierAssociations
+ClassifierAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActorCompositions">
 <![CDATA[
-  ClassifierCompositions
+ClassifierCompositions
 ]]>
 </macro>
 
@@ -1265,22 +1306,22 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UseCaseProperties">
 <![CDATA[
-  ClassifierProperties
-  <extensionPoint><ocl>self.extensionPoint</ocl></extensionPoint>
+ClassifierProperties
+<extensionPoint><ocl>self.extensionPoint</ocl></extensionPoint>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UseCaseAssociations">
 <![CDATA[
-  ClassifierAssociations
+ClassifierAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="UseCaseCompositions">
 <![CDATA[
-  ClassifierCompositions
+ClassifierCompositions
 ]]>
 </macro>
 
@@ -1305,15 +1346,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateVertexProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateVertexAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <parent> <XMI.reference target='<ocl>self.parent.id</ocl>'/> </parent>
+ModelElementAssociations
+<parent> <XMI.reference target='<ocl>self.parent.id</ocl>'/> </parent>
 ]]>
 </macro>
 <!-- ignoring incoming -->
@@ -1322,7 +1363,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateVertexCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
@@ -1335,14 +1376,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateProperties">
 <![CDATA[
-  StateVertexProperties
+StateVertexProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateAssociations">
 <![CDATA[
-  StateVertexAssociations
+StateVertexAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring deferredEvent -->
@@ -1350,16 +1391,16 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateCompositions">
 <![CDATA[
-  StateVertexCompositions
-  <entry>
-    <ocl>self.entry</ocl>
-  </entry>
-  <exit>
-    <ocl>self.exit</ocl>
-  </exit>
-  <internalTransition>
-    <ocl>self.internalTransition</ocl>
-  </internalTransition>
+StateVertexCompositions
+<entry>
+  <ocl>self.entry</ocl>
+</entry>
+<exit>
+  <ocl>self.exit</ocl>
+</exit>
+<internalTransition>
+  <ocl>self.internalTransition</ocl>
+</internalTransition>
 ]]>
 </macro>
 <!-- needs-more-work: bug: internalTransition should go around each -->
@@ -1381,25 +1422,25 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CompositeStateProperties">
 <![CDATA[
-  StateProperties
-  <isConcurrent XMI.value='<ocl>self.isConcurrent</ocl>'/>
+StateProperties
+<isConcurrent XMI.value='<ocl>self.isConcurrent</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CompositeStateAssociations">
 <![CDATA[
-  StateAssociations
+StateAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="CompositeStateCompositions">
 <![CDATA[
-  StateCompositions
-  <substate>
-    <ocl>self.substate</ocl>
-  </substate>
+StateCompositions
+<substate>
+  <ocl>self.substate</ocl>
+</substate>
 ]]>
 </macro>
 <!-- needs-more-work: bug: substate should go around each -->
@@ -1422,22 +1463,22 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GuardProperties">
 <![CDATA[
-  ModelElementProperties
-  <expression><ocl>self.expression</ocl></expression>
+ModelElementProperties
+<expression><ocl>self.expression</ocl></expression>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GuardAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="GuardCompositions">
 <![CDATA[
-  ModelElementCompositions
+ModelElementCompositions
 ]]>
 </macro>
 
@@ -1457,15 +1498,15 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PseudoStateProperties">
 <![CDATA[
-  StateVertexProperties
-  <stateKind XMI.value='<ocl>self.kind</ocl>'/>
+StateVertexProperties
+<stateKind XMI.value='<ocl>self.kind</ocl>'/>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PseudoStateAssociations">
 <![CDATA[
-  StateVertexAssociations
+StateVertexAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -1473,12 +1514,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PseudoStateCompositions">
 <![CDATA[
-  StateVertexCompositions
+StateVertexCompositions
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
-<template class="uci.uml.Behavioral_Elements.State_Machines.PseudoState">
+<template class="uci.uml.Behavioral_Elements.State_Machines.Pseudostate">
 <![CDATA[
 <PseudoState XMI.id = '<ocl>self.id</ocl>'>
   PseudoStateProperties
@@ -1495,21 +1536,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="SimpleStateProperties">
 <![CDATA[
-  StateProperties
+StateProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="SimpleStateAssociations">
 <![CDATA[
-  StateAssociations
+StateAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="SimpleStateCompositions">
 <![CDATA[
-  StateCompositions
+StateCompositions
 ]]>
 </macro>
 
@@ -1530,14 +1571,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateMachineProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateMachineAssociations">
 <![CDATA[
-  ModelElementAssociations
+ModelElementAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring context -->
@@ -1545,10 +1586,10 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="StateMachineCompositions">
 <![CDATA[
-  ModelElementCompositions
-  <top>
-    <ocl>self.top</ocl>
-  </top>
+ModelElementCompositions
+<top>
+  <ocl>self.top</ocl>
+</top>
 ]]>
 </macro>
 <!-- needs-more-work: ignoring transitions -->
@@ -1572,32 +1613,32 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="TransitionProperties">
 <![CDATA[
-  ModelElementProperties
+ModelElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="TransitionAssociations">
 <![CDATA[
-  ModelElementAssociations
-  <sourceState> <XMI.reference target='<ocl>self.source.id</ocl>'/> </sourceState>
-  <targetState> <XMI.reference target='<ocl>self.target.id</ocl>'/> </targetState>
-  <trigger>
-    <ocl>self.trigger</ocl>
-  </trigger>
+ModelElementAssociations
+<sourceState> <XMI.reference target='<ocl>self.source.id</ocl>'/> </sourceState>
+<targetState> <XMI.reference target='<ocl>self.target.id</ocl>'/> </targetState>
+<trigger>
+  <ocl>self.trigger</ocl>
+</trigger>
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="TransitionCompositions">
 <![CDATA[
-  ModelElementCompositions
-  <guard>
-    <ocl>self.guard</ocl>
-  </guard>
-  <effect>
-    <ocl>self.effect</ocl>
-  </effect>
+ModelElementCompositions
+<guard>
+  <ocl>self.guard</ocl>
+</guard>
+<effect>
+  <ocl>self.effect</ocl>
+</effect>
 ]]>
 </macro>
 
@@ -1620,21 +1661,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActivityModelProperties">
 <![CDATA[
-  StateMachineProperties
+StateMachineProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActivityModelAssociations">
 <![CDATA[
-  StateMachineAssociations
+StateMachineAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActivityModelCompositions">
 <![CDATA[
-  StateMachineCompositions
+StateMachineCompositions
 ]]>
 </macro>
 <!-- needs-more-work: ignoring partition -->
@@ -1655,21 +1696,21 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionStateProperties">
 <![CDATA[
-  SimpleStateProperties
+SimpleStateProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionStateAssociations">
 <![CDATA[
-  SimpleStateAssociations
+SimpleStateAssociations
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ActionStateCompositions">
 <![CDATA[
-  SimpleStateCompositions
+SimpleStateCompositions
 ]]>
 </macro>
 
@@ -1701,14 +1742,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PackageProperties">
 <![CDATA[
-  GeneralizableElementProperties
+GeneralizableElementProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PackageAssociations">
 <![CDATA[
-  GeneralizableElementAssociations
+GeneralizableElementAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring elementReference -->
@@ -1716,7 +1757,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="PackageCompositions">
 <![CDATA[
-  GeneralizableElementCompositions
+GeneralizableElementCompositions
 ]]>
 </macro>
 
@@ -1736,14 +1777,14 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelProperties">
 <![CDATA[
-  PackageProperties
+PackageProperties
 ]]>
 </macro>
 
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelAssociations">
 <![CDATA[
-  PackageAssociations
+PackageAssociations
 ]]>
 </macro>
 <!-- needs-more-work: ignoring specification -->
@@ -1751,7 +1792,7 @@
 <!-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -->
 <macro name="ModelCompositions">
 <![CDATA[
-  PackageCompositions
+PackageCompositions
 ]]>
 </macro>
 

@@ -152,8 +152,8 @@ public class ModePlace extends Mode {
         if (!(otherFig instanceof FigNode)) continue;
         if (otherFig.equals(_pers)) continue;
         Rectangle trap = otherFig.getTrapRect();
-        if ((trap.contains(bbox.x, bbox.y) &&
-             trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) 
+        if (trap != null && (trap.contains(bbox.x, bbox.y) &&
+             trap.contains(bbox.x + bbox.width, bbox.y + bbox.height)))
           encloser = otherFig;
       }
       _pers.setEnclosingFig(encloser);

@@ -89,5 +89,20 @@ public class Link extends ModelElementImpl {
     }
   }
 
+  public Object prepareForTrash() throws PropertyVetoException {
+    Vector conns = getLinkRole();
+    for (int i = 0; i < conns.size(); i++) {
+      try { ((LinkEnd)conns.elementAt(i)).setInstance(null); }
+      catch (PropertyVetoException pve) { }
+    }
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
+
   static final long serialVersionUID = -1637163109716378315L;
 }

@@ -44,7 +44,8 @@ import uci.graph.*;
  *  be placed in any LayerDiagram. Fig's are also used to define the
  *  look of FigNodes on NetNodes. */
 
-public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListener  {
+public class Fig
+implements Cloneable, java.io.Serializable, PropertyChangeListener, PopupGenerator  {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -189,6 +190,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
   public boolean getLocked() { return _locked; }
 
   public Rectangle getTrapRect() { return getBounds(); }
+  public boolean getUseTrapRect() { return false; }
 
   public Fig getEnclosingFig() { return null; }
 
@@ -200,6 +202,7 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
     //System.out.println("enclosing fig has been set");
   }
 
+  public Vector getEnclosedFigs() { return null; }
 
   /** Sets the owner object of this Fig. Fires PropertyChangeEvent
    *  "owner" */
@@ -531,18 +534,13 @@ public class Fig implements Cloneable, java.io.Serializable, PropertyChangeListe
    *  size. Subclasses must override to return something useful. */
   public Dimension getPreferedSize() { return new Dimension(_w, _h); }
 
-  public Stack getPopUpActions() {
-    Stack popUpActions = setPopUpActions();
-    return popUpActions;
-  }
-
-  public Stack setPopUpActions() {
-    Stack popUpActions = new Stack();
-    popUpActions.push(new CmdReorder(CmdReorder.BRING_FORWARD));
-    popUpActions.push(new CmdReorder(CmdReorder.SEND_BACKWARD));
-    popUpActions.push(new CmdReorder(CmdReorder.BRING_TO_FRONT));
-    popUpActions.push(new CmdReorder(CmdReorder.SEND_TO_BACK));
-    return popUpActions;
+  public Vector getPopUpActions() {
+    Vector actions = new Vector();
+    actions.addElement(new CmdReorder(CmdReorder.BRING_FORWARD));
+    actions.addElement(new CmdReorder(CmdReorder.SEND_BACKWARD));
+    actions.addElement(new CmdReorder(CmdReorder.BRING_TO_FRONT));
+    actions.addElement(new CmdReorder(CmdReorder.SEND_TO_BACK));
+    return actions;
   }
 
   // needs-more-work: property change events?

@@ -122,5 +122,8 @@ public interface ModelElement extends Element, java.io.Serializable {
 
   public String getOCLTypeStr();
 
+  public Object prepareForTrash() throws PropertyVetoException;
+  public void recoverFromTrash(Object momento) throws PropertyVetoException;
+
   static final long serialVersionUID = -4378657388222709582L;
 }

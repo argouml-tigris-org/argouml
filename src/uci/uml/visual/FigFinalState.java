@@ -26,7 +26,7 @@
 
 // File: FigFinalState.java
 // Classes: FigFinalState
-// Original Author: your email address here
+// Original Author: ics125b spring 98
 // $Id$
 
 package uci.uml.visual;
@@ -45,8 +45,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigFinalState extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigFinalState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -60,28 +59,22 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The main label on this icon. */
-  //  FigText _name;
-
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
   FigCircle _bigPort;
-
-  // add other Figs here as needed
-
   FigCircle _inCircle;
   FigCircle _outCircle;
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigFinalState() {
     Color handleColor = Globals.getPrefs().getHandleColor();
     _bigPort = new FigCircle(x,y,width,height, handleColor, Color.cyan);
-    _outCircle = new FigCircle(x,y,width,height, handleColor, Color.white);
+    _outCircle = new FigCircle(x,y,width,height, Color.black, Color.white);
     _inCircle = new FigCircle(x+5,y+5,width-10,height-10, handleColor, Color.black);
-    // initialize any other Figs here
-    // add Figs to the FigNode in back-to-front order
+
+    _outCircle.setLineWidth(1);
+    _inCircle.setLineWidth(0);
+
     addFig(_bigPort);
     addFig(_outCircle);
     addFig(_inCircle);
@@ -104,6 +97,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -115,55 +111,18 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   /** Final states are fixed size. */
   public boolean isResizable() { return false; }
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigFinalState got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
+  public void setLineColor(Color col) { _outCircle.setLineColor(col); }
+  public Color getLineColor() { return _outCircle.getLineColor(); }
 
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigFinalState got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-     // updateText();
-      // you may have to update more than just the text
-    }
-  }
+  public void setFillColor(Color col) { _inCircle.setFillColor(col); }
+  public Color getFillColor() { return _inCircle.getFillColor(); }
 
-  /** Update the text labels */
-  protected void updateText() {
-//     Element elmt = (Element) getOwner();
-//     String nameStr = GeneratorDisplay.Generate(elmt.getName());
+  public void setFilled(boolean f) { }
+  public boolean getFilled() { return true; }
 
-//     startTrans();
-// //    _name.setText(nameStr);
-//     Rectangle bbox = getBounds();
-//     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
-//     endTrans();
-  }
+  public void setLineWidth(int w) { _outCircle.setLineWidth(w); }
+  public int getLineWidth() { return _outCircle.getLineWidth(); }
 
-
-  public void dispose() {
-    //System.out.println("disposing FigFinalState");
-    Element elmt = (Element) getOwner();
-    if (elmt == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    StateVertex sv = (StateVertex) getOwner();
-    try { sv.setParent(null); }
-    catch (PropertyVetoException pve) { }
-    super.dispose();
-  }
   static final long serialVersionUID = -3506578343969467480L;
 
 } /* end class FigFinalState */

@@ -219,6 +219,9 @@ public class ModeModify extends Mode {
       Fig selectedFig = (Fig) sels.nextElement();
       if (!(selectedFig instanceof FigNode)) continue;
       Rectangle bbox = selectedFig.getBounds();
+//       Fig oldEncloser = selectedFig.getEnclosingFig();
+//       if (oldEncloser != null && oldEncloser.contains(bbox))
+// 	continue;
       Layer lay = selectedFig.getLayer();
       Vector otherFigs = lay.getContents();
       Enumeration others = otherFigs.elements();
@@ -226,10 +229,12 @@ public class ModeModify extends Mode {
       while (others.hasMoreElements()) {
         Fig otherFig = (Fig) others.nextElement();
         if (!(otherFig instanceof FigNode)) continue;
-        if (figs.contains(otherFig)) continue;
+	if (!(otherFig.getUseTrapRect())) continue;
+        //if (figs.contains(otherFig)) continue;
         Rectangle trap = otherFig.getTrapRect();
+	if (trap == null) continue;
         // now bbox is where the fig _will_ be
-        if ((trap.contains(bbox.x, bbox.y) && 
+        if ((trap.contains(bbox.x, bbox.y) &&
              trap.contains(bbox.x + bbox.width, bbox.y + bbox.height))) {
            encloser = otherFig;
            }
@@ -265,6 +270,7 @@ public class ModeModify extends Mode {
     Enumeration sels = figs.elements();
     while (sels.hasMoreElements()) {
       Fig selectedFig = (Fig) sels.nextElement();
+      boolean selectedUseTrap = selectedFig.getUseTrapRect();
       if (!(selectedFig instanceof FigNode)) continue;
       Rectangle bbox = selectedFig.getBounds();
       bbox.x += dx; bbox.y += dy;
@@ -274,8 +280,10 @@ public class ModeModify extends Mode {
       while (others.hasMoreElements()) {
         Fig otherFig = (Fig) others.nextElement();
         if (!(otherFig instanceof FigNode)) continue;
+	if (!selectedUseTrap && !otherFig.getUseTrapRect()) continue;
         if (figs.contains(otherFig)) continue;
         Rectangle trap = otherFig.getTrapRect();
+	if (trap == null) continue;
         // now bbox is where the fig _will_ be
         int cornersHit = 0;
         if (trap.contains(bbox.x, bbox.y)) cornersHit++;

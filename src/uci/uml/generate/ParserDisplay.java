@@ -32,6 +32,7 @@ import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Model_Management.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
@@ -357,7 +358,7 @@ public class ParserDisplay extends Parser {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     Classifier cls = p.findType(typeStr);
-    return new Parameter(cls, paramNameStr);
+    return new Parameter(cls, ParameterDirectionKind.IN, paramNameStr);
   }
 
 
@@ -487,6 +488,60 @@ public class ParserDisplay extends Parser {
     catch (PropertyVetoException pve) { }
 
     return t;
+  }
+
+  /** Parse a line of the form: "name: base" */
+  public void parseClassifierRole(ClassifierRole cls, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+    String name = "";
+    String base = "";
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      base = s.substring(s.indexOf(":") + 1).trim();
+    }
+    else {
+      name = s;
+    }
+    try { cls.setBaseString(base); }
+    catch (PropertyVetoException pve) { }
+    //Project p = ProjectBrowser.TheInstance.getProject();
+    //Classifier bs = p.findType(base);
+
+    try { cls.setName(new Name(name)); }
+    catch (PropertyVetoException pve) { }
+
+  }
+
+  /** Parse a line of the form: "name: action" */
+  public void parseMessage(Message mes, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+    String name = "";
+    String action = "";
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      action = s.substring(s.indexOf(":") + 1).trim();
+    }
+    try {
+     UninterpretedAction ua = (UninterpretedAction) mes.getAction();
+     ua.setBody(action);
+    }
+    catch (PropertyVetoException pve) { }
+
+    try {
+      Name nm = new Name(name);
+      mes.setName(nm);
+    }
+    catch (PropertyVetoException pve) { }
   }
 
   public MMAction parseAction(String s) {

@@ -86,7 +86,7 @@ public class CmdDistribute extends Cmd {
     Editor ce = Globals.curEditor();
     Vector figs = (Vector) getArg("figs");
     Integer packGapInt = (Integer) getArg("gap");
-    int packGap = 16;
+    int packGap = 8;
     if (packGapInt != null) packGap = packGapInt.intValue();
     _bbox = (Rectangle) getArg("bbox");
     if (figs == null) {
@@ -101,6 +101,8 @@ public class CmdDistribute extends Cmd {
     int topMostCenter = 0, bottomMostCenter = 0;
     int size = figs.size();
     if (size == 0) return;
+
+    // find the bbox of all selected objects
     Fig f = (Fig) figs.elementAt(0);
     if (_bbox == null) {
       _bbox = f.getBounds();
@@ -119,6 +121,7 @@ public class CmdDistribute extends Cmd {
       }
     }
 
+    // find the sum of the widths and heights of all selected objects
     int totalWidth = 0, totalHeight = 0;
     for (int i = 0; i < size; i++) {
       f = (Fig) figs.elementAt(i);
@@ -126,8 +129,8 @@ public class CmdDistribute extends Cmd {
       totalHeight += f.getHeight();
     }
 
-    int gap = 0, oncenter = 0;
-    int xNext = 0, yNext = 0;
+    float gap = 0, oncenter = 0;
+    float xNext = 0, yNext = 0;
 
     switch (_request) {
     case H_SPACING:
@@ -156,7 +159,8 @@ public class CmdDistribute extends Cmd {
       break;
     }
 
-    //sort top-to-bottom or left-to-rigth!
+    //sort top-to-bottom or left-to-right, this maintains visual order
+    //when we set the coordinates
     for (int i = 0; i < size; i++) {
       for (int j = i + 1; j < size; j++) {
 	Fig fi = (Fig) figs.elementAt(i);
@@ -177,20 +181,20 @@ public class CmdDistribute extends Cmd {
       switch (_request) {
       case H_SPACING:
       case H_PACK:
-	f.setLocation(xNext, f.getY());
+	f.setLocation((int) xNext, f.getY());
 	xNext += f.getWidth() + gap;
 	break;
       case H_CENTERS:
-	f.setLocation(xNext - f.getWidth() / 2, f.getY());
+	f.setLocation((int) xNext - f.getWidth() / 2, f.getY());
 	xNext += oncenter;
 	break;
       case V_SPACING:
       case V_PACK:
-	f.setLocation(f.getX(), yNext);
+	f.setLocation(f.getX(), (int) yNext);
 	yNext += f.getHeight() + gap;
 	break;
       case V_CENTERS:
-	f.setLocation(f.getX(), yNext - f.getHeight() / 2);
+	f.setLocation(f.getX(), (int) yNext - f.getHeight() / 2);
 	yNext += oncenter;
 	break;
       }

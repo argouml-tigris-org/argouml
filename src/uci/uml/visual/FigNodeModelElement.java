@@ -70,22 +70,22 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   // instance variables
 
   protected FigText _name;
+  protected Vector _enclosedFigs = new Vector();
+  protected Fig _encloser = null;
+  protected boolean _readyToEdit = true;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigNodeModelElement() {
-    //me.addVetoableChangeListener(this);
-
     _name = new FigText(10, 10, 90, 21);
     _name.setFont(LABEL_FONT);
     _name.setTextColor(Color.black);
     _name.setExpandOnly(true);
     _name.setMultiLine(false);
     _name.setAllowsTab(false);
-
-
-    //_name.addPropertyChangeListener(this);
+    _name.setText(placeString());
+    _readyToEdit = false;
   }
 
   /** Partially construct a new FigNode.  This method creates the
@@ -94,15 +94,21 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   public FigNodeModelElement(GraphModel gm, Object node) {
     this();
     setOwner(node);
-
-    ModelElement me = (ModelElement) node;
-    String placeString = me.getOCLTypeStr();
-    Name n = me.getName();
-    if (n != null && !n.equals(Name.UNSPEC)) placeString = n.getBody();
-    _name.setText(placeString); // shown while placing node in diagram
+    _name.setText(placeString());
+    _readyToEdit = false;
   }
 
-
+  /** Reply text to be shown while placing node in diagram */
+  public String placeString() {
+    if (getOwner() instanceof ModelElement) {
+      ModelElement me = (ModelElement) getOwner();
+      String placeString = "new " + me.getOCLTypeStr();
+      Name n = me.getName();
+      if (n != null && !n.equals(Name.UNSPEC)) placeString = n.getBody();
+      return placeString;
+    }
+    return "";
+  }
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -114,11 +120,29 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   public FigText getNameFig() { return _name; }
 
-  public Stack getPopUpActions() {
-    Stack popUpActions = super.getPopUpActions();
-    popUpActions.push(new CmdUMLProperties());
+  public Vector getPopUpActions() {
+    Vector popUpActions = super.getPopUpActions();
+    popUpActions.addElement(new CmdUMLProperties());
     return popUpActions;
   }
+
+  ////////////////////////////////////////////////////////////////
+  // Fig API
+  public Fig getEnclosingFig() { return _encloser; }
+
+  public void setEnclosingFig(Fig f) {
+    super.setEnclosingFig(f);
+    if (_encloser instanceof FigNodeModelElement)
+      ((FigNodeModelElement)_encloser)._enclosedFigs.removeElement(this);
+    _encloser = f;
+    if (_encloser instanceof FigNodeModelElement)
+      ((FigNodeModelElement)_encloser)._enclosedFigs.addElement(this);
+  }
+
+  public Vector getEnclosedFigs() { return _enclosedFigs; }
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers
 
   public void vetoableChange(PropertyChangeEvent pce) {
     //System.out.println("in vetoableChange");
@@ -144,6 +168,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     bbox.height = Math.max(bbox.height, minSize.height);
     setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
     endTrans();
+    _readyToEdit = true;
   }
 
   public void propertyChange(PropertyChangeEvent pve) {
@@ -175,8 +200,11 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
    *  and update the model.  This class handles the name, subclasses
    *  should override to handle other text elements. */
   protected void textEdited(FigText ft) throws PropertyVetoException {
-    if (ft == _name)
-      ((ModelElement)getOwner()).setName(new Name(ft.getText()));
+    if (ft == _name) {
+      ModelElement me = (ModelElement) getOwner();
+      if (me == null) return;
+      me.setName(new Name(ft.getText()));
+    }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -186,8 +214,22 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
    *  down to one of the internal Figs.  This allows the user to
    *  initiate direct text editing. */
   public void mouseClicked(MouseEvent me) {
+    if (!_readyToEdit) {
+      if (getOwner() instanceof ModelElement) {
+	ModelElement own = (ModelElement) getOwner();
+	try { own.setName(new Name("")); }
+	catch (PropertyVetoException pve) { return; }
+	_readyToEdit = true;
+      }
+      else {
+	System.out.println("not ready to edit name");
+	return;
+      }
+    }
     if (me.isConsumed()) return;
-    if (me.getClickCount() >= 2) {
+    if (me.getClickCount() >= 2 &&
+	!(me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+      if (getOwner() == null) return;
       Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
       if (f instanceof MouseListener) ((MouseListener)f).mouseClicked(me);
     }
@@ -195,12 +237,26 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
   }
 
   public void keyPressed(KeyEvent ke) {
+    if (!_readyToEdit) {
+      if (getOwner() instanceof ModelElement) {
+	ModelElement me = (ModelElement) getOwner();
+	try { me.setName(new Name("")); }
+	catch (PropertyVetoException pve) { return; }
+	_readyToEdit = true;
+      }
+      else {
+	System.out.println("not ready to edit name");
+	return;
+      }
+    }
     if (ke.isConsumed()) return;
+    if (getOwner() == null) return;
     _name.keyPressed(ke);
     //ke.consume();
-    ModelElement me = (ModelElement) getOwner();
-    try { me.setName(new Name(_name.getText())); }
-    catch (PropertyVetoException pve) { }
+//     ModelElement me = (ModelElement) getOwner();
+//     if (me == null) return;
+//     try { me.setName(new Name(_name.getText())); }
+//     catch (PropertyVetoException pve) { }
   }
 
   /** not used, do nothing. */
@@ -211,6 +267,7 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 //     _name.keyTyped(ke);
 //     //ke.consume();
 //     ModelElement me = (ModelElement) getOwner();
+//     if (me == null) return;
 //     try { me.setName(new Name(_name.getText())); }
 //     catch (PropertyVetoException pve) { }
   }
@@ -228,17 +285,6 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
     _name.setText(nameStr);
   }
 
-
-  /** needs-more-work: When the user deletes a ModelElement, it is
-   *  moved to a special trash container. */
-  public void dispose() {
-    //System.out.println("disposing FigNodeModelElement");
-    ModelElement me = (ModelElement) getOwner();
-    if (me == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(me);
-    super.dispose();
-  }
 
   public void setOwner(Object own) {
     Object oldOwner = getOwner();

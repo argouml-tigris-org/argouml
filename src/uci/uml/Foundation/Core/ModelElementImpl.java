@@ -81,6 +81,8 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     return _elementOwnership.getNamespace();
   }
   public void setNamespace(Namespace x) {
+    if (_elementOwnership != null &&
+	_elementOwnership.getNamespace() == x) return;
     VisibilityKind vk = (_elementOwnership == null) ?
       VisibilityKind.PUBLIC : _elementOwnership.getVisibility();
     try { setElementOwnership(new ElementOwnership(x, vk, this)); }
@@ -308,6 +310,23 @@ public class ModelElementImpl extends ElementImpl implements ModelElement {
     fireVetoableChange("behavior", _behavior, x);
     _behavior.removeElement(x);
   }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    //setNamespace(null);
+    return null;
+    //needs-more-work: remember old namespace
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work: restore old namespace
+  }
+
+  public Vector alsoTrash() {
+    return new Vector();
+  }
+
+  public boolean isLegalXMI() { return true; }
+  public boolean isNotLegalXMI() { return !isLegalXMI(); }
 
   ////////////////////////////////////////////////////////////////
   // debugging

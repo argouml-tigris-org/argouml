@@ -56,7 +56,7 @@ implements ItemListener, DocumentListener {
   // constants
   public static final VisibilityKind
   VISIBILITIES[] = { VisibilityKind.PUBLIC, VisibilityKind.PACKAGE };
-  public static final String CLASSKEYWORDS[] = { "None", "abstract", "final"};
+  public static final String CLASSKEYWORDS[] = { "none", "abstract", "final"};
 
   
   ////////////////////////////////////////////////////////////////
@@ -146,7 +146,7 @@ implements ItemListener, DocumentListener {
     gb.setConstraints(_impleLabel, c);
     add(_impleLabel);
     c.gridy = 1;
-    c.gridheight = 5;
+    c.gridheight = 11;
     JScrollPane implSP = new JScrollPane(_implList);
     gb.setConstraints(implSP, c);
     add(implSP);
@@ -169,20 +169,26 @@ implements ItemListener, DocumentListener {
       _keywordsField.setSelectedItem("abstract");
     else if (cls.getIsLeaf())
       _keywordsField.setSelectedItem("final");
-    else 
-      _keywordsField.setSelectedItem("None");
+    else
+      _keywordsField.setSelectedItem("none");
 
     Vector gens = cls.getGeneralization();
     Generalization gen = null;
+    JTextField ed = (JTextField) _extendsField.getEditor().getEditorComponent();
     if (gens != null && gens.size() == 1)
       gen = (Generalization) gens.firstElement();
     if (gen == null) {
       //System.out.println("null base class");
       _extendsField.setSelectedItem(null);
+      ed.setText("");
     }
     else {
-      //System.out.println("base class found");
+      System.out.println("base class found");
       _extendsField.setSelectedItem(gen.getSupertype());
+      if (gen.getSupertype() != null)
+	ed.setText(gen.getSupertype().getName().getBody());
+      else
+      ed.setText("");
     }
     Vector interfaces = new Vector();
     Vector specs = cls.getSpecification();
@@ -200,7 +206,7 @@ implements ItemListener, DocumentListener {
   public void setTargetExtends() {
     if (_target == null) return;
     Object base = _extendsField.getSelectedItem();
-    //System.out.println("base = " + base);
+    System.out.println("needs-more-work: baseClass = " + base);
     // needs-more-work: this could involve changes to the graph model
   }
 
@@ -221,15 +227,15 @@ implements ItemListener, DocumentListener {
     }
     MMClass cls = (MMClass) _target;
     try {
-      if (keys.equals("None")) {
+      if (keys.equalsIgnoreCase("none")) {
 	cls.setIsAbstract(false);
 	cls.setIsLeaf(false);
       }
-      else if (keys.equals("abstract")) {
+      else if (keys.equalsIgnoreCase("abstract")) {
 	cls.setIsAbstract(true);
 	cls.setIsLeaf(false);
       }
-      else if (keys.equals("final")) {
+      else if (keys.equalsIgnoreCase("final")) {
 	cls.setIsAbstract(false);
       cls.setIsLeaf(true);
       }

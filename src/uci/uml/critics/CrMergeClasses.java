@@ -76,6 +76,4 @@ public class CrMergeClasses extends CrUML {
     return NO_PROBLEM;
   }
 
-
-  
 } /* end class CrMergeClasses */

@@ -49,7 +49,7 @@ public class FigNode extends FigGroup
 implements MouseListener, PropertyChangeListener, Highlightable {
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   /** Constants useful for determining what side (north, south, east,
    *  or west) a port is located on. Maybe this should really be in
    *  FigNode. */
@@ -153,6 +153,17 @@ implements MouseListener, PropertyChangeListener, Highlightable {
     return (_x <= x) && (x <= _x + _w) && (_y <= y) && (y <= _y + _h);
   }
 
+  public void setEnclosingFig(Fig f) {
+    if (f != null && f != getEnclosingFig() && _layer != null) {
+      Enumeration arcPers = _figEdges.elements();
+      while (arcPers.hasMoreElements()) {
+	Fig fe = (Fig) arcPers.nextElement();
+	_layer.bringInFrontOf(fe, f);
+      }
+    }
+    super.setEnclosingFig(f);
+    //System.out.println("enclosing fig has been set");
+  }
 
   ////////////////////////////////////////////////////////////////
   // Editor API
@@ -179,7 +190,7 @@ implements MouseListener, PropertyChangeListener, Highlightable {
 
   /** When a FigNode is deleted, all of its edges are deleted. */
   public void delete() {
-    Enumeration arcPers = _figEdges.elements();
+    Enumeration arcPers = ((Vector)_figEdges.clone()).elements();
     while (arcPers.hasMoreElements()) {
       Fig f = (Fig) arcPers.nextElement();
       f.delete();

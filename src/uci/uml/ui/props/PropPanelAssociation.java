@@ -45,7 +45,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.generate.ParserDisplay;
 import uci.uml.ui.*;
 
-public class PropPanelAssociation extends PropPanel
+public class PropPanelAssociation extends PropPanelTwoEnds
 implements DocumentListener, ItemListener, ChangeListener {
 
   ////////////////////////////////////////////////////////////////
@@ -87,8 +87,6 @@ implements DocumentListener, ItemListener, ChangeListener {
   JLabel _navBLabel = new JLabel("Navigable: ");
   JCheckBox _navBField = new JCheckBox("");
 
-  SpacerPanel _spacer = new SpacerPanel();
-
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociation() {
@@ -108,82 +106,64 @@ implements DocumentListener, ItemListener, ChangeListener {
 
     c.gridx = 0;
     c.gridwidth = 1;
-    c.gridy = 5;
+    c.gridy = 4;
     gb.setConstraints(_roleALabel, c);
     add(_roleALabel);
-    c.gridy = 6;
+    c.gridy = 5;
     gb.setConstraints(_multALabel, c);
     add(_multALabel);
-    c.gridy = 7;
+    c.gridy = 6;
     gb.setConstraints(_aggALabel, c);
     add(_aggALabel);
-//     c.gridy = 8;
-//     gb.setConstraints(_visALabel, c);
-//     add(_visALabel);
-    c.gridy = 9;
+    c.gridy = 7;
     gb.setConstraints(_navALabel, c);
     add(_navALabel);
 
     c.gridx = 1;
     c.gridwidth = 1;
-    c.gridy = 5;
+    c.gridy = 4;
     c.weightx = 1.0;
     gb.setConstraints(_roleAField, c);
     add(_roleAField);
-    c.gridy = 6;
+    c.gridy = 5;
     gb.setConstraints(_multAField, c);
     add(_multAField);
-    c.gridy = 7;
+    c.gridy = 6;
     gb.setConstraints(_aggAField, c);
     add(_aggAField);
-//     c.gridy = 8;
-//     gb.setConstraints(_visAField, c);
-//     add(_visAField);
-    c.gridy = 9;
+    c.gridy = 7;
     gb.setConstraints(_navAField, c);
     add(_navAField);
 
     c.weightx = 0.0;
-    c.gridx = 2;
-    c.gridy = 0;
-    gb.setConstraints(_spacer, c);
-    add(_spacer);
-
-    c.weightx = 0.0;
     c.gridx = 3;
     c.gridwidth = 1;
-    c.gridy = 5;
+    c.gridy = 4;
     gb.setConstraints(_roleBLabel, c);
     add(_roleBLabel);
-    c.gridy = 6;
+    c.gridy = 5;
     gb.setConstraints(_multBLabel, c);
     add(_multBLabel);
-    c.gridy = 7;
+    c.gridy = 6;
     gb.setConstraints(_aggBLabel, c);
     add(_aggBLabel);
-//     c.gridy = 8;
-//     gb.setConstraints(_visBLabel, c);
-//     add(_visBLabel);
-    c.gridy = 9;
+    c.gridy = 7;
     gb.setConstraints(_navBLabel, c);
     add(_navBLabel);
 
     c.gridx = 4;
     c.gridwidth = 1;
-    c.gridy = 5;
+    c.gridy = 4;
     c.weightx = 1.0;
     gb.setConstraints(_roleBField, c);
     add(_roleBField);
-    c.gridy = 6;
+    c.gridy = 5;
     gb.setConstraints(_multBField, c);
     add(_multBField);
-    c.gridy = 7;
+    c.gridy = 6;
     gb.setConstraints(_aggBField, c);
     add(_aggBField);
-//     c.gridy = 8;
-//     gb.setConstraints(_visBField, c);
-//     add(_visBField);
-    c.gridy = 9;
+    c.gridy = 7;
     gb.setConstraints(_navBField, c);
     add(_navBField);
 
@@ -256,6 +236,35 @@ implements DocumentListener, ItemListener, ChangeListener {
     _navBField.getModel().setSelected(navB);
   }
 
+  public String getSourceLabel() {
+    if (!(_target instanceof Association)) return "non Association";
+    return "Classifier:";
+  }
+  public String getSourceValue() {
+    if (!(_target instanceof Association)) return "non Association";
+    Association a = (Association) _target;
+    AssociationEnd ae = (AssociationEnd) a.getConnection().elementAt(0);
+    if (ae == null) return "null ae";
+    Classifier type = ae.getType();
+    if (type == null) return "null type";
+    return type.getName().getBody();
+  }
+  public String getDestLabel() {
+    if (!(_target instanceof Association)) return "non AssociationEnd";
+    return "Classifier:";
+  }
+  public String getDestValue() {
+    if (!(_target instanceof Association)) return "non Association";
+    Association a = (Association) _target;
+    AssociationEnd ae = (AssociationEnd) a.getConnection().elementAt(1);
+    if (ae == null) return "null ae";
+    Classifier type = ae.getType();
+    if (type == null) return "null type";
+    return type.getName().getBody();
+  }
+  
+
+  
 
 
   public void setTargetVisibility() {

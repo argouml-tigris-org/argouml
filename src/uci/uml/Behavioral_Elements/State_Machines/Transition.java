@@ -130,6 +130,19 @@ public class Transition extends ModelElementImpl {
     if (_target != null) _target.addIncoming(this);
   }
 
+  public Object prepareForTrash() throws PropertyVetoException {
+    setStateMachine(null);
+    setSource(null);
+    setTarget(null);
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
+
   ////////////////////////////////////////////////////////////////
   // debugging
 

@@ -33,30 +33,31 @@ import uci.graph.*;
 import com.ibm.xml.parser.*;
 import org.w3c.dom.*;
 
-public class PGMLParserIBM implements ElementHandler {
+public class PGMLParserIBM implements ElementHandler, TagHandler {
 
   ////////////////////////////////////////////////////////////////
   // static variables
-  
+
   public static PGMLParserIBM SINGLETON = new PGMLParserIBM();
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  protected boolean _inGroup = false;
   protected Diagram _diagram = null;
-  
+  protected int _nestedGroups = 0;
+
   ////////////////////////////////////////////////////////////////
   // constructors
-  
+
   protected PGMLParserIBM() { }
 
   ////////////////////////////////////////////////////////////////
   // main parsing methods
-  
+
   protected Diagram readDiagram(String filename, InputStream is) {
     Parser pc = new Parser(filename);
     pc.addElementHandler(this);
+    pc.setTagHandler(this);
     initDiagram();
     pc.readStream(is);
     return _diagram;
@@ -69,28 +70,47 @@ public class PGMLParserIBM implements ElementHandler {
     _diagram = new Diagram();
   }
 
-  
+
   ////////////////////////////////////////////////////////////////
   // XML element handlers
-  
+
+  public void handleStartTag(TXElement e, boolean empty) {
+    String elementName = e.getName();
+    if ("group".equals(elementName) && !empty) _nestedGroups++;
+  }
+
+  public void handleEndTag(TXElement e, boolean empty) {
+    String elementName = e.getName();
+    if ("group".equals(elementName) && !empty) _nestedGroups--;
+  }
+
   public TXElement handleElement(TXElement e) {
     String elementName = e.getName();
     if (elementName.equals("pgml")) handlePGML(e);
-    else if (elementName.equals("path")) handlePolyLine(e);
-    else if (elementName.equals("ellipse")) handleEllipse(e);
-    else if (elementName.equals("rectangle")) handleRect(e);
-    else if (elementName.equals("text")) handleText(e);
-    else if (elementName.equals("group")) handleGroup(e);
-    else if (elementName.equals("piewedge")) { }
-    else if (elementName.equals("circle")) { }
-    else if (elementName.equals("moveto")) { }
-    else if (elementName.equals("lineto")) { }
-    else if (elementName.equals("curveto")) { }
-    else if (elementName.equals("arc")) { }
-    else if (elementName.equals("closepath")) { }
-    else System.out.println("unknown tag: " + elementName);
-
-    return e; // needs-more-work: too much memory? should return null.    
+    else if (elementName.equals("group"))
+      _diagram.add(handleGroup(e));
+    else if (_nestedGroups == 0) {
+      if (elementName.equals("path"))
+	_diagram.add(handlePolyLine(e));
+      else if (elementName.equals("ellipse"))
+	_diagram.add(handleEllipse(e));
+      else if (elementName.equals("rectangle"))
+	_diagram.add(handleRect(e));
+      else if (elementName.equals("text"))
+	_diagram.add(handleText(e));
+      else if (elementName.equals("piewedge")) { }
+      else if (elementName.equals("circle")) { }
+      else if (elementName.equals("moveto")) { }
+      else if (elementName.equals("lineto")) { }
+      else if (elementName.equals("curveto")) { }
+      else if (elementName.equals("arc")) { }
+      else if (elementName.equals("closepath")) { }
+      else System.out.println("unknown top-level tag: " + elementName);
+    }
+    else if (_nestedGroups > 0) {
+      System.out.println("skipping nested " + elementName);
+    }
+    return e; // needs-more-work: too much memory? should return null.
   }
 
 
@@ -104,15 +124,15 @@ public class PGMLParserIBM implements ElementHandler {
     catch (Exception ex) { System.out.println("Exception in handlePGML"); }
   }
 
-  protected void handlePolyLine(TXElement e) {
+  protected Fig handlePolyLine(TXElement e) {
     String clsName = e.getAttribute("description");
     if (clsName != null && clsName.indexOf("FigLine") != 0)
-      handleLine(e);
+      return handleLine(e);
     else
-      handlePath(e);
+      return handlePath(e);
   }
 
-  protected void handleLine(TXElement e) {
+  protected FigLine handleLine(TXElement e) {
     FigLine f = new FigLine(0, 0, 100, 100);
     setAttrs(f, e);
     TXElement moveto = e.getElementNamed("moveto");
@@ -131,10 +151,10 @@ public class PGMLParserIBM implements ElementHandler {
       f.setX2(x2Int);
       f.setY2(y2Int);
     }
-    _diagram.add(f);
+    return f;
   }
 
-  protected void handleEllipse(TXElement e) {
+  protected FigCircle handleEllipse(TXElement e) {
     FigCircle f = new FigCircle(0, 0, 50, 50);
     setAttrs(f, e);
     String rx = e.getAttribute("rx");
@@ -143,11 +163,11 @@ public class PGMLParserIBM implements ElementHandler {
     int ryInt = (ry == null) ? 10 : Integer.parseInt(ry);
     f.setWidth(rxInt * 2);
     f.setHeight(ryInt * 2);
-    _diagram.add(f);
+    return f;
   }
 
-  protected void handleRect(TXElement e) {
-    Fig f;
+  protected FigRect handleRect(TXElement e) {
+    FigRect f;
     String cornerRadius = e.getAttribute("rounding");
     if (cornerRadius == null) {
       f = new FigRect(0, 0, 80, 80);
@@ -158,10 +178,10 @@ public class PGMLParserIBM implements ElementHandler {
       ((FigRRect)f).setCornerRadius(rInt);
     }
     setAttrs(f, e);
-    _diagram.add(f);
+    return f;
   }
 
-  protected void handleText(TXElement e) {
+  protected FigText handleText(TXElement e) {
     FigText f = new FigText(100, 100, 90, 45);
     setAttrs(f, e);
     String text = e.getText();
@@ -173,10 +193,10 @@ public class PGMLParserIBM implements ElementHandler {
       int textsizeInt = Integer.parseInt(textsize);
       f.setFontSize(textsizeInt);
     }
-    _diagram.add(f);
+    return f;
   }
 
-  protected void handlePath(TXElement e) {
+  protected FigPoly handlePath(TXElement e) {
     FigPoly f = new FigPoly();
     setAttrs(f, e);
     if (e.hasChildNodes()) {
@@ -196,23 +216,60 @@ public class PGMLParserIBM implements ElementHandler {
 	}
       }
     }
-    _diagram.add(f);
+    return f;
   }
 
-  protected void handleGroup(TXElement e) {
+  /* Returns Fig rather than FigGroups because this is also
+     used for FigEdges. */
+  protected Fig handleGroup(TXElement e) {
     Fig f = null;
-    String clsName = e.getAttribute("description");
+    String clsNameBounds = e.getAttribute("description");
+    StringTokenizer st = new StringTokenizer(clsNameBounds, ",;[] ");
+    String clsName = st.nextToken();
+    String xStr = null, yStr = null, wStr = null, hStr = null;
+    if (st.hasMoreElements()) {
+      xStr = st.nextToken();
+      yStr = st.nextToken();
+      wStr = st.nextToken();
+      hStr = st.nextToken();
+    }
     try {
       Class nodeClass = Class.forName(clsName);
       f = (Fig) nodeClass.newInstance();
-      System.out.println("made instance " + f);
+      //System.out.println("made instance " + f);
+      if (xStr != null) {
+	int x = Integer.parseInt(xStr);
+	int y = Integer.parseInt(yStr);
+	int w = Integer.parseInt(wStr);
+	int h = Integer.parseInt(hStr);
+	f.setBounds(x, y, w, h);
+      }
+      if (f instanceof FigEdge) {
+	FigEdge fe = (FigEdge) f;
+	if (e.hasChildNodes()) {
+	  NodeList nl = e.getChildNodes();
+	  int size = nl.getLength();
+	  for (int i = 0; i < size; i++) {
+	    Node n = nl.item(i);
+	    int xInt = 0;
+	    int yInt = 0;
+	    if (n instanceof TXElement) {
+	      TXElement pe = (TXElement) n;
+	      String peName = pe.getName();
+	      if (!"path".equals(peName)) continue;
+	      Fig p = handlePath(pe);
+	      fe.setFig(p);
+	    }
+	  }
+	}
+      }
     }
     catch (Exception ex) {
       System.out.println("Exception in handleGroup");
       ex.printStackTrace();
     }
     setAttrs(f, e);
-    _diagram.add(f);
+    return f;
   }
 
   ////////////////////////////////////////////////////////////////
@@ -247,10 +304,17 @@ public class PGMLParserIBM implements ElementHandler {
     if (dasharray != null && !dasharray.equals("solid"))
       f.setDashed(true);
 
-    //needs-more-work: set owner
+    String owner = e.getAttribute("href");
+    if (owner != null) f.setOwner(findOwner(owner));
   }
 
-  
+
+  //needs-more-work: find object in model
+  protected Object findOwner(String uri) {
+    System.out.println("setting owner: " + uri);
+    return null;
+  }
+
   //needs-more-work: make an instance of the named class
   protected GraphModel getGraphModelFor(String desc) {
     return new DefaultGraphModel();
@@ -279,6 +343,6 @@ public class PGMLParserIBM implements ElementHandler {
     return new Color(code);
   }
 
-  
+
 } /* end class PGMLParserIBM */
 

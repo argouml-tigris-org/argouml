@@ -98,6 +98,7 @@ public class ChildGenUML implements ChildGenerator {
       IAssociation asc = (IAssociation) o;
       Vector assocEnds = asc.getConnection();
       if (assocEnds != null) return assocEnds.elements();
+      //needs-more-work: AssociationRole
     }
 
 

@@ -65,24 +65,9 @@ public class FigRealization extends FigEdgeModelElement {
     _fig.setDashed(true);
   }
 
-  public void dispose() {
-    Realization r = (Realization) getOwner();
-    if (r == null) return;
-    Classifier sup = r.getSupertype();
-    Classifier sub = r.getSubtype();
-    try {
-      sup.removeRealization(r);
-      sub.removeSpecification(r);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not remove Realization");
-    }
-    super.dispose();
-  }
-
 
   protected boolean canEdit(Fig f) { return false; }
-  
+
   /** This is called aftern any part of the UML ModelElement has
    *  changed. This method automatically updates the name FigText.
    *  Subclasses should override and update other parts. */
@@ -90,8 +75,6 @@ public class FigRealization extends FigEdgeModelElement {
     // do not set _name
     updateStereotypeText();
   }
-
-  
 
 } /* end class FigRealization */
 

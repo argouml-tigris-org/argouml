@@ -67,6 +67,7 @@ implements IStatusBar {
   // file menu
   protected static Action _actionNew =  Actions.New;
   protected static Action _actionOpen = Actions.Open;
+  protected static Action _actionOpenXMI = Actions.OpenXMI;
   protected static Action _actionSave = Actions.Save;
   protected static Action _actionSaveAs = Actions.SaveAs;
   protected static Action _actionSaveAsXMI = Actions.SaveAsXMI;
@@ -83,8 +84,9 @@ implements IStatusBar {
   protected static Action _actionCut = Actions.Cut;
   protected static Action _actionCopy = Actions.Copy;
   protected static Action _actionPaste = Actions.Paste;
-  protected static Action _actionDelete = new CmdDelete();
-  protected static Action _actionDispose = new CmdDispose();
+  protected static Action _actionDelete = Actions.DeleteFromDiagram;
+  protected static Action _actionRemove = Actions.RemoveFromModel;
+  protected static Action _actionEmpty = Actions.EmptyTrash;
 
   // view menu
   protected static Action _actionNavUp = Actions.NavUp;
@@ -104,17 +106,18 @@ implements IStatusBar {
   protected static Action _actionUseCaseDiagram = Actions.UseCaseDiagram;
   protected static Action _actionStateDiagram = Actions.StateDiagram;
   protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
+  protected static Action _actionCollabortationDiagram = Actions.CollaborationDiagram;
 
   // ----- model elements
-  protected static Action _actionModel = Actions.Model;
-  protected static Action _actionClass = Actions.Class;
-  protected static Action _actionInterface = Actions.Interface;
-  protected static Action _actionActor = Actions.Actor;
-  protected static Action _actionUseCase = Actions.UseCase;
-  protected static Action _actionState = Actions.State;
-  protected static Action _actionPseudostate = Actions.Pseudostate;
-  protected static Action _actionAttr = Actions.Attr;
-  protected static Action _actionOper = Actions.Oper;
+  //protected static Action _actionModel = Actions.Model;
+  //protected static Action _actionClass = Actions.Class;
+  //protected static Action _actionInterface = Actions.Interface;
+  //protected static Action _actionActor = Actions.Actor;
+  //protected static Action _actionUseCase = Actions.UseCase;
+  //protected static Action _actionState = Actions.State;
+  //protected static Action _actionPseudostate = Actions.Pseudostate;
+  //protected static Action _actionAttr = Actions.Attr;
+  //protected static Action _actionOper = Actions.Oper;
   // -----  shapes
   protected static Action _actionRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRect.class, "Rectangle");
   protected static Action _actionRRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRRect.class, "RRect");
@@ -213,7 +216,7 @@ implements IStatusBar {
     KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
     KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
     KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
-
+    KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
 
     KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
     KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
@@ -267,6 +270,7 @@ implements IStatusBar {
     JMenuItem openItem = file.add(_actionOpen);
     openItem.setMnemonic('O');
     openItem.setAccelerator(ctrlO);
+    JMenuItem openXMIItem = file.add(_actionOpenXMI);
     JMenuItem saveItem = file.add(_actionSave);
     saveItem.setMnemonic('S');
     saveItem.setAccelerator(ctrlS);
@@ -310,7 +314,10 @@ implements IStatusBar {
     pasteItem.setAccelerator(ctrlV);
     edit.addSeparator();
     edit.add(_actionDelete);
-    edit.add(_actionDispose);
+    JMenuItem removeItem = edit.add(_actionRemove);
+    removeItem.setMnemonic('R');
+    removeItem.setAccelerator(ctrlR);
+    JMenuItem emptyItem = edit.add(_actionEmpty);
 
     JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
     // maybe should be Navigate instead of view
@@ -387,17 +394,18 @@ implements IStatusBar {
     createDiagrams.add(_actionUseCaseDiagram);
     createDiagrams.add(_actionStateDiagram);
     createDiagrams.add(_actionActivityDiagram);
+    createDiagrams.add(_actionCollabortationDiagram);
 
     JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
-    createModelElements.add(_actionModel);
-    createModelElements.add(_actionClass);
-    createModelElements.add(_actionInterface);
-    createModelElements.add(_actionActor);
-    createModelElements.add(_actionUseCase);
-    createModelElements.add(_actionState);
-    createModelElements.add(_actionPseudostate);
-    createModelElements.add(_actionAttr);
-    createModelElements.add(_actionOper);
+    //createModelElements.add(_actionModel);
+    //createModelElements.add(_actionClass);
+    //createModelElements.add(_actionInterface);
+    //createModelElements.add(_actionActor);
+    //createModelElements.add(_actionUseCase);
+    //createModelElements.add(_actionState);
+    //createModelElements.add(_actionPseudostate);
+    //createModelElements.add(_actionAttr);
+    //createModelElements.add(_actionOper);
 
     JMenu createFig = (JMenu) create.add(new JMenu("Shapes"));
     createFig.add(_actionRectangle);
@@ -494,7 +502,7 @@ implements IStatusBar {
     if (_project == null) setTitle(getAppName());
     else setTitle(getAppName() + " - " + _project.getName());
   }
-  
+
   public String getAppName() { return _appName; }
   public void setAppName(String n) { _appName = n; }
 
@@ -525,6 +533,7 @@ implements IStatusBar {
   public void select(Object o) {
     _multiPane.select(o);
     _detailsPane.setTarget(o);
+    Actions.updateAllEnabled();
   }
 
   public void setTarget(Object o) {

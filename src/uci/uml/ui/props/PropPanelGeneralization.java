@@ -45,13 +45,7 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Model_Management.*;
 import uci.uml.ui.*;
 
-/** This is an abstract superclass for panels that go in the
- *  "Properties" tab in the Argo/UML user interface.
- *
- * @see TabProps */
-
-public class PropPanelGeneralization extends PropPanel
-implements TabModelTarget, DocumentListener {
+public class PropPanelGeneralization extends PropPanelTwoEnds {
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -62,6 +56,30 @@ implements TabModelTarget, DocumentListener {
     remove(_nameField);
     remove(_nameLabel);    
   }
+
+  public String getSourceLabel() {
+    if (!(_target instanceof Generalization)) return "non gen";
+    return "Superclass:";
+  }
+  public String getSourceValue() {
+    if (!(_target instanceof Generalization)) return "non gen";
+    Generalization g = (Generalization) _target;
+    GeneralizableElement sup = g.getSupertype();
+    if (sup == null) return "null";
+    return sup.getName().getBody();
+  }
+  public String getDestLabel() {
+    if (!(_target instanceof Generalization)) return "non gen";
+    return "Subclass:";
+  }
+  public String getDestValue() {
+    if (!(_target instanceof Generalization)) return "non gen";
+    Generalization g = (Generalization) _target;
+    GeneralizableElement sub = g.getSubtype();
+    if (sub == null) return "null";
+    return sub.getName().getBody();
+  }
+  
 
   
 } /* end class PropPanelGeneralization */

@@ -84,7 +84,6 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       Classifier toCls = (Classifier) toEnd.getType();
       FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
       FigNode toFN = (FigNode) lay.presentationFor(toCls);
-      System.out.println("seting sopurce and dest");
       ascFig.setSourcePortFig(fromFN);
       ascFig.setSourceFigNode(fromFN);
       ascFig.setDestPortFig(toFN);

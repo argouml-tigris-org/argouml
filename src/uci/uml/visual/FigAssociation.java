@@ -47,6 +47,9 @@ public class FigAssociation extends FigEdgeModelElement {
   protected FigText _srcMult, _srcRole;
   protected FigText _destMult, _destRole;
 
+  ////////////////////////////////////////////////////////////////
+  // constructors
+
   public FigAssociation() {
     addPathItem(_name, new PathConvPercent(this, 50, 10));
 
@@ -89,21 +92,12 @@ public class FigAssociation extends FigEdgeModelElement {
     setOwner(edge);
   }
 
-
-  public void dispose() {
-    //System.out.println("disposing FigAssociation");
-    Association asc = (Association) getOwner();
-    if (asc == null) return;
-    Vector conns = asc.getConnection();
-    for (int i = 0; i < conns.size(); i++) {
-      try { ((AssociationEnd)conns.elementAt(i)).setType(null); }
-      catch (PropertyVetoException pve) { }
-    }
-    super.dispose();
-  }
+  ////////////////////////////////////////////////////////////////
+  // event handlers
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     IAssociation asc = (IAssociation) getOwner();
+    if (asc == null) return;
     super.textEdited(ft);
 
     Vector conn = asc.getConnection();
@@ -119,10 +113,6 @@ public class FigAssociation extends FigEdgeModelElement {
     }
     // needs-more-work: parse multiplicities
   }
-
-//   protected boolean canEdit(Fig f) {
-//     return (f == _name || f == _srcRole || f == _destRole);
-//   }
 
 
   protected void modelChanged() {

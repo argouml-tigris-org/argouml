@@ -36,10 +36,25 @@ public class AssociationRole extends Association {
   public Multiplicity _multiplicity;
   public Association _base;
   public Collaboration _collaboration;
+  public Vector _associationEndRole;
+  public Vector _messages;
 
   public AssociationRole() { }
   public AssociationRole(Name name) { super(name); }
   public AssociationRole(String nameStr) { super(new Name(nameStr)); }
+  public AssociationRole(Classifier srcC, Classifier dstC) {
+    super();
+    try {
+      AssociationEndRole src = new AssociationEndRole(srcC);
+      AssociationEndRole dst = new AssociationEndRole(dstC);
+      addAssociationEndRole(src);
+      //srcC.addAssociationEnd(src);
+      addAssociationEndRole(dst);
+      //dstC.addAssociationEnd(dst);
+      setNamespace(srcC.getNamespace());
+    }
+    catch (PropertyVetoException pce) { }
+  }
 
   public Multiplicity getMultiplicity() { return _multiplicity; }
   public void setMultiplicity(Multiplicity x) throws PropertyVetoException {
@@ -50,7 +65,7 @@ public class AssociationRole extends Association {
   public Association getBase() { return _base; }
   public void setBase(Association x) throws PropertyVetoException {
     fireVetoableChange("base", _base, x);
-     _base = x;
+    _base = x;
   }
 
   public Collaboration getCollaboration() { return _collaboration; }
@@ -59,5 +74,62 @@ public class AssociationRole extends Association {
      _collaboration = x;
   }
 
+  public Vector getMessages() { return _messages; }
+  public void setMessages(Vector x) throws PropertyVetoException {
+    fireVetoableChange("messages", _messages, x);
+     _messages = x;
+  }
+
+  public void addMessage(Message x)
+  throws PropertyVetoException {
+    if (_messages == null) _messages = new Vector();
+    fireVetoableChange("messages", _messages, x);
+    _messages.addElement(x);
+    //x.setOwner(this);
+    //x.setNamespace(this);
+  }
+
+
+  public Vector getAssociationEndRole() { return (Vector) _associationEndRole; }
+  public void setAssociationEndRole(Vector x) throws PropertyVetoException {
+    if (_associationEndRole == null) _associationEndRole = new Vector();
+    fireVetoableChangeNoCompare("associationEndRole", _associationEndRole, x);
+    _associationEndRole = x;
+    java.util.Enumeration enum = _associationEndRole.elements();
+    while (enum.hasMoreElements()) {
+      AssociationEndRole ae = (AssociationEndRole) enum.nextElement();
+      ae.setAssociationRole(this);
+    }
+  }
+  public void addAssociationEndRole(AssociationEndRole x) throws PropertyVetoException {
+    if (_associationEndRole == null) _associationEndRole = new Vector();
+    fireVetoableChange("associationEndRole", _associationEndRole, x);
+    _associationEndRole.addElement(x);
+    x.setAssociationRole(this);
+  }
+  public void removeAssociationEndRole(AssociationEndRole x) throws PropertyVetoException {
+    if (_associationEndRole == null) return;
+    fireVetoableChange("associationEndRole", _associationEndRole, x);
+    _associationEndRole.removeElement(x);
+    x.setAssociationRole(null);
+  }
+
+
+  /*public void removeBehavioralFeature(Feature x)
+  throws PropertyVetoException {
+    if (_behavioralFeature == null) return;
+    fireVetoableChange("behavioralFeature", _behavioralFeature, x);
+    _behavioralFeature.removeElement(x);
+    x.setOwner(null);
+  }
+  public BehavioralFeature findBehavioralFeature(Name n) {
+    Vector beh = getBehavioralFeature();
+    int behSize = beh.size();
+    for (int i = 0; i < behSize; i++) {
+      BehavioralFeature bf = (BehavioralFeature) beh.elementAt(i);
+      if (bf.getName().equals(n)) return bf;
+    }
+    return null;
+  }*/
   static final long serialVersionUID = 5767831899229440182L;
 }

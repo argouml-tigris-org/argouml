@@ -70,6 +70,7 @@ public class CrDisambigStateName extends CrUML {
     ElementOwnership oe = s.getElementOwnership();
     if (oe == null) return NO_PROBLEM;
     Namespace ns = oe.getNamespace();
+    if (ns == null) return NO_PROBLEM;
     Vector oes = ns.getOwnedElement();
     if (oes == null) return NO_PROBLEM;
     java.util.Enumeration enum = oes.elements();

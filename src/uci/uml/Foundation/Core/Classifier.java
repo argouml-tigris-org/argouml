@@ -38,7 +38,6 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
-//nmw: import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.util.*;
 
 
@@ -90,7 +89,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("behavioralFeature", _behavioralFeature, x);
     _behavioralFeature.addElement(x);
     x.setOwner(this);
-    x.setNamespace(this);
+    //x.setNamespace(this);
   }
   public void removeBehavioralFeature(Feature x)
   throws PropertyVetoException {
@@ -136,7 +135,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
     fireVetoableChange("structuralFeature", _structuralFeature, x);
     _structuralFeature.addElement(x);
     x.setOwner(this);
-    x.setNamespace(this);
+    //x.setNamespace(this);
   }
   public void removeStructuralFeature(StructuralFeature x)
   throws PropertyVetoException {
@@ -165,6 +164,7 @@ public abstract class Classifier extends GeneralizableElementImpl {
   public void addSpecification(Realization x)
   throws PropertyVetoException {
     if (_specification == null) _specification = new Vector();
+    if (_specification.contains(x)) return;
     fireVetoableChange("specification", _specification, x);
     _specification.addElement(x);
   }
@@ -364,6 +364,24 @@ public abstract class Classifier extends GeneralizableElementImpl {
     return res;
   }
 
+  public Vector alsoTrash() {
+    Vector res = super.alsoTrash();
+    if (_specification != null) {
+      for (int i = 0; i < _specification.size(); i++)
+	res.addElement(_specification.elementAt(i));
+    }
+    if (_realization != null) {
+      for (int i = 0; i < _realization.size(); i++)
+	res.addElement(_realization.elementAt(i));
+    }
+    if (_associationEnd != null) {
+      for (int i = 0; i < _associationEnd.size(); i++) {
+	AssociationEnd ae = (AssociationEnd) _associationEnd.elementAt(i);
+	res.addElement(ae.getAssociation());
+      }
+    }
+    return res;
+  }
 
   ////////////////////////////////////////////////////////////////
   // debugging

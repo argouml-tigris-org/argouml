@@ -59,7 +59,7 @@ public abstract class Feature extends ModelElementImpl {
   public void setOwner(Classifier x) throws PropertyVetoException {
     fireVetoableChange("owner", _visibility, x);
     _owner = x;
-    setNamespace(x);
+    //setNamespace(x);
   }
 
 

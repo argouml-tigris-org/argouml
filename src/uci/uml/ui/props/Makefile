@@ -33,13 +33,19 @@ GEN =
 
 CLASSES = \
 	PropPanel.class \
+	PropPanelString.class \
 	PropPanelActionState.class \
+	PropPanelTwoEnds.class \
+	PropPanelClassifierRole.class \
+	PropPanelMessage.class \
 	PropPanelAssociation.class \
+	PropPanelAssociationRole.class \
 	PropPanelAttribute.class \
 	PropPanelOperation.class \
 	PropPanelClass.class \
 	PropPanelDependency.class \
 	PropPanelDiagram.class \
+	PropPanelUMLStateDiagram.class \
 	PropPanelInterface.class \
 	PropPanelGeneralization.class \
 	PropPanelModel.class \

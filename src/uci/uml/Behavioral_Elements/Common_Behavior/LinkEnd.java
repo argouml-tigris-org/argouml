@@ -40,7 +40,7 @@ public class LinkEnd extends ModelElementImpl {
   public AssociationEnd _associationEnd = null;
   public Instance _instance;
   public Classifier _type;
-  
+
   public LinkEnd() { }
   public LinkEnd(Name name) { super(name); }
   public LinkEnd(String nameStr) { super(new Name(nameStr)); }
@@ -49,24 +49,35 @@ public class LinkEnd extends ModelElementImpl {
     try { setInstance(i); }
     catch (PropertyVetoException pce) { }
   }
-  
-  
+
+
   public Link getLink() { return _link; }
-  
-  public Instance getInstance() { return _instance; }
-  
-  public AssociationEnd getAssociationEnd() { return _associationEnd; }
-  
+
   public void setLink(Link x) throws PropertyVetoException {
     fireVetoableChange("link", _link, x);
     _link = x;
   }
-  
+
+  public Instance getInstance() { return _instance; }
+
   public void setInstance(Instance x) throws PropertyVetoException {
+    if (_instance == x) return;
     fireVetoableChange("instance", _instance, x);
+    if (_instance != null) _instance.removeLinkEnd(this);
     _instance = x;
+    if (_instance != null) _instance.addLinkEnd(this);
   }
-  
+
+  public Classifier getType() { return _type; }
+  public void setType(Classifier x) throws PropertyVetoException {
+    if (x == _type) return;
+    fireVetoableChange("type", _type, x);
+    _type = x;
+  }
+
+
+  public AssociationEnd getAssociationEnd() { return _associationEnd; }
+
   public void setAssociationEnd(AssociationEnd x) throws PropertyVetoException {
     fireVetoableChange("associationEnd", _associationEnd, x);
     _associationEnd = x;

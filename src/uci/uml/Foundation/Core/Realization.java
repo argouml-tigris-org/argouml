@@ -45,20 +45,41 @@ public class Realization extends ModelElementImpl {
     super();
     setSubtype(sub);
     setSupertype(sup);
-    sub.addSpecification(this);
-    sup.addRealization(this);
+    //sub.addSpecification(this);
+    //sup.addRealization(this);
   }
 
   public Classifier getSubtype() { return _subtype; }
   public void setSubtype(Classifier x) throws PropertyVetoException {
+    if (_subtype == x) return;
     fireVetoableChange("subtype", _subtype, x);
+    if (_subtype != null) _subtype.removeSpecification(this);
     _subtype = x;
-    //if (x != null) setNamespace(x.getNamespace());
+    if (_subtype != null) _subtype.addSpecification(this);
+    if (x != null) setNamespace(x.getNamespace());
   }
+
   public Classifier getSupertype() { return _supertype; }
   public void setSupertype(Classifier x) throws PropertyVetoException {
+    if (_supertype == x) return;
     fireVetoableChange("supertype", _supertype, x);
+    if (_supertype != null) _supertype.removeRealization(this);
     _supertype = x;
+    if (_supertype != null) _supertype.addRealization(this);
+  }
+
+  public boolean isLegalXMI() { return false; }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    setSupertype(null);
+    setSubtype(null);
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
   }
 
   static final long serialVersionUID = -7208283564288364361L;

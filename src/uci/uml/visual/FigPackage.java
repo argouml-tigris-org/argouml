@@ -51,11 +51,11 @@ public class FigPackage extends FigNodeModelElement {
   // constants
 
   public final int MARGIN = 2;
-  public int x = 10;
-  public int y = 10;
-  public int width = 120;
-  public int height = 70;
-  public int indentX = 30;
+  public int x = 0;
+  public int y = 0;
+  public int width = 140;
+  public int height = 100;
+  public int indentX = 50;
   public int indentY = 20;
   public int textH = 20;
   protected int _radius = 20;
@@ -81,8 +81,6 @@ public class FigPackage extends FigNodeModelElement {
 			   handleColor, Color.lightGray);
     _name.setBounds(x, y, width - indentX, textH + 2);
     _name.setJustification(FigText.JUSTIFY_LEFT);
-    _name.setTextFilled(true);
-    _name.setText("Package");
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
@@ -100,6 +98,8 @@ public class FigPackage extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new Package"; }
+
   public Object clone() {
     FigPackage figClone = (FigPackage) super.clone();
     Vector v = figClone.getFigs();
@@ -109,10 +109,40 @@ public class FigPackage extends FigNodeModelElement {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // user interaction methods
+
+  public void setEnclosingFig(Fig encloser) {
+    super.setEnclosingFig(encloser);
+    if (!(getOwner() instanceof ModelElement)) return;
+    ModelElement me = (ModelElement) getOwner();
+    Model m = null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (encloser != null && (encloser.getOwner() instanceof Model)) {
+      m = (Model) encloser.getOwner();
+    }
+    else {
+      if (pb.getTarget() instanceof UMLDiagram) {
+	m = (Model) ((UMLDiagram)pb.getTarget()).getModel();
+      }
+    }
+    try {
+      me.setNamespace(m);
+    }
+    catch (Exception e) {
+      System.out.println("could not set package");
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // accessor methods
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
   }
+
+  public boolean getUseTrapRect() { return true; }
 
   public Dimension getMinimumSize() {
     Dimension nameMinimum = _name.getMinimumSize();
@@ -128,7 +158,7 @@ public class FigPackage extends FigNodeModelElement {
     Dimension nameMinimum = _name.getMinimumSize();
 
     _name.setBounds(x, y, w - indentX, nameMinimum.height + 2);
-    _bigPort.setBounds(x+1, y + nameMinimum.height,
+    _bigPort.setBounds(x+1, y+1 + nameMinimum.height,
 		       w-2, h - 2 - nameMinimum.height);
     _body.setBounds(x, y+1 + nameMinimum.height,
 		    w, h - 1 - nameMinimum.height);

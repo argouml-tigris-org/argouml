@@ -41,40 +41,98 @@ import uci.uml.Foundation.Core.*;
  * the trash, you must fix this before you empty the trash. */
 
 public class Trash {
-  public static Trash TheTrash = new Trash();
+  public static Trash SINGLETON = new Trash();
 
+  /** Keys are model objects, values are TrashItems with recovery info */
   public Vector _contents = new Vector();
-  public Model Trash_Model = new Model("Trash ");
+  public Model Trash_Model = new Model("Trash");
 
-  private Trash() { }
+
+  protected Trash() { }
 
   public void addItemFrom(Object obj, Vector places) {
-    TrashItem ti = new TrashItem(obj, places);
-    if (_contents.contains(ti)) return;
-    _contents.addElement(ti);
+    if (obj == null) {
+      System.out.println("tried to add null to trash!");
+      return;
+    }
     if (obj instanceof ModelElement) {
       ModelElement me = (ModelElement) obj;
-      try { Trash_Model.addOwnedElement(me.getElementOwnership()); }
+      try {
+	TrashItem ti = new TrashItem(obj, places);
+	_contents.addElement(ti);
+	me.setNamespace(Trash_Model);
+	System.out.println("added " + obj + " to trash");
+      }
       catch (PropertyVetoException pve) {
-	System.out.println("Trash had a PropertyVetoException");
+	System.out.println("Trash add had a PropertyVetoException");
+      }
+    }
+    //needs-more-work: trash diagrams
+  }
+
+  public boolean contains(Object obj) {
+    int size = _contents.size();
+    for (int i = 0; i < size; i++) {
+      TrashItem ti = (TrashItem) _contents.elementAt(i);
+      if (ti._item == obj) return true;
+    }
+    return false;
+  }
+  
+  public void recoverItem(Object obj) {
+    System.out.println("needs-more-work: recover from trash");
+    if (obj instanceof ModelElement) {
+      TrashItem ti = null; //needs-more-work: find in trash
+      try {
+	((ModelElement)obj).recoverFromTrash(ti);
+      }
+      catch (PropertyVetoException pve) {
+	System.out.println("trash recovery had a PropertyVetoException");
       }
     }
   }
 
   public void removeItem(Object obj) {
-    _contents.removeElement(new TrashItem(obj, null));
+    if (obj == null) {
+      System.out.println("tried to remove null from trash!");
+      return;
+    }
+    TrashItem ti = null; //needs-more-work: find in trash
+    _contents.removeElement(ti);
   }
-  
+
+  public void emptyTrash() {
+    System.out.println("needs-more-work: emptyTheTrash not implemented yet");
+    System.out.println("Trash contents:");
+    Enumeration keys = _contents.elements();
+    while (keys.hasMoreElements()) {
+      Object k = keys.nextElement();
+      System.out.println("| " + ((TrashItem)k)._item);
+    }
+    System.out.println("");
+  }
+
+  public int getSize() { return _contents.size(); }
+
 } /* end class Trash */
+
+////////////////////////////////////////////////////////////////
 
 class TrashItem {
 
   Object _item;
+  Object _recoveryInfo = null;
   Vector _places;
 
   TrashItem(Object item, Vector places) {
     _item = item;
     _places = places;
+    if (item instanceof ModelElement) {
+      try {
+	_recoveryInfo = ((ModelElement)item).prepareForTrash();
+      }
+      catch (PropertyVetoException pve) { }
+    }
   }
 
   public boolean equals(Object o) {
@@ -86,5 +144,5 @@ class TrashItem {
   }
 
   public int hashCode() { return _item.hashCode(); }
-  
+
 } /* end class TrashItem */

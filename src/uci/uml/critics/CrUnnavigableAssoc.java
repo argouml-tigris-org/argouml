@@ -35,6 +35,7 @@ import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Foundation.Extension_Mechanisms.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Model_Management.*;
 
 /** A critic to detect when a class can never have instances (of
@@ -61,6 +62,8 @@ public class CrUnnavigableAssoc extends CrUML {
     if (!(dm instanceof Association)) return NO_PROBLEM;
     Association asc = (Association) dm;
     Vector conn = asc.getConnection();
+    if (asc instanceof AssociationRole)
+      conn = ((AssociationRole)asc).getAssociationEndRole();
     int size = conn.size();
     for (int i=0; i < size; i++) {
       AssociationEnd ae = (AssociationEnd) conn.elementAt(i);

@@ -36,6 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 
 /** Well-formedness rule [2] for Classifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -86,6 +87,8 @@ public class CrOppEndVsAttr extends CrUML {
       AssociationEnd myAe = (AssociationEnd) enum.nextElement();
       Association asc = (Association) myAe.getAssociation();
       Vector conn = asc.getConnection();
+      if (asc instanceof AssociationRole)
+      conn = ((AssociationRole)asc).getAssociationEndRole();
       if (conn == null) continue;
       java.util.Enumeration enum2 = conn.elements();
       while (enum2.hasMoreElements()) {

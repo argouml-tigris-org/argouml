@@ -28,7 +28,6 @@
 
 package uci.uml.Foundation.Core;
 
-//nmw: import uci.uml.Behavioral_Elements.Collaborations.AssociationRole;
 import java.util.*;
 import java.beans.*;
 
@@ -157,6 +156,22 @@ implements IAssociation {
 	return true;
     }
     return false;
+  }
+
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    Vector conns = getConnection();
+    for (int i = 0; i < conns.size(); i++) {
+      try { ((AssociationEnd)conns.elementAt(i)).setType(null); }
+      catch (PropertyVetoException pve) { }
+    }
+    //needs-more-work
+    return super.prepareForTrash();
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
   }
 
   ////////////////////////////////////////////////////////////////

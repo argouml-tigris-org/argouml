@@ -39,16 +39,19 @@ import com.sun.java.swing.preview.filechooser.*;
 
 import uci.util.*;
 import uci.gef.*;
+import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
 import uci.uml.generate.*;
 import uci.uml.xmi.*;
+import uci.uml.ocl.*;
 
 public class Actions {
 
@@ -56,6 +59,7 @@ public class Actions {
 
   public static UMLAction New = new ActionNew();
   public static UMLAction Open = new ActionOpen();
+  public static UMLAction OpenXMI = new ActionOpenXMI();
   public static UMLAction Save = new ActionSave();
   public static UMLAction SaveAs = new ActionSaveAs();
   public static UMLAction SaveAsXMI = new ActionSaveAsXMI();
@@ -68,6 +72,9 @@ public class Actions {
   public static UMLAction Cut = new ActionCut();
   public static UMLAction Copy = new ActionCopy();
   public static UMLAction Paste = new ActionPaste();
+  public static UMLAction DeleteFromDiagram = new ActionDeleteFromDiagram();
+  public static UMLAction RemoveFromModel = new ActionRemoveFromModel();
+  public static UMLAction EmptyTrash = new ActionEmptyTrash();
 
   public static UMLAction NavUp = new ActionNavUp();
   public static UMLAction NavDown = new ActionNavDown();
@@ -86,22 +93,24 @@ public class Actions {
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
   public static UMLAction ClassWizard = new ActionClassWizard();
 
-  public static UMLAction Model = new ActionModel();
+  //public static UMLAction Model = new ActionModel();
   public static UMLAction ClassDiagram = new ActionClassDiagram();
   public static UMLAction UseCaseDiagram = new ActionUseCaseDiagram();
   public static UMLAction StateDiagram = new ActionStateDiagram();
   public static UMLAction ActivityDiagram = new ActionActivityDiagram();
+  public static UMLAction CollaborationDiagram = new ActionCollaborationDiagram();
 
-  public static UMLAction Class = new ActionClass();
-  public static UMLAction Interface = new ActionInterface();
-  public static UMLAction Actor = new ActionActor();
-  public static UMLAction UseCase = new ActionUseCase();
-  public static UMLAction State = new ActionState();
-  public static UMLAction Pseudostate = new ActionPseudostate();
-  public static UMLAction Package = new ActionPackage();
-  public static UMLAction Instance = new ActionInstance();
+  //public static UMLAction Class = new ActionClass();
+  //public static UMLAction Interface = new ActionInterface();
+  //public static UMLAction Actor = new ActionActor();
+  //public static UMLAction UseCase = new ActionUseCase();
+  //public static UMLAction State = new ActionState();
+  //public static UMLAction Pseudostate = new ActionPseudostate();
+  //public static UMLAction Package = new ActionPackage();
+  //public static UMLAction Instance = new ActionInstance();
   public static UMLAction Attr = new ActionAttr();
   public static UMLAction Oper = new ActionOper();
+  public static UMLAction Message = new ActionMessage();
   public static UMLAction InternalTransition = new ActionInternalTransition();
 
   public static UMLAction GenerateOne = new ActionGenerateOne();
@@ -174,7 +183,8 @@ class ActionNew extends UMLAction {
 	if (!((ActionSave)Actions.Save).trySave()) return;
       //needs-more-work: if you cancel the save it should cancel open
     }
-    pb.setProject(new EmptyProject());
+    p = Project.makeEmptyProject();
+    pb.setProject(p);
   }
 } /* end class ActionNew */
 
@@ -204,7 +214,7 @@ class ActionOpen extends UMLAction {
       else chooser = new JFileChooser();
       
       chooser.setDialogTitle("Open Project...");
-      ArgoFileFilter filter = new ArgoFileFilter();
+      FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
       int retval = chooser.showOpenDialog(pb);
@@ -261,7 +271,67 @@ class ActionOpen extends UMLAction {
   }
 } /* end class ActionOpen */
 
+class ActionOpenXMI extends UMLAction {
+  public ActionOpenXMI() { super("Open XMI..."); }
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
+    if (p != null) { // && p.getNeedsSave()) {
+      String t = "Save changes to " + p.getName();
+      int response =
+	JOptionPane.showConfirmDialog(pb, t, t,
+				      JOptionPane.YES_NO_CANCEL_OPTION);
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION)
+	if (!((ActionSave)Actions.Save).trySave()) return;
+    }
+
+    //    try {
+      JFileChooser chooser;
+      if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
+	System.out.println("open initial path=" + p.getPathname());
+	chooser = new JFileChooser(p.getPathname());
+      }
+      else chooser = new JFileChooser();
+
+      chooser.setDialogTitle("Open Project...");
+      FileFilter filter = FileFilters.XMIFilter;
+      chooser.addChoosableFileFilter(filter);
+      chooser.setFileFilter(filter);
+      int retval = chooser.showOpenDialog(pb);
+      if(retval == 0) {
+	File theFile = chooser.getSelectedFile();
+	if(theFile != null) {
+	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+    	System.out.println("Reading " + pathname + "...");
+	pb.showStatus("Reading " + pathname + "...");
+	XMIParserIBM.SINGLETON.readModels("", pathname);
+	//p.postLoad();
+    	pb.showStatus("Read " + pathname);
+	//p.setStats(stats);
+	return;
+	}
+      }
+//     }
+//     catch (FileNotFoundException ignore) {
+//       System.out.println("got an FileNotFoundException");
+//      }
+//     catch (java.lang.ClassNotFoundException ignore) {
+//       System.out.println("got an ClassNotFoundException");
+//      }
+//     catch (IOException ignore) {
+//       System.out.println("got an IOException");
+//     }
+  }
+} /* end class ActionOpenXMI */
+
 class ActionSave extends UMLAction {
+  protected static Hashtable _templates = new Hashtable();
+
+  static {
+    _templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
+  }
+
   public ActionSave() { super("Save"); }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
@@ -298,7 +368,7 @@ class ActionSaveAs extends UMLAction {
       else chooser = new JFileChooser();
 
       chooser.setDialogTitle("Save " + p.getName());
-      ArgoFileFilter filter = new ArgoFileFilter();
+      FileFilter filter = FileFilters.ArgoFilter;
       chooser.addChoosableFileFilter(filter);
       chooser.setFileFilter(filter);
       Hashtable stats = p.getStats();
@@ -371,18 +441,79 @@ class ActionSaveAs extends UMLAction {
 } /* end class ActionSaveAS */
 
 class ActionSaveAsXMI extends UMLAction {
-  public ActionSaveAsXMI() { super("Save As XMI"); }
-
+  protected static OCLExpander expander = null;
+  public ActionSaveAsXMI() {
+    super("Save As XMI");
+    Hashtable templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
+    expander = new OCLExpander(templates);
+  }
   public boolean shouldBeEnabled() {
     Project p = ProjectBrowser.TheInstance.getProject();
     return super.shouldBeEnabled() && p != null;
   }
-
   public void actionPerformed(ActionEvent e) {
-    System.out.println("Dump XMI now.");
-    Project p = ProjectBrowser.TheInstance.getProject();
+    trySave();
+  }
 
-    XMITraverse.traverse(p);
+  public boolean trySave() {
+    //@@@: just for rapid edig-compile-debug 
+    Hashtable templates = TemplateReader.readFile("/uci/dtd/XMI.tee");
+    expander = new OCLExpander(templates);
+
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p =  pb.getProject();
+    try {
+      JFileChooser chooser;
+      if (p != null && p.getPathname() != null && p.getPathname().length()>0) {
+	chooser  = new JFileChooser(p.getPathname());
+      }
+      else chooser = new JFileChooser();
+
+      chooser.setDialogTitle("Save " + p.getName());
+      FileFilter filter = FileFilters.XMIFilter;
+      chooser.addChoosableFileFilter(filter);
+      chooser.setFileFilter(filter);
+      Hashtable stats = p.getStats();
+
+      int retval = chooser.showSaveDialog(pb);
+      if(retval == 0) {
+	File theFile = chooser.getSelectedFile();
+	if (theFile != null) {
+	  String pathname = chooser.getSelectedFile().getAbsolutePath();
+	  pb.showStatus("Writing " + pathname + "...");
+	  p.setPathname(chooser.getSelectedFile().getParent());
+	  String name = chooser.getSelectedFile().getName();
+	  if (!name.endsWith(".xmi")) name += ".xmi";
+	  if (!pathname.endsWith(".xmi")) pathname += ".xmi";
+	  p.setName(name);
+	  FileWriter fw = new FileWriter(pathname);
+	  p.preSave();
+	  expander.expand(fw, p, "", "");
+	  p.postSave();
+	  fw.close();
+	  pb.showStatus("Wrote " + pathname);
+	  pb.updateTitle();
+	  return true;
+	}
+      }
+    }
+    catch (FileNotFoundException ignore) {
+      System.out.println("got an FileNotFoundException");
+    }
+    catch (PropertyVetoException ignore) {
+      System.out.println("got an PropertyVetoException in SaveAs");
+    }
+//     catch (PropertyVetoException ignore) {
+//       System.out.println("got an PropertyVetoException");
+//     }
+    //    catch (java.lang.ClassMismatchException ignore) {
+    //      System.out.println("got an ClassMismatchException");
+    //    }
+    catch (IOException ignore) {
+      System.out.println("got an IOException");
+      ignore.printStackTrace();
+    }
+    return false;
   }
 } /* end class ActionSaveAsXMI */
 
@@ -475,6 +606,74 @@ class ActionPaste extends UMLChangeAction {
   }
 
 } /* end class ActionPaste */
+
+
+class ActionDeleteFromDiagram extends UMLChangeAction {
+  public ActionDeleteFromDiagram() { super("Delete From Diagram"); }
+  public boolean shouldBeEnabled() {
+    Editor ce = Globals.curEditor();
+    Vector figs = ce.getSelectionManager().getFigs();
+    return figs.size() > 0;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    Editor ce = Globals.curEditor();
+    SelectionManager sm = ce.getSelectionManager();
+    sm.delete();
+  }
+}
+
+
+class ActionRemoveFromModel extends UMLChangeAction {
+  public ActionRemoveFromModel() { super("Remove From Model"); }
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    if (target instanceof ModelElement) return true;
+
+    // needs-more-work: trashing diagrams
+    Editor ce = Globals.curEditor();
+    Vector figs = ce.getSelectionManager().getFigs();
+    int size = figs.size();
+    for (int i = 0; i < size; i++) {
+      Fig f = (Fig) figs.elementAt(i);
+      Object owner = f.getOwner();
+      if (owner instanceof ModelElement) return true;
+    }
+    return false;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    Project p = pb.getProject();
+    if (target instanceof ModelElement)
+      p.moveToTrash(target);
+    // needs-more-work: trashing diagrams
+    else {
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      int size = figs.size();
+      for (int i = 0; i < size; i++) {
+	Fig f = (Fig) figs.elementAt(i);
+	Object owner = f.getOwner();
+	if (owner instanceof ModelElement)
+	  p.moveToTrash(owner);
+      }
+    }
+    super.actionPerformed(ae);
+  }
+} /* end class ActionRemoveFromModel */
+
+class ActionEmptyTrash extends UMLChangeAction {
+  public ActionEmptyTrash() { super("Empty Trash"); }
+  public boolean shouldBeEnabled() {
+    return Trash.SINGLETON.getSize() > 0;
+  }
+  public void actionPerformed(ActionEvent ae) {
+    Trash.SINGLETON.emptyTrash();
+    super.actionPerformed(ae);
+  }
+
+} /* end class ActionEmptyTrash */
 
 
 ////////////////////////////////////////////////////////////////
@@ -703,20 +902,23 @@ class ActionStateDiagram extends UMLChangeAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     try {
-      ModelElement context = (ModelElement) pb.getDetailsTarget();
-      if (context == null) {System.out.println("null context"); return;}
-      Name contextName = context.getName();
+      Object contextObj = pb.getDetailsTarget();
+      Name contextName = null;
+      if (contextObj instanceof ModelElement) {
+	contextName = ((ModelElement)contextObj).getName();
+      }
       String contextNameStr = "untitled";
       if (contextName != null && !contextName.equals(Name.UNSPEC))
 	contextNameStr = contextName.getBody();
       StateMachine sm = new StateMachine(contextNameStr + "States");
       CompositeState cs = new CompositeState("state_machine_top");
-      if (context instanceof Namespace) {
-	cs.setNamespace((Namespace)context);
-	sm.setNamespace((Namespace)context);
+      if (contextObj instanceof Namespace) {
+	//cs.setNamespace((Namespace)contextObj);
+	//sm.setNamespace((Namespace)contextObj);
       }
       sm.setTop(cs);
-      context.addBehavior(sm);
+      if (contextObj instanceof ModelElement)
+	((ModelElement)contextObj).addBehavior(sm);
       UMLStateDiagram d = new UMLStateDiagram(p.getCurrentModel(), sm);
       p.addDiagram(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -731,7 +933,8 @@ class ActionStateDiagram extends UMLChangeAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && p != null && (target instanceof ModelElement);
+    return super.shouldBeEnabled() && p != null;
+    //&& (target instanceof ModelElement);
   }
 } /* end class ActionStateDiagram */
 
@@ -744,20 +947,21 @@ class ActionActivityDiagram extends UMLChangeAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     try {
-      ModelElement context = (ModelElement) pb.getDetailsTarget();
-      if (context == null) {System.out.println("null context"); return;}
-      Name contextName = context.getName();
+      ModelElement context = null;
+      if (pb.getDetailsTarget() instanceof ModelElement)
+	context = (ModelElement) pb.getDetailsTarget();
+      Name contextName = (context == null) ? null : context.getName();
       String contextNameStr = "untitled";
       if (contextName != null && !contextName.equals(Name.UNSPEC))
 	contextNameStr = contextName.getBody();
       ActivityModel am = new ActivityModel(contextNameStr + "Activities");
       CompositeState cs = new CompositeState("activities_top");
       if (context instanceof Namespace) {
-	cs.setNamespace((Namespace)context);
-	am.setNamespace((Namespace)context);
+	//cs.setNamespace((Namespace)context);
+	//am.setNamespace((Namespace)context);
       }
       am.setTop(cs);
-      context.addBehavior(am);
+      if (context != null) context.addBehavior(am);
       UMLActivityDiagram d = new UMLActivityDiagram(p.getCurrentModel(), am);
       p.addDiagram(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -772,10 +976,32 @@ class ActionActivityDiagram extends UMLChangeAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && p != null &&
-      (target instanceof UseCase || target instanceof Operation);
+    return super.shouldBeEnabled() && p != null;
+    // && (target instanceof UseCase || target instanceof Operation);
   }
 } /* end class ActionActivityDiagram */
+
+class ActionCollaborationDiagram extends UMLChangeAction {
+  public ActionCollaborationDiagram() { super("CollaborationDiagram"); }
+
+  public void actionPerformed(ActionEvent ae) {
+    //System.out.println("making use case diagram...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      Diagram d  = new UMLCollaborationDiagram(p.getCurrentModel());
+      p.addDiagram(d);
+      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+      ProjectBrowser.TheInstance.setTarget(d);
+    }
+    catch (PropertyVetoException pve) { }
+    super.actionPerformed(ae);
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+} /* end class ActionCollaborationDiagram */
 
 
 ////////////////////////////////////////////////////////////////
@@ -784,7 +1010,7 @@ class ActionActivityDiagram extends UMLChangeAction {
 class ActionClass extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
   uci.gef.CmdCreateNode(MMClass.class, "Class");
-  
+
   public ActionClass() { super("Class"); }
 
   public void actionPerformed(ActionEvent ae) {
@@ -849,22 +1075,22 @@ class ActionUseCase extends UMLChangeAction {
   }
 } /* end class ActionUseCase */
 
-class ActionState extends UMLChangeAction {
-  uci.gef.Cmd _cmdCreateNode = new
-  uci.gef.CmdCreateNode(State.class, "State");
+// class ActionState extends UMLChangeAction {
+//   uci.gef.Cmd _cmdCreateNode = new
+//   uci.gef.CmdCreateNode(CompositeState.class, "State");
 
-  public ActionState() { super("State"); }
+//   public ActionState() { super("State"); }
 
-  public void actionPerformed(ActionEvent ae) {
-    //System.out.println("making state...");
-    _cmdCreateNode.doIt();
-    super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    return super.shouldBeEnabled() && p != null;
-  }
-} /* end class ActionState */
+//   public void actionPerformed(ActionEvent ae) {
+//     //System.out.println("making state...");
+//     _cmdCreateNode.doIt();
+//     super.actionPerformed(ae);
+//   }
+//   public boolean shouldBeEnabled() {
+//     Project p = ProjectBrowser.TheInstance.getProject();
+//     return super.shouldBeEnabled() && p != null;
+//   }
+// } /* end class ActionState */
 
 class ActionInternalTransition extends UMLChangeAction {
   public ActionInternalTransition() { super("Internal Transition"); }
@@ -893,7 +1119,7 @@ class ActionInternalTransition extends UMLChangeAction {
     Object target = pb.getDetailsTarget();
     return super.shouldBeEnabled() && target instanceof State;
   }
-} /* end class ActionState */
+} /* end class ActionInternalTransition */
 
 class ActionPseudostate extends UMLChangeAction {
   uci.gef.Cmd _cmdCreateNode = new
@@ -1003,6 +1229,63 @@ class ActionOper extends UMLChangeAction {
   }
 } /* end class ActionOper */
 
+
+class ActionMessage extends UMLChangeAction {
+  public ActionMessage() { super("Message"); }
+
+  public void actionPerformed(ActionEvent ae) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    Object d = pb.getTarget();
+    if (!(d instanceof UMLCollaborationDiagram)) return;
+    if (!(target instanceof AssociationRole)) return;
+    AssociationRole ar = (AssociationRole) target;
+    try {
+      Editor _curEditor = Globals.curEditor();
+      GraphModel gm = _curEditor.getGraphModel();
+      GraphNodeRenderer renderer = _curEditor.getGraphNodeRenderer();
+      Layer lay = _curEditor.getLayerManager().getActiveLayer();
+      SelectionManager _sm = _curEditor.getSelectionManager();
+      Vector figs = _sm.selections();
+      Selection _cf = (Selection) figs.firstElement();
+      FigEdge _curFig = (FigEdge) _cf.getContent();
+      Point _center = _curFig.center();
+
+      Message msg = new Message();
+      Vector ascEnds = ar.getAssociationEndRole();
+
+      AssociationEndRole aer1 = (AssociationEndRole) ascEnds.firstElement();
+      AssociationEndRole aer2 = (AssociationEndRole) ascEnds.lastElement();
+      ClassifierRole crSrc = (ClassifierRole) aer1.getType();
+      ClassifierRole crDst = (ClassifierRole) aer2.getType();
+      msg.setSender(crSrc);
+      msg.setReceiver(crDst);
+      UninterpretedAction ua = new UninterpretedAction();
+      msg.setAction(ua);
+      ar.addMessage(msg);
+
+      FigNode _pers = renderer.getFigNodeFor(gm, lay, msg);
+      Vector messages = ar.getMessages();
+      int size = messages.size();
+      int offsetY = _pers.getHeight()/2;
+      _pers.setLocation(_center.x, _center.y - (offsetY * size));
+      _curFig.addPathItem(_pers, new PathConvPercent(_curFig, 50, 10));
+      lay.add(_pers);
+      super.actionPerformed(ae);
+      //System.out.println("sender = " + msg.getSender().getName());
+      //System.out.println("receiver = " + msg.getReceiver().getName());
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionMessage");
+    }
+  }
+
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getDetailsTarget();
+    return super.shouldBeEnabled() && target instanceof AssociationRole;
+  }
+} /* end class ActionMessage */
 
 class ActionModel extends UMLChangeAction {
   //uci.gef.Cmd _cmdCreateNode = new

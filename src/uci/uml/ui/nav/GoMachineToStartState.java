@@ -38,8 +38,8 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 public class GoMachineToStartState implements TreeModelPrereqs {
 
-  public String toString() { return "State Machine->Start States"; }
-  
+  public String toString() { return "State Machine->Initial States"; }
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;

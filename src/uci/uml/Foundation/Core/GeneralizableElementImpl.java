@@ -109,12 +109,23 @@ implements GeneralizableElement {
      _specialization.addElement(x);
     x.setNamespace(getNamespace());
   }
-  public void removeSpecialization(Generalization x)
-       throws PropertyVetoException
-  {
+  public void removeSpecialization(Generalization x) throws PropertyVetoException {
     if (_specialization == null || !_specialization.contains(x)) return;
     fireVetoableChange("specalization", _specialization, x);
     _specialization.removeElement(x);
+  }
+
+  public Vector alsoTrash() {
+    Vector res = super.alsoTrash();
+    if (_specialization != null) {
+      for (int i = 0; i < _specialization.size(); i++)
+	res.addElement(_specialization.elementAt(i));
+    }
+    if (_generalization != null) {
+      for (int i = 0; i < _generalization.size(); i++)
+	res.addElement(_generalization.elementAt(i));
+    }
+    return res;
   }
 
   static final long serialVersionUID = -3189360194197209778L;

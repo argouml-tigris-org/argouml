@@ -96,6 +96,7 @@ implements ChangeListener, MouseListener {
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
 
   public void setTarget(Object target) {
+    System.out.println("MultiEditorPane setTarget: " + target);
     int firstEnabled = -1;
     boolean jumpToFirstEnabledTab = false;
     int currentTab = _tabs.getSelectedIndex();

@@ -30,20 +30,20 @@ import java.beans.*;
 import uci.uml.Foundation.Data_Types.*;
 
 public class CompositeState extends State {
-  public boolean _isConcurent;
+  public boolean _isConcurrent;
   //% public StateVertex _substate[];
   public Vector _substate = new Vector();
-    
+
   public CompositeState() { }
   public CompositeState(Name name) { super(name); }
   public CompositeState(String nameStr) { super(new Name(nameStr)); }
-  
-  public boolean getIsConcurent() { return _isConcurent; }
-  public void setIsConcurent(boolean x) throws PropertyVetoException {
-    fireVetoableChange("isConcurent",
-		       _isConcurent ? Boolean.TRUE : Boolean.FALSE,
+
+  public boolean getIsConcurrent() { return _isConcurrent; }
+  public void setIsConcurrent(boolean x) throws PropertyVetoException {
+    fireVetoableChange("isConcurrent",
+		       _isConcurrent ? Boolean.TRUE : Boolean.FALSE,
 		       x ? Boolean.TRUE : Boolean.FALSE);
-    _isConcurent = x;
+    _isConcurrent = x;
   }
 
   public Vector getSubstate() { return _substate; }
@@ -63,9 +63,11 @@ public class CompositeState extends State {
     fireVetoableChange("substate", _substate, x);
     _substate.addElement(x);
     x.setNamespace(getNamespace());
-    CompositeState oldParent = x.getParent();
-    if (oldParent != null) oldParent.removeSubstate(x);
+    //     CompositeState oldParent = x.getParent();
+    //     if (oldParent != this) {
+    //       if (oldParent != null) oldParent.removeSubstate(x);
     x.setParent(this);
+    //     }
     if (x instanceof State)
       ((State)x).setStateMachine(getStateMachine());
   }
@@ -77,6 +79,20 @@ public class CompositeState extends State {
     x.setParent(null);
   }
 
+  public Object prepareForTrash() throws PropertyVetoException {
+    CompositeState enclosing = getParent();
+    int size = _substate.size();
+    for (int i = 0; i < size; i++) {
+      StateVertex sv = (StateVertex) _substate.elementAt(i);
+      sv.setParent(enclosing);
+    }
+    return null;
+    //needs-more-work: remember old substates
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work: restore old substates
+  }
 
   ////////////////////////////////////////////////////////////////
   // debugging
@@ -90,7 +106,6 @@ public class CompositeState extends State {
       StateVertex sv = (StateVertex) subs.nextElement();
       s += sv.dbgString() + "\n";
     }
-    
     s += "  }\n";
     return s;
   }

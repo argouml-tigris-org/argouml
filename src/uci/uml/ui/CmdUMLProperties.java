@@ -34,13 +34,6 @@ package uci.uml.ui;
 import uci.gef.*;
 import java.awt.Event;
 
-/** Cmd to delete the Figs selected in the current editor, and dispose
- *  any underlying Net stuctures. This differs from CmdDelete in that
- *  when an underlying NetNode is disposed, it should delete all views
- *  on it, not just the selected one.
- *
- * @see NetPrimitive#dispose
- * @see CmdDelete */
 
 public class CmdUMLProperties extends Cmd {
 
@@ -50,8 +43,9 @@ public class CmdUMLProperties extends Cmd {
     //Editor ce = Globals.curEditor();
     //SelectionManager sm = ce.getSelectionManager();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (pb == null) return;
     DetailsPane dp = pb.getDetailsPane();
-    dp.selectTabNamed("Properties");    
+    dp.selectTabNamed("Properties");
   }
 
   public void undoIt() { }

@@ -277,7 +277,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   ////////////////////////////////////////////////////////////////
-  // methods related to adding, removing, and accessing DiagramElemnts
+  // methods related to adding, removing, and accessing Figs
   // shown in the editor
 
   /** Returns a collection of all Figs in the layer currently being edited. */

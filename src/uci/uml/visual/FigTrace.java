@@ -56,15 +56,6 @@ public class FigTrace extends FigEdgeLine {
     setOwner(edge);
   }
 
-  public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
-  }
-
-
   static final long serialVersionUID = -2094146244090391544L;
 
 } /* end class FigTrace */

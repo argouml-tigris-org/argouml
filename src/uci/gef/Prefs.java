@@ -51,11 +51,10 @@ public class Prefs {
   }
 
   /** Reply the color that should be used for rubberband lines. */
-  public Color getRubberbandColor() { return Color.cyan; }
-  //new Color(0x33, 0x33, 0x99); }
-  
+  public Color getRubberbandColor() { return new Color(0x33, 0x33, 0x99); }
+
   /** The color of the handles used to manipulate Fig's */
-  private Color _handleColor = Color.cyan; //new Color(0x55, 0x55, 0xaa);
+  private Color _handleColor = new Color(0x55, 0x55, 0xaa);
   /** The color of the handles used to indicate locked Fig's */
   private Color _lockedHandleColor = new Color(0x55, 0x55, 0x55);
   /** The color of the handles used to manipulate Fig's */

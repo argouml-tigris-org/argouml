@@ -39,6 +39,7 @@ CLASSES = \
 	FigEdgeModelElement.class \
 	FigActor.class \
 	FigAssociation.class \
+	FigCompositeState.class \
 	FigClass.class \
 	FigInterface.class \
 	FigDependency.class \
@@ -51,22 +52,29 @@ CLASSES = \
 	FigMessage.class \
 	FigNote.class \
 	FigPackage.class \
+	FigStateVertex.class \
 	FigState.class \
 	FigJoinState.class \
 	FigForkState.class \
 	FigBranchState.class \
+	FigHistoryState.class \
 	FigTrace.class \
 	FigTransition.class \
 	FigUseCase.class \
+	FigClassifierRole.class \
+	FigAssociationRole.class \
 	StateDiagramGraphModel.class \
 	StateDiagramRenderer.class \
 	UMLActivityDiagram.class \
 	UMLClassDiagram.class \
+	UMLCollaborationDiagram.class \
 	UMLDiagram.class \
 	UMLStateDiagram.class \
 	UMLUseCaseDiagram.class \
 	UseCaseDiagramGraphModel.class \
-	UseCaseDiagramRenderer.class
+	UseCaseDiagramRenderer.class \
+	CollaborationDiagramGraphModel.class \
+	CollaborationDiagramRenderer.class
 
 all: $(GEN) $(CLASSES)
 

@@ -57,8 +57,10 @@ implements IStatusBar {
     getContentPane().add(_statusBar, BorderLayout.SOUTH);
     // add preloading progress bar?
     //setSize(imgWidth + 50, imgHeight + 50);
+    setResizable(false);
     pack();
   }
+
 
   public void preload(Vector classnames) {
     //preload classes?

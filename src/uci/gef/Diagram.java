@@ -38,7 +38,7 @@ import uci.util.Set;
 /** A diagram is just combination of a GraphModel, a Layer, and a
     title. The GraphModel stores the connected graph representation,
     without any graphics. The Layer stores all the Figs. */
-public class Diagram implements java.io.Serializable {
+public class Diagram implements java.io.Serializable, GraphListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -95,8 +95,13 @@ public class Diagram implements java.io.Serializable {
     _name = n;
   }
 
-  public void setGraphModel(GraphModel gm) { getLayer().setGraphModel(gm); }
   public GraphModel getGraphModel() { return getLayer().getGraphModel(); }
+  public void setGraphModel(GraphModel gm) {
+    GraphModel oldGM = getLayer().getGraphModel();
+    if (oldGM != null) oldGM.removeGraphEventListener(this);
+    getLayer().setGraphModel(gm);
+    gm.addGraphEventListener(this);
+  }
 
   public LayerPerspective getLayer() { return _lay; }
   public void setLayer(LayerPerspective lay) { _lay = lay; }
@@ -135,6 +140,33 @@ public class Diagram implements java.io.Serializable {
   public void sendBackward(Fig f) { _lay.sendBackward(f); }
   public void bringToFront(Fig f) { _lay.bringToFront(f); }
   public void reorder(Fig f, int function) { _lay.reorder(f, function); }
+
+  ////////////////////////////////////////////////////////////////
+  // graph event handlers
+
+  public void nodeAdded(GraphEvent e) {
+    try { fireVetoableChange("nodeAdded", null, null); }
+    catch (PropertyVetoException pve) { }
+  }
+  public void edgeAdded(GraphEvent e) {
+    try { fireVetoableChange("edgeAdded", null, null); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void nodeRemoved(GraphEvent e) {
+    try { fireVetoableChange("nodeRemoved", null, null); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void edgeRemoved(GraphEvent e) {
+    try { fireVetoableChange("edgeRemoved", null, null); }
+    catch (PropertyVetoException pve) { }
+  }
+
+  public void graphChanged(GraphEvent e) {
+    try { fireVetoableChange("graphChanged", null, null); }
+    catch (PropertyVetoException pve) { }
+  }
 
 
   ////////////////////////////////////////////////////////////////

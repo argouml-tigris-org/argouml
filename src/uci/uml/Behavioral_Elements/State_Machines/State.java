@@ -175,6 +175,16 @@ public class State extends StateVertex {
     x.setNamespace(null);
   }
 
+  public Object prepareForTrash() throws PropertyVetoException {
+    setStateMachine(null);
+    return super.prepareForTrash();
+    //needs-more-work
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
+  }
 
   ////////////////////////////////////////////////////////////////
   // debugging

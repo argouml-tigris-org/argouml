@@ -47,6 +47,7 @@ CLASSES = \
 	TableMap.class \
 	TableSorter.class \
 	ToolBar.class \
+	PopupGenerator.class \
 	TinyHTMLViewer.class
 
 all: $(GEN) $(CLASSES)

@@ -50,7 +50,7 @@ public class Dependency extends ModelElementImpl {
   public Dependency(String nameStr) { super(new Name(nameStr)); }
 
   public Dependency(ModelElement aSupplier, ModelElement aClient) {
-    super(new Name("-->"));
+    super(new Name("==>"));
     try {
       addSupplier(aSupplier);
       addClient(aClient);
@@ -65,7 +65,7 @@ public class Dependency extends ModelElementImpl {
     ModelElement aSupplier = (ModelElement) _supplier.elementAt(0);
     ModelElement aClient = (ModelElement) _client.elementAt(0);
     n.setBody(aSupplier.getName().getBody() +
-	      "-->" +
+	      " ==> " +
 	      aClient.getName().getBody());
     return n;
   }
@@ -164,6 +164,18 @@ public class Dependency extends ModelElementImpl {
   public Dependency getOwningDependency() { return _owningDependency; }
   public void setOwningDependency(Dependency x) throws PropertyVetoException {
     _owningDependency = x;
+  }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    setSupplier(new Vector());
+    setClient(new Vector());
+    return super.prepareForTrash();
+    //needs-more-work
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
   }
 
   static final long serialVersionUID = 5158638856882915937L;

@@ -59,6 +59,8 @@ implements TabModelTarget, DocumentListener {
   JTextField _nameField = new JTextField();
   JLabel _stereoLabel = new JLabel("Stereotype: ");
   JComboBox _stereoField = new JComboBox();
+  JLabel _namespaceLabel = new JLabel("Namespace: ");
+  JComboBox _namespaceField = new JComboBox();
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -67,6 +69,8 @@ implements TabModelTarget, DocumentListener {
     super(title);
     _stereoField.setEditable(true);
     _stereoField.getEditor().getEditorComponent().setBackground(Color.white);
+    _namespaceField.setEditable(true);
+    _namespaceField.getEditor().getEditorComponent().setBackground(Color.white);
 
     GridBagLayout gb = new GridBagLayout();
     setLayout(gb);
@@ -81,9 +85,12 @@ implements TabModelTarget, DocumentListener {
     c.gridy = 0;
     gb.setConstraints(_nameLabel, c);
     add(_nameLabel);
-    c.gridy = 4;
+    c.gridy = 9;
     gb.setConstraints(_stereoLabel, c);
     add(_stereoLabel);
+    c.gridy = 10;
+    gb.setConstraints(_namespaceLabel, c);
+    add(_namespaceLabel);
 
 
     _nameField.setMinimumSize(new Dimension(120, 20));
@@ -93,9 +100,12 @@ implements TabModelTarget, DocumentListener {
     c.gridy = 0;
     gb.setConstraints(_nameField, c);
     add(_nameField);
-    c.gridy = 4;
+    c.gridy = 9;
     gb.setConstraints(_stereoField, c);
     add(_stereoField);
+    c.gridy = 10;
+    gb.setConstraints(_namespaceField, c);
+    add(_namespaceField);
 
     _nameField.getDocument().addDocumentListener(this);
     _nameField.setFont(_stereoField.getFont());
@@ -103,7 +113,10 @@ implements TabModelTarget, DocumentListener {
     Component ed = _stereoField.getEditor().getEditorComponent();
     Document stereoDoc = ((JTextField)ed).getDocument();
     stereoDoc.addDocumentListener(this);
-    
+
+    ed = _namespaceField.getEditor().getEditorComponent();
+    Document nsDoc = ((JTextField)ed).getDocument();
+    nsDoc.addDocumentListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -125,6 +138,18 @@ implements TabModelTarget, DocumentListener {
     }
     else {
       _stereoField.setSelectedItem(null);
+      ed.setText("");
+    }
+    Namespace ns = me.getNamespace();
+    ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
+    if (ns != null) {
+      String namespaceName = ns.getName().getBody();
+      // needs-more-work: select from list
+      _namespaceField.setSelectedItem(ns);
+      ed.setText(namespaceName);
+    }
+    else {
+      _namespaceField.setSelectedItem(null);
       ed.setText("");
     }
   }

@@ -67,7 +67,7 @@ public class GoStateToSubstate implements TreeModelPrereqs {
     if (!(parent instanceof CompositeState)) return null;
     CompositeState cs = (CompositeState) parent;
     Vector subs = cs.getSubstate();
-    if (!cs.getIsConcurent()) return subs;
+    if (!cs.getIsConcurrent()) return subs;
     Vector children = new Vector();
     java.util.Enumeration enum = subs.elements();
     while (enum.hasMoreElements()) {

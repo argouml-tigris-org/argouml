@@ -36,6 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 
 /** Well-formedness rule [2] for Associations. See page 27 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -59,6 +60,8 @@ public class CrMultipleAgg extends CrUML {
     if (!(dm instanceof IAssociation)) return NO_PROBLEM;
     IAssociation asc = (IAssociation) dm;
     Vector conns = asc.getConnection();
+    if (asc instanceof AssociationRole)
+      conns = ((AssociationRole)asc).getAssociationEndRole();
     int aggCount = 0;
     java.util.Enumeration enum = conns.elements();
     while (enum.hasMoreElements()) {

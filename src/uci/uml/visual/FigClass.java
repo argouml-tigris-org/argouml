@@ -45,6 +45,7 @@ import uci.uml.ui.*;
 import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Model_Management.*;
 
 /** Class to display graphics for a UML Class in a diagram. */
 
@@ -93,6 +94,8 @@ public class FigClass extends FigNodeModelElement  {
     this();
     setOwner(node);
   }
+
+  public String placeString() { return "new Class"; }
 
   public Object clone() {
     FigClass figClone = (FigClass) super.clone();
@@ -147,6 +150,32 @@ public class FigClass extends FigNodeModelElement  {
     updateEdges();
     firePropChange("bounds", oldBounds, getBounds());
   }
+
+  ////////////////////////////////////////////////////////////////
+  // user interaction methods
+
+  public void setEnclosingFig(Fig encloser) {
+    super.setEnclosingFig(encloser);
+    if (!(getOwner() instanceof ModelElement)) return;
+    ModelElement me = (ModelElement) getOwner();
+    Model m = null;
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    if (encloser != null && (encloser.getOwner() instanceof Model)) {
+      m = (Model) encloser.getOwner();
+    }
+    else {
+      if (pb.getTarget() instanceof UMLDiagram) {
+	m = (Model) ((UMLDiagram)pb.getTarget()).getModel();
+      }
+    }
+    try {
+      me.setNamespace(m);
+    }
+    catch (Exception e) {
+      System.out.println("could not set package");
+    }
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // internal methods

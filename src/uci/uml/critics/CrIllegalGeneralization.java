@@ -57,8 +57,11 @@ public class CrIllegalGeneralization extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof Generalization)) return NO_PROBLEM;
     Generalization gen = (Generalization) dm;
-    java.lang.Class javaClass1 = gen.getSupertype().getClass();
-    java.lang.Class javaClass2 = gen.getSubtype().getClass();
+    Object cls1 = gen.getSupertype();
+    Object cls2 = gen.getSubtype();
+    if (cls1 == null || cls2 == null) return NO_PROBLEM;
+    java.lang.Class javaClass1 = cls1.getClass();
+    java.lang.Class javaClass2 = cls2.getClass();
     if (javaClass1 != javaClass2) return PROBLEM_FOUND;
     return NO_PROBLEM;
   }

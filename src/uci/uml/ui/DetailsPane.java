@@ -38,6 +38,7 @@ import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
 import uci.gef.*;
+import uci.uml.Foundation.Core.ModelElement;
 
 
 /** The lower-right pane of the main Argo/UML window.  This panel has
@@ -146,9 +147,16 @@ implements ChangeListener, MouseListener {
 
 
   public void setTarget(Object target) {
+    //System.out.println("details target set to:" + target);
+    if (target == null) {
+      _figTarget = null;
+      _modelTarget = null;
+    }
     if (target instanceof Fig) _figTarget = (Fig) target;
     if (target instanceof Fig && ((Fig)target).getOwner() != null)
       _modelTarget = ((Fig)target).getOwner();
+    else _modelTarget = target;
+
     int firstEnabled = -1;
     boolean jumpToFirstEnabledTab = false;
     boolean jumpToPrevEnabled = false;
@@ -180,7 +188,7 @@ implements ChangeListener, MouseListener {
 	if (currentTab == i && !shouldEnable) {
 	  jumpToFirstEnabledTab = true;
 	}
-      }      
+      }
     }
     if (jumpToPrevEnabled) {
       _tabs.setSelectedIndex(_lastNonNullTab);

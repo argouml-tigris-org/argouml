@@ -27,7 +27,7 @@ package uci.uml.Behavioral_Elements.Collaborations;
 import java.util.*;
 import java.beans.*;
 
-import uci.uml.Foundation.Core.AssociationEnd;
+import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
 
@@ -38,6 +38,11 @@ public class AssociationEndRole extends AssociationEnd {
   public AssociationEndRole() { }
   public AssociationEndRole(Name name) { super(name); }
   public AssociationEndRole(String nameStr) { super(new Name(nameStr)); }
+  public AssociationEndRole(Classifier c) {
+    super();
+    try { setType(c); }
+    catch (PropertyVetoException pce) { }
+  }
 
   public AssociationEnd getBase() { return _base; }
   public void setBase(AssociationEnd x) throws PropertyVetoException {
@@ -51,6 +56,18 @@ public class AssociationEndRole extends AssociationEnd {
   public void setAssociationRole(AssociationRole x) throws PropertyVetoException {
     fireVetoableChange("associationRole", _associationRole, x);
     _associationRole = x;
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // events
+  public void fireVetoableChange(String propertyName,
+				 Object oldValue, Object newValue)
+       throws PropertyVetoException {
+    super.fireVetoableChange(propertyName, oldValue, newValue);
+    if (_associationRole instanceof ElementImpl) {
+       ((ElementImpl)_associationRole).fireVetoableChange("end_"+propertyName,
+				 oldValue, newValue);
+    }
   }
 
   static final long serialVersionUID = 177940593529064742L;

@@ -117,7 +117,7 @@ public class Set implements java.io.Serializable  {
 
 
   public Object firstElement() { return _v.firstElement(); }
-						       
+
   public int size() { return _v.size(); }
   public String toString() {
     String res = "Set{";
@@ -148,7 +148,7 @@ public class Set implements java.io.Serializable  {
   public Set reachable(ChildGenerator cg) {
     return reachable(cg, TC_LIMIT, PredicateTrue.theInstance());
   }
-  
+
   /** Reply the Set of all objects that can be reached from the
    * receiving Set by taking steps defined by the given
    * ChildGenerator.  The result DOES NOT include the elements of the
@@ -165,7 +165,7 @@ public class Set implements java.io.Serializable  {
     }
     return kids.transitiveClosure(cg, max, p);
   }
-  
+
   /** Reply the Set of all objects that can be reached from the
    * receiving Set by taking steps defined by the given
    * ChildGenerator.  The result includes the elements of the original

@@ -73,7 +73,7 @@ public class CrConflictingComposites extends CrUML {
       Multiplicity m = myEnd.getMultiplicity();
       if (m.min() == 0) continue;
       IAssociation asc = myEnd.getAssociation();
-      if (asc.hasCompositeEnd()) compositeCount++;
+      if (asc != null && asc.hasCompositeEnd()) compositeCount++;
     }
     if (compositeCount > 1) return PROBLEM_FOUND;
     return NO_PROBLEM;

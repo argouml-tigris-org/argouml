@@ -91,6 +91,8 @@ public class FigUseCase extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new UseCase"; }
+
   public Object clone() {
     FigUseCase figClone = (FigUseCase) super.clone();
     Vector v = figClone.getFigs();
@@ -100,15 +102,12 @@ public class FigUseCase extends FigNodeModelElement {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
-  }
-
-  /** Update the text labels */
-  protected void modelChanged() {
-    super.modelChanged();
-    // needs-more-work: update extension points?
   }
 
   public Dimension getMinimumSize() {
@@ -130,15 +129,26 @@ public class FigUseCase extends FigNodeModelElement {
     updateEdges();
   }
 
-  public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
+  public void setLineColor(Color col) { _cover.setLineColor(col); }
+  public Color getLineColor() { return _cover.getLineColor(); }
+
+  public void setFillColor(Color col) { _cover.setFillColor(col); }
+  public Color getFillColor() { return _cover.getFillColor(); }
+
+  public void setFilled(boolean f) { _cover.setFilled(f); }
+  public boolean getFilled() { return _cover.getFilled(); }
+
+  public void setLineWidth(int w) { _cover.setLineWidth(w); }
+  public int getLineWidth() { return _cover.getLineWidth(); }
+
+
+  ////////////////////////////////////////////////////////////////
+  // event handlers
+
+  /** Update the text labels */
+  protected void modelChanged() {
+    super.modelChanged();
+    // needs-more-work: update extension points?
   }
-
-
-
 
 } /* end class FigUseCase */

@@ -35,7 +35,7 @@ import uci.uml.generate.*;
 public class Operation extends BehavioralFeature {
   public Uninterpreted _specification;
   public boolean _isPolymorphic;
-  public CallConcurrencyKind _concurrency;
+  public CallConcurrencyKind _concurrency = CallConcurrencyKind.SEQUENTIAL;
   //% public Method _method[];
   public Vector _method = new Vector();
 
@@ -46,7 +46,9 @@ public class Operation extends BehavioralFeature {
   public Operation(Classifier returnType, String nameStr) {
     this(nameStr);
     try {
-      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+      addParameter(new Parameter(returnType,
+				 ParameterDirectionKind.RETURN,
+				 Parameter.RETURN_NAME));
     } catch (PropertyVetoException pve) { }
   }
 
@@ -54,8 +56,12 @@ public class Operation extends BehavioralFeature {
 		   Classifier arg1Type, String arg1Name) {
     this(nameStr);
     try {
-      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-      addParameter(new Parameter(arg1Type, arg1Name));
+      addParameter(new Parameter(returnType,
+				 ParameterDirectionKind.RETURN,
+				 Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type,
+				 ParameterDirectionKind.IN,
+				 arg1Name));
     } catch (PropertyVetoException pve) { }
   }
 
@@ -64,9 +70,11 @@ public class Operation extends BehavioralFeature {
 		   Classifier arg2Type, String arg2Name) {
     this(nameStr);
     try {
-      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-      addParameter(new Parameter(arg1Type, arg1Name));
-      addParameter(new Parameter(arg2Type, arg2Name));
+      addParameter(new Parameter(returnType,
+				 ParameterDirectionKind.RETURN,
+				 Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type, ParameterDirectionKind.IN, arg1Name));
+      addParameter(new Parameter(arg2Type, ParameterDirectionKind.IN, arg2Name));
     } catch (PropertyVetoException pve) { }
   }
 
@@ -76,10 +84,12 @@ public class Operation extends BehavioralFeature {
 		   Classifier arg3Type, String arg3Name) {
     this(nameStr);
     try {
-      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-      addParameter(new Parameter(arg1Type, arg1Name));
-      addParameter(new Parameter(arg2Type, arg2Name));
-      addParameter(new Parameter(arg3Type, arg3Name));
+      addParameter(new Parameter(returnType,
+				 ParameterDirectionKind.RETURN,
+				 Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type, ParameterDirectionKind.IN, arg1Name));
+      addParameter(new Parameter(arg2Type, ParameterDirectionKind.IN, arg2Name));
+      addParameter(new Parameter(arg3Type, ParameterDirectionKind.IN, arg3Name));
     } catch (PropertyVetoException pve) { }
   }
 

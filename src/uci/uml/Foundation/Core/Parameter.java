@@ -43,7 +43,7 @@ public class Parameter extends ModelElementImpl {
   public static final Name RETURN_NAME = new Name("return");
 
   public Expression _defaultValue;
-  public ParameterDirectionKind _kind;
+  public ParameterDirectionKind _kind = ParameterDirectionKind.IN;
   public BehavioralFeature _behavioralFeature;
   public Classifier _type;
   public Event _parameters;
@@ -54,13 +54,15 @@ public class Parameter extends ModelElementImpl {
   public Parameter() { }
   public Parameter(Name name) { super(name); }
   public Parameter(String nameStr) { super(new Name(nameStr)); }
-  public Parameter(Classifier type, Name name) {
+  public Parameter(Classifier type, ParameterDirectionKind kind, Name name) {
     this(name);
     setType(type);
+    setKind(kind);
   }
-  public Parameter(Classifier type, String nameStr) {
+  public Parameter(Classifier type, ParameterDirectionKind kind, String nameStr) {
     this(nameStr);
     setType(type);
+    setKind(kind);
   }
 
   public Expression getDefaultValue() { return _defaultValue; }

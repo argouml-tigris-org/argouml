@@ -51,6 +51,7 @@ public class FigActionState extends FigNodeModelElement {
   // constants
 
   public final int MARGIN = 2;
+  public int PADDING = 10;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -73,6 +74,7 @@ public class FigActionState extends FigNodeModelElement {
     _name.setLineWidth(0);
     _name.setBounds(10+5, 10+5, 90-5*2, 25-5*2);
     _name.setFilled(false);
+    _name.setMultiLine(true);
 
     // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
@@ -89,6 +91,8 @@ public class FigActionState extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new ActionState"; }
+
   public Object clone() {
     FigActionState figClone = (FigActionState) super.clone();
     Vector v = figClone.getFigs();
@@ -98,13 +102,19 @@ public class FigActionState extends FigNodeModelElement {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
   }
 
   public Dimension getMinimumSize() {
-    return new Dimension(90, 25);
+    Dimension nameDim = _name.getMinimumSize();
+    int w = nameDim.width + PADDING*2;
+    int h = nameDim.height + PADDING*2;
+    return new Dimension(w, h);
   }
 
   /* Override setBounds to keep shapes looking right */
@@ -120,22 +130,20 @@ public class FigActionState extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());    
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
 
-  public void dispose() {
-    //System.out.println("disposing FigActionState");
-    State s = (State) getOwner();
-    try {
-      s.setParent(null);
-      s.setStateMachine(null);
-    }
-    catch (PropertyVetoException pve) { }
-    super.dispose();
-  }
+  public void setLineColor(Color col) { _cover.setLineColor(col); }
+  public Color getLineColor() { return _cover.getLineColor(); }
 
+  public void setFillColor(Color col) { _cover.setFillColor(col); }
+  public Color getFillColor() { return _cover.getFillColor(); }
 
+  public void setFilled(boolean f) { _cover.setFilled(f); }
+  public boolean getFilled() { return _cover.getFilled(); }
 
+  public void setLineWidth(int w) { _cover.setLineWidth(w); }
+  public int getLineWidth() { return _cover.getLineWidth(); }
 
 } /* end class FigActionState */

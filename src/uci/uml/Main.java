@@ -104,7 +104,7 @@ public class Main {
       splash.getStatusBar().showStatus("Making Default Project");
       splash.getStatusBar().showProgress(40);
     }
-    EmptyProject empty = new EmptyProject();
+    Project empty = Project.makeEmptyProject();
     pb.setProject(empty);
 
     if (splash != null) {

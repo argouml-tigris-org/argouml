@@ -45,6 +45,7 @@ public class GenCompositeClasses implements ChildGenerator {
   public static GenAncestorClasses SINGLETON = new GenAncestorClasses();
 
   public java.util.Enumeration gen(Object o) {
+    if (!(o instanceof Classifier)) return EnumerationEmpty.theInstance();
     Classifier cls = (Classifier) o;
     Vector ends = cls.getInheritedAssociationEnds();
     if (ends == null) return EnumerationEmpty.theInstance();

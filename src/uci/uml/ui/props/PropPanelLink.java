@@ -53,8 +53,7 @@ import uci.uml.ui.*;
  *  the user to edit the properties of the selected UML model
  *  element. */
 
-public class PropPanelLink extends PropPanel
-implements DocumentListener, ItemListener {
+public class PropPanelLink extends PropPanelTwoEnds {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -69,7 +68,7 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelLink() {
-    super("Link Properties");
+    super("Link");
     GridBagLayout gb = (GridBagLayout) getLayout();
     GridBagConstraints c = new GridBagConstraints();
     c.fill = GridBagConstraints.BOTH;
@@ -98,6 +97,33 @@ implements DocumentListener, ItemListener {
     // set the values to be shown in all widgets based on model
   }
 
+  public String getSourceLabel() {
+    if (!(_target instanceof Link)) return "non Link";
+    return "Instance:";
+  }
+  public String getSourceValue() {
+    if (!(_target instanceof Link)) return "non Link";
+    Link a = (Link) _target;
+    LinkEnd ae = (LinkEnd) a.getLinkRole().elementAt(0);
+    if (ae == null) return "null ae";
+    Instance inst = ae.getInstance();
+    if (inst == null) return "null Instance";
+    return inst.getName().getBody();
+  }
+  public String getDestLabel() {
+    if (!(_target instanceof Link)) return "non Link";
+    return "Instance:";
+  }
+  public String getDestValue() {
+    if (!(_target instanceof Link)) return "non Link";
+    Link a = (Link) _target;
+    LinkEnd ae = (LinkEnd) a.getLinkRole().elementAt(1);
+    if (ae == null) return "null ae";
+    Instance inst = ae.getInstance();
+    if (inst == null) return "null Instance";
+    return inst.getName().getBody();
+  }
+  
 
   ////////////////////////////////////////////////////////////////
   // event handlers

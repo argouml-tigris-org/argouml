@@ -261,8 +261,10 @@
 <!-- __________________________________________________________________ -->
 <!-- __________________________________________________________________ -->
 
+<!-- jer 99/01/31: added unspec aggregation -->
+
 <!ENTITY % AggregationKind
-         ' XMI.value (none | shared |aggregate | composite) #REQUIRED ' >
+         ' XMI.value (none | shared |aggregate | composite | unspec) #REQUIRED ' >
 
 <!ENTITY % Boolean
          ' XMI.value (true|false) #REQUIRED ' >
@@ -286,8 +288,11 @@
 <!ENTITY % SynchronousKind
          ' XMI.value (synchronous | asynchronous) #REQUIRED ' >
 
+<!-- jer 99/01/31: added package visibility -->
+<!-- jer 99/01/31: added unspec visibility -->
+
 <!ENTITY % VisibilityKind
-         ' XMI.value (public | protected |private) #REQUIRED ' >
+         ' XMI.value (public | protected | private | package | unspec) #REQUIRED ' >
 
 <!-- __________________________________________________________________ -->
 <!-- __________________________________________________________________ -->
@@ -748,6 +753,9 @@
 <!-- source and target elements in this DTD. They are not defined in     -->
 <!-- UML.                                                                -->
 <!-- __________________________________________________________________  -->
+
+<!-- jer 99/01/31: the above DEVIATION does not seem to be implemented -->
+
 
 <!ENTITY % AssociationProperties '%GeneralizableElementProperties;' >
 
@@ -2578,8 +2586,9 @@
 <!ENTITY % extensionPoint 'extensionPoint' >
 <!ELEMENT extensionPoint (#PCDATA) >
 
+<!-- jer 99/01/31: use cases have any number of extensionPoints -->
 
-<!ENTITY % UseCaseProperties '%ClassifierProperties;, %extensionPoint;' >
+<!ENTITY % UseCaseProperties '%ClassifierProperties;, %extensionPoint;*' >
 
 <!ENTITY % UseCaseAssociations '%ClassifierAssociations;' >
 

@@ -46,8 +46,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.ui.*;
 
 
-public class PropPanelDependency extends PropPanel
-implements TabModelTarget, DocumentListener {
+public class PropPanelDependency extends PropPanelTwoEnds {
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -58,5 +57,36 @@ implements TabModelTarget, DocumentListener {
     remove(_nameField);
     remove(_nameLabel);
   }
+
+
+  public String getSourceLabel() {
+    if (!(_target instanceof Dependency)) return "non dep";
+    return "Supplier:";
+  }
+  public String getSourceValue() {
+    if (!(_target instanceof Dependency)) return "non dep";
+    Dependency d = (Dependency) _target;
+    Vector suppliers = d.getSupplier();
+    if (suppliers == null) return "null suppliers";
+    if (suppliers.size() == 0) return "no suppliers";
+    ModelElement sup = (ModelElement) suppliers.elementAt(0);
+    if (sup == null) return "null";
+    return sup.getName().getBody();
+  }
+  public String getDestLabel() {
+    if (!(_target instanceof Dependency)) return "non dep";
+    return "Client:";
+  }
+  public String getDestValue() {
+    if (!(_target instanceof Dependency)) return "non dep";
+    Dependency d = (Dependency) _target;
+    Vector clients = d.getClient();
+    if (clients == null) return "null clients";
+    if (clients.size() == 0) return "no clients";
+    ModelElement tar = (ModelElement) clients.elementAt(0);
+    if (tar == null) return "null";
+    return tar.getName().getBody();
+  }
+  
 
 } /* end class PropPanelDependency */

@@ -33,9 +33,13 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
-import uci.ui.ToolBar;
+import uci.ui.*;
 import uci.util.*;
+import uci.gef.Diagram;
 import uci.uml.ui.nav.*;
+
+import uci.uml.Foundation.Core.*;
+import uci.uml.Behavioral_Elements.Use_Cases.*;
 
 /** The upper-left pane of the main Argo/UML window.  This shows the
  *  contents of the current project in one of several ways that are
@@ -69,8 +73,7 @@ implements ItemListener, TreeSelectionListener {
 
   public static int _clicksInNavPane = 0;
   public static int _navPerspectivesChanged = 0;
-  
-  
+
   ////////////////////////////////////////////////////////////////
   // constructors
 
@@ -265,7 +268,6 @@ implements ItemListener, TreeSelectionListener {
 	_tree.setModel(_curPerspective);
 	_tree.show(); // blinks?
       }
-
   }
 
 //   /** This tells the listeners the editor has ended editing */
@@ -293,13 +295,42 @@ implements ItemListener, TreeSelectionListener {
 
       }
     }
-    public void mouseReleased(MouseEvent me) {
+    public void mousePressed(MouseEvent me) {
+      Vector tailActions = new Vector();
       if (me.isPopupTrigger() ||
 	  me.getModifiers() == InputEvent.BUTTON3_MASK) {
         //TreeCellEditor tce = _tree.getCellEditor();
-        JPopupMenu POP = new JPopupMenu("test");
-        POP.add(new CmdUMLProperties());
-        POP.show(NavigatorPane.this, me.getX(), me.getY()+25);
+        JPopupMenu popup = new JPopupMenu("test");
+	Object obj = getSelectedObject();
+	if (obj instanceof PopupGenerator) {
+	  Vector actions = ((PopupGenerator)obj).getPopUpActions();
+	  int size = actions.size();
+	  for (int i = 0; i < size; ++i) {
+	    AbstractAction a = (AbstractAction) actions.elementAt(i);
+	    popup.add(a);
+	  }
+	}
+	else if (obj instanceof MMClass) {
+	  popup.add(new ActionGoToDetails("Properties"));
+	  // goto state diagram
+	  // goto collaboration diagram(s)
+	  tailActions.addElement(Actions.RemoveFromModel);
+	}
+	else if (obj instanceof UseCase) {
+	  popup.add(new ActionGoToDetails("Properties"));
+	  // goto activity diagram
+	  tailActions.addElement(Actions.RemoveFromModel);
+	}
+	else if (obj instanceof ModelElement || obj instanceof Diagram) {
+	  popup.add(new ActionGoToDetails("Properties")); //was CmdUMLProperties
+	  tailActions.addElement(Actions.RemoveFromModel);
+	}
+	int size = tailActions.size();
+	for (int i = 0; i < size; ++i) {
+	  AbstractAction a = (AbstractAction) tailActions.elementAt(i);
+	  popup.add(a);
+	}
+	popup.show(NavigatorPane.this, me.getX(), me.getY()+25);
         me.consume();
       }
     }

@@ -43,7 +43,7 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
   public NamespaceImpl(Name name) { super(name); }
   public NamespaceImpl(String nameStr) { super(new Name(nameStr)); }
 
-  public Vector getOwnedElement() { return (Vector) _ownedElement;}
+  public Vector getOwnedElement() { return _ownedElement;}
   public void setOwnedElement(Vector x) throws PropertyVetoException {
     if (_ownedElement == null) _ownedElement = new Vector();
     fireVetoableChangeNoCompare("ownedElement", _ownedElement, x);
@@ -57,8 +57,10 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     fireVetoableChange("ownedElement", _ownedElement, x);
     _ownedElement.addElement(x);
     x.getModelElement().setElementOwnership(x);
+    x.setNamespace(this);
   }
   public void removeOwnedElement(ElementOwnership x) throws PropertyVetoException {
+    System.out.println("namespace removing: " + x);
     if (_ownedElement == null) return;
     else if (!_ownedElement.contains(x)) return;
     fireVetoableChange("ownedElement", _ownedElement, x);
@@ -88,6 +90,15 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
     addOwnedElement(eo);
   }
 
+  public Vector getModelElements() {
+    Vector res = new Vector();
+    int size = _ownedElement.size();
+    for (int i = 0; i < size; i++) {
+      ElementOwnership eo = (ElementOwnership) _ownedElement.elementAt(i);
+      res.addElement(eo.getModelElement());
+    }
+    return res;
+  }
 
   public ElementOwnership elementOwnershipFor(ModelElement me,
 					      VisibilityKind vk) {
@@ -109,6 +120,23 @@ public class NamespaceImpl extends ModelElementImpl implements Namespace {
 
   public boolean containsPublic(ModelElement me) {
     return elementOwnershipFor(me, VisibilityKind.PUBLIC) != null;
+  }
+
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    Namespace enclosing = getNamespace();
+    int size = _ownedElement.size();
+    for (int i = 0; i < size; i++) {
+      ElementOwnership eo = (ElementOwnership) _ownedElement.elementAt(i);
+      eo.setNamespace(enclosing);
+      if (enclosing != null) enclosing.addOwnedElement(eo);
+    }
+    return null;
+    //needs-more-work: remember old namespace
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work: restore old namespace
   }
 
   static final long serialVersionUID = -6554474404565654034L;

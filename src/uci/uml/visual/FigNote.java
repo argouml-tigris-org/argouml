@@ -111,15 +111,5 @@ public class FigNote extends FigNodeModelElement {
     updateEdges();
   }
 
-  public void dispose() {
-    if (!(getOwner() instanceof Element)) return;
-    Element elmt = (Element) getOwner();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    super.dispose();
-  }
-
-
-
 
 } /* end class FigNote */

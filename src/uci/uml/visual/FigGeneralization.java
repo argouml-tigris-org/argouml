@@ -59,21 +59,6 @@ public class FigGeneralization extends FigEdgeModelElement {
     setOwner(edge);
   }
 
-  public void dispose() {
-    Generalization g = (Generalization) getOwner();
-    if (g == null) return;
-    GeneralizableElement sup = g.getSupertype();
-    GeneralizableElement sub = g.getSubtype();
-    try {
-      sup.removeSpecialization(g);
-      sub.removeGeneralization(g);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not remove Generalization");
-    }
-    super.dispose();
-  }
-
   protected boolean canEdit(Fig f) { return false; }
 
   ////////////////////////////////////////////////////////////////

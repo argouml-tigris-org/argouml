@@ -68,7 +68,7 @@ public class ConcurrentSubstatesExample {
       taking.addSubstate(failed = new SimpleState("Failed"));
       taking.addSubstate(takingInitial = new Pseudostate(PseudostateKind.INITIAL));
       
-      incomplete.setIsConcurent(true);
+      incomplete.setIsConcurrent(true);
       incomplete.addSubstate(labTrack = new CompositeState("Lab Track"));
       incomplete.addSubstate(projTrack = new CompositeState("Term Project Track"));
       incomplete.addSubstate(testTrack = new CompositeState("Final Test Track"));

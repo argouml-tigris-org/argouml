@@ -45,18 +45,19 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 
 /** Class to display graphics for a UML State in a diagram. */
 
-public class FigState extends FigNodeModelElement {
+public class FigState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
 
   public final int MARGIN = 2;
+  public final int X = 0;
+  public final int Y = 0;
+  public final int W = 70;
+  public final int H = 40;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  /** The main label on this icon. */
-  //FigText _name;
 
   /** UML does not really use ports, so just define one big one so
    *  that users can drag edges to or from any point in the icon. */
@@ -66,27 +67,25 @@ public class FigState extends FigNodeModelElement {
   FigText _internal;
   FigLine _divider;
 
-  // add other Figs here aes needed
-
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public FigState() {
-    _bigPort = new FigRRect(10+1, 10+1, 90-2, 70-2, Color.cyan, Color.cyan);
-    _cover = new FigRRect(10, 10, 90, 70, Color.black, Color.white);
+    _bigPort = new FigRRect(X+1, Y+1, W-2, H-2, Color.cyan, Color.cyan);
+    _cover = new FigRRect(X, Y, W, H, Color.black, Color.white);
 
     _bigPort.setLineWidth(0);
     _name.setLineWidth(0);
-    _name.setBounds(12, 12, 86, _name.getBounds().height);
+    _name.setBounds(X+2, Y+2, W-4, _name.getBounds().height);
     _name.setFilled(false);
 
-    _divider = new FigLine(10,  12 + _name.getBounds().height + 1,
-			   90-1,  12 + _name.getBounds().height + 1,
+    _divider = new FigLine(X,  Y+2 + _name.getBounds().height + 1,
+			   W-1,  Y+2 + _name.getBounds().height + 1,
 			   Color.black);
 
-    _internal = new FigText(12, 12 + _name.getBounds().height + 4,
-			    86, 70 - (12 + _name.getBounds().height + 4));
+    _internal = new FigText(X+2, Y+2 + _name.getBounds().height + 4,
+			    W-4, H - (Y+2 + _name.getBounds().height + 4));
     _internal.setFont(LABEL_FONT);
     _internal.setTextColor(Color.black);
     _internal.setLineWidth(0);
@@ -112,6 +111,8 @@ public class FigState extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new State"; }
+
   public Object clone() {
     FigState figClone = (FigState) super.clone();
     Vector v = figClone.getFigs();
@@ -122,6 +123,9 @@ public class FigState extends FigNodeModelElement {
     figClone._internal = (FigText) v.elementAt(4);
     return figClone;
   }
+
+  ////////////////////////////////////////////////////////////////
+  // accessors
 
   public void setOwner(Object node) {
     super.setOwner(node);
@@ -137,7 +141,7 @@ public class FigState extends FigNodeModelElement {
     return new Dimension(w, h);
   }
 
-/* Override setBounds to keep shapes looking right */
+  /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
     Rectangle oldBounds = getBounds();
@@ -154,9 +158,33 @@ public class FigState extends FigNodeModelElement {
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
     updateEdges();
-    firePropChange("bounds", oldBounds, getBounds());    
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accessors
+
+  public void setLineColor(Color col) {
+    _cover.setLineColor(col);
+    _divider.setLineColor(col);
+  }
+ public Color getLineColor() { return _cover.getLineColor(); }
+
+  public void setFillColor(Color col) { _cover.setFillColor(col); }
+  public Color getFillColor() { return _cover.getFillColor(); }
+
+  public void setFilled(boolean f) { _cover.setFilled(f); }
+  public boolean getFilled() { return _cover.getFilled(); }
+
+  public void setLineWidth(int w) {
+    _cover.setLineWidth(w);
+    _divider.setLineWidth(w);
+  }
+  public int getLineWidth() { return _cover.getLineWidth(); }
+
+
+  ////////////////////////////////////////////////////////////////
+  // event processing
 
   /** Update the text labels */
   protected void modelChanged() {
@@ -172,23 +200,11 @@ public class FigState extends FigNodeModelElement {
     super.textEdited(ft);
     if (ft == _internal) {
       State st = (State) getOwner();
+      if (st == null) return;
       String s = ft.getText();
       ParserDisplay.SINGLETON.parseStateBody(st, s);
     }
   }
-
-  public void dispose() {
-    //System.out.println("disposing FigState");
-    State s = (State) getOwner();
-    try {
-      s.setParent(null);
-      s.setStateMachine(null);
-    }
-    catch (PropertyVetoException pve) { }
-    super.dispose();
-  }
-
-
 
 
 } /* end class FigState */

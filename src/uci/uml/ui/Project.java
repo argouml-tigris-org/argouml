@@ -38,6 +38,7 @@ import uci.argo.checklist.*;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.generate.*;
+import uci.uml.visual.*;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -48,6 +49,14 @@ public class Project implements java.io.Serializable {
 
   public String _pathname = "";
   public String _filename = "untitled.argo";
+  public String _authorname = "";
+  public String _description = "";
+  public String _version = "";
+
+  public Vector _searchpath = new Vector();
+  public Vector _members = new Vector();
+  public String _historyfile = "";
+
   public Vector _models = new Vector(); //instances of Model
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
@@ -63,6 +72,18 @@ public class Project implements java.io.Serializable {
     _filename = name;
     if (!_filename.endsWith(".argo")) _filename += ".argo";
     initProject();
+  }
+
+  public static Project makeEmptyProject() {
+    Project p = new Project("Untitled");
+    Model m1 = new Model("untitledpackage");
+    try {
+      p.addDiagram(new UMLClassDiagram(m1));
+      p.addModel(m1);
+      p.setNeedsSave(false);
+    }
+    catch (PropertyVetoException pve) { }
+    return p;
   }
 
   // needs-more-work: project setup wizard?
@@ -117,8 +138,24 @@ public class Project implements java.io.Serializable {
 
   public String getPathname() { return _pathname; }
   public void setPathname(String n) throws PropertyVetoException {
-    getVetoSupport().fireVetoableChange("Pathname", _pathname, n);    
+    getVetoSupport().fireVetoableChange("Pathname", _pathname, n);
     _pathname = n;
+  }
+
+  public void addSearchPath(String searchpath) {
+    _searchpath.addElement(searchpath);
+  }
+
+  public void addMember(ProjectMember pm) {
+    _members.addElement(pm);
+    pm.load();
+  }
+
+  public void saveAllMembers() {
+    int size = _members.size();
+    for (int i = 0; i < size; i++)
+      ((ProjectMember)_members.elementAt(i)).save();
+    // needs-more-work: check if each file is dirty
   }
 
   public boolean getNeedsSave() { return _needsSave; }
@@ -197,7 +234,7 @@ public class Project implements java.io.Serializable {
     for (int i = 0; i < _diagrams.size(); i++)
       ((Diagram)_diagrams.elementAt(i)).postSave();
     // needs-more-work: is postSave needed for models?
-    _needsSave = false;    
+    _needsSave = false;
   }
 
   public void postLoad() {
@@ -210,23 +247,36 @@ public class Project implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // trash related methos
   public void moveToTrash(Object obj) {
+    if (Trash.SINGLETON.contains(obj)) return;
+    Vector alsoTrash = null;
+    if (obj instanceof ModelElementImpl)
+      alsoTrash = ((ModelElementImpl)obj).alsoTrash();
+    trashInternal(obj);
+    if (alsoTrash != null) {
+      int numTrash = alsoTrash.size();
+      for (int i = 0; i < numTrash; i++)
+	moveToTrash(alsoTrash.elementAt(i));
+    }
+  }
+
+  protected void trashInternal(Object obj) {
     System.out.println("trashing: " + obj);
     if (obj instanceof ModelElement) {
       ModelElement me = (ModelElement) obj;
-      try { me.setElementOwnership(null); }
-      catch (PropertyVetoException pve) {
-	System.out.println("Project got a PropertyVetoException");
-      }
+      Vector places = new Vector();
       Enumeration diagramEnum = _diagrams.elements();
       while (diagramEnum.hasMoreElements()) {
 	Diagram d = (Diagram) diagramEnum.nextElement();
 	Fig f = d.getLayer().presentationFor(me);
-	if (f != null) {
-	  //System.out.println("trashing model element from diagram");
-	  d.getLayer().remove(f);
-	}
+	while (f != null) {
+	  f.delete();
+	  if (!places.contains(f)) places.addElement(f);
+	  f = d.getLayer().presentationFor(me);
+	} /* end while */
       } /* end while */
+      Trash.SINGLETON.addItemFrom(obj, places);
     }
+    // needs-more-work: trash diagrams
   }
 
   public void moveFromTrash(Object obj) {

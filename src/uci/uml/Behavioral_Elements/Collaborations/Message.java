@@ -40,6 +40,7 @@ public class Message extends ModelElementImpl {
   public ClassifierRole _sender;
   public ClassifierRole _receiver;
   public Vector _interaction;
+  public AssociationRole _associationRole;
 
   public Message() { }
 
@@ -101,6 +102,12 @@ public class Message extends ModelElementImpl {
   public void setReceiver(ClassifierRole x) throws PropertyVetoException {
     fireVetoableChange("receiver", _receiver, x);
      _receiver = x;
+  }
+
+  public AssociationRole getAssociationRole() { return _associationRole; }
+  public void setAssociationRole(AssociationRole x) throws PropertyVetoException {
+    fireVetoableChange("associationRole", _associationRole, x);
+     _associationRole = x;
   }
 
   public Vector getInteraction() { return _interaction; }

@@ -107,7 +107,7 @@ implements VetoableChangeListener {
     Object node = path.getLastPathComponent();
     addListenerToNode(node);
   }
-  
+
   protected void addListenerToNode(Object node) {
     if (node instanceof ElementImpl)
       ((ElementImpl)node).addVetoableChangeListener(this);
@@ -126,7 +126,7 @@ implements VetoableChangeListener {
 	((Diagram)child).addVetoableChangeListener(this);
     }
   }
-  
+
   public void fireTreeCollapsed(TreePath path) {
     super.fireTreeCollapsed(path);
     if (path == null || _expandedPathsInModel == null) return;
@@ -154,7 +154,6 @@ implements VetoableChangeListener {
     reexpand();
   }
 
-  
   public void vetoableChange(PropertyChangeEvent e) {
     Runnable updateTree;
     updateTree = new UpdateTreeHack(this);
@@ -162,14 +161,12 @@ implements VetoableChangeListener {
   }
 
 
-
-  
   public static final int DEPTH_LIMIT = 10;
   public static final int CHANGE = 1;
   public static final int ADD = 2;
   public static final int REMOVE = 3;
   public static Object path[] = new Object[DEPTH_LIMIT];
-  
+
   public void reexpand() {
     if (_expandedPathsInModel == null) return;
     _reexpanding = true;
@@ -181,7 +178,7 @@ implements VetoableChangeListener {
       addListenerToPath(path);
     }
     _reexpanding = false;
-    
+
 //     if (depth >= DEPTH_LIMIT) return;
 //     path[depth] = searchNode;
 //     if (updateNode == searchNode) {
@@ -211,7 +208,7 @@ implements VetoableChangeListener {
 //     }
 //     if (depth == 0) invalidate();
   }
-  
+
 } /* end class DisplayTextTree */
 
 
@@ -222,7 +219,7 @@ class UpdateTreeHack implements Runnable {
   public UpdateTreeHack(DisplayTextTree t) {
     _tree = t;
   }
-  
+
   public void run() {
     _tree.reexpand();
   }

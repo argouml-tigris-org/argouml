@@ -67,20 +67,6 @@ public class FigDependency extends FigEdgeModelElement {
 
   protected boolean canEdit(Fig f) { return false; }
 
-
-  public void dispose() {
-    if (!(getOwner() instanceof Dependency)) return;
-    Dependency dep = (Dependency) getOwner();
-    try {
-      dep.setSupplier(null);
-      dep.setClient(null);
-    }
-    catch (PropertyVetoException pve) {
-      System.out.println("could not remove Dependency");
-    }
-    super.dispose();
-  }
-
   ////////////////////////////////////////////////////////////////
   // event handlers
 

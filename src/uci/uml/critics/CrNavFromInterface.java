@@ -36,6 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Behavioral_Elements.Collaborations.*;
 
 public class CrNavFromInterface extends CrUML {
 
@@ -62,12 +63,17 @@ public class CrNavFromInterface extends CrUML {
     if (!(dm instanceof Association)) return NO_PROBLEM;
     Association asc = (Association) dm;
     Vector conns = asc.getConnection();
+    if (asc instanceof AssociationRole)
+      conns = ((AssociationRole)asc).getAssociationEndRole();
     int aggCount = 0;
     java.util.Enumeration enum = conns.elements();
     while (enum.hasMoreElements()) {
       AssociationEnd ae = (AssociationEnd) enum.nextElement();
       if (!ae.getIsNavigable()) continue;
       if (ae.getType() instanceof Interface) return PROBLEM_FOUND;
+      if (ae.getType() instanceof ClassifierRole &&
+	   ((ClassifierRole)ae.getType()).getBase() instanceof Interface)
+	return PROBLEM_FOUND;
     }
     return NO_PROBLEM;
   }

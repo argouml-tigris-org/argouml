@@ -32,12 +32,14 @@ include ../../../Makefile.config
 GEN = 
 
 CLASSES = \
+	Argument.class \
 	MMAction.class \
 	ActionSequence.class \
 	CreateAction.class \
 	DestroyAction.class \
 	MMException.class \
 	Instance.class \
+	MMObject.class \
 	Link.class \
 	LinkEnd.class \
 	LocalInvocation.class \

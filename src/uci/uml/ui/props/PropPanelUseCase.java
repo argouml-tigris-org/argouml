@@ -95,7 +95,7 @@ public class PropPanelUseCase extends PropPanel {
 
 //     SpacerPanel spacer1 = new SpacerPanel();
 //     c.gridx = 0;
-//     c.gridy = 5;
+//     c.gridy = 11;
 //     c.weighty = 1.0;
 //     gb.setConstraints(spacer1, c);
 //     add(spacer1);
@@ -121,8 +121,8 @@ public class PropPanelUseCase extends PropPanel {
 //     add(_extPtsLabel);
 
     //c.gridy = 1;
-    c.gridy = 7;
-    c.gridheight = 7;
+    c.gridy = 11;
+    c.gridheight = GridBagConstraints.REMAINDER;
     c.weightx = 0.0;
     c.weighty = 10.0;
     JScrollPane scroll = new JScrollPane(_extPts,

@@ -26,7 +26,7 @@
 
 // File: StateDiagramRenderer.java
 // Classes: StateDiagramRenderer
-// Original Author: your email address here
+// Original Author: ics125b spring 1998
 // $Id$
 
 package uci.uml.visual;
@@ -49,6 +49,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
  *  UML Object      ---  Fig
  *  ---------------------------------------
  *  State           ---  FigState
+ *  CompositeState  ---  FigCompositeState
  *  ActionState     ---  FigActionState
  *  Pseudostate     ---  FigPseudostate
  *    Final         ---  FigFinalState
@@ -56,6 +57,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
  *    Branch        ---  FigBranchState
  *    Fork          ---  FigForkState
  *    Join          ---  FigJoinState
+ *    History       ---  FigHistoryState
  *  Transition      ---  FigTransition
  *  more...
  *  </pre>
@@ -67,28 +69,26 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   /** Return a Fig that can be used to represent the given node */
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof ActionState) return new FigActionState(gm, node);
+    else if (node instanceof CompositeState) return new FigCompositeState(gm, node);
     else if (node instanceof State) return new FigState(gm, node);
-    else if (node instanceof Pseudostate) 
-    {
-       Pseudostate pState = (Pseudostate) node;
-       if (pState.getKind() == null) return null;
-       if (pState.getKind().equals(PseudostateKind.INITIAL)) {
-	 return new FigInitialState(gm, node);
-       }
-       else if (pState.getKind().equals(PseudostateKind.FINAL)) {
-	 return new FigFinalState(gm, node);
-       }
-       else if (pState.getKind().equals(PseudostateKind.BRANCH)) {
-	 return new FigBranchState(gm, node);
-       }
-       else if (pState.getKind().equals(PseudostateKind.FORK)) {
-	 return new FigForkState(gm, node);
-       }
-       else if (pState.getKind().equals(PseudostateKind.JOIN)) {
-	 return new FigJoinState(gm, node);
-       }
-       else { System.out.println("found a type not known"); }
-    };
+    else if (node instanceof Pseudostate) {
+      Pseudostate pState = (Pseudostate) node;
+      if (pState.getKind() == null) return null;
+      if (pState.getKind().equals(PseudostateKind.INITIAL))
+	return new FigInitialState(gm, node);
+      else if (pState.getKind().equals(PseudostateKind.FINAL))
+	return new FigFinalState(gm, node);
+      else if (pState.getKind().equals(PseudostateKind.BRANCH))
+	return new FigBranchState(gm, node);
+      else if (pState.getKind().equals(PseudostateKind.FORK))
+	return new FigForkState(gm, node);
+      else if (pState.getKind().equals(PseudostateKind.JOIN))
+	return new FigJoinState(gm, node);
+      else if (pState.getKind().equals(PseudostateKind.SHALLOW_HISTORY))
+	return new FigHistoryState(gm, node);
+      else
+	System.out.println("found a type not known");
+    }
     System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");
     return null;
   }

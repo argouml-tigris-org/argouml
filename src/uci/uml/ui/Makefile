@@ -37,7 +37,7 @@ CLASSES = \
 	Actions.class \
 	ActionCreatePseudostate.class \
 	AddToDoItemDialog.class \
-	ArgoFileFilter.class \
+	FileFilters.class \
 	ClassGenerationDialog.class \
 	ConfigLoader.class \
 	CriticBrowserDialog.class \
@@ -50,7 +50,6 @@ CLASSES = \
 	DisplayTextTree.class \
 	DocumentationManager.class \
 	EmailExpertDialog.class \
-	EmptyProject.class \
 	FindDialog.class \
 	ChildGenRelated.class \
 	GoalsDialog.class \

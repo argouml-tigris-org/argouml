@@ -43,10 +43,9 @@ import uci.uml.generate.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 
-/** Class to display graphics for a UML State in a diagram. */
+/** Class to display graphics for a UML Branch State in a diagram. */
 
-public class FigBranchState extends FigNode
-implements VetoableChangeListener, DelayedVetoableChangeListener {
+public class FigBranchState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -54,21 +53,13 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   public static final int MARGIN = 2;
   public static final int X = 0;
   public static final int Y = 0;
-  public static final int WIDTH = 32;
-  public static final int HEIGHT = 32;
+  public static final int WIDTH = 24;
+  public static final int HEIGHT = 24;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The main label on this icon. */
-//  FigText _name;
-
-  /** UML does not really use ports, so just define one big one so
-   *  that users can drag edges to or from any point in the icon. */
-
   FigPoly _bigPort;
-
-  // add other Figs here as needed
   FigPoly _head;
 
   ////////////////////////////////////////////////////////////////
@@ -108,6 +99,9 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
     return figClone;
   }
 
+  ////////////////////////////////////////////////////////////////
+  // Fig accesors
+
   public void setOwner(Object node) {
     super.setOwner(node);
     bindPort(node, _bigPort);
@@ -119,46 +113,18 @@ implements VetoableChangeListener, DelayedVetoableChangeListener {
   /** Initial states are fixed size. */
   public boolean isResizable() { return false; }
 
+  public void setLineColor(Color col) { _head.setLineColor(col); }
+  public Color getLineColor() { return _head.getLineColor(); }
 
-  /** If the UML meta-model object changes state. Update the Fig.  But
-   *  we need to do it as a "DelayedVetoableChangeListener", so that
-   *  model changes complete before we update the screen. */
-  public void vetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigBranchState got a change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-      DelayedChangeNotify delayedNotify = new DelayedChangeNotify(this, pce);
-      SwingUtilities.invokeLater(delayedNotify);
-    }
-  }
+  public void setFillColor(Color col) { _head.setFillColor(col); }
+  public Color getFillColor() { return _head.getFillColor(); }
 
-  /** The UML meta-model object changed. Now update the Fig to show
-   *  its current  state. */
-  public void delayedVetoableChange(PropertyChangeEvent pce) {
-    // throws PropertyVetoException
-    //System.out.println("FigBranchState got a delayed change notification!");
-    Object src = pce.getSource();
-    if (src == getOwner()) {
-     // updateText();
-      // you may have to update more than just the text
-    }
-  }
+  public void setFilled(boolean f) { }
+  public boolean getFilled() { return true; }
 
-  /** Update the text labels */
-  protected void updateText() { }
+  public void setLineWidth(int w) { _head.setLineWidth(w); }
+  public int getLineWidth() { return _head.getLineWidth(); }
 
-  public void dispose() {
-    //System.out.println("disposing FigBranchState");
-    Element elmt = (Element) getOwner();
-    if (elmt == null) return;
-    Project p = ProjectBrowser.TheInstance.getProject();
-    p.moveToTrash(elmt);
-    StateVertex sv = (StateVertex) getOwner();
-    try { sv.setParent(null); }
-    catch (PropertyVetoException pve) { }
-    super.dispose();
-  }
 
   static final long serialVersionUID = 7975577199958200215L;
 

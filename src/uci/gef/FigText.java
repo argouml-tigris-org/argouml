@@ -388,7 +388,10 @@ public class FigText extends Fig implements KeyListener, MouseListener {
       case JUSTIFY_RIGHT: chunkX = _x + _w  - chunkW; break;
       }
       if (curLine.equals("\n")  || curLine.equals("\r")) chunkY += chunkH;
-      else g.drawString(curLine, chunkX, chunkY);
+      else {
+        if (_underline) g.drawLine(chunkX, chunkY + 1, chunkX + chunkW, chunkY + 1);
+	g.drawString(curLine, chunkX, chunkY);
+      }
     }
   }
 

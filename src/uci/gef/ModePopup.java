@@ -31,6 +31,8 @@ import java.util.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 
+import uci.ui.PopupGenerator;
+
 /** A permanent Mode to catch right-mouse-button events and show a
  *  popup menu.  Needs-more-work: this is not fully implemented
  *  yet. It should ask the Fig under the mouse what menu it should
@@ -40,12 +42,12 @@ public class ModePopup extends Mode {
 
   ////////////////////////////////////////////////////////////////
   //  constructor
-  
+
   public ModePopup(Editor par) { super(par); }
 
   ////////////////////////////////////////////////////////////////
   // accessors
-  
+
   /** Always false because I never want to get out of popup mode. */
   public boolean canExit() { return false; }
 
@@ -56,18 +58,19 @@ public class ModePopup extends Mode {
   // event handlers
 
   /** Show a popup menu on right-mouse-button up. */
-  public void mouseReleased(MouseEvent me) {
+  public void mousePressed(MouseEvent me) {
     if (me.isPopupTrigger() || me.getModifiers() == InputEvent.BUTTON3_MASK) {
       int x = me.getX(), y = me.getY();
       Fig underMouse = _editor.hit(x, y);
-      if (!(underMouse instanceof Fig)) return;
-      JPopupMenu POP = new JPopupMenu("test");
-      Stack popUpActions = _editor._curFig.getPopUpActions();
-      while ( !popUpActions.empty() ) {
-        AbstractAction action = (AbstractAction) popUpActions.pop();
-        POP.add(action);
+      if (!(underMouse instanceof PopupGenerator)) return;
+      JPopupMenu popup = new JPopupMenu("test");
+      Vector actions = ((PopupGenerator)underMouse).getPopUpActions();
+      int size = actions.size();
+      for (int i = 0; i < size; ++i) {
+        AbstractAction a = (AbstractAction) actions.elementAt(i);
+        popup.add(a);
       }
-      POP.show(_editor.getAwtComponent(), me.getX(), me.getY());
+      popup.show(_editor.getAwtComponent(), me.getX(), me.getY());
       me.consume();
     }
   }

@@ -93,6 +93,8 @@ public class FigInterface extends FigNodeModelElement {
     setOwner(node);
   }
 
+  public String placeString() { return "new Interface"; }
+
   public Object clone() {
     FigInterface figClone = (FigInterface) super.clone();
     Vector v = figClone.getFigs();
@@ -119,6 +121,18 @@ public class FigInterface extends FigNodeModelElement {
     return new Dimension(w, h);
   }
 
+  public void setLineColor(Color c) {
+    super.setLineColor(c);
+    _stereo.setLineWidth(0);
+    _name.setLineWidth(0);
+  }
+
+  public void setLineWidth(int w) {
+    super.setLineWidth(w);
+    _stereo.setLineWidth(0);
+    _name.setLineWidth(0);
+  }
+
   /* Override setBounds to keep shapes looking right */
   public void setBounds(int x, int y, int w, int h) {
     if (_name == null) return;
@@ -128,12 +142,12 @@ public class FigInterface extends FigNodeModelElement {
     Dimension nameMin = _name.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
 
-    _outline.setBounds(x, y, w-1,
+    _outline.setBounds(x, y, w,
 		       stereoMin.height + nameMin.height - OVERLAP);
-    _stereo.setBounds(x, y, w, stereoMin.height);
-    _name.setBounds(x, y + stereoMin.height - OVERLAP, w, nameMin.height);
+    _stereo.setBounds(x+1, y+1, w-2, stereoMin.height);
+    _name.setBounds(x+1, y + stereoMin.height - OVERLAP + 1, w-2, nameMin.height);
     _oper.setBounds(x, y + _outline.getBounds().height-1,
-		    w-1, h - _outline.getBounds().height+1);
+		    w, h - _outline.getBounds().height+1);
     _bigPort.setBounds(x+1, y+1, w-2, h-2);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
@@ -147,6 +161,7 @@ public class FigInterface extends FigNodeModelElement {
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
     Classifier cls = (Classifier) getOwner();
+    if (cls == null) return;
     if (ft == _oper) {
       String s = ft.getText();
       ParserDisplay.SINGLETON.parseOperationCompartment(cls, s);

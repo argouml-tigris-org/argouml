@@ -57,15 +57,34 @@ public class Generalization extends ModelElementImpl {
   }
   public GeneralizableElement getSubtype() { return _subtype; }
   public void setSubtype(GeneralizableElement x) throws PropertyVetoException {
+    if (_subtype == x) return;
     fireVetoableChange("subtype", _subtype, x);
+    if (_subtype != null) _subtype.removeGeneralization(this);
     _subtype = x;
+    if (_subtype != null) _subtype.addGeneralization(this);
     //if (x != null) setNamespace(x.getNamespace());
   }
   public GeneralizableElement getSupertype() { return _supertype; }
   public void setSupertype(GeneralizableElement x) throws PropertyVetoException {
+    if (_supertype == x) return;
     fireVetoableChange("supertype", _supertype, x);
+    if (_supertype != null) _supertype.removeSpecialization(this);
     _supertype = x;
+    if (_supertype != null) _supertype.addSpecialization(this);
+  }
+
+  public Object prepareForTrash() throws PropertyVetoException {
+    setSupertype(null);
+    setSubtype(null);
+    return super.prepareForTrash();
+    //needs-more-work
+  }
+
+  public void recoverFromTrash(Object momento) throws PropertyVetoException {
+    // needs-more-work
+    super.recoverFromTrash(momento);
   }
 
   static final long serialVersionUID = -9116891000303758417L;
 }
+
