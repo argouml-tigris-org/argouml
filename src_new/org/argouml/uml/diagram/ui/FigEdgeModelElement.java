@@ -68,6 +68,7 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.UUIDHelper;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -867,8 +868,13 @@ public abstract class FigEdgeModelElement
      * @return MModelElement
      */
     protected Object getSource() {
-        if (getOwner() != null) {
-            return Model.getUmlHelper().getSource(getOwner());
+        Object owner = getOwner();
+        if (owner != null) {
+            if (owner instanceof CommentEdge) {
+                return ((CommentEdge)owner).getSource();
+            } else {
+                return Model.getCoreHelper().getSource(owner);
+            }
         }
         return null;
     }
@@ -876,13 +882,17 @@ public abstract class FigEdgeModelElement
      * Returns the destination of the edge. The destination is the
      * owner of the node the edge travels to in a binary
      * relationship. For instance: for a classifierrole, this is the
-     * receiver. Since we don't support n-array associations but only
-     * binary relations, source/destination works for all edges.
+     * receiver.
      * @return Object
      */
     protected Object getDestination() {
-        if (getOwner() != null) {
-            return Model.getCoreHelper().getDestination(getOwner());
+        Object owner = getOwner();
+        if (owner != null) {
+            if (owner instanceof CommentEdge) {
+                return ((CommentEdge)owner).getDestination();
+            } else {
+                return Model.getCoreHelper().getDestination(owner);
+            }
         }
         return null;
     }

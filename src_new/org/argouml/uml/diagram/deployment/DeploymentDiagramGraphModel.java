@@ -191,7 +191,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getSource();
+        } else if (ModelFacade.isARelationship(edge)) {
 	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	} else
 	    if (ModelFacade.isALink(edge)) {
@@ -209,7 +211,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
     public Object getDestPort(Object edge) {
-	if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getSource();
+        } else if (ModelFacade.isARelationship(edge)) {
 	    return Model.getCoreHelper().getDestination(edge);
 	} else if (ModelFacade.isALink(edge)) {
 	    return Model.getCommonBehaviorHelper()
@@ -251,7 +255,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	if (edge == null) return false;
 	if (containsEdge(edge)) return false;
 	Object end0 = null, end1 = null;
-	if (ModelFacade.isARelationship(edge)) {
+        if (edge instanceof CommentEdge) {
+            end0 = ((CommentEdge) edge).getSource();
+            end1 = ((CommentEdge) edge).getDestination();
+        } else if (ModelFacade.isARelationship(edge)) {
 	    end0 = Model.getCoreHelper().getSource(edge);
 	    end1 = Model.getCoreHelper().getDestination(edge);
 	}
@@ -259,9 +266,6 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    end0 = Model.getCommonBehaviorHelper().getSource(edge);
 	    end1 =
 		Model.getCommonBehaviorHelper().getDestination(edge);
-	} else if (edge instanceof CommentEdge) {
-	    end0 = ((CommentEdge) edge).getSource();
-	    end1 = ((CommentEdge) edge).getDestination();
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!containsNode(end0)) return false;
