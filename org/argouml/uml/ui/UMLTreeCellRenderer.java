@@ -44,7 +44,8 @@ import org.tigris.gef.util.*;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
  *  represented graphically. In particular it makes decisions about the icons
- *  to use in order to display a Navigationpane artifact.
+ *  to use in order to display a Navigationpane artifact depending on the kind
+ *  of object to be displayed.
  */
 public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
@@ -62,8 +63,10 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
   protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
 
-    protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
+  protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
 
+  protected ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
+  
   protected Hashtable _iconCache = new Hashtable();
 
 
@@ -103,6 +106,11 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
           if (value instanceof MSignal) {
               icon = _SignalIcon;
           }
+          
+          if (value instanceof MComment) {
+              icon = _CommentIcon;
+          }
+
           if (icon == null) {
               String clsPackName = value.getClass().getName();
               if (clsPackName.startsWith("org") || clsPackName.startsWith("ru")) {
@@ -114,6 +122,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                       cName = cName.substring(1);
                   if (cName.endsWith("Impl"))
                       cName = cName.substring(0,cName.length() -4 );
+                  // System.out.println("Trying to lookup resouce in: " +
+                  //                   "UMLTreeCellRenderer: " + cName);
                   icon = ResourceLoader.lookupIconResource(cName);
                   if (icon != null) _iconCache.put(value.getClass(), icon);
                   if (icon == null) System.out.println("UMLTreeCellRenderer: using default Icon for " + cName);
