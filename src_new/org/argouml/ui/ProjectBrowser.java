@@ -677,7 +677,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    *It should also default the model name as well.
    *{@link #setTarget}.
    */
-  protected void setActiveDiagram (ArgoDiagram ad) {
+  public void setActiveDiagram (ArgoDiagram ad) {
     _activeDiagram = ad;
     //System.out.println ("Active diagram set to " + ad.getName());
   }
