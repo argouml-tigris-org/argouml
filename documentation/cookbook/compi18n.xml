@@ -36,18 +36,15 @@ See <xref linkend="layer0"></xref>.
 
       <para>
 The internationalization is currently changing from ListResourceBundles
-to Property files. This chapter is not updated to fit the change.
+to Property files. This chapter is not entirely updated to fit the change.
 Please read carefully.
 </para>
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
-the ListResourceBundle-classes and parts of it is handled by the 
-GEF infrastructure.
-</para>
-      <para>
-There are several sets of Bundle files for different domains within ArgoUML.
-Each domain has a name and is handled by a file.
-This is set up in <classname>org.argouml.application.Main</classname>.
+the propertyfiles.
+In some cases there are instead ListResourceBundle classes but they
+will be changed to property files as soon as the problems with the transition
+is overcome.
 </para>
       <sect2>
 	<title>Organizing translators</title>
@@ -91,7 +88,7 @@ The language team has the following responsibilities:
 <orderedlist>
 	    <listitem>
 	      <para>
-All localized strings and resources shall be tranlated into the language.
+All localized strings and resources shall be translated into the language.
 </para>
 	      <para>
 This is a constant work with keeping up with the changes that
@@ -207,16 +204,16 @@ be to translate that.
 	    <para>Development environment translation</para>
 	    <para>
 Here I mean that everything that the developer of ArgoUML sees
-shall be translated.
+is translated.
+</para>
+	    <para>
+We don't do this in the ArgoUML project.
 </para>
 	    <para>
 This begins with this Cookbook, then the Developers' part of the
 ArgoUML web site and 
 also includes the javadoc comments in the code of ArgoUML and
 design documentation of included packages such as GEF, NSUML...
-</para>
-	    <para>
-We don't do this in the ArgoUML project.
 </para>
 	  </listitem>
 	</orderedlist>
@@ -246,8 +243,8 @@ do a good job.
 	    </listitem>
 	    <listitem>
 	      <para>
-...find the languages internationalization code for the language you 
-will add: en, es, en_GB,...
+...find the languages internationalization code for the language 
+your instance of ArgoUML is attempting to run with: en, es, en_GB,...
 </para>
 	      <para>
 The one you are currently using is shown in the log when ArgoUML starts.
@@ -259,7 +256,10 @@ Country: unknown
 </para>
 	    </listitem>
 	    <listitem>
-	      <para>...start the work?</para>
+	      <para>...start the translation work?</para>
+              <para>
+This is only applicable for members of the language team.
+</para>
 	      <para>
 Look at the files in
 <filename class="directory">org/argouml/i18n</filename>,
@@ -281,28 +281,21 @@ Create the files with the translations and store them in
 They will have the names:
 <filename>UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
 <filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>ActionResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>SettingsResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>MenuResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>DiagramResourceBundle_<replaceable>language code</replaceable>.java</filename>,
-<filename>TreeResourceBundle_<replaceable>language code</replaceable>.java</filename>, and
-<filename>NotationResourceBundle_<replaceable>language code</replaceable>.java</filename>.
+<filename>action_<replaceable>language code</replaceable>.properties</filename>,
+<filename>button_<replaceable>language code</replaceable>.properties</filename>,
+<filename>checkbox_<replaceable>language code</replaceable>.properties</filename>,
+<filename>combobox_<replaceable>language code</replaceable>.properties</filename>,
+<filename>dialog_<replaceable>language code</replaceable>.properties</filename>, 
+<filename>filechooser_<replaceable>language code</replaceable>.properties</filename>,
+<filename>label_<replaceable>language code</replaceable>.properties</filename>,
+<filename>menu_<replaceable>language code</replaceable>.properties</filename>,
+<filename>misc_<replaceable>language code</replaceable>.properties</filename>,
+<filename>optionpane_<replaceable>language code</replaceable>.properties</filename>,
+<filename>statusmsg_<replaceable>language code</replaceable>.properties</filename>, and
+<filename>tab_<replaceable>language code</replaceable>.properties</filename>.
 </para>
 	      <para>
-Add the language to the JUnit list of tested languages and run the JUnit tests.
-</para>
-	      <para>
-The purpose of this is for you to get the simple JUnit tests to work for
-your language also.
-</para>
-	      <para>
-This is in the file
-<filename>argouml/modules/junit/src/org/argouml/util/CheckResourceBundle.java</filename>.
-Search for the supportedLanguages-array.
-</para>
-	      <para>
-Now you have completed the first iteration of the Tool translation
-ambition.
+This completes the first iteration of the Tool translation.
 The work will probably be more maintenance-like from here on.
 </para>
 	    </listitem>
@@ -318,64 +311,77 @@ and what you can do.
 	      <orderedlist>
 		<listitem>
 		  <para>
-Write your code using the same way of handling strings as the surrounding code.
+Everywhere you would output a string in the GUI you should instead 
+localize a key.
 </para>
 		  <para>
-This means that strings are denoted by "labels" or "tags" and then
-the resolution of the "tag" is in a 
-<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+This means that instead of writing a string you write a call to a
+localizer method with a "key" ("label" or "tag") as argument and
+the localizer method finds
+the resolution of the "key" is in one of the property files.
+Which property file it uses depends on the current localization settings
+of your running ArgoUML instance.
+While developing you should use en_US or some language
+that does not exist at all.
 </para>
 		  <para>
-The name for the domain is most often specified in a variable like
+The key is a string.
+The key has a special syntax like this:
 <programlisting>
-    protected static final String BUNDLE = <replaceable>Domain</replaceable>;
+    word1.word2.word3
 </programlisting>
-or
+where word1 is the same as the first part of the filename that 
+the key resides in.
+Example:
+The key "action.about-argouml" resides in the files
+<filename>action.properties</filename> and 
+<filename>action_<replaceable>language code</replaceable>.properties</filename>.
+</para>
+                  <para>
+You will have to call the class
+<classname>org.argouml.i18n.Translator</classname>
+to convert them to wherever they are used.
+</para>
+                  <para>
+This is how a real example would look like:
 <programlisting>
-    protected static final String RESOURCE_BUNDLE = <replaceable>Domain</replaceable>;
-</programlisting>
-in a base class to what you are doing and there is 
-a convenience method in the class
-<classname>org.argouml.application.api.Argo</classname>
-so normal strings are written
-<programlisting>
-import org.argouml.application.api.*;
+import org.argouml.i18n.Translator;
 ...
-    String localized = Argo.localize(BUNDLE, <replaceable>tag</replaceable>);
+    String localized = Translator.localize(<replaceable>key</replaceable>);
 </programlisting>
 </para>
 		</listitem>
 		<listitem>
 		  <para>
-Add your "tag" and resolution in English in the non-localized 
-<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
-</para>
-		  <para>
-How do I choose the tag?
-Jean-Hugues de Raigniac has made a small investigation as to how this
-is done in the java world and found that there is no real consensus on
-how to do this.
-He suggests a hierarchical choice of tags like this:
-<programlisting>
-   {"docpane.label.since", "Since"},
-   {"docpane.label.deprecated", "Deprecated"},
-   {"docpane.label.see", "See"},
-
-   {"stylepane.label.bounds", "Bounds"},
-   {"stylepane.label.fill", "Fill"},
-   {"stylepane.label.no-fill", "No Fill"},
-</programlisting>
+Add your "key" and resolution in English (U.S.) in the non-localized 
+properties file.
 </para>
 		</listitem>
 		<listitem>
 		  <para>
-Contact all the language-teams so that they can update their files.
+Contact the language-teams so that they can update their files.
+</para>
+                  <para>
+Currently (November 2003) there is a great confusion as to where
+we stand on the different translations.
+For this reason we can't say if any language team is up to date
+with the changes and served by such a contact.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+If you have strings that are sentences where you have dynamic values
+like a file name, a class name, or some property to enter at a certain place,
+remember that all languages would not write it exactly like that.
+Use MessageFormat to build every such sentence!
+There is a convenience function in <classname>Translator</classname>
+called <methodname>messageFormat</methodname>.
 </para>
 		</listitem>
 	      </orderedlist>
 	      <para>
 Notice that if you somewhere change the meaning of a specific
-localized thing it would be a good idea to use a new "tag" for the
+localized thing it would be a good idea to use a new "key" for the
 new meaning.
 This will make it easier for the translation team to
 spot the modification.
