@@ -112,8 +112,9 @@ public class WizOperName extends WizMEName {
 
 	case 1:
 	    if (step1 == null) {
-		step1 = new WizStepChoice(this, instructions, getOptions());
-		step1.setTarget(_item);
+		step1 = 
+		    new WizStepChoice(this, getInstructions(), getOptions());
+		step1.setTarget(item);
 	    }
 	    return step1;
 
@@ -123,7 +124,7 @@ public class WizOperName extends WizMEName {
 		    step2 = 
 			new WizStepCue(this,
 				       "The operator is now a constructor.");
-		    step2.setTarget(_item);
+		    step2.setTarget(item);
 		}
 		return step2;
 	    } else {
@@ -146,8 +147,8 @@ public class WizOperName extends WizMEName {
      */
     public void undoAction(int origStep) {
 	super.undoAction(origStep);
-	if (_step >= 1) {
-	    _panels.remove(origStep);
+	if (step >= 1) {
+	    panels.remove(origStep);
 	}
 	if (origStep == 1) {
 	    Object oper = getModelElement();

@@ -53,7 +53,7 @@ public class WizAddConstructor extends Wizard {
 	"Please change the name of the offending model element.";
     private String suggestion = "suggestion";
     private String origSuggest = "suggestion";
-    private boolean mustEdit = false;
+    //private boolean mustEdit = false;
     
     /**
      * Creates a new instance of WizAddConstructor
@@ -125,7 +125,7 @@ public class WizAddConstructor extends Wizard {
      */
     public Object getModelElement() {
         if (getToDoItem() != null) {
-            VectorSet offs = _item.getOffenders();
+            VectorSet offs = item.getOffenders();
             if (offs.size() >= 1) {
                 Object me = /*(MModelElement)*/ offs.elementAt(0);
                 return me;
@@ -165,9 +165,9 @@ public class WizAddConstructor extends Wizard {
     /**
      * @param b
      */
-    public void setMustEdit(boolean b) {
+    /*public void setMustEdit(boolean b) {
 	mustEdit = b;
-    }
+    }*/
     
     /**
      * Create a new panel for the given step.

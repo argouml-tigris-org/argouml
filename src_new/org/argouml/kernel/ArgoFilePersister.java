@@ -43,7 +43,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
@@ -230,7 +229,8 @@ public class ArgoFilePersister extends AbstractFilePersister {
             Source xsltSource = new StreamSource(new StringReader(xslt));
             Source inputSource = new StreamSource(theUrl.openStream());
 
-            Transformer transformer = TransformerFactory.newInstance().newTransformer(xsltSource);
+            Transformer transformer = 
+                TransformerFactory.newInstance().newTransformer(xsltSource);
             
             PipedReader pipedReader = new PipedReader();
             Writer pipedWriter = new PipedWriter(pipedReader);
@@ -259,8 +259,9 @@ public class ArgoFilePersister extends AbstractFilePersister {
      * @return the transformed XML
      * @throws TransformerException on XSLT transformation error
      */
-    public static final String transform(String xml, StreamSource xsltStreamSource)
-            throws TransformerException {
+    public static final String transform(String xml, 
+            StreamSource xsltStreamSource)
+        throws TransformerException {
 
         TransformerFactory factory = TransformerFactory.newInstance();
         Transformer transformer = factory.newTransformer(xsltStreamSource);
