@@ -466,4 +466,15 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     }
     
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateNameText()
+     */
+    protected void updateNameText() {
+        if (getOwner() != null) {            
+        	String text = ((MComment)getOwner()).getName();    	
+        	if (text != null)
+        		_text.setText(text);
+        }
+    }
+
 } /* end class FigComment */
