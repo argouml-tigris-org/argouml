@@ -1,6 +1,5 @@
-
-//  $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,283 +61,258 @@ public class TabResults
                 ListSelectionListener,
                 KeyListener
 {
-        protected static Logger cat = Logger.getLogger(TabResults.class);
+    protected static Logger cat = Logger.getLogger(TabResults.class);
 
-        public static int _numJumpToRelated = 0;
+    public static int _numJumpToRelated = 0;
 
-        ////////////////////////////////////////////////////////////////
-        // insatnce variables
-        PredicateFind _pred;
-        ChildGenerator _cg = null;
-        Object _root = null;
-        JSplitPane _mainPane;
-        Vector _results = new Vector();
-        Vector _related = new Vector();
-        Vector _diagrams = new Vector();
-        boolean _showRelated = false;
+    ////////////////////////////////////////////////////////////////
+    // insatnce variables
+    PredicateFind _pred;
+    ChildGenerator _cg = null;
+    Object _root = null;
+    JSplitPane _mainPane;
+    Vector _results = new Vector();
+    Vector _related = new Vector();
+    Vector _diagrams = new Vector();
+    boolean _showRelated = false;
 
-        JLabel _resultsLabel = new JLabel("Results:");
-        JTable _resultsTable = new JTable(10, 4);
-        TMResults _resultsModel = new TMResults();
+    JLabel _resultsLabel = new JLabel("Results:");
+    JTable _resultsTable = new JTable(10, 4);
+    TMResults _resultsModel = new TMResults();
 
-        JLabel _relatedLabel = new JLabel("Related Elements:");
-        JTable _relatedTable = new JTable(4, 4);
-        TMResults _relatedModel = new TMResults();
+    JLabel _relatedLabel = new JLabel("Related Elements:");
+    JTable _relatedTable = new JTable(4, 4);
+    TMResults _relatedModel = new TMResults();
 
-        ////////////////////////////////////////////////////////////////
-        // constructor
-        public TabResults()
-        {
-                this(true);
-        }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public TabResults()
+    {
+	this(true);
+    }
 
-        public TabResults(boolean showRelated)
-        {
-                super("Results", true);
-                _showRelated = showRelated;
-                setLayout(new BorderLayout());
+    public TabResults(boolean showRelated)
+    {
+	super("Results", true);
+	_showRelated = showRelated;
+	setLayout(new BorderLayout());
 
-                JPanel resultsW = new JPanel();
-                JScrollPane resultsSP = new JScrollPane(_resultsTable);
-                resultsW.setLayout(new BorderLayout());
-                resultsW.add(_resultsLabel, BorderLayout.NORTH);
-                resultsW.add(resultsSP, BorderLayout.CENTER);
-                _resultsTable.setModel(_resultsModel);
-                _resultsTable.addMouseListener(this);
-                _resultsTable.addKeyListener(this);
-                _resultsTable.getSelectionModel().addListSelectionListener(
-                        this);
-                _resultsTable.setSelectionMode(
-                        ListSelectionModel.SINGLE_SELECTION);
-                resultsW.setMinimumSize(new Dimension(100, 100));
+	JPanel resultsW = new JPanel();
+	JScrollPane resultsSP = new JScrollPane(_resultsTable);
+	resultsW.setLayout(new BorderLayout());
+	resultsW.add(_resultsLabel, BorderLayout.NORTH);
+	resultsW.add(resultsSP, BorderLayout.CENTER);
+	_resultsTable.setModel(_resultsModel);
+	_resultsTable.addMouseListener(this);
+	_resultsTable.addKeyListener(this);
+	_resultsTable.getSelectionModel().addListSelectionListener(
+								   this);
+	_resultsTable.setSelectionMode(
+				       ListSelectionModel.SINGLE_SELECTION);
+	resultsW.setMinimumSize(new Dimension(100, 100));
 
-                JPanel relatedW = new JPanel();
-                if (_showRelated)
-                {
-                        JScrollPane relatedSP = new JScrollPane(_relatedTable);
-                        relatedW.setLayout(new BorderLayout());
-                        relatedW.add(_relatedLabel, BorderLayout.NORTH);
-                        relatedW.add(relatedSP, BorderLayout.CENTER);
-                        _relatedTable.setModel(_relatedModel);
-                        _relatedTable.addMouseListener(this);
-                        _relatedTable.addKeyListener(this);
-                        relatedW.setMinimumSize(new Dimension(100, 100));
-                }
+	JPanel relatedW = new JPanel();
+	if (_showRelated) {
+	    JScrollPane relatedSP = new JScrollPane(_relatedTable);
+	    relatedW.setLayout(new BorderLayout());
+	    relatedW.add(_relatedLabel, BorderLayout.NORTH);
+	    relatedW.add(relatedSP, BorderLayout.CENTER);
+	    _relatedTable.setModel(_relatedModel);
+	    _relatedTable.addMouseListener(this);
+	    _relatedTable.addKeyListener(this);
+	    relatedW.setMinimumSize(new Dimension(100, 100));
+	}
 
-                if (_showRelated)
-                {
-                        _mainPane =
-                                new JSplitPane(
-                                        JSplitPane.VERTICAL_SPLIT,
-                                        resultsW,
-                                        relatedW);
-                        _mainPane.setDividerSize(2);
-                        add(_mainPane, BorderLayout.CENTER);
-                }
-                else
-                {
-                        add(resultsW, BorderLayout.CENTER);
-                }
+	if (_showRelated) {
+	    _mainPane =
+		new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+			       resultsW,
+			       relatedW);
+	    _mainPane.setDividerSize(2);
+	    add(_mainPane, BorderLayout.CENTER);
+	} else {
+	    add(resultsW, BorderLayout.CENTER);
+	}
 
-        }
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-        public void setPredicate(PredicateFind p)
-        {
-                _pred = p;
-        }
-        public void setRoot(Object root)
-        {
-                _root = root;
-        }
-        public void setGenerator(ChildGenerator gen)
-        {
-                _cg = gen;
-        }
+    public void setPredicate(PredicateFind p)
+    {
+	_pred = p;
+    }
+    public void setRoot(Object root)
+    {
+	_root = root;
+    }
+    public void setGenerator(ChildGenerator gen)
+    {
+	_cg = gen;
+    }
 
-        public void setResults(Vector res, Vector dia)
-        {
-                _results = res;
-                _diagrams = dia;
-                _resultsLabel.setText("Results: " + _results.size() + " items");
-                _resultsModel.setTarget(_results, _diagrams);
-                _relatedModel.setTarget(null, null);
-                _relatedLabel.setText("Related Elements: ");
-        }
+    public void setResults(Vector res, Vector dia)
+    {
+	_results = res;
+	_diagrams = dia;
+	_resultsLabel.setText("Results: " + _results.size() + " items");
+	_resultsModel.setTarget(_results, _diagrams);
+	_relatedModel.setTarget(null, null);
+	_relatedLabel.setText("Related Elements: ");
+    }
 
-        public TabSpawnable spawn()
-        {
-                TabResults newPanel = (TabResults) super.spawn();
-                if (newPanel != null)
-                {
-                        newPanel.setResults(_results, _diagrams);
-                }
-                return newPanel;
-        }
+    public TabSpawnable spawn()
+    {
+	TabResults newPanel = (TabResults) super.spawn();
+	if (newPanel != null) {
+	    newPanel.setResults(_results, _diagrams);
+	}
+	return newPanel;
+    }
 
-        public void doDoubleClick()
-        {
-                myDoubleClick(_resultsTable);
-        }
+    public void doDoubleClick()
+    {
+	myDoubleClick(_resultsTable);
+    }
 
-        public void selectResult(int index)
-        {
-                if (index < _resultsTable.getRowCount())
-                {
-                        _resultsTable.getSelectionModel().setSelectionInterval(
-                                index,
-                                index);
-                }
-        }
+    public void selectResult(int index)
+    {
+	if (index < _resultsTable.getRowCount()) {
+	    _resultsTable.getSelectionModel().setSelectionInterval(index,
+								   index);
+	}
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // ActionListener implementation
+    ////////////////////////////////////////////////////////////////
+    // ActionListener implementation
 
-        public void actionPerformed(ActionEvent ae)
-        {
-        }
+    public void actionPerformed(ActionEvent ae)
+    {
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // MouseListener implementation
+    ////////////////////////////////////////////////////////////////
+    // MouseListener implementation
 
-        public void mousePressed(MouseEvent me)
-        {
-        }
-        public void mouseReleased(MouseEvent me)
-        {
-        }
-        public void mouseClicked(MouseEvent me)
-        {
-                if (me.getClickCount() >= 2)
-                        myDoubleClick(me.getSource());
-        }
-        public void mouseEntered(MouseEvent me)
-        {
-        }
-        public void mouseExited(MouseEvent me)
-        {
-        }
+    public void mousePressed(MouseEvent me)
+    {
+    }
+    public void mouseReleased(MouseEvent me)
+    {
+    }
+    public void mouseClicked(MouseEvent me)
+    {
+	if (me.getClickCount() >= 2)
+	    myDoubleClick(me.getSource());
+    }
+    public void mouseEntered(MouseEvent me)
+    {
+    }
+    public void mouseExited(MouseEvent me)
+    {
+    }
 
-        public void myDoubleClick(Object src)
-        {
-                Object sel = null;
-                Diagram d = null;
-                if (src == _resultsTable)
-                {
-                        int row =
-                                _resultsTable
-                                        .getSelectionModel()
-                                        .getMinSelectionIndex();
-                        if (row < 0)
-                                return;
-                        sel = _results.elementAt(row);
-                        d = (Diagram) _diagrams.elementAt(row);
-                }
-                else if (src == _relatedTable)
-                {
-                        int row =
-                                _relatedTable
-                                        .getSelectionModel()
-                                        .getMinSelectionIndex();
-                        if (row < 0)
-                                return;
-                        _numJumpToRelated++;
-                        sel = _related.elementAt(row);
-                }
+    public void myDoubleClick(Object src)
+    {
+	Object sel = null;
+	Diagram d = null;
+	if (src == _resultsTable) {
+	    int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
+	    if (row < 0)
+		return;
+	    sel = _results.elementAt(row);
+	    d = (Diagram) _diagrams.elementAt(row);
+	} else if (src == _relatedTable) {
+	    int row = _relatedTable.getSelectionModel().getMinSelectionIndex();
+	    if (row < 0)
+		return;
+	    _numJumpToRelated++;
+	    sel = _related.elementAt(row);
+	}
 
-                if (d != null)
-                        cat.debug("go " + sel + " in " + d.getName());
-                if (d != null)
-                        TargetManager.getInstance().setTarget(d);
-                TargetManager.getInstance().setTarget(sel);
-        }
+	if (d != null)
+	    cat.debug("go " + sel + " in " + d.getName());
+	if (d != null)
+	    TargetManager.getInstance().setTarget(d);
+	TargetManager.getInstance().setTarget(sel);
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // KeyListener implementation
+    ////////////////////////////////////////////////////////////////
+    // KeyListener implementation
 
-        public void keyPressed(KeyEvent e)
-        {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                {
-                        e.consume();
-                        myDoubleClick(e.getSource());
-                }
-        }
+    public void keyPressed(KeyEvent e)
+    {
+	if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+	    e.consume();
+	    myDoubleClick(e.getSource());
+	}
+    }
 
-        public void keyReleased(KeyEvent e)
-        {
-        }
+    public void keyReleased(KeyEvent e)
+    {
+    }
 
-        public void keyTyped(KeyEvent e)
-        {
-        }
+    public void keyTyped(KeyEvent e)
+    {
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // ListSelectionListener implementation
+    ////////////////////////////////////////////////////////////////
+    // ListSelectionListener implementation
 
-        public void valueChanged(ListSelectionEvent lse)
-        {
-                if (lse.getValueIsAdjusting())
-                        return;
-                Object src = lse.getSource();
-                if (_showRelated)
-                {
-                        int row = lse.getFirstIndex();
-                        Object sel = _results.elementAt(row);
-                        cat.debug("selected " + sel);
-                        _related.removeAllElements();
-                        java.util.Enumeration enum =
-                                ChildGenRelated.SINGLETON.gen(sel);
-                        if (enum != null)
-                        {
-                                while (enum.hasMoreElements())
-                                {
-                                        _related.addElement(enum.nextElement());
-                                }
-                        }
-                        _relatedModel.setTarget(_related, null);
-                        _relatedLabel.setText(
-                                "Related Elements: "
-                                        + _related.size()
-                                        + " items");
-                }
-        }
+    public void valueChanged(ListSelectionEvent lse)
+    {
+	if (lse.getValueIsAdjusting())
+	    return;
+	Object src = lse.getSource();
+	if (_showRelated) {
+	    int row = lse.getFirstIndex();
+	    Object sel = _results.elementAt(row);
+	    cat.debug("selected " + sel);
+	    _related.removeAllElements();
+	    java.util.Enumeration enum =
+		ChildGenRelated.SINGLETON.gen(sel);
+	    if (enum != null) {
+		while (enum.hasMoreElements()) {
+		    _related.addElement(enum.nextElement());
+		}
+	    }
+	    _relatedModel.setTarget(_related, null);
+	    _relatedLabel.setText("Related Elements: "
+				  + _related.size()
+				  + " items");
+	}
+    }
 
-        ////////////////////////////////////////////////////////////////
-        // actions
+    ////////////////////////////////////////////////////////////////
+    // actions
 
-        public void run()
-        {
-                _resultsLabel.setText("Searching...");
-                _results.removeAllElements();
-                depthFirst(_root, null);
-                setResults(_results, _diagrams);
-                _resultsLabel.setText("Results: " + _results.size() + " items");
-                _resultsModel.setTarget(_results, _diagrams);
-        }
+    public void run()
+    {
+	_resultsLabel.setText("Searching...");
+	_results.removeAllElements();
+	depthFirst(_root, null);
+	setResults(_results, _diagrams);
+	_resultsLabel.setText("Results: " + _results.size() + " items");
+	_resultsModel.setTarget(_results, _diagrams);
+    }
 
-        public void depthFirst(Object node, Diagram lastDiagram)
-        {
-                if (node instanceof Diagram)
-                {
-                        lastDiagram = (Diagram) node;
-                        if (!_pred.matchDiagram(lastDiagram))
-                                return;
-                        // diagrams are not placed in search results
-                }
-                java.util.Enumeration enum = _cg.gen(node);
-                while (enum.hasMoreElements())
-                {
-                        Object c = enum.nextElement();
-                        if (_pred.predicate(c))
-                        {
-                                _results.addElement(c);
-                                _diagrams.addElement(lastDiagram);
-                        }
-                        depthFirst(c, lastDiagram);
-                }
-        }
+    public void depthFirst(Object node, Diagram lastDiagram)
+    {
+	if (node instanceof Diagram) {
+	    lastDiagram = (Diagram) node;
+	    if (!_pred.matchDiagram(lastDiagram))
+		return;
+	    // diagrams are not placed in search results
+	}
+	java.util.Enumeration enum = _cg.gen(node);
+	while (enum.hasMoreElements()) {
+	    Object c = enum.nextElement();
+	    if (_pred.predicate(c)) {
+		_results.addElement(c);
+		_diagrams.addElement(lastDiagram);
+	    }
+	    depthFirst(c, lastDiagram);
+	}
+    }
 
 } /* end class TabResults */

@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,13 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-// File: PropPanelCallEvent.java
-// Classes: PropPanelCallEvent
-// Original Author: oliver.heyden@gentleware.de
-// $Id:
-
 package org.argouml.uml.ui.behavior.state_machines;
 
 import javax.swing.JList;
@@ -41,6 +33,9 @@ import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
+/**
+ * @author oliver.heyden@gentleware.de
+ */
 public class PropPanelCallEvent extends PropPanelEvent {
 
     ////////////////////////////////////////////////////////////////
@@ -54,8 +49,10 @@ public class PropPanelCallEvent extends PropPanelEvent {
         super.initialize();
        
         // TODO: make the next list into a scrollbox (issue 2288)
-        JList operationList = new UMLLinkedList(new UMLCallEventOperationListModel());
-        addField(Translator.localize("UMLMenu", "label.operations"), new JScrollPane(operationList));
+        JList operationList =
+	    new UMLLinkedList(new UMLCallEventOperationListModel());
+        addField(Translator.localize("UMLMenu", "label.operations"),
+		 new JScrollPane(operationList));
     }
 
 } /* end class PropPanelCallEvent */

@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,23 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: UMLChangeDispatch.java
-// Classes: UMLChangeDispatch
-// Original Author:
-// $Id$
-
-// 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added named constants
-
-// for the various event types.
-
-// 15 Juli 2002: Jaap Branderhorst (jaap.branderhorst@xs4all.nl). 
-//  Removed double registration of MEventListeners (see run for extra comment) Hopefully solves issue 827
-// for the various event types.
-
-
-
-
 package org.argouml.uml.ui;
 
 import java.awt.Component;
@@ -55,13 +36,14 @@ import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- *  This class is used to dispatch a NSUML change event (which may occur on a non-UI)
- *  thread) to user interface components.  The class is created in response to a 
- *  NSUML change event being captures by a UMLUserInterfaceContainer and then
- *  is passed as an argument to InvokeLater to be run on the user interface thread.
- * <p>
- * This class is updated to cope with changes to the targetchanged mechanisme
- * </p>
+ * This class is used to dispatch a NSUML change event (which may
+ * occur on a non-UI) thread) to user interface components.  The class
+ * is created in response to a NSUML change event being captures by a
+ * UMLUserInterfaceContainer and then is passed as an argument to
+ * InvokeLater to be run on the user interface thread.<p>
+ *
+ * This class is updated to cope with changes to the targetchanged
+ * mechanism.<p>
  */
 public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
     private MElementEvent _event;
@@ -144,11 +126,14 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 
 
     /**
-     *  Creates a UMLChangeDispatch.  eventType is overriden if a call to 
-     *  one of the event functions is called.
-     *  @param container user interface container to which changes are dispatched.
-     *  @param eventType -1 will add event listener to new target, 0 for default.
-     *      
+     * Creates a UMLChangeDispatch.  eventType is overriden if a call to 
+     * one of the event functions is called.
+     *
+     * @param container user interface container to which changes are
+     *                  dispatched.
+     * @param eventType -1 will add event listener to new target, 0
+     *                  for default.
+     *     
      */
     public UMLChangeDispatch(Container container, int eventType) {
         synchronized (container) {
@@ -256,8 +241,10 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
             	
             	// 2002-07-15
             	// Jaap Branderhorst
-            	// added next statement to prevent PropPanel getting added again and again to the target's listeners
-		UmlModelEventPump.getPump().addModelEventListener(propPanel, target);
+            	// added next statement to prevent PropPanel getting
+            	// added again and again to the target's listeners
+		UmlModelEventPump.getPump().addModelEventListener(propPanel,
+								  target);
             }
             
         }
@@ -281,7 +268,8 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                 dispatch((Container) component);
             if (component instanceof UMLUserInterfaceComponent) {
                 uiComp = (UMLUserInterfaceComponent) component;
-                if (uiComp instanceof Component && ((Component) uiComp).isVisible())
+                if (uiComp instanceof Component
+		        && ((Component) uiComp).isVisible()) {
 		    switch(_eventType) {
                     case -1:
                     case 0:
@@ -316,13 +304,17 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                         uiComp.targetReasserted();
                         break;
 		    }
+		}
             } 
         }
        
     }
     
     private void synchronizedDispatch(Container cont) {
-        if (_target == null)  throw new IllegalStateException("Target may not be null in synchronized dispatch");
+        if (_target == null) {
+	    throw new IllegalStateException("Target may not be null in "
+					    + "synchronized dispatch");
+	}
         synchronized (_target) {
             dispatch(cont);
         }

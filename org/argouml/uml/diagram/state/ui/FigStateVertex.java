@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigStateVertex.java
-// Classes: FigStateVertex
-// Original Author: jrobbins@ics.uci.edu
-
 package org.argouml.uml.diagram.state.ui;
 
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -36,9 +31,10 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 
-/** Abstract class to with common behavior for nestable nodes in UML
-    Statechart diagrams. */
-
+/**
+ * Abstract class to with common behavior for nestable nodes in UML
+ * Statechart diagrams.
+ */
 public abstract class FigStateVertex extends FigNodeModelElement {
 
     ////////////////////////////////////////////////////////////////
@@ -61,20 +57,21 @@ public abstract class FigStateVertex extends FigNodeModelElement {
 	 */
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
-        if (!(org.argouml.model.ModelFacade.isAStateVertex(getOwner())))
+        if (!(ModelFacade.isAStateVertex(getOwner())))
             return;
         Object stateVertex = getOwner();
         Object compositeState = null;
         if (encloser != null
-	    && (org.argouml.model.ModelFacade.isACompositeState(encloser.getOwner())))
+	    && (ModelFacade.isACompositeState(encloser.getOwner())))
 	{
             compositeState = encloser.getOwner();
         } else {
             compositeState = StateMachinesHelper.getHelper()
-		.getTop(StateMachinesHelper.getHelper().getStateMachine(stateVertex));
+		.getTop(StateMachinesHelper.getHelper()
+			.getStateMachine(stateVertex));
         }
         if (compositeState != null)
-            ModelFacade.setContainer(stateVertex,compositeState);
+            ModelFacade.setContainer(stateVertex, compositeState);
     }
 
 } /* end class FigStateVertex */

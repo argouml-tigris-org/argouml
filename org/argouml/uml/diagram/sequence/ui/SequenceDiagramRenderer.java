@@ -1,6 +1,5 @@
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,39 +42,41 @@ import org.tigris.gef.presentation.FigNode;
 
 public class SequenceDiagramRenderer
 	implements GraphNodeRenderer, GraphEdgeRenderer {
-	protected static Logger log =
-		Logger.getLogger(SequenceDiagramRenderer.class);
+    protected static Logger log =
+	Logger.getLogger(SequenceDiagramRenderer.class);
 
-	/** Return a Fig that can be used to represent the given node */
-	public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-		if (ModelFacade.isAObject(node))
-			return new FigObject(node);
-		// if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
-		log.debug("TODO SequenceDiagramRenderer getFigNodeFor");
-		return null;
-	}
+    /** Return a Fig that can be used to represent the given node */
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+	if (ModelFacade.isAObject(node))
+	    return new FigObject(node);
+	// if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
+	// TODO: Something here.
+	log.debug("SequenceDiagramRenderer getFigNodeFor");
+	return null;
+    }
 
-	/** Return a Fig that can be used to represent the given edge */	
-	public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-		if (ModelFacade.isALink(edge)) {
-			Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
-			Object action = ModelFacade.getDispatchAction(stimulus);
-			if (ModelFacade.isACallAction(action)) {
-				return new FigCallActionLink(edge);
-			} else
-			if (ModelFacade.isAReturnAction(action)) {
-				return new FigReturnActionLink(edge);
-			} else
-			if (ModelFacade.isADestroyAction(edge)) {
-				return new FigDestroyActionLink(edge);
-			} else
+    /** Return a Fig that can be used to represent the given edge */	
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+	if (ModelFacade.isALink(edge)) {
+	    Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
+	    Object action = ModelFacade.getDispatchAction(stimulus);
+	    if (ModelFacade.isACallAction(action)) {
+		return new FigCallActionLink(edge);
+	    } else
+		if (ModelFacade.isAReturnAction(action)) {
+		    return new FigReturnActionLink(edge);
+		} else
+		    if (ModelFacade.isADestroyAction(edge)) {
+			return new FigDestroyActionLink(edge);
+		    } else
 			if (ModelFacade.isACreateAction(edge)) {
-				return new FigCreateActionLink(edge);
+			    return new FigCreateActionLink(edge);
 			}
-		}		
-		log.debug("TODO SequenceDiagramRenderer getFigEdgeFor");
-		return null;
-	}
+	}		
+	// TODO: Something here.
+	log.debug("SequenceDiagramRenderer getFigEdgeFor");
+	return null;
+    }
 
 
 } /* end class SequenceDiagramRenderer */

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.diagram.sequence.ui;
 
 import org.argouml.model.ModelFacade;
@@ -42,8 +42,9 @@ import ru.novosoft.uml.behavior.common_behavior.MObject;
 
 /**
  * Action to add an object to a sequence diagram.
+ *
  * @author jaap.branderhorst@xs4all.nl
- * Aug 11, 2003
+ * @since Aug 11, 2003
  */
 public class ActionAddObject extends CmdCreateNode {
 
@@ -59,13 +60,14 @@ public class ActionAddObject extends CmdCreateNode {
         Editor ce = Globals.curEditor();
         GraphModel gm = ce.getGraphModel();
         if (gm instanceof SequenceDiagramGraphModel) {
-            SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel)gm;
+            SequenceDiagramGraphModel sgm = (SequenceDiagramGraphModel) gm;
             Object clasrole =
                 CollaborationsFactory.getFactory().buildClassifierRole(
                     sgm.getCollaboration());
             ModelFacade.addInstance(clasrole, node);            
         } else {
-            throw new IllegalStateException("Graphmodel is not a sequence diagram graph model");
+            throw new IllegalStateException("Graphmodel is not a "
+					    + "sequence diagram graph model");
         }
         return node;
     }

@@ -1,7 +1,5 @@
-
-
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,9 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigGeneralization.java
-// Classes: FigGeneralization
 
 package org.argouml.uml.diagram.ui;
 
@@ -78,7 +73,8 @@ public class FigGeneralization extends FigEdgeModelElement {
 	setBetweenNearestPoints(true);
     
 	if (getLayer() == null) {
-	    setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+	    setLayer(ProjectManager.getManager()
+		     .getCurrentProject().getActiveDiagram().getLayer());
 	}
     
     }
@@ -114,11 +110,11 @@ public class FigGeneralization extends FigEdgeModelElement {
      * and on construction time.
      */
     public void updateDiscriminatorText() {
-  	Object me = getOwner();//MGeneralization
+  	Object me = getOwner(); // MGeneralization
   	if (me == null) {
 	    return;
   	}
-  	String disc = (String)ModelFacade.getDiscriminator(me);
+  	String disc = (String) ModelFacade.getDiscriminator(me);
   	if (disc == null) {
 	    disc = "";
   	}
@@ -136,9 +132,11 @@ public class FigGeneralization extends FigEdgeModelElement {
     public void setOwner(Object own) {
 	super.setOwner(own);
 	if (org.argouml.model.ModelFacade.isAGeneralization(own)) {
-	    Object gen = own;//MGeneralization
-	    Object subType = ModelFacade.getChild(gen);//MGeneralizableElement
-	    Object superType = ModelFacade.getParent(gen);//MGeneralizableElement
+	    Object gen = own;	// MGeneralization
+	    Object subType =
+		ModelFacade.getChild(gen); // MGeneralizableElement
+	    Object superType =
+		ModelFacade.getParent(gen); // MGeneralizableElement
 	    // due to errors in earlier releases of argouml it can
 	    // happen that there is a generalization without a child
 	    // or parent.
@@ -156,7 +154,8 @@ public class FigGeneralization extends FigEdgeModelElement {
       
 	} else 
 	    if (own != null) {
-		throw new IllegalStateException("FigGeneralization has an illegal owner");
+		throw new IllegalStateException("FigGeneralization "
+						+ "has an illegal owner");
 	    }
     }
 
@@ -178,10 +177,10 @@ public class FigGeneralization extends FigEdgeModelElement {
         Fig destFig = getDestFigNode();
         Object source = sourceFig.getOwner();
         Object dest = destFig.getOwner();
-        if (org.argouml.model.ModelFacade.isAGeneralizableElement(source)
-	    && org.argouml.model.ModelFacade.isAGeneralizableElement(dest))
-	{
-            setOwner(CoreFactory.getFactory().buildGeneralization(source,dest));
+        if (ModelFacade.isAGeneralizableElement(source)
+	        && ModelFacade.isAGeneralizableElement(dest)) {
+            setOwner(CoreFactory.getFactory().buildGeneralization(source,
+								  dest));
         }
     }
 } /* end class FigGeneralization */
