@@ -287,7 +287,7 @@ public class UMLTextField
                 // next line dirty hack to enable the continuous updating 
                 // of the textfields in the figs and in the navigator
                 _textChanged = false;
-                _property.setProperty(_container, _oldPropertyValue);
+                // _property.setProperty(_container, _oldPropertyValue);
                 _property.setProperty(_container, getText(), true);
             }
             else {
