@@ -4,20 +4,24 @@
     "http://www.puppycrawl.com/dtds/configuration_1_1.dtd">
 
 <module name="Checker">
-
-    <module name="PackageHtml"/>
-
     <module name="NewlineAtEndOfFile"/>
-
+    <module name="PackageHtml"/>
+    <module name="StrictDuplicateCode"/>
     <module name="Translation"/>
 
     <module name="TreeWalker">
 
+        <module name="AnonInnerLength"/>
+        <module name="ArrayTrailingComma"/>
         <module name="ArrayTypeStyle"/>
         <module name="AvoidInlineConditionals"/>
         <module name="AvoidNestedBlocks"/>
         <module name="AvoidStarImport"/>
         <module name="ConstantName"/>
+        <module name="CovariantEquals"/>
+        <module name="CyclomaticComplexity">
+          <property name="max" value="15"/>
+        </module>
         <module name="DoubleCheckedLocking"/>
         <module name="EmptyBlock">
 	  <!-- All except catch and for. -->
@@ -34,6 +38,8 @@
         <module name="EmptyStatement"/>
 
         <module name="EqualsHashCode"/>
+        <module name="ExecutableStatementCount"/>
+        <module name="ExplicitInitialization"/>
         <module name="FileLength"/>
         <module name="FinalClass"/>
 
@@ -91,12 +97,14 @@
 	            value="Remove line from old style header format. Use @author tag."/>
         </module>
 
- 	<module name="HiddenField"/>
+        <module name="HiddenField"/>
         <module name="HideUtilityClassConstructor"/>
 
+        <module name="IllegalCatch"/>
         <module name="IllegalImport"/>
         <module name="IllegalInstantiation"/>
-	<module name="Indentation">
+        <module name="IllegalType"/>
+        <module name="Indentation">
             <property name="caseIndent" value="0"/>
         </module>
         <module name="InterfaceIsType"/>
@@ -114,6 +122,7 @@
             <property name="scope" value="private"/>
 	</module>
 
+        <module name="JUnitTestCase"/>
         <module name="LeftCurly"/>
 
         <module name="LineLength">
@@ -129,7 +138,13 @@
         <module name="MethodName"/>
         <module name="MissingSwitchDefault"/>
         <module name="ModifierOrder"/>
+        <module name="MutableException"/>
         <module name="NeedBraces"/>
+        <module name="NestedIfDepth">
+          <property name="max" value="3"/>
+        </module>
+        <module name="NestedTryDepth"/>
+        
         <module name="NoWhitespaceAfter"/>
 
         <module name="NoWhitespaceBefore"/>
@@ -140,7 +155,9 @@
 
         <module name="OperatorWrap"/>
 
+        <module name="PackageDeclaration"/>
         <module name="PackageName"/>
+        <module name="ParameterAssignment"/>
         <module name="ParameterName"/>
         <module name="ParameterNumber"/>
         <module name="ParenPad"/>
@@ -157,7 +174,14 @@
 
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
+        <module name="SuperClone"/>
+        <module name="SuperFinalize"/>
         <module name="StaticVariableName"/>
+        <module name="StringLiteralEquality"/>
+        <module name="ThrowsCount">
+          <property name="max" value="2"/>
+        </module>
+        
         <module name="TypecastParenPad"/>
         <module name="TypeName"/>
         <module name="UnusedImports"/>
@@ -169,6 +193,7 @@
         <module name="WhitespaceAround"/>
 
 	<!-- Over the top also in the paranoid version:
+
         <module name="DesignForExtension"/>
 
         <module name="FinalParameters"/>
