@@ -53,7 +53,9 @@ import org.argouml.application.api.PluggableImport;
 import org.argouml.cognitive.Designer;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.StatusBar;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
@@ -145,6 +147,8 @@ public class Import {
         JComponent chooser = module.getChooser(this);
         dialog = new JDialog(pb, "Import sources");
         dialog.setModal(true);
+        dialog.getParent().setEnabled(false);
+        
         dialog.getContentPane().add(chooser, BorderLayout.WEST);
         dialog.getContentPane().add(getConfigPanel(this), BorderLayout.EAST);
         dialog.pack();
@@ -274,6 +278,7 @@ public class Import {
         //turn off critiquing for reverse engineering
         boolean b = Designer.TheDesigner.getAutoCritique();
         if (b)  Designer.TheDesigner.setAutoCritique(false);
+        UmlModelEventPump.getPump().stopPumpingEvents();
         iss = new ImportStatusScreen("Importing", "Splash");
         SwingUtilities.invokeLater(
 				   new ImportRun(files, b,
@@ -444,6 +449,14 @@ public class Import {
                                  - _filesLeft.size()
                                  - _nextPassFiles.size());
                     pb.getStatusBar().showProgress(100 * act / tot);
+                    
+                    // flush model events after every 50 classes
+                    // to avoid too many events in the event queue
+                    // after a long r.e. run
+                    if( act % 50 == 0){
+                        UmlModelEventPump.getPump().flushModelEvents();
+                        UmlModelEventPump.getPump().stopPumpingEvents();
+                    }
                 }
                 catch (Exception e1) {
                     
@@ -511,6 +524,11 @@ public class Import {
             
             // turn criticing on again
             if (criticThreadWasOn)  Designer.TheDesigner.setAutoCritique(true);
+            
+            UmlModelEventPump.getPump().startPumpingEvents();
+            
+            NavigatorPane.getInstance().forceUpdate();
+            pb.setEnabled(true);
             
             Argo.log.info(_st);
             pb.getStatusBar().showProgress(0);
