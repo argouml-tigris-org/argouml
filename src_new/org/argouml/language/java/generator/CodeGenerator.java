@@ -59,7 +59,7 @@ class CodeGenerator
 	parseStateStack.push(new ParseState(mClass.getNamespace()));
 	ccp.write(writer, parseStateStack, 0);
 
-	writer.write("\n{\n");
+	writer.write("{\n");
 
 	// Features
 	Collection features = mClass.getFeatures();
@@ -85,7 +85,7 @@ class CodeGenerator
 	    }
 	}
 
-	writer.write("}\n\n");
+	writer.write("}\n");
     }
 
     /**
@@ -103,7 +103,7 @@ class CodeGenerator
 	parseStateStack.push(new ParseState(mInterface.getNamespace()));
 	icp.write(writer, parseStateStack, 0);
 
-	writer.write("\n{\n");
+	writer.write("{\n");
 
 	// Features
 	Collection features = mInterface.getFeatures();
@@ -129,7 +129,7 @@ class CodeGenerator
 	    }
 	}
 
-	writer.write("}\n\n");
+	writer.write("}\n");
     }
 
     /**
@@ -151,10 +151,10 @@ class CodeGenerator
 	ocp.write(writer, parseStateStack, 0);
 
 	if(mOperation.isAbstract() || mClassifier instanceof MInterface) {
-	    writer.write(";\n\n");
+	    writer.write(";\n");
 	}
 	else {
-	    writer.write("\n{\n}\n\n");
+	    writer.write("{}\n");
 	}
     }
 
@@ -177,6 +177,6 @@ class CodeGenerator
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));
 	acp.write(writer, parseStateStack, 0);
-	writer.write(";\n\n");
+	writer.write(";\n");
     }
 }
