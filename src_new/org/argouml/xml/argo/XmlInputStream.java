@@ -42,7 +42,7 @@ import org.apache.log4j.Logger;
  * The tag is not expected to be an empty tag.
  * @author Bob Tarling
  */
-class XmlInputStream extends BufferedInputStream {
+public class XmlInputStream extends BufferedInputStream {
 
     private boolean xmlStarted;
     private boolean inTag;
@@ -61,16 +61,18 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
+     * @param theTag the tag name from which to start reading
+     * @param instance the instance of the matching tag to find
      */
     public XmlInputStream(InputStream in, String theTag, int instance) {
         this(in, theTag, null, false);
+        instanceRequired = instance;
     }
     
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
+     * @param theTag the tag name from which to start reading
      */
     public XmlInputStream(InputStream in, String theTag) {
         this(in, theTag, null, false);
@@ -79,8 +81,8 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
-     * @param instanceNo the instance of the tag required (starting at zero)
+     * @param theTag the tag name from which to start reading
+     * @param attribs the attributes which must also match
      */
     public XmlInputStream(InputStream in, String theTag, Map attribs) {
         this(in, theTag, attribs, false);
@@ -89,17 +91,22 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
-     * @param instanceNo the instance of the tag required (starting at zero)
+     * @param theTag the tag name from which to start reading
+     * @param attribs the attributes which must also match
+     * @param instance the instance of the tag required (starting at zero)
      */
-    public XmlInputStream(InputStream in, String theTag, Map attribs, int instance) {
+    public XmlInputStream(InputStream in,
+                          String theTag,
+                          Map attribs,
+                          int instance) {
         this(in, theTag, attribs, false);
+        instanceRequired = instance;
     }
     
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
+     * @param theTag the tag name from which to start reading
      * @param child if true this will read only the children
      *              of the named tag otherwise the named tag
      *              and children are read.
@@ -111,8 +118,8 @@ class XmlInputStream extends BufferedInputStream {
     /**
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
-     * @param tag the tag name from which to start reading
-     * @param instanceNo the instance of the tag required (starting at zero)
+     * @param theTag the tag name from which to start reading
+     * @param attribs the attributes which must also match
      * @param child if true this will read only the children
      *              of the named tag otherwise the named tag
      *              and children are read.
@@ -126,11 +133,6 @@ class XmlInputStream extends BufferedInputStream {
         this.endTagName = '/' + theTag;
         this.attributes = attribs;
         this.childOnly = child;
-        if (child) {
-            LOG.info("Reading input stream after tag " + theTag + " with attributes " + attribs);
-        } else {
-            LOG.info("Reading input stream from tag " + theTag + " with attributes " + attribs);
-        }
     }
     
     /**

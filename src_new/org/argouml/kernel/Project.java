@@ -101,7 +101,7 @@ public class Project implements java.io.Serializable, TargetListener {
     private Vector searchpath;
     private Vector members;
     private String historyFile;
-
+    
     /**
      * The version number of the persistence format that last
      * saved this project.
@@ -827,6 +827,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         return null;
     }
+
 
     /**
      * @param cgp the generation preferences

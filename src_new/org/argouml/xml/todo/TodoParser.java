@@ -51,9 +51,6 @@ import org.tigris.gef.util.VectorSet;
 public class TodoParser extends SAXParserBase {
     private static final Logger LOG = Logger.getLogger(TodoParser.class);
 
-    /** The SINGLETON object of this class. */
-    private static TodoParser singleton = new TodoParser();
-
     private TodoTokenTable tokens = new TodoTokenTable();
     private URL url = null;
 
@@ -81,7 +78,7 @@ public class TodoParser extends SAXParserBase {
     /**
      * Creates a new TodoParser.
      */
-    private TodoParser()
+    public TodoParser()
     {
     }
 
@@ -562,13 +559,6 @@ public class TodoParser extends SAXParserBase {
 
 	//cat.debug("encode:\n" + str + "\n -> " + sb.toString());
 	return sb.toString();
-    }
-
-    /**
-     * @return Returns the sINGLETON.
-     */
-    public static TodoParser getSingleton() {
-        return singleton;
     }
 }
 

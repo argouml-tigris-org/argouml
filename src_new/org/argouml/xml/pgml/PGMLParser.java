@@ -70,14 +70,14 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    private static final PGMLParser INSTANCE = new PGMLParser();
+//    private static final PGMLParser INSTANCE = new PGMLParser();
 
     private HashMap translationTable = new HashMap();
 
     /**
      * Constructor
      */
-    protected PGMLParser() {
+    public PGMLParser() {
 	translationTable.put("uci.uml.visual.UMLClassDiagram",
 	    "org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram");
 	translationTable.put("uci.uml.visual.UMLUseCaseDiagram",
@@ -640,12 +640,12 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
     }
     
     
-    /**
-     * @return Returns the singleton instance.
-     */
-    public static PGMLParser getInstance() {
-        return INSTANCE;
-    }
+//    /**
+//     * @return Returns the singleton instance.
+//     */
+//    public static PGMLParser getInstance() {
+//        return INSTANCE;
+//    }
  
  
 

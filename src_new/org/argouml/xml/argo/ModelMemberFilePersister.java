@@ -28,11 +28,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.XmiReader;
@@ -93,7 +93,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      *
      * @see org.argouml.xml.argo.MemberFilePersister#load(java.util.Map)
      */
-    public void load(Map attributesMap) throws SAXException {
+    public void load(int instance) throws SAXException {
                 
         InputSource source = new InputSource(inputStream);
         Object mmodel = null;
@@ -120,8 +120,8 @@ public class ModelMemberFilePersister extends MemberFilePersister {
         }
 
         if (xmiReader.getErrors()) {
-            ArgoParser.getInstance().setLastLoadStatus(false);
-            ArgoParser.getInstance().setLastLoadMessage(
+            LastLoadInfo.getInstance().setLastLoadStatus(false);
+            LastLoadInfo.getInstance().setLastLoadMessage(
                     "XMI file could not be parsed.");
             LOG.error("XMI file could not be parsed.");
             throw new SAXException(

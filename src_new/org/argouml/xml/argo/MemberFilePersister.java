@@ -24,8 +24,6 @@
 
 package org.argouml.xml.argo;
 
-import java.util.Map;
-
 import org.xml.sax.SAXException;
 
 /**
@@ -38,7 +36,7 @@ public abstract class MemberFilePersister {
      * which should have been setup in the constructor.
      *
      * @throws SAXException on any parsing errors.
-     * @param attributesMap the map (an object that maps keys to values)
+     * @param instance the instance of the tag to load.
      */
-    public abstract void load(Map attributesMap) throws SAXException;
+    public abstract void load(int instance) throws SAXException;
 }
