@@ -1103,6 +1103,7 @@ public class FigUseCase extends FigNodeModelElement {
 
         // Mark the text as highlighted, then parse it
 
+        /* TODO: "highlightedFigText hides a field" Warning! Is intentional? */
         CompartmentFigText highlightedFigText = (CompartmentFigText) ft;
         highlightedFigText.setHighlighted(true);
 
