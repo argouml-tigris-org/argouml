@@ -522,6 +522,15 @@ public final class TargetManager {
     public synchronized Collection getTargets() {
         return new ArrayList(_targets);
     }
+    
+    public synchronized Collection getModelTargets() {
+        ArrayList targets = new ArrayList();
+        Iterator iter = getTargets().iterator();
+        while (iter.hasNext()) {
+            targets.add(determineModelTarget(iter.next()));
+        }
+        return targets;
+    }
 
     /**
      * Adds a listener.
