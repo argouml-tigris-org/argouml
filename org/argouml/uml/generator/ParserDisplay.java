@@ -56,7 +56,7 @@ public class ParserDisplay extends Parser {
 
   public void parseOperationCompartment(MClassifier cls, String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
-    List newOps = new ArrayList();
+    Vector newOps = new Vector();
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MOperation op = parseOperation(token);
@@ -69,18 +69,22 @@ public class ParserDisplay extends Parser {
 
 	// don't forget to remove old Operations!
 	for (int i = 0; i < oldOps.size(); i++)
-		((MOperation)oldOps.elementAt(i)).remove();
-	features.addAll(newOps);
+		cls.removeFeature((MOperation)oldOps.elementAt(i));
+
+	// now re-set the attributes
+	cls.setFeatures(features);
+
+	//features.addAll(newOps);
 	//add features with add-Operation, so a role-added-event is generated
-	for (int i=0; i<features.size(); i++){
-	    MOperation oper=(MOperation)features.elementAt(i);
+	for (int i=0; i<newOps.size(); i++){
+	    MOperation oper=(MOperation)newOps.elementAt(i);
 	    cls.addFeature(oper);
 	}
   }
 
   public void parseAttributeCompartment(MClassifier cls, String s) {
     java.util.StringTokenizer st = new java.util.StringTokenizer(s, "\n\r");
-    List newAttrs = new ArrayList();
+    Vector newAttrs = new Vector();
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MAttribute attr = parseAttribute(token);
@@ -94,12 +98,14 @@ public class ParserDisplay extends Parser {
 	// don't forget to remove old Attrbutes!
 	for (int i = 0; i < oldAttrs.size(); i++)
 		((MAttribute)oldAttrs.elementAt(i)).remove();
-	features.removeAll(MMUtil.SINGLETON.getAttributes(cls));
-	features.addAll(newAttrs);
+	
+	// now re-set the operations
+	cls.setFeatures(features);
 
+	//features.addAll(newAttrs);
 	//add features with add-Operation, so a role-added-event is generated
-	for (int i=0; i<features.size(); i++){
-	    MAttribute attr=(MAttribute)features.elementAt(i);
+	for (int i=0; i<newAttrs.size(); i++){
+	    MAttribute attr=(MAttribute)newAttrs.elementAt(i);
 	    cls.addFeature(attr);
 	}
 
