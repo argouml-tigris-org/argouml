@@ -34,6 +34,7 @@ package org.argouml.ui;
 // import java.awt.Image;
 // import java.awt.Graphics2D;
 import java.io.File;
+import java.net.URL;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.HashMap;
@@ -49,6 +50,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
+import org.argouml.persistence.TestZargoFilePersister;
 import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
@@ -71,7 +73,6 @@ import org.tigris.swidgets.Horizontal;
 public class GUITestPropertyPanels extends TestCase {
 
     private static Project p = null;
-    private static String projectFile;
     private Object modelElement;
 
     /**
@@ -87,7 +88,6 @@ public class GUITestPropertyPanels extends TestCase {
     // problems.
     static {
         Translator.init();
-        projectFile = "../tests/testmodels/GUITestPropertyPanels.zargo";
     }
 
 
@@ -112,10 +112,21 @@ public class GUITestPropertyPanels extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-	if (theDetailsPane == null) {
-	    theDetailsPane =
-		new DetailsPane("detail", Horizontal.getInstance());
-	}
+        if (theDetailsPane == null) {
+            theDetailsPane =
+        	new DetailsPane("detail", Horizontal.getInstance());
+        }
+    }
+
+    /**
+     * @param args the arguments given on the commandline
+     */
+    public static void main(java.lang.String[] args) {
+        try {
+            junit.textui.TestRunner.run(suite());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -136,7 +147,9 @@ public class GUITestPropertyPanels extends TestCase {
 			  + "for all known model elements");
 
         p = ProjectManager.getManager().makeEmptyProject();
-        File testfile = new File(projectFile);
+        URL url = GUITestPropertyPanels.class.getResource("/testmodels/GUITestPropertyPanels.zargo");
+
+        File testfile = new File(url.getFile());
 
         ZargoFilePersister persister = new ZargoFilePersister();
         p = persister.doLoad(testfile);
