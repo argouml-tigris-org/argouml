@@ -26,7 +26,9 @@ package org.argouml.model.uml;
 
 import java.io.IOException;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -171,6 +173,10 @@ public final class UmlModelEventPump implements MElementListener {
         Collection col =
             ModelManagementHelper.getHelper()
 	    .getAllModelElementsOfKind(modelClass);
+        
+        if(col == Collections.EMPTY_LIST)
+            col = new ArrayList();
+        
         if (modelClass.isAssignableFrom(MModel.class)) {
             Object root =
                 ProjectManager.getManager().getCurrentProject().getRoot();
@@ -718,11 +724,11 @@ class EventKey {
         if (o instanceof EventKey) {
             EventKey key = (EventKey) o;
             if ((key.getType() == null && getType() == null)
-                || (key.getType() != null && key.getType().equals(getType()))
-                && (key.getName() != null
-                    && key.getName().equals(getName())
-                    || (key.getName() == null && getName() == null)))
+                || 
+                (key.getType() != null && key.getType().equals(getType()) &&
+                 key.getName() != null && key.getName().equals(getName())) ){
                 return true;
+            }
         }
         return false;
     }
