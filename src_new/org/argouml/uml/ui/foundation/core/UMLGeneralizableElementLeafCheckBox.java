@@ -25,10 +25,9 @@
 package org.argouml.uml.ui.foundation.core;
 
 
+import org.argouml.model.ModelFacade;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
-
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 
 /**
  * 
@@ -52,7 +51,7 @@ public class UMLGeneralizableElementLeafCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
         if (getTarget() != null)
-            setSelected(((MGeneralizableElement) getTarget()).isLeaf());
+            setSelected(ModelFacade.isLeaf(getTarget()));
     }
 
 

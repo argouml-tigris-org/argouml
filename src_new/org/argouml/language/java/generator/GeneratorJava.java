@@ -956,7 +956,7 @@ public class GeneratorJava
 
                     if ((org.argouml.model.ModelFacade.isAClass(cls))
                         && (org.argouml.model.ModelFacade.isAOperation(bf))
-                        && (!((MOperation) bf).isAbstract())) {
+                        && (!ModelFacade.isAbstract(bf))) {
                         if (_lfBeforeCurly)
                             sb.append(LINE_SEPARATOR).append(INDENT);
                         else

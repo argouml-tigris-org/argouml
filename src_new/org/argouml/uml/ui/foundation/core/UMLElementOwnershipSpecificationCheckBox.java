@@ -25,10 +25,9 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 12, 2002
@@ -52,7 +51,7 @@ public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(((MModelElement) getTarget()).isSpecification());
+        setSelected(ModelFacade.isSpecification(getTarget()));
     }
 
 }
