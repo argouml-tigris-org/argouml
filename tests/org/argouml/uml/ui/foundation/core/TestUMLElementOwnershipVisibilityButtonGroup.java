@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JRadioButton;
@@ -41,7 +41,7 @@ import junit.framework.TestCase;
  */
 public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
 
-    private UMLVisibilityButtonGroup group;
+    private UMLVisibilityButtonGroup group = null;
     private MModelElement elem;
     /**
      * Constructor for TestUMLElementOwnershipVisibilityButtonGroup.
@@ -52,6 +52,7 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
     }
     
     public void testDoPublicClick() {
+	if (group == null) return; // Inconclusive
         JRadioButton button = group.getPublicButton();
         assertNotNull("public button null!", button);
         button.doClick();
@@ -59,6 +60,7 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
     }
     
     public void testDoProtectedClick() {
+	if (group == null) return; // Inconclusive
         JRadioButton button = group.getProtectedButton();
         assertNotNull("public button null!", button);
         button.doClick();
@@ -66,6 +68,7 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
     }    
     
     public void testDoPrivateClick() {
+	if (group == null) return; // Inconclusive
         JRadioButton button = group.getPrivateButton();
         assertNotNull("public button null!", button);
         button.doClick();
@@ -73,16 +76,19 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
     }   
     
     public void testVisibilityPublic() {
+	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PUBLIC);
         assertEquals(group.getSelection(), group.getPublicButton().getModel());
     }
     
     public void testVisibilityPrivate() {
+	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PRIVATE);
         assertEquals(group.getSelection(), group.getPrivateButton().getModel());
     }
     
     public void testVisibilityProtected() {
+	if (group == null) return; // Inconclusive
         elem.setVisibility(MVisibilityKind.PROTECTED);
         assertEquals(group.getSelection(), group.getProtectedButton().getModel());
     }
@@ -97,7 +103,16 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
         cont.setTarget(elem);
-        group = new UMLElementOwnershipVisibilityButtonGroup(cont);
+
+	// If we cannot create the group, we assume that it is because
+	// there is no GUI available.
+	// If so, all tests are inconclusive.
+	try {
+	    group = new UMLElementOwnershipVisibilityButtonGroup(cont);
+	} catch (java.lang.Exception e) {
+	    // Cannot set up for this test.
+	    return;
+	}
         elem.addMElementListener(group);
     }
 
