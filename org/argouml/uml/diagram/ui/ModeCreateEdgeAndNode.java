@@ -339,7 +339,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                     destPortFig = tempFigPort;
                 }
                 if (edgeType != null) {
-                    newEdge = mgm.connect(startPort, foundPort, (Class) edgeType);
+                    newEdge = 
+                        mgm.connect(startPort, foundPort, (Class) edgeType);
                 } else {
                     newEdge = mgm.connect(startPort, foundPort);
                 }
