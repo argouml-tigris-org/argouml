@@ -24,6 +24,7 @@
 
 package org.argouml.model.uml;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.UUIDManager;
 
@@ -78,13 +79,13 @@ public abstract class AbstractUmlModelFactory {
      */
     public void addListenersToModelElement(Object handle) {
         if (ModelFacade.isABase(handle)) {
-            Object base = handle;
             UmlModelEventPump pump = UmlModelEventPump.getPump();
             
-            ((MBase) base).addMElementListener(pump);
+            ((MBase) handle).addMElementListener(pump);
             pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),
-				       base);
-            pump.addModelEventListener(UmlModelListener.getInstance(), base);
+                    handle);
+            
+            UmlModelListener.getInstance().newElement(handle);
         }
     }
 }
