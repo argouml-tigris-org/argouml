@@ -133,7 +133,8 @@ abstract public class PropPanelModelElement extends PropPanel {
      * the namespace combobox has this optimisation because it is a performance
      * bottleneck with large models > 100 classifiers.
      */
-    private static UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = UMLModelElementNamespaceComboBoxModel.getInstance();
+    private static UMLModelElementNamespaceComboBoxModel 
+	namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
 
     private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
     private static UMLModelElementNamespaceListModel namespaceListModel = new UMLModelElementNamespaceListModel();

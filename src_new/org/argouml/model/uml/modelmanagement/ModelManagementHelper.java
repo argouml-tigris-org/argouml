@@ -365,5 +365,33 @@ public class ModelManagementHelper {
 		return false;
 	return corresponds(obj1.getNamespace(), obj2.getNamespace());
     }
+
+    /**
+     * Checks if a child for some ownershiprelationship (as in a
+     * namespace A is owned by a namespace B) is allready in the
+     * ownerhship relation.
+     * @param parent The current leaf for the ownership relation 
+     * @param child The child that should be owned by the parent
+     * @return true if the child is allready in the ownership relationship
+     */
+    public boolean isCyclicOwnership(Object parent, Object child) {
+        return (getOwnerShipPath(parent).contains(child) || parent == child);
+    }
+
+
+    private List getOwnerShipPath(Object elem) {
+        if (ModelFacade.isABase(elem)) {
+            List ownershipPath = new ArrayList();
+            Object parent = ModelFacade.getContainer(elem);
+            while (parent != null) {
+                ownershipPath.add(parent);
+                parent = ModelFacade.getContainer(parent);
+            }
+            return ownershipPath;
+        } else {
+            throw new IllegalArgumentException("Not a base");
+        }
+
+    }
 }
 
