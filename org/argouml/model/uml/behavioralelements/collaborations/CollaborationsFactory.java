@@ -25,11 +25,9 @@ package org.argouml.model.uml.behavioralelements.collaborations;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
@@ -38,9 +36,6 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -285,7 +280,12 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     
     public void deleteAssociationEndRole(MAssociationEndRole elem) {}
     
-    public void deleteAssociationRole(MAssociationRole elem) {}
+    public void deleteAssociationRole(MAssociationRole elem) {
+        Iterator it = elem.getMessages().iterator();
+        while (it.hasNext()) {
+            UmlFactory.getFactory().delete((MMessage)it.next());
+        }
+    }
     
     public void deleteClassifierRole(MClassifierRole elem) {}
     
