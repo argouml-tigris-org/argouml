@@ -28,36 +28,41 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.*;
-import java.beans.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.Iterator;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.UmlModelEventPump;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.presentation.ArrowHeadGreater;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-
-import org.argouml.ui.ProjectBrowser;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class FigDependency extends FigEdgeModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
-  protected ArrowHeadGreater endArrow;
+    ////////////////////////////////////////////////////////////////
+    // constructors
+    protected ArrowHeadGreater endArrow;
 
-  public FigDependency() {
-    addPathItem(_stereo, new PathConvPercent(this, 50, 10));
-    endArrow = new ArrowHeadGreater();
-    endArrow.setFillColor(Color.red);
-    setDestArrowHead(endArrow);
-    setBetweenNearestPoints(true);
-    setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
-  }
+    public FigDependency() {
+        addPathItem(_stereo, new PathConvPercent(this, 50, 10));
+        endArrow = new ArrowHeadGreater();
+        endArrow.setFillColor(Color.red);
+        setDestArrowHead(endArrow);
+        setBetweenNearestPoints(true);
+        setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+    }
 
-  public FigDependency(Object edge) {
-    this();
-    setOwner(edge);
-  }
+    public FigDependency(Object edge) {
+        this();
+        setOwner(edge);
+    }
 
     public FigDependency(Object edge, Layer lay) {
         this();
@@ -65,66 +70,73 @@ public class FigDependency extends FigEdgeModelElement {
         setLayer(lay);
     }
 
-  public void setOwner(Object own) {
-    Object oldOwner = getOwner();
-    super.setOwner(own);
-    
-    if (own instanceof MDependency) {
-        MDependency newDep = (MDependency) own;
-        for (int i = 0; i < newDep.getSuppliers().size(); i++) {
-            ((MModelElement)((Object[]) newDep.getSuppliers().toArray())[i]).removeMElementListener(this);
-            ((MModelElement)((Object[]) newDep.getSuppliers().toArray())[i]).addMElementListener(this);
-        }
-        for (int i = 0; i < newDep.getClients().size(); i++) {
-            ((MModelElement)((Object[]) newDep.getClients().toArray())[i]).removeMElementListener(this);
-            ((MModelElement)((Object[]) newDep.getClients().toArray())[i]).addMElementListener(this);
-        }
-        newDep.removeMElementListener(this);
-        newDep.addMElementListener(this);
-        MModelElement supplier = 
-            (MModelElement)((newDep.getSuppliers().toArray())[0]);
-        MModelElement client = 
-            (MModelElement)((newDep.getClients().toArray())[0]);
-		  
-        FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
-        FigNode cliFN = (FigNode) getLayer().presentationFor(client);
-		
-        if (cliFN != null) {
-            setSourcePortFig(cliFN);
-            setSourceFigNode(cliFN);
-        }
-        if (supFN != null) {
-            setDestPortFig(supFN);
-            setDestFigNode(supFN);
+    public void setOwner(Object own) {
+        Object oldOwner = getOwner();
+        super.setOwner(own);
+
+        if (own instanceof MDependency) {
+            MDependency newDep = (MDependency) own;
+            UmlModelEventPump pump = UmlModelEventPump.getPump();
+            Iterator it = newDep.getSuppliers().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                pump.removeModelEventListener(this, o);
+                pump.addModelEventListener(this, o);
+            }
+            it = newDep.getSuppliers().iterator();
+            while (it.hasNext()) {
+                Object o = it.next();
+                pump.removeModelEventListener(this, o);
+                pump.addModelEventListener(this, o);
+            }
+            pump.removeModelEventListener(this, newDep);
+            pump.addModelEventListener(this, newDep);
+            MModelElement supplier =
+                (MModelElement) ((newDep.getSuppliers().toArray())[0]);
+            MModelElement client =
+                (MModelElement) ((newDep.getClients().toArray())[0]);
+
+            FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
+            FigNode cliFN = (FigNode) getLayer().presentationFor(client);
+
+            if (cliFN != null) {
+                setSourcePortFig(cliFN);
+                setSourceFigNode(cliFN);
+            }
+            if (supFN != null) {
+                setDestPortFig(supFN);
+                setDestFigNode(supFN);
+            }
         }
     }
-  }
-  ////////////////////////////////////////////////////////////////
-  // accessors
+    ////////////////////////////////////////////////////////////////
+    // accessors
 
-  public void setFig(Fig f) {
-    super.setFig(f);
-    _fig.setDashed(true);
-    // computeRoute(); // this recomputes the route if you reload the diagram.
-  }
+    public void setFig(Fig f) {
+        super.setFig(f);
+        _fig.setDashed(true);
+        // computeRoute(); 
+        // this recomputes the route if you reload the diagram.
+    }
 
-  protected boolean canEdit(Fig f) { return false; }
+    protected boolean canEdit(Fig f) {
+        return false;
+    }
 
-  ////////////////////////////////////////////////////////////////
-  // event handlers
+    ////////////////////////////////////////////////////////////////
+    // event handlers
 
-  /** This is called aftern any part of the UML MModelElement has
-   *  changed. This method automatically updates the name FigText.
-   *  Subclasses should override and update other parts. */
-  protected void modelChanged(MElementEvent e) {
-    // do not set _name
-    updateStereotypeText();
-  }
+    /** This is called aftern any part of the UML MModelElement has
+     *  changed. This method automatically updates the name FigText.
+     *  Subclasses should override and update other parts. */
+    protected void modelChanged(MElementEvent e) {
+        // do not set _name
+        updateStereotypeText();
+    }
 
-  public void paint(Graphics g) {
+    public void paint(Graphics g) {
         endArrow.setLineColor(getLineColor());
         super.paint(g);
-  }
+    }
 
 } /* end class FigDependency */
-

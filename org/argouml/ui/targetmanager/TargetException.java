@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,40 +21,32 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.ui.targetmanager;
 
-package org.argouml.uml.ui;
-
-import org.argouml.ui.*;
-import java.awt.event.*;
-
-/** Action to select the properties tab.
- * @stereotype singleton
+/**
+ * @author gebruiker
+ *
+ * To change the template for this generated type comment go to
+ * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class ActionProperties extends UMLAction {
+public class TargetException extends RuntimeException {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
+	/**
+	 * 
+	 */
+	public TargetException() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
-    public static ActionProperties SINGLETON = new ActionProperties(); 
+	/**
+	 * @param message
+	 */
+	public TargetException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
 
+	
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    protected ActionProperties() { super("action.properties", NO_ICON); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	if (pb == null) return;
-	pb.selectTabNamed("action.properties");
-    }
-
-    public boolean shouldBeEnabled() { 
-	return true; 
-    }
-} /* end class ActionProperties */
-
+}

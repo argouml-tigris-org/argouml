@@ -27,7 +27,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.Iterator;
-
+ 
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsHelper;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -37,6 +37,7 @@ import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.model_management.MModel;
@@ -73,11 +74,8 @@ public class UmlHelper {
     /** 
      *  Internal recursive worker to add UmlModelListener.
      */
-    protected void addListenersToMBase(MBase mbase) {
-        // UmlModelEventPump.getPump().removeModelEventListener(UmlModelListener.getInstance(), mbase);
-        // UmlModelEventPump.getPump().addModelEventListener(UmlModelListener.getInstance(), mbase);
-	mbase.addMElementListener(UmlModelListener.getInstance());
-    mbase.addMElementListener(UmlModelEventPump.getPump());
+    protected void addListenersToMBase(MBase mbase) {     
+	UmlFactory.getFactory().addListenersToModelElement(mbase);
     Collection elements = mbase.getModelElementContents();
 	if (elements != null) {
 	    Iterator iterator = elements.iterator();

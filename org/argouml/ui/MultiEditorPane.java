@@ -43,6 +43,8 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.swingext.Horizontal;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
@@ -58,7 +60,7 @@ import org.tigris.gef.presentation.Fig;
 
 public class MultiEditorPane
     extends JPanel
-    implements ChangeListener, MouseListener, QuadrantPanel {
+    implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
     protected static Category cat = Category.getInstance(MultiEditorPane.class);
 
     ////////////////////////////////////////////////////////////////
@@ -365,6 +367,30 @@ public class MultiEditorPane
         }
         return returnList;
     }
+
+	/* (non-Javadoc)
+	 * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+	 */
+	public void targetAdded(TargetEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+	 */
+	public void targetRemoved(TargetEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	/* (non-Javadoc)
+	 * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+	 */
+	public void targetSet(TargetEvent e) {
+		// TODO Auto-generated method stub
+
+	}
 
 }
 

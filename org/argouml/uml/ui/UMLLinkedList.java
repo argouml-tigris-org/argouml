@@ -74,7 +74,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
             if (e.getClickCount() >=2 && SwingUtilities.isLeftMouseButton(e)) {
                 Object o = getSelectedValue();
                 if (o instanceof MModelElement) {                    
-                    ProjectBrowser.TheInstance.setTarget(o);
+                    ProjectBrowser.getInstance().setTarget(o);
                 }
             }
             e.consume();

@@ -205,7 +205,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         if (target instanceof MAssociationEnd) {
             MAssociation assoc = ((MAssociationEnd) target).getAssociation();
             if (assoc != null) {
-                ProjectBrowser.TheInstance.setTarget(assoc);
+                ProjectBrowser.getInstance().setTarget(assoc);
             }
         }
     }
@@ -219,7 +219,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         Object target = getTarget();
         if (ModelFacade.isAAssociationEnd(target)) {
             MAssociationEnd end = (MAssociationEnd) target;
-            ProjectBrowser.TheInstance.setTarget(end.getOppositeEnd());           
+            ProjectBrowser.getInstance().setTarget(end.getOppositeEnd());           
         }
     }
     

@@ -56,7 +56,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @see java.awt.event.ActionListener#actionPerformed(ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         // find the right namespace for the diagram
         Object target = pb.getTarget();
@@ -80,9 +80,9 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (ns!= null && isValidNamespace(ns)) {
             UMLDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
-            ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
-            ProjectBrowser.TheInstance.setTarget(diagram);
-            ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+            ProjectBrowser.getInstance().getNavigatorPane().addToHistory(diagram);
+            ProjectBrowser.getInstance().setTarget(diagram);
+            ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
         } else {
             log.error("No valid namespace found");

@@ -8,13 +8,13 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -56,14 +56,14 @@ abstract public class UMLBinaryRelationListModel
                     getAddDialogTitle(),
                     true,
                     true);
-            int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+            int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
             if (returnValue == JOptionPane.OK_OPTION) {
                 Iterator it = dialog.getSelected().iterator();
                 while (it.hasNext()) {
                     MModelElement othermelement = (MModelElement) it.next();
                     if (!selected.contains(othermelement)) {
-                        ProjectBrowser pb = ProjectBrowser.TheInstance;
-                        ArgoDiagram diagram = pb.getActiveDiagram();
+                        ProjectBrowser pb = ProjectBrowser.getInstance();
+                        ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
                         Fig figfrom =
                             diagram.getLayer().presentationFor(melement);
                         Fig figto =
@@ -87,11 +87,11 @@ abstract public class UMLBinaryRelationListModel
                     if (!dialog.getSelected().contains(othermelement)) {
                         MModelElement connector =
                             getRelation(melement, othermelement);
-                        Object pt = ProjectBrowser.TheInstance.getTarget();
-                        ProjectBrowser.TheInstance.setTarget(connector);
+                        Object pt = ProjectBrowser.getInstance().getTarget();
+                        ProjectBrowser.getInstance().setTarget(connector);
                         ActionEvent event = new ActionEvent(this, 1, "delete");
                         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-                        ProjectBrowser.TheInstance.setTarget(pt);
+                        ProjectBrowser.getInstance().setTarget(pt);
                     }
                 }
             }
@@ -108,11 +108,11 @@ abstract public class UMLBinaryRelationListModel
             MModelElement othermelement =
                 (MModelElement) getModelElementAt(index);
             MModelElement relation = getRelation(melement, othermelement);
-            Object pt = ProjectBrowser.TheInstance.getTarget();
-            ProjectBrowser.TheInstance.setTarget(relation);
+            Object pt = ProjectBrowser.getInstance().getTarget();
+            ProjectBrowser.getInstance().setTarget(relation);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-            ProjectBrowser.TheInstance.setTarget(pt);
+            ProjectBrowser.getInstance().setTarget(pt);
             fireIntervalRemoved(this, index, index);
         }
     }

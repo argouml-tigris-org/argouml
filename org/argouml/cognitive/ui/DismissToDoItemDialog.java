@@ -23,15 +23,28 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.argouml.ui.*;
+import javax.swing.ButtonGroup;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+
 import org.apache.log4j.Category;
-import org.argouml.cognitive.*;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.UnresolvableException;
+import org.argouml.ui.ProjectBrowser;
 
 public class DismissToDoItemDialog extends JDialog {
     protected static Category cat = Category.getInstance(DismissToDoItemDialog.class);
@@ -57,7 +70,7 @@ public class DismissToDoItemDialog extends JDialog {
   // constructors
   
   public DismissToDoItemDialog() {
-    super(ProjectBrowser.TheInstance, "Dismiss To Do Item");
+    super(ProjectBrowser.getInstance(), "Dismiss To Do Item");
     JLabel instrLabel = new JLabel("This item should be removed because");
 
     setLocation(300, 200);
@@ -148,13 +161,13 @@ public class DismissToDoItemDialog extends JDialog {
 
   private void badGoal(ActionEvent e) {
     //cat.debug("bad goal");
-    GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
+    GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
     d.setVisible(true);
   }
 
   private void badDec(ActionEvent e) {
     //cat.debug("bad decision");
-    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
+    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.getInstance());
     d.setVisible(true);
   }
 

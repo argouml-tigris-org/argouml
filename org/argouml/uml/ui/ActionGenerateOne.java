@@ -53,7 +53,7 @@ public class ActionGenerateOne extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Editor ce = org.tigris.gef.base.Globals.curEditor();
 	Vector sels = ce.getSelectionManager().getFigs();
 	java.util.Enumeration enum = sels.elements();

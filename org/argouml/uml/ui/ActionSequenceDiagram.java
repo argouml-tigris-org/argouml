@@ -66,7 +66,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
         }
         MNamespace ns = (MNamespace)handle;
         MCollaboration c = null;
-        Object target = ProjectBrowser.TheInstance.getTarget();
+        Object target = ProjectBrowser.getInstance().getTarget();
         if (target instanceof MOperation) {
             c =
                 UmlFactory.getFactory().getCollaborations().buildCollaboration(

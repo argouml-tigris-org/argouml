@@ -158,6 +158,11 @@ public class Project implements java.io.Serializable {
      * the navpane).
      */
     private MModel _root;
+    
+    /**
+     * The active diagram, pointer to a diagram in the list with diagrams.
+     */
+    private ArgoDiagram _activeDiagram;
 
     protected static Category cat =
         Category.getInstance(org.argouml.kernel.Project.class);
@@ -202,11 +207,10 @@ public class Project implements java.io.Serializable {
         addMember(new ProjectMemberTodoList("", this));
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
-        setNeedsSave(false);
-        // TODO: do the next thing via an event
-        ProjectBrowser.TheInstance.setActiveDiagram((ArgoDiagram)getDiagrams().get(0));
+        setNeedsSave(false);       
+        setActiveDiagram((ArgoDiagram)getDiagrams().get(0));
     }
-
+ 
     public Project(MModel model) {
         this();
         Argo.log.info("making empty project with model: " + model.getName());
@@ -228,6 +232,7 @@ public class Project implements java.io.Serializable {
      * ArgoParser.SINGLETON.getLastLoadStatus() field. This needs to be
      * examined by the calling function.
      *
+     * @deprecated
      * @param url The url with the .zargo file
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file itself is corrupted in any way.
@@ -993,7 +998,7 @@ public class Project implements java.io.Serializable {
             Trash.SINGLETON.addItemFrom(obj, null);
         }
         if (obj instanceof MBase) { // an object that can be represented
-            ProjectBrowser.TheInstance.getEditorPane().removePresentationFor(
+            ProjectBrowser.getInstance().getEditorPane().removePresentationFor(
                 obj,
                 getDiagrams());
             UmlFactory.getFactory().delete((MBase)obj);
@@ -1327,6 +1332,20 @@ public class Project implements java.io.Serializable {
      */
     public void setVetoSupport(VetoableChangeSupport vetoSupport) {
         _vetoSupport = vetoSupport;
+    }
+
+    /**
+     * @return
+     */
+    public ArgoDiagram getActiveDiagram() {
+        return _activeDiagram;
+    }
+
+    /**
+     * @param diagram
+     */
+    public void setActiveDiagram(ArgoDiagram diagram) {
+        _activeDiagram = diagram;
     }
 
 } /* end class Project */

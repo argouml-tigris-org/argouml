@@ -24,16 +24,13 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -61,7 +58,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = pb.getTarget();
         if (target instanceof Fig) {
@@ -76,7 +73,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target = pb.getDetailsTarget();
 	/*
 	if (target instanceof MInterface) {

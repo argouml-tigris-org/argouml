@@ -24,7 +24,9 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
-import org.argouml.ui.ProjectBrowser;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /** Action for viewing/editing source path settings of model elements
  */
@@ -51,9 +53,8 @@ public class ActionGenerationSettings extends UMLAction {
   }
 
   public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    org.argouml.ui.ArgoDiagram activeDiagram = pb.getActiveDiagram();
+    org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     return super.shouldBeEnabled() &&
-      (activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram);
+      (activeDiagram instanceof UMLDiagram);
   }
 } /* end class ActionGenerationSettings */

@@ -42,95 +42,103 @@ import org.argouml.ui.StatusBar;
 import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
-    protected static Category cat = 
-        Category.getInstance(UMLAction.class);
-    
-  public static boolean HAS_ICON = true;
-  public static boolean NO_ICON = false;
+    protected static Category cat = Category.getInstance(UMLAction.class);
 
-  public UMLAction(String name) { this(name, true, HAS_ICON); }
-  public UMLAction(String name, boolean hasIcon) {
-    this(name, true, hasIcon);
-  }
+    public static boolean HAS_ICON = true;
+    public static boolean NO_ICON = false;
 
-  public UMLAction(String name, boolean global, boolean hasIcon) {
-    super(Translator.localize("CoreMenu", name));
-    if (hasIcon) {
-      Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
-        Translator.getImageBinding(name),
-        Translator.localize("CoreMenu", name));
-      if (icon != null) putValue(Action.SMALL_ICON, icon);
-      else { cat.debug("icon not found: " + name); }
+    public UMLAction(String name) {
+        this(name, true, HAS_ICON);
     }
-    putValue(Action.SHORT_DESCRIPTION,
-      Translator.localize("CoreMenu", name) + " ");
-    if (global) Actions.addAction(this);
-  } 
+    public UMLAction(String name, boolean hasIcon) {
+        this(name, true, hasIcon);
+    }
 
-  /** Perform the work the action is supposed to do. */
-  public void actionPerformed(ActionEvent e) {
-    cat.debug("pushed " + getValue(Action.NAME));
-    StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
-    sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
-    History.TheHistory.addItemManipulation("pushed " + getValue(Action.NAME),
-					   "", null, null, null);
-    Actions.updateAllEnabled();
-  }
-
-  public void markNeedsSave() {
-    if (ProjectBrowser.TheInstance != null) {
-        Project p = ProjectManager.getManager().getCurrentProject();
-        if (p != null) {
-            p.setNeedsSave(true);
+    public UMLAction(String name, boolean global, boolean hasIcon) {
+        super(Translator.localize("CoreMenu", name));
+        if (hasIcon) {
+            Icon icon =
+                ResourceLoaderWrapper
+                    .getResourceLoaderWrapper()
+                    .lookupIconResource(
+                    Translator.getImageBinding(name),
+                    Translator.localize("CoreMenu", name));
+            if (icon != null)
+                putValue(Action.SMALL_ICON, icon);
+            else {
+                cat.debug("icon not found: " + name);
+            }
         }
+        putValue(
+            Action.SHORT_DESCRIPTION,
+            Translator.localize("CoreMenu", name) + " ");
+        if (global)
+            Actions.addAction(this);
     }
-  }
 
-  public void updateEnabled(Object target) {
-	  setEnabled(shouldBeEnabled());
-  }
-
-  public void updateEnabled() {
-	  boolean b = shouldBeEnabled();
-	  setEnabled(b);
-  }
-
-  /** return true if this action should be available to the user. This
-   *  method should examine the ProjectBrowser that owns it.  Sublass
-   *  implementations of this method should always call
-   *  super.shouldBeEnabled first. */
-  public boolean shouldBeEnabled() {
-	  return true;
-  }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
+    /** Perform the work the action is supposed to do. */
+    public void actionPerformed(ActionEvent e) {
+        cat.debug("pushed " + getValue(Action.NAME));
+        StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
+        sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
+        History.TheHistory.addItemManipulation(
+            "pushed " + getValue(Action.NAME),
+            "",
+            null,
+            null,
+            null);
+        Actions.updateAllEnabled();
     }
-    return res;
-  }
-  /**
-   *    This function returns a localized menu shortcut key
-   *    to the specified key.
-   *
-   */
-  static final public KeyStroke getShortcut(String key) {
-    return Localizer.getShortcut("CoreMenu",key);
-  }
 
-  /**
-   *    This function returns a localized string corresponding
-   *    to the specified key.
-   *
-   */
-  static final public String getMnemonic(String key) {
-    return Translator.localize("CoreMenu",key);
-  }
+    public void markNeedsSave() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        p.setNeedsSave(true);
+    }
 
+    public void updateEnabled(Object target) {
+        setEnabled(shouldBeEnabled());
+    }
+
+    public void updateEnabled() {
+        boolean b = shouldBeEnabled();
+        setEnabled(b);
+    }
+
+    /** return true if this action should be available to the user. This
+     *  method should examine the ProjectBrowser that owns it.  Sublass
+     *  implementations of this method should always call
+     *  super.shouldBeEnabled first. */
+    public boolean shouldBeEnabled() {
+        return true;
+    }
+
+    protected static String stripJunk(String s) {
+        String res = "";
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            char c = s.charAt(i);
+            if (Character.isJavaIdentifierPart(c))
+                res += c;
+        }
+        return res;
+    }
+    /**
+     *    This function returns a localized menu shortcut key
+     *    to the specified key.
+     *
+     */
+    static final public KeyStroke getShortcut(String key) {
+        return Localizer.getShortcut("CoreMenu", key);
+    }
+
+    /**
+     *    This function returns a localized string corresponding
+     *    to the specified key.
+     *
+     */
+    static final public String getMnemonic(String key) {
+        return Translator.localize("CoreMenu", key);
+    }
 
     /**
      * @see javax.swing.Action#isEnabled()

@@ -27,9 +27,7 @@ package org.argouml.application;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Enumeration;
@@ -243,7 +241,8 @@ public class Main {
         LookAndFeelMgr.SINGLETON.setCurrentTheme(themeMemory);
 
         // make the projectbrowser
-        ProjectBrowser pb = new ProjectBrowser("ArgoUML", doSplash);
+        ProjectBrowser.setSplash(doSplash);
+        ProjectBrowser pb = ProjectBrowser.getInstance();
 
         JOptionPane.setRootFrame(pb);
 

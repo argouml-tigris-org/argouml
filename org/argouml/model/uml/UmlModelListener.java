@@ -25,7 +25,6 @@ package org.argouml.model.uml;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -120,9 +119,6 @@ public class UmlModelListener implements MElementListener {
 	//
 
 	if (mee.getAddedValue() != null || mee.getRemovedValue() != null || (mee.getNewValue() != null && !mee.getNewValue().equals(mee.getOldValue()))) {
-		if (ProjectBrowser.TheInstance != null && ProjectBrowser.TheInstance.getNavigatorPane() != null){
-			ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate(mee.getSource());
-                }
         if (ProjectManager.getManager().getCurrentProject() != null)
 			ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
 	}

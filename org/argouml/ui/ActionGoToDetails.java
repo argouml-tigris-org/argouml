@@ -54,7 +54,7 @@ public class ActionGoToDetails extends UMLAction {
      */
     public boolean shouldBeEnabled() {
         super.shouldBeEnabled();
-        ProjectBrowser pb = ProjectBrowser.TheInstance;       
+        ProjectBrowser pb = ProjectBrowser.getInstance();       
         if (!super.shouldBeEnabled() || pb == null) return false;
         JPanel namedTab = pb.getNamedTab(_tabName);
         boolean shouldBeEnabled = false;
@@ -71,7 +71,7 @@ public class ActionGoToDetails extends UMLAction {
     }
 
     public void actionPerformed(ActionEvent ae) {
-        ProjectBrowser.TheInstance.selectTabNamed(_tabName);
+        ProjectBrowser.getInstance().selectTabNamed(_tabName);
     }
 
 } /* end class ActionGoToDetails */

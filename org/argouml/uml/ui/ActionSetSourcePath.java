@@ -65,7 +65,7 @@ public class ActionSetSourcePath extends UMLAction {
   public void actionPerformed(ActionEvent e) {
     File f = getNewDirectory();
     if (f != null) {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ProjectBrowser pb = ProjectBrowser.getInstance();
       Object obj = pb.getNavigatorPane().getSelectedObject();
       if (obj instanceof MModelElement) {
         ((MModelElement)obj).setTaggedValue("src_path",f.getPath());
@@ -74,7 +74,7 @@ public class ActionSetSourcePath extends UMLAction {
   }
 
   protected File getNewDirectory() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Project p = ProjectManager.getManager().getCurrentProject();
     Object obj = pb.getNavigatorPane().getSelectedObject();
     String name = null;

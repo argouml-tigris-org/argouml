@@ -23,11 +23,14 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
+import org.argouml.kernel.ProjectManager;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.presentation.Fig;
 
 
 public class ActionZoom extends UMLAction {
@@ -66,7 +69,7 @@ public class ActionZoom extends UMLAction {
 	SelectionManager sm = ce.getSelectionManager();         
 
         // Get all the figures from the diagram.
-        Vector nodes = ((Diagram)ProjectBrowser.TheInstance.getActiveDiagram()).getLayer().getContents();
+        Vector nodes = ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer().getContents();
         for(int i=0; i < nodes.size(); i++) {
 	    sm.select((Fig)(nodes.elementAt(i)));  // Select all the figures in the diagram.
         }      

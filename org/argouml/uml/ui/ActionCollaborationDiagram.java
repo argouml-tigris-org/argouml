@@ -23,20 +23,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-
-import org
-    .argouml
-    .model
-    .uml
-    .behavioralelements
-    .collaborations
-    .CollaborationsHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -68,7 +60,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         MNamespace ns = (MNamespace)handle;
-        Object target = ProjectBrowser.TheInstance.getTarget();
+        Object target = ProjectBrowser.getInstance().getTarget();
         MCollaboration c = null;
         if (target instanceof MOperation) {
             c =
@@ -125,7 +117,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
 
-        Object target = ProjectBrowser.TheInstance.getTarget();
+        Object target = ProjectBrowser.getInstance().getTarget();
         if (target instanceof MNamespace)
             return isValidNamespace((MNamespace)target);
         else

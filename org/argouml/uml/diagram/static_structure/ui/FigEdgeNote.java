@@ -30,22 +30,18 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import java.beans.*;
-import javax.swing.*;
+import java.awt.event.KeyListener;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeListener;
+import java.beans.VetoableChangeListener;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.*;
-
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.cognitive.*;
-import org.argouml.uml.*;
-import org.argouml.uml.generator.*;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.kernel.DelayedVChangeListener;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
 
 
 /** 
@@ -79,7 +75,7 @@ public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeLi
      */
     public FigEdgeNote(Object fromNode, Object toNode) {
         this();
-        Layer lay = ProjectBrowser.TheInstance.getActiveDiagram().getLayer();
+        Layer lay = ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer();
         setLayer(lay);
         Fig destFig = lay.presentationFor(toNode);
         Fig sourceFig = lay.presentationFor(fromNode);

@@ -23,17 +23,29 @@
 
 package org.argouml.cognitive.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
-import org.tigris.gef.util.*;
-import org.argouml.application.api.*;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 
-import org.argouml.cognitive.*;
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ToDoItem;
 import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.util.VectorSet;
 
 public class AddToDoItemDialog extends JDialog implements ActionListener {
 
@@ -60,7 +72,7 @@ public class AddToDoItemDialog extends JDialog implements ActionListener {
   // constructors
 
   public AddToDoItemDialog() {
-    super(ProjectBrowser.TheInstance, "Add a ToDoItem");
+    super(ProjectBrowser.getInstance(), "Add a ToDoItem");
     JLabel headlineLabel = new JLabel("Headline:");
     JLabel priorityLabel = new JLabel("Priority:");
     JLabel moreInfoLabel = new JLabel("MoreInfoURL:");

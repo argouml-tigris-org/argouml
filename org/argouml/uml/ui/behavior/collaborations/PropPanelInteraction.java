@@ -72,7 +72,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
 	 * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
 	 */
 	public void navigateUp() {
-		ProjectBrowser.TheInstance.setTarget(((MInteraction)getTarget()).getContext());
+		ProjectBrowser.getInstance().setTarget(((MInteraction)getTarget()).getContext());
 	}
 
 }
