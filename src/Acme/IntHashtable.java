@@ -2,6 +2,8 @@
 //
 // This is 90% based on JavaSoft's java.util.Hashtable.
 //
+//  CVS test (jrobbins)
+//
 // Visit the ACME Labs Java page for up-to-date versions of this and other
 // fine Java utilities: http://www.acme.com/java/
 
