@@ -50,7 +50,7 @@ import org.argouml.ui.menubar.GenericArgoMenuBar;
  */
 public class ActionSaveProject extends UMLAction {
     /** logger */
-    private static Logger cat = Logger.getLogger(ActionSaveProject.class);
+    private static final Logger LOG = Logger.getLogger(ActionSaveProject.class);
   
     ////////////////////////////////////////////////////////////////
     // static variables

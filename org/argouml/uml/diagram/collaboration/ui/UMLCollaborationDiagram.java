@@ -54,10 +54,8 @@ import org.tigris.gef.presentation.Fig;
 public class UMLCollaborationDiagram extends UMLDiagram {
 
     /** for logging */
-    private static final Logger cat =
-        Logger.getLogger(
-            "org.argouml.uml.diagram.collaboration.ui."
-                + "UMLCollaborationDiagram");
+    private static final Logger LOG =
+        Logger.getLogger(UMLCollaborationDiagram.class);
 
     ////////////////
     // actions for toolbar

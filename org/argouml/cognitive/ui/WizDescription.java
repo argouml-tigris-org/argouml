@@ -41,7 +41,7 @@ import org.argouml.i18n.Translator;
 
 public class WizDescription extends WizStep {
     /** logger */
-    private static Logger cat = Logger.getLogger(WizDescription.class);
+    private static final Logger LOG = Logger.getLogger(WizDescription.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables

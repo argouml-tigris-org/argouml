@@ -47,8 +47,8 @@ import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Logger cat =
-	Logger.getLogger(CollabDiagramGraphModel.class);
+    private static final Logger LOG =
+        Logger.getLogger(CollabDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't
