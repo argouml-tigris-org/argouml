@@ -565,7 +565,11 @@ public class ClassGenerationDialog
                 }
                 return "(anon)";
             } else if (col >= 0 && col < getLanguagesCount()) {
-                return Boolean.valueOf(checked[col].contains(cls));
+                if (checked[col].contains(cls)) {
+                    return Boolean.TRUE;
+                } else {
+                    return Boolean.FALSE;
+                }
             } else {
                 return "CC-r:" + row + " c:" + col;
             }
