@@ -92,69 +92,9 @@ public class PropPanelActor extends PropPanelClassifier {
     	
     	add(LabelledLayout.getSeperator());
     	
-    	JList connectList = new UMLList(new UMLActorAssociationListModel(this,null,true),true);
-      	connectList.setForeground(Color.blue);
-      	connectList.setVisibleRowCount(3);
-      	connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-    	
-    	addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
-    	/*
-
-        // Invoke the Classifier constructor, but passing in our name and
-        // representation and requesting 2 columns
-
-        super("Actor", _actorIcon, 2);
-
-        // The first column. All single line entries, so we just let the label
-        // at the bottom (modifiers) take the vertical weighting.
-
-        // nameField, stereotypeBox and namespaceScroll are all set up by
-        // PropPanelModelElement
-
-        addCaption(Argo.localize("UMLMenu", "label.name"), 1, 0, 0);
-        addField(nameField, 1, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"), 2, 0, 0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),
-                 2, 0, 0);
-
-        addCaption(Argo.localize("UMLMenu", "label.namespace"), 3, 0, 0);
-        addLinkField(namespaceScroll, 3, 0, 0);
-
-        // For modifiers we create a grid with three columns. We really ought
-        // to inherit this from GeneralizableElement, but since Java can't do
-        // multiple inheritance, it gets done here (it would at least be better
-        // in PropPanelClassifier).
-
-        PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class              mclass = MActor.class;
-
-        mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-                   Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
-        mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
-                   Argo.localize("UMLMenu", "checkbox.final-lc"), this);
-        mPanel.add("isRoot", mclass, "isRoot", "setRoot",
-                   localize("root"), this);
-
-        addCaption(Argo.localize("UMLMenu", "label.modifiers"), 4, 0, 1);
-        addField(mPanel, 4, 0, 0);
-
-        // The second column. These are all potentially multi-valued, so share
-        // the vertical weighting.
-
-        // Generalization, specialization and associations are inherited from
-        // PropPanelClassifier
-
-        addCaption("Generalizations:",0,1,1);
-        addLinkField(extendsScroll, 0, 1, 1);
-
-        addCaption("Specializations:", 1, 1, 1);
-        addField(derivedScroll, 1, 1, 1);
-
-        addCaption(Argo.localize("UMLMenu", "label.associations"),2,1,1);
-        addField(connectScroll,2,1,1);
-        */
-
+    	JList connectList = new UMLList(new UMLActorAssociationListModel(this,null,true),true);    	
+    	addField(Argo.localize("UMLMenu", "label.associations"), 
+            new JScrollPane(connectList));
         // The toolbar buttons that go at the top.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,

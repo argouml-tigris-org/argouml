@@ -36,6 +36,7 @@ import org.argouml.swingext.*;
 import org.argouml.util.*;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.AbstractWellformednessRule;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.AssociationEndAggregationWellformednessRule;
 import org.argouml.model.uml.foundation.core.AssociationEndNamespaceWellformednessRule;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -52,6 +53,7 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLTypeComboBox;
 import org.argouml.uml.ui.UMLVisibilityPanel;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
@@ -63,156 +65,29 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     protected JLabel associationsLabel;
 
-    public PropPanelAssociationEnd(String name, ImageIcon icon, int columns) {
-        super(name,icon,columns);
-    }
-
     public PropPanelAssociationEnd(String name, ImageIcon icon, Orientation orientation) {
         super(name, icon, orientation);
     }
     
     public PropPanelAssociationEnd() {
-      super("AssociationEnd",_assocEndIcon, ConfigLoader.getTabPropsOrientation());
-      Class mclass = MAssociationEnd.class;
+        super("AssociationEnd",_assocEndIcon, ConfigLoader.getTabPropsOrientation());
+        Class mclass = MAssociationEnd.class;
+      
+      //   this will cause the components on this page to be notified
+      //      anytime a stereotype, namespace, operation, etc
+      //      has its name changed or is removed anywhere in the model
+      Class[] namesToWatch = { MStereotype.class,MNamespace.class, MAssociation.class,MClassifier.class };
+        setNameEventListening(namesToWatch);
       makeFields(mclass);
     }
 
-  /*
-  protected void makeFields(Class mclass) {
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.type"),3,0,0);
-    UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
-        "type","getType","setType",false,MClassifier.class,true);
-    UMLComboBox box = new UMLComboBox(model);
-    box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box),3,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.multiplicity"),4,0,0);
-    addField(new UMLMultiplicityComboBox(this,mclass),4,0,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.association"),5,0,1);
-    JList namespaceList = new UMLList(new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    namespaceList.setVisibleRowCount(1);
-    addField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),5,0,0);
-
-    addCaption("Navigable:",0,1,0);
-    addField(new UMLCheckBox(localize("navigable"),this,
-      new UMLReflectionBooleanProperty("navigable",mclass,
-        "isNavigable","setNavigable")),0,1,0);
-
-    addCaption(Argo.localize("UMLMenu", "label.ordering"),1,1,0);
-    JPanel orderingPanel = new JPanel(new GridLayout(0,1));
-    ButtonGroup orderingGroup = new ButtonGroup();
-
-    UMLRadioButton unordered = new UMLRadioButton(localize("unordered"),this,
-      new UMLEnumerationBooleanProperty("ordering",mclass,
-        "getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null),true);
-
-    orderingGroup.add(unordered);
-    orderingPanel.add(unordered);
-
-
-    UMLRadioButton ordered = new UMLRadioButton(localize("ordered"),this,
-      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
-      "setOrdering",MOrderingKind.class,MOrderingKind.ORDERED,null));
-
-    orderingGroup.add(ordered);
-    orderingPanel.add(ordered);
-
-    UMLRadioButton sorted = new UMLRadioButton(Argo.localize("UMLMenu", "button.sorted"),this,
-      new UMLEnumerationBooleanProperty("ordering",mclass,"getOrdering",
-      "setOrdering",MOrderingKind.class,MOrderingKind.SORTED,null));
-
-    orderingGroup.add(sorted);
-    orderingPanel.add(sorted);
-    addField(orderingPanel,1,1,0);
-    
-    AbstractWellformednessRule[] wellformednessrules = new AbstractWellformednessRule[] {new AssociationEndAggregationWellformednessRule()};
-   
-
-    addCaption("Aggregation:",2,1,1);
-    JPanel aggregationPanel = new JPanel(new GridLayout(0,1));
-    ButtonGroup aggregationGroup = new ButtonGroup();
-
-    UMLRadioButton none = new UMLRadioButton(localize("none"),this,
-      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null,wellformednessrules),true);
-
-    aggregationGroup.add(none);
-    aggregationPanel.add(none);
-
-    UMLRadioButton aggregation = new UMLRadioButton(localize("aggregation"),this,
-      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.AGGREGATE,null, wellformednessrules));
-    aggregationGroup.add(aggregation);
-    aggregationPanel.add(aggregation);
-
-    UMLRadioButton composite = new UMLRadioButton(localize("composite"),this,
-      new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.COMPOSITE,null, wellformednessrules));
-    aggregationGroup.add(composite);
-    aggregationPanel.add(composite);
-    addField(aggregationPanel,2,1,0);
-
-
-    addCaption("Scope:",0,2,0);
-    addField(new UMLCheckBox(localize("classifier"),this,
-      new UMLEnumerationBooleanProperty("targetScope",mclass,"getTargetScope",
-        "setTargetScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)),0,2,0);
-
-    addCaption("Changeability:",1,2,0);
-    ButtonGroup changeabilityGroup = new ButtonGroup();
-    JPanel changeabilityPanel = new JPanel(new GridLayout(0,1));
-
-    UMLRadioButton changeable = new UMLRadioButton(Argo.localize("UMLMenu", "radiobutton.changeable"),this,
-      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
-        "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null), true);
-
-    changeabilityGroup.add(changeable);
-    changeabilityPanel.add(changeable);
-
-    UMLRadioButton frozen = new UMLRadioButton(localize("frozen"),this,
-      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
-        "setChangeability",MChangeableKind.class,MChangeableKind.FROZEN,null));
-    changeabilityGroup.add(frozen);
-    changeabilityPanel.add(frozen);
-
-
-    UMLRadioButton addOnly = new UMLRadioButton(localize("add only"),this,
-      new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
-        "setChangeability",MChangeableKind.class,MChangeableKind.ADD_ONLY,null));
-
-    changeabilityGroup.add(addOnly);
-    changeabilityPanel.add(addOnly);
-    addField(changeabilityPanel,1,2,0);
-
-
-    addCaption(Argo.localize("UMLMenu", "label.visibility"),2,2,1);
-    addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
-
-    //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-new-class"),"newClass",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association-end"), "removeElement", null);
-
-  }
-*/
   protected void makeFields(Class mclass) {
 
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
@@ -222,7 +97,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(Argo.localize("UMLMenu", "label.type"),new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-class"),box));
+    addField(Argo.localize("UMLMenu", "label.type"),new UMLTypeComboBox(this));
 
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
 
@@ -230,7 +105,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     associationList.setBackground(getBackground());
     associationList.setForeground(Color.blue);
     associationList.setVisibleRowCount(1);
-    associationsLabel = addField(Argo.localize("UMLMenu", "label.association"),new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+    associationsLabel = addField(Argo.localize("UMLMenu", "label.association"),new JScrollPane(associationList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
     add(LabelledLayout.getSeperator());
     
@@ -336,57 +211,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
   }
 
-  /*
-    // This isn't called any more. Do we still need it? Bob Tarling 8th Apr 2002
-
-    public void newClass() {
-        Object target = getTarget();
-        if(target instanceof MAssociationEnd) {
-            MAssociationEnd assocEnd = (MAssociationEnd) target;
-            MAssociation assoc = assocEnd.getAssociation();
-            if(assoc != null) {
-                MNamespace ns = assoc.getNamespace();
-                if(ns != null) {
-                    MClass newClass = ns.getFactory().createClass();
-                    ns.addOwnedElement(newClass);
-                    assocEnd.setType(newClass);
-                    navigateTo(newClass);
-                }
-            }
-        }
-    }
-
-    public void newInterface() {
-        Object target = getTarget();
-        if(target instanceof MAssociationEnd) {
-            MAssociationEnd assocEnd = (MAssociationEnd) target;
-            MAssociation assoc = assocEnd.getAssociation();
-            if(assoc != null) {
-                MNamespace ns = assoc.getNamespace();
-                if(ns != null) {
-                    MInterface newClass = ns.getFactory().createInterface();
-                    ns.addOwnedElement(newClass);
-                    //
-                    //   while we are at it, we should set all the other ends
-                    //      to not navigable
-                    assocEnd.setType(newClass);
-                    java.util.List ends = assoc.getConnections();
-                    MAssociationEnd otherEnd;
-                    if(ends != null) {
-                        Iterator iter = ends.iterator();
-                        while(iter.hasNext()) {
-                            otherEnd = (MAssociationEnd) iter.next();
-                            otherEnd.setNavigable(otherEnd == assocEnd);
-                        }
-                    }
-                    navigateTo(newClass);
-                }
-            }
-        }
-    }
-
-*/
-
+  
     public Object getAssociation() {
         Object assoc = null;
         Object target = getTarget();
@@ -492,7 +317,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     		while (it.hasNext()) {
     			// should do here something if the association end is shown
     		}
-    		end.remove();
+    		UmlFactory.getFactory().delete(end);
     		navigateTo(assoc);
     	} else {
     		ProjectBrowser.TheInstance.setDetailsTarget(assoc);

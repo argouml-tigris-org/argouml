@@ -41,6 +41,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -97,13 +98,9 @@ public class PropPanelStereotype extends PropPanelModelElement {
         if(target instanceof MStereotype) {
             MNamespace ns = ((MStereotype) target).getNamespace();
             if(ns != null) {
-                MStereotype newStereo = ns.getFactory().createStereotype();
+                MStereotype newStereo = ExtensionMechanismsFactory.getFactory().createStereotype();
                 ns.addOwnedElement(newStereo);
                 navigateTo(newStereo);
-                 // 2002-07-15
-            	// Jaap Branderhorst
-            	// Force an update of the navigation pane to solve issue 323
-            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
             }
         }
     }

@@ -39,6 +39,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
@@ -131,13 +132,9 @@ public class PropPanelInterface extends PropPanelClassifier {
     Object target = getTarget();
     if(target instanceof MInterface) {
         MInterface iface = (MInterface) target;
-        MInterface newInterface = iface.getFactory().createInterface();
+        MInterface newInterface = CoreFactory.getFactory().createInterface();
         iface.getNamespace().addOwnedElement(newInterface);
         navigateTo(newInterface);
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
   }
 

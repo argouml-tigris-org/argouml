@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
@@ -133,17 +134,8 @@ public class PropPanelDataType extends PropPanelClassifier {
                 }
             }
 
-            MAttribute attr = classifier.getFactory().createAttribute();
-            attr.setOwnerScope(MScopeKind.CLASSIFIER);
-            attr.setChangeability(MChangeableKind.FROZEN);
-            attr.setVisibility(MVisibilityKind.PUBLIC);
-            attr.setType(classifier);
-            classifier.addFeature(attr);
+            MAttribute attr = CoreFactory.getFactory().buildAttribute(classifier);
             navigateTo(attr);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
         
     }
@@ -159,13 +151,9 @@ public class PropPanelDataType extends PropPanelClassifier {
         if(target instanceof MDataType) {
             MDataType dt = (MDataType) target;
             MNamespace ns = dt.getNamespace();
-            MDataType newDt = dt.getFactory().createDataType();
+            MDataType newDt = CoreFactory.getFactory().createDataType();
             ns.addOwnedElement(newDt);
             navigateTo(newDt);
-            // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
     }
 

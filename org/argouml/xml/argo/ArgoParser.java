@@ -23,6 +23,7 @@
 
 package org.argouml.xml.argo;
 
+import org.apache.log4j.Category;
 import org.argouml.application.api.*;
 import java.util.*;
 import java.io.*;
@@ -34,6 +35,8 @@ import org.argouml.xml.XMLElement;
 import org.xml.sax.*;
 
 public class ArgoParser extends SAXParserBase {
+    protected static Category cat = Category.getInstance(ArgoParser.class);
+    
 
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -137,23 +140,23 @@ public class ArgoParser extends SAXParserBase {
     public Project getProject() { return _proj; }
 
     public void handleStartElement(XMLElement e) {
-        if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
+        if (_dbg) cat.debug("NOTE: ArgoParser handleStartTag:" + e.getName());
         try {
             switch (_tokens.toToken(e.getName(), true)) {
             case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
             case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
             default: if (_dbg)
-                System.out.println("WARNING: unknown tag:" + e.getName());  break;
+                cat.warn("WARNING: unknown tag:" + e.getName());  break;
             }
         }
         catch (Exception ex) {
-            ex.printStackTrace();
+            cat.error(ex);
         }
     }
 
 
     public void handleEndElement(XMLElement e) {
-        if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+        if (_dbg) cat.debug("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
         try {
             switch (_tokens.toToken(e.getName(), false)) {
             case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
@@ -163,7 +166,7 @@ public class ArgoParser extends SAXParserBase {
             case ArgoTokenTable.TOKEN_member : handleMember(e); break;
             case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
             default : if (_dbg)
-                System.out.println("WARNING: unknown end tag:" + e.getName()); break;
+                cat.warn("WARNING: unknown end tag:" + e.getName()); break;
             }
         }
         catch (Exception ex) {

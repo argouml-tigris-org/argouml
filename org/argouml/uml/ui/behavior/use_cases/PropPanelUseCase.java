@@ -38,6 +38,7 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
@@ -84,62 +85,45 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     	addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
 		
-		PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class              mclass = MUseCase.class;
-
-        mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
-                   Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
+	PropPanelModifiers mPanel = new PropPanelModifiers(3);
+        Class mclass = MUseCase.class;
+        
+    // since when do we know abstract usecases?
+    //    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
+    //               Argo.localize("UMLMenu", "checkbox.abstract-lc"), this);
         mPanel.add("isLeaf", mclass, "isLeaf", "setLeaf",
                    Argo.localize("UMLMenu", "checkbox.final-lc"), this);
         mPanel.add("isRoot", mclass, "isRoot", "setRoot",
                    localize("root"), this);
 		addField(Argo.localize("UMLMenu", "label.modifiers"),mPanel);
+            	
+    JList extensionPoints = new UMLMutableLinkedList(this, new UMLUseCaseExtensionPointListModel(this), null, ActionNewUseCaseExtensionPoint.SINGLETON);
+    addField(Argo.localize("UMLMenu", "label.extensionpoints"), 
+        new JScrollPane(extensionPoints));
 		
-		JList extensionPoints =
-            new UMLList(new UMLExtensionPointListModel(this, true, false),
-                        true);
-        extensionPoints.setForeground(Color.blue);
-        JScrollPane extensionPointsScroll =
-            new JScrollPane(extensionPoints,
-                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        addField(Argo.localize("UMLMenu", "label.extensionpoints"), extensionPointsScroll);
+    add(LabelledLayout.getSeperator());
 		
-		add(LabelledLayout.getSeperator());
-		
-		addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
-    	addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
+    addField(Argo.localize("UMLMenu", "label.generalizations"), extendsScroll);
+    addField(Argo.localize("UMLMenu", "label.specializations"), derivedScroll);
     	
-    	JList extendsList =
-            new UMLList(new UMLExtendListModel(this, "extend", true), true);
-        extendsList.setBackground(getBackground());
-        extendsList.setForeground(Color.blue);
-        JScrollPane extendsScroll =
-            new JScrollPane(extendsList,
-                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		addField(Argo.localize("UMLMenu", "label.extends"), extendsScroll);
-		
-		JList includeList =
-            new UMLList(new UMLIncludeListModel(this, "include", true), true);
-        includeList.setBackground(getBackground());
-        includeList.setForeground(Color.blue);
-        JScrollPane includeScroll =
-            new JScrollPane(includeList,
-                            JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-                            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		addField(Argo.localize("UMLMenu", "label.includes"), includeScroll);
-		
-		add(LabelledLayout.getSeperator());
-		
-		JList connectList = new UMLList(new UMLUseCaseAssociationListModel(this,null,true),true);
-      	connectList.setForeground(Color.blue);
-      	connectList.setVisibleRowCount(3);
+    JList extendsList = new UMLLinkedList(this, new UMLUseCaseExtendListModel(this));
+    addField(Argo.localize("UMLMenu", "label.extends"), 
+        new JScrollPane(extendsList));
+    
+    JList includesList = new UMLLinkedList(this, new UMLUseCaseIncludeListModel(this));
+    addField(Argo.localize("UMLMenu", "label.includes"), 
+        new JScrollPane(includesList));
+
+    add(LabelledLayout.getSeperator());
+	
+    /*	
+    JList connectList = new UMLLinkedList(this, new UMLUseCaseAssociationListModel(this));
+   
       	connectScroll= new JScrollPane(connectList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		addField(Argo.localize("UMLMenu", "label.associations"), connectScroll);
     	addField(Argo.localize("UMLMenu", "label.operations"), opsScroll);
    	 	addField(Argo.localize("UMLMenu", "label.attributes"), attrScroll);	
-		
+*/		
 	
 		/*
         // The first column. All single line entries, so we just let the label
@@ -295,16 +279,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
             MNamespace ns = ((MUseCase) target).getNamespace();
 
             if(ns != null) {
-                MUseCase useCase = ns.getFactory().createUseCase();
+                MUseCase useCase = UseCasesFactory.getFactory().createUseCase();
 
                 ns.addOwnedElement(useCase);
                 navigateTo(useCase);
             }
         }
-        // 2002-07-15
-            // Jaap Branderhorst
-            // Force an update of the navigation pane to solve issue 323
-            ProjectBrowser.TheInstance.getNavPane().forceUpdate();
     }
 
 
@@ -324,23 +304,10 @@ public class PropPanelUseCase extends PropPanelClassifier {
             MUseCase   useCase = (MUseCase) target;
             MNamespace ns      = useCase.getNamespace();
 
-            if(ns != null) {
-                MExtensionPoint extensionPoint =
-                    ns.getFactory().createExtensionPoint();
-
-                // Add to the current use case (NSUML will set the reverse
-                // link) and place in the namespace, before navigating to the
-                // extension point.
-
-                useCase.addExtensionPoint(extensionPoint);
-                ns.addOwnedElement(extensionPoint);
-
-                navigateTo(extensionPoint);
-                // 2002-07-15
-            	// Jaap Branderhorst
-            	// Force an update of the navigation pane to solve issue 323
-            	ProjectBrowser.TheInstance.getNavPane().forceUpdate();
-            }
+            MExtensionPoint extensionPoint =
+                    UseCasesFactory.getFactory().buildExtensionPoint(useCase);
+            navigateTo(extensionPoint);
+            
         }
     }
 

@@ -52,6 +52,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
 import org.argouml.uml.diagram.static_structure.layout.ClassdiagramGeneralizationEdge;
+import org.argouml.uml.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLAttributesListModel;
@@ -122,10 +123,8 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
     public void addOperation() {
         Object target = getTarget();
         if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            MOperation oper = UmlFactory.getFactory().getCore().buildOperation(classifier);
-            // why?-> oper.addMElementListener(((MElementListener)ProjectBrowser.TheInstance.getActiveDiagram().presentationFor(classifier)));
-            navigateTo(oper);
+            MOperation newOper = UmlFactory.getFactory().getCore().buildOperation((MClassifier)target);
+            navigateTo(newOper);
         }
     }
 
