@@ -819,7 +819,7 @@ public class GeneratorJava
         if ((start != null) && (start.length() > 0)) {
             StringBuffer body = generateClassifierBody(cls);
             StringBuffer end = generateClassifierEnd(cls);
-            returnValue.append(start);
+            returnValue.append(start.toString());
             if ((body != null) && (body.length() > 0)) {
                 returnValue.append(LINE_SEPARATOR);
                 returnValue.append(body);
