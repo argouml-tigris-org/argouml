@@ -324,7 +324,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
     public void keyPressed(KeyEvent ke) {
         if (!isReadyToEdit()) {
             if (ModelFacade.isAModelElement(getOwner())) {
-                ModelFacade.setName(getOwner(), "");
+                updateClassifierText();
+                updateStateText();
                 setReadyToEdit(true);
             } else {
                 //LOG.debug("not ready to edit name");
