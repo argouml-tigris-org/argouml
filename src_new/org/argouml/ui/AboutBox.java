@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,7 +69,7 @@ public class AboutBox extends JDialog {
     }
 
     private final String localize(String str) {
-	return str;
+	return Translator.localize(str);
     }
 
     /** Create a JScrollPane from the text
@@ -92,7 +92,7 @@ public class AboutBox extends JDialog {
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
         // TODO: i18n
-	this.setTitle(localize("About ArgoUML"));
+	this.setTitle(localize("aboutbox.aboutbox-title"));
 	_splashPanel = new SplashPanel("Splash");
 	int imgWidth = _splashPanel.getImage().getIconWidth();
 	int imgHeight = _splashPanel.getImage().getIconHeight();
@@ -102,10 +102,9 @@ public class AboutBox extends JDialog {
 	getContentPane().setLayout(new BorderLayout(0, 0));
 
 	StringBuffer versionBuf = new StringBuffer();
-	versionBuf.append(localize("\n--- Generated version information: ---\n"));
+	versionBuf.append(localize("aboutbox.generated-version-header"));
 	versionBuf.append(Tools.getVersionInfo());
-	versionBuf.append(localize("\n" +
-				   "Uses the following tools:\n"));
+	versionBuf.append(localize("aboutbox.used-tools-header"));
 	// Not localized:
 	versionBuf.append("* GEF (gef.tigris.org)\n");
 	versionBuf.append("* Xerces-J 1.2.3\n");
@@ -117,13 +116,7 @@ public class AboutBox extends JDialog {
 
 	versionBuf.append("\n\n");
 
-	versionBuf.append(localize("The ArgoUML developers would like to thank "
-				   + "all those broad-minded people "
-				   + "who spend their valuable time in "
-				   + "contributing "
-				   + "to the projects ArgoUML "
-				   + "depends on! We wouldn't be here without "
-				   + "your work!\n"));
+	versionBuf.append(localize("aboutbox.thanks"));
 	versionBuf.append("\n");
 
         /** MVW: Added the inset JPanel, so that the image width is also
@@ -143,13 +136,13 @@ public class AboutBox extends JDialog {
 
 	_tabs.addTab("Version", createPane(versionBuf.toString()));
 	_tabs.addTab("Credits", 
-		     createPane(Translator.localize("aboutbox.credits")));
+		     createPane(localize("aboutbox.credits")));
 	_tabs.addTab("Contact Info", 
-		     createPane(Translator.localize("aboutbox.contacts")));
+		     createPane(localize("aboutbox.contacts")));
 	_tabs.addTab("Report bugs", 
-		     createPane(Translator.localize("aboutbox.bugreport")));
+		     createPane(localize("aboutbox.bugreport")));
 	_tabs.addTab("Legal", 
-		     createPane(Translator.localize("aboutbox.legal")));
+		     createPane(localize("aboutbox.legal")));
 
 	// Add the about tabs from the modules.
 	ArrayList list = Argo.getPlugins( PluggableAboutTab.class);
