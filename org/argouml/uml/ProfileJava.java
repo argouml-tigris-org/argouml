@@ -36,6 +36,8 @@ import java.io.*;
 
 import java.util.*;
 import java.util.StringTokenizer;
+
+import org.argouml.xml.xmi.XMIReader;
 import org.xml.sax.*;
 
 /**
@@ -106,10 +108,18 @@ public class ProfileJava extends Profile {
             //   would really like to turn validation off to save
             //      a lot of scary messages
             _defaultModel = xmiReader.parse(new InputSource(is));
+            // 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// Created xmireader with method getErrors to check if parsing went well
+            if (xmiReader.getErrors()) {
+            	throw new IOException("XMI file " + defaultModelFileName + " could not be parsed.");
+            }
           }
           catch(Exception ex) {
             System.out.println("Error reading " + defaultModelFileName + "\n");
-//            ex.printStackTrace();
+            ex.printStackTrace();
           }
         }
 

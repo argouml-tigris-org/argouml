@@ -31,6 +31,7 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -41,7 +42,6 @@ import org.tigris.gef.util.*;
 import org.argouml.application.api.*;
 import org.argouml.application.events.*;
 import org.argouml.kernel.*;
-import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;

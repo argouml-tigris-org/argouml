@@ -30,6 +30,8 @@ import java.util.*;
 import java.net.*;
 import java.beans.*;
 import java.io.File;
+import java.io.IOException;
+
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -94,7 +96,7 @@ public class Main {
         String projectName = null;
         URL urlToOpen = null;
         
-	SimpleTimer st = new SimpleTimer();
+	    SimpleTimer st = new SimpleTimer();
         st.mark("arguments");
 
         /* set properties for application behaviour */
@@ -260,7 +262,21 @@ public class Main {
         
         if (urlToOpen == null) p = Project.makeEmptyProject();
         else {
+        	// 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// try catch block added
+        	try {
             p = Project.loadProject(urlToOpen);
+        	}
+        	catch (Exception ex) {
+        		Argo.log.error("Could not load most recent project file: " + urlToOpen.toString());
+        		Argo.log.error(ex);
+        		Configuration.setString(Argo.KEY_MOST_RECENT_PROJECT_FILE, "");
+        		urlToOpen = null;
+        		p = Project.makeEmptyProject();
+        	}
         }
         
 	st.mark("set project");
