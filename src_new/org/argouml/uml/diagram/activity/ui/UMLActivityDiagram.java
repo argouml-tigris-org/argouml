@@ -46,6 +46,10 @@ import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
 import org.argouml.uml.diagram.state.ui.*;
 
+// get the note from the class diagram
+import org.argouml.uml.ui.*;
+import org.argouml.uml.diagram.static_structure.ui.FigNote;
+
 public class UMLActivityDiagram extends UMLDiagram {
 
   ////////////////
@@ -179,6 +183,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
+    _toolBar.add(ActionAddNote.SINGLETON);
     _toolBar.addSeparator();
 
     _toolBar.add(_actionRectangle);
