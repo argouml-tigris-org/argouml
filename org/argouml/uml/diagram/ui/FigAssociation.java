@@ -44,6 +44,7 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConv;
 import org.tigris.gef.base.PathConvPercent;
+import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.presentation.ArrowHead;
 import org.tigris.gef.presentation.ArrowHeadComposite;
@@ -96,7 +97,7 @@ public class FigAssociation extends FigEdgeModelElement {
     // lets use groups to construct the different text sections at the association
     _middleGroup.addFig(_name);
     _middleGroup.addFig(_stereo);
-    addPathItem(_middleGroup, new PathConvPercent(this, 50, 10));
+    addPathItem(_middleGroup, new PathConvPercent(this, 50, 25));
     
     
     _srcMult = new FigText(10, 10, 90, 20);
@@ -126,7 +127,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.addFig(_srcRole);
     _srcGroup.addFig(_srcOrdering);
     _srcGroup.addFig(_srcMult);    
-    addPathItem(_srcGroup, new PathConvPercent(this, 15, 0));
+    addPathItem(_srcGroup, new PathConvPercentPlusConst(this, 15, 25, 15));
    
     _destMult = new FigText(10, 10, 90, 20);
     _destMult.setFont(LABEL_FONT);
@@ -155,7 +156,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.addFig(_destRole);
     _destGroup.addFig(_destMult);
     _destGroup.addFig(_destOrdering);
-      addPathItem(_destGroup, new PathConvPercent(this, 85, 0));
+      addPathItem(_destGroup, new PathConvPercentPlusConst(this, 85, -25, 15));
     
     setBetweenNearestPoints(true);
     // next line necessary for loading
