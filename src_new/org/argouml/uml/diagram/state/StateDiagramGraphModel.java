@@ -49,7 +49,7 @@ import org.tigris.gef.graph.*;
  *  GEF.  This class handles only UML MState Digrams.  */
 
 public class StateDiagramGraphModel extends MutableGraphSupport
-implements VetoableChangeListener, MElementListener {
+implements VetoableChangeListener {
     protected static Category cat = 
         Category.getInstance(StateDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
@@ -73,17 +73,13 @@ implements VetoableChangeListener, MElementListener {
 
   public MNamespace getNamespace() { return _namespace; }
   public void setNamespace(MNamespace m) {
-    if (_namespace != null) _namespace.removeMElementListener(this);
     _namespace = m;
-    if (_namespace != null) _namespace.addMElementListener(this);
   }
 
   public MStateMachine getMachine() { return _machine; }
   public void setMachine(MStateMachine sm) {
 	  if (sm != null) {
-		  if (_machine != null) _machine.removeMElementListener(this);
 		  _machine = sm;
-		  _machine.addMElementListener(this);
 	  }
   }
 
@@ -318,19 +314,6 @@ implements VetoableChangeListener, MElementListener {
       }
     }
   }
-
-	public void propertySet(MElementEvent mee) {
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
 
 
   static final long serialVersionUID = -8056507319026044174L;

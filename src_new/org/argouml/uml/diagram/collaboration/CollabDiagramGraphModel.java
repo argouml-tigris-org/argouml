@@ -50,7 +50,7 @@ import org.tigris.gef.graph.*;
  *  GEF.  This class handles only UML Use Case Digrams.  */
 
 public class CollabDiagramGraphModel extends MutableGraphSupport
-implements MElementListener, VetoableChangeListener {
+implements VetoableChangeListener {
     protected static Category cat = Category.getInstance(CollabDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -75,9 +75,7 @@ implements MElementListener, VetoableChangeListener {
     if (!(m instanceof MCollaboration)) {
       throw new IllegalArgumentException("invalid namespace for CollabDiagramGraphModel");
     }
-    if (_collab != null) _collab.removeMElementListener(this);
     _collab = (MCollaboration) m;
-    if (_collab != null) _collab.addMElementListener(this);
   }
 
 
@@ -324,17 +322,5 @@ implements MElementListener, VetoableChangeListener {
     }
   }
 
-	public void propertySet(MElementEvent mee) {
-	}
-	public void listRoleItemSet(MElementEvent mee) {
-	}
-	public void recovered(MElementEvent mee) {
-	}
-	public void removed(MElementEvent mee) {
-	}
-	public void roleAdded(MElementEvent mee) {
-	}
-	public void roleRemoved(MElementEvent mee) {
-	}
 } /* end class CollabDiagramGraphModel */
 

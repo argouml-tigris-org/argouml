@@ -21,7 +21,7 @@ import org.tigris.gef.graph.*;
 import org.argouml.uml.MMUtil;
 
 public class DeploymentDiagramGraphModel extends MutableGraphSupport
-implements VetoableChangeListener, MElementListener {
+implements VetoableChangeListener  {
     protected static Category cat = Category.getInstance(DeploymentDiagramGraphModel.class);
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -41,9 +41,7 @@ implements VetoableChangeListener, MElementListener {
 
   public MNamespace getNamespace() { return _model; }
   public void setNamespace(MNamespace m) {
-    if (_model != null) _model.removeMElementListener(this);
     _model = m;
-    if (_model != null) _model.addMElementListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -571,19 +569,6 @@ if(_edges.contains(edge)) return false;
 	    cat.debug("model added " + me);
       }
     }
-  }
-
-  public void propertySet(MElementEvent mee) {
-  }
-  public void listRoleItemSet(MElementEvent mee) {
-  }
-  public void recovered(MElementEvent mee) {
-  }
-  public void removed(MElementEvent mee) {
-  }
-  public void roleAdded(MElementEvent mee) {
-  }
-  public void roleRemoved(MElementEvent mee) {
   }
 
   static final long serialVersionUID = 1003748292917485298L;
