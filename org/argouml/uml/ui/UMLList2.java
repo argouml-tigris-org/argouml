@@ -29,11 +29,16 @@ import javax.swing.ListCellRenderer;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import org.argouml.ui.targetmanager.TargetListener;
+import org.argouml.ui.targetmanager.TargettableModelView;
+
 /**
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLList2 extends JList implements TargetChangedListener, ListSelectionListener {
+public abstract class UMLList2
+    extends JList
+    implements ListSelectionListener, TargettableModelView {
 
     /**
      * Constructor for UMLList2.
@@ -52,19 +57,21 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, L
         this(dataModel, false);
     }
 
-	/**
-	 * Constructor for UMLList2. Used by subclasses that want to add their own
-	 * renderer to the list.
-	 * @param dataModel
-	 * @param renderer
-	 */
-    protected UMLList2(UMLModelElementListModel2 dataModel, ListCellRenderer renderer) {
+    /**
+     * Constructor for UMLList2. Used by subclasses that want to add their own
+     * renderer to the list.
+     * @param dataModel
+     * @param renderer
+     */
+    protected UMLList2(
+        UMLModelElementListModel2 dataModel,
+        ListCellRenderer renderer) {
         super(dataModel);
         setDoubleBuffered(true);
         getSelectionModel().addListSelectionListener(this);
         if (renderer != null)
             setCellRenderer(renderer);
-    }    
+    }
 
     /**
      * @see javax.swing.event.ListSelectionListener#valueChanged(javax.swing.event.ListSelectionEvent)
@@ -89,19 +96,11 @@ public abstract class UMLList2 extends JList implements TargetChangedListener, L
     public Object getTarget() {
         return ((UMLModelElementListModel2) getModel()).getTarget();
     }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+    /** 
+     * @see org.argouml.ui.targetmanager.TargettableModelView#getTargettableModel()
      */
-    public void targetChanged(Object newTarget) {
-        ((UMLModelElementListModel2) getModel()).targetChanged(newTarget);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
-     */
-    public void targetReasserted(Object newTarget) {
-        ((UMLModelElementListModel2) getModel()).targetReasserted(newTarget);
+    public TargetListener getTargettableModel() {
+        return (TargetListener)getModel();
     }
 
 }

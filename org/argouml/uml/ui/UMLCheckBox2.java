@@ -28,6 +28,9 @@ import javax.swing.Action;
 import javax.swing.JCheckBox;
 
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -46,7 +49,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLCheckBox2
     extends JCheckBox
-    implements TargetChangedListener, MElementListener {
+    implements TargetListener, MElementListener {
 
     private Object _target;
     private String _propertySetName;
@@ -121,6 +124,7 @@ public abstract class UMLCheckBox2
      * @param target The target to set
      */
     public void setTarget(Object target) {
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
@@ -155,6 +159,26 @@ public abstract class UMLCheckBox2
     public void targetReasserted(Object newTarget) {
         if (newTarget != _target)
             setTarget(newTarget);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
+
+    /* (non-Javadoc)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
     }
 
 }

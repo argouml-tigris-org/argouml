@@ -75,7 +75,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.ui.targetmanager.TargettableModelView;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
 import org.tigris.gef.presentation.Fig;
@@ -461,6 +461,13 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         }  
     }
     
+    /**
+     * Builds a eventlistenerlist of all targetlisteners that are part of this
+     * container and its children.
+     * @param container the container to search for targetlisteners
+     * @return an EventListenerList with all TargetListeners on this container and
+     * its children.
+     */
     private EventListenerList registrateTargetListeners(Container container) {
         Component[] components = container.getComponents();
         EventListenerList list = new EventListenerList();
@@ -468,6 +475,9 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
             if (components[i] instanceof TargetListener) {
                 list.add(TargetListener.class, (TargetListener)components[i]);
             } 
+            if (components[i] instanceof TargettableModelView) {
+                list.add(TargetListener.class, ((TargettableModelView)components[i]).getTargettableModel());
+            }
             if (components[i] instanceof Container) {
                 EventListenerList list2 = registrateTargetListeners((Container)components[i]);
                 Object[] objects = list2.getListenerList();

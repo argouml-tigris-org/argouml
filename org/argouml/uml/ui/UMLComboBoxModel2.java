@@ -34,6 +34,10 @@ import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -46,7 +50,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLComboBoxModel2
     extends AbstractListModel
-    implements MElementListener, ComboBoxModel {
+    implements MElementListener, ComboBoxModel, TargetListener {
         
     private static Category log = 
         Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
@@ -291,6 +295,7 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
@@ -463,6 +468,28 @@ public abstract class UMLComboBoxModel2
     protected void fireIntervalRemoved(Object source, int index0, int index1) {
         if (_fireListEvents)
             super.fireIntervalRemoved(source, index0, index1);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {        
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+
     }
 
 }

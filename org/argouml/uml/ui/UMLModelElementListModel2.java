@@ -30,6 +30,9 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetListener;
+import org.tigris.gef.presentation.Fig;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
@@ -44,7 +47,7 @@ import ru.novosoft.uml.MElementListener;
  */
 public abstract class UMLModelElementListModel2
     extends DefaultListModel
-    implements TargetChangedListener, MElementListener {
+    implements TargetListener, MElementListener {
 
     private String _eventName = null;
     protected Object _target = null;
@@ -224,11 +227,8 @@ public abstract class UMLModelElementListModel2
      * target.
      * @param target
      */
-    public void setTarget(Object target) {
-        if (target == _target && target != null)
-            return;
-        if (_eventName == null || _eventName.equals(""))
-            throw new IllegalStateException("eventName not set!");
+    public void setTarget(Object target) {       
+        target = target instanceof Fig ? ((Fig)target).getOwner() : target;                
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(
                 this,
@@ -342,5 +342,27 @@ public abstract class UMLModelElementListModel2
         if (_target != newTarget)
             setTarget(newTarget);
     }
+    
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetAdded(TargetEvent e) {
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetRemoved(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
+
+    /**
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     */
+    public void targetSet(TargetEvent e) {
+        setTarget(e.getNewTargets()[0]);
+    }
+    
+    
 
 }
