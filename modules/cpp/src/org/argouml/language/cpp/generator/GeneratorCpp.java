@@ -189,19 +189,11 @@ public class GeneratorCpp extends Generator2
     }
 
     /**
-     * create the needed directories for the derived appropriate pathname
-     * @return full pathname
+     * Generate the relative path for the specified object.
+     *
+     * @return path relative to the project root (without name)
      */
-    private String generateDirectoriesPathname(Object cls, String path) {
-        String name = Model.getFacade().getName(cls);
-        if (name == null || name.length() == 0) {
-            return null;
-        }
-        String filename = name + getFileExtension();
-        if (!path.endsWith (FILE_SEPARATOR)) {
-            path += FILE_SEPARATOR;
-        }
-
+    private String generateRelativeDirPath(Object cls) {
         String packagePath = "";
         // avoid model being used as a package name
         Object parent =
@@ -218,6 +210,26 @@ public class GeneratorCpp extends Generator2
             }
             parent = Model.getFacade().getNamespace(parent);
         }
+
+       return packagePath;
+    }
+
+    /**
+     * create the needed directories for the derived appropriate pathname
+     * @return full pathname
+     */
+    private String generateDirectoriesPathname(Object cls, String path) {
+        String name = Model.getFacade().getName(cls);
+        if (name == null || name.length() == 0) {
+            return null;
+        }
+
+        if (!path.endsWith (FILE_SEPARATOR)) {
+            path += FILE_SEPARATOR;
+        }
+
+        String packagePath = generateRelativeDirPath(cls);
+        String filename = name + getFileExtension();
 
         int lastIndex = -1;
         do {
@@ -297,17 +309,34 @@ public class GeneratorCpp extends Generator2
             //String pathname = path + filename;
             // TODO: package, project basepath, tagged values to configure
             File f = new File(pathname);
+            if (generatorPass == SOURCE_PASS 
+                    && Model.getFacade().isAInterface(o))
+                break; // don't generate the .cpp, it's useless.
+
             String headerTop = generateHeaderTop(pathname);
             String header = generateHeader(o, packagePath);
             String src = generate(o);
             BufferedWriter fos = null;
             try {
                 fos = new BufferedWriter (new FileWriter (f));
+                if (generatorPass == HEADER_PASS) {
+                    String name = Model.getFacade().getName(o);
+                    String guard = generateRelativeDirPath(o) + '_' 
+                        + name + getFileExtension();
+                    guard = guard.replace('/', '_').replace('.', '_');
+                    fos.write("#ifndef " + guard + LINE_SEPARATOR 
+                            + "#define " + guard 
+                            + LINE_SEPARATOR + LINE_SEPARATOR);
+                }
                 writeTemplate(o, path, fos);
                 fos.write(headerTop);
                 fos.write(extraIncludes);
                 fos.write (header);
                 fos.write (src);
+                if (generatorPass == HEADER_PASS) {
+                    fos.write("#endif");
+                    fos.write(LINE_SEPARATOR);
+                }
             }
             catch (IOException exp) { }
             finally {

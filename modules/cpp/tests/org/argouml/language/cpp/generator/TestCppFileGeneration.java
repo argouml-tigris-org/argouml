@@ -185,9 +185,11 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         setUpNamespaces(testName);
 
         String generated = generateAClassFile(testName);
-        String modelNs = "namespace " + Model.getFacade().getName(getModel()) + " {";
+        String modelNs = 
+            "namespace " + Model.getFacade().getName(getModel()) + " {";
         assertTrue(generated.indexOf(modelNs) == -1);
-        String packNs = "namespace " + Model.getFacade().getName(getPack()) + " {";
+        String packNs = 
+            "namespace " + Model.getFacade().getName(getPack()) + " {";
         assertTrue(generated.indexOf(packNs) != -1);
     }
     
@@ -224,6 +226,31 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     }
 
     /**
+     * Generate the source file (cpp or h) for the AClass class and return it
+     * as String.
+     * @param testName name of the test calling this method
+     * @param header if true then generate header, else generate cpp
+     * @return the generated source file as String
+     * @throws IOException if something goes wrong with file access
+     */
+    private String generateAClassFile(String testName, boolean header)
+        throws IOException {
+        genDir = setUpDirectory4Test(testName);
+        String filePath = getGenerator().generateFile2(
+                getAClass(), genDir.getPath());
+        assertNotNull(filePath);
+        if (header)
+            filePath = 
+                filePath.substring(0, filePath.lastIndexOf(".cpp")) + ".h";
+        File genFile = new File(filePath);
+
+        String encoding = getEncoding(genFile);
+        String generated = FileUtils.readFileToString(
+            genFile, encoding);
+        return generated;
+    }
+
+    /**
      * Generate the source file (cpp) for the AClass class and return it as 
      * String.
      * @param testName name of the test calling this method
@@ -231,16 +258,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
      * @throws IOException if something goes wrong with file access
      */
     private String generateAClassFile(String testName) throws IOException {
-        genDir = setUpDirectory4Test(testName);
-        String filePath = getGenerator().generateFile2(
-                getAClass(), genDir.getPath());
-        assertNotNull(filePath);
-        File genFile = new File(filePath);
-
-        String encoding = getEncoding(genFile);
-        String generated = FileUtils.readFileToString(
-            genFile, encoding);
-        return generated;
+        return generateAClassFile(testName, false);
     }
 
     /**
@@ -281,5 +299,23 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         String encoding = fin.getEncoding();
         fin.close();
         return encoding;
+    }
+
+    /**
+     * Test that headers are wrapped into #ifndef ... #endif
+     *
+     * @throws IOException if something goes wrong with file access
+     */
+    public void testMultipleInclusionGuardAndIssue3053()
+        throws IOException {
+        final String testName = "testMultipleInclusionGuardAndIssue3053";
+        setUpNamespaces(testName);
+
+        String genH = generateAClassFile(testName, true).trim();
+        String guard = Model.getFacade().getName(getPack()) + "_"
+            + Model.getFacade().getName(getAClass()) + "_h";
+        String re = "(?m)(?s)\\s*#\\s*ifndef\\s+" + guard 
+            + "\\s*^\\s*#\\s*define\\s+" + guard + "\\s.*^\\s*#\\s*endif.*";
+        assertTrue(genH.matches(re));
     }
 }
