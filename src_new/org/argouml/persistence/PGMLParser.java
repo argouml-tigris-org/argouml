@@ -196,23 +196,21 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
      * @see org.tigris.gef.xml.pgml.PGMLParser#translateClassName(java.lang.String)
      */
     protected String translateClassName(String oldName) {
-        // TODO: Use stylesheet to convert.
+        // TODO: Use stylesheet to convert or wait till we use Fig
+        // factories in diagram subsystem.
         // What is the last version that used FigNote?
         if ("org.argouml.uml.diagram.static_structure.ui.FigNote"
             .equals(oldName)) {
             return "org.argouml.uml.diagram.static_structure.ui.FigComment";
         }
-        // TODO: Use stylesheet to convert
+        
+        // TODO: Use stylesheet to convert or wait till we use Fig
+        // factories in diagram subsystem.
         // What is the last version that used FigState?
 	if ("org.argouml.uml.diagram.state.ui.FigState".equals(oldName)) {
 	    return "org.argouml.uml.diagram.state.ui.FigSimpleState";
 	}
     
-        // TODO: Why "org."?
-        if (oldName.startsWith("org.")) {
-            return oldName;
-        }
-
         // TODO: I think this is so old we don't need it any more
         // This goes way back to pre-zargo days
         if (oldName.startsWith("uci.gef.")) {
@@ -222,6 +220,11 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
 
         String translated = (String) translationTable.get(oldName);
         LOG.debug("old = " + oldName + " / new = " + translated);
+        
+        if (translated == null) {
+            return oldName;
+        }
+        
         return translated;
     }
 
