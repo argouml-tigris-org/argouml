@@ -349,16 +349,15 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Check dependencies.                                                 -->
   <!--                                                                     -->
-  <!-- This process can be bypassed by setting the property                -->
-  <!-- "skip.dependency.check" to any value.                               -->
+  <!-- This process can be bypassed during the normal compile              -->
+  <!-- by setting the property "skip.dependency.check" to any value.       -->
   <!--                                                                     -->
-  <!-- It can still be run directly using the "depend" task.               -->
+  <!-- It can still be run directly using the "depend" target.             -->
   <!-- =================================================================== -->
   <target name="depend" depends="prepare,prerequisites">
 
     <!-- create directories -->
     <mkdir dir="${argo.build.classes}"/>
-    <echo message="skip.dependency.check=${skip.dependency.check}"/>
 
     <!-- TODO:  Investigate cache -->
     <!-- TODO:  Decide whether to use dump or not -->
@@ -374,8 +373,9 @@ ${Name} Build file
     </depend>
   </target>
 
-  <target name="check-dependencies" depends="depend"
-          unless="skip.dependency.check"/>
+  <target name="check-dependencies" unless="skip.dependency.check">
+      <antcall target="depend" inheritall="true"/>
+  </target>
   
   
   <!-- =================================================================== -->
