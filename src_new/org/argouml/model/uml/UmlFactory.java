@@ -308,34 +308,33 @@ public class UmlFactory extends AbstractUmlModelFactory {
         }
     }
 
+    /**
+     * Initialization for the "create(UmlModelEntity)" function.
+     */
     private void initializeFactoryMethods() {
         MFactory factory = MFactory.getDefaultFactory();
         elements = new Hashtable(80);
+        
         elements.put(Uml.ABSTRACTION,
-            new ObjectCreateInfo(
-                MAbstraction.class,
+            new ObjectCreateInfo(MAbstraction.class,
                 factory,
                 "createAbstraction"));
         elements.put(Uml.ASSOCIATION,
-            new ObjectCreateInfo(
-                MAssociation.class,
+            new ObjectCreateInfo(MAssociation.class,
                 factory,
                 "createAssociation"));
         elements.put(Uml.ASSOCIATION_ROLE,
-            new ObjectCreateInfo(
-                MAssociationRole.class,
+            new ObjectCreateInfo(MAssociationRole.class,
                 factory,
                 "createAssociationRole"));
         elements.put(Uml.DEPENDENCY,
-            new ObjectCreateInfo(
-                MDependency.class,
+            new ObjectCreateInfo(MDependency.class,
                 factory,
                 "createDependency"));
         elements.put(Uml.EXTEND,
             new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
         elements.put(Uml.GENERALIZATION,
-            new ObjectCreateInfo(
-                MGeneralization.class,
+            new ObjectCreateInfo(MGeneralization.class,
                 factory,
                 "createGeneralization"));
         elements.put(Uml.INCLUDE,
@@ -345,15 +344,13 @@ public class UmlFactory extends AbstractUmlModelFactory {
         elements.put(Uml.LINK_END,
             new ObjectCreateInfo(MLinkEnd.class, factory, "createLinkEnd"));
         elements.put(Uml.PERMISSION,
-            new ObjectCreateInfo(
-                MPermission.class,
+            new ObjectCreateInfo(MPermission.class,
                 factory,
                 "createPermission"));
         elements.put(Uml.USAGE,
             new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
         elements.put(Uml.TRANSITION,
-            new ObjectCreateInfo(
-                MTransition.class,
+            new ObjectCreateInfo(MTransition.class,
                 factory,
                 "createTransition"));
         elements.put(Uml.ACTOR,
@@ -365,20 +362,17 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 factory,
                 "createException"));
         elements.put(Uml.CLASSIFIER,
-            new ObjectCreateInfo(
-                MClassifier.class,
+            new ObjectCreateInfo(MClassifier.class,
                 factory,
                 "createClassifier"));
         elements.put(Uml.CLASSIFIER_ROLE,
-            new ObjectCreateInfo(
-                MClassifierRole.class,
+            new ObjectCreateInfo(MClassifierRole.class,
                 factory,
                 "createClassifierRole"));
         elements.put(Uml.COMPONENT,
             new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
         elements.put(Uml.COMPONENT_INSTANCE,
-            new ObjectCreateInfo(
-                MComponentInstance.class,
+            new ObjectCreateInfo(MComponentInstance.class,
                 CommonBehaviorFactory.getFactory(),
                 "createComponentInstance"));
         elements.put(Uml.INSTANCE,
@@ -388,8 +382,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         elements.put(Uml.NODE,
             new ObjectCreateInfo(MNode.class, factory, "createNode"));
         elements.put(Uml.NODE_INSTANCE,
-            new ObjectCreateInfo(
-                MNodeInstance.class,
+            new ObjectCreateInfo(MNodeInstance.class,
                 factory,
                 "createNodeInstance"));
         elements.put(Uml.OBJECT,
@@ -401,47 +394,39 @@ public class UmlFactory extends AbstractUmlModelFactory {
         elements.put(Uml.STATE,
             new ObjectCreateInfo(MState.class, factory, "createState"));
         elements.put(Uml.CALL_STATE,
-            new ObjectCreateInfo(
-                MCallState.class, 
+            new ObjectCreateInfo(MCallState.class, 
                 factory, 
                 "createCallState"));
         elements.put(Uml.COMPOSITE_STATE,
-            new ObjectCreateInfo(
-                MCompositeState.class,
+            new ObjectCreateInfo(MCompositeState.class,
                 factory,
                 "createCompositeState"));
         elements.put(Uml.PSEUDOSTATE,
-            new ObjectCreateInfo(
-                MPseudostate.class,
+            new ObjectCreateInfo(MPseudostate.class,
                 factory,
                 "createPseudostate"));
         elements.put(Uml.OBJECT_FLOW_STATE,
-                new ObjectCreateInfo(
-                    MObjectFlowState.class,
-                    factory,
-                    "createObjectFlowState"));
+            new ObjectCreateInfo(MObjectFlowState.class,
+                factory,
+                "createObjectFlowState"));
         elements.put(Uml.CLASSIFIER_IN_STATE,
-                new ObjectCreateInfo(
-                    MClassifierInState.class,
-                    factory,
-                    "createClassifierInState"));
+            new ObjectCreateInfo(MClassifierInState.class,
+                factory,
+                "createClassifierInState"));
         elements.put(Uml.SUBACTIVITY_STATE,
-                new ObjectCreateInfo(
-                    MSubactivityState.class,
-                    factory,
-                    "createSubactivityState"));
+            new ObjectCreateInfo(MSubactivityState.class,
+                factory,
+                "createSubactivityState"));
         elements.put(Uml.USE_CASE,
             new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
         elements.put(Uml.ACTION,
             new ObjectCreateInfo(MAction.class, factory, "createAction"));
         elements.put(Uml.ASSOCIATION_END,
-            new ObjectCreateInfo(
-                MAssociationEnd.class,
+            new ObjectCreateInfo(MAssociationEnd.class,
                 factory,
                 "createAssociationEnd"));
         elements.put(Uml.CALL_ACTION,
-            new ObjectCreateInfo(
-                MCallAction.class,
+            new ObjectCreateInfo(MCallAction.class,
                 factory,
                 "createCallAction"));
         elements.put(Uml.NAMESPACE,
@@ -449,8 +434,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         elements.put(Uml.RECEPTION,
             new ObjectCreateInfo(MReception.class, factory, "createReception"));
         elements.put(Uml.STEREOTYPE,
-            new ObjectCreateInfo(
-                MStereotype.class,
+            new ObjectCreateInfo(MStereotype.class,
                 factory,
                 "createStereotype"));
         elements.put(Uml.ATTRIBUTE,
@@ -464,8 +448,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 
         // NSUML does not have a factory method for this
         elements.put(Uml.ACTION_EXPRESSION,
-            new ObjectCreateInfo(
-                MActionExpression.class,
+            new ObjectCreateInfo(MActionExpression.class,
                 this,
                 "createActionExpression"));
 
@@ -502,7 +485,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * @param connectionType is the type of relationship
      * @param fromElement is an existing model element
      * @param toElement is another existing model element
-     * @throws IllegalModelElementConnectionException 
+     * @throws IllegalModelElementConnectionException if the connection is bad
      */
     public Object buildConnection(Object connectionType, 
 				  Object fromElement, Object toElement)
@@ -514,14 +497,17 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
     
     /**
-     * @param connectionType
-     * @param fromElement
-     * @param fromStyle
-     * @param toElement
-     * @param toStyle
-     * @param unidirectional
-     * @return
-     * @throws IllegalModelElementConnectionException
+     * @param connectionType the UML object type of the connection
+     * @param fromElement    the UML object for the "from" element
+     * @param fromStyle      the aggregationkind for the connection 
+     *                       in case of an association
+     * @param toElement      the UML object for the "to" element
+     * @param toStyle        the aggregationkind for the connection 
+     *                       in case of an association
+     * @param unidirectional for association and associationrole
+     * @return               the newly build connection (UML object)
+     * @throws IllegalModelElementConnectionException if the connection is not 
+     *                                                a valid thing to do
      */
     public Object buildConnection(Object connectionType,
                   Object fromElement, Object fromStyle,
@@ -595,10 +581,10 @@ public class UmlFactory extends AbstractUmlModelFactory {
     
     /**
      * Checks if some type of connection is valid between two elements
-     * @param connectionType
-     * @param fromElement
-     * @param toElement
-     * @return
+     * @param connectionType  the UML object type of the connection
+     * @param fromElement     the UML object type of the "from" 
+     * @param toElement       the UML object type of the "to"
+     * @return true if valid
      */
     public boolean isConnectionValid(Object connectionType,
                      Object fromElement, Object toElement)
@@ -1082,7 +1068,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
     }
 
     /** Create an empty but initialized instance of a UML ActionExpression.
-     *  
+     *  NSUML does not have a factory method for this.
+     * 
      *  @return an initialized UML ActionExpression instance.
      */
     public MActionExpression createActionExpression() {
