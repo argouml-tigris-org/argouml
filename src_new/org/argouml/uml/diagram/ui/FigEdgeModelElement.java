@@ -293,8 +293,12 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     return null;
   }
 
+  /**
+   * Returns a SelectionRerouteEdge object that manages selection and rerouting
+   * of the edge.
+   */
   public Selection makeSelection() {
-    return new SelectionEdgeClarifiers(this);
+    return new SelectionRerouteEdge(this);
   }
 
   public FigText getNameFig() { return _name; }
@@ -603,8 +607,11 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     }
     
     /**
-     * Updates the classifiers the edge is attached to. 
-     * @return boolean
+     * <p>Updates the classifiers the edge is attached to.
+     * <p>Calls a helper method (layoutThisToSelf) to avoid this edge disappearing
+     * if the new source and dest are the same node.
+     *
+     * @return boolean whether or not the update was sucessful
      */
     protected boolean updateClassifiers() {
     Object owner = getOwner();
@@ -649,11 +656,48 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
             ((FigNode)newDestFig).updateEdges();
         }
         calcBounds();
+
+        // adapted from SelectionWButtons from line 280
+        // calls a helper method to avoid this edge disappearing
+        // if the new source and dest are the same node.
+        if (newSourceFig == newDestFig ) {
+        
+            layoutThisToSelf();
+        }
+
     }
     
     return true;
   }
   
+  /**
+   * helper method for updateClassifiers() in order to automatically
+   * layout an edge that is now from and to the same node type.
+   * <p>adapted from SelectionWButtons from line 280
+   */
+  private void layoutThisToSelf(){
+      
+    FigPoly edgeShape = new FigPoly();
+    //newFC = _content;
+    Point fcCenter = getSourceFigNode().center();
+    Point centerRight = new Point(
+        (int) (fcCenter.x + getSourceFigNode().getSize().getWidth() / 2),fcCenter.y);
+
+    int yoffset = (int) ((getSourceFigNode().getSize().getHeight() / 2));
+    edgeShape.addPoint(fcCenter.x, fcCenter.y);
+    edgeShape.addPoint(centerRight.x, centerRight.y);
+    edgeShape.addPoint(centerRight.x + 30, centerRight.y);
+    edgeShape.addPoint(centerRight.x + 30, centerRight.y + yoffset);
+    edgeShape.addPoint(centerRight.x, centerRight.y + yoffset);
+            
+    // place the edge on the layer and update the diagram
+    this.setBetweenNearestPoints(true);
+    edgeShape.setLineColor(Color.black);
+    edgeShape.setFilled(false);
+    edgeShape._isComplete = true;
+    this.setFig(edgeShape);
+  }
+    
 /**
  * Returns the source of the edge. The source is the owner of the node the edge
  * travels from in a binary relationship. For instance: for a classifierrole, 
