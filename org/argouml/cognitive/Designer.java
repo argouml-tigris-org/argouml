@@ -125,7 +125,8 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
     _prefs = new Properties();
     _toDoList = new ToDoList();
     _toDoList.spawnValidityChecker(this);
-    _emailAddr = "jrobbins@ics.uci.edu";
+    // TODO: make this configurable
+    _emailAddr = "users@argouml.tigris.org";
     TheDesigner = this;
   }
 
