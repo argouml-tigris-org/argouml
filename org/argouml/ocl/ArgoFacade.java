@@ -358,7 +358,7 @@ class ArgoAny implements Any, Type2 {
 
         Collection operationParameters = ModelFacade.getParameters(operation);
 	if (!ModelFacade.isReturn(operationParameters.iterator().next())) {
-	    System.err.println(
+	    cat.warn(
                 "ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
 	    );
 	}

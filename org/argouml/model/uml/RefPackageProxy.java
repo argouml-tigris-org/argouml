@@ -38,11 +38,16 @@ import javax.jmi.reflect.RefObject;
 import javax.jmi.reflect.RefPackage;
 import javax.jmi.reflect.RefStruct;
 
+import org.apache.log4j.Logger;
+
 /**
  * @author Thierry
  */
 public class RefPackageProxy extends RefBaseObjectProxy
     implements InvocationHandler, RefPackage {
+
+    private static final Logger _cat = 
+        Logger.getLogger(RefBaseObjectProxy.class);
 
     /**
      * @param object being proxied
@@ -89,7 +94,7 @@ public class RefPackageProxy extends RefBaseObjectProxy
         throws Throwable {
         Object result = null;
 
-        System.out.println("method: " + method.getName());
+        _cat.debug("method: " + method.getName());
 
         if (method.getName().equals("refMetaObject")) {
             result = refMetaObject();

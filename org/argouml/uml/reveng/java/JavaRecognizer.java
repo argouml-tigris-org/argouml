@@ -104,7 +104,7 @@ import antlr.collections.impl.BitSet;
  * class Test {
  *   public static void main( String args[] ) {
  *     if (boolean.class.equals(boolean.class)) {
- *       System.out.println("works");
+ *       _cat.info("works");
  *     }
  *   }
  * }

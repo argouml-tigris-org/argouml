@@ -30,11 +30,17 @@
 
 package org.argouml.model.uml;
 
+import org.apache.log4j.Logger;
+
 /**
  *
  * @author  unknown (Bob Tarling?)
  */
 public class UmlException extends Exception {
+
+    private static final Logger _cat = 
+        Logger.getLogger(UmlException.class);
+
     private Throwable cause = null;
 
     public UmlException() {
@@ -56,13 +62,9 @@ public class UmlException extends Exception {
 
     public void printStackTrace() {
 	super.printStackTrace();
-	// No system.out.println() is allowed outside main.java. Use a logger.
-	/*
-	  if (cause != null) {
-	  System.out.println("Caused by:");
-	  cause.printStackTrace();
-	  }
-	*/
+	if (cause != null) {
+	    _cat.error("Caused by:", cause);
+	}
     }
 
     public void printStackTrace(java.io.PrintStream ps)
