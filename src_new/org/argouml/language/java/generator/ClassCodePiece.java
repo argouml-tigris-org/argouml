@@ -116,7 +116,7 @@ public class ClassCodePiece extends NamedCodePiece
 
 	if(mClass == null) {
 	    // Removed
-	    mClass = UmlFactory.getFactory().getCore().createClass();
+	    mClass = UmlFactory.getFactory().getCore().buildClass();
 	    writer.write("REMOVED ");
 	}
 

@@ -57,37 +57,8 @@ import org.tigris.gef.presentation.*;
 public class FigInclude extends FigEdgeModelElement {
 
 
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constants
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    /**
-     * <p>A constant to hold a stereotype <<include>> we can use in creating
-     *   the label for the include relationship.</p>
-     */
-
-    private static final MStereotype _INCLUDE_LABEL = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Static initialiser
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
-    static {
-        _INCLUDE_LABEL.setName("include");
-    }
-
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
+    private FigText label = null; // the label for the stereotype
+    
     /**
      * <p>The default constructor, but should never be called directly (use
      *   {@link #FigInclude(Object)}, since that sets the owner. However we
@@ -103,7 +74,7 @@ public class FigInclude extends FigEdgeModelElement {
         // same as a stereotype, and we use the stereotype notation generator
         // to give us the text.
 
-        FigText label = new FigText(10, 30, 90, 20);
+        label = new FigText(10, 30, 90, 20);
 
         label.setFont(LABEL_FONT);
         label.setTextColor(Color.black);
@@ -113,8 +84,6 @@ public class FigInclude extends FigEdgeModelElement {
         label.setExpandOnly(false);
         label.setMultiLine(false);
         label.setAllowsTab(false);
-
-        label.setText(Notation.generateStereotype(this, _INCLUDE_LABEL));
 
         addPathItem(label, new PathConvPercent(this, 50, 10));
 

@@ -442,10 +442,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           }
           else if (edgeClass == MDependency.class) {
               //nsuml: using Binding
-              MDependency dep = UmlFactory.getFactory().getCore().createDependency();
-              dep.addSupplier(fromIntf);
-              dep.addClient(toIntf);
-              addEdge(dep);
+              MDependency dep = UmlFactory.getFactory().getCore().buildDependency(fromIntf, toIntf);
               addEdge(dep);
               return dep;
           }
@@ -463,13 +460,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           MInstance fromInst = (MInstance) fromPort;
           MInstance toInst = (MInstance) toPort;
           if (edgeClass == MLink.class) {
-              MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
-              MLinkEnd le0 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-              le0.setInstance(fromInst);
-              MLinkEnd le1 = UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-              le1.setInstance(toInst);
-              link.addConnection(le0);
-              link.addConnection(le1);
+              MLink link = UmlFactory.getFactory().getCommonBehavior().buildLink(fromInst, toInst);
               addEdge(link);
               return link;
           }

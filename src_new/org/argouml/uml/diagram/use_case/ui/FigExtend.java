@@ -65,12 +65,7 @@ public class FigExtend extends FigEdgeModelElement {
     //
     ///////////////////////////////////////////////////////////////////////////
 
-    /**
-     * <p>A constant to hold a stereotype <<extend>> we can use in creating
-     *   the label for the extend relationship.</p>
-     */
-
-    private static final MStereotype _EXTEND_LABEL = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
+    
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -78,9 +73,7 @@ public class FigExtend extends FigEdgeModelElement {
     //
     ///////////////////////////////////////////////////////////////////////////
 
-    static {
-        _EXTEND_LABEL.setName("extend");
-    }
+    
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -141,7 +134,7 @@ public class FigExtend extends FigEdgeModelElement {
         _label.setExpandOnly(false);
         _label.setMultiLine(false);
         _label.setAllowsTab(false);
-        _label.setText(Notation.generateStereotype(this, _EXTEND_LABEL));
+        
 
         _label.calcBounds();
 

@@ -40,9 +40,7 @@ public class ActionAddAttribute extends UMLChangeAction {
 
     public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
 
-    // needs-more-work: should be part of java binding or common elements
-    //    public static MDataType INT_TYPE = UmlFactory.getFactory().getCore().createDataType();
-    //     static{ INT_TYPE.setName("int"); }
+   
 
 
     ////////////////////////////////////////////////////////////////

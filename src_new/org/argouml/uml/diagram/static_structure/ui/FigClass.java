@@ -759,6 +759,7 @@ public class FigClass extends FigNodeModelElement {
         for (int i=figs.size()-1; i>=acounter; i--)
           _attrVec.removeFig((Fig)figs.elementAt(i));
 	  }
+	  getUpdatedSize(_attrVec, xpos, ypos, 0, 0);
 	}
 	int ocounter = 1;
     Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);

@@ -241,9 +241,7 @@ class ColumnStereotype extends ColumnDescriptor {
     if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
 	String stereoName = (String) value;
-	MStereotype s = UmlFactory.getFactory().getExtensionMechanisms().createStereotype();
-	s.setName(stereoName);
-	((MModelElement) target).setStereotype(s);
+	MStereotype s = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype((MModelElement)target, stereoName);
   }
 } /* end class ColumnStereotype */
 
@@ -911,7 +909,7 @@ class ColumnReturn extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-	MParameter rp = UmlFactory.getFactory().getCore().createParameter();
+	MParameter rp = UmlFactory.getFactory().getCore().buildParameter();
 	rp.setType(rt);
 	UmlHelper.getHelper().getCore().setReturnParameter(op, rp);
   }
@@ -1144,7 +1142,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MObject tt = (MObject) target;
     String _value = (String) value;
-    MClass classifier = UmlFactory.getFactory().getCore().createClass(); 
+    MClass classifier = UmlFactory.getFactory().getCore().buildClass(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 

@@ -78,29 +78,7 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    pb.setTarget(d);
-	    /*
-	    if (!((me instanceof MNamespace) && ((me instanceof MUseCase) || (me instanceof MClass))))  {
-	    	JOptionPane.showMessageDialog(null, 
-	    	"You need to have a class or use case as your target in order to\nspecify for what you want to define a behaviour for.",
-	    	"Warning", JOptionPane.WARNING_MESSAGE);
-	    	return;
-	    };
-	    MNamespace ns=(MNamespace)me;
-	    String contextNameStr = ns.getName();
-	    if (contextNameStr == null) contextNameStr = "untitled";
-	    MActivityGraph am = UmlFactory.getFactory().getActivityGraphs().createActivityGraph();
-	    am.setName(contextNameStr + "ActivityGraph");
-	    MCompositeState cs = UmlFactory.getFactory().getStateMachines().createCompositeState();
-	    cs.setName("activities_top");
-	    //cs.setNamespace(ns);
-	    am.setNamespace(ns);
-	    am.setTop(cs);
-	    ns.addBehavior(am);
-	    UMLActivityDiagram d = new UMLActivityDiagram(ns, am);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    pb.setTarget(d);
-	    */
+	   
 	} catch (PropertyVetoException pve) {
 	    System.out.println("PropertyVetoException in ActionActivityDiagram");
 	}
