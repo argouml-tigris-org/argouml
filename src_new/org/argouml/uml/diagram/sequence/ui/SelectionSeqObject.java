@@ -71,7 +71,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 public class SelectionSeqObject extends SelectionWButtons  {
     protected static Logger cat = 
@@ -176,13 +175,15 @@ public class SelectionSeqObject extends SelectionWButtons  {
 	boolean reverse = false;
 	switch (hand.index) {
 	case 10: //add a called object
-	    edgeClass = ru.novosoft.uml.behavior.common_behavior.MLink.class;
+	    edgeClass = (Class)ModelFacade.LINK;
+            // TODO shouldn't have direct references to NSUML implementation class!!
 	    actionClass =  ru.novosoft.uml.behavior.common_behavior.MCallActionImpl.class;
 	    by = yPos;
 	    bx = cx + cw;
 	    break;
 	case 11: // add a callin object
-	    edgeClass = ru.novosoft.uml.behavior.common_behavior.MLink.class;
+	    edgeClass = (Class)ModelFacade.LINK;
+            // TODO shouldn't have direct references to NSUML implementation class!!
 	    actionClass = ru.novosoft.uml.behavior.common_behavior.MReturnActionImpl.class;
 	    //reverse = true;
 	    by = yPos;
@@ -296,7 +297,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
 	Mode mode = (Mode) modeManager.top();
 	mode.setArg("action", ModelFacade.CALL_ACTION);
 
-	return mgm.connect(cls, newCls, MLink.class);
+	return mgm.connect(cls, newCls, (Class)ModelFacade.LINK);
     }
 
     public Object addLinkStimulusReturn(MutableGraphModel mgm, Object/*MObject*/ cls,

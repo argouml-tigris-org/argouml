@@ -205,7 +205,9 @@ public class ModelFacade {
     public static final Object GENERALIZATION   = MGeneralization.class;
     public static final Object INCLUDE          = MInclude.class;
     public static final Object LINK             = MLink.class;
+    public static final Object MESSAGE          = MMessage.class;
     public static final Object PERMISSION       = MPermission.class;
+    public static final Object SIGNAL           = MSignal.class;
     public static final Object USAGE            = MUsage.class;
     public static final Object TRANSITION       = MTransition.class;
 
@@ -236,6 +238,7 @@ public class ModelFacade {
     public static final Object ACTION_EXPRESSION  = MActionExpression.class;
     public static final Object ACTION_STATE       = MActionState.class;
     public static final Object ASSOCIATION_END    = MAssociationEnd.class;
+    public static final Object ASSOCIATION_END_ROLE = MAssociationEndRole.class;
     public static final Object CALL_ACTION        = MCallAction.class;
     public static final Object CREATE_ACTION      = MCreateAction.class;
     public static final Object DESTROY_ACTION     = MDestroyAction.class;
@@ -258,7 +261,12 @@ public class ModelFacade {
     public static final Object VISIBILITYKIND     = MVisibilityKind.class;
 
     public static final Object MODELELEMENT       = MModelElement.class;
+    public static final Object STIMULUS           = MStimulus.class;
+    
+    
     public static final Object AGGREGATIONKIND = MAggregationKind.class;
+    public static final Object BOOLEAN_EXPRESSION = MBooleanExpression.class;
+    public static final Object GUARD = MGuard.class;
 
     public static final Object INITIAL_PSEUDOSTATEKIND =
         MPseudostateKind.INITIAL;

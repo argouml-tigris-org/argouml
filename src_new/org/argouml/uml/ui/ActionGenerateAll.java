@@ -38,9 +38,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MInterface;
-
 /** Action to trigger code generation for one or more classes.
  *  @stereotype singleton
  */
@@ -91,8 +88,8 @@ public class ActionGenerateAll extends UMLAction {
 	    while (selectedObjects.hasNext()) {
 		Object selected = selectedObjects.next();
 		if (ModelFacade.isAPackage(selected)) {
-		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
-		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
+		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, (Class)ModelFacade.CLASS), classes);
+		    addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, (Class)ModelFacade.INTERFACE), classes);
 		} else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
 		    if (!classes.contains(selected))
 			classes.addElement(selected);

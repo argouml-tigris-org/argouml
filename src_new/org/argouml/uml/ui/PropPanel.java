@@ -85,8 +85,6 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  *   <p>This abstract class provides the basic layout and event dispatching
  *   support for all Property Panels.</p>
@@ -575,13 +573,13 @@ abstract public class PropPanel
         */
         for (int i = 0; i < metaclasses.length; i++) {
             Class clazz = metaclasses[i];
-            if (MNamespace.class.isAssignableFrom(clazz)) {
+            if (((Class)ModelFacade.NAMESPACE).isAssignableFrom(clazz)) {
                 UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "ownedElement");
             }
-            if (MModelElement.class.isAssignableFrom(clazz)) {
+            if (((Class)ModelFacade.MODELELEMENT).isAssignableFrom(clazz)) {
                 UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "name");
             }
-            if (clazz.equals(MStereotype.class)) {
+            if (clazz.equals(ModelFacade.STEREOTYPE)) {
                 UmlModelEventPump.getPump().addClassModelEventListener(this, clazz, "baseClass");
             }
         }

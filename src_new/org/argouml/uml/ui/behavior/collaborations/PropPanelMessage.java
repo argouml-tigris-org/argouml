@@ -44,10 +44,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components, specifically namesToWatch mechanism.
@@ -63,11 +59,11 @@ public class PropPanelMessage extends PropPanelModelElement {
     public PropPanelMessage() {
 	super("Message", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = MMessage.class;
+	Class mclass = (Class)ModelFacade.MESSAGE;
 
 	Class[] namesToWatch = {
-	    MStereotype.class,
-	    MClassifierRole.class,
+	    (Class)ModelFacade.STEREOTYPE,
+	    (Class)ModelFacade.CLASSIFIER_ROLE,
 	    (Class) ModelFacade.ACTION 
 	};
 	setNameEventListening(namesToWatch);

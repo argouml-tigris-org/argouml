@@ -43,7 +43,6 @@ import org.argouml.uml.ui.UMLList;
 import org.argouml.util.ConfigLoader;
 import ru.novosoft.uml.foundation.core.MClassifier;
 
-import ru.novosoft.uml.foundation.core.MDataType;
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -56,7 +55,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     public PropPanelDataType() {
         super("DataType", _dataTypeIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MDataType.class;
+        Class mclass = (Class)ModelFacade.DATATYPE;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));

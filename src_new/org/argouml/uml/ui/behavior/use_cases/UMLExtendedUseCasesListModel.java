@@ -39,8 +39,6 @@ import org.argouml.uml.ui.UMLBinaryRelationListModel;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.MutableGraphModel;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 /**
  * @since Sep 30, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -70,7 +68,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
      */
     protected Collection getChoices() {
         if (org.argouml.model.ModelFacade.isAExtensionPoint(getTarget())) {
-            Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind(MUseCase.class);
+            Collection col = ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.USE_CASE);
             col.remove(ModelFacade.getUseCase(getTarget()));
             return col;
         } else
@@ -103,7 +101,7 @@ public class UMLExtendedUseCasesListModel extends UMLBinaryRelationListModel {
         Object/*MModelElement*/ from,
         Object/*MModelElement*/ to) {
             
-        gm.connect(to, from, MExtend.class);
+        gm.connect(to, from, (Class)ModelFacade.EXTEND);
         List list = new ArrayList();
         list.add(getTarget());
         Object e = UseCasesHelper.getHelper().getExtends(/*(MUseCase)*/ from, /*(MUseCase)*/ to);

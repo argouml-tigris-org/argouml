@@ -30,9 +30,6 @@ import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 /**
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -45,7 +42,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLIncludeAdditionComboBoxModel() {
         super("addition", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(this, (Class)ModelFacade.NAMESPACE, "ownedElement");
     }
 
     /**
@@ -55,7 +52,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         Object inc = /*(MInclude)*/ getTarget();
         if (inc == null) return;
         Object ns = ModelFacade.getNamespace(inc);
-        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MUseCase.class));
+        addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.USE_CASE));
         if (contains(ModelFacade.getBase(inc)))
             removeElement(ModelFacade.getBase(inc));
     }

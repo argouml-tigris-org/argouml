@@ -33,6 +33,7 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -42,8 +43,6 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on
@@ -57,7 +56,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     public PropPanelClassifierRole() {
 	super("ClassifierRole", ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = MClassifierRole.class;
+	Class mclass = (Class)ModelFacade.CLASSIFIER_ROLE;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 	addField(Argo.localize("UMLMenu", "label.stereotype"),
@@ -124,4 +123,3 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 
 
 } /* end class PropPanelClassifierRole */
-

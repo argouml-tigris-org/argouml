@@ -39,6 +39,7 @@ import org.tigris.gef.presentation.*;
 import java.awt.event.*;
 import java.beans.PropertyVetoException;
 import java.util.*;
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -56,10 +57,10 @@ import ru.novosoft.uml.model_management.MPackage;
 public class ActionModifier extends UMLAction {
     private UMLBooleanProperty _property;
     private Object object;
-    Class mclassClass = MClass.class;
-    Class mpackageClass = MPackage.class;
-    Class minterfaceClass = MInterface.class;
-    Class museCaseClass = MUseCase.class;      // Jeremy Bennett
+    Class mclassClass = (Class)ModelFacade.CLASS;
+    Class mpackageClass = (Class)ModelFacade.PACKAGE;
+    Class minterfaceClass = (Class)ModelFacade.INTERFACE;
+    Class museCaseClass = (Class)ModelFacade.USE_CASE;      // Jeremy Bennett
     Object trueValue = null;
     Object falseValue = null;
 

@@ -52,7 +52,6 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
@@ -197,7 +196,7 @@ class ColumnName extends ColumnDescriptor {
 
 
 class ColumnVisibility extends ColumnDescriptor {
-    ColumnVisibility() { super("Visibility", MVisibilityKind.class, true); }
+    ColumnVisibility() { super("Visibility", (Class)ModelFacade.VISIBILITYKIND, true); }
   
     public Object getValueFor(Object target) {
 	if (ModelFacade.isAModelElement(target)) {
@@ -218,7 +217,7 @@ class ColumnVisibility extends ColumnDescriptor {
 
 
 class ColumnFeatureVis extends ColumnDescriptor {
-    ColumnFeatureVis() { super("Visibility", MVisibilityKind.class, true); }
+    ColumnFeatureVis() { super("Visibility", (Class)ModelFacade.VISIBILITYKIND, true); }
   
     public Object getValueFor(Object target) {
 	if (ModelFacade.isAFeature(target)) {

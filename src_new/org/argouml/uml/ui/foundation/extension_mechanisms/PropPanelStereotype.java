@@ -47,8 +47,6 @@ import org.argouml.uml.ui.UMLSpecializationListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -61,7 +59,7 @@ public class PropPanelStereotype extends PropPanelModelElement {
     public PropPanelStereotype() {
         super("Stereotype", _stereotypeIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MStereotype.class;
+        Class mclass = (Class)ModelFacade.STEREOTYPE;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 

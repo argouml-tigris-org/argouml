@@ -80,7 +80,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	if (ns == null) return;
 	while (ModelFacade.getNamespace(ns) != null) ns = ModelFacade.getNamespace(ns);
 	Collection elems =
-	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);
+	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, (Class)ModelFacade.CLASSIFIER);
 	//Project p = ProjectManager.getManager().getCurrentProject();
 	//Collection elems =
 	//ModelManagementHelper.getHelper().getAllModelElementsOfKind(MClassifier.class);

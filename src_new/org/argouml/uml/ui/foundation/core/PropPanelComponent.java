@@ -25,14 +25,13 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 
 import org.argouml.util.ConfigLoader;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
-
-import ru.novosoft.uml.foundation.core.MComponent;
 
 /**
  * PropPanel for a UML component.
@@ -48,7 +47,7 @@ public class PropPanelComponent extends PropPanelClassifier {
 
     public PropPanelComponent() {
 	super("Component", ConfigLoader.getTabPropsOrientation());
-	Class mclass = MComponent.class;
+	Class mclass = (Class)ModelFacade.COMPONENT;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 	addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
@@ -98,6 +97,5 @@ public class PropPanelComponent extends PropPanelClassifier {
 
 
 } /* end class PropPanelComponent */
-
 
 

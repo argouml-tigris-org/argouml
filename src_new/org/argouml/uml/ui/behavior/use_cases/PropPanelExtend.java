@@ -46,7 +46,6 @@ import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 
 
@@ -97,7 +96,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         addSeperator();
 
         UMLExpressionModel conditionModel =
-            new UMLExpressionModel(this, MExtend.class, "condition",
+            new UMLExpressionModel(this, (Class)ModelFacade.EXTEND, "condition",
 				   MBooleanExpression.class, "getCondition", "setCondition");
 
         JTextArea conditionArea = new UMLExpressionBodyField(conditionModel,

@@ -41,7 +41,6 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.behavior.common_behavior.MLink;
 public class PropPanelLink extends PropPanelModelElement {
 
 
@@ -50,7 +49,7 @@ public class PropPanelLink extends PropPanelModelElement {
     public PropPanelLink() {
         super("Link Properties", _linkIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MLink.class;
+        Class mclass = (Class)ModelFacade.LINK;
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
         addLinkField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
@@ -78,4 +77,3 @@ public class PropPanelLink extends PropPanelModelElement {
 	if (newTarget != null) TargetManager.getInstance().setTarget(newTarget);
     }
 } /* end class PropPanelLink */
-
