@@ -25,6 +25,7 @@ package org.argouml.uml.reveng.java;
 
 import java.util.*;
 import org.argouml.ui.*;
+import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -371,88 +372,88 @@ public class Modeller
        @param javadoc The javadoc comment. null or "" if no comment available.
        @returns The operation.
     */
-    public MOperation addOperation(short modifiers,
-                             String returnType,
-			     String name,
-                             Vector parameters,
-                             String javadoc)
-    {
-	MOperation mOperation = getOperation(name);
-	parseState.feature(mOperation);
+    public MOperation addOperation (short modifiers,
+                                    String returnType,
+                                    String name,
+                                    Vector parameters,
+                                    String javadoc) {
+      MOperation mOperation = getOperation(name);
+      parseState.feature(mOperation);
 
-  /*
-   * Changed 2001-10-05 STEFFEN ZSCHALER.
-   *
-   * Was (space added below!):
-   *
-	if((javadoc == null) || "".equals(javadoc)) {
-	    javadoc = "/** * /";
-	}
-	getTaggedValue(mOperation, "documentation").setValue(javadoc);
-   *
-   */
-  
-  addDocumentationTag (mOperation, javadoc);
+      mOperation.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+      mOperation.setLeaf((modifiers & JavaRecognizer.ACC_FINAL) > 0);
+      mOperation.setRoot(false);
+      setScope(mOperation, modifiers);
+      setVisibility(mOperation, modifiers);
+      if((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
+          mOperation.setConcurrency(MCallConcurrencyKind.GUARDED);
+      } else if(mOperation.getConcurrency() ==
+          MCallConcurrencyKind.GUARDED) {
+          mOperation.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+      }
 
 
-	mOperation.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-	mOperation.setLeaf((modifiers & JavaRecognizer.ACC_FINAL) > 0);
-	mOperation.setRoot(false);
-	setScope(mOperation, modifiers);
-	setVisibility(mOperation, modifiers);
-	if((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
-	    mOperation.setConcurrency(MCallConcurrencyKind.GUARDED);
-	} else if(mOperation.getConcurrency() ==
-		  MCallConcurrencyKind.GUARDED) {
-	    mOperation.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
-	}
+      for(Iterator i = mOperation.getParameters().iterator(); 
+          i.hasNext(); ) {
+          mOperation.removeParameter((MParameter)i.next());
+      }
 
+      try {
+          MParameter mParameter;
+          String typeName;
+          MPackage mPackage;
+          MClassifier mClassifier;
 
-	for(Iterator i = mOperation.getParameters().iterator(); 
-	    i.hasNext(); ) {
-	    mOperation.removeParameter((MParameter)i.next());
-	}
+          if(returnType == null) {
+        // Constructor
+        mOperation.setStereotype(getStereotype("create"));
+        setScope(mOperation, JavaRecognizer.ACC_STATIC);
+          }
+          else {
+        mParameter = new MParameterImpl();
+        mParameter.setName("return");
+        mParameter.setKind(MParameterDirectionKind.RETURN);
+        mOperation.addParameter(mParameter);
 
-	try {
-	    MParameter mParameter;
-	    String typeName;
-	    MPackage mPackage;
-	    MClassifier mClassifier;
-	    
-	    if(returnType == null) {
-		// Constructor
-		mOperation.setStereotype(getStereotype("create"));
-		setScope(mOperation, JavaRecognizer.ACC_STATIC);
-	    }
-	    else {
-		mParameter = new MParameterImpl();
-		mParameter.setName("return");
-		mParameter.setKind(MParameterDirectionKind.RETURN);
-		mOperation.addParameter(mParameter);
-		
-		mClassifier =
-		    getContext(returnType).get(getClassifierName(returnType));
-		mParameter.setType(mClassifier);
-	    }
-	    
-	    for(Iterator i=parameters.iterator(); i.hasNext(); ) {
-		Vector parameter = (Vector)i.next();
-		mParameter = new MParameterImpl();
-		mParameter.setName((String)parameter.elementAt(2));
-		mParameter.setKind(MParameterDirectionKind.IN);
-		mOperation.addParameter(mParameter);
-		
-		typeName = (String)parameter.elementAt(1);
-		mClassifier =
-		    getContext(typeName).get(getClassifierName(typeName));
-		mParameter.setType(mClassifier);
-	    }
-	}
-	catch(ClassifierNotFoundException e) {
-	    _exception = e;
-	}
+        mClassifier =
+            getContext(returnType).get(getClassifierName(returnType));
+        mParameter.setType(mClassifier);
+          }
 
-	return mOperation;
+          for(Iterator i=parameters.iterator(); i.hasNext(); ) {
+        Vector parameter = (Vector)i.next();
+        mParameter = new MParameterImpl();
+        mParameter.setName((String)parameter.elementAt(2));
+        mParameter.setKind(MParameterDirectionKind.IN);
+        mOperation.addParameter(mParameter);
+
+        typeName = (String)parameter.elementAt(1);
+        mClassifier =
+            getContext(typeName).get(getClassifierName(typeName));
+        mParameter.setType(mClassifier);
+          }
+      }
+      catch(ClassifierNotFoundException e) {
+          _exception = e;
+      }
+
+      /*
+       * Changed 2001-10-05 STEFFEN ZSCHALER.
+       *
+       * Was (space added below!):
+       *
+      if((javadoc == null) || "".equals(javadoc)) {
+          javadoc = "/** * /";
+      }
+      getTaggedValue(mOperation, "documentation").setValue(javadoc);
+       *
+       * Moved to end of method 2001-11-05 to allow addDocumentationTag to
+       * access as much information as possible
+       */
+
+      addDocumentationTag (mOperation, javadoc);
+
+      return mOperation;
     }
 
     /**
@@ -498,103 +499,106 @@ public class Modeller
        @param initializer The initial value of the attribute.
        @param javadoc The javadoc comment. null or "" if no comment available.
     */
-    public void addAttribute(short modifiers,
-                             String typeSpec,
-                             String name,
-			     String initializer,
-                             String javadoc)
-    {
-	MMultiplicity multiplicity = MMultiplicity.M1_1;
+    public void addAttribute (short modifiers,
+                              String typeSpec,
+                              String name,
+                              String initializer,
+                              String javadoc) {
+	    MMultiplicity multiplicity = MMultiplicity.M1_1;
 
-	if(!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
-	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
-	    multiplicity = MMultiplicity.M1_N;
-	}
+      if(!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
+          typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
+          multiplicity = MMultiplicity.M1_N;
+      }
 
-	try {
-	    MClassifier mClassifier =
-		getContext(typeSpec).get(getClassifierName(typeSpec));
-	    MAttribute mAttribute =
-		getAttribute(name, initializer, mClassifier);
+      try {
+          MClassifier mClassifier =
+        getContext(typeSpec).get(getClassifierName(typeSpec));
+          MAttribute mAttribute =
+        getAttribute(name, initializer, mClassifier);
 
-	    if(mAttribute != null) {
-		parseState.feature(mAttribute);
-		
-    /*
-     * Changed 2001-10-05 STEFFEN ZSCHALER
-     *
-     * Was (added space below!):
-     *
-		if((javadoc==null) || "".equals(javadoc)) {
-		    javadoc = "/** * /";
-		}
-		getTaggedValue(mAttribute, "documentation").setValue(javadoc);
-     *
-     */
-    
-    addDocumentationTag (mAttribute, javadoc);
-		
-		setScope(mAttribute, modifiers);
-		setVisibility(mAttribute, modifiers);
-		mAttribute.setMultiplicity(multiplicity);
-		
-		mAttribute.setType(mClassifier);
-		
-		// Set the initial value for the attribute.
-		if(initializer != null) {
-		    mAttribute.setInitialValue(new MExpression("Java",
-							       initializer));
-		}
-		
-		if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-		    mAttribute.setChangeability(MChangeableKind.FROZEN);
-		}
-		else if(mAttribute.getChangeability() ==
-			MChangeableKind.FROZEN ||
-			mAttribute.getChangeability() == null) {
-		    mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
-		}
-	    }
-	    else {
-		MAssociationEnd mAssociationEnd =
-		    getAssociationEnd(name, mClassifier);
-		
-    /*
-     * Changed 2001-10-05 STEFFEN ZSCHALER
-     *
-     * Was (space added below!):
-     *
-		if((javadoc==null) || "".equals(javadoc)) {
-		    javadoc = "/** * /";
-		}
-		getTaggedValue(mAssociationEnd, "documentation")
-		    .setValue(javadoc);
-     *
-     */
-    addDocumentationTag (mAssociationEnd, javadoc);
-		
-		setScope(mAssociationEnd, modifiers);
-		setVisibility(mAssociationEnd, modifiers);
-		mAssociationEnd.setMultiplicity(multiplicity);
-		
-		mAssociationEnd.setType(mClassifier);
-		
-		if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
-		    mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
-		}
-		else if(mAssociationEnd.getChangeability() ==
-			MChangeableKind.FROZEN ||
-			mAssociationEnd.getChangeability() == null) {
-		    mAssociationEnd
-			.setChangeability(MChangeableKind.CHANGEABLE);
-		}
-		
-		mAssociationEnd.setNavigable(true);
-	    }
-	}
-	catch(ClassifierNotFoundException e) {
-	    _exception = e;
-	}
+          if(mAttribute != null) {
+            parseState.feature(mAttribute);
+
+            setScope(mAttribute, modifiers);
+            setVisibility(mAttribute, modifiers);
+            mAttribute.setMultiplicity(multiplicity);
+
+            mAttribute.setType(mClassifier);
+
+            // Set the initial value for the attribute.
+            if(initializer != null) {
+                mAttribute.setInitialValue(new MExpression("Java",
+                             initializer));
+            }
+
+            if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+                mAttribute.setChangeability(MChangeableKind.FROZEN);
+            }
+            else if(mAttribute.getChangeability() ==
+              MChangeableKind.FROZEN ||
+              mAttribute.getChangeability() == null) {
+                mAttribute.setChangeability(MChangeableKind.CHANGEABLE);
+            }
+
+            /*
+             * Changed 2001-10-05 STEFFEN ZSCHALER
+             *
+             * Was (added space below!):
+             *
+            if((javadoc==null) || "".equals(javadoc)) {
+                javadoc = "/** * /";
+            }
+            getTaggedValue(mAttribute, "documentation").setValue(javadoc);
+             *
+             * Moved to end of method 2001-11-05 to allow addDocumentationTag to access
+             * as much information as possible
+             */
+
+            addDocumentationTag (mAttribute, javadoc);
+          }
+          else {
+            MAssociationEnd mAssociationEnd =
+                getAssociationEnd(name, mClassifier);
+
+            setScope(mAssociationEnd, modifiers);
+            setVisibility(mAssociationEnd, modifiers);
+            mAssociationEnd.setMultiplicity(multiplicity);
+
+            mAssociationEnd.setType(mClassifier);
+
+            if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
+                mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
+            }
+            else if(mAssociationEnd.getChangeability() ==
+              MChangeableKind.FROZEN ||
+              mAssociationEnd.getChangeability() == null) {
+                mAssociationEnd
+              .setChangeability(MChangeableKind.CHANGEABLE);
+            }
+
+            mAssociationEnd.setNavigable(true);
+            
+            /*
+             * Changed 2001-10-05 STEFFEN ZSCHALER
+             *
+             * Was (added space below!):
+             *
+            if((javadoc==null) || "".equals(javadoc)) {
+                javadoc = "/** * /";
+            }
+            getTaggedValue(mAssociationEnd, "documentation").setValue(javadoc);
+             *
+             * Moved to end of method 2001-11-05 to allow addDocumentationTag to access
+             * as much information as possible
+             */
+
+            addDocumentationTag (mAssociationEnd, javadoc);
+          }
+      }
+      catch(ClassifierNotFoundException e) {
+          _exception = e;
+      }
     }
 
     /**
@@ -996,28 +1000,47 @@ public class Modeller
   private void addJavadocTagContents (MModelElement me,
                                       String sTagName,
                                       String sTagData) {
-    if (sTagName.equals ("invariant")) {
-      // add as invariant constraint, code below copied and adapted from TabConstraints
-      // Note that no checking of constraint syntax is performed... BAD!
-      MModelElement mmeContext = me;
-      while (! (mmeContext instanceof MClassifier)) {
-        mmeContext = mmeContext.getModelElementContainer();
-      }
+    if ((sTagName.equals ("invariant")) ||
+        (sTagName.equals ("pre-condition")) ||
+        (sTagName.equals ("post-condition"))) {
+
+      // add as OCL constraint
+      String sContext = OCLUtil.getContextString (me);
 
       MConstraint mc = new MConstraintImpl();
-      
       mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
-      
-      mc.setBody (
-          new MBooleanExpression (
-            "OCL",
-            "context " + mmeContext.getName() +
-            " inv " + sTagData
-          )
-        );
+
+      if (sTagName.equals ("invariant")) {
+        // add as invariant constraint
+        // Note that no checking of constraint syntax is performed... BAD!
+        mc.setBody (
+            new MBooleanExpression (
+              "OCL",
+              sContext +
+              " inv " + sTagData
+            )
+          );
+      }
+      else if (sTagName.equals ("pre-condition")) {
+        mc.setBody (
+            new MBooleanExpression (
+              "OCL",
+              sContext +
+              " pre " + sTagData
+            )
+          );
+      }
+      else {
+        mc.setBody (
+            new MBooleanExpression (
+              "OCL",
+              sContext +
+              " post " + sTagData
+            )
+          );
+      }
 
       me.addConstraint (mc);
-
       if (me.getNamespace() != null) {
         // Apparently namespace management is not supported for all model
         // elements. As this does not seem to cause problems, I'll just
@@ -1025,16 +1048,14 @@ public class Modeller
         me.getNamespace().addOwnedElement (mc);
       }
     }
-    // TODO: handle pre- and post-conditions --> this is trickier, as it requires
-    // better derival of the correct context
     else {
       getTaggedValue (
           me,
           sTagName
         ).setValue (sTagData);
     }
-  }  
-    
+  }
+
   /**
    * Add the javadocs as a tagged value 'documentation' to the model element. All
    * comment delimiters are removed prior to adding the comment.
