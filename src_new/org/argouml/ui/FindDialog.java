@@ -108,7 +108,7 @@ public class FindDialog extends ArgoDialog
     }
     
     public FindDialog() {
-        super(ProjectBrowser.getInstance(), "Find", false);
+        super(ProjectBrowser.getInstance(), "Find", ArgoDialog.OK_CANCEL_OPTION, false);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
 
@@ -162,6 +162,8 @@ public class FindDialog extends ArgoDialog
         //setSize(new Dimension(480, 550));
         
         setContent(mainPanel);
+        
+        getOkButton().setEnabled(false);
     }
 
     public void initNameLocTab() {
@@ -319,12 +321,27 @@ public class FindDialog extends ArgoDialog
 
     }
 
+    protected void nameButtons() {
+        super.nameButtons();
+        nameButton(getOkButton(), "button.go-to-selection");
+        nameButton(getCancelButton(), "button.close");
+    }
+    
     ////////////////////////////////////////////////////////////////
     // event handlers
     public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        if (e.getSource() == _search) doSearch();
-        if (e.getSource() == _clearTabs) doClearTabs();
+        if (e.getSource() == _search) {
+            doSearch();
+        } 
+        else if (e.getSource() == _clearTabs) {
+            doClearTabs();
+        } 
+        else if (e.getSource() == getOkButton()) {
+            doGoToSelection();
+        }
+        else {
+            super.actionPerformed(e);
+        }
         //     if (e.getSource() == _spawn) doSpawn();
         //     if (e.getSource() == _go) doGo();
         //     if (e.getSource() == _close) doClose();
@@ -379,6 +396,7 @@ public class FindDialog extends ArgoDialog
         _resultTabs.addElement(newResults);
         _results.addTab(name, newResults);
         _clearTabs.setEnabled(true);
+        getOkButton().setEnabled(true);
         _results.setSelectedComponent(newResults);
         _location.addItem("In Tab: " + name);
         invalidate();
@@ -386,6 +404,7 @@ public class FindDialog extends ArgoDialog
         validate();
         newResults.run();
         newResults.requestFocus();
+        newResults.selectResult(0);
     }
 
     public void doClearTabs() {
@@ -394,6 +413,7 @@ public class FindDialog extends ArgoDialog
             _results.remove((Component) _resultTabs.elementAt(i));
         _resultTabs.removeAllElements();
         _clearTabs.setEnabled(false);
+        getOkButton().setEnabled(false);
         doResetFields(false);
     }
 
@@ -412,6 +432,12 @@ public class FindDialog extends ArgoDialog
 
     public void doResetFields() {
         doResetFields(true);
+    }
+    
+    public void doGoToSelection() {
+        if (_results.getSelectedComponent() instanceof TabResults) {
+            ((TabResults) _results.getSelectedComponent()).doDoubleClick();
+        }
     }
   
     //   public void doSpawn() { }
