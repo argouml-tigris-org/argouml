@@ -30,6 +30,7 @@ import org.argouml.uml.diagram.state.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import java.awt.event.*;
+import javax.swing.JOptionPane;
 import java.beans.*;
 
 
@@ -56,7 +57,12 @@ public class ActionStateDiagram extends UMLChangeAction {
 	Project p = pb.getProject();
 	try {
 	    Object contextObj = pb.getDetailsTarget();
-	    if (!(contextObj instanceof MClass)) return;
+	    if (!(contextObj instanceof MClass)) {
+	    	JOptionPane.showMessageDialog(null, 
+	    	"You need to have a Class as your target in order to\nspecify for what you want to define a behaviour for.",
+	    	"Warning", JOptionPane.WARNING_MESSAGE);
+	    	return;
+	    }
 	    MClass cls = (MClass) contextObj;
 	    String contextNameStr = cls.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
@@ -79,10 +85,11 @@ public class ActionStateDiagram extends UMLChangeAction {
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && p != null &&
-	    (target instanceof MClass);
+    	return true;
+//	ProjectBrowser pb = ProjectBrowser.TheInstance;
+//	Project p = pb.getProject();
+//	Object target = pb.getDetailsTarget();
+//	return super.shouldBeEnabled() && p != null &&
+//	    (target instanceof MClass);
     }
 } /* end class ActionStateDiagram */

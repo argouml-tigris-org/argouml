@@ -121,6 +121,7 @@ public class MenuResourceBundle_de extends ListResourceBundle {
         {"Create", "Erzeugen" },
         {"Mnemonic_Create", "C" },
         {"Diagrams", "Diagramme" },
+        {"Create Diagram", "Neues Diagramm" },
         {"Arrange", "Anordnen" },
         {"Mnemonic_Arrange", "A" },
         {"Align", "Ausrichten" },

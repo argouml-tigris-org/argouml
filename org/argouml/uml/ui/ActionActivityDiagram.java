@@ -33,6 +33,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.activity_graphs.*;
 import java.awt.event.*;
 import java.beans.*;
+import javax.swing.JOptionPane;
 
 
 public class ActionActivityDiagram extends UMLChangeAction {
@@ -57,7 +58,12 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	Project p = pb.getProject();
 	try {
 	    MNamespace ns=(MNamespace)pb.getDetailsTarget();
-	    if (!((ns instanceof MUseCase) || (ns instanceof MClass))) return;
+	    if (!((ns instanceof MUseCase) || (ns instanceof MClass)))  {
+	    	JOptionPane.showMessageDialog(null, 
+	    	"You need to have a class or use case as your target in order to\nspecify for what you want to define a behaviour for.",
+	    	"Warning", JOptionPane.WARNING_MESSAGE);
+	    	return;
+	    };
 	    String contextNameStr = ns.getName();
 	    if (contextNameStr == null) contextNameStr = "untitled";
 	    MActivityGraph am = new MActivityGraphImpl();
@@ -79,10 +85,11 @@ public class ActionActivityDiagram extends UMLChangeAction {
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && p != null &&
-	    ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation
+    	return true;
+//	ProjectBrowser pb = ProjectBrowser.TheInstance;
+//	Project p = pb.getProject();
+//	Object target = pb.getDetailsTarget();
+//	return super.shouldBeEnabled() && p != null &&
+//	    ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation
     }
 } /* end class ActionActivityDiagram */
