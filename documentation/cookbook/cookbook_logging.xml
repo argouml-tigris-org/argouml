@@ -259,3 +259,13 @@ file://home/username/<emphasis>filename.lcf</emphasis>              <co id="ex.u
         </itemizedlist>
 </sect2>
 </sect1> <!-- End of logging -->
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "sect1" nil)
+End:
+
+-->

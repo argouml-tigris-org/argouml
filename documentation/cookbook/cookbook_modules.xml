@@ -651,3 +651,13 @@ which is used as follows:
 </sect2>
 
 </sect1>
+
+<!-- Local stuff for Emacs - please do not delete
+
+Local Variables:
+mode: xml
+sgml-doctype: "cookbook.xml"
+sgml-parent-document: ("cookbook.xml" "sect1" nil)
+End:
+
+-->
