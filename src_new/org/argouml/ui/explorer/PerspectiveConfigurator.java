@@ -45,6 +45,7 @@ import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
@@ -84,7 +85,9 @@ public class PerspectiveConfigurator extends ArgoDialog {
     ////////////////////////////////////////////////////////////////
     // instance variables
     
-    private JPanel  configPanel;
+    private JPanel  configPanelNorth;
+    private JPanel  configPanelSouth;
+    private JSplitPane splitPane;
     private JTextField renameTextField;
     private JList   perspectiveList;
     private JList   perspectiveRulesList;
@@ -112,7 +115,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
 	      ArgoDialog.OK_CANCEL_OPTION,
 	      true); // the dialog is modal
         
-        configPanel = new JPanel();
+        configPanelNorth = new JPanel();
+        configPanelSouth = new JPanel();
         
         makeLists();
         
@@ -124,7 +128,11 @@ public class PerspectiveConfigurator extends ArgoDialog {
 
         loadData();
         
-        setContent(configPanel);
+        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
+                configPanelNorth, configPanelSouth);
+        splitPane.setContinuousLayout(true);
+
+        setContent(splitPane);
     }
 
     /**
@@ -191,18 +199,21 @@ public class PerspectiveConfigurator extends ArgoDialog {
      */
     private void makeLayout() {
         GridBagLayout gb = new GridBagLayout();
-        configPanel.setLayout(gb);
+        configPanelNorth.setLayout(gb);
+        configPanelSouth.setLayout(gb);
         GridBagConstraints c = new GridBagConstraints();
         c.ipadx = 3;      c.ipady = 3;
         
         JLabel persLabel = new JLabel(
             Translator.localize("label.perspectives"));
+        persLabel.setBorder(BorderFactory.createEmptyBorder(
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.fill = GridBagConstraints.BOTH;
         c.gridx = 0;      c.gridy = 0;
         c.gridwidth = 3;
         c.weightx = 1.0;  c.weighty = 0.0;
         gb.setConstraints(persLabel, c);
-        configPanel.add(persLabel);
+        configPanelNorth.add(persLabel);
         
         JPanel persPanel = new JPanel(new BorderLayout());
         JScrollPane persScroll = new JScrollPane(perspectiveList,
@@ -214,7 +225,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.gridwidth = 4;
         c.weightx = 1.0;  c.weighty = 1.0;
         gb.setConstraints(persPanel, c);
-        configPanel.add(persPanel);
+        configPanelNorth.add(persPanel);
         
         JPanel persButtons = new JPanel(new GridLayout(5, 1, 0, 5));
         persButtons.add(newPerspectiveButton);
@@ -231,17 +242,19 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.ipadx = 0;      c.ipady = 0;
         c.insets = new Insets(0, 5, 0, 0);
         gb.setConstraints(persButtonWrapper, c);
-        configPanel.add(persButtonWrapper);
+        configPanelNorth.add(persButtonWrapper);
         
         JLabel ruleLibLabel = new JLabel(
             Translator.localize("label.rules-library"));
+        ruleLibLabel.setBorder(BorderFactory.createEmptyBorder(
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.gridx = 0; c.gridy = 3;
         c.gridwidth = 1;
         c.weightx = 1.0;  c.weighty = 0.0;
         c.ipadx = 3;      c.ipady = 3;
         c.insets = new Insets(10, 0, 0, 0);
         gb.setConstraints(ruleLibLabel, c);
-        configPanel.add(ruleLibLabel);
+        configPanelSouth.add(ruleLibLabel);
         
         addRuleButton.setMargin(new Insets(2, 15, 2, 15));
         removeRuleButton.setMargin(new Insets(2, 15, 2, 15));
@@ -254,16 +267,18 @@ public class PerspectiveConfigurator extends ArgoDialog {
         c.weightx = 0.0;  c.weighty = 0.0;
         c.insets = new Insets(0, 3, 0, 5);
         gb.setConstraints(xferButtons, c);
-        configPanel.add(xferButtons);
+        configPanelSouth.add(xferButtons);
         
         JLabel rulesLabel = new JLabel(
             Translator.localize("label.selected-rules"));
+        rulesLabel.setBorder(BorderFactory.createEmptyBorder(
+                INSET_PX, INSET_PX, INSET_PX, INSET_PX));
         c.gridx = 3;      c.gridy = 3;
         c.gridwidth = 1;
         c.weightx = 1.0;
         c.insets = new Insets(10, 0, 0, 0);
         gb.setConstraints(rulesLabel, c);
-        configPanel.add(rulesLabel);
+        configPanelSouth.add(rulesLabel);
         
         c.gridx = 0;      c.gridy = 4;
         c.weighty = 1.0;
@@ -274,7 +289,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
 			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         gb.setConstraints(ruleLibScroll, c);
-        configPanel.add(ruleLibScroll);
+        configPanelSouth.add(ruleLibScroll);
         
         c.gridx = 3;	  c.gridy = 4;
         c.gridwidth = 2;  c.gridheight = 2;
@@ -282,7 +297,7 @@ public class PerspectiveConfigurator extends ArgoDialog {
 			    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
 			    JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         gb.setConstraints(rulesScroll, c);
-        configPanel.add(rulesScroll);
+        configPanelSouth.add(rulesScroll);
     }
 
     /**
