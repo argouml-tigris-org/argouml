@@ -65,20 +65,6 @@ public class DecisionModel extends Observable implements Serializable {
      */
     public Vector getDecisions() { return decisions; }
 
-    /**
-     * Reply true iff the Designer is considering the given decision.
-     *
-     * @param decision the given decision
-     * @return true if considered
-     */
-    public boolean isConsidering(String decision) {
-	Decision d = findDecision(decision);
-	if (null == d) {
-	    return false;
-	}
-	return d.getPriority() > 0;
-    }
-
 
     /**
      * This function sets the priority of an existing decision, or
@@ -116,15 +102,6 @@ public class DecisionModel extends Observable implements Serializable {
 	}
     }
 
-    /**
-     * The Designer has indicated that he is now interested in the
-     * given decision.
-     *
-     * @param decision the interesting decision
-     */
-    public void startConsidering(String decision) {
-	setDecisionPriority(decision, 1);
-    }
 
     /**
      * The Designer has indicated that he is now interested in the
@@ -137,15 +114,6 @@ public class DecisionModel extends Observable implements Serializable {
 	decisions.addElement(d);
     }
 
-    /**
-     * The Designer has indicated that he is not interested in the
-     * given decision right now.
-     *
-     * @param decision the uninteresting decision
-     */
-    public void stopConsidering(String decision) {
-	setDecisionPriority(decision, 0);
-    }
 
     /**
      * The Designer has indicated that he is not interested in the

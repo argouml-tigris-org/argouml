@@ -584,10 +584,6 @@ public final class Designer
      */
     public DecisionModel getDecisionModel() { return decisions; }
 
-    /**
-     * @return the decisions
-     */
-    public Vector getDecisions() { return decisions.getDecisions(); }
 
     /**
      * @return the goals
@@ -711,16 +707,6 @@ public final class Designer
         return prefs;
     }
 
-    /**
-     * Reply true iff the designer is currently considering the given
-     * decison.
-     *
-     * @param decision the decision
-     * @return true if considered
-     */
-    public boolean isConsidering(String decision) {
-        return decisions.isConsidering(decision);
-    }
 
     /**
      * @param d the decision
@@ -739,42 +725,6 @@ public final class Designer
      */
     public void setDecisionPriority(String decision, int priority) {
         decisions.setDecisionPriority(decision, priority);
-    }
-
-    /**
-     * @param decision the decision
-     * @param priority the priority
-     */
-    public void defineDecision(String decision, int priority) {
-        decisions.defineDecision(decision, priority);
-    }
-
-    /**
-     * @param decision the decision
-     */
-    public void startConsidering(String decision) {
-        decisions.startConsidering(decision);
-    }
-
-    /**
-     * @param d the decision
-     */
-    public void startConsidering(Decision d) {
-        decisions.startConsidering(d);
-    }
-
-    /**
-     * @param decision the decision
-     */
-    public void stopConsidering(String decision) {
-        decisions.stopConsidering(decision);
-    }
-
-    /**
-     * @param d the decision
-     */
-    public void stopConsidering(Decision d) {
-        decisions.stopConsidering(d);
     }
 
     /**
