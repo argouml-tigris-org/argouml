@@ -559,12 +559,8 @@ This chapter covers the Explorer.
       <title>Add to Diagram</title>
 
       <para>This entry on the pop-up menu appears for any artifact that could
-        be added to the diagram in the editing
-        pane. 
-        Usually, this would be the diagram currently displayed in editing pane, or
-        it could be a diagram in a <quote>spawned</quote> window (see
-        <xref linkend="s2.ref.edit_button1_double_click"/> for an explantion of
-        how to do this).</para>
+        be added to the diagram in the editing pane. 
+      </para>
 
       <para>The item can be placed in a diagram by moving the cursor to the
         editing pane or a spawned editing pane window (where it will appear as
@@ -572,21 +568,13 @@ This chapter covers the Explorer.
 
       <caution>
         <para>This menu entry only appears as not grayed out, 
-          when the artifact is not present in the diagram in the editor pane, 
-          while it is allowed to be put there. 
-          Hence, it is only possible to place an artifact on a spawned diagram, 
-          if the <literal>Add&nbsp;to&nbsp;Diagram</literal> function would also work 
-          on the diagram in the editor pane.
-          <!-- TODO: This is not a good situation. Come up with a better
-          alternative. -->  
+          if the diagram in the editor pane allows to contain the artifact, 
+          and the artifact is not present yet in the diagram. 
+          &argouml; will not let you place more than one copy of any particular
+          artifact on a diagram.
         </para>
       </caution>
-
-      <caution><para>A separate known limitation is that the V0.14 release of
-        &argouml; will not let you place more than one copy of any particular
-        artifact on a diagram.</para></caution>
-        <!-- TODO: check if an issue exists for this defect-->
-
+      
     </sect2>
 
     <!-- Delete From Model -->
@@ -619,12 +607,14 @@ To illustrate the differences, consider the following examples:
           <listitem><para>
 Deleting a class diagram does not delete any artifact drawn on it. 
 All artifacts that were shown on the diagram remain present in the model.
-<!-- This because a class diagram does not "map" on any artifact according the UML standard V1.3, chapter 3.19.3 -->
+This because a class diagram does not "map" on any artifact 
+according the UML standard V1.3<!--, chapter 3.19.3-->.
           </para></listitem>
           <listitem><para>
 Deleting a statechart diagram also deletes the statemachine it represents, 
 and hence also all the artifacts owned by the statemachine.
-<!-- This because a statechart diagram does "map" into a StateMachine according the UML standard V1.3, chapter 3.74.3 -->
+This because a statechart diagram does "map" into a StateMachine 
+according the UML standard V1.3<!-- , chapter 3.74.3-->.
           </para></listitem>
         </itemizedlist>
       </caution>
@@ -646,30 +636,25 @@ and hence also all the artifacts owned by the statemachine.
 This entry on the pop-up menu is available 
 whenever an artifact is selected that may contain a package, 
 e.g. a package. 
-
 After activating this menu the artifact will own a new package.
 <!-- TODO: refer to the identical function on the properties pane. -->
       </para>
     </sect2>
 
-    <!-- Properties -->
+    <!-- Add All Classes in Namespace -->
 
     <sect2>
-      <title>Properties</title>
-
+      <title>Add All Classes in Namespace</title>
       <para>
-This entry on the pop-up menu causes the properties tab of the selected artifact or diagram 
-to be displayed in the details pane.
+This entry on the pop-up menu is available 
+for Class Diagrams only. 
+Activating this menu-item will add all classes in the current namespace 
+to the diagram. They will be located at the top left corner&mdash;obviously 
+a perfect occasion to use the <quote>Arrange->Layout</quote> 
+function in the menu.
       </para>
-      <para>
-The use of this function is limited <!-- read: non-existent -->, 
-since the same effect can be obtained by 
-clicking on the tab for the properties in the details pane directly.
-Besides, &argouml; V0.14 always downlights this menu-item.
-<!-- TODO: enter (or check for) an issue to remove this useless function --> 
-      </para>
-
     </sect2>
+
 
   </sect1>
 
