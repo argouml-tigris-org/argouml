@@ -5311,7 +5311,7 @@ breaking it out into its own private commented method.
 	<para>
 Indicate places of future modifications with 
 <programlisting>
-// Needs-More-Work: reason
+// TODO: reason
 </programlisting>
 </para>
       </listitem>
