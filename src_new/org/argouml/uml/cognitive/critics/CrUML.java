@@ -104,6 +104,7 @@ public class CrUML extends Critic {
     static {
 	Designer d = Designer.theDesigner();
 	d.startConsidering(decCLASS_SELECTION);
+        d.startConsidering(decBEHAVIOR);
 	d.startConsidering(decNAMING);
 	d.startConsidering(decSTORAGE);
 	d.startConsidering(decINHERITANCE);
