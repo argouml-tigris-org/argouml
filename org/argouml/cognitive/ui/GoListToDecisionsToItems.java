@@ -40,11 +40,21 @@ public class GoListToDecisionsToItems implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
   
+    /**
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
 	throw new UnsupportedOperationException();
     } 
+    
+    /**
+     * @param r ignored
+     */
     public void setRoot(Object r) { }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
 	    return getDecisions().elementAt(index);
@@ -85,14 +95,26 @@ public class GoListToDecisionsToItems implements TreeModel {
 	return 0;
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
     public int getChildCount(Object parent) {
         return getChildCountCond(parent, false);
     }
+    
+    /**
+     * @param parent the object to check its offspring
+     * @return the nr of children
+     */
     private boolean hasChildren(Object parent) {
         return getChildCountCond(parent, true) > 0;
     }
       
   
+    /**
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, 
+     * java.lang.Object)
+     */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
 	    return getDecisions().indexOf(child);
@@ -113,19 +135,37 @@ public class GoListToDecisionsToItems implements TreeModel {
 	return -1;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
 	if (node instanceof Decision && hasChildren(node)) return false;
 	return true;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     * javax.swing.tree.TreePath, java.lang.Object)
+     */
     public void valueForPathChanged(TreePath path, Object newValue) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void addTreeModelListener(TreeModelListener l) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void removeTreeModelListener(TreeModelListener l) { }
 
     ////////////////////////////////////////////////////////////////
     // utility methods
 
+    /**
+     * @return the decisions
+     */
     public Vector getDecisions() {
 	return Designer.TheDesigner.getDecisionModel().getDecisions();
     }

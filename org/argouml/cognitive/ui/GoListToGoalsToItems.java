@@ -40,11 +40,21 @@ public class GoListToGoalsToItems implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
   
+    /**
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
 	throw new UnsupportedOperationException();
     } 
+    
+    /**
+     * @param r ignored
+     */
     public void setRoot(Object r) { }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
     public Object getChild(Object parent, int index) {
 	if (parent instanceof ToDoList) {
 	    return getGoals().elementAt(index);
@@ -65,6 +75,9 @@ public class GoListToGoalsToItems implements TreeModel {
 					    + "GoListToGoalsToItems");
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
     public int getChildCount(Object parent) {
 	if (parent instanceof ToDoList) {
 	    return getGoals().size();
@@ -83,6 +96,10 @@ public class GoListToGoalsToItems implements TreeModel {
 	return 0;
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(
+     * java.lang.Object, java.lang.Object)
+     */
     public int getIndexOfChild(Object parent, Object child) {
 	if (parent instanceof ToDoList) {
 	    return getGoals().indexOf(child);
@@ -103,14 +120,29 @@ public class GoListToGoalsToItems implements TreeModel {
 	return -1;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
 	if (node instanceof Goal && getChildCount(node) > 0) return false;
 	return true;
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     * javax.swing.tree.TreePath, java.lang.Object)
+     */
     public void valueForPathChanged(TreePath path, Object newValue) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void addTreeModelListener(TreeModelListener l) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void removeTreeModelListener(TreeModelListener l) { }
 
 
@@ -118,6 +150,9 @@ public class GoListToGoalsToItems implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // utility methods
 
+    /**
+     * @return the goals
+     */
     public Vector getGoals() {
 	return Designer.TheDesigner.getGoalModel().getGoals();
     }

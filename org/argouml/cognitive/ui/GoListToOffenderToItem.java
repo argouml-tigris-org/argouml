@@ -43,26 +43,46 @@ public class GoListToOffenderToItem implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
   
+    /**
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
 	throw new UnsupportedOperationException();
     } 
+    
+    /**
+     * @param r ignored
+     */
     public void setRoot(Object r) { }
 
+    /**
+     * @see javax.swing.tree.TreeModel#getChild(java.lang.Object, int)
+     */
     public Object getChild(Object parent, int index) {
 	Vector children = getChildren(parent);
 	return (children == null) ? null : children.elementAt(index);
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
     public int getChildCount(Object parent) {
 	Vector children = getChildren(parent);
 	return (children == null) ? 0 : children.size();
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(
+     * java.lang.Object, java.lang.Object)
+     */
     public int getIndexOfChild(Object parent, Object child) {
 	Vector children = getChildren(parent);
 	return (children == null) ? -1 : children.indexOf(child);
     }
 
+    /**
+     * @see javax.swing.tree.TreeModel#isLeaf(java.lang.Object)
+     */
     public boolean isLeaf(Object node) {
 	if (node instanceof ToDoList) return false;
 	if (getChildCount(node) > 0) return false;
@@ -70,6 +90,10 @@ public class GoListToOffenderToItem implements TreeModel {
     }
 
 
+    /**
+     * @param parent the parent object to check for offspring
+     * @return the children
+     */
     public Vector getChildren(Object parent) {
         VectorSet allOffenders = new VectorSet();
         allOffenders.addAllElementsSuchThat(Designer.TheDesigner.getToDoList().
@@ -97,8 +121,20 @@ public class GoListToOffenderToItem implements TreeModel {
 	return null;
     }
   
+    /**
+     * @see javax.swing.tree.TreeModel#valueForPathChanged(
+     * javax.swing.tree.TreePath, java.lang.Object)
+     */
     public void valueForPathChanged(TreePath path, Object newValue) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#addTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void addTreeModelListener(TreeModelListener l) { }
+    
+    /**
+     * @see javax.swing.tree.TreeModel#removeTreeModelListener(javax.swing.event.TreeModelListener)
+     */
     public void removeTreeModelListener(TreeModelListener l) { }
 
 
@@ -109,7 +145,7 @@ public class GoListToOffenderToItem implements TreeModel {
  * which are already in the trash bin.
  **/
 class PredicateNotInTrash implements Predicate {
-    Project p; 
+    private Project p; 
     public boolean predicate(Object obj) {
         p = ProjectManager.getManager().getCurrentProject();
         if (p == null) return true;
