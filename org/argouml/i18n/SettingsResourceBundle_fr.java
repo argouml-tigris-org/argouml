@@ -34,6 +34,13 @@ import java.awt.event.*;
 *  @since 0.9.4
 */
 public class SettingsResourceBundle_fr extends ListResourceBundle {
+   /*
+    *  Notes for non-french maintainers who might get text and
+    *  have to convert accented letters to unicode characters:
+    *
+    *  \u00e8 is e with grave accent (accent is from NW toward SE)
+    *  \u00e9 is e with acute accent (accent is from NE toward SW)
+    */
 
    static final Object[][] _contents = {
         {"button_ok", "OK"},
@@ -46,9 +53,13 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
         {"label_preload", "Charger les classes communes"},
         {"label_edem", "Rendre compte des statistiques d'utilisation"},
         {"label_profile", "Rendre compte des temps de chargement"},
+        {"label_reload_recent", "Recharger au d\u00e9marrage le dernier projet enregistr\u00e9" }, 
+        {"label_startup_directory", "R\u00e9pertoire de d\u00e9marrage" }, 
         {"tab_preferences", "Pr\u00e9f\u00e9rences"},
-        {"tab_environment", "I18N: Environment"},
-
+        {"tab_environment", "Environnement"},
+        {"tab_notation", "Notations"},
+        {"label_uml_notation_only", "n'utiliser que la notation UML" }, 
+        {"label_use_guillemots", "utiliser des guillemets" }, 
 	{"tab_fonts", "Polices" },
 	{"label_fonts_normal", "Taille normale" },
 	{"label_fonts_big", "Grande taille" },
