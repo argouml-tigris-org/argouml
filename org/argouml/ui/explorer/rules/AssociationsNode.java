@@ -37,22 +37,35 @@ import org.argouml.ui.explorer.WeakExplorerNode;
  */
 public class AssociationsNode implements WeakExplorerNode {
 
-    Object parent;
+    private Object parent;
 
-    /** Creates a new instance of AssociationsNode */
-    public AssociationsNode(Object parent) {
+    /** 
+     * Creates a new instance of AssociationsNode
+     * 
+     * @param theParent the parent object
+     */
+    public AssociationsNode(Object theParent) {
         
-        this.parent = parent;
+        this.parent = theParent;
     }
 
+    /**
+     * @return the parent
+     */
     public Object getParent() {
 	return parent;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	return "Associations";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
+     */
     public boolean subsumes(Object obj) {
 	return obj instanceof AssociationsNode;
     }

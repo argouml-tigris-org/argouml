@@ -37,22 +37,35 @@ import org.argouml.ui.explorer.WeakExplorerNode;
  */
 public class AttributesNode implements WeakExplorerNode {
 
-    Object parent;
+    private Object parent;
 
-    /** Creates a new instance of AttributesNode */
-    public AttributesNode(Object parent) {
+    /** 
+     * Creates a new instance of AttributesNode
+     * 
+     * @param theParent the parent node
+     */
+    public AttributesNode(Object theParent) {
         
-        this.parent = parent;
+        this.parent = theParent;
     }
 
+    /**
+     * @return the parent
+     */
     public Object getParent() {
 	return parent;
     }
 
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
 	return "Attributes";
     }
 
+    /**
+     * @see org.argouml.ui.explorer.WeakExplorerNode#subsumes(java.lang.Object)
+     */
     public boolean subsumes(Object obj) {
 	return obj instanceof AttributesNode;
     }
