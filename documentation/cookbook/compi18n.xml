@@ -50,9 +50,8 @@ See <xref linkend="layer0"></xref>.
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the property files i.e. PropertyResourceBundles.
-In some cases there are instead ListResourceBundle classes but they
-will be changed to property files as soon as the problems with the transition
-is overcome.
+We used to have ListResourceBundle classes instead but they
+are all gone by 0.15.3.
 </para>
       <sect2>
 	<title>Organizing translators</title>
@@ -237,6 +236,23 @@ design documentation of included packages such as GEF, NSUML...
 	<para>
 <itemizedlist>
 	    <listitem>
+	      <para>...fix an incorrect or missing translation?</para>
+	      <para>
+This is the responsibility of the language team.
+Send your corrections to the correct team by mail
+or enter an issue in issuezilla.
+The language team members are listed in the Developer Zone.
+</para>
+	      <para>
+If the language team does not do its work quickly enough
+(or well enough in your opinion),
+please volunteer to help them out by joining the team.
+</para>
+	      <para>
+If the language team does not respond, contact the project leader.
+</para>
+</listitem>
+	    <listitem>
 	      <para>...verify that all translations are up to date?</para>
 	      <para>
 Run checkstyle on the i18n parts.
@@ -268,7 +284,7 @@ As soon as the language code and names (at least one) are in place
 the team is created.
 </para>
 	      <para>
-From that point it is the Language Teams responsibility to 
+From that point it is the Language Team's responsibility to 
 do a good job.
 </para>
 	    </listitem>
@@ -316,16 +332,6 @@ They will have names like:
 <filename>button_<replaceable>language code</replaceable>.properties</filename>,
 <filename>checkbox_<replaceable>language code</replaceable>.properties</filename>,
 <filename>combobox_<replaceable>language code</replaceable>.properties</filename>, ...
-</para>
-	      <para>
-The java files in
-<filename class="directory">argouml/src_new/org/argouml/i18n</filename>
-containing list resources instead of property files,
-are eventually to be converted to property files.
-Until then the java file for your language 
-<filename>UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>
-shall be stored in 
-<filename class="directory">argouml/src_new/org/argouml/i18n</filename>.
 </para>
 	      <para>
 When this is done the first iteration of the Tool translation is completed.
