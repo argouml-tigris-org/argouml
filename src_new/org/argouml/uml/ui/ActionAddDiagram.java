@@ -29,10 +29,12 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
@@ -58,13 +60,44 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         ProjectBrowser pb = ProjectBrowser.TheInstance;
         Project p = ProjectManager.getManager().getCurrentProject();
+        // find the right namespace for the diagram
         Object target = pb.getTarget();
+        if (target == null) {
+            target = p.getRoot();
+        }
+        Object owner = null;
+        if (ModelFacade.isABase(target)) {        
+            owner = ModelFacade.getContainer(target);
+            if (owner == null
+                && p.getRoot() == target) { // if the target is the root model
+                owner = p.getRoot();
+            }
+        }
+        if (ModelFacade.isANamespace(owner) && isValidNamespace(owner)) {
+            UMLDiagram diagram = createDiagram(owner);
+            p.addMember(diagram);
+            ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(diagram);
+            ProjectBrowser.TheInstance.setTarget(diagram);
+            ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+            super.actionPerformed(e);
+        }
+        // Issue 1722
+        // Removed following code so we allways get the correct namespace of the 
+        // diagram (via the getContainer method). 
+        /*    
+        if (ModelFacade.isABase(target)) {
+            MBase base = (MBase)target;
+            base.getModelElementContainer();
+        }
+        }
+        }
         MNamespace ns = null;
         if (target instanceof MNamespace) {
             ns = (MNamespace) target;
         }
         if (ns == null || !isValidNamespace(ns))
             ns = ProjectManager.getManager().getCurrentProject().getModel();
+            
         if (isValidNamespace(ns)) {
             ArgoDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
@@ -73,6 +106,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
             ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
         }
+        */
     }
 
     /**
@@ -81,7 +115,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @param ns
      * @return boolean
      */
-    public abstract boolean isValidNamespace(MNamespace ns);
+    public abstract boolean isValidNamespace(Object ns);
 
     /**
      * Creates the diagram. Classes derived from this class should implement any
@@ -89,6 +123,6 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @param ns The namespace the UMLDiagram should get.
      * @return UMLDiagram
      */
-    public abstract UMLDiagram createDiagram(MNamespace ns);
+    public abstract UMLDiagram createDiagram(Object ns);
 
 }

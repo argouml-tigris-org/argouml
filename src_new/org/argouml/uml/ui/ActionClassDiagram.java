@@ -24,27 +24,24 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
+import org.apache.log4j.Category;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import java.awt.event.*;
-import java.beans.*;
-import org.argouml.i18n.Translator;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to trigger creation of new class diagram.
  *  @stereotype singleton
  */
 public class ActionClassDiagram extends ActionAddDiagram {
+    private Category cat = Category.getInstance(this.getClass());
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     public static ActionClassDiagram SINGLETON = new ActionClassDiagram();
-
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -56,16 +53,29 @@ public class ActionClassDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
-        return new UMLClassDiagram(ns);
+    public UMLDiagram createDiagram(Object ns) {
+        if (ModelFacade.isANamespace(ns)) {
+            return new UMLClassDiagram(ns);
+        }
+        cat.error("No namespace as argument");
+        cat.error(ns);
+        throw new IllegalArgumentException(
+            "The argument " + ns + "is not a namespace.");
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        if (ns instanceof MPackage) return true;
+    public boolean isValidNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
+        if (ns instanceof MPackage)
+            return true;
         return false;
     }
 } /* end class ActionClassDiagram */
-

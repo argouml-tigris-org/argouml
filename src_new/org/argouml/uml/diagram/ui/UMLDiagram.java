@@ -34,6 +34,7 @@ import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 
 import org.tigris.gef.base.CmdSetMode;
@@ -150,10 +151,13 @@ public abstract class UMLDiagram
    * adds the diagram as a listener of its namspace in the UML model.
    * (so that it can delete itself when the model element is deleted).
    */
-  public void setNamespace(MNamespace m) {
-      
-      _namespace = m;
-      
+  public void setNamespace(Object ns) {
+      if (!ModelFacade.isANamespace(ns)) {
+          cat.error("Not a namespace");
+          cat.error(ns);
+          throw new IllegalArgumentException("Given object not a namespace");
+      }      
+      _namespace = (MNamespace)ns;      
       // add the diagram as a listener to the namspace so
       // that when the namespace is remove()d the diagram is deleted also.
       UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);

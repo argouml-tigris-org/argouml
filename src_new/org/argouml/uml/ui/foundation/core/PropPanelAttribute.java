@@ -40,9 +40,6 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 public class PropPanelAttribute extends PropPanelStructuralFeature {
 
 	public PropPanelAttribute() {

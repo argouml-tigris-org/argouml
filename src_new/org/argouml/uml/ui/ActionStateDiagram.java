@@ -24,8 +24,21 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
-import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
+import org.argouml.model.ModelFacade;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .statemachines
+    .StateMachinesFactory;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .statemachines
+    .StateMachinesHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -39,13 +52,13 @@ import ru.novosoft.uml.foundation.core.MNamespace;
  * @stereotype singleton
  */
 public class ActionStateDiagram extends ActionAddDiagram {
-    protected static Category cat = Category.getInstance(ActionStateDiagram.class);
+    protected static Category cat =
+        Category.getInstance(ActionStateDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
     public static ActionStateDiagram SINGLETON = new ActionStateDiagram();
-
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -54,7 +67,9 @@ public class ActionStateDiagram extends ActionAddDiagram {
         super("action.state-diagram");
     }
 
-    protected ActionStateDiagram(String name) { super(name); }
+    protected ActionStateDiagram(String name) {
+        super(name);
+    }
 
     /**
      * Overriden since it should only be possible to add statediagrams and
@@ -62,25 +77,44 @@ public class ActionStateDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return StateMachinesHelper.getHelper().isAddingStatemachineAllowed(ProjectBrowser.TheInstance.getTarget());    	
+        return StateMachinesHelper.getHelper().isAddingStatemachineAllowed(
+            ProjectBrowser.TheInstance.getTarget());
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
+    public UMLDiagram createDiagram(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
         Object target = ProjectBrowser.TheInstance.getTarget();
         // TODO: get rid of the parameter ns
-        MStateMachine machine = StateMachinesFactory.getFactory().buildStateMachine((MModelElement)target);        
-        UMLStateDiagram d = new UMLStateDiagram(machine.getNamespace(), machine);
+        MStateMachine machine =
+            StateMachinesFactory.getFactory().buildStateMachine(
+                (MModelElement)target);
+        UMLStateDiagram d =
+            new UMLStateDiagram(machine.getNamespace(), machine);
         return d;
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        if (ns instanceof MClassifier) return true;
+    public boolean isValidNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
+        if (ns instanceof MClassifier)
+            return true;
         return false;
     }
 

@@ -38,6 +38,7 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -58,22 +59,29 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLSequenceDiagram extends UMLDiagram {
-    protected static Category cat = Category.getInstance(UMLSequenceDiagram.class);
+    protected static Category cat =
+        Category.getInstance(UMLSequenceDiagram.class);
 
     ////////////////
     // actions for toolbar
 
-    protected static Action _actionObject = new CmdCreateNode(MObject.class, "Object");
+    protected static Action _actionObject =
+        new CmdCreateNode(MObject.class, "Object");
 
-    protected static Action _actionLinkWithStimulusCall = new ActionAddLink(MCallAction.class, "StimulusCall");
+    protected static Action _actionLinkWithStimulusCall =
+        new ActionAddLink(MCallAction.class, "StimulusCall");
 
-    protected static Action _actionLinkWithStimulusCreate = new ActionAddLink(MCreateAction.class, "StimulusCreate");
+    protected static Action _actionLinkWithStimulusCreate =
+        new ActionAddLink(MCreateAction.class, "StimulusCreate");
 
-    protected static Action _actionLinkWithStimulusDestroy = new ActionAddLink(MDestroyAction.class, "StimulusDestroy");
+    protected static Action _actionLinkWithStimulusDestroy =
+        new ActionAddLink(MDestroyAction.class, "StimulusDestroy");
 
-    protected static Action _actionLinkWithStimulusSend = new ActionAddLink(MSendAction.class, "StimulusSend");
+    protected static Action _actionLinkWithStimulusSend =
+        new ActionAddLink(MSendAction.class, "StimulusSend");
 
-    protected static Action _actionLinkWithStimulusReturn = new ActionAddLink(MReturnAction.class, "StimulusReturn");
+    protected static Action _actionLinkWithStimulusReturn =
+        new ActionAddLink(MReturnAction.class, "StimulusReturn");
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -98,14 +106,21 @@ public class UMLSequenceDiagram extends UMLDiagram {
         int res = 0;
         int size = figs.size();
         for (int i = 0; i < size; i++) {
-            Fig f = (Fig) figs.elementAt(i);
+            Fig f = (Fig)figs.elementAt(i);
             if (f.getOwner() instanceof MStimulus)
                 res++;
         }
         return res;
     }
 
-    public void setNamespace(MNamespace m) {
+    public void setNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error(
+                "Illegal argument. Object " + handle + " is not a namespace");
+            throw new IllegalArgumentException(
+                "Illegal argument. Object " + handle + " is not a namespace");
+        }
+        MNamespace m = (MNamespace)handle;
         super.setNamespace(m);
         SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
         gm.setNamespace(m);
@@ -113,12 +128,16 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
         LayerPerspective lay;
         if (m == null) {
-            cat.error("SEVERE WARNING: Sequence diagram was created " + "without a valid namesspace. " + "Setting namespace to empty.");
+            cat.error(
+                "SEVERE WARNING: Sequence diagram was created "
+                    + "without a valid namesspace. "
+                    + "Setting namespace to empty.");
             lay = new SequenceDiagramLayout("", gm);
         } else
             lay = new SequenceDiagramLayout(m.getName(), gm);
         setLayer(lay);
-        SequenceDiagramRenderer rend = new SequenceDiagramRenderer(); // singleton
+        SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
+        // singleton
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
     }
@@ -166,14 +185,15 @@ public class UMLSequenceDiagram extends UMLDiagram {
             FigSeqObject dest = null;
 
             while (oeIterator.hasNext()) {
-                MModelElement me = (MModelElement) oeIterator.next();
+                MModelElement me = (MModelElement)oeIterator.next();
 
                 if (me instanceof MLink) {
-                    stimuli = ((MLink) me).getStimuli();
+                    stimuli = ((MLink)me).getStimuli();
                     stimuliIterator = stimuli.iterator();
                     while (stimuliIterator.hasNext()) {
-                        MStimulus stimulus = (MStimulus) stimuliIterator.next();
-                        FigSeqStimulus figStimulus = (FigSeqStimulus) lay.presentationFor(stimulus);
+                        MStimulus stimulus = (MStimulus)stimuliIterator.next();
+                        FigSeqStimulus figStimulus =
+                            (FigSeqStimulus)lay.presentationFor(stimulus);
                         if (figStimulus != null) {
                             figStimulus.addPathItemToLink(lay);
                         }
@@ -192,7 +212,10 @@ public class UMLSequenceDiagram extends UMLDiagram {
         String name = null;
         name = "Sequence Diagram " + _SequenceDiagramSerial;
         _SequenceDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

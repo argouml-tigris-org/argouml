@@ -24,12 +24,11 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** Action to create a new use case diagram.
  *  @stereotype singleton
@@ -45,17 +44,26 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
+    public UMLDiagram createDiagram(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
         return new UMLUseCaseDiagram(ns);
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        if (ns instanceof MPackage) return true;
-        if (ns instanceof MClassifier) return true;
-        return false;
+    public boolean isValidNamespace(Object handle) {
+        boolean validNamespace = false;
+        if (ModelFacade.isAPackage(handle)
+            || ModelFacade.isAClassifier(handle))
+            validNamespace = true;
+        return validNamespace;
     }
 
 } /* end class ActionUseCaseDiagram */

@@ -24,12 +24,19 @@
 
 package org.argouml.uml.ui;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
-import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
+import org
+    .argouml
+    .model
+    .uml
+    .behavioralelements
+    .collaborations
+    .CollaborationsHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -43,7 +50,8 @@ import ru.novosoft.uml.model_management.MModel;
  */
 public class ActionCollaborationDiagram extends ActionAddDiagram {
 
-    public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram();
+    public static ActionCollaborationDiagram SINGLETON =
+        new ActionCollaborationDiagram();
 
     private ActionCollaborationDiagram() {
         super("action.collaboration-diagram");
@@ -52,35 +60,46 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
+    public UMLDiagram createDiagram(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
         Object target = ProjectBrowser.TheInstance.getTarget();
         MCollaboration c = null;
         if (target instanceof MOperation) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    ns);
             c.setRepresentedOperation((MOperation)target);
-        } else
-        if (target instanceof MClassifier) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MClassifier)target);
+        } else if (target instanceof MClassifier) {
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    (MClassifier)target);
             c.setRepresentedClassifier((MClassifier)target);
-        } else
-        if (target instanceof MModel) {
-            c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
-        } else
-        if (target instanceof MInteraction) {
+        } else if (target instanceof MModel) {
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    (MModel)target);
+        } else if (target instanceof MInteraction) {
             c = ((MInteraction)target).getContext();
-        } else
-        if (target instanceof UMLCollaborationDiagram) {
+        } else if (target instanceof UMLCollaborationDiagram) {
             Object o = ((UMLCollaborationDiagram)target).getOwner();
-            if (o instanceof MCollaboration) { //preventing backward compat problems
+            if (o instanceof MCollaboration) {
+                //preventing backward compat problems
                 c = (MCollaboration)o;
             }
-        } else
-        if (target instanceof MCollaboration) {
+        } else if (target instanceof MCollaboration) {
             c = (MCollaboration)target;
         } else {
-            c =  UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+            c =
+                UmlFactory.getFactory().getCollaborations().buildCollaboration(
+                    ns);
         }
-        UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
+        UMLCollaborationDiagram d = new UMLCollaborationDiagram(c);
         return d;
     }
 
@@ -88,8 +107,16 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      * @see org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper#isAddingCollaborationAllowed(Object)
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(ns);
+    public boolean isValidNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
+        return CollaborationsHelper.getHelper().isAddingCollaborationAllowed(
+            ns);
     }
 
     /**
@@ -97,12 +124,12 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        
+
         Object target = ProjectBrowser.TheInstance.getTarget();
-        if(target instanceof MNamespace)
+        if (target instanceof MNamespace)
             return isValidNamespace((MNamespace)target);
         else
             return false;
     }
-    
+
 } /* end class ActionCollaborationDiagram */

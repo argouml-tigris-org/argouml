@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -38,8 +39,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-    public static ActionDeploymentDiagram SINGLETON = new ActionDeploymentDiagram();
-
+    public static ActionDeploymentDiagram SINGLETON =
+        new ActionDeploymentDiagram();
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -54,17 +55,31 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
-    public UMLDiagram createDiagram(MNamespace ns) {
+    public UMLDiagram createDiagram(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
         return new UMLDeploymentDiagram(ns);
     }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
-    public boolean isValidNamespace(MNamespace ns) {
-        
-         // may only occur as child of the model or in a package
-        return (ns == ProjectManager.getManager().getCurrentProject().getModel()
+    public boolean isValidNamespace(Object handle) {
+        if (!ModelFacade.isANamespace(handle)) {
+            cat.error("No namespace as argument");
+            cat.error(handle);
+            throw new IllegalArgumentException(
+                "The argument " + handle + "is not a namespace.");
+        }
+        MNamespace ns = (MNamespace)handle;
+        // may only occur as child of the model or in a package
+        return (
+            ns == ProjectManager.getManager().getCurrentProject().getModel()
                 || ns instanceof MPackage);
     }
 
