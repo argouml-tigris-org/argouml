@@ -1,6 +1,0 @@
-SOURCES= \
-	GraphSelectionEvent.java \
-	GraphSelectionListener.java \
-	ModeChangeEvent.java \
-	ModeChangeListener.java
-

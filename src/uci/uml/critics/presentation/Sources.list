@@ -1,4 +1,0 @@
-SOURCES= \
-	CrNodesOverlap.java \
-	CrZeroLengthEdge.java
-

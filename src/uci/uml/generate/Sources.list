@@ -1,9 +1,0 @@
-SOURCES= \
-	GenerationPreferences.java \
-	Generator.java \
-	GeneratorDisplay.java \
-	GeneratorJava.java \
-	JavaUML.java \
-	Parser.java \
-	ParserDisplay.java
-

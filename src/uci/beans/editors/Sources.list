@@ -1,6 +1,0 @@
-SOURCES= \
-	ColorEditor.java \
-	ColorPickerGrid.java \
-	ColorTilePanel.java \
-	RectangleEditor.java
-
