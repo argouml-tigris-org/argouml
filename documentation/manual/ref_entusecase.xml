@@ -485,26 +485,26 @@ Lists any specialized actor (i.e. for which
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Associations -->
+        <!-- Entry for AssociationEnds -->
 
         <varlistentry>
-          <term><literal>Associations</literal></term>
+          <term><literal>AssociationEnds</literal></term>
 
           <listitem>
             <indexterm>
-              <primary>Actor Associations</primary>
+              <primary>Actor AssociationEnds</primary>
             </indexterm>
             <indexterm>
-              <primary>Associations</primary>
+              <primary>AssociationEnds</primary>
               <secondary>of Actor</secondary>
             </indexterm>
 
             <para>Text area. 
-Lists any associations connected to the
-actor.
-&Button1; Double Click
-on an association will navigate to that association.
-</para>
+              Lists any associationends of associations connected to this actor.
+            </para>
+            <para>
+              &Button1; Double Click navigates to the selected entry.
+            </para>
 
           </listitem>
         </varlistentry>
@@ -1074,64 +1074,23 @@ will navigate to that relationship.
           </listitem>
         </varlistentry>
 
-        <!-- Entry for Associations -->
+        <!-- Entry for Association Ends -->
 
-<!-- Issue: 2143
         <varlistentry>
-          <term><literal>Associations</literal></term>
+          <term><literal>Association Ends</literal></term>
 
-          <listitem>
-            <indexterm>
-              <primary>Use Case Associations</primary>
-            </indexterm>
-            <indexterm>
-              <primary>Associations</primary>
-              <secondary>of Use Case</secondary>
-            </indexterm>
+          <listitem><para>Text box. Lists any association ends 
+              (see <xref linkend="s1.ref.association_class"/>) 
+              of associations connected to this use case.
+            </para>
 
-            <para>Text area.
-Lists any associations connected to the
-            use case. &Button1; click on an association will navigate
-            to that association. &Button2; click gives a pop up menu with
-            five options.</para>
+            <para>
+              &Button1; double click navigates to the selected entry.
+            </para>
 
-          <itemizedlist>
-            <listitem><para><literal>Open</literal>. Navigate to the
-              association.</para></listitem>
-
-            <listitem><para><literal>Add</literal>. Add a new
-              association. Note that the new association is added to the
-              model, but not the diagram. You will need to find it in the
-              explorer and add it from there.</para>
-
-            <tip><para>It is far easier to add associations by drawing them
-              on the relevant diagram in the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Delete</literal>. Where an association
-              is linked to a use case, this removes the link to the use
-              case.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              association from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove associations from the editing
-              pane.</para></tip></listitem>
-
-            <listitem><para><literal>Move Up</literal>. Only available where
-             there are two or more associations listed, and the association
-             selected is not at the top. It is moved up one.</para></listitem>
-
-            <listitem><para><literal>Move Down</literal>. Only available where
-             there are two or more associations listed, and the association
-             selected is not at the bottom. It is moved down
-one.
-</para>
-              </listitem>
-            </itemizedlist>
           </listitem>
         </varlistentry>
--->
+
 
         <!-- Entry for Operations -->
 
