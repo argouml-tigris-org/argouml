@@ -30,6 +30,10 @@
 // project as needing saving if a text field is changed.
 package org.argouml.uml.ui;
 import java.text.*;
+import java.util.Iterator;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+
 import javax.swing.event.*;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -156,7 +160,7 @@ public class UMLTextField
      *   drawing as information is typed into the text boxes in the property
      *   panes. This is done by getting component parts (features or extension
      *   points) from the NSUML object and setting them back again to force a
-     *   redraw.</p>
+     *   redraw. The setting back costs VERY much.</p>
      *
      * @author modified by psager@tigris.org Aug. 27, 2001
      *
@@ -178,13 +182,31 @@ public class UMLTextField
         // Now look at the associated NSUML element and see if we need to do
         // anything special. Discard if we are null. As a start we need to mark
         // this for saving.
+        // 2002-08-02
+        // Jaap Branderhorst
+        // the only reason to do this next bit is to update the diagrams. 
+        // (according to the javadoc and what i see). This can be done in a 
+        // better way, by searching the appropriate figs and update them
         _target = _container.getTarget();
         if (_target == null) {
             return;
+        }  
+       
+    
+        Project p = ProjectBrowser.TheInstance.getProject();
+        // start new code
+        Iterator it = p.findFigsForMember(_target).iterator();
+        while (it.hasNext()) {
+            Object o = it.next();
+            if (o instanceof MElementListener) {
+                ((MElementListener)o).propertySet(null);
+            }
         }
+        // end new code
+        // commented out rest of update
+        /*    
         // Commented out for now, because this triggers from all over the
         // place.
-        Project p = ProjectBrowser.TheInstance.getProject();
         //p.setNeedsSave(true);
         // If we are a use case update all our extension points.
         if (_target instanceof MUseCase) {
@@ -249,6 +271,8 @@ public class UMLTextField
                             if (_target instanceof MCallEvent) {
                                 //            Argo.log.info("UMLTextField.update()...target = " + _target);
                             }
+          */
+            
     }
     
     public void changedUpdate(final DocumentEvent p1) {
