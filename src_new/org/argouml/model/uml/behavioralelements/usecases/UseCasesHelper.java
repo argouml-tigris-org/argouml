@@ -93,6 +93,10 @@ public class UseCasesHelper {
     /**
      * Returns all usecases in the current project model.
      * @return Collection
+     * 
+     * @deprecated by MVW in V0.17.2. Use #getAllUseCases(MNamespace ns) 
+     * instead.
+     * Reason: See issue 1814 - and it is never used.
      */
     public Collection getAllUseCases() {
     	MNamespace model =
@@ -126,6 +130,9 @@ public class UseCasesHelper {
     /**
      * Returns all actors in the current project model.
      * @return Collection
+     * 
+     * @deprecated by MVW in V0.17.2. Use #getAllActors(MNamespace ns) instead.
+     * Reason: See issue 1814 - and it is never used.
      */
     public Collection getAllActors() {
     	MNamespace model =
