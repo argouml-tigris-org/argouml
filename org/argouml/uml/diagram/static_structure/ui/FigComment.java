@@ -31,7 +31,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
@@ -52,7 +51,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -80,92 +78,84 @@ public class FigComment
 	       KeyListener,
 	       PropertyChangeListener
 {
-    protected static Logger cat = Logger.getLogger(FigComment.class);
+    private static final Logger LOG = Logger.getLogger(FigComment.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
     // public final int MARGIN = 2;
-    public int x = 0;
-    public int y = 0;
-    public int width = 80;
-    public int height = 60;
-    public int gapY = 10;
+    private int x = 0;
+    private int y = 0;
+    private int width = 80;
+    private int height = 60;
+    private int gapY = 10;
 
-    protected boolean _readyToEdit = true;
+    private boolean readyToEdit = true;
 
-    public static Font LABEL_FONT;
-    public static Font ITALIC_LABEL_FONT;
-    public final int MARGIN = 2;
 
-    static {
-        LABEL_FONT = LookAndFeelMgr.getInstance().getSmallFont();
-        ITALIC_LABEL_FONT = new Font(LABEL_FONT.getFamily(),
-				     Font.ITALIC,
-				     LABEL_FONT.getSize());
-    }
+    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    // The model element the note is attached to.
-    private Object _noteOwner = null;
-
     // The figure that holds the text of the note.
-    FigText _text;
+    private FigText text;
 
-    FigPoly _body;
-    FigPoly _urCorner;
+    private FigPoly body;
+    private FigPoly urCorner;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The main constructor used for file loading.
+     */
     public FigComment() {
-        _body = new FigPoly(Color.black, Color.white);
-        _body.addPoint(x, y);
-        _body.addPoint(x + width - 1 - gapY, y);
-        _body.addPoint(x + width - 1, y + gapY);
-        _body.addPoint(x + width - 1, y + height - 1);
-        _body.addPoint(x, y + height - 1);
-        _body.addPoint(x, y);
-        _body.setFilled(true);
-        _body.setLineWidth(1);
+        body = new FigPoly(Color.black, Color.white);
+        body.addPoint(x, y);
+        body.addPoint(x + width - 1 - gapY, y);
+        body.addPoint(x + width - 1, y + gapY);
+        body.addPoint(x + width - 1, y + height - 1);
+        body.addPoint(x, y + height - 1);
+        body.addPoint(x, y);
+        body.setFilled(true);
+        body.setLineWidth(1);
 
-        _urCorner = new FigPoly(Color.black, Color.white);
-        _urCorner.addPoint(x + width - 1 - gapY, y);
-        _urCorner.addPoint(x + width - 1, y + gapY);
-        _urCorner.addPoint(x + width - 1 - gapY, y + gapY);
-        _urCorner.addPoint(x + width - 1 - gapY, y);
-        _urCorner.setFilled(true);
-        _urCorner.setLineWidth(1);
+        urCorner = new FigPoly(Color.black, Color.white);
+        urCorner.addPoint(x + width - 1 - gapY, y);
+        urCorner.addPoint(x + width - 1, y + gapY);
+        urCorner.addPoint(x + width - 1 - gapY, y + gapY);
+        urCorner.addPoint(x + width - 1 - gapY, y);
+        urCorner.setFilled(true);
+        urCorner.setLineWidth(1);
 
         setBigPort(new FigRect(x, y, width, height, null, null));
         getBigPort().setFilled(false);
         getBigPort().setLineWidth(0);
 
-        _text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
-        _text.setFont(LABEL_FONT);
-        _text.setTextColor(Color.black);
-        _text.setMultiLine(true);
-        _text.setAllowsTab(false);
+        text = new FigText(2, 2, width - 2 - gapY, height - 4, true);
+        text.setFont(getLabelFont());
+        text.setTextColor(Color.black);
+        text.setMultiLine(true);
+        text.setAllowsTab(false);
         // _text.setText(placeString());
-        _text.setJustification(FigText.JUSTIFY_LEFT);
-        _text.setFilled(false);
-        _text.setLineWidth(0);
+        text.setJustification(FigText.JUSTIFY_LEFT);
+        text.setFilled(false);
+        text.setLineWidth(0);
         //_text.setLineColor(Color.white);
 
         // add Figs to the FigNode in back-to-front order
         addFig(getBigPort());
-        addFig(_body);
-        addFig(_urCorner);
-        addFig(_text);
+        addFig(body);
+        addFig(urCorner);
+        addFig(text);
 
         setBlinkPorts(false); //make port invisble unless mouse enters
         Rectangle r = getBounds();
         setBounds(r.x, r.y, r.width, r.height);
         updateEdges();
 
-        _readyToEdit = false;
+        readyToEdit = false;
     }
 
     /**
@@ -181,14 +171,15 @@ public class FigComment
 
     /**
      * Create a note for a given model element.
-     * @deprecated as of 0.17.1 nobody should use this constructor since it not only constructs
-     * the fig but also the model behind it. That should not be done by a fig which is only a view to the model
+     * @deprecated as of 0.17.1 nobody should use this constructor since 
+     * it not only constructs the fig but also the model behind it. 
+     * That should not be done by a fig which is only a view to the model
      * @param element The annotated model element.
      */
     public FigComment(Object element) {
         this(); // Construct the figure.
 
-        if(!ModelFacade.isAModelElement(element)){
+        if (!ModelFacade.isAModelElement(element)) {
             throw new IllegalArgumentException();
         }
 
@@ -208,16 +199,19 @@ public class FigComment
 	    // If the current target is a statechart diagram, we have to
 	    // check, if we are editing the diagram.
             ProjectBrowser pb = ProjectBrowser.getInstance(); 
-            if (TargetManager.getInstance().getTarget() instanceof UMLStateDiagram) { 
+            if (TargetManager.getInstance().getTarget() 
+                    instanceof UMLStateDiagram) { 
                 StateDiagramGraphModel gm =
 		    (StateDiagramGraphModel)
-		    (((UMLStateDiagram) TargetManager.getInstance().getTarget()).getGraphModel());
+		    (((UMLStateDiagram) TargetManager.getInstance()
+		            .getTarget()).getGraphModel());
 		// We are editing, so we set the Namespace directly.
                 ModelFacade.setNamespace(comment, gm.getNamespace());
             }
         } else {
 	    // Add the comment to the same namespace as the annotated element.
-            ModelFacade.setNamespace(comment, ModelFacade.getNamespace(element));
+            ModelFacade.setNamespace(comment, 
+                    ModelFacade.getNamespace(element));
         }
 
         storeNote(placeString()); // Set the default text for this figure type.
@@ -244,9 +238,9 @@ public class FigComment
         FigComment figClone = (FigComment) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
         figClone.setBigPort((FigRect) it.next());
-        figClone._body = (FigPoly) it.next();
-        figClone._urCorner = (FigPoly) it.next();
-        figClone._text = (FigText) it.next();
+        figClone.body = (FigPoly) it.next();
+        figClone.urCorner = (FigPoly) it.next();
+        figClone.text = (FigText) it.next();
         return figClone;
     }
 
@@ -259,14 +253,17 @@ public class FigComment
 
     /** If the user double clicks on any part of this FigNode, pass it
      *  down to one of the internal Figs.  This allows the user to
-     *  initiate direct text editing. */
+     *  initiate direct text editing. 
+     * 
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     public void mouseClicked(MouseEvent me) {
-        if (!_readyToEdit) {
+        if (!readyToEdit) {
             if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 Object own = /*(MModelElement)*/ getOwner();
-                _readyToEdit = true;
+                readyToEdit = true;
             } else {
-                cat.debug("not ready to edit note");
+                LOG.debug("not ready to edit note");
                 return;
             }
         }
@@ -285,6 +282,9 @@ public class FigComment
         me.consume();
     }
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
         if (src == getOwner()) {
@@ -292,10 +292,13 @@ public class FigComment
 		new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
         } else
-            cat.debug("FigNodeModelElement got vetoableChange"
+            LOG.debug("FigNodeModelElement got vetoableChange"
 		      + " from non-owner:" + src);
     }
 
+    /**
+     * @see org.argouml.kernel.DelayedVChangeListener#delayedVetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce) {
         Object src = pce.getSource();
         // update any text, colors, fonts, etc.
@@ -304,6 +307,9 @@ public class FigComment
         endTrans();
     }
 
+    /**
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     */
     public void propertyChange(PropertyChangeEvent pve) {
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
@@ -321,20 +327,23 @@ public class FigComment
                 setBounds(bbox.x, bbox.y, bbox.width, bbox.height);
                 endTrans();
             } catch (PropertyVetoException ex) {
-                cat.error("could not parse and use the text entered "
+                LOG.error("could not parse and use the text entered "
 			  + "in figcomment", ex);
             }
         } else
             super.propertyChange(pve);
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+     */
     public void keyPressed(KeyEvent ke) {
-        if (!_readyToEdit) {
+        if (!readyToEdit) {
             if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
                 storeNote("");
-                _readyToEdit = true;
+                readyToEdit = true;
             } else {
-                cat.debug("not ready to edit note");
+                LOG.debug("not ready to edit note");
                 return;
             }
         }
@@ -342,67 +351,103 @@ public class FigComment
             return;
         if (getOwner() == null)
             return;
-        _text.keyPressed(ke);
+        text.keyPressed(ke);
     }
 
-    /** not used, do nothing. */
+    /** not used, do nothing. 
+     * 
+     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+     */
     public void keyReleased(KeyEvent ke) {
     }
 
+    /**
+     * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+     */
     public void keyTyped(KeyEvent ke) {
     }
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
+     */
     public void setLineColor(Color col) {
         // The _text element has no border, so the line color doesn't matter.
-        _body.setLineColor(col);
-        _urCorner.setLineColor(col);
+        body.setLineColor(col);
+        urCorner.setLineColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineColor()
+     */
     public Color getLineColor() {
-        return _body.getLineColor();
+        return body.getLineColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
+     */
     public void setFillColor(Color col) {
-        _body.setFillColor(col);
-        _urCorner.setFillColor(col);
+        body.setFillColor(col);
+        urCorner.setFillColor(col);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFillColor()
+     */
     public Color getFillColor() {
-        return _body.getFillColor();
+        return body.getFillColor();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
+     */
     public void setFilled(boolean f) {
-        _text.setFilled(false); // The text is always opaque.
-        _body.setFilled(f);
-        _urCorner.setFilled(f);
+        text.setFilled(false); // The text is always opaque.
+        body.setFilled(f);
+        urCorner.setFilled(f);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getFilled()
+     */
     public boolean getFilled() {
-        return _body.getFilled();
+        return body.getFilled();
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
+     */
     public void setLineWidth(int w) {
-        _text.setLineWidth(0); // Make a seamless integration of the text
+        text.setLineWidth(0); // Make a seamless integration of the text
         // in the note figure.
-        _body.setLineWidth(w);
-        _urCorner.setLineWidth(w);
+        body.setLineWidth(w);
+        urCorner.setLineWidth(w);
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getLineWidth()
+     */
     public int getLineWidth() {
-        return _body.getLineWidth();
+        return body.getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
+     */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == _text)
+        if (ft == text)
             storeNote(ft.getText());
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#setEnclosingFig(org.tigris.gef.presentation.Fig)
+     */
     public void setEnclosingFig(Fig encloser) {
         super.setEnclosingFig(encloser);
     }
@@ -431,6 +476,9 @@ public class FigComment
 	    : null;
     }
 
+    /**
+     * @see org.tigris.gef.presentation.Fig#getUseTrapRect()
+     */
     public boolean getUseTrapRect() {
         return true;
     }
@@ -443,7 +491,7 @@ public class FigComment
     public Dimension getMinimumSize() {
 
         // Get the size of the text field.
-        Dimension textMinimumSize = _text.getMinimumSize();
+        Dimension textMinimumSize = text.getMinimumSize();
 
         // And add the gaps around the textfield to get the minimum
         // size of the note.
@@ -451,35 +499,41 @@ public class FigComment
 			     textMinimumSize.height + 4);
     }
 
-    public void setBounds(int x, int y, int w, int h) {
-        if (_text == null)
+    /**
+     * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
+     */
+    public void setBounds(int px, int py, int w, int h) {
+        if (text == null)
             return;
 
         Rectangle oldBounds = getBounds();
 
         // Resize the text figure
-        _text.setBounds(x + 2, y + 2, w - 4 - gapY, h - 4);
+        text.setBounds(px + 2, py + 2, w - 4 - gapY, h - 4);
 
         // Resize the big port around the figure
-        getBigPort().setBounds(x, y, w, h);
+        getBigPort().setBounds(px, py, w, h);
 
         // Since this is a complex polygon, there's no easy way to resize it.
         Polygon newPoly = new Polygon();
-        newPoly.addPoint(x, y);
-        newPoly.addPoint(x + w - 1 - gapY, y);
-        newPoly.addPoint(x + w - 1, y + gapY);
-        newPoly.addPoint(x + w - 1, y + h - 1);
-        newPoly.addPoint(x, y + h - 1);
-        newPoly.addPoint(x, y);
-        _body.setPolygon(newPoly);
+        newPoly.addPoint(px, py);
+        newPoly.addPoint(px + w - 1 - gapY, py);
+        newPoly.addPoint(px + w - 1, py + gapY);
+        newPoly.addPoint(px + w - 1, py + h - 1);
+        newPoly.addPoint(px, py + h - 1);
+        newPoly.addPoint(px, py);
+        body.setPolygon(newPoly);
 
         // Just move the corner to it's new position.
-        _urCorner.setBounds(x + w - 1 - gapY, y, gapY, gapY);
+        urCorner.setBounds(px + w - 1 - gapY, py, gapY, gapY);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         firePropChange("bounds", oldBounds, getBounds());
     }
 
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#updateBounds()
+     */
     protected void updateBounds() {
         Rectangle bbox = getBounds();
         Dimension minSize = getMinimumSize();
@@ -494,13 +548,15 @@ public class FigComment
     /**
      * This is called aftern any part of the UML MModelElement has
      * changed. This method automatically updates the note FigText.
+     *
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected final void modelChanged(MElementEvent mee) {
         super.modelChanged(mee);
 
         String noteStr = retrieveNote();
         if (noteStr != null)
-            _text.setText(noteStr);
+            text.setText(noteStr);
 
     }
 
@@ -509,9 +565,9 @@ public class FigComment
      */
     protected void updateNameText() {
         if (getOwner() != null) {
-            String text = org.argouml.model.ModelFacade.getName(getOwner());
-            if (text != null) {
-                _text.setText(text);
+            String t = org.argouml.model.ModelFacade.getName(getOwner());
+            if (t != null) {
+                text.setText(t);
                 calcBounds();
                 setBounds(getBounds());
             }
