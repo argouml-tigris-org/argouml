@@ -37,6 +37,7 @@ import org.tigris.gef.util.*;
  * This class belongs in org.argouml.util
  * @author Eugenio Alvarez
  *
+ * @deprecated as of 0.15.2, replace with nothing, remove in 0.15.3, alexb
  */
 public class PredNOT implements Predicate {
 

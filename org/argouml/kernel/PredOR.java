@@ -37,6 +37,7 @@ import org.tigris.gef.util.*;
  *
  * @author Eugenio Alvarez
  *
+ * @deprecated as of 0.15.2, replace with nothing, remove in 0.15.3, alexb
  */
 public class PredOR implements Predicate {
     protected Predicate _predicate1;
