@@ -4808,9 +4808,9 @@ public class ModelFacade {
             handle instanceof MModelElement
                 && container instanceof MNamespace) {
             ((MModelElement) handle).setNamespace((MNamespace) container);
-        }
-
-	illegalArgument(handle, container);
+        } else {
+	    illegalArgument(handle, container);
+	}
     }
 
     /**
