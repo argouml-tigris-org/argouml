@@ -7,7 +7,7 @@ Top level description of all the artifacts within ArgoUML.
 -->
 
 <chapter id="ch.ref.entities">
-  <title>&argouml; Top Level Artifact Reference</title>
+  <title>Top Level Artifact Reference</title>
 
   <sect1>
     <title>Introduction</title>
@@ -42,8 +42,8 @@ Top level description of all the artifacts within ArgoUML.
     <note><para>&argouml; is restricted to one model within the
       tool.</para></note>
 
-    <para>Where standard data types, classes and packages are loaded (the
-      default, see <xref linkend="ch.ref.entbuiltin"/>), these are sub-packages
+    <para>Standard data types, classes and packages are loaded (the
+      default, see <xref linkend="ch.ref.entbuiltin"/>) as sub-packages
 of the model.
 These sub-packages are not initially present in the model 
 but are added to the model when used.
@@ -114,9 +114,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Model</literal> within the UML
-            meta-model.</para></listitem>
+          <listitem><para>Standard tab. 
+This tab is downlighted, since constraints are not defined for a 
+<literal>Model</literal> within the &argouml; metamodel.
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -173,7 +174,8 @@ model.
 </para>
             <para>
 Since the model is the top package nothing will happen.
-</para>
+<!-- TODO: Shouldn't it better be downlighted or absent then? See issue ... -->
+            </para>
           </listitem>
         </varlistentry>
 
@@ -221,9 +223,10 @@ While it can make sense to create Packages of the
 
           <listitem>
             <para>
-This has no effect. 
-It is meaningless to delete the model!
-</para>
+This tool is always downlighted, since. 
+it is meaningless to delete the model!
+<!-- TODO: Shouldn't it better be absent then? See issue ... -->
+            </para>
           </listitem>
         </varlistentry>
       </variablelist>
@@ -344,6 +347,7 @@ as well as the stereotypes for models
             is the package hierarchy. However since the model is at the top
             of the hierarchy in &argouml;, this box is always
             empty.</para></listitem>
+<!-- ArgoUML V0.14 does should a non-relevent icon, though. See issue ... -->
         </varlistentry>
 
         <!-- Entry for Visibility -->
@@ -369,7 +373,7 @@ with entries
 
             <para>
 Records the visibility for the model.
-Ince &argouml; only permits one model,
+Since &argouml; only permits one model,
 this has no meaningful use.
 </para>
           </listitem>
@@ -394,7 +398,7 @@ this has no meaningful use.
 <literal>Leaf</literal> and 
 <literal>Root</literal>.
 </para>
-
+<!-- TODO: V0.14 shows the checkboxes centred, not left-aligned. See issue ... -->
             <itemizedlist>
               <listitem>
                 <para><literal>abstract</literal>
@@ -442,13 +446,13 @@ this could be used to emphasize that the Model is at the top level.
 Lists any model that <emphasis>generalizes</emphasis> this model.
 </para>
 
-            <caution>
+            <note>
               <para>
 Since there is only one model in ArgoUML there is no
 sensible specialization or generalization that could be
 created.
 </para>
-            </caution>
+            </note>
 
           </listitem>
         </varlistentry>
@@ -463,13 +467,13 @@ created.
 Lists any specialized model (i.e. for which this model is a generalization.
 </para>
 
-            <caution>
+            <note>
               <para>
 Since there is only one model in ArgoUML there is no
 sensible specialization or generalization that could be
 created.
 </para>
-            </caution>
+            </note>
 
           </listitem>
         </varlistentry>
@@ -504,8 +508,8 @@ within the model.
 </para>
 
             <para>
-&Button1; click on any of the artifacts yields
-navigates to that artifact.
+&Button1; double click on any of the artifacts yields
+navigating to that artifact.
 </para>
 
           </listitem>
@@ -540,22 +544,34 @@ navigates to that artifact.
       short</literal>), the predefined enumeration, <literal>boolean</literal>
       and user defined <emphasis>enumeration types</emphasis>.</para>
 
-    <note><para><literal>void</literal> is implemented as a class rather than a
+    <note><para>Also <literal>void</literal> is implemented as a 
       datatype within &argouml;</para></note>
 
-<!-- Issue 1761, (Issue 2114).
-    <para>
-This was so in earlier versions of ArgoUML. How does it work now?
+<!-- Issue 1761, (Issue 2114).-->
+<!-- TODO: The description below was true in earlier versions of ArgoUML. 
+How does it work now? -->
+<!--    <para>
 Within &argouml; new datatypes may be created using the <literal>New
       datatype</literal> button on the property tabs of the model and packages
       (in which case the new datatype is restricted in scope to the
       package), as well as the properties tab for datatype..</para>
-
-    <para>You can navigate to existing property types via the
-      <literal>NavClass</literal> button on any property sheet that has a Type
-      drop-down (for example attribute or parameter).</para>
  -->
-
+    <caution><para>
+Within &argouml; 0.14 new datatypes may be created using the <literal>New
+      datatype</literal> button on the property tabs of existing datatypes only.
+      This function really should be present on the property tabs of the model
+      and packages, too.
+      <!-- TODO: See issue ... -->
+    </para></caution>
+    <tip><para>
+      As a consequence, when starting a new model, a trick is needed to create
+      the first datatype. The easiest way is to create an operation (on a class)
+      and select the return parameter, and set it to any predefined datatype,
+      e.g. <literal>int</literal>. From this moment on, the datatype
+      <literal>int</literal> will be present in the explorer 
+      and its property tabs contains the <literal>New Datatype</literal> button.
+    </para></tip>
+      
     <note>
       <para>
 UML&nbsp;1.3 allows user defined datatypes to be placed on
@@ -624,7 +640,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
 
         <!-- Entry for Style tab -->
 
-        <varlistentry>
+<!--        <varlistentry>
           <term><literal>Style</literal></term>
 
           <listitem><para>Standard tab, but with no effect. In a future
@@ -633,7 +649,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
             display of literals and operations defined for the
             datatype.</para></listitem>
         </varlistentry>
-
+-->
         <!-- Entry for Source tab -->
 
         <varlistentry>
@@ -642,6 +658,7 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <listitem><para>Standard tab. Unused. One would expect a class
              declaration for the new datatype to support code
              generation.</para></listitem>
+<!-- TOTDO: See enhancement issue ... -->
         </varlistentry>
 
         <!-- Entry for Constraints tab -->
@@ -649,10 +666,10 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-            defined for <literal>Datatype</literal> (or
-            <literal>Enumeration</literal> within the UML
-            metamodel.</para></listitem>
+          <listitem><para>Standard tab. 
+This tab is downlighted, since constraints are not defined for an 
+<literal>Event</literal> within the &argouml; metamodel.
+          </para></listitem>
         </varlistentry>
 
         <!-- Entry for Tagged Values tab -->
@@ -674,6 +691,7 @@ In the UML metamodel,
             <literal>Datatype</literal> has the following standard tagged
             values defined.</para>
 
+<!-- TODO: All these below are not available. See issue ... -->
             <itemizedlist>
               <listitem><para><literal>persistence</literal> (from the
                 superclass, <literal>Classifier</literal>). Values
@@ -776,6 +794,7 @@ In the UML metamodel,
 sheet should be ignored.
 Also the name of the literal must obey the rules for an Attribute
 or a critic will fire.
+<!-- TODO: See enhancement issue ... -->
 </para>
             </caution>
           </listitem>
@@ -871,14 +890,15 @@ Package is provided by default
             enumeration data types.</para>
  -->
 
-          <tip><para><literal>enumeration</literal> should always be used
-            as the stereotype of any created datatypes.</para></tip>
+          <tip><para>The stereotype <literal>enumeration</literal>
+          should always be used
+          for any created enumeration datatypes.</para></tip>
 
             <caution>
               <para>
 <!-- Issue 2112 -->
 In version 0.14 the <literal>enumeration</literal> must be created
-the first time it is used.
+before it can be used.
 </para>
             </caution>
           </listitem>
@@ -906,7 +926,7 @@ the first time it is used.
 
           <listitem>
             <para>Drop down selector.
-Records the namespace for the datatype.
+Allows changeing the namespace for the datatype.
 This is the package hierarchy.
 </para>
           </listitem>
@@ -987,7 +1007,8 @@ In effect all datatypes are both
 
           <caution><para>It is not clear that generalizing datatypes makes much
             sense.</para></caution>
-
+<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
+            
 <!-- Issue 2117
           <para>&Button1; click navigates to the generalization and opens
             its property tab.</para>
@@ -1044,6 +1065,8 @@ one.
 
           <caution><para>It is not clear that specializing datatypes makes much
             sense.</para></caution>
+<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
+
 
 <!-- Issue 2117
           <para>&button1; click navigates to the generalization and opens
@@ -1106,6 +1129,8 @@ By default this is empty.
 It is not clear that Dependency datatypes makes much sence.
 </para>
             </caution>
+<!-- TODO: Shouldn't it be removed then? See enhancement issue ... -->
+
 
 <!-- Issue: 2117
           <para>&Button1; click navigates to any entry (but see the warning
@@ -1161,7 +1186,7 @@ It is not clear that Dependency datatypes makes much sence.
           <listitem>
             <para>Text area. Lists all the operations defined on this
 datatype.
-&Button1; click navigates to the selected operation.
+&Button1; double click navigates to the selected operation.
 </para>
 <!-- Issue: 637
             &button2; click brings up a pop up menu with five
@@ -1190,13 +1215,20 @@ datatype.
           <para>See <xref linkend="s1.ref.operation"/> for details of
             operations.</para>
 
-          <caution><para>&argouml; treats all operations as equivalent. Any
+          <para>Since V0.14 does not provide in any means to create 
+          operations of datatypes, this field is not useful.
+<!-- TODO: See enhancement issue ... -->
+          </para>
+<!--      <caution><para>&argouml; treats all operations as equivalent. Any
             operations created here will use the same mechanism as
             operations for classes. Remember that operations on datatypes
             must have no side effects (they are read-only). This means the
             <literal>query</literal> modifier <emphasis>must</emphasis> be
-            checked for all operations.</para></caution></listitem>
+            checked for all operations.</para></caution>
+-->
+            </listitem>
         </varlistentry>
+
 
         <!-- Entry for literals -->
 
@@ -1213,9 +1245,9 @@ datatype.
             </indexterm>
 
             <para>Text area.
-Lists all the literals defined for this
+Lists all the enumeration literals defined for this
             datatype. &Button1; click navigates to the selected literal,
-            &button2; click brings up a pop up menu with five
+            &button2; click brings up a pop up menu with three
             entries.</para>
 
             <itemizedlist>
@@ -1247,7 +1279,9 @@ Add a new literal and navigate to it.
             navigate to the property sheet for an attribute of a class (see
             <xref linkend="s1.ref.attribute"/>). When defining a literal,
             all that matters is its name. Other parts of the attribute
-            property sheet should be ignored.</para></caution></listitem>
+            property sheet should be ignored.</para></caution>
+<!-- TODO: Shouldn't we have this seperate concept? See enhancement issue ... -->
+          </listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1299,10 +1333,10 @@ the stereotype property tab itself (see
 
       <para>The details tabs that are active for stereotypes are as
         follows.</para>
-
+<!-- We normally do not mention this in the other chapters
       <note><para>The <literal>Style</literal> tab is grayed out, since a
         stereotype has no representation on a diagram.</para></note>
-
+-->
       <variablelist>
 
         <!-- Entry for ToDoItem tab -->
@@ -1355,17 +1389,19 @@ See <xref linkend="s2.ref.documentation_tab"/>.
         <varlistentry>
           <term><literal>Constraints</literal></term>
 
-          <listitem><para>Standard tab. There are no standard constraints
-defined for <literal>Stereotypes</literal> within the UML
-            metamodel.</para>
+          <listitem><para>Standard tab. 
+This tab is downlighted, since constraints are not defined for an 
+<literal>Stereotype</literal> within the &argouml; metamodel.
+            </para>
 
-            <caution>
+<!-- TODO: check Issue 1805 -->
+<!--            <caution>
               <para>
-<!-- Issue 1805 -->
 It is currently not possible to create constraints for Stereotypes
 so the Constraints tab is not active.
 </para>
             </caution>
+-->
           </listitem>
 
         </varlistentry>
@@ -1529,6 +1565,8 @@ Any stereotype must be derived
             <literal>Component</literal>, <literal>Constraint</literal>,
             <literal>DataType</literal>, <literal>Dependency</literal>,
             <literal>Flow</literal>, <literal>Generalization</literal>,
+<!-- TODO: Check for completeness. 
+E.g. Link is not listed here, but implemented. -->
             <literal>Model</literal>, <literal>ModelElement</literal>,
             <literal>ObjectFlowState</literal>, <literal>Package</literal>,
             <literal>Permission</literal>, <literal>Subsystem</literal> and
@@ -1553,8 +1591,9 @@ Any stereotype must be derived
             </indexterm>
 
             <para>
-Text box.
+Drop down selector.
 Records the namespace for the
+<!-- TODO: This is fixed to the model in V0.14. Is that correct? -->
             stereotype. This is the package hierarchy.</para>
           </listitem>
         </varlistentry>
@@ -1615,7 +1654,7 @@ Records the namespace for the
           <para>&Button1; click navigates to the generalization and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
+          <para>&Button2; click yields a drop down menu with three
             entries</para>
 
           <itemizedlist>
@@ -1623,23 +1662,22 @@ Records the namespace for the
               selected generalization.</para></listitem>
 
             <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram. You will need to find it in
-              the explorer and add it from there.</para>
+              generalization. The "Add/Remove Generalizations" dialog box opens.
+<!-- TODO: Where is this described? Provide a link to it! -->
+              </para>
 
+<!-- TODO: Is this nonsense?
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
+              pane.</para></tip>
+-->
+            </listitem>
 
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the stereotype (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
+            <listitem><para><literal>Delete</literal>. The 
+              generalization 
+              is deleted.
+              </para>
+            </listitem>
 
             </itemizedlist>
           </listitem>
@@ -1656,33 +1694,26 @@ Records the namespace for the
           <caution><para>It is not clear that specializing stereotypes makes
             much sense.</para></caution>
 
-          <para>&button1; click navigates to the generalization and opens
+          <para>&button1; click navigates to the specialised stereotype and opens
             its property tab.</para>
 
-          <para>&Button2; click yields a drop down menu with five
+          <para>&Button2; click yields a drop down menu with three
             entries</para>
 
           <itemizedlist>
             <listitem><para><literal>Open</literal>. Navigate to the
-              selected generalization.</para></listitem>
+              selected specialization.</para></listitem>
 
             <listitem><para><literal>Add</literal>. Add a new
-              generalization. Note that the new generalization is added to
-              the model, but not the diagram.</para>
+              specialization. The "Add/Remove Specializations" dialog box opens.
+<!-- TODO: Where is this described? Provide a link to it! -->
+              </para></listitem>
 
-            <tip><para>It is far easier to add generalizations by drawing
-              them on the relevant diagram in the editing
-              pane.</para></tip></listitem>
+             <listitem><para><literal>Delete</literal>. The link
+              specialization
+              is deleted.</para>
 
-            <listitem><para><literal>Delete</literal>. The link from the
-              generalization to the stereotype (<emphasis>but not the
-              generalization itself</emphasis>) is removed.</para>
-
-            <tip><para>This <emphasis>does not</emphasis> remove the
-              generalization from the model or the diagram, leading to
-              potentially very confusing diagrams. It is usually far easier
-              to remove generalizations from the editing
-              pane.</para></tip></listitem>
+             </listitem>
 
             </itemizedlist>
           </listitem>
@@ -1710,13 +1741,11 @@ Records the namespace for the
       component and deployment diagrams.</para></note>
 
     <caution><para>State and activity diagrams are associated with a particular
-      class, and can only be created when a class has been selected. In the
-      current version of &argouml; they are not grayed out even when a class
-      is not selected. However under these circumstances they will have no
-      effect.</para></caution>
+      class, and can only be created when a class has been selected. 
+    </para></caution>
 
-    <warning><para>There is currently no support for the UML 1.3 object diagram
-      as a variant of the class diagram. It is possible to create simple object
+    <warning><para>In version 0.14, there is no support for the UML 1.3 object diagram
+      as a variant of the class diagram. However, it is possible to create simple object
       diagrams within the &argouml; deployment diagram.</para></warning>
 
     <caution>

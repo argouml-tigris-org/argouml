@@ -289,7 +289,6 @@ an exit action and a Do activity are not permitted for action states.
             </imageobject></inlinemediaobject></guiicon> icon. If a
               stereotype has been selected, this will navigate to the
               stereotype property panel (see
-<!-- MVW: Changed reference to 14.4 instead of 16.4. -->
               <xref linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
 

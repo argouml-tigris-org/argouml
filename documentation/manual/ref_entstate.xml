@@ -55,6 +55,7 @@ Description of all the artifacts associated with State Diagrams within ArgoUML.
 The state diagrams are generally well drawn, but the 4 event types 
 supported (CallEvent, SignalEvent, ChangeEvent and TimeEvent), are purely 
 textual, with no way to link them back to their associated operations.
+<!-- TODO: See issue ... -->
 Also the various kinds of Actions are only supported in the same way.
 </para>
 
@@ -258,8 +259,8 @@ This is a deletion from the model,
 <emphasis>not</emphasis> just the diagram.
 To delete a
             state from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -1024,7 +1025,7 @@ Navigate up in the hierarchy to the parent state machine.
             <warning><para>This is a deletion from the model
               <emphasis>not</emphasis> just the diagram. To delete a
               transition from the diagram, but keep it within the model, use
-              the main menu <literal>Edit/Remove From Diagram</literal>
+              the main menu <literal>Remove From Diagram</literal>
               (or press the Delete key).</para>
             </warning>
           </listitem>
@@ -1294,6 +1295,7 @@ In practice, only the name can be specified,
 there is no difference between the 4 kinds of events described above.
 The name field should be used to indicate that it is a 
 signal, call, timing or change event.
+<!-- See issue 2288 and maybe others... -->
     </para></caution>
 
     <!-- Event details tabs -->
@@ -2342,8 +2344,8 @@ This tab is downlighted, since constraints are not defined for an
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             final state from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>

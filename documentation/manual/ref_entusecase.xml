@@ -8,7 +8,7 @@ ArgoUML.
 -->
 
 <chapter id="ch.ref.entusecase">
-  <title>&argouml; Use Case Diagram Artifact Reference</title>
+  <title>Use Case Diagram Artifact Reference</title>
   <indexterm>
     <primary>Use Case Diagram</primary>
   </indexterm>
@@ -286,8 +286,8 @@ This creates a new actor within the model, (but not
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an actor
             from the diagram, but keep it within the model, use the main
-            menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -773,8 +773,8 @@ This creates a new use extension point within the
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a use case
             from the diagram, but keep it within the model, use the main
-            menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -1575,6 +1575,8 @@ An association on a use case diagram represents a relationship
 
   <!-- Dependency -->
 
+  <!-- TODO: move this to the Class chapter -->
+  
   <sect1 id="s1.ref.dependency_use_case">
     <title>Dependency</title>
     <indexterm>
@@ -1736,8 +1738,8 @@ the UML metamodel so this is greyed out.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             dependency from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -2130,8 +2132,8 @@ In the UML metamodel,
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             generalization from the diagram, but keep it within the model,
-            use the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            use the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -2585,8 +2587,8 @@ model.</para>
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             extend from the diagram, but keep it within the model,
-            use the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            use the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>
@@ -2968,8 +2970,8 @@ See <xref linkend="s2.ref.documentation_tab"/>.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             include from the diagram, but keep it within the model,
-            use the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            use the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
             </warning>
           </listitem>

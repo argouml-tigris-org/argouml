@@ -102,7 +102,7 @@ you change that class at the same time (and think through the deployment).
         part of a composite (black diamond) aggregation. Such an association
         relects the tight binding of a collection of DataType instances to a
         class instance. In effect such a DataType is an attribute of the class
-        with mutliplicity.</para>
+        with multiplicity.</para>
 
       <para>Good &ooad; depends on careful choices about which entities to
         represent as full objects and which to represent as attributes of
@@ -467,13 +467,14 @@ you change that class at the same time (and think through the deployment).
   <!-- Critics associated with state machines -->
 
   <sect1 id="s1.ref.design_issues_state_machines">
-    <title>MState Machines</title>
+    <title>State Machines</title>
 
     <para>Critics concerning state machines.</para>
 
-    <note><para>The correct title for this category should be
+    <!-- What is this about? Why was the title "MState machines"? -->
+    <!--note><para>The correct title for this category should be
       <literal>State&nbsp;Machines</literal>. This is raised as an issue to be
-      fixed in a future version of &argouml;</para></note>
+      fixed in a future version of &argouml;</para></note-->
 
     <para>The current version of &argouml; has 14 critics in this
       category.</para>

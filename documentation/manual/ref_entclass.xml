@@ -9,7 +9,7 @@ ArgoUML.
 -->
 
 <chapter id="ch.ref.entclass">
-  <title>&argouml; Class Diagram Artifact Reference</title>
+  <title>Class Diagram Artifact Reference</title>
   <indexterm>
     <primary>Class Diagram Reference</primary>
   </indexterm>
@@ -280,8 +280,8 @@ This creates a new package (see <xref
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a
             package from the diagram, but keep it within the model,
-            use the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            use the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
 	    </warning>
 	  </listitem>
@@ -885,8 +885,8 @@ A hierarchical listing of the packages,
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete a class
             from the diagram, but keep it within the model, use the main
-            menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
 	    </warning>
 	  </listitem>
@@ -3373,8 +3373,8 @@ If desired the
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             association from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
 	    </warning>
 	  </listitem>
@@ -4230,8 +4230,8 @@ In the UML metamodel it is a sub-class of
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             interface from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
 	    </warning>
 	  </listitem>
@@ -4708,8 +4708,8 @@ In the UML metamodel it is a sub-class of
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             abstraction from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-(Delete).
+            the main menu <literal>Remove From Diagram</literal>
+(or press the Delete key).
 </para>
 	    </warning>
 	  </listitem>

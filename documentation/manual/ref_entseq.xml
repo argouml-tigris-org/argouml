@@ -9,7 +9,7 @@ Argo/UML.
 -->
 
 <chapter id="ch.ref.entseq">
-  <title>&argouml; Sequence Diagram Artifact Reference</title>
+  <title>Sequence Diagram Artifact Reference</title>
 
   <caution>
     <para>
@@ -250,40 +250,6 @@ need it because they are still working with &argouml; 0.10.1.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -298,8 +264,8 @@ need it because they are still working with &argouml; 0.10.1.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             object from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -696,39 +662,6 @@ need it because they are still working with &argouml; 0.10.1.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
 
         <!-- Entry for Delete button -->
 
@@ -744,8 +677,8 @@ need it because they are still working with &argouml; 0.10.1.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             stimulus from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1143,40 +1076,6 @@ need it because they are still working with &argouml; 0.10.1.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -1191,8 +1090,8 @@ need it because they are still working with &argouml; 0.10.1.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             link from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>

@@ -701,12 +701,12 @@ ArgoUML up and running.
           download the whole Java Development Kit (JDK).</para>
 
         <para>&argouml; needs a reasonable amount of computing resource. A PC
-          with 300MHz processor, 64Mb RAM and 10Mb of space available on a harddisk should be
+          with 200MHz processor, 64Mb RAM and 10Mb of space available on a harddisk should be
           adequate. Download the code from Download section of the project
           website
           <ulink url="http://argouml.tigris.org">argouml.tigris.org</ulink>.
           Choose the version that suits your needs as described in the section
-          above.</para>
+          below.</para>
       </sect3>
 
       <!-- Downloading options -->

@@ -9,7 +9,7 @@ Argo/UML.
 -->
 
 <chapter id="ch.ref.entcollab">
-  <title>&argouml; Collaboration Diagram Artifact Reference</title>
+  <title>Collaboration Diagram Artifact Reference</title>
 
   &notupdatedfor014disclaimer;
 
@@ -248,40 +248,6 @@ Argo/UML.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -297,8 +263,8 @@ Argo/UML.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             classifier role from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -611,39 +577,6 @@ Argo/UML.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
 
         <!-- Entry for Delete button -->
 
@@ -660,8 +593,9 @@ Argo/UML.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             association role from the diagram, but keep it within the
-            model, use the main menu <literal>Edit/Remove From
-            Diagram</literal> (Ctrl-R).</para></warning></listitem>
+            model, use the main menu <literal>Remove From
+            Diagram</literal> (or press the Delete key).
+            </para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -953,40 +887,6 @@ Argo/UML.
 
           <listitem><para>Navigate up to the association role to which this end
             role belongs.</para></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
         </varlistentry>
 
         <!-- Entry for Go to other end role button -->
@@ -1382,40 +1282,6 @@ Argo/UML.
             structure.</para></listitem>
         </varlistentry>
 
-        <!-- Entry for Go back button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_back.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            back</literal></term>
-
-          <listitem><para>Navigate back to the previous
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
-        <!-- Entry for Go forward button -->
-
-        <varlistentry>
-          <term><guiicon><inlinemediaobject><imageobject><imagedata
-            format="GIF" align="center"
-            fileref="images/icons/navigate_forward.gif"/>
-          </imageobject></inlinemediaobject></guiicon> <literal>Go
-            forward</literal></term>
-
-          <listitem><para>Navigate forward to the next
-            artifact.</para>
-
-          <warning><para>This feature is currently broken within &argouml;
-            and there is no guarantee where (if anywhere) this button will
-            take you.</para></warning></listitem>
-        </varlistentry>
-
         <!-- Entry for Delete button -->
 
         <varlistentry>
@@ -1430,8 +1296,8 @@ Argo/UML.
           <warning><para>This is a deletion from the model
             <emphasis>not</emphasis> just the diagram. To delete an
             message from the diagram, but keep it within the model, use
-            the main menu <literal>Edit/Remove From Diagram</literal>
-            (Ctrl-R).</para></warning></listitem>
+            the main menu <literal>Remove From Diagram</literal>
+            (or press the Delete key).</para></warning></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
