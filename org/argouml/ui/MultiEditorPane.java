@@ -220,10 +220,13 @@ public class MultiEditorPane
             Rectangle tabBounds = _tabs.getBoundsAt(tab);
             if (!tabBounds.contains(me.getX(), me.getY()))
                 return;
-            if (me.getClickCount() == 1)
+            if (me.getClickCount() == 1) {
                 mySingleClick(tab);
-            else if (me.getClickCount() >= 2)
+                me.consume();
+            } else if (me.getClickCount() >= 2) {
                 myDoubleClick(tab);
+                me.consume();
+            }
         }
     }
 

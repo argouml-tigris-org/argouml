@@ -1,6 +1,7 @@
 package org.argouml.ui;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Vector;
 import javax.swing.event.TreeModelListener;
 import javax.swing.tree.TreeModel;

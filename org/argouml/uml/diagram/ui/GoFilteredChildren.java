@@ -98,7 +98,7 @@ public class GoFilteredChildren extends AbstractGoRule {
   
   private boolean hasChildren(Object parent) {
     int unfilteredCount = _tm.getChildCount(parent);
-    for (int i = 0; i < unfilteredCount; ++i) {
+    for (int i = 0; i < unfilteredCount; i++) {
       Object kid = _tm.getChild(parent, i);
       if (_pred.predicate(kid)) return true;
     }
