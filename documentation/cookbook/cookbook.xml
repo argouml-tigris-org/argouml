@@ -4,6 +4,8 @@
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
 ]>
 
+<!-- $Id$ -->
+
 <!-- THIS IS THE ARGO/UML DEVELOPER COOKBOOK 
      - PLEASE FEEL FREE TO ADD TO THE CONTENT AND INSERT YOUR 
      NAME IN THE AUTHOR GROUP.
@@ -1804,54 +1806,7 @@ they shall be updated in a consistent manner throught the application.
 	  <listitem>
 	    <para>
 As soon as the model element changes then all views shall update.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-For text fields the update of model element shall not
-take place until the field has looses focus.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Pressing escape in a field that is edited shall 
-restore the value in the text field to that value when the field got
-focus, the field should then lose focus without updating the model
-element.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If a text field requires parsing to extract particular values or
-confirm its validity then it shall
-appear in red while the field remains invalid.
-</para>
-	    <para>
-As soon as it becomes valid it should revert to the normal field colour.
-</para>
-	    <para>
-A consequence of this is that the field must be parsed and checked to
-be valid on each keystroke without updating any model element.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-When the field loses focus and the text is valid then the model
-element should be updated.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If the field loses focus while it is invalid then the field should be
-returned to its original state as if the escape key was pressed. 
-There
-should be an audible warning and a user friendly error message
-displayed in red in the status bar followed by the text that the user
-attempted to parse.
+For text fields, this can be at every key stroke.
 </para>
 	  </listitem>
 
