@@ -21,7 +21,26 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: UMLIncludeListModel.java
+// Classes: UMLIncludeListModel
+// Original Author: not known
+// $$
+
+// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Tidied up, as part of
+// getting the include stuff to work. add() method tidied up to put the new
+// relationship at the correct place in the list. buildPopup removed, since the
+// parent implementation is fine.
+
+// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). There is a bug in
+// NSUML, where the "include" and "include2" associations of a use case are
+// back to front, i.e "include" is used as the opposite end of "addition" to
+// point to an including use case, rather than an included use case. Fixed
+// within the include relationship, rather than the use case, by reversing the
+// use of access functions for the "base" and "addition" associations.
+
+
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -29,92 +48,398 @@ import ru.novosoft.uml.behavior.use_cases.*;
 import java.util.*;
 import java.awt.*;
 
+
+/**
+ * <p>A list model for the include relationship on use case property
+ *   panels.</p>
+ *
+ * <p>Supports the full menu (Open, Add, Delete, Move Up, Move Down). Provides
+ *   its own formatElement routine, to use the name of the base use case (where
+ *   the container is a use case) or the extension use case (where the
+ *   container is an extension point, rather than name of the extend
+ *   relationship itself.</p>
+ *
+ * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+ *   "include2" associations of a use case are back to front, i.e "include" is
+ *   used as the opposite end of "addition" to point to an including use case,
+ *   rather than an included use case. Fixed within the include relationship,
+ *   rather than the use case, by reversing the use of access functions for the
+ *   "base" and "addition" associations in the code.</p>
+ */
+
 public class UMLIncludeListModel extends UMLModelElementListModel  {
 
-    private final static String _nullLabel = "(null)";
+    /**
+     * <p>The default text when there is no addition class for the include
+     *   relationship.</p>
+     */
+ 
+    private final static String _nullLabel = "(anon)";
     
-    public UMLIncludeListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
+
+    /**
+     * <p>Create a new list model.<p>
+     *
+     * <p>Implementation is just an invocation of the parent constructor.</p>
+     *
+     * @param container  The container for this list - the use case property
+     *                   panel.
+     *
+     * @param property   The name associated with the NSUML {@link
+     *                   MElementEvent} that we are tracking or
+     *                   <code>null</code> if we track them all. We 
+     *                   probably want to just track the "include" event.
+     *
+     * @param showNone   True if an empty list is represented by the keyword
+     *                   "none"
+     */
+
+    public UMLIncludeListModel(UMLUserInterfaceContainer container,
+                               String property,boolean showNone) {
         super(container,property,showNone);
     }
     
+    /**
+     * <p>Compute the size of the list model. This method must be provided to
+     *   override the abstract method in the parent.</p>
+     *
+     * @return the number of elements the list model (0 if there are none).
+     */
+
     protected int recalcModelElementSize() {
-        int size = 0;
+        int        size     = 0;
         Collection includes = getIncludes();
+
         if(includes != null) {
             size = includes.size();
         }
+
         return size;
     }
     
+    /**
+     * <p>Get the element at a given offset in the model This method must be
+     *   provided to override the abstract method in the parent.</p>
+     *
+     * <p>The implementation makes use of the {@link #elementAtUtil} method,
+     *   which takes care of all unusual cases.</p>
+     *
+     * @param   the index of the desired element.
+     *
+     * @return  the element at that index if there is one, otherwise
+     *          <code>null</code>.
+     */
+
     protected MModelElement getModelElementAt(int index) {
-        MModelElement elem = null;
-        Collection includes = getIncludes();
-        if(includes != null) {
-            elem = elementAtUtil(includes,index,MInclude.class);
-        }
-        return elem;
+
+        return elementAtUtil(getIncludes(), index, MInclude.class);
     }
             
         
+    /**
+     * <p>A private utility to get the list of extends relationships for this
+     *   use case.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *   "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including use
+     *   case, rather than an included use case.  Fixed within the include
+     *   relationship, rather than the use case, by reversing the use of access
+     *   functions for the "base" and "addition" associations in the code.</p>
+     *
+     * @return  the list of includes relationships for this use case.
+     */
+
     private Collection getIncludes() {
+
         Collection includes = null;
-        Object target = getTarget();
+        Object     target   = getTarget();
+
         if(target instanceof MUseCase) {
             MUseCase useCase = (MUseCase) target;
+
             includes = useCase.getIncludes();
         }
+
         return includes;
     }
     
     
-    public void add(int index) {
-        Object target = getTarget();
-        if(target instanceof MUseCase) {
-            MUseCase useCase = (MUseCase) target;
-            MInclude newInclude = new MIncludeImpl();
-            newInclude.setAddition(useCase);
-            useCase.addInclude(newInclude);
-            
-            fireIntervalAdded(this,index,index);
-            navigateTo(newInclude);
-        }
-    }
-    
-    public void delete(int index) {
-        Object target = getTarget();
-        if(target instanceof MUseCase) {
-            MUseCase useCase = (MUseCase) target;
-            MInclude include = (MInclude) getModelElementAt(index);
-            include.setAddition(null);
-            useCase.removeInclude(include);
-            MUseCase base = include.getBase();
-            if(base != null) {
-                include.setBase(null);
-                base.removeInclude2(include);
+    /**
+     * <p>Format a given model element.</p>
+     *
+     * <p>If there is no addition use case, use the default text
+     *   ("(anon)"). Otherwise use the parent formatElement on the use case
+     *   attached as addition to the extend relationship , which will
+     *   ultimately invoke the format element method of {@link PropPanel}.</p>
+     *
+     * <p>In this current implementation, more rigorously checks it is
+     *   formatting an extend relationship.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *  "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including
+     *   use case, rather than an included use case. Fixed within the include
+     *   relationship, rather than the use case, by reversing the meaning of
+     *   the "base" and "association" associations in the code.</p>
+     *
+     * @param element  the model element to format
+     *
+     * @return an object (typically a string) representing the element.
+     */
+
+    public Object formatElement(MModelElement element) {
+
+        Object value = _nullLabel;
+
+        // Note that we cope with the NSUML bug by using the getBase() accessor
+        // rather than the getAddition() accessor to reverse the problem.
+
+        if (element instanceof MInclude) {
+            MInclude include = (MInclude) element;
+            MUseCase target  = include.getBase();
+
+            if(target != null) {
+                value = super.formatElement(target);
             }
-            fireIntervalRemoved(this,index,index);
         }
+        else {
+            if (element != null) {
+                System.out.println("UMLIncludeListModel." +
+                                   "formatElement(): Can't format " +
+                                   element.getClass().toString());
+            }
+        }
+
+        return value;
+    }
+
+
+    /**
+     * <p>Implement the "add" function of the pop up menu.</p>
+     *
+     * <p>Create a new {@link MInclude} in the same namespace as the target (do
+     *   nothing if it doesn't have a namespace). Then navigate to the
+     *   include. Uses the NSUML Factory class.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *   "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including use
+     *   case, rather than an included use case.  Fixed within the include
+     *   relationship, rather than the use case, by reversing the use of access
+     *   functions for the "base" and "addition" associations in the code.</p>
+     *
+     * @param index  Offset in the list of the element at which the pop-up was
+     *               invoked.
+     */
+
+    public void add(int index) {
+
+        // Give up if the target isn't a use case or if it doesn't have a
+        // namespace.
+
+        Object target = getTarget();
+
+        if (!(target instanceof MUseCase)) {
+            return;
+        }
+
+        MNamespace ns = ((MModelElement) target).getNamespace();
+
+        if (ns == null) {
+            return;
+        }
+
+        // Get the new include relationship from the factory, and add it to the
+        // namespace
+
+        MInclude newInclude = ns.getFactory().createInclude();
+        ns.addOwnedElement(newInclude);
+
+        // Link it in to the list of includes relationships of the use case
+        // (NSUML will set set up the other end correctly) in the correct
+        // place.
+
+        MUseCase useCase = (MUseCase) target;
+
+        // Now put it in the list of extends relationships of the use case in
+        // the correct place. NSUML will automatically set up the other end.
+
+        // Note there is a bug in NSUML. It has the include and include2
+        // associations swapped over (include should be the other end of base,
+        // not additon). We deal with this elsewhere by swapping accessor
+        // functions for "base" and "addition".
+
+        if (index == getModelElementSize()) {
+            useCase.addInclude(newInclude);
+        }
+        else {
+            useCase.setIncludes(addAtUtil(useCase.getIncludes(),
+                                           newInclude, index));
+        }
+
+        // Advise Swing that we have added something at this index and
+        // navigate there.
+
+        fireIntervalAdded(this,index,index);
+        navigateTo(newInclude);
+    }
+    
+    /**
+     * <p>Implement the "delete" function of the pop up menu. Delete the
+     *   element at the given index.</p>
+     *
+     * <p>Find the use cases at each end (note that NSUML uses the name
+     *   "include2" for the use case doing the included, since it is unnamed in
+     *   the standard). Delete their references to this include
+     *   relationship. Also remove from the namespace.</p>
+     *
+     * <p><em>Note</em>. We don't actually need to check the target PropPanel
+     *   is a use case&mdash;given an include relationship we can delete
+     *   it.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *   "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including use
+     *   case, rather than an included use case.  Fixed within the include
+     *   relationship, rather than the use case, by reversing the use of access
+     *   functions for the "base" and "addition" associations in the code.</p>
+     *
+     * @param index  Offset in the list of the element at which the pop-up was
+     *               invoked and which is to be deleted.
+     */
+
+    public void delete(int index) {
+
+        // Only do this if it really is an includes relationship
+
+        MModelElement modElem = getModelElementAt(index);
+
+        if (!(modElem instanceof MInclude)) {
+            return ;
+        }
+
+        MInclude  include   = (MInclude) modElem;
+
+        // Note reversal of code using addition and base to handle NSUML bug
+
+        MUseCase   addition = include.getBase();
+        MUseCase   base     = include.getAddition();
+        MNamespace ns       = include.getNamespace();
+
+        // Remove the addition end of the relationship. Note we do not need to
+        // do anything about the include relationship's addition attribute - it
+        // will have been done by the removeInclude2.
+
+        // Note there is a bug in NSUML. It has the include and include2
+        // associations swapped over (include should be the other end of base,
+        // not additon). We deal with this in the code by swapping accessor
+        // fucntions for "base" and "addition".
+
+        if (addition != null) {
+            addition.removeInclude2(include);
+        }
+
+        // Remove the base end of the relationship (if there was one). Note we
+        // do not need to do anything about the include relationship's base
+        // attribute - it will have been done by the removeInclude.
+
+        // Note there is a bug in NSUML. It has the include and include2
+        // associations swapped over (include should be the other end of base,
+        // not additon). We deal with this elsewhere by swapping "base" and
+        // "addition"
+
+        if(base != null) {
+            base.removeInclude(include);
+        }
+
+        // Finally remove from the namespace
+
+        if (ns != null) {
+            ns.removeOwnedElement(include);
+        }
+
+        // Tell Swing this entry has gone
+        
+        fireIntervalRemoved(this,index,index);
+    }
+
+
+    /**
+     * <p>Implement the action that occurs with the "MoveUp" pop up.</p>
+     *
+     * <p>Move the include relationship at the given index in the list up one
+     *   (unless it is already at the top). Since we use {@link #moveUpUtil}
+     *   there is no need to test for unusual cases.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *   "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including use
+     *   case, rather than an included use case.  Fixed within the include
+     *   relationship, rather than the use case, by reversing the use of access
+     *   functions for the "base" and "addition" associations in the code.</p>
+     *
+     * @param index  the index in the list of the include relationship to move
+     *               up.
+     */
+
+    public void moveUp(int index) {
+
+        // Only do this if we are a use case
+
+        Object target = getTarget();
+
+        if (!(target instanceof MUseCase)) {
+            return;
+        }
+
+        MUseCase useCase = (MUseCase) target;
+        useCase.setIncludes(moveUpUtil(useCase.getIncludes(), index));
+
+        // Tell Swing
+
+        fireContentsChanged(this, index - 1, index);
     }
     
 
-    public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(getModelElementSize() <= 0) {
-            open.setEnabled(false);
-            delete.setEnabled(false);
+    /**
+     * <p>The action that occurs with the "MoveDown" pop up.</p>
+     *
+     * <p>Move the include relationship at the given index in the list down one
+     *   (unless it is already at the bottom). Since we use {@link #moveUpUtil}
+     *   there is no need to test for unusual cases.</p>
+     *
+     * <p><em>Note</em>. There is a bug in NSUML, where the "include" and
+     *   "include2" associations of a use case are back to front, i.e "include"
+     *   is used as the opposite end of "addition" to point to an including use
+     *   case, rather than an included use case.  Fixed within the include
+     *   relationship, rather than the use case, by reversing the use of access
+     *   functions for the "base" and "addition" associations in the code.</p>
+     *
+     * @param index  the index in the list of the include relationship to move
+     *               down.
+     */
+
+    public void moveDown(int index) {
+
+        // Only do this if we are a use case
+
+        Object target = getTarget();
+
+        if (!(target instanceof MUseCase)) {
+            return;
         }
 
-        popup.add(open);
-        popup.add(new UMLListMenuItem(container.localize("Add"),this,"add",index));
-        popup.add(delete);
+        MUseCase useCase = (MUseCase) target;
+        useCase.setIncludes(moveDownUtil(useCase.getIncludes(), index));
 
-        return true;
+        // Tell Swing
+
+        fireContentsChanged(this,index,index+1);
     }
-    
-    
-}
+
+
+} /* End of class UMLIncludeListModel */
 
 
 

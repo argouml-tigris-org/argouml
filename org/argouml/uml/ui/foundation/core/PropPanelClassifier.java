@@ -21,8 +21,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.ui.foundation.core;
+// 26 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). Minor fixes. Made
+// extends/derived scrollpanes have optional scrollbars.
 
+
+package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
 import javax.swing.*;
@@ -68,7 +71,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
       extendsList.setBackground(getBackground());
       extendsList.setForeground(Color.blue);
-      extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+      extendsScroll= new JScrollPane(extendsList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
       JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
       implementsList.setBackground(getBackground());
@@ -81,10 +84,10 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
       _modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
       _modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
 
-      JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+      JList derivedList = new UMLList(new UMLSpecializationListModel(this,"specialization",true),true);
       derivedList.setForeground(Color.blue);
       derivedList.setVisibleRowCount(1);
-      derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);      
+      derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);      
 
       JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
       opsList.setForeground(Color.blue);

@@ -26,6 +26,11 @@
 // Original Author: your email here
 // $Id$
 
+// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support the
+// Extend and Include relationships. JavaDoc added for clarity. Default
+// constructor made private, since it must never be called directly.
+
+
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.util.*;
@@ -43,110 +48,240 @@ import org.tigris.gef.ui.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.use_case.*;
 
+
+/**
+ * <p>The base class of the use case diagram.</p>
+ *
+ * <p>Defines the toolbar, provides for its initialization and provides
+ *   constructors for a top level diagram and one within a defined
+ *   namespace.</p>
+ */
+
 public class UMLUseCaseDiagram extends UMLDiagram {
 
-  ////////////////
-  // actions for toolbar
+    // Actions specific to the use case diagram toolbar
+
+    /**
+     * <p>Tool to add an actor node.</p>
+     */
+
+    protected static Action _actionActor =
+        new CmdCreateNode(MActorImpl.class, "Actor");
 
 
-  protected static Action _actionActor =
-  new CmdCreateNode(MActorImpl.class, "Actor");
+    /**
+     * <p>Tool to add a use case node.</p>
+     */
 
-  protected static Action _actionUseCase =
-  new CmdCreateNode(MUseCaseImpl.class, "UseCase");
-
-  protected static Action _actionAssoc =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MAssociationImpl.class,
-		 "Association");
-
-  protected static Action _actionGeneralize =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MGeneralizationImpl.class,
-		 "Generalization");
-
-  protected static Action _actionDependency =
-  new CmdSetMode(ModeCreatePolyEdge.class,
-		 "edgeClass", MDependencyImpl.class,
-		 "Dependency");
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  protected static int _UseCaseDiagramSerial = 1;
+    protected static Action _actionUseCase =
+        new CmdCreateNode(MUseCaseImpl.class, "UseCase");
 
 
-  public UMLUseCaseDiagram() {
-    try { setName("use case diagram " + _UseCaseDiagramSerial++); }
-    catch (PropertyVetoException pve) { }
-  }
+    /**
+     * <p>Tool to create an association between UML artifacts using a
+     *   polyedge.</p>
+     */
 
-  public UMLUseCaseDiagram(MNamespace m) {
-    this();
-    setNamespace(m);
-  }
+    protected static Action _actionAssoc =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MAssociationImpl.class,
+                       "Association");
 
-    /** method to perform a number of important initializations of a <I>Use Case Diagram</I>. 
-     * 
-     * @see      each diagram type has a similar <I>UMLxxxDiagram</I> class.
+
+    /**
+     * <p>Tool to create a generalization between UML artifacts using a
+     *   polyedge.</p>
+     */
+
+    protected static Action _actionGeneralize =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MGeneralizationImpl.class,
+                       "Generalization");
+
+    /**
+     * <p>Tool to create an extend relationship between UML use cases using a
+     *   polyedge.</p>
+     */
+
+    protected static Action _actionExtend =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MExtendImpl.class,
+                       "Extend");
+
+
+    /**
+     * <p>Tool to create an include relationship between UML use cases using a
+     *   polyedge.</p>
+     */
+
+    protected static Action _actionInclude =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MIncludeImpl.class,
+                       "Include");
+
+    /**
+     * <p>Tool to create a dependency between UML artifacts using a
+     *   polyedge.</p>
+     */
+
+    protected static Action _actionDependency =
+        new CmdSetMode(ModeCreatePolyEdge.class,
+                       "edgeClass", MDependencyImpl.class,
+                       "Dependency");
+
+
+    /**
+     * <p>A static counter of the use case index (used in constructing a unique
+     *   name for each new diagram.</p>
+     */
+
+    protected static int _UseCaseDiagramSerial = 1;
+
+
+    // constructors
+
+    /**
+     * <p>Construct a new use case diagram with no defined namespace.</p>
      *
-     * @param m  MNamespace from the model in NSUML...connects the class to the State diagram.
+     * <p>Note we must never call this directly, since defining the namespace
+     *   is what makes everything work. However GEF will call it directly when
+     *   loading a new diagram, so it must remain public.</p>
      *
-     * @modified changed <I>lay</I> from <I>LayerPerspective</I> to <I>LayerPerspectiveMutable</I>. 
-     *           This class is a child of <I>LayerPerspective</I> and was implemented 
-     *           to correct some difficulties in changing the model. <I>lay</I> is used 
-     *           mainly in <I>LayerManager</I>(GEF) to control the adding, changing and 
-     *           deleting of items in a layer of the diagram...
-     *           psager@tigris.org   Jan. 24, 2oo2
-     */          
-  public void setNamespace(MNamespace m) {
-    super.setNamespace(m);
-    UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
-    gm.setNamespace(m);
-    setGraphModel(gm);
-    LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
-    setLayer(lay);
-    UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer(); // singleton
-    lay.setGraphNodeRenderer(rend);
-    lay.setGraphEdgeRenderer(rend);
-  }
+     * <p>A unique name is constructed by using the serial index {@link
+     *   _UseCaseDiagramSerial}. We allow for the possibility that setting this
+     *   may fail, in which case no name is set.</p>
+     */
+
+    public UMLUseCaseDiagram() {
+        try {
+            setName("use case diagram " + _UseCaseDiagramSerial++);
+        }
+        catch (PropertyVetoException pve) { }
+    }
 
 
-  /** initialize the toolbar for this diagram type */
-  protected void initToolBar() {
-    //System.out.println("making usecase toolbar");
-    _toolBar = new ToolBar();
-    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//     _toolBar.add(Actions.Cut);
-//     _toolBar.add(Actions.Copy);
-//     _toolBar.add(Actions.Paste);
-//     _toolBar.addSeparator();
+    /**
+     * <p>Construct a new use case diagram with in a defined namespace.</p>
+     *
+     * <p>Invokes the generic constructor {@link #UMLUseCaseDiagram()}, then
+     *   intialises the namespace (which initializes all the graphics).</p>
+     *
+     * <p>This is the constructor which should always be used.</p>
+     *
+     * @param m  the desired namespace for this diagram.
+     */
 
-    _toolBar.add(_actionSelect);
-    _toolBar.add(_actionBroom);
-    _toolBar.addSeparator();
+    public UMLUseCaseDiagram(MNamespace m) {
+        this();
+        setNamespace(m);
+    }
 
-    _toolBar.add(_actionActor);
-    _toolBar.add(_actionUseCase);
+    /**
+     * <p> perform a number of important initializations of a <em>Use Case
+     *   Diagram</em>.</p>
+     *
+     * <p>Creates a new graph model for the diagram, settings its namespace to
+     *   that supplied.</p>
+     *
+     * <p>Changed <em>lay</em> from <em>LayerPerspective</em> to
+     *   <em>LayerPerspectiveMutable</em>. This class is a child of
+     *   <em>LayerPerspective</em> and was implemented to correct some
+     *   difficulties in changing the model. <em>lay</em> is used mainly in
+     *   <em>LayerManager</em>(GEF) to control the adding, changing and
+     *   deleting of items in a layer of the diagram.</p>
+     *
+     * <p>Set a renderer suitable for the use case diagram.</p>
+     *
+     * <p><em>Note</em>. This is declared as public. Not clear that other
+     *   classes should be allowed to invoke this method.</p>
+     *
+     * @param m  Namespace to be used for this diagram.
+     *
+     * @author   psager@tigris.org  Jan 24, 2002
+     */
 
-    _toolBar.addSeparator();
+    public void setNamespace(MNamespace m) {
+        super.setNamespace(m);
 
-    _toolBar.add(_actionAssoc);
-    _toolBar.add(_actionGeneralize);
-    _toolBar.add(_actionDependency);
-    // other actions
-    _toolBar.addSeparator();
+        UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
+        gm.setNamespace(m);
+        setGraphModel(gm);
 
-    _toolBar.add(_actionRectangle);
-    _toolBar.add(_actionRRectangle);
-    _toolBar.add(_actionCircle);
-    _toolBar.add(_actionLine);
-    _toolBar.add(_actionText);
-    _toolBar.add(_actionPoly);
-    _toolBar.add(_actionSpline);
-    _toolBar.add(_actionInk);
-    _toolBar.addSeparator();
+        LayerPerspective lay = new LayerPerspectiveMutable(m.getName(), gm);
+        setLayer(lay);
 
-    _toolBar.add(_diagramName);
-  }
+        // The renderer should be a singleton
+
+        UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
+
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
+    }
+
+
+    /**
+     * <p>Initialize the toolbar for a use case diagram.</p>
+     *
+     * <p>We follow the same format as other diagram types, with select and
+     *   broom to the left, and general graphics tools to the right, with
+     *   diagram specific tools in the middle, grouped appropriately.</p>
+     */
+
+    protected void initToolBar() {
+
+        // System.out.println(this.getClass().toString() +
+        //                    ": making usecase toolbar");
+
+        // Create a toolbar
+
+        _toolBar = new ToolBar();
+        _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+
+        // The Cut/Copy/Past tools would go here, but are currently not
+        // working, so commented out.
+
+        // _toolBar.add(Actions.Cut);
+        // _toolBar.add(Actions.Copy);
+        // _toolBar.add(Actions.Paste);
+        // _toolBar.addSeparator();
+
+        // Select and broom
+
+        _toolBar.add(_actionSelect);
+        _toolBar.add(_actionBroom);
+        _toolBar.addSeparator();
+
+        // Use case diagram specific nodes
+
+        _toolBar.add(_actionActor);
+        _toolBar.add(_actionUseCase);
+
+        _toolBar.addSeparator();
+
+        // Use case diagram specific edges
+
+        _toolBar.add(_actionAssoc);
+        _toolBar.add(_actionGeneralize);
+        _toolBar.add(_actionExtend);
+        _toolBar.add(_actionInclude);
+        _toolBar.add(_actionDependency);
+        _toolBar.addSeparator();
+
+        // General graphics actions
+
+        _toolBar.add(_actionRectangle);
+        _toolBar.add(_actionRRectangle);
+        _toolBar.add(_actionCircle);
+        _toolBar.add(_actionLine);
+        _toolBar.add(_actionText);
+        _toolBar.add(_actionPoly);
+        _toolBar.add(_actionSpline);
+        _toolBar.add(_actionInk);
+        _toolBar.addSeparator();
+
+        // Finally the name of the diagram
+
+        _toolBar.add(_diagramName);
+    }
 
 } /* end class UMLUseCaseDiagram */

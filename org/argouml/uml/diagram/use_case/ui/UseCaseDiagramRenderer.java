@@ -26,6 +26,10 @@
 // Original Author: abonner@ics.uci.edu
 // $Id$
 
+// 3 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support the
+// Extend and Include relationships. JavaDoc added for clarity.
+
+
 package org.argouml.uml.diagram.use_case.ui;
 
 import java.util.*;
@@ -38,85 +42,262 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.use_case.ui.*;
+
 
 // could be singleton
 
-/** This class defines a renderer object for UML Use Case Diagrams. In a
- *  Class Diagram the following UML objects are displayed with the
- *  following Figs: <p>
+/**
+ * <p>This class defines a renderer object for UML Use Case Diagrams. In a
+ *   Class Diagram the following UML objects are displayed with the
+ *   following Figs:</p>
+ *
  * <pre>
- *  UML Object      ---  Fig
- *  ---------------------------------------
- *  MActor           ---  FigActor
- *  MUseCase         ---  FigUseCase
- *  </pre>
+ *   UML Object       ---  Fig
+ *   ---------------------------------------
+ *   MActor           ---  FigActor
+ *   MUseCase         ---  FigUseCase
+ * </pre>
+ *
+ * <p>Provides {@link #getFigNodeFor} to implement the {@link
+ *   GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
+ *   {@link GraphEdgeRenderer} interface.</p>
+ *
+ * <p><em>Note</em>. Should be implemented as a singleton - we don't really
+ *   need a separate instance for each use case diagram.</p>
  */
 
 public class UseCaseDiagramRenderer
-implements GraphNodeRenderer, GraphEdgeRenderer {
+    implements GraphNodeRenderer, GraphEdgeRenderer {
 
-  /** Return a Fig that can be used to represent the given node */
-  public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
-    if (node instanceof MActor) return new FigActor(gm, node);
-    else if (node instanceof MUseCase) return new FigUseCase(gm, node);
-    System.out.println("needs-more-work UseCaseDiagramRenderer getFigNodeFor");
-    return null;
-  }
 
-  /** Return a Fig that can be used to represent the given edge */
-  /** Generally the same code as for the ClassDiagram, since its
-      very related to it. */
-  public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
-    //System.out.println("making figedge for " + edge);
-    if (edge instanceof MAssociation) {
-      MAssociation asc = (MAssociation) edge;
-      FigAssociation ascFig = new FigAssociation(asc);
-      Vector connections = new Vector(asc.getConnections());
-      if (connections == null) System.out.println("null connections....");
-      MAssociationEnd fromEnd = (MAssociationEnd) connections.elementAt(0);
-      MClassifier fromCls = (MClassifier) fromEnd.getType();
-      MAssociationEnd toEnd = (MAssociationEnd) connections.elementAt(1);
-      MClassifier toCls = (MClassifier) toEnd.getType();
-      FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
-      FigNode toFN = (FigNode) lay.presentationFor(toCls);
-      ascFig.setSourcePortFig(fromFN);
-      ascFig.setSourceFigNode(fromFN);
-      ascFig.setDestPortFig(toFN);
-      ascFig.setDestFigNode(toFN);
-      return ascFig;
-    }
-    if (edge instanceof MGeneralization) {
-      MGeneralization gen = (MGeneralization) edge;
-      FigGeneralization genFig = new FigGeneralization(gen);
-      MGeneralizableElement subType = gen.getChild();
-      MGeneralizableElement superType = gen.getParent();
-      FigNode subTypeFN = (FigNode) lay.presentationFor(subType);
-      FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
-      genFig.setSourcePortFig(subTypeFN);
-      genFig.setSourceFigNode(subTypeFN);
-      genFig.setDestPortFig(superTypeFN);
-      genFig.setDestFigNode(superTypeFN);
-      return genFig;
-    }
-      if (edge instanceof MDependency) {
-      MDependency dep = (MDependency) edge;
-      FigDependency depFig = new FigDependency(dep);
-      MModelElement supplier = (MModelElement)((dep.getSuppliers().toArray())[0]);
-      MModelElement client = (MModelElement)((dep.getClients().toArray())[0]);
-      FigNode supplierFN = (FigNode) lay.presentationFor(supplier);
-      FigNode clientFN = (FigNode) lay.presentationFor(client);
-      depFig.setSourcePortFig(clientFN);
-      depFig.setSourceFigNode(clientFN);
-      depFig.setDestPortFig(supplierFN);
-      depFig.setDestFigNode(supplierFN);
-      return depFig;
-    }
-    // what about realizations? They are not distince objects in my UML model
-    // maybe they should be, just as an implementation issue, dont
-    // remove any of the methods that are there now.
+    /**
+     * <p>Return a Fig that can be used to represent the given node.</p>
+     *
+     * @param gm    The graph model for which we are rendering.
+     *
+     * @param lay   The layer in the graph on which we want this figure.
+     *
+     * @param node  The node to be rendered (an NSUML object)
+     *
+     * @return      The fig to be used, or <code>null</code> if we can't create
+     *              one.
+     */
 
-    System.out.println("needs-more-work UseCaseDiagramRenderer getFigEdgeFor");
-    return null;
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
+
+        // Create a new version of the relevant fig
+
+        if (node instanceof MActor) {
+            return new FigActor(gm, node);
+        }
+        else if (node instanceof MUseCase) {
+            return new FigUseCase(gm, node);
+        }
+
+        // If we get here we were asked for a fig we can't handle.
+
+        System.out.println(this.getClass().toString() +
+                           ": getFigNodeFor(" + gm.toString() + ", " +
+                           lay.toString() + ", " + node.toString() +
+                           ") - cannot create this sort of node.");
+        return null;
+    }
+
+
+    /**
+     * <p>Return a Fig that can be used to represent the given edge.</p>
+     *
+     * <p>Generally the same code as for the ClassDiagram, since it's very
+     *   related to it. Deal with each of the edge types in turn.</p>
+     *
+     * @param gm    The graph model for which we are rendering.
+     *
+     * @param lay   The layer in the graph on which we want this figure.
+     *
+     * @param edge  The edge to be rendered (an NSUML object)
+     *
+     * @return      The fig to be used, or <code>null</code> if we can't create
+     *              one.
+     */
+
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
+
+        // System.out.println("making figedge for " + edge);
+
+        // If the edge is an association, we'll need a FigAssociation
+
+        if (edge instanceof MAssociation) {
+            MAssociation   asc         = (MAssociation) edge;
+            FigAssociation ascFig      = new FigAssociation(asc);
+            Vector         connections = new Vector(asc.getConnections());
+
+            // Print out a rude message if the association isn't connected to
+            // anything. Give up here, or we'll run in to difficulties. Note
+            // this should never happen!
+
+            if (connections == null) {
+                System.out.println(this.getClass().toString() +
+                                   ": getFigEdgeFor(" + gm.toString() + ", " +
+                                   lay.toString() + ", " + edge.toString() +
+                                   ") - null connections for association.");
+                return null;
+            }
+
+            // For an association the first connection is the from end. Get the
+            // two ends.
+
+            MAssociationEnd fromEnd =
+                (MAssociationEnd) connections.elementAt(0);
+            MClassifier fromCls     = (MClassifier) fromEnd.getType();
+
+            MAssociationEnd toEnd =
+                (MAssociationEnd) connections.elementAt(1);
+            MClassifier toCls     = (MClassifier) toEnd.getType();
+
+            // The figs for the nodes at the two ends (we know they must be on
+            // the graph)
+
+            FigNode fromFN = (FigNode) lay.presentationFor(fromCls);
+            FigNode toFN   = (FigNode) lay.presentationFor(toCls);
+
+            // Link to the figs
+
+            ascFig.setSourcePortFig(fromFN);
+            ascFig.setSourceFigNode(fromFN);
+
+            ascFig.setDestPortFig(toFN);
+            ascFig.setDestFigNode(toFN);
+
+            return ascFig;
+        }
+
+        // Generalization needs a FigGeneralization
+
+        else if (edge instanceof MGeneralization) {
+            MGeneralization   gen    = (MGeneralization) edge;
+            FigGeneralization genFig = new FigGeneralization(gen);
+
+            // The nodes at the two ends
+
+            MGeneralizableElement subType   = gen.getChild();
+            MGeneralizableElement superType = gen.getParent();
+
+            // The figs for the two end nodes
+
+            FigNode subTypeFN   = (FigNode) lay.presentationFor(subType);
+            FigNode superTypeFN = (FigNode) lay.presentationFor(superType);
+
+            // Link the new generalization in to the ends
+
+            genFig.setSourcePortFig(subTypeFN);
+            genFig.setSourceFigNode(subTypeFN);
+
+            genFig.setDestPortFig(superTypeFN);
+            genFig.setDestFigNode(superTypeFN);
+
+            return genFig;
+        }
+
+        // Extend relationship
+
+        else if (edge instanceof MExtend) {
+            MExtend   ext    = (MExtend) edge;
+            FigExtend extFig = new FigExtend(ext);
+
+            // The nodes at the two ends
+
+            MUseCase base      = ext.getBase();
+            MUseCase extension = ext.getExtension();
+
+            // The figs for the two end nodes
+
+            FigNode baseFN      = (FigNode) lay.presentationFor(base);
+            FigNode extensionFN = (FigNode) lay.presentationFor(extension);
+
+            // Link the new extend relationship in to the ends. Remember we
+            // draw from the extension use case to the base use case.
+
+            extFig.setSourcePortFig(extensionFN);
+            extFig.setSourceFigNode(extensionFN);
+
+            extFig.setDestPortFig(baseFN);
+            extFig.setDestFigNode(baseFN);
+
+            return extFig;
+        }
+
+        // Include relationship is very like extend. Watch out for the NSUML
+        // bug here.
+
+        else if (edge instanceof MInclude) {
+            MInclude   inc    = (MInclude) edge;
+            FigInclude incFig = new FigInclude(inc);
+
+            // The nodes at the two ends. NSUML has a bug which gets base and
+            // additon reversed, so we must reverse their accessors here.
+
+            MUseCase base     = inc.getAddition();
+            MUseCase addition = inc.getBase();
+
+            // The figs for the two end nodes
+
+            FigNode baseFN     = (FigNode) lay.presentationFor(base);
+            FigNode additionFN = (FigNode) lay.presentationFor(addition);
+
+            // Link the new include relationship in to the ends
+
+            incFig.setSourcePortFig(baseFN);
+            incFig.setSourceFigNode(baseFN);
+
+            incFig.setDestPortFig(additionFN);
+            incFig.setDestFigNode(additionFN);
+
+            return incFig;
+        }
+
+        // Dependency needs a FigDependency
+
+        else if (edge instanceof MDependency) {
+            MDependency   dep    = (MDependency) edge;
+            FigDependency depFig = new FigDependency(dep);
+
+            // Where there is more than one supplier or client, take the first
+            // element in each case. There really ought to be a check that
+            // there are some here for safety.
+
+            MModelElement supplier =
+                (MModelElement)((dep.getSuppliers().toArray())[0]);
+            MModelElement client =
+                (MModelElement)((dep.getClients().toArray())[0]);
+
+            // The figs for the two end nodes
+
+            FigNode supplierFN = (FigNode) lay.presentationFor(supplier);
+            FigNode clientFN   = (FigNode) lay.presentationFor(client);
+
+            // Link the new dependency in to the ends
+
+            depFig.setSourcePortFig(clientFN);
+            depFig.setSourceFigNode(clientFN);
+
+            depFig.setDestPortFig(supplierFN);
+            depFig.setDestFigNode(supplierFN);
+
+            return depFig;
+        }
+
+        // If we get here, we can't handle this sort of edge.
+
+        // What about realizations? They are not distinct objects in my UML
+        // model maybe they should be, just as an implementation issue, dont
+        // remove any of the methods that are there now.
+
+        System.out.println(this.getClass().toString() +
+                           ": getFigEdgeFor(" + gm.toString() + ", " +
+                           lay.toString() + ", " + edge.toString() +
+                           ") - needs more work to handle this sort of edge");
+        return null;
   }
 
   static final long serialVersionUID = 2217410137377934879L;

@@ -21,7 +21,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Fixed use of addAtUtil,
+// so test is with getModelElementSize() rather than getSize(). Then fixed the
+// associated errors that fell out due to misunderstanding of NSUML (you only
+// need to set one end).
+
+
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
 import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -76,22 +83,63 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
         navigateTo(elementAtUtil(getClientDependencies(),index,MDependency.class));
     }    
 
+    /**
+     * <p>Add a new abstraction relationship.</p>
+     *
+     * <p>Current implementation cures an earlier bug, which set both ends of
+     *   the NSUML object, thereby effectively adding the dependency twice (if
+     *   you add one end, NSUML does the other for you.</p>
+     *
+     * @param index  The index of the item in the list on which this add
+     *   operation was invoked.
+     */
+
     public void add(int index) {
-       Object target = getTarget();
-       if(target instanceof MModelElement) {
-            MAbstraction newAbstraction = new MAbstractionImpl();
-            ArrayList clients = new ArrayList(1);
-            clients.add(0,target);
-            newAbstraction.setClients(clients);
-            MModelElement targetElement = (MModelElement) target;
-            if(index == getSize()) {    
-                targetElement.addClientDependency(newAbstraction);
-            }
-            else {
-                targetElement.setClientDependencies(addAtUtil(targetElement.getClientDependencies(),newAbstraction,index));
-            }
-            navigateTo(newAbstraction);
+
+        // We can work for any model element. UML probably is more restrictive
+        // than that, since we are actually creating associations rather than
+        // dependencies here. Give up if it isn't a model element or we don't
+        // have a namespace.
+
+        Object target = getTarget();
+
+        if (!(target instanceof MModelElement)) {
+            return;
         }
+
+        MModelElement modelElement = (MModelElement) target;
+        MNamespace    ns           = modelElement.getNamespace();
+
+        if (ns == null) {
+            return;
+        }
+
+        // Get the new abstraction from the factory and add it to the
+        // namespace.
+
+        MAbstraction newAbstraction = ns.getFactory().createAbstraction();
+        ns.addOwnedElement(newAbstraction);
+
+        // We need not set the clients array up - that will happen when we add
+        // to the client dependency of the model element.
+
+        // Fixed to look at the true list size, not counting the "empty"
+        // entry.
+
+        if(index == getModelElementSize()) {    
+            modelElement.addClientDependency(newAbstraction);
+        }
+        else {
+            modelElement.setClientDependencies(
+                addAtUtil(modelElement.getClientDependencies(),
+                          newAbstraction, index));
+        }
+
+        // Advise Swing that we have added something at this index and
+        // navigate there.
+
+        fireIntervalAdded(this,index,index);
+        navigateTo(newAbstraction);
     }
     
     public void delete(int index) {
