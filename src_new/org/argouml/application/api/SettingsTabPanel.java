@@ -43,37 +43,37 @@ public interface SettingsTabPanel {
     /** 
      * Save any fields changed.
      */
-    public void handleSettingsTabSave();
+    void handleSettingsTabSave();
 
     /** 
      * Cancel any changes.
      */
-    public void handleSettingsTabCancel();
+    void handleSettingsTabCancel();
 
     /** 
      * Load or reload field settings.
      */
-    public void handleSettingsTabRefresh();
+    void handleSettingsTabRefresh();
 
     /** 
      * Gets the unlocalized settings tab name.
      *
      * @return the unlocalized settings tab name
      */
-    public String getTabKey();
+    String getTabKey();
 
     /** 
      * Gets the name of the resource bundle to use.
      *
      * @return the name of the resource bundle to use.
      */
-    public String getTabResourceBundleKey();
+    String getTabResourceBundleKey();
 
     /** 
      * Gets the JPanel which implements the tab.
      *
      * @return the JPanel which implements the tab
      */
-    public JPanel getTabPanel();
+    JPanel getTabPanel();
 
 } /* End interface SettingsTabPanel */
