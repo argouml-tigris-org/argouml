@@ -86,7 +86,12 @@ public class Critic implements Poster, Serializable {
    *
    *  @since 0.9.4
    */
-  public final static Category cat = Category.getInstance(Critic.class.getPackage().getName());
+  public final static Category cat = Category.getInstance("org.argouml.cognitive.critics");
+    // needs-more-work:  JDK 1.2 seems to not return the package name if
+    // not running from a jar.
+    //
+  // public final static Category cat = Category.getInstance(Critic.class.getPackage().getName());
+
 
   /** The email address of the author/maintainer of this critic. */
   private String _emailAddr;
