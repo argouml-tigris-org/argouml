@@ -52,7 +52,7 @@ import org.argouml.uml.diagram.state.ui.*;
 
 // get the note from the class diagram
 import org.argouml.uml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.FigNote;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
 
 /** Enabling an activity diagram connected to an
  * actor has been requested as a feature.

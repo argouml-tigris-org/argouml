@@ -37,6 +37,7 @@ import java.beans.*;
 import javax.swing.*;
 
 import org.tigris.gef.base.*;
+import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.*;
 
 import org.argouml.kernel.*;
@@ -48,7 +49,7 @@ import org.argouml.uml.diagram.ui.*;
 
 
 /** 
- * Abstract class to display a UML note connection to a
+ * Class to display a UML note connection to a
  * annotated model element.
  */
 public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyListener, PropertyChangeListener  {
@@ -70,11 +71,24 @@ public class FigEdgeNote extends FigEdgeModelElement implements VetoableChangeLi
     }
     
     /**
-     * This is just a dummy constructor. A note connection has no underlying
-     * model element (called owner).
+     * Constructs a new figedgenote from some object to another object. The
+     * objects must have a representation on the given layer.
+     * @param lay
+     * @param fromNode
+     * @param toNode
      */
-    public FigEdgeNote(Object edge) {
-	this();
+    public FigEdgeNote(Object fromNode, Object toNode) {
+        this();
+        Layer lay = ProjectBrowser.TheInstance.getActiveDiagram().getLayer();
+        setLayer(lay);
+        Fig destFig = lay.presentationFor(toNode);
+        Fig sourceFig = lay.presentationFor(fromNode);
+        if (destFig == null || sourceFig == null) throw new IllegalStateException("No destfig or sourcefig while creating FigEdgeNode");
+        setDestFigNode((FigNode)destFig);
+        setDestPortFig(destFig);
+        setSourceFigNode((FigNode)sourceFig);
+        setSourcePortFig(sourceFig);
+        computeRoute();
     }
 
     ////////////////////////////////////////////////////////////////
