@@ -35,168 +35,201 @@ import org.xml.sax.*;
 
 public class ArgoParser extends SAXParserBase {
 
-  ////////////////////////////////////////////////////////////////
-  // static variables
+    ////////////////////////////////////////////////////////////////
+    // static variables
 
-  public static ArgoParser SINGLETON = new ArgoParser();
+    public static ArgoParser SINGLETON = new ArgoParser();
 
-  ////////////////////////////////////////////////////////////////
-  // instance variables
+    ////////////////////////////////////////////////////////////////
+    // instance variables
 
-  protected Project        _proj   = null;
+    protected Project        _proj   = null;
 
-  private   ArgoTokenTable _tokens = new ArgoTokenTable();
+    private   ArgoTokenTable _tokens = new ArgoTokenTable();
 
     private boolean _addMembers = true;
 
     private URL _url = null;
 
-  ////////////////////////////////////////////////////////////////
-  // constructors
+    private boolean lastLoadStatus = true;
+    
+    private String lastLoadMessage = null;
 
-  protected ArgoParser() { super(); }
+    ////////////////////////////////////////////////////////////////
+    // constructors
 
-  ////////////////////////////////////////////////////////////////
-  // main parsing methods
+    protected ArgoParser() { super(); }
 
-  // needs-more-work: should be able to merge an existing project into
-  // the current one.
+    ////////////////////////////////////////////////////////////////
+    // main parsing methods
 
-  public synchronized void readProject(URL url) {
-      readProject(url, true);
-  }
+    // needs-more-work: should be able to merge an existing project into
+    // the current one.
 
-  public synchronized void readProject(URL url, boolean addMembers) {
+    public synchronized void readProject(URL url) {
+        readProject(url, true);
+    }
+
+    public synchronized void readProject(URL url, boolean addMembers) {
       
-      _url = url;
-      
-      try{
-	  readProject(url.openStream(), addMembers);
-      } catch (IOException e) {
-	  Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
-	  e.printStackTrace();
-      }
-  }
+        _url = url;
+
+        try{
+            readProject(url.openStream(), addMembers);
+        } catch (IOException e) {
+            Argo.log.info("Couldn't open InputStream in ArgoParser.load("+url+") "+e);
+            e.printStackTrace();
+            lastLoadMessage = e.toString();
+        }
+    }
 
     public void setURL(URL url) {
-	_url = url;
+        _url = url;
     }
 
-  public synchronized void readProject(InputStream is, boolean addMembers) {
+    public synchronized void readProject(InputStream is, boolean addMembers) {
 
-      _addMembers = addMembers;
+        lastLoadStatus = true;
+        lastLoadMessage = "OK";
 
-      if ((_url == null) && _addMembers) {
-	  Argo.log.info("URL not set! Won't be able to add members! Aborting...");
-	  return;
-      }
+        _addMembers = addMembers;
+
+        if ((_url == null) && _addMembers) {
+            Argo.log.info("URL not set! Won't be able to add members! Aborting...");
+            lastLoadMessage = "URL not set!";
+            return;
+        }
 	  
 
-    try {
-      Argo.log.info("=======================================");
-      Argo.log.info("== READING PROJECT "+_url);
-      _proj = new Project(_url);
-      parse(is);
-    }
-    catch(SAXException saxEx) {
-        Argo.log.info("Exception reading project================");
-        //
-        //  a SAX exception could have been generated
-        //    because of another exception.
-        //    Get the initial exception to display the
-        //    location of the true error
-        Exception ex = saxEx.getException();
-        if(ex == null) {
-            saxEx.printStackTrace();
+        try {
+            Argo.log.info("=======================================");
+            Argo.log.info("== READING PROJECT "+_url);
+            _proj = new Project(_url);
+            parse(is);
         }
-        else {
+        catch(SAXException saxEx) {
+            lastLoadStatus = false;
+            Argo.log.info("Exception reading project================");
+            //
+            //  a SAX exception could have been generated
+            //    because of another exception.
+            //    Get the initial exception to display the
+            //    location of the true error
+            Exception ex = saxEx.getException();
+            if(ex == null) {
+                lastLoadMessage = saxEx.toString();
+                saxEx.printStackTrace();
+            }
+            else {
+                lastLoadMessage = saxEx.toString();
+                ex.printStackTrace();
+            }
+        }
+        catch (Exception ex) {
+            Argo.log.info("Exception reading project================");
+            ex.printStackTrace();
+            lastLoadMessage = ex.toString();
+        }        
+    }
+
+    public Project getProject() { return _proj; }
+
+    public void handleStartElement(XMLElement e) {
+        if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
+        try {
+            switch (_tokens.toToken(e.getName(), true)) {
+            case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
+            case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
+            default: if (_dbg)
+                System.out.println("WARNING: unknown tag:" + e.getName());  break;
+            }
+        }
+        catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    catch (Exception ex) {
-      Argo.log.info("Exception reading project================");
-      ex.printStackTrace();
+
+
+    public void handleEndElement(XMLElement e) {
+        if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
+        try {
+            switch (_tokens.toToken(e.getName(), false)) {
+            case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
+            case ArgoTokenTable.TOKEN_version : handleVersion(e); break;
+            case ArgoTokenTable.TOKEN_description : handleDescription(e); break;
+            case ArgoTokenTable.TOKEN_searchpath : handleSearchpath(e); break;
+            case ArgoTokenTable.TOKEN_member : handleMember(e); break;
+            case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
+            default : if (_dbg)
+                System.out.println("WARNING: unknown end tag:" + e.getName()); break;
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
-  }
 
-  public Project getProject() { return _proj; }
-
-  public void handleStartElement(XMLElement e) {
-    if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
-    try {
-      switch (_tokens.toToken(e.getName(), true)) {
-      case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
-      case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
-      default: if (_dbg)
-	System.out.println("WARNING: unknown tag:" + e.getName());  break;
-      }
+    protected void handleArgo(XMLElement e) {
+        /* do nothing */
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+
+    protected void handleDocumentation(XMLElement e) {
+        /* do nothing */
     }
-  }
 
 
-  public void handleEndElement(XMLElement e) {
-    if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
-    try {
-      switch (_tokens.toToken(e.getName(), false)) {
-      case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
-      case ArgoTokenTable.TOKEN_version : handleVersion(e); break;
-      case ArgoTokenTable.TOKEN_description : handleDescription(e); break;
-      case ArgoTokenTable.TOKEN_searchpath : handleSearchpath(e); break;
-      case ArgoTokenTable.TOKEN_member : handleMember(e); break;
-      case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
-      default : if (_dbg)
-	System.out.println("WARNING: unknown end tag:" + e.getName()); break;
-      }
+    protected void handleAuthorname(XMLElement e) {
+        String authorname = e.getText().trim();
+        _proj._authorname = authorname;
     }
-    catch (Exception ex) {
-      ex.printStackTrace();
+
+    protected void handleVersion(XMLElement e) {
+        String version = e.getText().trim();
+        _proj._version = version;
     }
-  }
 
-  protected void handleArgo(XMLElement e) {
-    /* do nothing */
-  }
+    protected void handleDescription(XMLElement e) {
+        String description = e.getText().trim();
+        _proj._description = description;
+    }
 
-  protected void handleDocumentation(XMLElement e) {
-    /* do nothing */
-  }
+    protected void handleSearchpath(XMLElement e) {
+        String searchpath = e.getAttribute("href").trim();
+        _proj.addSearchPath(searchpath);
+    }
 
+    protected void handleMember(XMLElement e) {
+        if(_addMembers) {
+            String name = e.getAttribute("name").trim();
+            String type = e.getAttribute("type").trim();
+            _proj.addMember(name, type);
+        }
+    }
 
-  protected void handleAuthorname(XMLElement e) {
-    String authorname = e.getText().trim();
-    _proj._authorname = authorname;
-  }
+    protected void handleHistoryfile(XMLElement e) {
+        if (e.getAttribute("name") == null) return;
+        String historyfile = e.getAttribute("name").trim();
+        _proj._historyFile = historyfile;
+    }
 
-  protected void handleVersion(XMLElement e) {
-    String version = e.getText().trim();
-    _proj._version = version;
-  }
+    /** return the status of the last load attempt.
+        Used for junit tests.
+     */
+    public boolean getLastLoadStatus() { return lastLoadStatus; }
 
-  protected void handleDescription(XMLElement e) {
-    String description = e.getText().trim();
-    _proj._description = description;
-  }
-
-  protected void handleSearchpath(XMLElement e) {
-    String searchpath = e.getAttribute("href").trim();
-    _proj.addSearchPath(searchpath);
-  }
-
-  protected void handleMember(XMLElement e) {
-      if(_addMembers) {
-	  String name = e.getAttribute("name").trim();
-	  String type = e.getAttribute("type").trim();
-	  _proj.addMember(name, type);
-      }
-  }
-
-  protected void handleHistoryfile(XMLElement e) {
-    if (e.getAttribute("name") == null) return;
-    String historyfile = e.getAttribute("name").trim();
-    _proj._historyFile = historyfile;
-  }
+    /** set the status of the last load attempt. 
+        Used for junit tests.
+     */
+    public void setLastLoadStatus(boolean status) { lastLoadStatus = status;}
+    
+    /** get the last message which caused loading to fail. 
+        Used for junit tests.
+     */
+    public String getLastLoadMessage() { return lastLoadMessage; }
+    
+    /** set the last load message.
+        Used for junit tests.
+    */
+    public void setLastLoadMessage(String msg) { lastLoadMessage = msg; }
 
 } /* end class ArgoParser */
