@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+package org.argouml.persistence;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -33,6 +33,7 @@ import java.io.IOException;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
 
 /**
  * To persist to and from zargo (zipped file) storage.
@@ -150,7 +151,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * @param file The file to which the save is taking place.
      * @throws SaveException when anything goes wrong
      *
-     * @see org.argouml.kernel.ProjectFilePersister#save(
+     * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     public final void save(Project project, File file) throws SaveException {
@@ -212,7 +213,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * @param file The file to write.
      * @throws SaveException when anything goes wrong
      *
-     * @see org.argouml.kernel.AbstractFilePersister#save(
+     * @see org.argouml.persistence.AbstractFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     protected abstract void doSave(Project project, File file)

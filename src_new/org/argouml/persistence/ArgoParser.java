@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -30,10 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.LastLoadInfo;
 import org.argouml.kernel.Project;
-import org.argouml.xml.SAXParserBase;
-import org.argouml.xml.XMLElement;
 import org.xml.sax.SAXException;
 
 /**
@@ -112,7 +109,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @see org.argouml.xml.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
+     * @see org.argouml.persistence.SAXParserBase#handleStartElement(org.argouml.xml.XMLElement)
      */
     public void handleStartElement(XMLElement e) throws SAXException {
         if (DBG) {
@@ -134,7 +131,7 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @see org.argouml.xml.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
+     * @see org.argouml.persistence.SAXParserBase#handleEndElement(org.argouml.xml.XMLElement)
      */
     public void handleEndElement(XMLElement e) throws SAXException {
         if (DBG) {
@@ -167,7 +164,7 @@ public class ArgoParser extends SAXParserBase {
     }
     
     /**
-     * @see org.argouml.xml.SAXParserBase#isElementOfInterest(java.util.String)
+     * @see org.argouml.persistence.SAXParserBase#isElementOfInterest(java.util.String)
      */
     protected boolean isElementOfInterest(String name) {
         return tokens.contains(name);

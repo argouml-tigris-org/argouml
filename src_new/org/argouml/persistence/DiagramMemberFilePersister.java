@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,29 +21,56 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.kernel;
 
-import java.io.File;
-import java.net.URL;
+package org.argouml.persistence;
+
+import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.ui.ArgoDiagram;
 
 /**
- * To persist a project to and from file storage.
- * 
+ * The file persister for the diagram members.
  * @author Bob Tarling
  */
-public interface ProjectFilePersister {
+public class DiagramMemberFilePersister extends MemberFilePersister {
+    
+    /** logger */
+    private static final Logger LOG =
+        Logger.getLogger(ModelMemberFilePersister.class);
     
     /**
-     * @param project the project to save
-     * @param file The file to write.
-     * @throws SaveException if anything goes wrong.
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
+     * java.io.InputStream)
      */
-    public void save(Project project, File file) throws SaveException;
+    public void load(Project project, InputStream inputStream)
+        throws OpenException {
+        
+        try {
+            PGMLParser parser = new PGMLParser();
+            parser.setOwnerRegistry(project.getUUIDRefs());
+            ArgoDiagram d =
+                    (ArgoDiagram) parser.readDiagram(
+                                  inputStream,
+                                  false);
+            inputStream.close();
+            if (d != null) {
+                project.addMember(d);
+            }
+            else {
+                LOG.error("An error occurred while loading PGML");
+            }
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+    }
     
     /**
-     * @param url the url of the project to load
-     * @return the Project 
-     * @throws OpenException when we fail to open from this url
+     * @see org.argouml.persistence.MemberFilePersister#getTag()
      */
-    public Project loadProject(URL url) throws OpenException;
+    public String getMainTag() {
+        return "pgml";
+    }
 }

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,8 +31,6 @@ import java.util.HashMap;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.LastLoadInfo;
-import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.XmiReader;
@@ -57,7 +55,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
      * getLastLoadStatus() field. This needs to be examined by the
      * calling function.<p>
      *
-     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
@@ -110,7 +108,7 @@ public class ModelMemberFilePersister extends MemberFilePersister {
     }
     
     /**
-     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     * @see org.argouml.persistence.MemberFilePersister#getTag()
      */
     public String getMainTag() {
         return "XMI";

@@ -21,7 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.kernel;
+package org.argouml.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -30,9 +30,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.cognitive.ProjectMemberTodoList;
-import org.argouml.xml.xmi.XMIParser;
 
 /**
  * To persist to and from XMI file storage.
@@ -51,14 +52,14 @@ public class XmiFilePersister extends AbstractFilePersister {
     }
 
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "xmi";
     }
     
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getDesc()
+     * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return "XML Metadata Interchange";
@@ -156,7 +157,7 @@ public class XmiFilePersister extends AbstractFilePersister {
      * @return The newly loaded project.
      * @throws OpenException if the file can not be opened
      *
-     * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
     public Project loadProject(URL url) throws OpenException {
         try {

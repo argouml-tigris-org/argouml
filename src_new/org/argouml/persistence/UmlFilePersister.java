@@ -21,7 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-package org.argouml.kernel;
+package org.argouml.persistence;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -35,12 +35,8 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
-import org.argouml.xml.argo.ArgoParser;
-import org.argouml.xml.argo.DiagramMemberFilePersister;
-import org.argouml.xml.argo.MemberFilePersister;
-import org.argouml.xml.argo.ModelMemberFilePersister;
-import org.argouml.xml.argo.TodoListMemberFilePersister;
-import org.argouml.xml.argo.XmlInputStream;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectMember;
 import org.tigris.gef.ocl.ExpansionException;
 import org.tigris.gef.ocl.OCLExpander;
 import org.tigris.gef.ocl.TemplateReader;
@@ -56,7 +52,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     private static final Logger LOG = 
         Logger.getLogger(UmlFilePersister.class);
     
-    private static final String ARGO_TEE = "/org/argouml/xml/dtd/argo2.tee";
+    private static final String ARGO_TEE = "/org/argouml/persistence/argo2.tee";
 
     /**
      * The constructor.
@@ -66,14 +62,14 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
     
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getExtension()
+     * @see org.argouml.persistence.AbstractFilePersister#getExtension()
      */
     public String getExtension() {
         return "uml";
     }
     
     /**
-     * @see org.argouml.kernel.AbstractFilePersister#getDesc()
+     * @see org.argouml.persistence.AbstractFilePersister#getDesc()
      */
     protected String getDesc() {
         return "ArgoUML project file";
@@ -88,7 +84,7 @@ public class UmlFilePersister extends AbstractFilePersister {
      * @param project the project to save
      * @throws SaveException when anything goes wrong
      *
-     * @see org.argouml.kernel.ProjectFilePersister#save(
+     * @see org.argouml.persistence.ProjectFilePersister#save(
      * org.argouml.kernel.Project, java.io.File)
      */
     public void doSave(Project project, File file)
@@ -200,7 +196,7 @@ public class UmlFilePersister extends AbstractFilePersister {
     }
     
     /**
-     * @see org.argouml.kernel.ProjectFilePersister#loadProject(java.net.URL)
+     * @see org.argouml.persistence.ProjectFilePersister#loadProject(java.net.URL)
      */
     public Project loadProject(URL url) throws OpenException {
         try {

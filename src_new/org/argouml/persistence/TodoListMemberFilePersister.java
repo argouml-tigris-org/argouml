@@ -22,13 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.argo;
+package org.argouml.persistence;
 
 import java.io.InputStream;
 
-import org.argouml.kernel.OpenException;
 import org.argouml.kernel.Project;
-import org.argouml.xml.todo.TodoParser;
 
 /**
  * The file persister for the Todo members.
@@ -38,7 +36,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
     
     /**
      * Load the todo member.
-     * @see org.argouml.xml.argo.MemberFilePersister#load(org.argouml.kernel.Project,
+     * @see org.argouml.persistence.MemberFilePersister#load(org.argouml.kernel.Project,
      * java.io.InputStream)
      */
     public void load(Project project, InputStream inputStream)
@@ -49,7 +47,7 @@ public class TodoListMemberFilePersister extends MemberFilePersister {
     }
     
     /**
-     * @see org.argouml.xml.argo.MemberFilePersister#getTag()
+     * @see org.argouml.persistence.MemberFilePersister#getTag()
      */
     public final String getMainTag() {
         return "todo";

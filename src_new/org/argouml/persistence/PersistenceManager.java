@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.kernel;
+package org.argouml.persistence;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ import org.tigris.gef.util.UnexpectedException;
  * @author MVW
  *
  */
-public class PersisterManager {
+public class PersistenceManager {
 
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
@@ -52,7 +52,7 @@ public class PersisterManager {
     /**
      * The constructor.
      */
-    public PersisterManager() {
+    public PersistenceManager() {
         // These are the file formats I know about:
         defaultPersister = new ZargoFilePersister();
         otherPersisters.add(new UmlFilePersister());
