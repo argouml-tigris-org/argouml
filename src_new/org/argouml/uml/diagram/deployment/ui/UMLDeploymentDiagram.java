@@ -150,7 +150,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
     _toolBar.add(_actionInk);
     _toolBar.addSeparator();
 
-    _toolBar.add(_diagramName);
+    _toolBar.add(_diagramName.getJComponent());
   }
 
   static final long serialVersionUID = -375918274062198744L;

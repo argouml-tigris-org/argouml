@@ -218,7 +218,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     _toolBar.add(_actionInk);
     _toolBar.addSeparator();
 
-    _toolBar.add(_diagramName);
+    _toolBar.add(_diagramName.getJComponent());
   }
   
   protected static String getNewDiagramName() {
