@@ -295,7 +295,7 @@ public class UMLActivityDiagram extends UMLDiagram {
         return actions;
     }
 
-    private Object[] getExtendedActions() {
+    /*private Object[] getExtendedActions() {
         Object actions[] =
         {
             actionCallState, 
@@ -303,7 +303,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             actionSubactivityState };
         return actions;
 
-    }
+    }*/
 
     
     /**
