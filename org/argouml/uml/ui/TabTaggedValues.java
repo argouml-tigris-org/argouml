@@ -32,6 +32,7 @@ import java.util.Vector;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TableModelEvent;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -69,6 +70,7 @@ public class TabTaggedValues extends TabSpawnable
     TableModelTaggedValues _tableModel = null;
     boolean _shouldBeEnabled = false;
     JTable _table = new JTable(10, 2);
+    JLabel _titleLabel;
 
     ////////////////////////////////////////////////////////////////
     // constructor
@@ -82,8 +84,10 @@ public class TabTaggedValues extends TabSpawnable
         JScrollPane sp = new JScrollPane(_table);
         Font labelFont = MetalLookAndFeel.getSubTextFont();
         _table.setFont(labelFont);
+        _titleLabel = new JLabel("none");
         resizeColumns();
         setLayout(new BorderLayout());
+        add(_titleLabel, BorderLayout.NORTH);
         add(sp, BorderLayout.CENTER);
     }
 
@@ -133,6 +137,12 @@ public class TabTaggedValues extends TabSpawnable
         MModelElement me = (MModelElement) _target;
         Vector tvs = new Vector(me.getTaggedValues());
         _tableModel.setTarget(me);
+        if (me != null) {
+            _titleLabel.setText("Target: "+ me.getUMLClassName()+" ("+me.getName()+")");
+        }
+        else {
+            _titleLabel.setText("none");
+        }
         validate();
     }
 
