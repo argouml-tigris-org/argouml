@@ -27,6 +27,7 @@ import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*; //--pjs-- added for event.
 
 public class UMLTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
 
@@ -59,6 +60,7 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
     }
     public void removed(final MElementEvent p1) {
     }
+
     public void propertySet(final MElementEvent event) {
         if(_property.isAffected(event)) {
             //
@@ -75,6 +77,10 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
         }
     }
     
+/** update() updates both the Collection (by setText()) and the drawing (using 
+ *  the if statements and code blocks). The code forces FigClass to update the
+ *  drawing as information is typed into the text boxes in the property panes.
+ *  @author modifies psager@tigris.org Aug. 27, 2001 */    
     private void update() {
         String oldText = getText();
         String newText = _property.getProperty(_container);
@@ -83,7 +89,29 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
                 setText(newText);
             }
         }
+
+        Object target = _container.getTarget();
+        
+        if (target instanceof MClassifier){
+            MClassifier classifier = (MClassifier) target;
+            classifier.setFeatures(classifier.getFeatures());
+        }
+        else if (target instanceof MOperation){
+            MClassifier classifier = (MClassifier) ((MOperation)target).getOwner();
+            classifier.setFeatures(classifier.getFeatures());
+        }
+        else if (target instanceof MAttribute){
+            MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
+            classifier.setFeatures(classifier.getFeatures());
+        }
+        else if (target instanceof MParameter){
+            MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
+            MClassifier classifier = (MClassifier) feature.getOwner();
+            classifier.setFeatures(classifier.getFeatures());
+        }  
     }
+
+    
     public void changedUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
     }

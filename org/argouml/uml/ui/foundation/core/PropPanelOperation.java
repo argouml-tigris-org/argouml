@@ -104,7 +104,8 @@ public class PropPanelOperation extends PropPanelModelElement {
 	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
 	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
 	new PropPanelButton(this,buttonPanel,_operationIcon,localize("New operation"),"buttonAddOperation",null);
-	//new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"buttonAddParameter",null);
+// I uncommented this next line. I don't know why it was commented out, it seems to work just fine...--pjs--
+        new PropPanelButton(this,buttonPanel,_parameterIcon,localize("Add parameter"),"buttonAddParameter",null);
 	//new PropPanelButton(this,buttonPanel,_signalIcon,localize("Add raised signal"),"buttonAddRaisedSignal",null);
 	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete operation"),"removeElement",null);
     }
