@@ -33,15 +33,16 @@ public abstract class ProjectMember {
   ////////////////////////////////////////////////////////////////
   // instance varables
 
-  protected String _name;
+  //protected String _name;
+  private String _name;
   protected Project _project = null;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ProjectMember(String name, Project project) {
-    setName(name);
     _project = project;
+    setName(name);
   }
 
 
@@ -49,30 +50,57 @@ public abstract class ProjectMember {
   // accessors
 
 
-  public String getName() {
+  /**
+   * In contrast to {@link #getName} returns the member's name without the
+   * prepended name of the project. This is the name that
+   * {@link Project#findMemberByName} goes by.
+   *
+   * @author Steffen Zschaler
+   */
+  public String getPlainName() {
     String s = _name;
-    if (!(s.endsWith(getFileExtension()))) s += getFileExtension();
+    
+    if (s != null) {
+      if (! s.endsWith (getFileExtension())) {
+        s += getFileExtension();
+      }
+    }
+    
     return s;
   }
-  public void setName(String s) { _name = s; }
+
+  /**
+   * In contrast to {@link #getPlainName} returns the member's name including the
+   * project's base name. The project's base name is prepended followed by an
+   * underscore '_'.
+   */
+  public String getName() {
+    String s = _name;
+    
+    if (s != null) {
+      s = _project.getBaseName() + "_" + s;
+    
+      if (! s.endsWith (getFileExtension())) {
+        s += getFileExtension();
+      }
+    }
+    
+    return s;
+  }
+  
+  public void setName(String s) { 
+    if ((s != null) &&
+        (s.startsWith (_project.getBaseName()))) {
+      //System.out.println ("Setting project member name excluding project base name...");
+      _name = s.substring (_project.getBaseName().length());
+    }
+    else {
+      //System.out.println ("Setting project member name including project base name...");
+      _name = s;
+    }
+  }
 
   public Project getProject() { return _project; }
-
-  public void updateProjectName() {
-    if (_name == null) return;
-    
-    // Check if the name of this file has a extension, that indicates the
-    // type of the diagram (i.e. 'myproject_classdiagram1.pgml' for a
-    // project named 'myproject'. Try to preserve that extension, even
-    // if the projectname contains a underscore (see issue 221 for more
-    // info).
-    if( _name.startsWith(_project.getBaseName()) &&
-	(_name.lastIndexOf("_") > _project.getBaseName().lastIndexOf("_"))) {
-      _name = _name.substring(_name.lastIndexOf("_")+1);
-    }
-
-    _name = _project.getBaseName() + "_" + _name;
-  }
 
   public abstract String getType();
   public abstract String getFileExtension();

@@ -390,13 +390,6 @@ public class Project implements java.io.Serializable {
     setURL(new URL(s));
   }
 
-  public void updateMemberNames() {
-    for (int i = 0 ; i < _members.size(); i++) {
-      ProjectMember pm = (ProjectMember) _members.elementAt(i);
-      pm.updateProjectName();
-    }
-  }
-
 //   public void setName(String n) throws PropertyVetoException {
 //     getVetoSupport().fireVetoableChange("Name", _filename, n);
 //     _filename = n;
@@ -407,8 +400,10 @@ public class Project implements java.io.Serializable {
   public void setURL(URL url) throws PropertyVetoException {
     url = Util.fixURLExtension(url, FILE_EXT);
     getVetoSupport().fireVetoableChange("url", _url, url);
+
+    System.out.println ("Setting project URL from \"" + _url + "\" to \"" + url + "\".");
+    
     _url = url;
-    updateMemberNames();
   }
 
 //   public void setFilename(String path, String name) throws PropertyVetoException {
@@ -423,8 +418,10 @@ public class Project implements java.io.Serializable {
     try {
       URL url = Util.fileToURL(file);
       getVetoSupport().fireVetoableChange("url", _url, url);
+      
+      System.out.println ("Setting project file name from \"" + _url + "\" to \"" + url + "\".");
+      
       _url = url;
-      updateMemberNames();
     }
     catch (MalformedURLException murle) {
       System.out.println("problem in setFile:" + file);
@@ -550,10 +547,12 @@ public class Project implements java.io.Serializable {
   }
 
   public ProjectMember findMemberByName(String name) {
+    System.out.println ("findMemberByName called for \"" + name + "\".");
     for (int i = 0; i < _members.size(); i++) {
       ProjectMember pm = (ProjectMember) _members.elementAt(i);
-      if (name.equals(pm.getName())) return pm;
+      if (name.equals(pm.getPlainName())) return pm;
     }
+    System.out.println ("Member \"" + name + "\" not found.");
     return null;
   }
 
