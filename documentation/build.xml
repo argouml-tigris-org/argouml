@@ -324,15 +324,6 @@ After these operations the file will still be visible in the GUI.
       <param name="doc.prefix"  value="quickguide"/>
     </antcall>
 
-    <!-- The FAQ -->
-
-    <antcall target="internal-dispatcher">    
-      <!-- sub-dir of 'documentation' with xml file -->
-      <param name="doc.subdir"  value="faq"/>
-      <!-- DocBook filename without xml extension   -->
-      <param name="doc.prefix"  value="faq"/>
-    </antcall>
-
     <!-- The user manual -->
 
     <antcall target="internal-dispatcher">    

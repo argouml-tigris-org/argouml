@@ -164,8 +164,8 @@ Modifications
           qualified help.</para>
 
         <para>Before posting to this list, you should take a look at the
-          <ulink url="http://argouml.tigris.org/documentation/defaulthtml/faq">
-            user FAQ</ulink> maintained by Dennis Daniels.</para>
+          <ulink url="http://argouml.tigris.org/faqs/users.html">
+            user FAQ</ulink> maintained by Ewan R. Grantham.</para>
 
         <para>More information on ArgoUML and other UML related topics is also
           available on the <ulink url="http://www.argouml.org">ArgoUML
@@ -263,8 +263,7 @@ Modifications
            on the argouml part of the tigris server -->
 
       <para>These are covered in the
-        <ulink url="http://argouml.tigris.org/documentation/defaulthtml/faq/">
-          FAQ</ulink>, 
+        <ulink url="http://argouml.tigris.org/faqs/users.html">FAQ</ulink>, 
         <ulink url="http://argouml.tigris.org/documentation/defaulthtml/quickguide/">
           Quick Guide</ulink> and
         <ulink url="http://argouml.tigris.org/documentation/defaulthtml/cookbook/">
