@@ -523,7 +523,8 @@ public class UseCaseDiagramGraphModel
      * @param node  The node whose edges are to be added.
      */
     public void addNodeRelatedEdges(Object node) {
-
+        super.addNodeRelatedEdges(node);
+        
         // Extend and include relationships for use cases. Collect all the
         // relationships of which the use case is either end and iterate to see
         // if they can be added.

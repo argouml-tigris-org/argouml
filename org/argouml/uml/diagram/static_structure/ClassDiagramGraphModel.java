@@ -442,6 +442,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(Object)
      */
     public void addNodeRelatedEdges(Object node) {
+        super.addNodeRelatedEdges(node);
+        
         if (ModelFacade.isAClassifier(node)) {
             Collection ends = ModelFacade.getAssociationEnds(node);
             Iterator iter = ends.iterator();

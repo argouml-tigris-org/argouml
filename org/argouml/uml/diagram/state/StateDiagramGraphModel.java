@@ -277,6 +277,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.MutableGraphModel#addNodeRelatedEdges(java.lang.Object)
      */
     public void addNodeRelatedEdges(Object node) {
+        super.addNodeRelatedEdges(node);
+        
         if (ModelFacade.isAStateVertex(node)) {
             Vector transen = new Vector(ModelFacade.getOutgoings(node));
             transen.addAll(ModelFacade.getIncomings(node));

@@ -36,7 +36,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ActionGoToDetails;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -112,6 +111,8 @@ public class ExplorerPopup extends JPopupMenu {
                     ModelFacade.isADataType(selectedItem);
                 final boolean packageSelected =
                     ModelFacade.isAPackage(selectedItem);
+                final boolean commentSelected =
+                    ModelFacade.isAComment(selectedItem);
                 final boolean stateVertexSelected =
                     ModelFacade.isAStateVertex(selectedItem);
                 final boolean instanceSelected =
@@ -152,7 +153,8 @@ public class ExplorerPopup extends JPopupMenu {
                             && diagramStateMachine == selectedStateMachine)
                         || (instanceSelected && !dataValueSelected
                             && !sequenceDiagramActive)
-                        || nAryAssociationSelected) {
+                        || nAryAssociationSelected
+                        || commentSelected) {
                     UMLAction action =
                         new ActionAddExistingNode(
                             menuLocalize("menu.popup.add-to-diagram"),
@@ -175,19 +177,20 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                 }
 
-                if (selectedItem != projectModel || diagramSelected) {
-                    this.add(new ActionRemoveFromModel());
-                }
-
                 if (ModelFacade.isAClassifier(selectedItem)
-		    || ModelFacade.isAPackage(selectedItem)) {
-                    this.add(ActionSetSourcePath.SINGLETON);
+                        || ModelFacade.isAPackage(selectedItem)) {
+                    this.add(new ActionSetSourcePath());
                 }
 
                 if (ModelFacade.isAPackage(selectedItem)
                         || ModelFacade.isAModel(selectedItem)) {
                     this.add(ActionAddPackage.SINGLETON);
                 }
+                
+                if (selectedItem != projectModel || diagramSelected) {
+                    this.add(new ActionRemoveFromModel());
+                }
+
             }
 
 	    // TODO: Make sure this shouldn't go into a previous
@@ -201,11 +204,11 @@ public class ExplorerPopup extends JPopupMenu {
                 this.add(action);
 	    }
 
-            if (selectedItem != null) {
-                this.add(
-                    new ActionGoToDetails(menuLocalize("action.properties"))
-                );
-            }
+//            if (selectedItem != null) {
+//                this.add(
+//                    new ActionGoToDetails(menuLocalize("action.properties"))
+//                );
+//            }
         }
     }
 

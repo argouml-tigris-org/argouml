@@ -95,7 +95,6 @@ public class FigComment
      * The main constructor used for file loading.
      */
     public FigComment() {
-        allowRemoveFromDiagram(false);
         
         body = new FigPoly(Color.black, Color.white);
         body.addPoint(x, y);
