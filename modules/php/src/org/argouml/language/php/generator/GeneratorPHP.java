@@ -39,7 +39,7 @@ import org.argouml.application.api.*;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.*;
 
-/** 
+/**
  * Generator subclass to generate PHP from UML models.
  */
 
@@ -134,7 +134,7 @@ public class GeneratorPHP extends Generator {
      */
     public String generateHeader(MClassifier cls, String pathname, String packagePath, String fileHeader) {
 	String s = "";
-	
+
 	// Add the filename as the 1st entry.
 	s += "// FILE: " + pathname.replace('\\','/') +"\n\n";
 
@@ -147,18 +147,18 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate code for a operation.
-     * 
+     *
      * @param op The operation to generate code for.
      * @return The code for the operation as a String.
      */
     public String generateOperation(MOperation op, boolean b) {
 	String s = "";
-	s += DocumentationManager.getDocs(op) + "\n" + INDENT;
+	s += DocumentationManager.getDocs(op,INDENT) + "\n" + INDENT;
 	s += "function " + generateName(op.getName()) + "(";
 
 	// params
 	// pick out return type
-	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);  
+	MParameter rp = MMUtil.SINGLETON.getReturnParameter(op);
 
 	Vector params = new Vector(op.getParameters());
 	params.remove(rp);
@@ -183,7 +183,7 @@ public class GeneratorPHP extends Generator {
      */
     public String generateAttribute(MAttribute attr, boolean b) {
 	String s = "";
-	s += DocumentationManager.getDocs(attr) + "\n" + INDENT;
+	s += DocumentationManager.getDocs(attr,INDENT) + "\n" + INDENT;
 
 	s += "var $" + generateName(attr.getName());
 
@@ -212,7 +212,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate package info.
-     * 
+     *
      * @param The package of the currently processed classifier.
      * @return The entire package info as a String.
      */
@@ -250,7 +250,7 @@ public class GeneratorPHP extends Generator {
 	else return ""; // actors and use cases
 	StringBuffer sb = new StringBuffer(80);
 	sb.append(DocumentationManager.getComments(cls));  // Add the comments for this classifier first.
-	sb.append(DocumentationManager.getDocs(cls)).append("\n");
+	sb.append(DocumentationManager.getDocs(cls,"")).append("\n");
 
 	sb.append(classifierKeyword).append(" ").append(generatedName);
 	String baseClass = generateGeneralization(cls.getGeneralizations());
@@ -370,7 +370,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate a stereotype info.
-     * 
+     *
      * @param s The stereotype
      * @return The steretype info as a String.
      */
@@ -449,7 +449,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate code for a single constraint.
-     * 
+     *
      * @param c The constraint to generate code for.
      * @return The code for the constraint as a String.
      */
@@ -464,7 +464,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate code for a association.
-     * 
+     *
      * @param a The association to generate code for.
      * @param ae One end of the association.
      * @return The code for the association as a String.
@@ -472,7 +472,7 @@ public class GeneratorPHP extends Generator {
     public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
 	// needs-more-work: does not handle n-ary associations
 	String s = "";
-	s += DocumentationManager.getDocs(a) + "\n" + INDENT;
+	s += DocumentationManager.getDocs(a,INDENT) + "\n" + INDENT;
 	Collection connections = a.getConnections();
 	Iterator connEnum = connections.iterator();
 	while (connEnum.hasNext()) {
@@ -644,7 +644,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate code a state.
-     * 
+     *
      * @param m The state to generate code for.
      * @return The code for the state as a String.
      */
@@ -681,7 +681,7 @@ public class GeneratorPHP extends Generator {
 
     /**
      * Generate code a transistion.
-     * 
+     *
      * @param m The transition to generate code for.
      * @return The code for the transition as a String.
      */
