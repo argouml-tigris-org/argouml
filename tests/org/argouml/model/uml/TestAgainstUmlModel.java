@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -36,7 +36,6 @@ import junit.framework.Test;
 import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -298,12 +297,11 @@ public class TestAgainstUmlModel extends TestCase {
         return refs;
     }
 
-    /* (non-Javadoc)
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
 
         /* Running the tests here causes instantiation errors from the
          * navigator pane.  This is a temporary hack until the object

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.ui;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -58,7 +56,7 @@ public class TestStylePanel extends TestCase {
     }
 
     /**
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestStylePanel(String arg0) {
         super(arg0);       
@@ -69,61 +67,53 @@ public class TestStylePanel extends TestCase {
         StylePanel pane = new MockStylePanel();
         Object target = new Object();
         TargetEvent e =
-            new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { target });
+            new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				target,
+			    });
         pane.targetSet(e);
         // new target is of type object, refresh should not be called
         assertTrue(!((MockStylePanel)pane)._refreshCalled);
         target = new UMLClassDiagram();
-        e =
-            new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { target });
+        e = new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				target,
+			    });
         pane.targetSet(e);
         // new target is of type UMLClassDiagram, refresh should not be called
-        assertTrue(!((MockStylePanel)pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane)._refreshCalled);
         target = CoreFactory.getFactory().createClass();
-        e =
-            new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { target });
+        e = new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				target,
+			    });
         pane.targetSet(e);
         // new target is a modelelement, refresh should not be called
-        assertTrue(!((MockStylePanel)pane)._refreshCalled);
+        assertTrue(!((MockStylePanel) pane)._refreshCalled);
         target = new FigText(0, 0, 0, 0);
-        e =
-            new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { target });
+        e = new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				target,
+			    });
         pane.targetSet(e);
         // new target is a fig, refresh should be called
-        assertTrue(((MockStylePanel)pane)._refreshCalled);
+        assertTrue(((MockStylePanel) pane)._refreshCalled);
 
     }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {        
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {    
-        super.tearDown();
-    }
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.model.uml.behavioralelements.usecases;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 /**
@@ -39,7 +36,8 @@ public class TestUseCasesHelper extends TestCase {
 
     /**
      * Constructor for TestUseCasesHelper.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestUseCasesHelper(String arg0) {
 	super(arg0);
@@ -58,10 +56,4 @@ public class TestUseCasesHelper extends TestCase {
 					      UseCasesFactory.getFactory(),
 					      TestUseCasesFactory.allModelElements);
     }
-
-    protected void setUp() {
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-
 }

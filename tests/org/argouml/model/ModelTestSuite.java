@@ -1,4 +1,5 @@
-// Copyright (c) 2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,13 +32,15 @@ import junit.framework.TestSuite;
  */
 public class ModelTestSuite {
 
-	public static Test suite() {
-		TestSuite suite = new TestSuite("Tests for " + ModelTestSuite.class.getPackage().getName());
+    public static Test suite() {
+	TestSuite suite =
+	    new TestSuite("Tests for "
+			  + ModelTestSuite.class.getPackage().getName());
 
-		suite.addTest(new TestSuite(TestUmlObjectCreation.class));
+	suite.addTest(new TestSuite(TestUmlObjectCreation.class));
 
-		suite.addTest(TestModelFacade.suite());
+	suite.addTest(TestModelFacade.suite());
 
-		return suite;
-	}
+	return suite;
+    }
 }

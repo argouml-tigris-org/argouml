@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,13 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
 import java.util.Collection;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
@@ -46,43 +43,42 @@ public class TestExtensionMechanismsHelper extends TestCase {
 
     /**
      * Constructor for TestExtensionMechanismsHelper.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestExtensionMechanismsHelper(String arg0) {
         super(arg0);
     }
     
     public void testGetAllPossibleStereotypes1() {
-        // this test does not work yet since there are problems with isolating the project from
-        // the projectbrowser
+        // this test does not work yet since there are problems with
+        // isolating the project from the projectbrowser
         MNamespace ns = CoreFactory.getFactory().createNamespace();
         MClass clazz = CoreFactory.getFactory().buildClass(ns);
-        MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1");
-        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test2");
-        Collection col = ExtensionMechanismsHelper.getHelper().getAllPossibleStereotypes(clazz);
-        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo1));
-        assertTrue("stereotype not in list of possible stereotypes", col.contains(stereo2));
+        MStereotype stereo1 =
+	    ExtensionMechanismsFactory.getFactory().buildStereotype(clazz,
+								    "test1");
+        MStereotype stereo2 =
+	    ExtensionMechanismsFactory.getFactory().buildStereotype(clazz,
+								    "test2");
+        Collection col =
+	    ExtensionMechanismsHelper.getHelper()
+	    .getAllPossibleStereotypes(clazz);
+        assertTrue("stereotype not in list of possible stereotypes",
+		   col.contains(stereo1));
+        assertTrue("stereotype not in list of possible stereotypes",
+		   col.contains(stereo2));
     }
     
     public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this, ExtensionMechanismsFactory.getFactory(),
-            TestExtensionMechanismsFactory.allModelElements);
+        CheckUMLModelHelper.metaModelNameCorrect(this,
+		ExtensionMechanismsFactory.getFactory(),
+		TestExtensionMechanismsFactory.allModelElements);
     }
     
     public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this, ExtensionMechanismsFactory.getFactory(),
-            TestExtensionMechanismsFactory.allModelElements);
+        CheckUMLModelHelper.isValidStereoType(this,
+		ExtensionMechanismsFactory.getFactory(),
+                TestExtensionMechanismsFactory.allModelElements);
     }
-        
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-    
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
@@ -54,7 +52,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestUMLModelElementStereotypeComboBoxModel(String arg0) {
         super(arg0);
@@ -65,8 +63,6 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLModelElementStereotypeComboBoxModel();
         elem = CoreFactory.getFactory().createClass();
@@ -88,7 +84,6 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         UmlFactory.getFactory().delete(elem);
-        UmlFactory.getFactory().setGuiEnabled(false);   
         MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }

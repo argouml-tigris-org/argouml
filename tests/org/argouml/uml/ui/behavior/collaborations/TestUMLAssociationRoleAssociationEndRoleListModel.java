@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
@@ -42,7 +41,8 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
 
     /**
      * Constructor for TestUMLAssociationRoleAssociationEndRoleListModel.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestUMLAssociationRoleAssociationEndRoleListModel(String arg0) {
         super(arg0);
@@ -68,7 +68,8 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
     protected MBase[] fillModel() {
         MAssociationEndRole[] ends = new MAssociationEndRole[10];
         for (int i = 0; i < ends.length; i++) {
-            ends[i] = CollaborationsFactory.getFactory().createAssociationEndRole();
+            ends[i] =
+		CollaborationsFactory.getFactory().createAssociationEndRole();
             ends[i].setAssociation((MAssociationRole) elem);
         }
         return ends;
@@ -79,7 +80,8 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
      */
     protected void removeHalfModel(MBase[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MAssociationRole) elem).removeConnection((MAssociationEnd) elements[i]);
+            ((MAssociationRole) elem)
+		.removeConnection((MAssociationEnd) elements[i]);
         }
     }
 

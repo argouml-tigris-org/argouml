@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,18 +31,14 @@ import java.net.MalformedURLException;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.IllegalFormatException;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
 
 /**
  * Testclass for the XMIReader. Placeholder for all saving/loading tests
@@ -54,16 +50,10 @@ public class TestXMIReader extends TestCase {
 
     /**
      * Constructor for TestXMIReader.
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestXMIReader(String arg0) {
         super(arg0);
-    }
-    
-    protected void setUp() {
-        
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false); 
     }
 
     /**
@@ -78,7 +68,6 @@ public class TestXMIReader extends TestCase {
     {
         // next statement should be in a ArgoTestCase or something, is allmost 
         // allways needed
-        ArgoSecurityManager.getInstance().setAllowExit(true);
         Project p = ProjectManager.getManager().makeEmptyProject();
         MClass clazz = CoreFactory.getFactory().buildClass(p.getModel());
         MOperation oper = CoreFactory.getFactory().buildOperation(clazz);

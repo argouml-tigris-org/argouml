@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,9 +27,7 @@ package org.argouml.kernel;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * @since Nov 22, 2002
@@ -39,7 +37,8 @@ public class TestProjectManager extends TestCase {
 
     /**
      * Constructor for TestProjectManager.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestProjectManager(String arg0) {
 	super(arg0);
@@ -50,13 +49,4 @@ public class TestProjectManager extends TestCase {
 	assertEquals(2, p.getDiagrams().size());
         assertEquals("untitledModel", ModelFacade.getName(p.getModel()));
     }
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-
 }

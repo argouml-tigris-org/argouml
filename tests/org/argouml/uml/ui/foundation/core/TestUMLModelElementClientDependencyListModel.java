@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
@@ -50,7 +48,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
     
     /**
      * Constructor for TestUMLModelElementClientDependencyListModel.
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestUMLModelElementClientDependencyListModel(String arg0) {
         super(arg0);
@@ -61,8 +59,6 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
         ns = ModelManagementFactory.getFactory().createModel();
         elem = CoreFactory.getFactory().buildClass(ns);
         oldEventPolicy = MFactoryImpl.getEventPolicy();

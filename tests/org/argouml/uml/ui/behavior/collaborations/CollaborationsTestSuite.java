@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,29 +32,32 @@ import junit.framework.TestSuite;
  */
 public class CollaborationsTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + CollaborationsTestSuite.class.getPackage().getName());
-		suite.addTestSuite(TestUMLAssociationEndRoleBaseListModel.class);
-		suite.addTestSuite(TestUMLAssociationRoleAssociationEndRoleListModel.class);
-		suite.addTestSuite(TestUMLAssociationRoleBaseComboBoxModel.class);
-		suite.addTestSuite(TestUMLAssociationRoleMessageListModel.class);
-		suite.addTestSuite(TestUMLClassifierRoleAvailableContentsListModel.class);
-		suite.addTestSuite(TestUMLClassifierRoleAvailableFeaturesListModel.class);
-		suite.addTestSuite(TestUMLClassifierRoleBaseListModel.class);
-		suite.addTestSuite(TestUMLCollaborationConstraintListModel.class);
-		suite.addTestSuite(TestUMLCollaborationRepresentedClassifierListModel.class);
-		suite.addTestSuite(TestUMLCollaborationRepresentedOperationListModel.class);
-		suite.addTestSuite(TestUMLInteractionCollaborationListModel.class);
-		suite.addTestSuite(TestUMLInteractionMessagesListModel.class);
-		suite.addTestSuite(TestUMLMessageActionListModel.class);
-		suite.addTestSuite(TestUMLMessageActivatorComboBoxModel.class);
-		suite.addTestSuite(TestUMLMessagePredecessorListModel.class);
-		suite.addTestSuite(TestUMLMessageReceiverListModel.class);
-		suite.addTestSuite(TestUMLMessageSenderListModel.class);
+        TestSuite suite =
+	    new TestSuite("Tests for "
+			  + (CollaborationsTestSuite.class
+			     .getPackage().getName()));
+	suite.addTestSuite(TestUMLAssociationEndRoleBaseListModel.class);
+	suite.addTestSuite(TestUMLAssociationRoleAssociationEndRoleListModel.class);
+	suite.addTestSuite(TestUMLAssociationRoleBaseComboBoxModel.class);
+	suite.addTestSuite(TestUMLAssociationRoleMessageListModel.class);
+	suite.addTestSuite(TestUMLClassifierRoleAvailableContentsListModel.class);
+	suite.addTestSuite(TestUMLClassifierRoleAvailableFeaturesListModel.class);
+	suite.addTestSuite(TestUMLClassifierRoleBaseListModel.class);
+	suite.addTestSuite(TestUMLCollaborationConstraintListModel.class);
+	suite.addTestSuite(TestUMLCollaborationRepresentedClassifierListModel.class);
+	suite.addTestSuite(TestUMLCollaborationRepresentedOperationListModel.class);
+	suite.addTestSuite(TestUMLInteractionCollaborationListModel.class);
+	suite.addTestSuite(TestUMLInteractionMessagesListModel.class);
+	suite.addTestSuite(TestUMLMessageActionListModel.class);
+	suite.addTestSuite(TestUMLMessageActivatorComboBoxModel.class);
+	suite.addTestSuite(TestUMLMessagePredecessorListModel.class);
+	suite.addTestSuite(TestUMLMessageReceiverListModel.class);
+	suite.addTestSuite(TestUMLMessageSenderListModel.class);
         return suite;
     }
 

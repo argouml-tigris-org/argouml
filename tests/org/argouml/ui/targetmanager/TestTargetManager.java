@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -29,10 +29,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
 
@@ -66,29 +64,31 @@ public class TestTargetManager extends TestCase {
 
     private class TestTargetListener implements TargetListener {
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
 	 */
 	public void targetAdded(TargetEvent e) {
 	    targetAddedCalled = true;
 	    targetAddedTarget = TargetManager.getInstance().getTarget();
 	    targetAddedFigTarget = TargetManager.getInstance().getFigTarget();
-	    targetAddedModelTarget = TargetManager.getInstance().getModelTarget();
+	    targetAddedModelTarget =
+		TargetManager.getInstance().getModelTarget();
 	    targetAddedObjects = e.getNewTargets();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
 	 */
 	public void targetRemoved(TargetEvent e) {
 	    targetRemovedCalled = true;
 	    targetRemovedTarget = TargetManager.getInstance().getTarget();
 	    targetRemovedFigTarget = TargetManager.getInstance().getFigTarget();
-	    targetRemovedModelTarget = TargetManager.getInstance().getModelTarget();
+	    targetRemovedModelTarget =
+		TargetManager.getInstance().getModelTarget();
 	    targetRemovedObjects = e.getNewTargets();
 	}
 
-	/* (non-Javadoc)
+	/**
 	 * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
 	 */
 	public void targetSet(TargetEvent e) {
@@ -102,7 +102,7 @@ public class TestTargetManager extends TestCase {
     }
 
     /**
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestTargetManager(String arg0) {
 	super(arg0);
@@ -195,7 +195,8 @@ public class TestTargetManager extends TestCase {
 	TargetManager.getInstance().setTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 	TargetManager.getInstance().setTarget(test);
-	assertEquals(new HashSet(TargetManager.getInstance().getTargets()), set1);
+	assertEquals(new HashSet(TargetManager.getInstance().getTargets()),
+		     set1);
 	TargetManager.getInstance().setTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 
@@ -251,15 +252,18 @@ public class TestTargetManager extends TestCase {
 	test2.add(null);
 	test2.add(new Object());
 	TargetManager.getInstance().setTargets(test2);
-	assertTrue(TargetManager.getInstance().getTargets().contains(test2.get(0)));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(test2.get(0)));
 	assertTrue(!TargetManager.getInstance().getTargets().contains(null));
-	assertTrue(TargetManager.getInstance().getTargets().contains(test2.get(2)));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(test2.get(2)));
 
 	List test3 = new ArrayList();
 	test3.add(new Object());
 	test3.add(test3.get(0));
 	TargetManager.getInstance().setTargets(test3);
-	assertTrue(TargetManager.getInstance().getTargets().contains(test3.get(0)));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(test3.get(0)));
 	assertTrue(TargetManager.getInstance().getTargets().size() == 1);
 
 	List test4 = new ArrayList();
@@ -275,10 +279,14 @@ public class TestTargetManager extends TestCase {
 	    test.add(new Object());
 	}
 	TargetManager.getInstance().setTargets(test);
-	assertTrue(Arrays.equals(test.toArray(), TargetManager.getInstance().getTargets().toArray()));
+	assertTrue(Arrays.equals(test.toArray(),
+				 (TargetManager.getInstance()
+				  .getTargets().toArray())));
 	TargetManager.getInstance().setTargets(null);
         List expectedValue = new ArrayList();
-	assertTrue(Arrays.equals(expectedValue.toArray(), TargetManager.getInstance().getTargets().toArray()));
+	assertTrue(Arrays.equals(expectedValue.toArray(),
+				 (TargetManager.getInstance()
+				  .getTargets().toArray())));
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -314,11 +322,14 @@ public class TestTargetManager extends TestCase {
 	}
 	Object testObject = new Object();
 	TargetManager.getInstance().addTarget(testObject);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().setTargets(testList);
-	assertTrue(!TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(!TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().addTarget(testObject);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().addTarget(null);
 	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
 	assertTrue(!TargetManager.getInstance().getTargets().contains(null));
@@ -351,9 +362,11 @@ public class TestTargetManager extends TestCase {
 	}
 	Object testObject = new Object();
 	TargetManager.getInstance().setTarget(testObject);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().removeTarget(null);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(TargetManager.getInstance().getTargets().isEmpty());
 	TargetManager.getInstance().removeTarget(null);
@@ -361,9 +374,11 @@ public class TestTargetManager extends TestCase {
 
 	testList.add(testObject);
 	TargetManager.getInstance().setTargets(testList);
-	assertTrue(TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 	TargetManager.getInstance().removeTarget(testObject);
-	assertTrue(!TargetManager.getInstance().getTargets().contains(testObject));
+	assertTrue(!TargetManager.getInstance()
+		   .getTargets().contains(testObject));
 
 	TargetListener listener = new TestTargetListener();
 	TargetManager.getInstance().addTargetListener(listener);
@@ -392,7 +407,8 @@ public class TestTargetManager extends TestCase {
 	targetRemovedObjects = null;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertEquals(testList2.get(0), targetRemovedTarget);
-	assertTrue(Arrays.equals(new Object[] {testList2.get(0)}, targetRemovedObjects));
+	assertTrue(Arrays.equals(new Object[] {testList2.get(0)},
+				 targetRemovedObjects));
 	targetRemovedCalled = false;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(!targetRemovedCalled);
@@ -409,7 +425,8 @@ public class TestTargetManager extends TestCase {
 		if (obj == owner)
 		    return fig;
 		return null;
-	    }};
+	    }
+	};
 	Project p = ProjectManager.getManager().getCurrentProject();
 	p.addDiagram(diag);
 	TargetManager.getInstance().setTarget(diag);
@@ -599,7 +616,7 @@ public class TestTargetManager extends TestCase {
 	    int counter = 0;
 	    List list = new ArrayList();
 
-	    /* (non-Javadoc)
+	    /**
 	     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
 	     */
 	    public void targetAdded(TargetEvent e) {
@@ -612,7 +629,7 @@ public class TestTargetManager extends TestCase {
 
 	    }
 
-	    /* (non-Javadoc)
+	    /**
 	     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
 	     */
 	    public void targetRemoved(TargetEvent e) {
@@ -625,7 +642,7 @@ public class TestTargetManager extends TestCase {
 
 	    }
 
-	    /* (non-Javadoc)
+	    /**
 	     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
 	     */
 	    public void targetSet(TargetEvent e) {
@@ -670,7 +687,8 @@ public class TestTargetManager extends TestCase {
             TargetManager.getInstance().setTarget(targets[i]);
         }
         assertTrue(TargetManager.getInstance().navigateBackPossible());
-        assertEquals(false, TargetManager.getInstance().navigateForwardPossible());
+        assertEquals(false,
+		     TargetManager.getInstance().navigateForwardPossible());
         try {        
             TargetManager.getInstance().navigateForward();
             fail();
@@ -701,7 +719,8 @@ public class TestTargetManager extends TestCase {
         assertTrue(TargetManager.getInstance().navigateForwardPossible());
         TargetManager.getInstance().setTarget(targets[9]);
         assertTrue(TargetManager.getInstance().navigateBackPossible());
-        assertEquals(false, TargetManager.getInstance().navigateForwardPossible());
+        assertEquals(false,
+		     TargetManager.getInstance().navigateForwardPossible());
         try {
             TargetManager.getInstance().navigateForward();
             fail();
@@ -717,13 +736,17 @@ public class TestTargetManager extends TestCase {
         
     }
 
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     protected void setUp() {
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
 	TargetManager.getInstance().setTarget(null);
         
     }
 
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
     protected void tearDown() {
 	TargetManager.getInstance().setTarget(null);
     }

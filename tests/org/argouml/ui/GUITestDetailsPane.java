@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,8 +29,6 @@ import javax.swing.JPanel;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.Horizontal;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -48,7 +47,7 @@ public class GUITestDetailsPane extends TestCase {
     private JPanel _docPane;
 
     /**
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public GUITestDetailsPane(String arg0) {
         super(arg0);
@@ -60,31 +59,42 @@ public class GUITestDetailsPane extends TestCase {
             new TargetEvent(
                 this,
                 TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { o });
+                new Object[] {
+		    null,
+		},
+                new Object[] {
+		    o,
+		});
         _pane.targetSet(e);
         assertEquals(_todoPane, _pane.getTabs().getSelectedComponent());
         UMLDiagram diagram = new UMLClassDiagram();        
         e = new TargetEvent(
-        this,
-        TargetEvent.TARGET_SET,
-        new Object[] { o },
-        new Object[] { diagram });
+			    this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				o,
+			    },
+			    new Object[] {
+				diagram,
+			    });
         _pane.getTabs().setSelectedComponent(_todoPane);
         _pane.targetSet(e);
         assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
         Object clazz = CoreFactory.getFactory().createClass();
-        e = new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { diagram },
-                new Object[] { clazz });
+        e = new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				diagram,
+			    },
+			    new Object[] {
+				clazz,
+			    });
         _pane.targetSet(e);
         assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
         _pane.getTabs().setSelectedComponent(_todoPane);
         _pane.targetSet(e);
         assertEquals(_propertyPane, _pane.getTabs().getSelectedComponent());
-        // TODO at the moment setSelectedComponent doesn't take into account
+        // TODO: at the moment setSelectedComponent doesn't take into account
         // the rather complex tab selection mechanism of DetailsPane. The tab
         // selection mechanism must be refactored.
         /*
@@ -107,8 +117,6 @@ public class GUITestDetailsPane extends TestCase {
         _todoPane = _pane.getNamedTab("tab.todo-item"); 
         _propertyPane = _pane.getNamedTab("tab.properties"); 
         _docPane = _pane.getNamedTab("docpane.label.documentation");
-        ArgoSecurityManager.getInstance().setAllowExit(true);  
-        UmlFactory.getFactory().setGuiEnabled(false);    
     }
 
     /**

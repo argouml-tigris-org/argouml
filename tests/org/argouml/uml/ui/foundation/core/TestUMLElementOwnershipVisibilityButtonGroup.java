@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,8 +28,6 @@ import javax.swing.JRadioButton;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MFactoryImpl;
@@ -47,7 +45,7 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
     private MModelElement elem;
     /**
      * Constructor for TestUMLElementOwnershipVisibilityButtonGroup.
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestUMLElementOwnershipVisibilityButtonGroup(String arg0) {
         super(arg0);
@@ -101,8 +99,6 @@ public class TestUMLElementOwnershipVisibilityButtonGroup extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
         elem = new MClassImpl();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();

@@ -1,4 +1,5 @@
-// Copyright (c) 2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -23,12 +24,6 @@
 
 package org.argouml.model.uml;
 
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
-
-import org.argouml.model.UmlModelEntity;
-
 import junit.framework.TestCase;
 
 /**
@@ -39,29 +34,16 @@ public class TestUml extends TestCase
 
     /**
      * Constructor for Uml.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestUml(String arg0)
     {
         super(arg0);
     }
 
-    /*
-     * @see TestCase#setUp()
-     */
-    protected void setUp() throws Exception
-    {
-        super.setUp();
-    }
 
-    /*
-     * @see TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
-// TODO Rewrite this test using reflection against Uml class.
+// TODO: Rewrite this test using reflection against Uml class.
 
     public void testUmlClassList() {
 //        for (Iterator i = Uml.getUmlClassList().iterator(); i.hasNext();) {

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,7 @@ import java.util.Vector;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.tigris.gef.util.VectorSet;
 
@@ -55,7 +53,8 @@ public class TestResolvedCritic extends TestCase {
 	assertTrue("getCritic simple", "rc".equals(rc.getCritic()));
 	assertTrue(
 		   "getOffenderList simple",
-		   rc.getOffenderList() == null || rc.getOffenderList().size() == 0);
+		   (rc.getOffenderList() == null
+		    || rc.getOffenderList().size() == 0));
 
 	vec.add("str1");
 	rc = new ResolvedCritic("rc2", vec);
@@ -90,8 +89,8 @@ public class TestResolvedCritic extends TestCase {
 	    assertTrue(
 		       "getOffenderList 2",
 		       rc.getOffenderList() != null
-		       && ItemUID.getIDOfObject(testmc, false).equals(
-								      rc.getOffenderList().get(0)));
+		       && (ItemUID.getIDOfObject(testmc, false).equals(
+				   rc.getOffenderList().get(0))));
 	} catch (UnresolvableException ure1) {
 	    assertTrue("create 2 with MClass", false);
 	}
@@ -110,8 +109,8 @@ public class TestResolvedCritic extends TestCase {
 	    assertTrue(
 		       "getOffenderList 3",
 		       rc.getOffenderList() != null
-		       && ItemUID.getIDOfObject(testmc, false).equals(
-								      rc.getOffenderList().get(0)));
+		       && (ItemUID.getIDOfObject(testmc, false).equals(
+				   rc.getOffenderList().get(0))));
 	} catch (UnresolvableException ure1) {
 	    assertTrue("create 3 with MClass", false);
 	}
@@ -157,14 +156,5 @@ public class TestResolvedCritic extends TestCase {
 	} catch (UnresolvableException ure) {
 	    assertTrue("Test error URE", false);
 	}
-    }
-
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
     }
 }

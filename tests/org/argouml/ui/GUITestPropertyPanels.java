@@ -54,7 +54,6 @@ import org.tigris.gef.util.EnumerationEmpty;
 import org.tigris.gef.util.EnumerationSingle;
 import org.tigris.gef.util.ChildGenerator;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -192,12 +191,17 @@ public class GUITestPropertyPanels extends TestCase {
     }
     
     public void testPropertyTab() throws Throwable {
-	System.out.println("testPropertyTab called in " + this + ":" + this.hashCode());
+	System.out.println("testPropertyTab called in "
+			   + this + ":" + this.hashCode());
         TargetEvent e =
 	    new TargetEvent(this,
 			    TargetEvent.TARGET_SET,
-			    new Object[] { null },
-			    new Object[] { _modelElement });
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				_modelElement,
+			    });
         theDetailsPane.targetSet(e);
         
         _propertyPane = /*TabProps */

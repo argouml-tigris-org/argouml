@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
@@ -57,7 +55,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     
     /**
      * Constructor for TestUMLAssociationRoleBaseComboBoxModel.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestUMLAssociationRoleBaseComboBoxModel(String arg0) {
         super(arg0);
@@ -68,8 +67,6 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
         Project p = ProjectManager.getManager().getCurrentProject();
         model = new UMLAssociationRoleBaseComboBoxModel();
         MClass class1 = CoreFactory.getFactory().createClass();
@@ -80,19 +77,30 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         class2.setNamespace(m);
         bases = new MAssociation[10];
         for (int i = 0; i < 10; i++) {
-            bases[i] = CoreFactory.getFactory().buildAssociation(class1, class2);
+            bases[i] =
+		CoreFactory.getFactory().buildAssociation(class1, class2);
         }
-        MClassifierRole role1 = CollaborationsFactory.getFactory().createClassifierRole();
-        MClassifierRole role2 = CollaborationsFactory.getFactory().createClassifierRole();
+        MClassifierRole role1 =
+	    CollaborationsFactory.getFactory().createClassifierRole();
+        MClassifierRole role2 =
+	    CollaborationsFactory.getFactory().createClassifierRole();
         role1.addBase(class1);
         role2.addBase(class2);
-        MCollaboration col = CollaborationsFactory.getFactory().createCollaboration();
+        MCollaboration col =
+	    CollaborationsFactory.getFactory().createCollaboration();
         role1.setNamespace(col);
         role2.setNamespace(col);
-        elem = CollaborationsFactory.getFactory().buildAssociationRole(role1, role2);
+        elem =
+	    CollaborationsFactory.getFactory().buildAssociationRole(role1,
+								    role2);
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);   
-        model.targetSet(new TargetEvent(this, "set", new Object[0], new Object[] {elem}));
+        model.targetSet(new TargetEvent(this,
+					"set",
+					new Object[0],
+					new Object[] {
+					    elem,
+					}));
     }
     
     /**
@@ -106,7 +114,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
     }
     
     public void testSetUp() {
-        // there is one extra element due to the empty element that the user can select
+        // there is one extra element due to the empty element that
+        // the user can select
         assertEquals(10 + 1, model.getSize());
         assertTrue(model.contains(bases[5]));
         assertTrue(model.contains(bases[0]));

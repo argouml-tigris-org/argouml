@@ -29,7 +29,6 @@ import java.util.Iterator;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -93,7 +92,7 @@ public class GUITestParseMessage extends TestCase {
         /* START TESTING STUFF */
 
         MMessage m1 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r1_2);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r1_2);
         assertTrue(m1.getSender() == cl1);
         assertTrue(m1.getReceiver() == cl2);
         assertTrue(m1.getInteraction() == inter);
@@ -104,7 +103,7 @@ public class GUITestParseMessage extends TestCase {
         m1.setName("m1");
 
         MMessage m2 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r2_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r2_3);
         assertTrue(m2.getSender() == cl2);
         assertTrue(m2.getReceiver() == cl3);
         assertTrue(m2.getActivator() == m1);
@@ -114,7 +113,7 @@ public class GUITestParseMessage extends TestCase {
         m2.setName("m2");
 
         MMessage m3 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r2_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r2_3);
         assertTrue(m3.getActivator() == m1);
         assertTrue(
             m3.getPredecessors().iterator().next() == m2
@@ -240,13 +239,13 @@ public class GUITestParseMessage extends TestCase {
         checkParseException(m3, "1.2.1 / 1.2 :");
 
         MMessage m4 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r3_4);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r3_4);
         MMessage m5 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r4_5);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r4_5);
         MMessage m6 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r5_3);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r5_3);
         MMessage m7 =
-            (MMessage)fact.getCollaborations().buildMessage(inter, r3_1);
+            (MMessage) fact.getCollaborations().buildMessage(inter, r3_1);
 
         checkParseException(m6, "1.2.2 :");
 
@@ -278,14 +277,14 @@ public class GUITestParseMessage extends TestCase {
         boolean pre1 = false;
         boolean pre2 = false;
         it = m7.getPredecessors().iterator();
-        m = (MMessage)it.next();
+        m = (MMessage) it.next();
         if (m == m4)
             pre1 = true;
         else if (m == m5)
             pre2 = true;
         else
             assertTrue("Strange message found", false);
-        m = (MMessage)it.next();
+        m = (MMessage) it.next();
         if (m == m4)
             pre1 = true;
         else if (m == m5)

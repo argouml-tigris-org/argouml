@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,14 +32,16 @@ import junit.framework.TestSuite;
  */
 public class StatemachinesTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + StatemachinesTestSuite.class.getPackage().getName());
-		suite.addTestSuite(TestStateMachinesFactory.class);
-		suite.addTestSuite(TestStateMachinesHelper.class);
+        TestSuite suite =
+	    new TestSuite("Tests for "
+			  + StatemachinesTestSuite.class.getPackage().getName());
+	suite.addTestSuite(TestStateMachinesFactory.class);
+	suite.addTestSuite(TestStateMachinesHelper.class);
         return suite;
     }
 

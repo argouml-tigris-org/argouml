@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,7 +26,6 @@ package org.argouml.uml.diagram.ui;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 
 /**
@@ -54,7 +53,6 @@ public class TestActionAddAllClassesFromModel extends TestCase {
         _diagram = new UMLClassDiagram();
 	_action = new ActionAddAllClassesFromModel("Add all classes from model",
 						   _diagram);
-        ArgoSecurityManager.getInstance().setAllowExit(true);
     }
     
     /**

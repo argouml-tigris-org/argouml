@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,6 @@ import java.util.Date;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
@@ -48,26 +47,32 @@ import ru.novosoft.uml.MFactoryImpl;
  */
 public class TestTabDiagram extends TestCase {
 
-    private final static int NUMBER_OF_DIAGRAMS = 10;
+    private static final int NUMBER_OF_DIAGRAMS = 10;
 
-    private final static boolean PERFORMANCE_TEST = false;
+    private static final boolean PERFORMANCE_TEST = false;
 
     private UMLDiagram _diagram;
 
     /**
      * Constructor for TestTabDiagram.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestTabDiagram(String arg0) {
         super(arg0);
     }
 
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     protected void setUp() throws Exception {
         super.setUp();
         _diagram = new UMLClassDiagram();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
     }
 
+    /**
+     * @see junit.framework.TestCase#tearDown()
+     */
     protected void tearDown() throws Exception {
         super.tearDown();
         _diagram = null;
@@ -116,8 +121,9 @@ public class TestTabDiagram extends TestCase {
     }
 
     /**
-     * Test the performance of adding an operation to 1 class that's represented on 10 different
-     * diagrams. The last created diagram is the one selected.
+     * Test the performance of adding an operation to 1 class that's
+     * represented on 10 different diagrams. The last created diagram
+     * is the one selected.
      *
      */
     public void testFireModelEventPerformance() {

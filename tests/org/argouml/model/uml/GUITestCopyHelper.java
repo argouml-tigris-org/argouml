@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -43,7 +43,6 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MPackage;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model
     .uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
@@ -81,7 +80,9 @@ public class GUITestCopyHelper extends TestCase {
 	k = CoreFactory.getFactory().createClass();
 	m1.addOwnedElement(k);
 
-	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	st =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	st.setName("clsStT");
 	st.setBaseClass("Class");
 	m1.addOwnedElement(st);
@@ -142,7 +143,9 @@ public class GUITestCopyHelper extends TestCase {
 	d = CoreFactory.getFactory().createDataType();
 	m1.addOwnedElement(d);
 
-	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	st =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	st.setName("dttStT");
 	st.setBaseClass("DataType");
 	m1.addOwnedElement(st);
@@ -200,7 +203,9 @@ public class GUITestCopyHelper extends TestCase {
 	i = CoreFactory.getFactory().createInterface();
 	m1.addOwnedElement(i);
 
-	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	st =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	st.setName("intStT");
 	st.setBaseClass("Interface");
 	m1.addOwnedElement(st);
@@ -258,7 +263,9 @@ public class GUITestCopyHelper extends TestCase {
 	p = ModelManagementFactory.getFactory().createPackage();
 	m1.addOwnedElement(p);
 
-	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	st =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	st.setName("pkgStT");
 	st.setBaseClass("Package");
 	m1.addOwnedElement(st);
@@ -313,10 +320,14 @@ public class GUITestCopyHelper extends TestCase {
 	MStereotype s;
 	MStereotype st;
 
-	s = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	s =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	m1.addOwnedElement(s);
 
-	st = (MStereotype)ExtensionMechanismsFactory.getFactory().createStereotype();
+	st =
+	    (MStereotype) ExtensionMechanismsFactory.getFactory()
+	        .createStereotype();
 	st.setName("sttStT");
 	st.setBaseClass("Stereotype");
 	m1.addOwnedElement(st);
@@ -450,13 +461,5 @@ public class GUITestCopyHelper extends TestCase {
 
 	// TODO: constraints
 	// TODO: reuired tags
-    }
-
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
     }
 }

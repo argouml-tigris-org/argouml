@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.kernel;
-
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 
 import junit.framework.TestCase;
 import org.argouml.model.ModelFacade;
@@ -39,7 +35,8 @@ public class TestProject extends TestCase {
 
     /**
      * Constructor for TestProject.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestProject(String arg0) {
         super(arg0);
@@ -58,17 +55,6 @@ public class TestProject extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        UmlFactory.getFactory().setGuiEnabled(false);
-        ArgoSecurityManager.getInstance().setAllowExit(true);
         ProjectManager.getManager().setCurrentProject(null);
-        
     }
-
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
-
 }

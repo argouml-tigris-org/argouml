@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -79,7 +79,7 @@ public class TestActions extends TestCase {
     }
 
     /**
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public TestActions(String arg0) {
         super(arg0);
@@ -94,11 +94,14 @@ public class TestActions extends TestCase {
         Actions.addAction(a);
         Object o = new Object();
         TargetEvent e =
-            new TargetEvent(
-                this,
-                TargetEvent.TARGET_SET,
-                new Object[] { null },
-                new Object[] { o });
+            new TargetEvent(this,
+			    TargetEvent.TARGET_SET,
+			    new Object[] {
+				null,
+			    },
+			    new Object[] {
+				o,
+			    });
         Actions.getInstance().targetSet(e);
         assertTrue(a.isCalled());
     }

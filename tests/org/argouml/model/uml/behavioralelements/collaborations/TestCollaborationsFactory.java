@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,6 @@ import java.lang.ref.WeakReference;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.util.CheckUMLModelHelper;
@@ -43,14 +42,14 @@ import ru.novosoft.uml.model_management.MModel;
 public class TestCollaborationsFactory extends TestCase {
 
     static String[] allModelElements =
-        {
-            "AssociationEndRole",
-            "AssociationRole",
-            "ClassifierRole",
-            "Collaboration",
-            "Interaction",
-            "Message",
-            };
+    {
+	"AssociationEndRole",
+	"AssociationRole",
+	"ClassifierRole",
+	"Collaboration",
+	"Interaction",
+	"Message",
+    };
 
     public TestCollaborationsFactory(String n) {
         super(n);
@@ -68,15 +67,15 @@ public class TestCollaborationsFactory extends TestCase {
 
     public void testCreates() {
 
-        String[] objs =
-            {
-                "AssociationEndRole",
-                "AssociationRole",
-                "ClassifierRole",
-                "Collaboration",
-                "Interaction",
-                "Message",
-                null };
+        String[] objs = {
+	    "AssociationEndRole",
+	    "AssociationRole",
+	    "ClassifierRole",
+	    "Collaboration",
+	    "Interaction",
+	    "Message",
+	    null
+	};
 
         CheckUMLModelHelper.createAndRelease(
             this,
@@ -111,7 +110,7 @@ public class TestCollaborationsFactory extends TestCase {
         MInteraction inter =
             CollaborationsFactory.getFactory().buildInteraction(collab);
         MMessage mes =
-            (MMessage)CollaborationsFactory.getFactory().buildMessage(
+            (MMessage) CollaborationsFactory.getFactory().buildMessage(
                 inter,
                 role);
 
@@ -128,20 +127,13 @@ public class TestCollaborationsFactory extends TestCase {
         System.gc();
         assertNull("ClassifierRole not removed", cr1wr.get());
         assertNull("AssociationRole not removed", rolewr.get());
-        // Interaction should not be removed when removing classifierrole...
-        // maybe if the last message is removed from the interaction but even
-        // then it's doubtfull since it will probably lead to backward compatibility 
-        // problems in save formats.
+        // Interaction should not be removed when removing
+        // classifierrole...  maybe if the last message is removed
+        // from the interaction but even then it's doubtfull since it
+        // will probably lead to backward compatibility problems in
+        // save formats.
         // assertNull("Interaction not removed", interwr.get());
         assertNull("Message not removed", meswr.get());
 
-    }
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
     }
 }

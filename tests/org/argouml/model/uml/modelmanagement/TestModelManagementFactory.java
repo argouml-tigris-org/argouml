@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,6 @@ package org.argouml.model.uml.modelmanagement;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 public class TestModelManagementFactory extends TestCase {
@@ -70,13 +68,4 @@ public class TestModelManagementFactory extends TestCase {
 					   ModelManagementFactory.getFactory(),
 					   allModelElements);
     }
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -73,16 +73,16 @@ public class TestModelFacade3 extends TestCase {
      * @return true if method is not eligible for testing (e.g. helper methods)
      */
     protected boolean methodForbidden() {
-        return _methodToTest.getName().equals("getClassNull") ||
-        _methodToTest.getName().startsWith("isA") ||
-        _methodToTest.getName().equals("create");
+        return _methodToTest.getName().equals("getClassNull")
+	    || _methodToTest.getName().startsWith("isA")
+	    || _methodToTest.getName().equals("create");
     }
     
     protected void runTest() throws Throwable {
         if (!methodForbidden()) {
-            if (_methodToTest.getParameterTypes()!=null &&
-            _methodToTest.getParameterTypes().length>=1 &&
-            Modifier.isPublic(_methodToTest.getModifiers()) ) {
+            if (_methodToTest.getParameterTypes() != null
+		&& _methodToTest.getParameterTypes().length >= 1
+		&& Modifier.isPublic(_methodToTest.getModifiers()) ) {
                 testOneOrMoreParameters();
             }
         }
@@ -105,11 +105,11 @@ public class TestModelFacade3 extends TestCase {
             try {
                 if (params[i].isPrimitive()) {
                     String primitiveName = params[i].getName();
-                    if(primitiveName.equals("int"))
+                    if (primitiveName.equals("int"))
                         foo[i] = new Integer(0);
-                    if(primitiveName.equals("boolean"))
+                    if (primitiveName.equals("boolean"))
                         foo[i] = new Boolean(true);
-                    if(primitiveName.equals("short"))
+                    if (primitiveName.equals("short"))
                         foo[i] = new Short("0");
                 }
                 else if (params[i].getName().equals("java.util.Collection")) {
@@ -124,40 +124,40 @@ public class TestModelFacade3 extends TestCase {
                     foo[i] = params[i].newInstance();
                 }
             }
-            
-            catch(InstantiationException e) {
-                fail("Cannot create an instance of : " +
-                params[i].getName() + ", required for " +
-                _methodToTest.getName()+ ". Check if " +
-                "test needs reworking.");
+            catch (InstantiationException e) {
+                fail("Cannot create an instance of : "
+		     + params[i].getName() + ", required for "
+		     + _methodToTest.getName() + ". Check if "
+		     + "test needs reworking.");
             }
-            catch(IllegalAccessException il) {
-                fail("Illegal Access to : " +
-                params[i].getName());
+            catch (IllegalAccessException il) {
+                fail("Illegal Access to : " + params[i].getName());
             }
         }
         
         
         try {
             _methodToTest.invoke(_facade,  foo);
-            fail(_methodToTest.getName() + 
-            " does not deliver an IllegalArgumentException");
+            fail(_methodToTest.getName()
+		 + " does not deliver an IllegalArgumentException");
         }
-        
-        catch(InvocationTargetException e) {
+        catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof IllegalArgumentException) {
                 return;
             }
-            fail("Test failed for " + _methodToTest.toString() + 
-		 " because of: " + e.getTargetException());
+            fail("Test failed for " + _methodToTest.toString()
+		 + " because of: " + e.getTargetException());
         }
-        catch(Exception e) {
-            fail("Test failed for " + _methodToTest.toString() + 
-		 " because of: " + e.toString());
+        catch (Exception e) {
+            fail("Test failed for " + _methodToTest.toString()
+		 + " because of: " + e.toString());
         }
         
     }
     
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
     protected void setUp() throws Exception {
         super.setUp();
         _facade = new ModelFacade();

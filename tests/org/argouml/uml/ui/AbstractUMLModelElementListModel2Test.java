@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,12 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.uml.ui;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MBase;
@@ -47,7 +45,8 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
 
     /**
      * Constructor for AbstractUMLModelElementListModel2Test.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public AbstractUMLModelElementListModel2Test(String arg0) {
         super(arg0);
@@ -58,8 +57,6 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
         buildElement();
         oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);       
@@ -122,8 +119,10 @@ public abstract class AbstractUMLModelElementListModel2Test extends TestCase {
     }
     
     /**
-     * Developers should remove half the contents of the attribute in this method
-     * That is: they should remove the upper 5 elements of the attribute.
+     * Developers should remove half the contents of the attribute in
+     * this method That is: they should remove the upper 5 elements of
+     * the attribute.
+     *
      * @param elements
      */
     protected abstract void removeHalfModel(MBase[] elements);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,8 +26,6 @@ package org.argouml.model.uml.behavioralelements.usecases;
 
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.util.CheckUMLModelHelper;
 
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -69,7 +67,8 @@ public class TestUseCasesFactory extends TestCase {
 	};
 
 	CheckUMLModelHelper.createAndRelease(this, 
-					     UseCasesFactory.getFactory(), objs);
+					     UseCasesFactory.getFactory(),
+					     objs);
     }
     
     public void testDeleteComplete() {
@@ -81,20 +80,18 @@ public class TestUseCasesFactory extends TestCase {
     public void testBuildExtend1() {
         MUseCase base = UseCasesFactory.getFactory().createUseCase();
         MUseCase extension = UseCasesFactory.getFactory().createUseCase();
-        MExtensionPoint point = UseCasesFactory.getFactory().buildExtensionPoint(base);
-        MExtend extend = UseCasesFactory.getFactory().buildExtend(base, extension, point);
-        assertTrue("extensionpoint not added to base", !base.getExtensionPoints().isEmpty());
+        MExtensionPoint point =
+	    UseCasesFactory.getFactory().buildExtensionPoint(base);
+        MExtend extend =
+	    UseCasesFactory.getFactory().buildExtend(base, extension, point);
+        assertTrue("extensionpoint not added to base",
+		   !base.getExtensionPoints().isEmpty());
         assertTrue("extend not added to base", !base.getExtends2().isEmpty());
-        assertTrue("extend not added to extension", !extension.getExtends().isEmpty());
+        assertTrue("extend not added to extension",
+		   !extension.getExtends().isEmpty());
         assertTrue("extend not added to correct extensionpoint", 
-		   extend.getExtensionPoints().contains(point) && 
-		   extend.getExtensionPoints().size() == 1);
+		   (extend.getExtensionPoints().contains(point)
+		    && extend.getExtensionPoints().size() == 1));
     }
-    
-    protected void setUp() {
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-       
 }
 

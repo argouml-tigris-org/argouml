@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.ui;
-
-import org.argouml.application.security.ArgoSecurityManager;
 
 import junit.framework.TestCase;
 
@@ -37,24 +34,13 @@ public class TestMultiEditorPane extends TestCase {
 
     /**
      * Constructor for TestMultiEditorPane.
-     * @param arg0
+     *
+     * @param arg0 is the name of the test case.
      */
     public TestMultiEditorPane(String arg0) {
         super(arg0);
     }
     
-    /**
-     * @see junit.framework.TestCase#setUp()
-     */
-    protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
-    }
-     
-    protected void tearDown() throws Exception {
-	super.tearDown();
-    }
-     
     /**
      * Tests the construction of the multieditorpane. Can we construct a
      * multieditorpane and even have an editor in it?

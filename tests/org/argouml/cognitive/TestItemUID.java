@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,8 +27,6 @@ package org.argouml.cognitive;
 // Diagrams
 import junit.framework.TestCase;
 
-import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -117,7 +115,7 @@ public class TestItemUID extends TestCase {
 
 	FigActionState figactionstate = new FigActionState();
 
-	//		FigAssociationRole figassociationrole = new FigAssociationRole();
+	// FigAssociationRole figassociationrole = new FigAssociationRole();
 	FigClassifierRole figclassifierrole = new FigClassifierRole();
 
 	FigComponent figcomponent = new FigComponent();
@@ -217,12 +215,4 @@ public class TestItemUID extends TestCase {
 		   (uid == null && uid2 == null)
 		   || (uid != null && uid2 != null && uid.equals(uid2)));
     }
-	
-    
-    protected void setUp() throws Exception {
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-        UmlFactory.getFactory().setGuiEnabled(false);
-    }
-
 }

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,10 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
 package org.argouml.ui;
-
-import org.argouml.application.security.ArgoSecurityManager;
 
 import junit.framework.TestCase;
 
@@ -50,7 +48,8 @@ import junit.framework.TestCase;
  * Property panel
  * </td>
  * <td>
- * Modelelement targets (the target is a modelelement or a fig that shows a modelelement)
+ * Modelelement targets (the target is a modelelement or a fig that
+ * shows a modelelement)
  * </td>
  * </tr>
  * <tr>
@@ -58,7 +57,8 @@ import junit.framework.TestCase;
  * Tagged values panel
  * </td>
  * <td>
- * Modelelement targets (the target is a modelelement or a fig that shows a modelelement)
+ * Modelelement targets (the target is a modelelement or a fig that
+ * shows a modelelement)
  * </td>
  * </tr> 
  * <tr>
@@ -74,8 +74,8 @@ import junit.framework.TestCase;
  * Style panel
  * </td>
  * <td>
- * Only if the target is a fig OR the current shown diagram contains a fig that shows the currently 
- * selected model target.
+ * Only if the target is a fig OR the current shown diagram contains a
+ * fig that shows the currently selected model target.
  * </td>
  * </tr> 
  * <tr>
@@ -91,7 +91,8 @@ import junit.framework.TestCase;
  * Constraints panel
  * </td>
  * <td>
- * Only if the target is a class or a feature or a fig that shows a class or a feature.
+ * Only if the target is a class or a feature or a fig that shows a
+ * class or a feature.
  * </td>
  * </tr> 
  * </table>  
@@ -105,7 +106,7 @@ public class GUITestActionGoToDetails extends TestCase {
     
 
     /**
-     * @param arg0
+     * @param arg0 is the name of the test case.
      */
     public GUITestActionGoToDetails(String arg0) {
         super(arg0);
@@ -116,18 +117,9 @@ public class GUITestActionGoToDetails extends TestCase {
      */
     protected void setUp() throws Exception {       
         super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
         _action = new ActionGoToDetails("");
     }
 
-    /**
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
-        super.tearDown();
-    }
-    
     public void testToDoTab() {    
     }
 
