@@ -238,9 +238,10 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (_edges.contains(edge)) return;
     _edges.addElement(edge);
     // needs-more-work: assumes public
-      if (edge instanceof MModelElement) {
-	_model.addOwnedElement((MModelElement) edge);
-      }
+    if (edge instanceof MModelElement &&
+       ((MModelElement)edge).getNamespace() == null) {
+      _model.addOwnedElement((MModelElement) edge);
+    }
     fireEdgeAdded(edge);
   }
 
