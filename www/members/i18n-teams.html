@@ -15,11 +15,22 @@ language/region/country.
   <LI>
     <STRONG>(default) English (American English)</STRONG>
     <br>
+    All developers maintain this while working with the code.
+    <br>
     For ArgoUML the default language is American English (en_US).
     This is to be used in all non-localized texts, comments and documentation.
+    <br>
+    Notice that javadoc comments and variable names,
+    log messages (through log4j and System.out),
+    and
+    design documentation (cookbook and web site),
+    are not localized at this point but always written in American English 
+    (en_US).
   </LI>
   <LI>
     <STRONG>(en) English</STRONG>
+    <br>
+    All developers maintain this while working with the code.
     <br>
     en defaults in ArgoUML to the English spoken in America (en_US).
   </LI>
@@ -62,11 +73,13 @@ language/region/country.
 <h2>Status of the different translations</h2>
 (Linus Tolkes very personal opinion!)
 <P>
-All internationalisation effort suffer the problem that the 
-internationalisation in the code is not complete.
-I (Linus Tolke) suggest that all teams make the internationalisation
+All internationalization effort suffer the problem that the 
+internationalization in the code is not complete.
+I (Linus Tolke) suggest that all teams make the internationalization
 of the code their first priority and their respective languages
 their second priority.
+Jean-Hugues de Raigniac coordinates the work with completing the
+internationalization throughout the code.
 
 <TABLE border=3>
 <TR>
@@ -75,7 +88,7 @@ their second priority.
 </TR>
 <TR>
 <TH>fr</TH>
-<TD>Not complete since localisation of ArgoUML is not complete</TD>
+<TD>Not complete since localization of ArgoUML is not complete</TD>
 </TR>
 <TR>
 <TH>de</TH>
@@ -91,14 +104,14 @@ their second priority.
 </TR>
 <TR>
 <TH>ru</TH>
-<TD>Not started</TD>
+<TD>Not up to date</TD>
 </TR>
 </TABLE>
 
 Suggested priority order for each team:
 <OL>
-<LI>Complete localisation of ArgoUML excluding gef-parts.
-<LI>Complete localisation of GEF.
+<LI>Complete localization of ArgoUML excluding gef-parts.
+<LI>Complete localization of GEF.
 <LI>Quality assurance, making sure that the terms used match 
 the translations used in books in the domain.
 <LI>User manual.
