@@ -203,8 +203,7 @@ public class Modeller {
             // ModelFacade.lookupIn(Object,String)
             /*
 	      if(fileName.endsWith(".java"))
-	      fileName = fileName.substring(0,
-	      fileName.length()-5);
+	      fileName = fileName.substring(0, fileName.length()-5);
             */
 
             component = Model.getCoreFactory().createComponent();
@@ -365,8 +364,7 @@ public class Modeller {
 			+ ModelFacade.getName(mClassifier);
                     ModelFacade.setName(perm, newName);
                 }
-	    }
-	    catch (ClassifierNotFoundException e) {
+	    } catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -382,7 +380,9 @@ public class Modeller {
 	}
     }
 
-    /**        Called from the parser when a class declaration is found.
+    /**
+     * Called from the parser when a class declaration is found.
+     *
      * @param name The name of the class.
      * @param modifiers A sequence of class modifiers.
      * @param superclassName Zero or one string with the name of the
@@ -683,9 +683,11 @@ public class Modeller {
         // add the current classifier to the diagram.
         Object classifier = parseState.getClassifier();
         if (ModelFacade.isAInterface(classifier)) {
-            if (getDiagram() != null && importSession.isCreateDiagramsChecked())
+            if (getDiagram() != null
+                    && importSession.isCreateDiagramsChecked()) {
 		diagram.addInterface(classifier,
 				      importSession.isMinimiseFigsChecked());
+            }
         } else {
             if (ModelFacade.isAClass(classifier)) {
                 if (getDiagram() != null
@@ -705,7 +707,8 @@ public class Modeller {
         parseState = (ParseState) parseStateStack.pop();
     }
 
-    /** Called from the parser when an operation is
+    /**
+     * Called from the parser when an operation is
      * found.
      *
      * @param modifiers A sequence of operation modifiers.
@@ -733,10 +736,12 @@ public class Modeller {
 	setOwnerScope(mOperation, modifiers);
 	setVisibility(mOperation, modifiers);
 	if ((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
-	    ModelFacade.setConcurrency(mOperation, ModelFacade.GUARDED);
+	    ModelFacade.setConcurrency(mOperation,
+	            ModelFacade.GUARDED_CONCURRENCYKIND);
 	} else if (ModelFacade.getConcurrency(mOperation)
 		   == ModelFacade.GUARDED_CONCURRENCYKIND) {
-	    ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
+	    ModelFacade.setConcurrency(mOperation,
+	            ModelFacade.SEQUENTIAL_CONCURRENCYKIND);
 	}
 
 	for (Iterator i = ModelFacade.getParameters(mOperation).iterator();
@@ -755,8 +760,7 @@ public class Modeller {
 	    // Constructor
 	    ModelFacade.setStereotype(mOperation,
                 getStereotype(mOperation, "create", "BehavioralFeature"));
-	}
-	else {
+	} else {
 	    try {
 		mClassifier =
 		    getContext(returnType).get(getClassifierName(returnType));
@@ -773,8 +777,7 @@ public class Modeller {
 		ModelFacade.setKindToReturn(mParameter);
 
                 ModelFacade.setType(mParameter, mClassifier);
-	    }
-	    catch (ClassifierNotFoundException e) {
+	    } catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -806,8 +809,7 @@ public class Modeller {
 		ModelFacade.setKindToIn(mParameter);
                 if (ModelFacade.isAClassifier(mClassifier)) {
                     ModelFacade.setType(mParameter, mClassifier);
-                }
-                else {
+                } else {
                     // the type resolution failed to find a valid classifier.
                     LOG.warn("Modeller.java: a valid type for a parameter "
 			     + "could not be resolved:\n "
@@ -816,8 +818,7 @@ public class Modeller {
 			     + ", for parameter: "
 			     + ModelFacade.getName(mParameter));
                 }
-	    }
-	    catch (ClassifierNotFoundException e) {
+	    } catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -862,8 +863,9 @@ public class Modeller {
 //            LOG.warn("adding body failed: no operation!");
             return;
         }
-        if (body == null || body.length() == 0)
+        if (body == null || body.length() == 0) {
             return;
+        }
 
         Object method = getMethod(ModelFacade.getName(op));
         parseState.feature(method);
@@ -879,7 +881,9 @@ public class Modeller {
         ModelFacade.addFeature(ModelFacade.getOwner(op), method);
     }
 
-    /**        Called from the parser when an attribute is found.
+    /**
+     * Called from the parser when an attribute is found.
+     *
      * @param modifiers A sequence of attribute modifiers.
      * @param typeSpec The attribute's type.
      * @param name The name of the attribute.
@@ -896,8 +900,9 @@ public class Modeller {
 	if (!arraysAsDatatype && typeSpec.indexOf('[') != -1) {
 	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
 	    multiplicity = "1_N";
-	} else
+	} else {
 	    multiplicity = "1_1";
+	}
 
 	// the attribute type
 	Object mClassifier = null;
@@ -935,8 +940,7 @@ public class Modeller {
 
             if (ModelFacade.isAClassifier(mClassifier)) {
                 ModelFacade.setType(mAttribute, mClassifier);
-            }
-            else {
+            } else {
                 // the type resolution failed to find a valid classifier.
                 LOG.warn("Modeller.java: a valid type for a parameter "
 			 + "could not be resolved:\n "
@@ -977,8 +981,7 @@ public class Modeller {
 
             if ((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
                 ModelFacade.setChangeable(mAttribute, false);
-            }
-            else if (!ModelFacade.isChangeable(mAttribute)) {
+            } else if (!ModelFacade.isChangeable(mAttribute)) {
                 ModelFacade.setChangeable(mAttribute, true);
             }
             addDocumentationTag(mAttribute, javadoc);
@@ -1046,12 +1049,10 @@ public class Modeller {
             Collection c = ModelFacade.getSuppliers(mAbstraction);
             if (c == null || c.size() == 0) {
                 ModelFacade.removeClientDependency(child, mAbstraction);
-            }
-            else {
+            } else {
                 if (parent != c.toArray()[0]) {
                     mAbstraction = null;
-                }
-                else {
+                } else {
                     break;
                 }
             }
@@ -1084,8 +1085,7 @@ public class Modeller {
 	    // Find the owner for this package.
 	    if ("".equals(getPackageName(name))) {
 		ModelFacade.addOwnedElement(model, mPackage);
-	    }
-	    else {
+	    } else {
 		ModelFacade.addOwnedElement(getPackage(getPackageName(name)),
 					    mPackage);
 	    }
@@ -1282,8 +1282,9 @@ public class Modeller {
             while (iter.hasNext()) {
                 Object mStereotype = iter.next();
                 if (Model.getUmlHelper().getExtensionMechanisms()
-		        .isStereotypeInh(mStereotype, name, baseClass))
+		        .isStereotypeInh(mStereotype, name, baseClass)) {
 		    return mStereotype;
+                }
             }
         }
         throw new IllegalArgumentException("Could not find "
@@ -1334,8 +1335,7 @@ public class Modeller {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
 	    return "";
-	}
-	else {
+	} else {
 	    return name.substring(0, lastDot);
 	}
     }
@@ -1366,8 +1366,7 @@ public class Modeller {
 	int lastDot = name.lastIndexOf('.');
 	if (lastDot == -1) {
 	    return name;
-	}
-	else {
+	} else {
 	    return name.substring(lastDot + 1);
 	}
     }
@@ -1385,13 +1384,14 @@ public class Modeller {
             ModelFacade.setTaggedValue(element, "src_modifiers", "static");
 	}
 	if ((modifiers & JavaRecognizer.ACC_PRIVATE) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PRIVATE);
-	}
-	else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PROTECTED);
-	}
-	else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
-	    ModelFacade.setVisibility(element, ModelFacade.ACC_PUBLIC);
+	    ModelFacade.setVisibility(element,
+	            ModelFacade.PRIVATE_VISIBILITYKIND);
+	} else if ((modifiers & JavaRecognizer.ACC_PROTECTED) > 0) {
+	    ModelFacade.setVisibility(element,
+	            ModelFacade.PROTECTED_VISIBILITYKIND);
+	} else if ((modifiers & JavaRecognizer.ACC_PUBLIC) > 0) {
+	    ModelFacade.setVisibility(element,
+	            ModelFacade.PUBLIC_VISIBILITYKIND);
 	} else {
             ModelFacade.setTaggedValue(element, "src_visibility", "default");
 	}
@@ -1406,10 +1406,11 @@ public class Modeller {
     */
     private void setOwnerScope(Object feature, short modifiers) {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-            ModelFacade.setOwnerScope(feature, ModelFacade.CLASSIFIER_SCOPE);
-        }
-        else {
-            ModelFacade.setOwnerScope(feature, ModelFacade.INSTANCE_SCOPE);
+            ModelFacade.setOwnerScope(feature,
+                    ModelFacade.CLASSIFIER_SCOPEKIND);
+        } else {
+            ModelFacade.setOwnerScope(feature,
+                    ModelFacade.INSTANCE_SCOPEKIND);
         }
     }
 
@@ -1423,11 +1424,10 @@ public class Modeller {
     private void setTargetScope(Object mAssociationEnd, short modifiers) {
         if ((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
             ModelFacade.setTargetScope(mAssociationEnd,
-				       ModelFacade.CLASSIFIER_SCOPE);
-        }
-        else {
+				       ModelFacade.CLASSIFIER_SCOPEKIND);
+        } else {
             ModelFacade.setTargetScope(mAssociationEnd,
-				       ModelFacade.INSTANCE_SCOPE);
+				       ModelFacade.INSTANCE_SCOPEKIND);
         }
     }
 
@@ -1472,11 +1472,9 @@ public class Modeller {
 		// add as invariant constraint Note that no checking
 		// of constraint syntax is performed... BAD!
 		body = sContext + " inv " + sTagData;
-	    }
-	    else if (sTagName.equals ("pre-condition")) {
+	    } else if (sTagName.equals ("pre-condition")) {
 		body = sContext + " pre " + sTagData;
-	    }
-	    else {
+	    } else {
 		body = sContext + " post " + sTagData;
 	    }
 	    Object bexpr =
@@ -1492,8 +1490,7 @@ public class Modeller {
 		// moment...
 		ModelFacade.addOwnedElement(ModelFacade.getNamespace(me), mc);
 	    }
-	}
-	else {
+	} else {
 	    ModelFacade.setValueOfTag(getTaggedValue(me, sTagName), sTagData);
 	}
     }
@@ -1548,8 +1545,7 @@ public class Modeller {
 			    int lineEndPos = 0;
 			    if (sJavaDocs.indexOf('\n', j) < 0) {
 				lineEndPos = sJavaDocs.length() - 2;
-			    }
-			    else {
+			    } else {
 				lineEndPos = sJavaDocs.indexOf('\n', j) + 1;
 			    }
 			    sbPureDocs.append(sJavaDocs.substring(j,
@@ -1571,21 +1567,18 @@ public class Modeller {
 			    int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
 			    if (nTemp1 == -1) {
 				nTemp1 = sJavaDocs.length();
-			    }
-			    else {
+			    } else {
 				nTemp1++;
 			    }
 			    sCurrentTagData =
 				sJavaDocs.substring (nTemp, nTemp1);
 			    nStartPos = nTemp1;
-			}
-			else {
+			} else {
 			    // continue standard tag or comment text
 			    int nTemp = sJavaDocs.indexOf ('\n', nStartPos);
 			    if (nTemp == -1) {
 				nTemp = sJavaDocs.length();
-			    }
-			    else {
+			    } else {
 				nTemp++;
 			    }
 			    if (sCurrentTagName != null) {
@@ -1594,8 +1587,7 @@ public class Modeller {
 				sCurrentTagData +=
 				    " "
 				    + sJavaDocs.substring (nStartPos, nTemp);
-			    }
-			    else {
+			    } else {
 				sbPureDocs.append(sJavaDocs.substring(nStartPos,
 								      nTemp));
 			    }
@@ -1629,8 +1621,7 @@ public class Modeller {
 		// store tag
 		addJavadocTagContents (modelElement, sCurrentTagName,
 				       sCurrentTagData);
-	    }
-	    else {
+	    } else {
 		sJavaDocs =
 		    sJavaDocs.substring (0,
 		            sJavaDocs.lastIndexOf ('/') - 1);
