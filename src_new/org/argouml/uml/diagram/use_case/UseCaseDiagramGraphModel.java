@@ -527,9 +527,24 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
         // the model namespace.
 
         _nodes.addElement(node);
+        /*
+         * 2002-07-14
+         * Jaap Branderhorst
+         * Issue 324
+         * Next line of code didn't check if the node allready was
+         * owned by some namespace. So when a node was added that was allready
+         * owned by a namespace, the node was moved to the namespace the 
+         * usecase diagram belongs to.
+         * OLD CODE
 
         if ((node instanceof MActor) ||
             (node instanceof MUseCase)) {
+         
+         * NEW CODE:
+         */
+         if (((node instanceof MActor) || (node instanceof MUseCase)) && 
+         	(((MModelElement)node).getNamespace() == null)) {
+         // end NEW CODE
             // System.out.println("setting namespace " + _model +
             //                    " to element "+node);
             _model.addOwnedElement((MModelElement) node);
@@ -1045,3 +1060,4 @@ public class UseCaseDiagramGraphModel extends MutableGraphSupport
     static final long serialVersionUID = -8516841965639203796L;
 
 } /* end class UseCaseDiagramGraphModel */
+
