@@ -30,6 +30,10 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ui.UMLAction;
 
+/**
+ * Action to select the editor pane and shows it.
+ *
+ */
 public class ActionGoToEdit extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
