@@ -85,7 +85,7 @@ public class WizAddInstanceVariable extends Wizard {
      */
     public Object getModelElement() {
         if (getToDoItem() != null) {
-            VectorSet offs = item.getOffenders();
+            VectorSet offs = getToDoItem().getOffenders();
             if (offs.size() >= 1) {
                 Object me = /*(MModelElement)*/ offs.elementAt(0);
                 return me;

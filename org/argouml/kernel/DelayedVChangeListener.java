@@ -32,6 +32,9 @@ import java.beans.*;
  */
 public interface DelayedVChangeListener {
 
+    /**
+     * @param pce the event
+     */
     public void delayedVetoableChange(PropertyChangeEvent pce);
 
 } /* end interface DelayedVChangeListener */

@@ -69,8 +69,8 @@ public class WizNavigable extends Wizard {
      * @return the offending modelelement
      */
     public Object getModelElement() {
-	if (item != null) {
-	    VectorSet offs = item.getOffenders();
+	if (getToDoItem() != null) {
+	    VectorSet offs = getToDoItem().getOffenders();
 	    if (offs.size() >= 1) {
 		Object me = /*(MModelElement)*/ offs.elementAt(0);
 		return me;
@@ -122,7 +122,7 @@ public class WizNavigable extends Wizard {
 	case 1:
 	    if (step1 == null) {
 		step1 = new WizStepChoice(this, instructions, getOptions());
-		step1.setTarget(item);
+		step1.setTarget(getToDoItem());
 	    }
 	    return step1;
 	}
@@ -167,8 +167,8 @@ public class WizNavigable extends Wizard {
      */
     public boolean canFinish() {
 	if (!super.canFinish()) return false;
-	if (step == 0) return true;
-	if (step == 1 && step1 != null && step1.getSelectedIndex() != -1)
+	if (getStep() == 0) return true;
+	if (getStep() == 1 && step1 != null && step1.getSelectedIndex() != -1)
 	    return true;
 	return false;
     }
