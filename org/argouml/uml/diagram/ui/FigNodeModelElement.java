@@ -96,7 +96,7 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Abstract class to display diagram icons for UML ModelElements that
- * look like nodes and that have editiable names and can be
+ * look like nodes and that have editable names and can be
  * resized.
  *
  * @author abonner
