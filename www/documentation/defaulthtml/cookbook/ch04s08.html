@@ -1,39 +1,167 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>4.8. Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s07.html" title="4.7. Help System"><link rel="next" href="ch04s09.html" title="4.9. Modules and PlugIns"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.8. Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="internationalization"></a>4.8. Internationalization</h2></div></div><a class="indexterm" name="d0e3453"></a><a class="indexterm" name="d0e3456"></a><a class="indexterm" name="d0e3459"></a><a class="indexterm" name="d0e3462"></a><a class="indexterm" name="d0e3465"></a><p>
+   <title>4.8. Internationalization</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s07.html" title="4.7. Help System"><link rel="next" href="ch04s09.html" title="4.9. Modules and PlugIns"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.8. Internationalization</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="internationalization"></a>4.8. Internationalization</h2></div></div><a class="indexterm" name="d0e3461"></a><a class="indexterm" name="d0e3464"></a><a class="indexterm" name="d0e3467"></a><a class="indexterm" name="d0e3470"></a><a class="indexterm" name="d0e3473"></a><p>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the ListResourceBundle-classes and parts of it is handled by the 
-gef infrastructure.
+GEF infrastructure.
 </p><p>
 There are several sets of Bundle files for different domains within ArgoUML.
 Each domain has a name and is handled by a file.
 This is set up in <tt>org.argouml.application.Main</tt>.
-</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_internationalization"></a>4.8.1. How do I ...?</h3></div></div><p>
+</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e3483"></a>4.8.1. Organising translators</h3></div></div><a class="indexterm" name="d0e3486"></a><a class="indexterm" name="d0e3491"></a><p>
+The problems with internationalization are not so much the technical
+problems as to how it works but more so the problems are with
+getting, keeping and coordinating the correct compentences to do
+the job.
+This comes from the fact that by necessity the different
+persons working with internationalization have different native languages
+and that complicates the communications.
+</p><p>
+To handle this problem for GNU applications 
+there is a community set up around gettext with one language team
+per language working with all gettext applications.
+There are also tools to help the translator do his job
+delivered with gettext that are the same for all the applications.
+In each of these language teams discussions are held that ensure a
+consistant use of words over all these applications.
+</p><p>
+It is for me (Linus Tolke, May 2002) unclear if and how such a
+community exists for Open Source Java tools and ArgoUML cannot
+simply benefit from the gettext communities since we don't use
+gettext and cannot use the same tools.
+</p><p>
+To get things done, we organise our own Language Teams with ArgoUML.
+Each language teams are actually just one or several persons that
+know that language and is eager to work with translating ArgoUML.
+</p><p>
+The language team has the following responsibilities:
+</p><div class="orderedlist"><ol type="1"><li><p>
+All localized strings and resources shall be tranlated into the language.
+</p><p>
+This is a constant work with keeping up with the changes that
+will be made to the ArgoUML code since ArgoUML 
+is under fast development.
+</p></li><li><p>
+The terminology used shall be correct.
+</p><p>
+This requires work in keeping up with the current litterature in the
+domain of ArgoUML.
+</p></li><li><p>
+Help with the improvements on ArgoUML by pin-pointing where ArgoUML
+needs to be modified to allow for localisation.
+</p><p>
+As ArgoUML is originally built without localisation we still have a
+big backlog of stuff in the GUI that is not localisable just by
+modifying the resource bundles. 
+Each such thing is a Defect and shall be corrected.
+</p></li><li><p>
+See that the used libraries also provides their part in that language.
+</p><p>
+This is mostly GEF since GEF is central both when it comes to 
+the fact that it has localized strings of its own but also
+because it handles parts of the localisation.
+</p><p>
+This means discussing with the teams developing the underlaying package
+as to how best to provide the localisation for those parts. 
+Either by providing localisation for that team to include in the
+package or by having ArgoUML overriding that package in that respect.
+</p></li></ol></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e3528"></a>4.8.2. Ambitions for localisation</h3></div></div><p>
+Let me (Linus Tolke, May 2002) try to define the levels of
+ambition for us to try to make it possible to discuss where
+we are going.
+</p><div class="orderedlist"><ol type="1"><li><p>No translation</p><p>
+This is the lowest level of ambition that is a "do nothing"-level.
+This goes for all languages where we have not done anything like
+Swahili, Polish, South African English, ...
+</p></li><li><p>Tool translation</p><p>
+This is the basic level of ambition that each Language Team should
+aim for.
+It means that in ArgoUML all strings are localised so that ArgoUML
+is giving a complete appearance of being a tool for that language.
+</p><p>
+Setting this level of ambition for a language
+(or creating a team for the language) is pointless
+if there is no window system available for the language in questions.
+I mean, if neither the people working with 
+Windows, Linux (KDE or Gnome) or java has collected enough interest
+to do a translation of the basic infrastructure there is no point
+in doing so for ArgoUML.
+(My Windows 2k has 80 supported languages so I would think that this
+is a no-issue.)
+</p></li><li><p>User environment translation</p><p>
+This is the next level of ambition that can be set out by a 
+Language Team that works really well and has plenty of translating
+resources left.
+</p><p>
+It means that not only the ArgoUML tool should be translated but also
+everything around it that the user sees 
+i.e. the User Manual, the Quick Guide, the FAQ, 
+the Users' part of the ArgoUML Web site.
+</p><p>
+Setting this level of ambition for a language is pointless
+if the problem domain does not exist in that language.
+I mean, if the professionals that use UML or other 
+Software Engineering tools, in their every day work don't use 
+their native language to discuss UML concepts,
+then there is no use in translating these concepts to their language,
+they will not use the translation because they are more
+comfortable with the English concepts.
+Note that the UML Specification does only exist in English.
+</p></li><li><p>Development environment translation</p><p>
+Here I mean that everything that the developer of ArgoUML sees
+shall be translated.
+</p><p>
+This begins with this Cookbook, then the Developers' part of the
+ArgoUML web site and 
+also includes the javadoc comments in the code of ArgoUML and
+design documentation of included packages such as GEF, NSUML...
+</p><p>
+For translating the javadoc there exists no good tools.
+</p><p>
+This is pointless unless we have an extremely large developer base
+speaking one specific language and where most of them does not
+know English.
+</p><p>
+If any Language Team would consider this, 
+probably after several years of extremely good work on the 
+User environment translation ambition level
+it is a decision not only concerning that language team but the whole
+ArgoUML development community.
+</p><p>
+Maybe I (Linus Tolke) has gone a little over the top now in trying 
+to define things far of the side of the planet.
+It is probably just med but I find a weird pleasure in encouraging people
+to strive for unreachable goals.
+</p></li></ol></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_internationalization"></a>4.8.3. How do I ...?</h3></div></div><p>
 </p><div class="itemizedlist"><ul type="disc"><li><p>...verify that all translations are up to date?</p><p>
 Run the JUnit test cases.
 See <a href="ch04s12.html#run_junit_testcases" title="4.12.1. How to run the test cases">Section 4.12.1</a>.
 This will verify that all tags are in synch between different
 translations.
-</p></li><li><p>...add an new language?</p><div class="orderedlist"><ol type="1"><li><p>
-Find the languages internationalization code for the language you 
+</p></li><li><p>...start a new Language Team?</p><p>
+The Language Teams are loosely defined by
+the web page of language teams on the Tigris site.
+As soon as the language code and names (at least one) are in place
+the teams is created.
+</p><p>
+From that point it is the Language Teams responsibility to 
+do a good job.
+</p></li><li><p>
+...find the languages internationalization code for the language you 
 will add: en, es, en_GB,...
+</p><p>
 The one you are currently using is shown in the log when ArgoUML starts.
 Search for lines looking like:
 <tt>
-Language: sv
+Language: sh
 Country: unknown
 </tt>
-</p></li><li><p>
-Examine GEF to see if GEF supports the language you want to add.
-If not then some of the things in the menues will not be localized.
-To get this done you need to contribute your localization to 
-the GEF project and make sure to get it included in an up-coming
-GEF release.
-</p></li><li><p>
+</p></li><li><p>...start the work?</p><p>
 Look at the files in
 <tt>org/argouml/i18n</tt>,
 under <tt>argouml/src_new</tt>.
-</p></li><li><p>
+</p><p>
 Translate all the texts in each of these classes of files.
 </p><p>
 This is a lot of extremely qualified work including searching well-known
@@ -41,11 +169,7 @@ litterature on UML and Software Engineering in order to get the correct
 terms for the domain.
 Discuss with other UML and Software Engineering professionals with the
 same native language to get it right.
-</p></li><li><p>
-Put the list of persons involved in the work as a
-<i><tt>language</tt></i>-responsible group on the
-ArgoUML web site.
-</p></li><li><p>
+</p><p>
 Create the files with the translations and store them in
 <tt>argouml/src_new/org/argouml/i18n</tt>.
 They will have the names:
@@ -58,21 +182,22 @@ They will have the names:
 <tt>TreeResourceBundle_<i><tt>language code</tt></i>.java</tt>, and
 <tt>NotationResourceBundle_<i><tt>language code</tt></i>.java</tt>.
 </p><p>
-State your name clearly as author of all these files and add a couple of
-other "natives" that could help in the maintenance.
-</p></li><li><p>
 Add the language to the JUnit list of tested languages and run the JUnit tests.
+</p><p>
+The purpose of this is for you to get the simple JUnit tests to work for
+your language also.
 </p><p>
 This is in the file
 <tt>argouml/modules/junit/src/org/argouml/util/CheckResourceBundle.java</tt>.
-</p></li><li><p>
-Translate the User Manual.
+Search for the supportedLanguages-array.
 </p><p>
-The infrastructure for maintaining and updating several languages User
-Manual is not yet in place.
-The first language to complete this cycle will have some extra work to
-do with the creating of the infrastructure.
-</p></li></ol></div></li><li><p>...add or modify code with localized things?</p><div class="orderedlist"><ol type="1"><li><p>
+Now you have completed the first iteration of the Tool translation
+ambition.
+The work will probably be more maintenance-like from here on.
+</p></li><li><p>...join an existing Language Team</p><p>
+Discuss with the Language Team on where the team is in its work
+and what you can do.
+</p></li><li><p>...add or modify code with localized things?</p><div class="orderedlist"><ol type="1"><li><p>
 Write your code using the same way of handling strings as the surrounding code.
 </p><p>
 This means that strings are denoted by "labels" or "tags" and then

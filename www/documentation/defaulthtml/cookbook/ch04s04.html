@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>4.4. Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s03.html" title="4.3. Notation"><link rel="next" href="ch04s05.html" title="4.5. Reverse Engineering"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.4. Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="diagrams"></a>4.4. Diagrams</h2></div></div><a class="indexterm" name="d0e1844"></a><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_diagrams"></a>4.4.1. How do I add a new element to a diagram?</h3></div></div><p>
+   <title>4.4. Diagrams</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s03.html" title="4.3. Notation"><link rel="next" href="ch04s05.html" title="4.5. Reverse Engineering"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.4. Diagrams</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s03.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="diagrams"></a>4.4. Diagrams</h2></div></div><a class="indexterm" name="d0e1852"></a><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_diagrams"></a>4.4.1. How do I add a new element to a diagram?</h3></div></div><p>
 To add a new element to a diagram, two main things have to be done.
 </p><div class="orderedlist"><ol type="1"><li><p>
 Create a new property panel class that will be displayed in
@@ -19,7 +19,7 @@ The classes involved in this particular example have all been well
 commented and have full Javadoc descriptions, to help when examining
 the code. You wil need to read the description here in conjunction
 with looking at the code.
-</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1867"></a>4.4.1.1. Adding the property panel</h4></div></div><p>
+</p><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e1875"></a>4.4.1.1. Adding the property panel</h4></div></div><p>
 Property Panels are found as class PropPanelXXX.java, where XXX is the
 UML metaclass. They are in sub-packages of org.argouml.uml.ui
 corresponding to the XXX NSUML packages, which in turn corresponds to
@@ -97,7 +97,7 @@ example).
 </p></li><li><p>
 A set of check boxes for modifiers. Supported by the
 <tt>PropPanelModifiers</tt> class.
-</p></li></ul></div><p>Examples of these in more detail now follow.</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e1966"></a>4.4.1.1.1. Adding a simple list field</h5></div></div><p>
+</p></li></ul></div><p>Examples of these in more detail now follow.</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e1974"></a>4.4.1.1.1. Adding a simple list field</h5></div></div><p>
 For example We need to add a field to the use case property panel for
 the extends relationships that derive from this use case.
 </p><p>
@@ -119,7 +119,7 @@ The list model should be a subclass of
 <tt>UMLModelElementListModel</tt>, a subclass of the Swing
 <tt>AbstractListModel</tt> that implements the NSUML
 <tt>ElementListener</tt> interface.
-</p><div class="sect5"><div class="titlepage"><div><h6 class="title"><a name="d0e2009"></a>4.4.1.1.1.1. The list model</h6></div></div><p>
+</p><div class="sect5"><div class="titlepage"><div><h6 class="title"><a name="d0e2017"></a>4.4.1.1.1.1. The list model</h6></div></div><p>
 In out example we create UMLExtendListModel. Its constructor should
 take three arguments:
 </p><div class="orderedlist"><ol type="1"><li><p>
@@ -359,7 +359,7 @@ elementAtUtil(Collection collection, int index, Class requiredClass)</tt>
 helps in writing the <tt>getElementAt()</tt>.
 Finds the element at a specific index.
 The last argument is ignored!
-</p></dd></dl></div></div></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e2977"></a>4.4.1.1.2. Building the field</h5></div></div><p>
+</p></dd></dl></div></div></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e2985"></a>4.4.1.1.2. Building the field</h5></div></div><p>
 By convention the background of the list is set to the same as the
 background of the PropPanel and the foreground to Color.blue.
 </p><p>
@@ -384,7 +384,7 @@ value for all fields and corresponding captions that can have multiple
 entries, so they expand equally. If none of the fields should expand,
 the caption only of the last field in each column should be given a
 non-zero value.
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3009"></a>4.4.1.1.3. Adding Property Tab Toolbar Buttons</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3017"></a>4.4.1.1.3. Adding Property Tab Toolbar Buttons</h5></div></div><p>
 These are added by creating new instances of
 <tt>PropPanelButton</tt> (you don't need to assign them to
 anything&#8212;just creating will do).
@@ -417,7 +417,7 @@ In our example, the extend property panel has a &#8220;add extension
 point&#8221; button, with a method
 <tt>newExtensionPoint</tt> that we provide to create a new
 use case.
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3062"></a>4.4.1.1.4. Support for stereotypes</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3070"></a>4.4.1.1.4. Support for stereotypes</h5></div></div><p>
 The PropPanel should override the following (note the spelling of the
 method name).
 </p><p>
@@ -428,7 +428,7 @@ the target in the <tt>PropPanel</tt>.
 </p><p>
 This is used to determine what stereotypes may be shown for this
 property panel.
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3080"></a>4.4.1.1.5. Other sorts of fields</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3088"></a>4.4.1.1.5. Other sorts of fields</h5></div></div><p>
 Another sort of field that may be useful is the ComboBox.
 This is useful to allow users to select from a pre-defined list of
 alongside a navigation arrow to go to the selected entry.
@@ -467,11 +467,11 @@ routine the call for the &#8220;base&#8221; field is:
 and we define the methods <tt>isAcceptableUseCase</tt>,
 <tt>getBase</tt> and <tt>setBase</tt> in
 <tt>PropPanelExtend</tt>.
-</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e3157"></a>4.4.1.2. How to add a new Fig</h4></div></div><p>
+</p></div></div><div class="sect3"><div class="titlepage"><div><h4 class="title"><a name="d0e3165"></a>4.4.1.2. How to add a new Fig</h4></div></div><p>
 The new item must be added to the toolbar. Both the graph model and
 diagram renderer for the diagram will need modifying for any new fig
 object.
-</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3162"></a>4.4.1.2.1. Adding to the toolbar</h5></div></div><p>
+</p><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3170"></a>4.4.1.2.1. Adding to the toolbar</h5></div></div><p>
 Find the diagram object in
 <tt>uml/diagram/XXXX/ui/UMLYYYYDiagram.java</tt>, where
 <tt>XXXX</tt> is the diagram type (lower case) and
@@ -521,7 +521,7 @@ as an argument, and sets up a graph model
 (<tt>UseCaseDiagramGraphModel</tt>), layer perspective and
 renderer (<tt>UseCaseDigramRenderer</tt>) for nodes and
 edges.
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3231"></a>4.4.1.2.2. Changing the graph model</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3239"></a>4.4.1.2.2. Changing the graph model</h5></div></div><p>
 The graph model is the bridge between the UML meta-model
 representation of the design and the graph model of GEF. They are
 found in the parent directory of the corresponding diagram class, and
@@ -535,7 +535,7 @@ The graph model is defined as a child of the GEF class
 <tt>MutableGraphModel</tt> (GEF),
 <tt>VetoableChangeListener</tt> (Java) and
 <tt>MElementListener</tt> (NSUML).
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3259"></a>4.4.1.2.3. Changing the renderer</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3267"></a>4.4.1.2.3. Changing the renderer</h5></div></div><p>
 The renderer is responsible for creating graphic figs as required on
 the diagram. It is found in the same directory of the corresponding
 diagram class, and has the general name
@@ -552,7 +552,7 @@ represent a given NSUML edge object.
 In our example, we must extend <tt>getFigEdgeFor()</tt> so
 it can handle NSUML MExtend objects (producing a
 <tt>FigExtend</tt>).
-</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3289"></a>4.4.1.2.4. Creating a new Fig</h5></div></div><p>
+</p></div><div class="sect4"><div class="titlepage"><div><h5 class="title"><a name="d0e3297"></a>4.4.1.2.4. Creating a new Fig</h5></div></div><p>
 New objects that are to appear on a diagram will require new Fig
 classes to represent them. In our example we have created
 FigExtend. They are placed in the same directory as the diagram that
