@@ -44,7 +44,7 @@ public class Translator {
         Category.getInstance(Translator.class);
 
     /** Key for menu resource bundle. */
-    public static final String MENU_BUNDLE = "CoreMenu";
+    //public static final String MENU_BUNDLE = "CoreMenu";
 
     /** Binding between new key names and old ones needed by gef. */
     private static Properties images = null;
