@@ -509,6 +509,26 @@ public class FigAssociation extends FigEdgeModelElement {
     }
 
     /**
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#renderingChanged()
+     */
+    public void renderingChanged() {
+        Object associationEnd = getOwner(); //MAssociation
+        if (associationEnd == null) {
+            return;
+        }
+        
+        //MAssociationEnd
+        Object ae0 =
+            ((Model.getFacade().getConnections(associationEnd)).toArray())[0];
+        //MAssociationEnd
+        Object ae1 =
+            ((Model.getFacade().getConnections(associationEnd)).toArray())[1];
+        updateEnd(srcMult, srcRole, srcOrdering, ae0);
+        updateEnd(destMult, destRole, destOrdering, ae1);
+        super.renderingChanged();
+    }
+    
+    /**
      * Returns the name of the OrderingKind.
      *
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
