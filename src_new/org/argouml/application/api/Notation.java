@@ -122,6 +122,11 @@ implements PropertyChangeListener {
    * Indicates if the user wants to see the properties (everything between braces), that is for example the concurrency
    */
   public static final ConfigurationKey KEY_SHOW_PROPERTIES = Configuration.makeKey("notation", "show", "properties");
+
+    /** 
+     * Default value for the shadow size of classes, interfaces etc.
+     */
+    public static final ConfigurationKey KEY_DEFAULT_SHADOW_WIDTH = Configuration.makeKey("notation","default","shadow-width");
   
   private static Notation SINGLETON = new Notation();
 
@@ -609,4 +614,13 @@ implements PropertyChangeListener {
      Configuration.setBoolean(KEY_USE_GUILLEMOTS, useGuillemots);
   }
 
-}
+    /** get the default width for Fig shadows. */
+    public static int getDefaultShadowWidth() {
+	return Configuration.getInteger(KEY_DEFAULT_SHADOW_WIDTH, 1);
+    }
+
+    /** set the default width for Fig Shadow. */
+    public static void setDefaultShadowWidth(int width) {
+	Configuration.setInteger(KEY_DEFAULT_SHADOW_WIDTH, width);
+    }
+} // END NOTATION
