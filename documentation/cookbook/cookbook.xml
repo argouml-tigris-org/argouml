@@ -2063,9 +2063,157 @@ Remove the line for the tab from
 
 <sect1 id="internationalization">
 <title>Internationalization</title>
+      <para>
+In ArgoUML internationalization (sometimes called i18n) is done using
+the ListResourceBundle-classes and parts of it is handled by the 
+gef infrastructure.
+</para>
+      <para>
+There are several sets of Bundle files for different domains within ArgoUML.
+Each domain has a name and is handled by a file.
+This is set up in <classname>org.argouml.application.Main</classname>.
+</para>
 <sect2 id="howdoi_internationalization">
 <title>How do I ...?</title>
-<para>...</para></sect2>
+	<para>
+<itemizedlist>
+	    <listitem>
+	      <para>...verify that all translations are up to date?</para>
+	      <para>
+Run the JUnit test cases.
+See <xref linkend="run_junit_testcases"/>.
+This will verify that all tags are in synch between different
+translations.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>...add an new language?</para>
+	      <orderedlist>
+		<listitem>
+		  <para>
+Find the languages internationalization code for the language you 
+will add: en, es, en_GB,...
+The one you are currently using is shown in the log when ArgoUML starts.
+Search for lines looking like:
+<computeroutput>
+Language: sv
+Country: unknown
+</computeroutput>
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Look at the files
+<filename>org/argouml/uml/ui/UMLResourceBundle.java</filename>,
+<filename>org/argouml/uml/cognitive/UMLCognitiveResourceBundle.java</filename>,
+<filename>org/argouml/ui/ActionResourceBundle.java</filename>,
+<filename>org/argouml/ui/SettingsResourceBundle.java</filename>,
+<filename>org/argouml/ui/MenuResourceBundle.java</filename>,
+<filename>org/argouml/ui/DiagramResourceBundle.java</filename>,
+<filename>org/argouml/ui/TreeResourceBundle.java</filename>, and
+<filename>org/argouml/language/NotationResourceBundle.java</filename>
+under <filename class="directory">argouml/src_new</filename>.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Translate all the texts in those files.
+</para>
+		  <para>
+This is a lot of extremely qualified work including searching well-known
+litterature on UML and Software Engineering in order to get the correct
+terms for the domain.
+Discuss with other UML and Software Engineering professionals with the
+same native language to get it right.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Put the list of persons involved in the work as a
+<replaceable>language</replaceable>-responsible group on the
+ArgoUML web site.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Create the files with the translations. They will have the names:
+<filename>org/argouml/uml/ui/UMLResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/uml/cognitive/UMLCognitiveResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/ui/ActionResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/ui/SettingsResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/ui/MenuResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/ui/DiagramResourceBundle_<replaceable>language code</replaceable>.java</filename>,
+<filename>org/argouml/ui/TreeResourceBundle_<replaceable>language code</replaceable>.java</filename>, and
+<filename>org/argouml/language/NotationResourceBundle_<replaceable>language code</replaceable>.java</filename>.
+</para>
+		  <para>
+State your name clearly as author of all these files and add a couple of
+other "natives" that could help in the maintenance.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Add the language to the JUnit list of tested languages and run the JUnit tests.
+</para>
+		  <para>
+This is in the file
+<filename>argouml/modules/junit/src/org/argouml/util/CheckResourceBundle.java</filename>.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Translate the User Manual.
+</para>
+		  <para>
+The infrastructure for maintaining and updating several languages User
+Manual is not yet in place.
+The first language to complete this cycle will have some extra work to
+do with the creating of the infrastructure.
+</para>
+		</listitem>
+	      </orderedlist>
+	    </listitem>
+	    <listitem>
+	      <para>...add or modify code with localized things?</para>
+	      <orderedlist>
+		<listitem>
+		  <para>
+Write your code using the same way of handling strings as the surrounding code.
+</para>
+		  <para>
+This means that strings are denoted by "labels" or "tags" and then
+the resolution of the "tag" is in a 
+<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Add your "tag" and resolution in English in the non-localized 
+<filename><replaceable>Domain</replaceable>ResourceBundle.java</filename>-file.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+Contact all the language-teams so that they can update their files.
+</para>
+		</listitem>
+	      </orderedlist>
+	      <para>
+Notice that if you somewhere change the meaning of a specific
+localized thing it would be a good idea to use a new "tag" for the
+new meaning.
+This will make it easier for the translation team to
+spot the modification.
+</para>
+	      <para>
+There eledgedly are tools in the java world to spot this kind of changes.
+Until we have the tools and processes in place to handle the
+it is better to rely on this simpler mechanism to guarantee correctness.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
 </sect1>
 
 &cookbookmodules;
@@ -2172,7 +2320,7 @@ stored in the file
 <filename class="directory">modules/junit/src/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
 containing all the Unit Test Cases for that class.
 </para>
-      <sect2>
+      <sect2 id="run_junit_testcases">
 	<title>How to run the test cases</title>
 	<para>
 This is a simple description on how to run the JUnit Test Cases.
