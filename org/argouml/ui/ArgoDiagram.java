@@ -29,10 +29,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.ItemUID;
-import org.argouml.kernel.ChangeRegistry;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
@@ -99,26 +97,13 @@ public class ArgoDiagram extends Diagram {
     ////////////////////////////////////////////////////////////////
     // event management
 
-    /**
-     * @param change the changeregistry to be added
-     */
-    public void addChangeRegistryAsListener( ChangeRegistry change ) {
-	getGraphModel().addGraphEventListener( change );
-    }
-
-    /**
-     * @param change the changeregistry to be removed
-     */
-    public void removeChangeRegistryAsListener( ChangeRegistry change ) {
-	getGraphModel().removeGraphEventListener( change );
-    }
-
     static final long serialVersionUID = -401219134410459387L;
 
     /**
      * TODO: The reference to the method
      * org.argouml.uml.ui.VetoablePropertyChange#getVetoMessage(String)
      * was here but the class does exist anymore. Where is it?
+     * This method is never used!
      *
      * @param propertyName is the name of the property
      * @return a message or null if not applicable.
