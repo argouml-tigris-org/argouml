@@ -37,29 +37,30 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
-
-   
     
-    private JRadioButton _privateButton = 
-        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.private-lc"));
-    private JRadioButton _protectedButton =
-        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.protected-lc"));
-    private JRadioButton _publicButton =
-        new JRadioButton(Translator.localize("UMLMenu", "checkbox.visibility.public-lc"));
+    private JRadioButton privateButton = 
+        new JRadioButton(Translator.localize("UMLMenu", 
+                "checkbox.visibility.private-lc"));
+    private JRadioButton protectedButton =
+        new JRadioButton(Translator.localize("UMLMenu", 
+                "checkbox.visibility.protected-lc"));
+    private JRadioButton publicButton =
+        new JRadioButton(Translator.localize("UMLMenu", 
+                "checkbox.visibility.public-lc"));
         
     /**
      * Constructor for UMLVisibilityButtonGroup.
-     * @param container
+     * @param container the container for the buttongroup
      */
     public UMLVisibilityButtonGroup(UMLUserInterfaceContainer container) {
         super(container);
         setActions();
         
-        _publicButton.setSelected(true);
+        publicButton.setSelected(true);
         
-        _publicButton.setMnemonic(KeyEvent.VK_U);
-        _protectedButton.setMnemonic(KeyEvent.VK_O);
-        _privateButton.setMnemonic(KeyEvent.VK_I);
+        publicButton.setMnemonic(KeyEvent.VK_U);
+        protectedButton.setMnemonic(KeyEvent.VK_O);
+        privateButton.setMnemonic(KeyEvent.VK_I);
         
         
     }
@@ -69,12 +70,12 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      */
     public void buildModel() {
         if (ModelFacade.isPrivate(getTarget())) {
-            _privateButton.setSelected(true);
+            privateButton.setSelected(true);
         } else {
 	    if (ModelFacade.isProtected(getTarget())) {
-		_protectedButton.setSelected(true);
+		protectedButton.setSelected(true);
 	    } else {
-		_publicButton.setSelected(true);
+		publicButton.setSelected(true);
             }
         }
     }
@@ -84,7 +85,7 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      * @return JRadioButton
      */
     public JRadioButton getPrivateButton() {
-        return _privateButton;
+        return privateButton;
     }
 
     /**
@@ -92,7 +93,7 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      * @return JRadioButton
      */
     public JRadioButton getProtectedButton() {
-        return _protectedButton;
+        return protectedButton;
     }
 
     /**
@@ -100,7 +101,7 @@ public abstract class UMLVisibilityButtonGroup extends UMLButtonGroup {
      * @return JRadioButton
      */
     public JRadioButton getPublicButton() {
-        return _publicButton;
+        return publicButton;
     }
     
     protected abstract void setActions();

@@ -52,7 +52,7 @@ public class UMLDiscriminatorNameDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        return (String)ModelFacade.getDiscriminator(getTarget());
+        return (String) ModelFacade.getDiscriminator(getTarget());
     }
 
 }

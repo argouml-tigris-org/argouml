@@ -56,7 +56,8 @@ public class UMLGeneralizableElementGeneralizationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return org.argouml.model.ModelFacade.isAGeneralization(element) && ModelFacade.getGeneralizations(getTarget()).contains(element);
+        return org.argouml.model.ModelFacade.isAGeneralization(element) 
+            && ModelFacade.getGeneralizations(getTarget()).contains(element);
     }
 
 }
