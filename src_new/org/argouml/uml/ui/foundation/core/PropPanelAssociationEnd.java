@@ -75,7 +75,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     UMLRadioButton unordered = new UMLRadioButton(localize("unordered"),this,
       new UMLEnumerationBooleanProperty("ordering",mclass,
-        "getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null));
+        "getOrdering","setOrdering",MOrderingKind.class,MOrderingKind.UNORDERED,null),true);
 
     orderingGroup.add(unordered);
     orderingPanel.add(unordered);
@@ -102,7 +102,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     UMLRadioButton none = new UMLRadioButton(localize("none"),this,
       new UMLEnumerationBooleanProperty("aggregation",mclass,"getAggregation",
-        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null));
+        "setAggregation",MAggregationKind.class,MAggregationKind.NONE,null),true);
 
     aggregationGroup.add(none);
     aggregationPanel.add(none);
@@ -133,7 +133,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     UMLRadioButton changeable = new UMLRadioButton(localize("changeable"),this,
       new UMLEnumerationBooleanProperty("changeability",mclass,"getChangeability",
-        "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null));
+        "setChangeability",MChangeableKind.class,MChangeableKind.CHANGEABLE,null), true);
 
     changeabilityGroup.add(changeable);
     changeabilityPanel.add(changeable);
@@ -156,7 +156,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
 
     addCaption("Visibility:",2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
-
+    
     //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
     //does this amke sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
