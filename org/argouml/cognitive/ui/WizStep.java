@@ -60,29 +60,50 @@ import org.argouml.util.osdep.StartBrowser;
 public class WizStep extends JPanel
     implements TabToDoTarget, ActionListener, DocumentListener 
 {
-    protected static Logger cat = Logger.getLogger(WizStep.class);
+    private static final Logger LOG = Logger.getLogger(WizStep.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
-    public static final ImageIcon WIZ_ICON =
+    private static final ImageIcon WIZ_ICON =
 	ResourceLoaderWrapper
 	    .lookupIconResource("Wiz", "Wiz");
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    JPanel  _mainPanel = new JPanel();
-    JButton _backButton = new JButton(Translator.localize("button.back"));
-    JButton _nextButton = new JButton(Translator.localize("button.next"));
-    JButton _finishButton = new JButton(Translator.localize("button.finish"));
-    JButton _helpButton = new JButton(Translator.localize("button.help"));
-    JPanel  _buttonPanel = new JPanel();
+    private JPanel  mainPanel = new JPanel();
+    private JButton backButton = 
+        new JButton(Translator.localize("button.back"));
+    private JButton nextButton = 
+        new JButton(Translator.localize("button.next"));
+    private JButton finishButton = 
+        new JButton(Translator.localize("button.finish"));
+    private JButton helpButton = 
+        new JButton(Translator.localize("button.help"));
+    private JPanel  buttonPanel = new JPanel();
   
     /**
      * The current target
      */
-    private Object _target;
+    private Object target;
 
+    /**
+     * @return Returns the main Panel.
+     */
+    protected JPanel getMainPanel() {
+        return mainPanel;
+    }
+    /**
+     * @return Returns the WIZ_ICON.
+     */
+    protected static ImageIcon getWizardIcon() {
+        return WIZ_ICON;
+    }
+
+    /**
+     * @param b the button to set the mnemonic for
+     * @param key the mnemonic
+     */
     protected static final void setMnemonic(JButton b, String key) {
 	String m = Translator.localize(key);
 	if (m == null)
@@ -92,37 +113,39 @@ public class WizStep extends JPanel
 	}
     }   
 
-    ////////////////////////////////////////////////////////////////
-    // constructor
+    /**
+     * The constructor.
+     * 
+     */
     public WizStep() {
-	setMnemonic(_backButton, "mnemonic.button.back");
-	setMnemonic(_nextButton, "mnemonic.button.next");
-	setMnemonic(_finishButton, "mnemonic.button.finish");
-	setMnemonic(_helpButton, "mnemonic.button.help");
-	_buttonPanel.setLayout(new GridLayout(1, 5));
-	_buttonPanel.add(_backButton);
-	_buttonPanel.add(_nextButton);
-	_buttonPanel.add(new SpacerPanel());
-	_buttonPanel.add(_finishButton);
-	_buttonPanel.add(new SpacerPanel());
-	_buttonPanel.add(_helpButton);
+	setMnemonic(backButton, "mnemonic.button.back");
+	setMnemonic(nextButton, "mnemonic.button.next");
+	setMnemonic(finishButton, "mnemonic.button.finish");
+	setMnemonic(helpButton, "mnemonic.button.help");
+	buttonPanel.setLayout(new GridLayout(1, 5));
+	buttonPanel.add(backButton);
+	buttonPanel.add(nextButton);
+	buttonPanel.add(new SpacerPanel());
+	buttonPanel.add(finishButton);
+	buttonPanel.add(new SpacerPanel());
+	buttonPanel.add(helpButton);
 
-	_backButton.setMargin(new Insets(0, 0, 0, 0));
-	_nextButton.setMargin(new Insets(0, 0, 0, 0));
-	_finishButton.setMargin(new Insets(0, 0, 0, 0));
-	_helpButton.setMargin(new Insets(0, 0, 0, 0));
+	backButton.setMargin(new Insets(0, 0, 0, 0));
+	nextButton.setMargin(new Insets(0, 0, 0, 0));
+	finishButton.setMargin(new Insets(0, 0, 0, 0));
+	helpButton.setMargin(new Insets(0, 0, 0, 0));
 
 	JPanel southPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	southPanel.add(_buttonPanel);
+	southPanel.add(buttonPanel);
 
 	setLayout(new BorderLayout());
-	add(_mainPanel, BorderLayout.CENTER);
+	add(mainPanel, BorderLayout.CENTER);
 	add(southPanel, BorderLayout.SOUTH);
 
-	_backButton.addActionListener(this);
-	_nextButton.addActionListener(this);
-	_finishButton.addActionListener(this);
-	_helpButton.addActionListener(this);
+	backButton.addActionListener(this);
+	nextButton.addActionListener(this);
+	finishButton.addActionListener(this);
+	helpButton.addActionListener(this);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -132,26 +155,31 @@ public class WizStep extends JPanel
      * @deprecated since 0.15.3. The method in TabToDoTarget has been
      * 		   deprecated and replaced by 
      * 		   {@link org.argouml.ui.targetmanager.TargetManager}.
+     *
+     * @param item the target item
      */
     public void setTarget(Object item) {
-	_target = item;
+	target = item;
 	enableButtons();
     }
 
+    /**
+     * Enable/Disable the buttons.
+     */
     public void enableButtons() {
-	if (_target == null) {
-	    _backButton.setEnabled(false);
-	    _nextButton.setEnabled(false);
-	    _finishButton.setEnabled(false);
-	    _helpButton.setEnabled(false);
+	if (target == null) {
+	    backButton.setEnabled(false);
+	    nextButton.setEnabled(false);
+	    finishButton.setEnabled(false);
+	    helpButton.setEnabled(false);
 	}
-	else if (_target instanceof ToDoItem) {
-	    ToDoItem tdi = (ToDoItem) _target;
+	else if (target instanceof ToDoItem) {
+	    ToDoItem tdi = (ToDoItem) target;
 	    Wizard w = getWizard();
-	    _backButton.setEnabled(w != null ? w.canGoBack() : false);
-	    _nextButton.setEnabled(w != null ? w.canGoNext() : false);
-	    _finishButton.setEnabled(w != null ? w.canFinish() : false);
-	    _helpButton.setEnabled(true);
+	    backButton.setEnabled(w != null ? w.canGoBack() : false);
+	    nextButton.setEnabled(w != null ? w.canGoNext() : false);
+	    finishButton.setEnabled(w != null ? w.canFinish() : false);
+	    helpButton.setEnabled(true);
 	}
 	else {  
 	    return;
@@ -173,11 +201,17 @@ public class WizStep extends JPanel
 	return TargetManager.getInstance().getTarget(); 
     }
 
-    public void refresh() { setTarget(_target); }
+    /**
+     * Set the target anew.
+     */
+    public void refresh() { setTarget(target); }
 
+    /**
+     * @return the Wizard, or null
+     */
     public Wizard getWizard() {
-	if (_target instanceof ToDoItem) {
-	    return ((ToDoItem) _target).getWizard();
+	if (target instanceof ToDoItem) {
+	    return ((ToDoItem) target).getWizard();
 	}
 	return null;
     }
@@ -185,6 +219,9 @@ public class WizStep extends JPanel
     ////////////////////////////////////////////////////////////////
     // actions
 
+    /**
+     * The Back button has been pressed, so we do the "back" action.
+     */
     public void doBack() {
 	Wizard w = getWizard();
 	if (w != null) {
@@ -192,6 +229,9 @@ public class WizStep extends JPanel
 	    updateTabToDo();
 	}
     }
+    /**
+     * The Next button has been pressed, so we do the "next" action.
+     */
     public void doNext() {
 	Wizard w = getWizard();
 	if (w != null) {
@@ -199,6 +239,10 @@ public class WizStep extends JPanel
 	    updateTabToDo();
 	}
     }
+    
+    /**
+     * The Finish button has been pressed, so we do the "finish" action. 
+     */
     public void doFinsh() {
 	Wizard w = getWizard();
 	if (w != null) {
@@ -211,41 +255,56 @@ public class WizStep extends JPanel
      * Called when the Help button is pressed.
      */
     public void doHelp() {
-	if (!(_target instanceof ToDoItem))
+	if (!(target instanceof ToDoItem))
 	    return;
-	ToDoItem item = (ToDoItem) _target;
+	ToDoItem item = (ToDoItem) target;
 	String urlString = item.getMoreInfoURL();
 	StartBrowser.openUrl(urlString);
     }
 
+    /**
+     * Set the target and make visible.
+     */
     protected void updateTabToDo() {
 	TabToDo ttd =
 	    (TabToDo) ProjectBrowser.getInstance().getTab(TabToDo.class);
 	JPanel ws = getWizard().getCurrentPanel();
-	if (ws instanceof WizStep) ((WizStep) ws).setTarget(_target);
+	if (ws instanceof WizStep) ((WizStep) ws).setTarget(target);
 	ttd.showStep(ws);
     }
 
     ////////////////////////////////////////////////////////////////
     // ActionListener implementation
 
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
     public void actionPerformed(ActionEvent ae) {
 	Object src = ae.getSource();
-	if (src == _backButton) doBack();
-	else if (src == _nextButton) doNext();
-	else if (src == _finishButton) doFinsh();
-	else if (src == _helpButton) doHelp();
+	if (src == backButton) doBack();
+	else if (src == nextButton) doNext();
+	else if (src == finishButton) doFinsh();
+	else if (src == helpButton) doHelp();
     }
 
     ////////////////////////////////////////////////////////////////
     // DocumentListener implementation
 
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(DocumentEvent e) {
 	enableButtons();
     }
 
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
 
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(DocumentEvent e) {
 	// Apparently, this method is never called.
     }

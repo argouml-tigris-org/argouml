@@ -39,6 +39,10 @@ import org.argouml.i18n.Translator;
 
 
 
+/**
+ * This class represents the description for a wizard.
+ *
+ */
 public class WizDescription extends WizStep {
     /** logger */
     private static final Logger LOG = Logger.getLogger(WizDescription.class);
@@ -46,35 +50,42 @@ public class WizDescription extends WizStep {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    JTextArea _description = new JTextArea();
+    private JTextArea description = new JTextArea();
 
 
+    /**
+     * The constructor.
+     * 
+     */
     public WizDescription() {
 	super();
-	cat.info("making WizDescription");
+	LOG.info("making WizDescription");
 
-	_description.setLineWrap(true);
-	_description.setWrapStyleWord(true);
+	description.setLineWrap(true);
+	description.setWrapStyleWord(true);
 
-	_mainPanel.setLayout(new BorderLayout());
-	_mainPanel.add(new JScrollPane(_description), BorderLayout.CENTER);
+	getMainPanel().setLayout(new BorderLayout());
+	getMainPanel().add(new JScrollPane(description), BorderLayout.CENTER);
     }
 
+    /**
+     * @see org.argouml.cognitive.ui.WizStep#setTarget(java.lang.Object)
+     */
     public void setTarget(Object item) {
 	String message = "";
 	super.setTarget(item);
 	Object target = item;
 	if (target == null) {
-	    _description.setEditable(false);
-	    _description.setText(
+	    description.setEditable(false);
+	    description.setText(
                 Translator.localize("message.item.no-item-selected"));
 	}
 	else if (target instanceof ToDoItem) {
 	    ToDoItem tdi = (ToDoItem) target;
-	    _description.setEditable(false);
-	    _description.setEnabled(true);
-	    _description.setText(tdi.getDescription());
-	    _description.setCaretPosition(0);
+	    description.setEditable(false);
+	    description.setEnabled(true);
+	    description.setText(tdi.getDescription());
+	    description.setCaretPosition(0);
 	}
 	else if (target instanceof PriorityNode) {
 	    message = MessageFormat. 
@@ -82,8 +93,8 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setEditable(false);
-	    _description.setText(message);
+	    description.setEditable(false);
+	    description.setText(message);
 
 	    return;
 	}
@@ -93,8 +104,8 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setEditable(false);
-	    _description.setText(message);
+	    description.setEditable(false);
+	    description.setText(message);
 
 	    return;
 	}
@@ -104,8 +115,8 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setEditable(false);
-	    _description.setText(message);
+	    description.setEditable(false);
+	    description.setText(message);
 
 	    return;
 	}
@@ -115,7 +126,7 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setText(message);
+	    description.setText(message);
 
 	    return;
 	}
@@ -125,7 +136,7 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setText(message);
+	    description.setText(message);
 
 	    return;
 	}
@@ -135,12 +146,12 @@ public class WizDescription extends WizStep {
                        new Object [] {
 			   target.toString() 
 		       });
-	    _description.setText(message);
+	    description.setText(message);
 
 	    return;
 	}
 	else {
-	    _description.setText("");
+	    description.setText("");
 	    return;
 	}
     }

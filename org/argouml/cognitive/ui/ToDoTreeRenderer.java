@@ -45,27 +45,31 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
 
 
+/**
+ * Displays an entry in the ToDo tree.
+ *
+ */
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // class variables
     
     // general icons for poster
-    public final ImageIcon _PostIt0     = lookupIconResource("PostIt0");
-    public final ImageIcon _PostIt25    = lookupIconResource("PostIt25");
-    public final ImageIcon _PostIt50    = lookupIconResource("PostIt50");
-    public final ImageIcon _PostIt75    = lookupIconResource("PostIt75");
-    public final ImageIcon _PostIt99    = lookupIconResource("PostIt99");
-    public final ImageIcon _PostIt100   = lookupIconResource("PostIt100");
+    private final ImageIcon postIt0     = lookupIconResource("PostIt0");
+    private final ImageIcon postIt25    = lookupIconResource("PostIt25");
+    private final ImageIcon postIt50    = lookupIconResource("PostIt50");
+    private final ImageIcon postIt75    = lookupIconResource("PostIt75");
+    private final ImageIcon postIt99    = lookupIconResource("PostIt99");
+    private final ImageIcon postIt100   = lookupIconResource("PostIt100");
     
     // specialised icons for designer
-    public final ImageIcon _PostItD0    = lookupIconResource("PostItD0");
-    public final ImageIcon _PostItD25   = lookupIconResource("PostItD25");
-    public final ImageIcon _PostItD50   = lookupIconResource("PostItD50");
-    public final ImageIcon _PostItD75   = lookupIconResource("PostItD75");
-    public final ImageIcon _PostItD99   = lookupIconResource("PostItD99");
-    public final ImageIcon _PostItD100  = lookupIconResource("PostItD100");
+    private final ImageIcon postItD0    = lookupIconResource("PostItD0");
+    private final ImageIcon postItD25   = lookupIconResource("PostItD25");
+    private final ImageIcon postItD50   = lookupIconResource("PostItD50");
+    private final ImageIcon postItD75   = lookupIconResource("PostItD75");
+    private final ImageIcon postItD99   = lookupIconResource("PostItD99");
+    private final ImageIcon postItD100  = lookupIconResource("PostItD100");
     
-    protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
+    private UMLTreeCellRenderer treeCellRenderer = new UMLTreeCellRenderer();
     
     private static ImageIcon lookupIconResource(String name) {
         return ResourceLoaderWrapper.lookupIconResource(name);
@@ -74,6 +78,11 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
     
+    /**
+     * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
+     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, 
+     * boolean)
+     */
     public Component getTreeCellRendererComponent(JTree tree, Object value,
     boolean sel,
     boolean expanded,
@@ -90,19 +99,19 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                 ToDoItem item = (ToDoItem) value;
                 Poster post = item.getPoster();
                 if ( post instanceof Designer) {
-                    if (item.getProgress() == 0) lab.setIcon(_PostItD0);
-                    else if (item.getProgress() <= 25) lab.setIcon(_PostItD25);
-                    else if (item.getProgress() <= 50) lab.setIcon(_PostItD50);
-                    else if (item.getProgress() <= 75) lab.setIcon(_PostItD75);
-                    else if (item.getProgress() <= 100) lab.setIcon(_PostItD99);
-                    else lab.setIcon(_PostIt100);
+                    if (item.getProgress() == 0) lab.setIcon(postItD0);
+                    else if (item.getProgress() <= 25) lab.setIcon(postItD25);
+                    else if (item.getProgress() <= 50) lab.setIcon(postItD50);
+                    else if (item.getProgress() <= 75) lab.setIcon(postItD75);
+                    else if (item.getProgress() <= 100) lab.setIcon(postItD99);
+                    else lab.setIcon(postIt100);
                 } else {
-                    if (item.getProgress() == 0) lab.setIcon(_PostIt0);
-                    else if (item.getProgress() <= 25) lab.setIcon(_PostIt25);
-                    else if (item.getProgress() <= 50) lab.setIcon(_PostIt50);
-                    else if (item.getProgress() <= 75) lab.setIcon(_PostIt75);
-                    else if (item.getProgress() <= 100) lab.setIcon(_PostIt99);
-                    else lab.setIcon(_PostIt100);
+                    if (item.getProgress() == 0) lab.setIcon(postIt0);
+                    else if (item.getProgress() <= 25) lab.setIcon(postIt25);
+                    else if (item.getProgress() <= 50) lab.setIcon(postIt50);
+                    else if (item.getProgress() <= 75) lab.setIcon(postIt75);
+                    else if (item.getProgress() <= 100) lab.setIcon(postIt99);
+                    else lab.setIcon(postIt100);
                 }
                 
             }
@@ -122,7 +131,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
             }
             else if (org.argouml.model.ModelFacade.isADiagram(value)) {
-                return _navRenderer.getTreeCellRendererComponent(tree,
+                return treeCellRenderer.getTreeCellRendererComponent(tree,
 								 value,
 								 sel,
 								 expanded,
@@ -135,7 +144,7 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                 if (newValue instanceof Fig)
                     newValue = ((Fig) value).getOwner();
                 if (org.argouml.model.ModelFacade.isAModelElement(newValue)) {
-                    return _navRenderer.getTreeCellRendererComponent(tree,
+                    return treeCellRenderer.getTreeCellRendererComponent(tree,
 								     newValue,
 								     sel,
 								     expanded,

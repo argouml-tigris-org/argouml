@@ -79,6 +79,11 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
     ////////////////////////////////////////////////////////////////
     // TreeCellRenderer implementation
 
+    /**
+     * @see javax.swing.tree.TreeCellRenderer#getTreeCellRendererComponent(
+     * javax.swing.JTree, java.lang.Object, boolean, boolean, boolean, int, 
+     * boolean)
+     */
     public Component getTreeCellRendererComponent(
         JTree tree,
         Object value,
@@ -86,7 +91,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
         boolean expanded,
         boolean leaf,
         int row,
-        boolean _hasFocus) {
+        boolean hasFocus) {
             
 	if (value instanceof DefaultMutableTreeNode) {
 	    value = ((DefaultMutableTreeNode) value).getUserObject();
@@ -100,7 +105,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 expanded,
                 leaf,
                 row,
-                _hasFocus);
+                hasFocus);
 
         if (r instanceof JLabel) {
             JLabel lab = (JLabel) r;
