@@ -49,7 +49,6 @@ public class FigFinalState extends FigStateVertex {
     ////////////////////////////////////////////////////////////////
     // constants
 
-    private static final int MARGIN = 2;
     private static final int X = 10;
     private static final int Y = 10;
     private static final int WIDTH = 24;
@@ -59,7 +58,6 @@ public class FigFinalState extends FigStateVertex {
     // instance variables
 
     private FigCircle inCircle;
-    //private FigCircle outCircle;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -108,7 +106,6 @@ public class FigFinalState extends FigStateVertex {
     public Object clone() {
         FigFinalState figClone = (FigFinalState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        //figClone.setBigPort((FigRect) it.next());
         figClone.setBigPort((FigCircle) it.next());
         figClone.inCircle = (FigCircle) it.next();
         
