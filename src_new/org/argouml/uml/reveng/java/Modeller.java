@@ -887,7 +887,7 @@ public class Modeller
 	for(Iterator i = element.getTaggedValues().iterator(); i.hasNext(); ) {
 	    MTaggedValue tv = (MTaggedValue)i.next();
 	    if (tv.getTag().equals(MMUtil.GENERATED_TAG)) {
-		tv.remove();
+		UmlFactory.getFactory().remove(tv);
 	    }
 	}
     }

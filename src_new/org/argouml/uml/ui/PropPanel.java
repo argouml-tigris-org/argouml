@@ -37,6 +37,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import java.util.*;
@@ -576,7 +577,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
                     newTarget = ((MModelElement) base).getNamespace();
                 }
             }
-            base.remove();
+            UmlFactory.getFactory().remove(base);
             if(newTarget != null) {
                 navigateTo(newTarget);
             }
