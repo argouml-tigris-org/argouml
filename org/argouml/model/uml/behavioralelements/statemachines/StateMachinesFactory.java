@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.statemachines;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
@@ -448,6 +449,17 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             return trans;
         }
         return null;
+    }
+    
+    /**
+     * Builds a callevent whose namespace (and therefore the ownership) is the
+     * rootmodel.
+     * @return MCallEvent
+     */
+    public MCallEvent buildCallEvent() {
+        MCallEvent event = createCallEvent();
+        event.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        return event;
     }
     
     /**

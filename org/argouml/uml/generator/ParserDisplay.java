@@ -36,45 +36,68 @@
 
 package org.argouml.uml.generator;
 
-import java.beans.*;
-import java.util.*;
 import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.StringTokenizer;
+import java.util.Vector;
 
-import javax.swing.plaf.multi.MultiButtonUI;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.foundation.data_types.MActionExpression;
-import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.graph.*;
-
+import org.apache.log4j.Category;
+import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.MMUtil;
-import org.argouml.uml.ProfileJava;
-import org.argouml.uml.diagram.static_structure.*;
-import org.argouml.uml.diagram.deployment.*;
-import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.util.MyTokenizer;
-import org.argouml.model.uml.foundation.core.*;
-import org.argouml.model.uml.foundation.extensionmechanisms.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+import org.argouml.uml.ProfileJava;
+import org.argouml.uml.generator.GeneratorDisplay.MsgPtr;
+import org.argouml.util.MyTokenizer;
+
+import ru.novosoft.uml.MElementListener;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
+import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MArgument;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.behavior.state_machines.MCallEvent;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MActionExpression;
+import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MIterationExpression;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 
 /**
  * Interface specifying the operation to take when a PropertySpecialString
@@ -3261,11 +3284,9 @@ predfor:
   }
 
   public MEvent parseEvent(String s) {
-	MCallEvent ce = UmlFactory.getFactory().getStateMachines().createCallEvent();
-
+	MCallEvent ce = UmlFactory.getFactory().getStateMachines().buildCallEvent();
 	ce.setName(s);
-	ce.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
-        return ce;
+    return ce;
   }
 
   /** Parse a line of the form: "name: base-class" */
