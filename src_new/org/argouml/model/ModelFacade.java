@@ -145,6 +145,20 @@ public class ModelFacade {
 	return handle instanceof MPackage;
     }
 
+    /** Recognizer for attributes with instance scope.
+     *
+     * @param handle candidate
+     * @returns true if handle has instance scope.
+     */
+    public static boolean isInstanceScope(Object handle) {
+	if (handle instanceof MAttribute) {
+	    MAttribute a = (MAttribute)handle;
+	    return MScopeKind.INSTANCE.equals(a.getOwnerScope());
+	}
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /** Recognizer for leafs
      *
      * @param handle candidate GeneralizableElement
@@ -157,6 +171,21 @@ public class ModelFacade {
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
     }
+
+    /** Recognizer for Navigable elements
+     *
+     * @param handle candidate
+     * @returns true if handle is navigable
+     */
+    public static boolean isNavigable(Object handle) {
+	if (handle instanceof MAssociationEnd) {
+	    return ((MAssociationEnd) handle).isNavigable();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
 
     /** Recognizer for primary objects.
      * A primary object is an object that is created by the parser or 
@@ -226,6 +255,24 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // Getters for the UML model (in alphabetic order)
 
+    /** The list of Association Ends
+     *
+     * @param handle the object that we get the association ends from.
+     * @return Iterator with association ends.
+     */
+    public static Iterator getAssociationEnds(Object handle) {
+	if (handle instanceof MClass) {
+	    Collection endc = ((MClass)handle).getAssociationEnds();
+	    if (endc == null)
+		return emptyIterator();
+	    return endc.iterator();
+	}
+
+	//...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
     /** The list of Attributes.
      *
      * Only Classifiers have attributes so if this is called with something
@@ -273,6 +320,33 @@ public class ModelFacade {
 	    // TODO: We are converting back and forth between collections and
 	    // iterators. I (Linus) prefer iterators.
 	    return CoreHelper.getHelper().getOperationsInh(c).iterator();
+	}
+
+	// ...
+	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** The list of Associations Ends connected to this association end
+     *
+     * @param handle association end to start from
+     * @returns Iterator with all connected association ends.
+     */
+    public static Iterator getOtherAssociationEnds(Object handle) {
+	if (handle instanceof MAssociationEnd) {
+	    MAssociation a = ((MAssociationEnd)handle).getAssociation();
+
+	    if (a == null)
+		return emptyIterator();
+
+	    Collection allEnds = a.getConnections();
+	    if (allEnds == null)
+		return emptyIterator();
+
+	    // TODO: An Iterator filter would be nice here instead of the 
+	    // mucking around with the Collection.
+	    allEnds = new ArrayList(allEnds);
+	    allEnds.remove(handle);
+	    return allEnds.iterator();
 	}
 
 	// ...
@@ -333,5 +407,17 @@ public class ModelFacade {
 
 	// ...
 	throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+
+    ////////////////////////////////////////////////////////////////
+    // Convenience methods
+
+    /** The empty set.
+     *
+     * @returns an empty iterator.
+     */
+    private static Iterator emptyIterator() {
+	return Collections.EMPTY_SET.iterator();
     }
 }
