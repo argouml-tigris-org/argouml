@@ -223,7 +223,8 @@ public abstract class UMLDiagram
         namespace = ns;
         // add the diagram as a listener to the namspace so
         // that when the namespace is removed the diagram is deleted also.
-        Model.getPump().addModelEventListener(this, namespace, "remove");
+        /* Listening only to "remove" events does not work... */
+        Model.getPump().addModelEventListener(this, namespace);
     }
 
     /**
@@ -375,7 +376,7 @@ public abstract class UMLDiagram
     }
 
     /**
-     * This diagram listens to events from is namespace ModelElement;
+     * This diagram listens to events from its namespace ModelElement;
      * when the modelelement is removed, we also want to delete this
      * diagram.  <p>
      *
@@ -386,14 +387,15 @@ public abstract class UMLDiagram
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
-        if (evt.getPropertyName().equals("remove")) {
+        if ((evt.getSource() == namespace) && ProjectManager.getManager()
+                .getCurrentProject().isInTrash(namespace)) {
+            
+            Model.getPump().removeModelEventListener(this, namespace, "remove");
+            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
+        
             Object newTarget = ProjectManager.getManager().getCurrentProject()
                 .getDiagrams().get(0);
             TargetManager.getInstance().setTarget(newTarget);
-            
-            Model.getPump().removeModelEventListener(this, namespace, "remove");
-            
-            ProjectManager.getManager().getCurrentProject().moveToTrash(this);
         }
     }
     
