@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoStateToDownstream implements TreeModelPrereqs {
+public class GoStateToDownstream implements TreeModel {
 
   public String toString() { return "State->Following States"; }
   
@@ -82,17 +82,5 @@ public class GoStateToDownstream implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MStateVertex.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStateVertex.class);
-    return pros;
-  }
-
 
 } /* end class GoStateToDownstream */

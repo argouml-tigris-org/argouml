@@ -33,7 +33,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.argouml.ui.*;
 
-public class GoModelToAssociation implements TreeModelPrereqs {
+public class GoModelToAssociation implements TreeModel {
 
   public String toString() { return "Package->MAssociation"; }
   
@@ -129,16 +129,5 @@ public class GoModelToAssociation implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MModel.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MAssociation.class);
-    return pros;
-  }
 
 }

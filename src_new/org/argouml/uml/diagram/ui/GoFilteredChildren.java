@@ -35,18 +35,17 @@ import org.tigris.gef.util.*;
 
 import org.argouml.ui.*;
 
-public class GoFilteredChildren implements TreeModelPrereqs {
+public class GoFilteredChildren implements TreeModel {
 
   ////////////////////////////////////////////////////////////////
   // instance vars
   String _name = "unamed filtered rule";
   Predicate _pred = PredicateTrue.theInstance();
-  TreeModelPrereqs _tm;
-
+  TreeModel _tm;
 
   ////////////////////////////////////////////////////////////////
   // constructor
-  public GoFilteredChildren(String name, TreeModelPrereqs tm, Predicate pred) {
+  public GoFilteredChildren(String name, TreeModel tm, Predicate pred) {
     _name = Localizer.localize ("Tree", name);
     _tm = tm;
     _pred = pred;
@@ -59,7 +58,7 @@ public class GoFilteredChildren implements TreeModelPrereqs {
   // needs-more-work
   
   ////////////////////////////////////////////////////////////////
-  // TreeModelPrereqs implementation
+  // TreeModel implementation
   
   public String toString() { return _name; }
   
@@ -114,9 +113,6 @@ public class GoFilteredChildren implements TreeModelPrereqs {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
   
-  public Vector getPrereqs() { return _tm.getPrereqs(); }
-  public Vector getProvidedTypes() { return _tm.getProvidedTypes(); }
-
   public boolean isLeaf(Object node) {
     return !hasChildren(node);
   }

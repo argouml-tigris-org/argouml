@@ -35,7 +35,7 @@ import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import org.argouml.kernel.Project;
 import org.argouml.ui.*;
 
-public class GoCollaborationDiagram implements TreeModelPrereqs {
+public class GoCollaborationDiagram implements TreeModel {
 
   public String toString() { return "Collaboration->Diagram"; }
 
@@ -89,16 +89,5 @@ public class GoCollaborationDiagram implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MCollaboration.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(org.tigris.gef.base.Diagram.class);
-    return pros;
-  }
 
 }

@@ -36,7 +36,7 @@ import org.argouml.kernel.Project;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.activity.ui.*;
 
-public class GoMachineDiagram implements TreeModelPrereqs {
+public class GoMachineDiagram implements TreeModel {
 
   public String toString() { return "Machine->Diagram"; }
 
@@ -93,16 +93,5 @@ public class GoMachineDiagram implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MStateMachine.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(org.tigris.gef.base.Diagram.class);
-    return pros;
-  }
 
 }

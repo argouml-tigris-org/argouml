@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
 
 import org.argouml.ui.*;
 
-public class GoTransToTargetState implements TreeModelPrereqs {
+public class GoTransToTargetState implements TreeModel {
 
   public String toString() { return "Transition->Target MState"; }
   
@@ -72,17 +72,5 @@ public class GoTransToTargetState implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MTransition.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStateVertex.class);
-    return pros;
-  }
-
 
 }

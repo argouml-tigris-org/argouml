@@ -33,7 +33,7 @@ import org.tigris.gef.util.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 
-public class GoListToPosterToItem implements TreeModelPrereqs {
+public class GoListToPosterToItem implements TreeModel {
   
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
@@ -90,18 +90,5 @@ public class GoListToPosterToItem implements TreeModelPrereqs {
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
 
-
-  public Vector getPrereqs() {
-    Vector res = new Vector();
-    res.addElement(ToDoList.class);
-    return res;
-  }
-
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(Poster.class);
-    pros.addElement(ToDoItem.class);
-    return pros;
-  }
 
 } /* end class GoListToPosterToItem */

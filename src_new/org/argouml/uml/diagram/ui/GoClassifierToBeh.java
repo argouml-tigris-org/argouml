@@ -35,7 +35,7 @@ import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 import org.argouml.uml.MMUtil;
 
-public class GoClassifierToBeh implements TreeModelPrereqs {
+public class GoClassifierToBeh implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.class.operation");
@@ -83,16 +83,5 @@ public class GoClassifierToBeh implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MModelElement.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MBehavioralFeature.class);
-    return pros;
-  }
 
 }

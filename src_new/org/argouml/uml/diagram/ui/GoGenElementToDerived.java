@@ -34,7 +34,7 @@ import ru.novosoft.uml.foundation.core.*;
 import org.argouml.ui.*;
 import org.tigris.gef.util.Localizer;
 
-public class GoGenElementToDerived implements TreeModelPrereqs {
+public class GoGenElementToDerived implements TreeModel {
 
   public String toString() {
     return Localizer.localize ("Tree", "misc.class.subclass");
@@ -78,17 +78,6 @@ public class GoGenElementToDerived implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector prereqs = new Vector();
-    prereqs.addElement(MModelElement.class);
-    return prereqs;
-  }
-  
-  public Vector getProvidedTypes() {
-    return new Vector();
-  }
-
 
 } /* end class GoGenElementToDerived */
 

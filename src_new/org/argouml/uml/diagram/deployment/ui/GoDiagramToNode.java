@@ -36,7 +36,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.ui.*;
 
-public class GoDiagramToNode implements TreeModelPrereqs {
+public class GoDiagramToNode implements TreeModel {
 
   public String toString() { return "Diagram->Node"; }
 
@@ -77,16 +77,5 @@ public class GoDiagramToNode implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(org.tigris.gef.base.Diagram.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MModelElement.class);
-    return pros;
-  }
 
 }

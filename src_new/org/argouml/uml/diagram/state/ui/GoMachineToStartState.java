@@ -36,7 +36,7 @@ import org.argouml.ui.*;
 
 // needs-more-work: filter only start states
 
-public class GoMachineToStartState implements TreeModelPrereqs {
+public class GoMachineToStartState implements TreeModel {
 
   public String toString() { return "State Machine->Initial States"; }
 
@@ -94,17 +94,5 @@ public class GoMachineToStartState implements TreeModelPrereqs {
   public void valueForPathChanged(TreePath path, Object newValue) { }
   public void addTreeModelListener(TreeModelListener l) { }
   public void removeTreeModelListener(TreeModelListener l) { }
-
-  public Vector getPrereqs() {
-    Vector pros = new Vector();
-    pros.addElement(MStateMachine.class);
-    return pros;
-  }
-  public Vector getProvidedTypes() {
-    Vector pros = new Vector();
-    pros.addElement(MStateVertex.class);
-    return pros;
-  }
-
 
 }
