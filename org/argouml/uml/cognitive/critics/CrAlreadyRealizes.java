@@ -43,13 +43,6 @@ public class CrAlreadyRealizes extends CrUML {
 
   public CrAlreadyRealizes() {
     setHeadline("Remove Unneeded Realizes from <ocl>self</ocl>");
-    sd("The selected class already indirectly realizes MInterface " +
-       "{item.extra}.  There is no need to directly realize it again.\n\n"+
-       "Simplifying the design is always a good idea.  You might dismiss "+
-       "this \"to do\" item if you want to make it very explicit that the "+
-       "selected Class realizes this MInterface.\n\n"+
-       "To fix this, select the Realization (dashed line with white "+
-       "triangular arrowhead) and press the \"Delete\" key.");
     addSupportedDecision(CrUML.decINHERITANCE);
     setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
     addTrigger("genealization");

@@ -47,7 +47,6 @@ public class CrInterfaceWithoutComponent extends CrUML {
 
   public CrInterfaceWithoutComponent() {
     setHeadline("Interfaces normally are inside components");
-    sd(" In Deployment-diagrams interfaces are normally inside components");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

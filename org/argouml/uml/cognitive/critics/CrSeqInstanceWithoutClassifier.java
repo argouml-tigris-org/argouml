@@ -54,7 +54,6 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
 
   public CrSeqInstanceWithoutClassifier() {
     setHeadline("Set classifier");
-    sd(" Instances have a classifier");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

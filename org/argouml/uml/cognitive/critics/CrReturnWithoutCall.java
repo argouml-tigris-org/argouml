@@ -49,8 +49,6 @@ public class CrReturnWithoutCall extends CrUML {
 
   public CrReturnWithoutCall() {
     setHeadline("Missing call(send)-action");
-    sd("Every return-action requires a call- or send-action,\n"+
-         " but this Link has no corresponding call- or send-action.\n");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

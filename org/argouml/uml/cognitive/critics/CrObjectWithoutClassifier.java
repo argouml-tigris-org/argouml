@@ -47,7 +47,6 @@ public class CrObjectWithoutClassifier extends CrUML {
 
   public CrObjectWithoutClassifier() {
     setHeadline("Set Object-classifier");
-    sd(" In Deployment-diagrams objects normally have a base-class");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

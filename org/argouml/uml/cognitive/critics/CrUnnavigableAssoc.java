@@ -45,14 +45,6 @@ public class CrUnnavigableAssoc extends CrUML {
 
   public CrUnnavigableAssoc() {
     setHeadline("Make <ocl>self</ocl> Navigable");
-    sd("The MAssociation <ocl>self</ocl> is not navigable in any direction. "+
-       "All associations should be navigable at least one way.\n\n"+
-       "Setting the navigablility of associations allows your code to access "+
-       "data by following pointers. \n\n"+
-       "To fix this, select association \"<ocl>self</ocl>\" in the diagram or "+
-       "navigator panel and click the properties tab.  Then use the "+
-       "checkboxes at the bottom of the properties panel to turn on "+
-       "navigablility. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addTrigger("end_navigable");

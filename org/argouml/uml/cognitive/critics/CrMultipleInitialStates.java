@@ -44,13 +44,6 @@ public class CrMultipleInitialStates extends CrUML {
 
   public CrMultipleInitialStates() {
     setHeadline("Remove Extra Initial States");
-    sd("There are multiple, ambiguous initial states in this machine. "+
-       "Normally each state machine or composite state has one initial state. \n\n"+
-       "Defining unabiguous states is needed to complete the behavioral "+
-       "specification part of your design.\n\n"+
-       "To fix this, press the \"Next>\" button, or add manually select "+
-       "one of the extra initial states and remove it. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("parent");
     addTrigger("kind");

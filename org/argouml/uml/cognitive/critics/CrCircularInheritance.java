@@ -47,11 +47,6 @@ public class CrCircularInheritance extends CrUML {
 
   public CrCircularInheritance() {
     setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
-    sd("Inheritances relationships cannot have cycles. \n\n"+
-       "A legal class inheritance hierarchy is needed for code generation "+
-       "and the correctness of the design. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select one of the  "+
-       "generalization arrows in the cycle and remove it.");
     setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decINHERITANCE);
     setKnowledgeTypes(Critic.KT_SYNTAX);

@@ -55,9 +55,6 @@ public class CrLinkWithoutStimulus extends CrUML {
 
   public CrLinkWithoutStimulus() {
     setHeadline("No Stimuli on these links");
-    sd("In sequence-diagrams a sender-object sends stimuli\n"+
-          "to a receiving object over a link. The link is only the communication-\n"+
-          "connection, so a stimulus is needed.");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

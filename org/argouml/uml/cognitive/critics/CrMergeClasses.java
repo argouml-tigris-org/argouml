@@ -34,20 +34,6 @@ public class CrMergeClasses extends CrUML {
 
   public CrMergeClasses() {
     setHeadline("Consider Combining Classes");
-    String s = "";
-    s += "The highlighted class, <ocl>self</ocl>, only participates in one association and that ";
-    s += "association is one-to-one with another class.  Since instances of these ";
-    s += "two classes must always be created together and destroyed together, ";
-    s += "combining these classes might simplify your design without loss of any ";
-    s += "representation power.  However, you may find the combined class too large ";
-    s += "and complex, in which case separating them is usually better.\n\n";
-    s += "Organizing classes to manage complexity of the design is always important, ";
-    s += "especially when the design is already complex. \n\n";
-    s += "To fix this, click on the \"Next>\" button, or manually add the attribues and ";
-    s += "operations of the highlighted class to the other class, then remove the ";
-    s += "highlighted class from the project. ";
-
-    setDescription(s);
     addSupportedDecision(CrUML.decCLASS_SELECTION); //?
     //no good trigger, should be applied to association instead
   }

@@ -44,11 +44,6 @@ public class CrMissingOperName extends CrUML {
 
   public CrMissingOperName() {
     setHeadline("Choose a name");
-    sd("Every operation must have a name. \n\n"+
-       "Clear and unambiguous naming is key to code generation and \n"+
-       "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the \n"+
-       "attribute and use the Properties tab to give it a name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("name");

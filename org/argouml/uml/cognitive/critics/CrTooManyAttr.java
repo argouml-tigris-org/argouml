@@ -50,16 +50,6 @@ public class CrTooManyAttr extends CrUML {
   // constructor
   public CrTooManyAttr() {
     setHeadline("Reduce Attributes on <ocl>self</ocl>");
-    sd("There are too many Attributes on class <ocl>self</ocl>.  Whenever one class "+
-       "becomes too central to the design it may become a maintenance "+
-       "bottleneck that must be updated frequently. \n\n"+
-       "Defining the attributes of objects is an important "+
-       "part of your design. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove attributes manually "+
-       "by double-clicking on the attribute compartment of the  "+
-       "highlighted class in the diagram and removing the line of text "+
-       "for an attribute. ");
-
     addSupportedDecision(CrUML.decSTORAGE);
     setArg(THRESHOLD, new Integer(7));
     addTrigger("structuralFeature");

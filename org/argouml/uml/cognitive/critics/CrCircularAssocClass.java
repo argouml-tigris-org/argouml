@@ -44,8 +44,6 @@ public class CrCircularAssocClass extends CrUML {
 
   public CrCircularAssocClass() {
     setHeadline("Circular MAssociation");
-    sd("AssociationClasses cannot include roles that refer directly "+
-       "back to the MAssociationClass.");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_SEMANTICS);

@@ -45,14 +45,6 @@ public class CrInvalidJoin extends CrUML {
 
   public CrInvalidJoin() {
     setHeadline("Change Join Transitions");
-    sd("This join state has an invalid number of transitions. Normally "+
-       "join states have two or more incoming and one outgoing transitions. \n\n"+
-       "Defining correct state transitions is needed to complete the  "+
-       "behavioral specification part of your design.  \n\n"+
-       "To fix this, press the \"Next>\" button, or remove transitions  "+
-       "manually by clicking on transition in the diagram and pressing the "+
-       "Delete key. ");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     addTrigger("outgoing");
   }

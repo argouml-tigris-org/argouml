@@ -47,9 +47,6 @@ public class CrCompInstanceWithoutNode extends CrUML {
 
   public CrCompInstanceWithoutNode() {
     setHeadline("ComponentInstances normally are inside nodes");
-    sd("There are node-instances in the Diagram. So you have got a real\n"+
-         " deployment-diagram, and in deployment-diagrams Component-instances\n"+
-         " normally resides on node-instances.");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

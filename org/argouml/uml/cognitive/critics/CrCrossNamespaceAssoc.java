@@ -44,8 +44,6 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
   public CrCrossNamespaceAssoc() {
     setHeadline("Aggregate Role in N-way MAssociation");
-    sd("Each Class or MInterface involved in an MAssociation should be in "+
-       "the MNamespace of the MAssociation.\n");
 
     addSupportedDecision(CrUML.decMODULARITY);
     setKnowledgeTypes(Critic.KT_SYNTAX);

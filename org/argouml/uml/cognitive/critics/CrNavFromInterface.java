@@ -43,17 +43,6 @@ public class CrNavFromInterface extends CrUML {
 
   public CrNavFromInterface() {
     setHeadline("Remove Navigation from MInterface <ocl>self</ocl>");
-    sd("Associations involving an MInterface can be not be naviagable in "+
-       "the direction from the MInterface.  This is because interfaces do "+
-       "contain only operation declarations and cannot hold pointers to "+
-       "other objects.\n\n" +
-       "This part of the design should be changed before you can generate "+
-       "code from this design.  If you do generate code before fixing this "+
-       "problem, the code will not match the design.\n\n"+
-       "To fix this, select the MAssociation and use the \"Properties\" "+
-       "tab to uncheck Navigable for the end touching the MInterface.  "+
-       "The MAssociation should then appear with an stick arrowhead pointed "+
-       "away from the MInterface.");
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("end_navigable");

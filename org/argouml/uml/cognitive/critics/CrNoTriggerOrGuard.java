@@ -43,19 +43,6 @@ public class CrNoTriggerOrGuard extends CrUML {
 
   public CrNoTriggerOrGuard() {
     setHeadline("Add Trigger or Guard to Transistion");
-    sd("The highlighted Transition is incomplete because it has no "+
-       "trigger or guard condition.  Triggers are events that cause a "+
-       "transition to be taken.  Guard conditions must be true for the "+
-       "transition to be taken.  If only a guard is used, the transition "+
-       "is taken when the condition becomes true.\n\n" +
-       "This problem must be resolved to complete the state machine.\n\n"+
-       "To fix this, select the Transition and use the \"Properties\" "+
-       "tab, or select the Transition and type some text of the form:\n"+
-       "TRIGGER [GUARD] / ACTION\n"+
-       "Where TRIGGER is an event name, GUARD is a boolean expression, "+
-       "and ACTION is an action to be performed when the MTransition is "+
-       "taken.  All three parts are optional.");
-
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);
     addTrigger("trigger");

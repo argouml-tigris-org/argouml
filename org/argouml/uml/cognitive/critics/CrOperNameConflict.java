@@ -42,14 +42,6 @@ public class CrOperNameConflict extends CrUML {
 
   public CrOperNameConflict() {
     setHeadline("Change Names or Signatures in <ocl>self</ocl>");
-    sd("Two operations have the exact same signature.  "+
-       "Operations must have distinct signatures.  A signature is the combination "+
-       "of the operation's name, and parameter types. \n\n"+
-       "Avoiding conflicting siginatures is key to code generation and producing an "+
-       "understandable and maintainable design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the one of the "+
-       "conflicting operations of this class and change its name or parameters.");
-
     addSupportedDecision(CrUML.decMETHODS);
     addSupportedDecision(CrUML.decNAMING);
     addTrigger("behavioralFeature");

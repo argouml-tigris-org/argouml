@@ -47,7 +47,6 @@ public class CrClassWithoutComponent extends CrUML {
 
   public CrClassWithoutComponent() {
     setHeadline("Classes normally are inside components");
-    sd(" In Deployment-diagrams classes are normally inside components");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

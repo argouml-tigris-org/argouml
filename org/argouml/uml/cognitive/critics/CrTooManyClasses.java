@@ -51,15 +51,6 @@ public class CrTooManyClasses extends CrUML {
   public CrTooManyClasses() {
     // needs-more-work: <ocl>self.name</ocl> is not expanded for diagram objects
     setHeadline("Reduce Classes in diagram <ocl>self</ocl>");
-    sd("There are too many classes in <ocl>self</ocl>.  If one class diagram "+
-       "has too many classes it may become very difficult for humans "+
-       "to understand. \n\n"+
-       "Defining an understandable set of class diagrams is an important "+
-       "part of your design. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove classes manually "+
-       "by clicking on a class in the navigator pane or diagram and "+
-       "presing the \"Del\" key.  Or you can make a new diagram...");
-
     addSupportedDecision(CrUML.decCLASS_SELECTION);
     setArg(THRESHOLD, new Integer(20));
   }

@@ -187,13 +187,6 @@ public class CrReservedName extends CrUML {
 
   public CrReservedName() {
     setHeadline("Change <ocl>self</ocl> to a Non-Reserved Word");
-    sd("\"<ocl>self</ocl>\" is a reserver word or very close to one.  The "+
-       "names of model elements must not conflict with "+
-       "reserved words of programming languages or UML.\n\n"+
-       "Using legal names is needed to generate compilable code. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the "+
-       "highlighted element and use the Properties tab to give it "+
-       "a different name.");
     setPriority(ToDoItem.HIGH_PRIORITY);
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);

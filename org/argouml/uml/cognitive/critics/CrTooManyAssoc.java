@@ -50,14 +50,6 @@ public class CrTooManyAssoc extends CrUML {
   // constructor
   public CrTooManyAssoc() {
     setHeadline("Reduce Associations on <ocl>self</ocl>");
-    sd("There are too many Associations on class <ocl>self</ocl>.  Whenever one class "+
-       "becomes too central to the design it may become a maintenance "+
-       "bottleneck that must be updated frequently. \n\n"+
-       "Defining the associations between objects is an important "+
-       "part of your design. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove associations manually "+
-       "by clicking on an association in the navigator pane or "+
-       "diagram and presing the \"Del\" key. ");
 
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     setArg(THRESHOLD, new Integer(7));

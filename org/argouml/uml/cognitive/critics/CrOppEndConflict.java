@@ -49,15 +49,6 @@ public class CrOppEndConflict extends CrUML {
 
   public CrOppEndConflict() {
     setHeadline("Rename MAssociation Roles");
-    sd("Two roles of <ocl>self</ocl> have the same name. "+
-       "Roles must have distinct names.  This may because of an inherited "+
-       "attribute. \n\n"+
-       "Clear and unambiguous names are key to code generation and producing "+
-       "an understandable and maintainable design.\n\n"+
-       "To fix this, use the \"Next>\" button, or manually select the one of the "+
-       "conflicting roles at the far end of an association from this class "+
-       "and change its name.");
-
     addSupportedDecision(CrUML.decINHERITANCE);
     addSupportedDecision(CrUML.decRELATIONSHIPS);
     addSupportedDecision(CrUML.decNAMING);

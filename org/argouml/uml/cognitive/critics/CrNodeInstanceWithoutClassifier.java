@@ -47,7 +47,6 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 
   public CrNodeInstanceWithoutClassifier() {
     setHeadline("Set NodeInstance-Classifier");
-    sd(" In Deployment-Diagrams node-instances normally have a base-node");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

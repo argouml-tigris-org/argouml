@@ -45,14 +45,6 @@ public class CrUnconventionalPackName extends CrUML {
 
   public CrUnconventionalPackName() {
     setHeadline("Revise Package Name <ocl>self</ocl>");
-    sd("Normally package names are written in all lower case with "+
-       "periods used to indicate \"nested\" packages.  "+
-       "The name '<ocl>self</ocl>' "+
-       "is unconventional because it is not all lower case with periods.\n\n"+
-       "Following good naming conventions help to improve "+
-       "the understandability and maintainability of the design. \n\n"+
-       "To fix this, use the \"Next>\" button, or manually select <ocl>self</ocl> "+
-       "and use the Properties tab to give it a different name.");
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
     addTrigger("name");

@@ -44,16 +44,6 @@ public class CrUtilityViolated extends CrUML {
 
   public CrUtilityViolated() {
     setHeadline("Remove MInstance Variables from Utility Class");
-    sd("The <<utility>> class <ocl>self</ocl> has instance variables. "+
-       "Utility classes shold provide only static attributes and methods.\n\n"+
-       "Applying and following the constraints imposed by stereotypes "+
-       "allows you to add additional meaning to your design that helps "+
-       "to clarify and make explicit your intent. \n\n"+
-       "To fix this, press the \"Next>\" button, or remove instance "+
-       "variables by dobule clicking on them in the navigator pane and "+
-       "using the Remove From Project command, or remove the <<utility>> "+
-       "stereotype. ");
-
     addSupportedDecision(CrUML.decSTORAGE);
     addSupportedDecision(CrUML.decSTEREOTYPES);
     addTrigger("stereotype");

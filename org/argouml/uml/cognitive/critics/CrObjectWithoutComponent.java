@@ -47,7 +47,6 @@ public class CrObjectWithoutComponent extends CrUML {
 
   public CrObjectWithoutComponent() {
     setHeadline("Objects normally are inside components");
-    sd(" In Deployment-diagrams objects are normally inside components or component-instances");
     addSupportedDecision(CrUML.decPATTERNS);
   }
 

@@ -44,10 +44,6 @@ public class CrNameConflictAC extends CrUML {
 
   public CrNameConflictAC() {
     setHeadline("Role name conflicts with member");
-    sd("MAssociation role names of an MAssociationClass must not conflict \n"+
-       "with the names of structral features (e.g., instance variables) \n"+
-       "of the class.\n");
-
     addSupportedDecision(CrUML.decNAMING);
     setKnowledgeTypes(Critic.KT_SYNTAX);
   }
