@@ -240,8 +240,10 @@ public class UMLTextField
         if ((oldText == null)
             || (newText == null)
             || (!(oldText.equals(newText)))) {
-
-            setText(newText);
+            try {
+            	setText(newText);
+            }
+            catch (IllegalStateException il) {}
 
         }
 
