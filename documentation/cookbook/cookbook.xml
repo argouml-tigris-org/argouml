@@ -187,7 +187,7 @@ get it all again through CVS. If nothing helps, ask the
 
  </sect1>
  <sect1 id="Build">
-     <title>Build Process</title>
+     <title id="Build_term">Build Process</title>
      <para>
      The ArgoUML build process is driven by ant, and it is highly recommend that you stick to that. There are people known to build from JBuilder or Netbeans, but always make sure that your work compile with the plain vanilla build process.
      </para>
@@ -889,6 +889,245 @@ F E D
 
 &cookbookmodules;
 &cookbooklogging;
+
+    <sect1>
+      <title>The JUnit module</title>
+      <para>
+The JUnit module is an ArgoUML module that is used to contain all 
+Unit Test Cases.
+The reason for it being a module is that the classes contained need
+not be distributed with the ArgoUML distribution. 
+They have their use in the hands of the developers of ArgoUML.
+</para>
+      <para>
+The module is available from cvs under
+<filename class="directory">modules/junit</filename>
+and the used version of the JUnit framework is also available there
+(under <filename class="directory">modules/junit/lib</filename>).
+</para>
+      <para>
+The Java package structure under 
+<filename class="directory">modules/junit/src</filename>
+in the module is a complete copy of the ArgoUML Java package
+structure.
+Ideally every class
+<classname>org.argouml.<replaceable>x.y</replaceable>.<replaceable>z</replaceable></classname>
+stored in the file
+<filename class="directory">src_new/org/argouml/<replaceable>x/y</replaceable>/<replaceable>z</replaceable>.java</filename>
+should have a JUnit test case called
+<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>
+stored in the file
+<filename class="directory">modules/junit/src/org/argouml/<replaceable>x/y</replaceable>/Test<replaceable>z</replaceable>.java</filename>
+containing all the Unit Test Cases for that class.
+</para>
+      <sect2>
+	<title>How to run the test cases</title>
+	<para>
+This is a simple description on how to run the JUnit Test Cases.
+</para>
+	<orderedlist>
+	  <listitem>
+	    <para>
+Check out all you need to build ArgoUML and the modules/junit
+directory.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Build ArgoUML in src_new as described in the
+<xref endterm="Build_term" linkend="Build"></xref>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Change directory to
+<filename class="directory">../modules/junit</filename>
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Run ant with the argument run.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+ArgoUML starts up just with the splash screen and then the normal
+window.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Observe that the Tools menu now is enabled (i.e. not greyed out).
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Under the Tools menu, select the item Test Panel....
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+The JUnit panel called Run Test Suite opens on top of ArgoUML.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Enter the word <classname>TestAll</classname> in the field 
+"Enter the name of the Test class:" to run all tests.
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Press the "Run"-button and watch the "Progess"-bar turn all green
+(hopefully).
+</para>
+	  </listitem>
+	  <listitem>
+	    <para>
+Verify that all the tests are Run and that there are 
+no "Errors" and no "Failures".
+</para>
+	    <para>
+If there are "Errors" or "Failures" they you can hopefully easily
+pinpoint the problem.
+</para>
+	  </listitem>
+	</orderedlist>
+	<para>
+If you only want to run one of your newly written test cases and not
+all the test cases, give the class name of your test case instead of
+"TestAll" like
+<classname>org.argouml.<replaceable>x.y</replaceable>.Test<replaceable>z</replaceable></classname>.
+</para>
+      </sect2>
+      <sect2>
+	<title>How to write a test case</title>
+	<para>
+Now this will make all you java-enthusiasts go nuts!
+We have both classnames and method names that need to have a special
+syntax.
+</para>
+	<para>
+The name of the test case starts with "Test" (i.e. Capital T, then
+small e, s and t). This is to help the TestAll class determine what is
+a Test Case and what is not without loading them. 
+If you write a test case that does not comply to this rule you still
+can run the test case but it wont be run by TestAll.
+This could prove useful sometimes but I (Linus) have yet to figure out
+when.
+</para>
+	<para>
+The test case imports the JUnit framework: 
+<blockquote>
+	    <para>
+import junit.framework.*;
+</para>
+	  </blockquote>
+and it inherits <classname>TestCase</classname>.
+</para>
+	<para>
+Methods that are tests must have names that start with "test"
+(i.e. all small t, e, s, t). This is a requirement of the JUnit
+framework.
+</para>
+	<para>
+A lot of times it is useful just to run the compiler to verify that
+the signatures are correct on the interfaces. Therefor Linus has
+thought it is a good idea to add methods called
+<methodname>compileTestStatics</methodname>,
+<methodname>compileTestConstructors</methodname>, and
+<methodname>compileTestMethods</methodname>
+that was thought to include correct calls to all static methods,
+all public constructors, and all other public methods that are not
+otherwise tested.
+These methods are never called.
+They serve as a guarantee that the public interface of a class will
+ever loose any of the functionality provided by its signature in an
+uncontrolled way in just the same way as the test-methods serve as a
+guarantee that no features will ever be lost.
+</para>
+	<example>
+	  <title>A complete example</title>
+	  <para>
+<programlisting>
+package org.argouml.uml.ui;
+import junit.framework.*;
+
+public class TestUMLAction extends TestCase {
+    public TestUMLAction(String name) {
+	super(name);
+    }
+
+    // Testing all three constructors.
+    public void testCreate1() {
+	UMLAction to = new UMLAction(new String("hejsan"));
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate2() {
+	UMLAction to = new UMLAction(new String("hejsan"), true);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate3() {
+	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+	
+
+    /** Function never actually called. Provided in order to make
+     *  sure that the static interface has not changed.
+     */
+    private void compileTestStatics() {
+	boolean t1 = UMLAction.HAS_ICON;
+	boolean t2 = UMLAction.NO_ICON;
+	UMLAction.getShortcut(new String());
+	UMLAction.getMnemonic(new String());
+    }
+
+    private void compileTestConstructors() {
+	new UMLAction(new String());
+	new UMLAction(new String(), true);
+	new UMLAction(new String(), true, true);
+    }
+
+    private void compileTestMethods() {
+	UMLAction to = new UMLAction(new String());
+	to.markNeedsSave();
+	to.updateEnabled(new Object());
+	to.updateEnabled();
+	to.shouldBeEnabled();
+    }
+}
+</programlisting>
+</para>
+	</example>
+      </sect2>
+      <sect2>
+	<title>The TestAll class</title>
+	<para>
+The TestAll class goes through all directories under 
+<filename class="directory">modules/junit/build/classes</filename>
+and finds all class-files beginning with "Test".
+They are all added to the test suite.
+</para>
+	<para>
+This means that the risk of forgetting to add a test case to the suite
+is reduced and there is no need to maintain such a suite.
+</para>
+	<para>
+On the other hand this only works in the build environment.
+If the jar-file is used somewhere else or the ArgoUML is started in
+some other place with respect to
+<filename class="directory">modules/junit/build/classes</filename>
+then this will fail and TestAll will probably not detect any test
+cases at all.
+</para>
+	<para>
+I hope and think that this will never be a problem since most of the
+times the test cases are run by a person with all the source available
+in just this way.
+</para>
+      </sect2>
+    </sect1>
 
 </chapter>
 
