@@ -109,7 +109,8 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (isValidNamespace(ns)) {
             ArgoDiagram diagram = createDiagram(ns);
             p.addMember(diagram);
-            ProjectBrowser.getInstance().getNavigatorPane().addToHistory(diagram);
+            ProjectBrowser.getInstance().getNavigatorPane()
+                .addToHistory(diagram);
             ProjectBrowser.getInstance().setTarget(diagram);
             ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             super.actionPerformed(e);
@@ -120,7 +121,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
     /**
      * Returns true as the given namespace a valid namespace is to add the 
      * diagram to.
-     * @param ns
+     * @param ns the namespace to check
      * @return boolean
      */
     public abstract boolean isValidNamespace(Object ns);

@@ -137,7 +137,8 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
         // invoke the superclass action method.
 
 	Object/*MExtensionPoint*/ ep =
-            UmlFactory.getFactory().getUseCases().buildExtensionPoint(/*(MUseCase)*/target);
+            UmlFactory.getFactory().getUseCases()
+            .buildExtensionPoint(/*(MUseCase)*/target);
 
         TargetManager.getInstance().setTarget(ep);
 	super.actionPerformed(ae);
@@ -155,7 +156,8 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	Object         target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled() && (org.argouml.model.ModelFacade.isAUseCase(target));
+	return super.shouldBeEnabled() && (org.argouml.model.ModelFacade
+            .isAUseCase(target));
     }
 
 } /* end class ActionAddExtensionPoint */

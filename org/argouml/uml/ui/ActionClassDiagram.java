@@ -33,7 +33,8 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  *  @stereotype singleton
  */
 public class ActionClassDiagram extends ActionAddDiagram {
-    private static final Logger LOG = Logger.getLogger(ActionClassDiagram.class);
+    private static final Logger LOG = 
+        Logger.getLogger(ActionClassDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables
