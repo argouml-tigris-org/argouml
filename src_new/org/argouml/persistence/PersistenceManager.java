@@ -24,6 +24,9 @@
 
 package org.argouml.persistence;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -31,16 +34,17 @@ import java.util.List;
 
 import javax.swing.JFileChooser;
 
+import org.argouml.kernel.Project;
 import org.tigris.gef.util.UnexpectedException;
 
 
 /**
- * This class shall be the only one that knows in which file formats 
- * ArgoUML is able to save and load. And all that knowledge is 
+ * This class shall be the only one that knows in which file formats
+ * ArgoUML is able to save and load. And all that knowledge is
  * concentrated in the constructor... <p>
- * 
+ *
  * The PersisterManager manages the list of persisters.
- * 
+ *
  * @author MVW
  *
  */
@@ -48,41 +52,43 @@ public class PersistenceManager {
 
     private AbstractFilePersister defaultPersister;
     private List otherPersisters = new ArrayList();
-    
+    private UmlFilePersister quickViewDump;
+
     /**
      * The constructor.
      */
     public PersistenceManager() {
         // These are the file formats I know about:
         defaultPersister = new ZargoFilePersister();
-        otherPersisters.add(new UmlFilePersister());
+        quickViewDump = new UmlFilePersister();
+        otherPersisters.add(quickViewDump);
         otherPersisters.add(new XmiFilePersister());
     }
 
     /**
      * This function allows e.g. modules to easily add new persisters.<p>
-     * 
-     * If someone wants to use this function, then we first should 
+     *
+     * If someone wants to use this function, then we first should
      * make the PersisterManager into a singleton!
-     * 
+     *
      * @param fp the persister
      */
     public void register(AbstractFilePersister fp) {
         otherPersisters.add(fp);
     }
-    
+
     /**
      * @param name the filename
      * @return the persister
      */
     public AbstractFilePersister getPersisterFromFileName(String name) {
-        if (name.toLowerCase().endsWith("." + defaultPersister.getExtension())) 
+        if (name.toLowerCase().endsWith("." + defaultPersister.getExtension()))
             return defaultPersister;
         Iterator iter = otherPersisters.iterator();
         while (iter.hasNext()) {
-            AbstractFilePersister persister = 
+            AbstractFilePersister persister =
                 (AbstractFilePersister) iter.next();
-            if (name.toLowerCase().endsWith("." + persister.getExtension())) { 
+            if (name.toLowerCase().endsWith("." + persister.getExtension())) {
                 return persister;
             }
         }
@@ -90,7 +96,7 @@ public class PersistenceManager {
     }
 
     /**
-     * @param chooser the filechooser of which the filters will be set 
+     * @param chooser the filechooser of which the filters will be set
      */
     public void setFileChooserFilters(JFileChooser chooser) {
         chooser.addChoosableFileFilter(defaultPersister);
@@ -100,19 +106,19 @@ public class PersistenceManager {
         }
         chooser.setFileFilter(defaultPersister);
     }
-    
+
     /**
-     * @return the extension of the default persister 
+     * @return the extension of the default persister
      *         (just the text, not the ".")
      */
     public String getDefaultExtension() {
         return defaultPersister.getExtension();
     }
-    
+
     /**
-     * @param in the input file or path name which may or may not 
+     * @param in the input file or path name which may or may not
      *           have a recognised extension
-     * @return the amended file or pathname, guaranteed to have 
+     * @return the amended file or pathname, guaranteed to have
      *         a recognised extension
      */
     public String fixExtension(String in) {
@@ -121,10 +127,10 @@ public class PersistenceManager {
         }
         return in;
     }
-    
+
     /**
      * @param in the input url which may or may not have a recognised extension
-     * @return the url with default extension added, 
+     * @return the url with default extension added,
      *         if it did not have a valid extension yet
      */
     public URL fixUrlExtension(URL in) {
@@ -138,11 +144,11 @@ public class PersistenceManager {
         }
         return newUrl;
     }
-    
+
     /**
      * Find the base name of the given filename.<p>
-     * 
-     * This is the name minus any valid file extension. 
+     *
+     * This is the name minus any valid file extension.
      * Invalid extensions are left alone.
      *
      * @param n the given file name
@@ -150,9 +156,28 @@ public class PersistenceManager {
      */
     public String getBaseName(String n) {
         AbstractFilePersister p = getPersisterFromFileName(n);
-        if (p == null) return n;
+        if (p == null) {
+            return n;
+        }
         int extLength = p.getExtension().length() + 1;
         return n.substring(0, n.length() - extLength);
     }
 
+    /**
+     * Generates a String dump of the current model for quick viewing.
+     *
+     * @param project The project to generate.
+     * @return The whole model in a String.
+     */
+    public String getQuickViewDump(Project project) {
+        OutputStream stream = new ByteArrayOutputStream();
+        try {
+            quickViewDump.generateProject(project, stream);
+        } catch (SaveException e) {
+            return "Could not save project: " + e;
+        } catch (FileNotFoundException e) {
+            return "Could not save project: " + e;
+        }
+        return stream.toString();
+    }
 }
