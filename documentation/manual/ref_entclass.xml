@@ -483,8 +483,8 @@ Modifications
 
           <note><para>The default name supplied to a new package by
             &argouml; is the empty string <quote></quote>. The package will
-            appear with the name <literal>anon</literal> in the navigation
-            pane.</para></note></listitem>
+            appear with the name <literal>anon</literal> in the exporer.
+          </para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -653,7 +653,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -1173,7 +1173,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -1267,7 +1267,7 @@ Modifications
             <note><para>This only removes the link to the
               association. To remove the association from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+              explorer) and then delete it.</para></note></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more associations, and the association selected
@@ -1309,7 +1309,7 @@ Modifications
             <note><para>This only removes the link to the
               abstraction. To remove the abstraction from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+              explorer) and then delete it.</para></note></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more abstractions, and the abstraction selected
@@ -1383,7 +1383,7 @@ Modifications
           <caution><para>You may potentially have a large number of entries
             here, and the pop up menu makes access very difficult. The work
             around is to go to the parent classes on the diagram or the
-            navigation pane.</para></caution></listitem>
+            explorer.</para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for Operations -->
@@ -3230,7 +3230,7 @@ Modifications
             <note><para>This only removes the link to the
               generalization. To remove the generalization from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+              explorer) and then delete it.</para></note></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more generalizations, and the generalization
@@ -3287,7 +3287,7 @@ Modifications
             <note><para>This only removes the link to the
               abstraction. To remove the abstraction from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+              explorer) and then delete it.</para></note></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more abstractions, and the abstraction selected
@@ -4734,7 +4734,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -4827,7 +4827,7 @@ Modifications
             <note><para>This only removes the link to the
               association. To remove the association from the model
               you must navigate to it (or select it on the diagram or
-              navigation pane) and then delete it.</para></note></listitem>
+              explorer) and then delete it.</para></note></listitem>
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more associations, and the association selected

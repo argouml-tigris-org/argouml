@@ -902,22 +902,21 @@ Modifications
       <para>At the top of screen is a <emphasis>menu bar</emphasis>. The bulk
         of the window comprises four sub-windows or
         <emphasis>Panes</emphasis>. Clockwise from top left these are the
-        <emphasis>Navigator Pane</emphasis>, <emphasis>Editing
+        <emphasis>Explorer</emphasis>, <emphasis>Editing
         Pane</emphasis>, <emphasis>Details Pane</emphasis> and
         <emphasis>To-Do Pane</emphasis>. At the top of the details Pane is a
         <emphasis>tool bar</emphasis>. Finally at the bottom of the window is
         a <emphasis>status bar</emphasis>.</para>
 
-      <!-- Subsection describing the Navigator Pane -->
+      <!-- Subsection describing the Explorer -->
 
       <sect3>
-        <title>The Navigator Pane</title>
+        <title>The Explorer</title>
 
-        <para><xref linkend="fig.tut.navoverview"/> shows the Navigator
-          Pane.</para>
+        <para><xref linkend="fig.tut.navoverview"/> shows the Explorer.</para>
 
         <figure id="fig.tut.navoverview" float="1">
-          <title>Overview of the Navigator Pane</title>
+          <title>Overview of the Explorer</title>
 
           <screenshot><mediaobject>
             <imageobject>
@@ -927,7 +926,7 @@ Modifications
           </mediaobject></screenshot>
         </figure>
 
-        <para>This is the navigator pane, where you can navigate through your
+        <para>This is the explorer, where you can navigate through your
           model. This pane list all the classes, interfaces and data types of
           your model as a tree view.</para>
       </sect3>
@@ -1085,7 +1084,7 @@ Modifications
         <orderedlist>
           <listitem><para><emphasis>&Button1; click</emphasis>. This action
             is generally used to select an item for subsequent operations. If
-            the item is an artifact in the navigation pane or the editing pane it
+            the item is an artifact in the explorer or the editing pane it
             will be highlighted.</para>
 
           <para>In the case of the tool bar of the editing pane, that artifact is
@@ -1102,7 +1101,7 @@ Modifications
             tool is again selected or another tool chosen.</para></listitem>
 
           <listitem><para><emphasis>&Button2; click</emphasis>. When used
-            over text items in the the navigation or details panes, or
+            over text items in the the explorer or details panes, or
             graphical artifacts in the editing pane, this will display a context
             dependent drop-down menu.</para>
 
@@ -1146,7 +1145,7 @@ Modifications
           artifacts.</para>
 
         <para>Artifacts that are already in the model, but not on a diagram, may
-          be added to a diagram by selecting the artifact in the navigation pane,
+          be added to a diagram by selecting the artifact in the explorer,
           using <literal>Add&nbsp;to&nbsp;Diagram</literal> from the drop down
           menu (&button2;) over that artifact, and then clicking
           &button1; at the desired location on the diagram.</para>
@@ -1224,7 +1223,7 @@ Modifications
 
           <para>The main window's client area, below the menu bar, is
             subdivided into four panes. Starting at the leftmost top pane, and
-            working around the clock, you can see the Navigation Pane, showing
+            working around the clock, you can see the Explorer, showing
             an explorer-like tree view of your UML model, the Editing Pane with
             its tool bar, two scroll bars and gray drawing area, the Details
             Pane with the ToDoItem tab selected, and the To-Do Pane with a tree
@@ -1246,8 +1245,8 @@ Modifications
             Case Diagram called
             <literal>use&nbsp;case&nbsp;diagram&nbsp;1</literal>.</para>
 
-          <para>The model and both empty diagrams can be seen in the Navigation
-            Pane, which is the main tool for you to navigate through your
+          <para>The model and both empty diagrams can be seen in the explorer,
+            which is the main tool for you to navigate through your
             model.</para>
 
           <para>Let's assume for a moment that this is the point where you want
@@ -1889,11 +1888,11 @@ Modifications
           information gets updated on the screen.</para>
 
         <para>Normally, the package name change should also be reflected in the
-          navigation pane, in the top left corner of your &argouml;
+          explorer, in the top left corner of your &argouml;
           window.</para>
 
         <para>Actually, that doesn't happen until you click on one of the items
-          in the navigator pane. This is also a small bug in &argouml; that
+          in the explorer. This is also a small bug in &argouml; that
           will need to be fixed in following versions.</para>
 
         <para>Don't let this discourage you, but remember that &argouml; is

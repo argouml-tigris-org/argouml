@@ -1556,12 +1556,12 @@ artifact.
       <para>This menu entry creates a blank class diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
         class diagram will be created within that package, it will be shown
-        within the package on the navigation pane hierarchy (under
+        within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
         created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other namespaces/packages
-        appearing on the diagram. They can be added from the navigation pane
+        appearing on the diagram. They can be added from the explorer
         using <literal>Add to Diagram</literal> from the &button2; pop-up
         menu.</para></tip>
     </sect2>
@@ -1578,12 +1578,12 @@ artifact.
       <para>This menu entry creates a blank use case diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
         use case diagram will be created within that package, it will be shown
-        within the package on the navigation pane hierarchy (under
+        within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
         created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other namespaces/packages
-        appearing on the diagram. They can be added from the navigation pane
+        appearing on the diagram. They can be added from the explorer
         using <literal>Add to Diagram</literal> from the &button2; pop-up
         menu.</para></tip>
     </sect2>
@@ -1645,14 +1645,14 @@ artifact.
         or model, rather than within the package or model directly itself. If a
         package is currently selected, the collaboration diagram will be
         created within a collaboration within that package, it will be shown
-        within the collaboration within the package on the navigation pane
+        within the collaboration within the package on the explorer
         hierarchy (under Package-centric view) and artifacts created on the
         diagram will be created within the namespace of the collaboration
         within the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
-        navigation pane using <literal>Add to Diagram</literal> from the
+        explorer using <literal>Add to Diagram</literal> from the
         &button2; pop-up menu.</para></tip>
     </sect2>
 
@@ -1668,13 +1668,13 @@ artifact.
       <para>This menu entry creates a blank deployment diagram, and selects
         that diagram in the editing pane. If a package is currently selected,
         the deployment diagram will be created within that package, it will be
-        shown within the package on the navigation pane hierarchy (under
+        shown within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
         created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
-        navigation pane using <literal>Add to Diagram</literal> from the
+        explorer using <literal>Add to Diagram</literal> from the
         &button2; pop-up menu.</para></tip>
     </sect2>
 
@@ -1690,13 +1690,13 @@ artifact.
       <para>This menu entry creates a blank sequence diagram, and selects that
         diagram in the editing pane. If a package is currently selected, the
         sequence diagram will be created within that package, it will be shown
-        within the package on the navigation pane hierarchy (under
+        within the package on the explorer hierarchy (under
         Package-centric view) and artifacts created on the diagram will be
         created within the namespace of the package.</para>
 
       <tip><para>This does not prevent artifacts from other
         namespaces/packages appearing on the diagram. They can added from the
-        navigation pane using <literal>Add to Diagram</literal> from the
+        explorer using <literal>Add to Diagram</literal> from the
         &button2; pop-up menu.</para></tip>
     </sect2>
   </sect1>

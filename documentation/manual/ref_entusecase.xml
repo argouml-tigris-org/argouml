@@ -419,7 +419,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -511,7 +511,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               association. Note that the new association is added to the
               model, but not the diagram. You will need to find it in the
-              navigation pane and add it from there.</para>
+              explorer and add it from there.</para>
 
             <tip><para>It is far easier to add associations by drawing them
               on the relevant diagram in the editing
@@ -924,7 +924,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new association is added to the
               model, but not the diagram. You will need to find it in the
-              navigation pane and add it from there.</para>
+              explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -1146,7 +1146,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               association. Note that the new association is added to the
               model, but not the diagram. You will need to find it in the
-              navigation pane and add it from there.</para>
+              explorer and add it from there.</para>
 
             <tip><para>It is far easier to add associations by drawing them
               on the relevant diagram in the editing
@@ -2628,8 +2628,8 @@ Modifications
             base use case on an extend relationship that is already shown on a
             diagram, then it will NOT be redrawn. Currently the only way to
             effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the navigation
-            pane.</para></caution></listitem>
+            diagram and then add them back from the explorer.
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for NavUseCase (Base) -->
@@ -2661,8 +2661,8 @@ Modifications
             extension use case on an extend relationship that is already shown
             on a diagram, then it will NOT be redrawn. Currently the only way
             to effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the navigation
-            pane.</para></caution></listitem>
+            diagram and then add them back from the explorer.
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for NavUseCase (Extension) -->
@@ -3019,8 +3019,8 @@ Modifications
             base use case on an include relationship that is already shown on a
             diagram, then it will NOT be redrawn. Currently the only way to
             effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the navigation
-            pane.</para></caution></listitem>
+            diagram and then add them back from the explorer.
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for NavUseCase (Base) -->
@@ -3052,8 +3052,8 @@ Modifications
             addition use case on an include relationship that is already shown
             on a diagram, then it will NOT be redrawn. Currently the only way
             to effect a redraw is to remove the use cases at each end from the
-            diagram and then add them back from the navigation
-            pane.</para></caution></listitem>
+            diagram and then add them back from the explorer.
+          </para></caution></listitem>
         </varlistentry>
 
         <!-- Entry for NavUseCase (Addition) -->

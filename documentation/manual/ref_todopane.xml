@@ -84,7 +84,7 @@ Modifications
         toggled by &button1; click on these icons.</para>
 
       <tip><para>It is possible to turn off the display of these icons using
-        the <literal>Flat</literal> button in the navigation pane.</para></tip>
+        the <literal>Flat</literal> button in the explorer.</para></tip>
 
       <para>&Button1; click over the headline of any to-do item will cause its
         details to be shown in the <literal>To&nbsp;Do&nbsp;Item</literal> tab

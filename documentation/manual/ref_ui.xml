@@ -61,7 +61,7 @@ Modifications
     <para>At the top of screen is a <emphasis>menu bar</emphasis> described in
       <xref linkend="ch.ref.menu"/>. The bulk of the window comprises four
       sub-windows or <emphasis>panes</emphasis>. Clockwise from top left these
-      are the <emphasis>navigator pane</emphasis> (see <xref
+      are the <emphasis>explorer</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
       linkend="ch.ref.editpane"/>), <emphasis>details pane</emphasis> (see
       <xref linkend="ch.ref.detpane"/>) and <emphasis>to-do pane</emphasis>
@@ -201,7 +201,7 @@ Modifications
       <title>&Button1; Click</title>
 
       <para>This action is generally used to select an item for subsequent
-        operations. If the item is an artifact in the navigation pane or the
+        operations. If the item is an artifact in the explorer or the
         editing pane it will be highlighted.</para>
 
       <!-- General behavior when editing text -->
@@ -325,7 +325,7 @@ Modifications
 
     <para>The four sub-windows of the main &argouml; window are called
       <emphasis>panes</emphasis>. Clockwise from top left these are the
-      <emphasis>navigator pane</emphasis> (see <xref
+      <emphasis>explorer</emphasis> (see <xref
       linkend="ch.ref.navpane"/>), <emphasis>editing pane</emphasis> (see <xref
       linkend="ch.ref.editpane"/>), <emphasis>details pane</emphasis> (see
       <xref linkend="ch.ref.detpane"/>) and <emphasis>to-do pane</emphasis>
@@ -341,7 +341,7 @@ Modifications
 
       <para>In addition you will see there are two small left pointing arrows
         within the vertical divider bars, one at the top of the vertical
-        divider bar between navigation pane and editing pane and one at the top
+        divider bar between explorer and editing pane and one at the top
         of the vertical divider bar between to-do pane and details
         pane. &Button1; click on the first of these will expand the editing
         pane to the full width of the window, &button1; click on the second
@@ -349,7 +349,7 @@ Modifications
       
       <para>There is also a small downward pointing arrow within the
         horizontal divider bar at its leftmost end. Clicking on this will
-        expand the navigation and editing panes to the full depth of the
+        expand the explorer and editing panes to the full depth of the
         window.</para>
 
       <para>By using both the top arrow on the vertical divider and the arrow
@@ -369,7 +369,7 @@ Modifications
         in sections <xref linkend="s1.ref.edit_mouse"/> and
         <xref linkend="s1.ref.details_mouse"/>.</para>
 
-      <note><para>There is no equivalent function for the navigation or to-do
+      <note><para>There is no equivalent function for the explorer or to-do
         panes.</para></note>
     </sect2>
 

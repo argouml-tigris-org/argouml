@@ -403,7 +403,7 @@ you change that class at the same time (and think through the deployment).
         and class invariants are a powerful aid in writing solid code.</para>
 
       <para>To fix this, add a constructor manually by clicking on
-        <emphasis>class</emphasis> in the navigator pane and adding an
+        <emphasis>class</emphasis> in the explorer and adding an
         operation using the context sensitive pop-up menu in the property tab,
         or select <emphasis>class</emphasis> where it appears on a class
         diagram and use the <literal>Add Operation</literal> tool.</para>

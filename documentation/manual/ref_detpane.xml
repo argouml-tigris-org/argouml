@@ -342,17 +342,17 @@ Modifications
     <title>Properties Tab</title>
 
     <para>Through this tab, the properties of artifacts selected in the
-      navigation pane or editing pane may be set. The properties of an artifact
+      explorer or editing pane may be set. The properties of an artifact
       may be displayed in one of two ways:</para>
 
     <orderedlist>
-      <listitem><para>Selection of the artifact in the navigation or editing
+      <listitem><para>Selection of the artifact in the explorer or editing
         panes, followed by selection of the properties tab in the details pane;
         or</para></listitem>
       
       <listitem><para>Context sensitive pop-up menu
         <literal>Properties</literal> (using &button2; click) on an artifact in
-        the editing or navigation pane, which will select the item
+        the editing or explorer, which will select the item
         <emphasis>and</emphasis>select the <literal>Properties</literal> tab in
         the details pane.</para></listitem>
     </orderedlist>

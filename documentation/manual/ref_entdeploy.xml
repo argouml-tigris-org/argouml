@@ -343,7 +343,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing

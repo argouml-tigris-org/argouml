@@ -745,7 +745,7 @@ Modifications
     <para>&argouml; allows you to draw use case diagrams. When you create a new
       project it has a use case diagram created by default, named <literal>use
       case diagram 1</literal>. Select this by &button1; click on the diagram
-      name in the navigation pane (the upper left quadrant of the user
+      name in the explorer (the upper left quadrant of the user
       screen).</para>
 
     <para>New use case diagrams can be created as needed through
@@ -784,11 +784,11 @@ Modifications
         selected) will allow the name to be edited directly. This is a
         convenient way to enter a name for a new actor.</para>
 
-      <para>Having created the actor, you will see it appear in the navigation
-        pane (the upper left quadrant of the user screen). This shows all the
+      <para>Having created the actor, you will see it appear in the explorer
+        (the upper left quadrant of the user screen). This shows all the
         artifacts created within the UML design. A drop down at the top of the
-        navigation pane controls the ordering of artifacts in the navigation
-        pane. The most useful are the <literal>Package-centric</literal>
+        explorer controls the ordering of artifacts in the explorer.
+        The most useful are the <literal>Package-centric</literal>
         (default) and <literal>Diagram-centric</literal>. The latter shows
         artifacts grouped by the diagram on which they appear.</para>
     </sect2>
@@ -890,7 +890,7 @@ Modifications
           the use case property tab.</para>
 
         <para>Having created an extension point, it will appear in the
-          navigation pane (upper left quadrant of the user screen). Extension
+          explorer (upper left quadrant of the user screen). Extension
           points are always shown in a sub-tree beneath their owning use
           case.</para>
       </sect3>

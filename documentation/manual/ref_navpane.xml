@@ -2,7 +2,7 @@
 
 <!--
 
-This chapter covers the Navigator Pane.
+This chapter covers the Explorer.
 
 Modifications
 =============
@@ -22,21 +22,45 @@ Modifications
 -->
 
 <chapter id="ch.ref.navpane">
-  <title>The Navigation Pane</title>
+  <title>The Explorer</title>
+  <indexterm>
+    <primary>Explorer</primary>
+  </indexterm>
+  <indexterm>
+    <primary>Navigation</primary>
+    <secondary>Tree</secondary>
+  </indexterm>
+  <indexterm>
+    <primary>Navigation</primary>
+    <secondary>Pane</secondary>
+  </indexterm>
+  <indexterm>
+    <primary>Navigator</primary>
+    <secondary>Tree</secondary>
+  </indexterm>
+  <indexterm>
+    <primary>Navigator</primary>
+    <secondary>Pane</secondary>
+  </indexterm>
+
+  <para>
+    The Explorer was previously called Navigation Pane/Tree or sometimes
+    Navigator Pane/Tree.
+  </para>  
 
   <sect1>
     <title>Introduction</title>
 
     <para><xref linkend="fig.ref.navigation_pane"/> shows the &argouml; window,
-      with the navigation pane highlighted.</para>
+      with the explorer highlighted.</para>
 
     <!-- This diagram shows the navigation overview. It is a complete ArgoUML
-         window, but with all except the navigation pane grayed out. This was
+         window, but with all except the explorer grayed out. This was
          done using GIMP with selected areas using filter color range 0.5 to
          0.7.-->
 
     <figure id="fig.ref.navigation_pane" float="1">
-      <title>Overview of the navigation pane</title>
+      <title>Overview of the explorer</title>
 
       <screenshot><mediaobject>
         <imageobject>
@@ -46,9 +70,9 @@ Modifications
       </mediaobject></screenshot>
     </figure>
 
-    <para>The navigation pane allows the user to view the structure of the
+    <para>The explorer allows the user to view the structure of the
       model from a number of predefined perspectives. It also allows the user
-      to define their own perspetives for custom navigation of the
+      to define their own perspetives for custom exploring of the
       model.</para>
 
     <para>An important feature, related to the cognitive psychology ideas
@@ -60,7 +84,15 @@ Modifications
   <!-- How the mouse behaves in this pane -->
 
   <sect1 id="s1.ref.nav_mouse">
-    <title>Mouse Behavior in the Navigation Pane</title>
+    <title>Mouse Behavior in the Explorer</title>
+    <indexterm>
+      <primary>Explorer</primary>
+      <secondary>Mouse Behavior</secondary>
+    </indexterm>
+    <indexterm>
+      <primary>Mouse Behavior</primary>
+      <secondary>in the Explorer</secondary>
+    </indexterm>
 
     <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
@@ -89,7 +121,7 @@ Modifications
         details will also be displayed in the details pane.</para>
 
       <para>&Button1; click over the name of any artifact other than a diagram
-        in the main area of the navigation pane will cause it to be selected,
+        in the main area of the explorer will cause it to be selected,
         and its details shown in the details pane. If the artifact is part of a
         diagram currently displayed in the editing pane, it will be highlighted
         there.</para>
@@ -119,7 +151,7 @@ Modifications
     <sect2>
       <title>&Button2; Actions</title>
 
-      <para>When used over text items in the the navigation pane, this will
+      <para>When used over text items in the the explorer, this will
         display a context dependent pop-up menu. Menu entries are highlighted
         (but not selected) and sub-menus exposed by subsequent mouse motion
         (without any buttons). Menu entry selection is with &button1;</para>
@@ -145,7 +177,7 @@ Modifications
 
     <para>The artifacts in the &argouml; model may be ordered from a number of
       perspectives. This drop-down allows selection of the perspective to be
-      used in the navigation pane.</para>
+      used in the explorer.</para>
 
     <note><para>Within the hierarchy, there is no particular ordering of
       artifacts at a particular level. They tend to be in order of
@@ -154,7 +186,7 @@ Modifications
 
     <itemizedlist>
       <listitem><para><literal>Package-centric</literal> (the default). The
-        navigation hierarchy is organized by package hierarchy. The top level
+        exploring hierarchy is organized by package hierarchy. The top level
         shows the model. Under this are all the top level packages in the model
         and all the artifacts that are directly in the namespace of the
         model.</para>
@@ -288,7 +320,7 @@ Modifications
   <sect1>
     <title>Configuring Perspectives</title>
 
-    <para>The navigation pane is designed to be user configurable, to allow the
+    <para>The explorer is designed to be user configurable, to allow the
       designer to view in his or her preferred way.</para>
 
     <!-- The Perspectives -->
@@ -299,14 +331,14 @@ Modifications
       <para>&button1; click on the NavConfig icon
         (<guiicon><inlinemediaobject><imageobject><imagedata 
           format="GIF" align="center" fileref="images/icons/nav_config.gif"/>
-        </imageobject></inlinemediaobject></guiicon>) brings up the navigation
+        </imageobject></inlinemediaobject></guiicon>) brings up the explorer
         perspectives dialog (see
         <xref linkend="fig.ref.navigator_pane_perspectives"/>).</para>
 
-      <!-- The navigation pane perspectives dialog. -->
+      <!-- The explorer perspectives dialog. -->
 
       <figure id="fig.ref.navigator_pane_perspectives" float="1">
-        <title>Navigation pane perspectives dialog box</title>
+        <title>Explorer perspectives dialog box</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -378,13 +410,13 @@ Modifications
         icon (<guiicon><inlinemediaobject><imageobject><imagedata format="GIF"
         align="center" fileref="images/icons/nav_config.gif"/>
         </imageobject></inlinemediaobject></guiicon>) has brought up the
-        navigation perspectives dialog (see <xref
+        explorer perspectives dialog (see <xref
         linkend="fig.ref.navigator_pane_panes"/>).</para>
 
-      <!-- The navigation pane perspectives dialog. -->
+      <!-- The explorer perspectives dialog. -->
 
       <figure id="fig.ref.navigator_pane_panes" float="1">
-        <title>Navigation panes dialog box</title>
+        <title>explorers dialog box</title>
 
         <screenshot><mediaobject>
           <imageobject>
@@ -394,7 +426,7 @@ Modifications
         </mediaobject></screenshot>
       </figure>
 
-      <para>The navigation pane was conceived as being able to offer multiple
+      <para>The explorer was conceived as being able to offer multiple
         views simultaneously, with up to three panels of hierarchy. This dialog
         offers control of these panels, with an option to show or not show each
         panel, and the option of the second and third panels to be rooted at
@@ -406,7 +438,7 @@ Modifications
         at project. All other options are grayed out and
         unavailable.</para></caution>
 
-      <para>When using the navigation pane, it is worth bearing in mind that
+      <para>When using the explorer, it is worth bearing in mind that
         this is a useful visualization of the model, it is not
         <emphasis>solely</emphasis> for navigation and selection.  It is also
         useful for users to easily (meaning a few mouse clicks without having
@@ -448,7 +480,7 @@ Modifications
         finish what they were doing, or simply to help them switch between two
         or three related parts of the design.  The <literal>Navigate
         Back</literal> and <literal>Navigate Forward</literal> buttons in the
-        navigation pane serve the same basic purpose and use a lot less screen
+        explorer serve the same basic purpose and use a lot less screen
         space.</para>
 
 
@@ -473,7 +505,7 @@ Modifications
     <title>Context Sensitive Menu</title>
 
     <para>&Button2; Click over any selected artifact in the main area of the
-      navigation pane will cause a pop-up menu to appear.</para>
+      explorer will cause a pop-up menu to appear.</para>
 
      <!-- Properties -->
 

@@ -63,7 +63,7 @@ Modifications
 
     <caution><para>In principle you can add a model to a class diagram using
       the context sensitive (&button2;) pop up menu <literal>Add To
-      Diagram</literal>from the navigation pane. However this is very demanding
+      Diagram</literal>from the explorer. However this is very demanding
       of memory and may cause a problem with &argouml; running out of
       memory.</para></caution>
 
@@ -603,7 +603,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -997,7 +997,7 @@ Modifications
           <note><para>The default name supplied to a new package by
             &argouml; is the empty string <quote></quote>. The datatype
             will appear with the name <literal>anon</literal> in the
-            navigation pane.</para></note></listitem>
+            explorer.</para></note></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -1116,7 +1116,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
@@ -1660,7 +1660,7 @@ Modifications
             <listitem><para><literal>Add</literal>. Add a new
               generalization. Note that the new generalization is added to
               the model, but not the diagram. You will need to find it in
-              the navigation pane and add it from there.</para>
+              the explorer and add it from there.</para>
 
             <tip><para>It is far easier to add generalizations by drawing
               them on the relevant diagram in the editing
