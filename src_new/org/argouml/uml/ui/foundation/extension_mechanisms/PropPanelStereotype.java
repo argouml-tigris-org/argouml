@@ -49,49 +49,50 @@ import org.argouml.uml.ui.foundation.core.*;
 
 public class PropPanelStereotype extends PropPanelModelElement {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelStereotype() {
-    super("Stereotype", _stereotypeIcon ,2);
+    /**
+     * Construct new stereotype properties tab
+     * @todo convert to use LabelledLayout(Bob Tarling)
+     */
+    public PropPanelStereotype() {
+        super("Stereotype", _stereotypeIcon ,2);  // Change this to call labelled layout constructor
 
-    Class mclass = MStereotype.class;
+        Class mclass = MStereotype.class;
 
-    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-    addField(nameField,1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
+        addField(nameField,1,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.base-class"),2,0,0);
-    JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
-    addField(baseClass,2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.base-class"),2,0,0);
+        JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
+        addField(baseClass,2,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    addField(namespaceComboBox,3,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
+        addField(namespaceComboBox,3,0,0);
 
-    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
-    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
-    modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,4,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
+        JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+        modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+        modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
+        addField(modifiersPanel,4,0,0);
 
-    addCaption("Generalizations:",0,1,1);
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(new JScrollPane(extendsList),0,1,1);
+        addCaption("Generalizations:",0,1,1);
+        JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+        extendsList.setBackground(getBackground());
+        extendsList.setForeground(Color.blue);
+        addField(new JScrollPane(extendsList),0,1,1);
 
-    addCaption("Specializations:",1,1,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    addField(new JScrollPane(derivedList),1,1,1);
+        addCaption("Specializations:",1,1,1);
+        JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
+        derivedList.setForeground(Color.blue);
+        derivedList.setVisibleRowCount(1);
+        addField(new JScrollPane(derivedList),1,1,1);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_stereotypeIcon, Argo.localize("UMLMenu", "button.add-new-stereotype"),"newStereotype",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement",null);
-
-  }
+        new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+        new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_stereotypeIcon, Argo.localize("UMLMenu", "button.add-new-stereotype"),"newStereotype",null);
+        new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-package"),"removeElement",null);
+    }
 
 
     public void newStereotype() {

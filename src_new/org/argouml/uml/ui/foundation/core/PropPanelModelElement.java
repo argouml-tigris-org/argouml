@@ -124,8 +124,13 @@ abstract public class PropPanelModelElement extends PropPanel {
     private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
     private UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
     
-    ////////////////////////////////////////////////////////////////
-    // constructors
+    /**
+     *    Constructs the PropPanel.
+     *    @param title Title of panel
+     *    @param panelCount number of horizontal panels
+     *    @deprecated 7-Dec-2002 by Bob Tarling. Use the constructor
+     *    specifying orientation instead.
+     */
     public PropPanelModelElement(String name, int columns) {
         this(name,null,columns);
     }

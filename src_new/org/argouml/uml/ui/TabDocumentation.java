@@ -51,12 +51,16 @@ public class TabDocumentation extends PropPanel {
 
   private static final String BUNDLE = "Cognitive";
     ////////////////////////////////////////////////////////////////
-  // constructor
-  public TabDocumentation() {
-    super("tab.documentation",2);
+  
+    /**
+     * Construct new documentation tab
+     * @todo convert to use LabelledLayout(Bob Tarling)
+     */
+    public TabDocumentation() {
+        super("tab.documentation", null, 2); // Change this to call labelled layout constructor
         addCaption(Argo.localize(BUNDLE, "docpane.label.author") + ":",1,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("author")),1,0,0);
-//unknown where this information is stored; it does not go to myproject.argo (xml file)
+        //unknown where this information is stored; it does not go to myproject.argo (xml file)
         addCaption(Argo.localize(BUNDLE, "docpane.label.version") + ":",2,0,0);
         addField(new UMLTextField(this,new UMLTaggedTextProperty("version")),2,0,0);
 
@@ -81,7 +85,7 @@ public class TabDocumentation extends PropPanel {
         JScrollPane spDocs = new JScrollPane();
         spDocs.getViewport().add(_doc);
         addField(spDocs,0,1,1);
-  }
+    }
 
     public boolean shouldBeEnabled() {
         Object target = getTarget();
@@ -91,6 +95,4 @@ public class TabDocumentation extends PropPanel {
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return false;
     }
-
-
 } /* end class TabDocumentation */
