@@ -1,53 +1,28 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>E.3. DocBook Conventions</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ape.html" title="Appendix E. Documentation Standards for the User Manual"><link rel="previous" href="apes02.html" title="E.2. Document Conventions"><link rel="next" href="apes04.html" title="E.4. For emacs Users"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">E.3. DocBook Conventions</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apes02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Appendix E. Documentation Standards for the User Manual</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="apes04.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e31406"></a>E.3. DocBook Conventions</h2></div></div><div class="itemizedlist"><ul type="disc"><li><p>The top level document is argouml.xml. Each chapter (or
-        preface, glossary, appendix etc) is a separate file, defined as a
-        system entity and included from this top level
-        file.</p></li><li><p>There are some useful entities defined for common terms
-        at the top of argouml.xml. Of these, use of
-        <tt class="sgmltag-element">argouml</tt> will ensure consistent naming of the
-        project (Argo/UML) and allow us to change it later (to ArgoUML,
-        Argouml or whatever).</p></li><li><p>XML comments are used throughout to explain what various
-        sections are trying to achieve.</p></li><li><p>Cross-referencing requires use of <tt>id.</tt>
-        attributes. To avoid confusion, use a prefix of <tt>ch.</tt>
-        for <tt class="sgmltag-element">chapter</tt>, <tt>app.</tt> for
-        <tt class="sgmltag-element">appendix</tt>, <tt>s1.</tt> through
-        <tt>s5.</tt> for <tt class="sgmltag-element">sect1</tt> through
-        <tt class="sgmltag-element">sect5</tt>, <tt>fig.</tt> for
-        <tt class="sgmltag-element">figure</tt>, <tt>tab.</tt> for
-        <tt class="sgmltag-element">table</tt> and <tt>gl</tt> for
-        <tt class="sgmltag-element">glossentry</tt>.</p><p>A second prefix of <tt>tut.</tt> or
-          <tt>ref.</tt> is used to distinguish tutorial and reference
-          material. The remainder of the tag should be descriptive, but concise
-          with words separate by underscore. Where a graphic is involved this
-          remainder should correspond to the file name. For example
-          <tt>fig.ref.navigation_pane</tt> for a figure showing the
-          navigation pane, with the diagram in
-          <tt>navigation_pane.gif</tt></p></li><li><p>Only use <tt class="sgmltag-element">glossterm</tt> (for the term
-        <span class="emphasis"><i>or</i></span> its abbreviation/acronym),
-        <tt class="sgmltag-element">glossdef</tt> and <tt class="sgmltag-element">glossseealso</tt>
-        within <tt class="sgmltag-element">glossentry</tt>. Other entries are not
-        implemented in the style sheets and so do not appear in the
-        glossary!</p></li><li><p>Use spaces (2 per level) rather than tabs. Tabs are
-        generally set so large the text moves over to the right of the page,
-        and are not set the same everywhere (emacs uses 8 spaces, some MS
-        editors use 6 spaces), making documents unreadable between
-        users.</p></li><li><p>All block graphics should be encapsulated within
-        <tt class="sgmltag-element">figure</tt>, allowing reference from around the
-        text. Set attribute <tt class="sgmltag-element">float</tt> to 1 to allow the figure
-        to float (makes life easier for printed version).</p></li><li><p>All block graphics should be provided through
-        <tt class="sgmltag-element">mediaobject</tt> and provided with both an
-        <tt class="sgmltag-element">imageobject</tt> and comprehensive description in a
-        <tt class="sgmltag-element">textobject</tt>. This gives the potential of meaningful
-        content where a diagram cannot be displayed for any
-        reason. Where appropriate the <tt class="sgmltag-element">mediaobject</tt> should be
-        wrapped by <tt class="sgmltag-element">screenshot</tt>.</p></li><li><p>Inline graphics can be done through
-        <tt class="sgmltag-element">inlinegraphic</tt>, rather
-        <tt class="sgmltag-element">inlinemediaobject</tt>. A textual alternative is of
-        little value in these circumstances. Where appropriate the
-        <tt class="sgmltag-element">mediaobject</tt> should be wrapped by
-        <tt class="sgmltag-element">guiicon</tt></p></li><li><p>In general use <tt class="sgmltag-element">literal</tt> for computer
-        related text (input and output). There are a huge number of possible
-        specialist tags, but I suggest restriction to the following list:
-        <tt class="sgmltag-element">filename</tt> and <tt class="sgmltag-element">application</tt>.
-      </p></li></ul></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apes02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ape.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="apes04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">E.2. Document Conventions&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;E.4. For emacs Users</td></tr></table></div></body></html>
+   <title>E.3.&nbsp;Suggested Manual Structure</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ape.html" title="Appendix&nbsp;E.&nbsp;User Manual Plan"><link rel="previous" href="apes02.html" title="E.2.&nbsp;Goals"><link rel="next" href="apes04.html" title="E.4.&nbsp;Actions, Priorities and Questions"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">E.3.&nbsp;Suggested Manual Structure</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="apes02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Appendix&nbsp;E.&nbsp;User Manual Plan</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="apes04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e30766"></a>E.3.&nbsp;Suggested Manual Structure</h2></div></div><div></div></div><p>Here are my thoughts. I think the user manual is really a set of two
+      books, the tutorial manual (corresponding to Chapters 1&#8211;3 of the
+      current manual), and the reference manual (Chapter 4 of the current
+      manual)</p><p>I suggest that the tutorial book be based around an OOA&amp;D process
+      (any preferences), and that each UML concept is introduced with each step
+      of the process, followed by an explanation of how to do it under
+      ArgoUML. A <span class="emphasis"><em>simple</em></span>case study will be needed
+      throughout. A lot of this material can come from existing Chapters
+      1&#8211;3, with some additional material from chapter 4 of the Cookbook,
+      answers in the FAQ and Jason Robbins dissertation.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e30776"></a>E.3.1.&nbsp;Tutorial Manual Structure</h3></div></div><div></div></div><div class="orderedlist"><ol type="1"><li><p>Introduction</p><div class="orderedlist"><ol type="a"><li><p>Origins and overview of ArgoUML</p></li><li><p>Scope of the User Manual. Include cross-reference
+              to other documentation (Cookbook, FAQ, Quick Guide, online help,
+              ArgoUML website etc).</p></li><li><p>Overview of the User Manual. Explains that ArgoUML
+              will be explained in the context of an OOA&amp;D process, and
+              with an example running through.</p></li><li><p>Assumptions. At this stage assume the user knows
+              OOA&amp;D, but not UML.</p></li></ol></div></li><li><p>UML Based OOA&amp;D</p><div class="orderedlist"><ol type="a"><li><p>Background to UML&#8212;what it is, history
+              etc.</p></li><li><p>UML based processes for OOA&amp;D</p></li><li><p>ArgoUML Basics&#8212;projects, drawing, exploring,
+              details</p></li><li><p>What ArgoUML has that other tools are missing
+              (critics, to-do list, based in cognitive psychology
+              theory).</p></li><li><p>The Case Study</p></li></ol></div></li><li><p>Requirements Capture</p><div class="orderedlist"><ol type="a"><li><p>Use Case Diagrams (this section will be relatively
+              large, because its the first time we use ArgoUML to create
+              something).</p></li></ol></div></li><li><p>Analysis</p><div class="orderedlist"><ol type="a"><li><p>Concept Class Diagrams</p></li><li><p>System Sequence Charts and Collaboration
+              Diagrams</p></li><li><p>System State Diagrams</p></li></ol></div></li><li><p>Design</p><div class="orderedlist"><ol type="a"><li><p>Class Diagrams for Realisation</p></li><li><p>Sequence Charts and Collaboration Diagrams for
+              Realisation</p></li><li><p>State Diagrams for realisation</p></li><li><p>Package Diagrams</p></li></ol></div></li><li><p>Build</p><div class="orderedlist"><ol type="a"><li><p>Deployment Diagrams</p></li><li><p>Code Generation in ArgoUML</p></li></ol></div></li></ol></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e30868"></a>E.3.2.&nbsp;Reference Manual Structure</h3></div></div><div></div></div><p>This section largely follows Chapter 4 of the existing User Manual,
+        including the Gloassary. However it needs a few extra things.</p><div class="orderedlist"><ol type="1"><li><p>material on each of the
+          diagram types, each of the artifacts that can appear on the diagrams
+          and details of the features of each artifact type.</p></li><li><p>An Index</p></li></ol></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="apes02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ape.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="apes04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">E.2.&nbsp;Goals&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;E.4.&nbsp;Actions, Priorities and Questions</td></tr></table></div></body></html>

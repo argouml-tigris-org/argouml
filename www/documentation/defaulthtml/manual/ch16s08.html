@@ -1,106 +1,99 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>16.8. Parameter</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter 16. ArgoUML Class Diagram Artifact Reference"><link rel="previous" href="ch16s07.html" title="16.7. Operation"><link rel="next" href="ch16s09.html" title="16.9. Signal"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.8. Parameter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 16. ArgoUML Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.parameter"></a>16.8. Parameter</h2></div></div><p>A parameter is a variable that can be passed. In the UML metamodel it
-      is a sub-class of <tt>ModelElement</tt>.</p><p>A parameter is represented within the operation declaration in the
-      operation compartment of a class as follows.</p><blockquote class="blockquote"><p><span class="emphasis"><i>name</i></span> <tt>:</tt>
-      <span class="emphasis"><i>type</i></span></p></blockquote><p><span class="emphasis"><i>name</i></span> is the name of the parameter.</p><p><span class="emphasis"><i>type</i></span> is the type (UML datatype, class or
+   <title>16.8.&nbsp;Parameter</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter&nbsp;16.&nbsp;ArgoUML Class Diagram Artifact Reference"><link rel="previous" href="ch16s07.html" title="16.7.&nbsp;Operation"><link rel="next" href="ch16s09.html" title="16.9.&nbsp;Signal"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.8.&nbsp;Parameter</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;16.&nbsp;ArgoUML Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.parameter"></a>16.8.&nbsp;Parameter</h2></div></div><div></div></div><p>A parameter is a variable that can be passed. In the UML metamodel it
+      is a sub-class of <tt class="literal">ModelElement</tt>.</p><p>A parameter is represented within the operation declaration in the
+      operation compartment of a class as follows.</p><div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>name</em></span> <tt class="literal">:</tt>
+      <span class="emphasis"><em>type</em></span></p></blockquote></div><p><span class="emphasis"><em>name</em></span> is the name of the parameter.</p><p><span class="emphasis"><em>type</em></span> is the type (UML datatype, class or
       interface) of the parameter.</p><p>The exception is any parameter representing a return value, whose
-      type only is shown at the end of the operation declaration.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e19771"></a>16.8.1. Parameter Details Tabs</h3></div></div><p>The details tabs that are active for parameters are as
-        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s08.html#s2.ref.parameter_property_toolbar" title="16.8.2. Parameter Property Toolbar">Section 16.8.2</a> and <a href="ch16s08.html#s2.ref.parameter_property_fields" title="16.8.3. Property Fields For Parameter">Section 16.8.3</a>
-            below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
+      type only is shown at the end of the operation declaration.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e19167"></a>16.8.1.&nbsp;Parameter Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for parameters are as
+        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch16s08.html#s2.ref.parameter_property_toolbar" title="16.8.2.&nbsp;Parameter Property Toolbar">Section&nbsp;16.8.2, &#8220;Parameter Property Toolbar&#8221;</a> and <a href="ch16s08.html#s2.ref.parameter_property_fields" title="16.8.3.&nbsp;Property Fields For Parameter">Section&nbsp;16.8.3, &#8220;Property Fields For Parameter&#8221;</a>
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
             rather than the parameter. The tick boxes,
-            <tt>Attributes</tt> and <tt>Operations</tt>
+            <tt class="literal">Attributes</tt> and <tt class="literal">Operations</tt>
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
-            <tt>Bounds:</tt> field defines the bounding box for
-            the package on the diagram.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
-            parameter.</p></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt>Parameter</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt>Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt>Parameter</tt> has the following standard tagged
-            values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>derived</tt> (from the
-                superclass, <tt>ModelElement</tt>). Values
-                <tt>true</tt>, meaning the parameter is
+            <tt class="literal">Bounds:</tt> field defines the bounding box for
+            the package on the diagram.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
+            parameter.</p></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
+            defined for <tt class="literal">Parameter</tt> within the UML
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            <tt class="literal">Parameter</tt> has the following standard tagged
+            values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
+                superclass, <tt class="literal">ModelElement</tt>). Values
+                <tt class="literal">true</tt>, meaning the parameter is
                 redundant&#8212;it can be formally derived from other
-                elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A derived parameter is a meaningless
-                concept.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                elements, or <tt class="literal">false</tt> meaning it
+                cannot.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A derived parameter is a meaningless
+                concept.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
               which all other artifacts are derived includes the tagged
-              element <tt>documentation</tt> which is handled by
-              the <span class="emphasis"><i>documentation tab</i></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.parameter_property_toolbar"></a>16.8.2. Parameter Property Toolbar</h3></div></div><div class="variablelist"><dl><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="center"></span> <tt>Go
+              element <tt class="literal">documentation</tt> which is handled by
+              the <span class="emphasis"><em>documentation tab</em></span> under
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.parameter_property_toolbar"></a>16.8.2.&nbsp;Parameter Property Toolbar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
-            structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
-            back</tt></span></dt><dd><p>Navigate back to the previous
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
-            forward</tt></span></dt><dd><p>Navigate forward to the next
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/parameter.gif" align="center"></span> <tt>Add
+            structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/parameter.gif" align="middle"></span></span> <tt class="literal">Add
             parameter</tt></span></dt><dd><p>This creates a new parameter for the for the same
             operation as the current parameter, navigating immediately to
-            the properties tab for that parameter.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a convenient way to add a series of parameters
-            for the same operation.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
-            <tt>Delete</tt></span></dt><dd><p>This deletes the parameter from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
-            <span class="emphasis"><i>not</i></span> just the diagram. Since parameters
+            the properties tab for that parameter.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a convenient way to add a series of parameters
+            for the same operation.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span>
+            <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the parameter from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
+            <span class="emphasis"><em>not</em></span> just the diagram. Since parameters
             have no meaning independent of their owning operation, it makes
-            no sense to delete them just from the model. If desired the
+no sense to delete them just from the diagram.
+If desired the
             whole operation compartment can be hidden on the diagram using
-            the <span class="emphasis"><i>style</i></span> tab (see <a href="ch16s08.html#s2.ref.parameter_property_toolbar" title="16.8.2. Parameter Property Toolbar">Section 16.8.2</a>) or the
+            the <span class="emphasis"><em>style</em></span> tab (see <a href="ch16s08.html#s2.ref.parameter_property_toolbar" title="16.8.2.&nbsp;Parameter Property Toolbar">Section&nbsp;16.8.2, &#8220;Parameter Property Toolbar&#8221;</a>) or the
             button&nbsp;2 pop up menu for the class on the
-            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.parameter_property_fields"></a>16.8.3. Property Fields For Parameter</h3></div></div><div class="variablelist"><dl><dt><span class="term"><tt>Name</tt></span></dt><dd><p>Text box. The name of the parameter. By convention,
+            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.parameter_property_fields"></a>16.8.3.&nbsp;Property Fields For Parameter</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the parameter. By convention,
             the name of a parameter has a leading lower case letter, with
-            words separated by &#8220;bumpy caps&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics do not complain about parameter
+            words separated by &#8220;<span class="quote">bumpy caps</span>&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics do not complain about parameter
             names that do not have an initial lower case
-            letter.</p></td></tr></table></div></dd><dt><span class="term"><tt>Stereotype</tt></span></dt><dd><p>Drop down selector. There are no UML standard
-            stereotypes for <tt>Parameter</tt>. ArgoUML
-            provides the stereotypes, <tt>machine</tt>,
-            <tt>organization</tt> and <tt>person</tt>,
-            and rather strangely <tt>realize</tt> (a stereotype
-            of <tt>Abstraction</tt>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides the stereotype
-            <tt>realize</tt> for parameters. This appears to be
+            letter.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. There are no UML standard
+            stereotypes for <tt class="literal">Parameter</tt>. ArgoUML
+            provides the stereotypes, <tt class="literal">machine</tt>,
+            <tt class="literal">organization</tt> and <tt class="literal">person</tt>,
+            and rather strangely <tt class="literal">realize</tt> (a stereotype
+            of <tt class="literal">Abstraction</tt>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides the stereotype
+            <tt class="literal">realize</tt> for parameters. This appears to be
             an error, since this stereotype properly belongs to the
-            <tt>Abstraction</tt>
-            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+            <tt class="literal">Abstraction</tt>
+            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Owner</tt></span></dt><dd><p>Text box. Records the operation which contains this
+              stereotype property panel (see <a href="ch16s04.html" title="16.4.&nbsp;Stereotype">Section&nbsp;16.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Owner</tt></span></dt><dd><p>Text box. Records the operation which contains this
             parameter.</p><p>Button&nbsp;1 click on the entry will navigate to the
             operation. Button&nbsp;2 click provides a pop up menu with a single
-            entry, <tt>Open</tt>, which will also navigate to the
-            operation.</p></dd><dt><span class="term"><tt>Type</tt></span></dt><dd><p>Drop down selector. The type of this parameter. This
-            can be any UML <tt>Classifier</tt>, although in
-            practice only <tt>Class</tt>,
-            <tt>DataType</tt> or <tt>Interface</tt>
-            make any sense.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>A type must be declared (it can be
-            <tt>void</tt>, but this only makes sense for a return
+            entry, <tt class="literal">Open</tt>, which will also navigate to the
+            operation.</p></dd><dt><span class="term"><tt class="literal">Type</tt></span></dt><dd><p>Drop down selector. The type of this parameter. This
+            can be any UML <tt class="literal">Classifier</tt>, although in
+            practice only <tt class="literal">Class</tt>,
+            <tt class="literal">DataType</tt> or <tt class="literal">Interface</tt>
+            make any sense.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>A type must be declared (it can be
+            <tt class="literal">void</tt>, but this only makes sense for a return
             parameter). By default ArgoUML supplies
-            <tt>int</tt> as the type the first time a parameter
+            <tt class="literal">int</tt> as the type the first time a parameter
             is created, and thereafter the type of the most recently
-            created parameter.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Type</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_type.gif" align="center"></span> icon. This will
+            created parameter.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Type</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_type.gif" align="middle"></span></span> icon. This will
             navigate to the property panel for the currently selected
-            type. (see <a href="ch16s05.html" title="16.5. Class">Section 16.5</a>, <a href="ch16s03.html" title="16.3. Datatype">Section 16.3</a> and <a href="ch16s14.html" title="16.14. Interface">Section 16.14</a>).</p></dd><dt><span class="term"><tt>Initial Value</tt></span></dt><dd><p>Text box with drop down. This allows you to set an
+            type. (see <a href="ch16s05.html" title="16.5.&nbsp;Class">Section&nbsp;16.5, &#8220;Class&#8221;</a>, <a href="ch16s03.html" title="16.3.&nbsp;Datatype">Section&nbsp;16.3, &#8220;Datatype&#8221;</a> and <a href="ch16s14.html" title="16.14.&nbsp;Interface">Section&nbsp;16.14, &#8220;Interface&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Initial Value</tt></span></dt><dd><p>Text box with drop down. This allows you to set an
             initial value for the parameter if desired (this is
             optional). The drop down menu provides access to the common
-            values <tt>0</tt>, <tt>1</tt>,
-            <tt>2</tt> and <tt>null</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only makes sense for <tt>out</tt>
-            or <tt>return</tt>
-            parameters.</p></td></tr></table></div></dd><dt><span class="term"><tt>Kind</tt></span></dt><dd><p>Radio box, with entries <tt>in/out</tt>,
-            <tt>in</tt>, <tt>out</tt> and
-            <tt>return</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>in/out</tt>. The parameter is
+            values <tt class="literal">0</tt>, <tt class="literal">1</tt>,
+            <tt class="literal">2</tt> and <tt class="literal">null</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This only makes sense for <tt class="literal">out</tt>
+            or <tt class="literal">return</tt>
+            parameters.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Kind</tt></span></dt><dd><p>Radio box, with entries <tt class="literal">in/out</tt>,
+            <tt class="literal">in</tt>, <tt class="literal">out</tt> and
+            <tt class="literal">return</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">in/out</tt>. The parameter is
               used both to pass values in and to pass results back out of
-              the operation.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is the default for any new
-              parameter.</p></td></tr></table></div></li><li><p><tt>in</tt>. The parameter is used
-              only to pass values in to the operation.</p></li><li><p><tt>out</tt>. The parameter is used
+              the operation.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is the default for any new
+              parameter.</p></td></tr></table></div></li><li><p><tt class="literal">in</tt>. The parameter is used
+              only to pass values in to the operation.</p></li><li><p><tt class="literal">out</tt>. The parameter is used
               only to pass values back from the
-              operation.</p></li><li><p><tt>return</tt>. The parameter is a
-              return result from the call.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is nothing to stop you declaring more than
+              operation.</p></li><li><p><tt class="literal">return</tt>. The parameter is a
+              return result from the call.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is nothing to stop you declaring more than
               one return parameter (some programming languages support this
               concept), but all except the first appear in the list of
               parameters passed in on the diagram, which is
-              confusing.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>The name of the return parameter does not appear on
+              confusing.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>The name of the return parameter does not appear on
               the diagram, but it is convenient to give it an appropriate
-              name (such as the default <tt>return</tt> to
+              name (such as the default <tt class="literal">return</tt> to
               identify it in the list of parameters on the operation
-              property tab.</p></td></tr></table></div></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.7. Operation&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.9. Signal</td></tr></table></div></body></html>
+              property tab.</p></td></tr></table></div></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.7.&nbsp;Operation&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.9.&nbsp;Signal</td></tr></table></div></body></html>

@@ -1,175 +1,166 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>16.7. Operation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter 16. ArgoUML Class Diagram Artifact Reference"><link rel="previous" href="ch16s06.html" title="16.6. Attribute"><link rel="next" href="ch16s08.html" title="16.8. Parameter"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.7. Operation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 16. ArgoUML Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s08.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.operation"></a>16.7. Operation</h2></div></div><p>Operation is a service that can be requested from an object to effect
+   <title>16.7.&nbsp;Operation</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch16.html" title="Chapter&nbsp;16.&nbsp;ArgoUML Class Diagram Artifact Reference"><link rel="previous" href="ch16s06.html" title="16.6.&nbsp;Attribute"><link rel="next" href="ch16s08.html" title="16.8.&nbsp;Parameter"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">16.7.&nbsp;Operation</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;16.&nbsp;ArgoUML Class Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch16s08.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.operation"></a>16.7.&nbsp;Operation</h2></div></div><div></div></div><p>Operation is a service that can be requested from an object to effect
       behavior. In the UML metamodel it is a sub-class of
-      <tt>BehavioralFeature</tt> which is itself a sub-class of
-      <tt>Feature</tt>.</p><p>An operation is represented on a single line within the operation
-      compartment of the class. Its syntax is as follows:</p><blockquote class="blockquote"><p><span class="emphasis"><i>visibility</i></span>
-      [<tt>static</tt>] [<tt>final</tt>]
-      <span class="emphasis"><i>operationName</i></span> <tt>(</tt>
-      [<span class="emphasis"><i>argumentDeclaration</i></span> [,
-      <span class="emphasis"><i>argumentDeclaration</i></span>]*] <tt>:</tt>
-      <span class="emphasis"><i>returnType</i></span></p></blockquote><p><span class="emphasis"><i>visibility</i></span> is <tt>+</tt>,
-      <tt>#</tt> or <tt>-</tt> corresponding to
-      <tt>public</tt>, <tt>protected</tt> or
-      <tt>private</tt> visibility respectively.</p><p><tt>static</tt> and <tt>final</tt> optionally
+      <tt class="literal">BehavioralFeature</tt> which is itself a sub-class of
+      <tt class="literal">Feature</tt>.</p><p>An operation is represented on a single line within the operation
+      compartment of the class. Its syntax is as follows:</p><div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>visibility</em></span>
+      [<tt class="literal">static</tt>] [<tt class="literal">final</tt>]
+      <span class="emphasis"><em>operationName</em></span> <tt class="literal">(</tt>
+      [<span class="emphasis"><em>argumentDeclaration</em></span> [,
+      <span class="emphasis"><em>argumentDeclaration</em></span>]*] <tt class="literal">:</tt>
+      <span class="emphasis"><em>returnType</em></span></p></blockquote></div><p><span class="emphasis"><em>visibility</em></span> is <tt class="literal">+</tt>,
+      <tt class="literal">#</tt> or <tt class="literal">-</tt> corresponding to
+      <tt class="literal">public</tt>, <tt class="literal">protected</tt> or
+      <tt class="literal">private</tt> visibility respectively.</p><p><tt class="literal">static</tt> and <tt class="literal">final</tt> optionally
       appear if the operation has those modifiers</p><p>In addition any operation declared static will have its whole entry
-      underlined on the diagram.</p><p><span class="emphasis"><i>operationName</i></span> is the name of the operation
-      actually being declared.</p><p>There may be zero or more <span class="emphasis"><i>argumentDeclarations</i></span>
-      separated by commas. An <span class="emphasis"><i>argumentDeclaration</i></span> is a
-      pair of the form:</p><blockquote class="blockquote"><p><span class="emphasis"><i>name</i></span> <tt>:</tt>
-      <span class="emphasis"><i>type</i></span></p></blockquote><p><span class="emphasis"><i>returnType</i></span> is the type (UML datatype, class or
+      underlined on the diagram.</p><p><span class="emphasis"><em>operationName</em></span> is the name of the operation
+      actually being declared.</p><p>There may be zero or more <span class="emphasis"><em>argumentDeclarations</em></span>
+      separated by commas. An <span class="emphasis"><em>argumentDeclaration</em></span> is a
+      pair of the form:</p><div class="blockquote"><blockquote class="blockquote"><p><span class="emphasis"><em>name</em></span> <tt class="literal">:</tt>
+      <span class="emphasis"><em>type</em></span></p></blockquote></div><p><span class="emphasis"><em>returnType</em></span> is the type (UML datatype, class or
       interface) of the result returned.</p><p>Finally the whole entry is shown in italics if the operation is
-      declared abstract.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e19202"></a>16.7.1. Operation Details Tabs</h3></div></div><p>The details tabs that are active for operations are as
-        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch16s07.html#s2.ref.operation_property_toolbar" title="16.7.2. Operation Property Toolbar">Section 16.7.2</a> and <a href="ch16s07.html#s2.ref.operation_property_fields" title="16.7.3. Property Fields For Operation">Section 16.7.3</a>
-            below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
+      declared abstract.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e18633"></a>16.7.1.&nbsp;Operation Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for operations are as
+        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch16s07.html#s2.ref.operation_property_toolbar" title="16.7.2.&nbsp;Operation Property Toolbar">Section&nbsp;16.7.2, &#8220;Operation Property Toolbar&#8221;</a> and <a href="ch16s07.html#s2.ref.operation_property_fields" title="16.7.3.&nbsp;Property Fields For Operation">Section&nbsp;16.7.3, &#8220;Property Fields For Operation&#8221;</a>
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab, but relating to the owning class,
             rather than the operation. The tick boxes,
-            <tt>Attributes</tt> and <tt>Operations</tt>
+            <tt class="literal">Attributes</tt> and <tt class="literal">Operations</tt>
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
-            <tt>Bounds:</tt> field defines the bounding box for
-            the package on the diagram.</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
-            operation.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>final</tt> modifier is ignored
+            <tt class="literal">Bounds:</tt> field defines the bounding box for
+            the package on the diagram.</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab. This contains a declaration for the
+            operation.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt class="literal">final</tt> modifier is ignored
             and will not appear in the source
-            declaration.</p></td></tr></table></div></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt>Operation</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt>Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt>Operation</tt> has the following standard tagged
-            values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>semantics</tt>. The value is a
+            declaration.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
+            defined for <tt class="literal">Operation</tt> within the UML
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            <tt class="literal">Operation</tt> has the following standard tagged
+            values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">semantics</tt>. The value is a
                 specification of the semantics of the
-                operation.</p></li><li><p><tt>derived</tt> (from the
-                superclass, <tt>ModelElement</tt>). Values
-                <tt>true</tt>, meaning the operation is
+                operation.</p></li><li><p><tt class="literal">derived</tt> (from the
+                superclass, <tt class="literal">ModelElement</tt>). Values
+                <tt class="literal">true</tt>, meaning the operation is
                 redundant&#8212;it can be formally derived from other
-                elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived operations still have their value in
+                elements, or <tt class="literal">false</tt> meaning it
+                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived operations still have their value in
                 analysis to introduce useful names or concepts, and in
-                design to avoid re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                design to avoid re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
               which all other artifacts are derived includes the tagged
-              element <tt>documentation</tt> which is handled by
-              the <span class="emphasis"><i>documentation tab</i></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.operation_property_toolbar"></a>16.7.2. Operation Property Toolbar</h3></div></div><div class="variablelist"><dl><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="center"></span> <tt>Go
+              element <tt class="literal">documentation</tt> which is handled by
+              the <span class="emphasis"><em>documentation tab</em></span> under
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.operation_property_toolbar"></a>16.7.2.&nbsp;Operation Property Toolbar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
-            structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
-            back</tt></span></dt><dd><p>Navigate back to the previous
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
-            forward</tt></span></dt><dd><p>Navigate forward to the next
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
-            and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/operation.gif" align="center"></span> <tt>New
+            structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/operation.gif" align="middle"></span></span> <tt class="literal">New
             operation</tt></span></dt><dd><p>This creates a new operation within the owning class
               of the current operation, navigating immediately to the
-              properties tab for that operation.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a very convenient way to add a number of
+              properties tab for that operation.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a very convenient way to add a number of
             operations, one after the other, to a
-            class.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/parameter.gif" align="center"></span> <tt>Add
+            class.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/parameter.gif" align="middle"></span></span> <tt class="literal">Add
             parameter</tt></span></dt><dd><p>This creates a new parameter for the operation,
             navigating immediately to the properties tab for that
-            parameter.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
-            <tt>Delete</tt></span></dt><dd><p>This deletes the operation from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
-            <span class="emphasis"><i>not</i></span> just the diagram. Since operations
+            parameter.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span>
+            <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the operation from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
+            <span class="emphasis"><em>not</em></span> just the diagram. Since operations
             have no meaning independent of their owning class, it makes no
-            sense to delete them just from the model. If desired the whole
+sense to delete them just from the diagram.
+If desired the whole
             operation compartment can be hidden on the diagram using the
-            <span class="emphasis"><i>style</i></span> tab (see <a href="ch16s07.html#s2.ref.operation_property_toolbar" title="16.7.2. Operation Property Toolbar">Section 16.7.2</a>) or the
+            <span class="emphasis"><em>style</em></span> tab (see <a href="ch16s07.html#s2.ref.operation_property_toolbar" title="16.7.2.&nbsp;Operation Property Toolbar">Section&nbsp;16.7.2, &#8220;Operation Property Toolbar&#8221;</a>) or the
             button&nbsp;2 pop up menu for the class on the
-            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.operation_property_fields"></a>16.7.3. Property Fields For Operation</h3></div></div><div class="variablelist"><dl><dt><span class="term"><tt>Name</tt></span></dt><dd><p>Text box. The name of the operation. The name of an
+            diagram.</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.operation_property_fields"></a>16.7.3.&nbsp;Property Fields For Operation</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the operation. The name of an
             operation has a leading lower case letter, with words separated
-            by &#8220;bumpy caps&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics will complain about operation
+            by &#8220;<span class="quote">bumpy caps</span>&#8221;.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The ArgoUML critics will complain about operation
             names that do not have an initial
-            lower case letter.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>If you wish to follow the Java convention of
+            lower case letter.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>If you wish to follow the Java convention of
             constructors having the same name as the class, you will
             violate this rule. Remove the critic using the to-do tab (see
-            <a href="ch10s03.html" title="10.3. To Do Item Tab">Section 10.3</a>).</p></td></tr></table></div></dd><dt><span class="term"><tt>Stereotype</tt></span></dt><dd><p>Drop down selector. There are two UML standard
-            stereotypes for <tt>Operation</tt> (from the parent
-            metaclass, <tt>BehavioralFeature</tt>),
-            <tt>create</tt> and
-            <tt>destroy</tt>. ArgoUML provides the additional
-            stereotypes, <tt>machine</tt>,
-            <tt>organization</tt> and <tt>person</tt>,
-            and rather strangely <tt>realize</tt> (a stereotype
-            of <tt>Abstraction</tt>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>You should use <tt>create</tt> as the
-            stereotype for constructors, and <tt>destroy</tt> for
-            destructors (or finalize methods under Java).</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides the stereotype
-            <tt>realize</tt> for operations. This appears to be
+            <a href="ch10s03.html" title="10.3.&nbsp;To Do Item Tab">Section&nbsp;10.3, &#8220;To Do Item Tab&#8221;</a>).</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. There are two UML standard
+            stereotypes for <tt class="literal">Operation</tt> (from the parent
+            metaclass, <tt class="literal">BehavioralFeature</tt>),
+            <tt class="literal">create</tt> and
+            <tt class="literal">destroy</tt>. ArgoUML provides the additional
+            stereotypes, <tt class="literal">machine</tt>,
+            <tt class="literal">organization</tt> and <tt class="literal">person</tt>,
+            and rather strangely <tt class="literal">realize</tt> (a stereotype
+            of <tt class="literal">Abstraction</tt>).</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>You should use <tt class="literal">create</tt> as the
+            stereotype for constructors, and <tt class="literal">destroy</tt> for
+            destructors (or finalize methods under Java).</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML provides the stereotype
+            <tt class="literal">realize</tt> for operations. This appears to be
             an error, since this stereotype properly belongs to the
-            <tt>Abstraction</tt>
-            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+            <tt class="literal">Abstraction</tt>
+            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Owner</tt></span></dt><dd><p>Text box. Records the class which contains this
+              stereotype property panel (see <a href="ch16s04.html" title="16.4.&nbsp;Stereotype">Section&nbsp;16.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Owner</tt></span></dt><dd><p>Text box. Records the class which contains this
             operation.</p><p>Button&nbsp;1 click on the entry will navigate to the
             class. Button&nbsp;2 click provides a pop up menu with a single
-            entry, <tt>Open</tt>, which will also navigate to the
-            class.</p></dd><dt><span class="term"><tt>Visibility</tt></span></dt><dd><p>Radio box, with entries <tt>public</tt>,
-            <tt>protected</tt> and
-            <tt>private</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>public</tt>. The operation is
+            entry, <tt class="literal">Open</tt>, which will also navigate to the
+            class.</p></dd><dt><span class="term"><tt class="literal">Visibility</tt></span></dt><dd><p>Radio box, with entries <tt class="literal">public</tt>,
+            <tt class="literal">protected</tt> and
+            <tt class="literal">private</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">public</tt>. The operation is
               available to any artifact that can see the owning
-              class.</p></li><li><p><tt>protected</tt>. The operation is
+              class.</p></li><li><p><tt class="literal">protected</tt>. The operation is
               available only to the owning class, or artifacts that are
-              subclasses of the owning class.</p></li><li><p><tt>private</tt>. The operation is
+              subclasses of the owning class.</p></li><li><p><tt class="literal">private</tt>. The operation is
               available only to the owning class (and any inner
-              classes).</p></li></ul></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box, with entries <tt>abstract</tt>,
-            <tt>final</tt>, <tt>root</tt>,
-            <tt>query</tt> and <tt>static</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>abstract</tt>. This operation has
+              classes).</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Modifiers</tt></span></dt><dd><p>Check box, with entries <tt class="literal">abstract</tt>,
+            <tt class="literal">final</tt>, <tt class="literal">root</tt>,
+            <tt class="literal">query</tt> and <tt class="literal">static</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">abstract</tt>. This operation has
               no implementation with this class. The implementation must be
-              provided by a subclass.</p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/important.png"></td><th>Important</th></tr><tr><td colspan="2" align="left" valign="top"><p>Any class with an abstract operation must
-              itself be declared abstract.</p></td></tr></table></div></li><li><p><tt>final</tt>The implementation of
+              provided by a subclass.</p><div class="important" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Important"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Important]" src="images/important.png"></td><th align="left">Important</th></tr><tr><td colspan="2" align="left" valign="top"><p>Any class with an abstract operation must
+              itself be declared abstract.</p></td></tr></table></div></li><li><p><tt class="literal">final</tt>The implementation of
               this operation must not be overridden by any
-              subclass.</p></li><li><p><tt>root</tt>. The declaration of
+              subclass.</p></li><li><p><tt class="literal">root</tt>. The declaration of
               this operation must not override a declaration of the
-              operation from a superclass.</p></li><li><p><tt>query</tt>. This indicates that
+              operation from a superclass.</p></li><li><p><tt class="literal">query</tt>. This indicates that
               the operation must have no side effects (i.e. it must not
               change the state of the system). It can only return a
-              value.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Operations for user defined datatypes must
-              always check this modifier.</p></td></tr></table></div></li><li><p><tt>static</tt>. There is only one
+              value.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Operations for user defined datatypes must
+              always check this modifier.</p></td></tr></table></div></li><li><p><tt class="literal">static</tt>. There is only one
               instance of this operation associated with the class (as
               opposed to one for each instance of the class). This is the
-              <tt>OwnerScope</tt> attribute of a
-              <tt>Feature</tt> metaclass within UML. Any
+              <tt class="literal">OwnerScope</tt> attribute of a
+              <tt class="literal">Feature</tt> metaclass within UML. Any
               operation declared static is shown underlined on the class
-              diagram.</p></li></ul></div></dd><dt><span class="term"><tt>Concurrency</tt></span></dt><dd><p>Radio box, with entries
-            <tt>sequential</tt>, <tt>synchronized</tt>
-            and <tt>concurrent</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>sequential</tt>. Only one call to
+              diagram.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Concurrency</tt></span></dt><dd><p>Radio box, with entries
+            <tt class="literal">sequential</tt>, <tt class="literal">synchronized</tt>
+            and <tt class="literal">concurrent</tt>.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">sequential</tt>. Only one call to
               an instance (of the class with the operation) may be
               outstanding at any one time. There is no protection, and no
               guarantee of behavior if the system violates this
-              rule.</p></li><li><p><tt>synchronized</tt>. Multiple calls
+              rule.</p></li><li><p><tt class="literal">synchronized</tt>. Multiple calls
               to one instance are allowed, but only one may execute at a
               time. The others are blocked. In the UML&nbsp;1.3 standard
               this form of concurrency is known as
-              <tt>guarded</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is up to the system designer to ensure
+              <tt class="literal">guarded</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>It is up to the system designer to ensure
               deadlock cannot occur. It is the responsibility of the
               operation to implement the blocking behavior (as opposed to
-              the system).</p></td></tr></table></div></li><li><p><tt>concurrent</tt>. Multiple calls
+              the system).</p></td></tr></table></div></li><li><p><tt class="literal">concurrent</tt>. Multiple calls
               to one instance may execute at the same time. The operation
               is responsible for ensuring correct behavior. This must be
               managed even if there are other sequential or synchronized
-              (guarded) operations executing at the time.</p></li></ul></div></dd><dt><span class="term"><tt>Parameter</tt></span></dt><dd><p>Text area, with entries for all the parameters of
-            the operation (see <a href="ch16s08.html" title="16.8. Parameter">Section 16.8</a>). A new
+              (guarded) operations executing at the time.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Parameter</tt></span></dt><dd><p>Text area, with entries for all the parameters of
+            the operation (see <a href="ch16s08.html" title="16.8.&nbsp;Parameter">Section&nbsp;16.8, &#8220;Parameter&#8221;</a>). A new
             operation is always created with one new parameter,
-            <tt>return</tt> to define the return type of the
+            <tt class="literal">return</tt> to define the return type of the
             operation.</p><p>Button&nbsp;1 click on any of the parameters
             navigates to that parameter. button&nbsp;2 click brings up a pop up
-            menu with four entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected parameter.</p></li><li><p><tt>Add</tt>. Create a new parameter
-              and navigate to it.</p></li><li><p><tt>Move Up</tt>. Only available where
+            menu with four entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected parameter.</p></li><li><p><tt class="literal">Add</tt>. Create a new parameter
+              and navigate to it.</p></li><li><p><tt class="literal">Move Up</tt>. Only available where
               there are two or more parameters, and the parameter selected is
-              not at the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              not at the top. It is moved up one.</p></li><li><p><tt class="literal">Move Down</tt>. Only available where
               there are two or more parameters listed, and the parameter
               selected is not at the bottom. It is moved down
-              one.</p></li></ul></div></dd><dt><span class="term"><tt>Raised Signals</tt></span></dt><dd><p>Text area, with entries for all the signals (see
-            <a href="ch16s09.html" title="16.9. Signal">Section 16.9</a>) that can be raised by the
-            operation.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML at present has limited support for
+              one.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Raised Signals</tt></span></dt><dd><p>Text area, with entries for all the signals (see
+            <a href="ch16s09.html" title="16.9.&nbsp;Signal">Section&nbsp;16.9, &#8220;Signal&#8221;</a>) that can be raised by the
+            operation.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML at present has limited support for
             signals. In particular they are not linked to signal events
             that could drive state machines.</p></td></tr></table></div><p>Button&nbsp;1 click on any of the parameters
             navigates to that parameter. button&nbsp;2 click brings up a pop up
-            menu with four entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected signal.</p></li><li><p><tt>Add</tt>. Create a new signal
-              and navigate to it.</p></li><li><p><tt>Move Up</tt>. Only available where
+            menu with four entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected signal.</p></li><li><p><tt class="literal">Add</tt>. Create a new signal
+              and navigate to it.</p></li><li><p><tt class="literal">Move Up</tt>. Only available where
               there are two or more signals, and the signal selected is not at
-              the top. It is moved up one.</p></li><li><p><tt>Move Down</tt>. Only available where
+              the top. It is moved up one.</p></li><li><p><tt class="literal">Move Down</tt>. Only available where
               there are two or more signals listed, and the signal selected is
-              not at the bottom. It is moved down one.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.6. Attribute&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.8. Parameter</td></tr></table></div></body></html>
+              not at the bottom. It is moved down one.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch16s06.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch16.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch16s08.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">16.6.&nbsp;Attribute&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;16.8.&nbsp;Parameter</td></tr></table></div></body></html>

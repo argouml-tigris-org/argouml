@@ -1,87 +1,87 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>20.2. Action State</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter 20. ArgoUML Activity Diagram Artifact Reference"><link rel="previous" href="ch20.html" title="Chapter 20. ArgoUML Activity Diagram Artifact Reference"><link rel="next" href="ch20s03.html" title="20.3. Action"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2. Action State</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 20. ArgoUML Activity Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e27902"></a>20.2. Action State</h2></div></div><p>An action state represents execution of an atomic action, usually the
+   <title>20.2.&nbsp;Action State</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch20.html" title="Chapter&nbsp;20.&nbsp;ArgoUML Activity Diagram Artifact Reference"><link rel="previous" href="ch20.html" title="Chapter&nbsp;20.&nbsp;ArgoUML Activity Diagram Artifact Reference"><link rel="next" href="ch20s03.html" title="20.3.&nbsp;Action"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">20.2.&nbsp;Action State</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;20.&nbsp;ArgoUML Activity Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e27126"></a>20.2.&nbsp;Action State</h2></div></div><div></div></div><p>An action state represents execution of an atomic action, usually the
       invocation of an action. Within the UML metamodel,
-      <tt>ActionState</tt> is a sub-class of 
-      <tt>SimpleState</tt>. It is a specialized simple state that
+      <tt class="literal">ActionState</tt> is a sub-class of 
+      <tt class="literal">SimpleState</tt>. It is a specialized simple state that
       only has an entry action, and with an implicit trigger as soon as that
-      action is completed.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>As a consequence any outgoing transitions from an action
+      action is completed.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>As a consequence any outgoing transitions from an action
       state should not have explicit triggers defined (ArgoUML will not
       currently check for this). They may have guards to provide a choice where
       there is more than one transition.</p></td></tr></table></div><p>An action state is represented on an activity diagram in ArgoUML as
       a rectangle with rounded corners containing the name of the action
-      state.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML standard expects that the activity diagram should
+      state.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML standard expects that the activity diagram should
       contain the expression associated with the entry action, rather than the
-      action state name.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e27922"></a>20.2.1. Action State Details Tabs</h3></div></div><p>The details tabs that are active for action states are as
-        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch20s02.html#s2.ref.action_state_property_toolbar" title="20.2.2. Action State Property ToolBar">Section 20.2.2</a> and <a href="ch20s02.html#s2.ref.action_state_property_fields" title="20.2.3. Property fields for action state">Section 20.2.3</a>
-            below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
+      action state name.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e27146"></a>20.2.1.&nbsp;Action State Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for action states are as
+        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch20s02.html#s2.ref.action_state_property_toolbar" title="20.2.2.&nbsp;Action State Property ToolBar">Section&nbsp;20.2.2, &#8220;Action State Property ToolBar&#8221;</a> and <a href="ch20s02.html#s2.ref.action_state_property_fields" title="20.2.3.&nbsp;Property fields for action state">Section&nbsp;20.2.3, &#8220;Property fields for action state&#8221;</a>
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             action state define the bounding box of the action
-            state.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>Shadow</tt> field has no
+            state.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt class="literal">Shadow</tt> field has no
             effect&#8212; in the current release of ArgoUML. There are no
             shadow effects provided for action states on the
-            diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab that is empty.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain code to
+            diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab that is empty.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain code to
             implement the action state (code for actions will be associated
             with the particular actions). This is not implemented in the
-            current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt>ActionState</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt>Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt>ActionState</tt> has the following standard
-            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>derived</tt> (from the
-                superclass, <tt>ModelElement</tt>). Values
-                <tt>true</tt>, meaning the action state is
+            current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
+            defined for <tt class="literal">ActionState</tt> within the UML
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            <tt class="literal">ActionState</tt> has the following standard
+            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
+                superclass, <tt class="literal">ModelElement</tt>). Values
+                <tt class="literal">true</tt>, meaning the action state is
                 redundant&#8212;it can be formally derived from other
-                elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived action states still have their value in
+                elements, or <tt class="literal">false</tt> meaning it
+                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived action states still have their value in
                 analysis and design to introduce useful names or concepts,
                 and in design to avoid
-                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
               which all other artifacts are derived includes the tagged
-              element <tt>documentation</tt> which is handled by
-              the <span class="emphasis"><i>documentation tab</i></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.action_state_property_toolbar"></a>20.2.2. Action State Property ToolBar</h3></div></div><div class="variablelist"><dl><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="center"></span> <tt>Go
+              element <tt class="literal">documentation</tt> which is handled by
+              the <span class="emphasis"><em>documentation tab</em></span> under
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.action_state_property_toolbar"></a>20.2.2.&nbsp;Action State Property ToolBar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
-            structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
+            structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="middle"></span></span> <tt class="literal">Go
             back</tt></span></dt><dd><p>Navigate back to the previous
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="middle"></span></span> <tt class="literal">Go
             forward</tt></span></dt><dd><p>Navigate forward to the next
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
-            <tt>Delete</tt></span></dt><dd><p>This deletes the action state from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
-            <span class="emphasis"><i>not</i></span> just the diagram. To delete an
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span>
+            <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the action state from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
+            <span class="emphasis"><em>not</em></span> just the diagram. To delete an
             action state from the diagram, but keep it within the model, use
-            the main menu <tt>Edit/Remove From Diagram</tt>
-            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.action_state_property_fields"></a>20.2.3. Property fields for action state</h3></div></div><div class="variablelist"><dl><dt><span class="term"><tt>Name</tt></span></dt><dd><p>Text box. The name of the action state. By
+            the main menu <tt class="literal">Edit/Remove From Diagram</tt>
+            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.action_state_property_fields"></a>20.2.3.&nbsp;Property fields for action state</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the action state. By
             convention action state names start with a lower case letter
-            and use bumpy caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
-            convention.</p></td></tr></table></div></dd><dt><span class="term"><tt>Stereotype</tt></span></dt><dd><p>Drop down selector. Action state has no stereotypes
+            and use bumpy caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
+            convention.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. Action state has no stereotypes
             by default in the UML standard, but ArgoUML provides the
-            stereotypes, <tt>machine</tt>,
-            <tt>organization</tt> and
-            <tt>person</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML also provides the stereotype
-            <tt>realize</tt> for action states. This appears to
+            stereotypes, <tt class="literal">machine</tt>,
+            <tt class="literal">organization</tt> and
+            <tt class="literal">person</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML also provides the stereotype
+            <tt class="literal">realize</tt> for action states. This appears to
             be an error, since this stereotype properly belongs to the
-            <tt>Abstraction</tt>
-            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+            <tt class="literal">Abstraction</tt>
+            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Entry-Action</tt></span></dt><dd><p>Text box. Lists the action (if any) to be invoked on
+              stereotype property panel (see <a href="ch16s04.html" title="16.4.&nbsp;Stereotype">Section&nbsp;16.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Entry-Action</tt></span></dt><dd><p>Text box. Lists the action (if any) to be invoked on
             entry to this action state.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected action.</p></li><li><p><tt>Delete</tt>. Delete the selected
-              action.</p></li><li><p><tt>Add</tt>. Add a new
-              action.</p></li></ul></div></dd><dt><span class="term"><tt>Modifiers</tt></span></dt><dd><p>Check box. Indicates whether the action state's
+            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected action.</p></li><li><p><tt class="literal">Delete</tt>. Delete the selected
+              action.</p></li><li><p><tt class="literal">Add</tt>. Add a new
+              action.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Modifiers</tt></span></dt><dd><p>Check box. Indicates whether the action state's
             actions may be executed concurrently if there are parallel
-            executions invoked.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This field is of limited value in the current
+            executions invoked.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>This field is of limited value in the current
             release of ArgoUML in the absence of fields specifying
             dynamic arguments and dynamic
-            multiplicity.</p></td></tr></table></div></dd><dt><span class="term"><tt>Incoming</tt></span></dt><dd><p>Text area. Lists the transitions that enter this
-            action state.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike an ordinary state, internal transitions are
+            multiplicity.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Incoming</tt></span></dt><dd><p>Text area. Lists the transitions that enter this
+            action state.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike an ordinary state, internal transitions are
             not permitted for action states.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt>Outgoing</tt></span></dt><dd><p>Text area. Lists the transitions that leave this
-            action state.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike an ordinary state, internal transitions are
+            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Outgoing</tt></span></dt><dd><p>Text area. Lists the transitions that leave this
+            action state.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike an ordinary state, internal transitions are
             not permitted for action states.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the selected action, button&nbsp;2
-            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter 20. ArgoUML Activity Diagram Artifact Reference&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;20.3. Action</td></tr></table></div></body></html>
+            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch20.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch20.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch20s03.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">Chapter&nbsp;20.&nbsp;ArgoUML Activity Diagram Artifact Reference&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;20.3.&nbsp;Action</td></tr></table></div></body></html>

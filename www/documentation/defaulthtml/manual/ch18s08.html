@@ -1,76 +1,76 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>18.8. Pseudostate</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch18.html" title="Chapter 18. ArgoUML State Diagram Artifact Reference"><link rel="previous" href="ch18s07.html" title="18.7. Guard"><link rel="next" href="ch18s09.html" title="18.9. Initial State"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">18.8. Pseudostate</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 18. ArgoUML State Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch18s09.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.pseudostate"></a>18.8. Pseudostate</h2></div></div><p>A pseudostate encompasses a number of different transient vertices on
+   <title>18.8.&nbsp;Pseudostate</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch18.html" title="Chapter&nbsp;18.&nbsp;ArgoUML State Diagram Artifact Reference"><link rel="previous" href="ch18s07.html" title="18.7.&nbsp;Guard"><link rel="next" href="ch18s09.html" title="18.9.&nbsp;Initial State"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">18.8.&nbsp;Pseudostate</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;18.&nbsp;ArgoUML State Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch18s09.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.pseudostate"></a>18.8.&nbsp;Pseudostate</h2></div></div><div></div></div><p>A pseudostate encompasses a number of different transient vertices on
       a state machine diagram. They do not have the properties of a full state
       and serve only as a connection point for transactions (but with some
       semantic value). Within the
-      UML metamodel, <tt>Pseudostate</tt> is a sub-class of
-      <tt>StateVertex</tt>.</p><p>The representation of a pseudostate on a state diagram in ArgoUML
+      UML metamodel, <tt class="literal">Pseudostate</tt> is a sub-class of
+      <tt class="literal">StateVertex</tt>.</p><p>The representation of a pseudostate on a state diagram in ArgoUML
       depends on the particular type of pseudostate: initial, deepHistory,
       shallowHistory, join, fork, junction and choice. ArgoUML does not allow
       you to place a pseudostate directly, but only through tools for the
       specific types of pseudostate. These are described in separate sections
       below (see
-      <a href="ch18s09.html" title="18.9. Initial State">Section 18.9</a>,
-      <a href="ch18s11.html" title="18.11. Branch">Section 18.11</a>,
-      <a href="ch18s12.html" title="18.12. Fork">Section 18.12</a>,
-      <a href="ch18s13.html" title="18.13. Join">Section 18.13</a>,
-      <a href="ch18s14.html" title="18.14. Shallow History">Section 18.14</a> and
-      <a href="ch18s15.html" title="18.15. Deep History">Section 18.15</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The current release of ArgoUML does not provide support
-      for a junction pseudostate.</p></td></tr></table></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e25596"></a>18.8.1. Pseudostate Details Tabs</h3></div></div><p>The details tabs that are active for pseudostates are as
-        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch18s08.html#s2.ref.pseudostate_property_toolbar" title="18.8.2. Pseudostate Property Toolbar">Section 18.8.2</a> and <a href="ch18s08.html#s2.ref.pseudostate_property_fields" title="18.8.3. Property Fields For Pseudostate">Section 18.8.3</a>
-            below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt>Shadow</tt> field has no
+      <a href="ch18s09.html" title="18.9.&nbsp;Initial State">Section&nbsp;18.9, &#8220;Initial State&#8221;</a>,
+      <a href="ch18s11.html" title="18.11.&nbsp;Branch">Section&nbsp;18.11, &#8220;Branch&#8221;</a>,
+      <a href="ch18s12.html" title="18.12.&nbsp;Fork">Section&nbsp;18.12, &#8220;Fork&#8221;</a>,
+      <a href="ch18s13.html" title="18.13.&nbsp;Join">Section&nbsp;18.13, &#8220;Join&#8221;</a>,
+      <a href="ch18s14.html" title="18.14.&nbsp;Shallow History">Section&nbsp;18.14, &#8220;Shallow History&#8221;</a> and
+      <a href="ch18s15.html" title="18.15.&nbsp;Deep History (to be improved...)">Section&nbsp;18.15, &#8220;Deep History (to be improved...)&#8221;</a>).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The current release of ArgoUML does not provide support
+      for a junction pseudostate.</p></td></tr></table></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e24811"></a>18.8.1.&nbsp;Pseudostate Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for pseudostates are as
+        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch18s08.html#s2.ref.pseudostate_property_toolbar" title="18.8.2.&nbsp;Pseudostate Property Toolbar">Section&nbsp;18.8.2, &#8220;Pseudostate Property Toolbar&#8221;</a> and <a href="ch18s08.html#s2.ref.pseudostate_property_fields" title="18.8.3.&nbsp;Property Fields For Pseudostate">Section&nbsp;18.8.3, &#8220;Property Fields For Pseudostate&#8221;</a>
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The <tt class="literal">Shadow</tt> field has no
             effect&#8212; in the current release of ArgoUML. There are no
             shadow effects provided for states on the
-            diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, containing just the name of the
-            pseudostate.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain any
+            diagram.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, containing just the name of the
+            pseudostate.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain any
             code to implement the pseudostate. This is not implemented in
-            the current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt>Pseudostate</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt>Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt>Pseudostate</tt> has the following standard
-            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>derived</tt> (from the
-                superclass, <tt>ModelElement</tt>). Values
-                <tt>true</tt>, meaning the pseudostate is
+            the current release of ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
+            defined for <tt class="literal">Pseudostate</tt> within the UML
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            <tt class="literal">Pseudostate</tt> has the following standard
+            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
+                superclass, <tt class="literal">ModelElement</tt>). Values
+                <tt class="literal">true</tt>, meaning the pseudostate is
                 redundant&#8212;it can be formally derived from other
-                elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived pseudostates still have their value in
+                elements, or <tt class="literal">false</tt> meaning it
+                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived pseudostates still have their value in
                 analysis and design to introduce useful names or concepts,
                 and in design to avoid
-                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
               which all other artifacts are derived includes the tagged
-              element <tt>documentation</tt> which is handled by
-              the <span class="emphasis"><i>documentation tab</i></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.pseudostate_property_toolbar"></a>18.8.2. Pseudostate Property Toolbar</h3></div></div><div class="variablelist"><dl><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="center"></span> <tt>Go
+              element <tt class="literal">documentation</tt> which is handled by
+              the <span class="emphasis"><em>documentation tab</em></span> under
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.pseudostate_property_toolbar"></a>18.8.2.&nbsp;Pseudostate Property Toolbar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
-            structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
+            structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="middle"></span></span> <tt class="literal">Go
             back</tt></span></dt><dd><p>Navigate back to the previous
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="middle"></span></span> <tt class="literal">Go
             forward</tt></span></dt><dd><p>Navigate forward to the next
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
-            <tt>Delete</tt></span></dt><dd><p>This deletes the pseudostate from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
-            <span class="emphasis"><i>not</i></span> just the diagram. To delete a
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span>
+            <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the pseudostate from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
+            <span class="emphasis"><em>not</em></span> just the diagram. To delete a
             pseudostate from the diagram, but keep it within the model, use
-            the main menu <tt>Edit/Remove From Diagram</tt>
-            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.pseudostate_property_fields"></a>18.8.3. Property Fields For Pseudostate</h3></div></div><div class="variablelist"><dl><dt><span class="term"><tt>Name</tt></span></dt><dd><p>Text box. The name of the pseudostate. By convention
+            the main menu <tt class="literal">Edit/Remove From Diagram</tt>
+            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.pseudostate_property_fields"></a>18.8.3.&nbsp;Property Fields For Pseudostate</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the pseudostate. By convention
             pseudostate names start with a lower case letter and use bumpy
-            caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
-            convention.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/tip.png"></td><th>Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Pseudostate names are not shown on the diagram and it
+            caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
+            convention.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Pseudostate names are not shown on the diagram and it
             is not usually necessary to give them a
-            name.</p></td></tr></table></div></dd><dt><span class="term"><tt>Kind</tt></span></dt><dd><p>Radio buttons. Radio button indicating the type of
-            pseudostate: <tt>junction</tt>,
-            <tt>branch</tt>, <tt>fork</tt>,
-            <tt>join</tt>, <tt>deep history</tt> and
-            <tt>shallow history</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In ArgoUML these buttons are defined by the type of
+            name.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Kind</tt></span></dt><dd><p>Radio buttons. Radio button indicating the type of
+            pseudostate: <tt class="literal">junction</tt>,
+            <tt class="literal">branch</tt>, <tt class="literal">fork</tt>,
+            <tt class="literal">join</tt>, <tt class="literal">deep history</tt> and
+            <tt class="literal">shallow history</tt>.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In ArgoUML these buttons are defined by the type of
             pseudostate created and cannot be changed. As a consequence
-            they are shown grayed out.</p></td></tr></table></div></dd><dt><span class="term"><tt>Incoming</tt></span></dt><dd><p>Text area. Lists any incoming transitions for the
+            they are shown grayed out.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Incoming</tt></span></dt><dd><p>Text area. Lists any incoming transitions for the
             pseudostate.</p><p>Button&nbsp;1 click navigates to the selected transition,
-            button&nbsp;2 gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt>Outgoing</tt></span></dt><dd><p>Text area. Lists any outgoing transitions for the
+            button&nbsp;2 gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Outgoing</tt></span></dt><dd><p>Text area. Lists any outgoing transitions for the
             pseudostate.</p><p>Button&nbsp;1 click navigates to the selected transition,
-            button&nbsp;2 gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch18s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">18.7. Guard&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;18.9. Initial State</td></tr></table></div></body></html>
+            button&nbsp;2 gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s07.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch18s09.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">18.7.&nbsp;Guard&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;18.9.&nbsp;Initial State</td></tr></table></div></body></html>

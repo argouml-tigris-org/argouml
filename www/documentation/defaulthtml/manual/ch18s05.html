@@ -1,90 +1,91 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>18.5. Transition</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch18.html" title="Chapter 18. ArgoUML State Diagram Artifact Reference"><link rel="previous" href="ch18s04.html" title="18.4. Composite State"><link rel="next" href="ch18s06.html" title="18.6. Call Event"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">18.5. Transition</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 18. ArgoUML State Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch18s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="s1.ref.transition_state"></a>18.5. Transition</h2></div></div><p>A transition is a directed relation between a source state (or
+   <title>18.5.&nbsp;Transition</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch18.html" title="Chapter&nbsp;18.&nbsp;ArgoUML State Diagram Artifact Reference"><link rel="previous" href="ch18s04.html" title="18.4.&nbsp;Composite State"><link rel="next" href="ch18s06.html" title="18.6.&nbsp;Call Event"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">18.5.&nbsp;Transition</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch18s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;18.&nbsp;ArgoUML State Diagram Artifact Reference</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch18s06.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.transition_state"></a>18.5.&nbsp;Transition</h2></div></div><div></div></div><p>A transition is a directed relation between a source state (or
       composite state) and destination state (or composite state). Within the
-      UML metamodel, <tt>Transition</tt> is a sub-class of
-      <tt>ModelElement</tt>.</p><p>A transition is represented on a state diagram in ArgoUML as an
+      UML metamodel, <tt class="literal">Transition</tt> is a sub-class of
+      <tt class="literal">ModelElement</tt>.</p><p>A transition is represented on a state diagram in ArgoUML as an
       arrow connecting the source to the destination state. Alongside the state
       is the name of the transition (if any) separated by a colon
-      (<tt>:</tt>) from the trigger action, any guard in square
-      brackets (<tt>[]</tt>) separated by a slash
-      (<tt>/</tt> from any effect expression.</p><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e24724"></a>18.5.1. Transition Details Tabs</h3></div></div><p>The details tabs that are active for transitions are as
-        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt>ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Properties</tt></span></dt><dd><p>See <a href="ch18s05.html#s2.ref.transition_property_toolbar" title="18.5.2. Transition Property Toolbar">Section 18.5.2</a> and <a href="ch18s05.html#s2.ref.transition_property_fields" title="18.5.3. Property Fields For Transition">Section 18.5.3</a>
-            below.</p></dd><dt><span class="term"><tt>Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt>Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
+      (<tt class="literal">:</tt>) from the trigger action, any guard in square
+      brackets (<tt class="literal">[]</tt>) separated by a slash
+(<tt class="literal">/</tt>) from any effect expression.
+</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e23939"></a>18.5.1.&nbsp;Transition Details Tabs</h3></div></div><div></div></div><p>The details tabs that are active for transitions are as
+        follows.</p><div class="variablelist"><dl><dt><span class="term"><tt class="literal">ToDoItem</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Properties</tt></span></dt><dd><p>See <a href="ch18s05.html#s2.ref.transition_property_toolbar" title="18.5.2.&nbsp;Transition Property Toolbar">Section&nbsp;18.5.2, &#8220;Transition Property Toolbar&#8221;</a> and <a href="ch18s05.html#s2.ref.transition_property_fields" title="18.5.3.&nbsp;Property Fields For Transition">Section&nbsp;18.5.3, &#8220;Property Fields For Transition&#8221;</a>
+            below.</p></dd><dt><span class="term"><tt class="literal">Documentation</tt></span></dt><dd><p>Standard tab.</p></dd><dt><span class="term"><tt class="literal">Style</tt></span></dt><dd><p>Standard tab. The values for the bounds of the
             transition have no effect, since the position of the transition
-            is defined by its end points.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML changing the
+            is defined by its end points.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML changing the
             color of the line does not change the color of the arrow
-            head.</p></td></tr></table></div></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Standard tab, containing just the name of the
+            head.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Standard tab, containing just the name of the
             transition, any guard and any effect in the same format as the
-            diagram.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain any
+            diagram.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the fullness of time this tab will contain any
             code to implement the transition (code for the effect and guard
             will be associated with their artifacts). This is not
             implemented in the current release of
-            ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt>Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
-            defined for <tt>Transition</tt> within the UML
-            metamodel.</p></dd><dt><span class="term"><tt>Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
-            <tt>Transition</tt> has the following standard
-            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>derived</tt> (from the
-                superclass, <tt>ModelElement</tt>). Values
-                <tt>true</tt>, meaning the transition is
+            ArgoUML.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Constraints</tt></span></dt><dd><p>Standard tab. There are no standard constraints
+            defined for <tt class="literal">Transition</tt> within the UML
+            metamodel.</p></dd><dt><span class="term"><tt class="literal">Tagged Values</tt></span></dt><dd><p>Standard tab. In the UML metamodel,
+            <tt class="literal">Transition</tt> has the following standard
+            tagged values defined.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">derived</tt> (from the
+                superclass, <tt class="literal">ModelElement</tt>). Values
+                <tt class="literal">true</tt>, meaning the transition is
                 redundant&#8212;it can be formally derived from other
-                elements, or <tt>false</tt> meaning it
-                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived transitions still have their value in
+                elements, or <tt class="literal">false</tt> meaning it
+                cannot.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Derived transitions still have their value in
                 analysis and design to introduce useful names or concepts,
                 and in design to avoid
-                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt>Element</tt> metaclass from
+                re-computation.</p></td></tr></table></div></li></ul></div><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML <tt class="literal">Element</tt> metaclass from
               which all other artifacts are derived includes the tagged
-              element <tt>documentation</tt> which is handled by
-              the <span class="emphasis"><i>documentation tab</i></span> under
-              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.transition_property_toolbar"></a>18.5.2. Transition Property Toolbar</h3></div></div><div class="variablelist"><dl><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="center"></span> <tt>Go
+              element <tt class="literal">documentation</tt> which is handled by
+              the <span class="emphasis"><em>documentation tab</em></span> under
+              ArgoUML</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.transition_property_toolbar"></a>18.5.2.&nbsp;Transition Property Toolbar</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_up.gif" align="middle"></span></span> <tt class="literal">Go
             up</tt></span></dt><dd><p>Navigate up through the package
-            structure.</p></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="center"></span> <tt>Go
+            structure.</p></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_back.gif" align="middle"></span></span> <tt class="literal">Go
             back</tt></span></dt><dd><p>Navigate back to the previous
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="center"></span> <tt>Go
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_forward.gif" align="middle"></span></span> <tt class="literal">Go
             forward</tt></span></dt><dd><p>Navigate forward to the next
-            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
+            artifact.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This feature is currently broken within ArgoUML
             and there is no guarantee where (if anywhere) this button will
-            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="center"></span>
-            <tt>Delete</tt></span></dt><dd><p>This deletes the transition from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/warning.png"></td><th>Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
-            <span class="emphasis"><i>not</i></span> just the diagram. To delete a
+            take you.</p></td></tr></table></div></dd><dt><span class="term"><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/property_delete.gif" align="middle"></span></span>
+            <tt class="literal">Delete</tt></span></dt><dd><p>This deletes the transition from the model</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a deletion from the model
+            <span class="emphasis"><em>not</em></span> just the diagram. To delete a
             transition from the diagram, but keep it within the model, use
-            the main menu <tt>Edit/Remove From Diagram</tt>
-            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="s2.ref.transition_property_fields"></a>18.5.3. Property Fields For Transition</h3></div></div><div class="variablelist"><dl><dt><span class="term"><tt>Name</tt></span></dt><dd><p>Text box. The name of the transition. By convention
+            the main menu <tt class="literal">Edit/Remove From Diagram</tt>
+            (Ctrl-R).</p></td></tr></table></div></dd></dl></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.transition_property_fields"></a>18.5.3.&nbsp;Property Fields For Transition</h3></div></div><div></div></div><div class="variablelist"><dl><dt><span class="term"><tt class="literal">Name</tt></span></dt><dd><p>Text box. The name of the transition. By convention
             transition names start with a lower case letter and use bumpy
-            caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
-            convention.</p></td></tr></table></div></dd><dt><span class="term"><tt>Stereotype</tt></span></dt><dd><p>Drop down selector. Transition has no stereotypes by
+            caps to divide words within the name.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML does not enforce this naming
+            convention.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Stereotype</tt></span></dt><dd><p>Drop down selector. Transition has no stereotypes by
             default in the UML standard, but ArgoUML provides the
-            stereotypes, <tt>machine</tt>,
-            <tt>organization</tt> and
-            <tt>person</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/caution.png"></td><th>Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML also provides the stereotype
-            <tt>realize</tt> for transitions. This appears to be
+            stereotypes, <tt class="literal">machine</tt>,
+            <tt class="literal">organization</tt> and
+            <tt class="literal">person</tt>.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>ArgoUML also provides the stereotype
+            <tt class="literal">realize</tt> for transitions. This appears to be
             an error, since this stereotype properly belongs to the
-            <tt>Abstraction</tt>
-            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt>Navigate Stereotype</tt></span></dt><dd><p><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="center"></span> icon. If a
+            <tt class="literal">Abstraction</tt>
+            metaclass.</p></td></tr></table></div></dd><dt><span class="term"><tt class="literal">Navigate Stereotype</tt></span></dt><dd><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/navigate_stereotype.gif" align="middle"></span></span> icon. If a
               stereotype has been selected, this will navigate to the
-              stereotype property panel (see <a href="ch16s04.html" title="16.4. Stereotype">Section 16.4</a>).</p></dd><dt><span class="term"><tt>Source</tt></span></dt><dd><p>Text box. Lists the source state for the
+              stereotype property panel (see <a href="ch16s04.html" title="16.4.&nbsp;Stereotype">Section&nbsp;16.4, &#8220;Stereotype&#8221;</a>).</p></dd><dt><span class="term"><tt class="literal">Source</tt></span></dt><dd><p>Text box. Lists the source state for the
             transition.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt>Target</tt></span></dt><dd><p>Text box. Lists the target state for the
+            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Target</tt></span></dt><dd><p>Text box. Lists the target state for the
             transition.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt>Trigger</tt></span></dt><dd><p>Text box. Lists the trigger event (if any) which
-            invokes this transition.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0"><tr><td rowspan="2" align="center" valign="top" width="25"><img src="images/note.png"></td><th>Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML does not require there to be a trigger, if a
+            gives a pop up menu with one entry.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected transition.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Trigger</tt></span></dt><dd><p>Text box. Lists the trigger event (if any) which
+            invokes this transition.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>UML does not require there to be a trigger, if a
             guard is defined. The transition is taken immediately if the
             guard is true.</p></td></tr></table></div><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected event.</p></li><li><p><tt>Delete</tt>. Delete the selected
-              event.</p></li><li><p><tt>Add</tt>. Add a new event. Grayed
-              out if there is already an event defined.</p></li></ul></div></dd><dt><span class="term"><tt>Guard</tt></span></dt><dd><p>Text box. Lists the guard expression (if any) which
+            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected event.</p></li><li><p><tt class="literal">Delete</tt>. Delete the selected
+              event.</p></li><li><p><tt class="literal">Add</tt>. Add a new event. Grayed
+              out if there is already an event defined.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Guard</tt></span></dt><dd><p>Text box. Lists the guard expression (if any) which
             must be true before this transition can be taken.</p><p>Button&nbsp;1 click navigates to the selected entry, button&nbsp;2
-            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected guard.</p></li><li><p><tt>Delete</tt>. Delete the selected
-              guard.</p></li><li><p><tt>Add</tt>. Add a new guard. Grayed
-              out if there is already a guard defined.</p></li></ul></div></dd><dt><span class="term"><tt>Effect</tt></span></dt><dd><p>Text box. Lists the action (if any) to be invoked as
+            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected guard.</p></li><li><p><tt class="literal">Delete</tt>. Delete the selected
+              guard.</p></li><li><p><tt class="literal">Add</tt>. Add a new guard. Grayed
+              out if there is already a guard defined.</p></li></ul></div></dd><dt><span class="term"><tt class="literal">Effect</tt></span></dt><dd><p>Text box. Lists the action (if any) to be invoked as
             this transition is taken.</p><p>Button&nbsp;1 click navigates to the selected action, button&nbsp;2
-            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt>Open</tt>. Navigate to the
-              selected action.</p></li><li><p><tt>Delete</tt>. Delete the selected
-              action.</p></li><li><p><tt>Add</tt>. Add a new
-              action.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch18s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">18.4. Composite State&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;18.6. Call Event</td></tr></table></div></body></html>
+            gives a pop up menu with three entries.</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Open</tt>. Navigate to the
+              selected action.</p></li><li><p><tt class="literal">Delete</tt>. Delete the selected
+              action.</p></li><li><p><tt class="literal">Add</tt>. Add a new
+              action.</p></li></ul></div></dd></dl></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch18s04.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch18.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch18s06.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">18.4.&nbsp;Composite State&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;18.6.&nbsp;Call Event</td></tr></table></div></body></html>
