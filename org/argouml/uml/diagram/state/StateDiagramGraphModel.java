@@ -118,7 +118,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all edges going from given port */
     public Vector getOutEdges(Object port) {
 	if (org.argouml.model.ModelFacade.isAStateVertex(port)) {
-	    return new Vector(((MStateVertex) port).getOutgoings());
+	    return new Vector(ModelFacade.getOutgoings(port));
 	}
 	cat.debug("TODO getOutEdges of MState");
 	return new Vector(); //wasteful!
@@ -212,7 +212,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     public void addNodeRelatedEdges(Object node) {
 	if ( org.argouml.model.ModelFacade.isAStateVertex(node) ) {
-	    Vector transen = new Vector(((MStateVertex) node).getOutgoings());
+	    Vector transen = new Vector(ModelFacade.getOutgoings(node));
 	    transen.addAll(ModelFacade.getIncomings(node));
 	    Iterator iter = transen.iterator();
 	    while (iter.hasNext()) {

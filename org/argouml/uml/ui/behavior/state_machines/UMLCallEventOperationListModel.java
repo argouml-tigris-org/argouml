@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MCallEvent;
-
 /**
  * List model for the operation with a callevent. Might be replaced by a 
  * comboboxmodel in the future.
@@ -53,14 +52,14 @@ public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MCallEvent) getTarget()).getOperation());
+        addElement(ModelFacade.getOperation(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return element == ((MCallEvent) getTarget()).getOperation();
+        return element == ModelFacade.getOperation(getTarget());
     }
 
 }
