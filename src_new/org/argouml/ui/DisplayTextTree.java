@@ -42,7 +42,8 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -123,37 +124,37 @@ public class DisplayTextTree extends JTree implements TargetListener {
         //cat.debug("convertValueToText");
 
         // do model elements first
-        if (ModelFacade.getInstance().isAModelElement(value)) {
+        if (FacadeManager.getUmlFacade().isAModelElement(value)) {
 
             String name = null;
 
             // Jeremy Bennett patch
-            if (ModelFacade.getInstance().isATransition(value) 
-                || ModelFacade.getInstance().isAExtensionPoint(value)) {
+            if (FacadeManager.getUmlFacade().isATransition(value) 
+                || FacadeManager.getUmlFacade().isAExtensionPoint(value)) {
                 name = GeneratorDisplay.Generate(value);
             }
             // changing the label in case of comments
             // this is necessary since the name of the comment is the same as
             // the content of the comment causing the total comment to be
             // displayed in the navperspective
-            else if (ModelFacade.getInstance().isAComment(value)) {
-                name = ModelFacade.getInstance().getName(value);
+            else if (FacadeManager.getUmlFacade().isAComment(value)) {
+                name = FacadeManager.getUmlFacade().getName(value);
                 if (name != null && name.length() > 10) {
                     name = name.substring(0, 10) + "...";
                 }
             } else {
-                name = ModelFacade.getInstance().getName(value);
+                name = FacadeManager.getUmlFacade().getName(value);
             }
 
             if (name == null || name.equals("")) {
 
                 name =
-                    "(anon " + ModelFacade.getInstance().getUMLClassName(value) + ")";
+                    "(anon " + FacadeManager.getUmlFacade().getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
-                Object st =  ModelFacade.getInstance().getStereoType(value);
+                Object st =  FacadeManager.getUmlFacade().getStereoType(value);
                 if (st != null) {
                     name += " " + GeneratorDisplay.Generate(st);
                 }
@@ -168,8 +169,8 @@ public class DisplayTextTree extends JTree implements TargetListener {
         if (value instanceof ToDoList) {
             return "ToDoList";
         }
-        if (ModelFacade.getInstance().isATaggedValue(value)) {
-            String tagName = ModelFacade.getInstance().getTagOfTag(value);
+        if (FacadeManager.getUmlFacade().isATaggedValue(value)) {
+            String tagName = FacadeManager.getUmlFacade().getTagOfTag(value);
             if (tagName == null || tagName.equals(""))
                 tagName = "(anon)";
             return ("1-" + tagName);
@@ -294,7 +295,7 @@ public class DisplayTextTree extends JTree implements TargetListener {
             // (it is never displayed in the tree(package parspective)), therefore
             // this method will not work unless we get its statemachine
             // and set that as the 'changed' object.
-            if(ModelFacade.getInstance().isAStateVertex(changed)){
+            if(FacadeManager.getUmlFacade().isAStateVertex(changed)){
                 changed = UmlHelper.getHelper().getStateMachines().getStateMachine(changed);
             }
             

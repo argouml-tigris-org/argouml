@@ -24,7 +24,8 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.TabText;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -45,7 +46,7 @@ public class TabUMLDisplay extends TabText {
     // accessors
 
     protected String genText(Object o) {
-        if (!(ModelFacade.getInstance().isAModelElement(o)))
+        if (!(FacadeManager.getUmlFacade().isAModelElement(o)))
             return "Nothing selected";
         return "This feature is not yet implemented";
     }

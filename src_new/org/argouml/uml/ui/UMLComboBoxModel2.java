@@ -33,7 +33,8 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -310,7 +311,7 @@ public abstract class UMLComboBoxModel2
      */
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.getInstance().isABase(target) || ModelFacade.getInstance().isADiagram(target)) {
+        if (FacadeManager.getUmlFacade().isABase(target) || FacadeManager.getDiagramFacade().isADiagram(target)) {
             if (_target instanceof MBase) {
                 UmlModelEventPump.getPump().removeModelEventListener(
                     this,

@@ -24,7 +24,8 @@
 
 package org.argouml.uml.ui;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -58,7 +59,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     public UMLDiagram createDiagram(Object handle) {
         // a deployment diagram shows something about the whole model according to the uml spec
           handle = ProjectManager.getManager().getCurrentProject().getRoot();   
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
@@ -74,7 +75,7 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
     public boolean isValidNamespace(Object handle) {
         // a deployment diagram shows something about the whole model according to the uml spec
         handle = ProjectManager.getManager().getCurrentProject().getRoot();        
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(

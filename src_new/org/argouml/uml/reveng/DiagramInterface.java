@@ -42,7 +42,8 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.Fig;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * Instances of this class interface the current Class diagram.
@@ -186,7 +187,7 @@ public class DiagramInterface {
      * @return The name for the diagram.
      */
     private String getDiagramName(Object p) {
-	return getDiagramName(ModelFacade.getInstance().getName(p));
+	return getDiagramName(FacadeManager.getUmlFacade().getName(p));
     }
 
     /**

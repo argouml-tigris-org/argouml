@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -50,7 +51,7 @@ public class GoSummaryToAttribute extends AbstractGoRule {
 
   public Collection getChildren(Object parent) {
       if ( parent instanceof AttributesNode) {
-          return ModelFacade.getInstance().getAttributes(((AttributesNode)parent).getParent());
+          return FacadeManager.getUmlFacade().getAttributes(((AttributesNode)parent).getParent());
       }
       return null;
   }

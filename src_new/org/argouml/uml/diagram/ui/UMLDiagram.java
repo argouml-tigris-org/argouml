@@ -32,7 +32,8 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.ArgoDiagram;
@@ -139,7 +140,7 @@ public abstract class UMLDiagram
      * (so that it can delete itself when the model element is deleted).
      */
     public void setNamespace(Object ns) {
-        if (!ModelFacade.getInstance().isANamespace(ns)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(ns)) {
             cat.error("Not a namespace");
             cat.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");

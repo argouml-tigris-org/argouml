@@ -50,7 +50,8 @@ import javax.swing.JMenu;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
@@ -968,7 +969,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _attrBigPort.getX();
         int ypos = _attrBigPort.getY();
         int acounter = 1;
-        Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
+        Collection strs = FacadeManager.getUmlFacade().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
             Vector figs = _attrVec.getFigs();
@@ -1021,7 +1022,7 @@ public class FigClass extends FigNodeModelElement {
         int xpos = _operBigPort.getX();
         int ypos = _operBigPort.getY();
         int ocounter = 1;
-        Collection behs = ModelFacade.getInstance().getOperations(cls);
+        Collection behs = FacadeManager.getUmlFacade().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             Vector figs = _operVec.getFigs();
@@ -1154,7 +1155,7 @@ public class FigClass extends FigNodeModelElement {
     public void postLoad() {      
         super.postLoad();
         Object owner = getOwner();
-        if (ModelFacade.getInstance().isAbstract(owner)) {
+        if (FacadeManager.getUmlFacade().isAbstract(owner)) {
             Font font = _name.getFont();              
             _name.setFont(font.deriveFont(Font.ITALIC));
         }

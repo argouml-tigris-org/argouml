@@ -32,7 +32,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p> A critic to detect when a class can never have instances (of itself or
@@ -89,22 +90,22 @@ public class CrConstructorNeeded extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
-        if (!(ModelFacade.getInstance().isAClass(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
 	// We don't consider secondary stuff.
-	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) 
+	if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm))) 
 	    return NO_PROBLEM;
 
         // Types don't need a constructor.
-        if (ModelFacade.getInstance().isType(dm)) {
+        if (FacadeManager.getUmlFacade().isType(dm)) {
             return NO_PROBLEM;
         }
 
         // Check for uninitialised instance variables and
         // constructor.
-        Collection operations = ModelFacade.getInstance().getOperations(dm);
+        Collection operations = FacadeManager.getUmlFacade().getOperations(dm);
         if (operations.isEmpty()) {
             return PROBLEM_FOUND;
         }
@@ -112,21 +113,21 @@ public class CrConstructorNeeded extends CrUML {
         Iterator opers = operations.iterator();
 
         while (opers.hasNext()) {
-            if (ModelFacade.getInstance().isConstructor(opers.next())) {
+            if (FacadeManager.getUmlFacade().isConstructor(opers.next())) {
                 // There is a constructor.
                 return NO_PROBLEM;
             }
         }
 
-        Iterator attrs = ModelFacade.getInstance().getAttributes(dm).iterator();
+        Iterator attrs = FacadeManager.getUmlFacade().getAttributes(dm).iterator();
 
         while (attrs.hasNext()) {
             Object attr = attrs.next();
 
-            if (!ModelFacade.getInstance().isInstanceScope(attr))
+            if (!FacadeManager.getUmlFacade().isInstanceScope(attr))
                 continue;
 
-            if (ModelFacade.getInstance().isInitialized(attr))
+            if (FacadeManager.getUmlFacade().isInitialized(attr))
                 continue;
 
             // We have found one with instance scope that is not initialized.

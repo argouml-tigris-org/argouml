@@ -63,7 +63,8 @@ import org.argouml.cognitive.ui.DesignIssuesDialog;
 import org.argouml.cognitive.ui.GoalsDialog;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -1441,7 +1442,7 @@ public class Project implements java.io.Serializable, TargetListener {
             currentNamespace = target;
         else 
         if (target instanceof MModelElement) 
-            currentNamespace = ModelFacade.getInstance().getNamespace(target);
+            currentNamespace = FacadeManager.getUmlFacade().getNamespace(target);
         else
             currentNamespace = getRoot();
         setCurrentNamespace((MNamespace)currentNamespace);

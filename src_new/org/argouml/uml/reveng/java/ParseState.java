@@ -25,7 +25,8 @@ package org.argouml.uml.reveng.java;
 
 import java.util.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 /**
@@ -83,9 +84,9 @@ class ParseState
                       Object currentPackage)
     {
 	classnamePrefix =
-	    previousState.classnamePrefix + ModelFacade.getInstance().getName(mClassifier) + "$";
-	obsoleteFeatures = new Vector(ModelFacade.getInstance().getFeatures(mClassifier));
-	obsoleteInnerClasses = new Vector(ModelFacade.getInstance().getOwnedElements(mClassifier));
+	    previousState.classnamePrefix + FacadeManager.getUmlFacade().getName(mClassifier) + "$";
+	obsoleteFeatures = new Vector(FacadeManager.getUmlFacade().getFeatures(mClassifier));
+	obsoleteInnerClasses = new Vector(FacadeManager.getUmlFacade().getOwnedElements(mClassifier));
 	context = new OuterClassifierContext(previousState.context,
 						     mClassifier,
 						     currentPackage,
@@ -198,7 +199,7 @@ class ParseState
     public void removeObsoleteFeatures()
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    ModelFacade.getInstance().removeFeature(classifier,i.next());
+	    FacadeManager.getUmlFacade().removeFeature(classifier,i.next());
 	}
     }
 
@@ -210,7 +211,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    Object element = i.next();
-	    if(ModelFacade.getInstance().isAClassifier(element)) {
+	    if(FacadeManager.getUmlFacade().isAClassifier(element)) {
                 CoreFactory.getFactory().deleteClassifier(element);
 	    }
 	}
@@ -237,7 +238,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(name.equals(ModelFacade.getInstance().getName(mFeature))) {
+	    if(name.equals(FacadeManager.getUmlFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -254,7 +255,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.getInstance().isAMethod(mFeature) && name.equals(ModelFacade.getInstance().getName(mFeature))) {
+	    if(FacadeManager.getUmlFacade().isAMethod(mFeature) && name.equals(FacadeManager.getUmlFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -271,7 +272,7 @@ class ParseState
     {
 	for(Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
 	    Object mFeature = i.next();
-	    if(ModelFacade.getInstance().isAOperation(mFeature) && name.equals(ModelFacade.getInstance().getName(mFeature))) {
+	    if(FacadeManager.getUmlFacade().isAOperation(mFeature) && name.equals(FacadeManager.getUmlFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}

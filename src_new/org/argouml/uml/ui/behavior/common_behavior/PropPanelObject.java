@@ -38,7 +38,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -66,7 +67,7 @@ public class PropPanelObject extends PropPanelModelElement {
     public PropPanelObject() {
 	super("Object", _objectIcon, ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.OBJECT;
+	Class mclass = (Class)NsumlModelFacade.OBJECT;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 

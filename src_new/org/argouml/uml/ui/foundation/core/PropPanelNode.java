@@ -45,7 +45,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
@@ -68,7 +69,7 @@ public class PropPanelNode extends PropPanelClassifier {
     public PropPanelNode() {
         super("Node",_nodeIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.NODE;
+        Class mclass = (Class)NsumlModelFacade.NODE;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
@@ -99,15 +100,15 @@ public class PropPanelNode extends PropPanelClassifier {
     public Collection getResidents() {
         Collection components = null;
         Object target = getTarget();
-        if(ModelFacade.getInstance().isANode(target)) {
-            components = ModelFacade.getInstance().getResidents(target);
+        if(FacadeManager.getUmlFacade().isANode(target)) {
+            components = FacadeManager.getUmlFacade().getResidents(target);
         }
         return components;
     }
 
     public void setResidents(Collection components) {
         Object target = getTarget();
-        if(ModelFacade.getInstance().isANode(target)) {
+        if(FacadeManager.getUmlFacade().isANode(target)) {
             ((MNode) target).setResidents(components);
         }
     }

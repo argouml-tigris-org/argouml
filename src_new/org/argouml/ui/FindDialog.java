@@ -51,7 +51,8 @@ import javax.swing.border.EtchedBorder;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.cognitive.ChildGenFind;
 import org.tigris.gef.util.Predicate;
@@ -297,26 +298,26 @@ public class FindDialog extends JDialog
     public void initTypes() {
         _type.addItem(PredicateMType.create());
 
-        _type.addItem(PredicateMType.create(ModelFacade.CLASS));
-        _type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
-        _type.addItem(PredicateMType.create(ModelFacade.ACTOR));
-        _type.addItem(PredicateMType.create(ModelFacade.ASSOCIATION));
-        _type.addItem(PredicateMType.create(ModelFacade.ATTRIBUTE));
-        _type.addItem(PredicateMType.create(ModelFacade.CLASSIFIER));
-        _type.addItem(PredicateMType.create(ModelFacade.COMPOSITESTATE));
-        _type.addItem(PredicateMType.create(ModelFacade.DEPENDENCY));
-        _type.addItem(PredicateMType.create(ModelFacade.GENERALIZATION));
-        _type.addItem(PredicateMType.create(ModelFacade.INSTANCE));
-        _type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
-        _type.addItem(PredicateMType.create(ModelFacade.LINK));
-        _type.addItem(PredicateMType.create(ModelFacade.CLASS));
-        _type.addItem(PredicateMType.create(ModelFacade.PACKAGE));
-        _type.addItem(PredicateMType.create(ModelFacade.OPERATION));
-        _type.addItem(PredicateMType.create(ModelFacade.PSEUDOSTATE));
-        _type.addItem(PredicateMType.create(ModelFacade.STATE));
-        _type.addItem(PredicateMType.create(ModelFacade.STATEVERTEX));
-        _type.addItem(PredicateMType.create(ModelFacade.TRANSITION));
-        _type.addItem(PredicateMType.create(ModelFacade.USE_CASE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.CLASS));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.INTERFACE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.ACTOR));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.ASSOCIATION));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.ATTRIBUTE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.CLASSIFIER));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.COMPOSITESTATE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.DEPENDENCY));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.GENERALIZATION));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.INSTANCE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.INTERFACE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.LINK));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.CLASS));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.PACKAGE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.OPERATION));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.PSEUDOSTATE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.STATE));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.STATEVERTEX));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.TRANSITION));
+        _type.addItem(PredicateMType.create(NsumlModelFacade.USE_CASE));
 
     }
 

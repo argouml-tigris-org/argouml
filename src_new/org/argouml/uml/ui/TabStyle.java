@@ -46,7 +46,8 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.StylePanelFig;
 import org.argouml.ui.TabFigTarget;
@@ -164,7 +165,7 @@ public class TabStyle
         // detailpane. Reason for this is that the detailspane is configurable and
         // cannot know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
-            if (ModelFacade.getInstance().isABase(t)) {
+            if (FacadeManager.getUmlFacade().isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {
@@ -283,7 +284,7 @@ public class TabStyle
     public boolean shouldBeEnabled(Object target) {
 
         if (!(target instanceof Fig)) {
-            if (ModelFacade.getInstance().isABase(target)) {
+            if (FacadeManager.getUmlFacade().isABase(target)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(target);
                 if (col == null || col.isEmpty()) {

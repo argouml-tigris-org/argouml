@@ -33,7 +33,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.GridLayout2;
 
 import org.argouml.swingext.Orientation;
@@ -219,7 +220,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public void gotoOther() {
         Object target = getTarget();
-        if (ModelFacade.getInstance().isAAssociationEnd(target)) {
+        if (FacadeManager.getUmlFacade().isAAssociationEnd(target)) {
             MAssociationEnd end = (MAssociationEnd) target;
             TargetManager.getInstance().setTarget(end.getOppositeEnd());
         }
@@ -231,8 +232,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.getInstance().isAAssociationEnd(getTarget())) {
-          return ModelFacade.getInstance().getOtherAssociationEnds(getTarget()).size() > 1;
+        if (FacadeManager.getUmlFacade().isAAssociationEnd(getTarget())) {
+          return FacadeManager.getUmlFacade().getOtherAssociationEnds(getTarget()).size() > 1;
         }
         return false;
     }

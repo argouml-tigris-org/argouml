@@ -34,7 +34,8 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.SuperclassGen;
 import org.tigris.gef.util.VectorSet;
@@ -58,7 +59,7 @@ public class CrCircularInheritance extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
       boolean problem = NO_PROBLEM;
-      if (ModelFacade.getInstance().isAGeneralizableElement(dm)) {
+      if (FacadeManager.getUmlFacade().isAGeneralizableElement(dm)) {
           try {
               CoreHelper.getHelper().getChildren(dm);
           }

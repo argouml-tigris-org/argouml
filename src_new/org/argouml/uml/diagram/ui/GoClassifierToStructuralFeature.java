@@ -26,7 +26,8 @@ package org.argouml.uml.diagram.ui;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 public class GoClassifierToStructuralFeature extends AbstractGoRule {
@@ -36,8 +37,8 @@ public class GoClassifierToStructuralFeature extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.getInstance().isAClassifier(parent)) {
-          return ModelFacade.getInstance().getStructuralFeatures(parent);
+      if (FacadeManager.getUmlFacade().isAClassifier(parent)) {
+          return FacadeManager.getUmlFacade().getStructuralFeatures(parent);
       }
       return null;
   }

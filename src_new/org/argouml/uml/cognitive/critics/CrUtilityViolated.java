@@ -32,7 +32,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 
 /** A critic to detect when a class can never have instances (of
@@ -54,9 +55,9 @@ public class CrUtilityViolated extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
         // we could check for base class of the stereotype but the 
 	// condition normally covers it all.
-        if (!(ModelFacade.getInstance().isAClassifier(dm)))
+        if (!(FacadeManager.getUmlFacade().isAClassifier(dm)))
 	    return NO_PROBLEM;
-	if (!(ModelFacade.getInstance().isUtility(dm)))
+	if (!(FacadeManager.getUmlFacade().isUtility(dm)))
 	    return NO_PROBLEM;
 
 	Collection classesToCheck = new ArrayList();
@@ -67,17 +68,17 @@ public class CrUtilityViolated extends CrUML {
 	Iterator it = classesToCheck.iterator();
 	while (it.hasNext()) {
 	    Object o = it.next();
-	    if (!ModelFacade.getInstance().isAInterface(o)) {
-		Iterator it2 = ModelFacade.getInstance().getAttributes(o).iterator();
+	    if (!FacadeManager.getUmlFacade().isAInterface(o)) {
+		Iterator it2 = FacadeManager.getUmlFacade().getAttributes(o).iterator();
 		while (it2.hasNext()) {
-		    if (ModelFacade.getInstance().isInstanceScope(it2.next())) {
+		    if (FacadeManager.getUmlFacade().isInstanceScope(it2.next())) {
 			return PROBLEM_FOUND;
 		    }
 		}
 	    }
-	    Iterator it2 = ModelFacade.getInstance().getOperations(o).iterator();
+	    Iterator it2 = FacadeManager.getUmlFacade().getOperations(o).iterator();
 	    while (it2.hasNext()) {
-		if (ModelFacade.getInstance().isInstanceScope(it2.next())) {
+		if (FacadeManager.getUmlFacade().isInstanceScope(it2.next())) {
 		    return PROBLEM_FOUND;
 		}
 	    }

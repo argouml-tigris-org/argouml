@@ -33,7 +33,8 @@ import javax.swing.JOptionPane;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -148,9 +149,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         //      move the pointer to the target in the NavPane to some other target
         Object newTarget = null;
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.getInstance().isABase(target)) {
+        if (FacadeManager.getUmlFacade().isABase(target)) {
             newTarget = ((MBase)target).getModelElementContainer();
-        } else if (ModelFacade.getInstance().isADiagram(target)) {
+        } else if (FacadeManager.getDiagramFacade().isADiagram(target)) {
             Diagram firstDiagram = (Diagram)p.getDiagrams().get(0);
             if (target != firstDiagram)
                 newTarget = firstDiagram;

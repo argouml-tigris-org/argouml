@@ -208,7 +208,7 @@ public class ItemUID
 		// d00mst 2002-10-08
 		if (obj instanceof MModelElement)
 		{
-			MTaggedValue mtv = ExtensionMechanismsFactory.getFactory().createTaggedValue();;
+			MTaggedValue mtv = (MTaggedValue)ObjectFactoryManager.getUmlFactory().create(Uml.TAGGED_VALUE);;
 			String id = generateID();
 			mtv.setTag("org.argouml.uid");
 			mtv.setValue(id);

@@ -29,6 +29,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
+import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.model.uml.Uml;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
@@ -46,6 +48,7 @@ import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
@@ -144,7 +147,7 @@ public class PropPanelParameter extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = CoreFactory.getFactory().createDataType();
+            MModelElement ownedElem = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE);
             ns.addOwnedElement(ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }

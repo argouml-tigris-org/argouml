@@ -35,7 +35,8 @@ import java.util.*;
 import org.argouml.cognitive.*;
 
 // Use Model through Facade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p> A critic to check that the ends of an association all have distinct
@@ -105,16 +106,16 @@ public class CrDupRoleNames extends CrUML {
 
         // Only work for associations
 
-        if (!(ModelFacade.getInstance().isAAssociation(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
 	// No problem if this is an association role.
-	if (ModelFacade.getInstance().isAAssociationRole(dm)) {
+	if (FacadeManager.getUmlFacade().isAAssociationRole(dm)) {
 	    return NO_PROBLEM;
 	}
 
-        Iterator enum = ModelFacade.getInstance().getConnections(dm);
+        Iterator enum = FacadeManager.getUmlFacade().getConnections(dm);
 
         // Loop through all the ends, comparing the name against those already
         // seen (ignoring any with no name).
@@ -125,7 +126,7 @@ public class CrDupRoleNames extends CrUML {
 
         while (enum.hasNext()) {
 
-            String          name = ModelFacade.getInstance().getName(enum.next());
+            String          name = FacadeManager.getUmlFacade().getName(enum.next());
 
             // Ignore non-existent and empty names
 

@@ -26,7 +26,8 @@ package org.argouml.uml.diagram.ui;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
@@ -38,8 +39,8 @@ public class GoGenElementToDerived extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isAGeneralizableElement(parent)) {
-          return ModelFacade.getInstance().getChildren(parent);
+      if (FacadeManager.getUmlFacade().isAGeneralizableElement(parent)) {
+          return FacadeManager.getUmlFacade().getChildren(parent);
       }
       return null;
   }

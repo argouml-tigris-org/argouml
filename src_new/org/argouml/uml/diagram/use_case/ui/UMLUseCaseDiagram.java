@@ -45,7 +45,8 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
@@ -243,7 +244,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
 
     public void setNamespace(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(

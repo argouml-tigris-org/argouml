@@ -24,7 +24,8 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
@@ -72,7 +73,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {
-        return super.isValidNamespace(handle) || ModelFacade.getInstance().isAPackage(handle);
+        return super.isValidNamespace(handle) || FacadeManager.getUmlFacade().isAPackage(handle);
     }
 
 } /* end class ActionActivityDiagram */

@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -54,7 +55,7 @@ public class GoSummaryToAssociation extends AbstractGoRule {
           //List list = new ArrayList();
           
           return UmlHelper.getHelper().getCore().getAssociations(((AssociationsNode)parent).getParent());
-          //ModelFacade.getInstance().getAssociationEnds(((AssociationsNode)parent).getParent());
+          //FacadeManager.getUmlFacade().getAssociationEnds(((AssociationsNode)parent).getParent());
           /*
           Iterator it = col.iterator();
           

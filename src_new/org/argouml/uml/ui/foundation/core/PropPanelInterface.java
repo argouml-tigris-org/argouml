@@ -30,6 +30,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.model.uml.Uml;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
@@ -85,7 +87,9 @@ public class PropPanelInterface extends PropPanelClassifier {
     Object target = getTarget();
     if(target instanceof MInterface) {
         MInterface iface = (MInterface) target;
-        MInterface newInterface = CoreFactory.getFactory().createInterface();
+
+//        MInterface newInterface = (MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE);
+		  MInterface newInterface = (MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE);
         iface.getNamespace().addOwnedElement(newInterface);
         TargetManager.getInstance().setTarget(newInterface);
     }

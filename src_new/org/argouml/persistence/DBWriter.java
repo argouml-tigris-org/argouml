@@ -18,7 +18,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 
@@ -266,10 +267,10 @@ public class DBWriter
 		store((MGeneralizableElement)cls, stmt);
 
 		// in case the Classifier has attributes or operations, store these.
-		Vector attributes = new Vector(ModelFacade.getInstance().getStructuralFeatures(cls));
+		Vector attributes = new Vector(FacadeManager.getUmlFacade().getStructuralFeatures(cls));
 		for ( int i = 0; i < attributes.size(); i++) store((MAttribute)attributes.elementAt(i),stmt);
 
-		Vector operations = new Vector(ModelFacade.getInstance().getOperations(cls));
+		Vector operations = new Vector(FacadeManager.getUmlFacade().getOperations(cls));
 		for ( int i = 0; i < operations.size(); i++) store((MOperation)operations.elementAt(i),stmt);
     }
 

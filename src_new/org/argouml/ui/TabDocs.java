@@ -24,7 +24,8 @@
 package org.argouml.ui;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.DocumentationManager;
 import org.tigris.gef.presentation.Fig;
@@ -42,7 +43,7 @@ public class TabDocs extends TabText {
   // accessors
   protected String genText(Object modelObject) {
     modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;    
-    return !(ModelFacade.getInstance().isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
+    return !(FacadeManager.getUmlFacade().isAElement(modelObject)) ? null : DocumentationManager.getDocs(modelObject,"");
   }
 
   protected void parseText(String s) {

@@ -31,7 +31,8 @@ import java.util.Vector;
 import javax.swing.tree.TreePath;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
@@ -74,9 +75,9 @@ public class ActionGenerateAll extends UMLAction {
       java.util.Enumeration enum = nodes.elements();
       while (enum.hasMoreElements()) {
           Object owner = enum.nextElement();
-          if (!ModelFacade.getInstance().isAClass(owner) && !ModelFacade.getInstance().isAInterface(owner))
+          if (!FacadeManager.getUmlFacade().isAClass(owner) && !FacadeManager.getUmlFacade().isAInterface(owner))
             continue;
-          String name = ModelFacade.getInstance().getName(owner);
+          String name = FacadeManager.getUmlFacade().getName(owner);
           if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
             classes.addElement(owner);
       }
@@ -84,10 +85,10 @@ public class ActionGenerateAll extends UMLAction {
       if (classes.size() == 0 && paths != null) {
           for (int i = 0; i < paths.length; i++ ) {
               Object selected = paths[i].getLastPathComponent();
-              if (ModelFacade.getInstance().isAPackage(selected)) {
+              if (FacadeManager.getUmlFacade().isAPackage(selected)) {
                   addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
                   addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
-              } else if (ModelFacade.getInstance().isAClass(selected) || ModelFacade.getInstance().isAInterface(selected)) {
+              } else if (FacadeManager.getUmlFacade().isAClass(selected) || FacadeManager.getUmlFacade().isAInterface(selected)) {
                   if(!classes.contains(selected)) classes.addElement(selected);
               }
           }

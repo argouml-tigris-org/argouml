@@ -34,8 +34,9 @@ import javax.swing.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-// Uses Model through ModelFacade.
-import org.argouml.model.ModelFacade;
+// Uses Model through NsumlModelFacade.
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic to detect if a class has instance variables.
  *  The critic fires currently only if a class and its base classes have
@@ -54,23 +55,23 @@ public class CrNoInstanceVariables extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isAClass(dm))) return NO_PROBLEM;
 
-	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getInstance().getName(dm) == null) ||
-            ("".equals(ModelFacade.getInstance().getName(dm))))
+        if ((FacadeManager.getUmlFacade().getName(dm) == null) ||
+            ("".equals(FacadeManager.getUmlFacade().getName(dm))))
             return NO_PROBLEM;
 
 	// types can probably have variables, but we should not nag at them
 	// not having any.
-	if (ModelFacade.getInstance().isType(dm)) return NO_PROBLEM;
+	if (FacadeManager.getUmlFacade().isType(dm)) return NO_PROBLEM;
 
 	// utility is a namespace collection - also not strictly 
 	// required to have variables.
-	if (ModelFacade.getInstance().isUtility(dm)) return NO_PROBLEM;
+	if (FacadeManager.getUmlFacade().isUtility(dm)) return NO_PROBLEM;
 
 	if (findChangeableInstanceAttributeInInherited(dm, 0))
 	    return NO_PROBLEM;
@@ -93,15 +94,15 @@ public class CrNoInstanceVariables extends CrUML {
     private boolean findChangeableInstanceAttributeInInherited(Object dm,
 							       int depth) {
 
-	Iterator enum = ModelFacade.getInstance().getAttributes(dm).iterator();
+	Iterator enum = FacadeManager.getUmlFacade().getAttributes(dm).iterator();
 
 	while (enum.hasNext()) {
 	    Object attr = enum.next();
 
 	    // If we find an instance variable that is not a constant
 	    // we have succeeded
-	    if (ModelFacade.getInstance().isInstanceScope(attr)
-		&& ModelFacade.getInstance().isChangeable(attr))
+	    if (FacadeManager.getUmlFacade().isInstanceScope(attr)
+		&& FacadeManager.getUmlFacade().isChangeable(attr))
 		return true;
 	}
 
@@ -109,15 +110,15 @@ public class CrNoInstanceVariables extends CrUML {
 	if (depth > 50)
 	    return false;
 
-	Iterator iter = ModelFacade.getInstance().getGeneralizations(dm);
+	Iterator iter = FacadeManager.getUmlFacade().getGeneralizations(dm);
 
 	while (iter.hasNext()) {
-	    Object parent = ModelFacade.getInstance().getParent(iter.next());
+	    Object parent = FacadeManager.getUmlFacade().getParent(iter.next());
 
 	    if (parent == dm)
 		continue;
 
-	    if (ModelFacade.getInstance().isAClassifier(parent))
+	    if (FacadeManager.getUmlFacade().isAClassifier(parent))
 		if (findChangeableInstanceAttributeInInherited(parent,
 							       depth + 1))
 		    return true;

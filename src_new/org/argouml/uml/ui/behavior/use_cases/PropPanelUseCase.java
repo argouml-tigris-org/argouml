@@ -41,7 +41,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -77,7 +78,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
     	addField(Argo.localize("UMLMenu", "label.namespace"),getNamespaceComboBox());
 
 	PropPanelModifiers mPanel = new PropPanelModifiers(3);
-        Class mclass = (Class)ModelFacade.USE_CASE;
+        Class mclass = (Class)NsumlModelFacade.USE_CASE;
 
     // since when do we know abstract usecases?
     //    mPanel.add("isAbstract", mclass, "isAbstract", "setAbstract",
@@ -136,12 +137,12 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newUseCase() {
         Object target = getTarget();
 
-        if(ModelFacade.getInstance().isAUseCase(target)) {
-            Object ns = ModelFacade.getInstance().getNamespace(target);
+        if(FacadeManager.getUmlFacade().isAUseCase(target)) {
+            Object ns = FacadeManager.getUmlFacade().getNamespace(target);
 
             if(ns != null) {
                 Object useCase = UseCasesFactory.getFactory().createUseCase();
-                ModelFacade.getInstance().addOwnedElement(ns, useCase);
+                FacadeManager.getUmlFacade().addOwnedElement(ns, useCase);
                 TargetManager.getInstance().setTarget(useCase);
             }
         }
@@ -159,7 +160,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
     public void newExtensionPoint() {
         Object target = getTarget();
 
-        if (ModelFacade.getInstance().isAUseCase(target)) {
+        if (FacadeManager.getUmlFacade().isAUseCase(target)) {
             TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildExtensionPoint(target));
         }
     }

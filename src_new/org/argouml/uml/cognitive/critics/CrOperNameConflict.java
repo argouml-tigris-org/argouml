@@ -35,7 +35,8 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p> A critic to detect when a class has operations with two matching
@@ -116,11 +117,11 @@ public class CrOperNameConflict extends CrUML {
 
         // Only do this for classifiers
 
-        if (!(ModelFacade.getInstance().isAClassifier(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAClassifier(dm))) {
             return NO_PROBLEM;
         }
 
-	Iterator enum = ModelFacade.getInstance().getOperations(dm).iterator();
+	Iterator enum = FacadeManager.getUmlFacade().getOperations(dm).iterator();
 
         // Get all the features (giving up if there are none). Then loop
         // through finding all operations. Each time we find one, we compare
@@ -202,11 +203,11 @@ public class CrOperNameConflict extends CrUML {
 
 	// Check that the names match.
 
-	String name1 = ModelFacade.getInstance().getName(op1);
+	String name1 = FacadeManager.getUmlFacade().getName(op1);
 	if (name1 == null)
 	    return false;
 
-	String name2 = ModelFacade.getInstance().getName(op2);
+	String name2 = FacadeManager.getUmlFacade().getName(op2);
 	if (name2 == null)
 	    return false;
 
@@ -215,8 +216,8 @@ public class CrOperNameConflict extends CrUML {
 
 	// Check that the parameter lists match.
 
-	Iterator params1 = ModelFacade.getInstance().getParameters(op1);
-	Iterator params2 = ModelFacade.getInstance().getParameters(op2);
+	Iterator params1 = FacadeManager.getUmlFacade().getParameters(op1);
+	Iterator params2 = FacadeManager.getUmlFacade().getParameters(op2);
 
 	while (params1.hasNext() 
 	       && params2.hasNext()) {
@@ -225,14 +226,14 @@ public class CrOperNameConflict extends CrUML {
 	    Object p1 = null;
 	    while (p1 == null && params1.hasNext()) {
 		p1 = params1.next();
-		if (ModelFacade.getInstance().isReturn(p1))
+		if (FacadeManager.getUmlFacade().isReturn(p1))
 		    p1 = null;
 	    }
 
 	    Object p2 = null;
 	    while (p2 == null && params1.hasNext()) {
 		p2 = params1.next();
-		if (ModelFacade.getInstance().isReturn(p2))
+		if (FacadeManager.getUmlFacade().isReturn(p2))
 		    p2 = null;
 	    }
 
@@ -247,11 +248,11 @@ public class CrOperNameConflict extends CrUML {
 
 	    // Compare the type of the parameters. If any of the types is
 	    // null, then we have a match.
-	    Object p1type = ModelFacade.getInstance().getType(p1);
+	    Object p1type = FacadeManager.getUmlFacade().getType(p1);
 	    if (p1type == null)
 		continue;
 
-	    Object p2type = ModelFacade.getInstance().getType(p2);
+	    Object p2type = FacadeManager.getUmlFacade().getType(p2);
 	    if (p2type == null)
 		continue;
 

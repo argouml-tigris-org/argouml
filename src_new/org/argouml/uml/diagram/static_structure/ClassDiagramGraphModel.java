@@ -39,7 +39,8 @@ import java.util.Hashtable;
 
 import org.apache.log4j.Category;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -123,29 +124,29 @@ implements VetoableChangeListener  {
       Vector edges = new Vector();
       
       // top of the hierarchy is ME:
-      if(ModelFacade.getInstance().isAModelElement(port)){
+      if(FacadeManager.getUmlFacade().isAModelElement(port)){
           
-          Iterator it = ModelFacade.getInstance().getSupplierDependencies(port);
+          Iterator it = FacadeManager.getUmlFacade().getSupplierDependencies(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Generalizable Element
-      if(ModelFacade.getInstance().isAGeneralizableElement(port)){
+      if(FacadeManager.getUmlFacade().isAGeneralizableElement(port)){
           
-          Iterator it = ModelFacade.getInstance().getSpecializations(port);
+          Iterator it = FacadeManager.getUmlFacade().getSpecializations(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Classifier
-      if(ModelFacade.getInstance().isAClassifier(port)){
+      if(FacadeManager.getUmlFacade().isAClassifier(port)){
           
-          Iterator it = ModelFacade.getInstance().getAssociationEnds(port).iterator();
+          Iterator it = FacadeManager.getUmlFacade().getAssociationEnds(port).iterator();
           while (it.hasNext()) {
               Object nextAssocEnd = it.next();
               // navigable.... only want incoming
-              if(ModelFacade.getInstance().isNavigable(nextAssocEnd)){
+              if(FacadeManager.getUmlFacade().isNavigable(nextAssocEnd)){
                   edges.add(nextAssocEnd);
               }
           }
@@ -200,29 +201,29 @@ implements VetoableChangeListener  {
       Vector edges = new Vector();
       
       // top of the hierarchy is ME:
-      if(ModelFacade.getInstance().isAModelElement(port)){
+      if(FacadeManager.getUmlFacade().isAModelElement(port)){
           
-          Iterator it = ModelFacade.getInstance().getClientDependencies(port);
+          Iterator it = FacadeManager.getUmlFacade().getClientDependencies(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Generalizable Element
-      if(ModelFacade.getInstance().isAGeneralizableElement(port)){
+      if(FacadeManager.getUmlFacade().isAGeneralizableElement(port)){
           
-          Iterator it = ModelFacade.getInstance().getGeneralizations(port);
+          Iterator it = FacadeManager.getUmlFacade().getGeneralizations(port);
           while (it.hasNext()) {
               edges.add(it.next());
           }
       }
       // then Classifier
-      if(ModelFacade.getInstance().isAClassifier(port)){
+      if(FacadeManager.getUmlFacade().isAClassifier(port)){
           
-          Iterator it = ModelFacade.getInstance().getAssociationEnds(port).iterator();
+          Iterator it = FacadeManager.getUmlFacade().getAssociationEnds(port).iterator();
           while (it.hasNext()) {
-              Object nextAssocEnd = ModelFacade.getInstance().getOppositeEnd(it.next());
+              Object nextAssocEnd = FacadeManager.getUmlFacade().getOppositeEnd(it.next());
               // navigable.... only want outgoing
-              if(ModelFacade.getInstance().isNavigable(nextAssocEnd)){
+              if(FacadeManager.getUmlFacade().isNavigable(nextAssocEnd)){
                   edges.add(nextAssocEnd);
               }
           }

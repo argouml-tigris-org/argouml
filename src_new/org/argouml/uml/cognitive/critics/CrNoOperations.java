@@ -34,8 +34,9 @@ import javax.swing.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-// Uses Model through ModelFacade.
-import org.argouml.model.ModelFacade;
+// Uses Model through NsumlModelFacade.
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 
 /** A critic to detect when a class or its base class doesn't 
@@ -51,23 +52,23 @@ public class CrNoOperations extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isAClass(dm))) return NO_PROBLEM;
 
-	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getInstance().getName(dm) == null) ||
-            ("".equals(ModelFacade.getInstance().getName(dm))))
+        if ((FacadeManager.getUmlFacade().getName(dm) == null) ||
+            ("".equals(FacadeManager.getUmlFacade().getName(dm))))
             return NO_PROBLEM;
 
  	// types can probably contain operations, but we should not nag at them
 	// not having any.
-	if (ModelFacade.getInstance().isType(dm)) return NO_PROBLEM;
+	if (FacadeManager.getUmlFacade().isType(dm)) return NO_PROBLEM;
 
 	// utility is a namespace collection - also not strictly 
 	// required to have operations.
-	if (ModelFacade.getInstance().isUtility(dm)) return NO_PROBLEM;
+	if (FacadeManager.getUmlFacade().isUtility(dm)) return NO_PROBLEM;
 
 	//TODO: different critic or special message for classes
 	//that inherit all ops but define none of their own.
@@ -84,25 +85,25 @@ public class CrNoOperations extends CrUML {
 
     private boolean findInstanceOperationInInherited(Object dm, int depth)
     {
-	Iterator enum = ModelFacade.getInstance().getOperations(dm).iterator();
+	Iterator enum = FacadeManager.getUmlFacade().getOperations(dm).iterator();
 
 	while (enum.hasNext()) {
-	    if (ModelFacade.getInstance().isInstanceScope(enum.next()))
+	    if (FacadeManager.getUmlFacade().isInstanceScope(enum.next()))
 		return true;
 	}
 
 	if (depth > 50)
 	    return false;
 
-	Iterator iter = ModelFacade.getInstance().getGeneralizations(dm);
+	Iterator iter = FacadeManager.getUmlFacade().getGeneralizations(dm);
 
 	while (iter.hasNext()) {
-	    Object parent = ModelFacade.getInstance().getParent(iter.next());
+	    Object parent = FacadeManager.getUmlFacade().getParent(iter.next());
 
 	    if (parent == dm)
 		continue;
 
-	    if (ModelFacade.getInstance().isAClassifier(parent))
+	    if (FacadeManager.getUmlFacade().isAClassifier(parent))
 		if (findInstanceOperationInInherited(parent, depth + 1))
 		    return true;
 	}

@@ -26,7 +26,8 @@ package org.argouml.uml.diagram.state.ui;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -36,9 +37,9 @@ public class GoTransitionToTarget extends AbstractGoRule {
   public String getRuleName() { return "Transition->Target State"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isATransition(parent)) {
+      if (FacadeManager.getUmlFacade().isATransition(parent)) {
           Collection col = new ArrayList();
-	  col.add(ModelFacade.getInstance().getTarget(parent));
+	  col.add(FacadeManager.getUmlFacade().getTarget(parent));
           return col;
       }
       return null;

@@ -38,7 +38,8 @@ import org.apache.log4j.Category;
 import org.argouml.cognitive.*;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic whether a package/subsystem/model is empty. */
 
@@ -57,8 +58,8 @@ public class CrEmptyPackage extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {
 	cat.debug("predicate2 on " + dm);
-	if (!(ModelFacade.getInstance().isAPackage(dm))) return NO_PROBLEM;
-	Iterator enum = ModelFacade.getInstance().getOwnedElements(dm).iterator();
+	if (!(FacadeManager.getUmlFacade().isAPackage(dm))) return NO_PROBLEM;
+	Iterator enum = FacadeManager.getUmlFacade().getOwnedElements(dm).iterator();
 	if (!enum.hasNext()) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

@@ -48,7 +48,8 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.TabToDoTarget;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -444,7 +445,7 @@ public class DetailsPane
         }
         
         if (target != null
-            && ModelFacade.getInstance().isABase(target)
+            && FacadeManager.getUmlFacade().isABase(target)
             && _tabs.getSelectedIndex() > 0)
             _lastNonNullTab = _tabs.getSelectedIndex();
 

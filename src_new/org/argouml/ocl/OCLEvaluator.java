@@ -25,7 +25,8 @@ package org.argouml.ocl;
 
 import java.util.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 
 /** OCLEvaluator is responsible for evaluating simple OCL expressions.
@@ -41,26 +42,26 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
 
     public synchronized String evalToString(Object self, String expr) {
         String res = null;
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.getInstance().isAModelElement(self)) 
+        if (GET_NAME_EXPR_1.equals(expr) && FacadeManager.getUmlFacade().isAModelElement(self)) 
         {
-            res = ModelFacade.getInstance().getName(self);
+            res = FacadeManager.getUmlFacade().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.getInstance().isAModelElement(self))
+        if (GET_NAME_EXPR_2.equals(expr) && FacadeManager.getUmlFacade().isAModelElement(self))
         {
-            res = ModelFacade.getInstance().getName(self);
+            res = FacadeManager.getUmlFacade().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_OWNER_EXPR.equals(expr) && ModelFacade.getInstance().isAFeature(self)) {
-            res = ModelFacade.getInstance().getName(self);
+        if (GET_OWNER_EXPR.equals(expr) && FacadeManager.getUmlFacade().isAFeature(self)) {
+            res = FacadeManager.getUmlFacade().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.getInstance().isADiagram(self)) {
-            res = ModelFacade.getInstance().getName(self);
+        if (GET_NAME_EXPR_1.equals(expr) && FacadeManager.getDiagramFacade().isADiagram(self)) {
+            res = FacadeManager.getUmlFacade().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.getInstance().isADiagram(self)) {
-            res = ModelFacade.getInstance().getName(self);
+        if (GET_NAME_EXPR_2.equals(expr) && FacadeManager.getDiagramFacade().isADiagram(self)) {
+            res = FacadeManager.getUmlFacade().getName(self);
             if (res == null || "".equals(res)) res = "(anon)";
         }
     /*
@@ -81,12 +82,12 @@ public class OCLEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         Iterator iter = values.iterator();
         while(iter.hasNext()) {
             Object v = iter.next();
-            if (ModelFacade.getInstance().isAModelElement(v)) {
-                v = ModelFacade.getInstance().getName(v);
+            if (FacadeManager.getUmlFacade().isAModelElement(v)) {
+                v = FacadeManager.getUmlFacade().getName(v);
                 if ("".equals(v)) v = "(anon)";
             }
-            if (ModelFacade.getInstance().isAExpression(v)) {
-                v = ModelFacade.getInstance().getBody(v);
+            if (FacadeManager.getUmlFacade().isAExpression(v)) {
+                v = FacadeManager.getUmlFacade().getBody(v);
                 if ("".equals(v)) v = "(unspecified)";
             }
             if (! "".equals(v)) {

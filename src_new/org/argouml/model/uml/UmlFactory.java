@@ -29,7 +29,8 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -170,53 +171,53 @@ public class UmlFactory extends AbstractUmlModelFactory {
      * direction only.
      */
     private static final Object[][] VALID_CONNECTIONS = {
-        {ModelFacade.GENERALIZATION,   ModelFacade.CLASSIFIER_ROLE},
-        {ModelFacade.GENERALIZATION,   ModelFacade.CLASS},
-        {ModelFacade.GENERALIZATION,   ModelFacade.INTERFACE},
-        {ModelFacade.GENERALIZATION,   ModelFacade.PACKAGE},
-        {ModelFacade.GENERALIZATION,   ModelFacade.USE_CASE},
-        {ModelFacade.GENERALIZATION,   ModelFacade.ACTOR},
-        {ModelFacade.DEPENDENCY,       ModelFacade.PACKAGE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.CLASS},
-        {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,          ModelFacade.CLASS},
-        {ModelFacade.DEPENDENCY,       ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.CLASS,              ModelFacade.PACKAGE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.USE_CASE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.ACTOR},
-        {ModelFacade.DEPENDENCY,       ModelFacade.ACTOR,              ModelFacade.USE_CASE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT},
-        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE},
-        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT},
-        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT,          ModelFacade.NODE,               null},
-        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT,          null},
-        {ModelFacade.DEPENDENCY,       ModelFacade.COMPONENT_INSTANCE, ModelFacade.NODE_INSTANCE,      null},
-        {ModelFacade.DEPENDENCY,       ModelFacade.OBJECT,             ModelFacade.COMPONENT_INSTANCE, null},
-        {ModelFacade.DEPENDENCY,       ModelFacade.CLASSIFIER_ROLE},
-        {ModelFacade.USAGE,            ModelFacade.CLASS},
-        {ModelFacade.USAGE,            ModelFacade.INTERFACE},
-        {ModelFacade.USAGE,            ModelFacade.PACKAGE},
-        {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.PACKAGE},
-        {ModelFacade.USAGE,            ModelFacade.CLASS,              ModelFacade.INTERFACE},
-        {ModelFacade.USAGE,            ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-        {ModelFacade.PERMISSION,       ModelFacade.CLASS},
-        {ModelFacade.PERMISSION,       ModelFacade.INTERFACE},
-        {ModelFacade.PERMISSION,       ModelFacade.PACKAGE},
-        {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.PACKAGE},
-        {ModelFacade.PERMISSION,       ModelFacade.CLASS,              ModelFacade.INTERFACE},
-        {ModelFacade.PERMISSION,       ModelFacade.INTERFACE,          ModelFacade.PACKAGE},
-        {ModelFacade.ABSTRACTION,      ModelFacade.CLASS,              ModelFacade.INTERFACE,          null},
-        {ModelFacade.ASSOCIATION,      ModelFacade.CLASS},
-        {ModelFacade.ASSOCIATION,      ModelFacade.CLASS,              ModelFacade.INTERFACE},
-        {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR},
-        {ModelFacade.ASSOCIATION,      ModelFacade.USE_CASE},
-        {ModelFacade.ASSOCIATION,      ModelFacade.ACTOR,              ModelFacade.USE_CASE},
-        {ModelFacade.ASSOCIATION,      ModelFacade.NODE},
-        {ModelFacade.ASSOCIATION_ROLE, ModelFacade.CLASSIFIER_ROLE},
-        {ModelFacade.EXTEND,           ModelFacade.USE_CASE},
-        {ModelFacade.INCLUDE,          ModelFacade.USE_CASE},
-        {ModelFacade.LINK,             ModelFacade.NODE_INSTANCE},
-        {ModelFacade.LINK,             ModelFacade.OBJECT}
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.CLASSIFIER_ROLE},
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.CLASS},
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.GENERALIZATION,   NsumlModelFacade.ACTOR},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.CLASS},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.INTERFACE,          NsumlModelFacade.CLASS},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.INTERFACE,          NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.CLASS,              NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.ACTOR},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.ACTOR,              NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.COMPONENT},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.COMPONENT_INSTANCE},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.OBJECT},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.COMPONENT,          NsumlModelFacade.NODE,               null},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.OBJECT,             NsumlModelFacade.COMPONENT,          null},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.COMPONENT_INSTANCE, NsumlModelFacade.NODE_INSTANCE,      null},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.OBJECT,             NsumlModelFacade.COMPONENT_INSTANCE, null},
+        {NsumlModelFacade.DEPENDENCY,       NsumlModelFacade.CLASSIFIER_ROLE},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.CLASS},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.CLASS,              NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.CLASS,              NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.USAGE,            NsumlModelFacade.INTERFACE,          NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.CLASS},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.CLASS,              NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.CLASS,              NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.PERMISSION,       NsumlModelFacade.INTERFACE,          NsumlModelFacade.PACKAGE},
+        {NsumlModelFacade.ABSTRACTION,      NsumlModelFacade.CLASS,              NsumlModelFacade.INTERFACE,          null},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.CLASS},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.CLASS,              NsumlModelFacade.INTERFACE},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.ACTOR},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.ACTOR,              NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.ASSOCIATION,      NsumlModelFacade.NODE},
+        {NsumlModelFacade.ASSOCIATION_ROLE, NsumlModelFacade.CLASSIFIER_ROLE},
+        {NsumlModelFacade.EXTEND,           NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.INCLUDE,          NsumlModelFacade.USE_CASE},
+        {NsumlModelFacade.LINK,             NsumlModelFacade.NODE_INSTANCE},
+        {NsumlModelFacade.LINK,             NsumlModelFacade.OBJECT}
     };
     
     /** Singleton instance.
@@ -292,39 +293,39 @@ public class UmlFactory extends AbstractUmlModelFactory {
         
         Object connection = null;
         
-        if (connectionType == ModelFacade.ASSOCIATION) {
+        if (connectionType == NsumlModelFacade.ASSOCIATION) {
             connection = getCore().buildAssociation(
                 (MClassifier)fromElement, 
                 (MAggregationKind)fromStyle, 
                 (MClassifier)toElement, 
                 (MAggregationKind)toStyle, 
                 (Boolean)unidirectional);
-        } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
+        } else if (connectionType == NsumlModelFacade.ASSOCIATION_ROLE) {
             connection = getCollaborations().buildAssociationRole(
                 (MClassifierRole)fromElement, 
                 (MAggregationKind)fromStyle, 
                 (MClassifierRole)toElement,
                 (MAggregationKind)toStyle, 
                 (Boolean)unidirectional);
-        } else if (connectionType == ModelFacade.GENERALIZATION) {
+        } else if (connectionType == NsumlModelFacade.GENERALIZATION) {
             connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
-        } else if (connectionType == ModelFacade.PERMISSION) {
+        } else if (connectionType == NsumlModelFacade.PERMISSION) {
             connection = getCore().buildPermission((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == ModelFacade.USAGE) {
+        } else if (connectionType == NsumlModelFacade.USAGE) {
             connection = getCore().buildUsage((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == ModelFacade.GENERALIZATION) {
+        } else if (connectionType == NsumlModelFacade.GENERALIZATION) {
             connection = getCore().buildGeneralization((MGeneralizableElement)fromElement, (MGeneralizableElement)toElement);
-        } else if (connectionType == ModelFacade.DEPENDENCY) {
+        } else if (connectionType == NsumlModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
-        } else if (connectionType == ModelFacade.ABSTRACTION) {
+        } else if (connectionType == NsumlModelFacade.ABSTRACTION) {
             connection = getCore().buildRealization((MModelElement)fromElement, (MModelElement)toElement);
-        } else if (connectionType == ModelFacade.LINK) {
+        } else if (connectionType == NsumlModelFacade.LINK) {
             connection = getCommonBehavior().buildLink((MInstance)fromElement, (MInstance)toElement);
-        } else if (connectionType == ModelFacade.EXTEND) {
+        } else if (connectionType == NsumlModelFacade.EXTEND) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend((MUseCase)toElement, (MUseCase)fromElement);
-        } else if (connectionType == ModelFacade.INCLUDE) {
+        } else if (connectionType == NsumlModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude((MUseCase)fromElement, (MUseCase)toElement);
         }
     

@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -49,7 +50,7 @@ public class GoSummaryToOperation extends AbstractGoRule {
 
   public Collection getChildren(Object parent) {
       if ( parent instanceof OperationsNode) {
-          return ModelFacade.getInstance().getOperations(((OperationsNode)parent).getParent());
+          return FacadeManager.getUmlFacade().getOperations(((OperationsNode)parent).getParent());
       }
       return null;
   }

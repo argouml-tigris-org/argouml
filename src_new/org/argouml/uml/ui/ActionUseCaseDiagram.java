@@ -24,7 +24,8 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 
@@ -45,7 +46,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
     public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
@@ -60,8 +61,8 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
      */
     public boolean isValidNamespace(Object handle) {
         boolean validNamespace = false;
-        if (ModelFacade.getInstance().isAPackage(handle)
-            || ModelFacade.getInstance().isAClassifier(handle))
+        if (FacadeManager.getUmlFacade().isAPackage(handle)
+            || FacadeManager.getUmlFacade().isAClassifier(handle))
             validNamespace = true;
         return validNamespace;
     }

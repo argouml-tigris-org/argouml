@@ -36,7 +36,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -51,8 +52,8 @@ public class CrMissingStateName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!ModelFacade.getInstance().isAStateVertex(dm) || ModelFacade.getInstance().isTop(dm)) return NO_PROBLEM;   
-    String myName = ModelFacade.getInstance().getName(dm);
+    if (!FacadeManager.getUmlFacade().isAStateVertex(dm) || FacadeManager.getUmlFacade().isTop(dm)) return NO_PROBLEM;   
+    String myName = FacadeManager.getUmlFacade().getName(dm);
     if (myName == null || myName.equals(""))
       return PROBLEM_FOUND;
     return NO_PROBLEM;

@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -53,12 +54,12 @@ public class GoSummaryToIncomingDependency extends AbstractGoRule {
           
           List list = new ArrayList();
           
-          Iterator it = ModelFacade.getInstance().getSupplierDependencies(((IncomingDependencyNode)parent).getParent());
+          Iterator it = FacadeManager.getUmlFacade().getSupplierDependencies(((IncomingDependencyNode)parent).getParent());
           
           while(it.hasNext()){
               
               Object next = it.next();
-              if(!ModelFacade.getInstance().isAAbstraction(next))
+              if(!FacadeManager.getUmlFacade().isAAbstraction(next))
                 list.add(next);
           }
           

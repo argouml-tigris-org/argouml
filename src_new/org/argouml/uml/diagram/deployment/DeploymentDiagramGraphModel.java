@@ -1,7 +1,8 @@
 package org.argouml.uml.diagram.deployment;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -53,14 +54,14 @@ implements VetoableChangeListener  {
   /** Return all ports on node or edge */
   public Vector getPorts(Object nodeOrEdge) {
     Vector res = new Vector();  //wasteful!
-    if (ModelFacade.getInstance().isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
-    if (ModelFacade.getInstance().isANodeInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
-    if (ModelFacade.getInstance().isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);    
-    if (ModelFacade.getInstance().isAComponentInstance(nodeOrEdge)) 
+    if (FacadeManager.getUmlFacade().isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
+    if (FacadeManager.getUmlFacade().isANodeInstance(nodeOrEdge)) res.addElement(nodeOrEdge);
+    if (FacadeManager.getUmlFacade().isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (FacadeManager.getUmlFacade().isAComponentInstance(nodeOrEdge)) 
         res.addElement(nodeOrEdge);
-    if (ModelFacade.getInstance().isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
-    if (ModelFacade.getInstance().isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);    
-    if (ModelFacade.getInstance().isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
+    if (FacadeManager.getUmlFacade().isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (FacadeManager.getUmlFacade().isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);    
+    if (FacadeManager.getUmlFacade().isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
     return res;
   }
 
@@ -73,8 +74,8 @@ implements VetoableChangeListener  {
   /** Return all edges going to given port */
   public Vector getInEdges(Object port) {
     Vector res = new Vector(); //wasteful!
-    if (ModelFacade.getInstance().isANode(port)) {
-      Collection ends = ModelFacade.getInstance().getAssociationEnds(port);
+    if (FacadeManager.getUmlFacade().isANode(port)) {
+      Collection ends = FacadeManager.getUmlFacade().getAssociationEnds(port);
       if (ends == null) return res; // empty Vector
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
@@ -82,13 +83,13 @@ implements VetoableChangeListener  {
 	    res.add(aec.getAssociation());
       }
     }
-    if (ModelFacade.getInstance().isANodeInstance(port)) {
+    if (FacadeManager.getUmlFacade().isANodeInstance(port)) {
       MNodeInstance noi = (MNodeInstance) port;
       Collection ends = noi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (ModelFacade.getInstance().isAComponent(port)) {
-      Collection ends = ModelFacade.getInstance().getAssociationEnds(port);
+    if (FacadeManager.getUmlFacade().isAComponent(port)) {
+      Collection ends = FacadeManager.getUmlFacade().getAssociationEnds(port);
       if (ends == null) return res; // empty Vector
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -96,13 +97,13 @@ implements VetoableChangeListener  {
 	    res.addElement(aec.getAssociation());
       }
     }
-    if (ModelFacade.getInstance().isAComponentInstance(port)) {
+    if (FacadeManager.getUmlFacade().isAComponentInstance(port)) {
       MComponentInstance coi = (MComponentInstance) port;
       Collection ends = coi.getLinkEnds();
 	    res.addAll(ends);
     }
-    if (ModelFacade.getInstance().isAClass(port)) {
-      Collection ends = ModelFacade.getInstance().getAssociationEnds(port);
+    if (FacadeManager.getUmlFacade().isAClass(port)) {
+      Collection ends = FacadeManager.getUmlFacade().getAssociationEnds(port);
       if (ends == null) return res; // empty Vector 
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -110,8 +111,8 @@ implements VetoableChangeListener  {
 	res.addElement(ae.getAssociation());
       }
     }
-    if (ModelFacade.getInstance().isAInterface(port)) {
-      Collection ends = ModelFacade.getInstance().getAssociationEnds(port);
+    if (FacadeManager.getUmlFacade().isAInterface(port)) {
+      Collection ends = FacadeManager.getUmlFacade().getAssociationEnds(port);
       if (ends == null) return res; // empty Vector 
       Iterator endEnum = ends.iterator();
       while (endEnum.hasNext()) {
@@ -119,7 +120,7 @@ implements VetoableChangeListener  {
 	    res.addElement(ae.getAssociation());
 	  }
     }
-    if (ModelFacade.getInstance().isAObject(port)) {
+    if (FacadeManager.getUmlFacade().isAObject(port)) {
       MInstance clo = (MInstance) port;
       Collection ends = clo.getLinkEnds();
 	    res.addAll(ends);
@@ -137,10 +138,10 @@ implements VetoableChangeListener  {
 
   /** Return one end of an edge */
   public Object getSourcePort(Object edge) {
-    if (ModelFacade.getInstance().isARelationship(edge)) {
+    if (FacadeManager.getUmlFacade().isARelationship(edge)) {
         return CoreHelper.getHelper().getSource((MRelationship)edge);
     } else
-    if (ModelFacade.getInstance().isALink(edge)) {
+    if (FacadeManager.getUmlFacade().isALink(edge)) {
        return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
     
@@ -152,10 +153,10 @@ implements VetoableChangeListener  {
 
   /** Return  the other end of an edge */
   public Object getDestPort(Object edge) {
-    if (ModelFacade.getInstance().isARelationship(edge)) {
+    if (FacadeManager.getUmlFacade().isARelationship(edge)) {
         return CoreHelper.getHelper().getDestination((MRelationship)edge);
     } else
-    if (ModelFacade.getInstance().isALink(edge)) {
+    if (FacadeManager.getUmlFacade().isALink(edge)) {
        return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
     
@@ -173,13 +174,13 @@ implements VetoableChangeListener  {
   public boolean canAddNode(Object node) {
     if (node == null) return false;
     if (_nodes.contains(node)) return false;
-    return (ModelFacade.getInstance().isANode(node)) || 
-        (ModelFacade.getInstance().isAComponent(node)) || 
-        (ModelFacade.getInstance().isAClass(node)) || 
-        (ModelFacade.getInstance().isAInterface(node)) ||
-        (ModelFacade.getInstance().isAObject(node)) ||
-        (ModelFacade.getInstance().isANodeInstance(node)) || 
-        (ModelFacade.getInstance().isAComponentInstance(node));
+    return (FacadeManager.getUmlFacade().isANode(node)) || 
+        (FacadeManager.getUmlFacade().isAComponent(node)) || 
+        (FacadeManager.getUmlFacade().isAClass(node)) || 
+        (FacadeManager.getUmlFacade().isAInterface(node)) ||
+        (FacadeManager.getUmlFacade().isAObject(node)) ||
+        (FacadeManager.getUmlFacade().isANodeInstance(node)) || 
+        (FacadeManager.getUmlFacade().isAComponentInstance(node));
   }
 
   /** Return true if the given object is a valid edge in this graph */
@@ -187,11 +188,11 @@ implements VetoableChangeListener  {
     if (edge == null) return false;
 if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
-    if (ModelFacade.getInstance().isARelationship(edge)) {
+    if (FacadeManager.getUmlFacade().isARelationship(edge)) {
         end0 = CoreHelper.getHelper().getSource((MRelationship)edge);
         end1 = CoreHelper.getHelper().getDestination((MRelationship)edge);
     }
-    else if (ModelFacade.getInstance().isALink(edge)) {
+    else if (FacadeManager.getUmlFacade().isALink(edge)) {
       end0 = CommonBehaviorHelper.getHelper().getSource((MLink)edge);
       end1 = CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
@@ -209,8 +210,8 @@ if(_edges.contains(edge)) return false;
     _nodes.addElement(node);
     // TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
-	if (ModelFacade.getInstance().isAModelElement(node) &&
-		(ModelFacade.getInstance().getNamespace(node) == null)) {
+	if (FacadeManager.getUmlFacade().isAModelElement(node) &&
+		(FacadeManager.getUmlFacade().getNamespace(node) == null)) {
 		((MNamespace)_model).addOwnedElement((MModelElement) node);
 	}
     fireNodeAdded(node);
@@ -222,15 +223,15 @@ if(_edges.contains(edge)) return false;
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
     // TODO: assumes public
-      if (ModelFacade.getInstance().isAModelElement(edge)) {
+      if (FacadeManager.getUmlFacade().isAModelElement(edge)) {
           ((MNamespace)_model).addOwnedElement((MModelElement) edge);
       }
     fireEdgeAdded(edge);
   }
 
   public void addNodeRelatedEdges(Object node) {
-    if (ModelFacade.getInstance().isAClassifier(node) ) {
-      Collection ends = ModelFacade.getInstance().getAssociationEnds(node);
+    if (FacadeManager.getUmlFacade().isAClassifier(node) ) {
+      Collection ends = FacadeManager.getUmlFacade().getAssociationEnds(node);
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
          MAssociationEnd ae = (MAssociationEnd) iter.next();
@@ -239,7 +240,7 @@ if(_edges.contains(edge)) return false;
            return;
       }
     }
-    if ( ModelFacade.getInstance().isAInstance(node) ) {
+    if ( FacadeManager.getUmlFacade().isAInstance(node) ) {
       Collection ends = ((MInstance)node).getLinkEnds();
       Iterator iter = ends.iterator();
       while (iter.hasNext()) {
@@ -249,8 +250,8 @@ if(_edges.contains(edge)) return false;
            return;
       }
     }
-    if ( ModelFacade.getInstance().isAGeneralizableElement(node) ) {
-      Iterator iter = ModelFacade.getInstance().getGeneralizations(node);
+    if ( FacadeManager.getUmlFacade().isAGeneralizableElement(node) ) {
+      Iterator iter = FacadeManager.getUmlFacade().getGeneralizations(node);
       while (iter.hasNext()) {
           // g contains a Generalization
          Object g = iter.next();
@@ -258,7 +259,7 @@ if(_edges.contains(edge)) return false;
            addEdge(g);
            return;
       }
-      iter = ModelFacade.getInstance().getSpecializations(node);
+      iter = FacadeManager.getUmlFacade().getSpecializations(node);
       while (iter.hasNext()) {
           // s contains a specialization
          Object s = iter.next();
@@ -267,7 +268,7 @@ if(_edges.contains(edge)) return false;
            return;
       }
     }
-    if ( ModelFacade.getInstance().isAModelElement(node) ) {
+    if ( FacadeManager.getUmlFacade().isAModelElement(node) ) {
       Vector specs = new Vector(((MModelElement)node).getClientDependencies());
       specs.addAll(((MModelElement)node).getSupplierDependencies());
       Iterator iter = specs.iterator();
@@ -288,16 +289,16 @@ if(_edges.contains(edge)) return false;
       MModelElement me = eo.getModelElement();
       if (oldOwned.contains(eo)) {
 	    cat.debug("model removed " + me);
-	    if (ModelFacade.getInstance().isANode(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isANodeInstance(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAComponent(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAComponentInstance(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAClass(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAInterface(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAObject(me)) removeNode(me);
-	    if (ModelFacade.getInstance().isAAssociation(me)) removeEdge(me);
-	    if (ModelFacade.getInstance().isADependency(me)) removeEdge(me);
-        if (ModelFacade.getInstance().isALink(me)) removeEdge(me);
+	    if (FacadeManager.getUmlFacade().isANode(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isANodeInstance(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAComponent(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAComponentInstance(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAClass(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAInterface(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAObject(me)) removeNode(me);
+	    if (FacadeManager.getUmlFacade().isAAssociation(me)) removeEdge(me);
+	    if (FacadeManager.getUmlFacade().isADependency(me)) removeEdge(me);
+        if (FacadeManager.getUmlFacade().isALink(me)) removeEdge(me);
       }
       else {
 	    cat.debug("model added " + me);

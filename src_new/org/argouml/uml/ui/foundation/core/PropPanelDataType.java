@@ -32,7 +32,10 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.model.uml.Uml;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -138,7 +141,7 @@ public class PropPanelDataType extends PropPanelClassifier {
         if(target instanceof MDataType) {
             MDataType dt = (MDataType) target;
             MNamespace ns = dt.getNamespace();
-            MDataType newDt = CoreFactory.getFactory().createDataType();
+            MDataType newDt = (MDataType)ObjectFactoryManager.getUmlFactory().create(Uml.DATA_TYPE);
             ns.addOwnedElement(newDt);
             TargetManager.getInstance().setTarget(newDt);
         }

@@ -36,7 +36,8 @@ import javax.swing.*;
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -50,9 +51,9 @@ public class CrUnconventionalPackName extends CrUML {
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.getInstance().isAPackage(dm))) return NO_PROBLEM;
+    if (!(FacadeManager.getUmlFacade().isAPackage(dm))) return NO_PROBLEM;
 
-    String myName = ModelFacade.getInstance().getName(dm);
+    String myName = FacadeManager.getUmlFacade().getName(dm);
     if (myName == null || myName.equals("")) return NO_PROBLEM;
     String nameStr = myName;
     if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;

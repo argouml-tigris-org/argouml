@@ -40,7 +40,8 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
@@ -88,7 +89,7 @@ public class StylePanel
 
     public void setTarget(Object t) {
         if (!(t instanceof Fig)) {
-            if (ModelFacade.getInstance().isABase(t)) {
+            if (FacadeManager.getUmlFacade().isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {

@@ -28,7 +28,8 @@ import java.beans.*;
 
 import ru.novosoft.uml.foundation.core.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 public class TableModelAttr extends TableModelComposite {
   ////////////////
@@ -46,7 +47,7 @@ public class TableModelAttr extends TableModelComposite {
   public Vector rowObjectsFor(Object t) {
     if (!(t instanceof MClassifier)) return new Vector();
     MClassifier cls = (MClassifier) t;
-    Vector attr = new Vector(ModelFacade.getInstance().getStructuralFeatures(cls));
+    Vector attr = new Vector(FacadeManager.getUmlFacade().getStructuralFeatures(cls));
     return attr;
   }
 

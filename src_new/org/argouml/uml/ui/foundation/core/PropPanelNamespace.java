@@ -28,14 +28,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
+import org.argouml.api.model.ObjectFactoryManager;
+import org.argouml.api.model.uml.Uml;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 
+import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MPackage;
 
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
@@ -86,7 +90,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = CoreFactory.getFactory().createInterface();
+            MModelElement ownedElem = (MInterface)ObjectFactoryManager.getUmlFactory().create(Uml.INTERFACE);
             ns.addOwnedElement(ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
@@ -96,7 +100,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ModelManagementFactory.getFactory().createPackage();
+            MModelElement ownedElem = (MPackage)ObjectFactoryManager.getUmlFactory().create(Uml.PACKAGE);
             ns.addOwnedElement(ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }

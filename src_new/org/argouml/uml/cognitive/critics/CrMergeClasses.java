@@ -25,7 +25,8 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -45,7 +46,7 @@ public class CrMergeClasses extends CrUML {
 
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
+    if (!(FacadeManager.getUmlFacade().isAClass(dm))) return NO_PROBLEM;
     MClass cls = (MClass) dm;
     Collection ends = cls.getAssociationEnds();
     if (ends == null || ends.size() != 1) return NO_PROBLEM;
@@ -55,12 +56,12 @@ public class CrMergeClasses extends CrUML {
     MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
     MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
     // both ends must be classes, otherwise there is nothing to merge
-    if (!(ModelFacade.getInstance().isAClass(ae0.getType()) && 
-          ModelFacade.getInstance().isAClass(ae1.getType()))) 
+    if (!(FacadeManager.getUmlFacade().isAClass(ae0.getType()) && 
+          FacadeManager.getUmlFacade().isAClass(ae1.getType()))) 
         return NO_PROBLEM;
     // both ends must be navigable, otherwise there is nothing to merge
-    if (!(ModelFacade.getInstance().isNavigable(ae0) && 
-          ModelFacade.getInstance().isNavigable(ae1)))
+    if (!(FacadeManager.getUmlFacade().isNavigable(ae0) && 
+          FacadeManager.getUmlFacade().isNavigable(ae1)))
         return NO_PROBLEM;
     if (ae0.getMultiplicity().equals(MMultiplicity.M1_1) &&
         ae1.getMultiplicity().equals(MMultiplicity.M1_1))

@@ -35,7 +35,8 @@ import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.Actions;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Diagram;
@@ -232,7 +233,7 @@ public final class TargetManager {
         }
 
         private void removeHistoryTarget(Object o) {
-            if (ModelFacade.getInstance().isADiagram(o)) {
+            if (FacadeManager.getDiagramFacade().isADiagram(o)) {
                 ListIterator it = ((Diagram)o).getEdges().listIterator();
                 while (it.hasNext()) {
                     removeHistoryTarget(it.next());
@@ -247,7 +248,7 @@ public final class TargetManager {
             while (it.hasNext()) {
                 WeakReference ref = (WeakReference)it.next();
                 Object historyObject = ref.get();
-                if (ModelFacade.getInstance().isAModelElement(o)) {
+                if (FacadeManager.getUmlFacade().isAModelElement(o)) {
                     historyObject =
                         historyObject instanceof Fig
                             ? ((Fig)historyObject).getOwner()
@@ -607,12 +608,12 @@ public final class TargetManager {
     private Object determineModelTarget(Object target) {
         if (target instanceof Fig) {
             Object owner = ((Fig)target).getOwner();
-            if (ModelFacade.getInstance().isABase(owner)) {
+            if (FacadeManager.getUmlFacade().isABase(owner)) {
                 target = owner;
             }
         }
         return target instanceof UMLDiagram
-            || ModelFacade.getInstance().isABase(target) ? target : null;
+            || FacadeManager.getUmlFacade().isABase(target) ? target : null;
 
     }
 

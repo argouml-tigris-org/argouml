@@ -27,7 +27,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
@@ -64,8 +65,8 @@ public class ActionAddNote extends UMLChangeAction {
         if (target == null || ProjectManager.getManager().getCurrentProject().getActiveDiagram()
             == null)
             enabled = false;
-        if (ModelFacade.getInstance().isAModelElement(target)
-            && !ModelFacade.getInstance().isAComment(target)
+        if (FacadeManager.getUmlFacade().isAModelElement(target)
+            && !FacadeManager.getUmlFacade().isAComment(target)
             && (ProjectManager
                 .getManager()
                 .getCurrentProject()

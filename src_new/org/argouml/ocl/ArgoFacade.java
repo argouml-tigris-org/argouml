@@ -36,7 +36,8 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
@@ -208,7 +209,7 @@ class ArgoAny implements Any, Type2 {
       if (type != null) return type;
 
       MOperation foundOp = null;
-      java.util.Collection operations = ModelFacade.getInstance().getOperations(classifier);
+      java.util.Collection operations = FacadeManager.getUmlFacade().getOperations(classifier);
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();

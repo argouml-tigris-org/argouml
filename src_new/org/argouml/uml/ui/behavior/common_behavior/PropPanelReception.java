@@ -28,7 +28,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.swingext.GridLayout2;
 
@@ -55,7 +56,7 @@ public class PropPanelReception extends PropPanelModelElement {
     public PropPanelReception() {
         super("Reception", _receptionIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.RECEPTION;
+        Class mclass = (Class)NsumlModelFacade.RECEPTION;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), getStereotypeBox());
@@ -87,7 +88,7 @@ public class PropPanelReception extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isAcceptibleClassifier(MModelElement element) {
-        return (ModelFacade.getInstance().isAClassifier(element) && !(ModelFacade.getInstance().isADataType(element)));
+        return (FacadeManager.getUmlFacade().isAClassifier(element) && !(FacadeManager.getUmlFacade().isADataType(element)));
     }
 
     /**
@@ -96,7 +97,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public MClassifier getOwner() {
         Object target = getTarget();
-        if (ModelFacade.getInstance().isAReception(target)) {
+        if (FacadeManager.getUmlFacade().isAReception(target)) {
             return ((MReception)target).getOwner();
         }
         return null;
@@ -108,7 +109,7 @@ public class PropPanelReception extends PropPanelModelElement {
      */
     public void setOwner(MClassifier owner) {
         Object target = getTarget();
-        if (ModelFacade.getInstance().isAReception(target)) {
+        if (FacadeManager.getUmlFacade().isAReception(target)) {
             MReception rec = (MReception)target;
             if (rec.getOwner() != null) {
                 rec.setOwner(null);

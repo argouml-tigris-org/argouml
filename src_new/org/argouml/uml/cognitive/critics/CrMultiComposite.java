@@ -29,7 +29,8 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** Well-formedness rule [2] for MAssociationEnd. See page 28 of UML
  *  1.1 Semantics. OMG document ad/97-08-04.  */
@@ -46,9 +47,9 @@ public class CrMultiComposite extends CrUML {
     
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.getInstance().isAAssociationEnd(dm)) {
-            if (ModelFacade.getInstance().isComposite(dm)) {
-                if (ModelFacade.getInstance().getUpper(dm) > 1) {
+        if (FacadeManager.getUmlFacade().isAAssociationEnd(dm)) {
+            if (FacadeManager.getUmlFacade().isComposite(dm)) {
+                if (FacadeManager.getUmlFacade().getUpper(dm) > 1) {
                     problem = PROBLEM_FOUND;
                 }
             }

@@ -63,7 +63,8 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 //
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.swingext.Orientation;
@@ -389,7 +390,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return ModelFacade.getInstance().isAModelElement(target);
+        return FacadeManager.getUmlFacade().isAModelElement(target);
     }
 
     public void propertySet(MElementEvent mee) {

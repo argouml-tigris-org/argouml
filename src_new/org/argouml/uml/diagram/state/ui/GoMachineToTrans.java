@@ -25,7 +25,8 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
@@ -35,8 +36,8 @@ public class GoMachineToTrans extends AbstractGoRule {
   public String getRuleName() { return "State Machine->Transition"; }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isAStateMachine(parent)) {
-          return ModelFacade.getInstance().getTransitions(parent);
+      if (FacadeManager.getUmlFacade().isAStateMachine(parent)) {
+          return FacadeManager.getUmlFacade().getTransitions(parent);
       }
       return null;
   }

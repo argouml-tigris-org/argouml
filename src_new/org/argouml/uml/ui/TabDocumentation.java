@@ -27,7 +27,8 @@ package org.argouml.uml.ui;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
@@ -137,7 +138,7 @@ public class TabDocumentation extends PropPanel {
     public boolean shouldBeEnabled() {
         Object target = getTarget();
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return ModelFacade.getInstance().isAModelElement(target);
+        return FacadeManager.getUmlFacade().isAModelElement(target);
     }
 
 } /* end class TabDocumentation */

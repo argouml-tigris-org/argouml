@@ -69,7 +69,8 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -728,7 +729,7 @@ public abstract class FigNodeModelElement
      */
     protected void updateStereotypeText() {
         _stereo.setText(
-            Notation.generate(this, ModelFacade.getInstance().getStereoType(getOwner())));
+            Notation.generate(this, FacadeManager.getUmlFacade().getStereoType(getOwner())));
     }
 
     /**

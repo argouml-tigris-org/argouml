@@ -23,7 +23,8 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 /**
@@ -67,7 +68,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in classifier
-        Object mInterface = ModelFacade.getInstance().lookupIn(mClassifier,name);
+        Object mInterface = FacadeManager.getUmlFacade().lookupIn(mClassifier,name);
 
 	if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -75,7 +76,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.getInstance().isAModel(mPackage)) {
+		if(FacadeManager.getUmlFacade().isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
@@ -114,7 +115,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in classifier
-	Object iClassifier = ModelFacade.getInstance().lookupIn(mClassifier,name);
+	Object iClassifier = FacadeManager.getUmlFacade().lookupIn(mClassifier,name);
 
 	if(iClassifier == null) {
 	    // Try to find it via the classpath
@@ -122,7 +123,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelFacade.getInstance().isAModel(mPackage)) {
+		if(FacadeManager.getUmlFacade().isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {

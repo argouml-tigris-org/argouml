@@ -28,7 +28,8 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 // import ru.novosoft.uml.foundation.core.MModelElement;
@@ -65,7 +66,7 @@ public class Trash {
       cat.warn("tried to add null to trash!");
       return;
     }    
-    if (ModelFacade.getInstance().isAModelElement(obj)) {
+    if (FacadeManager.getUmlFacade().isAModelElement(obj)) {
         //MModelElement me = (MModelElement) obj;
 	  TrashItem ti = new TrashItem(obj, places);
 	  _contents.addElement(ti);
@@ -89,7 +90,7 @@ public class Trash {
   
   public void recoverItem(Object obj) {
     cat.debug("TODO: recover from trash");
-    if (ModelFacade.getInstance().isAModelElement(obj)) {
+    if (FacadeManager.getUmlFacade().isAModelElement(obj)) {
       TrashItem ti = null; //TODO: find in trash
 	  //((MModelElement)obj).recoverFromTrash(ti);
     }

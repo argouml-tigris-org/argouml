@@ -35,8 +35,9 @@ import org.argouml.cognitive.critics.*;
 import org.argouml.uml.*;
 import org.argouml.uml.cognitive.critics.*;
 
-// Use Model through ModelFacade.
-import org.argouml.model.ModelFacade;
+// Use Model through NsumlModelFacade.
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p>A critic to detect when a class can never have more than one instance (of
@@ -97,48 +98,48 @@ public class CrConsiderSingleton extends CrUML {
 
         // Only look at classes...
 
-        if (!(ModelFacade.getInstance().isAClass(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
         
         // with a name...
-        if (ModelFacade.getInstance().getName(dm) == null ||
-            "".equals(ModelFacade.getInstance().getName(dm))) {
+        if (FacadeManager.getUmlFacade().getName(dm) == null ||
+            "".equals(FacadeManager.getUmlFacade().getName(dm))) {
                 return NO_PROBLEM;
         }
         
         // ... and not incompletely imported
-        if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
+        if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
-        if (ModelFacade.getInstance().isSingleton(dm)) {
+        if (FacadeManager.getUmlFacade().isSingleton(dm)) {
             return NO_PROBLEM;
         }
 
-	if (ModelFacade.getInstance().isUtility(dm)) {
+	if (FacadeManager.getUmlFacade().isUtility(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	// If there is an attribute with instance scope => no problem
-	Iterator iter = ModelFacade.getInstance().getAttributes(dm).iterator();
+	Iterator iter = FacadeManager.getUmlFacade().getAttributes(dm).iterator();
 
 	while (iter.hasNext()) {
-	    if (ModelFacade.getInstance().isInstanceScope(iter.next()))
+	    if (FacadeManager.getUmlFacade().isInstanceScope(iter.next()))
 		return NO_PROBLEM;
 	}
 
 
 	// If there is an outgoing association => no problem
-	Iterator ends = ModelFacade.getInstance().getAssociationEnds(dm).iterator();
+	Iterator ends = FacadeManager.getUmlFacade().getAssociationEnds(dm).iterator();
 
 	while (ends.hasNext()) {
 	    Iterator otherends = 
-		ModelFacade.getInstance().getOtherAssociationEnds(ends.next()).iterator();
+		FacadeManager.getUmlFacade().getOtherAssociationEnds(ends.next()).iterator();
 
 	    while (otherends.hasNext()) {
-		if (ModelFacade.getInstance().isNavigable(otherends.next()))
+		if (FacadeManager.getUmlFacade().isNavigable(otherends.next()))
 		    return NO_PROBLEM;
 	    }
 	}

@@ -34,7 +34,8 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.CopyHelper;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -154,10 +155,10 @@ public class ModelManagementHelper {
     public Collection getAllModelElementsOfKind(Object nsa, Class kind) {
         if (nsa == null || kind == null)
             return new ArrayList();
-        if (!ModelFacade.getInstance().isANamespace(nsa))
+        if (!FacadeManager.getUmlFacade().isANamespace(nsa))
             throw new IllegalArgumentException(
                 "given argument " + nsa + " is not a namespace");
-        Iterator it = ModelFacade.getInstance().getOwnedElements(nsa).iterator();
+        Iterator it = FacadeManager.getUmlFacade().getOwnedElements(nsa).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();

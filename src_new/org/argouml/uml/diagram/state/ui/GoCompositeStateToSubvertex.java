@@ -25,7 +25,8 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 public class GoCompositeStateToSubvertex extends AbstractGoRule {
@@ -33,8 +34,8 @@ public class GoCompositeStateToSubvertex extends AbstractGoRule {
   public String getRuleName() { return "State->Substates"; }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.getInstance().isACompositeState(parent)) {
-          return ModelFacade.getInstance().getSubvertices(parent);
+      if (FacadeManager.getUmlFacade().isACompositeState(parent)) {
+          return FacadeManager.getUmlFacade().getSubvertices(parent);
       }
       return null;
   }

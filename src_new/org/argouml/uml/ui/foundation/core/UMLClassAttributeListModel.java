@@ -23,7 +23,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
@@ -51,7 +52,7 @@ public class UMLClassAttributeListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         if (getTarget() != null) {
             
-            setAllElements(ModelFacade.getInstance().getAttributes(getTarget()));
+            setAllElements(FacadeManager.getUmlFacade().getAttributes(getTarget()));
         }
     }
 
@@ -59,7 +60,7 @@ public class UMLClassAttributeListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return (ModelFacade.getInstance().getAttributes(getTarget()).contains(element));
+        return (FacadeManager.getUmlFacade().getAttributes(getTarget()).contains(element));
     }
 
 }

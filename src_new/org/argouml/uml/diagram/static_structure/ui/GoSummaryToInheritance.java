@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -52,29 +53,29 @@ public class GoSummaryToInheritance extends AbstractGoRule {
           
           List list = new ArrayList();
           
-          Iterator it = ModelFacade.getInstance().getSupplierDependencies(
+          Iterator it = FacadeManager.getUmlFacade().getSupplierDependencies(
                                         ((InheritanceNode)parent).getParent());
           
           while(it.hasNext()){
               
               Object next = it.next();
-              if(ModelFacade.getInstance().isAAbstraction(next))
+              if(FacadeManager.getUmlFacade().isAAbstraction(next))
                 list.add(next);
           }
           
-          it = ModelFacade.getInstance().getClientDependencies(
+          it = FacadeManager.getUmlFacade().getClientDependencies(
                             ((InheritanceNode)parent).getParent());
           
           while(it.hasNext()){
               
               Object next = it.next();
-              if(ModelFacade.getInstance().isAAbstraction(next))
+              if(FacadeManager.getUmlFacade().isAAbstraction(next))
                 list.add(next);
           }
           
-          Iterator generalizationsIt = ModelFacade.getInstance().getGeneralizations(
+          Iterator generalizationsIt = FacadeManager.getUmlFacade().getGeneralizations(
                                             ((InheritanceNode)parent).getParent());
-          Iterator specializationsIt = ModelFacade.getInstance().getSpecializations(
+          Iterator specializationsIt = FacadeManager.getUmlFacade().getSpecializations(
                                             ((InheritanceNode)parent).getParent());
           
           while(generalizationsIt.hasNext())

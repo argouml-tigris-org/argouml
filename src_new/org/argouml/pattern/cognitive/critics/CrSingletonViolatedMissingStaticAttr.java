@@ -33,7 +33,8 @@ import org.argouml.cognitive.critics.*;
 import org.argouml.uml.cognitive.critics.*;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * A critic to detect whether a class violates the conditions required for
@@ -107,24 +108,24 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
-        if (!(ModelFacade.getInstance().isAClass(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
         // We only look at singletons
-        if (!(ModelFacade.getInstance().isSingleton(dm))) {
+        if (!(FacadeManager.getUmlFacade().isSingleton(dm))) {
             return NO_PROBLEM;
         }
 
-	Iterator attrs = ModelFacade.getInstance().getAttributes(dm).iterator();
+	Iterator attrs = FacadeManager.getUmlFacade().getAttributes(dm).iterator();
 
 	while (attrs.hasNext()) {
 	    Object attr = attrs.next();
 
-	    if (!(ModelFacade.getInstance().isClassifierScope(attr)))
+	    if (!(FacadeManager.getUmlFacade().isClassifierScope(attr)))
 		continue;
 
-	    if (ModelFacade.getInstance().getType(attr) == dm)
+	    if (FacadeManager.getUmlFacade().getType(attr) == dm)
 		return NO_PROBLEM;
 	}
 

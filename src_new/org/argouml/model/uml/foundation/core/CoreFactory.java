@@ -34,7 +34,8 @@ import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -869,7 +870,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	 * @return MAttribute
 	 */
 	public MAttribute buildAttribute(Object handle) {
-		if (!ModelFacade.getInstance().isAClassifier(handle))
+		if (!FacadeManager.getUmlFacade().isAClassifier(handle))
 			return null;
 		MClassifier cls = (MClassifier)handle;
 		MAttribute attr = buildAttribute();

@@ -30,7 +30,8 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
    The context is the current available namespaces via import in the
@@ -76,12 +77,12 @@ abstract class Context
     */
     protected String getJavaName(Object mPackage)
     {
-	Object parent = ModelFacade.getInstance().getNamespace(mPackage);
-	if(ModelFacade.getInstance().isAModel(parent)) {
-	    return ModelFacade.getInstance().getName(mPackage);
+	Object parent = FacadeManager.getUmlFacade().getNamespace(mPackage);
+	if(FacadeManager.getUmlFacade().isAModel(parent)) {
+	    return FacadeManager.getUmlFacade().getName(mPackage);
 	}
 	else if(parent != null) {
-	    return getJavaName(parent) + "." + ModelFacade.getInstance().getName(mPackage);
+	    return getJavaName(parent) + "." + FacadeManager.getUmlFacade().getName(mPackage);
 	}
 	else {
 	    return "";

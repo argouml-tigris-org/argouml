@@ -32,7 +32,8 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -97,8 +98,8 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
 	public void newAttribute() {
         Object target = getTarget();
-        if (ModelFacade.getInstance().isAStructuralFeature(target)) {
-            Object owner = ModelFacade.getInstance().getOwner(target);
+        if (FacadeManager.getUmlFacade().isAStructuralFeature(target)) {
+            Object owner = FacadeManager.getUmlFacade().getOwner(target);
             TargetManager.getInstance().setTarget(UmlFactory.getFactory().getCore().buildAttribute(owner));
         }
 

@@ -54,7 +54,8 @@ import org.argouml.application.api.NotationName;
 import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator;
@@ -266,16 +267,16 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
         Set nodes = _classTableModel.getChecked(language);
         for (Iterator iter = nodes.iterator(); iter.hasNext(); ) {
           Object node = iter.next();
-          if (ModelFacade.getInstance().isAClassifier(node)) {
+          if (FacadeManager.getUmlFacade().isAClassifier(node)) {
             if (isPathInModel) {
               path = Generator.getCodePath(node);
               if (path == null) {
-                Object parent = ModelFacade.getInstance().getNamespace(node);
+                Object parent = FacadeManager.getUmlFacade().getNamespace(node);
                 while (parent != null) {
                   path = Generator.getCodePath(parent);
                   if (path != null)
                     break;
-                  parent = ModelFacade.getInstance().getNamespace(parent);
+                  parent = FacadeManager.getUmlFacade().getNamespace(parent);
                 }
               }
             }
@@ -288,9 +289,9 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
               // save the selected language in the model
               // TODO 1: no support of multiple checked languages
               // TODO 2: it's a change in the model -> save needed!
-              String savedLang = ModelFacade.getInstance().getValueOfTag(ModelFacade.getInstance().getTaggedValue(node,"src_lang"));
+              String savedLang = FacadeManager.getUmlFacade().getValueOfTag(FacadeManager.getUmlFacade().getTaggedValue(node,"src_lang"));
               if (!language.getConfigurationValue().equals(savedLang))
-                ModelFacade.getInstance().setTaggedValue(node,"src_lang",language.getConfigurationValue());
+                FacadeManager.getUmlFacade().setTaggedValue(node,"src_lang",language.getConfigurationValue());
             }
           }
         }
@@ -359,7 +360,7 @@ class TableModelClassChecks extends AbstractTableModel {
     int size = _classes.size();
     for (int i = 0; i < size; i++) {
       Object cls = _classes.elementAt(i);
-      String name = ModelFacade.getInstance().getName(cls);
+      String name = FacadeManager.getUmlFacade().getName(cls);
       if (!(name.length() > 0))
 	  continue;
 
@@ -379,7 +380,7 @@ class TableModelClassChecks extends AbstractTableModel {
   private boolean isSupposedToBeGeneratedAsLanguage(NotationName lang, Object cls) {
     if (lang == null)
       return false;
-    String savedLang = ModelFacade.getInstance().getValueOfTag(ModelFacade.getInstance().getTaggedValue(cls,"src_lang"));
+    String savedLang = FacadeManager.getUmlFacade().getValueOfTag(FacadeManager.getUmlFacade().getTaggedValue(cls,"src_lang"));
     return (lang.getConfigurationValue().equals(savedLang));
   }
 
@@ -429,7 +430,7 @@ class TableModelClassChecks extends AbstractTableModel {
 	Object cls = _classes.elementAt(row);
 	if (col == 0)
 	    return false;
-	if (!(ModelFacade.getInstance().getName(cls).length() > 0))
+	if (!(FacadeManager.getUmlFacade().getName(cls).length() > 0))
 	    return false;
 	int langindex = col - 1;
 	if (langindex >= 0 && langindex < getLanguagesCount())
@@ -446,7 +447,7 @@ class TableModelClassChecks extends AbstractTableModel {
 	Object cls = _classes.elementAt(row);
 	int langindex = col - 1;
 	if (col == 0) {
-	    String name = ModelFacade.getInstance().getName(cls);
+	    String name = FacadeManager.getUmlFacade().getName(cls);
 	    return (name.length() > 0) ? name : "(anon)";
 	}
 	else if (langindex >= 0 && langindex < getLanguagesCount()) {

@@ -34,7 +34,8 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Category;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.ocl.OCLUtil;
@@ -130,7 +131,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return (ModelFacade.getInstance().isAClass(target) || ModelFacade.getInstance().isAFeature(target));
+        return (FacadeManager.getUmlFacade().isAClass(target) || FacadeManager.getUmlFacade().isAFeature(target));
     }
 
     /**
@@ -253,13 +254,13 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                 mmeContext = mmeContext.getModelElementContainer();
             }
             
-            if(ModelFacade.getInstance().getName(mmeContext) == null ||
-               ModelFacade.getInstance().getName(m_mmeiTarget) == null ||
-               !Character.isUpperCase(ModelFacade.getInstance().getName(mmeContext).charAt(0)) ||
-               (ModelFacade.getInstance().isAClass(m_mmeiTarget) &&
-                !Character.isUpperCase(ModelFacade.getInstance().getName(m_mmeiTarget).charAt(0))) ||
-               (ModelFacade.getInstance().isAFeature(m_mmeiTarget) &&
-                !Character.isLowerCase(ModelFacade.getInstance().getName(m_mmeiTarget).charAt(0)))
+            if(FacadeManager.getUmlFacade().getName(mmeContext) == null ||
+               FacadeManager.getUmlFacade().getName(m_mmeiTarget) == null ||
+               !Character.isUpperCase(FacadeManager.getUmlFacade().getName(mmeContext).charAt(0)) ||
+               (FacadeManager.getUmlFacade().isAClass(m_mmeiTarget) &&
+                !Character.isUpperCase(FacadeManager.getUmlFacade().getName(m_mmeiTarget).charAt(0))) ||
+               (FacadeManager.getUmlFacade().isAFeature(m_mmeiTarget) &&
+                !Character.isLowerCase(FacadeManager.getUmlFacade().getName(m_mmeiTarget).charAt(0)))
                 ){
                     // TODO I18n
                     JOptionPane.showMessageDialog (null,

@@ -29,7 +29,8 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
 import org.apache.log4j.Category;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -130,7 +131,7 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.getInstance().isABase(target) || ModelFacade.getInstance().isADiagram(target)) {
+        if (FacadeManager.getUmlFacade().isABase(target) || FacadeManager.getDiagramFacade().isADiagram(target)) {
 
             if (target instanceof MBase) {
                 if (_target != null)

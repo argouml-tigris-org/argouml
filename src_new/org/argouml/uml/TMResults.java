@@ -28,7 +28,8 @@ import java.util.Vector;
 import javax.swing.table.AbstractTableModel;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -134,15 +135,15 @@ public class TMResults extends AbstractTableModel {
                     return numNodes + " nodes and " + numEdges + " edges";
             }
         }
-        if (ModelFacade.getInstance().isAModelElement(rowObj)) {
+        if (FacadeManager.getUmlFacade().isAModelElement(rowObj)) {
             Diagram d = null;
             if (_diagrams != null)
                 d = (Diagram)_diagrams.elementAt(row);
             switch (col) {
                 case 0 :
-                    return ModelFacade.getInstance().getUMLClassName(rowObj);
+                    return FacadeManager.getUmlFacade().getUMLClassName(rowObj);
                 case 1 :
-                    return ModelFacade.getInstance().getName(rowObj);
+                    return FacadeManager.getUmlFacade().getName(rowObj);
                 case 2 :
                     return (d == null) ? "N/A" : d.getName();
                 case 3 :

@@ -40,7 +40,8 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Using Model through Facade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 
 /** Check the:
@@ -75,13 +76,13 @@ public class CrAttrNameConflict extends CrUML {
      * @returns true if there are two with the same name.
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isAClassifier(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isAClassifier(dm))) return NO_PROBLEM;
 
 	Vector namesSeen = new Vector();
 
-	Iterator enum = ModelFacade.getInstance().getAttributes(dm).iterator();
+	Iterator enum = FacadeManager.getUmlFacade().getAttributes(dm).iterator();
 	while (enum.hasNext()) {
-	    String name = ModelFacade.getInstance().getName(enum.next());
+	    String name = FacadeManager.getUmlFacade().getName(enum.next());
 	    if (name == null || name.length() == 0) continue;
 
 	    if (namesSeen.contains(name)) return PROBLEM_FOUND;

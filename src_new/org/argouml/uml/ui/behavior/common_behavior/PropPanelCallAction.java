@@ -27,7 +27,8 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLExpressionBodyField;
@@ -47,16 +48,16 @@ public class PropPanelCallAction extends PropPanelModelElement {
     public PropPanelCallAction() {
         super("Action", _callActionIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.CALL_ACTION;
+        Class mclass = (Class)NsumlModelFacade.CALL_ACTION;
 
         addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 
         UMLExpressionModel expressionModel =
             new UMLExpressionModel(
                 this,
-                (Class)ModelFacade.ACTION,
+                (Class)NsumlModelFacade.ACTION,
                 "script",
-                (Class)ModelFacade.ACTION_EXPRESSION,
+                (Class)NsumlModelFacade.ACTION_EXPRESSION,
                 "getScript",
                 "setScript");
         addField(Argo.localize("UMLMenu", "label.expression"), new JScrollPane(new UMLExpressionBodyField(expressionModel, true)));

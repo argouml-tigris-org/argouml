@@ -32,7 +32,8 @@ import java.util.List;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 /** Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
@@ -51,13 +52,13 @@ public class CrOppEndConflict extends CrUML {
     
     public boolean predicate2(Object dm, Designer dsgr) {
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.getInstance().isAClassifier(dm)) {
+        if (FacadeManager.getUmlFacade().isAClassifier(dm)) {
             Collection col = CoreHelper.getHelper().getAssociations(dm);
             List names = new ArrayList();
             Iterator it = col.iterator();
             String name = null;
             while (it.hasNext()) {
-                name = ModelFacade.getInstance().getName(it.next());
+                name = FacadeManager.getUmlFacade().getName(it.next());
                 if (name == null || name.equals("")) continue;
                 if (names.contains(name)) {
                     problem = PROBLEM_FOUND;

@@ -36,7 +36,8 @@ import java.util.*;
 import org.argouml.cognitive.*;
 
 // Use model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. 
@@ -57,9 +58,9 @@ public class CrFinalSubclassed extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isAGeneralizableElement(dm))) return NO_PROBLEM;
-	if (!(ModelFacade.getInstance().isLeaf(dm))) return NO_PROBLEM;
-	Iterator enum = ModelFacade.getInstance().getSpecializations(dm);
+	if (!(FacadeManager.getUmlFacade().isAGeneralizableElement(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isLeaf(dm))) return NO_PROBLEM;
+	Iterator enum = FacadeManager.getUmlFacade().getSpecializations(dm);
 	if (enum.hasNext()) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

@@ -26,7 +26,8 @@ package org.argouml.uml.diagram.ui;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
@@ -38,8 +39,8 @@ public class GoInteractionMessages extends AbstractGoRule {
     }
 
     public Collection getChildren(Object parent) {
-        if (ModelFacade.getInstance().isAInteraction(parent)) {
-            return ModelFacade.getInstance().getMessages(parent);
+        if (FacadeManager.getUmlFacade().isAInteraction(parent)) {
+            return FacadeManager.getUmlFacade().getMessages(parent);
         }
         return null;
     }

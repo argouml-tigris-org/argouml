@@ -37,7 +37,8 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 
 /** Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
@@ -55,11 +56,11 @@ public class CrNameConflict extends CrUML {
 
     public boolean predicate2(Object dm, Designer dsgr) {      
         boolean problem = NO_PROBLEM;
-        if (ModelFacade.getInstance().isANamespace(dm)) {
-            Iterator it = ModelFacade.getInstance().getOwnedElements(dm).iterator();
+        if (FacadeManager.getUmlFacade().isANamespace(dm)) {
+            Iterator it = FacadeManager.getUmlFacade().getOwnedElements(dm).iterator();
             Collection names = new ArrayList(); 
             while (it.hasNext()) {  
-                String name = ModelFacade.getInstance().getName(it.next());
+                String name = FacadeManager.getUmlFacade().getName(it.next());
                 if (names.contains(name)) {  
                     problem = PROBLEM_FOUND; 
                     break;   
@@ -74,7 +75,7 @@ public class CrNameConflict extends CrUML {
         if (w instanceof WizMEName) {
             ToDoItem item = w.getToDoItem();
             Object me = item.getOffenders().elementAt(0);
-            String sug = ModelFacade.getInstance().getName(me);
+            String sug = FacadeManager.getUmlFacade().getName(me);
             String ins = "Change the name to something different.";
             ((WizMEName)w).setInstructions(ins);
             ((WizMEName)w).setSuggestion(sug);

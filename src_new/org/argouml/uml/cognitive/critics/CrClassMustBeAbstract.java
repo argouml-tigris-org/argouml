@@ -36,7 +36,8 @@ import java.util.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic to detect whether a non abstract class  
  *  contains abstract operations. It checks whether a non abstract class
@@ -54,12 +55,12 @@ public class CrClassMustBeAbstract extends CrUML {
   }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isAClass(dm))) return NO_PROBLEM;
-	if (ModelFacade.getInstance().isAbstract(dm)) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isAClass(dm))) return NO_PROBLEM;
+	if (FacadeManager.getUmlFacade().isAbstract(dm)) return NO_PROBLEM;
 	
-	Iterator enum = ModelFacade.getInstance().getOperations(dm).iterator();
+	Iterator enum = FacadeManager.getUmlFacade().getOperations(dm).iterator();
 	while (enum.hasNext()) {
-	    if (ModelFacade.getInstance().isAbstract(enum.next())) return PROBLEM_FOUND;
+	    if (FacadeManager.getUmlFacade().isAbstract(enum.next())) return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
     }

@@ -42,7 +42,8 @@ import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.helpers.NotationHelper;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -275,8 +276,8 @@ public abstract class Generator
      */
     public static String getCodePath(Object me) {
         String s =
-            ModelFacade.getInstance().getValueOfTag(
-                ModelFacade.getInstance().getTaggedValue(me, "src_path"));
+            FacadeManager.getUmlFacade().getValueOfTag(
+                FacadeManager.getUmlFacade().getTaggedValue(me, "src_path"));
         if (s != null)
             return s.trim();
         return null;

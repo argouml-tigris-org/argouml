@@ -41,7 +41,8 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -405,7 +406,7 @@ public class GeneratorDisplay extends Generator {
         //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
         s += "{\n";
 
-        Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
+        Collection strs = FacadeManager.getUmlFacade().getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";
@@ -430,7 +431,7 @@ public class GeneratorDisplay extends Generator {
 
         // TODO: constructors
 
-        Collection behs = ModelFacade.getInstance().getOperations(cls);
+        Collection behs = FacadeManager.getUmlFacade().getOperations(cls);
         if (behs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";

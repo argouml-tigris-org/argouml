@@ -24,7 +24,8 @@
 package org.argouml.uml.ui;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -60,7 +61,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
     public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(
@@ -106,7 +107,7 @@ public class ActionSequenceDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
             throw new IllegalArgumentException(

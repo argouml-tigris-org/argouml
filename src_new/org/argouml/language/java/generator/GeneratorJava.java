@@ -47,7 +47,8 @@ import java.util.Vector;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
@@ -142,7 +143,7 @@ public class GeneratorJava
      * 	       null if no file can be generated.
      */
     public String GenerateFile(Object me, String path) {
-        String name = ModelFacade.getInstance().getName(me);
+        String name = FacadeManager.getUmlFacade().getName(me);
         if (name == null || name.length() == 0)
             return null;
         MClassifier cls = (MClassifier)me;
@@ -150,7 +151,7 @@ public class GeneratorJava
         if (!path.endsWith(FILE_SEPARATOR))
             path += FILE_SEPARATOR;
 
-        String packagePath = getPackageName(ModelFacade.getInstance().getNamespace(cls));
+        String packagePath = getPackageName(FacadeManager.getUmlFacade().getNamespace(cls));
 
         int lastIndex = -1;
         do {
@@ -846,7 +847,7 @@ public class GeneratorJava
             String tv = null; // helper for tagged values
 
             // add attributes
-            Collection strs = ModelFacade.getInstance().getStructuralFeatures(cls);
+            Collection strs = FacadeManager.getUmlFacade().getStructuralFeatures(cls);
 
             //
             // 2002-06-08
@@ -914,7 +915,7 @@ public class GeneratorJava
 
             // add operations
             // TODO: constructors
-            Collection behs = ModelFacade.getInstance().getOperations(cls);
+            Collection behs = FacadeManager.getUmlFacade().getOperations(cls);
 
             //
             // 2002-06-08
@@ -1477,7 +1478,7 @@ public class GeneratorJava
     //  public String generateSpecification(Collection realizations) {
     public String generateSpecification(MClass cls) {
         Collection realizations =
-            ModelFacade.getInstance().getSpecifications(cls);
+            FacadeManager.getUmlFacade().getSpecifications(cls);
         if (realizations == null)
             return "";
         StringBuffer sb = new StringBuffer(80);
@@ -1753,13 +1754,13 @@ public class GeneratorJava
        @return the Java package name
     */
     public String getPackageName(Object namespace) {
-        if (namespace == null || !ModelFacade.getInstance().isANamespace(namespace) || ModelFacade.getInstance().getNamespace(namespace) == null)
+        if (namespace == null || !FacadeManager.getUmlFacade().isANamespace(namespace) || FacadeManager.getUmlFacade().getNamespace(namespace) == null)
             return "";
-        String packagePath = ModelFacade.getInstance().getName(namespace);
-        while ((namespace = ModelFacade.getInstance().getNamespace(namespace)) != null) {
+        String packagePath = FacadeManager.getUmlFacade().getName(namespace);
+        while ((namespace = FacadeManager.getUmlFacade().getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
-            if (ModelFacade.getInstance().getNamespace(namespace) != null)
-                packagePath = ModelFacade.getInstance().getName(namespace) + '.' + packagePath;
+            if (FacadeManager.getUmlFacade().getNamespace(namespace) != null)
+                packagePath = FacadeManager.getUmlFacade().getName(namespace) + '.' + packagePath;
         }
         return packagePath;
     }

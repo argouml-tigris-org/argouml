@@ -27,7 +27,8 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsHelper;
 import org.argouml.uml.ui.UMLModelElementListModel2;
@@ -88,7 +89,7 @@ public class UMLClassifierRoleAvailableContentsListModel
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig)target).getOwner() : target;
-        if (ModelFacade.getInstance().isABase(target) || ModelFacade.getInstance().isADiagram(target)) {
+        if (FacadeManager.getUmlFacade().isABase(target) || FacadeManager.getDiagramFacade().isADiagram(target)) {
             if (_target != null) {
                 Collection bases = ((MClassifierRole)getTarget()).getBases();
                 Iterator it = bases.iterator();

@@ -32,7 +32,8 @@ import java.util.Vector;
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -139,7 +140,7 @@ public class CoreHelper {
      */
     public Collection getSupertypes(Object ogeneralizableelement) {
         Collection result = new HashSet();
-        if (ModelFacade.getInstance().isAGeneralizableElement(ogeneralizableelement)) {
+        if (FacadeManager.getUmlFacade().isAGeneralizableElement(ogeneralizableelement)) {
             MGeneralizableElement cls =
                 (MGeneralizableElement)ogeneralizableelement;
             Collection gens = cls.getGeneralizations();
@@ -229,12 +230,12 @@ public class CoreHelper {
      */
     public Collection getOperations(Object classifier) {
         Collection result = new ArrayList();
-        if (ModelFacade.getInstance().isAClassifier(classifier)) {
+        if (FacadeManager.getUmlFacade().isAClassifier(classifier)) {
             MClassifier mclassifier = (MClassifier)classifier;
             Iterator features = mclassifier.getFeatures().iterator();
             while (features.hasNext()) {
                 MFeature feature = (MFeature)features.next();
-                if (ModelFacade.getInstance().isAOperation(feature))
+                if (FacadeManager.getUmlFacade().isAOperation(feature))
                     result.add(feature);
             }
         }
@@ -264,7 +265,7 @@ public class CoreHelper {
      */
     public Collection getAttributesInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getInstance().getStructuralFeatures(classifier));
+        result.addAll(FacadeManager.getUmlFacade().getStructuralFeatures(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier)parents.next();
@@ -280,7 +281,7 @@ public class CoreHelper {
      */
     public Collection getOperationsInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getInstance().getOperations(classifier));
+        result.addAll(FacadeManager.getUmlFacade().getOperations(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             result.addAll(getOperationsInh((MClassifier)parents.next()));
@@ -851,7 +852,7 @@ public class CoreHelper {
      */
     public Collection getAssociations(Object oclassifier) {
         Collection col = new ArrayList();
-        if (ModelFacade.getInstance().isAClassifier(oclassifier)) {
+        if (FacadeManager.getUmlFacade().isAClassifier(oclassifier)) {
             MClassifier classifier = (MClassifier)oclassifier;
             Iterator it = classifier.getAssociationEnds().iterator();
             while (it.hasNext()) {
@@ -1298,7 +1299,7 @@ public class CoreHelper {
      */
     public Collection getBaseClasses(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.getInstance().isANamespace(o)) {
+        if (FacadeManager.getUmlFacade().isANamespace(o)) {
             Iterator it =
                 ModelManagementHelper
                     .getHelper()
@@ -1329,7 +1330,7 @@ public class CoreHelper {
     //       getChildren won't forget that they need to catch it.
     public Collection getChildren(Object o) {
         Collection col = new ArrayList();
-        if (ModelFacade.getInstance().isAGeneralizableElement(o)) {
+        if (FacadeManager.getUmlFacade().isAGeneralizableElement(o)) {
             Iterator it =
                 ((MGeneralizableElement)o).getSpecializations().iterator();
             while (it.hasNext()) {
@@ -1369,7 +1370,7 @@ public class CoreHelper {
     public Collection getAllRealizedInterfaces(Object o) {
         Collection col = new ArrayList();
         if (o != null) {
-            if (ModelFacade.getInstance().isAClass(o)) {
+            if (FacadeManager.getUmlFacade().isAClass(o)) {
                 MClass clazz = (MClass)o;
                 Collection supDependencies = clazz.getClientDependencies();
                 Iterator it = supDependencies.iterator();

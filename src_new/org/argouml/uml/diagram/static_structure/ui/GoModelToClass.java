@@ -25,7 +25,8 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -37,7 +38,7 @@ public class GoModelToClass extends AbstractGoRule {
   public String getRuleName() { return "Package->Class"; }
   
   public Collection getChildren(Object parent) {
-      if (ModelFacade.getInstance().isAPackage(parent)) {
+      if (FacadeManager.getUmlFacade().isAPackage(parent)) {
           return ModelManagementHelper.getHelper().getAllModelElementsOfKind(parent, MClass.class);
       }
       return null;

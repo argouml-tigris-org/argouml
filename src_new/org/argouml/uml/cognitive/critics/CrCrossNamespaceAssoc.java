@@ -60,7 +60,8 @@ import org.argouml.cognitive.critics.*;
 
 // Uses Model through ModelFacade
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p>A critic to check that the classifiers associated with the ends of an
@@ -126,10 +127,10 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
         // Only look at associations
 
-        if (!ModelFacade.getInstance().isAAssociation(dm))
+        if (!FacadeManager.getUmlFacade().isAAssociation(dm))
             return NO_PROBLEM;
 
-        Object ns = ModelFacade.getInstance().getNamespace(dm);
+        Object ns = FacadeManager.getUmlFacade().getNamespace(dm);
 
         if (ns == null)
             return PROBLEM_FOUND;
@@ -140,7 +141,7 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
         // classifier is in the same sub-system or model
 
-        Iterator enum = ModelFacade.getInstance().getConnections(dm);
+        Iterator enum = FacadeManager.getUmlFacade().getConnections(dm);
 
         while (enum.hasNext()) {
 
@@ -150,9 +151,9 @@ public class CrCrossNamespaceAssoc extends CrUML {
 
             // have a problem.
 
-            Object clf = ModelFacade.getInstance().getType(enum.next());
+            Object clf = FacadeManager.getUmlFacade().getType(enum.next());
 
-            if (ns != ModelFacade.getInstance().getNamespace(clf))
+            if (ns != FacadeManager.getUmlFacade().getNamespace(clf))
                 return PROBLEM_FOUND;
 
         }

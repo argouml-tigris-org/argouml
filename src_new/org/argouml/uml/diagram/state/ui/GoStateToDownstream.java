@@ -25,7 +25,8 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -36,7 +37,7 @@ public class GoStateToDownstream extends AbstractGoRule {
   public String getRuleName() { return "State->Following States"; }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isAStateVertex(parent)) {
+      if (FacadeManager.getUmlFacade().isAStateVertex(parent)) {
           return StateMachinesHelper.getHelper().getOutgoingStates(parent);
       }
       return null;

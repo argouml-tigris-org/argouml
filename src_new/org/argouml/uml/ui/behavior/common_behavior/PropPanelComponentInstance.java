@@ -33,7 +33,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
@@ -57,10 +58,10 @@ public class PropPanelComponentInstance extends PropPanelModelElement {
     public PropPanelComponentInstance() {
         super("Component Instance", _componentInstanceIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = (Class)ModelFacade.COMPONENT_INSTANCE;
+        Class mclass = (Class)NsumlModelFacade.COMPONENT_INSTANCE;
 
         Class[] namesToWatch =
-        {(Class)ModelFacade.STEREOTYPE, (Class)ModelFacade.NAMESPACE, MClassifier.class};
+        {(Class)NsumlModelFacade.STEREOTYPE, (Class)NsumlModelFacade.NAMESPACE, MClassifier.class};
 
         setNameEventListening(namesToWatch);
 

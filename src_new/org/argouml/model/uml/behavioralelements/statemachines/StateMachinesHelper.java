@@ -27,7 +27,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -253,7 +254,7 @@ public class StateMachinesHelper {
      * @return Collection
      */
     public Collection getOutgoingStates(Object ostatevertex) {
-        if (ModelFacade.getInstance().isAStateVertex(ostatevertex)) {
+        if (FacadeManager.getUmlFacade().isAStateVertex(ostatevertex)) {
             MStateVertex statevertex = (MStateVertex)ostatevertex;
             Collection col = new ArrayList();
             Iterator it = statevertex.getOutgoings().iterator();

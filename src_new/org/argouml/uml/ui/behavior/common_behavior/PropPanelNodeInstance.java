@@ -33,7 +33,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLClassifierComboBoxModel;
@@ -55,7 +56,7 @@ public class PropPanelNodeInstance extends PropPanelModelElement {
     public PropPanelNodeInstance() {
         super("Node Instance", _nodeInstanceIcon, ConfigLoader.getTabPropsOrientation());
 
-	Class mclass = (Class)ModelFacade.NODE_INSTANCE;
+	Class mclass = (Class)NsumlModelFacade.NODE_INSTANCE;
 
 	addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
 

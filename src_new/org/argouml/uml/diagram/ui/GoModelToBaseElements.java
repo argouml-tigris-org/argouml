@@ -27,7 +27,8 @@ import java.util.Collection;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -41,7 +42,7 @@ public class GoModelToBaseElements extends AbstractGoRule {
   }
   
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isAPackage(parent)) {
+      if (FacadeManager.getUmlFacade().isAPackage(parent)) {
           return CoreHelper.getHelper().getBaseClasses(parent);
       }
       return null;

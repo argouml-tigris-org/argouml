@@ -34,7 +34,8 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /**
  * <p> A critic to detect navigation from an Interface to a Class in an
@@ -107,11 +108,11 @@ public class CrNavFromInterface extends CrUML {
 
         // Only look at Associations
 
-        if (!(ModelFacade.getInstance().isAAssociation(dm))) {
+        if (!(FacadeManager.getUmlFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
-        if (ModelFacade.getInstance().isAAssociationRole(dm)) {
+        if (FacadeManager.getUmlFacade().isAAssociationRole(dm)) {
             return NO_PROBLEM;
         }
 
@@ -119,7 +120,7 @@ public class CrNavFromInterface extends CrUML {
         // there is an end connected to an Interface and 2) an end other than
         // that end is navigable. 
 
-        Iterator enum = ModelFacade.getInstance().getConnections(dm);
+        Iterator enum = FacadeManager.getUmlFacade().getConnections(dm);
 
         boolean haveInterfaceEnd  = false ;  // End at an Interface?
         boolean otherEndNavigable = false ;  // Navigable other end?
@@ -136,12 +137,12 @@ public class CrNavFromInterface extends CrUML {
             // ClassifierRole, since we have effectively eliminated that
             // possiblity in rejecting AssociationRoles above.
 
-	    Object type = ModelFacade.getInstance().getType(ae);
+	    Object type = FacadeManager.getUmlFacade().getType(ae);
 
-            if (ModelFacade.getInstance().isAInterface(type)) {
+            if (FacadeManager.getUmlFacade().isAInterface(type)) {
                 haveInterfaceEnd = true;
             }
-	    else if (ModelFacade.getInstance().isNavigable(ae)) {
+	    else if (FacadeManager.getUmlFacade().isNavigable(ae)) {
                 otherEndNavigable = true;
             }
 

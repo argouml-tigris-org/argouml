@@ -31,7 +31,8 @@ package org.argouml.uml.cognitive.critics;
 import java.util.*;
 import javax.swing.*;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.ProjectBrowser;
@@ -196,10 +197,10 @@ public class CrReservedName extends CrUML {
     // Critic implementation
     
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.getInstance().isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
-        if (!(ModelFacade.getInstance().isAModelElement(dm))) return NO_PROBLEM;
-        String meName = ModelFacade.getInstance().getName(dm);
+        if (!(FacadeManager.getUmlFacade().isAModelElement(dm))) return NO_PROBLEM;
+        String meName = FacadeManager.getUmlFacade().getName(dm);
         if (meName == null || meName.equals("")) return NO_PROBLEM;
         String nameStr = meName;
         if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
@@ -234,7 +235,7 @@ public class CrReservedName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
-	    String sug = ModelFacade.getInstance().getName(item.getOffenders().elementAt(0));
+	    String sug = FacadeManager.getUmlFacade().getName(item.getOffenders().elementAt(0));
 	    String ins = "Change the name to something different.";
 	    ((WizMEName)w).setInstructions(ins);
 	    ((WizMEName)w).setSuggestion(sug);

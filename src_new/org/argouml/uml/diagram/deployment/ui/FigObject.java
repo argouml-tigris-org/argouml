@@ -34,7 +34,8 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -171,13 +172,13 @@ public class FigObject extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     // super.setEnclosingFig(encloser);
-    if (!(ModelFacade.getInstance().isAModelElement(getOwner()))) return;
-    if (ModelFacade.getInstance().isAObject(getOwner())) {
+    if (!(FacadeManager.getUmlFacade().isAModelElement(getOwner()))) return;
+    if (FacadeManager.getUmlFacade().isAObject(getOwner())) {
       MObject me = (MObject) getOwner();
       MComponentInstance mcompInst = null;
       MComponent mcomp = null;
 
-      if (encloser != null && (ModelFacade.getInstance().isAComponentInstance(encloser.getOwner()))) {
+      if (encloser != null && (FacadeManager.getUmlFacade().isAComponentInstance(encloser.getOwner()))) {
         mcompInst = (MComponentInstance) encloser.getOwner();
         me.setComponentInstance(mcompInst);
       }
@@ -187,7 +188,7 @@ public class FigObject extends FigNodeModelElement {
         }
       }
       if (encloser != null && 
-          (ModelFacade.getInstance().isAComponent(encloser.getOwner()))) {
+          (FacadeManager.getUmlFacade().isAComponent(encloser.getOwner()))) {
         mcomp = (MComponent) encloser.getOwner();
         MObject obj = (MObject) getOwner();
         resident.setImplementationLocation(mcomp);

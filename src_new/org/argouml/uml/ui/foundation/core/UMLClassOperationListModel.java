@@ -24,7 +24,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -50,7 +51,7 @@ public class UMLClassOperationListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         if (getTarget() != null) {
             
-            setAllElements(ModelFacade.getInstance().getOperations(getTarget()));
+            setAllElements(FacadeManager.getUmlFacade().getOperations(getTarget()));
         }
     }
 
@@ -58,7 +59,7 @@ public class UMLClassOperationListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return (ModelFacade.getInstance().getOperations(getTarget()).contains(element));
+        return (FacadeManager.getUmlFacade().getOperations(getTarget()).contains(element));
     }
 
 }

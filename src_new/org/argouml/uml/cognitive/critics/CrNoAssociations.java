@@ -34,7 +34,8 @@ import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
 
 // Uses Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 
 /** A critic to detect when a class can never have instances (of
  *  itself or any subclasses). */
@@ -49,24 +50,24 @@ public class CrNoAssociations extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(ModelFacade.getInstance().isAClassifier(dm)))
+        if (!(FacadeManager.getUmlFacade().isAClassifier(dm)))
             return NO_PROBLEM;
-        if (!(ModelFacade.getInstance().isPrimaryObject(dm)))
+        if (!(FacadeManager.getUmlFacade().isPrimaryObject(dm)))
             return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getInstance().getName(dm) == null)
-            || ("".equals(ModelFacade.getInstance().getName(dm))))
+        if ((FacadeManager.getUmlFacade().getName(dm) == null)
+            || ("".equals(FacadeManager.getUmlFacade().getName(dm))))
             return NO_PROBLEM;
 
         // types can probably have associations, but we should not nag at them
         // not having any.
         // utility is a namespace collection - also not strictly required 
         // to have associations.
-        if (ModelFacade.getInstance().isType(dm))
+        if (FacadeManager.getUmlFacade().isType(dm))
             return NO_PROBLEM;
-        if (ModelFacade.getInstance().isUtility(dm))
+        if (FacadeManager.getUmlFacade().isUtility(dm))
             return NO_PROBLEM;
 
         //TODO: different critic or special message for classes
@@ -84,21 +85,21 @@ public class CrNoAssociations extends CrUML {
      *		or in any of its generalizations.
      */
     private boolean findAssociation(Object dm, int depth) {
-        if (ModelFacade.getInstance().getAssociationEnds(dm).iterator().hasNext())
+        if (FacadeManager.getUmlFacade().getAssociationEnds(dm).iterator().hasNext())
             return true;
 
         if (depth > 50)
             return false;
 
-        Iterator iter = ModelFacade.getInstance().getGeneralizations(dm);
+        Iterator iter = FacadeManager.getUmlFacade().getGeneralizations(dm);
 
         while (iter.hasNext()) {
-            Object parent = ModelFacade.getInstance().getParent(iter.next());
+            Object parent = FacadeManager.getUmlFacade().getParent(iter.next());
 
             if (parent == dm)
                 continue;
 
-            if (ModelFacade.getInstance().isAClassifier(parent))
+            if (FacadeManager.getUmlFacade().isAClassifier(parent))
                 if (findAssociation(parent, depth + 1))
                     return true;
         }

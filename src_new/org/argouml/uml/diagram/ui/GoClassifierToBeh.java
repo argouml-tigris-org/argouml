@@ -26,7 +26,8 @@ package org.argouml.uml.diagram.ui;
 import java.util.Collection;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -38,8 +39,8 @@ public class GoClassifierToBeh extends AbstractGoRule {
   }
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.getInstance().isAClassifier(parent)) {
-          return ModelFacade.getInstance().getOperations(parent);
+      if (FacadeManager.getUmlFacade().isAClassifier(parent)) {
+          return FacadeManager.getUmlFacade().getOperations(parent);
       }
       return null;
   }

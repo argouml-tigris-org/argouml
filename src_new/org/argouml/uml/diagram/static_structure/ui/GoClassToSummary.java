@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.argouml.application.api.Argo;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
@@ -49,17 +50,17 @@ public class GoClassToSummary extends AbstractGoRule {
 
 
   public Collection getChildren(Object parent) {
-      if (ModelFacade.getInstance().isAClass(parent)) {
+      if (FacadeManager.getUmlFacade().isAClass(parent)) {
           
           ArrayList list = new ArrayList();
           
-          if(ModelFacade.getInstance().getAttributes(parent).size() > 0)
+          if(FacadeManager.getUmlFacade().getAttributes(parent).size() > 0)
                 list.add(new AttributesNode(parent));
           
-          if(ModelFacade.getInstance().getAssociationEnds(parent).size() > 0)
+          if(FacadeManager.getUmlFacade().getAssociationEnds(parent).size() > 0)
                 list.add(new AssociationsNode(parent));
           
-          if(ModelFacade.getInstance().getOperations(parent).size() > 0)
+          if(FacadeManager.getUmlFacade().getOperations(parent).size() > 0)
                 list.add(new OperationsNode(parent));
           
           if(hasIncomingDependencies( parent))
@@ -78,12 +79,12 @@ public class GoClassToSummary extends AbstractGoRule {
 
   private boolean hasIncomingDependencies(Object parent){
       
-            Iterator incomingIt = ModelFacade.getInstance().getSupplierDependencies(parent);
+            Iterator incomingIt = FacadeManager.getUmlFacade().getSupplierDependencies(parent);
           
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(!ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
+              if(!FacadeManager.getUmlFacade().isAAbstraction(incomingIt.next()))
                 return true;
           }
           return false;
@@ -91,12 +92,12 @@ public class GoClassToSummary extends AbstractGoRule {
   
   private boolean hasOutGoingDependencies(Object parent){
       
-          Iterator incomingIt = ModelFacade.getInstance().getClientDependencies(parent);
+          Iterator incomingIt = FacadeManager.getUmlFacade().getClientDependencies(parent);
           
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(!ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
+              if(!FacadeManager.getUmlFacade().isAAbstraction(incomingIt.next()))
                 return true;
           }
           return false;
@@ -104,10 +105,10 @@ public class GoClassToSummary extends AbstractGoRule {
  
   private boolean hasInheritance(Object parent){
       
-          Iterator incomingIt = ModelFacade.getInstance().getSupplierDependencies(parent);
-          Iterator outgoingIt = ModelFacade.getInstance().getClientDependencies(parent);
-          Iterator generalizationsIt = ModelFacade.getInstance().getGeneralizations(parent);
-          Iterator specializationsIt = ModelFacade.getInstance().getSpecializations(parent);
+          Iterator incomingIt = FacadeManager.getUmlFacade().getSupplierDependencies(parent);
+          Iterator outgoingIt = FacadeManager.getUmlFacade().getClientDependencies(parent);
+          Iterator generalizationsIt = FacadeManager.getUmlFacade().getGeneralizations(parent);
+          Iterator specializationsIt = FacadeManager.getUmlFacade().getSpecializations(parent);
           
           if(generalizationsIt.hasNext())
               return true;
@@ -118,14 +119,14 @@ public class GoClassToSummary extends AbstractGoRule {
           while(incomingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(ModelFacade.getInstance().isAAbstraction(incomingIt.next()))
+              if(FacadeManager.getUmlFacade().isAAbstraction(incomingIt.next()))
                 return true;
           }
           
           while(outgoingIt.hasNext()){
               
               // abstractions are represented in the Inheritance Node.
-              if(ModelFacade.getInstance().isAAbstraction(outgoingIt.next()))
+              if(FacadeManager.getUmlFacade().isAAbstraction(outgoingIt.next()))
                 return true;
           }
           

@@ -34,7 +34,8 @@ import javax.swing.Action;
 import javax.swing.JToolBar;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.PopupToolBoxButton;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -117,7 +118,7 @@ public class UMLClassDiagram extends UMLDiagram {
     }
 
     public void setNamespace(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
           cat.error("Illegal argument. Object " + handle + " is not a namespace");
           throw new IllegalArgumentException("Illegal argument. Object " + handle + " is not a namespace");
         }

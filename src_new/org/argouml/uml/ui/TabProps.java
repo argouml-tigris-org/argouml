@@ -46,7 +46,8 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
 import org.argouml.ui.ArgoDiagram;
@@ -222,7 +223,7 @@ public class TabProps
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams 
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || ModelFacade.getInstance().isABase(t) || t instanceof ArgoDiagram))
+        if (!(t == null || FacadeManager.getUmlFacade().isABase(t) || t instanceof ArgoDiagram))
             return;
 
         if (_lastPanel != null) {
@@ -354,7 +355,7 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object target) {
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.getInstance().isADiagram(target) || ModelFacade.getInstance().isABase(target)) {
+        if (FacadeManager.getDiagramFacade().isADiagram(target) || FacadeManager.getUmlFacade().isABase(target)) {
             _shouldBeEnabled = true;
         } else {
             _shouldBeEnabled = false;

@@ -11,7 +11,8 @@ import javax.swing.JToolBar;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.uml.diagram.deployment.DeploymentDiagramGraphModel;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
@@ -142,7 +143,7 @@ public class UMLDeploymentDiagram extends UMLDiagram {
      *           psager@tigris.org   Jan. 24, 2oo2
      */
     public void setNamespace(Object handle) {
-        if (!ModelFacade.getInstance().isANamespace(handle)) {
+        if (!FacadeManager.getUmlFacade().isANamespace(handle)) {
             cat.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(

@@ -25,7 +25,8 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.api.model.FacadeManager;
+import org.argouml.model.uml.NsumlModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
@@ -35,8 +36,8 @@ public class GoStateToOutgoingTrans extends AbstractGoRule {
   public String getRuleName() { return "State->Outgoing Transitions"; }
 
   public Collection getChildren(Object parent) { 
-      if (ModelFacade.getInstance().isAStateVertex(parent)) {
-          return ModelFacade.getInstance().getOutgoings(parent);
+      if (FacadeManager.getUmlFacade().isAStateVertex(parent)) {
+          return FacadeManager.getUmlFacade().getOutgoings(parent);
       }
       return null;
   }
