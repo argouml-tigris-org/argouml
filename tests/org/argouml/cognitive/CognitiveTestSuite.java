@@ -32,16 +32,17 @@ import junit.framework.TestSuite;
  */
 public class CognitiveTestSuite {
 
-	/** Test suite for this package
-	 * 
-	 * @return the junit test suite
-	 */
+    /** Test suite for this package
+     * 
+     * @return the junit test suite
+     */
     public static Test suite() {
-	TestSuite suite =
-	    new TestSuite("Tests for "
-			  + CognitiveTestSuite.class.getPackage().getName());
-        suite.addTestSuite(TestItemUID.class);
+        TestSuite suite = new TestSuite("Tests for "
+            + CognitiveTestSuite.class.getPackage().getName());
+        //$JUnit-BEGIN$
         suite.addTestSuite(TestResolvedCritic.class);
+        suite.addTestSuite(TestItemUID.class);
+        //$JUnit-END$
         return suite;
     }
 }
