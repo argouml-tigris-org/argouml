@@ -131,6 +131,119 @@ Code Conventions for the Java Programming Language
 </para>
       </listitem>
     </itemizedlist>
+    <sect1>
+      <title>Settings for Eclipse</title>
+      <author>Linus Tolke</author>
+      <para>
+These style guides correspond to the following settings in Eclipse:
+        <itemizedlist>
+          <listitem>
+            <para>In Preferences => Java => Code Formatter => New Lines</para>
+            <para>
+None of the boxes 
+"Insert a new line before opening brace",
+"Insert new lines in control statements",
+"Clear all blank lines",
+"Insert new line between 'else if'",
+or
+"Insert a new line inside an empty block"
+are checked.
+</para>
+          </listitem>
+          <listitem>
+            <para>
+In Preferences => Java => Code Formatter => Line Splitting
+</para>
+            <para>
+Maximum line length is 80.
+</para>
+          </listitem>
+          <listitem>
+            <para>In Preferences => Java => Code Formatter => Style</para>
+            <para>
+None of the boxes
+"Compact assignment"
+or
+"Indentation is represented by a tab"
+are checked.
+</para>
+            <para>
+Number of spaces representing a tab: 4.
+This should probably be read as Number of spaces representing a 
+level of indentation.
+</para>
+</listitem>
+          <listitem>
+            <para>In Preferences => Java => Java Editor => Appearance</para>
+            <para>
+Displayed tab width: 8
+</para>
+            <para>
+"Insert space for tabs (see Formatting preferences)" checked.
+There seems to be no way of having tabs set at width 8 and the
+indentation level set at 4 at the same time so we must let
+Eclipse generate code without tabs to obey the Sun Coding standard.
+</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </sect1>
+    <sect1>
+      <title>Settings for NetBeans</title>
+      <author>Linus Tolke</author>
+      <para>
+These style guides correspond to the following settings in NetBeans:
+        <itemizedlist>
+          <listitem>
+            <para>
+In (Tools =>) Options => Editing => Editor Settings => Java Editor
+</para>
+            <para>
+Tab Size = 8
+</para>
+          </listitem>
+          <listitem>
+            <para>
+In (Tools =>) Options => Editing => 
+Indentation Engines => Java Indentation Engine
+</para>
+            <para>
+Add Newline Before Brace: False,
+Add Space Before Parenthesis: False,
+Expand Tabs to Spaces: False,
+Number of Spaces per Tab: 4 (Should probably be read as
+Number of Spaces per indentation level).
+</para>
+          </listitem>
+        </itemizedlist>
+      </para>
+    </sect1>
+    <sect1>
+      <title>Settings for Emacs</title>
+      <author>Linus Tolke</author>
+      <para>
+These style guides correspond to the default java settings in Emacs:
+<programlisting>
+ ("java"
+  (c-basic-offset . 4)
+  (c-comment-only-line-offset 0 . 0)
+  (c-offsets-alist
+   (inline-open . 0)
+   (topmost-intro-cont . +)
+   (statement-block-intro . +)
+   (knr-argdecl-intro . 5)
+   (substatement-open . +)
+   (label . +)
+   (statement-case-open . +)
+   (statement-cont . +)
+   (arglist-intro . c-lineup-arglist-intro-after-paren)
+   (arglist-close . c-lineup-arglist)
+   (access-label . 0)
+   (inher-cont . c-lineup-java-inher)
+   (func-decl-cont . c-lineup-java-throws)))
+</programlisting>
+</para>
+    </sect1>
   </chapter>
 
 
