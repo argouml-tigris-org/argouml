@@ -56,6 +56,10 @@ public class Set implements java.io.Serializable  {
   public Set(Object o1) { _v = new Vector(); addElement(o1); }
 
   public void addElement(Object o) { if (!contains(o)) _v.addElement(o); }
+  public void addAllElements(Vector v) {
+    if (v == null) return;
+    addAllElements(v.elements());
+  }
   public void addAllElements(Enumeration enum) {
     while (enum.hasMoreElements()) {
       addElement(enum.nextElement());
@@ -94,6 +98,8 @@ public class Set implements java.io.Serializable  {
   }
 
   public Enumeration elements() { return _v.elements(); }
+
+  public Object elementAt(int index) { return _v.elementAt(index); }
 
   public Vector asVector() { return _v; }
 

@@ -58,7 +58,7 @@ public class CrMergeClasses extends CrUML {
 
     setDescription(s);
     addSupportedDecision(CrUML.decCLASS_SELECTION); //?
-  }  
+  }
 
 
   public boolean predicate(Object dm, Designer dsgr) {

@@ -38,6 +38,7 @@ import java.io.*;
 import java.beans.*;
 
 import uci.util.*;
+import uci.ui.*;
 import uci.graph.*;
 
 /** Abastract Fig class for representing edges between ports.
@@ -46,7 +47,8 @@ import uci.graph.*;
  *  @see FigEdgeRectiline
  */
 
-public abstract class FigEdge extends Fig implements PropertyChangeListener {
+public abstract class FigEdge extends Fig
+implements PropertyChangeListener {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -128,14 +130,20 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
    *  FigEdge should represent. */
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
-    if (oldOwner != null && oldOwner instanceof GraphEdgeHooks) {
+
+    if (oldOwner != null && oldOwner instanceof GraphEdgeHooks) 
       ((GraphEdgeHooks)oldOwner).removePropertyChangeListener(this);
-    }
-    if (own instanceof GraphEdgeHooks) {
+    else if (oldOwner != null && oldOwner instanceof Highlightable) 
+      ((Highlightable)oldOwner).removePropertyChangeListener(this);
+
+    if (own instanceof GraphEdgeHooks)
       ((GraphEdgeHooks)own).addPropertyChangeListener(this);
-    }
+    else if (own instanceof Highlightable)
+      ((Highlightable)own).addPropertyChangeListener(this);
+
     super.setOwner(own);
   }
+
 
   /** Get the ArrowHead at the start of this FigEdge. */
   public ArrowHead getSourceArrowHead() { return _arrowHeadStart; }

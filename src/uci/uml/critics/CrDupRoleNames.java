@@ -35,12 +35,12 @@ import uci.uml.Foundation.Data_Types.*;
 public class CrDupRoleNames extends CrUML {
 
   public CrDupRoleNames() {
-    setHeadline("Duplicate Role Names");
-    sd("Each role name must be unique within a given Association.\n\n" +
-       "Using clear, unambiguous names is important to code generation\n"+
-       "and and OCL constraints.\n"+
-       "To fix this, select the Association and edit its role names.");
-       
+    setHeadline("Change {name} Role Names");
+    sd("Association {name} has two roles with conflicting names. \n\n"+
+       "Clear and unambiguous naming is key to code generation and "+
+       "the understandability and maintainability of the design. \n\n"+
+       "To fix this, use the FixIt button, or manually select {name} "+
+       "and use the Properties tab to change the role names.");
     addSupportedDecision(CrUML.decNAMING);
   }
 
@@ -57,6 +57,7 @@ public class CrDupRoleNames extends CrUML {
       Name aeName = ae.getName();
       if (aeName == Name.UNSPEC) continue;
       String nameStr = aeName.getBody();
+      if (nameStr.length() == 0) continue;
       if (namesSeen.contains(nameStr)) return PROBLEM_FOUND;
       namesSeen.addElement(nameStr);
     }

@@ -48,6 +48,7 @@ CLASSES = \
 	HushOrder.class \
 	Poster.class \
 	StandardCM.class \
+	EnabledCM.class \
 	ToDoItem.class \
 	ToDoList.class \
 	ToDoListEvent.class \

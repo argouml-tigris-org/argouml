@@ -112,18 +112,16 @@ implements MouseListener, PropertyChangeListener, Serializable {
    *  itself as a listener on the node. */
   public void setOwner(Object node) {
     Object oldOwner = getOwner();
-    if (oldOwner != null && oldOwner instanceof GraphNodeHooks) {
+    if (oldOwner != null && oldOwner instanceof GraphNodeHooks)
       ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
-    }
-    if (oldOwner != null && oldOwner instanceof Highlightable) {
+    else if (oldOwner != null && oldOwner instanceof Highlightable)
       ((Highlightable)oldOwner).removePropertyChangeListener(this);
-    }
-    if (node instanceof GraphNodeHooks) {
+
+    if (node instanceof GraphNodeHooks)
       ((GraphNodeHooks)node).addPropertyChangeListener(this);
-    }
-    else if (node instanceof Highlightable) {
+    else if (node instanceof Highlightable)
       ((Highlightable)node).addPropertyChangeListener(this);
-    }
+
     super.setOwner(node);
   }
 
