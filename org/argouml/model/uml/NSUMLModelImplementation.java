@@ -40,6 +40,7 @@ import org.argouml.model.DataTypesHelper;
 import org.argouml.model.DirectionKind;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.ExtensionMechanismsHelper;
+import org.argouml.model.Facade;
 import org.argouml.model.MetaTypes;
 import org.argouml.model.ModelEventPump;
 import org.argouml.model.ModelImplementation;
@@ -61,6 +62,8 @@ import org.argouml.model.VisibilityKind;
  * The handle to find all helper and factories.
  */
 public class NSUMLModelImplementation implements ModelImplementation {
+    private Facade theFacade = new NSUMLModelFacade(this);
+
     private ActivityGraphsFactory theActivityGraphsFactory =
         new ActivityGraphsFactoryImpl(this);
     private ActivityGraphsHelper theActivityGraphsHelper =
@@ -99,6 +102,13 @@ public class NSUMLModelImplementation implements ModelImplementation {
     private MetaTypesImpl theMetaTypesObject = new MetaTypesImpl();
 
     private KindsImpl theKindsObject = new KindsImpl();
+
+    /**
+     * @see org.argouml.model.ModelImplementation#getFacade()
+     */
+    public Facade getFacade() {
+        return theFacade;
+    }
 
     /**
      * @see org.argouml.model.ModelImplementation#getModelEventPump()

@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 /**
@@ -56,10 +55,10 @@ public class ActionSetElementOwnershipSpecification extends UMLAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (ModelFacade.isAModelElement(target)) {
+            if (Model.getFacade().isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
                 Model.getCoreHelper().setSpecification(m,
-                        !ModelFacade.isSpecification(m));
+                        !Model.getFacade().isSpecification(m));
             }
         }
     }

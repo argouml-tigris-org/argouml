@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,14 +46,14 @@ public class UMLUseCaseExtendListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getExtends(getTarget()));
+        setAllElements(Model.getFacade().getExtends(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.getExtends(getTarget()).contains(o);
+        return Model.getFacade().getExtends(getTarget()).contains(o);
     }
 
 }

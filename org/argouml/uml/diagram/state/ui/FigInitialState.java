@@ -24,7 +24,6 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.argouml.model.ModelFacade;
 import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
@@ -32,8 +31,8 @@ import java.awt.event.MouseEvent;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
-
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
@@ -115,18 +114,19 @@ public class FigInitialState extends FigStateVertex {
             pstate = getOwner();
             if (pstate == null)
                 return sel;
-            if (org.argouml.model.ModelFacade.isAActivityGraph(ModelFacade
-                    .getStateMachine(ModelFacade.getContainer(pstate)))) {
+            if (Model.getFacade().isAActivityGraph(
+                    Model.getFacade().getStateMachine(
+                            Model.getFacade().getContainer(pstate)))) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setIncomingButtonEnabled(false);
-                Collection outs = ModelFacade.getOutgoings(getOwner());
+                Collection outs = Model.getFacade().getOutgoings(getOwner());
                 ((SelectionActionState) sel)
                         .setOutgoingButtonEnabled(outs == null
                                 || outs.size() == 0);
             } else {
                 sel = new SelectionState(this);
                 ((SelectionState) sel).setIncomingButtonEnabled(false);
-                Collection outs = ModelFacade.getOutgoings(getOwner());
+                Collection outs = Model.getFacade().getOutgoings(getOwner());
                 ((SelectionState) sel).setOutgoingButtonEnabled(outs == null
                         || outs.size() == 0);
             }

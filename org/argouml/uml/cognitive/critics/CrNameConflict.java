@@ -26,12 +26,13 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.HashMap;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -74,12 +75,12 @@ public class CrNameConflict extends CrUML {
      */
     protected VectorSet computeOffenders(Object dm) {
         VectorSet offs = new VectorSet();
-        if (ModelFacade.isANamespace(dm)) {
-            Iterator it = ModelFacade.getOwnedElements(dm).iterator();
+        if (Model.getFacade().isANamespace(dm)) {
+            Iterator it = Model.getFacade().getOwnedElements(dm).iterator();
             HashMap names = new HashMap();
             while (it.hasNext()) {
                 Object name1Object = it.next();
-                String name = ModelFacade.getName(name1Object);
+                String name = Model.getFacade().getName(name1Object);
 		if (name == null)
 		    continue;
 		if ("".equals(name))
@@ -108,7 +109,7 @@ public class CrNameConflict extends CrUML {
         // first element is e.g. the class, but we need to have its namespace
         // to recompute the offenders.
 	Object f = offs.firstElement();
-        Object ns = ModelFacade.getNamespace(f);
+        Object ns = Model.getFacade().getNamespace(f);
 	if (!predicate(ns, dsgr)) return false;
 	VectorSet newOffs = computeOffenders(ns);
 	boolean res = offs.equals(newOffs);
@@ -123,7 +124,7 @@ public class CrNameConflict extends CrUML {
         if (w instanceof WizMEName) {
             ToDoItem item = (ToDoItem) w.getToDoItem();
             Object me = item.getOffenders().firstElement();
-            String sug = ModelFacade.getName(me);
+            String sug = Model.getFacade().getName(me);
             String ins = "Change the name to something different.";
             ((WizMEName) w).setInstructions(ins);
             ((WizMEName) w).setSuggestion(sug);

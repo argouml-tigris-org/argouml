@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
@@ -69,8 +68,8 @@ public class ActionAddMessage extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
     	Object target =  TargetManager.getInstance().getModelTarget();
 
-    	if (!(ModelFacade.isAAssociationRole(target))
-	    && ModelFacade.isACollaboration(ModelFacade.getNamespace(target))) {
+    	if (!(Model.getFacade().isAAssociationRole(target))
+	    && Model.getFacade().isACollaboration(Model.getFacade().getNamespace(target))) {
     	    return;
     	}
         // So, the target is a MAssociationRole
@@ -87,7 +86,7 @@ public class ActionAddMessage extends UMLAction {
      *                        must be added
      */
     private void addMessage(Object associationrole) {
-        Object collaboration = ModelFacade.getNamespace(associationrole);
+        Object collaboration = Model.getFacade().getNamespace(associationrole);
         Object message =
             Model.getCollaborationsFactory()
             	.buildMessage(collaboration, associationrole);
@@ -106,7 +105,7 @@ public class ActionAddMessage extends UMLAction {
     public boolean shouldBeEnabled() {
 	Object target =  TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled()
-	    && ModelFacade.isAAssociationRole(target);
+	    && Model.getFacade().isAAssociationRole(target);
     }
 
     /**

@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -61,12 +60,12 @@ public class ActionSetParameterType extends UMLAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = ((UMLComboBox2) source);
             Object o = box.getTarget();
-            if (ModelFacade.isAParameter(o)) {
+            if (Model.getFacade().isAParameter(o)) {
                 para = /*(MParameter)*/ o;
-                oldClassifier = ModelFacade.getType(para);
+                oldClassifier = Model.getFacade().getType(para);
             }
             o = box.getSelectedItem();
-            if (ModelFacade.isAClassifier(o)) {
+            if (Model.getFacade().isAClassifier(o)) {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }
@@ -76,7 +75,7 @@ public class ActionSetParameterType extends UMLAction {
             newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
                 .getCorrespondingElement(
 				      newClassifier,
-				      ModelFacade.getModel(para));
+				      Model.getFacade().getModel(para));
             Model.getCoreHelper().setType(para, newClassifier);
             super.actionPerformed(e);
         }

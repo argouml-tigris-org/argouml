@@ -25,12 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
-
-
-// Use Model through ModelFacade
+import org.argouml.model.Model;
 
 /**
  * A critic to detect navigation from an Interface to a Class in an
@@ -98,17 +96,17 @@ public class CrNavFromInterface extends CrUML {
      * @param  dsgr  the designer creating the model. Not used, this is for
      *               future development of ArgoUML
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
-     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.  */
-
+     *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at Associations
 
-        if (!(ModelFacade.isAAssociation(dm))) {
+        if (!(Model.getFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
-        if (ModelFacade.isAAssociationRole(dm)) {
+        if (Model.getFacade().isAAssociationRole(dm)) {
             return NO_PROBLEM;
         }
 
@@ -116,7 +114,7 @@ public class CrNavFromInterface extends CrUML {
         // there is an end connected to an Interface and 2) an end other than
         // that end is navigable.
 
-        Iterator assocEnds = ModelFacade.getConnections(dm).iterator();
+        Iterator assocEnds = Model.getFacade().getConnections(dm).iterator();
 
         boolean haveInterfaceEnd  = false;  // End at an Interface?
         boolean otherEndNavigable = false;  // Navigable other end?
@@ -133,12 +131,11 @@ public class CrNavFromInterface extends CrUML {
             // ClassifierRole, since we have effectively eliminated that
             // possiblity in rejecting AssociationRoles above.
 
-	    Object type = ModelFacade.getType(ae);
+	    Object type = Model.getFacade().getType(ae);
 
-            if (ModelFacade.isAInterface(type)) {
+            if (Model.getFacade().isAInterface(type)) {
                 haveInterfaceEnd = true;
-            }
-	    else if (ModelFacade.isNavigable(ae)) {
+            } else if (Model.getFacade().isNavigable(ae)) {
                 otherEndNavigable = true;
             }
 

@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.static_structure.ui;
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
 import org.argouml.uml.diagram.use_case.ui.UseCaseDiagramRenderer;
 
@@ -106,11 +105,11 @@ public class CommentEdge {
      * Commit suicide. Adapt the UML model.
      */
     public void delete() {
-        if (ModelFacade.isAComment(source)) {
+        if (Model.getFacade().isAComment(source)) {
             Model.getCoreHelper().removeAnnotatedElement(source, dest);
         } else {
             // not save to presume the destination is the comment
-            if (ModelFacade.isAComment(dest))
+            if (Model.getFacade().isAComment(dest))
                 Model.getCoreHelper().removeAnnotatedElement(dest, source);
         }
     }

@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -64,12 +63,12 @@ public class ActionSetGeneralizationPowertype extends UMLAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
-            if (ModelFacade.isAGeneralization(o)) {
+            if (Model.getFacade().isAGeneralization(o)) {
                 gen = /*(MGeneralization)*/ o;
-                oldClassifier = ModelFacade.getPowertype(gen);
+                oldClassifier = Model.getFacade().getPowertype(gen);
             }
             o = box.getSelectedItem();
-            if (ModelFacade.isAClassifier(o)) {
+            if (Model.getFacade().isAClassifier(o)) {
                 newClassifier = /*(MClassifier)*/ o;
             }
         }

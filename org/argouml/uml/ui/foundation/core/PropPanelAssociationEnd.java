@@ -24,6 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import java.util.Collection;
+
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JList;
@@ -32,9 +34,10 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionNavigateAssociation;
 import org.argouml.uml.ui.ActionNavigateOppositeAssocEnd;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -45,13 +48,10 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
-import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
-import org.tigris.gef.presentation.Fig;
-
-import java.util.Collection;
 
 /**
  * TODO: this property panel needs refactoring to remove dependency on old gui
@@ -281,10 +281,10 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      */
     public void gotoOther() {
         Object target = getTarget();
-        if (ModelFacade.isAAssociationEnd(target)) {
+        if (Model.getFacade().isAAssociationEnd(target)) {
             Object end = /* (MAssociationEnd) */target;
             TargetManager.getInstance().setTarget(
-                    ModelFacade.getOppositeEnd(end));
+                    Model.getFacade().getOppositeEnd(end));
         }
     }
 
@@ -295,8 +295,9 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @return boolean
      */
     public boolean isDeleteEnabled() {
-        if (ModelFacade.isAAssociationEnd(getTarget())) {
-            return ModelFacade.getOtherAssociationEnds(getTarget()).size() > 1;
+        if (Model.getFacade().isAAssociationEnd(getTarget())) {
+            return Model.getFacade().getOtherAssociationEnds(getTarget()).size()
+            	> 1;
         }
         return false;
     }
@@ -307,11 +308,13 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     public void targetSet(TargetEvent e) {
         super.targetSet(e);
         Object o = e.getNewTarget();
-        if (o instanceof Fig)
+        if (o instanceof Fig) {
             o = ((Fig) o).getOwner();
-        if (o != null && ModelFacade.isAAssociationEnd(o)) {
+        }
+        if (o != null && Model.getFacade().isAAssociationEnd(o)) {
             Collection ascEnds =
-                ModelFacade.getConnections(ModelFacade.getAssociation(o));
+                Model.getFacade().getConnections(
+                        Model.getFacade().getAssociation(o));
             if (ascEnds.size() > 2) {
                 oppositeEndButton.setEnabled(false);
             } else {

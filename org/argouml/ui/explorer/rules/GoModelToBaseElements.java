@@ -30,7 +30,6 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Rule for Package->Base Class.
@@ -49,7 +48,7 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAPackage(parent)) {
+	if (Model.getFacade().isAPackage(parent)) {
 	    return Model.getCoreHelper().getBaseClasses(parent);
 	}
 	return null;
@@ -59,7 +58,7 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAPackage(parent)) {
+        if (Model.getFacade().isAPackage(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
@@ -52,7 +51,7 @@ public class UMLClassAttributeListModel
     protected void buildModelList() {
         if (getTarget() != null) {
 
-            setAllElements(ModelFacade.getAttributes(getTarget()));
+            setAllElements(Model.getFacade().getAttributes(getTarget()));
         }
     }
 
@@ -60,7 +59,7 @@ public class UMLClassAttributeListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return (ModelFacade.getAttributes(getTarget()).contains(element));
+        return (Model.getFacade().getAttributes(getTarget()).contains(element));
     }
 
     /**
@@ -68,7 +67,7 @@ public class UMLClassAttributeListModel
      */
     public void swap(int index1, int index2) {
         Object clss = getTarget();
-        List c = new ArrayList(ModelFacade.getAttributes(clss));
+        List c = new ArrayList(Model.getFacade().getAttributes(clss));
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
         List cc = new ArrayList(c);

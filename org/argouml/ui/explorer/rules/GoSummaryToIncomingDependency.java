@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Summary->IncomingDependency.
@@ -58,14 +58,15 @@ public class GoSummaryToIncomingDependency extends AbstractPerspectiveRule {
 	    List list = new ArrayList();
 
 	    Iterator it =
-		ModelFacade.getSupplierDependencies(
+		Model.getFacade().getSupplierDependencies(
 			((IncomingDependencyNode) parent)
 		    .getParent()).iterator();
 
 	    while (it.hasNext()) {
 		Object next = it.next();
-		if (!ModelFacade.isAAbstraction(next))
+		if (!Model.getFacade().isAAbstraction(next)) {
 		    list.add(next);
+		}
 	    }
 
 	    return list;

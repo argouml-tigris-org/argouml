@@ -33,7 +33,7 @@ import java.util.Set;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -59,7 +59,7 @@ public class GoNamespaceToDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isANamespace(parent)) {
+        if (Model.getFacade().isANamespace(parent)) {
             List returnList = new ArrayList();
             Object namespace = parent; //MNamespace
             Project proj = ProjectManager.getManager().getCurrentProject();

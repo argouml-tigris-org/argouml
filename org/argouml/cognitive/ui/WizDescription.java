@@ -34,8 +34,9 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.Translator;
+import org.argouml.cognitive.critics.Critic;
+import org.argouml.model.Model;
 
 
 
@@ -44,7 +45,9 @@ import org.argouml.cognitive.Translator;
  *
  */
 public class WizDescription extends WizStep {
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(WizDescription.class);
 
     ////////////////////////////////////////////////////////////////
@@ -79,15 +82,13 @@ public class WizDescription extends WizStep {
 	    description.setEditable(false);
 	    description.setText(
                 Translator.localize("message.item.no-item-selected"));
-	}
-	else if (target instanceof ToDoItem) {
+	} else if (target instanceof ToDoItem) {
 	    ToDoItem tdi = (ToDoItem) target;
 	    description.setEditable(false);
 	    description.setEnabled(true);
 	    description.setText(tdi.getDescription());
 	    description.setCaretPosition(0);
-	}
-	else if (target instanceof PriorityNode) {
+	} else if (target instanceof PriorityNode) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-priority"),
                        new Object [] {
@@ -97,8 +98,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else if (target instanceof Critic) {
+	} else if (target instanceof Critic) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-critic"),
                        new Object [] {
@@ -108,8 +108,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else if (org.argouml.model.ModelFacade.isAModelElement(target)) {
+	} else if (Model.getFacade().isAModelElement(target)) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-model"),
                        new Object [] {
@@ -119,8 +118,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else if (target instanceof Decision) {
+	} else if (target instanceof Decision) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-decision"),
                        new Object [] {
@@ -129,8 +127,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else if (target instanceof Goal) {
+	} else if (target instanceof Goal) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-goal"),
                        new Object [] {
@@ -139,8 +136,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else if (target instanceof KnowledgeTypeNode) {
+	} else if (target instanceof KnowledgeTypeNode) {
 	    message = MessageFormat.
                 format(Translator.localize("message.item.branch-knowledge"),
                        new Object [] {
@@ -149,8 +145,7 @@ public class WizDescription extends WizStep {
 	    description.setText(message);
 
 	    return;
-	}
-	else {
+	} else {
 	    description.setText("");
 	    return;
 	}

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -47,7 +47,7 @@ public class UMLModelElementNamespaceListModel
     protected void buildModelList() {
         removeAllElements();
         if (getTarget() != null) {
-            addElement(ModelFacade.getNamespace(getTarget()));
+            addElement(Model.getFacade().getNamespace(getTarget()));
         }
     }
 
@@ -56,7 +56,7 @@ public class UMLModelElementNamespaceListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getNamespace(getTarget()) == element;
+        return Model.getFacade().getNamespace(getTarget()) == element;
     }
 
 }

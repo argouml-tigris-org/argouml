@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.activity;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 
 /**
@@ -40,9 +40,14 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-        if (containsNode(node)) return false;
-        if (ModelFacade.isAPartition(node)) return true;
-        else return super.canAddNode(node);
+        if (containsNode(node)) {
+            return false;
+        }
+        if (Model.getFacade().isAPartition(node)) {
+            return true;
+        } else {
+            return super.canAddNode(node);
+        }
     }
 
     /**

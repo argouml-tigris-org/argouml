@@ -33,7 +33,7 @@ import java.util.Set;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.sequence.SequenceDiagramGraphModel;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -56,8 +56,8 @@ public class GoOperationToSequenceDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAOperation(parent)) {
-            Collection col = ModelFacade.getCollaborations(parent);
+        if (Model.getFacade().isAOperation(parent)) {
+            Collection col = Model.getFacade().getCollaborations(parent);
             List ret = new ArrayList();
             Project p = ProjectManager.getManager().getCurrentProject();
             Iterator it = p.getDiagrams().iterator();

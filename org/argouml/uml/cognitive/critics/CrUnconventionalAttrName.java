@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,12 +25,13 @@
 package org.argouml.uml.cognitive.critics;
 
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -62,12 +63,12 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAAttribute(dm)) {
+	if (!Model.getFacade().isAAttribute(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	Object attr = /*(MAttribute)*/ dm;
-	String nameStr = ModelFacade.getName(attr);
+	String nameStr = Model.getFacade().getName(attr);
 	if (nameStr == null || nameStr.equals("")) {
 	    return NO_PROBLEM;
 	}
@@ -99,8 +100,8 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 
 	// check whether constant, constants are often weird and thus not a
 	// problem
-	Object/*MChangeableKind*/ ck = ModelFacade.getChangeability(attr);
-	if (ModelFacade.isFrozen(ck)) {
+	Object/*MChangeableKind*/ ck = Model.getFacade().getChangeability(attr);
+	if (Model.getFacade().isFrozen(ck)) {
 	    return NO_PROBLEM;
 	}
 
@@ -127,7 +128,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
      */
     protected VectorSet computeOffenders(Object /*MFeature*/ dm) {
 	VectorSet offs = new VectorSet(dm);
-	offs.addElement(ModelFacade.getOwner(dm));
+	offs.addElement(Model.getFacade().getOwner(dm));
 	return offs;
     }
 
@@ -199,7 +200,7 @@ public class CrUnconventionalAttrName extends AbstractCrUnconventionalName {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me =
 		/*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String sug = computeSuggestion(ModelFacade.getName(me));
+	    String sug = computeSuggestion(Model.getFacade().getName(me));
 	    String ins =
 	        "Change the attribute name to start with a "
 	        + "lowercase letter.";

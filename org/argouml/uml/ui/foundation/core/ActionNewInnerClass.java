@@ -53,7 +53,7 @@ public class ActionNewInnerClass extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+        if (Model.getFacade().isAClassifier(target)) {
             Object classifier = /* (MClassifier) */target;
             Object inner = Model.getCoreFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);

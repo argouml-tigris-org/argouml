@@ -25,7 +25,7 @@
 
 package org.argouml.uml.ui.behavior.activity_graphs;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 
@@ -50,7 +50,7 @@ public class UMLPartitionContentsListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getContents(getTarget()));
+        addElement(Model.getFacade().getContents(getTarget()));
         // TODO: Auto-generated method stub
 
     }

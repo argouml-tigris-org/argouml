@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  *
@@ -54,7 +53,7 @@ public class UMLConditionExpressionModel extends UMLExpressionModel2 {
      */
     public Object getExpression() {
         LOG.debug("getting condition");
-        return ModelFacade.getCondition(getContainer().getTarget());
+        return Model.getFacade().getCondition(getContainer().getTarget());
     }
 
     /**

@@ -32,7 +32,6 @@ import java.util.Iterator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
@@ -71,10 +70,10 @@ public class ActionAddOperation extends UMLAction {
 	Object target =  TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
 
-	if (ModelFacade.isAClassifier(target)) {
+	if (Model.getFacade().isAClassifier(target)) {
 	    cls = target;
-	} else if (ModelFacade.isAFeature(target)) {
-	    cls = ModelFacade.getOwner(target);
+	} else if (Model.getFacade().isAFeature(target)) {
+	    cls = Model.getFacade().getOwner(target);
 	} else {
 	    return;
 	}
@@ -111,9 +110,9 @@ public class ActionAddOperation extends UMLAction {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
 	return super.shouldBeEnabled()
-	    && (ModelFacade.isAClassifier(target)
-		|| ModelFacade.isAFeature(target))
-	    && !ModelFacade.isASignal(target);
+	    && (Model.getFacade().isAClassifier(target)
+		|| Model.getFacade().isAFeature(target))
+	    && !Model.getFacade().isASignal(target);
     }
     /**
      * @return Returns the singleton.

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Navigate to the transition. Used for e.g. a Guard.
@@ -37,7 +37,7 @@ public class ActionNavigateTransition extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
-        return ModelFacade.getTransition(source);
+        return Model.getFacade().getTransition(source);
     }
 
 }

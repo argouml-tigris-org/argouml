@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -73,13 +72,13 @@ public class ActionGenerateAll extends UMLAction {
 	Enumeration elems = nodes.elements();
 	while (elems.hasMoreElements()) {
 	    Object owner = elems.nextElement();
-	    if (!ModelFacade.isAClass(owner)
-		&& !ModelFacade.isAInterface(owner)) {
+	    if (!Model.getFacade().isAClass(owner)
+		&& !Model.getFacade().isAInterface(owner)) {
 
 		continue;
 
 	    }
-	    String name = ModelFacade.getName(owner);
+	    String name = Model.getFacade().getName(owner);
 	    if (name == null
 		|| name.length() == 0
 		|| Character.isDigit(name.charAt(0))) {
@@ -97,7 +96,7 @@ public class ActionGenerateAll extends UMLAction {
 
 	    while (selectedObjects.hasNext()) {
 		Object selected = selectedObjects.next();
-		if (ModelFacade.isAPackage(selected)) {
+		if (Model.getFacade().isAPackage(selected)) {
 		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
@@ -108,8 +107,8 @@ public class ActionGenerateAll extends UMLAction {
                                       selected,
 			              Model.getMetaTypes().getInterface()),
 				  classes);
-		} else if (ModelFacade.isAClass(selected)
-			   || ModelFacade.isAInterface(selected)) {
+		} else if (Model.getFacade().isAClass(selected)
+			   || Model.getFacade().isAInterface(selected)) {
 		    if (!classes.contains(selected)) {
 		        classes.addElement(selected);
 		    }

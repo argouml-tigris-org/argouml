@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2002, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
    This context is a specific classifier.
@@ -57,8 +57,8 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this interface
-	if (name.equals(ModelFacade.getName(mClassifier))
-	    && ModelFacade.isAInterface(mClassifier))
+	if (name.equals(Model.getFacade().getName(mClassifier))
+	    && Model.getFacade().isAInterface(mClassifier))
 	{
 	    return mClassifier;
 	}
@@ -83,7 +83,7 @@ class ClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Check if it is this classifier
-	if (classifierName.equals(ModelFacade.getName(mClassifier))) {
+	if (classifierName.equals(Model.getFacade().getName(mClassifier))) {
 	    return mClassifier;
 	}
 	else {

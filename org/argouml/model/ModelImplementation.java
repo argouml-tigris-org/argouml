@@ -30,6 +30,13 @@ package org.argouml.model;
  */
 public interface ModelImplementation {
     /**
+     * Get the facade.
+     *
+     * @return The facade object.
+     */
+    Facade getFacade();
+
+    /**
      * Get the event pump.
      *
      * @return the current ModelEventPump.

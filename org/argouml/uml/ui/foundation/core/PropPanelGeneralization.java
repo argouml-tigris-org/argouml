@@ -30,7 +30,6 @@ import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -111,8 +110,8 @@ public class PropPanelGeneralization extends PropPanelModelElement {
      */
     public void navigateUp() {
         Object target = getTarget();
-        if (ModelFacade.isAModelElement(target)) {
-            Object namespace = ModelFacade.getNamespace(target);
+        if (Model.getFacade().isAModelElement(target)) {
+            Object namespace = Model.getFacade().getNamespace(target);
             if (namespace != null) {
                 TargetManager.getInstance().setTarget(namespace);
             }

@@ -31,7 +31,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 import org.tigris.gef.util.EnumerationComposite;
@@ -81,27 +80,27 @@ public class ChildGenUML implements ChildGenerator {
 	    }
 	}
 
-	if (ModelFacade.isAPackage(o)) {
+	if (Model.getFacade().isAPackage(o)) {
 	    Vector ownedElements =
-		new Vector(ModelFacade.getOwnedElements(o));
+		new Vector(Model.getFacade().getOwnedElements(o));
 	    if (ownedElements != null) {
 	        return ownedElements.elements();
 	    }
 	}
 
-	if (ModelFacade.isAElementImport(o)) {
-	    Object me = ModelFacade.getModelElement(o);
+	if (Model.getFacade().isAElementImport(o)) {
+	    Object me = Model.getFacade().getModelElement(o);
 	    return new EnumerationSingle(me);  //wasteful!
 	}
 
 
 	// TODO: associationclasses fit both of the next 2 cases
 
-	if (ModelFacade.isAClassifier(o)) {
+	if (Model.getFacade().isAClassifier(o)) {
 	    EnumerationComposite res = new EnumerationComposite();
-	    res.addSub(new Vector(ModelFacade.getFeatures(o)));
+	    res.addSub(new Vector(Model.getFacade().getFeatures(o)));
 
-	    Vector sms = new Vector(ModelFacade.getBehaviors(o));
+	    Vector sms = new Vector(Model.getFacade().getBehaviors(o));
 	    //Object sm = null;
 	    //if (sms != null && sms.size() > 0)
 		//sm = sms.elementAt(0);
@@ -112,8 +111,8 @@ public class ChildGenUML implements ChildGenerator {
 	    return res;
 	}
 
-	if (ModelFacade.isAAssociation(o)) {
-	    Vector assocEnds = new Vector(ModelFacade.getConnections(o));
+	if (Model.getFacade().isAAssociation(o)) {
+	    Vector assocEnds = new Vector(Model.getFacade().getConnections(o));
 	    if (assocEnds != null) {
 	        return assocEnds.elements();
 	    }
@@ -121,33 +120,33 @@ public class ChildGenUML implements ChildGenerator {
 	}
 
 	// // needed?
-	if (ModelFacade.isAStateMachine(o)) {
+	if (Model.getFacade().isAStateMachine(o)) {
 	    EnumerationComposite res = new EnumerationComposite();
 	    Object top = Model.getStateMachinesHelper().getTop(o);
 	    if (top != null) {
 	        res.addSub(new EnumerationSingle(top));
 	    }
-	    res.addSub(new Vector(ModelFacade.getTransitions(o)));
+	    res.addSub(new Vector(Model.getFacade().getTransitions(o)));
 	    return res;
 	}
 
 	// needed?
-	if (ModelFacade.isACompositeState(o)) {
-	    Vector substates = new Vector(ModelFacade.getSubvertices(o));
+	if (Model.getFacade().isACompositeState(o)) {
+	    Vector substates = new Vector(Model.getFacade().getSubvertices(o));
 	    if (substates != null) {
 	        return substates.elements();
 	    }
 	}
 
-        if (ModelFacade.isAOperation(o)) {
-            Vector params = new Vector(ModelFacade.getParameters(o));
+        if (Model.getFacade().isAOperation(o)) {
+            Vector params = new Vector(Model.getFacade().getParameters(o));
             if (params != null) {
                 return params.elements();
             }
         }
 
-        if (ModelFacade.isAModelElement(o)) {
-	    Vector behavior = new Vector(ModelFacade.getBehaviors(o));
+        if (Model.getFacade().isAModelElement(o)) {
+	    Vector behavior = new Vector(Model.getFacade().getBehaviors(o));
 	    if (behavior != null) {
 	        return behavior.elements();
 	    }

@@ -34,17 +34,17 @@ import java.text.ParseException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import javax.swing.JSeparator;
+
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
-import org.argouml.model.ModelFacade;
+import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import javax.swing.*;
 
 /**
  * Class to display graphics for a UML MCompositeState in a diagram.
@@ -202,7 +202,7 @@ public class FigCompositeState extends FigState {
         /* If it is concurrent and contains concurrent regions,
         the bottom region has a minimum height*/
         if (getOwner() != null) {
-            if (ModelFacade.isConcurrent(getOwner())
+            if (Model.getFacade().isConcurrent(getOwner())
                     && !regionsVector.isEmpty()) {
                 FigConcurrentRegion f = 
                     ((FigConcurrentRegion) regionsVector.lastElement());
@@ -232,7 +232,7 @@ public class FigCompositeState extends FigState {
         /*If it is concurrent and contains concurrent regions,
         the regions are resized*/
         if (getOwner() != null) {
-            if (ModelFacade.isConcurrent(getOwner())
+            if (Model.getFacade().isConcurrent(getOwner())
                     && !regionsVector.isEmpty()) {
                 FigConcurrentRegion f = 
                     ((FigConcurrentRegion) regionsVector.lastElement());

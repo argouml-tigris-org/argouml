@@ -24,10 +24,10 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-import org.apache.log4j.Logger;
 
 /** Action to create a new use case diagram.
  *  @stereotype singleton
@@ -51,7 +51,7 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
             throw new IllegalArgumentException(
@@ -66,8 +66,8 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
      */
     public boolean isValidNamespace(Object handle) {
         boolean validNamespace = false;
-        if (ModelFacade.isAPackage(handle)
-            || ModelFacade.isAClassifier(handle))
+        if (Model.getFacade().isAPackage(handle)
+            || Model.getFacade().isAClassifier(handle))
             validNamespace = true;
         return validNamespace;
     }

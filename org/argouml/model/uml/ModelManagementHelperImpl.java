@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
-import org.argouml.model.ModelFacade;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelManagementHelper;
 
 import ru.novosoft.uml.MBase;
@@ -42,8 +42,6 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.model_management.MModel;
 import ru.novosoft.uml.model_management.MSubsystem;
-
-import org.apache.log4j.Logger;
 
 /**
  * Helper class for UML ModelManagement Package.<p>
@@ -196,7 +194,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
                 "given argument " + nsa + " is not a namespace");
         }
 
-        Collection elementsCol = ModelFacade.getOwnedElements(nsa);
+        Collection elementsCol = nsmodel.getFacade().getOwnedElements(nsa);
 
         // only continue if there are owned elements
         if (elementsCol == Collections.EMPTY_LIST
@@ -306,7 +304,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
         ArrayList features = new ArrayList();
         Iterator i = classifiers.iterator();
         while (i.hasNext()) {
-            features.addAll(ModelFacade.getFeatures(i.next()));
+            features.addAll(nsmodel.getFacade().getFeatures(i.next()));
         }
         ArrayList behavioralfeatures = new ArrayList();
         Iterator ii = features.iterator();
@@ -380,8 +378,8 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
             return new Vector();
         }
 
-        path = getPath(ModelFacade.getNamespace(element));
-        path.add(ModelFacade.getName(element));
+        path = getPath(nsmodel.getFacade().getNamespace(element));
+        path.add(nsmodel.getFacade().getName(element));
 
         return path;
     }
@@ -523,10 +521,10 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
     private List getOwnerShipPath(Object elem) {
         if (elem instanceof MBase) {
             List ownershipPath = new ArrayList();
-            Object parent = ModelFacade.getModelElementContainer(elem);
+            Object parent = nsmodel.getFacade().getModelElementContainer(elem);
             while (parent != null) {
                 ownershipPath.add(parent);
-                parent = ModelFacade.getModelElementContainer(parent);
+                parent = nsmodel.getFacade().getModelElementContainer(parent);
             }
             return ownershipPath;
         }

@@ -24,12 +24,12 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
  * ListModel for resient relations and containers, such as Node,
- * ComponentInstance, NodeInstance
+ * ComponentInstance, NodeInstance.
  *
  * @author mkl
  *
@@ -48,14 +48,15 @@ public class UMLContainerResidentListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getResidents(getTarget()));
+        setAllElements(Model.getFacade().getResidents(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return (ModelFacade.isAComponent(o) || ModelFacade.isAInstance(o));
+        return (Model.getFacade().isAComponent(o)
+                || Model.getFacade().isAInstance(o));
     }
 
 }

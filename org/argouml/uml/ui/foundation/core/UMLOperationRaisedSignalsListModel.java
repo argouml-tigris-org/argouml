@@ -26,7 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.util.Collection;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 
@@ -52,8 +52,8 @@ public class UMLOperationRaisedSignalsListModel
         if (getTarget() != null) {
             Collection signals = null;
             Object target = getTarget();
-            if (ModelFacade.isAOperation(target)) {
-                signals = ModelFacade.getRaisedSignals(target);
+            if (Model.getFacade().isAOperation(target)) {
+                signals = Model.getFacade().getRaisedSignals(target);
             }
             setAllElements(signals);
         }
@@ -65,8 +65,8 @@ public class UMLOperationRaisedSignalsListModel
     protected boolean isValidElement(Object element) {
         Collection signals = null;
         Object target = getTarget();
-        if (ModelFacade.isAOperation(target)) {
-            signals = ModelFacade.getRaisedSignals(target);
+        if (Model.getFacade().isAOperation(target)) {
+            signals = Model.getFacade().getRaisedSignals(target);
         }
         return signals.contains(element);
     }

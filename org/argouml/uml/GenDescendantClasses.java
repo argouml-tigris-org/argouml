@@ -27,7 +27,8 @@ package org.argouml.uml;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the subclasses of a class.  It
  *  recursively moves down the class hierarchy.  But it does that in a
@@ -51,10 +52,10 @@ public class GenDescendantClasses implements ChildGenerator {
      */
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(ModelFacade.isAGeneralizableElement(o))) return res.elements();
+	if (!(Model.getFacade().isAGeneralizableElement(o))) return res.elements();
 
 	Object cls = /*(MGeneralizableElement)*/ o;
-	Collection gens = ModelFacade.getSpecializations(cls);
+	Collection gens = Model.getFacade().getSpecializations(cls);
 	if (gens == null) return res.elements();
 	accumulateDescendants(cls, res);
 	return res.elements();
@@ -67,12 +68,12 @@ public class GenDescendantClasses implements ChildGenerator {
      */
     public void accumulateDescendants(Object/*MGeneralizableElement*/ cls,
             Vector accum) {
-	Vector gens = new Vector(ModelFacade.getSpecializations(cls));
+	Vector gens = new Vector(Model.getFacade().getSpecializations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
 	    Object g = /*(MGeneralization)*/ (gens.elementAt(i));
-	    Object ge = ModelFacade.getChild(g);
+	    Object ge = Model.getFacade().getChild(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);
 		accumulateDescendants(cls, accum);

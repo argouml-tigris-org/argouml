@@ -60,7 +60,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
@@ -316,17 +315,17 @@ public class ClassGenerationDialog
                 Set nodes = classTableModel.getChecked(language);
                 for (Iterator iter = nodes.iterator(); iter.hasNext();) {
                     Object node = iter.next();
-                    if (ModelFacade.isAClassifier(node)) {
+                    if (Model.getFacade().isAClassifier(node)) {
                         if (isPathInModel) {
                             path = Generator2.getCodePath(node);
                             if (path == null) {
-                                Object parent = ModelFacade.getNamespace(node);
+                                Object parent = Model.getFacade().getNamespace(node);
                                 while (parent != null) {
                                     path = Generator2.getCodePath(parent);
                                     if (path != null) {
                                         break;
                                     }
-                                    parent = ModelFacade.getNamespace(parent);
+                                    parent = Model.getFacade().getNamespace(parent);
                                 }
                             }
                         }
@@ -339,11 +338,11 @@ public class ClassGenerationDialog
                             // save the selected language in the model
                             // TODO: no support of multiple checked
                             // languages
-                            Object taggedValue = ModelFacade.getTaggedValue(
+                            Object taggedValue = Model.getFacade().getTaggedValue(
                                 node, "src_lang");
                             String savedLang = null;
                             if (taggedValue != null) {
-                                savedLang = ModelFacade.getValueOfTag(
+                                savedLang = Model.getFacade().getValueOfTag(
                                     taggedValue);
                             }
                             if (taggedValue == null || !language
@@ -420,7 +419,7 @@ public class ClassGenerationDialog
             int size = classes.size();
             for (int i = 0; i < size; i++) {
                 Object cls = classes.get(i);
-                String name = ModelFacade.getName(cls);
+                String name = Model.getFacade().getName(cls);
                 // Jaap B. in older versions of argouml (before
                 // 0.14alpha1) names were not initialized correctly.  this
                 // is a patch for that.
@@ -457,11 +456,11 @@ public class ClassGenerationDialog
                 return false;
             }
 
-            Object taggedValue = ModelFacade.getTaggedValue(cls, "src_lang");
+            Object taggedValue = Model.getFacade().getTaggedValue(cls, "src_lang");
             if (taggedValue == null) {
                 return false;
             }
-            String savedLang = ModelFacade.getValueOfTag(taggedValue);
+            String savedLang = Model.getFacade().getValueOfTag(taggedValue);
             return (lang.getConfigurationValue().equals(savedLang));
         }
 
@@ -535,7 +534,7 @@ public class ClassGenerationDialog
             if (col == getLanguagesCount()) {
                 return false;
             }
-            if (!(ModelFacade.getName(cls).length() > 0)) {
+            if (!(Model.getFacade().getName(cls).length() > 0)) {
                 return false;
             }
             if (col >= 0 && col < getLanguagesCount()) {
@@ -560,7 +559,7 @@ public class ClassGenerationDialog
         public Object getValueAt(int row, int col) {
             Object cls = classes.get(row);
             if (col == getLanguagesCount()) {
-                String name = ModelFacade.getName(cls);
+                String name = Model.getFacade().getName(cls);
                 if (name.length() > 0) {
                     return name;
                 }

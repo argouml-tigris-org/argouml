@@ -164,7 +164,7 @@ public class FigComment
 //    public FigComment(Object element) {
 //        this(); // Construct the figure.
 //
-//        if (!ModelFacade.isAModelElement(element)) {
+//        if (!Model.getFacade().isAModelElement(element)) {
 //            throw new IllegalArgumentException();
 //        }
 //
@@ -179,7 +179,7 @@ public class FigComment
 //        // the nodes in them don't necessary have a namespace, where
 //        // we could add the note. So I added this hack... :-(
 //        // Andreas Rueckert <a_rueckert@gmx.net>
-//        if (ModelFacade.isAStateVertex(element)) {
+//        if (Model.getFacade().isAStateVertex(element)) {
 //
 //	    // If the current target is a statechart diagram, we have to
 //	    // check, if we are editing the diagram.
@@ -196,7 +196,7 @@ public class FigComment
 //        } else {
 //	    // Add the comment to the same namespace as the annotated element.
 //            Model.getCoreHelper().setNamespace(comment,
-//                    ModelFacade.getNamespace(element));
+//                    Model.getFacade().getNamespace(element));
 //        }
 //
 //        // Set the default text for this figure type.
@@ -247,7 +247,7 @@ public class FigComment
      */
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
-            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
                 Object own = /*(MModelElement)*/ getOwner();
                 readyToEdit = true;
             } else {
@@ -330,7 +330,7 @@ public class FigComment
      */
     public void keyPressed(KeyEvent ke) {
         if (!readyToEdit) {
-            if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
                 storeNote("");
                 readyToEdit = true;
             } else {
@@ -467,7 +467,7 @@ public class FigComment
      */
     public final String retrieveNote() {
         return (getOwner() != null)
-	    ? org.argouml.model.ModelFacade.getName(getOwner())
+	    ? Model.getFacade().getName(getOwner())
 	    : null;
     }
 
@@ -561,7 +561,7 @@ public class FigComment
      */
     protected void updateNameText() {
         if (getOwner() != null) {
-            String t = org.argouml.model.ModelFacade.getName(getOwner());
+            String t = Model.getFacade().getName(getOwner());
             if (t != null) {
                 text.setText(t);
                 calcBounds();

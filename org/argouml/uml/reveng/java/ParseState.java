@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * The parse state keep control of data during parsing.
@@ -87,11 +86,11 @@ class ParseState {
                       Object currentPackage) {
 	classnamePrefix =
 	    previousState.classnamePrefix
-	    + ModelFacade.getName(mClassifier)
+	    + Model.getFacade().getName(mClassifier)
 	    + "$";
-	obsoleteFeatures = new Vector(ModelFacade.getFeatures(mClassifier));
+	obsoleteFeatures = new Vector(Model.getFacade().getFeatures(mClassifier));
 	obsoleteInnerClasses =
-	    new Vector(ModelFacade.getOwnedElements(mClassifier));
+	    new Vector(Model.getFacade().getOwnedElements(mClassifier));
 	context = new OuterClassifierContext(previousState.context,
 						     mClassifier,
 						     currentPackage,
@@ -212,7 +211,7 @@ class ParseState {
 	}
 	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext();) {
 	    Object element = i.next();
-	    if (ModelFacade.isAClassifier(element)) {
+	    if (Model.getFacade().isAClassifier(element)) {
 		Model.getCoreFactory().deleteClassifier(element);
 	    }
 	}
@@ -237,7 +236,7 @@ class ParseState {
     public Object getFeature(String name) {
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
-	    if (name.equals(ModelFacade.getName(mFeature))) {
+	    if (name.equals(Model.getFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -254,7 +253,7 @@ class ParseState {
     	ArrayList list = new ArrayList();
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
-	    if (name.equals(ModelFacade.getName(mFeature))) {
+	    if (name.equals(Model.getFacade().getName(mFeature))) {
 		list.add(mFeature);
 	    }
 	}
@@ -270,8 +269,8 @@ class ParseState {
     public Object getMethod(String name) {
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
-	    if (ModelFacade.isAMethod(mFeature)
-		&& name.equals(ModelFacade.getName(mFeature))) {
+	    if (Model.getFacade().isAMethod(mFeature)
+		&& name.equals(Model.getFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}
@@ -287,8 +286,8 @@ class ParseState {
     public Object getOperation(String name) {
 	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext();) {
 	    Object mFeature = i.next();
-	    if (ModelFacade.isAOperation(mFeature)
-		&& name.equals(ModelFacade.getName(mFeature))) {
+	    if (Model.getFacade().isAOperation(mFeature)
+		&& name.equals(Model.getFacade().getName(mFeature))) {
 		return mFeature;
 	    }
 	}

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.model.CommonBehaviorHelper;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MExtension;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -91,7 +90,7 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
      * @return MInstance the source of the given link
      */
     public Object getSource(Object link) {
-        Collection con = ModelFacade.getConnections(link);
+        Collection con = nsmodel.getFacade().getConnections(link);
         if (con.isEmpty()) {
             return null;
         }
@@ -107,7 +106,7 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
      * @return MInstance the destination of the given link
      */
     public Object getDestination(Object link) {
-        Collection con = ModelFacade.getConnections(link);
+        Collection con = nsmodel.getFacade().getConnections(link);
         if (con.size() <= 1) {
             return null;
         }
@@ -142,7 +141,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MInstance) handle).removeClassifier((MClassifier) classifier);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or classifier: " + classifier);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or classifier: " + classifier);
     }
 
     /**
@@ -157,7 +157,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MSignal) handle).removeContext((MBehavioralFeature) context);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or context: " + context);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or context: " + context);
     }
 
     /**
@@ -171,7 +172,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MSignal) handle).removeReception((MReception) reception);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or reception: " + reception);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or reception: " + reception);
     }
 
     /**
@@ -185,7 +187,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MAction) handle).addActualArgument((MArgument) argument);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or argument: " + argument);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or argument: " + argument);
     }
 
     /**
@@ -199,7 +202,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MInstance) handle).addClassifier((MClassifier) classifier);
         return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or classifier: " + classifier);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or classifier: " + classifier);
     }
 
     /**
@@ -221,7 +225,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
                 return;
             }
         }
-    throw new IllegalArgumentException("handle: " + handle + " or stimulus: " + stimulus);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or stimulus: " + stimulus);
     }
 
     /**
@@ -253,7 +258,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MCallEvent) handle).setOperation((MOperation) operation);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or operation: " + operation);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or operation: " + operation);
     }
 
     /**
@@ -290,11 +296,11 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
      */
     public void setComponentInstance(Object handle, Object c) {
         if (handle instanceof MInstance
-        && (c == null || c instanceof MComponentInstance)) {
+                && (c == null || c instanceof MComponentInstance)) {
             ((MInstance) handle).setComponentInstance((MComponentInstance) c);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or c: " + c);
+        throw new IllegalArgumentException("handle: " + handle + " or c: " + c);
     }
 
     /**
@@ -323,7 +329,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MStimulus) handle).setDispatchAction((MAction) value);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or value: " + value);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
     }
 
     /**
@@ -343,7 +350,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
                 return;
             }
         }
-    throw new IllegalArgumentException("handle: " + handle + " or inst: " + inst);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or inst: " + inst);
     }
 
     /**
@@ -354,12 +362,13 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
      */
     public void setNodeInstance(Object handle, Object nodeInstance) {
         if (handle instanceof MComponentInstance
-        && nodeInstance instanceof MNodeInstance) {
+                && nodeInstance instanceof MNodeInstance) {
             ((MComponentInstance) handle).setNodeInstance(
                 (MNodeInstance) nodeInstance);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or nodeInstance: " + nodeInstance);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or nodeInstance: " + nodeInstance);
     }
 
     /**
@@ -379,7 +388,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MStimulus) handle).setReceiver((MInstance) receiver);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or receiver: " + receiver);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or receiver: " + receiver);
     }
 
     /**
@@ -394,7 +404,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MAction) handle).setRecurrence((MIterationExpression) expr);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or expr: " + expr);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or expr: " + expr);
     }
 
     /**
@@ -409,7 +420,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MAction) handle).setScript((MActionExpression) expr);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or expr: " + expr);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or expr: " + expr);
     }
 
     /**
@@ -429,7 +441,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MStimulus) handle).setSender((MInstance) sender);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or sender: " + sender);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or sender: " + sender);
     }
 
     /**
@@ -453,7 +466,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
                 return;
             }
         }
-    throw new IllegalArgumentException("handle: " + handle + " or signal: " + signal);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or signal: " + signal);
     }
 
     /**
@@ -485,7 +499,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
             ((MTransition) handle).setTarget((MStateVertex) element);
             return;
         }
-    throw new IllegalArgumentException("handle: " + handle + " or element: " + element);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or element: " + element);
     }
 
     /**
@@ -505,7 +520,8 @@ class CommonBehaviorHelperImpl implements CommonBehaviorHelper {
                 return;
             }
         }
-    throw new IllegalArgumentException("handle: " + handle + " or trans: " + trans);
+        throw new IllegalArgumentException("handle: " + handle
+                + " or trans: " + trans);
     }
 
     /**

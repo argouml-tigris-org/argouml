@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -34,7 +34,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLFeatureOwnerListModel
+     * Constructor for UMLFeatureOwnerListModel.
      */
     public UMLFeatureOwnerListModel() {
 	super("owner");
@@ -46,7 +46,7 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
 	if (getTarget() != null) {
 	    removeAllElements();
-	    addElement(ModelFacade.getOwner(getTarget()));
+	    addElement(Model.getFacade().getOwner(getTarget()));
 	}
     }
 
@@ -54,7 +54,7 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-	return ModelFacade.getOwner(getTarget()) == o;
+	return Model.getFacade().getOwner(getTarget()) == o;
     }
 
 }

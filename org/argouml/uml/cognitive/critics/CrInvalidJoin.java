@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 
 /**
@@ -55,17 +54,17 @@ public class CrInvalidJoin extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAPseudostate(dm))) {
+	if (!(Model.getFacade().isAPseudostate(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object k = ModelFacade.getPseudostateKind(dm);
-	if (!ModelFacade.
+	Object k = Model.getFacade().getPseudostateKind(dm);
+	if (!Model.getFacade().
 	    equalsPseudostateKind(k,
 				  Model.getPseudostateKind().getJoin())) {
 	    return NO_PROBLEM;
 	}
-	Collection outgoing = ModelFacade.getOutgoings(dm);
-	Collection incoming = ModelFacade.getIncomings(dm);
+	Collection outgoing = Model.getFacade().getOutgoings(dm);
+	Collection incoming = Model.getFacade().getIncomings(dm);
 	int nOutgoing = outgoing == null ? 0 : outgoing.size();
 	int nIncoming = incoming == null ? 0 : incoming.size();
 	if (nOutgoing > 1) {

@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -56,18 +55,18 @@ public class ActionAddDataType extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
-        if (ModelFacade.isANamespace(target))
+        if (Model.getFacade().isANamespace(target))
             ns = target;
-        if (ModelFacade.isAParameter(target))
-            if (ModelFacade.getModelElementContainer(target) != null)
-                target = ModelFacade.getModelElementContainer(target);
-        if (ModelFacade.isAFeature(target))
-            if (ModelFacade.getOwner(target) != null)
-                target = ModelFacade.getOwner(target);
-        if (ModelFacade.isAEvent(target))
-            ns = ModelFacade.getNamespace(target);
-        if (ModelFacade.isAClassifier(target))
-            ns = ModelFacade.getNamespace(target);
+        if (Model.getFacade().isAParameter(target))
+            if (Model.getFacade().getModelElementContainer(target) != null)
+                target = Model.getFacade().getModelElementContainer(target);
+        if (Model.getFacade().isAFeature(target))
+            if (Model.getFacade().getOwner(target) != null)
+                target = Model.getFacade().getOwner(target);
+        if (Model.getFacade().isAEvent(target))
+            ns = Model.getFacade().getNamespace(target);
+        if (Model.getFacade().isAClassifier(target))
+            ns = Model.getFacade().getNamespace(target);
 
         Object newDt = Model.getCoreFactory().buildDataType("", ns);
         TargetManager.getInstance().setTarget(newDt);

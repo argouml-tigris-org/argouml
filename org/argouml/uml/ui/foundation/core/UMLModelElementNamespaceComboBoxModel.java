@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -50,7 +49,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isANamespace(o)
+        return Model.getFacade().isANamespace(o)
         && Model.getCoreHelper().isValidNamespace(
                 /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o);
     }
@@ -70,7 +69,7 @@ public class UMLModelElementNamespaceComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getNamespace(getTarget());
+            return Model.getFacade().getNamespace(getTarget());
         }
         return null;
     }

@@ -34,7 +34,7 @@ import java.util.List;
 
 import javax.swing.SwingUtilities;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -175,7 +175,7 @@ public class FigNodeAssociation extends FigNodeModelElement {
             return;
         }
         Object assoc =  getOwner();
-        if (ModelFacade.isAbstract(assoc)) {
+        if (Model.getFacade().isAbstract(assoc)) {
             getNameFig().setFont(getItalicLabelFont());
         } else {
             getNameFig().setFont(getLabelFont());

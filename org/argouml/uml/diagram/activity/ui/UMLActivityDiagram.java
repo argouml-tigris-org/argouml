@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
@@ -85,12 +84,12 @@ public class UMLActivityDiagram extends UMLDiagram {
     public UMLActivityDiagram(Object m) {
         this();
         setNamespace(m);
-        Object context = ModelFacade.getContext(getStateMachine());
+        Object context = Model.getFacade().getContext(getStateMachine());
         String name = null;
         if (context != null
-            && ModelFacade.getName(context) != null
-            && ModelFacade.getName(context).length() > 0) {
-            name = ModelFacade.getName(context);
+            && Model.getFacade().getName(context) != null
+            && Model.getFacade().getName(context).length() > 0) {
+            name = Model.getFacade().getName(context);
             try {
                 setName(name);
             } catch (PropertyVetoException pve) { }
@@ -107,17 +106,17 @@ public class UMLActivityDiagram extends UMLDiagram {
 
         this();
 
-        if (!ModelFacade.isANamespace(namespace)
-            || !ModelFacade.isAActivityGraph(agraph)) {
+        if (!Model.getFacade().isANamespace(namespace)
+            || !Model.getFacade().isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
         }
 
-        if (namespace != null && ModelFacade.getName(namespace) != null) {
-            if (ModelFacade.getName(namespace).trim() != "") {
+        if (namespace != null && Model.getFacade().getName(namespace) != null) {
+            if (Model.getFacade().getName(namespace).trim() != "") {
                 String name =
-                    ModelFacade.getName(namespace)
+                    Model.getFacade().getName(namespace)
                     + " activity "
-                    + (ModelFacade.getBehaviors(namespace).size());
+                    + (Model.getFacade().getBehaviors(namespace).size());
                 try {
                     setName(name);
                 } catch (PropertyVetoException pve) { }
@@ -134,11 +133,11 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
      */
     public void initialize(Object o) {
-        if (!(org.argouml.model.ModelFacade.isAActivityGraph(o)))
+        if (!(Model.getFacade().isAActivityGraph(o)))
             return;
-        Object context = ModelFacade.getContext(o);
+        Object context = Model.getFacade().getContext(o);
         if (context != null
-            && org.argouml.model.ModelFacade.isANamespace(context))
+            && Model.getFacade().isANamespace(context))
             setup(context, o);
         else
             LOG.debug("ActivityGraph without context not yet possible :-(");
@@ -163,8 +162,8 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     public void setup(Object m, Object agraph) {
 
-        if (!ModelFacade.isANamespace(m)
-            || !ModelFacade.isAActivityGraph(agraph)) {
+        if (!Model.getFacade().isANamespace(m)
+            || !Model.getFacade().isAActivityGraph(agraph)) {
             throw new IllegalArgumentException();
         }
 
@@ -175,7 +174,7 @@ public class UMLActivityDiagram extends UMLDiagram {
             gm.setMachine(agraph);
         }
         LayerPerspective lay =
-            new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
+            new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
         ActivityDiagramRenderer rend = new ActivityDiagramRenderer();
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
@@ -209,7 +208,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     public void setStateMachine(Object sm) {
 
-        if (!ModelFacade.isAStateMachine(sm)) {
+        if (!Model.getFacade().isAStateMachine(sm)) {
             throw new IllegalArgumentException();
         }
 
@@ -411,7 +410,7 @@ public class UMLActivityDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
     public boolean needsToBeRemoved() {
-        Object context = ModelFacade.getContext(getStateMachine());
+        Object context = Model.getFacade().getContext(getStateMachine());
         if (context == null) {
             return true;
         }

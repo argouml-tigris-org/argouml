@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for State->Incoming Transitions.
@@ -48,8 +48,8 @@ public class GoStateToIncomingTrans extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAStateVertex(parent)) {
-	    return ModelFacade.getIncomings(parent);
+	if (Model.getFacade().isAStateVertex(parent)) {
+	    return Model.getFacade().getIncomings(parent);
 	}
 	return null;
     }
@@ -58,7 +58,7 @@ public class GoStateToIncomingTrans extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStateVertex(parent)) {
+        if (Model.getFacade().isAStateVertex(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

@@ -31,7 +31,6 @@ import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator2;
@@ -83,8 +82,8 @@ public class ActionGenerateProjectCode extends UMLAction {
 	if (ns == null) {
 	    return;
 	}
-	while (ModelFacade.getNamespace(ns) != null) {
-	    ns = ModelFacade.getNamespace(ns);
+	while (Model.getFacade().getNamespace(ns) != null) {
+	    ns = Model.getFacade().getNamespace(ns);
 	}
 	Collection elems =
 	    Model.getModelManagementHelper()
@@ -117,7 +116,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 
     private boolean isCodeRelevantClassifier(Object/*MClassifier*/ cls) {
 	String path = Generator2.getCodePath(cls);
-	String name = ModelFacade.getName(cls);
+	String name = Model.getFacade().getName(cls);
 	if (name == null
             || name.length() == 0
             || Character.isDigit(name.charAt(0))) {
@@ -126,13 +125,13 @@ public class ActionGenerateProjectCode extends UMLAction {
 	if (path != null) {
 	    return (path.length() > 0);
 	}
-	Object/*MNamespace*/ parent = ModelFacade.getNamespace(cls);
+	Object/*MNamespace*/ parent = Model.getFacade().getNamespace(cls);
 	while (parent != null) {
 	    path = Generator2.getCodePath(parent);
 	    if (path != null) {
 		return (path.length() > 0);
 	    }
-	    parent = ModelFacade.getNamespace(parent);
+	    parent = Model.getFacade().getNamespace(parent);
 	}
 	return false;
     }

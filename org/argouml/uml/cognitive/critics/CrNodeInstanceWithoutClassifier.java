@@ -26,10 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.tigris.gef.util.VectorSet;
@@ -113,7 +114,7 @@ public class CrNodeInstanceWithoutClassifier extends CrUML {
 	    if (fn != null) {
 		Object noi = /*(MNodeInstance)*/ fn.getOwner();
 		if (noi != null) {
-		    Collection col = ModelFacade.getClassifiers(noi);
+		    Collection col = Model.getFacade().getClassifiers(noi);
 		    if (col.size() > 0) {
 		        continue;
 		    }

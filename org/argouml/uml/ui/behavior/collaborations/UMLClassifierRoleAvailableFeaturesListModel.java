@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
@@ -65,7 +64,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
     public void roleAdded(MElementEvent e) {
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             Object clazz = /*(MClassifier)*/ getChangedElement(e);
-            addAll(ModelFacade.getFeatures(clazz));
+            addAll(Model.getFacade().getFeatures(clazz));
             // UmlModelEventPump.getPump().removeModelEventListener(this,
             // clazz, "feature");
             UmlModelEventPump.getPump().addModelEventListener(
@@ -74,7 +73,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 							      "feature");
         } else if (
 		   e.getName().equals("feature")
-		   && ModelFacade.getBases(getTarget()).contains(
+		   && Model.getFacade().getBases(getTarget()).contains(
 			  e.getSource())) {
             addElement(getChangedElement(e));
         }
@@ -88,7 +87,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void setTarget(Object target) {
         if (getTarget() != null) {
-            Collection bases = ModelFacade.getBases(getTarget());
+            Collection bases = Model.getFacade().getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
                 Object base = /*(MBase)*/ it.next();
@@ -103,11 +102,11 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 		"base");
         }
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (!ModelFacade.isABase(target))
+        if (!Model.getFacade().isABase(target))
             return;
         setListTarget(target);
         if (getTarget() != null) {
-            Collection bases = ModelFacade.getBases(getTarget());
+            Collection bases = Model.getFacade().getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
                 Object base = /*(MBase)*/ it.next();
@@ -152,7 +151,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 								 "feature");
         } else if (
 		   e.getName().equals("feature")
-		   && ModelFacade.getBases(getTarget()).contains(
+		   && Model.getFacade().getBases(getTarget()).contains(
 		           e.getSource())) {
             removeElement(getChangedElement(e));
         }

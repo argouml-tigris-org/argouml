@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -100,7 +99,7 @@ public class ActionMultiplicity extends UMLAction {
 	    Selection sel = (Selection) sels.firstElement();
 	    Fig f = sel.getContent();
 	    Object owner = ((FigEdgeModelElement) f).getOwner();
-	    Collection ascEnds = ModelFacade.getConnections(owner);
+	    Collection ascEnds = Model.getFacade().getConnections(owner);
             Iterator iter = ascEnds.iterator();
 	    Object ascEnd = null;
 	    if (str.equals("src")) {

@@ -42,7 +42,6 @@ import org.argouml.application.events.ArgoEventTypes;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.events.ArgoModuleEventListener;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -203,7 +202,7 @@ public class TabProps
         panels.put(FigText.class, new PropPanelString());
         // now a plugin
         // panels.put(MModelImpl.class, new PropPanelModel());
-        // panels.put((Class)ModelFacade.USE_CASE/*MUseCaseImpl.class*/,
+        // panels.put((Class)Model.getFacade().USE_CASE/*MUseCaseImpl.class*/,
         //                 new PropPanelUseCase());
         //important: MStateImpl corresponds to PropPanelSimpleState
         //               not to PropPanelState!!
@@ -247,13 +246,16 @@ public class TabProps
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (!(t == null || ModelFacade.isABase(t) || t instanceof ArgoDiagram))
+        if (!(t == null || Model.getFacade().isABase(t)
+                || t instanceof ArgoDiagram)) {
             return;
+        }
 
         if (lastPanel != null) {
             remove(lastPanel);
-            if (lastPanel instanceof TargetListener)
+            if (lastPanel instanceof TargetListener) {
                 removeTargetListener((TargetListener) lastPanel);
+            }
         }
         target = t;
         if (t == null) {
@@ -414,7 +416,7 @@ public class TabProps
      */
     public boolean shouldBeEnabled(Object t) {
         t = (t instanceof Fig) ? ((Fig) t).getOwner() : t;
-        if (t instanceof Diagram || ModelFacade.isABase(t)) {
+        if (t instanceof Diagram || Model.getFacade().isABase(t)) {
             shouldBeEnabled = true;
         } else {
             shouldBeEnabled = false;

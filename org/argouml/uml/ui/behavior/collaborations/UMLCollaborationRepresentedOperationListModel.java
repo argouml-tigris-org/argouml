@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -48,11 +48,11 @@ public class UMLCollaborationRepresentedOperationListModel
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isACollaboration(target)) {
+        if (Model.getFacade().isACollaboration(target)) {
             Object col = /*(MCollaboration)*/ target;
             removeAllElements();
-            if (ModelFacade.getRepresentedOperation(col) != null)
-                addElement(ModelFacade.getRepresentedOperation(col));
+            if (Model.getFacade().getRepresentedOperation(col) != null)
+                addElement(Model.getFacade().getRepresentedOperation(col));
         }
     }
 
@@ -60,8 +60,8 @@ public class UMLCollaborationRepresentedOperationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAOperation(elem)
-            && ModelFacade.getRepresentedOperation(getTarget()) == elem;
+        return Model.getFacade().isAOperation(elem)
+            && Model.getFacade().getRepresentedOperation(getTarget()) == elem;
     }
 
 }

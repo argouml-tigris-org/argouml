@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
@@ -56,7 +55,7 @@ public class ActionSetClassActive extends UMLAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (ModelFacade.isAClass(target)) {
+            if (Model.getFacade().isAClass(target)) {
                 Object m = /*(MGeneralizableElement)*/ target;
                 Model.getCoreHelper().setActive(m, source.isSelected());
             }

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,14 +46,14 @@ public class UMLStimulusSenderListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getSender(getTarget()));
+        addElement(Model.getFacade().getSender(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return ModelFacade.getSender(getTarget()) == elem;
+        return Model.getFacade().getSender(getTarget()) == elem;
     }
 
 }

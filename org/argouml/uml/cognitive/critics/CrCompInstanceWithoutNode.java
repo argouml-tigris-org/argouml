@@ -26,14 +26,14 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
-import org.argouml.model.ModelFacade;
-
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -125,7 +125,7 @@ public class CrCompInstanceWithoutNode extends CrUML {
 		}
 		offs.addElement(fc);
 	    } else if (fc.getEnclosingFig() != null
-		     && ((ModelFacade.getNodeInstance(fc.getOwner()))
+		     && ((Model.getFacade().getNodeInstance(fc.getOwner()))
 			 == null)) {
 		if (offs == null) {
 		    offs = new VectorSet();

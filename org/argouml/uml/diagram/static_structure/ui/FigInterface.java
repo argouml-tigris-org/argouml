@@ -41,7 +41,6 @@ import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -206,9 +205,9 @@ public class FigInterface extends FigNodeModelElement
         this();
         setOwner(node);
         enableSizeChecking(true);
-        if (ModelFacade.isAInterface(node)
-	        && (ModelFacade.getName(node) != null)) {
-            getNameFig().setText(ModelFacade.getName(node));
+        if (Model.getFacade().isAInterface(node)
+	        && (Model.getFacade().getName(node) != null)) {
+            getNameFig().setText(Model.getFacade().getName(node));
 	}
     }
 
@@ -512,7 +511,7 @@ public class FigInterface extends FigNodeModelElement
     public void setEnclosingFig(Fig encloser) {
         Fig oldEncloser = getEnclosingFig();
         super.setEnclosingFig(encloser);
-        if (!(ModelFacade.isAModelElement(getOwner())))
+        if (!(Model.getFacade().isAModelElement(getOwner())))
             return;
         /* If this fig is not visible, do not adapt the UML model! 
          * This is used for deleting. See issue 3042. */
@@ -525,13 +524,13 @@ public class FigInterface extends FigNodeModelElement
             // If moved into an Package
             if (encloser != null
                     && oldEncloser != encloser
-                    && ModelFacade.isAPackage(encloser.getOwner())) {
+                    && Model.getFacade().isAPackage(encloser.getOwner())) {
                 Model.getCoreHelper().setNamespace(me,
 					 /*(MNamespace)*/ encloser.getOwner());
             }
 
             // If default Namespace is not already set
-            if (ModelFacade.getNamespace(me) == null
+            if (Model.getFacade().getNamespace(me) == null
 		    && (TargetManager.getInstance().getTarget()
 		       instanceof UMLDiagram)) {
                 m = /*(MNamespace)*/
@@ -548,7 +547,7 @@ public class FigInterface extends FigNodeModelElement
         // it detects if the enclosing fig is a component, in this case
         // the ImplementationLocation will be set for the owning MInterface
         if (encloser != null
-	        && (ModelFacade.isAComponent(encloser.getOwner()))) {
+	        && (Model.getFacade().isAComponent(encloser.getOwner()))) {
             Object component = /*(MComponent)*/ encloser.getOwner();
             Object in = /*(MInterface)*/ getOwner();
             Model.getCoreHelper().setImplementationLocation(resident,
@@ -707,8 +706,8 @@ public class FigInterface extends FigNodeModelElement
 
         // operations
         if (mee == null
-                || org.argouml.model.ModelFacade.isAOperation(mee.getSource())
-                || org.argouml.model.ModelFacade.isAParameter(mee.getSource())
+                || Model.getFacade().isAOperation(mee.getSource())
+                || Model.getFacade().isAParameter(mee.getSource())
                 || (mee.getSource() == getOwner()
 		&& mee.getPropertyName().equals("feature"))) {
             updateOperations();
@@ -867,7 +866,7 @@ public class FigInterface extends FigNodeModelElement
         int xpos = operPort.getX();
         int ypos = operPort.getY();
         int ocounter = 1;
-        Collection behs = ModelFacade.getOperations(cls);
+        Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             // TODO: in future version of GEF call getFigs returning array
@@ -903,12 +902,12 @@ public class FigInterface extends FigNodeModelElement
         	oper.setOwner(behavioralFeature);
         	// underline, if static
         	oper.setUnderline(Model.getScopeKind().getClassifier()
-        			  .equals(ModelFacade
+        			  .equals(Model.getFacade()
         				  .getOwnerScope(behavioralFeature)));
         	// italics, if abstract
         	//oper.setItalic(((MOperation)bf).isAbstract());
         	//// does not properly work (GEF bug?)
-        	if (ModelFacade.isAbstract(behavioralFeature)) {
+        	if (Model.getFacade().isAbstract(behavioralFeature)) {
         	    oper.setFont(getItalicLabelFont());
         	} else {
         	    oper.setFont(getLabelFont());

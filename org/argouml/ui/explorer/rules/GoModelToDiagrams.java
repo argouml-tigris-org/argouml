@@ -27,9 +27,9 @@ package org.argouml.ui.explorer.rules;
 import java.util.Collection;
 import java.util.Set;
 
-import org.argouml.model.ModelFacade;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 
 /**
  * Rule for Model->Diagram.
@@ -49,7 +49,7 @@ public class GoModelToDiagrams extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAModel(parent)) {
+	if (Model.getFacade().isAModel(parent)) {
 	    return ProjectManager.getManager()
                         .getCurrentProject().getDiagrams();
 	}

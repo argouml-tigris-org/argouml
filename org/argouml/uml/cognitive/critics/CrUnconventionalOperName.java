@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,7 +28,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
@@ -52,11 +52,11 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAOperation(dm))) {
+	if (!(Model.getFacade().isAOperation(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object oper = /*(MOperation)*/ dm;
-	String myName = ModelFacade.getName(oper);
+	String myName = Model.getFacade().getName(oper);
 	if (myName == null || myName.equals("")) {
 	    return NO_PROBLEM;
 	}
@@ -66,12 +66,12 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	}
 	char initalChar = nameStr.charAt(0);
         Object stereo = null;
-        if (ModelFacade.getStereotypes(oper).size() > 0) {
-            stereo = ModelFacade.getStereotypes(oper).iterator().next();
+        if (Model.getFacade().getStereotypes(oper).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(oper).iterator().next();
         }
 	if ((stereo != null)
-            && ("create".equals(ModelFacade.getName(stereo))
-                    || "constructor".equals(ModelFacade.getName(stereo)))) {
+            && ("create".equals(Model.getFacade().getName(stereo))
+                    || "constructor".equals(Model.getFacade().getName(stereo)))) {
 	    return NO_PROBLEM;
         }
 	if (!Character.isLowerCase(initalChar)) {
@@ -96,7 +96,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      */
     protected VectorSet computeOffenders(Object/*MFeature*/ dm) {
 	VectorSet offs = new VectorSet(dm);
-	offs.addElement(ModelFacade.getOwner(dm));
+	offs.addElement(Model.getFacade().getOwner(dm));
 	return offs;
     }
 
@@ -128,16 +128,16 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * @return true if this operation looks like a constructor
      */
     protected boolean candidateForConstructor(Object/*MModelElement*/ me) {
-	if (!(ModelFacade.isAOperation(me))) {
+	if (!(Model.getFacade().isAOperation(me))) {
 	    return false;
 	}
 	Object oper = /*(MOperation)*/ me;
-	String myName = ModelFacade.getName(oper);
+	String myName = Model.getFacade().getName(oper);
 	if (myName == null || myName.equals("")) {
 	    return false;
 	}
-	Object cl = ModelFacade.getOwner(oper);
-	String nameCl = ModelFacade.getName(cl);
+	Object cl = Model.getFacade().getOwner(oper);
+	String nameCl = Model.getFacade().getName(cl);
 	if (nameCl == null || nameCl.equals("")) {
 	    return false;
 	}
@@ -156,7 +156,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
 	if (w instanceof WizOperName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String sug = ModelFacade.getName(me);
+	    String sug = Model.getFacade().getName(me);
 	    sug = computeSuggestion(sug);
 	    boolean cand = candidateForConstructor(me);
 	    String ins =

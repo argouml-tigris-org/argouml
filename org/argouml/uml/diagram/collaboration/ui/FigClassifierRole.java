@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -232,8 +232,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         Rectangle   bounds = getBounds();
 
         Object stereo = null;
-        if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
 
         // Where we now have no stereotype, mark as not displayed. Were we do
@@ -243,8 +243,8 @@ public class FigClassifierRole extends FigNodeModelElement {
         // will be done in setBounds().
 
         if ((stereo == null)
-	    || (ModelFacade.getName(stereo) == null)
-	    || (ModelFacade.getName(stereo).length() == 0)) {
+	    || (Model.getFacade().getName(stereo) == null)
+	    || (Model.getFacade().getName(stereo).length() == 0)) {
 
             if (getStereotypeFig().isVisible()) {
                 bounds.height -= getStereotypeFig().getBounds().height;
@@ -487,18 +487,18 @@ public class FigClassifierRole extends FigNodeModelElement {
         // do the whole thing.
 
         String nameStr =
-	    Notation.generate(this, ModelFacade.getName(cr)).trim();
+	    Notation.generate(this, Model.getFacade().getName(cr)).trim();
         String baseString = "";
 
         // Loop through all base classes, building a comma separated list
 
-        if (ModelFacade.getBases(cr) != null
-	        && ModelFacade.getBases(cr).size() > 0) {
-            Vector bases = new Vector(ModelFacade.getBases(cr));
-            baseString += ModelFacade.getName(bases.elementAt(0));
+        if (Model.getFacade().getBases(cr) != null
+	        && Model.getFacade().getBases(cr).size() > 0) {
+            Vector bases = new Vector(Model.getFacade().getBases(cr));
+            baseString += Model.getFacade().getName(bases.elementAt(0));
 
             for (int i = 1; i < bases.size(); i++)
-                baseString += ", " + ModelFacade.getName(bases.elementAt(i));
+                baseString += ", " + Model.getFacade().getName(bases.elementAt(i));
         }
 
         // Build the final string and set it as the name text.

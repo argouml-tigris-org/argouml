@@ -24,17 +24,18 @@
 
 package org.argouml.uml.diagram.state.ui;
 
-import org.argouml.model.ModelFacade;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.presentation.FigCircle;
-import org.tigris.gef.presentation.FigRect;
-import org.tigris.gef.presentation.FigText;
-
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
+
+import org.argouml.model.Model;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.presentation.FigCircle;
+import org.tigris.gef.presentation.FigRect;
+import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display graphics for a UML MSynchState in a diagram.
@@ -154,7 +155,7 @@ public class FigSynchState extends FigStateVertex {
         if (mee.getPropertyName().equals("bound")) {
             if (getOwner() == null)
                 return;
-            int b = ModelFacade.getBound(getOwner());
+            int b = Model.getFacade().getBound(getOwner());
             String aux;
             if (b <= 0)
                 aux = "*";

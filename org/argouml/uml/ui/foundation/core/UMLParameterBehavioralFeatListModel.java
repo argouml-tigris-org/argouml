@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -47,7 +47,7 @@ public class UMLParameterBehavioralFeatListModel
     protected void buildModelList() {
 	if (getTarget() != null) {
 	    removeAllElements();
-	    addElement(ModelFacade.getBehavioralFeature(getTarget()));
+	    addElement(Model.getFacade().getBehavioralFeature(getTarget()));
 	}
     }
 
@@ -55,7 +55,7 @@ public class UMLParameterBehavioralFeatListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-	return ModelFacade.getBehavioralFeature(getTarget()) == o;
+	return Model.getFacade().getBehavioralFeature(getTarget()) == o;
     }
 
 }

@@ -33,7 +33,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -79,7 +78,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public void setNamespace(Object ns) {
 
-        if (!ModelFacade.isANamespace(ns)) {
+        if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
         }
         namespace = ns;
@@ -97,7 +96,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public void setMachine(Object sm) {
 
-        if (!ModelFacade.isAStateMachine(sm)) {
+        if (!Model.getFacade().isAStateMachine(sm)) {
             throw new IllegalArgumentException();
         }
 
@@ -117,10 +116,10 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      */
     public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector(); //wasteful!
-        if (ModelFacade.isAState(nodeOrEdge)) {
+        if (Model.getFacade().isAState(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
-        if (ModelFacade.isAPseudostate(nodeOrEdge)) {
+        if (Model.getFacade().isAPseudostate(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
         return res;
@@ -143,8 +142,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
-        if (ModelFacade.isAStateVertex(port)) {
-	    return new Vector(ModelFacade.getIncomings(port));
+        if (Model.getFacade().isAStateVertex(port)) {
+	    return new Vector(Model.getFacade().getIncomings(port));
 	}
         LOG.debug("TODO: getInEdges of MState");
         return new Vector(); //wasteful!
@@ -156,8 +155,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
-        if (ModelFacade.isAStateVertex(port)) {
-	    return new Vector(ModelFacade.getOutgoings(port));
+        if (Model.getFacade().isAStateVertex(port)) {
+	    return new Vector(Model.getFacade().getOutgoings(port));
 	}
         LOG.debug("TODO: getOutEdges of MState");
         return new Vector(); //wasteful!
@@ -169,7 +168,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
-        if (ModelFacade.isATransition(edge)) {
+        if (Model.getFacade().isATransition(edge)) {
 	    return Model.getStateMachinesHelper()
 		.getSource(/* (MTransition) */edge);
 	}
@@ -183,7 +182,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
     public Object getDestPort(Object edge) {
-        if (ModelFacade.isATransition(edge)) {
+        if (Model.getFacade().isATransition(edge)) {
 	    return Model.getStateMachinesHelper()
 		.getDestination(/* (MTransition) */edge);
 	}
@@ -206,9 +205,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (containsNode(node)) {
             return false;
         }
-        return (ModelFacade.isAStateVertex(node)
-                || ModelFacade.isAPartition(node)
-                || ModelFacade.isAComment(node));
+        return (Model.getFacade().isAStateVertex(node)
+                || Model.getFacade().isAPartition(node)
+                || Model.getFacade().isAComment(node));
     }
 
     /**
@@ -228,13 +227,13 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         }
         Object end0 = null, end1 = null, state = null;
 
-        if (ModelFacade.isATransition(edge)) {
-            state = ModelFacade.getState(edge);
-            end0 = ModelFacade.getSource(edge);
-            end1 = ModelFacade.getTarget(edge);
+        if (Model.getFacade().isATransition(edge)) {
+            state = Model.getFacade().getState(edge);
+            end0 = Model.getFacade().getSource(edge);
+            end1 = Model.getFacade().getTarget(edge);
             // it's not allowed to directly draw a transition
             // from a composite state to one of it's substates.
-            if (ModelFacade.isACompositeState(end0)
+            if (Model.getFacade().isACompositeState(end0)
                     && Model.getStateMachinesHelper().getAllSubStates(end0)
                                                         .contains(end1)) {
                 return false;
@@ -274,7 +273,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
         getNodes().add(node);
 
-        if (ModelFacade.isAStateVertex(node)) {
+        if (Model.getFacade().isAStateVertex(node)) {
             Object top = Model.getStateMachinesHelper().getTop(getMachine());
             Model.getStateMachinesHelper().addSubvertex(top, node);
         }
@@ -303,9 +302,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
 
-        if (ModelFacade.isAStateVertex(node)) {
-            Vector transen = new Vector(ModelFacade.getOutgoings(node));
-            transen.addAll(ModelFacade.getIncomings(node));
+        if (Model.getFacade().isAStateVertex(node)) {
+            Vector transen = new Vector(Model.getFacade().getOutgoings(node));
+            transen.addAll(Model.getFacade().getIncomings(node));
             Iterator iter = transen.iterator();
             while (iter.hasNext()) {
                 Object dep = /* (MTransition) */iter.next();
@@ -324,21 +323,21 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * java.lang.Object)
      */
     public boolean canConnect(Object fromPort, Object toPort) {
-        if (!(ModelFacade.isAStateVertex(fromPort))) {
+        if (!(Model.getFacade().isAStateVertex(fromPort))) {
             LOG.error("internal error not from sv");
             return false;
         }
-        if (!(ModelFacade.isAStateVertex(toPort))) {
+        if (!(Model.getFacade().isAStateVertex(toPort))) {
             LOG.error("internal error not to sv");
             return false;
         }
 
-        if (ModelFacade.isAFinalState(fromPort)) {
+        if (Model.getFacade().isAFinalState(fromPort)) {
             return false;
         }
-        if (ModelFacade.isAPseudostate(toPort)) {
+        if (Model.getFacade().isAPseudostate(toPort)) {
             if ((Model.getPseudostateKind().getInitial()).equals(
-                    ModelFacade.getKind(toPort))) {
+                    Model.getFacade().getKind(toPort))) {
                 return false;
             }
         }
@@ -354,13 +353,13 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     public Object connect(Object fromPort, Object toPort,
 			  Class edgeClass) {
 
-        if (ModelFacade.isAFinalState(fromPort)) {
+        if (Model.getFacade().isAFinalState(fromPort)) {
 	    return null;
 	}
 
-        if (ModelFacade.isAPseudostate(toPort)
+        if (Model.getFacade().isAPseudostate(toPort)
                 && Model.getPseudostateKind().getInitial().equals(
-			ModelFacade.getKind(toPort))) {
+			Model.getFacade().getKind(toPort))) {
             return null;
 	}
 
@@ -407,16 +406,16 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if ("ownedElement".equals(pce.getPropertyName())) {
             Vector oldOwned = (Vector) pce.getOldValue();
             Object eo = /* (MElementImport) */pce.getNewValue();
-            Object me = ModelFacade.getModelElement(eo);
+            Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {
                 LOG.debug("model removed " + me);
-                if (ModelFacade.isAState(me)) {
+                if (Model.getFacade().isAState(me)) {
                     removeNode(me);
                 }
-                if (ModelFacade.isAPseudostate(me)) {
+                if (Model.getFacade().isAPseudostate(me)) {
                     removeNode(me);
                 }
-                if (ModelFacade.isATransition(me)) {
+                if (Model.getFacade().isATransition(me)) {
                     removeEdge(me);
                 }
             } else {
@@ -444,20 +443,20 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         }
 
         // check parameter types:
-        if (!(ModelFacade.isAState(newNode)
-	      || ModelFacade.isAState(oldNode)
-	      || ModelFacade.isATransition(edge))) {
+        if (!(Model.getFacade().isAState(newNode)
+	      || Model.getFacade().isAState(oldNode)
+	      || Model.getFacade().isATransition(edge))) {
 	    return false;
 	}
 
         // it's not allowed to move a transition
         // so that it will go from a composite to its substate
         // nor vice versa. See issue 2865.
-        Object otherSideNode = ModelFacade.getSource(edge);
+        Object otherSideNode = Model.getFacade().getSource(edge);
         if (otherSideNode == oldNode) {
-            otherSideNode = ModelFacade.getTarget(edge);
+            otherSideNode = Model.getFacade().getTarget(edge);
         }
-        if (ModelFacade.isACompositeState(newNode)
+        if (Model.getFacade().isACompositeState(newNode)
                 && Model.getStateMachinesHelper().getAllSubStates(newNode)
                                                     .contains(otherSideNode)) {
             return false;

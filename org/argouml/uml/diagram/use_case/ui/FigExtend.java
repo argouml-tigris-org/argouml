@@ -29,7 +29,7 @@ import java.awt.Graphics;
 import java.beans.PropertyChangeEvent;
 
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -222,7 +222,7 @@ public class FigExtend extends FigEdgeModelElement {
         // condition set. We call the main generate method, which will realise
         // this is a MExpression (subclass) and invoke the correct method.
         Object/*MBooleanExpression*/ c =
-            ModelFacade.getCondition(extend);
+            Model.getFacade().getCondition(extend);
 
         if (c == null) {
             condition.setText("");

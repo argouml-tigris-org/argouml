@@ -53,7 +53,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -146,7 +145,7 @@ public class TabTaggedValues extends TabSpawnable
 
         Object t = (theTarget instanceof Fig)
                     ? ((Fig) theTarget).getOwner() : theTarget;
-        if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
+        if (!(Model.getFacade().isAModelElement(t))) {
             target = null;
             shouldBeEnabled = false;
             return;
@@ -165,12 +164,14 @@ public class TabTaggedValues extends TabSpawnable
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.sizeColumnsToFit(0);
 
-        Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
+        Vector tvs =
+            new Vector(Model.getFacade().getTaggedValuesCollection(target));
         tableModel.setTarget(target);
         if (target != null) {
             titleLabel.setText("Target: "
-				+ ModelFacade.getUMLClassName(target)
-				+ " (" + ModelFacade.getName(target) + ")");
+				+ Model.getFacade().getUMLClassName(target)
+				+ " ("
+				+ Model.getFacade().getName(target) + ")");
         } else {
             titleLabel.setText("none");
         }
@@ -193,7 +194,7 @@ public class TabTaggedValues extends TabSpawnable
     public boolean shouldBeEnabled(Object theTarget) {
         Object t = (theTarget instanceof Fig)
             ? ((Fig) theTarget).getOwner() : theTarget;
-        if (!(org.argouml.model.ModelFacade.isAModelElement(t))) {
+        if (!(Model.getFacade().isAModelElement(t))) {
             shouldBeEnabled = false;
             return shouldBeEnabled;
         } else {
@@ -276,7 +277,7 @@ class TableModelTaggedValues extends AbstractTableModel
      */
     public void setTarget(Object t) {
 
-        if (!ModelFacade.isAModelElement(t)) {
+        if (!Model.getFacade().isAModelElement(t)) {
             throw new IllegalArgumentException();
         }
 
@@ -330,7 +331,7 @@ class TableModelTaggedValues extends AbstractTableModel
 	if (target == null) {
 	    return 0;
 	}
-	Collection tvs = ModelFacade.getTaggedValuesCollection(target);
+	Collection tvs = Model.getFacade().getTaggedValuesCollection(target);
 	//if (tvs == null) return 1;
 	return tvs.size() + 1;
     }
@@ -339,21 +340,22 @@ class TableModelTaggedValues extends AbstractTableModel
      * @see javax.swing.table.TableModel#getValueAt(int, int)
      */
     public Object getValueAt(int row, int col) {
-	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
+	Vector tvs =
+	    new Vector(Model.getFacade().getTaggedValuesCollection(target));
 	//if (tvs == null) return "";
 	if (row == tvs.size()) {
 	    return ""; //blank line allows addition
 	}
 	Object tv = tvs.elementAt(row);
 	if (col == 0) {
-	    String n = ModelFacade.getTagOfTag(tv);
+	    String n = Model.getFacade().getTagOfTag(tv);
 	    if (n == null) {
 	        return "";
 	    }
 	    return n;
 	}
 	if (col == 1) {
-	    String be = ModelFacade.getValueOfTag(tv);
+	    String be = Model.getFacade().getValueOfTag(tv);
 	    if (be == null) {
 	        return "";
 	    }
@@ -378,7 +380,8 @@ class TableModelTaggedValues extends AbstractTableModel
             aValue = "";
         }
 
-	Vector tvs = new Vector(ModelFacade.getTaggedValuesCollection(target));
+	Vector tvs =
+	    new Vector(Model.getFacade().getTaggedValuesCollection(target));
 	if (tvs.size() <= rowIndex) {
 	    Object tv =
 		Model.getExtensionMechanismsFactory().createTaggedValue();
@@ -469,7 +472,7 @@ class ActionRemoveTaggedValue extends AbstractAction {
         JTable table = tab.getTable();
         int row = table.getSelectedRow();
         List c = new ArrayList(
-                ModelFacade.getTaggedValuesCollection(tab.getTarget()));
+                Model.getFacade().getTaggedValuesCollection(tab.getTarget()));
         if ((row != -1) && (c.size() > row)) {
             c.remove(row);
             Model.getCoreHelper().setTaggedValues(tab.getTarget(), c);

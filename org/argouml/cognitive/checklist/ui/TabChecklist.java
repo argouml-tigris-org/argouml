@@ -49,7 +49,6 @@ import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -284,11 +283,11 @@ class TableModelChecklist extends AbstractTableModel
      * @param t the new target
      */
     public void setTarget(Object t) {
-	if (ModelFacade.isAElement(target)) {
+	if (Model.getFacade().isAElement(target)) {
 	    Model.getPump().removeModelEventListener(this, target);
 	}
 	target = t;
-	if (ModelFacade.isAElement(target)) {
+	if (Model.getFacade().isAElement(target)) {
 	    Model.getPump().addModelEventListener(this, target, "name");
 	}
 	fireTableStructureChanged();

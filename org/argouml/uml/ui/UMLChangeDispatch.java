@@ -27,11 +27,11 @@ package org.argouml.uml.ui;
 import java.awt.Component;
 import java.awt.Container;
 
+import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
 import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
-
 
 import ru.novosoft.uml.MElementEvent;
 
@@ -227,7 +227,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
 	    PropPanel propPanel = (PropPanel) container;
             Object t = propPanel.getTarget();
 
-            if (org.argouml.model.ModelFacade.isABase(t)) {
+            if (Model.getFacade().isABase(t)) {
 
             	// 2002-07-15
             	// Jaap Branderhorst

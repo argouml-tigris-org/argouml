@@ -48,7 +48,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
@@ -148,7 +147,7 @@ public class GeneratorJava
      * java.lang.Object, java.lang.String)
      */
     public String generateFile2(Object modelElement, String path) {
-        String name = ModelFacade.getName(modelElement);
+        String name = Model.getFacade().getName(modelElement);
         if (name == null || name.length() == 0) {
             return null;
         }
@@ -159,7 +158,7 @@ public class GeneratorJava
         }
 
         String packagePath =
-	    getPackageName(ModelFacade.getNamespace(classifier));
+	    getPackageName(Model.getFacade().getNamespace(classifier));
 
         int lastIndex = -1;
         do {
@@ -269,26 +268,26 @@ public class GeneratorJava
         java.util.HashSet importSet = new java.util.HashSet();
         String ftype;
         Iterator j;
-        Collection c = ModelFacade.getFeatures(cls);
+        Collection c = Model.getFacade().getFeatures(cls);
         if (c != null) {
             // now check packages of all feature types
             for (j = c.iterator(); j.hasNext();) {
                 Object mFeature = /*(MFeature)*/ j.next();
-                if (ModelFacade.isAAttribute(mFeature)) {
+                if (Model.getFacade().isAAttribute(mFeature)) {
                     if ((ftype =
-                            generateImportType(ModelFacade.getType(mFeature),
+                            generateImportType(Model.getFacade().getType(mFeature),
                                                packagePath))
                             != null) {
                         importSet.add(ftype);
                     }
-                } else if (ModelFacade.isAOperation(mFeature)) {
+                } else if (Model.getFacade().isAOperation(mFeature)) {
                     // check the parameter types
                     Iterator it =
-			ModelFacade.getParameters(mFeature).iterator();
+			Model.getFacade().getParameters(mFeature).iterator();
                     while (it.hasNext()) {
                         Object parameter = it.next();
 			ftype =
-			    generateImportType(ModelFacade.getType(parameter),
+			    generateImportType(Model.getFacade().getType(parameter),
 					       packagePath);
 			if (ftype != null) {
                             importSet.add(ftype);
@@ -303,7 +302,7 @@ public class GeneratorJava
                     while (it.hasNext()) {
                         Object parameter = it.next();
 			ftype =
-			    generateImportType(ModelFacade.getType(parameter),
+			    generateImportType(Model.getFacade().getType(parameter),
 					       packagePath);
                         if (ftype != null) {
                             importSet.add(ftype);
@@ -311,15 +310,15 @@ public class GeneratorJava
                     }
 
 		    // check raised signals
-		    it = ModelFacade.getRaisedSignals(mFeature).iterator();
+		    it = Model.getFacade().getRaisedSignals(mFeature).iterator();
 		    while (it.hasNext()) {
 			Object signal = it.next();
-			if (!ModelFacade.isAException(signal)) {
+			if (!Model.getFacade().isAException(signal)) {
 			    continue;
 			}
 
 			ftype =
-			    generateImportType(ModelFacade.getType(signal),
+			    generateImportType(Model.getFacade().getType(signal),
 					       packagePath);
 			if (ftype != null) {
 			    importSet.add(ftype);
@@ -329,12 +328,12 @@ public class GeneratorJava
             }
         }
 
-	c = ModelFacade.getGeneralizations(cls);
+	c = Model.getFacade().getGeneralizations(cls);
 	if (c != null) {
 	    // now check packages of all generalized types
 	    for (j = c.iterator(); j.hasNext();) {
 		Object gen = /*(MGeneralization)*/ j.next();
-		Object parent = ModelFacade.getParent(gen);
+		Object parent = Model.getFacade().getParent(gen);
 		if (parent == cls) {
 		    continue;
 		}
@@ -346,7 +345,7 @@ public class GeneratorJava
 	    }
 	}
 
-	c = ModelFacade.getSpecifications(cls);
+	c = Model.getFacade().getSpecifications(cls);
 	if (c != null) {
 	    // now check packages of the interfaces
 	    for (j = c.iterator(); j.hasNext();) {
@@ -359,32 +358,32 @@ public class GeneratorJava
 	    }
 	}
 
-        c = ModelFacade.getAssociationEnds(cls);
+        c = Model.getFacade().getAssociationEnds(cls);
         if (!c.isEmpty()) {
             // check association end types
             for (j = c.iterator(); j.hasNext();) {
                 Object associationEnd = /*(MAssociationEnd)*/ j.next();
-                Object association = ModelFacade.getAssociation(associationEnd);
+                Object association = Model.getFacade().getAssociation(associationEnd);
                 Iterator connEnum =
-		    ModelFacade.getConnections(association).iterator();
+		    Model.getFacade().getConnections(association).iterator();
                 while (connEnum.hasNext()) {
                     Object associationEnd2 =
 			/*(MAssociationEnd)*/ connEnum.next();
                     if (associationEnd2 != associationEnd
-                            && ModelFacade.isNavigable(associationEnd2)
-                            && !ModelFacade.isAbstract(
-                                    ModelFacade.getAssociation(
+                            && Model.getFacade().isNavigable(associationEnd2)
+                            && !Model.getFacade().isAbstract(
+                                    Model.getFacade().getAssociation(
                                             associationEnd2))) {
                         // association end found
                         Object multiplicity =
-			    ModelFacade.getMultiplicity(associationEnd2);
+			    Model.getFacade().getMultiplicity(associationEnd2);
                         if (!Model.getMultiplicities().get11().equals(multiplicity)
                                 && !Model.getMultiplicities().get01().equals(
                                         multiplicity)) {
                             importSet.add("java.util.Vector");
                         } else {
 			    ftype =
-				generateImportType(ModelFacade.getType(
+				generateImportType(Model.getFacade().getType(
 				        associationEnd2),
 						   packagePath);
 			    if (ftype != null) {
@@ -410,18 +409,18 @@ public class GeneratorJava
     private String generateImportType(Object type, String exclude) {
         String ret = null;
 
-	if (ModelFacade.isADataType(type)
-	    && JAVA_TYPES.contains(ModelFacade.getName(type))) {
+	if (Model.getFacade().isADataType(type)
+	    && JAVA_TYPES.contains(Model.getFacade().getName(type))) {
 		return null;
 	}
 
-        if (type != null && ModelFacade.getNamespace(type) != null) {
-            String p = getPackageName(ModelFacade.getNamespace(type));
+        if (type != null && Model.getFacade().getNamespace(type) != null) {
+            String p = getPackageName(Model.getFacade().getNamespace(type));
             if (!p.equals(exclude) && !p.equals(LANG_PACKAGE)) {
 		if (p.length() > 0) {
-		    ret = p + '.' + ModelFacade.getName(type);
+		    ret = p + '.' + Model.getFacade().getName(type);
 		} else {
-		    ret = ModelFacade.getName(type);
+		    ret = Model.getFacade().getName(type);
 		}
 	    }
         }
@@ -462,17 +461,17 @@ public class GeneratorJava
         String nameStr = null;
         boolean constructor = false;
         Object/*MStereotype*/ stereo = null;
-        if (ModelFacade.getStereotypes(op).size() > 0) {
-            stereo = ModelFacade.getStereotypes(op).iterator().next();
+        if (Model.getFacade().getStereotypes(op).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(op).iterator().next();
         }
         if (stereo != null
-                && ModelFacade.getName(stereo).equals("create")) {
+                && Model.getFacade().getName(stereo).equals("create")) {
             // constructor
             nameStr =
-		generateName(ModelFacade.getName(ModelFacade.getOwner(op)));
+		generateName(Model.getFacade().getName(Model.getFacade().getOwner(op)));
             constructor = true;
         } else {
-            nameStr = generateName(ModelFacade.getName(op));
+            nameStr = generateName(Model.getFacade().getName(op));
         }
         // Each pattern here must be similar to corresponding code piece
         // Operation code piece doesn't start with '\n'
@@ -500,7 +499,7 @@ public class GeneratorJava
         Object/*MParameter*/ rp =
 	    Model.getCoreHelper().getReturnParameter(op);
         if (rp != null && !constructor) {
-            Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
+            Object/*MClassifier*/ returnType = Model.getFacade().getType(rp);
             if (returnType == null) {
                 sb.append("void ");
             } else {
@@ -509,7 +508,7 @@ public class GeneratorJava
         }
 
         // name and params
-        Vector params = new Vector(ModelFacade.getParameters(op));
+        Vector params = new Vector(Model.getFacade().getParameters(op));
         params.remove(rp);
 
         sb.append(nameStr).append('(');
@@ -525,14 +524,14 @@ public class GeneratorJava
 
         sb.append(')');
 
-	Collection c = ModelFacade.getRaisedSignals(op);
+	Collection c = Model.getFacade().getRaisedSignals(op);
 	if (!c.isEmpty()) {
 	    Iterator it = c.iterator();
 	    boolean first = true;
 	    while (it.hasNext()) {
 		Object signal = it.next();
 
-		if (!ModelFacade.isAException(signal)) {
+		if (!Model.getFacade().isAException(signal)) {
 		    continue;
 		}
 
@@ -542,7 +541,7 @@ public class GeneratorJava
 		    sb.append(", ");
 		}
 
-		sb.append(ModelFacade.getName(it.next()));
+		sb.append(Model.getFacade().getName(it.next()));
 		first = false;
 	    }
 	}
@@ -576,23 +575,23 @@ public class GeneratorJava
         sb.append(generateVisibility(attr));
         sb.append(generateScope(attr));
         sb.append(generateChangability(attr));
-        Object/*MClassifier*/ type = ModelFacade.getType(attr);
-        Object/*MMultiplicity*/ multi = ModelFacade.getMultiplicity(attr);
+        Object/*MClassifier*/ type = Model.getFacade().getType(attr);
+        Object/*MMultiplicity*/ multi = Model.getFacade().getMultiplicity(attr);
         // handle multiplicity here since we need the type
         // actually the API of generator is buggy since to generate
         // multiplicity correctly we need the attribute too
         if (type != null && multi != null) {
             if (multi.equals(Model.getMultiplicities().get11())) {
                 sb.append(generateClassifierRef(type)).append(' ');
-            } else if (ModelFacade.isADataType(type)) {
+            } else if (Model.getFacade().isADataType(type)) {
                 sb.append(generateClassifierRef(type)).append("[] ");
             } else {
                 sb.append("java.util.Vector ");
             }
         }
 
-        sb.append(generateName(ModelFacade.getName(attr)));
-        Object/*MExpression*/ init = ModelFacade.getInitialValue(attr);
+        sb.append(generateName(Model.getFacade().getName(attr)));
+        Object/*MExpression*/ init = Model.getFacade().getInitialValue(attr);
         if (init != null) {
             String initStr = generateExpression(init).trim();
             if (initStr.length() > 0)
@@ -609,9 +608,9 @@ public class GeneratorJava
         StringBuffer sb = new StringBuffer(20);
         //TODO: qualifiers (e.g., const)
         //TODO: stereotypes...
-        sb.append(generateClassifierRef(ModelFacade.getType(parameter)));
+        sb.append(generateClassifierRef(Model.getFacade().getType(parameter)));
 	sb.append(' ');
-        sb.append(generateName(ModelFacade.getName(parameter)));
+        sb.append(generateName(Model.getFacade().getName(parameter)));
         //TODO: initial value
         return sb.toString();
     }
@@ -621,10 +620,10 @@ public class GeneratorJava
      */
     public String generatePackage(Object p) {
         StringBuffer sb = new StringBuffer(80);
-        String packName = generateName(ModelFacade.getName(p));
+        String packName = generateName(Model.getFacade().getName(p));
         sb.append("package ").append(packName).append(" {");
 	sb.append(LINE_SEPARATOR);
-        Collection ownedElements = ModelFacade.getOwnedElements(p);
+        Collection ownedElements = Model.getFacade().getOwnedElements(p);
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
@@ -652,9 +651,9 @@ public class GeneratorJava
      */
     StringBuffer generateClassifierStart(Object cls) {
         String sClassifierKeyword;
-        if (ModelFacade.isAClass(cls)) {
+        if (Model.getFacade().isAClass(cls)) {
             sClassifierKeyword = "class";
-        } else if (ModelFacade.isAInterface(cls)) {
+        } else if (Model.getFacade().isAInterface(cls)) {
             sClassifierKeyword = "interface";
         } else {
             return null; // actors, use cases etc.
@@ -671,39 +670,39 @@ public class GeneratorJava
 	sb.append(generateConstraintEnrichedDocComment(cls, true, ""));
 
         // Now add visibility
-        sb.append(generateVisibility(ModelFacade.getVisibility(cls)));
+        sb.append(generateVisibility(Model.getFacade().getVisibility(cls)));
 
         // Add other modifiers
-        if (ModelFacade.isAbstract(cls) && !(ModelFacade.isAInterface(cls))) {
+        if (Model.getFacade().isAbstract(cls) && !(Model.getFacade().isAInterface(cls))) {
             sb.append("abstract ");
         }
 
-        if (ModelFacade.isLeaf(cls)) {
+        if (Model.getFacade().isLeaf(cls)) {
             sb.append("final ");
         }
 
         // add additional modifiers
-	Object smod = ModelFacade.getTaggedValue(cls, "src_modifiers");
-        if (smod != null && ModelFacade.getValue(smod) != null) {
+	Object smod = Model.getFacade().getTaggedValue(cls, "src_modifiers");
+        if (smod != null && Model.getFacade().getValue(smod) != null) {
             sb.append(" ");
-	    sb.append(ModelFacade.getValue(smod));
+	    sb.append(Model.getFacade().getValue(smod));
 	    sb.append(" ");
 	}
 
         // add classifier keyword and classifier name
         sb.append(sClassifierKeyword).append(" ");
-	sb.append(generateName(ModelFacade.getName(cls)));
+	sb.append(generateName(Model.getFacade().getName(cls)));
 
         // add base class/interface
         String baseClass =
-	    generateGeneralization(ModelFacade.getGeneralizations(cls));
+	    generateGeneralization(Model.getFacade().getGeneralizations(cls));
         if (!baseClass.equals("")) {
             sb.append(" ").append("extends ").append(baseClass);
         }
 
         // add implemented interfaces, if needed
         // nsuml: realizations!
-        if (ModelFacade.isAClass(cls)) {
+        if (Model.getFacade().isAClass(cls)) {
             String interfaces = generateSpecification(cls);
 	    LOG.debug("Specification: " + interfaces);
             if (!interfaces.equals("")) {
@@ -725,17 +724,17 @@ public class GeneratorJava
 
     private StringBuffer generateClassifierEnd(Object cls) {
         StringBuffer sb = new StringBuffer();
-        if (ModelFacade.isAClass(cls) || ModelFacade.isAInterface(cls)) {
+        if (Model.getFacade().isAClass(cls) || Model.getFacade().isAInterface(cls)) {
             if (verboseDocs) {
                 String classifierkeyword = null;
-                if (ModelFacade.isAClass(cls)) {
+                if (Model.getFacade().isAClass(cls)) {
                     classifierkeyword = "class";
                 } else {
                     classifierkeyword = "interface";
                 }
                 sb.append(LINE_SEPARATOR);
 		sb.append("//end of ").append(classifierkeyword);
-		sb.append(" ").append(ModelFacade.getName(cls));
+		sb.append(" ").append(Model.getFacade().getName(cls));
 		sb.append(LINE_SEPARATOR);
             }
             sb.append("}");
@@ -796,15 +795,15 @@ public class GeneratorJava
      */
     private StringBuffer generateClassifierBody(Object cls) {
         StringBuffer sb = new StringBuffer();
-        if (ModelFacade.isAClass(cls) || ModelFacade.isAInterface(cls)) {
+        if (Model.getFacade().isAClass(cls) || Model.getFacade().isAInterface(cls)) {
             String tv = null; // helper for tagged values
 
             // add attributes
-            Collection strs = ModelFacade.getStructuralFeatures(cls);
+            Collection strs = Model.getFacade().getStructuralFeatures(cls);
 
             if (!strs.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
-                if (verboseDocs && ModelFacade.isAClass(cls)) {
+                if (verboseDocs && Model.getFacade().isAClass(cls)) {
                     sb.append(INDENT).append("// Attributes");
 		    sb.append(LINE_SEPARATOR);
                 }
@@ -829,7 +828,7 @@ public class GeneratorJava
             }
 
             // add attributes implementing associations
-            Collection ends = ModelFacade.getAssociationEnds(cls);
+            Collection ends = Model.getFacade().getAssociationEnds(cls);
             // 2002-06-08
             // Jaap Branderhorst
             // Bugfix: ends is never null. Should check for isEmpty instead
@@ -838,7 +837,7 @@ public class GeneratorJava
             // new code:
             if (!ends.isEmpty()) {
                 sb.append(LINE_SEPARATOR);
-                if (verboseDocs && ModelFacade.isAClass(cls)) {
+                if (verboseDocs && Model.getFacade().isAClass(cls)) {
                     sb.append(INDENT).append("// Associations");
 		    sb.append(LINE_SEPARATOR);
                 }
@@ -848,7 +847,7 @@ public class GeneratorJava
                     Object associationEnd =
 			/*(MAssociationEnd)*/ endEnum.next();
                     Object association =
-			ModelFacade.getAssociation(associationEnd);
+			Model.getFacade().getAssociation(associationEnd);
 
                     sb.append(generateAssociationFrom(association,
 						      associationEnd));
@@ -861,11 +860,11 @@ public class GeneratorJava
             }
 
             // Inner classes
-            Collection elements = ModelFacade.getOwnedElements(cls);
+            Collection elements = Model.getFacade().getOwnedElements(cls);
             for (Iterator i = elements.iterator(); i.hasNext();) {
                 Object element = /*(MModelElement)*/ i.next();
-                if (ModelFacade.isAClass(element)
-		    || ModelFacade.isAInterface(element)) {
+                if (Model.getFacade().isAClass(element)
+		    || Model.getFacade().isAInterface(element)) {
 
                     sb.append(generateClassifier(element));
                 }
@@ -873,7 +872,7 @@ public class GeneratorJava
 
             // add operations
             // TODO: constructors
-            Collection behs = ModelFacade.getOperations(cls);
+            Collection behs = Model.getFacade().getOperations(cls);
 
             //
             // 2002-06-08
@@ -903,9 +902,9 @@ public class GeneratorJava
 
                     tv = generateTaggedValues(behavioralFeature);
 
-                    if ((ModelFacade.isAClass(cls))
-                            && (ModelFacade.isAOperation(behavioralFeature))
-                            && (!ModelFacade.isAbstract(behavioralFeature))) {
+                    if ((Model.getFacade().isAClass(cls))
+                            && (Model.getFacade().isAOperation(behavioralFeature))
+                            && (!Model.getFacade().isAbstract(behavioralFeature))) {
                         if (lfBeforeCurly) {
                             sb.append(LINE_SEPARATOR).append(INDENT);
                         } else {
@@ -947,7 +946,7 @@ public class GeneratorJava
     private String generateMethodBody(Object op) {
         //cat.info("generateMethodBody");
         if (op != null) {
-            Collection methods = ModelFacade.getMethods(op);
+            Collection methods = Model.getFacade().getMethods(op);
             Iterator i = methods.iterator();
             Object m = null;
 
@@ -955,10 +954,10 @@ public class GeneratorJava
                 m = i.next();
 
                 if (m != null) {
-                    if (ModelFacade.getBody(m) != null) {
+                    if (Model.getFacade().getBody(m) != null) {
                         String body =
-			    (String) ModelFacade.getBody(
-			            ModelFacade.getBody(m));
+			    (String) Model.getFacade().getBody(
+			            Model.getFacade().getBody(m));
 			// Note that this will not preserve empty lines
 			// in the body
                         StringTokenizer tokenizer =
@@ -986,7 +985,7 @@ public class GeneratorJava
             // pick out return type
             Object rp = Model.getCoreHelper().getReturnParameter(op);
             if (rp != null) {
-                Object returnType = ModelFacade.getType(rp);
+                Object returnType = Model.getFacade().getType(rp);
                 return generateDefaultReturnStatement(returnType);
             }
         }
@@ -999,7 +998,7 @@ public class GeneratorJava
             return "";
         }
 
-        String clsName = ModelFacade.getName(cls);
+        String clsName = Model.getFacade().getName(cls);
         if (clsName.equals("void")) {
             return "";
         }
@@ -1030,7 +1029,7 @@ public class GeneratorJava
     private String generateTaggedValues(Object e) {
         if (isInUpdateMode)
             return ""; // no tagged values are generated in update mode.
-        Iterator iter = ModelFacade.getTaggedValues(e);
+        Iterator iter = Model.getFacade().getTaggedValues(e);
         if (iter == null)
             return "";
         boolean first = true;
@@ -1094,10 +1093,10 @@ public class GeneratorJava
     public String generateTaggedValue(Object tv) {
         if (tv == null)
             return "";
-        String s = generateUninterpreted(ModelFacade.getValueOfTag(tv));
+        String s = generateUninterpreted(Model.getFacade().getValueOfTag(tv));
         if (s == null || s.length() == 0 || s.equals("/** */"))
             return "";
-        String t = ModelFacade.getTagOfTag(tv);
+        String t = Model.getFacade().getTagOfTag(tv);
         if (t.equals("documentation"))
             return "";
         return generateName(t) + "=" + s;
@@ -1128,7 +1127,7 @@ public class GeneratorJava
     public String generateConstraintEnrichedDocComment(Object me, Object ae) {
         String s = generateConstraintEnrichedDocComment(me, true, INDENT);
 
-        Object/*MMultiplicity*/ m = ModelFacade.getMultiplicity(ae);
+        Object/*MMultiplicity*/ m = Model.getFacade().getMultiplicity(ae);
         if (!(Model.getMultiplicities().get11().equals(m)
 	      || Model.getMultiplicities().get01().equals(m))) {
             // Multiplicity greater 1, that means we will generate some sort of
@@ -1146,10 +1145,10 @@ public class GeneratorJava
             }
 
             // Build doccomment
-            Object/*MClassifier*/ type = ModelFacade.getType(ae);
+            Object/*MClassifier*/ type = Model.getFacade().getType(ae);
             if (type != null) {
                 sDocComment.append(" @element-type ");
-		sDocComment.append(ModelFacade.getName(type));
+		sDocComment.append(Model.getFacade().getName(type));
             }
 
 	    // REMOVED: 2002-03-11 STEFFEN ZSCHALER: element type
@@ -1208,7 +1207,7 @@ public class GeneratorJava
             return sDocComment.toString();
 
         // Extract constraints
-        Collection cConstraints = ModelFacade.getConstraints(me);
+        Collection cConstraints = Model.getFacade().getConstraints(me);
 
         if (cConstraints.size() == 0) {
             return sDocComment.toString();
@@ -1292,12 +1291,12 @@ public class GeneratorJava
 
             try {
 		String body =
-		    (String) ModelFacade.getBody(
-		            ModelFacade.getBody(constraint));
+		    (String) Model.getFacade().getBody(
+		            Model.getFacade().getBody(constraint));
                 OclTree otParsed = OclTree.createTree(body, mf);
 
                 TagExtractor te =
-		    new TagExtractor(ModelFacade.getName(constraint));
+		    new TagExtractor(Model.getFacade().getName(constraint));
                 otParsed.apply(te);
 
                 for (Iterator j = te.getTags(); j.hasNext();) {
@@ -1319,7 +1318,7 @@ public class GeneratorJava
         // TODO: does not handle n-ary associations
         StringBuffer sb = new StringBuffer(80);
 
-        Collection connections = ModelFacade.getConnections(a);
+        Collection connections = Model.getFacade().getConnections(a);
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
             Object associationEnd2 = /*(MAssociationEnd)*/ connEnum.next();
@@ -1358,9 +1357,9 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object ae) {
-        if (!ModelFacade.isNavigable(ae))
+        if (!Model.getFacade().isNavigable(ae))
             return "";
-        if (ModelFacade.isAbstract(ModelFacade.getAssociation(ae)))
+        if (Model.getFacade().isAbstract(Model.getFacade().getAssociation(ae)))
             return "";
         //String s = INDENT + "protected ";
         // must be public or generate public navigation method!
@@ -1373,20 +1372,20 @@ public class GeneratorJava
 
     String generateCoreAssociationEnd(Object ae) {
         StringBuffer sb = new StringBuffer(80);
-        sb.append(generateVisibility(ModelFacade.getVisibility(ae)));
+        sb.append(generateVisibility(Model.getFacade().getVisibility(ae)));
 
         if (Model.getScopeKind().getClassifier().equals(
-                ModelFacade.getTargetScope(ae)))
+                Model.getFacade().getTargetScope(ae)))
             sb.append("static ");
         //     String n = ae.getName();
         //     if (n != null && !String.UNSPEC.equals(n))
 	//         s += generateName(n) + " ";
         //     if (ae.isNavigable()) s += "navigable ";
         //     if (ae.getIsOrdered()) s += "ordered ";
-        Object/*MMultiplicity*/ m = ModelFacade.getMultiplicity(ae);
+        Object/*MMultiplicity*/ m = Model.getFacade().getMultiplicity(ae);
         if (Model.getMultiplicities().get11().equals(m)
                 || Model.getMultiplicities().get01().equals(m)) {
-            sb.append(generateClassifierRef(ModelFacade.getType(ae)));
+            sb.append(generateClassifierRef(Model.getFacade().getType(ae)));
         } else {
             sb.append("Vector "); //generateMultiplicity(m) + " ";
         }
@@ -1406,7 +1405,7 @@ public class GeneratorJava
         Iterator it = generalizations.iterator();
         while (it.hasNext()) {
             Object generalization = /*(MGeneralization)*/ it.next();
-            Object generalizableElement = ModelFacade.getParent(generalization);
+            Object generalizableElement = Model.getFacade().getParent(generalization);
             // assert ge != null
             if (generalizableElement != null)
                 classes.add(generalizableElement);
@@ -1417,7 +1416,7 @@ public class GeneratorJava
     //  public String generateSpecification(Collection realizations) {
     private String generateSpecification(Object cls) {
         Collection realizations =
-            ModelFacade.getSpecifications(cls);
+            Model.getFacade().getSpecifications(cls);
         if (realizations == null)
             return "";
 	LOG.debug("realizations: " + realizations.size());
@@ -1453,10 +1452,10 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object o) {
-	if (ModelFacade.isAFeature(o)) {
-	    Object tv = ModelFacade.getTaggedValue(o, "src_visibility");
+	if (Model.getFacade().isAFeature(o)) {
+	    Object tv = Model.getFacade().getTaggedValue(o, "src_visibility");
 	    if (tv != null) {
-		String tagged = (String) ModelFacade.getValue(tv);
+		String tagged = (String) Model.getFacade().getValue(tv);
 		if (tagged != null) {
 		    if (tagged.trim().equals("")
 			|| tagged.trim().toLowerCase().equals("package")
@@ -1468,15 +1467,15 @@ public class GeneratorJava
 		}
             }
         }
-        if (ModelFacade.isAModelElement(o)) {
-            if (ModelFacade.isPublic(o))
+        if (Model.getFacade().isAModelElement(o)) {
+            if (Model.getFacade().isPublic(o))
                 return "public ";
-            if (ModelFacade.isPrivate(o))
+            if (Model.getFacade().isPrivate(o))
                 return "private ";
-            if (ModelFacade.isProtected(o))
+            if (Model.getFacade().isProtected(o))
                 return "protected ";
         }
-        if (ModelFacade.isAVisibilityKind(o)) {
+        if (Model.getFacade().isAVisibilityKind(o)) {
             if (Model.getVisibilityKind().getPublic().equals(o))
                 return "public ";
             if (Model.getVisibilityKind().getPrivate().equals(o))
@@ -1488,7 +1487,7 @@ public class GeneratorJava
     }
 
     private String generateScope(Object f) {
-        if (ModelFacade.isClassifierScope(f))
+        if (Model.getFacade().isClassifierScope(f))
             return "static ";
         return "";
     }
@@ -1497,7 +1496,7 @@ public class GeneratorJava
      * Generate "abstract" keyword for an abstract operation.
      */
     private String generateAbstractness(Object op) {
-        if (ModelFacade.isAbstract(op)) {
+        if (Model.getFacade().isAbstract(op)) {
             return "abstract ";
         } else {
             return "";
@@ -1508,7 +1507,7 @@ public class GeneratorJava
      * Generate "final" keyword for final operations.
      */
     private String generateChangeability(Object op) {
-        if (ModelFacade.isLeaf(op)) {
+        if (Model.getFacade().isLeaf(op)) {
             return "final ";
         } else {
             return "";
@@ -1516,7 +1515,7 @@ public class GeneratorJava
     }
 
     private String generateChangability(Object sf) {
-        if (!ModelFacade.isChangeable(sf))
+        if (!Model.getFacade().isChangeable(sf))
             return "final ";
         return "";
     }
@@ -1528,9 +1527,9 @@ public class GeneratorJava
      *                else "".
      */
     private String generateConcurrency(Object op) {
-        if (ModelFacade.getConcurrency(op) != null
+        if (Model.getFacade().getConcurrency(op) != null
             && Model.getConcurrencyKind().getGuarded().equals(
-                    ModelFacade.getConcurrency(op))) {
+                    Model.getFacade().getConcurrency(op))) {
             return "synchronized ";
         }
         return "";
@@ -1551,7 +1550,7 @@ public class GeneratorJava
         if (Model.getMultiplicities().get0N().equals(m)) {
             return ANY_RANGE;
 	}
-        Iterator rangeEnum = ModelFacade.getRanges(m);
+        Iterator rangeEnum = Model.getFacade().getRanges(m);
         if (rangeEnum == null)
             return "";
         StringBuffer sb = new StringBuffer(20);
@@ -1565,8 +1564,8 @@ public class GeneratorJava
     }
 
     private String generateMultiplicityRange(Object mr) {
-        Integer lower = new Integer(ModelFacade.getLower(mr));
-        Integer upper = new Integer(ModelFacade.getUpper(mr));
+        Integer lower = new Integer(Model.getFacade().getLower(mr));
+        Integer upper = new Integer(Model.getFacade().getUpper(mr));
         if (lower.intValue() == -1 && upper.intValue() == -1)
             return ANY_RANGE;
         if (lower.intValue() == -1) {
@@ -1586,18 +1585,18 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object m) {
-        return ModelFacade.getName(m);
+        return Model.getFacade().getName(m);
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
-        Object c = ModelFacade.getType(m);
+        Object c = Model.getFacade().getType(m);
         if (c == null) {
             return "";
         }
-        return ModelFacade.getName(c);
+        return Model.getFacade().getName(c);
     }
 
     /**
@@ -1606,9 +1605,9 @@ public class GeneratorJava
     public String generateStateBody(Object m) {
         LOG.info("GeneratorJava: generating state body");
         StringBuffer sb = new StringBuffer(80);
-        Object entryAction = ModelFacade.getEntry(m);
-        Object exitAction = ModelFacade.getExit(m);
-        Object doAction = ModelFacade.getDoActivity(m);
+        Object entryAction = Model.getFacade().getEntry(m);
+        Object exitAction = Model.getFacade().getExit(m);
+        Object doAction = Model.getFacade().getDoActivity(m);
 
         if (entryAction != null) {
             String entryStr = generate(entryAction);
@@ -1634,7 +1633,7 @@ public class GeneratorJava
                 sb.append("exit / ").append(exitStr);
             }
         }
-        Collection trans = ModelFacade.getInternalTransitions(m);
+        Collection trans = Model.getFacade().getInternalTransitions(m);
         if (trans != null) {
             Iterator iter = trans.iterator();
             while (iter.hasNext()) {
@@ -1660,10 +1659,10 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object m) {
-        StringBuffer sb = new StringBuffer(generate(ModelFacade.getName(m)));
-        String t = generate(ModelFacade.getTrigger(m));
-        String g = generate(ModelFacade.getGuard(m));
-        String e = generate(ModelFacade.getEffect(m));
+        StringBuffer sb = new StringBuffer(generate(Model.getFacade().getName(m)));
+        String t = generate(Model.getFacade().getTrigger(m));
+        String g = generate(Model.getFacade().getGuard(m));
+        String e = generate(Model.getFacade().getEffect(m));
         if (sb.length() > 0) {
             sb.append(": ");
         }
@@ -1677,9 +1676,9 @@ public class GeneratorJava
         return sb.toString();
 
         /*  String s = m.getName();
-	    String t = generate(ModelFacade.getTrigger(m));
-	    String g = generate(ModelFacade.getGuard(m));
-	    String e = generate(ModelFacade.getEffect(m));
+	    String t = generate(Model.getFacade().getTrigger(m));
+	    String g = generate(Model.getFacade().getGuard(m));
+	    String e = generate(Model.getFacade().getEffect(m));
 	    if(s == null) s = "";
 	    if(t == null) t = "";
 	    if (s.length() > 0 &&
@@ -1700,10 +1699,10 @@ public class GeneratorJava
         // return m.getName();
 
         if (m != null) {
-            Object script = ModelFacade.getScript(m);
+            Object script = Model.getFacade().getScript(m);
             if ((script != null)
-		    && (ModelFacade.getBody(script) != null)) {
-                return ModelFacade.getBody(script).toString();
+		    && (Model.getFacade().getBody(script) != null)) {
+                return Model.getFacade().getBody(script).toString();
 	    }
         }
         return "";
@@ -1713,9 +1712,9 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object m) {
-        //return generateExpression(ModelFacade.getExpression(m));
-        if (m != null && ModelFacade.getExpression(m) != null) {
-            return generateExpression(ModelFacade.getExpression(m));
+        //return generateExpression(Model.getFacade().getExpression(m));
+        if (m != null && Model.getFacade().getExpression(m) != null) {
+            return generateExpression(Model.getFacade().getExpression(m));
         }
         return "";
     }
@@ -1727,8 +1726,8 @@ public class GeneratorJava
         if (m == null) {
             return "";
         }
-        return generateName(ModelFacade.getName(m)) + "::"
-	    + generateAction(ModelFacade.getAction(m));
+        return generateName(Model.getFacade().getName(m)) + "::"
+	    + generateAction(Model.getFacade().getAction(m));
     }
 
     /**
@@ -1739,36 +1738,36 @@ public class GeneratorJava
      * @return The generated event (as a String).
      */
     public String generateEvent(Object m) {
-        if (ModelFacade.isAChangeEvent(m)) {
+        if (Model.getFacade().isAChangeEvent(m)) {
             return "when("
-                + generateExpression(ModelFacade.getExpression(m))
+                + generateExpression(Model.getFacade().getExpression(m))
                 + ")";
         }
-        if (ModelFacade.isATimeEvent(m)) {
+        if (Model.getFacade().isATimeEvent(m)) {
             return "after("
-                + generateExpression(ModelFacade.getExpression(m))
+                + generateExpression(Model.getFacade().getExpression(m))
                 + ")";
         }
-        if (ModelFacade.isASignalEvent(m)) {
-            return generateName(ModelFacade.getName(m));
+        if (Model.getFacade().isASignalEvent(m)) {
+            return generateName(Model.getFacade().getName(m));
         }
-        if (ModelFacade.isACallEvent(m)) {
-            return generateName(ModelFacade.getName(m));
+        if (Model.getFacade().isACallEvent(m)) {
+            return generateName(Model.getFacade().getName(m));
         }
         return "";
     }
 
     String generateAscEndName(Object ae) {
-        String n = ModelFacade.getName(ae);
-        Object/*MAssociation*/ asc = ModelFacade.getAssociation(ae);
-        String ascName = ModelFacade.getName(asc);
+        String n = Model.getFacade().getName(ae);
+        Object/*MAssociation*/ asc = Model.getFacade().getAssociation(ae);
+        String ascName = Model.getFacade().getName(asc);
         if (n != null && n != null && n.length() > 0) {
             n = generateName(n);
         } else if (
 		   ascName != null && ascName != null && ascName.length() > 0) {
             n = generateName(ascName);
         } else {
-            n = "my" + generateClassifierRef(ModelFacade.getType(ae));
+            n = "my" + generateClassifierRef(Model.getFacade().getType(ae));
         }
         return n;
     }
@@ -1782,16 +1781,16 @@ public class GeneratorJava
     */
     public String getPackageName(Object namespace) {
         if (namespace == null
-	    || !ModelFacade.isANamespace(namespace)
-	    || ModelFacade.getNamespace(namespace) == null) {
+	    || !Model.getFacade().isANamespace(namespace)
+	    || Model.getFacade().getNamespace(namespace) == null) {
             return "";
         }
-        String packagePath = ModelFacade.getName(namespace);
-        while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
+        String packagePath = Model.getFacade().getName(namespace);
+        while ((namespace = Model.getFacade().getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
-            if (ModelFacade.getNamespace(namespace) != null) {
+            if (Model.getFacade().getNamespace(namespace) != null) {
                 packagePath =
-		    ModelFacade.getName(namespace) + '.' + packagePath;
+		    Model.getFacade().getName(namespace) + '.' + packagePath;
             }
         }
         return packagePath;
@@ -1832,7 +1831,7 @@ public class GeneratorJava
         }
         //cat.info("Generating " + newFile.getPath());
         isInUpdateMode = true;
-        cpc.filter(file, newFile, ModelFacade.getNamespace(mClassifier));
+        cpc.filter(file, newFile, Model.getFacade().getNamespace(mClassifier));
         isInUpdateMode = false;
         //cat.info("Backing up " + file.getPath());
         file.renameTo(backupFile);

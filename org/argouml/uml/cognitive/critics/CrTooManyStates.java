@@ -25,8 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /** A critic to detect when a composite state has too
  * many subvertices.
@@ -49,11 +50,11 @@ public class CrTooManyStates extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isACompositeState(dm))) return NO_PROBLEM;
 	Object cs = /*(MCompositeState)*/ dm;
 
 	int threshold = getThreshold();
-	Collection subs = ModelFacade.getSubvertices(cs);
+	Collection subs = Model.getFacade().getSubvertices(cs);
 	if (subs.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }

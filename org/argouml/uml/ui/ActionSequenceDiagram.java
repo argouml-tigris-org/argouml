@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -69,10 +68,10 @@ public class ActionSequenceDiagram extends UMLAction {
         super.actionPerformed(e);
         Object target = TargetManager.getInstance().getModelTarget();
         Object owner = null;
-        if (ModelFacade.isAClassifier(target)) {
-            owner = ModelFacade.getNamespace(target);
-        } else if (ModelFacade.isAOperation(target)) {
-            owner = ModelFacade.getNamespace(target);
+        if (Model.getFacade().isAClassifier(target)) {
+            owner = Model.getFacade().getNamespace(target);
+        } else if (Model.getFacade().isAOperation(target)) {
+            owner = Model.getFacade().getNamespace(target);
         }
         Object collaboration =
             Model.getCollaborationsFactory().buildCollaboration(
@@ -91,8 +90,8 @@ public class ActionSequenceDiagram extends UMLAction {
         // TODO: Once the sequence diagrams are working again, they should
         //       be re-enabled.
 //	        Object target = TargetManager.getInstance().getModelTarget();
-//	        if (ModelFacade.isAClassifier(target)
-//	            || ModelFacade.isAOperation(target)) {
+//	        if (Model.getFacade().isAClassifier(target)
+//	            || Model.getFacade().isAOperation(target)) {
 //	            return true;
 //	        }
 

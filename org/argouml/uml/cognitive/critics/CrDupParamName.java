@@ -26,9 +26,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
@@ -54,20 +55,20 @@ public class CrDupParamName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isABehavioralFeature(dm)) {
+	if (!Model.getFacade().isABehavioralFeature(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	Object bf = /*(MBehavioralFeature)*/ dm;
 	Vector namesSeen = new Vector();
-	Iterator params = ModelFacade.getParameters(bf).iterator();
+	Iterator params = Model.getFacade().getParameters(bf).iterator();
 	while (params.hasNext()) {
 	    Object p = /*(MParameter)*/ params.next();
-	    if (ModelFacade.isReturn(p)) {
+	    if (Model.getFacade().isReturn(p)) {
 		continue;
 	    }
 
-	    String pName = ModelFacade.getName(p);
+	    String pName = Model.getFacade().getName(p);
 	    if (pName == null || "".equals(pName)) {
 		continue;
 	    }

@@ -29,7 +29,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
 import org.argouml.uml.diagram.state.ui.FigConcurrentRegion;
@@ -100,7 +99,7 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
             Rectangle encBound;
             Project p = ProjectManager.getManager().getCurrentProject();
 
-            if (ModelFacade.isAConcurrentRegion(f.getOwner()))
+            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
                 encloser = f.getEnclosingFig();
 
             Vector nodesInside;
@@ -108,7 +107,7 @@ public class ActionDeleteConcurrentRegion extends UMLAction {
             int index = nodesInside.indexOf(f);
             Rectangle r = f.getBounds();
             encBound = encloser.getBounds();
-            if (ModelFacade.isAConcurrentRegion(f.getOwner()))
+            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
                 p.moveToTrash(f.getOwner());
             //It wasnt the last region
             if (index < nodesInside.size() - 1) {

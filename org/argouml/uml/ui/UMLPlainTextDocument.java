@@ -34,7 +34,6 @@ import javax.swing.text.PlainDocument;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.tigris.gef.presentation.Fig;
@@ -108,7 +107,7 @@ public abstract class UMLPlainTextDocument
      */
     public final void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target)) {
+        if (Model.getFacade().isABase(target)) {
             ModelEventPump eventPump = Model.getPump();
             if (panelTarget != null) {
                 eventPump.removeModelEventListener(this, panelTarget,

@@ -27,9 +27,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 /** A critic to detect when a class can never have instances (of
  *  itself of any subclasses).
  *
@@ -53,14 +54,14 @@ public class CrUnnavigableAssoc extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAAssociation(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAAssociation(dm))) return NO_PROBLEM;
 	Object asc = /*(MAssociation)*/ dm;
-	Collection conn = ModelFacade.getConnections(asc);
-	if (ModelFacade.isAAssociationRole(asc))
-	    conn = ModelFacade.getConnections(asc);
+	Collection conn = Model.getFacade().getConnections(asc);
+	if (Model.getFacade().isAAssociationRole(asc))
+	    conn = Model.getFacade().getConnections(asc);
 	for (Iterator iter = conn.iterator(); iter.hasNext();) {
 	    Object ae = /*(MAssociationEnd)*/ iter.next();
-	    if (ModelFacade.isNavigable(ae)) return NO_PROBLEM;
+	    if (Model.getFacade().isNavigable(ae)) return NO_PROBLEM;
 	}
 	return PROBLEM_FOUND;
     }

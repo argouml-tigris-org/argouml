@@ -27,7 +27,6 @@ package org.argouml.uml.cognitive.critics;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 
 /**
@@ -54,25 +53,27 @@ public class CrNoGuard extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isATransition(dm))) {
+	if (!(Model.getFacade().isATransition(dm))) {
 	    return NO_PROBLEM;
 	}
-	Object sv = ModelFacade.getSource(dm);
-	if (!(ModelFacade.isAPseudostate(sv))) {
+	Object sv = Model.getFacade().getSource(dm);
+	if (!(Model.getFacade().isAPseudostate(sv))) {
 	    return NO_PROBLEM;
 	}
-	if (!ModelFacade.equalsPseudostateKind(
-	        ModelFacade.getPseudostateKind(sv),
+	if (!Model.getFacade().equalsPseudostateKind(
+	        Model.getFacade().getPseudostateKind(sv),
 	        Model.getPseudostateKind().getBranch())) {
 	    return NO_PROBLEM;
 	}
-	Object g = /*(MGuard)*/ ModelFacade.getGuard(dm);
+	Object g = /*(MGuard)*/ Model.getFacade().getGuard(dm);
 	boolean noGuard =
 	    (g == null
-            || ModelFacade.getExpression(g) == null
-            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
-            || ((String) ModelFacade.getBody(ModelFacade.getExpression(g)))
-                                                    .length() == 0);
+            || Model.getFacade().getExpression(g) == null
+            || Model.getFacade().getBody(
+                    Model.getFacade().getExpression(g)) == null
+            || ((String) Model.getFacade().getBody(
+                    Model.getFacade().getExpression(g)))
+                    	.length() == 0);
 	if (noGuard) {
 	    return PROBLEM_FOUND;
 	}

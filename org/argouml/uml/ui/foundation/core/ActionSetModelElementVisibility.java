@@ -30,7 +30,6 @@ import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -76,7 +75,7 @@ public class ActionSetModelElementVisibility extends UMLAction {
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel)
                     source.getParent()).getTarget();
-            if (ModelFacade.isAModelElement(target)) {
+            if (Model.getFacade().isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
                 Object kind = null;
                 if (actionCommand.equals(PUBLIC_COMMAND)) {

@@ -32,7 +32,6 @@ import java.util.Set;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -57,7 +56,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getPowertype(getTarget());
+            return Model.getFacade().getPowertype(getTarget());
         }
         return null;
     }
@@ -85,7 +84,7 @@ public class UMLGeneralizationPowertypeComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return org.argouml.model.ModelFacade.isAClassifier(element);
+        return Model.getFacade().isAClassifier(element);
     }
 
 }

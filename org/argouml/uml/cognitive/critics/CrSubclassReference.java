@@ -29,13 +29,13 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.List;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.GenDescendantClasses;
-
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -64,7 +64,7 @@ public class CrSubclassReference extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClass(dm))) return NO_PROBLEM;
 	Object cls = /*(MClass)*/ dm;
 	VectorSet offs = computeOffenders(cls);
 	if (offs != null) return PROBLEM_FOUND;
@@ -100,7 +100,7 @@ public class CrSubclassReference extends CrUML {
      * @return the list of offenders
      */
     public VectorSet computeOffenders(Object/*MClassifier*/ cls) {
-	Collection asc = ModelFacade.getAssociationEnds(cls);
+	Collection asc = Model.getFacade().getAssociationEnds(cls);
 	if (asc == null || asc.size() == 0) return null;
 
 	Enumeration descendEnum =
@@ -115,14 +115,14 @@ public class CrSubclassReference extends CrUML {
 	VectorSet offs = null;
 	for (Iterator iter = asc.iterator(); iter.hasNext();) {
 	    Object ae = /*(MAssociationEnd)*/ iter.next();
-	    Object a = ModelFacade.getAssociation(ae);
-	    List conn = new ArrayList(ModelFacade.getConnections(a));
+	    Object a = Model.getFacade().getAssociation(ae);
+	    List conn = new ArrayList(Model.getFacade().getConnections(a));
 	    if (conn.size() != 2) continue;
 	    Object otherEnd = /*(MAssociationEnd)*/ conn.get(0);
 	    if (ae == conn.get(0))
 		otherEnd = /*(MAssociationEnd)*/ conn.get(1);
-	    if (!ModelFacade.isNavigable(otherEnd)) continue;
-	    Object otherCls = ModelFacade.getType(otherEnd);
+	    if (!Model.getFacade().isNavigable(otherEnd)) continue;
+	    Object otherCls = Model.getFacade().getType(otherEnd);
 	    if (descendants.contains(otherCls)) {
 		if (offs == null) {
 		    offs = new VectorSet();

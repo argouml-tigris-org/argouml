@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
@@ -75,39 +74,39 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
             ((target instanceof Fig)
                     ? ((Fig) target).getOwner()
                     : target);
-        if (ModelFacade.isAPseudostate(o)) {
-            Object kind = ModelFacade.getPseudostateKind(o);
-            if (ModelFacade.equalsPseudostateKind(kind,
+        if (Model.getFacade().isAPseudostate(o)) {
+            Object kind = Model.getFacade().getPseudostateKind(o);
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getFork())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.fork"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJoin())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.join"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getBranch())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.choice"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getDeepHistory())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.deephistory"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getShallowHistory())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.shallowhistory"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getInitial())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.initial"));
             }
-            if (ModelFacade.equalsPseudostateKind(kind,
+            if (Model.getFacade().equalsPseudostateKind(kind,
                 Model.getPseudostateKind().getJunction())) {
                 getTitleLabel().setText(
                     Translator.localize("label.pseudostate.junction"));

@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -47,7 +46,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        Object scope = ModelFacade.getOwnerScope(getTarget());
+        Object scope = Model.getFacade().getOwnerScope(getTarget());
         if (scope != null
                 && scope.equals(
                         Model.getScopeKind().getClassifier())) {

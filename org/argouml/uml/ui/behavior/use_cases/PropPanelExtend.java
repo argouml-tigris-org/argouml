@@ -33,7 +33,6 @@ import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
@@ -140,11 +139,11 @@ public class PropPanelExtend extends PropPanelModelElement {
         String condBody = null;
         Object target   = getTarget();
 
-        if (ModelFacade.isAExtend(target)) {
-            Object condition = ModelFacade.getCondition(target);
+        if (Model.getFacade().isAExtend(target)) {
+            Object condition = Model.getFacade().getCondition(target);
 
             if (condition != null) {
-                condBody = (String) ModelFacade.getBody(condition);
+                condBody = (String) Model.getFacade().getBody(condition);
             }
         }
 
@@ -169,7 +168,7 @@ public class PropPanelExtend extends PropPanelModelElement {
 
         Object target = getTarget();
 
-        if (!(ModelFacade.isAExtend(target))) {
+        if (!(Model.getFacade().isAExtend(target))) {
             return;
         }
 
@@ -206,15 +205,17 @@ public class PropPanelExtend extends PropPanelModelElement {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (ModelFacade.isAExtend(target)) {
-                Object ns = ModelFacade.getNamespace(target);
+            if (Model.getFacade().isAExtend(target)) {
+                Object ns = Model.getFacade().getNamespace(target);
                 if (ns != null) {
-                    if (ModelFacade.getBase(target) != null) {
+                    if (Model.getFacade().getBase(target) != null) {
                         Object extensionPoint =
                             Model.getUseCasesFactory()
                             	.buildExtensionPoint(
-                            	        ModelFacade.getBase(target));
-                        Model.getUseCasesHelper().addExtensionPoint(target, extensionPoint);
+                            	        Model.getFacade().getBase(target));
+                        Model.getUseCasesHelper().addExtensionPoint(
+                                target,
+                                extensionPoint);
                         TargetManager.getInstance().setTarget(extensionPoint);
                         super.actionPerformed(e);
                     }

@@ -28,7 +28,6 @@ import javax.swing.JComboBox;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -108,8 +107,8 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Note that because of the NSUML bug, we must use getAddition() rather
         // than getBase() to get the base use case.
 
-        if (ModelFacade.isAInclude(target)) {
-            base = ModelFacade.getAddition(target);
+        if (Model.getFacade().isAInclude(target)) {
+            base = Model.getFacade().getAddition(target);
         }
         return base;
     }
@@ -137,7 +136,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Note that because of the NSUML bug, we must use setAddition() rather
         // than setBase() to set the base use case.
 
-        if (ModelFacade.isAInclude(target)) {
+        if (Model.getFacade().isAInclude(target)) {
             Model.getUseCasesHelper().setAddition(target, base);
         }
     }
@@ -157,8 +156,8 @@ public class PropPanelInclude extends PropPanelModelElement {
         Object addition   = null;
         Object target = getTarget();
 
-        if (ModelFacade.isAInclude(target)) {
-            addition = ModelFacade.getAddition(target);
+        if (Model.getFacade().isAInclude(target)) {
+            addition = Model.getFacade().getAddition(target);
         }
 
         return addition;
@@ -180,7 +179,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Note that because of the NSUML bug, we must use setBase() rather
         // than setAddition() to set the addition use case.
 
-        if (ModelFacade.isAInclude(target)) {
+        if (Model.getFacade().isAInclude(target)) {
             Model.getUseCasesHelper().setAddition(target, addition);
         }
     }
@@ -203,7 +202,7 @@ public class PropPanelInclude extends PropPanelModelElement {
      */
     public boolean isAcceptableUseCase(Object/*MModelElement*/ modElem) {
 
-        return ModelFacade.isAUseCase(modElem);
+        return Model.getFacade().isAUseCase(modElem);
     }
 
 

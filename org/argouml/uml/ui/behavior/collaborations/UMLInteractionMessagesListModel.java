@@ -24,9 +24,9 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
 import java.util.Iterator;
 
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -48,7 +48,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        Iterator it = ModelFacade.getMessages(getTarget()).iterator();
+        Iterator it = Model.getFacade().getMessages(getTarget()).iterator();
         while (it.hasNext()) {
             addElement(it.next());
         }
@@ -58,8 +58,8 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAMessage(elem)
-            && ModelFacade.getInteraction(elem) == getTarget();
+        return Model.getFacade().isAMessage(elem)
+            && Model.getFacade().getInteraction(elem) == getTarget();
     }
 
 }

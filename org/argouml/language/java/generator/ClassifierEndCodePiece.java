@@ -30,7 +30,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 
 /**
  * This code piece represents the end of a class or an interface.
@@ -40,14 +41,16 @@ import org.argouml.model.ModelFacade;
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
 public class ClassifierEndCodePiece extends NamedCodePiece {
-    /** The curly bracket at the end. */
+    /**
+     * The curly bracket at the end.
+     */
     private CodePiece bracket;
 
     /**
-       Constructor.
-
-       @param br The curly bracket at the end.
-    */
+     * Constructor.
+     *
+     * @param br The curly bracket at the end.
+     */
     public ClassifierEndCodePiece(CodePiece br) {
 	bracket = br;
     }
@@ -116,11 +119,10 @@ public class ClassifierEndCodePiece extends NamedCodePiece {
         // Insert new features
         for (Iterator i = newFeatures.iterator(); i.hasNext();) {
             Object mFeature = /*(MFeature)*/ i.next();
-            if (ModelFacade.isAOperation(mFeature)) {
+            if (Model.getFacade().isAOperation(mFeature)) {
                 CodeGenerator.generateOperation(mFeature,
 						mClassifier, reader, writer);
-            }
-            else if (ModelFacade.isAAttribute(mFeature)) {
+            } else if (Model.getFacade().isAAttribute(mFeature)) {
                 CodeGenerator.generateAttribute(mFeature,
 						mClassifier, reader, writer);
             }
@@ -129,9 +131,9 @@ public class ClassifierEndCodePiece extends NamedCodePiece {
         // Insert new inner classes
         for (Iterator i = newInnerClasses.iterator(); i.hasNext();) {
             Object element = /*(MModelElement)*/ i.next();
-            if (ModelFacade.isAClass(element)) {
+            if (Model.getFacade().isAClass(element)) {
                 CodeGenerator.generateClass(element, reader, writer);
-            } else if (ModelFacade.isAInterface(element)) {
+            } else if (Model.getFacade().isAInterface(element)) {
                 CodeGenerator.generateInterface(element, reader, writer);
             }
         }

@@ -27,7 +27,6 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
@@ -111,7 +110,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
 
 	Object         target = TargetManager.getInstance().getModelTarget();
 
-	if (!(ModelFacade.isAUseCase(target))) {
+	if (!(Model.getFacade().isAUseCase(target))) {
             return;
         }
 
@@ -138,7 +137,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
     public boolean shouldBeEnabled() {
 	Object target = TargetManager.getInstance().getModelTarget();
 
-	return super.shouldBeEnabled() && (ModelFacade.isAUseCase(target));
+	return super.shouldBeEnabled() && (Model.getFacade().isAUseCase(target));
     }
 
 } /* end class ActionAddExtensionPoint */

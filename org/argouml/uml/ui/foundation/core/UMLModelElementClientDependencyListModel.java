@@ -24,11 +24,12 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * The listmodel of the client dependencies for some modelelement
+ * The listmodel of the client dependencies for some modelelement.
+ *
  * @since Oct 12, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -46,15 +47,17 @@ public class UMLModelElementClientDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null)
-            setAllElements(ModelFacade.getClientDependencies(getTarget()));
+        if (getTarget() != null) {
+            setAllElements(
+                    Model.getFacade().getClientDependencies(getTarget()));
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isADependency(o)
-            && ModelFacade.getClientDependencies(getTarget()).contains(o);
+        return Model.getFacade().isADependency(o)
+            && Model.getFacade().getClientDependencies(getTarget()).contains(o);
     }
 }

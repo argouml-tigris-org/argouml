@@ -26,8 +26,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 
 // Use Model through Facade
@@ -104,12 +105,12 @@ public class CrDupRoleNames extends CrUML {
 
         // Only work for associations
 
-        if (!(ModelFacade.isAAssociation(dm))) {
+        if (!(Model.getFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
 	// No problem if this is an association role.
-	if (ModelFacade.isAAssociationRole(dm)) {
+	if (Model.getFacade().isAAssociationRole(dm)) {
 	    return NO_PROBLEM;
 	}
 
@@ -120,9 +121,9 @@ public class CrDupRoleNames extends CrUML {
 
         Vector   namesSeen = new Vector();
 
-        Iterator conns = ModelFacade.getConnections(dm).iterator();
+        Iterator conns = Model.getFacade().getConnections(dm).iterator();
         while (conns.hasNext()) {
-            String name = ModelFacade.getName(conns.next());
+            String name = Model.getFacade().getName(conns.next());
 
             // Ignore non-existent and empty names
 

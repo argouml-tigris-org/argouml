@@ -26,9 +26,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * <p> A critic to check that no end of a 3-way (or more) association is an
@@ -111,7 +112,7 @@ public class CrNWayAgg extends CrUML {
 
         // Only work for associatins
 
-        if (!(ModelFacade.isAAssociation(dm))) {
+        if (!(Model.getFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
@@ -120,11 +121,11 @@ public class CrNWayAgg extends CrUML {
 
         Object asc = /*(MAssociation)*/ dm;
 
-        if (ModelFacade.isAAssociationRole(asc)) {
+        if (Model.getFacade().isAAssociationRole(asc)) {
             return NO_PROBLEM;
         }
 
-        Collection conns = ModelFacade.getConnections(asc);
+        Collection conns = Model.getFacade().getConnections(asc);
 
         if ((conns == null) || (conns.size() <= 2)) {
             return NO_PROBLEM;
@@ -135,7 +136,7 @@ public class CrNWayAgg extends CrUML {
         Iterator assocEnds = conns.iterator();
         while (assocEnds.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-            if (ModelFacade.isAggregate(ae) || ModelFacade.isComposite(ae)) {
+            if (Model.getFacade().isAggregate(ae) || Model.getFacade().isComposite(ae)) {
                 return PROBLEM_FOUND;
             }
         }

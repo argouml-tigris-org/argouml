@@ -35,7 +35,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -91,9 +91,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
     public FigMNodeInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (ModelFacade.isAClassifier(node)
-	        && (ModelFacade.getName(node) != null)) {
-            getNameFig().setText(ModelFacade.getName(node));
+        if (Model.getFacade().isAClassifier(node)
+	        && (Model.getFacade().getName(node) != null)) {
+            getNameFig().setText(Model.getFacade().getName(node));
 	}
     }
 
@@ -185,12 +185,12 @@ public class FigMNodeInstance extends FigNodeModelElement {
         if (me == null)
             return;
 	Object stereo = null;
-	if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+	if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
         if (stereo == null
-                || ModelFacade.getName(stereo) == null
-                || ModelFacade.getName(stereo).length() == 0) {
+                || Model.getFacade().getName(stereo) == null
+                || Model.getFacade().getName(stereo).length() == 0) {
             setStereotype("");
 	} else {
             setStereotype(Notation.generateStereotype(this, stereo));
@@ -269,17 +269,17 @@ public class FigMNodeInstance extends FigNodeModelElement {
         if (noi == null)
             return;
         String nameStr = "";
-        if (ModelFacade.getName(noi) != null) {
-            nameStr = ModelFacade.getName(noi).trim();
+        if (Model.getFacade().getName(noi) != null) {
+            nameStr = Model.getFacade().getName(noi).trim();
         }
         // construct bases string (comma separated)
         String baseStr = "";
-        Collection col = ModelFacade.getClassifiers(noi);
+        Collection col = Model.getFacade().getClassifiers(noi);
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
-            baseStr = ModelFacade.getName(it.next());
+            baseStr = Model.getFacade().getName(it.next());
             while (it.hasNext()) {
-                baseStr += ", " + ModelFacade.getName(it.next());
+                baseStr += ", " + Model.getFacade().getName(it.next());
             }
         }
 

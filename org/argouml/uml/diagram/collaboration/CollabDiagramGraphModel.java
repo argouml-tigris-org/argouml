@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -63,7 +62,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     /**
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
-    public Object getNamespace() { return ModelFacade.getNamespace(collab); }
+    public Object getNamespace() { return Model.getFacade().getNamespace(collab); }
 
     /**
      * @param collaboration the collaboration to be set for this diagram
@@ -74,7 +73,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
                 throw new IllegalArgumentException(
                     "A null collaboration was supplied");
             }
-            if (!(ModelFacade.isACollaboration(collaboration))) {
+            if (!(Model.getFacade().isACollaboration(collaboration))) {
                 throw new IllegalArgumentException(
                     "Expected a collaboration. The type received was "
                     + collaboration.getClass().getName());
@@ -98,7 +97,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  //wasteful!
-	if (ModelFacade.isAClassifierRole(nodeOrEdge)) {
+	if (Model.getFacade().isAClassifierRole(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
 	return res;
@@ -118,14 +117,14 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
-	if (ModelFacade.isAClassifierRole(port)) {
+	if (Model.getFacade().isAClassifierRole(port)) {
 	    Object cr = /*(MClassifierRole)*/ port;
-	    Collection ends = ModelFacade.getAssociationEnds(cr);
+	    Collection ends = Model.getFacade().getAssociationEnds(cr);
 	    if (ends == null) return res; // empty Vector
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object aer = /*(MAssociationEndRole)*/ iter.next();
-		res.addElement(ModelFacade.getAssociation(aer));
+		res.addElement(Model.getFacade().getAssociation(aer));
 	    }
 	}
 	return res;
@@ -148,7 +147,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public Object getSourcePort(Object edge) {
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getSource();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
 	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 	LOG.debug("TODO: getSourcePort");
@@ -163,7 +162,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public Object getDestPort(Object edge) {
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getDestination();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
 	    return Model.getCoreHelper().getDestination(edge);
 	}
 	LOG.debug("TODO: getDestPort");
@@ -182,8 +181,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (containsNode(node)) return false;
-	return (ModelFacade.isAClassifierRole(node)
-            || ModelFacade.isAMessage(node));
+	return (Model.getFacade().isAClassifierRole(node)
+            || Model.getFacade().isAMessage(node));
     }
 
     /**
@@ -196,8 +195,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (containsEdge(edge)) return false;
 	Object end0 = null;
         Object end1 = null;
-	if (ModelFacade.isAAssociationRole(edge)) {
-	    Collection conns = ModelFacade.getConnections(edge);
+	if (Model.getFacade().isAAssociationRole(edge)) {
+	    Collection conns = Model.getFacade().getConnections(edge);
             Iterator iter = conns.iterator();
 	    if (conns.size() < 2) return false;
 	    Object associationEndRole0 = iter.next();
@@ -205,17 +204,17 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	    if (associationEndRole0 == null || associationEndRole1 == null) {
 	        return false;
 	    }
-	    end0 = ModelFacade.getType(associationEndRole0);
-	    end1 = ModelFacade.getType(associationEndRole1);
+	    end0 = Model.getFacade().getType(associationEndRole0);
+	    end1 = Model.getFacade().getType(associationEndRole1);
 	}
-	if (ModelFacade.isAGeneralization(edge)) {
+	if (Model.getFacade().isAGeneralization(edge)) {
 	    Object gen = /*(MGeneralization)*/ edge;
-	    end0 = ModelFacade.getParent(gen);
-	    end1 = ModelFacade.getChild(gen);
+	    end0 = Model.getFacade().getParent(gen);
+	    end1 = Model.getFacade().getChild(gen);
 	}
-	if (ModelFacade.isADependency(edge)) {
-	    Collection clients = ModelFacade.getClients(edge);
-	    Collection suppliers = ModelFacade.getSuppliers(edge);
+	if (Model.getFacade().isADependency(edge)) {
+	    Collection clients = Model.getFacade().getClients(edge);
+	    Collection suppliers = Model.getFacade().getSuppliers(edge);
 	    if (clients == null || suppliers == null) return false;
 	    end0 = (clients.toArray())[0];
 	    end1 = (suppliers.toArray())[0];
@@ -241,7 +240,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddNode(node)) return;
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
-	if (ModelFacade.isAClassifier(node)) {
+	if (Model.getFacade().isAClassifier(node)) {
 	    Model.getCoreHelper().addOwnedElement(collab, node);
 	    // ((MClassifier)node).setNamespace(_collab.getNamespace());
 	}
@@ -259,8 +258,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
         if (!canAddEdge(edge)) return;
         getEdges().add(edge);
         // TODO: assumes public
-        if (ModelFacade.isAModelElement(edge)
-	    && ModelFacade.getNamespace(edge) == null) {
+        if (Model.getFacade().isAModelElement(edge)
+	    && Model.getFacade().getNamespace(edge) == null) {
             Model.getCoreHelper().addOwnedElement(collab, edge);
         }
         fireEdgeAdded(edge);
@@ -272,17 +271,17 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
         
-	if (ModelFacade.isAClassifier(node)) {
-	    Collection ends = ModelFacade.getAssociationEnds(node);
+	if (Model.getFacade().isAClassifier(node)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object ae = /*(MAssociationEndRole)*/ iter.next();
-		if (canAddEdge(ModelFacade.getAssociation(ae)))
-		    addEdge(ModelFacade.getAssociation(ae));
+		if (canAddEdge(Model.getFacade().getAssociation(ae)))
+		    addEdge(Model.getFacade().getAssociation(ae));
 	    }
 	}
-	if (ModelFacade.isAGeneralizableElement(node)) {
-	    Collection gn = ModelFacade.getGeneralizations(node);
+	if (Model.getFacade().isAGeneralizableElement(node)) {
+	    Collection gn = Model.getFacade().getGeneralizations(node);
 	    Iterator iter = gn.iterator();
 	    while (iter.hasNext()) {
 		Object g = /*(MGeneralization)*/ iter.next();
@@ -291,7 +290,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 		    return;
 		}
 	    }
-	    Collection sp = ModelFacade.getSpecializations(node);
+	    Collection sp = Model.getFacade().getSpecializations(node);
 	    iter = sp.iterator();
 	    while (iter.hasNext()) {
 		Object s = /*(MGeneralization)*/ iter.next();
@@ -301,10 +300,10 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 		}
 	    }
 	}
-	if (ModelFacade.isAModelElement(node)) {
+	if (Model.getFacade().isAModelElement(node)) {
 	    Vector specs =
-		new Vector(ModelFacade.getClientDependencies(node));
-	    specs.addAll(ModelFacade.getSupplierDependencies(node));
+		new Vector(Model.getFacade().getClientDependencies(node));
+	    specs.addAll(Model.getFacade().getSupplierDependencies(node));
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
 		Object dep = /*(MDependency)*/ iter.next();
@@ -324,8 +323,8 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      * java.lang.Object)
      */
     public boolean canConnect(Object fromP, Object toP) {
-	if ((ModelFacade.isAClassifierRole(fromP))
-	    && (ModelFacade.isAClassifierRole(toP)))
+	if ((Model.getFacade().isAClassifierRole(fromP))
+	    && (Model.getFacade().isAClassifierRole(toP)))
 	    return true;
 	return false;
     }
@@ -342,12 +341,12 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
 	    Object eo = /*(MElementImport)*/ pce.getNewValue();
-	    Object me = ModelFacade.getModelElement(eo);
+	    Object me = Model.getFacade().getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		LOG.debug("model removed " + me);
-		if (ModelFacade.isAClassifier(me)) removeNode(me);
-		if (ModelFacade.isAMessage(me)) removeNode(me);
-		if (ModelFacade.isAAssociation(me)) removeEdge(me);
+		if (Model.getFacade().isAClassifier(me)) removeNode(me);
+		if (Model.getFacade().isAMessage(me)) removeNode(me);
+		if (Model.getFacade().isAAssociation(me)) removeEdge(me);
 	    }
 	    else {
 		LOG.debug("model added " + me);

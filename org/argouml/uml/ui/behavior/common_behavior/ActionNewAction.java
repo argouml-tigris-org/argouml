@@ -22,13 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -52,28 +50,30 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
      *
      */
     public static interface Roles {
+        /**
+         * The entry activity for some state.
+         */
+        String ENTRY = "entry";
 
         /**
-         * The entry activity for some state
+         * The exit activity for some state.
          */
-        public static final String ENTRY = "entry";
-        /**
-         * The exit activity for some state
-         */
-        public static final String EXIT = "exit";
-        /**
-         * The doactivity with some state
-         */
-        public static final String DO = "do";
-        /**
-         * The action with some message
-         */
-        public static final String ACTION = "action";
+        String EXIT = "exit";
 
         /**
-         * The effect of some transition
+         * The doactivity with some state.
          */
-        public static final String EFFECT = "effect";
+        String DO = "do";
+
+        /**
+         * The action with some message.
+         */
+        String ACTION = "action";
+
+        /**
+         * The effect of some transition.
+         */
+        String EFFECT = "effect";
     }
 
     /**
@@ -103,13 +103,19 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
 		Model.getStateMachinesHelper().setEntry(getTarget(), action);
 	    } else
 		if (getValue(ROLE).equals(Roles.DO)) {
-		    Model.getStateMachinesHelper().setDoActivity(getTarget(), action);
+		    Model.getStateMachinesHelper().setDoActivity(
+		            getTarget(),
+		            action);
 		} else
 		    if (getValue(ROLE).equals(Roles.ACTION)) {
-			Model.getCollaborationsHelper().setAction(getTarget(), action);
+			Model.getCollaborationsHelper().setAction(
+			        getTarget(),
+			        action);
 		    } else
 			if (getValue(ROLE).equals(Roles.EFFECT)) {
-			    Model.getStateMachinesHelper().setEffect(getTarget(), action);
+			    Model.getStateMachinesHelper().setEffect(
+			            getTarget(),
+			            action);
 			}
 
     }
@@ -121,19 +127,19 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
      */
     public static Object getAction(String role, Object t) {
         if (role.equals(Roles.EXIT)) {
-            return ModelFacade.getExit(t);
+            return Model.getFacade().getExit(t);
         } else
             if (role.equals(Roles.ENTRY)) {
-                return ModelFacade.getEntry(t);
+                return Model.getFacade().getEntry(t);
             } else
                 if (role.equals(Roles.DO)) {
-                    return ModelFacade.getDoActivity(t);
+                    return Model.getFacade().getDoActivity(t);
                 } else
                     if (role.equals(Roles.ACTION)) {
-                        return ModelFacade.getAction(t);
+                        return Model.getFacade().getAction(t);
                     } else
                         if (role.equals(Roles.EFFECT)) {
-                            return ModelFacade.getEffect(t);
+                            return Model.getFacade().getEffect(t);
                         }
         return null;
     }

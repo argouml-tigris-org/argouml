@@ -30,12 +30,10 @@ package org.argouml.uml.diagram.sequence.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -57,7 +55,7 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-        if (ModelFacade.isAObject(node)) {
+        if (Model.getFacade().isAObject(node)) {
             return new FigObject(node);
         }
         // if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
@@ -74,16 +72,16 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      * java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
-        if (ModelFacade.isALink(edge)) {
-            Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
-            Object action = ModelFacade.getDispatchAction(stimulus);
-            if (ModelFacade.isACallAction(action)) {
+        if (Model.getFacade().isALink(edge)) {
+            Object stimulus = Model.getFacade().getStimuli(edge).iterator().next();
+            Object action = Model.getFacade().getDispatchAction(stimulus);
+            if (Model.getFacade().isACallAction(action)) {
                 return new FigCallActionLink(edge);
-            } else if (ModelFacade.isAReturnAction(action)) {
+            } else if (Model.getFacade().isAReturnAction(action)) {
         	    return new FigReturnActionLink(edge);
-        	} else if (ModelFacade.isADestroyAction(edge)) {
+        	} else if (Model.getFacade().isADestroyAction(edge)) {
         		return new FigDestroyActionLink(edge);
-            } else if (ModelFacade.isACreateAction(edge)) {
+            } else if (Model.getFacade().isACreateAction(edge)) {
                 return new FigCreateActionLink(edge);
             }
         }
@@ -103,16 +101,16 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
-        if (ModelFacade.isALink(edge)) {
-            Object stimulus = ModelFacade.getStimuli(edge).iterator().next();
-            Object action = ModelFacade.getDispatchAction(stimulus);
-            if (ModelFacade.isACallAction(action)) {
+        if (Model.getFacade().isALink(edge)) {
+            Object stimulus = Model.getFacade().getStimuli(edge).iterator().next();
+            Object action = Model.getFacade().getDispatchAction(stimulus);
+            if (Model.getFacade().isACallAction(action)) {
                 return new FigCallActionLink();
-            } else if (ModelFacade.isAReturnAction(action)) {
+            } else if (Model.getFacade().isAReturnAction(action)) {
                 return new FigReturnActionLink();
-            } else if (ModelFacade.isADestroyAction(edge)) {
+            } else if (Model.getFacade().isADestroyAction(edge)) {
                 return new FigDestroyActionLink();
-            } else if (ModelFacade.isACreateAction(edge)) {
+            } else if (Model.getFacade().isACreateAction(edge)) {
                 return new FigCreateActionLink();
             }
         }

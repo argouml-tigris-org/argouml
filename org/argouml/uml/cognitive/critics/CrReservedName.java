@@ -26,14 +26,16 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
 import java.util.Vector;
+
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * This critic checks whether a given name in the Model resembles or matches
@@ -198,10 +200,10 @@ public class CrReservedName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
-        if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
-        String meName = ModelFacade.getName(dm);
+        if (!(Model.getFacade().isAModelElement(dm))) return NO_PROBLEM;
+        String meName = Model.getFacade().getName(dm);
         if (meName == null || meName.equals("")) return NO_PROBLEM;
         String nameStr = meName;
         if (nameStr == null || nameStr.length() == 0) return NO_PROBLEM;
@@ -243,7 +245,7 @@ public class CrReservedName extends CrUML {
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
-	    String sug = ModelFacade.getName(item.getOffenders().elementAt(0));
+	    String sug = Model.getFacade().getName(item.getOffenders().elementAt(0));
 	    String ins = "Change the name to something different.";
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);

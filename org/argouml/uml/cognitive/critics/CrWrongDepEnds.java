@@ -26,10 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.tigris.gef.util.VectorSet;
@@ -109,42 +110,42 @@ public class CrWrongDepEnds extends CrUML {
                 continue;
             }
 	    FigDependency figDependency = (FigDependency) obj;
-	    if (!(ModelFacade.isADependency(figDependency.getOwner()))) {
+	    if (!(Model.getFacade().isADependency(figDependency.getOwner()))) {
                 continue;
             }
 	    Object dependency = figDependency.getOwner();
-	    Collection suppliers = ModelFacade.getSuppliers(dependency);
+	    Collection suppliers = Model.getFacade().getSuppliers(dependency);
 	    int count = 0;
 	    if (suppliers != null && (suppliers.size() > 0)) {
 		Iterator it = suppliers.iterator();
 		while (it.hasNext()) {
 		    Object moe = /*(MModelElement)*/ it.next();
-		    if (ModelFacade.isAObject(moe)) {
+		    if (Model.getFacade().isAObject(moe)) {
 			Object objSup = /*(MObject)*/ moe;
-			if (ModelFacade.getElementResidences(objSup) != null
-			    && (ModelFacade.getElementResidences(objSup).size()
+			if (Model.getFacade().getElementResidences(objSup) != null
+			    && (Model.getFacade().getElementResidences(objSup).size()
 			                                        > 0)) {
 			    count += 2;
                         }
-			if (ModelFacade.getComponentInstance(objSup) != null) {
+			if (Model.getFacade().getComponentInstance(objSup) != null) {
 			    count++;
                         }
 		    }
 		}
 	    }
-	    Collection clients = ModelFacade.getClients(dependency);
+	    Collection clients = Model.getFacade().getClients(dependency);
 	    if (clients != null && (clients.size() > 0)) {
 		Iterator it = clients.iterator();
 		while (it.hasNext()) {
 		    Object moe = /*(MModelElement)*/ it.next();
-		    if (ModelFacade.isAObject(moe)) {
+		    if (Model.getFacade().isAObject(moe)) {
 			Object objCli = /*(MObject)*/ moe;
-			if (ModelFacade.getElementResidences(objCli) != null
-			    && (ModelFacade.getElementResidences(objCli).size()
+			if (Model.getFacade().getElementResidences(objCli) != null
+			    && (Model.getFacade().getElementResidences(objCli).size()
 			                                            > 0)) {
 			    count += 2;
                         }
-			if (ModelFacade.getComponentInstance(objCli) != null) {
+			if (Model.getFacade().getComponentInstance(objCli) != null) {
 			    count++;
                         }
 		    }

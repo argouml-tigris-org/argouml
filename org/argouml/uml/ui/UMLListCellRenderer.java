@@ -30,6 +30,8 @@ import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
+import org.argouml.model.Model;
+
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.UMLListCellRenderer2},
@@ -106,16 +108,18 @@ public class UMLListCellRenderer extends DefaultListCellRenderer {
             lab.setText("\"\"");
             return lab;
         }
-        if (!(org.argouml.model.ModelFacade.isAModelElement(value)))
+        if (!(Model.getFacade().isAModelElement(value))) {
             return lab;
-        String name = org.argouml.model.ModelFacade.getName(value);
+        }
+        String name = Model.getFacade().getName(value);
         if (name == null) {
             lab.setText("(null anon)");
             return lab;
         }
         String nameStr = name;
-        if (nameStr.length() == 0)
+        if (nameStr.length() == 0) {
             nameStr = "(anon)";
+        }
         lab.setText(nameStr);
         nameStr = nameStr + " ";
         lab.setToolTipText(nameStr);

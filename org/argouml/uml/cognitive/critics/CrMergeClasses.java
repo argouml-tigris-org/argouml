@@ -31,7 +31,6 @@ import java.util.List;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A critic to check whether to classes sharing a 1..1 association can or
@@ -56,32 +55,32 @@ public class CrMergeClasses extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) {
+	if (!(Model.getFacade().isAClass(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object cls = /*(MClass)*/ dm;
-	Collection ends = ModelFacade.getAssociationEnds(cls);
+	Collection ends = Model.getFacade().getAssociationEnds(cls);
 	if (ends == null || ends.size() != 1) {
 	    return NO_PROBLEM;
 	}
 	Object myEnd = /*(MAssociationEnd)*/ ends.iterator().next();
-	Object asc = ModelFacade.getAssociation(myEnd);
-	List conns = new ArrayList(ModelFacade.getConnections(asc));
+	Object asc = Model.getFacade().getAssociation(myEnd);
+	List conns = new ArrayList(Model.getFacade().getConnections(asc));
 	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
-	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0))
-            && ModelFacade.isAClass(ModelFacade.getType(ae1)))) {
+	if (!(Model.getFacade().isAClass(Model.getFacade().getType(ae0))
+            && Model.getFacade().isAClass(Model.getFacade().getType(ae1)))) {
 	    return NO_PROBLEM;
 	}
 	// both ends must be navigable, otherwise there is nothing to merge
-	if (!(ModelFacade.isNavigable(ae0)
-            && ModelFacade.isNavigable(ae1))) {
+	if (!(Model.getFacade().isNavigable(ae0)
+            && Model.getFacade().isNavigable(ae1))) {
 	    return NO_PROBLEM;
 	}
-	if (ModelFacade.getMultiplicity(ae0)
+	if (Model.getFacade().getMultiplicity(ae0)
             .equals(Model.getMultiplicities().get11())
-                && ModelFacade.getMultiplicity(ae1)
+                && Model.getFacade().getMultiplicity(ae1)
                     .equals(Model.getMultiplicities().get11())) {
 	    return PROBLEM_FOUND;
 	}

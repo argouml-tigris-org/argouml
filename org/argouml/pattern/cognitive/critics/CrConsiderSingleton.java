@@ -25,12 +25,10 @@
 package org.argouml.pattern.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.model.ModelFacade;
-
-
-// Use Model through ModelFacade.
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
@@ -96,52 +94,59 @@ public class CrConsiderSingleton extends CrUML {
 
         // Only look at classes...
 
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(Model.getFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
         // with a name...
-        if (ModelFacade.getName(dm) == null
-                || "".equals(ModelFacade.getName(dm))) {
+        if (Model.getFacade().getName(dm) == null
+                || "".equals(Model.getFacade().getName(dm))) {
                 return NO_PROBLEM;
         }
 
         // ... and not incompletely imported
-        if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+        if (!(Model.getFacade().isPrimaryObject(dm))) {
+            return NO_PROBLEM;
+        }
 
         	// abstract classes are hardly ever singletons
-        if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
+        if (Model.getFacade().isAbstract(dm)) {
+            return NO_PROBLEM;
+        }
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.
 
-        if (ModelFacade.isSingleton(dm)) {
+        if (Model.getFacade().isSingleton(dm)) {
             return NO_PROBLEM;
         }
 
-	if (ModelFacade.isUtility(dm)) {
+	if (Model.getFacade().isUtility(dm)) {
 	    return NO_PROBLEM;
 	}
 
 	// If there is an attribute with instance scope => no problem
-	Iterator iter = ModelFacade.getAttributes(dm).iterator();
+	Iterator iter = Model.getFacade().getAttributes(dm).iterator();
 
 	while (iter.hasNext()) {
-	    if (ModelFacade.isInstanceScope(iter.next()))
-		return NO_PROBLEM;
+	    if (Model.getFacade().isInstanceScope(iter.next())) {
+	        return NO_PROBLEM;
+	    }
 	}
 
 
 	// If there is an outgoing association => no problem
-	Iterator ends = ModelFacade.getAssociationEnds(dm).iterator();
+	Iterator ends = Model.getFacade().getAssociationEnds(dm).iterator();
 
 	while (ends.hasNext()) {
 	    Iterator otherends =
-		ModelFacade.getOtherAssociationEnds(ends.next()).iterator();
+		Model.getFacade()
+			.getOtherAssociationEnds(ends.next()).iterator();
 
 	    while (otherends.hasNext()) {
-		if (ModelFacade.isNavigable(otherends.next()))
+		if (Model.getFacade().isNavigable(otherends.next())) {
 		    return NO_PROBLEM;
+		}
 	    }
 	}
 

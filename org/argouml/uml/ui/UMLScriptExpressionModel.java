@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  *
@@ -49,7 +48,7 @@ public class UMLScriptExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return ModelFacade.getScript(getContainer().getTarget());
+        return Model.getFacade().getScript(getContainer().getTarget());
     }
 
     /**

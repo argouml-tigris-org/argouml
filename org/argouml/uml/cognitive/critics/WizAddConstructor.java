@@ -33,7 +33,6 @@ import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ProfileJava;
 
@@ -97,14 +96,14 @@ public class WizAddConstructor extends UMLWizard {
      */
     private Object getCreateStereotype(Object obj) {
 	Iterator iter =
-		ModelFacade.getOwnedElements(ProfileJava.getInstance()
+		Model.getFacade().getOwnedElements(ProfileJava.getInstance()
 			.getProfileModel())
 		.iterator();
 
 	while (iter.hasNext()) {
 	    Object stereo = iter.next();
-	    if (!ModelFacade.isAStereotype(stereo)
-		|| !"create".equals(ModelFacade.getName(stereo))) {
+	    if (!Model.getFacade().isAStereotype(stereo)
+		|| !"create".equals(Model.getFacade().getName(stereo))) {
 	        continue;
 	    }
 
@@ -112,7 +111,7 @@ public class WizAddConstructor extends UMLWizard {
 		    .isValidStereoType(obj, stereo)) {
 		return Model.getModelManagementHelper()
 		    .getCorrespondingElement(stereo,
-					     ModelFacade.getModel(obj));
+					     Model.getFacade().getModel(obj));
 	    }
 	}
 

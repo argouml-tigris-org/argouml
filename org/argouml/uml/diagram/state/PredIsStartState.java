@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.state;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.Predicate;
 
 /**
@@ -45,9 +44,9 @@ public class PredIsStartState implements Predicate {
      * @see org.tigris.gef.util.Predicate#predicate(java.lang.Object)
      */
     public boolean predicate(Object obj) {
-	return (ModelFacade.isAPseudostate(obj))
+	return (Model.getFacade().isAPseudostate(obj))
 	    && (Model.getPseudostateKind().getInitial().equals(
-                ModelFacade.getKind(obj)));
+                Model.getFacade().getKind(obj)));
     }
 
     /**

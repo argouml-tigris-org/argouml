@@ -27,7 +27,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 /**
  * A critic that checks for missing trigger and/or guard.
  *
@@ -53,22 +53,22 @@ public class CrNoTriggerOrGuard extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isATransition(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
 	Object tr = /*(MTransition)*/ dm;
-	Object/*MEvent*/ t = ModelFacade.getTrigger(tr);
-	Object g = ModelFacade.getGuard(tr);
-	Object sv = ModelFacade.getSource(tr);
-	if (!(ModelFacade.isAState(sv))) return NO_PROBLEM;
-	if (ModelFacade.getDoActivity(sv) != null) return NO_PROBLEM;
+	Object/*MEvent*/ t = Model.getFacade().getTrigger(tr);
+	Object g = Model.getFacade().getGuard(tr);
+	Object sv = Model.getFacade().getSource(tr);
+	if (!(Model.getFacade().isAState(sv))) return NO_PROBLEM;
+	if (Model.getFacade().getDoActivity(sv) != null) return NO_PROBLEM;
 	boolean hasTrigger =
 	    (t != null
-            && ModelFacade.getName(t) != null
-            && ModelFacade.getName(t).length() > 0);
+            && Model.getFacade().getName(t) != null
+            && Model.getFacade().getName(t).length() > 0);
 	if (hasTrigger) return NO_PROBLEM;
 	boolean noGuard = (g == null
-            || ModelFacade.getExpression(g) == null
-            || ModelFacade.getBody(ModelFacade.getExpression(g)) == null
-            || ModelFacade.getBody(ModelFacade.getExpression(g)).toString()
+            || Model.getFacade().getExpression(g) == null
+            || Model.getFacade().getBody(Model.getFacade().getExpression(g)) == null
+            || Model.getFacade().getBody(Model.getFacade().getExpression(g)).toString()
                                 .length() == 0);
 	if (noGuard) return PROBLEM_FOUND;
 	return NO_PROBLEM;

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Use Case->Extension Point.
@@ -52,8 +52,8 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAUseCase(parent)) {
-            return ModelFacade.getExtensionPoints(parent);
+        if (Model.getFacade().isAUseCase(parent)) {
+            return Model.getFacade().getExtensionPoints(parent);
         }
         return null;
     }
@@ -62,7 +62,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAUseCase(parent)) {
+        if (Model.getFacade().isAUseCase(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

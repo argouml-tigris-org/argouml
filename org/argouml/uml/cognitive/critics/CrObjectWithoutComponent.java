@@ -26,10 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
 import org.tigris.gef.presentation.Fig;
@@ -107,8 +108,8 @@ public class CrObjectWithoutComponent extends CrUML {
 	    FigObject fo = (FigObject) obj;
 	    Fig enclosing = fo.getEnclosingFig();
 	    if (enclosing == null
-		|| (!(ModelFacade.isAComponent(enclosing.getOwner())
-		|| ModelFacade.isAComponentInstance(enclosing.getOwner())))) {
+		|| (!(Model.getFacade().isAComponent(enclosing.getOwner())
+		|| Model.getFacade().isAComponentInstance(enclosing.getOwner())))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

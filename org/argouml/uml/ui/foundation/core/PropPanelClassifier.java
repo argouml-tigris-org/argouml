@@ -35,7 +35,6 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
@@ -142,7 +141,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addOperation() {
         Object target = getTarget();
-        if (ModelFacade.isAClassifier(target)) {
+        if (Model.getFacade().isAClassifier(target)) {
             Collection propertyChangeListeners = ProjectManager.getManager()
                 .getCurrentProject().findFigsForMember(target);
             Object model = ProjectManager.getManager()
@@ -162,7 +161,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addAttribute() {
         Object target = getTarget();
-        if (ModelFacade.isAClassifier(target)) {
+        if (Model.getFacade().isAClassifier(target)) {
             Object cls = /*(MClassifier)*/ target;
             Collection propertyChangeListeners = ProjectManager.getManager()
                 .getCurrentProject().findFigsForMember(cls);
@@ -200,7 +199,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addDataType() {
         Object target = getTarget();
-        if (ModelFacade.isANamespace(target)) {
+        if (Model.getFacade().isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().createDataType();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);

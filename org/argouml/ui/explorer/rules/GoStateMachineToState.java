@@ -31,7 +31,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * PerspectiveRule to navigate from statemachine to the subvertices of
@@ -53,9 +53,9 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 
-        if (ModelFacade.isAStateMachine(parent)) {
-            if (ModelFacade.getTop(parent) != null) {
-                return ModelFacade.getSubvertices(ModelFacade.getTop(parent));
+        if (Model.getFacade().isAStateMachine(parent)) {
+            if (Model.getFacade().getTop(parent) != null) {
+                return Model.getFacade().getSubvertices(Model.getFacade().getTop(parent));
             }
         }
         return null;
@@ -65,11 +65,11 @@ public class GoStateMachineToState extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStateMachine(parent)) {
+        if (Model.getFacade().isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
-	    if (ModelFacade.getTop(parent) != null)
-		set.add(ModelFacade.getTop(parent));
+	    if (Model.getFacade().getTop(parent) != null)
+		set.add(Model.getFacade().getTop(parent));
 	    return set;
 	}
 	return null;

@@ -28,9 +28,10 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Well-formedness rule [2] for MNamespace. See page 33 of UML 1.1
@@ -56,13 +57,13 @@ public class CrAssocNameConflict extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isANamespace(dm))) return NO_PROBLEM;
-	Collection oes = ModelFacade.getOwnedElements(dm);
+	if (!(Model.getFacade().isANamespace(dm))) return NO_PROBLEM;
+	Collection oes = Model.getFacade().getOwnedElements(dm);
 	if (oes == null) return NO_PROBLEM;
 	Vector namesSeen = new Vector();
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
-	    if (!ModelFacade.isAAssociation(elems.next())) continue;
+	    if (!Model.getFacade().isAAssociation(elems.next())) continue;
 	    // TODO: not implemented yet
 	}
 	return NO_PROBLEM;

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,7 +46,8 @@ public class UMLModelElementSupplierDependencyListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getSupplierDependencies(getTarget()));
+            setAllElements(
+                    Model.getFacade().getSupplierDependencies(getTarget()));
         }
     }
 
@@ -54,8 +55,9 @@ public class UMLModelElementSupplierDependencyListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isADependency(o)
-            && ModelFacade.getSupplierDependencies(getTarget()).contains(o);
+        return Model.getFacade().isADependency(o)
+            && Model.getFacade().getSupplierDependencies(getTarget())
+            	.contains(o);
     }
 
 }

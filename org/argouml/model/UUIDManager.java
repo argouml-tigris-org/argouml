@@ -117,43 +117,43 @@ public class UUIDManager {
         LOG.info("NOTE: The temporary method 'createModelUUIDs' "
 		 + "has been called.");
 
-        if (!ModelFacade.isANamespace(model)) {
+        if (!Model.getFacade().isANamespace(model)) {
             throw new IllegalArgumentException();
 	}
 
-        Collection ownedElements = ModelFacade.getOwnedElements(model);
+        Collection ownedElements = Model.getFacade().getOwnedElements(model);
 	Iterator oeIterator = ownedElements.iterator();
 
-        String uuid = ModelFacade.getUUID(model);
+        String uuid = Model.getFacade().getUUID(model);
         if (uuid == null) {
 	    Model.getCoreHelper().setUUID(model, getNewUUID());
 	}
 
 	while (oeIterator.hasNext()) {
             Object me = oeIterator.next();
-            if (ModelFacade.isAModel(me)
-                || ModelFacade.isAClassifier(me)
-                || ModelFacade.isAFeature(me)
-                || ModelFacade.isAStateVertex(me)
-		|| ModelFacade.isAStateMachine(me)
-                || ModelFacade.isATransition(me)
-                || ModelFacade.isACollaboration(me)
-		|| ModelFacade.isAMessage(me)
-                || ModelFacade.isAAssociation(me)
-                || ModelFacade.isAAssociationEnd(me)
-                || ModelFacade.isAGeneralization(me)
-                || ModelFacade.isADependency(me)
-                || ModelFacade.isAStereotype(me)
-		|| ModelFacade.isAUseCase(me)) {
+            if (Model.getFacade().isAModel(me)
+                || Model.getFacade().isAClassifier(me)
+                || Model.getFacade().isAFeature(me)
+                || Model.getFacade().isAStateVertex(me)
+		|| Model.getFacade().isAStateMachine(me)
+                || Model.getFacade().isATransition(me)
+                || Model.getFacade().isACollaboration(me)
+		|| Model.getFacade().isAMessage(me)
+                || Model.getFacade().isAAssociation(me)
+                || Model.getFacade().isAAssociationEnd(me)
+                || Model.getFacade().isAGeneralization(me)
+                || Model.getFacade().isADependency(me)
+                || Model.getFacade().isAStereotype(me)
+		|| Model.getFacade().isAUseCase(me)) {
 
-                uuid = ModelFacade.getUUID(me);
+                uuid = Model.getFacade().getUUID(me);
                 if (uuid == null) {
                     Model.getCoreHelper().setUUID(me, getNewUUID());
                 }
 
             }
 	    //recursive handling of namespaces, needed for Collaborations
-	    if (ModelFacade.isANamespace(me)) {
+	    if (Model.getFacade().isANamespace(me)) {
 		LOG.debug("Found another namespace: " + me);
 		createModelUUIDS(me);
 	    }

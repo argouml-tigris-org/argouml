@@ -26,10 +26,12 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * The critic for ambiguous names.
@@ -55,28 +57,28 @@ public class CrDisambigStateName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAState(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAState(dm))) return NO_PROBLEM;
 	Object state = /*(MState)*/ dm;
-	String myName = ModelFacade.getName(state);
+	String myName = Model.getFacade().getName(state);
 	// TODO: should define a CompoundCritic
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String myNameString = myName;
 	if (myNameString.length() == 0) return NO_PROBLEM;
-	Collection pkgs = ModelFacade.getElementImports2(state);
+	Collection pkgs = Model.getFacade().getElementImports2(state);
 	if (pkgs == null) return NO_PROBLEM;
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
 	    Object imp = /*(MElementImport)*/ iter.next();
-	    Object ns = ModelFacade.getPackage(imp);
+	    Object ns = Model.getFacade().getPackage(imp);
 	    if (ns == null) return NO_PROBLEM;
-	    Collection oes = ModelFacade.getOwnedElements(ns);
+	    Collection oes = Model.getFacade().getOwnedElements(ns);
 	    if (oes == null) return NO_PROBLEM;
 	    Iterator elems = oes.iterator();
 	    while (elems.hasNext()) {
 		Object eo = /*(MElementImport)*/ elems.next();
-		Object me = /*(MModelElement)*/ ModelFacade.getModelElement(eo);
-		if (!(ModelFacade.isAClassifier(me))) continue;
+		Object me = /*(MModelElement)*/ Model.getFacade().getModelElement(eo);
+		if (!(Model.getFacade().isAClassifier(me))) continue;
 		if (me == state) continue;
-		String meName = ModelFacade.getName(me);
+		String meName = Model.getFacade().getName(me);
 		if (meName == null || meName.equals("")) continue;
 		if (meName.equals(myNameString)) return PROBLEM_FOUND;
 	    }

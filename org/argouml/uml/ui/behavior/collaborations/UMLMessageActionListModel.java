@@ -25,7 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,7 +46,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getAction(getTarget()));
+        addElement(Model.getFacade().getAction(getTarget()));
     }
 
 
@@ -54,8 +54,8 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return ModelFacade.isAAction(elem)
-            && ModelFacade.getAction(getTarget()) == elem;
+        return Model.getFacade().isAAction(elem)
+            && Model.getFacade().getAction(getTarget()) == elem;
     }
 
 }

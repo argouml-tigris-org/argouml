@@ -34,8 +34,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
-import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlException;
 
 import ru.novosoft.uml.MBase;
@@ -416,7 +414,7 @@ class CoreHelperImpl implements CoreHelper {
         }
 
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getStructuralFeatures(classifier));
+        result.addAll(nsmodel.getFacade().getStructuralFeatures(classifier));
         Iterator parents = ((MClassifier) classifier).getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier) parents.next();
@@ -439,7 +437,7 @@ class CoreHelperImpl implements CoreHelper {
         }
 
         Collection result = new ArrayList();
-        result.addAll(ModelFacade.getOperations(classifier));
+        result.addAll(nsmodel.getFacade().getOperations(classifier));
         Iterator parents = ((MClassifier) classifier).getParents().iterator();
         while (parents.hasNext()) {
             result.addAll(getOperationsInh(parents.next()));
@@ -535,14 +533,15 @@ class CoreHelperImpl implements CoreHelper {
         while (depIterator.hasNext()) {
             Object dep = depIterator.next();
             Object stereo = null;
-            if (ModelFacade.getStereotypes(dep).size() > 0) {
-                stereo = ModelFacade.getStereotypes(dep).iterator().next();
+            if (nsmodel.getFacade().getStereotypes(dep).size() > 0) {
+                stereo =
+                    nsmodel.getFacade().getStereotypes(dep).iterator().next();
             }
             if ((dep instanceof MAbstraction)
                 && stereo != null
-                && ModelFacade.getName(stereo) != null
-                && ModelFacade.getName(stereo).equals("realize")) {
-		Object i = ModelFacade.getSuppliers(dep).toArray()[0];
+                && nsmodel.getFacade().getName(stereo) != null
+                && nsmodel.getFacade().getName(stereo).equals("realize")) {
+		Object i = nsmodel.getFacade().getSuppliers(dep).toArray()[0];
                 result.add(i);
             }
         }
@@ -614,7 +613,7 @@ class CoreHelperImpl implements CoreHelper {
     public Collection getBehavioralFeatures(Object clazz) {
         if (clazz instanceof MClassifier) {
             List ret = new ArrayList();
-            Iterator it = ModelFacade.getFeatures(clazz).iterator();
+            Iterator it = nsmodel.getFacade().getFeatures(clazz).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 if (o instanceof MBehavioralFeature) {
@@ -700,19 +699,22 @@ class CoreHelperImpl implements CoreHelper {
             Object clientDependency = it.next();
             if (clientDependency instanceof MAbstraction) {
                 Object stereo = null;
-                if (ModelFacade.getStereotypes(clientDependency).size() > 0) {
+                if (nsmodel.getFacade().getStereotypes(clientDependency).size()
+                        > 0) {
                     stereo =
-			ModelFacade.getStereotypes(clientDependency).iterator()
-			    .next();
+			nsmodel.getFacade().getStereotypes(clientDependency)
+				.iterator().next();
                 }
                 if (stereo != null
-                        && ModelFacade.getBaseClass(stereo) != null
-                        && ModelFacade.getName(stereo) != null
-                        && ModelFacade.getBaseClass(stereo)
+                        && nsmodel.getFacade().getBaseClass(stereo) != null
+                        && nsmodel.getFacade().getName(stereo) != null
+                        && nsmodel.getFacade().getBaseClass(stereo)
 		                .equals("Abstraction")
-                        && ModelFacade.getName(stereo).equals("realize")) {
+                        && nsmodel.getFacade().getName(stereo)
+                        	.equals("realize")) {
                     Iterator it2 =
-			ModelFacade.getSuppliers(clientDependency).iterator();
+                        nsmodel.getFacade().getSuppliers(clientDependency)
+				.iterator();
                     while (it2.hasNext()) {
                         Object supplier = it2.next();
                         if (supplier instanceof MInterface) {
@@ -735,7 +737,7 @@ class CoreHelperImpl implements CoreHelper {
         if (clazz == null) {
             return new ArrayList();
         }
-        Iterator it = ModelFacade.getGeneralizations(clazz).iterator();
+        Iterator it = nsmodel.getFacade().getGeneralizations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();
@@ -813,11 +815,12 @@ class CoreHelperImpl implements CoreHelper {
         if (clazz == null) {
             return new ArrayList();
         }
-        Iterator it = ModelFacade.getSpecializations(clazz).iterator();
+        Iterator it = nsmodel.getFacade().getSpecializations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
-            Object/*MGeneralization*/ gen = it.next();
-            Object/*MGeneralizableElement*/ client = ModelFacade.getChild(gen);
+            MGeneralization gen = (MGeneralization) it.next();
+            MGeneralizableElement client =
+                (MGeneralizableElement) nsmodel.getFacade().getChild(gen);
             if (client != null) {
                 list.add(client);
             }
@@ -978,7 +981,7 @@ class CoreHelperImpl implements CoreHelper {
         if (from == null || to == null) {
             return ret;
         }
-        Iterator it = ModelFacade.getAssociationEnds(from).iterator();
+        Iterator it = nsmodel.getFacade().getAssociationEnds(from).iterator();
         while (it.hasNext()) {
             MAssociationEnd end = (MAssociationEnd) it.next();
             MAssociation assoc = end.getAssociation();
@@ -1156,9 +1159,10 @@ class CoreHelperImpl implements CoreHelper {
 
 	}
         if (relationship instanceof MLink) {
-	    Iterator it = ModelFacade.getConnections(relationship).iterator();
+	    Iterator it =
+	        nsmodel.getFacade().getConnections(relationship).iterator();
 	    if (it.hasNext()) {
-		return ModelFacade.getInstance(it.next());
+		return nsmodel.getFacade().getInstance(it.next());
 	    } else {
 		return null;
 	    }
@@ -1198,7 +1202,7 @@ class CoreHelperImpl implements CoreHelper {
         if (relationship instanceof MInclude) {
             MInclude include = (MInclude) relationship;
             // we use modelfacade here to cover up for a messup in NSUML
-            return ModelFacade.getBase(include);
+            return nsmodel.getFacade().getBase(include);
         }
         if (relationship instanceof MAssociationEnd) {
             return ((MAssociationEnd) relationship).getAssociation();
@@ -1234,11 +1238,12 @@ class CoreHelperImpl implements CoreHelper {
 					       + "a relationship");
 	}
 	if (relationship instanceof MLink) {
-	    Iterator it = ModelFacade.getConnections(relationship).iterator();
+	    Iterator it =
+	        nsmodel.getFacade().getConnections(relationship).iterator();
 	    if (it.hasNext()) {
 		it.next();
 		if (it.hasNext()) {
-		    return ModelFacade.getInstance(it.next());
+		    return nsmodel.getFacade().getInstance(it.next());
 		} else {
 		    return null;
 		}
@@ -1282,7 +1287,7 @@ class CoreHelperImpl implements CoreHelper {
         }
         if (relationship instanceof MInclude) {
             MInclude include = (MInclude) relationship;
-            return ModelFacade.getAddition(include);
+            return nsmodel.getFacade().getAddition(include);
         }
         if (relationship instanceof MAssociationEnd) {
             return ((MAssociationEnd) relationship).getType();
@@ -2469,7 +2474,7 @@ class CoreHelperImpl implements CoreHelper {
          */
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
-                (MExpressionEditor) Model.getDataTypesFactory()
+                (MExpressionEditor) nsmodel.getDataTypesFactory()
                 	.createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
             expressionEditor.toExpression();

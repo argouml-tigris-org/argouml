@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -81,21 +80,21 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
-        if (ModelFacade.isAActionState(node)) {
+        if (Model.getFacade().isAActionState(node)) {
             return new FigActionState(gm, node);
-        } else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
+        } else if (Model.getFacade().isAFinalState(node)) {
             return new FigFinalState(gm, node);
-        } else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
+        } else if (Model.getFacade().isACompositeState(node)) {
             return new FigCompositeState(gm, node);
-        } else if (org.argouml.model.ModelFacade.isASynchState(node)) {
+        } else if (Model.getFacade().isASynchState(node)) {
             return new FigSynchState(gm, node);
-        } else if (org.argouml.model.ModelFacade.isAState(node)) {
+        } else if (Model.getFacade().isAState(node)) {
             return new FigSimpleState(gm, node);
-        } else if (ModelFacade.isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
-        } else if (org.argouml.model.ModelFacade.isAPseudostate(node)) {
+        } else if (Model.getFacade().isAPseudostate(node)) {
             Object pState = node;
-            Object kind = ModelFacade.getKind(pState);
+            Object kind = Model.getFacade().getKind(pState);
             if (kind == null) {
                 return null;
             }
@@ -137,7 +136,7 @@ public class StateDiagramRenderer extends UmlDiagramRenderer {
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {
         LOG.debug("making figedge for " + edge);
-        if (org.argouml.model.ModelFacade.isATransition(edge)) {
+        if (Model.getFacade().isATransition(edge)) {
             FigTransition trFig = new FigTransition(edge, lay);
             return trFig;
         } else if (edge instanceof CommentEdge) {

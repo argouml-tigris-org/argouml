@@ -28,8 +28,7 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -37,7 +36,6 @@ import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
-
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
@@ -79,11 +77,11 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-	if (ModelFacade.isAClassifierRole(node))
+	if (Model.getFacade().isAClassifierRole(node))
 	    return new FigClassifierRole(gm, lay, node);
-	if (ModelFacade.isAMessage(node))
+	if (Model.getFacade().isAMessage(node))
 	    return new FigMessage(gm, lay, node);
-	if (ModelFacade.isAComment(node)) {
+	if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
         }
 	LOG.debug("TODO: CollabDiagramRenderer getFigNodeFor");
@@ -99,15 +97,15 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
      * org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
-	if (ModelFacade.isAAssociationRole(edge)) {
+	if (Model.getFacade().isAAssociationRole(edge)) {
 	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
 	    return asrFig;
 	} else
-	    if (ModelFacade.isAGeneralization(edge)) {
+	    if (Model.getFacade().isAGeneralization(edge)) {
 		FigGeneralization genFig = new FigGeneralization(edge, lay);
 		return genFig;
 	    }
-	if (ModelFacade.isADependency(edge)) {
+	if (Model.getFacade().isADependency(edge)) {
 	    FigDependency depFig = new FigDependency(edge , lay);
 	    return depFig;
 	}

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,8 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Original author: jaap.branderhorst@xs4all.nl
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -31,10 +29,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
- * @author : jaap.branderhorst@xs4all.nl
+ * @author jaap.branderhorst@xs4all.nl
  */
 public class GoClassifierToInstance extends AbstractPerspectiveRule {
 
@@ -49,16 +47,17 @@ public class GoClassifierToInstance extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!ModelFacade.isAClassifier(parent))
-        	return null;
-        return ModelFacade.getInstances(parent);
+        if (!Model.getFacade().isAClassifier(parent)) {
+            return null;
+        }
+        return Model.getFacade().getInstances(parent);
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAClassifier(parent)) {
+        if (Model.getFacade().isAClassifier(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

@@ -36,7 +36,7 @@ import java.util.Iterator;
 import org.argouml.application.api.Notation;
 import org.argouml.application.events.ArgoEvent;
 import org.argouml.application.events.ArgoEventPump;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -137,7 +137,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
     protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if ((mee.getSource() == getOwner())
-            || (mee.getSource() == ModelFacade.getType(getOwner()))) {
+            || (mee.getSource() == Model.getFacade().getType(getOwner()))) {
             renderingChanged();
         }
     }
@@ -244,8 +244,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
             if (getOwner() == null)
                 return;
             String theNewText = "";
-            Object cis = ModelFacade.getType(getOwner());
-            if (ModelFacade.isAClassifierInState(cis)) {
+            Object cis = Model.getFacade().getType(getOwner());
+            if (Model.getFacade().isAClassifierInState(cis)) {
                 theNewText = "[" + Notation.generate(this, cis) + "]";
             }
             state.setText(theNewText);
@@ -329,7 +329,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
      */
     public void keyPressed(KeyEvent ke) {
         if (!isReadyToEdit()) {
-            if (ModelFacade.isAModelElement(getOwner())) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
                 updateClassifierText();
                 updateStateText();
                 setReadyToEdit(true);

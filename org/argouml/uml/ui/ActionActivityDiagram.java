@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -64,8 +63,8 @@ public class ActionActivityDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MActivityGraph*/ graph =
 	    Model.getActivityGraphsFactory().buildActivityGraph(target);
-        /*if (ModelFacade.isABehavioralFeature(target)) {
-            ns = ModelFacade.getNamespace(target);
+        /*if (Model.getFacade().isABehavioralFeature(target)) {
+            ns = Model.getFacade().getNamespace(target);
             // this fails always, see issue 1817
         }*/
         UMLActivityDiagram d = new UMLActivityDiagram(ns, graph);
@@ -92,7 +91,7 @@ public class ActionActivityDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(java.lang.Object)
      */
     public boolean isValidNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
             throw new IllegalArgumentException(

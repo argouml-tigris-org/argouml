@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -70,8 +69,8 @@ public class UMLAssociationEndAggregationRadioButtonPanel
      */
     public void buildModel() {
         if (getTarget() != null) {
-            Object target = /*(MAssociationEnd)*/ getTarget();
-            Object/*MAggregationKind*/kind = ModelFacade.getAggregation(target);
+            Object target = getTarget();
+            Object kind = Model.getFacade().getAggregation(target);
             if (kind == null
                     || kind.equals(
                             Model.getAggregationKind().getNone())) {

@@ -25,12 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
-
-
-// Uses Model through ModelFacade
+import org.argouml.model.Model;
 
 /**
  * A critic to detect when a classifier might require
@@ -40,7 +38,9 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoAssociations extends CrUML {
 
-    /** */
+    /**
+     * Constructor.
+     */
     public CrNoAssociations() {
         setHeadline("Add Associations to <ocl>self</ocl>");
         addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
@@ -58,21 +58,21 @@ public class CrNoAssociations extends CrUML {
      *         otherwise <CODE>NO_PROBLEM</CODE>
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(ModelFacade.isAClassifier(dm)))
+        if (!(Model.getFacade().isAClassifier(dm)))
             return NO_PROBLEM;
-        if (!(ModelFacade.isPrimaryObject(dm)))
+        if (!(Model.getFacade().isPrimaryObject(dm)))
             return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getName(dm) == null)
-	    || ("".equals(ModelFacade.getName(dm)))) {
+        if ((Model.getFacade().getName(dm) == null)
+	    || ("".equals(Model.getFacade().getName(dm)))) {
             return NO_PROBLEM;
 	}
 
         // abstract elements do not necessarily require associations
-        if (ModelFacade.isAGeneralizableElement(dm)
-	    && ModelFacade.isAbstract(dm)) {
+        if (Model.getFacade().isAGeneralizableElement(dm)
+	    && Model.getFacade().isAbstract(dm)) {
             return NO_PROBLEM;
         }
 
@@ -80,9 +80,9 @@ public class CrNoAssociations extends CrUML {
         // not having any.
         // utility is a namespace collection - also not strictly required
         // to have associations.
-        if (ModelFacade.isType(dm))
+        if (Model.getFacade().isType(dm))
             return NO_PROBLEM;
-        if (ModelFacade.isUtility(dm))
+        if (Model.getFacade().isUtility(dm))
             return NO_PROBLEM;
 
         //TODO: different critic or special message for classes
@@ -100,48 +100,48 @@ public class CrNoAssociations extends CrUML {
      *		or in any of its generalizations.
      */
     private boolean findAssociation(Object dm, int depth) {
-        if (ModelFacade.getAssociationEnds(dm).iterator().hasNext())
+        if (Model.getFacade().getAssociationEnds(dm).iterator().hasNext())
             return true;
 
         if (depth > 50)
             return false;
 
-        Iterator iter = ModelFacade.getGeneralizations(dm).iterator();
+        Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
         while (iter.hasNext()) {
-            Object parent = ModelFacade.getParent(iter.next());
+            Object parent = Model.getFacade().getParent(iter.next());
 
             if (parent == dm)
                 continue;
 
-            if (ModelFacade.isAClassifier(parent))
+            if (Model.getFacade().isAClassifier(parent))
                 if (findAssociation(parent, depth + 1))
                     return true;
         }
 
-        if (ModelFacade.isAUseCase(dm)) {
+        if (Model.getFacade().isAUseCase(dm)) {
             // for use cases we need to check for extend/includes
             // actors cannot have them, so no need to check
-            Iterator iter2 = ModelFacade.getExtends(dm).iterator();
+            Iterator iter2 = Model.getFacade().getExtends(dm).iterator();
             while (iter2.hasNext()) {
-                Object parent = ModelFacade.getExtension(iter2.next());
+                Object parent = Model.getFacade().getExtension(iter2.next());
 
                 if (parent == dm)
                     continue;
 
-                if (ModelFacade.isAClassifier(parent))
+                if (Model.getFacade().isAClassifier(parent))
                     if (findAssociation(parent, depth + 1))
                         return true;
             }
 
-            Iterator iter3 = ModelFacade.getIncludes(dm).iterator();
+            Iterator iter3 = Model.getFacade().getIncludes(dm).iterator();
             while (iter3.hasNext()) {
-                Object parent = ModelFacade.getBase(iter3.next());
+                Object parent = Model.getFacade().getBase(iter3.next());
 
                 if (parent == dm)
                     continue;
 
-                if (ModelFacade.isAClassifier(parent))
+                if (Model.getFacade().isAClassifier(parent))
                     if (findAssociation(parent, depth + 1))
                         return true;
             }

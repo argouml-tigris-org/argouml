@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -53,11 +52,11 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
         if (inc == null) {
             return;
         }
-        Object ns = ModelFacade.getNamespace(inc);
+        Object ns = Model.getFacade().getNamespace(inc);
         addAll(Model.getModelManagementHelper().getAllModelElementsOfKind(ns,
                 Model.getMetaTypes().getUseCase()));
-        if (contains(ModelFacade.getAddition(inc))) {
-            removeElement(ModelFacade.getAddition(inc));
+        if (contains(Model.getFacade().getAddition(inc))) {
+            removeElement(Model.getFacade().getAddition(inc));
         }
     }
 
@@ -66,7 +65,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getAddition(getTarget());
+            return Model.getFacade().getAddition(getTarget());
         }
         return null;
     }
@@ -75,9 +74,9 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return ModelFacade.isAUseCase(element)
-            && ModelFacade.getNamespace(getTarget())
-                == ModelFacade.getNamespace(element);
+        return Model.getFacade().isAUseCase(element)
+            && Model.getFacade().getNamespace(getTarget())
+                == Model.getFacade().getNamespace(element);
     }
 
 }

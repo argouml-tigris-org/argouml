@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -75,7 +74,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      * @param namespace the namespace to be set for this diagram
      */
     public void setNamespace(Object namespace) {
-        if (!ModelFacade.isANamespace(namespace)) {
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
 	model = namespace;
@@ -92,16 +91,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getPorts(Object nodeOrEdge) {
 	Vector res = new Vector();  // wasteful!
-	if (ModelFacade.isAClass(nodeOrEdge)) {
+	if (Model.getFacade().isAClass(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
-	if (ModelFacade.isAInterface(nodeOrEdge)) {
+	if (Model.getFacade().isAInterface(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
-	if (ModelFacade.isAInstance(nodeOrEdge)) {
+	if (Model.getFacade().isAInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
-	if (ModelFacade.isAModel(nodeOrEdge)) {
+	if (Model.getFacade().isAModel(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
 	}
 	return res;
@@ -128,26 +127,26 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	Vector edges = new Vector();
 
 	// top of the hierarchy is ME:
-	if (ModelFacade.isAModelElement(port)) {
-	    Iterator it = ModelFacade.getSupplierDependencies(port).iterator();
+	if (Model.getFacade().isAModelElement(port)) {
+	    Iterator it = Model.getFacade().getSupplierDependencies(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
 	}
 	// then Generalizable Element
-	if (ModelFacade.isAGeneralizableElement(port)) {
-	    Iterator it = ModelFacade.getSpecializations(port).iterator();
+	if (Model.getFacade().isAGeneralizableElement(port)) {
+	    Iterator it = Model.getFacade().getSpecializations(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
 	}
 	// then Classifier
-	if (ModelFacade.isAClassifier(port)) {
-	    Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+	if (Model.getFacade().isAClassifier(port)) {
+	    Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
 	    while (it.hasNext()) {
 		Object nextAssocEnd = it.next();
 		// navigable.... only want incoming
-		if (ModelFacade.isNavigable(nextAssocEnd)) {
+		if (Model.getFacade().isNavigable(nextAssocEnd)) {
 		    edges.add(nextAssocEnd);
 		}
 	    }
@@ -205,26 +204,26 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	Vector edges = new Vector();
 
 	// top of the hierarchy is ME:
-	if (ModelFacade.isAModelElement(port)) {
-	    Iterator it = ModelFacade.getClientDependencies(port).iterator();
+	if (Model.getFacade().isAModelElement(port)) {
+	    Iterator it = Model.getFacade().getClientDependencies(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
 	}
 	// then Generalizable Element
-	if (ModelFacade.isAGeneralizableElement(port)) {
-	    Iterator it = ModelFacade.getGeneralizations(port).iterator();
+	if (Model.getFacade().isAGeneralizableElement(port)) {
+	    Iterator it = Model.getFacade().getGeneralizations(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
 	}
 	// then Classifier
-	if (ModelFacade.isAClassifier(port)) {
-	    Iterator it = ModelFacade.getAssociationEnds(port).iterator();
+	if (Model.getFacade().isAClassifier(port)) {
+	    Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
 	    while (it.hasNext()) {
-		Object nextAssocEnd = ModelFacade.getOppositeEnd(it.next());
+		Object nextAssocEnd = Model.getFacade().getOppositeEnd(it.next());
 		// navigable.... only want outgoing
-		if (ModelFacade.isNavigable(nextAssocEnd)) {
+		if (Model.getFacade().isNavigable(nextAssocEnd)) {
 		    edges.add(nextAssocEnd);
 		}
 	    }
@@ -275,12 +274,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (containsNode(node)) {
 	    return false;
 	}
-        if (ModelFacade.isAAssociation(node)) {
-            Collection ends = ModelFacade.getConnections(node);
+        if (Model.getFacade().isAAssociation(node)) {
+            Collection ends = Model.getFacade().getConnections(node);
             Iterator iter = ends.iterator();
             boolean canAdd = true;
             while (iter.hasNext()) {
-                Object classifier = ModelFacade.getClassifier(iter.next());
+                Object classifier = Model.getFacade().getClassifier(iter.next());
                 if (!containsNode(classifier)) {
                     canAdd = false;
                     break;
@@ -291,11 +290,11 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         // TODO: This logic may well be worth moving into the model component.
         // Provide a similar grid to the connectionsGrid
-	return ModelFacade.isAClass(node)
-		|| ModelFacade.isAInterface(node)
-		|| ModelFacade.isAModel(node)
-		|| ModelFacade.isAPackage(node)
-		|| ModelFacade.isAInstance(node);
+	return Model.getFacade().isAClass(node)
+		|| Model.getFacade().isAInterface(node)
+		|| Model.getFacade().isAModel(node)
+		|| Model.getFacade().isAPackage(node)
+		|| Model.getFacade().isAInstance(node);
     }
 
     /**
@@ -311,8 +310,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             return false;
         }
         Object end0 = null, end1 = null;
-        if (ModelFacade.isAAssociation(edge)) {
-            Collection conns = ModelFacade.getConnections(edge);
+        if (Model.getFacade().isAAssociation(edge)) {
+            Collection conns = Model.getFacade().getConnections(edge);
             if (conns.size() < 2) {
                 return false;
             }
@@ -322,29 +321,29 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             if (associationEnd0 == null || associationEnd1 == null) {
                 return false;
             }
-            end0 = ModelFacade.getType(associationEnd0);
-            end1 = ModelFacade.getType(associationEnd1);
-        } else if (ModelFacade.isAAssociationEnd(edge)) {
-            end0 = ModelFacade.getAssociation(edge);
-            end1 = ModelFacade.getType(edge);
+            end0 = Model.getFacade().getType(associationEnd0);
+            end1 = Model.getFacade().getType(associationEnd1);
+        } else if (Model.getFacade().isAAssociationEnd(edge)) {
+            end0 = Model.getFacade().getAssociation(edge);
+            end1 = Model.getFacade().getType(edge);
         
             return (end0 != null
                     && end1 != null
                     && (containsEdge(end0) || containsNode(end0))
                     && containsNode(end1));
-        } else if (ModelFacade.isAGeneralization(edge)) {
-            end0 = ModelFacade.getChild(edge);
-            end1 = ModelFacade.getParent(edge);
-        } else if (ModelFacade.isADependency(edge)) {
-            Collection clients = ModelFacade.getClients(edge);
-            Collection suppliers = ModelFacade.getSuppliers(edge);
+        } else if (Model.getFacade().isAGeneralization(edge)) {
+            end0 = Model.getFacade().getChild(edge);
+            end1 = Model.getFacade().getParent(edge);
+        } else if (Model.getFacade().isADependency(edge)) {
+            Collection clients = Model.getFacade().getClients(edge);
+            Collection suppliers = Model.getFacade().getSuppliers(edge);
             if (clients == null || suppliers == null) {
                 return false;
             }
             end0 = clients.iterator().next();
             end1 = suppliers.iterator().next();
-        } else if (ModelFacade.isALink(edge)) {
-            Collection roles = ModelFacade.getConnections(edge);
+        } else if (Model.getFacade().isALink(edge)) {
+            Collection roles = Model.getFacade().getConnections(edge);
             if (roles.size() < 2) {
                 return false;
             }
@@ -354,8 +353,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             if (linkEnd0 == null || linkEnd1 == null) {
                 return false;
             }
-            end0 = ModelFacade.getInstance(linkEnd0);
-            end1 = ModelFacade.getInstance(linkEnd1);
+            end0 = Model.getFacade().getInstance(linkEnd0);
+            end1 = Model.getFacade().getInstance(linkEnd1);
         } else if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
@@ -387,8 +386,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    return;
 	}
 	getNodes().add(node);
-	if (ModelFacade.isAModelElement(node)
-	        && ModelFacade.getNamespace(node) == null) {
+	if (Model.getFacade().isAModelElement(node)
+	        && Model.getFacade().getNamespace(node) == null) {
             Model.getCoreHelper().addOwnedElement(model, node);
 	}
 
@@ -427,9 +426,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         getEdges().add(edge);
 
         // TODO: assumes public
-        if (ModelFacade.isAModelElement(edge)
-                && ModelFacade.getNamespace(edge) == null
-                && !ModelFacade.isAAssociationEnd(edge)) {
+        if (Model.getFacade().isAModelElement(edge)
+                && Model.getFacade().getNamespace(edge) == null
+                && !Model.getFacade().isAAssociationEnd(edge)) {
     	    Model.getCoreHelper().addOwnedElement(model, edge);
         }
         fireEdgeAdded(edge);
@@ -444,21 +443,21 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
         
-        if (ModelFacade.isAClassifier(node)) {
-            Collection ends = ModelFacade.getAssociationEnds(node);
+        if (Model.getFacade().isAClassifier(node)) {
+            Collection ends = Model.getFacade().getAssociationEnds(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object associationEnd = iter.next();
-                if (!ModelFacade.isANaryAssociation(
-                        ModelFacade.getAssociation(associationEnd))
-                    && canAddEdge(ModelFacade.getAssociation(associationEnd))) {
+                if (!Model.getFacade().isANaryAssociation(
+                        Model.getFacade().getAssociation(associationEnd))
+                    && canAddEdge(Model.getFacade().getAssociation(associationEnd))) {
 
-                    addEdge(ModelFacade.getAssociation(associationEnd));
+                    addEdge(Model.getFacade().getAssociation(associationEnd));
                 }
             }
         }
-        if (ModelFacade.isAGeneralizableElement(node)) {
-            Collection generalizations = ModelFacade.getGeneralizations(node);
+        if (Model.getFacade().isAGeneralizableElement(node)) {
+            Collection generalizations = Model.getFacade().getGeneralizations(node);
             Iterator iter = generalizations.iterator();
             while (iter.hasNext()) {
         	Object generalization = iter.next();
@@ -467,7 +466,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	    // return;
         	}
             }
-            Collection specializations = ModelFacade.getSpecializations(node);
+            Collection specializations = Model.getFacade().getSpecializations(node);
             iter = specializations.iterator();
             while (iter.hasNext()) {
         	Object specialization = iter.next();
@@ -477,10 +476,10 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	}
             }
         }
-        if (ModelFacade.isAModelElement(node)) {
+        if (Model.getFacade().isAModelElement(node)) {
             Vector specs =
-        	new Vector(ModelFacade.getClientDependencies(node));
-            specs.addAll(ModelFacade.getSupplierDependencies(node));
+        	new Vector(Model.getFacade().getClientDependencies(node));
+            specs.addAll(Model.getFacade().getSupplierDependencies(node));
             Iterator iter = specs.iterator();
             while (iter.hasNext()) {
         	Object dependency = iter.next();
@@ -490,8 +489,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 }
             }
         }
-        if (ModelFacade.isAAssociation(node)) {
-            Collection ends = ModelFacade.getConnections(node);
+        if (Model.getFacade().isAAssociation(node)) {
+            Collection ends = Model.getFacade().getConnections(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object associationEnd = iter.next();
@@ -514,23 +513,23 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
 	    Object elementImport = /*(MElementImport)*/ pce.getNewValue();
-            Object modelElement = ModelFacade.getModelElement(elementImport);
+            Object modelElement = Model.getFacade().getModelElement(elementImport);
 	    //MModelElement modelElement = elementImport.getModelElement();
 	    if (oldOwned.contains(elementImport)) {
 		LOG.debug("model removed " + modelElement);
-		if (ModelFacade.isAClassifier(modelElement)) {
+		if (Model.getFacade().isAClassifier(modelElement)) {
 		    removeNode(modelElement);
 		}
-		if (ModelFacade.isAPackage(modelElement)) {
+		if (Model.getFacade().isAPackage(modelElement)) {
 		    removeNode(modelElement);
 		}
-		if (ModelFacade.isAAssociation(modelElement)) {
+		if (Model.getFacade().isAAssociation(modelElement)) {
 		    removeEdge(modelElement);
 		}
-		if (ModelFacade.isADependency(modelElement)) {
+		if (Model.getFacade().isADependency(modelElement)) {
 		    removeEdge(modelElement);
 		}
-		if (ModelFacade.isAGeneralization(modelElement)) {
+		if (Model.getFacade().isAGeneralization(modelElement)) {
 		    removeEdge(modelElement);
 		}
 	    }
@@ -565,9 +564,9 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	    return false;
 
 	// check parameter types:
-	if (!(ModelFacade.isAClass(newNode)
-	        || ModelFacade.isAClass(oldNode)
-	        || ModelFacade.isAAssociation(edge))) {
+	if (!(Model.getFacade().isAClass(newNode)
+	        || Model.getFacade().isAClass(oldNode)
+	        || Model.getFacade().isAAssociation(edge))) {
 	    return false;
 	}
 
@@ -588,13 +587,13 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void changeConnectedNode(Object newNode, Object oldNode,
 				    Object edge, boolean isSource) {
-	if (ModelFacade.isAAssociation(edge))
+	if (Model.getFacade().isAAssociation(edge))
 	    rerouteAssociation(newNode,  oldNode,  edge,  isSource);
-	else if (ModelFacade.isAGeneralization(edge))
+	else if (Model.getFacade().isAGeneralization(edge))
 	    rerouteGeneralization(newNode,  oldNode,  edge,  isSource);
-	else if (ModelFacade.isADependency(edge))
+	else if (Model.getFacade().isADependency(edge))
 	    rerouteDependency(newNode,  oldNode,  edge,  isSource);
-	else if (ModelFacade.isALink(edge))
+	else if (Model.getFacade().isALink(edge))
 	    rerouteLink(newNode,  oldNode,  edge,  isSource);
     }
 
@@ -605,8 +604,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 				    Object edge, boolean isSource) {
 	// check param types: only some connections are legal uml connections:
 
-	if (!(ModelFacade.isAClassifier(newNode))
-	    || !(ModelFacade.isAClassifier(oldNode)))
+	if (!(Model.getFacade().isAClassifier(newNode))
+	    || !(Model.getFacade().isAClassifier(oldNode)))
 	    return;
 
 	// can't have a connection between 2 interfaces:
@@ -622,8 +621,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
-	if (ModelFacade.isAInterface(newNode)
-	        && ModelFacade.isAInterface(otherNode))
+	if (Model.getFacade().isAInterface(newNode)
+	        && Model.getFacade().isAInterface(otherNode))
 	    return;
 
         // cast the params
@@ -631,7 +630,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	Object theEnd = null;
 	Object theOtherEnd = null;
-        Collection connections = ModelFacade.getConnections(edgeAssoc);
+        Collection connections = Model.getFacade().getConnections(edgeAssoc);
         Iterator iter = connections.iterator();
         if (isSource) {
             // rerouting the source:
@@ -644,12 +643,12 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         }
 
         // set the ends navigability see also Class ActionNavigability
-        if (ModelFacade.isAInterface(newNode)) {
+        if (Model.getFacade().isAInterface(newNode)) {
             Model.getCoreHelper().setNavigable(theEnd, true);
             Model.getCoreHelper().setNavigable(theOtherEnd, false);
         }
 
-        if (ModelFacade.isAInterface(otherNode)) {
+        if (Model.getFacade().isAInterface(otherNode)) {
             Model.getCoreHelper().setNavigable(theOtherEnd, true);
             Model.getCoreHelper().setNavigable(theEnd, false);
         }

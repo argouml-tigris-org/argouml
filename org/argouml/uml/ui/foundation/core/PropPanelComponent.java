@@ -93,14 +93,14 @@ public class PropPanelComponent extends PropPanelClassifier {
 	//    JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
 	//    modifiersPanel.add(new UMLCheckBox(Translator.localize(
         //        "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty(
-        //        "isAbstract",ModelFacade.COMPONENT,"isAbstract",
+        //        "isAbstract",Model.getFacade().COMPONENT,"isAbstract",
 	//        "setAbstract")));
 	//    modifiersPanel.add(new UMLCheckBox(Translator.localize(
         //        "checkbox.final-lc"),this,new UMLReflectionBooleanProperty(
-        //        "isLeaf",ModelFacade.COMPONENT,"isLeaf","setLeaf")));
+        //        "isLeaf",Model.getFacade().COMPONENT,"isLeaf","setLeaf")));
 	//    modifiersPanel.add(new UMLCheckBox(localize("root"),this,
         //        new UMLReflectionBooleanProperty("isRoot",
-	//                                         ModelFacade.COMPONENT,
+	//                                         Model.getFacade().COMPONENT,
 	//                                         "isRoot",
         //                                         "setRoot")));
 	//    addField(modifiersPanel,4,0,0);

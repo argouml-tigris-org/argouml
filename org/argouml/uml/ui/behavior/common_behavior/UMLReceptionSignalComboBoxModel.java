@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -51,7 +50,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAReception(target)) {
+        if (Model.getFacade().isAReception(target)) {
             Object rec = /*(MReception)*/ target;
             removeAllElements();
             Project p = ProjectManager.getManager().getCurrentProject();
@@ -60,7 +59,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
                     .getAllModelElementsOfKindWithModel(
                             model,
                             Model.getMetaTypes().getSignal()));
-            setSelectedItem(ModelFacade.getSignal(rec));
+            setSelectedItem(Model.getFacade().getSignal(rec));
         }
 
     }
@@ -69,7 +68,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object m) {
-        return ModelFacade.isASignal(m);
+        return Model.getFacade().isASignal(m);
     }
 
     /**
@@ -77,7 +76,7 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getSignal(getTarget());
+            return Model.getFacade().getSignal(getTarget());
         }
         return null;
     }

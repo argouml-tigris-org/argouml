@@ -26,8 +26,9 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 /** A critic to detect when a classifier has too many attributes.
  *
  * @author mkl
@@ -51,15 +52,15 @@ public class CrTooManyAttr extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited attributes?
 	int threshold = getThreshold();
-	Collection str = ModelFacade.getFeatures(cls);
+	Collection str = Model.getFacade().getFeatures(cls);
 	if (str == null) return NO_PROBLEM;
 	int n = 0;
 	for (Iterator iter = str.iterator(); iter.hasNext();) {
-	    if (ModelFacade.isAStructuralFeature(iter.next()))
+	    if (Model.getFacade().isAStructuralFeature(iter.next()))
 		n++;
 	}
 	if (n <= threshold) return NO_PROBLEM;

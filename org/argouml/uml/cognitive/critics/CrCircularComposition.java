@@ -25,14 +25,14 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.GenCompositeClasses;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -58,7 +58,7 @@ public class CrCircularComposition extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
 	VectorSet reach =
 	    (new VectorSet(dm)).reachable(GenCompositeClasses.getSINGLETON());
 	if (reach.contains(dm)) return PROBLEM_FOUND;

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * PerspectiveRule to navigate from behavioral
@@ -51,8 +51,9 @@ public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isABehavioralFeature(parent))
-	    return ModelFacade.getBehaviors(parent);
+	if (Model.getFacade().isABehavioralFeature(parent)) {
+	    return Model.getFacade().getBehaviors(parent);
+	}
 	return null;
     }
 
@@ -60,7 +61,7 @@ public class GoBehavioralFeatureToStateMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isABehavioralFeature(parent)) {
+        if (Model.getFacade().isABehavioralFeature(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

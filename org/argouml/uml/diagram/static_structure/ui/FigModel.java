@@ -30,7 +30,7 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
@@ -67,8 +67,8 @@ public class FigModel extends FigPackage {
         this();
         setOwner(node);
 
-        if (ModelFacade.isAModel(node) && ModelFacade.getName(node) != null) {
-            getNameFig().setText(ModelFacade.getName(node));
+        if (Model.getFacade().isAModel(node) && Model.getFacade().getName(node) != null) {
+            getNameFig().setText(Model.getFacade().getName(node));
         }
     }
 

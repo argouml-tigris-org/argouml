@@ -30,7 +30,6 @@ import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 /**
@@ -58,12 +57,12 @@ public class ActionSetFlowSource extends UMLAction {
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 source = (UMLComboBox2) e.getSource();
             Object target = source.getTarget();
-            if (ModelFacade.isAFlow(target)) {
+            if (Model.getFacade().isAFlow(target)) {
                 Object flow = /*(MFlow)*/ target;
                 Object old = null;
-                if (!ModelFacade.getSources(flow).isEmpty()) {
+                if (!Model.getFacade().getSources(flow).isEmpty()) {
                     old = /*(MModelElement)*/
-                        ModelFacade.getSources(flow).toArray()[0];
+                        Model.getFacade().getSources(flow).toArray()[0];
                 }
                 if (old != source.getSelectedItem()) {
                     if (source.getSelectedItem() != null) {

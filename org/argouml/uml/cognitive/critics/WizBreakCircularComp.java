@@ -37,7 +37,6 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.generator.GeneratorDisplay;
 import org.tigris.gef.util.VectorSet;
 
@@ -91,7 +90,7 @@ public class WizBreakCircularComp extends UMLWizard {
 	    for (int i = 0; i < size; i++) {
 		Object me = /*(MModelElement)*/ offs.elementAt(i);
 		String s = GeneratorDisplay.getInstance()
-		    .generate(ModelFacade.getName(me));
+		    .generate(Model.getFacade().getName(me));
 		res.addElement(s);
 	    }
 	}
@@ -104,25 +103,25 @@ public class WizBreakCircularComp extends UMLWizard {
     protected Vector getOptions2() {
 	Vector res = new Vector();
 	if (selectedCls != null) {
-	    Collection aes = ModelFacade.getAssociationEnds(selectedCls);
+	    Collection aes = Model.getFacade().getAssociationEnds(selectedCls);
 	    Object fromType = selectedCls;
 	    String fromName =
 	        GeneratorDisplay.getInstance()
-	            .generate(ModelFacade.getName(fromType));
+	            .generate(Model.getFacade().getName(fromType));
 	    for (Iterator iter = aes.iterator(); iter.hasNext();) {
 		Object fromEnd = /*(MAssociationEnd)*/ iter.next();
-		Object asc = ModelFacade.getAssociation(fromEnd);
+		Object asc = Model.getFacade().getAssociation(fromEnd);
 		Object toEnd =
-		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
+		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 		if (toEnd == fromEnd) {
 		    toEnd =
-		        new ArrayList(ModelFacade.getConnections(asc)).get(1);
+		        new ArrayList(Model.getFacade().getConnections(asc)).get(1);
 		}
-		Object toType = ModelFacade.getType(toEnd);
+		Object toType = Model.getFacade().getType(toEnd);
 		String ascName = GeneratorDisplay.getInstance()
-		    .generate(ModelFacade.getName(asc));
+		    .generate(Model.getFacade().getName(asc));
 		String toName = GeneratorDisplay.getInstance()
-		    .generate(ModelFacade.getName(toType));
+		    .generate(Model.getFacade().getName(toType));
 		String s = ascName + " from " + fromName + " to " + toName;
 		res.addElement(s);
 	    }
@@ -192,17 +191,17 @@ public class WizBreakCircularComp extends UMLWizard {
 	    }
 	    Object ae = null;
 	    Iterator iter =
-	        ModelFacade.getAssociationEnds(selectedCls).iterator();
+	        Model.getFacade().getAssociationEnds(selectedCls).iterator();
 	    for (int n = 0; n <= choice; n++) {
 	        ae = /*(MAssociationEnd)*/ iter.next();
 	    }
-	    selectedAsc = ModelFacade.getAssociation(ae);
+	    selectedAsc = Model.getFacade().getAssociation(ae);
 	    break;
 	    ////////////////
 	case 3:
 	    if (selectedAsc != null) {
 		List conns =
-		    new ArrayList(ModelFacade.getConnections(selectedAsc));
+		    new ArrayList(Model.getFacade().getConnections(selectedAsc));
 		Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 		Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 		try {

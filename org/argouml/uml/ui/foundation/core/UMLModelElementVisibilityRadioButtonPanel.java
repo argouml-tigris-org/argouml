@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -71,7 +70,7 @@ public class UMLModelElementVisibilityRadioButtonPanel
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /*(MModelElement)*/ getTarget();
-            Object kind = ModelFacade.getVisibility(target);
+            Object kind = Model.getFacade().getVisibility(target);
             if (kind == null
                     || kind.equals(
                             Model.getVisibilityKind().getPublic())) {

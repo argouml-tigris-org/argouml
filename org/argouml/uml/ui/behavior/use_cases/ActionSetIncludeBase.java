@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -63,12 +62,12 @@ public class ActionSetIncludeBase extends UMLAction {
             UMLComboBox2 combo = (UMLComboBox2) source;
             newBase = /*(MUseCase)*/ combo.getSelectedItem();
             Object o = combo.getTarget();
-            if (org.argouml.model.ModelFacade.isAInclude(o)) {
+            if (Model.getFacade().isAInclude(o)) {
                 include = /*(MInclude)*/ o;
                 o = combo.getSelectedItem();
-                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
+                if (Model.getFacade().isAUseCase(o)) {
                     newBase = /*(MUseCase)*/ o;
-                    oldBase = ModelFacade.getBase(include);
+                    oldBase = Model.getFacade().getBase(include);
                     if (newBase != oldBase) {
                         Model.getUseCasesHelper().setBase(include, newBase);
                     }

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,15 +45,15 @@ public class UMLModelElementElementResidenceListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getElementResidences(getTarget()));
+        setAllElements(Model.getFacade().getElementResidences(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAElementResidence(o)
-            && ModelFacade.getElementResidences(getTarget()).contains(o);
+        return Model.getFacade().isAElementResidence(o)
+            && Model.getFacade().getElementResidences(getTarget()).contains(o);
     }
 
 }

@@ -49,9 +49,7 @@ import org.argouml.application.api.QuadrantPanel;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.TabToDoTarget;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.tigris.swidgets.Orientable;
-import org.tigris.swidgets.Orientation;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -59,6 +57,8 @@ import org.argouml.uml.ui.PropPanel;
 import org.argouml.uml.ui.TabModelTarget;
 import org.argouml.uml.ui.TabProps;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.Orientable;
+import org.tigris.swidgets.Orientation;
 
 /**
  * The lower-right pane of the main ArgoUML window, which shows
@@ -78,7 +78,9 @@ public class DetailsPane
 	       Orientable,
 	       TargetListener {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(DetailsPane.class);
 
     ////////////////////////////////////////////////////////////////
@@ -156,8 +158,9 @@ public class DetailsPane
         for (int i = 0; i < tabPanelList.size(); i++) {
             String title = "tab";
             JPanel t = (JPanel) tabPanelList.elementAt(i);
-            if (t instanceof TabSpawnable)
+            if (t instanceof TabSpawnable) {
                 title = ((TabSpawnable) t).getTitle();
+            }
             title = Translator.localize(title);
             if (t instanceof TabToDoTarget) {
                 topLevelTabbedPane.addTab(title, leftArrowIcon, t);
@@ -237,8 +240,9 @@ public class DetailsPane
                 Component tab = topLevelTabbedPane.getComponentAt(i);
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
-                        if (!(tab instanceof TargetListener))
-			    ((TabTarget) tab).setTarget(target);
+                        if (!(tab instanceof TargetListener)) {
+                            ((TabTarget) tab).setTarget(target);
+                        }
                         topLevelTabbedPane.setSelectedIndex(i);
                         tabSelected = true;
                         lastNonNullTab = i;
@@ -327,7 +331,7 @@ public class DetailsPane
     // actions
 
     /**
-     * Get the index of the tab with the given name
+     * Get the index of the tab with the given name.
      *
      * @param tabName the name of the required tab
      * @return index of the tab of the given name
@@ -335,14 +339,15 @@ public class DetailsPane
     public int getIndexOfNamedTab(String tabName) {
         for (int i = 0; i < tabPanelList.size(); i++) {
             String title = topLevelTabbedPane.getTitleAt(i);
-            if (title != null && title.equals(tabName))
+            if (title != null && title.equals(tabName)) {
                 return i;
+            }
         }
         return -1;
     }
 
     /**
-     * Get the JPanel of the tab with the given name
+     * Get the JPanel of the tab with the given name.
      *
      * @param tabName the name of the required tab
      * @return the tab of the given name
@@ -350,14 +355,15 @@ public class DetailsPane
     public JPanel getNamedTab(String tabName) {
         for (int i = 0; i < tabPanelList.size(); i++) {
             String title = topLevelTabbedPane.getTitleAt(i);
-            if (title != null && title.equals(tabName))
+            if (title != null && title.equals(tabName)) {
                 return (JPanel) topLevelTabbedPane.getComponentAt(i);
+            }
         }
         return null;
     }
 
     /**
-     * Get the number of tabs
+     * Get the number of tabs.
      *
      * @return the number of tab pages
      */
@@ -411,7 +417,7 @@ public class DetailsPane
     }
 
     /**
-     * returns the tab instance of the specified class
+     * Returns the tab instance of the specified class.
      *
      * @param tabClass the given class
      * @return the tab instance for the given class
@@ -450,26 +456,28 @@ public class DetailsPane
         // update the tab
         if (lastNonNullTab >= 0) {
 	    Object tab = tabPanelList.get(lastNonNullTab);
-	    if (tab instanceof TargetListener)
-		removeTargetListener((TargetListener) tab);
+	    if (tab instanceof TargetListener) {
+	        removeTargetListener((TargetListener) tab);
+	    }
 	}
         Object target = TargetManager.getInstance().getTarget();
 
         if (!(sel instanceof TargetListener)) {
-            if (sel instanceof TabToDo)
-		((TabToDo) sel).refresh();
-
-            else if (sel instanceof TabTarget)
-		((TabTarget) sel).setTarget(target);
+            if (sel instanceof TabToDo) {
+                ((TabToDo) sel).refresh();
+            } else if (sel instanceof TabTarget) {
+                ((TabTarget) sel).setTarget(target);
+            }
         } else {
             removeTargetListener((TargetListener) sel);
             addTargetListener((TargetListener) sel);
         }
 
         if (target != null
-            && ModelFacade.isABase(target)
-            && topLevelTabbedPane.getSelectedIndex() > 0)
+            && Model.getFacade().isABase(target)
+            && topLevelTabbedPane.getSelectedIndex() > 0) {
             lastNonNullTab = topLevelTabbedPane.getSelectedIndex();
+        }
 
     }
 
@@ -545,22 +553,24 @@ public class DetailsPane
         int tab = topLevelTabbedPane.getSelectedIndex();
         if (tab != -1) {
             Rectangle tabBounds = topLevelTabbedPane.getBoundsAt(tab);
-            if (!tabBounds.contains(me.getX(), me.getY()))
+            if (!tabBounds.contains(me.getX(), me.getY())) {
                 return;
-            if (me.getClickCount() == 1)
+            }
+            if (me.getClickCount() == 1) {
                 mySingleClick(tab);
-            else if (me.getClickCount() >= 2)
+            } else if (me.getClickCount() >= 2) {
                 myDoubleClick(tab);
+            }
         }
     }
 
     /**
-     * graphic that goes on the tab label
+     * Graphic that goes on the tab label.
      */
     private Icon upArrowIcon = new UpArrowIcon();
 
     /**
-     * graphic that goes on the tab label
+     * Graphic that goes on the tab label.
      */
     private Icon leftArrowIcon = new LeftArrowIcon();
 
@@ -682,7 +692,7 @@ public class DetailsPane
 // related classes
 
 /**
- * class defining a graphic that goes on the tab label
+ * Class defining a graphic that goes on the tab label.
  */
 class UpArrowIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {
@@ -703,7 +713,7 @@ class UpArrowIcon implements Icon {
 }
 
 /**
- * class defining a graphic that goes on the tab label
+ * Class defining a graphic that goes on the tab label.
  */
 class LeftArrowIcon implements Icon {
     public void paintIcon(Component c, Graphics g, int x, int y) {

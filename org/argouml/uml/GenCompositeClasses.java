@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
 
 /**
@@ -61,11 +60,11 @@ public class GenCompositeClasses implements ChildGenerator {
      */
     public Enumeration gen(Object o) {
 	Vector res = new Vector();
-	if (!(ModelFacade.isAClassifier(o))) {
+	if (!(Model.getFacade().isAClassifier(o))) {
 	    return res.elements();
 	}
 	Object cls = /*(MClassifier)*/ o;
-	Vector ends = new Vector(ModelFacade.getAssociationEnds(cls));
+	Vector ends = new Vector(Model.getFacade().getAssociationEnds(cls));
 	if (ends == null) {
 	    return res.elements();
 	}
@@ -73,16 +72,16 @@ public class GenCompositeClasses implements ChildGenerator {
 	while (assocEnds.hasNext()) {
 	    Object ae = /*(MAssociationEnd)*/ assocEnds.next();
 	    if (Model.getAggregationKind().getComposite().equals(
-	            ModelFacade.getAggregation(ae))) {
-		Object asc = ModelFacade.getAssociation(ae);
-		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
+	            Model.getFacade().getAggregation(ae))) {
+		Object asc = Model.getFacade().getAssociation(ae);
+		ArrayList conn = new ArrayList(Model.getFacade().getConnections(asc));
 		if (conn == null || conn.size() != 2) {
 		    continue;
 		}
 		Object otherEnd =
 		    (ae == conn.get(0)) ? conn.get(1) : conn.get(0);
-		if (ModelFacade.getType(ae) != ModelFacade.getType(otherEnd)) {
-		    res.add(ModelFacade.getType(otherEnd));
+		if (Model.getFacade().getType(ae) != Model.getFacade().getType(otherEnd)) {
+		    res.add(Model.getFacade().getType(otherEnd));
 		}
 	    }
 	}

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,7 +46,7 @@ public class UMLClassifierInstanceListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getInstances(getTarget()));
+            setAllElements(Model.getFacade().getInstances(getTarget()));
         }
     }
 
@@ -54,7 +54,7 @@ public class UMLClassifierInstanceListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getInstances(getTarget()).contains(element);
+        return Model.getFacade().getInstances(getTarget()).contains(element);
     }
 
 }

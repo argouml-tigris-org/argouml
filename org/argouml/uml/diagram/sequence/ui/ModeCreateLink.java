@@ -200,7 +200,8 @@ public class ModeCreateLink extends ModeCreate {
                 Fig destPortFig = destFigNode.getPortFig(foundPort);
                 Object edgeType = getArg("edgeClass");
                 if (edgeType != null) {
-                    newEdge = mgm.connect(startPort, foundPort, (Class) edgeType);
+                    newEdge =
+                        mgm.connect(startPort, foundPort, (Class) edgeType);
                 } else {
                     newEdge = mgm.connect(startPort, foundPort);
                 }

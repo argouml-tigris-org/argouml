@@ -34,7 +34,6 @@ import javax.swing.Action;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
@@ -67,7 +66,7 @@ public class ActionAddNote extends UMLAction {
     private boolean containsAModelElement(Collection c) {
         Iterator i = c.iterator();
         while (i.hasNext()) {
-            if (ModelFacade.isAModelElement(i.next()))
+            if (Model.getFacade().isAModelElement(i.next()))
                 return true;
         }
         return false;
@@ -90,12 +89,12 @@ public class ActionAddNote extends UMLAction {
         Iterator i = targets.iterator();
         while (i.hasNext()) {
             Object obj = i.next();
-            if (ModelFacade.isAModelElement(obj)
+            if (Model.getFacade().isAModelElement(obj)
                     && (d.presentationFor(obj) instanceof FigNode)
-                    && (!(ModelFacade.isAComment(obj)))) {
+                    && (!(Model.getFacade().isAComment(obj)))) {
                 if (firstTarget == null) firstTarget = obj;
                 /* Prevent e.g. AssociationClasses from being added trice: */
-                if (!ModelFacade.getAnnotatedElements(comment).contains(obj))
+                if (!Model.getFacade().getAnnotatedElements(comment).contains(obj))
                     Model.getCoreHelper().addAnnotatedElement(comment, obj);
             }
         }
@@ -105,7 +104,7 @@ public class ActionAddNote extends UMLAction {
         Fig fig = d.presentationFor(comment); // remember the fig for later
         
         //Create the comment links and draw them
-        i = ModelFacade.getAnnotatedElements(comment).iterator();
+        i = Model.getFacade().getAnnotatedElements(comment).iterator();
         while (i.hasNext()) {
             Object obj = i.next();
             ((MutableGraphModel) d.getGraphModel())

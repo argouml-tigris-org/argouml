@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -106,8 +105,8 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public Object getSender() {
         Object sender = null;
         Object target = getTarget();
-        if (ModelFacade.isAStimulus(target)) {
-            sender =  ModelFacade.getSender(target);
+        if (Model.getFacade().isAStimulus(target)) {
+            sender =  Model.getFacade().getSender(target);
         }
         return sender;
     }
@@ -117,7 +116,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
      */
     public void setSender(Object/*MInstance*/ element) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAStimulus(target)) {
+        if (Model.getFacade().isAStimulus(target)) {
             Model.getCollaborationsHelper().setSender(target, element);
         }
     }
@@ -129,8 +128,8 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public Object getReceiver() {
         Object receiver = null;
         Object target = getTarget();
-        if (ModelFacade.isAStimulus(target)) {
-            receiver =  ModelFacade.getReceiver(target);
+        if (Model.getFacade().isAStimulus(target)) {
+            receiver =  Model.getFacade().getReceiver(target);
         }
         return receiver;
     }
@@ -140,7 +139,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
      */
     public void setReceiver(Object/*MInstance*/ element) {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAStimulus(target)) {
+        if (Model.getFacade().isAStimulus(target)) {
             Model.getCommonBehaviorHelper().setReceiver(target, element);
         }
     }
@@ -151,7 +150,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
      */
     public boolean isAcceptibleAssociation(
             Object/*MModelElement*/ modelelement) {
-        return org.argouml.model.ModelFacade.isAAssociation(modelelement);
+        return Model.getFacade().isAAssociation(modelelement);
     }
 
     /**
@@ -160,10 +159,10 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public Object getAssociation() {
         Object association = null;
         Object target = getTarget();
-        if (ModelFacade.isAStimulus(target)) {
-            Object link = ModelFacade.getCommunicationLink(target);
+        if (Model.getFacade().isAStimulus(target)) {
+            Object link = Model.getFacade().getCommunicationLink(target);
             if (link != null) {
-                association = ModelFacade.getAssociation(link);
+                association = Model.getFacade().getAssociation(link);
             }
         }
         return association;
@@ -174,9 +173,9 @@ public class PropPanelStimulus extends PropPanelModelElement {
      */
     public void setAssociation(Object/*MAssociation*/ element) {
         Object target = getTarget();
-        if (ModelFacade.isAStimulus(target)) {
+        if (Model.getFacade().isAStimulus(target)) {
             Object stimulus = /*(MStimulus)*/ target;
-            Object link = ModelFacade.getCommunicationLink(stimulus);
+            Object link = Model.getFacade().getCommunicationLink(stimulus);
             if (link == null) {
                 link = Model.getCommonBehaviorFactory().createLink();
                 //((MStimulus)stimulus).getFactory().createLink();
@@ -187,7 +186,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
                             link);
                 }
             }
-            Object oldAssoc = ModelFacade.getAssociation(link);
+            Object oldAssoc = Model.getFacade().getAssociation(link);
             if (oldAssoc != element) {
                 Model.getCoreHelper().setAssociation(link, element);
                 //

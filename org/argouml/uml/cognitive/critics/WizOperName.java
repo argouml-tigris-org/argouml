@@ -34,7 +34,6 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A wizard to help the user change the name of an operation to a better name.
@@ -202,9 +201,9 @@ public class WizOperName extends WizMEName {
 
                 if (!oldStereotypeIsSet) {
                     oldStereotype = null;
-                    if (ModelFacade.getStereotypes(oper).size() > 0) {
+                    if (Model.getFacade().getStereotypes(oper).size() > 0) {
                         oldStereotype =
-                            ModelFacade.getStereotypes(oper).iterator().next();
+                            Model.getFacade().getStereotypes(oper).iterator().next();
                     }
                     oldStereotypeIsSet = true;
                 }
@@ -213,19 +212,19 @@ public class WizOperName extends WizMEName {
                 // "create" and the base class BehavioralFeature in
                 // the model. If there is none then we create one and
                 // put it there.
-                Object m = ModelFacade.getModel(oper);
+                Object m = Model.getFacade().getModel(oper);
                 Object theStereotype = null;
-                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator();
+                for (Iterator iter = Model.getFacade().getOwnedElements(m).iterator();
                                         iter.hasNext();) {
                     Object candidate = iter.next();
-                    if (!(ModelFacade.isAStereotype(candidate))) {
+                    if (!(Model.getFacade().isAStereotype(candidate))) {
                         continue;
                     }
-                    if (!("create".equals(ModelFacade.getName(candidate)))) {
+                    if (!("create".equals(Model.getFacade().getName(candidate)))) {
                         continue;
                     }
-                    if (!("BehavioralFeature".equals(ModelFacade
-                            .getBaseClass(candidate)))) {
+                    if (!("BehavioralFeature".equals(
+                            Model.getFacade().getBaseClass(candidate)))) {
                         continue;
                     }
                     theStereotype = candidate;
@@ -240,8 +239,8 @@ public class WizOperName extends WizMEName {
                     Model.getExtensionMechanismsHelper()
                             .setBaseClass(theStereotype, "BehavioralFeature");
                     Object targetNS =
-                        findNamespace(ModelFacade.getNamespace(oper),
-                                      ModelFacade.getModel(oper));
+                        findNamespace(Model.getFacade().getNamespace(oper),
+                                      Model.getFacade().getModel(oper));
                     Model.getCoreHelper().addOwnedElement(targetNS, theStereotype);
                 }
 
@@ -280,7 +279,7 @@ public class WizOperName extends WizMEName {
         if (phantomNS == null) {
             return targetModel;
         }
-        Object parentNS = ModelFacade.getNamespace(phantomNS);
+        Object parentNS = Model.getFacade().getNamespace(phantomNS);
         if (parentNS == null) {
             return targetModel;
         } else {
@@ -289,17 +288,17 @@ public class WizOperName extends WizMEName {
             //   see if there is already an element with the same name
             //
             Collection ownedElements =
-                ModelFacade.getOwnedElements(targetParentNS);
-            String phantomName = ModelFacade.getName(phantomNS);
+                Model.getFacade().getOwnedElements(targetParentNS);
+            String phantomName = Model.getFacade().getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
                 Object ownedElement;
                 Iterator iter = ownedElements.iterator();
                 while (iter.hasNext()) {
                     ownedElement = iter.next();
-                    targetName = ModelFacade.getName(ownedElement);
+                    targetName = Model.getFacade().getName(ownedElement);
                     if (targetName != null && phantomName.equals(targetName)) {
-                        if (ModelFacade.isAPackage(ownedElement)) {
+                        if (Model.getFacade().isAPackage(ownedElement)) {
                             ns = ownedElement;
                             break;
                         }

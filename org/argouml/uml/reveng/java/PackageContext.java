@@ -25,7 +25,6 @@
 package org.argouml.uml.reveng.java;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.reveng.ImportClassLoader;
 
 /**
@@ -55,7 +54,7 @@ class PackageContext extends Context {
     public Object getInterface(String name)
 	throws ClassifierNotFoundException {
         // Search in model
-        Object mInterface = ModelFacade.lookupIn(mPackage, name);
+        Object mInterface = Model.getFacade().lookupIn(mPackage, name);
 
         if (mInterface == null) {
 	    Class classifier;
@@ -64,7 +63,7 @@ class PackageContext extends Context {
 	    try {
 
 		// Special case for model
-		if (ModelFacade.isAModel(mPackage)) {
+		if (Model.getFacade().isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
@@ -77,7 +76,7 @@ class PackageContext extends Context {
 			Model.getCoreFactory()
 			    .buildInterface(name, mPackage);
 		    Model.getCoreHelper().setTaggedValue(mInterface,
-					       ModelFacade.GENERATED_TAG,
+					       Model.getFacade().GENERATED_TAG,
 					       "yes");
 		}
 	    }
@@ -86,7 +85,7 @@ class PackageContext extends Context {
                 // try USER classpath
                 try {
                     // Special case for model
-                    if (ModelFacade.isAModel(mPackage)) {
+                    if (Model.getFacade().isAModel(mPackage)) {
                         classifier =
 			    ImportClassLoader.getInstance().loadClass(name);
                     }
@@ -101,7 +100,7 @@ class PackageContext extends Context {
 			    Model.getCoreFactory()
 			        .buildInterface(name, mPackage);
 			Model.getCoreHelper().setTaggedValue(mInterface,
-						   ModelFacade.GENERATED_TAG,
+						   Model.getFacade().GENERATED_TAG,
 						   "yes");
 		    }
                 }
@@ -133,7 +132,7 @@ class PackageContext extends Context {
     public Object get(String name)
 	throws ClassifierNotFoundException {
 	// Search in model
-	Object mClassifier = ModelFacade.lookupIn(mPackage, name);
+	Object mClassifier = Model.getFacade().lookupIn(mPackage, name);
 
 	if (mClassifier == null) {
 	    Class classifier;
@@ -141,7 +140,7 @@ class PackageContext extends Context {
 	    try {
 
 		// Special case for model
-		if (ModelFacade.isAModel(mPackage)) {
+		if (Model.getFacade().isAModel(mPackage)) {
 		    classifier = Class.forName(name);
 		}
 		else {
@@ -160,7 +159,7 @@ class PackageContext extends Context {
 			    .buildClass(name, mPackage);
 		}
 		Model.getCoreHelper().setTaggedValue(mClassifier,
-					   ModelFacade.GENERATED_TAG,
+					   Model.getFacade().GENERATED_TAG,
 					   "yes");
 	    }
 	    catch (ClassNotFoundException e) {
@@ -169,7 +168,7 @@ class PackageContext extends Context {
 
                 try {
                     // Special case for model
-                    if (ModelFacade.isAModel(mPackage)) {
+                    if (Model.getFacade().isAModel(mPackage)) {
                         classifier =
 			    ImportClassLoader.getInstance().loadClass(name);
                     }
@@ -189,7 +188,7 @@ class PackageContext extends Context {
 			        .buildClass(name, mPackage);
 		    }
 		    Model.getCoreHelper().setTaggedValue(mClassifier,
-					       ModelFacade.GENERATED_TAG,
+					       Model.getFacade().GENERATED_TAG,
 					       "yes");
                 }
                 catch (Exception e1) {

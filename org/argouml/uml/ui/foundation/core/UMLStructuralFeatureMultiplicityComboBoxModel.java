@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 
 /**
@@ -48,8 +48,9 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null
-                && (ModelFacade.isAStructuralFeature(getTarget())))
-            return ModelFacade.getMultiplicity(getTarget());
+                && (Model.getFacade().isAStructuralFeature(getTarget()))) {
+            return Model.getFacade().getMultiplicity(getTarget());
+        }
         return null;
     }
 

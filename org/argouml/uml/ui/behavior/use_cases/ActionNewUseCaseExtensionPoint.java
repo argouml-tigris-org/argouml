@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -56,7 +55,7 @@ public class ActionNewUseCaseExtensionPoint
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        if (ModelFacade.isAUseCase(getTarget())) {
+        if (Model.getFacade().isAUseCase(getTarget())) {
             Model.getUseCasesFactory().buildExtensionPoint(getTarget());
         }
     }

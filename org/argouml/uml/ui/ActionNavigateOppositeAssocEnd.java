@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * navigate to opposite association end.
@@ -45,7 +45,7 @@ public class ActionNavigateOppositeAssocEnd extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
-        return ModelFacade.getOppositeEnd(source);
+        return Model.getFacade().getOppositeEnd(source);
     }
 
     /**

@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -98,35 +97,35 @@ public class ExplorerPopup extends JPopupMenu {
 
             final Object projectModel = currentProject.getModel();
             final boolean modelElementSelected =
-                ModelFacade.isAModelElement(selectedItem);
+                Model.getFacade().isAModelElement(selectedItem);
 
             if (modelElementSelected) {
                 final boolean nAryAssociationSelected =
-                        ModelFacade.isANaryAssociation(selectedItem);
+                        Model.getFacade().isANaryAssociation(selectedItem);
                 final boolean classifierAndRelationShipSelected =
-                    ModelFacade.isAClassifierAndARelationship(selectedItem);
+                    Model.getFacade().isAClassifierAndARelationship(selectedItem);
                 final boolean classifierSelected =
-                    ModelFacade.isAClassifier(selectedItem);
+                    Model.getFacade().isAClassifier(selectedItem);
                 final boolean dataTypeSelected =
-                    ModelFacade.isADataType(selectedItem);
+                    Model.getFacade().isADataType(selectedItem);
                 final boolean packageSelected =
-                    ModelFacade.isAPackage(selectedItem);
+                    Model.getFacade().isAPackage(selectedItem);
                 final boolean commentSelected =
-                    ModelFacade.isAComment(selectedItem);
+                    Model.getFacade().isAComment(selectedItem);
                 final boolean stateVertexSelected =
-                    ModelFacade.isAStateVertex(selectedItem);
+                    Model.getFacade().isAStateVertex(selectedItem);
                 final boolean instanceSelected =
-                    ModelFacade.isAInstance(selectedItem);
+                    Model.getFacade().isAInstance(selectedItem);
                 final boolean dataValueSelected =
-                    ModelFacade.isADataValue(selectedItem);
+                    Model.getFacade().isADataValue(selectedItem);
                 final boolean relationshipSelected =
-                    ModelFacade.isARelationship(selectedItem);
+                    Model.getFacade().isARelationship(selectedItem);
                 final boolean flowSelected =
-                    ModelFacade.isAFlow(selectedItem);
+                    Model.getFacade().isAFlow(selectedItem);
                 final boolean linkSelected =
-                    ModelFacade.isALink(selectedItem);
+                    Model.getFacade().isALink(selectedItem);
                 final boolean transitionSelected =
-                    ModelFacade.isATransition(selectedItem);
+                    Model.getFacade().isATransition(selectedItem);
                 final boolean diagramSelected =
                     selectedItem instanceof Diagram;
 
@@ -177,13 +176,13 @@ public class ExplorerPopup extends JPopupMenu {
                     this.add(action);
                 }
 
-                if (ModelFacade.isAClassifier(selectedItem)
-                        || ModelFacade.isAPackage(selectedItem)) {
+                if (Model.getFacade().isAClassifier(selectedItem)
+                        || Model.getFacade().isAPackage(selectedItem)) {
                     this.add(new ActionSetSourcePath());
                 }
 
-                if (ModelFacade.isAPackage(selectedItem)
-                        || ModelFacade.isAModel(selectedItem)) {
+                if (Model.getFacade().isAPackage(selectedItem)
+                        || Model.getFacade().isAModel(selectedItem)) {
                     this.add(ActionAddPackage.SINGLETON);
                 }
                 

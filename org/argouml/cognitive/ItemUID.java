@@ -28,7 +28,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
 
 /**
@@ -157,7 +157,7 @@ public class ItemUID {
      * @return	The ID of the object, or null.
      */
     protected static String readObjectID(Object obj) {
-        if (ModelFacade.isABase(obj)) {
+        if (Model.getFacade().isABase(obj)) {
             return UUIDHelper.getInstance().getUUID(obj);
         }
 	/*
@@ -226,7 +226,7 @@ public class ItemUID {
      * @return	The new ID of the object, or null.
      */
     protected static String createObjectID(Object obj) {
-	if (ModelFacade.isABase(obj)) {
+	if (Model.getFacade().isABase(obj)) {
 	    return null;
 	}
 

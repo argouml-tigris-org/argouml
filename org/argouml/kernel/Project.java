@@ -43,7 +43,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -362,7 +361,7 @@ public class Project implements java.io.Serializable, TargetListener {
         } else if (m instanceof ProjectMemberTodoList) {
             LOG.info("Adding todo member");
             addTodoMember((ProjectMemberTodoList) m);
-        } else if (ModelFacade.isAModel(m)) {
+        } else if (Model.getFacade().isAModel(m)) {
             LOG.info("Adding model member");
             addModelMember(m);
         } else {
@@ -409,7 +408,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void addModel(Object m) {
 
-        if (!ModelFacade.isANamespace(m)) {
+        if (!Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
 	}
 
@@ -680,7 +679,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public Object findTypeInModel(String s, Object ns) {
 
-        if (!ModelFacade.isANamespace(ns)) {
+        if (!Model.getFacade().isANamespace(ns)) {
             throw new IllegalArgumentException();
     	}
 
@@ -695,8 +694,8 @@ public class Project implements java.io.Serializable, TargetListener {
         for (int i = 0; i < classifiers.length; i++) {
 
             classifier = classifiers[i];
-            if (ModelFacade.getName(classifier) != null
-            		&& ModelFacade.getName(classifier).equals(s)) {
+            if (Model.getFacade().getName(classifier) != null
+            		&& Model.getFacade().getName(classifier).equals(s)) {
                 return classifier;
             }
         }
@@ -709,7 +708,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setCurrentNamespace(Object m) {
 
-        if (m != null && !ModelFacade.isANamespace(m)) {
+        if (m != null && !Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
     	}
 
@@ -822,7 +821,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public int getPresentationCountFor(Object me) {
 
-        if (!ModelFacade.isAModelElement(me)) {
+        if (!Model.getFacade().isAModelElement(me)) {
             throw new IllegalArgumentException();
     	}
 
@@ -944,10 +943,11 @@ public class Project implements java.io.Serializable, TargetListener {
             TargetManager.getInstance().removeHistoryElement(obj);
             trashcan.add(obj);
         }
-        if (ModelFacade.isABase(obj)) { // an object that can be represented
-            Collection allFigs = findAllPresentationsFor(obj, true); 
+        if (Model.getFacade().isABase(obj)) {
+            // an object that can be represented
+            Collection allFigs = findAllPresentationsFor(obj, true);
             removeAllFigs(allFigs);
-            
+
             Model.getUmlFactory().delete(obj);
 
 
@@ -995,11 +995,11 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         ProjectManager.getManager().setNeedsSave(needSave);
     }
-    
+
     private Collection collectAllEnclosedFigsRecursively(Fig f) {
         Collection c = new ArrayList();
         Collection encl = f.getEnclosedFigs();
-        if (encl != null) { 
+        if (encl != null) {
             if (!encl.isEmpty()) {
                 Iterator i = encl.iterator();
                 while (i.hasNext()) {
@@ -1010,7 +1010,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         return c;
     }
-    
+
     /**
      * @param c a collection of figs
      */
@@ -1047,7 +1047,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setDefaultModel(Object theDefaultModel) {
 
-        if (!ModelFacade.isAModel(theDefaultModel)) {
+        if (!Model.getFacade().isAModel(theDefaultModel)) {
             throw new IllegalArgumentException();
         }
 
@@ -1094,7 +1094,7 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setRoot(Object root) {
 
-        if (!ModelFacade.isAModel(root)) {
+        if (!Model.getFacade().isAModel(root)) {
             throw new IllegalArgumentException();
         }
 
@@ -1244,10 +1244,10 @@ public class Project implements java.io.Serializable, TargetListener {
         target = TargetManager.getInstance().getModelTarget();
         if (target instanceof UMLDiagram) {
             theCurrentNamespace = ((UMLDiagram) target).getNamespace();
-        } else if (ModelFacade.isANamespace(target)) {
+        } else if (Model.getFacade().isANamespace(target)) {
             theCurrentNamespace = target;
-        } else if (ModelFacade.isAModelElement(target)) {
-            theCurrentNamespace = ModelFacade.getNamespace(target);
+        } else if (Model.getFacade().isAModelElement(target)) {
+            theCurrentNamespace = Model.getFacade().getNamespace(target);
         } else {
             theCurrentNamespace = getRoot();
         }

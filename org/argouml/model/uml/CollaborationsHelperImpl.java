@@ -32,7 +32,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.argouml.model.CollaborationsHelper;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -384,8 +383,8 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         }
         // wellformednessrule: if the role does not have a name, the role shall
         // be the only one with the particular base
-        if (ModelFacade.getName(role) == null
-	    || ModelFacade.getName(role).equals("")) {
+        if (nsmodel.getFacade().getName(role) == null
+	    || nsmodel.getFacade().getName(role).equals("")) {
 
             MCollaboration collab = (MCollaboration) role.getNamespace();
             Collection roles =
@@ -403,7 +402,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
             }
         }
         role.addBase(base);
-        if (ModelFacade.getBases(role).size() == 1) {
+        if (nsmodel.getFacade().getBases(role).size() == 1) {
             role.setAvailableContentses(base.getOwnedElements());
             role.setAvailableFeatures(base.getFeatures());
         } else {
@@ -438,7 +437,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
 					       + "or the collection bases is "
 					       + "null");
         }
-        Iterator it = ModelFacade.getBases(role).iterator();
+        Iterator it = nsmodel.getFacade().getBases(role).iterator();
         while (it.hasNext()) {
             removeBase(role, it.next());
         }
@@ -600,7 +599,7 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
      * @return Collection all possible bases
      */
     private Collection getAllPossibleBases(MClassifierRole role) {
-        if (role == null || ModelFacade.getNamespace(role) == null) {
+        if (role == null || nsmodel.getFacade().getNamespace(role) == null) {
             return new ArrayList();
         }
         MCollaboration coll = (MCollaboration) role.getNamespace();
@@ -611,8 +610,8 @@ class CollaborationsHelperImpl implements CollaborationsHelper {
         returnList.removeAll(nsmodel.getModelManagementHelper()
 			     .getAllModelElementsOfKind(ns,
 							MClassifierRole.class));
-        if (ModelFacade.getName(role) == null
-	    || ModelFacade.getName(role).equals("")) {
+        if (nsmodel.getFacade().getName(role) == null
+	    || nsmodel.getFacade().getName(role).equals("")) {
 
             List listToRemove = new ArrayList();
             Iterator it = returnList.iterator();

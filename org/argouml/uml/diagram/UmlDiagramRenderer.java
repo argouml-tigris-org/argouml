@@ -28,7 +28,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.FigActionState;
 import org.argouml.uml.diagram.activity.ui.FigCallState;
 import org.argouml.uml.diagram.activity.ui.FigObjectFlowState;
@@ -107,61 +106,61 @@ public abstract class UmlDiagramRenderer
                     "A model element must be supplied");
         }
         FigNode figNode = null;
-        if (ModelFacade.isAComment(node)) {
+        if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment();
-        } else if (ModelFacade.isAClass(node)) {
+        } else if (Model.getFacade().isAClass(node)) {
             figNode = new FigClass();
-        } else if (ModelFacade.isAInterface(node)) {
+        } else if (Model.getFacade().isAInterface(node)) {
             figNode = new FigInterface();
-        } else if (ModelFacade.isAInstance(node)) {
+        } else if (Model.getFacade().isAInstance(node)) {
             figNode = new FigInstance();
-        } else if (ModelFacade.isAModel(node)) {
+        } else if (Model.getFacade().isAModel(node)) {
             figNode = new FigModel();
-        } else if (ModelFacade.isASubsystem(node)) {
+        } else if (Model.getFacade().isASubsystem(node)) {
             figNode = new FigSubsystem();
-        } else if (ModelFacade.isAPackage(node)) {
+        } else if (Model.getFacade().isAPackage(node)) {
             figNode = new FigPackage();
-        } else if (ModelFacade.isAAssociation(node)) {
+        } else if (Model.getFacade().isAAssociation(node)) {
             figNode = new FigNodeAssociation();
-        } else if (ModelFacade.isAActor(node)) {
+        } else if (Model.getFacade().isAActor(node)) {
             figNode = new FigActor();
-        } else if (ModelFacade.isAUseCase(node)) {
+        } else if (Model.getFacade().isAUseCase(node)) {
             figNode = new FigUseCase();
-        } else if (ModelFacade.isAPartition(node)) {
+        } else if (Model.getFacade().isAPartition(node)) {
             figNode = new FigPartition();
-        } else if (ModelFacade.isACallState(node)) {
+        } else if (Model.getFacade().isACallState(node)) {
             figNode = new FigCallState();
-        } else if (ModelFacade.isAObjectFlowState(node)) {
+        } else if (Model.getFacade().isAObjectFlowState(node)) {
             figNode = new FigObjectFlowState();
-        } else if (ModelFacade.isASubactivityState(node)) {
+        } else if (Model.getFacade().isASubactivityState(node)) {
             figNode = new FigSubactivityState();
-        } else if (ModelFacade.isAClassifierRole(node)) {
+        } else if (Model.getFacade().isAClassifierRole(node)) {
             figNode = new FigClassifierRole();
-        } else if (ModelFacade.isAMessage(node)) {
+        } else if (Model.getFacade().isAMessage(node)) {
             figNode = new FigMessage();
-        } else if (ModelFacade.isANode(node)) {
+        } else if (Model.getFacade().isANode(node)) {
             figNode = new FigMNode();
-        } else if (ModelFacade.isANodeInstance(node)) {
+        } else if (Model.getFacade().isANodeInstance(node)) {
             figNode = new FigMNodeInstance();
-        } else if (ModelFacade.isAComponent(node)) {
+        } else if (Model.getFacade().isAComponent(node)) {
             figNode = new FigComponent();
-        } else if (ModelFacade.isAComponentInstance(node)) {
+        } else if (Model.getFacade().isAComponentInstance(node)) {
             figNode = new FigComponentInstance();
-        } else if (ModelFacade.isAObject(node)) {
+        } else if (Model.getFacade().isAObject(node)) {
             figNode = new FigObject();
-        } else if (ModelFacade.isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             figNode = new FigComment();
-        } else if (ModelFacade.isAActionState(node)) {
+        } else if (Model.getFacade().isAActionState(node)) {
             figNode = new FigActionState();
-        } else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
+        } else if (Model.getFacade().isAFinalState(node)) {
             figNode = new FigFinalState();
-        } else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
+        } else if (Model.getFacade().isACompositeState(node)) {
             figNode = new FigCompositeState();
-        } else if (org.argouml.model.ModelFacade.isAState(node)) {
+        } else if (Model.getFacade().isAState(node)) {
             figNode = new FigSimpleState();
-        } else if (ModelFacade.isAPseudostate(node)) {
+        } else if (Model.getFacade().isAPseudostate(node)) {
             Object pState = node;
-            Object kind = ModelFacade.getKind(pState);
+            Object kind = Model.getFacade().getKind(pState);
             if (Model.getPseudostateKind().getInitial().equals(kind)) {
                 figNode = new FigInitialState();
             } else if (Model.getPseudostateKind().getBranch()
@@ -229,25 +228,25 @@ public abstract class UmlDiagramRenderer
             throw new IllegalArgumentException("A model edge must be supplied");
         }
         FigEdge newEdge = null;
-        if (ModelFacade.isAAssociationClass(edge)) {
+        if (Model.getFacade().isAAssociationClass(edge)) {
             newEdge = new FigAssociationClass();
-        } else if (ModelFacade.isAAssociationEnd(edge)) {
+        } else if (Model.getFacade().isAAssociationEnd(edge)) {
             newEdge = new FigAssociationEnd();
-        } else if (ModelFacade.isAAssociation(edge)) {
+        } else if (Model.getFacade().isAAssociation(edge)) {
             newEdge = new FigAssociation();
-        } else if (ModelFacade.isALink(edge)) {
+        } else if (Model.getFacade().isALink(edge)) {
             newEdge = new FigLink();
-        } else if (ModelFacade.isAGeneralization(edge)) {
+        } else if (Model.getFacade().isAGeneralization(edge)) {
             newEdge = new FigGeneralization();
-        } else if (ModelFacade.isAPermission(edge)) {
+        } else if (Model.getFacade().isAPermission(edge)) {
             newEdge = new FigPermission();
-        } else if (ModelFacade.isAUsage(edge)) {
+        } else if (Model.getFacade().isAUsage(edge)) {
             newEdge = new FigUsage();
-        } else if (ModelFacade.isADependency(edge)) {
+        } else if (Model.getFacade().isADependency(edge)) {
             Object stereotype = null;
 
-            if (ModelFacade.getStereotypes(edge).size() > 0) {
-                stereotype = ModelFacade.getStereotypes(edge).get(0);
+            if (Model.getFacade().getStereotypes(edge).size() > 0) {
+                stereotype = Model.getFacade().getStereotypes(edge).get(0);
             }
             if (Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
@@ -257,13 +256,13 @@ public abstract class UmlDiagramRenderer
             }
         } else if (edge instanceof CommentEdge) {
             newEdge = new FigEdgeNote();
-        } else if (ModelFacade.isAAssociationRole(edge)) {
+        } else if (Model.getFacade().isAAssociationRole(edge)) {
             newEdge = new FigAssociationRole();
-        } else if (ModelFacade.isATransition(edge)) {
+        } else if (Model.getFacade().isATransition(edge)) {
             newEdge = new FigTransition();
-        } else if (ModelFacade.isAExtend(edge)) {
+        } else if (Model.getFacade().isAExtend(edge)) {
             newEdge = new FigExtend();
-        } else if (ModelFacade.isAInclude(edge)) {
+        } else if (Model.getFacade().isAInclude(edge)) {
             newEdge = new FigInclude();
         }
 

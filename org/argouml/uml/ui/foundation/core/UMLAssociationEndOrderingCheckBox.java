@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -52,7 +51,7 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
             setSelected(
                     Model.getOrderingKind().getOrdered().equals(
-                            ModelFacade.getOrdering(associationEnd)));
+                            Model.getFacade().getOrdering(associationEnd)));
         }
     }
 }

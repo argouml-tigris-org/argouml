@@ -34,7 +34,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 /**
@@ -95,8 +95,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
 
             // setting the tooltip to type and name
             String type = null;
-            if (ModelFacade.isAModelElement(value)) {
-                type = ModelFacade.getUMLClassName(value);
+            if (Model.getFacade().isAModelElement(value)) {
+                type = Model.getFacade().getUMLClassName(value);
             } else if (value instanceof UMLDiagram) {
                 type = ((UMLDiagram) value).getLabelName();
             }

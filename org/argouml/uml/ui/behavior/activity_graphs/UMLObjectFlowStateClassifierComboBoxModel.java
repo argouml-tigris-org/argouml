@@ -26,7 +26,6 @@ package org.argouml.uml.ui.behavior.activity_graphs;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -53,7 +52,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return ModelFacade.isAClassifier(o);
+        return Model.getFacade().isAClassifier(o);
         // && CoreHelper.getHelper().isValidNamespace(
         //      /*(MModelElement)*/ getTarget(), /*(MNamespace)*/ o)
     }
@@ -72,7 +71,7 @@ public class UMLObjectFlowStateClassifierComboBoxModel
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getType(getTarget());
+            return Model.getFacade().getType(getTarget());
         }
         return null;
     }

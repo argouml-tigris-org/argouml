@@ -25,7 +25,6 @@
 // $Id$
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
 import java.awt.Component;
 
 import javax.swing.DefaultListCellRenderer;
@@ -35,6 +34,7 @@ import javax.swing.UIManager;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.Model;
 
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
@@ -78,7 +78,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             int index, boolean isSelected, boolean cellHasFocus) {
         LOG.debug("determine rendering for: " + value);
         LOG.debug("show icon: " + showIcon);
-        if (ModelFacade.isABase(value) || ModelFacade.isAMultiplicity(value)) {
+        if (Model.getFacade().isABase(value)
+                || Model.getFacade().isAMultiplicity(value)) {
 
             LOG.debug("is a MBase or MMultiplicity");
             String text = makeText(value);
@@ -133,13 +134,13 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public String makeText(Object value) {
         String name = null;
-        if (ModelFacade.isAModelElement(value)) {
+        if (Model.getFacade().isAModelElement(value)) {
             Object/* MModelElement */elem = value;
-            name = ModelFacade.getName(elem);
+            name = Model.getFacade().getName(elem);
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
-        } else if (ModelFacade.isAMultiplicity(value)) {
+        } else if (Model.getFacade().isAMultiplicity(value)) {
             name = value.toString();
         } else {
             name = makeTypeName(value);
@@ -149,8 +150,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (org.argouml.model.ModelFacade.isABase(elem)) {
-            return ModelFacade.getUMLClassName(elem);
+        if (Model.getFacade().isABase(elem)) {
+            return Model.getFacade().getUMLClassName(elem);
         }
         return null;
     }

@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.argouml.model.ExtensionMechanismsHelper;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -245,7 +244,8 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
         if (clazz == null || stereo == null) {
             return false;
         }
-        if (getMetaModelName(clazz).equals(ModelFacade.getBaseClass(stereo))) {
+        if (getMetaModelName(clazz)
+                .equals(nsmodel.getFacade().getBaseClass(stereo))) {
             return true;
         } else {
             if (getMetaModelName(clazz).equals("ModelElement")) {
@@ -302,7 +302,7 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
 	    stereotype =
 		nsmodel.getModelManagementHelper().getCorrespondingElement(
 			stereotype,
-			ModelFacade.getModel(modelElement),
+			nsmodel.getFacade().getModel(modelElement),
 			true);
 	}
         nsmodel.getCoreHelper().setStereotype(modelElement, stereotype);

@@ -60,7 +60,6 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -448,7 +447,7 @@ public abstract class FigEdgeModelElement
             endTrans();
         } else
             super.propertyChange(pve);
-        if (ModelFacade.isABase(src)) {
+        if (Model.getFacade().isABase(src)) {
             /* If the source of the event is an UML object,
              * then the UML model has been changed.*/
             modelChanged(pve);
@@ -586,7 +585,7 @@ public abstract class FigEdgeModelElement
         if (getOwner() == null)
             return;
         String nameStr =
-	    Notation.generate(this, ModelFacade.getName(getOwner()));
+	    Notation.generate(this, Model.getFacade().getName(getOwner()));
         name.setText(nameStr);
         calcBounds();
         setBounds(getBounds());
@@ -600,15 +599,15 @@ public abstract class FigEdgeModelElement
             return;
         }
         Object stereotype = null;
-        if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
+        if (Model.getFacade().getStereotypes(getOwner()).size() > 0) {
             stereotype =
-		ModelFacade.getStereotypes(getOwner()).iterator().next();
+		Model.getFacade().getStereotypes(getOwner()).iterator().next();
         }
         if (stereotype == null) {
             stereo.setText("");
             return;
         }
-        String stereoStr = ModelFacade.getName(stereotype);
+        String stereoStr = Model.getFacade().getName(stereotype);
         if (stereoStr == null || stereoStr.length() == 0)
             stereo.setText("");
         else {
@@ -624,10 +623,10 @@ public abstract class FigEdgeModelElement
         if (newOwner != null) {
             Object oldOwner = getOwner();
 
-            if (org.argouml.model.ModelFacade.isAModelElement(oldOwner)) {
+            if (Model.getFacade().isAModelElement(oldOwner)) {
                 Model.getPump().removeModelEventListener(this, oldOwner);
             }
-            if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
+            if (Model.getFacade().isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, oldOwner);
 
                 if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
@@ -736,7 +735,7 @@ public abstract class FigEdgeModelElement
      */
     public void removeFromDiagram() {
         Object o = getOwner();
-        if (ModelFacade.isABase(o)) {
+        if (Model.getFacade().isABase(o)) {
             Model.getPump().removeModelEventListener(this, o);
         }
         if (this instanceof ArgoEventListener) {

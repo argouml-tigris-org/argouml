@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
@@ -87,21 +86,21 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
      * Return a Fig that can be used to represent the given node.
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-        if (ModelFacade.isAClass(node)) {
+        if (Model.getFacade().isAClass(node)) {
             return new FigClass(gm, node);
-        } else if (ModelFacade.isAInterface(node)) {
+        } else if (Model.getFacade().isAInterface(node)) {
             return new FigInterface(gm, node);
-        } else if (ModelFacade.isAInstance(node)) {
+        } else if (Model.getFacade().isAInstance(node)) {
             return new FigInstance(gm, node);
-        } else if (ModelFacade.isAModel(node)) {
+        } else if (Model.getFacade().isAModel(node)) {
             return new FigModel(gm, node);
-        } else if (ModelFacade.isASubsystem(node)) {
+        } else if (Model.getFacade().isASubsystem(node)) {
             return new FigSubsystem(gm, node);
-        } else if (ModelFacade.isAPackage(node)) {
+        } else if (Model.getFacade().isAPackage(node)) {
             return new FigPackage(gm, node);
-        } else if (ModelFacade.isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
-        } else if (ModelFacade.isAAssociation(node)) {
+        } else if (Model.getFacade().isAAssociation(node)) {
             return new FigNodeAssociation(gm, node);
         }
         LOG.error("TODO: ClassDiagramRenderer getFigNodeFor " + node);
@@ -126,33 +125,33 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
         FigEdge newEdge = null;
-        if (ModelFacade.isAAssociationClass(edge)) {
+        if (Model.getFacade().isAAssociationClass(edge)) {
             FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
             return ascCFig;
-        } else if (ModelFacade.isAAssociationEnd(edge)) {
+        } else if (Model.getFacade().isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
-            ModelFacade.getAssociation(edge);
+            Model.getFacade().getAssociation(edge);
             FigNode associationFN = 
-                (FigNode) lay.presentationFor(ModelFacade.getAssociation(edge));
+                (FigNode) lay.presentationFor(Model.getFacade().getAssociation(edge));
             FigNode classifierFN = 
-                (FigNode) lay.presentationFor(ModelFacade.getType(edge));
+                (FigNode) lay.presentationFor(Model.getFacade().getType(edge));
 
             asend.setSourcePortFig(associationFN);
             asend.setSourceFigNode(associationFN);
             asend.setDestPortFig(classifierFN);
             asend.setDestFigNode(classifierFN);
             newEdge = asend;
-        } else if (ModelFacade.isAAssociation(edge)) {
+        } else if (Model.getFacade().isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
             newEdge = ascFig;
-        } else if (ModelFacade.isALink(edge)) {
+        } else if (Model.getFacade().isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
-            Collection linkEndsColn = ModelFacade.getConnections(lnk);
+            Collection linkEndsColn = Model.getFacade().getConnections(lnk);
 
             Object[] linkEnds = linkEndsColn.toArray();
-            Object fromInst = ModelFacade.getInstance(linkEnds[0]);
-            Object toInst = ModelFacade.getInstance(linkEnds[1]);
+            Object fromInst = Model.getFacade().getInstance(linkEnds[0]);
+            Object toInst = Model.getFacade().getInstance(linkEnds[1]);
 
             FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
             FigNode toFN = (FigNode) lay.presentationFor(toInst);
@@ -162,24 +161,24 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
             lnkFig.setDestFigNode(toFN);
             lnkFig.getFig().setLayer(lay);
             newEdge = lnkFig;
-        } else if (ModelFacade.isAGeneralization(edge)) {
+        } else if (Model.getFacade().isAGeneralization(edge)) {
             FigGeneralization genFig = new FigGeneralization(edge, lay);
             newEdge = genFig;
-        } else if (ModelFacade.isAPermission(edge)) {
+        } else if (Model.getFacade().isAPermission(edge)) {
             FigPermission perFig = new FigPermission(edge, lay);
             newEdge = perFig;
-        } else if (ModelFacade.isAUsage(edge)) {
+        } else if (Model.getFacade().isAUsage(edge)) {
             FigUsage usageFig = new FigUsage(edge, lay);
             newEdge = usageFig;
-        } else if (ModelFacade.isADependency(edge)) {
+        } else if (Model.getFacade().isADependency(edge)) {
             Object stereotype = null;
 
-            if (ModelFacade.getStereotypes(edge).size() > 0) {
-                stereotype = ModelFacade.getStereotypes(edge).iterator().next();
+            if (Model.getFacade().getStereotypes(edge).size() > 0) {
+                stereotype = Model.getFacade().getStereotypes(edge).iterator().next();
             }
             if (LOG.isDebugEnabled()) {
             	if (stereotype != null) {
-                    LOG.debug("stereotype: " + ModelFacade.getName(stereotype));
+                    LOG.debug("stereotype: " + Model.getFacade().getName(stereotype));
                 } else {
                     LOG.debug("stereotype is null");
                 }
@@ -193,8 +192,8 @@ public class ClassDiagramRenderer extends UmlDiagramRenderer {
                 FigRealization realFig = new FigRealization(edge);
 
                 Object supplier =
-                    ((ModelFacade.getSuppliers(edge).toArray())[0]);
-                Object client = ((ModelFacade.getClients(edge).toArray())[0]);
+                    ((Model.getFacade().getSuppliers(edge).toArray())[0]);
+                Object client = ((Model.getFacade().getClients(edge).toArray())[0]);
 
                 FigNode supFN = (FigNode) lay.presentationFor(supplier);
                 FigNode cliFN = (FigNode) lay.presentationFor(client);

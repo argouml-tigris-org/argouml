@@ -25,7 +25,7 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 
 /**
@@ -39,7 +39,7 @@ public class ActionNavigateNamespace extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object elem) {
-        return ModelFacade.getNamespace(elem);
+        return Model.getFacade().getNamespace(elem);
     }
 
 }
