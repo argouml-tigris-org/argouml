@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -51,9 +51,9 @@ public class ParseState
     private Object mClassifier;
 
     /**
-       Create a new parse state.
-
-       @param The namespace the classifier belongs to.
+     * Create a new parse state.
+     *
+     * @param handle is the namespace the classifier belongs to.
      */
     public ParseState(Object handle) {
         if (ModelFacade.isAClassifier(handle)) {
