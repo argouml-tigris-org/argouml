@@ -86,6 +86,7 @@ import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerDiagram;
+import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -1715,10 +1716,10 @@ public abstract class FigNodeModelElement
         if (!(Model.getFacade().isAStateVertex(getOwner()))) {
             return;
         }
-        Editor editor = Globals.curEditor();
-        LayerDiagram lay =
-            ((LayerDiagram) editor.getLayerManager().getActiveLayer());
-        if (!enclosedFigs.isEmpty()) {
+        if (!enclosedFigs.isEmpty() && Globals.curEditor() != null) {
+            Editor editor = Globals.curEditor();
+            LayerManager lm = editor.getLayerManager();
+            LayerDiagram lay = ((LayerDiagram) lm.getActiveLayer());
             for (int i = 0; i < enclosedFigs.size(); i++) {
                 FigStateVertex f = ((FigStateVertex) enclosedFigs.elementAt(i));
                 lay.bringInFrontOf(f, this);
