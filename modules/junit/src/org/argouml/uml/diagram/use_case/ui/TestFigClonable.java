@@ -39,10 +39,10 @@ public class TestFigClonable extends TestCase {
              FigUseCase usecaseclone;
              
              usecaseclone = (FigUseCase) usecase.clone();
-             assert("FigUseCase cloned", true);
+             assertTrue("FigUseCase cloned", true);
          }
          catch(Exception e) {
-             assert("FigUseCase not clonable", false);
+             assertTrue("FigUseCase not clonable", false);
          }
      }
 
@@ -53,10 +53,10 @@ public class TestFigClonable extends TestCase {
              FigActor actorclone;
              
              actorclone = (FigActor) actor.clone();
-             assert("FigActor cloned", true);
+             assertTrue("FigActor cloned", true);
          }
          catch(Exception e) {
-             assert("FigActor not clonable", false);
+             assertTrue("FigActor not clonable", false);
          }
      }
 }

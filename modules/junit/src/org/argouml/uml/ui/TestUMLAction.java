@@ -66,7 +66,7 @@ public class TestUMLAction extends TestCase {
 
 	UMLAction to = new UMLAction(new String("hejsan"));
 
-	assert("Disabled", to.shouldBeEnabled());
+	assertTrue("Disabled", to.shouldBeEnabled());
 
     }
 
@@ -74,7 +74,7 @@ public class TestUMLAction extends TestCase {
 
 	UMLAction to = new UMLAction(new String("hejsan"), true);
 
-	assert("Disabled", to.shouldBeEnabled());
+	assertTrue("Disabled", to.shouldBeEnabled());
 
     }
 
@@ -82,7 +82,7 @@ public class TestUMLAction extends TestCase {
 
 	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
 
-	assert("Disabled", to.shouldBeEnabled());
+	assertTrue("Disabled", to.shouldBeEnabled());
 
     }
 

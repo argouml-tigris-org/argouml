@@ -426,40 +426,40 @@ public class TestParserDisplay extends TestCase {
 	private void checkName(MAttribute attr, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong name: " + attr.getName(),
+			assertTrue(text + " gave wrong name: " + attr.getName(),
 				name.equals(attr.getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
 	private void checkName(MOperation op, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assert(text + " gave wrong name: " + op.getName() + " != " + name,
+			assertTrue(text + " gave wrong name: " + op.getName() + " != " + name,
 				name.equals(op.getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
 	private void checkName(MClassifierRole ro, String text, String name) {
 		try {
 			ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-			assert(text + " gave wrong name: " + ro.getName() + " != " + name,
+			assertTrue(text + " gave wrong name: " + ro.getName() + " != " + name,
 				name.equals(ro.getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
 	private void checkType(MAttribute attr, String text, String type) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong type: " + (attr.getType() == null ? "(null)" : attr.getType().getName()),
+			assertTrue(text + " gave wrong type: " + (attr.getType() == null ? "(null)" : attr.getType().getName()),
 				attr.getType() != null && type.equals(attr.getType().getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -468,17 +468,17 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			Collection ret = UmlHelper.getHelper().getCore().getReturnParameters(op);
 			Iterator it = ret.iterator();
-			assert(text + " gave extra return value", !(type == null && it.hasNext()));
-			assert(text + " lacks return value", !(type != null && !it.hasNext()));
+			assertTrue(text + " gave extra return value", !(type == null && it.hasNext()));
+			assertTrue(text + " lacks return value", !(type != null && !it.hasNext()));
 			if (it.hasNext()) {
 				MParameter p = (MParameter) it.next();
-				assert(text + " gave wrong return",
+				assertTrue(text + " gave wrong return",
 					(type == null && p.getType() == null) ||
 					(type != null && type.equals(p.getType().getName())));
 			}
-			assert(text + " gave extra return value", !it.hasNext());
+			assertTrue(text + " gave extra return value", !it.hasNext());
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -489,50 +489,50 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			Collection prm = op.getParameters();
 			Iterator it = prm.iterator();
-			assert(text + " lacks parameters", !(params.length > 0 && !it.hasNext()));
+			assertTrue(text + " lacks parameters", !(params.length > 0 && !it.hasNext()));
 			for (i = 0; i + 3 < params.length; i += 4) {
 				MParameter p;
 				do {
-					assert(text + " lacks parameters", it.hasNext());
+					assertTrue(text + " lacks parameters", it.hasNext());
 					p = (MParameter) it.next();
 				} while (p.getKind().equals(MParameterDirectionKind.RETURN));
-				assert(text + "gave wrong inout in parameter " + (i / 4),
+				assertTrue(text + "gave wrong inout in parameter " + (i / 4),
 					params[i].equals(p.getKind().getName()));
-				assert(text + "gave wrong name in parameter " + (i / 4),
+				assertTrue(text + "gave wrong name in parameter " + (i / 4),
 					params[i+1].equals(p.getName()));
-				assert(text + "gave wrong type in parameter " + (i / 4),
+				assertTrue(text + "gave wrong type in parameter " + (i / 4),
 					params[i+2].equals(p.getType().getName()));
-				assert(text + "gave wrong default value in parameter " + (i / 4),
+				assertTrue(text + "gave wrong default value in parameter " + (i / 4),
 					(params[i+3] == null && p.getDefaultValue() == null) ||
 					(params[i+3] != null && p.getDefaultValue() != null) &&
 					 params[i+3].equals(p.getDefaultValue().getBody()));
 			}
 			while (it.hasNext()) {
 				MParameter p = (MParameter) it.next();
-				assert(text + " gave extra parameters", p.getKind().equals(MParameterDirectionKind.RETURN));
+				assertTrue(text + " gave extra parameters", p.getKind().equals(MParameterDirectionKind.RETURN));
 			}
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
 	private void checkVisibility(MAttribute attr, String text, String vis) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong visibility: " + (attr.getVisibility() == null ? "(null)" : attr.getVisibility().getName()),
+			assertTrue(text + " gave wrong visibility: " + (attr.getVisibility() == null ? "(null)" : attr.getVisibility().getName()),
 				attr.getVisibility() != null && vis.equals(attr.getVisibility().getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
 	private void checkVisibility(MOperation op, String text, String vis) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assert(text + " gave wrong visibility: " + (op.getVisibility() == null ? "(null)" : op.getVisibility().getName()),
+			assertTrue(text + " gave wrong visibility: " + (op.getVisibility() == null ? "(null)" : op.getVisibility().getName()),
 				op.getVisibility() != null && vis.equals(op.getVisibility().getName()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -542,12 +542,12 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
 			for (i = 0; i + 1 < props.length; i += 2) {
 				if (props[i+1] == null)
-					assert("TaggedValue " + props[i] + " exists!", attr.getTaggedValue(props[i]) == null);
+					assertTrue("TaggedValue " + props[i] + " exists!", attr.getTaggedValue(props[i]) == null);
 				else
-					assert("TaggedValue " + props[i] + " wrong!", props[i+1].equals(attr.getTaggedValue(props[i])));
+					assertTrue("TaggedValue " + props[i] + " wrong!", props[i+1].equals(attr.getTaggedValue(props[i])));
 			}
 		} catch (Exception e) {
-			assert(text + " threw Exception " + e, false);
+			assertTrue(text + " threw Exception " + e, false);
 		}
 	}
 
@@ -557,23 +557,23 @@ public class TestParserDisplay extends TestCase {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
 			for (i = 0; i + 1 < props.length; i += 2) {
 				if (props[i+1] == null)
-					assert("TaggedValue " + props[i] + " exists!", op.getTaggedValue(props[i]) == null);
+					assertTrue("TaggedValue " + props[i] + " exists!", op.getTaggedValue(props[i]) == null);
 				else
-					assert("TaggedValue " + props[i] + " wrong!", props[i+1].equals(op.getTaggedValue(props[i])));
+					assertTrue("TaggedValue " + props[i] + " wrong!", props[i+1].equals(op.getTaggedValue(props[i])));
 			}
 		} catch (Exception e) {
-			assert(text + " threw Exception " + e, false);
+			assertTrue(text + " threw Exception " + e, false);
 		}
 	}
 
 	private void checkMultiplicity(MAttribute attr, String text, MMultiplicity mult) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong multiplicity: " + (attr.getMultiplicity() == null ? "(null)" : attr.getMultiplicity().toString()),
+			assertTrue(text + " gave wrong multiplicity: " + (attr.getMultiplicity() == null ? "(null)" : attr.getMultiplicity().toString()),
 				mult == null && attr.getMultiplicity() == null ||
 				mult != null && mult.equals(attr.getMultiplicity()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -581,11 +581,11 @@ public class TestParserDisplay extends TestCase {
 			boolean ex2, boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert("didn't throw for " + text, false);
+			assertTrue("didn't throw for " + text, false);
 		} catch (ParseException pe) {
-			assert(text + " threw ParseException " + pe, prsEx);
+			assertTrue(text + " threw ParseException " + pe, prsEx);
 		} catch (Exception e) {
-			assert(text + " threw Exception " + e, !prsEx);
+			assertTrue(text + " threw Exception " + e, !prsEx);
 		}
 	}
 
@@ -593,11 +593,11 @@ public class TestParserDisplay extends TestCase {
 			boolean ex2, boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assert("didn't throw for " + text, false);
+			assertTrue("didn't throw for " + text, false);
 		} catch (ParseException pe) {
-			assert(text + " threw ParseException " + pe, prsEx);
+			assertTrue(text + " threw ParseException " + pe, prsEx);
 		} catch (Exception e) {
-			assert(text + " threw Exception " + e, !prsEx);
+			assertTrue(text + " threw Exception " + e, !prsEx);
 		}
 	}
 
@@ -605,22 +605,22 @@ public class TestParserDisplay extends TestCase {
 			boolean prsEx, boolean ex2, boolean ex3) {
 		try {
 			ParserDisplay.SINGLETON.parseClassifierRole(ro, text);
-			assert("didn't throw for " + text, false);
+			assertTrue("didn't throw for " + text, false);
 		} catch (ParseException pe) {
-			assert(text + " threw ParseException " + pe, prsEx);
+			assertTrue(text + " threw ParseException " + pe, prsEx);
 		} catch (Exception e) {
-			assert(text + " threw Exception " + e, !prsEx);
+			assertTrue(text + " threw Exception " + e, !prsEx);
 		}
 	}
 
 	private void checkValue(MAttribute attr, String text, String val) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
+			assertTrue(text + " gave wrong visibility: " + (attr.getInitialValue() == null ? "(null)" : attr.getInitialValue().getBody()),
 				val == null && (attr.getInitialValue() == null || "".equals(attr.getInitialValue().getBody())) ||
 				val != null && attr.getInitialValue() != null && val.equals(attr.getInitialValue().getBody()));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -628,7 +628,7 @@ public class TestParserDisplay extends TestCase {
 			String val) {
 		try {
 			ParserDisplay.SINGLETON.parseAttribute(text, attr);
-			assert(text + " gave wrong stereotype " +
+			assertTrue(text + " gave wrong stereotype " +
 				(attr.getStereotype() != null ?
 				 attr.getStereotype().getName() : "(null)"),
 				(val == null && attr.getStereotype() == null)||
@@ -636,7 +636,7 @@ public class TestParserDisplay extends TestCase {
 				 attr.getStereotype() != null &&
 				 val.equals(attr.getStereotype().getName())));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -644,7 +644,7 @@ public class TestParserDisplay extends TestCase {
 			String val) {
 		try {
 			ParserDisplay.SINGLETON.parseOperation(text, op);
-			assert(text + " gave wrong stereotype " +
+			assertTrue(text + " gave wrong stereotype " +
 				(op.getStereotype() != null ?
 				 op.getStereotype().getName() : "(null)"),
 				(val == null && op.getStereotype() == null)||
@@ -652,7 +652,7 @@ public class TestParserDisplay extends TestCase {
 				 op.getStereotype() != null &&
 				 val.equals(op.getStereotype().getName())));
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 
@@ -673,7 +673,7 @@ checkAllValid:
 				for (i = 0; i < bases.length; i++)
 					if (bases[i].equals(cls.getName()))
 						continue checkAllValid;
-				assert("Base " + cls.getName() + " falsely " +
+				assertTrue("Base " + cls.getName() + " falsely " +
 					"generated by " + text, false);
 			}
 
@@ -685,11 +685,11 @@ checkAllExist:
 					if (bases[i].equals(cls.getName()))
 						continue checkAllExist;
 				}
-				assert("Base " + bases[i] + " was not " +
+				assertTrue("Base " + bases[i] + " was not " +
 					"generated by " + text, false);
 			}
 		} catch (Exception e) {
-			assert(text + " threw unexpectedly: " + e, false);
+			assertTrue(text + " threw unexpectedly: " + e, false);
 		}
 	}
 }

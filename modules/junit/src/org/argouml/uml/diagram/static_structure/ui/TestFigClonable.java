@@ -40,10 +40,10 @@ public class TestFigClonable extends TestCase {
             FigClass figclone;
              
             figclone = (FigClass) fig.clone();
-            assert("FigClass cloned", true);
+            assertTrue("FigClass cloned", true);
         }
         catch(Exception e) {
-            assert("FigClass not clonable", false);
+            assertTrue("FigClass not clonable", false);
         }
     }
 
@@ -55,10 +55,10 @@ public class TestFigClonable extends TestCase {
             FigEdgeNote figclone;
              
             figclone = (FigEdgeNote) fig.clone();
-            assert("FigEdgeNote cloned", true);
+            assertTrue("FigEdgeNote cloned", true);
         }
         catch(Exception e) {
-            assert("FigEdgeNote not clonable", false);
+            assertTrue("FigEdgeNote not clonable", false);
         }
     }
 
@@ -70,10 +70,10 @@ public class TestFigClonable extends TestCase {
             FigInstance figclone;
              
             figclone = (FigInstance) fig.clone();
-            assert("FigInstance cloned", true);
+            assertTrue("FigInstance cloned", true);
         }
         catch(Exception e) {
-            assert("FigInstance not clonable", false);
+            assertTrue("FigInstance not clonable", false);
         }
     }
 
@@ -85,10 +85,10 @@ public class TestFigClonable extends TestCase {
             FigInterface figclone;
              
             figclone = (FigInterface) fig.clone();
-            assert("FigInterface cloned", true);
+            assertTrue("FigInterface cloned", true);
         }
         catch(Exception e) {
-            assert("FigInterface not clonable", false);
+            assertTrue("FigInterface not clonable", false);
         }
     }
 
@@ -100,10 +100,10 @@ public class TestFigClonable extends TestCase {
             FigLink figclone;
              
             figclone = (FigLink) fig.clone();
-            assert("FigLink cloned", true);
+            assertTrue("FigLink cloned", true);
         }
         catch(Exception e) {
-            assert("FigLink not clonable", false);
+            assertTrue("FigLink not clonable", false);
         }
     }
 
@@ -117,11 +117,11 @@ public class TestFigClonable extends TestCase {
             FigModel figclone;
              
             figclone = (FigModel) fig.clone();
-            assert("FigModel cloned", true);
+            assertTrue("FigModel cloned", true);
         }
         catch(Exception e) {
             e.printStackTrace(System.err);
-            assert("FigModel not clonable", false);
+            assertTrue("FigModel not clonable", false);
         }
     }
     */
@@ -134,10 +134,10 @@ public class TestFigClonable extends TestCase {
             FigComment figclone;
              
             figclone = (FigComment) fig.clone();
-            assert("FigComment cloned", true);
+            assertTrue("FigComment cloned", true);
         }
         catch(Exception e) {
-            assert("FigComment not clonable", false);
+            assertTrue("FigComment not clonable", false);
         }
     }
 
@@ -150,10 +150,10 @@ public class TestFigClonable extends TestCase {
             FigPackage figclone;
              
             figclone = (FigPackage) fig.clone();
-            assert("FigPackage cloned", true);
+            assertTrue("FigPackage cloned", true);
         }
         catch(Exception e) {
-            assert("FigPackage not clonable", false);
+            assertTrue("FigPackage not clonable", false);
         }
     }
 

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
@@ -143,14 +143,14 @@ public class TestUmlModelEventPump extends TestCase {
      * modelevent listeners as the object modelevent listeners
      */
     public void testAddLegalListener() {
-        assert(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assertEquals(UmlModelEventPump.getPump().getListenerModelEventsMap().size(), 0);
         UmlModelEventPump.getPump().addClassModelEventListener(listener, elem.getClass(), new String[] {"name"});
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
-        assert(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
-        assert(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
-        assert(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
-        assert(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
+        assertTrue(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
+        assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
+        assertTrue(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
     }
    
     /**
@@ -366,9 +366,9 @@ public class TestUmlModelEventPump extends TestCase {
     public void testRemoveLegalClassListener() {
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeClassModelEventListener(listener2, elem.getClass(), new String[] {"isRoot"});
-        assert(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         elem.addParameter(new MParameterImpl());
-        assert(!eventcalled);
+        assertTrue(!eventcalled);
     }
     
     /**
@@ -377,9 +377,9 @@ public class TestUmlModelEventPump extends TestCase {
     public void testRemoveLegalListener() {
         UmlModelEventPump.getPump().addModelEventListener(listener2, elem, new String[] {"isRoot"});
         UmlModelEventPump.getPump().removeModelEventListener(listener2, elem, new String[] {"isRoot"});
-        assert(UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
+        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
         elem.addParameter(new MParameterImpl());
-        assert(!eventcalled);
+        assertTrue(!eventcalled);
     }
      
     /**

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,7 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import junit.framework.TestCase;
@@ -57,7 +56,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
     public void testDoClick() {
         boolean spec = elem.isSpecification();
         box.doClick();
-        assert("click did not work!", spec != elem.isSpecification());
+        assertTrue("click did not work!", spec != elem.isSpecification());
     }
     
     /**
@@ -67,7 +66,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
     public void testPropertySet() {
         boolean selected = box.isSelected();
         elem.setSpecification(!selected);
-        assert("elem change did not work!", selected != box.isSelected());
+        assertTrue("elem change did not work!", selected != box.isSelected());
     }
 
 

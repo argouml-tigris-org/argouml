@@ -84,44 +84,44 @@ public class TestParseMessage extends TestCase {
 
 		MMessage m1 = UmlFactory.getFactory()
 			.getCollaborations().buildMessage(inter, r1_2);
-		assert(m1.getSender() == cl1);
-		assert(m1.getReceiver() == cl2);
-		assert(m1.getInteraction() == inter);
-		assert(m1.getActivator() == null);
-		assert(m1.getAction() == null ||
+		assertTrue(m1.getSender() == cl1);
+		assertTrue(m1.getReceiver() == cl2);
+		assertTrue(m1.getInteraction() == inter);
+		assertTrue(m1.getActivator() == null);
+		assertTrue(m1.getAction() == null ||
 			m1.getAction().getRecurrence() == null);
-		assert(m1.getPredecessors().size() == 0);
+		assertTrue(m1.getPredecessors().size() == 0);
 		m1.setName("m1");
 
 		MMessage m2 = UmlFactory.getFactory()
 			.getCollaborations().buildMessage(inter, r2_3);
-		assert(m2.getSender() == cl2);
-		assert(m2.getReceiver() == cl3);
-		assert(m2.getActivator() == m1);
-		assert(m2.getAction() == null ||
+		assertTrue(m2.getSender() == cl2);
+		assertTrue(m2.getReceiver() == cl3);
+		assertTrue(m2.getActivator() == m1);
+		assertTrue(m2.getAction() == null ||
 			m2.getAction().getRecurrence() == null);
-		assert(m2.getPredecessors().size() == 0);
+		assertTrue(m2.getPredecessors().size() == 0);
 		m2.setName("m2");
 
 		MMessage m3 = UmlFactory.getFactory()
 			.getCollaborations().buildMessage(inter, r2_3);
-		assert(m3.getActivator() == m1);
-		assert(m3.getPredecessors().iterator().next() == m2 &&
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
 			m3.getPredecessors().size() == 1);
 		m3.setName("m3");
 
 		/* TRY MOVING IN A SIMPLE MANER */
 
 		parseMessage(m3, " \t1.1 : ");
-		assert(m3.getActivator() == m1);
-		assert(m3.getPredecessors().size() == 0);
-		assert(m2.getPredecessors().iterator().next() == m3 &&
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m3.getPredecessors().size() == 0);
+		assertTrue(m2.getPredecessors().iterator().next() == m3 &&
 			m2.getPredecessors().size() == 1);
 
 		parseMessage(m3, " / 1.2\t: ");
-		assert(m3.getActivator() == m1);
-		assert(m2.getPredecessors().size() == 0);
-		assert(m3.getPredecessors().iterator().next() == m2 &&
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m2.getPredecessors().size() == 0);
+		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
 			m3.getPredecessors().size() == 1);
 
 		/* TRY SOME ERRORS */
@@ -133,17 +133,17 @@ public class TestParseMessage extends TestCase {
 		/* TRY SOME MORE COMPLEX MOVING */
 
 		parseMessage(m3, " 1.1.1 : ");
-		assert(m3.getActivator() == m2);
-		assert(m3.getPredecessors().size() == 0);
+		assertTrue(m3.getActivator() == m2);
+		assertTrue(m3.getPredecessors().size() == 0);
 
 		parseMessage(m3, " / 1..2 : ");
-		assert(m3.getActivator() == m1);
-		assert(m2.getPredecessors().size() == 0);
-		assert(m3.getPredecessors().iterator().next() == m2 &&
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m2.getPredecessors().size() == 0);
+		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
 			m3.getPredecessors().size() == 1);
 		parseMessage(m3, "");
-		assert(m3.getActivator() == m1);
-		assert(m3.getPredecessors().iterator().next() == m2 &&
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m3.getPredecessors().iterator().next() == m2 &&
 			m3.getPredecessors().size() == 1);
 
 		/* TRY SOME MORE ERRORS */
@@ -154,23 +154,23 @@ public class TestParseMessage extends TestCase {
 		/* TRY GUARD/ITERATOR SYNTAX */
 
 		parseMessage(m3, " 1.2 [ x < 5 ] : ");
-		assert(m3.getAction() != null &&
+		assertTrue(m3.getAction() != null &&
 			m3.getAction().getRecurrence() != null);
-		assert("[x < 5]".equals(
+		assertTrue("[x < 5]".equals(
 				m3.getAction().getRecurrence().getBody()));
 
 		parseMessage(m3, " 1.2 * [ i = 1..10 ] : ");
-		assert("*[i = 1..10]".equals(
+		assertTrue("*[i = 1..10]".equals(
 				m3.getAction().getRecurrence().getBody()));
 		parseMessage(m3, " 1.2 *// : ");
-		assert("*[i = 1..10]".equals(
+		assertTrue("*[i = 1..10]".equals(
 				m3.getAction().getRecurrence().getBody()));
 
 		parseMessage(m3, " * // [i=1..] 1.2 : ");
-		assert("*//[i=1..]".equals(
+		assertTrue("*//[i=1..]".equals(
 				m3.getAction().getRecurrence().getBody()));
 		parseMessage(m3, " 1.2 : ");
-		assert("*//[i=1..]".equals(
+		assertTrue("*//[i=1..]".equals(
 				m3.getAction().getRecurrence().getBody()));
 
 		/* TRY SOME GUARD/ITERATOR ERRORS */
@@ -188,29 +188,29 @@ public class TestParseMessage extends TestCase {
 		/* TRY THE ACTIONS */
 
 		parseMessage(m3, " 1.2 : func() ");
-		assert("func".equals(
+		assertTrue("func".equals(
 				m3.getAction().getScript().getBody()));
 		parseMessage(m3, " 1.2 ");
-		assert("func".equals(
+		assertTrue("func".equals(
 				m3.getAction().getScript().getBody()));
 		parseMessage(m3, " 1.2 : ");
-		assert("".equals(
+		assertTrue("".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var := func() ");
-		assert("var := func".equals(
+		assertTrue("var := func".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var = func() ");
-		assert("var := func".equals(
+		assertTrue("var := func".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, "1.2:var2:=func2()");
-		assert("var2 := func2".equals(
+		assertTrue("var2 := func2".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, " 1.2 : var, var2, var3 := func() ");
-		assert("var, var2, var3 := func".equals(
+		assertTrue("var, var2, var3 := func".equals(
 				m3.getAction().getScript().getBody()));
 
 		parseMessage(m3, "1.2 : load_the_accumulating_taxes");
@@ -245,27 +245,27 @@ public class TestParseMessage extends TestCase {
 		checkParseException(m6,	"1.2.2 :");
 
 		parseMessage(m7, "2:");
-		assert(m7.getSender() == cl1);
-		assert(m7.getReceiver() == cl3);
-		assert(m7.getActivator() == null);
-		assert(m7.getPredecessors().iterator().next() == m1 &&
+		assertTrue(m7.getSender() == cl1);
+		assertTrue(m7.getReceiver() == cl3);
+		assertTrue(m7.getActivator() == null);
+		assertTrue(m7.getPredecessors().iterator().next() == m1 &&
 			m7.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1.1.1.1:");
-		assert(m7.getSender() == cl3);
-		assert(m7.getReceiver() == cl1);
-		assert(m7.getActivator() == m6);
-		assert(m7.getPredecessors().size() == 0);
+		assertTrue(m7.getSender() == cl3);
+		assertTrue(m7.getReceiver() == cl1);
+		assertTrue(m7.getActivator() == m6);
+		assertTrue(m7.getPredecessors().size() == 0);
 
-		assert(m1.getActivator() == null);
-		assert(m1.getPredecessors().size() == 0);
-		assert(m4.getActivator() == m3);
-		assert(m4.getPredecessors().size() == 0);
-		assert(m3.getActivator() == m1);
-		assert(m3.getPredecessors().size() == 1);
+		assertTrue(m1.getActivator() == null);
+		assertTrue(m1.getPredecessors().size() == 0);
+		assertTrue(m4.getActivator() == m3);
+		assertTrue(m4.getPredecessors().size() == 0);
+		assertTrue(m3.getActivator() == m1);
+		assertTrue(m3.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1 / 1.2.1.1.1.1:");
-		assert(m7.getPredecessors().iterator().next() == m4 &&
+		assertTrue(m7.getPredecessors().iterator().next() == m4 &&
 			m7.getPredecessors().size() == 1);
 
 		parseMessage(m7, "1.2.1, 1.2.1.1 / 1.2.1.1.1.1:");
@@ -278,15 +278,15 @@ public class TestParseMessage extends TestCase {
 		else if (m == m5)
 			pre2 = true;
 		else
-			assert("Strange message found", false);
+			assertTrue("Strange message found", false);
 		m = (MMessage) it.next();
 		if (m == m4)
 			pre1 = true;
 		else if (m == m5)
 			pre2 = true;
 		else
-			assert("Strange message found", false);
-		assert(pre1 && pre2 && !it.hasNext());
+			assertTrue("Strange message found", false);
+		assertTrue(pre1 && pre2 && !it.hasNext());
 
 		/* TRY SOME PREDECESSOR ERRORS */
 		checkParseException(m2,	"1.2 / 1.1 :");
@@ -298,19 +298,19 @@ public class TestParseMessage extends TestCase {
 		try {
 			ParserDisplay.SINGLETON.parseMessage(m, s);
 		} catch (ParseException pe) {
-			assert("Unexpected throw: " + pe, false);
+			assertTrue("Unexpected throw: " + pe, false);
 		}
 	}
 
 	private void checkParseException(MMessage m, String s) {
 		try {
 			ParserDisplay.SINGLETON.parseMessage(m, s);
-			assert("Didn't throw for \"" + s + "\" in " + m,
+			assertTrue("Didn't throw for \"" + s + "\" in " + m,
 				false);
 		} catch (ParseException pe) {
-			assert("Did throw", true);
+			assertTrue("Did throw", true);
 		} catch (Exception e) {
-			assert("Unexpected throw " + e, false);
+			assertTrue("Unexpected throw " + e, false);
 		}
 	}
 }
