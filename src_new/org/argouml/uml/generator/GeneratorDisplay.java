@@ -495,24 +495,30 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
     return Integer.toString(position);
   }
 
-  private class MsgPtr {
+  class MsgPtr {
     public MMessage message;
   }
 
-  private int recCountPredecessors(MMessage m, MsgPtr ptr) {
+  int recCountPredecessors(MMessage m, MsgPtr ptr) {
     Collection c;
     Iterator it;
     int pre = 0;
     int local = 0;
     MMessage maxmsg = null;
+    MMessage act;
 
-    if (m == null)
+    if (m == null) {
+	ptr.message = null;
 	return 0;
+    }
 
+    act = m.getActivator();
     c = m.getPredecessors();
     it = c.iterator();
     while (it.hasNext()) {
 	MMessage msg = (MMessage) it.next();
+	if (msg.getActivator() != act)
+	    continue;
 	int p = recCountPredecessors(msg, null) + 1;
 	if (p > pre) {
 	    pre = p;
@@ -525,6 +531,19 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 	ptr.message = maxmsg;
 
     return Math.max(pre, local);
+  }
+
+  int countSuccessors(MMessage m) {
+    MMessage act = m.getActivator();
+    Iterator it = m.getMessages3().iterator();
+    int count = 0;
+    while (it.hasNext()) {
+	MMessage msg = (MMessage) it.next();
+	if (msg.getActivator() != act)
+	    continue;
+	count++;
+    }
+    return count;
   }
 
   /**
@@ -573,8 +592,10 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
 	    int mpn = recCountPredecessors(msg, ptr2) + 1;
 
 	    if (mpn == lpn - 1 && rt == msg.getActivator() &&
-		msg.getPredecessors().size() < 2)
+		msg.getPredecessors().size() < 2 &&
+		(ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
 		continue;
+	    }
 
 	    if (predecessors.length() > 0)
 		predecessors += ", ";
