@@ -141,7 +141,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addOperation() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+        if (ModelFacade.isAClassifier(target)) {
             Object newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
                     /*(MClassifier)*/ target);
@@ -154,7 +154,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addAttribute() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+        if (ModelFacade.isAClassifier(target)) {
             Object cls = /*(MClassifier)*/ target;
             Object attr =
                 UmlFactory.getFactory().getCore().buildAttribute(cls);
