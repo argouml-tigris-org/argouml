@@ -91,7 +91,7 @@ Compilation instructions for ArgoUML
 If you want to compile ArgoUML, you need to have following:
 - JAVA_HOME correctly set to where Java2 jdk is installed
 - the additional libraries (nsuml.jar, ocl-argo.jar, xml4j.jar,
-  gef.jar, antlrall.jar) in argouml/lib
+  gef.jar, i18n.jar, antlrall.jar) in argouml/lib
 
 when these are right the command
 
@@ -250,6 +250,7 @@ Property files to be searched:
       <pathelement location="${nsuml.jar.path}" />
       <pathelement location="${ocl-argo.jar.path}" />
       <pathelement location="${gef.jar.path}" />
+      <pathelement location="${i18n.jar.path}" />
       <pathelement location="${log4j.jar.path}" />
       <pathelement location="${jh.jar.path}" />
       <path refid="antlr.runtime.classpath" />
@@ -593,11 +594,12 @@ ${Name} Build file
   <!-- =================================================================== -->
   <target name="package" depends="jar">
     <property name="names.of.all.included.libs"
-              value="antlrall.jar gef.jar log4j.jar nsuml.jar ocl-argo.jar xerces.jar"
+              value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar xerces.jar"
      />
     <copy file="${antlrall.jar.path}" 
           tofile="${argo.build.dir}/antlrall.jar" />
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
+    <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar" />
     <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
     <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
     <copy file="${ocl-argo.jar.path}"
