@@ -34,9 +34,11 @@ import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
 
 /**
- * ComboBox for UML modelelements. This implementation does not use 
+ * ComboBox for UML modelelements. <p>
+ * 
+ * This implementation does not use 
  * reflection and seperates Model, View and Controller better then does
- * UMLComboBox. In the future UMLComboBoxModel and UMLComboBox will be
+ * UMLComboBox. The ancient UMLComboBoxModel and UMLComboBox are
  * replaced with this implementation to improve performance.
  */
 public class UMLComboBox2
@@ -52,7 +54,6 @@ public class UMLComboBox2
         super(arg0);
         setFont(LookAndFeelMgr.getInstance().getSmallFont());
         addActionListener(this);
-
     }
     
     /**
