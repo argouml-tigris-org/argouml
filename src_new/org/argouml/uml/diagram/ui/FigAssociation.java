@@ -102,15 +102,15 @@ public class FigAssociation extends FigEdgeModelElement {
 	MAssociation oldAsc = (MAssociation)oldOwner;
 	for (int i = 0; i < oldAsc.getConnections().size(); i++)
 	    ((MAssociationEnd)((Object[]) oldAsc.getConnections().toArray())[i]).removeMElementListener(this);
-    
+
 	oldAsc.removeMElementListener(this);
     }
-    
+
     if (own instanceof MAssociation) {
 	MAssociation newAsc = (MAssociation)own;
 	for (int i = 0; i < newAsc.getConnections().size(); i++)
 	    ((MAssociationEnd)((Object[]) newAsc.getConnections().toArray())[i]).addMElementListener(this);
-    
+
       newAsc.addMElementListener(this);
     }
     modelChanged();
@@ -241,7 +241,26 @@ public class FigAssociation extends FigEdgeModelElement {
       aggMenu.add(ActionAggregation.DestAggComposite);
       popUpActions.insertElementAt(aggMenu, popUpActions.size() - 1);
     }
-    else { }
+    else {
+        // Options available when right click anywhere on line (added by BobTarling 7-Jan-2002)
+        MAssociation asc = (MAssociation) getOwner();
+        if (asc != null) {
+            // Navigability menu with suboptions built dynamically to allow navigability
+            // from atart to end, from end to start or bidirectional
+            JMenu navMenu = new JMenu("Navigability");
+
+            java.util.List ascEnds = ((MAssociation) asc).getConnections();
+            MAssociationEnd ascStart = (MAssociationEnd) (ascEnds.get(0));
+            MAssociationEnd ascEnd = (MAssociationEnd) (ascEnds.get(1));
+
+            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.BIDIRECTIONAL));
+            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.STARTTOEND));
+            navMenu.add(ActionNavigability.newActionNavigability(ascStart, ascEnd, ActionNavigability.ENDTOSTART));
+
+            popUpActions.insertElementAt(navMenu, popUpActions.size() - 1);
+        }
+
+    }
 
     return popUpActions;
   }
