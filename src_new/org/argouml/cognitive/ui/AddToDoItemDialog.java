@@ -28,10 +28,11 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -40,99 +41,94 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.util.VectorSet;
 
 public class AddToDoItemDialog extends JDialog implements ActionListener {
 
-  ////////////////////////////////////////////////////////////////
-  // constants
-  private static final String BUNDLE = "Cognitive";
+    ////////////////////////////////////////////////////////////////
+    // constants
+    private static final String BUNDLE = "Cognitive";
 
-  static final String high = Argo.localize(BUNDLE, "level.high");
-  static final String medium = Argo.localize(BUNDLE, "level.medium");
-  static final String low = Argo.localize(BUNDLE, "level.low");
+    private static final String PRIORITIES[] = {
+        Argo.localize(BUNDLE, "level.high"),
+        Argo.localize(BUNDLE, "level.medium"),
+        Argo.localize(BUNDLE, "level.low")
+    };
 
-  public static final String PRIORITIES[] = { high, medium, low };
-
-  ////////////////////////////////////////////////////////////////
-  // instance variables
-  protected JTextField _headline = new JTextField();
-  protected JComboBox  _priority = new JComboBox(PRIORITIES);
-  protected JTextField _moreinfo = new JTextField();
-  protected JTextArea  _description = new JTextArea();
-  protected JButton _addButton = new JButton("Add");
-  protected JButton _cancelButton = new JButton("Cancel");
+    ////////////////////////////////////////////////////////////////
+    // instance variables
+    private JTextField _headline = new JTextField(30);
+    private JComboBox  _priority = new JComboBox(PRIORITIES);
+    private JTextField _moreinfo = new JTextField(30);
+    private JTextArea  _description = new JTextArea(10, 30);
+    private JButton _addButton = new JButton(Argo.localize(BUNDLE, "button.add"));
+    private JButton _cancelButton = new JButton(Argo.localize(BUNDLE, "button.cancel"));
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public AddToDoItemDialog() {
-    super(ProjectBrowser.getInstance(), "Add a ToDoItem");
-    JLabel headlineLabel = new JLabel("Headline:");
-    JLabel priorityLabel = new JLabel("Priority:");
-    JLabel moreInfoLabel = new JLabel("MoreInfoURL:");
+    public AddToDoItemDialog() {
+        super(ProjectBrowser.getInstance(), Argo.localize(BUNDLE, "dialog.title.add-todo-item"), true);
+        JLabel headlineLabel = new JLabel(Argo.localize(BUNDLE, "label.headline"));
+        JLabel priorityLabel = new JLabel(Argo.localize(BUNDLE, "label.priority"));
+        JLabel moreInfoLabel = new JLabel(Argo.localize(BUNDLE, "label.more-info-url"));
+    
+        _priority.setSelectedItem(PRIORITIES[0]);
+    
+        JPanel panel = new JPanel(new LabelledLayout(10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        getContentPane().add(panel);
 
-    _priority.setSelectedItem(PRIORITIES[0]);
+        headlineLabel.setLabelFor(_headline);
+        headlineLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(headlineLabel);
+        panel.add(_headline);
 
-    setSize(new Dimension(400, 350));
-    getContentPane().setLayout(new BorderLayout());
-    JPanel top = new JPanel();
-    GridBagLayout gb = new GridBagLayout();
-    top.setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
+        priorityLabel.setLabelFor(_priority);
+        priorityLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(priorityLabel);
+        panel.add(_priority);
 
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(headlineLabel, c);
-    top.add(headlineLabel);
-    c.gridy = 1;
-    gb.setConstraints(priorityLabel, c);
-    top.add(priorityLabel);
-    c.gridy = 2;
-    gb.setConstraints(moreInfoLabel, c);
-    top.add(moreInfoLabel);
+        moreInfoLabel.setLabelFor(_moreinfo);
+        moreInfoLabel.setHorizontalAlignment(SwingConstants.RIGHT);
+        panel.add(moreInfoLabel);
+        panel.add(_moreinfo);
+    
+        _description.setText(Argo.localize(BUNDLE, "label.enter-todo-item") + "\n");
+        JPanel descriptionPanel = new JPanel(new BorderLayout());
+        JScrollPane descriptionScroller = new JScrollPane(_description);
+        descriptionScroller.setPreferredSize(_description.getPreferredSize());
+        panel.add(descriptionScroller);
+        
+        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 0));
+        buttonPanel.add(_addButton);
+        buttonPanel.add(_cancelButton);
+        panel.add(buttonPanel);
 
-    c.weightx = 1.0;
-    c.gridx = 1;
-    c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 0;
-    gb.setConstraints(_headline, c);
-    top.add(_headline);
-    c.gridy = 1;
-    gb.setConstraints(_priority, c);
-    top.add(_priority);
-    c.gridy = 2;
-    gb.setConstraints(_moreinfo, c);
-    top.add(_moreinfo);
+        getRootPane().setDefaultButton(_addButton);
+        _addButton.addActionListener(this);
+        _cancelButton.addActionListener(this);
 
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    JPanel buttonInner = new JPanel(new GridLayout(1, 2));
-    buttonInner.add(_addButton);
-    buttonInner.add(_cancelButton);
-    buttonPanel.add(buttonInner);
+        pack();
+        
+        centerOnParent();
+    }
 
-    _description.setText("<Enter TODO Item here>\n");
-
-    getContentPane().add(top, BorderLayout.NORTH);
-    getContentPane().add(new JScrollPane(_description), BorderLayout.CENTER);
-    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-
-    getRootPane().setDefaultButton(_addButton);
-    _addButton.addActionListener(this);
-    _cancelButton.addActionListener(this);
-  }
-
-
+    private void centerOnParent() {
+        Dimension size = getSize();
+        Dimension p = getParent().getSize();
+        int x = (getParent().getX() - size.width) + (int) ((size.width + p.width) / 2d);
+        int y = (getParent().getY() - size.height) + (int) ((size.height + p.height) / 2d);
+        setLocation(x, y);
+    }
+    
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void actionPerformed(ActionEvent e) {
