@@ -31,6 +31,7 @@ import org.tigris.gef.ocl.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URL;
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
@@ -66,69 +67,83 @@ public class ActionSaveProjectAs extends ActionSaveProject {
 	trySave(false);
     }
 
-    public boolean trySave(boolean overwrite) {
-
-	StringBuffer msg = new StringBuffer();
-	msg.append("This is a developer release of ArgoUML. You should not use it \n");
-	msg.append("for production use, it's only for testing. You may save your models,\n");
-	msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
-	msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
-	msg.append("and get one there. Thank you.");
-	JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);
-
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p =  pb.getProject();
-	try {
-	    JFileChooser chooser = null;
-	    try {
-		if (p != null && p.getURL() != null &&
-		    p.getURL().getFile().length()>0) {
-		    String filename = p.getURL().getFile();
-		    if (!filename.startsWith("/FILE1/+/"))
-			chooser  = new JFileChooser(p.getURL().getFile());
-		}
-	    }
+  public boolean trySave(boolean overwrite) {
+    StringBuffer msg = new StringBuffer();
+    msg.append("This is a developer release of ArgoUML. You should not use it \n");
+    msg.append("for production use, it's only for testing. You may save your models,\n");
+    msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
+    msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
+    msg.append("and get one there. Thank you.");
+    JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);
+    
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p =  pb.getProject();
+    
+    try {
+      JFileChooser chooser = null;
+      try {
+        if (p != null && p.getURL() != null &&
+            p.getURL().getFile().length()>0) {
+          String filename = p.getURL().getFile();
+          
+          if (!filename.startsWith("/FILE1/+/")) {
+            chooser  = new JFileChooser (p.getURL().getFile());
+          }
+        }
+      }
 	    catch (Exception ex) {
-		System.out.println("exception in opening JFileChooser");
-		ex.printStackTrace();
-	    }
-	    if (chooser == null) chooser = new JFileChooser();
-
-	    chooser.setDialogTitle("Save Project: " + p.getName());
-	    FileFilter filter = FileFilters.ZArgoFilter;
-	    chooser.addChoosableFileFilter(filter);
-	    chooser.setFileFilter(filter);
-
-	    int retval = chooser.showSaveDialog(pb);
-	    if(retval == 0) {
-		File theFile = chooser.getSelectedFile();
-		if (theFile != null) {
-		    String path = chooser.getSelectedFile().getParent();
-		    String name = chooser.getSelectedFile().getName();
-		    if (!name.endsWith(".zargo")) name += ".zargo";
-		    if (!path.endsWith(separator)) path += separator;
-		    pb.showStatus("Writing " + path + name + "...");
-		    p.setFile(chooser.getSelectedFile());
-		    //p.setPathname(path);
-		    File f = new File(path + name);
-		    p.setURL(Util.fileToURL(f));
-		    pb.updateTitle();
-		    return super.trySave(false);
-		}
-	    }
-	}
-	catch (FileNotFoundException ignore) {
-	    System.out.println("got an FileNotFoundException");
-	}
-	catch (PropertyVetoException ignore) {
-	    System.out.println("got an PropertyVetoException in SaveAs");
-	}
-	catch (IOException ignore) {
-	    System.out.println("got an IOException");
-	    ignore.printStackTrace();
-	}
-	return false;
+		    System.out.println ("exception in opening JFileChooser");
+        ex.printStackTrace();
+      }
+      
+      if (chooser == null) chooser = new JFileChooser();
+      
+      chooser.setDialogTitle ("Save Project: " + p.getName());
+      FileFilter filter = FileFilters.ZArgoFilter;
+      chooser.addChoosableFileFilter (filter);
+      chooser.setFileFilter (filter);
+      
+      int retval = chooser.showSaveDialog (pb);
+      if(retval == 0) {
+        File theFile = chooser.getSelectedFile();
+        
+        if (theFile != null) {
+          String path = chooser.getSelectedFile().getParent();
+          String name = chooser.getSelectedFile().getName();
+          if (!name.endsWith (".zargo")) name += ".zargo";
+          if (!path.endsWith (separator)) path += separator;
+          
+          URL oldURL = p.getURL();
+          p.setFile (chooser.getSelectedFile());
+          //p.setPathname(path);
+          File f = new File (path + name);
+          p.setURL (Util.fileToURL (f));
+          pb.updateTitle();
+          
+          boolean fResult = super.trySave(false);
+          
+          if (! fResult) {
+            p.setURL (oldURL);
+            pb.updateTitle();
+          }
+          
+          return fResult;
+        }
+      }
     }
+    catch (FileNotFoundException ignore) {
+      System.out.println("got an FileNotFoundException");
+    }
+    catch (PropertyVetoException ignore) {
+      System.out.println("got an PropertyVetoException in SaveAs");
+    }
+    catch (IOException ignore) {
+      System.out.println("got an IOException");
+      ignore.printStackTrace();
+    }
+    
+    return false;
+  }
 
     public boolean shouldBeEnabled() {
 	return true;

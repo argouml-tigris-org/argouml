@@ -31,94 +31,127 @@ import java.io.*;
 import java.awt.event.*;
 import java.util.zip.*;
 
+import javax.swing.JOptionPane;
 
 public class ActionSaveProject extends UMLAction {
+  
+  ////////////////////////////////////////////////////////////////
+  // static variables
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
+  public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
-    public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
+  protected static OCLExpander expander = null;
 
-    protected static OCLExpander expander = null;
-
-    public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
+  public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
 
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    public ActionSaveProject() {
-	super("Save Project");
+  public ActionSaveProject() {
+    super("Save Project");
+  }
+
+  public ActionSaveProject(String title, boolean icon) {
+    super(title, icon);
+  }
+
+
+  ////////////////////////////////////////////////////////////////
+  // main methods
+
+  public void actionPerformed(ActionEvent e) {
+    trySave(true);
+  }
+
+  public boolean trySave (boolean overwrite) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    
+    try {
+      if (expander == null) {
+        java.util.Hashtable templates = TemplateReader.readFile (ARGO_TEE);
+        expander = new OCLExpander(templates);
+      }
+      
+      Project p =  pb.getProject();
+      
+      String fullpath = "Untitled.zargo";
+      if (p.getURL() != null) fullpath = p.getURL().getFile();
+      
+      if (fullpath.charAt (0) == '/' && fullpath.charAt (2) == ':') {
+        fullpath = fullpath.substring(1); // for Windows /D: -> D:
+      }
+      
+      File f = new File (fullpath);
+      if (f.exists() && !overwrite) {
+        //Argo.log.info ("Are you sure you want to overwrite " + fullpath + "?");
+        int nResult = JOptionPane.showConfirmDialog (
+            pb,
+            "Are you sure you want to overwrite " + fullpath + "?",
+            "Confirm overwrite",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+          );
+        
+        if (nResult != JOptionPane.YES_OPTION) {
+          return false;
+        }
+      }
+      
+      pb.showStatus ("Writing " + fullpath + "...");      
+      {
+        ZipOutputStream zos = new ZipOutputStream (new FileOutputStream (f));
+        ZipEntry zipEntry = new ZipEntry (p.getBaseName() + ".argo");
+        zos.putNextEntry (zipEntry);
+        OutputStreamWriter fw = new OutputStreamWriter (zos, "UTF-8");
+        p.preSave();
+        expander.expand (fw, p, "", "");
+        fw.flush();
+        // zos.flush();
+        zos.closeEntry();
+        String parentDirName = fullpath.substring (0, fullpath.lastIndexOf ("/"));
+        Argo.log.info ("Dir ==" + parentDirName);
+        p.saveAllMembers (parentDirName, overwrite, fw, zos);
+        //needs-more-work: in future allow independent saving
+        p.postSave();
+        fw.close();
+        // zos.close();
+      }
+      pb.showStatus ("Wrote " + p.getURL());
+      
+      return true;
     }
-
-    public ActionSaveProject(String title, boolean icon) {
-	super(title, icon);
+    catch (FileNotFoundException fnfe) {
+      JOptionPane.showMessageDialog (
+          pb,
+          "A problem occurred while saving: \"" + fnfe.getMessage() + "\".\n"+
+          "Your file might be corrupted.",
+          "Problem while saving",
+          JOptionPane.ERROR_MESSAGE
+        );
+      
+      fnfe.printStackTrace();
     }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent e) {
-	trySave(true);
+    catch (IOException ioe) {
+      JOptionPane.showMessageDialog (
+          pb,
+          "A problem occurred while saving: \"" + ioe.getMessage() + "\".\n" +
+          "Your file might be corrupted.",
+          "Problem while saving",
+          JOptionPane.ERROR_MESSAGE
+        );
+      
+      ioe.printStackTrace();
     }
+    
+    return false;
+  }
 
-    public boolean trySave(boolean overwrite) {
-
-	try {
-	    if (expander == null) {
-		java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
-		expander = new OCLExpander(templates);
-	    }
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    Project p =  pb.getProject();
-
-	    String fullpath = "Untitled.zargo";
-	    if (p.getURL() != null) fullpath = p.getURL().getFile();
-
-	    if (fullpath.charAt(0) == '/' && fullpath.charAt(2) == ':')
-		fullpath = fullpath.substring(1); // for Windows /D: -> D:
-	    File f = new File(fullpath);
-	    if (f.exists() && !overwrite) {
-		Argo.log.info("Are you sure you want to overwrite " +
-				   fullpath + "?");
-	    }
-
-	    ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(f));
-	    ZipEntry zipEntry = new ZipEntry(p.getBaseName()+".argo");
-	    zos.putNextEntry(zipEntry);
-	    OutputStreamWriter fw = new OutputStreamWriter(zos, "UTF-8");
-	    p.preSave();
-	    expander.expand(fw, p, "", "");
-	    fw.flush();
-	    // zos.flush();
-	    zos.closeEntry();
-	    String parentDirName = fullpath.substring(0, fullpath.lastIndexOf("/"));
-	    Argo.log.info("Dir ==" + parentDirName);
-	    p.saveAllMembers(parentDirName, overwrite, fw, zos);
-	    //needs-more-work: in future allow independent saving
-	    p.postSave();
-	    fw.close();
-	    // zos.close();
-	    pb.showStatus("Wrote " + p.getURL());
-	    return true;
-	}
-	catch (FileNotFoundException ignore) {
-	    System.out.println("got an FileNotFoundException in SaveProject");
-	    ignore.printStackTrace();
-	}
-	catch (IOException ignore) {
-	    System.out.println("got an IOException");
-	    ignore.printStackTrace();
-	}
-	return false;
-    }
-
-    public boolean shouldBeEnabled() {
-	Project p = ProjectBrowser.TheInstance.getProject();
-	return super.shouldBeEnabled() &&
-	    p != null &&
-	    p.getURL() != null &&
-	    p.getURL().toString().indexOf("templates") == -1;
-    }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() &&
+           p != null &&
+           p.getURL() != null &&
+           p.getURL().toString().indexOf ("templates") == -1;  // something of a hack, isn't it???
+  }
 } /* end class ActionSaveProject */
