@@ -70,10 +70,14 @@ public class AboutBox extends JDialog {
 	this(owner, false);
     }
 
+    private final String localize(String str) {
+	return str;
+    }
+
     public AboutBox(Frame owner, boolean modal) {
 	super(owner, modal);
         // TODO: i18n
-	this.setTitle("About ArgoUML");
+	this.setTitle(localize("About ArgoUML"));
 	_splashPanel = new SplashPanel("Splash");
 	int imgWidth = _splashPanel.getImage().getIconWidth();
 	int imgHeight = _splashPanel.getImage().getIconHeight();
@@ -83,32 +87,28 @@ public class AboutBox extends JDialog {
 	getContentPane().setLayout(new BorderLayout(0, 0));
 
 	StringBuffer versionBuf = new StringBuffer();
-	versionBuf.append("\n--- Generated version information: ---\n");
+	versionBuf.append(localize("\n--- Generated version information: ---\n"));
 	versionBuf.append(Tools.getVersionInfo());
-	versionBuf.append(
-			  "\n" +
-			  "Intended for use with:\n" +
-			  "* JDK 1.3 or higher\n" +
-			  "* GEF Graph Editing Framework (gef.tigris.org)\n" +
-			  "  including GIF generation code " +
-			     "from www.acme.com\n" +
-			  "* A JAXP 1.0.1 compatible parser\n" +
-			  "  [Xerces-J 1.2.2 or later recommended, " +
-			     "(xml.apache.org), it's just great!]\n" +
-			  "* Novosoft's NSUML 0.4.19 or higher " +
-			     "(nsuml.sourceforge.net)\n" +
-			  "* Frank Finger's (TU-Dresden) OCL-Compiler " +
-			     "(dresden-ocl.sourceforge.net)\n" +
-			  "* ANTLR (www.antlr.org) version 2.7\n" +
-			  "\n");
+	versionBuf.append(localize("\n" +
+				   "Uses the following tools:\n"));
+	// Not localized:
+	versionBuf.append("* GEF (gef.tigris.org)\n");
+	versionBuf.append("* Xerces-J 1.2.3\n");
+	versionBuf.append("* NSUML 0.4.19 (nsuml.sourceforge.net)\n");
+	versionBuf.append("* TU-Dresden OCL-Compiler " +
+			  "(dresden-ocl.sourceforge.net)\n");
+	versionBuf.append("* ANTLR 2.7.2 (www.antlr.org)\n");
+	// Library maintainers! Add and update information here above!
 
-	versionBuf.append("\n");
-	versionBuf.append("The ArgoUML developers would like to thank "
-			  + "all those broad-minded people ");
-	versionBuf.append("who spend their valuable time in contributing "
-			  + "to the projects ArgoUML ");
-	versionBuf.append("depends on! We wouldn't be here without your "
-			  + "work!\n");
+	versionBuf.append("\n\n");
+
+	versionBuf.append(localize("The ArgoUML developers would like to thank "
+				   + "all those broad-minded people "
+				   + "who spend their valuable time in "
+				   + "contributing "
+				   + "to the projects ArgoUML "
+				   + "depends on! We wouldn't be here without "
+				   + "your work!\n"));
 	versionBuf.append("\n");
 
         /** MVW: Added the inset JPanel, so that the image width is also
