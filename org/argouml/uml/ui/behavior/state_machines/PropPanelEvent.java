@@ -87,6 +87,9 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.parameters"), getParameterScroll());
 
         addSeperator();
+        
+        new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete"), 
+                "removeElement", null);
     }
 
     /**
