@@ -79,32 +79,30 @@ import ru.novosoft.uml.model_management.MPackageImpl;
 
 public class TestUmlObjectCreation extends TestCase {
 
-    public TestUmlObjectCreation(String n) { super(n); }
+    private UmlFactory factory = null;
 
-    private void testObjectFactoryType(Class c, Class expected, Object legacy, boolean runTest) {
+	public TestUmlObjectCreation(String n) { super(n); }
+
+    private void testObjectFactoryType(Uml.UmlEntity c, Class expected, Object legacy, boolean runTest) {
         // Certain objects cannot be instantiated by NSUML.
         // We allow these to be part of the test list for completeness, but do not test them.
         if (! runTest) {
         	return;
         }
     	assertTrue("Not a valid entity: " + c.getClass(),
-		           Uml.Entity.class.isAssignableFrom(c));
+		           c instanceof Uml.UmlEntity);
 		
-		UmlFactory f = UmlFactory.getFactory();
-		assertNotNull("Did not get Factory", f);
-		assertEquals("Did not get the correct Factory",
-					 f.getClass(), UmlFactory.class);
         Object o = null;
-		o = f.create(c);
-		assertNotNull("Could not create " + c.getName(), o);
+		o = factory.create(c);
+		assertNotNull("Could not create " + c.getClass().getName(), o);
 		
+		// Make sure that the new create() mechanism gives the same class as the legacy create
 		if (legacy != null) {
 			assertEquals("Not the same class", o.getClass(), legacy.getClass());
 		}
     }
 
 	public void testObjectFactory() {
-		NavigatorPane.setInstance(null);
 		testObjectFactoryType(
 			Uml.ABSTRACTION,
 			MAbstractionImpl.class,
@@ -309,6 +307,18 @@ public class TestUmlObjectCreation extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
+
+		/* Running the tests here causes instantiation errors from the navigator pane.
+		 * This is a temporary hack until the object model is cleaned up.
+		 */
+		NavigatorPane.setInstance(null);
+		assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
+
+		// Get the factory instance
+		factory = UmlFactory.getFactory();
+		assertNotNull("Did not get Factory", factory);
+		assertEquals("Did not get the correct Factory",
+					 factory.getClass(), UmlFactory.class);
 	}
 
 	/** @see junit.framework.TestCase#tearDown()
