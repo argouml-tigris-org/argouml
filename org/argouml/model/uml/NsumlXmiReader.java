@@ -130,13 +130,16 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //  and unfortunately is a bit too protective of it's data to just extend.
 //
 //  To make use of this code -
-//   a) Refactor to rename this class to NsumlXMIReader
+//   a) Make the class public
 //   b) Refactor to move this class to ru.novosoft.uml.xmi
 //   c) Uncomment the code.
 //
 //  By pretending to be part of the NSUML package this code can now get
 //  access to the links attribute of the NSUML XMIReader and report on
 //  (or ignore) any corrupt data.
+//
+// To ignore and not just report you also have to uncomment the 2
+// //i.remove(); lines
 //
 //  This technique was used to fix
 //  http://argouml.tigris.org/issues/show_bug.cgi?id=2547 and
@@ -146,15 +149,15 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 */
 //    protected void performLinking() {
 //        try {
-//            Iterator i = links.iterator();
+//            java.util.Iterator i = links.iterator();
 //            Object link = null;
 //            while(i.hasNext()) {
 //                link = i.next();
 //                Class c = link.getClass();
-//                Field[] fields = c.getDeclaredFields();
+//                java.lang.reflect.Field[] fields = c.getDeclaredFields();
 //                boolean methodType = fields[2].getBoolean(link);
 //                Object sourceObject = fields[0].get(link);
-//                if (sourceObject instanceof MBase) {
+//                if (sourceObject instanceof ru.novosoft.uml.MBase) {
 //                    if (methodType) {
 //                        String parameterXMIID =  (String)fields[3].get(link);
 //                        String parameterXMIUUID =
@@ -163,8 +166,10 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //                                                          parameterXMIUUID);
 //                        Object methodName =  fields[1].get(link);
 //                        if (methodName.equals("type")
-//                              && sourceObject instanceof MAssociationEnd
-//                              && !(objectParameter instanceof MModelElement))
+//                              && sourceObject instanceof
+//                                ru.novosoft.uml.foundation.core.MAssociationEnd
+//                              && !(objectParameter instanceof
+//                                ru.novosoft.uml.foundation.core.MModelElement))
 //                        {
 //                            System.out.println("Link data from XMI "
 //                                  + sourceObject + " " + methodName + " "
@@ -177,7 +182,8 @@ class NsumlXmiReader extends ru.novosoft.uml.xmi.XMIReader {
 //                        String parameterXMIUUID = (String)fields[4].get(link);
 //                        Object objectParameter =
 //                            getObject(parameterXMIID, parameterXMIUUID);
-//                        if (!(objectParameter instanceof MModelElement)) {
+//                        if (!(objectParameter instanceof
+//                              ru.novosoft.uml.foundation.core.MModelElement)) {
 //                            Object methodName =  fields[1].get(link);
 //                            System.out.println("Invalid link data from XMI "
 //                                + sourceObject + " " + methodName + " "
