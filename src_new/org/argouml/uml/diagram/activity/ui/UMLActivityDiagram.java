@@ -102,14 +102,9 @@ public class UMLActivityDiagram extends UMLDiagram {
 	_actionFinalPseudoState =
             new CmdCreateNode(ModelFacade.FINALSTATE, "FinalState");
 
-	/* TODO: Uncomment this for V0.17.1, and remove the Branch part below.*/
-/*	_actionJunctionPseudoState =
+	_actionJunctionPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.JUNCTION_PSEUDOSTATEKIND,
 					"Junction");
-*/
-	_actionBranchPseudoState =
-	    new ActionCreatePseudostate(ModelFacade.BRANCH_PSEUDOSTATEKIND,
-	                                "Junction");
 
 	_actionForkPseudoState =
 	    new ActionCreatePseudostate(ModelFacade.FORK_PSEUDOSTATEKIND, 
@@ -243,9 +238,7 @@ public class UMLActivityDiagram extends UMLDiagram {
 	    null,
 	    _actionStartPseudoState,
 	    _actionFinalPseudoState,
-	    /* TODO: Replace the Branch with Junction. */
-	    /*_actionJunctionPseudoState,*/
-	    _actionBranchPseudoState,
+	    _actionJunctionPseudoState,
 	    _actionForkPseudoState,
 	    _actionJoinPseudoState,
 	    //_actionNewSwimlane,
