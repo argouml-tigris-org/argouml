@@ -458,15 +458,4 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
     updateBounds();
   }
 
-  // notify GraphModel of deletion.
-  public void delete() {
-    LayerPerspective lay = (LayerPerspective)getLayer();
-    if ( lay != null && getOwner() != null ) {
-      GraphModel gm = lay.getGraphModel();
-      if ( gm != null && gm instanceof MutableGraphModel )
-        ((MutableGraphModel)gm).removeNode(getOwner());
-    }
-    super.delete();
-  }
-
 } /* end class FigNodeModelElement */
