@@ -165,6 +165,12 @@ public class MMUtil {
 		return usage;
 	}
 
+	/** This method returns all attributes of a given Classifier
+	 *
+	 * @param classifier the classifier you want to have the attributes for
+	 * @return a collection of the attributes
+	 */
+
 	public Collection getAttributes(MClassifier classifier) {
 	    Collection result = new ArrayList();
 		Iterator features = classifier.getFeatures().iterator();
@@ -176,6 +182,27 @@ public class MMUtil {
 		return result;
 	}
 
+	/** This method returns all opposite AssociationEnds of a given Classifier
+	 *
+	 * @param classifier the classifier you want to have the opposite association ends for
+	 * @return a collection of the opposite associationends
+	 */
+	public Collection getAssociateEnds(MClassifier classifier) {
+	    Collection result = new ArrayList();
+		Iterator ascends = classifier.getAssociationEnds().iterator();
+		while (ascends.hasNext()) {
+			MAssociationEnd ascend = (MAssociationEnd)ascends.next();
+			if ((ascend.getOppositeEnd() != null))
+				result.add(ascend.getOppositeEnd());
+		}
+		return result;
+	}
+
+	/** This method returns all operations of a given Classifier
+	 *
+	 * @param classifier the classifier you want to have the operations for
+	 * @return a collection of the operations
+	 */
 	public Collection getOperations(MClassifier classifier) {
 	    Collection result = new ArrayList();
 		Iterator features = classifier.getFeatures().iterator();
@@ -187,11 +214,63 @@ public class MMUtil {
 		return result;
 	}
 
-	// this method finds all paramters of the given operation which have
-	// the MParamterDirectionType RETURN. If it is only one, it is returned.
-	// In case there are no return parameters, null is returned. If there
-	// is more than one return paramter, first of them is returned, but a 
-	// message is written to System.out
+	/** This method returns all attributes of a given Classifier, including inherited
+	 *
+	 * @param classifier the classifier you want to have the attributes for
+	 * @return a collection of the attributes
+	 */
+
+	public Collection getAttributesInh(MClassifier classifier) {
+	    Collection result = new ArrayList();
+		result.addAll(getAttributes(classifier));
+		Iterator parents = classifier.getParents().iterator();
+		while (parents.hasNext()) {
+			MClassifier parent = (MClassifier)parents.next();
+  			System.out.println("Adding attributes for: "+parent);
+			result.addAll(getAttributesInh(parent));
+		}
+		return result;
+	}
+
+	/** This method returns all opposite AssociationEnds of a given Classifier, including inherited
+	 *
+	 * @param classifier the classifier you want to have the opposite association ends for
+	 * @return a collection of the opposite associationends
+	 */
+	public Collection getAssociateEndsInh(MClassifier classifier) {
+	    Collection result = new ArrayList();
+		result.addAll(getAssociateEnds(classifier));
+		Iterator parents = classifier.getParents().iterator();
+		while (parents.hasNext()) {
+		    result.addAll(getAssociateEndsInh((MClassifier)parents.next()));
+		}
+		return result;
+	}
+
+	/** This method returns all operations of a given Classifier, including inherited
+	 *
+	 * @param classifier the classifier you want to have the operations for
+	 * @return a collection of the operations
+	 */
+	public Collection getOperationsInh(MClassifier classifier) {
+	    Collection result = new ArrayList();
+		result.addAll(getOperations(classifier));
+		Iterator parents = classifier.getParents().iterator();
+		while (parents.hasNext()) {
+			result.addAll(getOperationsInh((MClassifier)parents.next()));
+		}
+		return result;
+	}
+
+	/** this method finds all paramters of the given operation which have
+	 * the MParamterDirectionType RETURN. If it is only one, it is returned.
+	 * In case there are no return parameters, null is returned. If there
+	 * is more than one return paramter, first of them is returned, but a 
+	 * message is written to System.out
+	 *
+	 * @param operation the operation you want to find the return parameter for
+	 * @return If this operation has only one paramter with Kind: RETURN, this is it, otherwise null
+	 */
 
 	public MParameter getReturnParameter(MOperation operation) {
 		Vector returnParams = new Vector();

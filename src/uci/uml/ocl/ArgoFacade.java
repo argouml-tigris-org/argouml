@@ -44,35 +44,60 @@ class ArgoAny implements Any {
 	Type type = Basic.navigateAnyQualified(name, this, qualifiers);
 	if (type != null) return type;
 
-	MAttribute foundAttr = null;
-	com.sun.java.util.collections.Collection attributes = MMUtil.SINGLETON.getAttributes(classifier);
+	MClassifier foundType = null;
+
+	// first search for appropriate attributes:
+System.out.println("I'll look for attributes now");
+	com.sun.java.util.collections.Collection attributes = MMUtil.SINGLETON.getAttributesInh(classifier);
 	Iterator iter = attributes.iterator();
-	while (iter.hasNext() && foundAttr == null){
+	while (iter.hasNext() && foundType == null) {
 	    MAttribute attr = (MAttribute)iter.next();
 	    if (attr.getName().equals(name)) {
-		foundAttr = attr;
+			foundType = attr.getType();
 	    }
 	}
 
-	if (foundAttr == null) { throw new OclTypeException("attribute "+name+" not found in classifier "+toString());}
+	// if no attribute was found, look for associations:
+	if (foundType == null) {
+		System.out.println("I'll look for associations now");
+		com.sun.java.util.collections.Collection associationEnds = MMUtil.SINGLETON.getAssociateEndsInh(classifier);
+		Iterator asciter = associationEnds.iterator();
+		while (asciter.hasNext() && foundType == null) {
+			MAssociationEnd ae = (MAssociationEnd)asciter.next();
+			if (name.equals(ae.getName())) 
+				foundType = ae.getType();
+			else {
+				String oppositeName = ae.getType().getName();
+				if (oppositeName != null) {
+					String lowerOppositeName = oppositeName.substring(0,1).toLowerCase();
+					lowerOppositeName += oppositeName.substring(1);
+					System.out.println("lowerOppositeName is: "+lowerOppositeName);
+					if (lowerOppositeName.equals(name))
+						foundType = ae.getType();
+				}
+			}
+		}
+	}
 
-	if (foundAttr.getType().getName().equals("int") || foundAttr.getType().getName().equals("Integer")) {
+	if (foundType == null) { throw new OclTypeException("attribute "+name+" not found in classifier "+toString());}
+
+	if (foundType.getName().equals("int") || foundType.getName().equals("Integer")) {
 	    return Basic.INTEGER;
 	}
 
-	if (foundAttr.getType().getName().equals("float") || foundAttr.getType().getName().equals("double")) {
+	if (foundType.getName().equals("float") || foundType.getName().equals("double")) {
 	    return Basic.REAL;
 	}
 
-	if (foundAttr.getType().getName().equals("bool") || foundAttr.getType().getName().equals("Boolean")) {
+	if (foundType.getName().equals("bool") || foundType.getName().equals("Boolean")) {
 	    return Basic.BOOLEAN;
 	}
 
-	if (foundAttr.getType().getName().equals("String")){
+	if (foundType.getName().equals("String")){
 	    return Basic.STRING;
 	}
 	
-	return new ArgoAny(foundAttr.getType());
+	return new ArgoAny(foundType);
     }
     
     public Type navigateParameterized(String name, Type[] params) {

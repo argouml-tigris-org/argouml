@@ -120,6 +120,22 @@ implements TabModelTarget, DocumentListener, MElementListener{
     nsDoc.addDocumentListener(this);
   }
 
+  protected SetTargetRunner setTargetRunner = new SetTargetRunner();
+
+  class SetTargetRunner implements Runnable {
+    public boolean scheduled = false;
+    public void run() {
+      setTarget(_target);
+      scheduled = false;
+    }
+  }
+
+  protected void scheduleSetTarget() {
+    if (!setTargetRunner.scheduled) {
+      SwingUtilities.invokeLater(setTargetRunner);
+    }
+  }
+
   ////////////////////////////////////////////////////////////////
   // accessors
 
@@ -134,7 +150,13 @@ implements TabModelTarget, DocumentListener, MElementListener{
   }
 
   protected void setTargetInternal(Object t) {
+    if (! t.equals(_target)) {
+     if ( _target instanceof MBase )
+       ((MBase)t).removeMElementListener(this);
     _target = t;
+     if ( _target instanceof MBase )
+       ((MBase)t).addMElementListener(this);
+    }
     MModelElement me = (MModelElement) _target;
     String n = me.getName();
     // this is a small hack to get the text to update for an empty string
@@ -228,7 +250,12 @@ implements TabModelTarget, DocumentListener, MElementListener{
 	// MElementListener implementation
 
 	public void propertySet(MElementEvent mee) {
-		refresh();
+           if (( mee.getName().equals("name"))
+           &&  ( mee.getType() == MElementEvent.ATTRIBUTE_SET )
+           &&  ( !_nameField.hasFocus())) { 
+	     scheduleSetTarget();	
+           }
+           
 	}
 	public void listRoleItemSet(MElementEvent mee) {
 	}
