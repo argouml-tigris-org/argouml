@@ -22,54 +22,58 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.foundation.core;
-
-import javax.swing.JComboBox;
-
-import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
-import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
-import org.argouml.uml.ui.UMLComboBox2;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassImpl;
-import ru.novosoft.uml.foundation.core.MFlow;
-import ru.novosoft.uml.foundation.core.MFlowImpl;
-import ru.novosoft.uml.model_management.MModel;
-import ru.novosoft.uml.model_management.MModelImpl;
+package org.argouml.uml.ui.behavior.use_cases;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.modelmanagement.ModelManagementFactory;
+import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
+import ru.novosoft.uml.MFactoryImpl;
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.model_management.MModel;
+
 /**
- * @since Oct 12, 2002
+ * @since Nov 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestUMLFlowSourceComboBox extends TestCase {
-    
-    private MFlow elem = null;
-    private UMLComboBox2 box = null;
+public class TestUMLIncludeBaseComboBoxModel extends TestCase {
 
+    private int oldEventPolicy;
+    private MUseCase[] bases;
+    private UMLIncludeBaseComboBoxModel model;
+    private MInclude elem;
+    
     /**
-     * Constructor for TestUMLFlowSourceComboBox.
+     * Constructor for TestUMLIncludeBaseComboBoxModel.
      * @param arg0
      */
-    public TestUMLFlowSourceComboBox(String arg0) {
+    public TestUMLIncludeBaseComboBoxModel(String arg0) {
         super(arg0);
     }
     
+    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
+        elem = UseCasesFactory.getFactory().createInclude();
+        oldEventPolicy = MFactoryImpl.getEventPolicy();
         MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
-        elem = CoreFactory.getFactory().createFlow();
-        MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
-        mockcomp.setTarget(elem);
-        box = new UMLComboBox2(mockcomp, new UMLFlowSourceComboBoxModel(mockcomp), ActionSetFlowSource.SINGLETON);
-        UmlModelEventPump.getPump().addModelEventListener(box, elem, "source");
+        MockUMLUserInterfaceContainer cont = new MockUMLUserInterfaceContainer();
+        cont.setTarget(elem);
+        model = new UMLIncludeBaseComboBoxModel(cont);
+        bases = new MUseCase[10];
+        MModel m = ModelManagementFactory.getFactory().createModel();
+        elem.setNamespace(m);
+        for (int i = 0 ; i < 10; i++) {
+            bases[i] = UseCasesFactory.getFactory().createUseCase();
+            m.addOwnedElement(bases[i]);
+        }      
     }
 
     /**
@@ -77,25 +81,35 @@ public class TestUMLFlowSourceComboBox extends TestCase {
      */
     protected void tearDown() throws Exception {
         super.tearDown();
-        elem.remove();
-        elem = null;
-        box = null;
+        UmlFactory.getFactory().delete(elem);
+        for (int i = 0 ; i < 10; i++) {
+            UmlFactory.getFactory().delete(bases[i]);
+        }
+        MFactoryImpl.setEventPolicy(oldEventPolicy);
+        model = null;
     }
     
-    public void testSetSelectedNull() {
-        elem.addSource(new MClassImpl());
-        box.setSelectedItem(null);
-        assert(elem.getSources().isEmpty());
+    public void testSetUp() {
+        assertEquals(10, model.getSize());
+        assertTrue(model.contains(bases[5]));
+        assertTrue(model.contains(bases[0]));
+        assertTrue(model.contains(bases[9]));
     }
     
-    // this test does not work yet since the event mechanisme in argo needs to 
-    // be refactored.
-    public void testSetSelected() {
-        MModel m = ModelManagementFactory.getFactory().createModel();
-        MClass clazz = CoreFactory.getFactory().buildClass(m);
-        box.setSelectedItem(clazz);
-        assert(elem.getSources().contains(clazz));
+    public void testSetBase() {
+        elem.setBase(bases[0]);
+        assertTrue(model.getSelectedItem() == bases[0]);
     }
-        
+    
+    public void testSetBaseToNull() {
+        elem.setBase(null);
+        assertNull(model.getSelectedItem());
+    }
+    
+    public void testRemoveBase() {
+        UmlFactory.getFactory().delete(bases[9]);
+        assertEquals(9, model.getSize());
+        assertTrue(!model.contains(bases[9]));
+    } 
 
 }
