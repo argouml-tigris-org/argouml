@@ -139,11 +139,12 @@ public class FileFilters {
     /**
      * Returns the suffix for which a FileFilter filters. 
      * @param filter The FileFilter from which we want to know the suffix
-     * @return String The suffix of the FileFilter. Returns null if the FileFilter is not an instance of SuffixFilter.
+     * @return String The suffix of the FileFilter. 
+     * Returns null if the FileFilter is not an instance of SuffixFilter.
      */
     public static String getSuffix(FileFilter filter) {
         if (filter instanceof SuffixFilter) {
-            return ((SuffixFilter) filter)._suffix;
+            return ((SuffixFilter) filter).getSuffix();
         }
         return null;
     }

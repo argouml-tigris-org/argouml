@@ -69,8 +69,8 @@ public class JavaImport extends FileImportSupport {
 	    // Create a modeller for the parser
 	    Modeller modeller = new Modeller(p.getModel(),
 					     diagram, _import,
-					     attribute.isSelected(),
-					     datatype.isSelected(),
+					     getAttribute().isSelected(),
+					     getDatatype().isSelected(),
 					     f.getName());
 
 	    // Print the name of the current file, so we can associate

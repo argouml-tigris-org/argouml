@@ -27,12 +27,16 @@ package org.argouml.util;
 import java.io.File;
 import javax.swing.filechooser.FileFilter;
 
+/**
+ * This class handles file extensions.
+ *
+ */
 public class SuffixFilter extends FileFilter {
 
     ////////////////////////////////////////////////////////////////
     // instance varaibles
 
-    public final String _suffix;
+    private final String suffix;
     private final String desc;
 
     ////////////////////////////////////////////////////////////////
@@ -45,7 +49,7 @@ public class SuffixFilter extends FileFilter {
      * @param d the file type description
      */
     public SuffixFilter(String s, String d) {
-	_suffix = s;
+	suffix = s;
 	desc = d;
     }
 
@@ -59,15 +63,23 @@ public class SuffixFilter extends FileFilter {
 	if (f == null) return false;
 	if (f.isDirectory()) return true;
 	String extension = getExtension(f);
-	if (_suffix.equalsIgnoreCase(extension)) return true;
+	if (suffix.equalsIgnoreCase(extension)) return true;
 	return false;
     }
 
+    /**
+     * @param f the file to get the extension from
+     * @return the extension string (without the dot)
+     */
     public static String getExtension(File f) {
 	if (f == null) return null;
 	return getExtension(f.getName());
     }
 
+    /**
+     * @param filename the name of the file to get the extension from
+     * @return the extension string (without the dot)
+     */
     public static String getExtension(String filename) {
 	int i = filename.lastIndexOf('.');
 	if (i > 0 && i < filename.length() - 1) {
@@ -80,7 +92,14 @@ public class SuffixFilter extends FileFilter {
      * @see javax.swing.filechooser.FileFilter#getDescription()
      */
     public String getDescription() {
-	return desc + " (*." + _suffix + ")";
+	return desc + " (*." + suffix + ")";
+    }
+
+    /**
+     * @return Returns the _suffix.
+     */
+    public String getSuffix() {
+        return suffix;
     }
 
 } /* end class SuffixFilter */

@@ -138,7 +138,7 @@ public class ActionSaveGraphics
 	    // concerning the following lines: is .GIF preferred?
 	    chooser.setFileFilter(FileFilters.GIFFilter);
 	    File def = new File(defaultName + "."
-				+ FileFilters.GIFFilter._suffix);
+				+ FileFilters.GIFFilter.getSuffix());
 	    chooser.setSelectedFile(def);
 
 	    int retval = chooser.showSaveDialog(pb);
@@ -153,10 +153,11 @@ public class ActionSaveGraphics
 		    // filter.  start new code
 			
 		    if (suffix == null
-			|| !(suffix.equals(FileFilters.PSFilter._suffix)
-			     || suffix.equals(FileFilters.EPSFilter._suffix)
-			     || suffix.equals(FileFilters.GIFFilter._suffix)
-			     || suffix.equals(FileFilters.SVGFilter._suffix))) {
+			|| !(suffix.equals(FileFilters.PSFilter.getSuffix())
+			     || suffix.equals(FileFilters.EPSFilter.getSuffix())
+			     || suffix.equals(FileFilters.GIFFilter.getSuffix())
+			     || suffix.equals(FileFilters.SVGFilter
+			                                     .getSuffix()))) {
 			// add the selected filter suffix
 			FileFilter filter = chooser.getFileFilter();
 			suffix = FileFilters.getSuffix(filter);  
@@ -197,13 +198,13 @@ public class ActionSaveGraphics
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 
 	CmdSaveGraphics cmd = null;
-	if (FileFilters.PSFilter._suffix.equals(suffix)) {
+	if (FileFilters.PSFilter.getSuffix().equals(suffix)) {
 	    cmd = new CmdSavePS();
-	} else if (FileFilters.EPSFilter._suffix.equals(suffix)) {
+	} else if (FileFilters.EPSFilter.getSuffix().equals(suffix)) {
 	    cmd = new ActionSaveGraphicsCmdSaveEPS();
-	} else if (FileFilters.GIFFilter._suffix.equals(suffix)) {
+	} else if (FileFilters.GIFFilter.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveGIF();
-	} else if (FileFilters.SVGFilter._suffix.equals(suffix)) {
+	} else if (FileFilters.SVGFilter.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveSVG();
 	} else {
 	    pb.showStatus("Unknown graphics file type with suffix "
