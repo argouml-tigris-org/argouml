@@ -42,6 +42,7 @@ import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
 
 public abstract class ColumnDescriptor {
+
   ////////////////////////////////////////////////////////////////
   // constants
   public static ColumnDescriptor Name       = new ColumnName();

@@ -13,6 +13,7 @@ public class DeploymentDiagramRenderer
 implements GraphNodeRenderer, GraphEdgeRenderer {
 
   /** Return a Fig that can be used to represent the given node */
+
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MNodeImpl) return new FigMNode(gm, node);
     else if (node instanceof MNodeInstanceImpl) return new FigMNodeInstance(gm, node);
