@@ -149,13 +149,13 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
     protected final int getModelElementSize()
     {
-        if(_recalcSize) {
+        // if(_recalcSize) {
             _currentModelElementSize = recalcModelElementSize();
             if(_currentModelElementSize < 0) {
                 return 0;
             }
-            _recalcSize = false;
-        }
+        //    _recalcSize = false;
+        // }
         return _currentModelElementSize;
     }
 
