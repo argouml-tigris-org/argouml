@@ -73,9 +73,10 @@ implements Runnable, java.io.Serializable {
   /** Pending ToDoItems for the designer to consider. */
   protected Vector _items = new Vector(100);
 
-  protected VectorSet _allOffenders = new VectorSet(100);
-  protected VectorSet _allKnowledgeTypes = new VectorSet();
-  protected VectorSet _allPosters = new VectorSet();
+    // These are computed when needed.
+  private VectorSet _allOffenders = null;
+  private VectorSet _allKnowledgeTypes = null;
+  private VectorSet _allPosters = null;
   
   /** ToDoItems that the designer has explicitly indicated that (s)he
    * considers resolved.  Needs-More-Work: generalize into a design
@@ -193,12 +194,59 @@ implements Runnable, java.io.Serializable {
 
   public Vector getToDoItems() { return _items; }
 
-  // needs-more-work: not implemented
-  public VectorSet getOffenders() { return _allOffenders; }
+    // needs-more-work: not implemented
+    public VectorSet getOffenders() {
+	if (_allOffenders == null) {
+	    int size = _items.size();
+	    _allOffenders = new VectorSet(size*2);
+	    for (int i = 0; i < size; i++) {
+		ToDoItem item = (ToDoItem) _items.elementAt(i);
+		_allOffenders.addAllElements(item.getOffenders());
+	    }
+	}
+	return _allOffenders; 
+    }
+    private void addOffenders(VectorSet newoffs) {
+	if (_allOffenders != null)
+	    _allOffenders.addAllElements(newoffs);
+    }
+
+    public VectorSet getKnowledgeTypes() { 
+	if (_allKnowledgeTypes == null) {
+	    _allKnowledgeTypes = new VectorSet();
+	    Enumeration enum = _items.elements();
+	    while (enum.hasMoreElements()) {
+		ToDoItem item = (ToDoItem) enum.nextElement();
+		_allKnowledgeTypes.addAllElements(item.getPoster().
+						  getKnowledgeTypes());
+	    }
+	}
+	return _allKnowledgeTypes;
+    }
+    private void addKnowledgeTypes(VectorSet newkt) {
+	if (_allKnowledgeTypes != null) {
+	    _allKnowledgeTypes.addAllElements(newkt);
+	}
+    }
+
+    public VectorSet getPosters() { 
+	if (_allPosters == null) {
+	    _allPosters = new VectorSet();
+	    int size = _items.size();
+	    for (int i = 0; i < size; i++) {
+		ToDoItem item = (ToDoItem) _items.elementAt(i);
+		_allPosters.addElement(item.getPoster());
+	    }
+	}
+	return _allPosters;
+    }
+    private void addPosters(Poster newp) {
+	if (_allPosters != null)
+	    _allPosters.addElement(newp);
+    }
+
   public Vector getDecisions() { return new Vector(); }
   public Vector getGoals() { return new Vector(); }
-  public VectorSet getKnowledgeTypes() { return _allKnowledgeTypes; }
-  public VectorSet getPosters() { return _allPosters; }
 
   private synchronized void addE(ToDoItem item) {
     /* remove any identical items already on the list */
@@ -209,9 +257,9 @@ implements Runnable, java.io.Serializable {
     }
     _items.addElement(item);
     _longestToDoList = Math.max(_longestToDoList, _items.size());
-    _allOffenders.addAllElements(item.getOffenders());
-    _allKnowledgeTypes.addAllElements(item.getPoster().getKnowledgeTypes());
-    _allPosters.addElement(item.getPoster());
+    addOffenders(item.getOffenders());
+    addKnowledgeTypes(item.getPoster().getKnowledgeTypes());
+    addPosters(item.getPoster());
     if (item.getPoster() instanceof Designer)
       History.TheHistory.addItem(item, "note: ");
     else
@@ -314,32 +362,17 @@ implements Runnable, java.io.Serializable {
     return (ToDoItem)_items.elementAt(index);
   }
 
-  protected void recomputeAllOffenders() {
-    _allOffenders = new VectorSet(_items.size()*2);
-    int size = _items.size();
-    for (int i = 0; i < size; i++) {
-      ToDoItem item = (ToDoItem) _items.elementAt(i);
-      _allOffenders.addAllElements(item.getOffenders());
+    protected void recomputeAllOffenders() {
+	_allOffenders = null;
     }
-  }
 
-  protected void recomputeAllKnowledgeTypes() {
-    _allKnowledgeTypes = new VectorSet();
-    Enumeration enum = _items.elements();
-    while (enum.hasMoreElements()) {
-      ToDoItem item = (ToDoItem) enum.nextElement();
-      _allKnowledgeTypes.addAllElements(item.getPoster().getKnowledgeTypes());
+    protected void recomputeAllKnowledgeTypes() {
+	_allKnowledgeTypes = null;
     }
-  }
   
-  protected void recomputeAllPosters() {
-    _allPosters = new VectorSet();
-    int size = _items.size();
-    for (int i = 0; i < size; i++) {
-      ToDoItem item = (ToDoItem) _items.elementAt(i);
-      _allPosters.addElement(item.getPoster());
+    protected void recomputeAllPosters() {
+	_allPosters = null;
     }
-  }
   
 
   ////////////////////////////////////////////////////////////////
