@@ -956,7 +956,7 @@ Modifications
             literal.</para>
 
           <caution><para>&argouml; does not actually have a separate
-            concept of a literal. The navigation will take you to the
+            concept of a literal. The navigation will navigate to the
             property sheet for an attribute of a class (see <xref
             linkend="s1.ref.attribute"/>). When defining a literal, all
             that matters is its name. Other parts of the attribute property
@@ -1051,7 +1051,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             datatype. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1202,7 +1202,7 @@ Modifications
             realized by this datatype. By default shows the entry
             <literal>none</literal>.</para> 
 
-          <para>&Button1; click takes you to any entry (but see the warning
+          <para>&Button1; click navigates to any entry (but see the warning
             below), &button2; gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -1251,7 +1251,7 @@ Modifications
           <term><literal>Operations</literal></term>
 
           <listitem><para>Text area. Lists all the operations defined on this
-            datatype. &Button1; click takes you to the selected operation,
+            datatype. &Button1; click navigates to the selected operation,
             &button2; click brings up a pop up menu with five
             entries.</para>
 
@@ -1292,7 +1292,7 @@ Modifications
           <term><literal>Literals</literal></term>
 
           <listitem><para>Text area. Lists all the literals defined for this
-            datatype. &Button1; click takes you to the selected literal,
+            datatype. &Button1; click navigates to the selected literal,
             &button2; click brings up a pop up menu with five
             entries.</para>
 
@@ -1317,7 +1317,7 @@ Modifications
 
           <caution><para>&argouml; does not actually have a separate
             concept of a literal. The navigations listed above will all
-            take you to the property sheet for an attribute of a class (see
+            navigate to the property sheet for an attribute of a class (see
             <xref linkend="s1.ref.attribute"/>). When defining a literal,
             all that matters is its name. Other parts of the attribute
             property sheet should be ignored.</para></caution></listitem>
@@ -1602,7 +1602,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             stereotype. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>

@@ -24,6 +24,9 @@ Modifications
  3 May 2002:  Jeremy Bennett. Updated details to cover display of extension
               points in use cases
 
+17 May 2002:  Jeremy Bennett. Improved description of discriminators in
+              generalizations.
+
 -->
 
 <chapter id="ch.ref.entusecase">
@@ -364,7 +367,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the actor. This
             is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -870,7 +873,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             use case. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1465,7 +1468,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             extension point. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1833,7 +1836,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             dependency. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1998,10 +2001,10 @@ Modifications
             constraints defined.</para>
 
             <itemizedlist>
-              <listitem><para><literal>complete</literal>. Applied to a set
-                of generalizations with the same discriminator (see <xref
-                linkend="s1.ref.generalization_class"/>) and same parent,
-                indicating that an instance of the parent must be an
+              <listitem><para><literal>complete</literal>. Applied to a set of
+                generalizations with the same discriminator (described in <xref
+                linkend="s2.ref.generalization_property_fields"/>) and same
+                parent, indicating that an instance of the parent must be an
                 instance of one of those children.</para>
 
               <para>Where there is only one discriminator, this implies the
@@ -2219,13 +2222,17 @@ Modifications
             specialization. UML&nbsp;1.3 allows grouping of specializations
             into a number of sets, on the basis of this value.</para>
 
-          <tip><para>The empty string <quote></quote> is a valid entry (and
-            the default) for this field. The discriminator is only of
-            practical use in cases of multiple inheritance. An example is
-            discussed in the section covering generalization on class
-            diagrams (see <xref
-            linkend="s1.ref.generalization_class"/>). There is little point
-            in use this with a use case diagram.</para></tip></listitem>
+          <tip><para>The empty string <quote></quote> is a valid entry (and the
+            default) for this field. The discriminator is only of practical use
+            in cases of multiple inheritance. A (class diagram) example is
+            shown in <xref linkend="fig.discriminator_example"/>. Here each
+            type of user should inherit from two sorts of user. One indicating
+            whether he/she is a local or remote user (which can be identified
+            by one discriminator) and one indicating their function as a user
+            (identified by a different discriminator).</para>
+
+          <para>There is little point in use this with a use case
+            diagram.</para></tip></listitem>
         </varlistentry>
 
         <!-- Entry for Namespace -->
@@ -2236,7 +2243,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             generalization. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -2249,7 +2256,7 @@ Modifications
           <listitem><para>Text box. Records the use case or actor that is the
             <emphasis>parent</emphasis> in this relationship, i.e. the more
             general end of the relationship. &Button1; click
-            on this entry will take you to that use case or
+            on this entry will navigate to that use case or
             actor. &Button2; click will give a pop up menu, with a single
             entry, <literal>Open</literal> which will also navigate to that
             use case or actor.</para></listitem>
@@ -2263,7 +2270,7 @@ Modifications
           <listitem><para>Text box. Records the use case or actor that is the
             <emphasis>child</emphasis> in this relationship, i.e. the more
             specific end of the relationship. &Button1; click
-            on this entry will take you to that use case or
+            on this entry will navigate to that use case or
             actor. &Button2; click will give a pop up menu, with a single
             entry, <literal>Open</literal> which will also navigate to that
             use case or actor.</para></listitem>
@@ -2592,7 +2599,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             extend. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -2992,7 +2999,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             include. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>

@@ -2501,7 +2501,7 @@ v           new datatypes in their own right (the default) or as their base
 
       <para>The next field is labeled <literal>MoreInfo:</literal> and
         contains a URL pointing to further information with a button to the
-        right labeled <literal>Go</literal> to take you to that URL.</para>
+        right labeled <literal>Go</literal> to navigate to that URL.</para>
 
       <caution><para>In the current release of &argouml; there is no further
         information available, and the <literal>Go</literal> button is always

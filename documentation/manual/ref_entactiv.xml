@@ -147,12 +147,6 @@ Modifications
             action state define the bounding box of the action
             state.</para>
 
-          <caution><para>In the current release of &argouml; there are
-            known problems with typing in the <literal>Bounds</literal>
-            box, with the cursor jumping about. Take care that you enter
-            the changes you intend when changing
-            values</para></caution>
-
           <caution><para>The <literal>Shadow</literal> field has no
             effect&mdash; in the current release of &argouml;. There are no
             shadow effects provided for action states on the
@@ -348,7 +342,7 @@ Modifications
           <listitem><para>Text box. Lists the action (if any) to be invoked on
             entry to this action state.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -389,7 +383,7 @@ Modifications
           <note><para>Unlike an ordinary state, internal transitions are
             not permitted for action states.</para></note>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -409,7 +403,7 @@ Modifications
           <note><para>Unlike an ordinary state, internal transitions are
             not permitted for action states.</para></note>
 
-          <para>&Button1; click takes you to the selected action, &button2;
+          <para>&Button1; click navigates to the selected action, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>

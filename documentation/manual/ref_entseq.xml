@@ -385,7 +385,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             object. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -398,7 +398,7 @@ Modifications
           <listitem><para>Text area. Lists the stimuli sent to this
             object.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -450,7 +450,7 @@ Modifications
           <warning><para>In the current release of &argouml; this field is
             completely broken. No entries are every shown.</para></warning>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -832,7 +832,7 @@ Modifications
           <listitem><para>Text box. Identifies the instance which sent this
             stimulus.</para>
 
-          <para>&Button1; click takes you to the sender instance, &button2;
+          <para>&Button1; click navigates to the sender instance, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -849,7 +849,7 @@ Modifications
           <listitem><para>Text box. Identifies the instance which receives
             this stimulus.</para>
 
-          <para>&Button1; click takes you to the receiver instance,
+          <para>&Button1; click navigates to the receiver instance,
             &button2; gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -870,7 +870,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             stimulus. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1256,7 +1256,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             link. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>

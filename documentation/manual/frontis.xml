@@ -30,10 +30,12 @@ Modifications
               Bob Marcum (draft A for 0.9.9).
 
  3 May 2002:  Jeremy Bennett. Updated for issue 0.9.9.
+
+17 May 2002:  Jeremy Bennett. Updated for issue 0.10
 -->
 
 <bookinfo>
-  <date>5/3/2002</date>
+  <date>5/17/2002</date>
 
   <title>&argouml; User Manual</title>
   <subtitle>A tutorial and reference description of &argouml;</subtitle>
@@ -102,6 +104,18 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.10</revnumber> <date>17 May 2002</date>
+      <revdescription><para>Full issue for release 0.10. Update to
+        incorporate further comments from Bob Marcum. The reference part of the
+        manual (chapters 7 through 22) is now completed. In addition chapter 1
+        (introduction) and tutorial chapters 2 and 3 are now largely
+        complete.</para>
+
+      <para>Bob Marcum's comments for chapters 18 through 22
+        incorporated.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.9</revnumber> <date>3 May 2002</date>
       <revdescription><para>Full issue for release 0.9.9. Update to add the

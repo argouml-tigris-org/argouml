@@ -17,6 +17,9 @@ Modifications
 
 18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
               particularly relating to "limitations" section.
+
+17 May 2002:  Jeremy Bennett. Comments from Bob Marcum incorporated.
+
 -->
 
 <chapter id="ch.ref.entstate">
@@ -84,7 +87,7 @@ Modifications
       <literal>State</literal> is a sub-class of 
       <literal>StateVertex</literal>.</para>
 
-    <para>An state is represented on a state diagram in &argouml; as a
+    <para>A state is represented on a state diagram in &argouml; as a
       rectangle with rounded corners, with a horizontal line separating the
       name at the top from the description of the behavior below. The
       description of the behavior includes the entry and exit actions and any
@@ -137,11 +140,6 @@ Modifications
 
           <listitem><para>Standard tab. The values for the bounds of the state
             define the bounding box of the state.</para>
-
-          <caution><para>In the current release of &argouml; there are
-            known problems with typing in the <literal>Bounds</literal>
-            box, with the cursor jumping about. Take care that you enter
-            the changes you intend when changing values</para></caution>
 
           <caution><para>The <literal>Shadow</literal> field has no
             effect&mdash; in the current release of &argouml;. There are no
@@ -339,7 +337,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             state. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -353,7 +351,7 @@ Modifications
             state, including any internal transitions within the state
             (described below).</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -371,7 +369,7 @@ Modifications
             state, including any internal transitions within the state
             (described below).</para>
 
-          <para>&Button1; click takes you to the selected action, &button2;
+          <para>&Button1; click navigates to the selected action, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -388,7 +386,7 @@ Modifications
           <listitem><para>Text box. Lists the action (if any) to be invoked on
             entry to this state.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -411,7 +409,7 @@ Modifications
           <listitem><para>Text box. Lists the action (if any) to be invoked on
             exit from this state.</para>
 
-          <para>&Button1; click takes you to the selected action, &button2;
+          <para>&Button1; click navigates to the selected action, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -434,7 +432,7 @@ Modifications
           <listitem><para>Text box. Lists the action (if any) to be invoked
             while in this state.</para>
 
-          <para>&Button1; click takes you to the selected action, &button2;
+          <para>&Button1; click navigates to the selected action, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -459,7 +457,7 @@ Modifications
             only the <literal>Do-Activity</literal> (see above) will be
             executed if such a transition is taken.</para>
 
-          <para>&Button1; click takes you to the selected transition,
+          <para>&Button1; click navigates to the selected transition,
             &button2; gives a pop up menu with two entries.</para>
 
           <itemizedlist>
@@ -484,7 +482,7 @@ Modifications
       UML metamodel it is a child of both <literal>Model</literal> and
       <literal>ActionSequence</literal>. Since in the metamodel an action
       sequence is itself an action that is an aggregation of other actions, an
-      action sequence may be used anywhere that an action may be.</para>
+      action sequence may be used anywhere an action may be.</para>
 
     <para>There are a number of different types of action that are children of
       action within the UML metamodel.</para>
@@ -747,7 +745,7 @@ Modifications
         <listitem><para>Text area. Lists the sub-states contained within
           this composite state.</para>
 
-        <para>&Button1; click takes you to the selected entry, &button2;
+        <para>&Button1; click navigates to the selected entry, &button2;
           gives a pop up menu with one entry.</para>
 
         <itemizedlist>
@@ -1018,7 +1016,7 @@ Modifications
           <listitem><para>Text box. Lists the source state for the
             transition.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -1035,7 +1033,7 @@ Modifications
           <listitem><para>Text box. Lists the target state for the
             transition.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -1056,7 +1054,7 @@ Modifications
             guard is defined. The transition is taken immediately if the
             guard is true.</para></note>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -1079,7 +1077,7 @@ Modifications
           <listitem><para>Text box. Lists the guard expression (if any) which
             must be true before this transition can be taken.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -1102,7 +1100,7 @@ Modifications
           <listitem><para>Text box. Lists the action (if any) to be invoked as
             this transition is taken.</para>
 
-          <para>&Button1; click takes you to the selected action, &button2;
+          <para>&Button1; click navigates to the selected action, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -1128,7 +1126,7 @@ Modifications
     <para>An event is an observable occurrence. In the
       UML metamodel it is a child of <literal>ModelElement</literal>.</para>
 
-    <para>There are a number of different types of event that are children of
+    <para>There are a number of different types of events that are children of
       event within the UML metamodel.</para>
 
     <itemizedlist>
@@ -1325,7 +1323,7 @@ Modifications
           </imageobject></inlinemediaobject></guiicon> <literal>Add
             parameter</literal></term>
 
-          <listitem><para>This creates a new parameter for the for the event
+          <listitem><para>This creates a new parameter for the event
             operation as the current parameter, navigating immediately to
             the properties tab for that parameter (see
             <xref linkend="s1.ref.parameter"/>).</para></listitem>
@@ -1699,11 +1697,6 @@ Modifications
 
           <listitem><para>Standard tab.</para>
 
-          <caution><para>In the current release of &argouml; there are
-            known problems with typing in the <literal>Bounds</literal>
-            box, with the cursor jumping about. Take care that you enter
-            the changes you intend when changing values</para></caution>
-
           <caution><para>The <literal>Shadow</literal> field has no
             effect&mdash; in the current release of &argouml;. There are no
             shadow effects provided for states on the
@@ -1887,7 +1880,7 @@ Modifications
           <listitem><para>Text area. Lists any incoming transitions for the
             pseudostate.</para>
 
-          <para>&Button1; click takes you to the selected transition,
+          <para>&Button1; click navigates to the selected transition,
             &button2; gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -1904,7 +1897,7 @@ Modifications
           <listitem><para>Text area. Lists any outgoing transitions for the
             pseudostate.</para>
 
-          <para>&Button1; click takes you to the selected transition,
+          <para>&Button1; click navigates to the selected transition,
             &button2; gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -2000,11 +1993,6 @@ Modifications
           <term><literal>Style</literal></term>
 
           <listitem><para>Standard tab.</para>
-
-          <caution><para>In the current release of &argouml; there are
-            known problems with typing in the <literal>Bounds</literal>
-            box, with the cursor jumping about. Take care that you enter
-            the changes you intend when changing values</para></caution>
 
           <caution><para>The <literal>Shadow</literal> field has no
             effect&mdash; in the current release of &argouml;. There are no
@@ -2206,7 +2194,7 @@ Modifications
           <listitem><para>Text area. Lists any incoming transitions for the
             final state.</para>
 
-          <para>&Button1; click takes you to the selected transition,
+          <para>&Button1; click navigates to the selected transition,
             &button2; gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -2293,7 +2281,7 @@ Modifications
     <para>Shallow History is a pseudostate (see <xref
       linkend="s1.ref.pseudostate"/>) within a composite state, which
       causes control to be passed to the state that last had control within the
-      composite state. A transition may show a default to state to use if the
+      composite state. A transition may show a default state to use if the
       composite state has never been entered before.</para> 
 
     <para>The shallow history ignores any composite states within this
@@ -2314,7 +2302,7 @@ Modifications
     <para>Shallow History is a pseudostate (see <xref
       linkend="s1.ref.pseudostate"/>) within a composite state, which
       causes control to be passed to the state that last had control within the
-      composite state. A transition may show a default to state to use if the
+      composite state. A transition may show a default state to use if the
       composite state has never been entered before.</para> 
 
     <para>The deep history will transfer to a state within any hierarchy of

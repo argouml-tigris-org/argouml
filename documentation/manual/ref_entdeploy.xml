@@ -18,6 +18,9 @@ Modifications
 
 18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum,
               particularly relating to "limitations" section.
+
+17 May 2002:  Jeremy Bennett. Comments from Bob Marcum incorporated.
+
 -->
 
 <chapter id="ch.ref.entdeploy">
@@ -104,7 +107,7 @@ Modifications
       deployed. In the UML metamodel it is a sub-class of
       <literal>Classifier</literal>.</para>
 
-    <para>A node is represented on a class diagram as a 3-D box, labeled with
+    <para>A node is represented on a class diagram as a three dimensional box, labeled with
       its name.</para>
 
     <!-- Node details tabs -->
@@ -151,14 +154,9 @@ Modifications
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
             defines the bounding box for the node on the diagram.</para>
 
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para>
-
-          <para>Beware that in the current release of &argouml;, the
+          <warning><para>Beware that in the current release of &argouml;, the
             bounding box just refers to the front face of the cube. This
-            means that the 3-D top and side may be ignored, for example
+            means that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
             graphics.</para>
 
@@ -438,7 +436,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             node. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -499,7 +497,7 @@ Modifications
             <xref linkend="s1.ref.component"/>) designed to be deployed on
             this type of node.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -531,7 +529,7 @@ Modifications
       derived from a node.</para>
 
     <para>A node instance is represented on a sequence diagram in &argouml; as
-      a 3-D box labeled with the node instance name (if any) and node type,
+      a three dimensional box labeled with the node instance name (if any) and node type,
       separated by a colon (<literal>:</literal>).</para>
 
     <tip><para>It is the presence of the colon (<literal>:</literal> that
@@ -588,13 +586,9 @@ Modifications
             defines the bounding box for the node instance on the
             diagram.</para>
 
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in place.</para>
-
-          <para>Beware that in the current release of &argouml;, the
-            bounding box just refers to the front face of the cube. This
-            means that the 3-D top and side may be ignored, for example
+          <warning><para>Beware that in the current release of &argouml;, the
+            bounding box just refers to the front face of the cube. This means
+            that the three dimensional top and side may be ignored, for example
             when determining the limits of a diagram for saving
             graphics.</para>
 
@@ -838,7 +832,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             node instance. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -905,12 +899,7 @@ Modifications
             defines the bounding box for the component on the
             diagram.</para>
 
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para>
-
-          <para>In addition when typing or making any other change to a
+          <warning><para>When typing or making any other change to a
             component on the diagram, its left edge will jump to the
             left.</para></warning></listitem>
         </varlistentry>
@@ -1122,7 +1111,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             component. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1139,7 +1128,7 @@ Modifications
             <quote>Extends</quote> for this field. It should correctly be
             called <quote>Generalizations</quote>.</para></caution>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -1202,7 +1191,7 @@ Modifications
             <quote>Derived</quote> for this field. It should correctly be
             called <quote>Specializations</quote>.</para></caution>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with one entry.</para>
 
           <itemizedlist>
@@ -1292,12 +1281,7 @@ Modifications
             defines the bounding box for the component on the
             diagram.</para>
 
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para>
-
-          <para>In addition when typing or making any other change to a
+          <warning><para>When typing or making any other change to a
             component on the diagram, its left edge will jump to the
             left.</para></warning></listitem>
         </varlistentry>
@@ -1521,7 +1505,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             component instance. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>

@@ -14,7 +14,7 @@ Modifications
 -->
 
 <chapter id="ch.ref.entbuiltin">
-  <title>&argouml; Built In DataTypes, Classes, Intefaces and
+  <title>&argouml; Built In DataTypes, Classes, Interfaces and
     Stereotypes</title>
 
   <sect1>
@@ -30,13 +30,13 @@ Modifications
     <sect2>
       <title>Package Structure</title>
 
-      <para>The datatypes, classes and interfaces are effectively organised as
-        a hierarchy beneath the overall model itself. They are in four
-        packages, <literal>lang</literal>, <literal>math</literal>,
+      <para>&argouml; datatypes, classes and interfaces are effectively
+        organized as a hierarchy beneath the overall model itself. They are in
+        four packages, <literal>lang</literal>, <literal>math</literal>,
         <literal>net</literal> and <literal>util</literal>, themselves
         subpackages of <literal>java</literal>, which is a subpackage of the
-        model itself. <xref linkend="fig.ref.entclasshier"/> shows this as a UML
-        package diagram.</para>
+        model itself. <xref linkend="fig.ref.entclasshier"/> shows this as a
+        UML package diagram.</para>
 
       <!-- This diagram shows the package hierarchy. -->
 
@@ -123,12 +123,12 @@ Modifications
       (but only to the type you came up from).</para></note>
 
     <para>For a definition of these classes see the Java language and library
-      defintions.</para>
+      definitions.</para>
 
     <!-- Classes in java.lang -->
 
     <sect2>
-      <title>Built In Classes Within <literal>java.lang</literal></title>
+      <title>Built In Classes From <literal>java.lang</literal></title>
 
       <para>These are the classes within the <literal>java.lang</literal>
         package.</para>
@@ -160,7 +160,7 @@ Modifications
     <!-- Classes in java.math -->
 
     <sect2>
-      <title>Built In Classes Within <literal>java.math</literal></title>
+      <title>Built In Classes From <literal>java.math</literal></title>
 
       <para>These are the classes within the <literal>java.math</literal>
         package.</para>
@@ -176,7 +176,7 @@ Modifications
     <!-- Classes in java.net -->
 
     <sect2>
-      <title>Built In Classes Within <literal>java.net</literal></title>
+      <title>Built In Classes From <literal>java.net</literal></title>
 
       <para>These are the classes within the <literal>java.net</literal>
         package.</para>
@@ -190,7 +190,7 @@ Modifications
     <!-- Classes in java.util -->
 
     <sect2>
-      <title>Built In Classes Within <literal>java.util</literal></title>
+      <title>Built In Classes From <literal>java.util</literal></title>
 
       <para>These are the classes within the <literal>java.util</literal>
         package.</para>
@@ -248,7 +248,7 @@ Modifications
   <sect1>
     <title>Built In Stereotypes</title>
 
-    <para>UML defines a large number of stereotypes which are (mostly)
+    <para>UML 1.3 defines a large number of stereotypes which are (mostly)
       supported by &argouml;. In addition &argouml; defines three additional
       stereotypes that may be of use.</para>
 

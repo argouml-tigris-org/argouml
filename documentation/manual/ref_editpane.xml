@@ -117,7 +117,7 @@ Modifications
         there.</para>
 
       <para>A special use is with package artifacts on the class diagram. A
-        double click on a package will take you to the class diagram associated
+        double click on a package will navigate to the class diagram associated
         with a package (the first created if there is more than one), or will
         offer to create one for you if there is none.</para>
 

@@ -171,12 +171,8 @@ Modifications
           <term><literal>Style</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
-            defines the bounding box for the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            defines the bounding box for the package on the
+            diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -549,7 +545,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             package. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -856,14 +852,9 @@ Modifications
 
           <listitem><para>Standard tab. The tick boxes,
             <literal>Attributes</literal> and <literal>Operations</literal>
-            allow the attributes and operations compartments to be shown
-            (the default) or hidden. The <literal>Bounds:</literal> field
-            defines the bounding box for the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            allow the attributes and operations compartments to be shown (the
+            default) or hidden. The <literal>Bounds:</literal> field defines
+            the bounding box for the package on the diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -1156,7 +1147,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             class. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -1257,7 +1248,7 @@ Modifications
               linkend="s1.ref.association_class"/>) connected to this
             class.</para>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -1298,7 +1289,7 @@ Modifications
               abstraction of this class (i.e. which this class
               realizes).</para>
 
-          <para>&Button1; click takes you to the abstraction for the
+          <para>&Button1; click navigates to the abstraction for the
             selected entry, &button2; 
             gives a pop up menu with five entries.</para>
 
@@ -1385,9 +1376,9 @@ Modifications
           <listitem><para>Text area. Lists any derived classes, i.e those for
             which this class is a generalization.</para>
 
-          <para>&Button1; click takes you to the generalization for the
+          <para>&Button1; click navigates to the generalization for the
             selected entry, &button2; gives a pop up menu with a single
-            entry, which also takes you to the generalization.</para>
+            entry, which also navigates to the generalization.</para>
 
           <caution><para>You may potentially have a large number of entries
             here, and the pop up menu makes access very difficult. The work
@@ -1402,7 +1393,7 @@ Modifications
 
           <listitem><para>Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
-              class. &Button1; click takes you to the selected operation,
+              class. &Button1; click navigates to the selected operation,
               &button2; click brings up a pop up menu with five
               entries.</para>
 
@@ -1433,7 +1424,7 @@ Modifications
 
           <listitem><para>Text area. Lists all the attributes (see <xref
               linkend="s1.ref.attribute"/>) defined for this
-            class. &Button1; click takes you to the selected attribute,
+            class. &Button1; click navigates to the selected attribute,
             &button2; click brings up a pop up menu with five
             entries.</para>
 
@@ -1604,12 +1595,7 @@ Modifications
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            the package on the diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -2076,12 +2062,7 @@ Modifications
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            the package on the diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -2577,12 +2558,7 @@ Modifications
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            the package on the diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -2962,12 +2938,7 @@ Modifications
             allow the attributes and operations compartments of the class
             to be shown (the default) or hidden. The
             <literal>Bounds:</literal> field defines the bounding box for
-            the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            the package on the diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -3236,7 +3207,7 @@ Modifications
             called <quote>Generalizations</quote>.</para></caution>
 
           <para>By default this field is shown with the entry
-            <literal>none</literal>. &Button1; click takes you to the
+            <literal>none</literal>. &Button1; click navigates to the
             selected entry, &button2; gives a pop up menu with five
             entries.</para>
 
@@ -3294,7 +3265,7 @@ Modifications
             called <quote>Realizes</quote>.</para></caution>
 
           <para>By default this field is shown with the entry
-            <literal>none</literal>. &Button1; click takes you to the
+            <literal>none</literal>. &Button1; click navigates to the
             selected entry, &button2; gives a pop up menu with five
             entries.</para>
 
@@ -3382,7 +3353,7 @@ Modifications
             class. This is the package hierarchy of the class which owns
             the operation which owns this signal.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -3410,7 +3381,7 @@ Modifications
 
           <listitem><para>Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
-              signal. &Button1; click takes you to the selected operation,
+              signal. &Button1; click navigates to the selected operation,
               &button2; click brings up a pop up menu with five
               entries.</para>
 
@@ -3446,7 +3417,7 @@ Modifications
           <listitem><para>Text area. Lists all the attributes (see <xref
               linkend="s1.ref.attribute"/>) defined for this class. These
             are effectively the parameters to the signal. &Button1; click
-            takes you to the selected attribute, &button2; click brings
+            navigates to the selected attribute, &button2; click brings
             up a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -3476,7 +3447,7 @@ Modifications
 
           <listitem><para>Text area. Lists all the associations (see <xref
               linkend="s1.ref.association_class"/>) defined on this
-              signal. &Button1; click takes you to the selected
+              signal. &Button1; click navigates to the selected
               association, &button2; click brings up a pop up menu with
               five entries.</para>
 
@@ -3832,7 +3803,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             association. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -4322,7 +4293,7 @@ Modifications
 
           <listitem><para>Text box. Records the parent association for this
             association end. &Button1; click on
-            this entry will take you to that association. &Button2; click
+            this entry will navigate to that association. &Button2; click
             will invoke a pop-up menu, with a single entry,
             <literal>Open</literal> that will also navigate to that
             association.</para></listitem>
@@ -4510,12 +4481,8 @@ Modifications
           <term><literal>Style</literal></term>
 
           <listitem><para>Standard tab. The <literal>Bounds:</literal> field
-            defines the bounding box for the package on the diagram.</para>
-
-          <warning><para>There are some bugs remaining in entering data in
-            the <literal>Bounds:</literal> field. Take care when typing
-            that you do get the values you want in
-            place.</para></warning></listitem>
+            defines the bounding box for the package on the
+            diagram.</para></listitem>
         </varlistentry>
 
         <!-- Entry for Source tab -->
@@ -4741,7 +4708,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             interface. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -4841,7 +4808,7 @@ Modifications
             interface. &argouml; will create associations between classes
             and interfaces with the correct navigability.</para></note>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with five entries.</para>
 
           <itemizedlist>
@@ -4949,7 +4916,7 @@ Modifications
 
           <listitem><para>Text area. Lists all the operations (see <xref
               linkend="s1.ref.operation"/>) defined on this
-              interface. &Button1; click takes you to the selected
+              interface. &Button1; click navigates to the selected
               operation, &button2; click brings up a pop up menu with five
               entries.</para>
 
@@ -5244,7 +5211,7 @@ Modifications
           <listitem><para>Text box. Records the namespace for the
             abstraction. This is the package hierarchy.</para>
 
-          <para>&Button1; click on the entry will take you to the package
+          <para>&Button1; click on the entry will navigate to the package
             defining this namespace (or the model for the top level
             namespace).</para></listitem>
         </varlistentry>
@@ -5261,7 +5228,7 @@ Modifications
           <note><para> Although this is a text area there is no mechanism
             for adding more than one supplier.</para></note>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
@@ -5290,7 +5257,7 @@ Modifications
           <note><para> Although this is a text area there is no mechanism
             for adding more than one client.</para></note>
 
-          <para>&Button1; click takes you to the selected entry, &button2;
+          <para>&Button1; click navigates to the selected entry, &button2;
             gives a pop up menu with three entries.</para>
 
           <itemizedlist>
