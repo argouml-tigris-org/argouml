@@ -73,7 +73,8 @@ implements PluggableNotation {
   public String generateOperation(MOperation op, boolean documented) {
     boolean isConstructor = false;
     if(op.getStereotype() != null) {
-	isConstructor = "create".equals(op.getStereotype().getName());
+	isConstructor = ("create".equals(op.getStereotype().getName()) ||
+                     "constructor".equals(op.getStereotype().getName()));
     }
     String s = "";
     s += generateVisibility(op);
