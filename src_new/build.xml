@@ -1031,6 +1031,8 @@ ${Name} Build file
            errorproperty="junit.failure"
            fork="yes">
 		<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+                <sysproperty key="log4j.configuration"
+		value="org/argouml/resource/default.lcf"/>
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
@@ -1146,6 +1148,15 @@ For details see http://www.clarkware.com/software/JDepend.html.
       </classpath>
       <arg value="../build/javasrc"/>
     </java>
+  </target>
+
+<!-- Attempts at generating code. -->
+
+  <target name="generate">
+    <style basedir="org/argouml/xml/generator" destdir="../build/generator"
+         style="org/argouml/xml/generator/mf.xsl"
+	 in="org/argouml/xml/generator/metamodel.xml"
+	 out="../build/generator/result.xxx" />
   </target>
 
 </project>
