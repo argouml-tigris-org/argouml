@@ -232,7 +232,7 @@ Then you do the actual checking out.
 <command>cvs checkout <replaceable>modulename</replaceable></command>.
 </para>
       <para>
-The modules you need to check out to build ArgoUML are
+The CVS modules you need to check out to build ArgoUML are
 <parameter>argouml/lib</parameter> and
 <parameter>argouml/src_new</parameter>.
 If you don't give a module name all of ArgoUML is checked out.
@@ -781,7 +781,261 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 </itemizedlist>
 </para>
 </sect1>
+    <sect1>
+      <title>Collaboration table between components</title>
+      <para>
+Here is a table that lists all components within ArgoUML against each other
+so that you easily can find where that specific collaboration is described
+(if at all) in this cookbook.
+<!--
+For the document maintainer:
+Please stick to the component names as they are written 
+in the entry tags in the header row for links within this document.
+They all start with comp-.
+Every component has a section describing it at componentname.
+Every component has a purpose at componentname-purpose.
+Every interface has a description at componentname-to-componentname
+(origin-to-destination). Example comp-critics-to-comp-model.
+-->
+</para>
+      <table>
+	<title>Collaboration table</title>
+	<tgroup cols="12">
+	  <thead>
+	    <row>
+	      <entry>       </entry>
+	      <entry id="comp-ui">User Interface</entry>
+	      <entry id="comp-diagrams">Diagram</entry>
+	      <entry id="comp-gef">GEF</entry>
+	      <entry id="comp-model">Model</entry>
+	      <entry id="comp-saveload">Saving and Loading</entry>
+	      <entry id="comp-notation">Notation</entry>
+	      <entry id="comp-codegenreveng">Code Generation and Reverse Engineering</entry>
+	      <entry id="comp-ocl">OCL-constraints</entry>
+	      <entry id="comp-critics">Cognitive</entry>
+	      <entry id="comp-help">Help system</entry>
+	      <entry id="comp-internationalization">Internationalization</entry>
+	      <entry id="comp-logging">Logging</entry>
+	      <entry id="comp-plugins">Plug in and Module API</entry>
+	    </row>
+	  </thead>
+	  <tbody>
+	    <row>
+	      <entry>User Interface</entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Diagram</entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>GEF</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Model</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Saving and Loading</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Notation</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Code Generation and Reverse Engineering</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>OCL-constraints</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Cognitive</entry>
+	      <entry>       </entry>
+	      <entry><xref linkend="comp-critics-to-comp-diagrams"/></entry>
+	      <entry>       </entry>
+	      <entry><xref linkend="comp-critics-to-comp-model"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-saveload"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-notation"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-codegenreveng"/></entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry><xref linkend="comp-critics-to-comp-help"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-internationalization"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-logging"/></entry>
+	      <entry><xref linkend="comp-critics-to-comp-plugins"/></entry>
+	    </row>
+	    <row>
+	      <entry>Help system</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Internationalization</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Logging</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	      <entry>       </entry>
+	    </row>
+	    <row>
+	      <entry>Plug in and Module API</entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry>       </entry>
+	      <entry> - </entry>
+	    </row>
+	  </tbody>
+	</tgroup>
+      </table>
+    </sect1>
+
+
 </chapter>
+
 
 <chapter id="inside_components">
 <title>Inside the components</title>
@@ -811,7 +1065,7 @@ programming in Argo/UML.
 
 <sect1 id="critics">
 <title>Critics and other cognitive tools</title>
-      <para>
+      <para id="comp-critics-purpose">
 Purpose - to provide help for the User.
 </para>
       <para>
@@ -850,33 +1104,34 @@ found by the Critics.
 The module communicates with/uses the other parts of ArgoUML like this:
 </para>
       <itemizedlist>
-	<listitem><para>Diagrams</para>
+	<listitem><para id="comp-critics-to-comp-diagrams">Diagrams</para>
 	  <para>
 Stepping through the model and examining it using get-calls.
 Wizard could modify the model the using set-calls to Fig-objects.
 </para>
 	</listitem>
-	<listitem><para>Model</para>
+	<listitem><para id="comp-critics-to-comp-model">Model</para>
 	  <para>
 Stepping through the model and examining it using get-calls.
-Wizard could modify the model the using set-calls to Fig-objects.
+Wizard could modify the model the using set-calls to the model and 
+creating new model elements.
 </para>
 </listitem>
-	<listitem><para>Saving/Loading - not at all</para>
+	<listitem><para id="comp-critics-to-comp-saveload">Saving/Loading - not at all</para>
 	  <para>
 Eventually the user created To Do Items needs to be saved as well as
 information on what Critiques that have been snoozed.
 </para>
 	</listitem>
-	<listitem><para>Notation - not at all</para></listitem>
-	<listitem><para>Code Generation and Reverse Engineering - not at all</para></listitem>
-	<listitem><para>Help System</para>
+	<listitem><para id="comp-critics-to-comp-notation">Notation - not at all</para></listitem>
+	<listitem><para id="comp-critics-to-comp-codegenreveng">Code Generation and Reverse Engineering - not at all</para></listitem>
+	<listitem><para id="comp-critics-to-comp-help">Help System</para>
 	  <para>
 The help system is fired by the ToDoItems and Wizards when
 a longer explanation is required.
 </para>
 	</listitem>
-	<listitem><para>Internationalization - 
+	<listitem><para id="comp-critics-to-comp-internationalization">Internationalization - 
 <classname>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
 	  <para>
 Since the whole module contains a lot of texts describing
@@ -897,7 +1152,7 @@ and
 with friends to be created futher down the road.
 </para>
 </listitem>
-	<listitem><para>Plugin-Module API - currently not</para>
+	<listitem><para id="comp-critics-to-comp-plugins">Plugin-Module API - currently not</para>
 	  <para>
 There is a <classname>PluggableCritic</classname> 
 the purpose of which is to add new Critics
@@ -905,7 +1160,7 @@ but that is not yet used.
 </para>
 	</listitem>
 	<listitem>
-	  <para>
+	  <para id="comp-critics-to-comp-logging">
 Logging - logging is made using instance org.argouml.cognitive.critics
 </para>
 	</listitem>
