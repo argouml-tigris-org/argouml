@@ -247,10 +247,15 @@ public class ToolBar extends JToolBar implements MouseListener {
       ((JButton)c).getModel().setArmed(false);
       ((JButton)c).getModel().setPressed(false);
     }
-    Component c = getComponent(0);
-    JButton select = (JButton) c;
-    select.getModel().setArmed(true);
-    select.getModel().setPressed(true);
+    // press the first button (usually ModeSelect)
+    for (int i = 0; i < size; i++) {
+      Component c = getComponent(i);
+      if (!(c instanceof JButton)) continue;
+      JButton select = (JButton) c;
+      select.getModel().setArmed(true);
+      select.getModel().setPressed(true);
+      return;
+    }
   }
 
   static final long serialVersionUID = -633571897049780787L;
