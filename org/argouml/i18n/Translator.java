@@ -34,14 +34,14 @@ import org.apache.log4j.Logger;
 import org.tigris.gef.util.Localizer;
 
 /**
- * A tool class to help localization.
+ * The API class to the localization. All localization calls goes through
+ * this class.
  *
  * @author Jean-Hugues de Raigniac
- *
  */
 public class Translator {
     /** logger */
-    private static Logger cat = Logger.getLogger(Translator.class);
+    private static final Logger LOG = Logger.getLogger(Translator.class);
 
     /** Binding between new key names and old ones needed by gef. */
     private static Properties images = null;
@@ -75,27 +75,30 @@ public class Translator {
 
     /**
      * For Locale selection.
+     *
      * @return Locales used in ArgoUML
      */
-    public static Locale[] getLocales () {
+    public static Locale[] getLocales() {
         return org.workingfrog.i18n.util.Translator.getLocales(
 		new Translator());
     }
 
     /**
      * Change the current Locale.
+     *
      * @param locale the new Locale
      */
-    public static void setLocale (Locale locale) {
+    public static void setLocale(Locale locale) {
         org.workingfrog.i18n.util.Translator.setLocale(locale);
     }
 
     /**   
      * Loads image bindings from a File.
+     *
      * @param file the properties file
      * @return the properties in file
      */
-    private static Properties loadImageBindings (String file) {
+    private static Properties loadImageBindings(String file) {
 
         InputStream inputStream = null;
         Properties properties = new Properties();
@@ -105,7 +108,7 @@ public class Translator {
             properties.load(inputStream);
             inputStream.close();
         } catch (IOException ex) {
-            cat.fatal("Unable to load properties from file: " + file, ex);
+            LOG.fatal("Unable to load properties from file: " + file, ex);
             System.exit(1);
         }
 
@@ -114,10 +117,11 @@ public class Translator {
 
     /**   
      * Provide a "gef compliant" image file name.
+     *
      * @param name the new i18n key
      * @return the old i18n key
      */
-    public static String getImageBinding (String name) {
+    public static String getImageBinding(String name) {
 
         String binding = null;
 
@@ -158,7 +162,10 @@ public class Translator {
     }
 
     /**
-     * Generates an localized String with Arguments
+     * Generates an localized String with arguments.<p>
+     *
+     * The localized string is a pattern to be processed by
+     * {@link MessageFormat}.
      *
      * @param bundle a binding to a bundle of i18n resources
      * @param key the key to localize
@@ -170,5 +177,20 @@ public class Translator {
     {
     	MessageFormat msgFmt = new MessageFormat(localize(bundle, key));
 	return msgFmt.format(args);
+    }
+
+    /**
+     * Generates an localized String with arguments.<p>
+     *
+     * The localized string is a pattern to be processed by
+     * {@link MessageFormat}.
+     *
+     * @param key the key to localize
+     * @param args the args as Objects, inserted in the localized String
+     * @return the localized String with inserted arguments
+     */
+    public static String messageFormat(String key, Object[] args)
+    {
+        return new MessageFormat(localize(key)).format(args);
     }
 }
