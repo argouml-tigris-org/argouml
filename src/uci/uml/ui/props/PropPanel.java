@@ -76,7 +76,7 @@ implements TabModelTarget, DocumentListener, ItemListener, MElementListener{
     GridBagLayout gb = new GridBagLayout();
     setLayout(gb);
     GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 0.0;
     c.weighty = 0.0;
     c.ipadx = 3; c.ipady = 3;

@@ -55,7 +55,6 @@ public class ParserDisplay extends Parser {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MOperation op = parseOperation(token);
-      op.setNamespace(cls);
       newOps.add(op);
     }
     // System.out.println("parsed " + newOps.size() + " operations");
@@ -76,7 +75,6 @@ public class ParserDisplay extends Parser {
     while (st.hasMoreTokens()) {
       String token = st.nextToken();
       MAttribute attr = parseAttribute(token);
-      attr.setNamespace(cls);
       newAttrs.add(attr);
     }
     // System.out.println("parsed " + newAttrs.size() + " attributes");

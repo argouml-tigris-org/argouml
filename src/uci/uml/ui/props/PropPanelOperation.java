@@ -138,6 +138,8 @@ implements ItemListener {
     _keywordsField.addItemListener(this);
     _typeField.addItemListener(this);
 
+    remove(_namespaceLabel);
+    remove(_namespaceField);
   }
 
 
