@@ -1,5 +1,48 @@
-<html><head><title>Chapter 2. Preliminaries</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="index.html" rel="up" title="ArgoUML Programmers Cookbook"><link href="ch01s02.html" rel="previous" title="2. About this Cookbook..."><link href="ch02s02.html" rel="next" title="2. Build Process"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">Chapter 2. Preliminaries</th></tr><tr><td align="left" width="20%"><a href="ch01s02.html">Prev</a>&nbsp;</td><th align="center" width="60%">&nbsp;</th><td align="right" width="20%">&nbsp;<a href="ch02s02.html">Next</a></td></tr></table><hr></div><div class="chapter" id="Preliminaries"><div class="titlepage"><div><h2 class="title"><a name="Preliminaries"></a>Chapter 2. Preliminaries</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>1 <a href="ch02.html#starting">Getting started</a></dt><dt>2 <a href="ch02s02.html">Build Process</a></dt><dd><dl><dt>2.1 <a href="ch02s02.html#Nade">How ant is run from the ArgoUML development environment</a></dt><dd><dl><dt>2.1.1 <a href="ch02s02.html#Nb21">Compiling for Unix</a></dt><dt>2.1.2 <a href="ch02s02.html#Nb88">Compiling for Windows</a></dt></dl></dd><dt>2.2 <a href="ch02s02.html#Nbdb">How documentation is presented</a></dt><dd><dl><dt>2.2.1 <a href="ch02s02.html#Nbe3">How the ArgoUML web site works</a></dt><dt>2.2.2 <a href="ch02s02.html#Nc06">The ArgoUML documentation</a></dt><dd><dl><dt>2.2.2.1 <a href="ch02s02.html#Nd06">Tools that does the generation</a></dt></dl></dd></dl></dd></dl></dd><dt>3 <a href="ch02s03.html">Mailing Lists</a></dt></dl></div><div class="sect1"><a name="starting"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="starting"></a>1. Getting started</h2></div></div><p>In order to develop with ArgoUML it is absolutely mandatory to get get the CVS version of ArgoUML. See the ArgoUML website for instructions for that.</p><p>
-<a class="indexterm" name="Na98"></a>
-<a class="indexterm" name="Naa0"></a>
+<html><head><title>Chapter 2. Building and Tools</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="index.html" rel="up" title="ArgoUML Programmers Cookbook"><link href="ch01s03.html" rel="previous" title="1.3. About this Cookbook..."><link href="ch02s02.html" rel="next" title="2.2. Download from the cvs repository"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">Chapter 2. Building and Tools</th></tr><tr><td align="left" width="20%"><a href="ch01s03.html">Prev</a>&nbsp;</td><th align="center" width="60%">&nbsp;</th><td align="right" width="20%">&nbsp;<a href="ch02s02.html">Next</a></td></tr></table><hr></div><div class="chapter" id="buildingandtools"><div class="titlepage"><div><h2 class="title"><a name="buildingandtools"></a>Chapter 2. Building and Tools</h2></div></div><div class="toc"><p><b>Table of Contents</b></p><dl><dt>2.1 <a href="ch02.html#starting">Getting started</a></dt><dd><dl><dt>2.1.1 <a href="ch02.html#Nad8">Which tools do I need to build ArgoUML?</a></dt></dl></dd><dt>2.2 <a href="ch02s02.html">Download from the cvs repository</a></dt><dt>2.3 <a href="ch02s03.html">Build Process</a></dt><dd><dl><dt>2.3.1 <a href="ch02s03.html#Nb81">How ant is run from the ArgoUML development environment</a></dt><dt>2.3.2 <a href="ch02s03.html#Nc93">How documentation is presented</a></dt><dt>2.3.3 <a href="ch02s03.html#Ne2b">Troubleshooting the development build</a></dt></dl></dd><dt>2.4 <a href="ch02s04.html">Mailing Lists</a></dt></dl></div><p>
+If you are in a hurry:
+<pre class="programlisting">
+C:\Work&gt;set CVSROOT=:pserver:guest@cvs.tigris.org:/cvs
+C:\Work&gt;cvs login   (use guest as password)
+C:\Work&gt;cvs checkout argouml/lib argouml/src_new
+C:\Work&gt;set JAVA_HOME=<i><tt>C:\Programs\jdkwhatever</tt></i>
+C:\Work&gt;set ANT_HOME=C:\Work\argouml
+C:\Work&gt;cd argouml\src_new
+C:\Work\argouml\src_new&gt;build run
+
+</pre>
+A window from the newly compiled ArgoUML opens after a while!
+</p><p>
+That was the compact version.
+(Note: jdk cannot be installed in a directory that contains space in its 
+name.)
+</p><p>
+If you don't understand this or it doesn't work read the rest of 
+the chapter that describes all the nitty details about why and
+how.
+</p><div class="sect1"><a name="starting"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="starting"></a>2.1. Getting started</h2></div></div><p>
+In order to develop with ArgoUML it is absolutely mandatory to get get
+the CVS version of ArgoUML.
+How this is done is described in 
+<a href="ch02s02.html">Download from the cvs repository</a>.
+</p><p>
+<a class="indexterm" name="Nabf"></a>
+<a class="indexterm" name="Nac7"></a>
 It is also recommended that you check out GEF from <a href="http://gef.tigris.org" target="_top">gef.tigris.org</a> because many things in Argo relate to GEF and it is quite handy to have the source code available. Especially since during development cycles new gef libraries to not as frequently get checked into the argouml modules, so it is useful to build the current version for yourself in order to avoid build errors.</p><p>If you want to - but that is really more of a gimmick - get yourself the source of the NSUML library to. But that is not strictly required.
- </p></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch01s02.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch02s02.html">Next</a></td></tr><tr><td align="left" width="40%">2. About this Cookbook...&nbsp;</td><td align="center" width="20%"><a href="index.html">Up</a></td><td align="right" width="40%">&nbsp;2. Build Process</td></tr></table></div></body></html>
+ </p><div class="sect2"><a name="Nad8"></a><div class="titlepage"><div><h3 class="title"><a name="Nad8"></a>2.1.1. Which tools do I need to build ArgoUML?</h3></div></div><div class="itemizedlist"><ul><li><p><a name="Nadf"></a>
+CVS for obtaining the latest files via internet
+</p></li><li><p><a name="Nae5"></a>
+JDK, at least version 1.2.2 (includes the java compiler)
+</p></li><li><p><a name="Naeb"></a>
+ANT, the Java make tool to manage compiling and packaging.
+</p><p>
+This tool is provided when you check out
+<tt>argouml/lib</tt>.
+</p></li><li><p><a name="Nafb"></a>
+libs: nsuml.jar, ocl-argo.jar, gef.jar, antlrall.jar
+</p><p>
+These tools are also provided when you check out
+<tt>argouml/lib</tt>.
+</p></li></ul></div><p>
+Since the ant tool and the four libs are provided by in the cvs repository,
+a simple 'build package' should be sufficient to compile and build.
+</p></div></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch01s03.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch02s02.html">Next</a></td></tr><tr><td align="left" width="40%">1.3. About this Cookbook...&nbsp;</td><td align="center" width="20%"><a href="index.html">Up</a></td><td align="right" width="40%">&nbsp;2.2. Download from the cvs repository</td></tr></table></div></body></html>

@@ -1,0 +1,171 @@
+<html><head><title>4.11. The JUnit module</title><link href="look-and-feel.css" rel="stylesheet" type="text/css"><meta content="DocBook XSL Stylesheets V1.37" name="generator"><link href="index.html" rel="home" title="ArgoUML Programmers Cookbook"><link href="ch04.html" rel="up" title="Chapter 4. Inside the components"><link href="ch04s10.html" rel="previous" title="4.10. Logging"><link href="ch05.html" rel="next" title="Chapter 5. Employed CVS standards"></head><body alink="#0000FF" bgcolor="white" link="#0000FF" text="black" vlink="#840084"><div class="navheader"><table summary="Navigation header" width="100%"><tr><th align="center" colspan="3">4.11. The JUnit module</th></tr><tr><td align="left" width="20%"><a href="ch04s10.html">Prev</a>&nbsp;</td><th align="center" width="60%">Chapter 4. Inside the components</th><td align="right" width="20%">&nbsp;<a href="ch05.html">Next</a></td></tr></table><hr></div><div class="sect1"><a name="N19c5"></a><div class="titlepage"><div><h2 class="title" style="clear: all"><a name="N19c5"></a>4.11. The JUnit module</h2></div></div><p>
+The JUnit module is an ArgoUML module that is used to contain all 
+Unit Test Cases.
+The reason for it being a module is that the classes contained need
+not be distributed with the ArgoUML distribution. 
+They have their use in the hands of the developers of ArgoUML.
+</p><p>
+The module is available from cvs under
+<tt>modules/junit</tt>
+and the used version of the JUnit framework is also available there
+(under <tt>modules/junit/lib</tt>).
+</p><p>
+The Java package structure under 
+<tt>modules/junit/src</tt>
+in the module is a complete copy of the ArgoUML Java package
+structure.
+Ideally every class
+<tt>org.argouml.<i><tt>x.y</tt></i>.<i><tt>z</tt></i></tt>
+stored in the file
+<tt>src_new/org/argouml/<i><tt>x/y</tt></i>/<i><tt>z</tt></i>.java</tt>
+should have a JUnit test case called
+<tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>
+stored in the file
+<tt>modules/junit/src/org/argouml/<i><tt>x/y</tt></i>/Test<i><tt>z</tt></i>.java</tt>
+containing all the Unit Test Cases for that class.
+</p><div class="sect2"><a name="N1a12"></a><div class="titlepage"><div><h3 class="title"><a name="N1a12"></a>4.11.1. How to run the test cases</h3></div></div><p>
+This is a simple description on how to run the JUnit Test Cases.
+</p><div class="orderedlist"><ol type="1"><li><p><a name="N1a20"></a>
+Check out all you need to build ArgoUML and the modules/junit
+directory.
+</p></li><li><p><a name="N1a26"></a>
+Build ArgoUML in src_new as described in the
+<a href="ch02s03.html">Build Process</a>
+</p></li><li><p><a name="N1a32"></a>
+Change directory to
+<tt>../modules/junit</tt>
+</p></li><li><p><a name="N1a3f"></a>
+Run ant with the argument run.
+</p></li><li><p><a name="N1a45"></a>
+ArgoUML starts up just with the splash screen and then the normal
+window.
+</p></li><li><p><a name="N1a4b"></a>
+Observe that the Tools menu now is enabled (i.e. not greyed out).
+</p></li><li><p><a name="N1a51"></a>
+Under the Tools menu, select the item Test Panel....
+</p></li><li><p><a name="N1a57"></a>
+The JUnit panel called Run Test Suite opens on top of ArgoUML.
+</p></li><li><p><a name="N1a5d"></a>
+Enter the word <tt>TestAll</tt> in the field 
+"Enter the name of the Test class:" to run all tests.
+</p></li><li><p><a name="N1a66"></a>
+Press the "Run"-button and watch the "Progess"-bar turn all green
+(hopefully).
+</p></li><li><p><a name="N1a6c"></a>
+Verify that all the tests are Run and that there are 
+no "Errors" and no "Failures".
+</p><p>
+If there are "Errors" or "Failures" they you can hopefully easily
+pinpoint the problem.
+</p></li></ol></div><p>
+If you only want to run one of your newly written test cases and not
+all the test cases, give the class name of your test case instead of
+"TestAll" like
+<tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>.
+</p></div><div class="sect2"><a name="N1a82"></a><div class="titlepage"><div><h3 class="title"><a name="N1a82"></a>4.11.2. How to write a test case</h3></div></div><p>
+Now this will make all you java-enthusiasts go nuts!
+We have both classnames and method names that need to have a special
+syntax.
+</p><p>
+The name of the test case starts with "Test" (i.e. Capital T, then
+small e, s and t). This is to help the TestAll class determine what is
+a Test Case and what is not without loading them. 
+If you write a test case that does not comply to this rule you still
+can run the test case but it wont be run by TestAll.
+This could prove useful sometimes but I (Linus) have yet to figure out
+when.
+</p><p>
+The test case imports the JUnit framework: 
+<blockquote class="blockquote"><p>
+import junit.framework.*;
+</p></blockquote>
+and it inherits <tt>TestCase</tt>.
+</p><p>
+Methods that are tests must have names that start with "test"
+(i.e. all small t, e, s, t). This is a requirement of the JUnit
+framework.
+</p><p>
+A lot of times it is useful just to run the compiler to verify that
+the signatures are correct on the interfaces. Therefor Linus has
+thought it is a good idea to add methods called
+<tt>compileTestStatics</tt>,
+<tt>compileTestConstructors</tt>, and
+<tt>compileTestMethods</tt>
+that was thought to include correct calls to all static methods,
+all public constructors, and all other public methods that are not
+otherwise tested.
+These methods are never called.
+They serve as a guarantee that the public interface of a class will
+ever loose any of the functionality provided by its signature in an
+uncontrolled way in just the same way as the test-methods serve as a
+guarantee that no features will ever be lost.
+</p><div class="example"><p><a name="N1aa8"></a><b>Example 4.1. A complete example</b></p><p>
+<pre class="programlisting">
+package org.argouml.uml.ui;
+import junit.framework.*;
+
+public class TestUMLAction extends TestCase {
+    public TestUMLAction(String name) {
+	super(name);
+    }
+
+    // Testing all three constructors.
+    public void testCreate1() {
+	UMLAction to = new UMLAction(new String("hejsan"));
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate2() {
+	UMLAction to = new UMLAction(new String("hejsan"), true);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+    public void testCreate3() {
+	UMLAction to = new UMLAction(new String("hejsan"), true, UMLAction.NO_ICON);
+	assert("Disabled", to.shouldBeEnabled());
+    }
+	
+
+    /** Function never actually called. Provided in order to make
+     *  sure that the static interface has not changed.
+     */
+    private void compileTestStatics() {
+	boolean t1 = UMLAction.HAS_ICON;
+	boolean t2 = UMLAction.NO_ICON;
+	UMLAction.getShortcut(new String());
+	UMLAction.getMnemonic(new String());
+    }
+
+    private void compileTestConstructors() {
+	new UMLAction(new String());
+	new UMLAction(new String(), true);
+	new UMLAction(new String(), true, true);
+    }
+
+    private void compileTestMethods() {
+	UMLAction to = new UMLAction(new String());
+	to.markNeedsSave();
+	to.updateEnabled(new Object());
+	to.updateEnabled();
+	to.shouldBeEnabled();
+    }
+}
+</pre>
+</p></div></div><div class="sect2"><a name="N1ab7"></a><div class="titlepage"><div><h3 class="title"><a name="N1ab7"></a>4.11.3. The TestAll class</h3></div></div><p>
+The TestAll class goes through all directories under 
+<tt>modules/junit/build/classes</tt>
+and finds all class-files beginning with "Test".
+They are all added to the test suite.
+</p><p>
+This means that the risk of forgetting to add a test case to the suite
+is reduced and there is no need to maintain such a suite.
+</p><p>
+On the other hand this only works in the build environment.
+If the jar-file is used somewhere else or the ArgoUML is started in
+some other place with respect to
+<tt>modules/junit/build/classes</tt>
+then this will fail and TestAll will probably not detect any test
+cases at all.
+</p><p>
+I hope and think that this will never be a problem since most of the
+times the test cases are run by a person with all the source available
+in just this way.
+</p></div></div><div class="navfooter"><hr><table summary="Navigation footer" width="100%"><tr><td align="left" width="40%"><a href="ch04s10.html">Prev</a>&nbsp;</td><td align="center" width="20%"><a href="index.html">Home</a></td><td align="right" width="40%">&nbsp;<a href="ch05.html">Next</a></td></tr><tr><td align="left" width="40%">4.10. Logging&nbsp;</td><td align="center" width="20%"><a href="ch04.html">Up</a></td><td align="right" width="40%">&nbsp;Chapter 5. Employed CVS standards</td></tr></table></div></body></html>
