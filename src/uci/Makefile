@@ -108,6 +108,7 @@ umlFresh:
 	cd Behavioral_Elements/State_Machines; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
 	cd Behavioral_Elements/Use_Cases; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
 	cd Behavioral_Elements/Collaborations; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
+	cd util; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
 	cd test/omg; $(JAVAC) $(JFLAGS) *.java; cd ../.. ; \
 	cd generate; $(JAVAC) $(JFLAGS) *.java; cd .. ; \
 	$(JAVAC) $(JFLAGS) *.java; \
@@ -159,7 +160,7 @@ umlClean:
 	cd Behavioral_Elements/State_Machines; make clean; cd ../.. ; \
 	cd Behavioral_Elements/Use_Cases; make clean; cd ../.. ; \
 	cd Behavioral_Elements/Collaborations; make clean; cd ../.. ; \
-	cd util; make clean; cd ../.. ; \
+	cd util; make clean; cd .. ; \
 	cd test/omg; make clean; cd ../.. ; \
 	cd generate; make clean; cd .. ; \
 	make clean ; \
@@ -202,13 +203,15 @@ UMLPACKS = \
 	uci.uml.Behavioral_Elements.Use_Cases \
 	uci.uml.Behavioral_Elements.Collaborations \
 	uci.uml.test.omg \
-	uci.uml.generate
+	uci.uml.generate \
+	uci.uml.util
 
 ARGOUMLPACKS = \
 	uci.uml.ui uci.uml.visual
 
 CRITICPACKS = \
-	uci.uml.critics uci.uml.critics.patterns
+	uci.uml.critics uci.uml.critics.patterns uci.uml.critics.java \
+	uci.uml.checklist uci.argo.kernel uci.argo.checklist
 
 
 gefjavadocs:
@@ -250,6 +253,7 @@ javadocs:
 #	cd Behavioral_Elements/State_Machines; make gen; cd ../.. ; \
 #	cd Behavioral_Elements/Use_Cases; make gen; cd ../.. ; \
 #	cd Behavioral_Elements/Collaborations; make gen; cd ../.. ; \
+#	cd util; make gen; cd .. ; \
 #	cd test/omg; make gen; cd ../.. ; \
 #	cd generate; make gen; cd .. ; \
 #	cd .. ; \
