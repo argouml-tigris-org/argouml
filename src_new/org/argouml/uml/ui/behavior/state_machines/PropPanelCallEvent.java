@@ -24,13 +24,19 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import javax.swing.JList;
-import javax.swing.JScrollPane;
+import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.UMLComboBoxModel2;
+import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
@@ -54,17 +60,92 @@ public class PropPanelCallEvent extends PropPanelEvent {
     public void initialize() {
         super.initialize();
 
-        // TODO: make the next list into a scrollbox (issue 2288)
-        JList operationList =
-	    new UMLLinkedList(new UMLCallEventOperationListModel());
-        addField(Translator.localize("label.operations"),
-		 new JScrollPane(operationList));
+        UMLSearchableComboBox operationComboBox = 
+            new UMLCallEventOperationComboBox2(
+                new UMLCallEventOperationComboBoxModel());
+        addField(Translator.localize("label.operations"), operationComboBox);
+        
         addButton(new PropPanelButton2(new ActionNewParameter(),
                 lookupIcon("Parameter")));
+        
         addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));
     }
 
 } /* end class PropPanelCallEvent */
 
+class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
+    /**
+     * The constructor.
+     * 
+     * @param arg0 the model
+     */
+    public UMLCallEventOperationComboBox2(UMLComboBoxModel2 arg0) {
+        super(arg0, null); // no external action; we do it ourselves
+        setEditable(true);
+    }
+    
+    /**
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (ModelFacade.isACallEvent(target)) {
+            ModelFacade.setOperation(target, getSelectedItem());
+        }
+    }
+}
+
+class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
+    /**
+     * The constructor.
+     */
+    public UMLCallEventOperationComboBoxModel() {
+        super("operation", true); // TODO: Is this the correct event name?
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
+     */
+    protected void buildModelList() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (ModelFacade.isACallEvent(target)) {
+            Object ns = ModelFacade.getNamespace(target); 
+            if (ModelFacade.isANamespace(ns)) {
+                Collection c = Model.getModelManagementHelper()
+                    .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
+                Collection ops = new ArrayList();
+                Iterator i = c.iterator();
+                while (i.hasNext()) {
+                    ops.addAll(ModelFacade.getOperations(i.next()));
+                }
+                setElements(ops);
+                return;
+            }
+        }
+        setElements(new ArrayList());
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
+     */
+    protected Object getSelectedModelElement() {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (ModelFacade.isACallEvent(target)) {
+            return ModelFacade.getOperation(target);
+        }
+        return null;
+    }
+    
+    /**
+     * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(java.lang.Object)
+     */
+    protected boolean isValidElement(Object element) {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (ModelFacade.isACallEvent(target)) {
+            return element == ModelFacade.getOperation(target);
+        }
+        return false;
+    }
+}
 
