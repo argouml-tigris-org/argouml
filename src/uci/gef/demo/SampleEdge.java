@@ -36,7 +36,9 @@ public class SampleEdge extends NetEdge {
   public SampleEdge() { } /* needs-more-work */
 
   public FigEdge makePresentation(Layer lay) {
-    return new FigEdgeLine();
+    FigEdge foo = new FigEdgeLine();
+    foo.setSourceArrowHead(new ArrowHeadTriangle());
+    return foo;
   }
 
 } /* end class SampleEdge */
