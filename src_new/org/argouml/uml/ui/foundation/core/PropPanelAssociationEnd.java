@@ -215,8 +215,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
         add(visibilityRadioButtonPanel);
 
         addButton(new PropPanelButton2(new ActionNavigateAssociation()));
-        addButton(new PropPanelButton2(new ActionNavigateOppositeAssocEnd()
-                .setIcon(lookupIcon("AssociationEnd"))));
+        addButton(new PropPanelButton2(new ActionNavigateOppositeAssocEnd(),
+                lookupIcon("AssociationEnd")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(), 
                 lookupIcon("Delete")));;
 

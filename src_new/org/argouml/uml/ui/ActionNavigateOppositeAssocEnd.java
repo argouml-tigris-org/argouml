@@ -35,6 +35,13 @@ import org.argouml.model.ModelFacade;
 public class ActionNavigateOppositeAssocEnd extends AbstractActionNavigate {
 
     /**
+     * The constructor.
+     */
+    public ActionNavigateOppositeAssocEnd() {
+        super("button.go-opposite", true);
+    }
+
+    /**
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
