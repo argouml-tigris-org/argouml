@@ -634,4 +634,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
         }
     }   
     
+    /**
+     * Used by the copy functions. Do not call this function directly.
+     *
+     * Extensions? I don't think we use them anywhere.
+     */
+    public void doCopyBase(MBase source, MBase target) {
+    }
 }
+

@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,6 +35,7 @@ import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CopyHelper;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
@@ -197,6 +198,7 @@ public class ModelManagementHelper {
      * TODO: make this only move/copy the asked element
      * @param element
      * @param to
+     * @deprecated You should use getCorrespondingElement instead.
      */
     public void moveElement(MModelElement element, MModel to) {
         MModel currentModel = element.getModel();
@@ -236,22 +238,17 @@ public class ModelManagementHelper {
 	    }
 	}
 
-	if (!(src instanceof MPackage) ||
-	    src instanceof MModel ||
-	    src instanceof MSubsystem) {
-	    cat.warn("ModelManagementHelper::findPackage to copy " +
-		     src.getClass().toString());
+	Object obj = CopyHelper.getHelper().copy(src, ns);
+	if (obj == null || !(obj instanceof MNamespace))
 	    return null;
-	}
 
-	MPackage p = ModelManagementFactory.getFactory().createPackage();
-	p.setName(src.getName());
-	ns.addOwnedElement(p);
+	MNamespace p = (MNamespace) obj;
+	//ns.addOwnedElement(p);
 	// TODO: copy constraints, imports, stereotype, tagged values from src
 	// Beware that it must be done after the addelement, so that elements
 	// from namespaces below src will be able to be created below p,
 	// otherwise there will be nasty stack overflows looming in the
-	// background.
+	// background. ??? Maybe not, how is this going to work?
 	return p;
     }
 
@@ -271,6 +268,7 @@ public class ModelManagementHelper {
      * @param source is the source element.
      * @param element is your new element.
      * @param to is your model.
+     * @deprecated
      */
     public void importElement(MModelElement source, MModelElement element, MModel to) {
 	if (source == null || element == null || to == null)
@@ -286,4 +284,58 @@ public class ModelManagementHelper {
 	}
 	ns.addOwnedElement(element);
     }
+
+    public MModelElement getCorrespondingElement(MModelElement elem,
+						 MModel model) {
+	return getCorrespondingElement(elem, model, true);
+    }
+
+    public MModelElement getCorrespondingElement(MModelElement elem,
+					 MModel model, boolean canCreate) {
+	if (elem == null || model == null)
+	    throw new NullPointerException();
+
+	// Trivial case
+	if (elem.getModel() == model)
+	    return elem;
+
+	// Base case
+	if (elem instanceof MModel)
+	    return model;
+
+	// The cast is actually safe
+	MNamespace ns = (MNamespace) getCorrespondingElement(
+					elem.getNamespace(),
+					model,
+					canCreate);
+	if (ns == null)
+	    return null;
+
+	Iterator it = ns.getOwnedElements().iterator();
+	while (it.hasNext()) {
+	    MModelElement e = (MModelElement) it.next();
+	    if (e.getClass() == elem.getClass() &&
+		((elem.getName() == null && e.getName() == null) ||
+		 (elem.getName() != null && elem.getName().equals(e.getName())))) {
+		return (MModelElement) e;
+	    }
+	}
+
+	if (!canCreate)
+	    return null;
+
+	return CopyHelper.getHelper().copy(elem, ns);
+    }
+
+    public boolean corresponds(MModelElement obj1, MModelElement obj2) {
+	if (obj1 instanceof MModel && obj2 instanceof MModel)
+	    return true;
+	if (obj1.getClass() != obj2.getClass())
+	    return false;
+	if (obj1.getName() == null && obj2.getName() != null ||
+	    obj1.getName() != null && !obj1.getName().equals(obj2.getName()))
+		return false;
+	return corresponds(obj1.getNamespace(), obj2.getNamespace());
+    }
 }
+

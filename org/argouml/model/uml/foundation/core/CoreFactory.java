@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -38,6 +38,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
+import org.argouml.model.uml.foundation.datatypes.DataTypesHelper;
 import org
 	.argouml
 	.model
@@ -46,6 +47,7 @@ import org
 	.extensionmechanisms
 	.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -1446,4 +1448,142 @@ public class CoreFactory extends AbstractUmlModelFactory {
 	public void deleteUsage(MUsage elem) {
 	}
 
+	/**
+	 * Copies a class, and it's features. This may also require other
+	 * classifiers to be copied.
+	 *
+	 * @param source is the class to copy.
+	 * @param ns is the namespace to put the copy in.
+	 */
+	public MClass copyClass(MClass source, MNamespace ns) {
+		MClass c = createClass();
+		ns.addOwnedElement(c);
+		doCopyClass(source, c);
+		return c;
+	}
+
+	/**
+	 * Copies a datatype, and it's features. This may also require other
+	 * classifiers to be copied.
+	 *
+	 * @param source is the datatype to copy.
+	 * @param ns is the namespace to put the copy in.
+	 */
+	public MDataType copyDataType(MDataType source, MNamespace ns) {
+		MDataType i = createDataType();
+		ns.addOwnedElement(i);
+		doCopyDataType(source, i);
+		return i;
+	}
+
+	/**
+	 * Copies an interface, and it's features. This may also require other
+	 * classifiers to be copied.
+	 *
+	 * @param source is the interface to copy.
+	 * @param ns is the namespace to put the copy in.
+	 */
+	public MInterface copyInterface(MInterface source, MNamespace ns) {
+		MInterface i = createInterface();
+		ns.addOwnedElement(i);
+		doCopyInterface(source, i);
+		return i;
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 */
+	public void doCopyElement(MElement source, MElement target) {
+		UmlFactory.getFactory().doCopyBase(source, target);
+		// Nothing more to do.
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 */
+	public void doCopyClass(MClass source, MClass target) {
+		doCopyClassifier(source, target);
+
+		target.setActive(source.isActive());
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 * TODO: actions? instances? collaborations etc?
+	 */
+	public void doCopyClassifier(MClassifier source, MClassifier target) {
+		// TODO: how to merge multiple inheritance? Necessary?
+		doCopyNamespace(source, target);
+		doCopyGeneralizableElement(source, target);
+
+		// TODO: Features
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 */
+	public void doCopyDataType(MDataType source, MDataType target) {
+		doCopyClassifier(source, target);
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 * TODO: generalizations, specializations?
+	 */
+	public void doCopyGeneralizableElement(MGeneralizableElement source,
+						MGeneralizableElement target) {
+		doCopyModelElement(source, target);
+
+		target.setAbstract(source.isAbstract());
+		target.setLeaf(source.isLeaf());
+		target.setRoot(source.isRoot());
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 */
+	public void doCopyInterface(MInterface source, MInterface target) {
+		doCopyClassifier(source, target);
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 * TODO: template parameters, default type
+	 * TODO: constraining elements
+	 * TODO: flows, dependencies, comments, bindings, contexts ???
+	 * TODO: contents, residences ???
+	 */
+	public void doCopyModelElement(MModelElement source, MModelElement target) {
+		// Set the name so that superclasses can find the newly
+		// created element in the model, if necessary.
+		target.setName(source.getName());
+		doCopyElement(source, target);
+
+		target.setSpecification(source.isSpecification());
+		target.setVisibility(source.getVisibility());
+		DataTypesHelper.getHelper().copyTaggedValues(source, target);
+
+		if (source.getStereotype() != null) {
+			// Note that if we're copying this element then we
+			// must also be allowed to copy other necessary
+			// objects.
+			MStereotype st = (MStereotype)
+				ModelManagementHelper
+				.getHelper()
+				.getCorrespondingElement(
+					source.getStereotype(),
+					target.getModel(),
+					true);
+			target.setStereotype(st);
+		}
+	}
+
+	/**
+	 * Used by the copy functions. Do not call this function directly.
+	 */
+	public void doCopyNamespace(MNamespace source, MNamespace target) {
+		doCopyModelElement(source, target);
+		// Nothing more to do, don't copy owned elements.
+	}
 }
+
