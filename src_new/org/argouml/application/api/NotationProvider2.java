@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,87 +22,208 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: NotationProvider2.java
-// Interfaces: NotationProvider2
-// Original Author: Thierry Lach
-// $Id$
-
 package org.argouml.application.api;
 
+/**
+ * Interface provided by classes that provide a notation.<p>
+ * 
+ * This interface is used by all elements in the Diagrams whenever some UML-object
+ * needs to be converted into a text string.<p>
+ * 
+ * For UML this interface is implemented by 
+ * {@link org.argouml.uml.generator.GeneratorDisplay}. 
+ * For Java it is implemented by 
+ * {@link org.argouml.language.java.generator.GeneratorJava}.
+ * 
+ * TODO: {@link org.argouml.uml.generator.ParserDisplay} and this interface 
+ * should probably be joined into an editable field instead.
+ *  
+ * @see org.argouml.language
+ */
 public interface NotationProvider2 {
 
+    /**
+     * @return The name of this notation.
+     */
     public NotationName getNotation();
 
+    /**
+     * Generate the String representation for an ExtensionPoint.
+     *
+     * @param op Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateExtensionPoint(Object op);
+
+    /**
+     * Generate the String representation for an Operation.
+     *
+     * @param op Object to generate representation for.
+     * @param documented <tt>true</tt> if documentation shall be generated.
+     * @return The String representation of the object.
+     */
     public String generateOperation(Object op, boolean documented);
+
+    /**
+     * Generate the String representation for an Attribute.
+     *
+     * @param attr Object to generate representation for.
+     * @param documented <tt>true</tt> if documentation shall be generated.
+     * @return The String representation of the object.
+     */
     public String generateAttribute(Object attr, boolean documented);
+
+    /**
+     * Generate the String representation for a Parameter.
+     *
+     * @param parameter Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateParameter(Object parameter);
+
+    /**
+     * Convert a String to a name.<p>
+     *
+     * TODO: What is the purpose of this function? Is it really needed?
+     *
+     * @param name The String to be converted.
+     * @return The name.
+     */
     public String generateName(String name);
+
+    /**
+     * Generate the String representation for a Package.
+     *
+     * @param pkg Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generatePackage(Object pkg);
+
+    /**
+     * Generate the String representation for an Expression.
+     *
+     * @param expr Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateExpression(Object expr);
+
+    /**
+     * Generate the String representation for a Classifier.
+     *
+     * @param cls Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateClassifier(Object cls);
+
+    /**
+     * Generate the String representation for a Stereotype.
+     *
+     * @param s Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateStereotype(Object s);
+
+    /**
+     * Generate the String representation for a TaggedValue.
+     *
+     * @param s Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateTaggedValue(Object s);
+
+    /**
+     * Generate the String representation for an Association.
+     *
+     * @param a Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateAssociation(Object a);
+
+    /**
+     * Generate the String representation for an AssociationEnd.
+     *
+     * @param ae Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateAssociationEnd(Object ae);
+
+    /**
+     * Generate the String representation for an Multiplicity.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateMultiplicity(Object m);
+
+    /**
+     * Generate the String representation for a State.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateState(Object m);
+
+    /**
+     * Generate the String representation for a StateBody.
+     *
+     * @param stt Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateStateBody(Object stt);
+
+    /**
+     * Generate the String representation for a Transition.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateTransition(Object m);
+
+    /**
+     * Generate the String representation for a Visibility.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateVisibility(Object m);
+
+    /**
+     * Generate the String representation for an Action.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateAction(Object m);
+
+    /**
+     * Generate the String representation for a Guard.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateGuard(Object m);
+
+    /**
+     * Generate the String representation for a Message.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateMessage(Object m);
+
+    /**
+     * Generate the String representation for a ClassifierRef.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateClassifierRef(Object m);
+
+    /**
+     * Generate the String representation for an AssociationRole.
+     *
+     * @param m Object to generate representation for.
+     * @return The String representation of the object.
+     */
     public String generateAssociationRole(Object m);
-
-    /** Can the notation be parsed for this object?
-     *  @param o the object to be tested.
-     *  @return <code>true</code> if it can be parsed
-     *          <code>false</code> if not
-     */
-    public boolean canParse(Object o);
-
-    /** Can the notation be parsed at all?
-     *  @return <code>true</code> if it can be parsed
-     *          <code>false</code> if not
-     */
-    public boolean canParse();
-
-    // public void parseExtensionPointCompartment(MUseCase uc, String s);
-    // public void parseOperationCompartment(MClassifier cls, String s);
-    // public void parseAttributeCompartment(MClassifier cls, String s);
-    // public MExtensionPoint parseExtensionPoint(String s);
-    // public MOperation parseOperation(String s);
-    // public MAttribute parseAttribute(String s);
-    // public String parseOutVisibility(MFeature f, String s);
-    // public String parseOutKeywords(MFeature f, String s);
-    // public String parseOutReturnType(MOperation op, String s);
-    // public String parseOutParams(MOperation op, String s);
-    // public String parseOutName(MModelElement me, String s);
-    // public String parseOutType(MAttribute attr, String s);
-    // public String parseOutInitValue(MAttribute attr, String s);
-    // public String parseOutColon(String s);
-    // public MParameter parseParameter(String s);
-    // public Package parsePackage(String s);
-    // public MClassImpl parseClassifier(String s);
-    // public MStereotype parseStereotype(String s);
-    // public MTaggedValue parseTaggedValue(String s);
-    // public MAssociation parseAssociation(String s);
-    // public MAssociationEnd parseAssociationEnd(String s);
-    // public MMultiplicity parseMultiplicity(String s);
-    // public MState parseState(String s);
-    // public void parseStateBody(MState st, String s);
-    // public void parseStateEntyAction(MState st, String s);
-    // public void parseStateExitAction(MState st, String s);
-    // public MTransition parseTransition(MTransition trans, String s);
-    // public void parseClassifierRole(MClassifierRole cls, String s);
-    // public void parseMessage(MMessage mes, String s);
-    // public void parseStimulus(MStimulus sti, String s);
-    // public MAction parseAction(String s);
-    // public MGuard parseGuard(String s);
-    // public MEvent parseEvent(String s);
-    // public void parseObject(MObject obj, String s);
-    // public void parseNodeInstance(MNodeInstance noi, String s);
-    // public void parseComponentInstance(MComponentInstance coi, String s);
 }
