@@ -121,75 +121,109 @@ import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 /** This defines a NavPerspective as a kind of TreeModel that is made
- *  up of rules from the files whose names begin with "Go".  It also
- *  defines several useful navigational perspectives. */
-
+ *  up of rules from the files whose names begin with "Go".
+ *
+ * <p>It also defines several useful navigational perspectives.
+ *
+ * $Id$
+ */
 public class NavPerspective
     extends TreeModelComposite
-    implements Serializable, TreeModel, Cloneable {
+    implements
+        Serializable {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
+    /** needs documenting */
     protected EventListenerList _listenerList = new EventListenerList();
 
     ////////////////////////////////////////////////////////////////
     // static variables
 
+    /** needs documenting */
     protected static Vector _registeredPerspectives = new Vector();
+    
+    /** needs documenting */
     protected static Vector _rules = new Vector();
 
+    /**
+     * statically initialise all perspectives
+     */
     static {
+        // ----------- navigation perspectives ---------------------
+        
         // this are meant for pane-1 of NavigatorPane, they all have
         // Project as their only prerequiste.  These trees tend to be 3
         // to 5 levels deep and sometimes have recursion.
         NavPerspective packageCentric =
             new NavPerspective("combobox.item.package-centric");
+        
         NavPerspective diagramCentric =
             new NavPerspective("combobox.item.diagram-centric");
+        
         NavPerspective inheritanceCentric =
             new NavPerspective("combobox.item.inheritance-centric");
+        
         NavPerspective classAssociation =
             new NavPerspective("combobox.item.class-associations");
+        
         NavPerspective navAssociation =
-            new NavPerspective("combobox.item.navigable-associations");       
+            new NavPerspective("combobox.item.navigable-associations");
+        
         NavPerspective aggregateCentric =
             new NavPerspective("combobox.item.aggregate-centric");
+        
         NavPerspective compositeCentric =
             new NavPerspective("combobox.item.composite-centric");
+        
         NavPerspective classStates =
             new NavPerspective("combobox.item.class-states");
+        
         NavPerspective stateCentric =
             new NavPerspective("combobox.item.state-centric");
+        
         NavPerspective stateTransitions =
             new NavPerspective("combobox.item.state-transitions");
+        
         NavPerspective transitionCentric =
             new NavPerspective("combobox.item.transitions-centric");
+        
         NavPerspective transitionPaths =
             new NavPerspective("combobox.item.transitions-paths");
-        //     NavPerspective useCaseCentric = new NavPerspective("combobox.item.usecase-centric");
+        
         NavPerspective collabCentric =
             new NavPerspective("combobox.item.collaboration-centric");
+        
         NavPerspective depCentric =
             new NavPerspective("combobox.item.dependency-centric");
 
         // These are intended for pane-2 of NavigatorPane, the tend to be
         // simple and shallow, and have something in pane-1 as a prerequiste
+        // TODO i8n
         NavPerspective useCaseToExtensionPoint =
             new NavPerspective("Extension Points of Use Case");
+        
         NavPerspective classToBehStr =
             new NavPerspective("misc.features-of-class");
+        
         NavPerspective classToBeh = new NavPerspective("misc.methods-of-class");
+        
         NavPerspective classToStr =
             new NavPerspective("misc.attributes-of-class");
+        
         NavPerspective machineToState =
             new NavPerspective("misc.states-of-class");
+        
         NavPerspective machineToTransition =
             new NavPerspective("misc.transitions-of-class");
         
+        // TODO i8n
         NavPerspective classCentric =
             new NavPerspective("Class - centric");
 
+        // -------------- GO rules --------------------------
+        
         // Subsystem is travsersed via Classifier. Eugenio
         GoFilteredChildren modelToPackages =
             new GoFilteredChildren(
@@ -221,7 +255,6 @@ public class NavPerspective
                 new PredInstanceOf(MGeneralization.class));
 
         // Extend and include are traversed via use case.
-
         GoFilteredChildren modelToExtendsAndIncludes =
             new GoFilteredChildren(
                 "Package->Extends/Includes",
@@ -264,6 +297,31 @@ public class NavPerspective
                 new GoModelToElements(),
                 new PredInstanceOf(MNodeInstance.class));
 
+        GoFilteredChildren machineToFinalState =
+            new GoFilteredChildren(
+                "misc.state-machine.final-states",
+                new GoMachineToState(),
+                PredIsFinalState.TheInstance);
+        GoFilteredChildren machineToInitialState =
+            new GoFilteredChildren(
+                "misc.state-machine.initial-states",
+                new GoMachineToState(),
+                PredIsStartState.TheInstance);
+        transitionPaths.addSubTreeModel(machineToInitialState);
+
+        GoFilteredChildren compositeToFinalStates =
+            new GoFilteredChildren(
+                "misc.state.final-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsFinalState.TheInstance);
+        GoFilteredChildren compositeToInitialStates =
+            new GoFilteredChildren(
+                "misc.state.initial-substates",
+                new GoCompositeStateToSubvertex(),
+                PredIsStartState.TheInstance);
+        
+        // ---------------- building the perspectives
+        
         packageCentric.addSubTreeModel(new GoProjectToModel());
         packageCentric.addSubTreeModel(new GoModelToDiagram());
         packageCentric.addSubTreeModel(new GoModelElementToComment());
@@ -281,7 +339,6 @@ public class NavPerspective
         packageCentric.addSubTreeModel(new GoUseCaseToExtensionPoint());
         packageCentric.addSubTreeModel(new GoClassifierToStructuralFeature());
         packageCentric.addSubTreeModel(new GoClassifierToBeh());
-        // packageCentric.addSubTreeModel(new GoAssocRoleMessages());
         packageCentric.addSubTreeModel(new GoCollaborationInteraction());
         packageCentric.addSubTreeModel(new GoInteractionMessage());
         packageCentric.addSubTreeModel(new GoMessageAction());
@@ -318,24 +375,12 @@ public class NavPerspective
         classAssociation.addSubTreeModel(new GoProjectToModel());
         classAssociation.addSubTreeModel(new GoModelToDiagram());
         classAssociation.addSubTreeModel(new GoModelToClass());
-        //classAssociation.addSubTreeModel(new GoClassifierToBeh());
-        //classAssociation.addSubTreeModel(new GoClassifierToStructuralFeature());
         classAssociation.addSubTreeModel(new GoClassToAssociatedClass());
 
         navAssociation.addSubTreeModel(new GoProjectToModel());
         navAssociation.addSubTreeModel(new GoModelToDiagram());
         navAssociation.addSubTreeModel(new GoModelToClass());
-        //navAssociation.addSubTreeModel(new GoClassifierToBeh());
-        //navAssociation.addSubTreeModel(new GoClassifierToStructuralFeature());
         navAssociation.addSubTreeModel(new GoClassToNavigableClass());               
-
-        
-
-        //     classStates.addSubTreeModel(new GoProjectToModel());
-        //     classStates.addSubTreeModel(new GoModelToDiagram());
-        //     classStates.addSubTreeModel(new GoModelToClass());
-        //     classStates.addSubTreeModel(new GoElementToMachine());
-        //     classStates.addSubTreeModel(new GoMachineToState());
 
         stateCentric.addSubTreeModel(new GoProjectToStateMachine());
         stateCentric.addSubTreeModel(new GoMachineDiagram());
@@ -352,40 +397,8 @@ public class NavPerspective
 
         transitionPaths.addSubTreeModel(new GoProjectToStateMachine());
         transitionPaths.addSubTreeModel(new GoMachineDiagram());
-
-        //transitionPaths.addSubTreeModel(new GoMachineToStartState());
-        GoFilteredChildren machineToFinalState =
-            new GoFilteredChildren(
-                "misc.state-machine.final-states",
-                new GoMachineToState(),
-                PredIsFinalState.TheInstance);
-        GoFilteredChildren machineToInitialState =
-            new GoFilteredChildren(
-                "misc.state-machine.initial-states",
-                new GoMachineToState(),
-                PredIsStartState.TheInstance);
-        transitionPaths.addSubTreeModel(machineToInitialState);
-
-        GoFilteredChildren compositeToFinalStates =
-            new GoFilteredChildren(
-                "misc.state.final-substates",
-                new GoCompositeStateToSubvertex(),
-                PredIsFinalState.TheInstance);
-        GoFilteredChildren compositeToInitialStates =
-            new GoFilteredChildren(
-                "misc.state.initial-substates",
-                new GoCompositeStateToSubvertex(),
-                PredIsStartState.TheInstance);
         transitionPaths.addSubTreeModel(compositeToInitialStates);
-
         transitionPaths.addSubTreeModel(new GoStateToDownstream());
-        //     transitionPaths.addSubTreeModel(new GoStateToOutgoingTrans());
-        //     transitionPaths.addSubTreeModel(new GoTransitionToTarget());
-
-        //     useCaseCentric.addSubTreeModel(new GoProjectToModel());
-        //     useCaseCentric.addSubTreeModel(new GoModelToDiagram());
-        //     useCaseCentric.addSubTreeModel(new GoModelToUseCase());
-        //     useCaseCentric.addSubTreeModel(new GoModelToActor());
 
         collabCentric.addSubTreeModel(new GoProjectToCollaboration());
         collabCentric.addSubTreeModel(new GoCollaborationDiagram());
@@ -394,8 +407,7 @@ public class NavPerspective
         collabCentric.addSubTreeModel(new GoCollaborationInteraction());
         collabCentric.addSubTreeModel(new GoInteractionMessages());        
 
-        useCaseToExtensionPoint.addSubTreeModel(
-            new GoUseCaseToExtensionPoint());
+        useCaseToExtensionPoint.addSubTreeModel(new GoUseCaseToExtensionPoint());
 
         classToBehStr.addSubTreeModel(new GoClassifierToStructuralFeature());
         classToBehStr.addSubTreeModel(new GoClassifierToBeh());
@@ -426,68 +438,37 @@ public class NavPerspective
         registerPerspective(inheritanceCentric);
         registerPerspective(classAssociation);
         registerPerspective(navAssociation);
-        //     registerPerspective(classStates);
         registerPerspective(stateCentric);
         registerPerspective(transitionCentric);
         registerPerspective(transitionPaths);
-        //registerPerspective(useCaseCentric);
         registerPerspective(collabCentric);
         registerPerspective(depCentric);
-        
-        // probably registerRules can be removed
-        /*
-        registerRule(new GoProjectToModel());
-        registerRule(new GoModelToDiagram());
-        registerRule(new GoModelToElements());
-        registerRule(new GoModelToClass());
-        registerRule(new GoModelToAssociation());
-        registerRule(new GoModelToBaseElements());
-        registerRule(new GoProjectToDiagram());
-        registerRule(new GoUseCaseToExtensionPoint());
-        registerRule(new GoClassifierToBeh());
-        registerRule(new GoClassifierToStructuralFeature());
-        registerRule(new GoDiagramToNode());
-        registerRule(new GoDiagramToEdge());
-        registerRule(new GoGenElementToDerived());
-        registerRule(new GoClassToAssociatedClass());
-        registerRule(new GoMachineToTrans());
-        registerRule(new GoMachineToState());
-        registerRule(machineToInitialState);
-        registerRule(machineToFinalState);
-        registerRule(new GoCompositeStateToSubvertex());
-        registerRule(compositeToInitialStates);
-        registerRule(compositeToFinalStates);
-        registerRule(new GoStateToIncomingTrans());
-        registerRule(new GoStateToOutgoingTrans());
-        registerRule(new GoStateToDownstream());
-        registerRule(new GoStateToUpstream());
-        registerRule(new GoTransitionToSource());
-        registerRule(new GoTransitionToTarget());
-        registerRule(new GoModelToActor());
-        registerRule(new GoModelToUseCase());    
-        */
-        // TODO: this list is not updated
-    }
+    }/** end of static initialiser... */
 
     ////////////////////////////////////////////////////////////////
     // static methods
 
+    /** needs documenting */
     public static void registerPerspective(NavPerspective np) {
         _registeredPerspectives.addElement(np);
     }
 
+    /** needs documenting */
     public static void unregisterPerspective(NavPerspective np) {
         _registeredPerspectives.removeElement(np);
     }
 
+    /** needs documenting */
     public static Vector getRegisteredPerspectives() {
         return _registeredPerspectives;
     }
 
+    /** needs documenting */
     public static void registerRule(AbstractGoRule rule) {
         _rules.addElement(rule);
     }
 
+    /** needs documenting */
     public static Vector getRegisteredRules() {
         return _rules;
     }
@@ -495,32 +476,18 @@ public class NavPerspective
     ////////////////////////////////////////////////////////////////
     // constructor
 
+    /** needs documenting */
     public NavPerspective(String name) {
         super(name);
     }
 
+    /** needs documenting */
     public Object clone() throws CloneNotSupportedException {
         return super.clone();
     }
 
     ////////////////////////////////////////////////////////////////
-    // TreeModel implementation
-
-    /**
-     * Messaged when the user has altered the value for the item identified
-     * by <I>path</I> to <I>newValue</I>.  If <I>newValue</I> signifies
-     * a truly new value the model should post a treeNodesChanged
-     * event.
-     *
-     * @param path path to the node that the user has altered.
-     * @param newValue the new value from the TreeCellEditor.
-     */
-    public void valueForPathChanged(TreePath path, Object newValue) {
-    }
-
-    //
-    //  Change Events
-    //
+    // Some methods from DefaultTreeModel
 
     /**
      * Notify all listeners that have registered interest for
@@ -530,10 +497,11 @@ public class NavPerspective
      * @see EventListenerList
      */
     protected void fireTreeNodesChanged(
-        Object source,
-        Object[] path,
-        int[] childIndices,
-        Object[] children) {
+                    Object source,
+                    Object[] path,
+                    int[] childIndices,
+                    Object[] children) {
+            
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -562,10 +530,11 @@ public class NavPerspective
      * @see EventListenerList
      */
     protected void fireTreeNodesInserted(
-        Object source,
-        Object[] path,
-        int[] childIndices,
-        Object[] children) {
+                    Object source,
+                    Object[] path,
+                    int[] childIndices,
+                    Object[] children) {
+            
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -594,10 +563,11 @@ public class NavPerspective
      * @see EventListenerList
      */
     protected void fireTreeNodesRemoved(
-        Object source,
-        Object[] path,
-        int[] childIndices,
-        Object[] children) {
+                    Object source,
+                    Object[] path,
+                    int[] childIndices,
+                    Object[] children) {
+            
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -630,10 +600,11 @@ public class NavPerspective
      * @see EventListenerList
      */
     public void fireTreeStructureChanged(
-        Object source,
-        Object[] path,
-        int[] childIndices,
-        Object[] children) {
+                    Object source,
+                    Object[] path,
+                    int[] childIndices,
+                    Object[] children) {
+            
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
         TreeModelEvent e = null;
@@ -654,10 +625,15 @@ public class NavPerspective
         }
     }
 
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
+
+    /** needs documenting */
     public void addTreeModelListener(TreeModelListener l) {
         _listenerList.add(TreeModelListener.class, l);
     }
 
+    /** needs documenting */
     public void removeTreeModelListener(TreeModelListener l) {
         _listenerList.remove(TreeModelListener.class, l);
     }
@@ -671,6 +647,7 @@ public class NavPerspective
      * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, java.lang.Object)
      */
     public int getIndexOfChild(Object parent, Object child) {
+        
         if (child == null || parent == null) return -1;
         if (child instanceof TreeNode)
             return super.getIndexOfChild(parent, child);
@@ -700,10 +677,12 @@ public class NavPerspective
         return -1;
     }
 
+    /** needs documenting */
     private int getHelperIndex(
-        AbstractGoRule rule,
-        Object parent,
-        Object child) {
+                    AbstractGoRule rule,
+                    Object parent,
+                    Object child) {
+            
         if (parent == child)
             throw new IllegalStateException("Parent cannot equal child");
         if (rule.getChildCount(parent) == 0)

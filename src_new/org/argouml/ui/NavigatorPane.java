@@ -79,18 +79,23 @@ import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.model_management.MModel;
 
-/** The upper-left pane of the main Argo/UML window.  This shows the
+/**
+ * The upper-left pane of the main Argo/UML window, shows a tree view
+ * of the UML model.
+ *
+ * <p>This shows the
  * contents of the current project in one of several ways that are
  * determined by NavPerspectives.
  *
- * This does not allow drag and drop as yet. This is considered
+ * <p>This does not allow drag and drop as yet. This is considered
  * a must have for as yet undetermined future.
  *
- * other feature enhancements include showing the presence of
+ * <p>other feature enhancements include showing the presence of
  * note connected to individual UML artifacts and to diagrams
  * themselves.
+ *
+ * $Id$
  */
-
 public class NavigatorPane
     extends JPanel
     implements
@@ -98,48 +103,64 @@ public class NavigatorPane
         TreeSelectionListener,
         PropertyChangeListener,
         QuadrantPanel {
+    
     protected static Category cat = Category.getInstance(NavigatorPane.class);
-
-    //, CellEditorListener
-
-    ////////////////////////////////////////////////////////////////
-    // constants
-    public static int MAX_HISTORY = 10;
-
+    
+    public static final int MAX_HISTORY = 10;
+    
+    /** for collecting user statistics */
+    public static int _clicksInNavPane = 0;
+    /** for collecting user statistics */
+    public static int _navPerspectivesChanged = 0;
+    
     ////////////////////////////////////////////////////////////////
     // instance variables
+    
+    /** needs documenting */
+    protected DisplayTextTree _tree;
 
-    // vector of TreeModels
-    protected Vector _perspectives = new Vector();
+    /** needs documenting */
+    protected Toolbar _toolbar;
 
-    protected Toolbar _toolbar = new Toolbar();
-    protected JComboBox _combo = new JComboBox();
-    protected Object _root = null;
-    protected Vector _navHistory = new Vector();
-    protected int _historyIndex = 0;
-    protected NavPerspective _curPerspective = null;
-    protected DisplayTextTree _tree = new DisplayTextTree();
-    //   protected Action _navBack = Actions.NavBack;
-    //   protected Action _navForw = Actions.NavForw;
-    //   protected Action _navConfig = Actions.NavConfig;
-
-    public static int _clicksInNavPane = 0;
-    public static int _navPerspectivesChanged = 0;
-
+    /** needs documenting */
+    protected JComboBox _combo;
+    
+    /** needs documenting */
+    protected NavPerspective _curPerspective;
+    
+    /** vector of TreeModels */
+    protected Vector _perspectives;
+    
+    /** needs documenting */
+    protected Object _root;
+    
+    /** needs documenting */
+    protected Vector _navHistory;
+    
+    /** needs documenting */
+    protected int _historyIndex;
+    
+    
     ////////////////////////////////////////////////////////////////
     // constructors
-
+    
+    /** needs documenting */
     public NavigatorPane(boolean doSplash) {
-        setLayout(new BorderLayout());
+        
+        _combo = new JComboBox();
+        _tree = new DisplayTextTree();
+        _toolbar = new Toolbar();
         JPanel toolbarPanel = new JPanel(new BorderLayout());
-        toolbarPanel.add(_toolbar, BorderLayout.WEST);
+        
+        setLayout(new BorderLayout());
+        
         _toolbar.add(_combo);
         _toolbar.add(Actions.NavBack);
         _toolbar.add(Actions.NavForw);
         _toolbar.add(Actions.NavConfig);
-        add(toolbarPanel, BorderLayout.NORTH);
-        add(new JScrollPane(_tree), BorderLayout.CENTER);
+        
         _combo.addItemListener(this);
+        
         _tree.setRootVisible(false);
         _tree.setShowsRootHandles(true);
         _tree.addTreeSelectionListener(this);
@@ -148,28 +169,39 @@ public class NavigatorPane
         //_tree.addActionListener(new NavigatorActionListener());
         //_tree.setEditable(true);
         //_tree.getCellEditor().addCellEditorListener(this);
-        Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
-        Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
+        
+        toolbarPanel.add(_toolbar, BorderLayout.WEST);
+        add(toolbarPanel, BorderLayout.NORTH);
+        add(new JScrollPane(_tree), BorderLayout.CENTER);
         setPreferredSize(
             new Dimension(
                 Configuration.getInteger(
                     Argo.KEY_SCREEN_WEST_WIDTH,
                     ProjectBrowser.DEFAULT_COMPONENTWIDTH),
                 0));
+        
+        Configuration.addListener(Notation.KEY_USE_GUILLEMOTS, this);
+        Configuration.addListener(Notation.KEY_SHOW_STEREOTYPES, this);
         ProjectManager.getManager().addPropertyChangeListener(this);
-
+        
         if (doSplash) {
             SplashScreen splash = ProjectBrowser.TheInstance.getSplashScreen();
             splash.getStatusBar().showStatus(
                 "Making NavigatorPane: Setting Perspectives");
             splash.getStatusBar().showProgress(25);
         }
+        
         setPerspectives(NavPerspective.getRegisteredPerspectives());
+        
+        _perspectives = new Vector();
+        _navHistory = new Vector();
+        _historyIndex = 0;
     }
-
+    
     ////////////////////////////////////////////////////////////////
-    // accessors
-
+    // methods
+    
+    /** needs documenting */
     public void setRoot(Object r) {
         _root = r;
         if (_curPerspective != null) {
@@ -178,13 +210,16 @@ public class NavigatorPane
         }
         clearHistory();
     }
+    /** needs documenting */
     public Object getRoot() {
         return _root;
     }
-
+    
+    /** needs documenting */
     public Vector getPerspectives() {
         return _perspectives;
     }
+    /** needs documenting */
     public void setPerspectives(Vector pers) {
         _perspectives = pers;
         NavPerspective oldCurPers = _curPerspective;
@@ -193,7 +228,7 @@ public class NavigatorPane
         java.util.Enumeration persEnum = _perspectives.elements();
         while (persEnum.hasMoreElements())
             _combo.addItem(persEnum.nextElement());
-
+        
         if (_perspectives == null || _perspectives.isEmpty())
             _curPerspective = null;
         else if (oldCurPers != null && _perspectives.contains(oldCurPers))
@@ -202,25 +237,29 @@ public class NavigatorPane
             setCurPerspective((NavPerspective) _perspectives.elementAt(0));
         updateTree();
     }
-
+    
+    /** needs documenting */
     public NavPerspective getCurPerspective() {
         return _curPerspective;
     }
+    /** needs documenting */
     public void setCurPerspective(NavPerspective per) {
         _curPerspective = per;
         if (_perspectives == null || !_perspectives.contains(per))
             return;
         _combo.setSelectedItem(_curPerspective);
     }
-
+    
+    /** needs documenting */
     public Object getSelectedObject() {
         return _tree.getLastSelectedPathComponent();
     }
-
+    
+    /** needs documenting */
     public void forceUpdate() {
         _tree.forceUpdate();
     }
-
+    
     /** This is pretty limited, it is really only useful for selecting
      *  the default diagram when the user does New.  A general function
      *  to select a given object would have to find the shortest path to
@@ -233,21 +272,22 @@ public class NavigatorPane
         TreePath path = new TreePath(objs);
         _tree.setSelectionPath(path);
     }
-
+    
+    /** needs documenting */
     public Dimension getMinimumSize() {
         return new Dimension(120, 100);
     }
-
+    
     ////////////////////////////////////////////////////////////////
     // event handlers
-
+    
     /** called when the user selects a perspective from the perspective
      *  combo. */
     public void itemStateChanged(ItemEvent e) {
         updateTree();
         _navPerspectivesChanged++;
     }
-
+    
     /** called when the user selects an item in the tree, by clicking or
      *  otherwise. */
     public void valueChanged(TreeSelectionEvent e) {
@@ -256,7 +296,7 @@ public class NavigatorPane
         //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
         //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     }
-
+    
     /** called when the user clicks once on an item in the tree. */
     public void mySingleClick(int row, TreePath path) {
         //TODO: should fire its own event and ProjectBrowser
@@ -267,14 +307,15 @@ public class NavigatorPane
         //if (sel instanceof Diagram) {
           myDoubleClick(row, path);
           return;
-        
+         
         }
         ProjectBrowser.TheInstance.select(sel);
-        */
+         */
         mouseClick(row, path);
         _clicksInNavPane++;
     }
-
+    
+    /** needs documenting */
     protected void mouseClick(int row, TreePath path) {
         Object sel = getSelectedObject();
         if (sel == null)
@@ -284,7 +325,7 @@ public class NavigatorPane
         // ProjectBrowser.TheInstance.setDetailsTarget(sel);
         repaint();
     }
-
+    
     /** called when the user clicks twice on an item in the tree. */
     public void myDoubleClick(int row, TreePath path) {
         //TODO: should fire its own event and ProjectBrowser
@@ -293,7 +334,8 @@ public class NavigatorPane
         _clicksInNavPane += 2;
         repaint();
     }
-
+    
+    /** needs documenting */
     public void navDown() {
         int row = _tree.getMinSelectionRow();
         if (row == _tree.getRowCount())
@@ -303,7 +345,8 @@ public class NavigatorPane
         _tree.setSelectionRow(row);
         ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     }
-
+    
+    /** needs documenting */
     public void navUp() {
         int row = _tree.getMinSelectionRow();
         if (row == 0)
@@ -313,12 +356,14 @@ public class NavigatorPane
         _tree.setSelectionRow(row);
         ProjectBrowser.TheInstance.setTarget(getSelectedObject());
     }
-
+    
+    /** needs documenting */
     public void clearHistory() {
         _historyIndex = 0;
         _navHistory.removeAllElements();
     }
-
+    
+    /** needs documenting */
     public void addToHistory(Object sel) {
         if (_navHistory.size() == 0)
             _navHistory.addElement(ProjectBrowser.TheInstance.getTarget());
@@ -331,9 +376,11 @@ public class NavigatorPane
         _navHistory.addElement(sel);
         _historyIndex = _navHistory.size() - 1;
     }
+    /** needs documenting */
     public boolean canNavBack() {
         return _navHistory.size() > 0 && _historyIndex > 0;
     }
+    /** needs documenting */
     public void navBack() {
         _historyIndex = Math.max(0, _historyIndex - 1);
         if (_navHistory.size() <= _historyIndex)
@@ -341,19 +388,22 @@ public class NavigatorPane
         Object oldTarget = _navHistory.elementAt(_historyIndex);
         ProjectBrowser.TheInstance.setTarget(oldTarget);
     }
-
+    
+    /** needs documenting */
     public boolean canNavForw() {
         return _historyIndex < _navHistory.size() - 1;
     }
+    /** needs documenting */
     public void navForw() {
         _historyIndex = Math.min(_navHistory.size() - 1, _historyIndex + 1);
         Object oldTarget = _navHistory.elementAt(_historyIndex);
         ProjectBrowser.TheInstance.setTarget(oldTarget);
     }
-
+    
     ////////////////////////////////////////////////////////////////
     // internal methods
-
+    
+    /** needs documenting */
     protected void updateTree() {
         NavPerspective tm = (NavPerspective) _combo.getSelectedItem();
         //if (tm == _curPerspective) return;
@@ -367,7 +417,7 @@ public class NavigatorPane
             _tree.setVisible(true); // blinks?
         }
     }
-
+    
     /**
      * Locale a popup menu item in the navigator pane.
      *
@@ -377,11 +427,14 @@ public class NavigatorPane
     final protected String menuLocalize(String key) {
         return Argo.localize("Tree", key);
     }
-
+    
     ////////////////////////////////////////////////////////////////
     // inner classes
-
+    
+    /** needs documenting */
     class NavigatorMouseListener extends MouseAdapter {
+        
+        /** needs documenting */
         public void mouseClicked(MouseEvent me) {
             //
             //   if this platform's popup trigger is occurs on a click
@@ -404,7 +457,8 @@ public class NavigatorPane
                 }
             }
         }
-
+        
+        /** needs documenting */
         public void showPopupMenu(MouseEvent me) {
             //TreeCellEditor tce = _tree.getCellEditor();
             JPopupMenu popup = new JPopupMenu("test");
@@ -412,53 +466,53 @@ public class NavigatorPane
             if (obj instanceof PopupGenerator) {
                 Vector actions = ((PopupGenerator) obj).getPopUpActions(me);
                 for (Enumeration e = actions.elements();
-                    e.hasMoreElements();
-                    ) {
+                e.hasMoreElements();
+                ) {
                     popup.add((AbstractAction) e.nextElement());
                 }
             } else {
                 if ((obj instanceof MClassifier && !(obj instanceof MDataType))
-                    || ((obj instanceof MPackage)
-                        && (obj
-                            != ProjectManager
-                                .getManager()
-                                .getCurrentProject()
-                                .getModel()))
-                    || ((obj instanceof MStateVertex) && 
-                        ((ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLStateDiagram) &&
-                            (((UMLStateDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getStateMachine() ==
-                                StateMachinesHelper.getHelper().getStateMachine(obj))))                                
-                    || (obj instanceof MInstance
-                        && !(obj instanceof MDataValue)
-                        && !(ProjectBrowser.TheInstance.getActiveDiagram()
-                            instanceof UMLSequenceDiagram))) {
+                || ((obj instanceof MPackage)
+                && (obj
+                != ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getModel()))
+                || ((obj instanceof MStateVertex) &&
+                ((ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLStateDiagram) &&
+                (((UMLStateDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getStateMachine() ==
+                StateMachinesHelper.getHelper().getStateMachine(obj))))
+                || (obj instanceof MInstance
+                && !(obj instanceof MDataValue)
+                && !(ProjectBrowser.TheInstance.getActiveDiagram()
+                instanceof UMLSequenceDiagram))) {
                     UMLAction action =
-                        new ActionAddExistingNode(
-                            menuLocalize("menu.popup.add-to-diagram"),
-                            obj);
+                    new ActionAddExistingNode(
+                    menuLocalize("menu.popup.add-to-diagram"),
+                    obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
                 if ((obj instanceof MRelationship && !(obj instanceof MFlow))
-                    || ((obj instanceof MLink)
-                        && !(ProjectBrowser.TheInstance.getActiveDiagram()
-                            instanceof UMLSequenceDiagram))
-                    || (obj instanceof MTransition)) {
+                || ((obj instanceof MLink)
+                && !(ProjectBrowser.TheInstance.getActiveDiagram()
+                instanceof UMLSequenceDiagram))
+                || (obj instanceof MTransition)) {
                     UMLAction action =
-                        new ActionAddExistingEdge(
-                            menuLocalize("menu.popup.add-to-diagram"),
-                            obj);
+                    new ActionAddExistingEdge(
+                    menuLocalize("menu.popup.add-to-diagram"),
+                    obj);
                     action.setEnabled(action.shouldBeEnabled());
                     popup.add(action);
                 }
-
+                
                 if ((obj instanceof MModelElement
-                    && (obj
-                        != ProjectManager
-                            .getManager()
-                            .getCurrentProject()
-                            .getModel()))
-                    || obj instanceof Diagram) {
+                && (obj
+                != ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getModel()))
+                || obj instanceof Diagram) {
                     popup.add(ActionRemoveFromModel.SINGLETON);
                 }
                 if (obj instanceof MClassifier || obj instanceof MPackage) {
@@ -471,25 +525,29 @@ public class NavigatorPane
             }
             popup.show(_tree, me.getX(), me.getY());
         }
-
+        
+        /** needs documenting */
         public void mousePressed(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
                 showPopupMenu(me);
             }
         }
-
+        
+        /** needs documenting */
         public void mouseReleased(MouseEvent me) {
             if (me.isPopupTrigger()) {
                 me.consume();
                 showPopupMenu(me);
             }
         }
-
+        
     } /* end class NavigatorMouseListener */
-
+    
+    /** needs documenting */
     class NavigatorKeyListener extends KeyAdapter {
-        // maybe use keyTyped?
+        
+        /** maybe use keyTyped?*/
         public void keyPressed(KeyEvent e) {
             cat.debug("got key: " + e.getKeyCode());
             int code = e.getKeyCode();
@@ -500,18 +558,20 @@ public class NavigatorPane
             }
         }
     }
-
+    
+    /** maybe use keyTyped?*/
     public int getQuadrant() {
         return Q_TOP_LEFT;
     }
-
+    
+    /** maybe use keyTyped?*/
     public TreePath getParentPath() {
         TreePath path = _tree.getSelectionPath();
         if (path != null)
             return path.getParentPath();
         return null;
     }
-
+    
     /** Listen for configuration changes that could require repaint
      *  of the navigator pane.
      * Listens for changes of the project fired by projectmanager.
@@ -520,18 +580,18 @@ public class NavigatorPane
      */
     public void propertyChange(PropertyChangeEvent pce) {
         if (pce
-            .getPropertyName()
-            .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
+        .getPropertyName()
+        .equals(ProjectManager.CURRENT_PROJECT_PROPERTY_NAME)) {
             setRoot(pce.getNewValue());
             forceUpdate();
             return;
         }
         if (Notation.KEY_USE_GUILLEMOTS.isChangedProperty(pce)
-            || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
+        || Notation.KEY_SHOW_STEREOTYPES.isChangedProperty(pce)) {
             _tree.forceUpdate();
         }
     }
-
+    
     /**
      * Returns the DisplayTextTree.
      * @return DisplayTextTree
@@ -539,5 +599,5 @@ public class NavigatorPane
     public DisplayTextTree getTree() {
         return _tree;
     }
-
+    
 } /* end class NavigatorPane */
