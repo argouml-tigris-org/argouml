@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,6 +27,8 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -51,6 +53,9 @@ import org.tigris.gef.presentation.Fig;
  * <p>
  * Via an event mechanism this manager makes sure that all objects interested 
  * in knowing wether the event changed are acknowledged.
+ * </p>
+ * <p>
+ * Note in particular that null is an invalid target.
  * </p>
  * 
  * @author jaap.branderhorst@xs4all.nl
@@ -216,7 +221,7 @@ public final class TargetManager {
          */
         public void targetRemoved(TargetEvent e) {
             // comparable to targetReasserted in this respect.
-            // putInHistory(e.getNewTargets()[0]);
+            // putInHistory(e.getNewTarget());
 
         }
 
@@ -225,7 +230,7 @@ public final class TargetManager {
          * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
          */
         public void targetSet(TargetEvent e) {
-            putInHistory(e.getNewTargets()[0]);
+	    putInHistory(e.getNewTarget());
         }
 
         /**
@@ -291,9 +296,9 @@ public final class TargetManager {
     private static TargetManager instance = new TargetManager();
 
     /**
-     * The targets stored in an object array to improve performance
+     * The targets
      */
-    private Object[] _targets = new Object[0];
+    private List _targets = new ArrayList();
 
     /** 
      * Cache for the modeltarget. See getModelTarget
@@ -317,16 +322,6 @@ public final class TargetManager {
     private HistoryManager _historyManager = new HistoryManager();
 
     /**
-     * While firing events, the list with targets is not updated
-     * yet. Therefore getTarget() will return the old target. This can
-     * get nasty for classes that do not use the event mechanism
-     * yet. The newTarget is a variable that is temporarily filled
-     * with the new target. When the targets are set, the new target
-     * is nullified.
-     */
-    private Object _newTarget;
-
-    /**
      * Flag to indicate that there is a setTarget method running
      */
     private boolean _inTransaction = false;
@@ -345,155 +340,177 @@ public final class TargetManager {
      * all interested targetlisteners, a TargetEvent will be fired. If the 
      * new target o equals the current target, no events will be fired, nor will
      * the target be (re)set.
-     * @param o The new target
+     * @param o The new target, null clears all targets.
      */
     public synchronized void setTarget(Object o) {
-        if (!isInTargetTransaction()) {
-            startTargetTransaction();
+	RuntimeException exception;
 
-            Object[] targets = new Object[] {
-		o 
-	    };
-            List _targetsList = Arrays.asList(_targets);
-            boolean equal = true;
-            for (int i = 0; i < targets.length; i++) {
-                if (!_targetsList.contains(targets[i])) {
-                    equal = false;
-                    break;
-                }
-            }
-            if (!equal) {
-                _newTarget = o;
-                _figTarget = determineFigTarget(_newTarget);
-                _modelTarget = determineModelTarget(_newTarget);
-                fireTargetSet(targets);
-                _targets = new Object[] {
-		    o 
-		};
-                _newTarget = null;
-            }
-            endTargetTransaction();
-        }
+	if (isInTargetTransaction())
+	    return;
+
+	if ((_targets.size() == 0 && o == null) ||
+	    (_targets.size() == 1 && _targets.get(0).equals(o)))
+	    return;
+
+	startTargetTransaction();
+
+	Object oldTargets[] = _targets.toArray();
+	_targets.clear();
+	if (o != null)
+	    _targets.add(o);
+	exception = internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
+
+        endTargetTransaction();
+	if (exception != null)
+	    throw new TargetException("Exception dispatching events", exception);
+    }
+
+    private RuntimeException internalOnSetTarget(String eventName, Object oldTargets[]) {
+	TargetEvent event = new TargetEvent(this, eventName, oldTargets, _targets.toArray());
+
+	if (_targets.size() > 0) {
+	    _figTarget = determineFigTarget(_targets.get(0));
+	    _modelTarget = determineModelTarget(_targets.get(0));
+	} else {
+	    _figTarget = null;
+	    _modelTarget = null;
+	}
+
+	if (TargetEvent.TARGET_SET.equals(eventName))
+	    return fireTargetSet(event);
+	else if (TargetEvent.TARGET_ADDED.equals(eventName))
+	    return fireTargetAdded(event);
+	else if (TargetEvent.TARGET_REMOVED.equals(eventName))
+	    return fireTargetRemoved(event);
+
+	_log.error("Unknown eventName: " + eventName);
+	return null;
     }
 
     /**
-     * Returns the current target. 
-     * @return The current target
-     * @throws TargetException if there are more then 1 target.
+     * Returns the current target.
+     * @return The current target, or null if no target is selected
+     * @throws TargetException isn't thrown, obsolete declaration.
      */
     public synchronized Object getTarget() throws TargetException {
-        return _newTarget != null
-            ? _newTarget
-            : (_targets.length >= 1 ? _targets[0] : null);
+	return _targets.size() > 0 ? _targets.get(0) : null;
     }
 
     /**
      * Sets the given collection to the current targets. If the collection 
-     * equals the current targets, the targets will not be (re)set. When setting
+     * equals the current targets, then does nothing. When setting
      * the targets, a TargetEvent will be fired to each interested listener.
      * @param targetsList The new targets list.
      */
     public synchronized void setTargets(Collection targetsList) {
-        if (!isInTargetTransaction()) {
-            startTargetTransaction();
-            if (targetsList != null && !targetsList.isEmpty()) {
-                List _targetsList = Arrays.asList(_targets);
-                Object[] targets = targetsList.toArray();
-                boolean equal = true;
-                for (int i = 0; i < targets.length; i++) {
-                    if (!_targetsList.contains(targets[i])) {
-                        equal = false;
-                        break;
-                    }
-                }
-                if (!equal) {
-                    _newTarget = targets[0];
-                    _figTarget = determineFigTarget(_newTarget);
-                    _modelTarget = determineModelTarget(_newTarget);
-                    fireTargetSet(targets);
-                    _targets = targets;
-                    _newTarget = null;
-                }
-            } else {
-                Object[] targets = new Object[] {
-		    null 
-		};
-                fireTargetSet(targets);
-                _targets = targets;
-                _modelTarget = null;
-                _figTarget = null;
-            }
-            endTargetTransaction();
-        }
+	RuntimeException exception;
+
+	if (isInTargetTransaction())
+	    return;
+
+	if (targetsList == null)
+	    targetsList = Collections.EMPTY_LIST;
+
+	Object oldTargets[] = null;
+	Iterator ctarg = _targets.iterator();
+	Iterator ntarg = targetsList.iterator();
+
+	while (ctarg.hasNext() && ntarg.hasNext()) {
+	    Object targ = ntarg.next();
+	    if (targ == null ? ctarg.next() != null : !targ.equals(ctarg.next())) {
+		oldTargets = _targets.toArray();
+		break;
+	    }
+	}
+
+	if (oldTargets == null && (ctarg.hasNext() || ntarg.hasNext()))
+	    oldTargets = _targets.toArray();
+
+	if (oldTargets == null)
+	    return;
+
+	startTargetTransaction();
+
+	_targets.clear();
+	ntarg = targetsList.iterator();
+	while (ntarg.hasNext()) {
+	    Object targ = ntarg.next();
+	    if (targ == null || _targets.contains(targ))
+		continue;
+	    _targets.add(targ);
+	}
+
+	exception = internalOnSetTarget(TargetEvent.TARGET_SET, oldTargets);
+
+	endTargetTransaction();
+	if (exception != null)
+	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
-     * Adds a target to the targets list. If the target is allready in
-     * the targets list no (re)setting will take place. Otherwise the
+     * Adds a target to the targets list. If the target is already in
+     * the targets list then does nothing. Otherwise the
      * target will be added and an appropriate TargetEvent will be
      * fired to all interested listeners.
      * @param target the target to be added.
      */
     public synchronized void addTarget(Object target) {
-        if (target != null && !isInTargetTransaction()) {
-            startTargetTransaction();
-            Object[] targets = new Object[_targets.length + 1];
-            System.arraycopy(_targets, 0, targets, 0, _targets.length);
-            targets[_targets.length] = target;
-            fireTargetAdded(target);
-            _targets = targets;
-            endTargetTransaction();
-        }
+	RuntimeException exception;
+
+	if (isInTargetTransaction())
+	    return;
+
+	if (target == null || _targets.contains(target))
+	    return;
+
+	startTargetTransaction();
+
+	Object[] oldTargets = _targets.toArray();
+	_targets.add(target);
+	exception = internalOnSetTarget(TargetEvent.TARGET_ADDED, oldTargets);
+
+	endTargetTransaction();
+	if (exception != null)
+	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
-     * Removes the target from the targets list. Does do nothing if the target
+     * Removes the target from the targets list. Does nothing if the target
      * does not exist in the targets list. Fires an appropriate TargetEvent to 
      * all interested listeners.
      * @param target The target to remove.
      */
     public synchronized void removeTarget(Object target) {
-        if (target != null && !isInTargetTransaction()) {
-            startTargetTransaction();
-            boolean found = false;
-            for (int i = 0; i < _targets.length; i++) {
-                if (_targets[i] == target) {
-                    Object[] targets = new Object[_targets.length - 1];
-                    // Copy the list up to index
-                    System.arraycopy(_targets, 0, targets, 0, i);
-                    // Copy from two past the index, up to
-                    // the end of tmp (which is two elements
-                    // shorter than the old list)
-                    if (i < targets.length)
-                        System.arraycopy(
-					 _targets,
-					 i + 1,
-					 targets,
-					 i,
-					 targets.length - i);
-                    // set the listener array to the new array or null
-                    if (target == _modelTarget) {
-                        _modelTarget = null;
-                    }
-                    if (target == _figTarget) {
-                        _figTarget = null;
-                    }
-                    fireTargetRemoved(target);
-                    _targets = (targets.length == 0) ? new Object[0] : targets;
+	RuntimeException exception;
 
-                }
-            }
-            endTargetTransaction();
-        }
+        if (isInTargetTransaction())
+	    return;
+
+	if (target == null || !_targets.contains(target))
+	    return;
+
+	startTargetTransaction();
+
+	Object[] oldTargets = _targets.toArray();
+	_targets.remove(target);
+	exception = internalOnSetTarget(TargetEvent.TARGET_REMOVED, oldTargets);
+
+	endTargetTransaction();
+	if (exception != null)
+	    throw new TargetException("Exception dispatching events", exception);
     }
 
     /**
-     * Returns a collection with all targets. Returns null if there are no
-     * targets.
+     * Returns a collection with all targets. Returns an empty collection
+     * if there are no targets. If there are several targets then the first
+     * Object by an Iterator on the returned Collection or the zero'th Object
+     * in an array on this Collection is guaranteed to be the object returned
+     * by getTarget.
+     *
      * @return A collection with all targets.
      */
     public synchronized Collection getTargets() {
-        return _targets.length > 0 ? Arrays.asList(_targets) : new ArrayList();
+        return new ArrayList(_targets);
     }
 
     /**
@@ -512,57 +529,55 @@ public final class TargetManager {
         _listenerList.remove(TargetListener.class, listener);
     }
 
-    private void fireTargetSet(Object[] newTargets) {
+    private RuntimeException fireTargetSet(TargetEvent targetEvent) {
+	RuntimeException exception = null;
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
-        TargetEvent targetEvent =
-            new TargetEvent(this, TargetEvent.TARGET_SET, _targets, newTargets);
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
-		((TargetListener) listeners[i + 1]).targetSet(targetEvent);
-            }
+	    try {
+		if (listeners[i] == TargetListener.class) {
+		    // Lazily create the event:                     
+		    ((TargetListener) listeners[i + 1]).targetSet(targetEvent);
+		}
+	    } catch (RuntimeException e) {
+		exception = e;
+	    }
         }
+	return exception;
     }
 
-    private void fireTargetAdded(Object targetAdded) {
+    private RuntimeException fireTargetAdded(TargetEvent targetEvent) {
+	RuntimeException exception = null;
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
-        TargetEvent targetEvent =
-            new TargetEvent(
-			    this,
-			    TargetEvent.TARGET_SET,
-			    _targets,
-			    new Object[] {
-				targetAdded 
-			    });
-
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
-		((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
-            }
+	    try {
+		if (listeners[i] == TargetListener.class) {
+		    // Lazily create the event:                     
+		    ((TargetListener) listeners[i + 1]).targetAdded(targetEvent);
+		}
+	    } catch (RuntimeException e) {
+		exception = e;
+	    }
         }
+	return exception;
     }
 
-    private void fireTargetRemoved(Object targetRemoved) {
+    private RuntimeException fireTargetRemoved(TargetEvent targetEvent) {
+	RuntimeException exception = null;
         // Guaranteed to return a non-null array
         Object[] listeners = _listenerList.getListenerList();
-        TargetEvent targetEvent =
-            new TargetEvent(
-			    this,
-			    TargetEvent.TARGET_SET,
-			    _targets,
-			    new Object[] {
-				targetRemoved 
-			    });
-
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
-            if (listeners[i] == TargetListener.class) {
-                // Lazily create the event:                     
-		((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
-            }
+	    try {
+		if (listeners[i] == TargetListener.class) {
+		    // Lazily create the event:                     
+		    ((TargetListener) listeners[i + 1]).targetRemoved(targetEvent);
+		}
+	    } catch (RuntimeException e) {
+		exception = e;
+	    }
         }
+	return exception;
     }
 
     private void startTargetTransaction() {

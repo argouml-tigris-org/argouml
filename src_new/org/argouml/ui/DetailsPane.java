@@ -575,7 +575,7 @@ public class DetailsPane
     public void targetRemoved(TargetEvent e) {
         // how to handle empty target lists?
         // probably the detailspane should only show an empty pane in that case
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
         fireTargetRemoved(e);
     }
 
@@ -584,7 +584,7 @@ public class DetailsPane
      * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTargets()[0]);
+        setTarget(e.getNewTarget());
         fireTargetSet(e);
     }
 

@@ -123,7 +123,7 @@ public class Actions implements TargetListener {
 	Iterator actions = _allActions.iterator();
 	while (actions.hasNext()) {
 	    UMLAction a = (UMLAction) actions.next();
-	    a.updateEnabled(e.getNewTargets()[0]);
+	    a.updateEnabled(e.getNewTarget());
 	}
     }
 

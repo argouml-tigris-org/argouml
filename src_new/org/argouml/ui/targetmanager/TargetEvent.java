@@ -103,5 +103,13 @@ public class TargetEvent extends EventObject {
     public Object[] getNewTargets() {
         return _newTargets == null ? new Object[] {} : _newTargets;
     }
+
+    /**
+     * Helper for getting the new target
+     * @return the zero'th element in _newTargets, or null
+     */
+    public Object getNewTarget() {
+        return _newTargets == null || _newTargets.length < 1 ? null : _newTargets[0];
+    }
 }
 
