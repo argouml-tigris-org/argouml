@@ -159,6 +159,13 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
     <!-- create directories -->
     <echo message="Preparing the build directories"/>
     <mkdir dir="${build.dir}"/>
+    <copy todir="${build.dest}/uci/Images">
+      <fileset dir="${build.src}/uci/Images" includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy todir="${build.dest}/uci/xml/dtd">
+      <fileset dir="${build.src}/uci/xml/dtd" includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy file="${build.src}/uci/uml/ui/argo.ini" tofile="${build.dest}/uci/uml/ui/argo.ini" />
   </target>
 
   <!-- =================================================================== -->
@@ -196,11 +203,15 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- Creates the class package                                           -->
   <!-- =================================================================== -->
   <target name="package" depends="compile">
-    <echo message="Creating the jar file ${build.dir}/${name}-${version}.jar"/>
-    <jar jarfile="${lib.dir}/${name}-${version}.jar"
+    <echo message="Creating the jar file ${build.dir}/${name}.jar"/>
+    <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="uci/** Acme/**"
+         excludes="*.txt,*.bat,*.xml,*.sh,${manifest}"
          manifest="${manifest}"/>
+    <copy todir="${build.dir}">
+      <fileset dir="${lib.dir}" />
+    </copy>
   </target>
 
   <!-- =================================================================== -->
@@ -213,7 +224,12 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <!-- Creates the distribution                                            -->
   <!-- =================================================================== -->
-  <target name="dist" depends="package, dist-src">
+  <target name="dist" depends="package">
+    <echo message="Building the distribution files (zip,tar)"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xml4j.jar ocl-argo.jar argouml.jar"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xml4j.jar ocl-argo.jar argouml.jar"/>
+    <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
+    <delete file="../${Name}-${version}.tar"/>
   </target>
 
   <!-- =================================================================== -->
@@ -221,12 +237,27 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
   <!-- =================================================================== -->
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
-    <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}_src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
-    <tar tarfile="${Name}-${version}_src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.*"/>
-    <gzip zipfile="${Name}-${version}_src.tar.gz" src="${Name}-${version}_src.tar" />
-    <delete file="${Name}-${version}_src.tar"/>
-  </target>                                                                                                                                                                    
+    <zip zipfile="../${Name}-${version}-src.zip" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src/**"/>
+    <tar tarfile="../${Name}-${version}-src.tar" basedir="${src.dir}/.." excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak" includes="src/**"/>
+    <gzip zipfile="../${Name}-${version}-src.tar.gz" src="../${Name}-${version}-src.tar" />
+    <delete file="../${Name}-${version}-src.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the lib distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-lib" depends="init">
+    <echo message="Building the library distribution files (zip,tar)"/>
+    <zip zipfile="../${Name}-${version}-libs.zip" basedir="${lib.dir}/.." includes="lib/gef.jar lib/nsuml.jar lib/xml4j.jar lib/ocl-argo.jar" />
+    <tar tarfile="../${Name}-${version}-libs.tar" basedir="${lib.dir}/.." includes="lib/gef.jar lib/nsuml.jar lib/xml4j.jar lib/ocl-argo.jar" />
+    <gzip zipfile="../${Name}-${version}-libs.tar.gz" src="../${Name}-${version}-libs.tar" />
+    <delete file="../${Name}-${version}-libs.tar"/>
+  </target>                                                                                                            
+
+  <!-- =================================================================== -->
+  <!-- Creates the whole distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist-all" depends="dist,dist-src,dist-lib"/>
 
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
@@ -237,6 +268,9 @@ Sometimes ant gives out this warnings, but the build is finished without any pro
 
   <target name="distclean" depends="clean">
     <deltree dir="${dist.dir}"/>
+    <delete>
+       <fileset dir=".." includes="${Name}-${version}*" />
+    </delete>
   </target>
 
 
