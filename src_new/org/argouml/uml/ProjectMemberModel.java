@@ -90,7 +90,7 @@ public class ProjectMemberModel extends ProjectMember {
     cat.info("Reading " + getURL());
     XMIParser.SINGLETON.readModels(_project,getURL());
     _model = XMIParser.SINGLETON.getCurModel();
-    _project._UUIDRefs = XMIParser.SINGLETON.getUUIDRefs();
+    _project.setUUIDRefs(XMIParser.SINGLETON.getUUIDRefs());
     cat.info("Done reading " + getURL());
   }
 

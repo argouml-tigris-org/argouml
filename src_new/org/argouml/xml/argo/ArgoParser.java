@@ -23,18 +23,18 @@
 
 package org.argouml.xml.argo;
 
-import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
-import org.xml.sax.*;
+import org.xml.sax.SAXException;
 
 /** @stereotype singleton
  */
@@ -197,17 +197,17 @@ public class ArgoParser extends SAXParserBase {
 
     protected void handleAuthorname(XMLElement e) {
         String authorname = e.getText().trim();
-        _proj._authorname = authorname;
+        _proj.setAuthorname(authorname);
     }
 
     protected void handleVersion(XMLElement e) {
         String version = e.getText().trim();
-        _proj._version = version;
+        _proj.setVersion(version);
     }
 
     protected void handleDescription(XMLElement e) {
         String description = e.getText().trim();
-        _proj._description = description;
+        _proj.setDescription(description);
     }
 
     protected void handleSearchpath(XMLElement e) {
@@ -227,7 +227,7 @@ public class ArgoParser extends SAXParserBase {
         if (e.getAttribute("name") == null)
             return;
         String historyfile = e.getAttribute("name").trim();
-        _proj._historyFile = historyfile;
+        _proj.setHistoryFile(historyfile);
     }
 
     /** return the status of the last load attempt.

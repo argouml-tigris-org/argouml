@@ -24,17 +24,21 @@
 
 package org.argouml.xml;
 
-import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.xml.sax.*;
-import org.xml.sax.helpers.*;
-import java.util.Stack;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
-import java.io.*;
 
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParserFactory;
 import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.xml.sax.AttributeList;
+import org.xml.sax.HandlerBase;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 /**
  * @author Jim Holt

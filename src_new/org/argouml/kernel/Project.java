@@ -52,8 +52,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.ProjectMemberTodoList;
+import org.argouml.cognitive.ToDoList;
 import org.argouml.cognitive.checklist.ChecklistStatus;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
@@ -80,7 +80,6 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
 import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
@@ -88,7 +87,6 @@ import org.argouml.util.SubInputStream;
 import org.argouml.util.Trash;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.pgml.PGMLParser;
-import org.argouml.xml.xmi.XMIParser;
 import org.argouml.xml.xmi.XMIReader;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.OCLExpander;
@@ -97,6 +95,7 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -132,22 +131,22 @@ public class Project implements java.io.Serializable {
     private URL _url = null;
     protected ChangeRegistry _saveRegistry;
 
-    public String _authorname = "";
-    public String _description = "";
-    public String _version = "";
+    private String _authorname = "";
+    private String _description = "";
+    private String _version = "";
 
-    public Vector _searchpath = new Vector();
-    public Vector _members = new Vector();
-    public String _historyFile = "";
+    private Vector _searchpath = new Vector();
+    private Vector _members = new Vector();
+    private String _historyFile = "";
 
-    public Vector _models = new Vector(); //instances of MModel
-    public Vector _diagrams = new Vector(); // instances of LayerDiagram
+    private Vector _models = new Vector(); //instances of MModel
+    private Vector _diagrams = new Vector(); // instances of LayerDiagram
     protected MModel _defaultModel = null;
-    public boolean _needsSave = false;
+    private boolean _needsSave = false;
     protected MNamespace _currentNamespace = null;
-    public HashMap _UUIDRefs = null;
-    public GenerationPreferences _cgPrefs = new GenerationPreferences();
-    public transient VetoableChangeSupport _vetoSupport = null;
+    private HashMap _UUIDRefs = null;
+    private GenerationPreferences _cgPrefs = new GenerationPreferences();
+    private transient VetoableChangeSupport _vetoSupport = null;
 
     /**
      * True if we are in the proces of making a project, otherwise false
@@ -192,7 +191,7 @@ public class Project implements java.io.Serializable {
      * Makes a just created project to an untitled project with a class diagram and 
      * a usecase diagram and an untitled model.
      */
-    public void makeUntitledProject() {
+    protected void makeUntitledProject() {
         if (getRoot() != null)
             throw new IllegalStateException("Tried to make a non-empty project to an untitled project");
         MModel model =
@@ -218,12 +217,7 @@ public class Project implements java.io.Serializable {
         */
 
     }
-
     
-
-    
-    
-
     /**
      * Loads a model (XMI only) from a .zargo file. BE ADVISED this method has a side
      * effect. It sets _UUIDREFS to the model.
@@ -236,7 +230,7 @@ public class Project implements java.io.Serializable {
      * @return MModel The model loaded
      * @throws IOException Thrown if the model or the .zargo file itself is corrupted in any way.
      */
-    public MModel loadModelFromXMI(URL url) throws IOException, SAXException, ParserConfigurationException {
+    protected MModel loadModelFromXMI(URL url) throws IOException, SAXException, ParserConfigurationException {
         ZipInputStream zis = new ZipInputStream(url.openStream());
 
         String name = zis.getNextEntry().getName();
@@ -263,17 +257,13 @@ public class Project implements java.io.Serializable {
 
         InputSource source = new InputSource(zis);
         source.setEncoding("UTF-8");
-        try {
-            mmodel = xmiReader.parse(new InputSource(zis));
-        } catch (ClassCastException cc) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(
-                "XMI file " + url.toString() + " could not be " + "parsed.");
-        }
+        mmodel = xmiReader.parseToModel(source);        
         if (xmiReader.getErrors()) {
             ArgoParser.SINGLETON.setLastLoadStatus(false);
             ArgoParser.SINGLETON.setLastLoadMessage(
                 "XMI file " + url.toString() + " could not be " + "parsed.");
+            cat.error("XMI file " + url.toString() + " could not be " + "parsed.");
+            throw new SAXException("XMI file " + url.toString() + " could not be " + "parsed.");
         }
 
         // This should probably be inside xmiReader.parse
@@ -305,7 +295,7 @@ public class Project implements java.io.Serializable {
      *                     or with the model.
      * @throws PropertyVetoException if the adding of a diagram is vetoed.
      */
-    public void loadZippedProjectMembers(URL url)
+    protected void loadZippedProjectMembers(URL url)
         throws IOException, ParserConfigurationException, SAXException {
 
         loadModelFromXMI(url); // throws a IOException if things go wrong
@@ -925,20 +915,20 @@ public class Project implements java.io.Serializable {
         return _vetoSupport;
     }
 
-    public void preSave() {
+    private void preSave() {
         for (int i = 0; i < _diagrams.size(); i++)
              ((Diagram)_diagrams.elementAt(i)).preSave();
         // TODO: is preSave needed for models?
     }
 
-    public void postSave() {
+    private void postSave() {
         for (int i = 0; i < _diagrams.size(); i++)
              ((Diagram)_diagrams.elementAt(i)).postSave();
         // TODO: is postSave needed for models?
         setNeedsSave(false);
     }
 
-    public void postLoad() {
+    protected void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
              ((Diagram)_diagrams.elementAt(i)).postLoad();
         // TODO: is postLoad needed for models?
@@ -1168,22 +1158,6 @@ public class Project implements java.io.Serializable {
     static final long serialVersionUID = 1399111233978692444L;
 
     /**
-     * Sets the currentProject.
-     * @param currentProject The currentProject to set
-     */
-    public static void setCurrentProject(Project currentProject) {
-        ProjectManager.getManager().setCurrentProject(currentProject);
-        /*
-        // update the graphics
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
-        if (pb != null) {
-            pb.setProject(currentProject);
-        }
-        _currentProject = currentProject;
-        */
-    }
-
-    /**
      * Returns the root.
      * @return MModel
      */
@@ -1224,6 +1198,126 @@ public class Project implements java.io.Serializable {
             }
         }
         return rv;
+    }
+
+    /**
+     * Returns the cgPrefs.
+     * @return GenerationPreferences
+     */
+    public GenerationPreferences getCgPrefs() {
+        return _cgPrefs;
+    }
+
+    /**
+     * Returns the needsSave.
+     * @return boolean
+     */
+    public boolean isNeedsSave() {
+        return _needsSave;
+    }
+
+    /**
+     * Returns the saveRegistry.
+     * @return ChangeRegistry
+     */
+    public ChangeRegistry getSaveRegistry() {
+        return _saveRegistry;
+    }
+
+    /**
+     * Returns the searchpath.
+     * @return Vector
+     */
+    public Vector getSearchpath() {
+        return _searchpath;
+    }
+
+    /**
+     * Returns the url.
+     * @return URL
+     */
+    public URL getUrl() {
+        return _url;
+    }
+
+    /**
+     * Returns the uUIDRefs.
+     * @return HashMap
+     */
+    public HashMap getUUIDRefs() {
+        return _UUIDRefs;
+    }
+
+    /**
+     * Sets the cgPrefs.
+     * @param cgPrefs The cgPrefs to set
+     */
+    public void setCgPrefs(GenerationPreferences cgPrefs) {
+        _cgPrefs = cgPrefs;
+    }
+
+    /**
+     * Sets the diagrams.
+     * @param diagrams The diagrams to set
+     */
+    public void setDiagrams(Vector diagrams) {
+        _diagrams = diagrams;
+    }
+
+    /**
+     * Sets the members.
+     * @param members The members to set
+     */
+    public void setMembers(Vector members) {
+        _members = members;
+    }
+
+    /**
+     * Sets the models.
+     * @param models The models to set
+     */
+    public void setModels(Vector models) {
+        _models = models;
+    }
+
+    /**
+     * Sets the saveRegistry.
+     * @param saveRegistry The saveRegistry to set
+     */
+    public void setSaveRegistry(ChangeRegistry saveRegistry) {
+        _saveRegistry = saveRegistry;
+    }
+
+    /**
+     * Sets the searchpath.
+     * @param searchpath The searchpath to set
+     */
+    public void setSearchpath(Vector searchpath) {
+        _searchpath = searchpath;
+    }
+
+    /**
+     * Sets the url.
+     * @param url The url to set
+     */
+    public void setUrl(URL url) {
+        _url = url;
+    }
+
+    /**
+     * Sets the uUIDRefs.
+     * @param uUIDRefs The uUIDRefs to set
+     */
+    public void setUUIDRefs(HashMap uUIDRefs) {
+        _UUIDRefs = uUIDRefs;
+    }
+
+    /**
+     * Sets the vetoSupport.
+     * @param vetoSupport The vetoSupport to set
+     */
+    public void setVetoSupport(VetoableChangeSupport vetoSupport) {
+        _vetoSupport = vetoSupport;
     }
 
 } /* end class Project */
