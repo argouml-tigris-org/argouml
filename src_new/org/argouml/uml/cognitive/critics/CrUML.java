@@ -243,34 +243,38 @@ public class CrUML extends Critic {
   private static final String OCL_START = "<ocl>";
   private static final String OCL_END = "</ocl>";
 
-
-
+    /**
+     * Expand text with ocl brackets in it.
+     * No recursive expansion.
+     */
   public String expand(String res, VectorSet offs) {
       //System.out.println("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
     if (!(off1 instanceof MElement)) return res;
 
-    int searchPos = 0;
-    int matchPos = res.indexOf(OCL_START, searchPos);
+    StringBuffer beginning = new StringBuffer("");
+    int matchPos = res.indexOf(OCL_START);
 
     // replace all occurances of OFFENDER with the name of the first offender
     while (matchPos != -1) {
       int endExpr = res.indexOf(OCL_END, matchPos + 1);
       //check if there is no OCL_END; if so, the critic expression s not correct and can not be expanded
-      if (endExpr == -1) return res; 
+      if (endExpr == -1) break; 
+      if (matchPos > 0) beginning.append(res.substring(0, matchPos));
       String expr = res.substring(matchPos + OCL_START.length(), endExpr);
       String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
       //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
       if (expr.endsWith("") && evalStr.equals(""))
 	evalStr = "(anon)";
-      res = res.substring(0, matchPos) +
-	evalStr +
-	res.substring(endExpr + OCL_END.length());
-      searchPos = endExpr + 1;
-      matchPos = res.indexOf(OCL_START, searchPos);
+      beginning.append(evalStr);
+      res = res.substring(endExpr + OCL_END.length());
+      matchPos = res.indexOf(OCL_START);
     }
-    return res;
+    if (beginning.length() == 0) // This is just to avoid creation of a new
+	return res;		// string when not needed.
+    else
+	return beginning.append(res).toString();
   }
 
 } /* end class CrUML */
