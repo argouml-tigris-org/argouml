@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,6 +30,8 @@
 
 
 package org.argouml.uml.diagram.sequence;
+
+import org.argouml.model.ModelFacade;
 
 import java.util.*;
 import java.beans.*;
@@ -80,19 +81,19 @@ public class TableModelSeqStimulusByProps extends TableModelComposite {
 		Object figure = contents.elementAt(i);
 		if (figure instanceof FigSeqStimulus) {
 		    FigSeqStimulus figSti = (FigSeqStimulus) figure;
-		    MStimulus sti = (MStimulus) figSti.getOwner();
+		    Object sti = /*(MStimulus)*/ figSti.getOwner();
 		    res.addElement(sti);
 		}
 	    }
 	    return res;
 	}
 	else {
-	    MLink ml = (MLink) t;
+	    Object ml = /*(MLink)*/ t;
 	    Vector res = new Vector();
-	    Collection stimuli = ml.getStimuli();
+	    Collection stimuli = ModelFacade.getStimuli(ml);
 	    Iterator it = stimuli.iterator();
 	    while (it.hasNext()) {
-		MStimulus sti = (MStimulus) it.next();
+		Object sti = /*(MStimulus)*/ it.next();
 		res.addElement(sti);
 	    }
 	    return res;

@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -58,9 +55,6 @@ import org.tigris.gef.presentation.*;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-
 public class FigSeqLink
     extends FigEdgeModelElement
     implements MElementListener
@@ -130,49 +124,49 @@ public class FigSeqLink
     }
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
-	MLink ml = (MLink) getOwner();
+	Object ml = /*(MLink)*/ getOwner();
 	super.textEdited(ft);
 
-	Collection conn = ml.getConnections();
+	Collection conn = ModelFacade.getConnections(ml);
 	if (conn == null || conn.size() == 0) return;
 
 	if (ft == _srcRole) {
-	    MLinkEnd srcLE = (MLinkEnd) ((Object[]) conn.toArray())[0];
-	    srcLE.setName(_srcRole.getText());
+	    Object/*MLinkEnd*/ srcLE = ((Object[]) conn.toArray())[0];
+	    ModelFacade.setName(srcLE, _srcRole.getText());
 	}
 	if (ft == _destRole) {
-	    MLinkEnd destLE = (MLinkEnd) ((Object[]) conn.toArray())[1];
-	    destLE.setName(_destRole.getText());
+	    Object/*MLinkEnd*/ destLE = ((Object[]) conn.toArray())[1];
+	    ModelFacade.setName(destLE, _destRole.getText());
 	}
     }
 
     protected void modelChanged(MElementEvent e) {
 
-	MLink ml = (MLink) getOwner();
+	Object ml = /*(MLink)*/ getOwner();
 	if (ml == null) return;
 
-	String mlNameStr = Notation.generate(this, ml.getName());
+	String mlNameStr = (String)Notation.generate(this, ModelFacade.getName(ml));
 
 	super.modelChanged(null);
 
 	Vector contents = getContents();
 
-	Collection ends = ml.getConnections();
-	MLinkEnd le0 = (MLinkEnd) ((Object[]) ends.toArray())[0];
-	MLinkEnd le1 = (MLinkEnd) ((Object[]) ends.toArray())[1];
+	Collection ends = ModelFacade.getConnections(ml);
+	Object/*MLinkEnd*/ le0 = ((Object[]) ends.toArray())[0];
+	Object/*MLinkEnd*/ le1 = ((Object[]) ends.toArray())[1];
 
-	_srcRole.setText(Notation.generate(this, le0.getName()));
-	_destRole.setText(Notation.generate(this, le1.getName()));
+	_srcRole.setText(Notation.generate(this, ModelFacade.getName(le0)));
+	_destRole.setText(Notation.generate(this, ModelFacade.getName(le1)));
 
 	//    if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS)
 	//      srcNav = destNav = false;
 
-	Vector conns = new Vector(ml.getConnections());
+	Vector conns = new Vector(ModelFacade.getConnections(ml));
 	if (conns == null || conns.size() != 2) return;
-	MLinkEnd endA = (MLinkEnd) conns.elementAt(0);
-	MLinkEnd endB = (MLinkEnd) conns.elementAt(1);
-	MObject moA = (MObject) endA.getInstance();
-	MObject moB = (MObject) endB.getInstance();
+	Object/*MLinkEnd*/ endA = conns.elementAt(0);
+	Object/*MLinkEnd*/ endB = conns.elementAt(1);
+	Object moA = /*(MObject)*/ ModelFacade.getInstance(endA);
+	Object moB = /*(MObject)*/ ModelFacade.getInstance(endB);
    
 	setArrowHeads(ml, contents);
 
@@ -183,15 +177,15 @@ public class FigSeqLink
     /** Takes the action of this link and then
      *    set the aroow-heads on both ends of
      *    this FigSeqLink. */
-    public void setArrowHeads(MLink ml, Vector contents) {
+    public void setArrowHeads(Object/*MLink*/ ml, Vector contents) {
 
 	if (ml != null ) {
-	    Collection col = ml.getStimuli();
-	    MStimulus stimulus = null;
+	    Collection col = ModelFacade.getStimuli(ml);
+	    Object stimulus = null;
 	    Object action = null;
 	    Iterator it = col.iterator();
 	    while (it.hasNext()) {
-		stimulus = (MStimulus) it.next();    
+		stimulus = /*(MStimulus)*/ it.next();    
 		action = ModelFacade.getDispatchAction(stimulus);
 	    }
 
@@ -291,13 +285,13 @@ public class FigSeqLink
 	LayerPerspective lay = (LayerPerspective) getLayer();
 	GraphNodeRenderer renderer = lay.getGraphNodeRenderer();
 	GraphModel gm = lay.getGraphModel();
-	MLink link = (MLink) getOwner();
-	if (link.getStimuli() != null && link.getStimuli().size() > 0) {
-	    Collection stimuli = link.getStimuli();
+	Object link = /*(MLink)*/ getOwner();
+	if (ModelFacade.getStimuli(link) != null && ModelFacade.getStimuli(link).size() > 0) {
+	    Collection stimuli = ModelFacade.getStimuli(link);
 	    Iterator it = stimuli.iterator();
-	    MStimulus stimulus = null;
+	    Object stimulus = null;
 	    while (it.hasNext()) {
-		stimulus = (MStimulus) it.next();
+		stimulus = /*(MStimulus)*/ it.next();
 	    }
 	    if (lay.presentationFor(stimulus) == null ) {
 		Point center = this.center();
@@ -554,7 +548,7 @@ public class FigSeqLink
 	    Fig figure = (Fig) figs.elementAt(i);
 	    if (figure instanceof FigSeqStimulus) {
 		FigSeqStimulus fss = (FigSeqStimulus) figure;
-		MStimulus ms = (MStimulus) fss.getOwner();
+		Object ms = /*(MStimulus)*/ fss.getOwner();
 		delOwners.addElement(ms);
 		fss.delete();
 	    }
@@ -833,29 +827,29 @@ public class FigSeqLink
      *   default action will be created and set */
     public void setDefaultAction() {
 
-	MLink ml = (MLink) getOwner();
-	Collection col = ml.getStimuli();
+	Object ml = /*(MLink)*/ getOwner();
+	Collection col = ModelFacade.getStimuli(ml);
 	Iterator it = col.iterator();
 	while (it.hasNext()) {
-	    MStimulus ms = (MStimulus) it.next();
+	    Object ms = /*(MStimulus)*/ it.next();
 	    Object ma = ModelFacade.getDispatchAction(ms);
-	    MNamespace ns = ms.getNamespace();
-	    Collection elements = ns.getOwnedElements();
+	    Object ns = ModelFacade.getNamespace(ms);
+	    Collection elements = ModelFacade.getOwnedElements(ns);
 	    Iterator iterator = elements.iterator();
 	    while (iterator.hasNext()) {
-		MModelElement moe = (MModelElement) iterator.next();
-		if (org.argouml.model.ModelFacade.isAAction(moe)) {
+		Object moe = /*(MModelElement)*/ iterator.next();
+		if (ModelFacade.isAAction(moe)) {
 		    if (moe == ma) {
 			ModelFacade.removeOwnedElement(ns, ma);
 		    }
 		}
 	    }
-	    MCallAction mca =
+	    Object mca =
 		UmlFactory.getFactory().getCommonBehavior().createCallAction();
-	    mca.setAsynchronous(ModelFacade.isAsynchronous(ma));
-	    mca.setName(ModelFacade.getName(ma));
-	    ms.setDispatchAction(mca);
-	    ns.addOwnedElement(mca);
+	    ModelFacade.setAsynchronous(mca, ModelFacade.isAsynchronous(ma));
+	    ModelFacade.setName(mca, ModelFacade.getName(ma));
+	    ModelFacade.setDispatchAction(ms, mca);
+	    ModelFacade.addOwnedElement(ns, mca);
 	}
     }
     
@@ -999,7 +993,7 @@ public class FigSeqLink
 	    }
 	    if (contents.elementAt(j) instanceof FigSeqLink) {
 		FigSeqLink fsl = (FigSeqLink) contents.elementAt(j);
-		MLink ml = (MLink) fsl.getOwner();
+		Object ml = /*(MLink)*/ fsl.getOwner();
 		if (ml != null) fsl.setArrowHeads(ml, contents);
 	    }
 	}
@@ -1013,7 +1007,7 @@ public class FigSeqLink
     protected Object getDestination() {
         if (getOwner() != null) {
             return CommonBehaviorHelper.getHelper()
-		.getDestination((MLink) getOwner());
+		.getDestination(/*(MLink)*/ getOwner());
         }
         return null;
     }
@@ -1024,7 +1018,7 @@ public class FigSeqLink
     protected Object getSource() {
         if (getOwner() != null) {
             return CommonBehaviorHelper.getHelper()
-		.getSource((MLink) getOwner());
+		.getSource(/*(MLink)*/ getOwner());
         }
         return null;
     }

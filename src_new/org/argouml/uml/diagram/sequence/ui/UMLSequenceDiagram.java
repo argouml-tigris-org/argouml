@@ -52,8 +52,6 @@ import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 import ru.novosoft.uml.behavior.common_behavior.MReturnAction;
 import ru.novosoft.uml.behavior.common_behavior.MSendAction;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLSequenceDiagram extends UMLDiagram {
@@ -118,7 +116,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
             throw new IllegalArgumentException(
 					       "Illegal argument. Object " + handle + " is not a namespace");
         }
-        MNamespace m = (MNamespace) handle;
+        Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         SequenceDiagramGraphModel gm = new SequenceDiagramGraphModel();
         gm.setNamespace(m);
@@ -132,7 +130,7 @@ public class UMLSequenceDiagram extends UMLDiagram {
 		      + "Setting namespace to empty.");
             lay = new SequenceDiagramLayout("", gm);
         } else
-            lay = new SequenceDiagramLayout(m.getName(), gm);
+            lay = new SequenceDiagramLayout(ModelFacade.getName(m), gm);
         setLayer(lay);
         SequenceDiagramRenderer rend = new SequenceDiagramRenderer();
         // singleton
@@ -183,13 +181,13 @@ public class UMLSequenceDiagram extends UMLDiagram {
             FigSeqObject dest = null;
 
             while (oeIterator.hasNext()) {
-                MModelElement me = (MModelElement) oeIterator.next();
+                Object me = /*(MModelElement)*/ oeIterator.next();
 
                 if (org.argouml.model.ModelFacade.isALink(me)) {
                     stimuli = ModelFacade.getStimuli(me);
                     stimuliIterator = stimuli.iterator();
                     while (stimuliIterator.hasNext()) {
-                        MStimulus stimulus = (MStimulus) stimuliIterator.next();
+                        Object stimulus = /*(MStimulus)*/ stimuliIterator.next();
                         FigSeqStimulus figStimulus =
                             (FigSeqStimulus) lay.presentationFor(stimulus);
                         if (figStimulus != null) {

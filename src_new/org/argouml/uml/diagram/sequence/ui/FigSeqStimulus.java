@@ -52,12 +52,6 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-
-
-
 /** Class to display graphics for a UML collaboration in a diagram. */
 
 public class FigSeqStimulus extends FigNodeModelElement {
@@ -147,7 +141,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
 	super.textEdited(ft);
-	MStimulus sti = (MStimulus) getOwner();
+	Object sti = /*(MStimulus)*/ getOwner();
 	if (ft == _name) {
 	    String s = ft.getText();
 	    ParserDisplay.SINGLETON.parseStimulus(sti, s);
@@ -164,19 +158,18 @@ public class FigSeqStimulus extends FigNodeModelElement {
 
 	super.modelChanged(mee);
 
-	MStimulus sti = (MStimulus) getOwner();
+	Object sti = /*(MStimulus)*/ getOwner();
 	if (sti == null) return;
 
-	String nameStr = Notation.generate(this, sti.getName()).trim();
+	String nameStr = Notation.generate(this, ModelFacade.getName(sti)).trim();
 	String actionString = "new Action";
 
-	if (sti.getDispatchAction() != null
-	    && sti.getDispatchAction().getName() != null)
+	if (ModelFacade.getDispatchAction(sti) != null
+	    && ModelFacade.getName(ModelFacade.getDispatchAction(sti)) != null)
 	    actionString =
 		Notation
 		.generate(this,
-			  ModelFacade.getName(ModelFacade
-					      .getDispatchAction(sti)))
+			  ModelFacade.getName(ModelFacade.getDispatchAction(sti)))
 		.trim();
 
 	if ( nameStr.equals("") && actionString.equals("") )
@@ -184,27 +177,31 @@ public class FigSeqStimulus extends FigNodeModelElement {
 	else
 	    _name.setText(nameStr.trim() + " : " + actionString.trim());
 
-	if (sti.getCommunicationLink() != null) {
-	    MLink link = (MLink) sti.getCommunicationLink();
-	    if (link.getName() != null) {
-		link.setName(link.getName());
+	if (ModelFacade.getCommunicationLink(sti) != null) {
+	    Object link = /*(MLink)*/ ModelFacade.getCommunicationLink(sti);
+	    if (ModelFacade.getName(link) != null) {
+		ModelFacade.setName(link, ModelFacade.getName(link));
 	    }
-	    else link.setName("");
+	    else ModelFacade.setName(link, "");
 	}
 
-	if (sti.getSender() != null) {
-	    MInstance inst = (MInstance) sti.getSender();
-	    if (inst.getName() != null) {
-		inst.setName(inst.getName());
+	if (ModelFacade.getSender(sti) != null) {
+	    Object inst = /*(MInstance)*/ ModelFacade.getSender(sti);
+	    if (ModelFacade.getName(inst) != null) {
+		ModelFacade.setName(inst, ModelFacade.getName(inst));
 	    }
-	    else inst.setName("");
+	    else {
+                ModelFacade.setName(inst, "");
+            }
 	}
-	if (sti.getReceiver() != null) {
-	    MInstance inst = (MInstance) sti.getReceiver();
-	    if (inst.getName() != null) {
-		inst.setName(inst.getName());
+	if (ModelFacade.getReceiver(sti) != null) {
+	    Object inst = /*(MInstance)*/ ModelFacade.getReceiver(sti);
+	    if (ModelFacade.getName(inst) != null) {
+		ModelFacade.setName(inst, ModelFacade.getName(inst));
 	    }
-	    else inst.setName("");
+	    else {
+                ModelFacade.setName(inst, "");
+            }
 	}
 
 	if (getLayer() != null && getLayer() instanceof SequenceDiagramLayout) {

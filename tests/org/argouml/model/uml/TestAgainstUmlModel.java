@@ -65,6 +65,10 @@ public class TestAgainstUmlModel extends TestCase {
  
     public TestAgainstUmlModel(String n) { super(n); }
 
+    public static void main(java.lang.String[] args) {
+        junit.textui.TestRunner.run(suite());
+    }
+
     public void testDataModel()
     throws SAXException,
            IOException,
@@ -304,6 +308,7 @@ public class TestAgainstUmlModel extends TestCase {
         }
         catch (Exception e) {
             e.printStackTrace();
+            fail(e.toString());
         }
         assertNotNull("Cannot parse document", doc);
         NodeList list = doc.getElementsByTagName("Model:Class");

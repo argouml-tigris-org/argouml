@@ -49,7 +49,6 @@ import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphEvent;
 
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 public class SequenceDiagramLayout extends LayerPerspective {
     protected static Logger cat = 
         Logger.getLogger(SequenceDiagramLayout.class);
@@ -144,9 +143,9 @@ public class SequenceDiagramLayout extends LayerPerspective {
 	int maxWidth = 0;
 	for  (int i = 0; i < figSeqStimuli.size(); i++) {
 	    FigSeqStimulus fig = (FigSeqStimulus) figSeqStimuli.elementAt(i);
-	    MStimulus st = (MStimulus) fig.getOwner();
-	    if ( (st.getReceiver() == o1.getOwner() && st.getSender() == o2.getOwner() ) ||
-		 (st.getReceiver() == o2.getOwner() && st.getSender() == o1.getOwner() ) ) {
+	    Object st = /*(MStimulus)*/ fig.getOwner();
+	    if ( (ModelFacade.getReceiver(st) == o1.getOwner() && ModelFacade.getSender(st) == o2.getOwner() ) ||
+		 (ModelFacade.getReceiver(st) == o2.getOwner() && ModelFacade.getSender(st) == o1.getOwner() ) ) {
 		if (fig.getBounds().width > maxWidth) maxWidth = fig.getBounds().width;
 		// needs more work: include the width of end roles
 	    }
@@ -290,11 +289,11 @@ public class SequenceDiagramLayout extends LayerPerspective {
 	    // to keep it all selectable
 
 	    Collection col = ModelFacade.getStimuli(link.getOwner());
-	    MStimulus stimulus = null;
+	    Object stimulus = null;
 	    Iterator it = col.iterator();
 
 	    while (it.hasNext()) {
-		stimulus = (MStimulus) it.next();
+		stimulus = /*(MStimulus)*/ it.next();
 	    }
 	    if (stimulus != null && this.presentationFor(stimulus) != null) {
 		this.bringToFront(this.presentationFor(stimulus) );
@@ -312,7 +311,6 @@ public class SequenceDiagramLayout extends LayerPerspective {
     }
 
 }
-
 
 
 

@@ -52,6 +52,7 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -210,9 +211,9 @@ public class SelectionSeqObject extends SelectionWButtons  {
 
 
     public void buttonClicked(int buttonCode) {
-	MObject newNode = UmlFactory.getFactory().getCommonBehavior().createObject();
+	Object newNode = UmlFactory.getFactory().getCommonBehavior().createObject();
 	FigSeqObject fc = (FigSeqObject) _content;
-	MObject cls = (MObject) fc.getOwner();
+	Object cls = /*(MObject)*/ fc.getOwner();
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
@@ -250,15 +251,15 @@ public class SelectionSeqObject extends SelectionWButtons  {
     	
 	    Mode mode = new ModeCreatePolyEdge();
 	    Hashtable args = new Hashtable();
-	    args.put("action", MCallAction.class);
-	    args.put("edgeClass", MLink.class);
+	    args.put("action", ModelFacade.CALL_ACTION);
+	    args.put("edgeClass", ModelFacade.LINK);
 	    mode.init(args);
 	    Globals.mode(mode);
 	    newEdge = addLinkStimulusCall(mgm, cls, newNode);
 	}
 	else if (buttonCode == 11) newEdge = addLinkStimulusReturn(mgm, cls, newNode);
 
-	MLink link = (MLink) newEdge;
+	Object link = /*(MLink)*/ newEdge;
 	FigSeqLink figSeqLink = (FigSeqLink) lay.presentationFor(newEdge);
 
 
@@ -269,13 +270,13 @@ public class SelectionSeqObject extends SelectionWButtons  {
 	ce.getSelectionManager().select(fc);
 
 
-	Collection liEnds = link.getConnections();
+	Collection liEnds = ModelFacade.getConnections(link);
 	if (liEnds.size() != 2 ) return;
 	Iterator iter = liEnds.iterator();
 	MLinkEnd le1 = (MLinkEnd) iter.next();
 	MLinkEnd le2 = (MLinkEnd) iter.next();
-	MObject objSrc = (MObject) le1.getInstance();
-	MObject objDst = (MObject) le2.getInstance();
+	Object objSrc = /*(MObject)*/ le1.getInstance();
+	Object objDst = /*(MObject)*/ le2.getInstance();
 
 	FigSeqObject figObjSrc = (FigSeqObject) lay.presentationFor(objSrc);
 	FigSeqObject figObjDst = (FigSeqObject) lay.presentationFor(objDst);
@@ -290,24 +291,24 @@ public class SelectionSeqObject extends SelectionWButtons  {
 	figSeqLink.addFigSeqStimulusWithAction();
     }
 
-    public Object addLinkStimulusCall(MutableGraphModel mgm, MObject cls,
-				      MObject newCls) {
+    public Object addLinkStimulusCall(MutableGraphModel mgm, Object/*MObject*/ cls,
+				      Object/*MObject*/ newCls) {
           	
 	Editor ce = Globals.curEditor();
 	ModeManager modeManager = ce.getModeManager();
 	Mode mode = (Mode) modeManager.top();
-	mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MCallAction.class);
+	mode.setArg("action", ModelFacade.CALL_ACTION);
 
 	return mgm.connect(cls, newCls, MLink.class);
     }
 
-    public Object addLinkStimulusReturn(MutableGraphModel mgm, MObject cls,
-					MObject newCls) {
+    public Object addLinkStimulusReturn(MutableGraphModel mgm, Object/*MObject*/ cls,
+					Object/*MObject*/ newCls) {
 	Editor ce = Globals.curEditor();
 	ModeManager modeManager = ce.getModeManager();
 	Mode mode = (Mode) modeManager.top();
-	mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MReturnAction.class);
-	return mgm.connect(cls, newCls, MLink.class);
+	mode.setArg("action", ModelFacade.RETURN_ACTION);
+	return mgm.connect(cls, newCls, (Class)ModelFacade.LINK);
     }
 
     ////////////////////////////////////////////////////////////////

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -133,7 +132,7 @@ public class TablePanelUMLSequenceDiagram extends TablePanel {
     public void objectSelected(Object sel) {
 	super.objectSelected(sel);
 	if (org.argouml.model.ModelFacade.isALink(sel)) {
-	    _tableModelSeqStimulusByProps.setTarget((MLink) sel);
+	    _tableModelSeqStimulusByProps.setTarget(/*(MLink)*/ sel);
 	}
     }
 

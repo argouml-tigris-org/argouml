@@ -79,7 +79,7 @@ public class TableModelSeqActionByProps extends TableModelComposite {
 	    Object figure = contents.elementAt(i);
 	    if (figure instanceof FigSeqStimulus) {
 		FigSeqStimulus figSti = (FigSeqStimulus) figure;
-		MStimulus sti = (MStimulus) figSti.getOwner();
+		Object sti = /*(MStimulus)*/ figSti.getOwner();
 		Object act = ModelFacade.getDispatchAction(sti);
 		res.addElement(act);
 	    }
@@ -89,4 +89,3 @@ public class TableModelSeqActionByProps extends TableModelComposite {
 
     public String toString() { return "SeqAction vs. Properties"; }
 } /* end class TableModelSeqActionByProps */
-
