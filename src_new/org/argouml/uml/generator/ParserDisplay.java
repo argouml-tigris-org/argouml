@@ -561,9 +561,10 @@ public class ParserDisplay extends Parser {
                     .getModel();
                 Object voidType = ProjectManager.getManager()
                     .getCurrentProject().findType("void");
-                Object newOp = Model.getUmlFactory().getCore()
-                    .buildOperation(cls, model, voidType, 
-                            propertyChangeListeners);
+                Object newOp =
+                    Model.getCoreFactory()
+                    	.buildOperation(cls, model, voidType,
+                    	        propertyChangeListeners);
                 if (newOp != null) {
                     try {
                         parseOperation(s, newOp);
@@ -631,7 +632,7 @@ public class ParserDisplay extends Parser {
                     .getModel();
                 Object intType = ProjectManager.getManager().getCurrentProject()
                     .findType("int");
-                Object newAt = Model.getUmlFactory().getCore()
+                Object newAt = Model.getCoreFactory()
                         .buildAttribute(model, intType);
                 if (newAt != null) {
                     try {
@@ -694,7 +695,7 @@ public class ParserDisplay extends Parser {
         // This method has insufficient information to call buildExtensionPoint.
         // Thus we'll need to create one, and pray that whomever called us knows
         // what kind of mess they got.
-        Object ep = Model.getUmlFactory().getUseCases()
+        Object ep = Model.getUseCasesFactory()
                 .createExtensionPoint();
 
         StringTokenizer st = new StringTokenizer(text.trim(), ":", true);
@@ -1167,7 +1168,7 @@ public class ParserDisplay extends Parser {
                 .getCurrentProject().findType("void");
             Collection propertyChangeListeners = ProjectManager.getManager()
                 .getCurrentProject().findFigsForMember(op);
-            param = Model.getUmlFactory().getCore()
+            param = Model.getCoreFactory()
                 .buildParameter(op, model, voidType, propertyChangeListeners);
         }
         ModelFacade.setType(param, type);
@@ -1465,7 +1466,7 @@ public class ParserDisplay extends Parser {
         // Should we be getting this from the GUI? BT 11 aug 2002
         type = p.findType(name, false);
         if (type == null) { // no type defined yet
-            type = Model.getUmlFactory().getCore().buildClass(name,
+            type = Model.getCoreFactory().buildClass(name,
                     defaultSpace);
         }
         if (ModelFacade.getModel(type) != p.getModel()
@@ -1678,7 +1679,7 @@ public class ParserDisplay extends Parser {
                     parseStateDoAction(st, line);
                     foundDo = true;
                 } else {
-                    Object t = Model.getUmlFactory().getStateMachines()
+                    Object t = Model.getStateMachinesFactory()
                         .buildInternalTransition(st);
                     if (t == null)
                         continue;
@@ -2052,13 +2053,13 @@ public class ParserDisplay extends Parser {
                 if (timeEvent) { // after(...)
                     Object model = ProjectManager.getManager()
                         .getCurrentProject().getModel();
-                    evt = Model.getUmlFactory().getStateMachines()
+                    evt = Model.getStateMachinesFactory()
                         .buildTimeEvent(s, model);
                 }
                 if (changeEvent) { // when(...)
                     Object model = ProjectManager.getManager()
                         .getCurrentProject().getModel();
-                    evt = Model.getUmlFactory().getStateMachines()
+                    evt = Model.getStateMachinesFactory()
                         .buildChangeEvent(s, model);
                 }
                 if (callEvent) { // operation(paramlist)
@@ -2067,7 +2068,7 @@ public class ParserDisplay extends Parser {
                         : trigger;
                     Object model = ProjectManager.getManager()
                              .getCurrentProject().getModel();
-                    evt = Model.getUmlFactory().getStateMachines()
+                    evt = Model.getStateMachinesFactory()
                         .buildCallEvent(trans, triggerName, model);
                     // and parse the parameter list
                     parseParamList(evt, s, 0);
@@ -2075,7 +2076,7 @@ public class ParserDisplay extends Parser {
                 if (signalEvent) { // signalname
                     Object model = ProjectManager.getManager()
                         .getCurrentProject().getModel();
-                    evt = Model.getUmlFactory().getStateMachines()
+                    evt = Model.getStateMachinesFactory()
                         .buildSignalEvent(trigger, model);
                 }
                 createdEvent = true;
@@ -2087,7 +2088,7 @@ public class ParserDisplay extends Parser {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
                         Model.getUmlFactory().delete(evt);
-                        evt = Model.getUmlFactory().getStateMachines()
+                        evt = Model.getStateMachinesFactory()
                             .buildTimeEvent(s, model);
                         createdEvent = true;
                     }
@@ -2095,7 +2096,7 @@ public class ParserDisplay extends Parser {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
                         Model.getUmlFactory().delete(evt);
-                        evt = Model.getUmlFactory().getStateMachines()
+                        evt = Model.getStateMachinesFactory()
                             .buildChangeEvent(s, model);
                         createdEvent = true;
                     }
@@ -2103,7 +2104,7 @@ public class ParserDisplay extends Parser {
                         Model.getUmlFactory().delete(evt);
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
-                        evt = Model.getUmlFactory().getStateMachines()
+                        evt = Model.getStateMachinesFactory()
                             .buildCallEvent(trans, trigger, model);
                         // and parse the parameter list
                         parseParamList(evt, s, 0);
@@ -2114,7 +2115,7 @@ public class ParserDisplay extends Parser {
                         Object model = ProjectManager.getManager()
                             .getCurrentProject().getModel();
                         Model.getUmlFactory().delete(evt);
-                        evt = Model.getUmlFactory().getStateMachines()
+                        evt = Model.getStateMachinesFactory()
                             .buildSignalEvent(trigger, model);
                         createdEvent = true;
                     }
@@ -2180,7 +2181,7 @@ public class ParserDisplay extends Parser {
                 /*TODO: In the next line, I should use buildGuard(),
                  * but it doesn't show the guard on the diagram...
                  * Why? (MVW)*/
-                g = Model.getUmlFactory().getStateMachines().createGuard();
+                g = Model.getStateMachinesFactory().createGuard();
                 if (g != null) {
                     ModelFacade.setExpression(g,
                             Model.getDataTypesFactory()
@@ -2241,7 +2242,7 @@ public class ParserDisplay extends Parser {
         Object effect = ModelFacade.getEffect(trans);
         if (actions.length() > 0) {
             if (effect == null) { // case 1
-                effect = Model.getUmlFactory().getCommonBehavior()
+                effect = Model.getCommonBehaviorFactory()
                     .createCallAction();
                 ModelFacade.setScript(effect,
                         Model.getDataTypesFactory()
@@ -2766,7 +2767,7 @@ public class ParserDisplay extends Parser {
         }
 
         if (ModelFacade.getAction(mes) == null) {
-            Object a = Model.getUmlFactory().getCommonBehavior()
+            Object a = Model.getCommonBehaviorFactory()
                     .createCallAction();
             ModelFacade.addOwnedElement(ModelFacade.getContext(ModelFacade
                     .getInteraction(mes)), a);
@@ -2851,7 +2852,7 @@ public class ParserDisplay extends Parser {
             for (i = 0; i < args.size(); i++) {
                 Object arg = (it.hasNext() ? /* (MArgument) */it.next() : null);
                 if (arg == null) {
-                    arg = Model.getUmlFactory().getCommonBehavior()
+                    arg = Model.getCommonBehaviorFactory()
                             .createArgument();
                     ModelFacade.addActualArgument(ModelFacade.getAction(mes),
                             arg);

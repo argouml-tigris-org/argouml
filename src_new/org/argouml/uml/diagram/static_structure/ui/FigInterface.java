@@ -63,12 +63,12 @@ import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML Interface in a diagram. 
- * 
+/**
+ * Class to display graphics for a UML Interface in a diagram.
  */
-public class FigInterface extends FigNodeModelElement 
+public class FigInterface extends FigNodeModelElement
         implements OperationsCompartmentContainer {
-    
+
     private static final Logger LOG = Logger.getLogger(FigInterface.class);
 
     ////////////////////////////////////////////////////////////////
@@ -78,7 +78,7 @@ public class FigInterface extends FigNodeModelElement
     //They mst be added in the constructor in this order.
     private static final int BLINDER_POSN = 3;
     private static final int OPERATIONS_POSN = 4;
-    
+
     ////////////////////////////////////////////////////////////////
     // instance variables
 
@@ -100,7 +100,7 @@ public class FigInterface extends FigNodeModelElement
      * variable (rather than local to the method).<p>
      */
     private Object resident =
-        Model.getUmlFactory().getCore().createElementResidence();
+        Model.getCoreFactory().createElementResidence();
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>
@@ -145,7 +145,7 @@ public class FigInterface extends FigNodeModelElement
         getNameFig().setLineWidth(1);
         getNameFig().setFilled(true);
 
-        operVec = 
+        operVec =
             new FigOperationsCompartment(10, 31 + ROWHEIGHT, 60, ROWHEIGHT + 2);
 
         // Set properties of the stereotype box. Make it 1 pixel higher than
@@ -252,14 +252,14 @@ public class FigInterface extends FigNodeModelElement
      */
     public Vector getPopUpActions(MouseEvent me) {
         Vector popUpActions = super.getPopUpActions(me);
-        
+
         // Add ...
         ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
         addMenu.add(new ActionAddOperation());
         addMenu.add(ActionAddNote.getSingleton());
         popUpActions.insertElementAt(addMenu,
             popUpActions.size() - POPUP_ADD_OFFSET);
-        
+
         // Show ...
         ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
         if (operVec.isVisible()) {
@@ -273,7 +273,7 @@ public class FigInterface extends FigNodeModelElement
         // Modifier ...
         popUpActions.insertElementAt(buildModifierPopUp(ABSTRACT | LEAF | ROOT),
                 popUpActions.size() - POPUP_ADD_OFFSET);
-        
+
         // Visibility ...
         popUpActions.insertElementAt(buildVisibilityPopUp(),
                 popUpActions.size() - POPUP_ADD_OFFSET);
@@ -282,7 +282,8 @@ public class FigInterface extends FigNodeModelElement
     }
 
     /**
-     * Getter for operVec
+     * Getter for operVec.
+     *
      * @return operVec
      */
     public FigGroup getOperationsFig() {
@@ -592,8 +593,9 @@ public class FigInterface extends FigNodeModelElement
 
         do {
             i--;
-            if (i < 1)
+            if (i < 1) {
                 i = v.size() - 1;
+            }
             ft2 = (FigText) v.elementAt(i);
             if (!ft2.isVisible()) {
                 ft2 = null;
@@ -834,9 +836,9 @@ public class FigInterface extends FigNodeModelElement
             return;
         }
 
-        Fig operPort = 
+        Fig operPort =
             ((FigOperationsCompartment) getFigAt(OPERATIONS_POSN)).getBigPort();
-        
+
         int xpos = operPort.getX();
         int ypos = operPort.getY();
         int ocounter = 1;
@@ -850,9 +852,9 @@ public class FigInterface extends FigNodeModelElement
         	Object behavioralFeature =
         	    /*(MBehavioralFeature)*/ iter.next();
         	// update the listeners
-        	Model.getPump().removeModelEventListener(this, 
+        	Model.getPump().removeModelEventListener(this,
                     behavioralFeature);
-        	Model.getPump().addModelEventListener(this, 
+        	Model.getPump().addModelEventListener(this,
                     behavioralFeature);
         	if (figs.size() <= ocounter) {
         	    oper =

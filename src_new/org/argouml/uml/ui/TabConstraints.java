@@ -409,7 +409,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                                 OclTree ocltCurrent = (OclTree) i.next();
 
                                 Object/*MConstraint*/ mc =
-                                    Model.getUmlFactory().getCore()
+                                    Model.getCoreFactory()
 				        .createConstraint();
                                 ModelFacade.setName(mc, ocltCurrent
                                     .getConstraintName());
@@ -517,7 +517,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                     // Set name
                     Object/*MConstraint*/ mcOld =
-                        Model.getUmlFactory().getCore().createConstraint();
+                        Model.getCoreFactory().createConstraint();
                     ModelFacade.setName(mcOld,
                             ModelFacade.getName(theMMcConstraint));
                     Object constraintBody =

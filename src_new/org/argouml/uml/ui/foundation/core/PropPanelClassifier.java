@@ -150,7 +150,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             Object voidType = ProjectManager.getManager()
                 .getCurrentProject().findType("void");
             Object newOper =
-                Model.getUmlFactory().getCore().buildOperation(
+                Model.getCoreFactory().buildOperation(
                     /*(MClassifier)*/ target, model, voidType, 
                     propertyChangeListeners);
             TargetManager.getInstance().setTarget(newOper);
@@ -171,7 +171,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             Object model = ProjectManager.getManager()
                 .getCurrentProject().getModel();
             Object attr =
-                Model.getUmlFactory().getCore().buildAttribute(cls, model, 
+                Model.getCoreFactory().buildAttribute(cls, model, 
                         intType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(attr);
         }

@@ -245,9 +245,9 @@ public class SelectionUseCase extends SelectionWButtons {
     protected Object getNewNode(int buttonCode) {
         Object newNode = null;
         if (buttonCode == 10 || buttonCode == 11)
-            newNode = Model.getUmlFactory().getUseCases().createUseCase();
+            newNode = Model.getUseCasesFactory().createUseCase();
         else
-            newNode = Model.getUmlFactory().getUseCases().createActor();
+            newNode = Model.getUseCasesFactory().createActor();
         return newNode;
     }
 

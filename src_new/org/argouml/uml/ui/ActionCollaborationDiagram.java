@@ -64,13 +64,13 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         Object target = TargetManager.getInstance().getModelTarget();
         Object collaboration = null;
         if (ModelFacade.isAOperation(target)) {
-            collaboration = Model.getUmlFactory().getCollaborations()
+            collaboration = Model.getCollaborationsFactory()
                             .buildCollaboration(namespace, target);
         } else if (ModelFacade.isAClassifier(target)) {
-            collaboration = Model.getUmlFactory().getCollaborations()
+            collaboration = Model.getCollaborationsFactory()
                             .buildCollaboration(namespace, target);
 //        } else if (ModelFacade.isAModel(target)) {
-//            collaboration = Model.getUmlFactory().getCollaborations()
+//            collaboration = Model.getCollaborationsFactory()
 //                            .buildCollaboration(target);
 //        } else if (ModelFacade.isAInteraction(target)) {
 //            collaboration = ModelFacade.getContext(target);
@@ -84,7 +84,7 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 //            collaboration = target;
 //        } else {
 //            collaboration =
-//                Model.getUmlFactory().getCollaborations().buildCollaboration(
+//                Model.getCollaborationsFactory().buildCollaboration(
 //                    namespace);
         }
         UMLCollaborationDiagram d = 

@@ -478,7 +478,7 @@ public class CoreFactoryImpl
         }
         MAssociation assoc =
             (MAssociation)
-            	nsmodel.getUmlFactory().getCore().createAssociation();
+            	nsmodel.getCoreFactory().createAssociation();
         assoc.setName("");
         assoc.setNamespace(
                 (MNamespace) nsmodel.getCoreHelper()
@@ -546,7 +546,7 @@ public class CoreFactoryImpl
         }
         MAssociation assoc =
             (MAssociation)
-            	nsmodel.getUmlFactory().getCore().createAssociation();
+            	nsmodel.getCoreFactory().createAssociation();
         assoc.setName("");
         assoc.setNamespace((MNamespace)
         		   nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
@@ -760,7 +760,7 @@ public class CoreFactoryImpl
 
         MAssociationEnd end =
             (MAssociationEnd)
-            	nsmodel.getUmlFactory().getCore().createAssociationEnd();
+            	nsmodel.getCoreFactory().createAssociationEnd();
         end.setAssociation((MAssociation) assoc);
         end.setType((MClassifier) type);
         end.setName(name);
@@ -1399,7 +1399,7 @@ public class CoreFactoryImpl
             voidType.setNamespace(model);
         }
         MParameter res =
-            (MParameter) nsmodel.getUmlFactory().getCore().createParameter();
+            (MParameter) nsmodel.getCoreFactory().createParameter();
         res.setName("");
         res.setStereotype(null);
         res.setType(voidType);
@@ -1494,7 +1494,7 @@ public class CoreFactoryImpl
 	    throw new IllegalArgumentException("faulty arguments.");
 	}
 	Object realization =
-	    nsmodel.getUmlFactory().getCore().createAbstraction();
+	    nsmodel.getCoreFactory().createAbstraction();
 	MNamespace nsc = client.getNamespace();
 	MNamespace nss = supplier.getNamespace();
 	MNamespace ns = null;
@@ -1537,7 +1537,7 @@ public class CoreFactoryImpl
 					       + "must be part of the same "
 					       + "model.");
 	}
-	MUsage usage = (MUsage) nsmodel.getUmlFactory().getCore().createUsage();
+	MUsage usage = (MUsage) nsmodel.getCoreFactory().createUsage();
 	usage.addSupplier((MModelElement) supplier);
 	usage.addClient((MModelElement) client);
 	if (((MModelElement) supplier).getNamespace() != null) {

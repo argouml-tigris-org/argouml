@@ -119,7 +119,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
         // invoke the superclass action method.
 
 	Object ep =
-            Model.getUmlFactory().getUseCases()
+            Model.getUseCasesFactory()
             	.buildExtensionPoint(target);
 
         TargetManager.getInstance().setTarget(ep);

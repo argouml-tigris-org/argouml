@@ -37,46 +37,55 @@ import org.argouml.model.Model;
  * @see GeneratorCpp
  * @author euluis
  * @since 0.17.2
- */                                
+ */
 class BaseTestGeneratorCpp extends TestCase {
     /**
      * The constructor.
-     * 
+     *
      * @param testName the name of the test
      */
     public BaseTestGeneratorCpp(String testName) {
         super(testName);
     }
 
-    /** factory for model elements */
+    /**
+     * Factory for model elements.
+     */
     private CoreFactory factory;
 
-    /** The venerable C++ generator instance used in the test fixtures. */
+    /**
+     * The venerable C++ generator instance used in the test fixtures.
+     */
     private GeneratorCpp generator;
 
-    /** the AClass model element */
+    /**
+     * The AClass model element.
+     */
     private Object aClass;
 
-    /** the AClass::foo() operation */
+    /**
+     * The AClass::foo() operation.
+     */
     private Object fooMethod;
-    
-    /*
+
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() {
         setGenerator(GeneratorCpp.getInstance());
-        setFactory(Model.getUmlFactory().getCore());
+        setFactory(Model.getCoreFactory());
         setAClass(getFactory().buildClass("AClass"));
-        
+
         Object me = getAClass();
-        Collection propertyChangeListeners = ProjectManager.getManager()
-            .getCurrentProject().findFigsForMember(me);
-        Object voidType = ProjectManager.getManager().getCurrentProject()
-            .findType("void");
-        setFooMethod(Model.getUmlFactory().getCore().buildOperation(me,
+        Collection propertyChangeListeners =
+            ProjectManager.getManager().getCurrentProject()
+            	.findFigsForMember(me);
+        Object voidType =
+            ProjectManager.getManager().getCurrentProject().findType("void");
+        setFooMethod(Model.getCoreFactory().buildOperation(me,
                 getModel(), voidType, "foo", propertyChangeListeners));
     }
-    
+
     /**
      * @return the model
      */

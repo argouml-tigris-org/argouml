@@ -232,7 +232,7 @@ public class GUITestProject extends TestCase {
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object model = p.getModel();
         Object voidType = p.findType("void");
-        Object oper = Model.getUmlFactory().getCore()
+        Object oper = Model.getCoreFactory()
             .buildOperation(aClass, model, voidType, propertyChangeListeners);
         
         // try with Statediagram

@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UmlFactory;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
@@ -55,16 +54,14 @@ public class GUITestParseMessage extends TestCase {
      * @throws ParseException if the parsing was in error.
      */
     public void testParseMessage() throws ParseException {
-        UmlFactory fact = Model.getUmlFactory();
+        Object coll = Model.getCollaborationsFactory().createCollaboration();
+        Object inter = Model.getCollaborationsFactory().buildInteraction(coll);
 
-        Object coll = fact.getCollaborations().createCollaboration();
-        Object inter = fact.getCollaborations().buildInteraction(coll);
-
-        Object cl1 = fact.getCollaborations().createClassifierRole();
-        Object cl2 = fact.getCollaborations().createClassifierRole();
-        Object cl3 = fact.getCollaborations().createClassifierRole();
-        Object cl4 = fact.getCollaborations().createClassifierRole();
-        Object cl5 = fact.getCollaborations().createClassifierRole();
+        Object cl1 = Model.getCollaborationsFactory().createClassifierRole();
+        Object cl2 = Model.getCollaborationsFactory().createClassifierRole();
+        Object cl3 = Model.getCollaborationsFactory().createClassifierRole();
+        Object cl4 = Model.getCollaborationsFactory().createClassifierRole();
+        Object cl5 = Model.getCollaborationsFactory().createClassifierRole();
         ModelFacade.setNamespace(cl1, coll);
         ModelFacade.setNamespace(cl2, coll);
         ModelFacade.setNamespace(cl3, coll);
@@ -72,22 +69,23 @@ public class GUITestParseMessage extends TestCase {
         ModelFacade.setNamespace(cl5, coll);
 
         Object r1to2 =
-            fact.getCollaborations().buildAssociationRole(cl1, cl2);
+            Model.getCollaborationsFactory().buildAssociationRole(cl1, cl2);
         Object r2to3 =
-            fact.getCollaborations().buildAssociationRole(cl2, cl3);
+            Model.getCollaborationsFactory().buildAssociationRole(cl2, cl3);
         Object r3to4 =
-            fact.getCollaborations().buildAssociationRole(cl3, cl4);
+            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl4);
         Object r4to5 =
-            fact.getCollaborations().buildAssociationRole(cl4, cl5);
+            Model.getCollaborationsFactory().buildAssociationRole(cl4, cl5);
         Object r3to1 =
-            fact.getCollaborations().buildAssociationRole(cl3, cl1);
+            Model.getCollaborationsFactory().buildAssociationRole(cl3, cl1);
         Object r5to3 =
-            fact.getCollaborations().buildAssociationRole(cl5, cl3);
+            Model.getCollaborationsFactory().buildAssociationRole(cl5, cl3);
 
         /* START TESTING STUFF */
 
         MMessage m1 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r1to2);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r1to2);
         assertTrue(m1.getSender() == cl1);
         assertTrue(m1.getReceiver() == cl2);
         assertTrue(m1.getInteraction() == inter);
@@ -98,7 +96,8 @@ public class GUITestParseMessage extends TestCase {
         m1.setName("m1");
 
         MMessage m2 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r2to3);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r2to3);
         assertTrue(m2.getSender() == cl2);
         assertTrue(m2.getReceiver() == cl3);
         assertTrue(m2.getActivator() == m1);
@@ -108,7 +107,8 @@ public class GUITestParseMessage extends TestCase {
         m2.setName("m2");
 
         MMessage m3 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r2to3);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r2to3);
         assertTrue(m3.getActivator() == m1);
         assertTrue(
             m3.getPredecessors().iterator().next() == m2
@@ -153,13 +153,17 @@ public class GUITestParseMessage extends TestCase {
         checkParseException(m3, "1.2.1 / 1.2 :");
 
         MMessage m4 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r3to4);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r3to4);
         MMessage m5 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r4to5);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r4to5);
         MMessage m6 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r5to3);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r5to3);
         MMessage m7 =
-            (MMessage) fact.getCollaborations().buildMessage(inter, r3to1);
+            (MMessage) Model.getCollaborationsFactory()
+            	.buildMessage(inter, r3to1);
 
         checkParseException(m6, "1.2.2 :");
 

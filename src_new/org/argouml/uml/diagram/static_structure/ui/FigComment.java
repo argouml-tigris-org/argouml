@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigComment.java
-// Classes: FigComment
-// Original Author: a_rueckert@gmx.net
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
@@ -63,6 +59,8 @@ import org.tigris.gef.presentation.FigText;
 
 /**
  * Class to display a UML comment in a diagram.
+ *
+ * @author Andreas Rueckert
  */
 public class FigComment
     extends FigNodeModelElement
@@ -70,8 +68,7 @@ public class FigComment
 	       DelayedVChangeListener,
 	       MouseListener,
 	       KeyListener,
-	       PropertyChangeListener
-{
+	       PropertyChangeListener {
     private static final Logger LOG = Logger.getLogger(FigComment.class);
 
     ////////////////////////////////////////////////////////////////
@@ -151,7 +148,7 @@ public class FigComment
     }
 
     /**
-     * Construct a new comment
+     * Construct a new comment.
      *
      * @param gm the graphmodel
      * @param node the underlying UML Comment
@@ -163,8 +160,8 @@ public class FigComment
 
     /**
      * Create a note for a given model element.
-     * @deprecated as of 0.17.1 nobody should use this constructor since 
-     * it not only constructs the fig but also the model behind it. 
+     * @deprecated as of 0.17.1 nobody should use this constructor since
+     * it not only constructs the fig but also the model behind it.
      * That should not be done by a fig which is only a view to the model
      * @param element The annotated model element.
      */
@@ -177,7 +174,7 @@ public class FigComment
 
 	// Create a new Comment node.
         Object comment =
-	    Model.getUmlFactory().getCore().createComment();
+	    Model.getCoreFactory().createComment();
         setOwner(comment); // Set it as the owner of the figure.
 	// Tell the annotated element, that it has a comment now.
         ModelFacade.addComment(element, comment);
@@ -190,9 +187,9 @@ public class FigComment
 
 	    // If the current target is a statechart diagram, we have to
 	    // check, if we are editing the diagram.
-            ProjectBrowser pb = ProjectBrowser.getInstance(); 
-            if (TargetManager.getInstance().getTarget() 
-                    instanceof UMLStateDiagram) { 
+            ProjectBrowser pb = ProjectBrowser.getInstance();
+            if (TargetManager.getInstance().getTarget()
+                    instanceof UMLStateDiagram) {
                 StateDiagramGraphModel gm =
 		    (StateDiagramGraphModel)
 		    (((UMLStateDiagram) TargetManager.getInstance()
@@ -202,7 +199,7 @@ public class FigComment
             }
         } else {
 	    // Add the comment to the same namespace as the annotated element.
-            ModelFacade.setNamespace(comment, 
+            ModelFacade.setNamespace(comment,
                     ModelFacade.getNamespace(element));
         }
 
@@ -216,8 +213,9 @@ public class FigComment
      */
     public String placeString() {
         String placeString = retrieveNote();
-        if (placeString == null)
+        if (placeString == null) {
             placeString = "new note";
+        }
         return placeString;
     }
 
@@ -243,11 +241,11 @@ public class FigComment
      * See FigNodeModelElement.java for more info on these methods.
      */
 
-    /** 
+    /**
      * If the user double clicks on any part of this FigNode, pass it
      * down to one of the internal Figs.  This allows the user to
-     * initiate direct text editing. 
-     * 
+     * initiate direct text editing.
+     *
      * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
      */
     public void mouseClicked(MouseEvent me) {
@@ -260,17 +258,19 @@ public class FigComment
                 return;
             }
         }
-        if (me.isConsumed())
+        if (me.isConsumed()) {
             return;
+        }
         if (me.getClickCount() >= 2
 	    && !(me.isPopupTrigger()
-		 || me.getModifiers() == InputEvent.BUTTON3_MASK))
-	{
-            if (getOwner() == null)
+		 || me.getModifiers() == InputEvent.BUTTON3_MASK)) {
+            if (getOwner() == null) {
                 return;
+            }
             Fig f = hitFig(new Rectangle(me.getX() - 2, me.getY() - 2, 4, 4));
-            if (f instanceof MouseListener)
-                 ((MouseListener) f).mouseClicked(me);
+            if (f instanceof MouseListener) {
+                ((MouseListener) f).mouseClicked(me);
+            }
         }
         me.consume();
     }
@@ -284,9 +284,10 @@ public class FigComment
             DelayedChangeNotify delayedNotify =
 		new DelayedChangeNotify(this, pce);
             SwingUtilities.invokeLater(delayedNotify);
-        } else
+        } else {
             LOG.debug("FigNodeModelElement got vetoableChange"
 		      + " from non-owner:" + src);
+        }
     }
 
     /**
@@ -307,8 +308,7 @@ public class FigComment
         Object src = pve.getSource();
         String pName = pve.getPropertyName();
         if (pName.equals("editing")
-	    && Boolean.FALSE.equals(pve.getNewValue()))
-	{
+	    && Boolean.FALSE.equals(pve.getNewValue())) {
             try {
                 //parse the text that was edited
                 textEdited((FigText) src);
@@ -323,8 +323,9 @@ public class FigComment
                 LOG.error("could not parse and use the text entered "
 			  + "in figcomment", ex);
             }
-        } else
+        } else {
             super.propertyChange(pve);
+        }
     }
 
     /**
@@ -340,15 +341,17 @@ public class FigComment
                 return;
             }
         }
-        if (ke.isConsumed())
+        if (ke.isConsumed()) {
             return;
-        if (getOwner() == null)
+        }
+        if (getOwner() == null) {
             return;
+        }
         text.keyPressed(ke);
     }
 
-    /** not used, do nothing. 
-     * 
+    /** not used, do nothing.
+     *
      * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
      */
     public void keyReleased(KeyEvent ke) {
@@ -434,8 +437,9 @@ public class FigComment
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) throws PropertyVetoException {
-        if (ft == text)
+        if (ft == text) {
             storeNote(ft.getText());
+        }
     }
 
     /**
@@ -454,8 +458,9 @@ public class FigComment
      * @param note The note to store.
      */
     public final void storeNote(String note) {
-        if (getOwner() != null)
-             ModelFacade.setName(getOwner(), note);
+        if (getOwner() != null) {
+            ModelFacade.setName(getOwner(), note);
+        }
     }
 
     /**
@@ -496,8 +501,9 @@ public class FigComment
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int px, int py, int w, int h) {
-        if (text == null)
+        if (text == null) {
             return;
+        }
 
         Rectangle oldBounds = getBounds();
 
@@ -548,8 +554,9 @@ public class FigComment
         super.modelChanged(mee);
 
         String noteStr = retrieveNote();
-        if (noteStr != null)
+        if (noteStr != null) {
             text.setText(noteStr);
+        }
     }
 
     /**

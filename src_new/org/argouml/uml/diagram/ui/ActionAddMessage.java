@@ -37,7 +37,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigNode;
 
-/** 
+/**
  * Action to add a message.
  * @stereotype singleton
  */
@@ -45,8 +45,8 @@ public class ActionAddMessage extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
-    private static ActionAddMessage singleton = new ActionAddMessage(); 
+
+    private static ActionAddMessage singleton = new ActionAddMessage();
 
 
     ////////////////////////////////////////////////////////////////
@@ -55,8 +55,8 @@ public class ActionAddMessage extends UMLAction {
     /**
      * The constructor.
      */
-    private ActionAddMessage() { 
-        super("action.add-message", true, HAS_ICON); 
+    private ActionAddMessage() {
+        super("action.add-message", true, HAS_ICON);
     }
 
 
@@ -70,25 +70,27 @@ public class ActionAddMessage extends UMLAction {
     	Object target =  TargetManager.getInstance().getModelTarget();
 
     	if (!(ModelFacade.isAAssociationRole(target))
-	    && ModelFacade.isACollaboration(ModelFacade.getNamespace(target)))
-	    return;
+	    && ModelFacade.isACollaboration(ModelFacade.getNamespace(target))) {
+    	    return;
+    	}
         // So, the target is a MAssociationRole
     	this.addMessage(target);
         super.actionPerformed(ae);
     }
-    
+
     /**
      * Add a message to an associationRole: it builds it using the
      * Factory method and then it creates the Fig and adds it to the
      * diagram.
-     * 
-     * @param associationrole the associationRole to which the new message 
+     *
+     * @param associationrole the associationRole to which the new message
      *                        must be added
      */
     private void addMessage(Object associationrole) {
         Object collaboration = ModelFacade.getNamespace(associationrole);
-        Object message = Model.getUmlFactory().getCollaborations()
-                .buildMessage(collaboration, associationrole);
+        Object message =
+            Model.getCollaborationsFactory()
+            	.buildMessage(collaboration, associationrole);
         Editor e = Globals.curEditor();
         GraphModel gm = e.getGraphModel();
         Layer lay = e.getLayerManager().getActiveLayer();
@@ -103,10 +105,10 @@ public class ActionAddMessage extends UMLAction {
      */
     public boolean shouldBeEnabled() {
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled() 
+	return super.shouldBeEnabled()
 	    && ModelFacade.isAAssociationRole(target);
     }
-    
+
     /**
      * @return Returns the singleton.
      */

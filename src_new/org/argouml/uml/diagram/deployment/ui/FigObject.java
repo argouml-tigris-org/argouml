@@ -53,7 +53,7 @@ public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
     private Object resident =
-	Model.getUmlFactory().getCore().createElementResidence();
+	Model.getCoreFactory().createElementResidence();
 
 
     ////////////////////////////////////////////////////////////////
@@ -63,7 +63,7 @@ public class FigObject extends FigNodeModelElement {
      * Main constructor.
      */
     public FigObject() {
-	setBigPort( new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
+	setBigPort(new FigRect(10, 10, 90, 50, Color.cyan, Color.cyan));
 	cover = new FigRect(10, 10, 90, 50, Color.black, Color.white);
 	getNameFig().setLineWidth(0);
 	getNameFig().setFilled(false);
@@ -81,7 +81,8 @@ public class FigObject extends FigNodeModelElement {
     }
 
     /**
-     * Constructor that hooks the Fig to an existing UML element
+     * Constructor that hooks the Fig to an existing UML element.
+     *
      * @param gm ignored
      * @param node the UML element
      */
@@ -145,13 +146,12 @@ public class FigObject extends FigNodeModelElement {
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) { cover.setLineWidth(w); }
-    
+
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() { return cover.getLineWidth(); }
 
-  
     /**
      * @see org.tigris.gef.presentation.Fig#makeSelection()
      */
@@ -172,7 +172,9 @@ public class FigObject extends FigNodeModelElement {
 	return new Dimension(w, h);
     }
 
-    /** Override setBounds to keep shapes looking right 
+    /**
+     * Override setBounds to keep shapes looking right.
+     *
      * @see org.tigris.gef.presentation.Fig#setBounds(int, int, int, int)
      */
     public void setBounds(int x, int y, int w, int h) {
@@ -196,7 +198,7 @@ public class FigObject extends FigNodeModelElement {
 	updateEdges();
     }
 
-  
+
     ////////////////////////////////////////////////////////////////
     // user interaction methods
 
@@ -232,8 +234,7 @@ public class FigObject extends FigNodeModelElement {
 		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
 		ModelFacade.setComponentInstance(me, mcompInst);
 
-	    }
-	    else if (ModelFacade.getComponentInstance(me) != null) {
+	    } else if (ModelFacade.getComponentInstance(me) != null) {
                 ModelFacade.setComponentInstance(me, null);
 	    }
 	    if (encloser != null
@@ -244,8 +245,7 @@ public class FigObject extends FigNodeModelElement {
 		ModelFacade.setImplementationLocation(resident, mcomp);
 		ModelFacade.setResident(resident, obj);
 
-	    }
-	    else {
+	    } else {
 		if (ModelFacade.getImplementationLocation(resident) != null) {
 		    ModelFacade.setImplementationLocation(resident, null);
 		    ModelFacade.setResident(resident, null);
@@ -271,23 +271,26 @@ public class FigObject extends FigNodeModelElement {
      */
     protected void updateNameText() {
         Object obj = /*(MObject)*/ getOwner();
-	if (obj == null) return;
+	if (obj == null) {
+	    return;
+	}
 	String nameStr = "";
 	if (ModelFacade.getName(obj) != null) {
 	    nameStr = ModelFacade.getName(obj).trim();
 	}
 
 	Vector bases = new Vector(ModelFacade.getClassifiers(obj));
- 
+
 	String baseString = "";
 
 	if (ModelFacade.getClassifiers(obj) != null
 	        && ModelFacade.getClassifiers(obj).size() > 0) {
 
 	    baseString += ModelFacade.getName(bases.elementAt(0));
-	    for (int i = 1; i < bases.size(); i++)
+	    for (int i = 1; i < bases.size(); i++) {
 		baseString +=
 		    ", "  + ModelFacade.getName(bases.elementAt(i));
+	    }
 	}
 
 	if (isReadyToEdit()) {

@@ -125,32 +125,32 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR01, "name");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR02, "name");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR03, "name");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR04, "name");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR05, "name");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkName(attr, ATTR06, "name");
@@ -169,22 +169,22 @@ public class GUITestParserDisplay extends TestCase {
         Object ns = project.getModel();
         Object intType = project.findType("int");
         
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkType(attr, ATTR03, "void");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkType(attr, ATTR04, "int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkType(attr, ATTR05, "int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkType(attr, ATTR06, "int");
@@ -202,39 +202,39 @@ public class GUITestParserDisplay extends TestCase {
         Object ns = project.getModel();
         Object intType = project.findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR02, "public");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR03, "private");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR04, "protected");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR05, "public");
         checkVisibility(attr, ATTR01, "public");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR06, "private");
         checkVisibility(attr, ATTR01, "private");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR08, "public");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR11, "public");
@@ -263,17 +263,17 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkProperties(attr, ATTR04, res1);
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkProperties(attr, ATTR05, res2);
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkProperties(attr, ATTR06, res3);
@@ -292,17 +292,17 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR04, new MMultiplicity("1..1"));
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR05, new MMultiplicity("1..*"));
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR06, new MMultiplicity("*..*"));
@@ -319,7 +319,7 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkThrows(attr, NATTR01, true, false, false);
@@ -350,39 +350,39 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR05, "0");
         checkValue(attr, ATTR01, "0");
         checkValue(attr, ATTR06, "15");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR07, "\'val[15] \'");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR08, "\"a <<string>>\"");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR09, "(a * (b+c) - d)");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR10, "2 * (b+c) - 10");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR11, "a[15]");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkValue(attr, ATTR12, "a << 5");
@@ -421,23 +421,23 @@ public class GUITestParserDisplay extends TestCase {
         Object intType =
             ProjectManager.getManager().getCurrentProject().findType("int");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         softAddStereotype("attrstereo1", attr);
         softAddStereotype("attrstereo2", attr);
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR01, null);
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR10, "attrstereo1");
 
-        attr = Model.getUmlFactory().getCore().buildAttribute(ns, intType);
+        attr = Model.getCoreFactory().buildAttribute(ns, intType);
         ModelFacade.setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR11, "attrstereo2");
@@ -451,7 +451,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationName() throws ParseException {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
 
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
@@ -464,17 +464,17 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER01, "name");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER02, "name");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkName(op, OPER03, "name2");
     }
@@ -486,7 +486,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationType() throws ParseException {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
 
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
@@ -499,18 +499,18 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER01, "void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER02, "int");
         checkType(op, OPER01, "int");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkType(op, OPER03, "String");
     }
@@ -522,7 +522,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationVisibility() throws ParseException {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
@@ -534,24 +534,24 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER01, "public");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER02, "private");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER03, "protected");
         checkVisibility(op, OPER01, "protected");
         checkVisibility(op, OPER02, "private");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkVisibility(op, OPER04, "protected");
     }
@@ -563,7 +563,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationParameters() throws ParseException {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
@@ -591,17 +591,17 @@ public class GUITestParserDisplay extends TestCase {
         };
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER01, res1);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER02, res2);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkParameters(op, OPER03, res3);
         checkParameters(op, OPER01, res1);
@@ -615,7 +615,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationProperties() throws ParseException {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
         Collection propertyChangeListeners =
@@ -638,17 +638,17 @@ public class GUITestParserDisplay extends TestCase {
         };
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER01, res1);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER02, res1);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkProperties(op, OPER03, res1);
     }
@@ -662,7 +662,7 @@ public class GUITestParserDisplay extends TestCase {
     	throws ParseException {
 
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
 
@@ -674,23 +674,23 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         softAddStereotype("opstereo1", op);
         softAddStereotype("opstereo2", op);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkStereotype(op, OPER01, null);
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkStereotype(op, OPER02, "opstereo1");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkStereotype(op, OPER03, "opstereo2");
         checkStereotype(op, OPER01, "opstereo2");
@@ -702,7 +702,7 @@ public class GUITestParserDisplay extends TestCase {
      */
     public void testOperationParseExceptions() {
         Object op;
-        Object cl = Model.getUmlFactory().getCore().buildClass();
+        Object cl = Model.getCoreFactory().buildClass();
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
 
@@ -714,7 +714,7 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("void");
 
         op =
-            Model.getUmlFactory().getCore()
+            Model.getCoreFactory()
             	.buildOperation(cl, ns, voidType, propertyChangeListeners);
         checkThrows(op, NOPER01, true, false, false);
         checkThrows(op, NOPER02, true, false, false);

@@ -307,7 +307,7 @@ public class WizOperName extends WizMEName {
                 }
             }
             if (ns == null) {
-                ns = Model.getUmlFactory().getCore().createNamespace();
+                ns = Model.getCoreFactory().createNamespace();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);
             }
