@@ -32,7 +32,7 @@ package uci.gef;
 
 import java.awt.*;
 import java.util.*;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 import uci.graph.*;
 
@@ -89,6 +89,9 @@ public class ModePlace extends Mode {
 
   /** Move the perpective along with the mouse. */
   public void mousePressed(MouseEvent me) {
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
+    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
+    if (me.isConsumed()) return;
     _node = _factory.makeNode();
     start();
     _editor = Globals.curEditor();
@@ -109,6 +112,7 @@ public class ModePlace extends Mode {
 
   /** Move the perpective along with the mouse. */
   public void mouseMoved(MouseEvent me) {
+    if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     if (_pers == null) { me.consume(); return; }
     _editor.damaged(_pers);
@@ -134,6 +138,7 @@ public class ModePlace extends Mode {
    *
    * @see uci.graph.GraphNodeHooks#postPlacement */
   public void mouseReleased(MouseEvent me) {
+    if (me.isConsumed()) return;
     GraphModel gm = _editor.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) return;
 

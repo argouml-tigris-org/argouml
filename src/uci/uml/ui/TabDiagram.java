@@ -160,6 +160,7 @@ uci.gef.event.ModeChangeListener {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = TabDiagram.class.getResource(imgName);
+      if (imgURL == null) return null;
       return new ImageIcon(imgURL, desc);
     }
     catch (Exception ex) { return new ImageIcon(desc); }

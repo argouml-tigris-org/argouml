@@ -93,6 +93,7 @@ SOURCES= \
 	ModeCreateFigSpline.java \
 	ModeCreateFigText.java \
 	ModeCreatePolyEdge.java \
+	ModeDragScroll.java \
 	ModeManager.java \
 	ModeModify.java \
 	ModePlace.java \

@@ -143,12 +143,13 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   ////////////////////////////////////////////////////////////////
   // utility functions
-  
+
   protected static ImageIcon loadIconResource(String name) {
     String imgName = imageName(name);
     ImageIcon res = null;
     try {
       java.net.URL imgURL = UMLTreeCellRenderer.class.getResource(imgName);
+      if (imgURL == null) return null;
       return new ImageIcon(imgURL);
     }
     catch (Exception ex) {
@@ -159,7 +160,7 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
   protected static String imageName(String name) {
     return "/uci/Images/" + stripJunk(name) + ".gif";
   }
-  
+
   protected static String stripJunk(String s) {
     String res = "";
     int len = s.length();
@@ -169,10 +170,10 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
     }
     return res;
   }
-  
+
   ////////////////////////////////////////////////////////////////
   // inner classes
-  
+
 //   protected Icon _manuipIcon = new ManipIcon();
 
 //   protected Icon _criticFiredIcon = new FiredIcon();

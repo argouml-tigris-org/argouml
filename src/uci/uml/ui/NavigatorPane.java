@@ -199,7 +199,7 @@ implements ItemListener, TreeSelectionListener {
 
   public void navDown() {
     int row = _tree.getMinSelectionRow();
-    if (row == _tree.getUI().getRowCount()) row = 0;
+    if (row == _tree.getRowCount()) row = 0;
     else row = row + 1;
     _tree.setSelectionRow(row);
     ProjectBrowser.TheInstance.select(getSelectedObject());
@@ -207,7 +207,7 @@ implements ItemListener, TreeSelectionListener {
 
   public void navUp() {
     int row = _tree.getMinSelectionRow();
-    if (row == 0) row = _tree.getUI().getRowCount();
+    if (row == 0) row = _tree.getRowCount();
     else row = row - 1;
     _tree.setSelectionRow(row);
     ProjectBrowser.TheInstance.select(getSelectedObject());

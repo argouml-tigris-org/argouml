@@ -32,7 +32,7 @@
 package uci.gef;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /** A Mode to interpert user input while creating a FigImage. All of
  *  the actual event handling is inherited from ModeCreate. This class
@@ -101,6 +101,8 @@ public class ModeCreateFigImage extends ModeCreate {
 
   /** On mouse down, do nothing. */
   public void mousePressed(MouseEvent me) {
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
+    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
     me.consume();
   }
 

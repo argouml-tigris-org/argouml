@@ -164,6 +164,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
     mode(new ModeSelect(this));
     mode(new ModePopup(this));
+    mode(new ModeDragScroll(this));
     Globals.curEditor(this);
   }
 

@@ -170,6 +170,8 @@ implements VetoableChangeListener {
     if (_expandedPathsInModel == null) return;
     _reexpanding = true;
     ((AbstractTreeUI)getUI()).rebuild();
+    //In Swing 1.1.1 try: treeDidChange();
+    //In Swing 1.1.1 try: fireTreeStructureChanged();
     java.util.Enumeration enum = getExpandedPaths().elements();
     while (enum.hasMoreElements()) {
       TreePath path = (TreePath) enum.nextElement();

@@ -31,7 +31,7 @@
 package uci.gef;
 
 import java.awt.*;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 /** A Mode to interpert user input while creating a FigPoly. All of
  *  the actual event handling is inherited from ModeCreate. This class
@@ -50,7 +50,7 @@ public class ModeCreateFigPoly extends ModeCreate {
 
   ////////////////////////////////////////////////////////////////
   // Mode API
-  
+
   public String instructions() {
     return "Click to add a point; Double-click to finish";
   }
@@ -72,7 +72,10 @@ public class ModeCreateFigPoly extends ModeCreate {
   // Event handlers
 
   public void mousePressed(MouseEvent me) {
-    int x = me.getX(), y = me.getY();    
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
+    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
+    if (me.isConsumed()) return;
+    int x = me.getX(), y = me.getY();
     if (_npoints == 0) { super.mousePressed(me); }
     if (!nearLast(x, y)) {
       _editor.damaged(_newItem);
@@ -86,7 +89,8 @@ public class ModeCreateFigPoly extends ModeCreate {
   }
 
   public void mouseReleased(MouseEvent me) {
-    int x = me.getX(), y = me.getY();    
+    if (me.isConsumed()) return;
+    int x = me.getX(), y = me.getY();
     if (_npoints > 2 && nearLast(x, y)) {
       FigPoly p = (FigPoly) _newItem;
       _editor.damaged(_newItem);
@@ -110,7 +114,8 @@ public class ModeCreateFigPoly extends ModeCreate {
   }
 
   public void mouseDragged(MouseEvent me) {
-    int x = me.getX(), y = me.getY();    
+    if (me.isConsumed()) return;
+    int x = me.getX(), y = me.getY();
     if (_npoints == 0) { me.consume(); return; }
     FigPoly p = (FigPoly)_newItem;
     _editor.damaged(_newItem); // startTrans?

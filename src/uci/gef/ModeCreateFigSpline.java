@@ -66,6 +66,7 @@ public class ModeCreateFigSpline extends ModeCreateFigPoly {
 
 
   public void mouseReleased(MouseEvent me) {
+    if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     if (_npoints > 2 && nearLast(x, y)) {
       FigSpline p = (FigSpline) _newItem;

@@ -255,6 +255,7 @@ public class ToolBar extends JToolBar implements MouseListener {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = ToolBar.class.getResource(imgName);
+      if (imgURL == null) return null;
       //System.out.println(imgName);
       //System.out.println(imgURL);
       return new ImageIcon(imgURL, desc);

@@ -58,6 +58,8 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   protected ImageIcon _BranchIcon = loadIconResource("Branch");
   protected ImageIcon _FinalStateIcon = loadIconResource("FinalState");
 
+  protected Hashtable _iconCache = new Hashtable();
+
 
 
   ////////////////////////////////////////////////////////////////
@@ -75,43 +77,32 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
 
     if (r instanceof JLabel) {
       JLabel lab = (JLabel) r;
-/////////////////////////////////////////////////////////////////////      
-      String stringValue = value.getClass().getName();
-      //System.out.println("stringValue = " + stringValue);
+      Icon icon = (Icon) _iconCache.get(value.getClass());
 
-      StringTokenizer st = new StringTokenizer(stringValue,".");
-      String lastToken = "";
-      while (st.hasMoreTokens())
-        lastToken = st.nextToken();
-      lastToken = lastToken.trim();
-      
-      // special case "UML*" e.g. UMLClassDiagram
-      if (lastToken.startsWith("UML"))
-        lastToken = lastToken.substring(3);
-
-      // special case "MM*" e.g. MMClass
-      if (lastToken.startsWith("MM"))
-        lastToken = lastToken.substring(2);
-        
-      lab.setIcon(loadIconResource(lastToken));
-      
-      //System.out.println("lastToken = " + lastToken);
-      
       if (value instanceof Pseudostate) {
-	    Pseudostate ps = (Pseudostate) value;
-	    PseudostateKind kind = ps.getKind();
-	    if (PseudostateKind.INITIAL.equals(kind)) lab.setIcon(_InitialStateIcon);
-	    if (PseudostateKind.DEEP_HISTORY.equals(kind)) lab.setIcon(_DeepIcon);
-	    if (PseudostateKind.SHALLOW_HISTORY.equals(kind)) lab.setIcon(_ShallowIcon);
-	    if (PseudostateKind.FORK.equals(kind)) lab.setIcon(_ForkIcon);
-	    if (PseudostateKind.JOIN.equals(kind)) lab.setIcon(_JoinIcon);
-	    if (PseudostateKind.BRANCH.equals(kind)) lab.setIcon(_BranchIcon);
-	    if (PseudostateKind.FINAL.equals(kind)) lab.setIcon(_FinalStateIcon);
+	Pseudostate ps = (Pseudostate) value;
+	PseudostateKind kind = ps.getKind();
+	if (PseudostateKind.INITIAL.equals(kind)) icon = _InitialStateIcon;
+	if (PseudostateKind.DEEP_HISTORY.equals(kind)) icon = _DeepIcon;
+	if (PseudostateKind.SHALLOW_HISTORY.equals(kind)) icon = _ShallowIcon;
+	if (PseudostateKind.FORK.equals(kind)) icon = _ForkIcon;
+	if (PseudostateKind.JOIN.equals(kind)) icon = _JoinIcon;
+	if (PseudostateKind.BRANCH.equals(kind)) icon = _BranchIcon;
+	if (PseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
       }
-//       else if (value instanceof
-// 	       uci.uml.Behavioral_Elements.State_Machines.ActionState)
-// 	    lab.setIcon(_ActionStateIcon);
-//       else if (value instanceof State) lab.setIcon(_StateIcon);
+
+      if (icon == null) {
+	String clsPackName = value.getClass().getName();
+	String clsName = clsPackName.substring(clsPackName.lastIndexOf(".")+1);
+	// special case "UML*" e.g. UMLClassDiagram
+	if (clsName.startsWith("UML")) clsName = clsName.substring(3);
+	// special case "MM*" e.g. MMClass
+	if (clsName.startsWith("MM")) clsName = clsName.substring(2);
+	icon = loadIconResource(clsName);
+	if (icon != null) _iconCache.put(value.getClass(), icon);
+      }
+
+      if (icon != null) lab.setIcon(icon);
 
       String tip = (value == null) ? "null" : value.toString();
       if (value instanceof ElementImpl)
@@ -132,6 +123,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = UMLTreeCellRenderer.class.getResource(imgName);
+      if (imgURL == null) return null;
       return new ImageIcon(imgURL);
     }
     catch (Exception ex) {

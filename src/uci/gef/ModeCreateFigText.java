@@ -50,6 +50,6 @@ public class ModeCreateFigText extends ModeCreate {
   }
 
   static final long serialVersionUID = 8022413001067764087L;
-  
+
 } /* end class ModeCreateFigText */
 

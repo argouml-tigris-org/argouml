@@ -145,7 +145,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseMoved(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
       Mode m = ((Mode)_modes.elementAt(i));
       m.mouseMoved(me);
     }
@@ -153,7 +153,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseDragged(MouseEvent me) {
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
       Mode m = ((Mode)_modes.elementAt(i));
       m.mouseDragged(me);
     }
@@ -171,7 +171,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mousePressed(MouseEvent me) {
     checkModeTransitions(me);
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
       Mode m = ((Mode)_modes.elementAt(i));
       m.mousePressed(me);
     }
@@ -180,7 +180,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   /** Pass events to all modes in order, until one consumes it. */
   public void mouseReleased(MouseEvent me) {
     checkModeTransitions(me);
-    for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
+    for (int i = _modes.size() - 1; i >= 0; --i) { // && !me.isConsumed()
       Mode m = ((Mode)_modes.elementAt(i));
       m.mouseReleased(me);
     }

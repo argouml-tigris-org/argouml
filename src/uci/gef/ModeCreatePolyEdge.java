@@ -102,6 +102,9 @@ public class ModeCreatePolyEdge extends ModeCreate {
   /** On mousePressed determine what port the user is dragging from.
    *  The mousePressed event is sent via ModeSelect. */
   public void mousePressed(MouseEvent me) {
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
+    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
+    if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     //Editor _editor = Globals.curEditor();
     Fig underMouse = _editor.hit(x, y);
@@ -132,6 +135,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
    *  construct a new FigEdge and add it to the Layer and send it to
    *  the back. */
   public void mouseReleased(MouseEvent me) {
+    if (me.isConsumed()) return;
     if (_sourceFigNode == null) { done(); me.consume(); return; }
 
     int x = me.getX(), y = me.getY();
@@ -216,6 +220,7 @@ public class ModeCreatePolyEdge extends ModeCreate {
   }
 
   public void mouseDragged(MouseEvent me) {
+    if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     if (_npoints == 0) { me.consume(); return; }
     if (_newItem == null) { me.consume(); return; }

@@ -60,6 +60,7 @@ public class UMLAction extends AbstractAction {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = UMLAction.class.getResource(imgName);
+      if (imgURL == null) return null;
       return new ImageIcon(imgURL, desc);
     }
     catch (Exception ex) {

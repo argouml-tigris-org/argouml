@@ -107,6 +107,11 @@ public class ModeBroom extends Mode {
    *  the shift key is not down, then go to ModeModify. If the mouse
    *  down event happens on a port, to to ModeCreateEdge.   */
   public void mousePressed(MouseEvent me) {
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) {
+      //System.out.println("wrong button");
+      return;
+    }
+    if (me.isConsumed()) return;
     _touched = new Fig[MAX_TOUCHED];
     _origX = new int[MAX_TOUCHED];
     _origY = new int[MAX_TOUCHED];
@@ -130,6 +135,7 @@ public class ModeBroom extends Mode {
 
   /** On mouse dragging, stretch the selection rectangle. */
   public void mouseDragged(MouseEvent me) {
+    if (me.isConsumed()) return;
     me.consume();
     Enumeration figs;
     _lastMX = me.getX();
@@ -273,6 +279,7 @@ public class ModeBroom extends Mode {
   /** On mouse up, select or toggle the selection of items under the
    *  mouse or in the selection rectangle. */
   public void mouseReleased(MouseEvent me) {
+    if (me.isConsumed()) return;
     _selectRect.reshape(x1 - 1, y1 - 1, x2 - x1 + 2, y2 - y1 + 20);
     _bigDamageRect.setLocation(x1 - 200, y1 - 200);
     _editor.damaged(_bigDamageRect);

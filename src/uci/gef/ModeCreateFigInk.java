@@ -41,12 +41,11 @@ public class ModeCreateFigInk extends ModeCreate {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
   /** the minium distance that the mouse must move before a new point
    *  is added. */
   public static final int MIN_DELTA = 4;
 
-  
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -76,7 +75,8 @@ public class ModeCreateFigInk extends ModeCreate {
 
   /** Dragging adds points to the ink. */
   public void mouseDragged(MouseEvent me) {
-    int x = me.getX(), y = me.getY();    
+    if (me.isConsumed()) return;
+    int x = me.getX(), y = me.getY();
     FigInk ink = (FigInk)_newItem;
     if (!nearLast(x, y)) {
       _editor.damaged(_newItem); // startTrans?

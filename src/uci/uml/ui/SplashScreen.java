@@ -82,6 +82,7 @@ implements IStatusBar {
     ImageIcon res = null;
     try {
       java.net.URL imgURL = SplashScreen.class.getResource(imageName(imgName));
+      if (imgURL == null) return null;
       //System.out.println(imgName);
       //System.out.println(imgURL);
       return new ImageIcon(imgURL, desc);

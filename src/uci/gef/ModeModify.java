@@ -119,7 +119,11 @@ public class ModeModify extends Mode {
    *  dragging on a handle of one Fig then the user can drag the
    *  handle around the drawing area and the Fig reacts to that.  */
   public void mouseDragged(MouseEvent me) {
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
+    if (me.isConsumed()) return;
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) {
+      //System.out.println("wrong button in ModeModify mouseDragged");
+      return;
+    }
     int x = me.getX(), y = me.getY();
     int dx, dy, snapX, snapY;
     if (!checkMinDelta(x, y)) { me.consume(); return; }
@@ -174,7 +178,7 @@ public class ModeModify extends Mode {
     //Note: if _curHandle.index == -2 then do nothing
 
     sm.endTrans();
-    _editor.scrollToShow(snapX, snapY);
+    //_editor.scrollToShow(snapX, snapY);
     me.consume();
   }
 
@@ -182,7 +186,9 @@ public class ModeModify extends Mode {
    *  starts preparing for future drag events by finding if a handle
    *  was clicked on.  This event is passed from ModeSelect. */
   public void mousePressed(MouseEvent me) {
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
+    //if (me.getModifiers() != InputEvent.BUTTON1_MASK) return;
+    if (me.isConsumed()) return;
     int x = me.getX(), y = me.getY();
     start();
     SelectionManager sm = getEditor().getSelectionManager();
@@ -203,12 +209,14 @@ public class ModeModify extends Mode {
       _startX = _lastX = snapPt.x;
       _startY = _lastY = snapPt.y;
     }
-    me.consume();
+    //System.out.println("consuming in ModeModify");
+    //me.consume();
   }
 
   /** On mouse up the modification interaction is done. */
   public void mouseReleased(MouseEvent me) {
-    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
+    if (me.isConsumed()) return;
+    if ((me.getModifiers() | InputEvent.BUTTON1_MASK) == 0) return;
     done();
     me.consume();
     SelectionManager sm = getEditor().getSelectionManager();
