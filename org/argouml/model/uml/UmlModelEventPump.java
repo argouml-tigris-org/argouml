@@ -38,8 +38,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -206,8 +204,7 @@ public final class UmlModelEventPump implements MElementListener {
 	    String eventName) {
         // first register the listener for all elements allready in
         // the model modelClass = formatClass(modelClass);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object model = p.getRoot();
+        Object model = Model.getModelManagementFactory().getRootModel();
         Collection col =
             Model.getModelManagementHelper()
 	        .getAllModelElementsOfKindWithModel(model, modelClass);
@@ -347,8 +344,7 @@ public final class UmlModelEventPump implements MElementListener {
         // remove all registrations of this listener with all instances of
         // modelClass
         //modelClass = formatClass(modelClass);
-        Project p = ProjectManager.getManager().getCurrentProject();
-        Object model = p.getRoot();
+        Object model = Model.getModelManagementFactory().getRootModel();
         Iterator it =
             Model.getModelManagementHelper()
 	        .getAllModelElementsOfKindWithModel(model, modelClass)

@@ -160,6 +160,9 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      */
     public Collection getAllModelElementsOfKindWithModel(Object model,
             Object type) {
+        if (model == null) {
+            throw new IllegalArgumentException("A model must be supplied");
+        }
         Class kind = (Class) type;
         Collection ret = getAllModelElementsOfKind(model, kind);
         if (kind.isAssignableFrom(model.getClass())) {

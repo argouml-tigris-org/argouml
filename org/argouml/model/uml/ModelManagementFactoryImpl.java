@@ -47,6 +47,11 @@ public class ModelManagementFactoryImpl
 	implements ModelManagementFactory {
 
     /**
+     * The root model.
+     */
+    MModel rootModel;
+    
+    /**
      * The model implementation.
      */
     private NSUMLModelImplementation nsmodel;
@@ -71,6 +76,23 @@ public class ModelManagementFactoryImpl
 	return modelElement;
     }
 
+    /**
+     * Sets the root model of the project
+     * @param rootModel the new root model.
+     */
+    public void setRootModel(Object rootModel) {
+        this.rootModel = (MModel)rootModel;
+    }
+    
+    /**
+     * Gets the root model of the project
+     * @return the current root model.
+     */
+    public Object getRootModel() {
+        return rootModel;
+    }
+    
+    
     /**
      * Create an empty but initialized instance of a UML ElementImport.
      *
