@@ -160,10 +160,10 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
      */
     private NSUMLModelImplementation nsmodel;
 
-//    /**
-//     * A map of valid connections keyed by the connection type.
-//     * The constructor builds this from the data in the VALID_CONNECTIONS array
-//     */
+    /**
+     * A map of valid connections keyed by the connection type.
+     * The constructor builds this from the data in the VALID_CONNECTIONS array
+     */
     private Map validConnectionMap = new HashMap();
 
     // TODO: The purpose of the jmiProxy is not understood (Linus January
@@ -272,7 +272,7 @@ public class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactor
     UmlFactoryImpl(NSUMLModelImplementation implementation) {
         nsmodel = implementation;
 
-//        buildValidConnectionMap();
+        buildValidConnectionMap();
         initializeFactoryMethods();
     }
 
