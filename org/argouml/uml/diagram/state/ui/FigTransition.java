@@ -168,7 +168,8 @@ public class FigTransition extends FigEdgeModelElement {
             // register the event (or trigger)
             Model.getPump().addModelEventListener(this,
                     e.getNewValue(), new String[] {
-                    	"parameter", "name",
+                    	"parameter", "name", "operation", "signal"
+                        //TODO: How to listen to time/change expression?
             	    });
             updateNameText();
             damage();
