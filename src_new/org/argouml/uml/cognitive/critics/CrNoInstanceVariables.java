@@ -135,7 +135,7 @@ public class CrNoInstanceVariables extends CrUML {
 
     /**
      * @see org.argouml.cognitive.critics.Critic#initWizard(
-     *         org.argouml.kernel.Wizard)
+     *         org.argouml.cognitive.ui.Wizard)
      */
     public void initWizard(Wizard w) {
 	if (w instanceof WizAddInstanceVariable) {
