@@ -211,7 +211,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-    TableModelEvent mEvent1 = null, mEvent2 = null;
+    TableModelEvent mEvent = null;
 
     if (columnIndex != 0 && columnIndex != 1) return;
     if (!(aValue instanceof String)) return;
@@ -225,26 +225,23 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
       }
       tvs.addElement(tv);
 
-      mEvent1 = new TableModelEvent(this, tvs.size()-1);
-      mEvent2 = new TableModelEvent(this, tvs.size(), tvs.size(),
+      mEvent = new TableModelEvent(this, tvs.size(), tvs.size(),
 			TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
     }
     else if ("".equals(aValue) && columnIndex == 0) {
       tvs.removeElementAt(rowIndex);
-      mEvent1 = new TableModelEvent(this, rowIndex, rowIndex,
+      mEvent = new TableModelEvent(this, rowIndex, rowIndex,
 			TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
     }
     else {
       MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
       if (columnIndex == 0) tv.setTag((String) aValue);
       if (columnIndex == 1) tv.setValue((String) aValue);
-      mEvent1 = new TableModelEvent(this, rowIndex);
+      mEvent = new TableModelEvent(this, rowIndex);
     }
     _target.setTaggedValues(tvs);
-    if (mEvent1 != null)
-      fireTableChanged(mEvent1);
-    if (mEvent2 != null)
-      fireTableChanged(mEvent2);
+    if (mEvent != null)
+      fireTableChanged(mEvent);
     _tab.resizeColumns();
   }
 
