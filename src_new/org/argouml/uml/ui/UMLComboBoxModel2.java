@@ -59,7 +59,7 @@ public abstract class UMLComboBoxModel2
     
 	
     /**
-     * Constructs a model for a combobox. The container given is usecd to retreive
+     * Constructs a model for a combobox. The container given is used to retreive
      * the target that is manipulated through this combobox. The propertyname
      * must equal the name of the NSUML event thrown when the property is set.
      * @param container
@@ -126,14 +126,16 @@ public abstract class UMLComboBoxModel2
      * @see ru.novosoft.uml.MElementListener#roleRemoved(MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
-        
+        if (isValid((MModelElement)e.getRemovedValue())) {
+            removeElement(e.getAddedValue());
+        }
     }
 
     /**
      * Returns the container.
      * @return UMLUserInterfaceContainer
      */
-    public UMLUserInterfaceContainer getContainer() {
+    protected UMLUserInterfaceContainer getContainer() {
         return container;
     }
 
@@ -141,7 +143,7 @@ public abstract class UMLComboBoxModel2
      * Sets the container.
      * @param container The container to set
      */
-    public void setContainer(UMLUserInterfaceContainer container) {
+    protected void setContainer(UMLUserInterfaceContainer container) {
         this.container = container;
     }
 
@@ -153,7 +155,6 @@ public abstract class UMLComboBoxModel2
         // the change (the actual old and new target)
         // this must be implemented in the whole of argo one time or another
         // to improve performance and reduce errors
-        Object target = getContainer().getTarget();
         buildModelList();
     }
 
@@ -288,7 +289,7 @@ public abstract class UMLComboBoxModel2
      * at once.
      * @param elements
      */
-    public void setElements(Collection elements) {
+    protected void setElements(Collection elements) {
         if (elements != null) {
             int size = list.size() > 0 ? list.size()-1 : 0;
             list.clear();

@@ -825,7 +825,6 @@ public class Project implements java.io.Serializable {
     }
     
 	public MClassifier findTypeInModel(String s, MNamespace ns) {
-		cat.debug("Looking for type "+s+" in Namespace "+ns.getName());
 		// s is short name
 		// will only return first found element
 		Collection allClassifiers = ModelManagementHelper.getHelper().getAllModelElementsOfKind(ns, MClassifier.class);

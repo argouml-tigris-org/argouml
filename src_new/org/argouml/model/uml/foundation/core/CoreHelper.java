@@ -36,8 +36,6 @@ import org.argouml.kernel.Project;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.ui.ProjectBrowser;
 
-import com.icl.saxon.functions.Extensions;
-
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;

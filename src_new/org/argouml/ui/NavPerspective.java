@@ -184,7 +184,7 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(modelToExtendsAndIncludes);
     packageCentric.addSubTreeModel(modelToInstances);
     packageCentric.addSubTreeModel(modelToLinks);
-    packageCentric.addSubTreeModel(modelToCollaboration);
+    packageCentric.addSubTreeModel(new GoModelToCollaboration());
     packageCentric.addSubTreeModel(modelToComponentInstance);
     packageCentric.addSubTreeModel(modelToNodeInstance);
     packageCentric.addSubTreeModel(modelToGeneralizations);
@@ -199,6 +199,8 @@ implements Serializable, TreeModel, Cloneable {
     packageCentric.addSubTreeModel(new GoSignalToReception());
     packageCentric.addSubTreeModel(new GoLinkStimuli());
     packageCentric.addSubTreeModel(new GoStimulusAction());
+    packageCentric.addSubTreeModel(new GoClassifierToCollaboration());
+    packageCentric.addSubTreeModel(new GoOperationToCollaboration());
     
     // rules for statemachinediagram and activitydiagram
     packageCentric.addSubTreeModel(new GoBehavioralFeatureToStateMachine());

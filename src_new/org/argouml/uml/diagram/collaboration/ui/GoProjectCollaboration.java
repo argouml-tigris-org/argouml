@@ -77,7 +77,10 @@ public class GoProjectCollaboration implements TreeModel {
     java.util.Enumeration enum = models.elements();
     while (enum.hasMoreElements()) {
       Object ns = enum.nextElement();
-      if (ns instanceof MCollaboration) res.addElement(ns);
+      if (ns instanceof MCollaboration && 
+        (((MCollaboration)ns).getRepresentedClassifier() == null) &&
+        (((MCollaboration)ns).getRepresentedOperation() == null))
+            res.addElement(ns);
     }
     return res;
   }

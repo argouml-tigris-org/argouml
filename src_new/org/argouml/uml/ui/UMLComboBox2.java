@@ -135,6 +135,11 @@ public abstract class UMLComboBox2
         }
     }
     
+    /**
+     * The 'body' of the actionPerformed method. Is only called if there is
+     * actually a selection made.
+     * @param event
+     */
     protected abstract void doIt(ActionEvent event);
 
 }
