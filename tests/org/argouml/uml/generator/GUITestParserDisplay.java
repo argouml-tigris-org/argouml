@@ -126,32 +126,32 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR01, "name");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR02, "name");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR03, "name");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR04, "name");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR05, "name");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkName(attr, ATTR06, "name");
     }
@@ -170,22 +170,22 @@ public class GUITestParserDisplay extends TestCase {
         Object intType = project.findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR03, "void");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR04, "int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR05, "int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkType(attr, ATTR06, "int");
     }
@@ -203,39 +203,39 @@ public class GUITestParserDisplay extends TestCase {
         Object intType = project.findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR02, "public");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR03, "private");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR04, "protected");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR05, "public");
         checkVisibility(attr, ATTR01, "public");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR06, "private");
         checkVisibility(attr, ATTR01, "private");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR08, "public");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkVisibility(attr, ATTR11, "public");
     }
@@ -264,17 +264,17 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR04, res1);
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR05, res2);
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkProperties(attr, ATTR06, res3);
     }
@@ -293,17 +293,17 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR04, new MMultiplicity("1..1"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR05, new MMultiplicity("1..*"));
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkMultiplicity(attr, ATTR06, new MMultiplicity("*..*"));
     }
@@ -320,7 +320,7 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkThrows(attr, NATTR01, true, false, false);
         checkThrows(attr, NATTR02, true, false, false);
@@ -351,39 +351,39 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR05, "0");
         checkValue(attr, ATTR01, "0");
         checkValue(attr, ATTR06, "15");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR07, "\'val[15] \'");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR08, "\"a <<string>>\"");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR09, "(a * (b+c) - d)");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR10, "2 * (b+c) - 10");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR11, "a[15]");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkValue(attr, ATTR12, "a << 5");
     }
@@ -422,23 +422,23 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject().findType("int");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         softAddStereotype("attrstereo1", attr);
         softAddStereotype("attrstereo2", attr);
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR01, null);
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR10, "attrstereo1");
 
         attr = Model.getCoreFactory().buildAttribute(ns, intType);
-        ModelFacade.setNamespace(attr, ns);
+        Model.getCoreHelper().setNamespace(attr, ns);
 
         checkStereotype(attr, ATTR11, "attrstereo2");
         checkStereotype(attr, ATTR01, "attrstereo2");
@@ -459,7 +459,7 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject()
             	.findFigsForMember(cl);
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
@@ -494,7 +494,7 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject()
             	.findFigsForMember(cl);
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
@@ -529,7 +529,7 @@ public class GUITestParserDisplay extends TestCase {
             ProjectManager.getManager().getCurrentProject()
             	.findFigsForMember(cl);
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
@@ -572,7 +572,7 @@ public class GUITestParserDisplay extends TestCase {
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
 
         String[] res1 = {
         };
@@ -624,7 +624,7 @@ public class GUITestParserDisplay extends TestCase {
         Object voidType =
             ProjectManager.getManager().getCurrentProject().findType("void");
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
 
         String[] res1 = {
             "abstract", null,
@@ -666,7 +666,7 @@ public class GUITestParserDisplay extends TestCase {
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
             	.findFigsForMember(cl);
@@ -706,7 +706,7 @@ public class GUITestParserDisplay extends TestCase {
         MNamespace ns =  (MNamespace)
             ProjectManager.getManager().getCurrentProject().getModel();
 
-        ModelFacade.setNamespace(cl, ns);
+        Model.getCoreHelper().setNamespace(cl, ns);
         Collection propertyChangeListeners =
             ProjectManager.getManager().getCurrentProject()
             	.findFigsForMember(cl);

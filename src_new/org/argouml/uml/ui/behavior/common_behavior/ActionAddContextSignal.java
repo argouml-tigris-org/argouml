@@ -80,7 +80,7 @@ public class ActionAddContextSignal extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ModelFacade.setContexts(getTarget(), selected);
+        Model.getCommonBehaviorHelper().setContexts(getTarget(), selected);
     }
 
 }

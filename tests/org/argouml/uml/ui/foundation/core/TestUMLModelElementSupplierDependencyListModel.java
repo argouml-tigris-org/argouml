@@ -26,7 +26,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -65,7 +64,7 @@ public class TestUMLModelElementSupplierDependencyListModel
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getCoreFactory().createDependency();
-            ModelFacade.addSupplierDependency(getElem(), ext[i]);
+            Model.getCoreHelper().addSupplierDependency(getElem(), ext[i]);
         }
         return ext;
     }
@@ -75,7 +74,7 @@ public class TestUMLModelElementSupplierDependencyListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeSupplierDependency(getElem(), elements[i]);
+            Model.getCoreHelper().removeSupplierDependency(getElem(), elements[i]);
         }
     }
 

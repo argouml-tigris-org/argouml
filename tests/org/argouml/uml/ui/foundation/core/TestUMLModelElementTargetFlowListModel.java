@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -64,7 +63,7 @@ public class TestUMLModelElementTargetFlowListModel
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getCoreFactory().createFlow();
-            ModelFacade.addTargetFlow(getElem(), ext[i]);
+            Model.getCoreHelper().addTargetFlow(getElem(), ext[i]);
         }
         return ext;
     }
@@ -74,7 +73,7 @@ public class TestUMLModelElementTargetFlowListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeTargetFlow(getElem(), elements[i]);
+            Model.getCoreHelper().removeTargetFlow(getElem(), elements[i]);
         }
     }
 }

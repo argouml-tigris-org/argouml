@@ -118,7 +118,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void setSender(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            ModelFacade.setSender(target, element);
+            Model.getCollaborationsHelper().setSender(target, element);
         }
     }
 
@@ -141,7 +141,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     public void setReceiver(Object/*MInstance*/ element) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAStimulus(target)) {
-            ModelFacade.setReceiver(target, element);
+            Model.getCommonBehaviorHelper().setReceiver(target, element);
         }
     }
 
@@ -181,13 +181,13 @@ public class PropPanelStimulus extends PropPanelModelElement {
                 link = Model.getCommonBehaviorFactory().createLink();
                 //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
-                    ModelFacade.addStimulus(link, stimulus);
-                    ModelFacade.setCommunicationLink(stimulus, /*(MLink)*/link);
+                    Model.getCommonBehaviorHelper().addStimulus(link, stimulus);
+                    Model.getCommonBehaviorHelper().setCommunicationLink(stimulus, /*(MLink)*/link);
                 }
             }
             Object oldAssoc = ModelFacade.getAssociation(link);
             if (oldAssoc != element) {
-                ModelFacade.setAssociation(link, element);
+                Model.getCoreHelper().setAssociation(link, element);
                 //
                 //  TODO: more needs to go here
                 //

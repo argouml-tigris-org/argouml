@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
@@ -169,9 +170,11 @@ public abstract class UMLExpressionModel2  {
      * @param body the body text of the expression
      */
     private void setExpression(String lang, Object body) {
-        if (expression == null) expression = newExpression();
-        ModelFacade.setLanguage(expression, lang);
-        ModelFacade.setBody(expression, body);
+        if (expression == null) {
+            expression = newExpression();
+        }
+        Model.getDataTypesHelper().setLanguage(expression, lang);
+        Model.getCoreHelper().setBody(expression, body);
         setExpression(expression);
     }
 

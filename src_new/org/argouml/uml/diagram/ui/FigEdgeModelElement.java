@@ -462,7 +462,7 @@ public abstract class FigEdgeModelElement
         if (ft == name) {
             if (getOwner() == null)
                 return;
-            ModelFacade.setName(getOwner(), ft.getText());
+            Model.getCoreHelper().setName(getOwner(), ft.getText());
         }
     }
 
@@ -624,7 +624,7 @@ public abstract class FigEdgeModelElement
                 Model.getPump().addModelEventListener(this, oldOwner);
 
                 if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
-                    ModelFacade.setUUID(newOwner,
+                    Model.getCoreHelper().setUUID(newOwner,
 					UUIDHelper.getInstance().getNewUUID());
 		}
             }

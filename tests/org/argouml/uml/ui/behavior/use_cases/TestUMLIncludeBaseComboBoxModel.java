@@ -28,7 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -61,10 +60,10 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
         bases = new Object[10];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        ModelFacade.setNamespace(elem, m);
+        Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             bases[i] = Model.getUseCasesFactory().createUseCase();
-            ModelFacade.addOwnedElement(m, bases[i]);
+            Model.getCoreHelper().addOwnedElement(m, bases[i]);
         }
     }
 
@@ -94,7 +93,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
      * Test setBase().
      */
     public void testSetBase() {
-        ModelFacade.setBase(elem, bases[0]);
+        Model.getUseCasesHelper().setBase(elem, bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
@@ -102,7 +101,7 @@ public class TestUMLIncludeBaseComboBoxModel extends TestCase {
      * Test setBase() with null argument.
      */
     public void testSetBaseToNull() {
-        ModelFacade.setBase(elem, null);
+        Model.getUseCasesHelper().setBase(elem, null);
         assertNull(model.getSelectedItem());
     }
 

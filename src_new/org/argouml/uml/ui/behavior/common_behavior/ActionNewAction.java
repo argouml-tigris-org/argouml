@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -96,19 +97,19 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
         super.actionPerformed(e);
         Object action = createAction();
         if (getValue(ROLE).equals(Roles.EXIT)) {
-            ModelFacade.setExit(getTarget(), action);
+            Model.getStateMachinesHelper().setExit(getTarget(), action);
         } else
 	    if (getValue(ROLE).equals(Roles.ENTRY)) {
-		ModelFacade.setEntry(getTarget(), action);
+		Model.getStateMachinesHelper().setEntry(getTarget(), action);
 	    } else
 		if (getValue(ROLE).equals(Roles.DO)) {
-		    ModelFacade.setDoActivity(getTarget(), action);
+		    Model.getStateMachinesHelper().setDoActivity(getTarget(), action);
 		} else
 		    if (getValue(ROLE).equals(Roles.ACTION)) {
-			ModelFacade.setAction(getTarget(), action);
+			Model.getCollaborationsHelper().setAction(getTarget(), action);
 		    } else
 			if (getValue(ROLE).equals(Roles.EFFECT)) {
-			    ModelFacade.setEffect(getTarget(), action);
+			    Model.getStateMachinesHelper().setEffect(getTarget(), action);
 			}
 
     }

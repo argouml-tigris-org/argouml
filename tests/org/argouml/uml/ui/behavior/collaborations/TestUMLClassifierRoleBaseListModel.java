@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -65,7 +64,7 @@ public class TestUMLClassifierRoleBaseListModel
         Object[] bases = new Object[10];
         for (int i = 0; i < bases.length; i++) {
             bases[i] = Model.getCoreFactory().createClass();
-            ModelFacade.addBase(getElem(), bases[i]);
+            Model.getCollaborationsHelper().addBase(getElem(), bases[i]);
         }
         return bases;
     }
@@ -75,7 +74,7 @@ public class TestUMLClassifierRoleBaseListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeBase(getElem(), elements[i]);
+            Model.getCollaborationsHelper().removeBase(getElem(), elements[i]);
         }
     }
 

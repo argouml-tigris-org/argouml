@@ -304,10 +304,10 @@ public class GUITestProject extends TestCase {
         // test with a package and a class and activity diagram
         Object package1 =
             Model.getModelManagementFactory().buildPackage("test1", null);
-        ModelFacade.setNamespace(package1, p.getModel());
+        Model.getCoreHelper().setNamespace(package1, p.getModel());
         Object package2 =
             Model.getModelManagementFactory().buildPackage("test2", null);
-        ModelFacade.setNamespace(package2, package1);
+        Model.getCoreHelper().setNamespace(package2, package1);
 
         // build the Activity Diagram
         Object actgrph =

@@ -34,12 +34,38 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.CoreHelper;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.UmlException;
 
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
+import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
+import ru.novosoft.uml.behavior.activity_graphs.MObjectFlowState;
+import ru.novosoft.uml.behavior.activity_graphs.MPartition;
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MAttributeLink;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstance;
+import ru.novosoft.uml.behavior.common_behavior.MReception;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
@@ -50,10 +76,12 @@ import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MDataType;
 import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MFeature;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
@@ -68,9 +96,21 @@ import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
+import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MOrderingKind;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MElementImport;
 import ru.novosoft.uml.model_management.MPackage;
 
 /**
@@ -1742,5 +1782,1570 @@ class CoreHelperImpl implements CoreHelper {
             throw new IllegalArgumentException("kindType: " + kindType
 					       + " not supported");
         }
+    }
+
+    /**
+     * Remove the given modelelement from a given comment.
+     *
+     * @param handle MComment
+     * @param me MModelElement
+     */
+    public void removeAnnotatedElement(Object handle, Object me) {
+        if (handle instanceof MComment && me instanceof MModelElement) {
+            ((MComment) handle).removeAnnotatedElement((MModelElement) me);
+            return;
+        }
+        throw new IllegalArgumentException();
+    }
+
+    /**
+     * This method removes a dependency from a model element.
+     *
+     * @param handle is the model element
+     * @param dep is the dependency
+     */
+    public void removeClientDependency(Object handle, Object dep) {
+        if (handle instanceof MModelElement
+                && dep instanceof MDependency) {
+            ((MModelElement) handle).removeClientDependency((MDependency) dep);
+            return;
+        }
+	throw new IllegalArgumentException();
+    }
+
+    /**
+     * Remove the given constraint from a given ModelElement.
+     *
+     * @param handle ModelElement
+     * @param cons Constraint
+     */
+    public void removeConstraint(Object handle, Object cons) {
+        if (handle instanceof MModelElement && cons instanceof MConstraint) {
+            ((MModelElement) handle).removeConstraint((MConstraint) cons);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or cons: " + cons);
+    }
+
+    /**
+     * Removes a owned model element from a namespace.
+     *
+     * @param handle is the name space
+     * @param value is the model element
+     */
+    public void removeOwnedElement(Object handle, Object value) {
+        if (handle instanceof MNamespace
+                && value instanceof MModelElement) {
+            ((MNamespace) handle).removeOwnedElement((MModelElement) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * This method removes a parameter from an operation.
+     *
+     * @param handle The operation.
+     * @param parameter The parameter.
+     */
+    public void removeParameter(Object handle, Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (handle instanceof MObjectFlowState) {
+                ((MObjectFlowState) handle).removeParameter(
+                        (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).removeParameter((MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).removeParameter(
+                    (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MClassifier) {
+                ((MClassifier) handle).removeParameter((MParameter) parameter);
+                return;
+            }
+        }
+
+        throw new IllegalArgumentException("handle: " + handle
+                + " or parameter: " + parameter);
+    }
+
+    /**
+     * Remove a source flow from a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    public void removeSourceFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).removeSourceFlow((MFlow) flow);
+            return;
+        }
+
+        throw new IllegalArgumentException("handle: " + handle
+                + " or flow: " + flow);
+    }
+
+    /**
+     * Adds a supplier dependency to some modelelement.
+     *
+     * @param supplier the supplier
+     * @param dependency the dependency
+     */
+    public void removeSupplierDependency(
+            Object supplier,
+            Object dependency) {
+        if (ModelFacade.isAModelElement(supplier)
+                && ModelFacade.isADependency(dependency)) {
+            MModelElement me = (MModelElement) supplier;
+            me.removeSupplierDependency((MDependency) dependency);
+            return;
+        }
+        throw new IllegalArgumentException("supplier: " + supplier
+                + " or dependency: " + dependency);
+    }
+
+    /**
+     * Removes a named tagged value from a model element, ie subsequent calls
+     * to getTaggedValue will return null for name, at least until a tagged
+     * value with that name has been added again.
+     *
+     * @param handle the model element to remove the tagged value from
+     * @param name the name of the tagged value
+     * @throws IllegalArgumentException if handle isn't a model element
+     */
+    public void removeTaggedValue(Object handle, String name) {
+        if (handle instanceof MModelElement) {
+            MModelElement me = (MModelElement) handle;
+            me.removeTaggedValue(name);
+            return;
+        }
+
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    public void removeTargetFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).removeTargetFlow((MFlow) flow);
+            return;
+        }
+
+        throw new IllegalArgumentException("handle: " + handle
+                + " or flow: " + flow);
+    }
+
+    /**
+     * Adds an annotated element to a comment.
+     *
+     * @param comment The comment to which the element is annotated
+     * @param annotatedElement The element to annotate
+     */
+    public void addAnnotatedElement(Object comment,
+            Object annotatedElement) {
+        if (comment instanceof MComment
+                && annotatedElement instanceof MModelElement) {
+            ((MComment) comment)
+                .addAnnotatedElement(((MModelElement) annotatedElement));
+            return;
+        }
+        throw new IllegalArgumentException("comment: " + comment
+                + " or annotatedElement: " + annotatedElement);
+    }
+
+    /**
+     * Adds a client model element to some dependency.
+     *
+     * @param handle dependency.
+     * @param element The model element.
+     * @throws IllegalArgumentException if the handle is not a dependency
+     * or the element is not a model element.
+     */
+    public void addClient(Object handle, Object element) {
+        if (handle instanceof MDependency
+                && element instanceof MModelElement) {
+            ((MDependency) handle).addClient((MModelElement) element);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or element: " + element);
+    }
+
+    /**
+     * Adds a client dependency to some modelelement.
+     *
+     * @param handle the modelelement
+     * @param dependency the dependency
+     */
+    public void addClientDependency(Object handle, Object dependency) {
+        if (ModelFacade.isAModelElement(handle)
+                && ModelFacade.isADependency(dependency)) {
+            MModelElement me = (MModelElement) handle;
+            me.addClientDependency((MDependency) dependency);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or dependency: " + dependency);
+    }
+
+    /**
+     * Add a new comment to a model element.
+     *
+     * @param element the element to which the comment is to be added
+     * @param comment the comment for the model element
+     */
+    public void addComment(Object element, Object comment) {
+        if (element instanceof MModelElement && comment instanceof MComment) {
+            ((MModelElement) element).addComment((MComment) comment);
+            return;
+        }
+        throw new IllegalArgumentException("element: " + element);
+    }
+
+    /**
+     * Add an End to a connection.
+     *
+     * @param handle Association or Link
+     * @param connection AssociationEnd or LinkEnd
+     */
+    public void addConnection(Object handle, Object connection) {
+        if (handle instanceof MAssociation
+            && connection instanceof MAssociationEnd) {
+            ((MAssociation) handle).addConnection((MAssociationEnd) connection);
+            return;
+        }
+        if (handle instanceof MLink
+            && connection instanceof MLinkEnd) {
+            ((MLink) handle).addConnection((MLinkEnd) connection);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or connection: " + connection);
+    }
+
+    /**
+     * Adds a constraint to some model element.
+     *
+     * @param handle model element
+     * @param mc constraint
+     */
+    public void addConstraint(Object handle, Object mc) {
+        if (handle instanceof MModelElement && mc instanceof MConstraint) {
+            ((MModelElement) handle).addConstraint((MConstraint) mc);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or mc: " + mc);
+    }
+
+    /**
+     * @param handle Component
+     * @param node Node
+     */
+    public void addDeploymentLocation(Object handle, Object node) {
+        if (handle instanceof MComponent && node instanceof MNode) {
+            ((MComponent) handle).addDeploymentLocation((MNode) node);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or node: " + node);
+    }
+
+    /**
+     * Adds a feature to some classifier.
+     *
+     * @param handle classifier
+     * @param index position
+     * @param f feature
+     */
+    public void addFeature(Object handle, int index, Object f) {
+        if (handle instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier) handle).addFeature(index, (MFeature) f);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or f: " + f);
+    }
+
+    /**
+     * Adds a feature to some classifier.
+     *
+     * @param handle classifier
+     * @param f feature
+     */
+    public void addFeature(Object handle, Object f) {
+        if (handle instanceof MClassifier && f instanceof MFeature) {
+            ((MClassifier) handle).addFeature((MFeature) f);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Add the given Link to the given Link or Association.
+     *
+     * @param handle the Link or Association
+     * @param link Link
+     */
+    public void addLink(Object handle, Object link) {
+        if (handle instanceof MAssociation && link instanceof MLink) {
+            ((MAssociation) handle).addLink((MLink) link);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or link: " + link);
+    }
+
+    /**
+     * Adds a method to some operation and copies the op's attributes
+     * to the method.
+     *
+     * @param handle is the operation
+     * @param m is the method
+     */
+    public void addMethod(Object handle, Object m) {
+        if (handle instanceof MOperation
+            && m instanceof MMethod) {
+            ((MMethod) m).setVisibility(((MOperation) handle).getVisibility());
+            ((MMethod) m).setOwnerScope(((MOperation) handle).getOwnerScope());
+            ((MOperation) handle).addMethod((MMethod) m);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or m: " + m);
+    }
+
+    /**
+     * Adds a model element to some namespace.
+     *
+     * @param handle namespace
+     * @param me model element
+     */
+    public void addOwnedElement(Object handle, Object me) {
+        if (handle instanceof MNamespace && me instanceof MModelElement) {
+            ((MNamespace) handle).addOwnedElement((MModelElement) me);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or me: " + me);
+    }
+
+    /**
+     * Add a Parameter to the given object at given location.
+     *
+     * @param handle The object that will get the Parameter:
+     *               MEvent, MBehavioralFeature.
+     * @param index the location
+     * @param parameter Object that will be added
+     */
+    public void addParameter(
+        Object handle,
+        int index,
+        Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).addParameter(index, (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).addParameter(
+                        index,
+                        (MParameter) parameter);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or parameter: " + parameter);
+    }
+
+    /**
+     * Add a Parameter to the given object.
+     *
+     * @param handle The object that will get the Parameter:
+     *               MObjectFlowState, MEvent, MBehavioralFeature, MClassifier.
+     * @param parameter Object that will be added
+     */
+    public void addParameter(Object handle, Object parameter) {
+        if (parameter instanceof MParameter) {
+            if (handle instanceof MObjectFlowState) {
+                ((MObjectFlowState) handle).addParameter(
+                        (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MEvent) {
+                ((MEvent) handle).addParameter((MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MBehavioralFeature) {
+                ((MBehavioralFeature) handle).addParameter(
+                    (MParameter) parameter);
+                return;
+            }
+            if (handle instanceof MClassifier) {
+                ((MClassifier) handle).addParameter((MParameter) parameter);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or parameter: " + parameter);
+    }
+
+    /**
+     * Add a raised Signal to a Message or Operation.
+     *
+     * @param handle the Message or Operation
+     * @param sig the Signal that is raised
+     */
+    public void addRaisedSignal(Object handle, Object sig) {
+        if (sig instanceof MSignal) {
+            if (handle instanceof MMessage) {
+                ((MBehavioralFeature) handle).addRaisedSignal((MSignal) sig);
+                return;
+            }
+            if (handle instanceof MOperation) {
+                ((MOperation) handle).addRaisedSignal((MSignal) sig);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or sig: " + sig);
+    }
+
+    /**
+     * Add a source flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow.
+     */
+    public void addSourceFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).addSourceFlow((MFlow) flow);
+            return;
+        }
+
+        throw new IllegalArgumentException("handle: " + handle
+                + " or flow: " + flow);
+    }
+
+    /**
+     * Adds a supplier classifier to some abstraction.
+     *
+     * @param handle abstraction
+     * @param element supplier model element
+     */
+    public void addSupplier(Object handle, Object element) {
+        if (handle instanceof MDependency && element instanceof MModelElement) {
+            ((MDependency) handle).addSupplier((MModelElement) element);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or element: " + element);
+    }
+
+    /**
+     * Adds a supplier dependency to some modelelement.
+     *
+     * @param supplier the supplier
+     * @param dependency the dependency
+     */
+    public void addSupplierDependency(
+            Object supplier,
+            Object dependency) {
+        if (supplier instanceof MModelElement
+                && dependency instanceof MDependency) {
+            MModelElement me = (MModelElement) supplier;
+            me.addSupplierDependency((MDependency) dependency);
+            return;
+        }
+        throw new IllegalArgumentException("supplier: " + supplier
+                + " or dependency: " + dependency);
+    }
+
+    /**
+     * Adds a TaggedValue to a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param taggedValue TaggedValue
+     */
+    public void addTaggedValue(Object handle, Object taggedValue) {
+        if (handle instanceof MModelElement
+                && taggedValue instanceof MTaggedValue) {
+            ((MModelElement) handle).addTaggedValue((MTaggedValue) taggedValue);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or taggedValue: " + taggedValue);
+    }
+
+    /**
+     * Add a target flow to a model element.
+     *
+     * @param handle The model element.
+     * @param flow The flow to add.
+     */
+    public void addTargetFlow(Object handle, Object flow) {
+        if (handle instanceof MModelElement
+                && flow instanceof MFlow) {
+            ((MModelElement) handle).addTargetFlow((MFlow) flow);
+            return;
+        }
+
+        throw new IllegalArgumentException("handle: " + handle
+                + " or flow: " + flow);
+    }
+
+    /**
+     * Sets if of some model element is abstract.
+     *
+     * @param handle is the classifier
+     * @param flag is true if it should be abstract
+     */
+    public void setAbstract(Object handle, boolean flag) {
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setAbstract(flag);
+            return;
+        }
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setAbstract(flag);
+            return;
+        }
+        if (handle instanceof MReception) {
+            ((MReception) handle).setAbstarct(flag);
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Makes a Class active.
+     *
+     * @param handle Class
+     * @param active boolean
+     */
+    public void setActive(Object handle, boolean active) {
+        if (handle instanceof MClass) {
+            ((MClass) handle).setActive(active);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the aggregation of some model element.
+     *
+     * @param handle the model element to set aggregation
+     * @param aggregationKind the aggregation kind
+     */
+    public void setAggregation(Object handle, Object aggregationKind) {
+        if (handle instanceof MAssociationEnd
+            && aggregationKind instanceof MAggregationKind) {
+            ((MAssociationEnd) handle).setAggregation(
+                (MAggregationKind) aggregationKind);
+                return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or aggregationKind: " + aggregationKind);
+    }
+
+    /**
+     * Sets the list of annotated elements of the given comment.
+     *
+     * @param handle the given comment
+     * @param elems the list of annotated modelelements
+     */
+    public void setAnnotatedElements(Object handle, Collection elems) {
+        if (handle instanceof MComment
+            && elems instanceof List) {
+            ((MComment) handle).setAnnotatedElements(elems);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the association of some model element.
+     *
+     * @param handle the model element to set association
+     * @param association is the association
+     */
+    public void setAssociation(Object handle, Object association) {
+        if (association instanceof MAssociation) {
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setAssociation(
+                    (MAssociation) association);
+                return;
+            }
+            if (handle instanceof MLink) {
+                ((MLink) handle).setAssociation((MAssociation) association);
+                return;
+            }
+        } else if (association instanceof MAssociationRole) {
+            if (handle instanceof MAssociationEndRole) {
+                ((MAssociationEndRole) handle).setAssociation(
+                        (MAssociationRole) association);
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or association: " + association);
+    }
+
+    /**
+     * Sets if some model element is a leaf.
+     *
+     * @param handle model element
+     * @param flag is true if it is a leaf.
+     */
+    public void setLeaf(Object handle, boolean flag) {
+        if (handle instanceof MReception) {
+            ((MReception) handle).setLeaf(flag);
+            return;
+        }
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setLeaf(flag);
+            return;
+        }
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setLeaf(flag);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the raised signals of some behavioural feature.
+     *
+     * @param handle the behavioural feature
+     * @param raisedSignals the raised signals
+     */
+    public void setRaisedSignals(
+        Object handle,
+        Collection raisedSignals) {
+        if (handle instanceof MBehavioralFeature) {
+            ((MBehavioralFeature) handle).setRaisedSignals(raisedSignals);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets a body of a given Method, Constraint or Expression.
+     *
+     * @param handle is the method, expression
+     * @param expr is the body string for the expression
+     */
+    public void setBody(Object handle, Object expr) {
+        if (handle instanceof MMethod
+            && (expr == null || expr instanceof MProcedureExpression)) {
+            ((MMethod) handle).setBody((MProcedureExpression) expr);
+            return;
+        }
+
+        if (handle instanceof MConstraint
+            && (expr == null || expr instanceof MBooleanExpression)) {
+            ((MConstraint) handle).setBody((MBooleanExpression) expr);
+            return;
+        }
+
+        /*
+         * TODO: MVW: The next part is fooling the user of setBody()
+         * in thinking that the body of the object is changed.
+         * Instead, a new object is created and as a side-effect
+         * the language is lost.
+         * Maybe we should just copy the language?
+         */
+        if (handle instanceof MExpression) {
+            MExpressionEditor expressionEditor =
+                (MExpressionEditor) Model.getDataTypesFactory()
+                	.createExpressionEditor(handle);
+            expressionEditor.setBody((String) expr);
+            expressionEditor.toExpression();
+            // this last step creates a new MExpression
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or expr: " + expr);
+    }
+
+    /**
+     * Set the Changeability of a StructuralFeature or AssociationEnd.
+     *
+     * @param handle StructuralFeature or AssociationEnd
+     * @param ck ChangeableKind
+     */
+    public void setChangeability(Object handle, Object ck) {
+        if (ck == null || ck instanceof MChangeableKind) {
+            MChangeableKind changeableKind = (MChangeableKind) ck;
+
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature) handle).setChangeability(changeableKind);
+                return;
+            }
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setChangeability(changeableKind);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or ck: " + ck);
+    }
+
+    /**
+     * Set the changeability of some feature.
+     *
+     * @param handle is the feature
+     * @param flag is the changeability flag
+     */
+    public void setChangeable(Object handle, boolean flag) {
+        // TODO: the implementation is ugly, because I have no spec
+        // at hand...
+        if (handle instanceof MStructuralFeature) {
+            if (flag) {
+                ((MStructuralFeature) handle).setChangeability(
+                    MChangeableKind.CHANGEABLE);
+                    return;
+            } else {
+                ((MStructuralFeature) handle).setChangeability(
+                    MChangeableKind.FROZEN);
+            return;
+            }
+        } else if (handle instanceof MAssociationEnd) {
+            MAssociationEnd ae = (MAssociationEnd) handle;
+            if (flag) {
+                ae.setChangeability(MChangeableKind.CHANGEABLE);
+            } else {
+                ae.setChangeability(MChangeableKind.FROZEN);
+            }
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the child for a generalization.
+     *
+     * @param handle Generalization
+     * @param child GeneralizableElement
+     */
+    public void setChild(Object handle, Object child) {
+        if (handle instanceof MGeneralization) {
+            ((MGeneralization) handle).setChild((MGeneralizableElement) child);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or child: " + child);
+    }
+
+    /**
+     * Set the concurrency of some operation.
+     *
+     * @param handle is the operation
+     * @param concurrencyKind is the concurrency
+     */
+    public void setConcurrency(
+        Object handle,
+        Object concurrencyKind) {
+        if (handle instanceof MOperation
+            && concurrencyKind instanceof MCallConcurrencyKind) {
+            ((MOperation) handle).setConcurrency(
+                (MCallConcurrencyKind) concurrencyKind);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or concurrencyKind: " + concurrencyKind);
+    }
+
+    /**
+     * Sets the list of connections of the given association or link.
+     *
+     * @param handle the given association or link
+     * @param elems the list of association-ends or link-ends
+     */
+    public void setConnections(Object handle, Collection elems) {
+        if (handle instanceof MAssociation && elems instanceof List) {
+            ((MAssociation) handle).setConnections((List) elems);
+            return;
+        }
+        if (handle instanceof MLink && elems instanceof List) {
+            ((MLink) handle).setConnections(elems);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets a default value of some parameter.
+     *
+     * @param handle is the parameter
+     * @param expr is the expression
+     */
+    public void setDefaultValue(Object handle, Object expr) {
+        if (handle instanceof MParameter && expr instanceof MExpression) {
+            ((MParameter) handle).setDefaultValue((MExpression) expr);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or expr: " + expr);
+    }
+
+    /**
+     * @param handle a generalization
+     * @param discriminator the discriminator to set
+     */
+    public void setDiscriminator(Object handle, String discriminator) {
+        if (handle instanceof MGeneralization) {
+            ((MGeneralization) handle).setDiscriminator(discriminator);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the feature at the given position.
+     *
+     * @param elem The classifier to set.
+     * @param i The position. Start with 0.
+     * @param impl The feature to set.
+     */
+    public void setFeature(Object elem, int i, Object impl) {
+        if (elem instanceof MClassifier
+                && impl instanceof MFeature) {
+            ((MClassifier) elem).setFeature(i, (MFeature) impl);
+            return;
+        }
+
+        throw new IllegalArgumentException("elem: " + elem
+                + " or impl: " + impl);
+    }
+
+    /**
+     * Sets the features of some model element.
+     *
+     * @param handle the model element to set features to
+     * @param features the list of features
+     */
+    public void setFeatures(Object handle, Collection features) {
+        if (handle instanceof MClassifier
+            && features instanceof List) {
+            ((MClassifier) handle).setFeatures((List) features);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the ImplementationLocation of the given ElementResidence
+     * to the given Component.
+     *
+     * @param handle the ElementResidence
+     * @param component the Component
+     */
+    public void setImplementationLocation(
+        Object handle,
+        Object component) {
+        if (handle instanceof MElementResidence
+                && (component == null || component instanceof MComponent)) {
+            ((MElementResidence) handle).setImplementationLocation(
+                (MComponent) component);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or component: " + component);
+    }
+
+    /**
+     * Sets an initial value.
+     *
+     * @param at attribute that we set the initial value of
+     * @param expr that is the value to set. Can be <code>null</code>.
+     */
+    public void setInitialValue(Object at, Object expr) {
+        if (at instanceof MAttribute
+                && (expr == null || expr instanceof MExpression)) {
+            ((MAttribute) at).setInitialValue((MExpression) expr);
+            return;
+        }
+        throw new IllegalArgumentException("at: " + at + " or expr: " + expr);
+    }
+
+    /**
+     * Set some parameters kind.
+     *
+     * @param handle is the parameter
+     * @param kind is the directionkind
+     */
+    public void setKind(Object handle, Object kind) {
+        if (handle instanceof MParameter
+            && kind instanceof MParameterDirectionKind) {
+            ((MParameter) handle).setKind((MParameterDirectionKind) kind);
+            return;
+        }
+        if (handle instanceof MPseudostate
+            && kind instanceof MPseudostateKind) {
+            ((MPseudostate) handle).setKind((MPseudostateKind) kind);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or kind: " + kind);
+    }
+
+    /**
+     * Set some parameters kind to 'in'.
+     *
+     * @param handle is the parameter
+     */
+    public void setKindToIn(Object handle) {
+        if (handle instanceof MParameter) {
+            ((MParameter) handle).setKind(MParameterDirectionKind.IN);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set some parameters kind to 'in/out'.
+     *
+     * @param handle is the parameter
+     */
+    public void setKindToInOut(Object handle) {
+        if (handle instanceof MParameter) {
+            ((MParameter) handle).setKind(MParameterDirectionKind.INOUT);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set some parameters kind to 'out'.
+     *
+     * @param handle is the parameter
+     */
+    public void setKindToOut(Object handle) {
+        if (handle instanceof MParameter) {
+            ((MParameter) handle).setKind(MParameterDirectionKind.OUT);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set some parameters kind to 'return'.
+     *
+     * @param handle is the parameter
+     */
+    public void setKindToReturn(Object handle) {
+        if (handle instanceof MParameter) {
+            ((MParameter) handle).setKind(MParameterDirectionKind.RETURN);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the container that owns the handle. This must be set
+     * correctly so every modelelement except the root model does have
+     * an owner. Otherwise the saving/loading will fail.<p>
+     *
+     * <em>Warning: when changing the implementation of this method
+     * be warned that the sequence of the if then else tree DOES
+     * matter.</em> Most notabely, do not move the setNamespace method
+     * any level up in the tree.<p>
+     *
+     * <em>Warning: the implementation does not support setting the
+     * owner of actions.</em> Use setState1 etc. on action for that
+     * goal<p>
+     *
+     * @param handle The modelelement that must be added to the container
+     * @param container The owning modelelement
+     * @exception IllegalArgumentException when the handle or
+     * container is null or if the handle cannot be added to the
+     * container.
+     */
+    public void setModelElementContainer(
+        Object handle,
+        Object container) {
+        if (handle instanceof MPartition
+            && container instanceof MActivityGraph) {
+            ((MPartition) handle).setActivityGraph((MActivityGraph) container);
+        } else if (handle instanceof MModelElement
+                && container instanceof MPartition) {
+            ((MPartition) container).addContents((MModelElement) handle);
+        } else if (
+            handle instanceof MConstraint
+                && container instanceof MStereotype) {
+            MConstraint c = (MConstraint) handle;
+            c.setConstrainedElement2((MStereotype) container);
+        } else if (
+            handle instanceof MInteraction
+                && container instanceof MCollaboration) {
+            ((MInteraction) handle).setContext((MCollaboration) container);
+        } else if (
+            handle instanceof MElementResidence
+                && container instanceof MComponent) {
+            MElementResidence er = (MElementResidence) handle;
+            er.setImplementationLocation((MComponent) container);
+        } else if (
+            handle instanceof MAttributeLink
+                && container instanceof MInstance) {
+            ((MAttributeLink) handle).setInstance((MInstance) container);
+        } else if (
+            handle instanceof MMessage && container instanceof MInteraction) {
+            ((MMessage) handle).setInteraction((MInteraction) container);
+        } else if (handle instanceof MLinkEnd && container instanceof MLink) {
+            ((MLinkEnd) handle).setLink((MLink) container);
+        } else if (
+            handle instanceof MAttributeLink
+                && container instanceof MLinkEnd) {
+            ((MAttributeLink) handle).setLinkEnd((MLinkEnd) container);
+        } else if (
+            handle instanceof MTaggedValue
+                && container instanceof MStereotype) {
+            ((MTaggedValue) handle).setStereotype((MStereotype) container);
+        } else if (
+            handle instanceof MTaggedValue
+                && container instanceof MModelElement) {
+            ((MTaggedValue) handle).setModelElement((MModelElement) container);
+        } else if (
+            handle instanceof MStateVertex
+                && container instanceof MCompositeState) {
+            ((MStateVertex) handle).setContainer((MCompositeState) container);
+        } else if (
+            handle instanceof MElementImport
+                && container instanceof MPackage) {
+            ((MElementImport) handle).setPackage((MPackage) container);
+        } else if (
+            handle instanceof MTransition && container instanceof MState) {
+            ((MTransition) handle).setState((MState) container);
+        } else if (
+            handle instanceof MState && container instanceof MStateMachine) {
+            ((MState) handle).setStateMachine((MStateMachine) container);
+        } else if (
+            handle instanceof MTransition
+                && container instanceof MStateMachine) {
+            ((MTransition) handle).setStateMachine((MStateMachine) container);
+        } else if (
+            handle instanceof MAction && container instanceof MTransition) {
+            ((MAction) handle).setTransition((MTransition) container);
+        } else if (
+            handle instanceof MGuard && container instanceof MTransition) {
+            ((MGuard) handle).setTransition((MTransition) container);
+        } else if (
+            handle instanceof MModelElement
+                && container instanceof MNamespace) {
+            ((MModelElement) handle).setNamespace((MNamespace) container);
+        } else {
+            throw new IllegalArgumentException("handle: " + handle
+                    + " or container: " + container);
+        }
+    }
+
+    /**
+     * Sets a multiplicity of some model element.
+     *
+     * @param handle model element
+     * @param arg multiplicity as string OR multiplicity object
+     */
+    public void setMultiplicity(Object handle, Object arg) {
+        if (arg instanceof String) {
+            arg =
+                ("1_N".equals(arg)) ? MMultiplicity.M1_N : MMultiplicity.M1_1;
+        }
+
+        if (arg instanceof MMultiplicity) {
+            MMultiplicity mult = (MMultiplicity) arg;
+
+            if (handle instanceof MAssociationRole) {
+                ((MAssociationRole) handle).setMultiplicity(mult);
+                return;
+            }
+            if (handle instanceof MClassifierRole) {
+                ((MClassifierRole) handle).setMultiplicity(mult);
+                return;
+            }
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature) handle).setMultiplicity(mult);
+                return;
+            }
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setMultiplicity(mult);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or arg: " + arg);
+    }
+
+    /**
+     * Sets a name of some modelelement.
+     *
+     * @param handle is the model element
+     * @param name to set
+     */
+    public void setName(Object handle, String name) {
+        if ((handle instanceof MModelElement) && (name != null)) {
+            // The following code is a workaround for issue
+            // http://argouml.tigris.org/issues/show_bug.cgi?id=2847.
+            // The cause is
+            // not known and the best fix available for the moment is to remove
+            // the corruptions as they are found.
+            int pos = 0;
+            while ((pos = name.indexOf(0xffff)) >= 0) {
+                name =
+                    name.substring(0, pos)
+                    + name.substring(pos + 1, name.length());
+                try {
+                    throw new UmlException(
+                            "Illegal character stripped out of element name");
+                } catch (UmlException e) {
+                    LOG.warn("0xFFFF detected in element name", e);
+                }
+            }
+            ((MModelElement) handle).setName(name);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or name: " + name);
+    }
+
+    /**
+     * Sets a namespace of some modelelement.
+     *
+     * @param handle is the model element
+     * @param ns is the namespace. Can be <code>null</code>.
+     */
+    public void setNamespace(Object handle, Object ns) {
+        if (handle instanceof MModelElement
+            && (ns == null || ns instanceof MNamespace)) {
+            ((MModelElement) handle).setNamespace((MNamespace) ns);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or ns: " + ns);
+    }
+
+    /**
+     * Sets the navigability of some association end.
+     *
+     * @param handle is the association end
+     * @param flag is the navigability flag
+     */
+    public void setNavigable(Object handle, boolean flag) {
+        if (handle instanceof MAssociationEnd) {
+            ((MAssociationEnd) handle).setNavigable(flag);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the OrderingKind of a given AssociationEnd.
+     *
+     * @param handle AssociationEnd
+     * @param ok OrderingKind
+     */
+    public void setOrdering(Object handle, Object ok) {
+        if (handle instanceof MAssociationEnd && ok instanceof MOrderingKind) {
+            ((MAssociationEnd) handle).setOrdering((MOrderingKind) ok);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or ok: " + ok);
+    }
+
+    /**
+     * Set the owner of a Feature.
+     *
+     * @param handle Feature
+     * @param owner Classifier or null
+     */
+    public void setOwner(Object handle, Object owner) {
+        if (handle instanceof MFeature
+            && (owner == null || owner instanceof MClassifier)) {
+            ((MFeature) handle).setOwner((MClassifier) owner);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or owner: " + owner);
+    }
+
+    /**
+     * @param handle Feature
+     * @param os ScopeKind
+     */
+    public void setOwnerScope(Object handle, Object os) {
+        if (handle instanceof MFeature
+            && (os == null || os instanceof MScopeKind)) {
+            ((MFeature) handle).setOwnerScope((MScopeKind) os);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or os: " + os);
+    }
+
+    /**
+     * Sets the parameters of a classifier, event, objectflowstate or
+     * behavioralfeature.
+     *
+     * @param handle the classifier, event, objectflowstate or
+     * behavioralfeature
+     * @param parameters is a Collection of parameters
+     */
+    public void setParameters(Object handle, Collection parameters) {
+        if (handle instanceof MObjectFlowState) {
+            ((MObjectFlowState) handle).setParameters(parameters);
+            return;
+        }
+        if (handle instanceof MClassifier) {
+            ((MClassifier) handle).setParameters(parameters);
+            return;
+        }
+        if (handle instanceof MEvent && parameters instanceof List) {
+            ((MEvent) handle).setParameters((List) parameters);
+            return;
+        }
+        if (handle instanceof MBehavioralFeature
+            && parameters instanceof List) {
+            ((MBehavioralFeature) handle).setParameters((List) parameters);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or parameters: " + parameters);
+    }
+
+    /**
+     * Sets the parent of a generalization.
+     *
+     * @param handle generalization
+     * @param parent generalizable element (parent)
+     */
+    public void setParent(Object handle, Object parent) {
+        if (handle instanceof MGeneralization
+            && parent instanceof MGeneralizableElement) {
+            ((MGeneralization) handle).setParent(
+                (MGeneralizableElement) parent);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or parent: " + parent);
+    }
+
+    /**
+     * Set the PowerType of a Generalization.
+     * @param handle Generalization
+     * @param pt Classifier
+     */
+    public void setPowertype(Object handle, Object pt) {
+        if (handle instanceof MGeneralization
+                && (pt == null
+                        || pt instanceof MClassifier)) {
+            ((MGeneralization) handle).setPowertype((MClassifier) pt);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or pt: " + pt);
+    }
+
+    /**
+     * Sets the qualified attributes of an association end.
+     *
+     * @param handle the association end
+     * @param elems is a Collection of qualifiers
+     */
+    public void setQualifiers(Object handle, Collection elems) {
+        if (handle instanceof MAssociationEnd && elems instanceof List) {
+            ((MAssociationEnd) handle).setQualifiers((List) elems);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the query flag of a behavioral feature.
+     *
+     * @param handle is the behavioral feature
+     * @param flag is the query flag
+     */
+    public void setQuery(Object handle, boolean flag) {
+        if (handle instanceof MBehavioralFeature) {
+            ((MBehavioralFeature) handle).setQuery(flag);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * @param handle ElementResidence
+     * @param resident ModelElement or null
+     */
+    public void setResident(Object handle, Object resident) {
+        if (handle instanceof MElementResidence
+            && (resident == null || resident instanceof MModelElement)) {
+            ((MElementResidence) handle).setResident((MModelElement) resident);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or resident: " + resident);
+    }
+
+    /**
+     * Sets the residents of some model element.
+     *
+     * @param handle the model element
+     * @param residents collection
+     */
+    public void setResidents(Object handle, Collection residents) {
+        if (handle instanceof MNodeInstance) {
+            ((MNodeInstance) handle).setResidents(residents);
+            return;
+        }
+        if (handle instanceof MComponentInstance) {
+            ((MComponentInstance) handle).setResidents(residents);
+            return;
+        }
+        if (handle instanceof MNode) {
+            ((MNode) handle).setResidents(residents);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets if some model element is a root.
+     *
+     * @param handle model element
+     * @param flag is true if it is a root
+     */
+    public void setRoot(Object handle, boolean flag) {
+        if (handle instanceof MReception) {
+            ((MReception) handle).setRoot(flag);
+            return;
+        }
+        if (handle instanceof MOperation) {
+            ((MOperation) handle).setRoot(flag);
+            return;
+        }
+        if (handle instanceof MGeneralizableElement) {
+            ((MGeneralizableElement) handle).setRoot(flag);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * @param handle Flow
+     * @param specifications the collection of ModelEvents (sourceFlow)
+     */
+    public void setSources(Object handle, Collection specifications) {
+        if (handle instanceof MFlow) {
+            ((MFlow) handle).setSources(specifications);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the Specification flag for a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param specification boolean
+     */
+    public void setSpecification(Object handle, boolean specification) {
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setSpecification(specification);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the specifications of some association end.
+     *
+     * @param handle the association end
+     * @param specifications collection
+     */
+    public void setSpecifications(
+        Object handle,
+        Collection specifications) {
+        if (handle instanceof MAssociationEnd) {
+            ((MAssociationEnd) handle).setSpecifications(specifications);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the stereotype of some modelelement. The method also
+     * copies a stereotype that is not a part of the current model to
+     * the current model.<p>
+     *
+     * TODO: Currently does not copy the stereotype, but changes the
+     * namespace to the new model (kidnapping it). That might possibly be
+     * dangerous, especially if more complex profile models are developed.
+     * This documentation should say what is supposed to be done. I think
+     * it would have been better if the caller had been responsible for the
+     * stereotype being in the right model and been adviced of
+     * eg ModelManagementHelper.getCorrespondingElement(...). Or if that had
+     * been used here. This function could possibly assert that the caller had
+     * got it right.
+     *
+     * @param handle model element
+     * @param stereo stereotype
+     */
+    public void setStereotype(Object handle, Object stereo) {
+        if (handle instanceof MModelElement) {
+            MModelElement me = (MModelElement) handle;
+            if (stereo instanceof MStereotype
+                && me.getModel() != ((MStereotype) stereo).getModel()) {
+                ((MStereotype) stereo).setNamespace(me.getModel());
+            }
+            if (stereo == null || stereo instanceof MStereotype) {
+                me.setStereotype((MStereotype) stereo);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or stereo: " + stereo);
+    }
+
+    /**
+     * Sets a tagged value of some modelelement.
+     *
+     * @param handle is the model element
+     * @param tag is the tag name (a string)
+     * @param value is the value
+     */
+    public void setTaggedValue(
+        Object handle,
+        String tag,
+        String value) {
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setTaggedValue(tag, value);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the TaggedValues of a ModelElement.
+     *
+     * @param handle ModelElement
+     * @param taggedValues Collection of TaggedValues
+     */
+    public void setTaggedValues(
+        Object handle,
+        Collection taggedValues) {
+        if (handle instanceof MModelElement) {
+            ((MModelElement) handle).setTaggedValues(taggedValues);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the target scope of some association end or structural feature.
+     *
+     * @param handle the model element
+     * @param scopeKind the target scope
+     */
+    public void setTargetScope(Object handle, Object scopeKind) {
+        if (scopeKind instanceof MScopeKind) {
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature) handle).setTargetScope(
+                    (MScopeKind) scopeKind);
+                return;
+            }
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle)
+                	.setTargetScope((MScopeKind) scopeKind);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or scopeKind: " + scopeKind);
+    }
+
+    /**
+     * Sets the type of some parameter.
+     *
+     * @param handle is the model element
+     * @param type is the type (a classifier)
+     */
+    public void setType(Object handle, Object type) {
+        if (type == null || type instanceof MClassifier) {
+            if (handle instanceof MObjectFlowState) {
+                ((MObjectFlowState) handle).setType((MClassifier) type);
+                return;
+            }
+            if (handle instanceof MClassifierInState) {
+                ((MClassifierInState) handle).setType((MClassifier) type);
+                return;
+            }
+            if (handle instanceof MParameter) {
+                ((MParameter) handle).setType((MClassifier) type);
+                return;
+            }
+            if (handle instanceof MAssociationEnd) {
+                ((MAssociationEnd) handle).setType((MClassifier) type);
+                return;
+            }
+            if (handle instanceof MStructuralFeature) {
+                ((MStructuralFeature) handle).setType((MClassifier) type);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or type: " + type);
+    }
+
+    /**
+     * Set the UUID of this element.
+     *
+     * @param handle base element (MBase type)
+     * @param uuid is the UUID
+     */
+    public void setUUID(Object handle, String uuid) {
+        if (ModelFacade.isABase(handle)) {
+            ((MBase) handle).setUUID(uuid);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the visibility of some modelelement.
+     *
+     * @param handle element
+     * @param visibility is the visibility
+     */
+    public void setVisibility(Object handle, Object visibility) {
+        if (visibility instanceof MVisibilityKind) {
+            if (handle instanceof MModelElement) {
+                ((MModelElement) handle).setVisibility(
+                    (MVisibilityKind) visibility);
+                return;
+            }
+            if (handle instanceof MElementResidence) {
+                ((MElementResidence) handle).setVisibility(
+                    (MVisibilityKind) visibility);
+                    return;
+            }
+            if (handle instanceof MElementImport) {
+                ((MElementImport) handle).setVisibility(
+                    (MVisibilityKind) visibility);
+                    return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or visibility: " + visibility);
     }
 }

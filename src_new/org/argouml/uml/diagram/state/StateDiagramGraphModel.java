@@ -251,7 +251,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         Object top = /* (MCompositeState) */Model.getStateMachinesHelper()
                 .getTop(getMachine());
 
-        ModelFacade.addSubvertex(top, sv);
+        Model.getStateMachinesHelper().addSubvertex(top, sv);
         //       sv.setParent(top); this is done in setEnclosingFig!!
         //      if ((sv instanceof MState) &&
         //      (sv.getNamespace()==null))
@@ -441,9 +441,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
             Object edge, boolean isSource) {
 
         if (isSource)
-            ModelFacade.setSource(edge, newNode);
+            Model.getStateMachinesHelper().setSource(edge, newNode);
         else
-            ModelFacade.setTarget(edge, newNode);
+            Model.getCommonBehaviorHelper().setTarget(edge, newNode);
 
     }
 

@@ -26,7 +26,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -66,7 +65,7 @@ public class TestUMLAssociationRoleMessageListModel
         Object[] messages = new Object[10];
         for (int i = 0; i < messages.length; i++) {
             messages[i] = Model.getCollaborationsFactory().createMessage();
-            ModelFacade.addMessage(getElem(), messages[i]);
+            Model.getCollaborationsHelper().addMessage(getElem(), messages[i]);
         }
         return messages;
     }
@@ -76,7 +75,7 @@ public class TestUMLAssociationRoleMessageListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeMessage(getElem(), elements[i]);
+            Model.getCollaborationsHelper().removeMessage(getElem(), elements[i]);
         }
     }
 

@@ -77,13 +77,13 @@ public class ActionBooleanTaggedValue extends UMLAction {
         if (taggedValue == null) {
             taggedValue =
                 Model.getExtensionMechanismsFactory().createTaggedValue();
-            ModelFacade.setTag(taggedValue, tagName);
-            ModelFacade.addTaggedValue(obj, taggedValue);
+            Model.getExtensionMechanismsHelper().setTag(taggedValue, tagName);
+            Model.getCoreHelper().addTaggedValue(obj, taggedValue);
         }
         if (newState) {
-            ModelFacade.setValue(taggedValue, "true");
+            Model.getCommonBehaviorHelper().setValue(taggedValue, "true");
         } else {
-            ModelFacade.setValue(taggedValue, "false");
+            Model.getCommonBehaviorHelper().setValue(taggedValue, "false");
         }
     }
 }

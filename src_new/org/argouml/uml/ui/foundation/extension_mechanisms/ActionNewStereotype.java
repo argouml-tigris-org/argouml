@@ -72,8 +72,9 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
             );
         if (ModelFacade.isAModelElement(t)) {
             Object ns = ModelFacade.getNamespace(t);
-            if (ModelFacade.isANamespace(ns))
-                ModelFacade.setNamespace(newStereo, ns);
+            if (ModelFacade.isANamespace(ns)) {
+                Model.getCoreHelper().setNamespace(newStereo, ns);
+            }
         }
         TargetManager.getInstance().setTarget(newStereo);
         super.actionPerformed(e);

@@ -387,7 +387,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	if (ModelFacade.isAModelElement(node)
 	        && ModelFacade.getNamespace(node) == null) {
-            ModelFacade.addOwnedElement(model, node);
+            Model.getCoreHelper().addOwnedElement(model, node);
 	}
 
 	fireNodeAdded(node);
@@ -428,7 +428,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         if (ModelFacade.isAModelElement(edge)
                 && ModelFacade.getNamespace(edge) == null
                 && !ModelFacade.isAAssociationEnd(edge)) {
-    	    ModelFacade.addOwnedElement(model, edge);
+    	    Model.getCoreHelper().addOwnedElement(model, edge);
         }
         fireEdgeAdded(edge);
     }
@@ -641,17 +641,17 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
         // set the ends navigability see also Class ActionNavigability
         if (ModelFacade.isAInterface(newNode)) {
-            ModelFacade.setNavigable(theEnd, true);
-            ModelFacade.setNavigable(theOtherEnd, false);
+            Model.getCoreHelper().setNavigable(theEnd, true);
+            Model.getCoreHelper().setNavigable(theOtherEnd, false);
         }
 
         if (ModelFacade.isAInterface(otherNode)) {
-            ModelFacade.setNavigable(theOtherEnd, true);
-            ModelFacade.setNavigable(theEnd, false);
+            Model.getCoreHelper().setNavigable(theOtherEnd, true);
+            Model.getCoreHelper().setNavigable(theEnd, false);
         }
 
         //set the new end type!
-        ModelFacade.setType(theEnd, newNode);
+        Model.getCoreHelper().setType(theEnd, newNode);
     }
 
     /**

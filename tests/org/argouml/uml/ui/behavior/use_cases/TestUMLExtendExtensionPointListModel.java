@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -64,7 +63,7 @@ public class TestUMLExtendExtensionPointListModel
         Object[] points = new Object[10];
         for (int i = 0; i < 10; i++) {
             points[i] = Model.getUseCasesFactory().createExtensionPoint();
-            ModelFacade.addExtensionPoint(getElem(), points[i]);
+            Model.getUseCasesHelper().addExtensionPoint(getElem(), points[i]);
         }
         return points;
     }
@@ -74,7 +73,7 @@ public class TestUMLExtendExtensionPointListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeExtensionPoint(getElem(),  elements[i]);
+            Model.getUseCasesHelper().removeExtensionPoint(getElem(),  elements[i]);
         }
     }
 

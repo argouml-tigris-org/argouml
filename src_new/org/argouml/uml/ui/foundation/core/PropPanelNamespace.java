@@ -73,10 +73,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addClass() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isANamespace(target)) {
+        if (ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().buildClass();
-            ModelFacade.addOwnedElement(ns, ownedElem);
+            Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
     }
@@ -86,10 +86,10 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addInterface() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isANamespace(target)) {
+        if (ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().createInterface();
-            ModelFacade.addOwnedElement(ns, ownedElem);
+            Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
     }
@@ -99,11 +99,11 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addPackage() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isANamespace(target)) {
+        if (ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getModelManagementFactory()
                 .createPackage();
-            ModelFacade.addOwnedElement(ns, ownedElem);
+            Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
     }

@@ -108,7 +108,7 @@ public class PropPanelSignal extends PropPanelModelElement {
                 if (ns != null) {
                     Object newSig = Model.getCommonBehaviorFactory()
                         .createSignal();
-                    ModelFacade.addOwnedElement(ns, newSig);
+                    Model.getCoreHelper().addOwnedElement(ns, newSig);
                     TargetManager.getInstance().setTarget(newSig);
                     super.actionPerformed(e);
                 }

@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
@@ -76,7 +77,7 @@ public class ActionSetOperationConcurrencyKind extends UMLAction {
             String actionCommand = source.getActionCommand();
             Object target = ((UMLRadioButtonPanel) source.getParent())
                     .getTarget();
-            if (org.argouml.model.ModelFacade.isAOperation(target)) {
+            if (ModelFacade.isAOperation(target)) {
                 Object m = /* (MModelElement) */target;
                 Object kind = null;
                 if (actionCommand.equals(SEQUENTIAL_COMMAND)) {
@@ -86,7 +87,7 @@ public class ActionSetOperationConcurrencyKind extends UMLAction {
                 } else {
                     kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
                 }
-                ModelFacade.setConcurrency(m, kind);
+                Model.getCoreHelper().setConcurrency(m, kind);
             }
         }
     }

@@ -23,6 +23,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
@@ -67,11 +68,11 @@ public class UMLStimulusActionTextProperty  {
 		if (newValue != oldValue) {
 		    // Object[] args = { newValue };
 		    Object action = ModelFacade.getDispatchAction(stimulus);
-		    ModelFacade.setName(action, newValue);
+		    Model.getCoreHelper().setName(action, newValue);
 		    // to rupdate the diagram set the stimulus name again
 		    String dummyStr =
 		        new String(ModelFacade.getName(stimulus));
-		    ModelFacade.setName(stimulus, dummyStr);
+		    Model.getCoreHelper().setName(stimulus, dummyStr);
 
 
 

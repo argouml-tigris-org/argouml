@@ -1842,7 +1842,7 @@ public class GeneratorCpp extends Generator2
         String id = UUIDHelper.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
-            ModelFacade.setUUID(op, id);
+            Model.getCoreHelper().setUUID(op, id);
         }
         return Section.generateTop(id, localIndent);
     }
@@ -1851,7 +1851,7 @@ public class GeneratorCpp extends Generator2
         String id = UUIDHelper.getInstance().getUUID(op);
         if (id == null) {
             id = (new UID().toString());
-            ModelFacade.setUUID(op, id);
+            Model.getCoreHelper().setUUID(op, id);
         }
         return Section.generateBottom(id, localIndent);
     }

@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
@@ -58,7 +59,7 @@ public class ActionSetGeneralizableElementAbstract extends UMLAction {
             Object target = source.getTarget();
             if (ModelFacade.isAGeneralizableElement(target)
                     || ModelFacade.isAOperation(target)) {
-                ModelFacade.setAbstract(target, source.isSelected());
+                Model.getCoreHelper().setAbstract(target, source.isSelected());
             }
         }
     }

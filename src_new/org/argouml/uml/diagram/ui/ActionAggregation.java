@@ -29,6 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Globals;
@@ -101,7 +102,7 @@ public class ActionAggregation extends UMLAction {
                     ascEnd = iter.next();
                 }
             }
-	    ModelFacade.setAggregation(ascEnd, agg);
+	    Model.getCoreHelper().setAggregation(ascEnd, agg);
 	}
     }
 

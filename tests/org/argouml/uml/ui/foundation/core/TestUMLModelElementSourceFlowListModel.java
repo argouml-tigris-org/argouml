@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.foundation.core.MFlow;
@@ -66,7 +65,7 @@ public class TestUMLModelElementSourceFlowListModel
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = (MFlow) Model.getCoreFactory().createFlow();
-            ModelFacade.addSourceFlow(getElem(), ext[i]);
+            Model.getCoreHelper().addSourceFlow(getElem(), ext[i]);
         }
         return ext;
     }
@@ -76,7 +75,7 @@ public class TestUMLModelElementSourceFlowListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeSourceFlow(getElem(), elements[i]);
+            Model.getCoreHelper().removeSourceFlow(getElem(), elements[i]);
         }
     }
 

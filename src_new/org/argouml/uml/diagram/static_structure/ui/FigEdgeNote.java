@@ -33,7 +33,7 @@ import java.beans.VetoableChangeListener;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Layer;
@@ -149,7 +149,7 @@ public class FigEdgeNote
         }
         owner = newOwner;
         if (UUIDHelper.getInstance().getUUID(newOwner) == null) {
-            ModelFacade.setUUID(newOwner,
+            Model.getCoreHelper().setUUID(newOwner,
 				UUIDHelper.getInstance().getNewUUID());
 	}
     }

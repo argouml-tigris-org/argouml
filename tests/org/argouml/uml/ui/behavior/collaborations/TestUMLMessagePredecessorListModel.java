@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -64,7 +63,7 @@ public class TestUMLMessagePredecessorListModel
         Object[] pres = new Object[10];
         for (int i = 0; i < pres.length; i++) {
             pres[i] = Model.getCollaborationsFactory().createMessage();
-            ModelFacade.addPredecessor(getElem(), pres[i]);
+            Model.getCollaborationsHelper().addPredecessor(getElem(), pres[i]);
         }
         return pres;
     }
@@ -74,7 +73,7 @@ public class TestUMLMessagePredecessorListModel
      */
     protected void removeHalfModel(Object[] elements) {
 	for (int i = 0; i < 5; i++) {
-	    ModelFacade.removePredecessor(getElem(), elements[i]);
+	    Model.getCollaborationsHelper().removePredecessor(getElem(), elements[i]);
         }
     }
 

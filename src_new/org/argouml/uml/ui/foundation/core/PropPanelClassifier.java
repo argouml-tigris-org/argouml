@@ -200,10 +200,10 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
      */
     public void addDataType() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isANamespace(target)) {
+        if (ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().createDataType();
-            ModelFacade.addOwnedElement(ns, ownedElem);
+            Model.getCoreHelper().addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
     }

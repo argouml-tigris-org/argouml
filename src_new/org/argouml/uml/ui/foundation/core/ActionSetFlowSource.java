@@ -29,6 +29,7 @@ import java.awt.event.ActionEvent;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -68,7 +69,7 @@ public class ActionSetFlowSource extends UMLAction {
                     if (source.getSelectedItem() != null) {
                         Vector sources = new Vector();
                         sources.add(source.getSelectedItem());
-                        ModelFacade.setSources(flow, sources);
+                        Model.getCoreHelper().setSources(flow, sources);
                     }
                 }
             }

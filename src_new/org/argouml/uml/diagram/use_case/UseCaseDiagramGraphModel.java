@@ -468,7 +468,7 @@ public class UseCaseDiagramGraphModel
 	    // end NEW CODE
 	    LOG.debug("setting namespace " + model
 		      + " to element " + node);
-            ModelFacade.addOwnedElement(model, /*(MModelElement)*/ node);
+            Model.getCoreHelper().addOwnedElement(model, /*(MModelElement)*/ node);
         }
 
         // Tell GEF its changed
@@ -500,7 +500,7 @@ public class UseCaseDiagramGraphModel
 
         if (ModelFacade.isAModelElement(edge)
                 && ModelFacade.getNamespace(edge) == null) {
-            ModelFacade.addOwnedElement(model, /*(MModelElement)*/ edge);
+            Model.getCoreHelper().addOwnedElement(model, /*(MModelElement)*/ edge);
         }
 
         // Tell GEF

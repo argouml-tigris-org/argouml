@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
@@ -69,7 +68,7 @@ public class TestUMLAssociationRoleAssociationEndRoleListModel
         for (int i = 0; i < ends.length; i++) {
             ends[i] =
 		Model.getCollaborationsFactory().createAssociationEndRole();
-            ModelFacade.setAssociation(ends[i], getElem());
+            Model.getCoreHelper().setAssociation(ends[i], getElem());
         }
         return ends;
     }

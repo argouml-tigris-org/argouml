@@ -89,7 +89,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 	    throw new IllegalStateException(
                 "doIt may not be called with null target");
 	Object message = /*(MMessage)*/ getTarget();
-	ModelFacade.setPredecessors(message, selected);
+	Model.getCollaborationsHelper().setPredecessors(message, selected);
     }
 
     /**

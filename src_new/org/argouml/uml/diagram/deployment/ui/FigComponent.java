@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
@@ -248,7 +249,7 @@ public class FigComponent extends FigNodeModelElement {
 	    Object node = /*(MNode)*/ encloser.getOwner();
 	    Object comp = /*(MComponent)*/ getOwner();
 	    if (!ModelFacade.getDeploymentLocations(comp).contains(node)) {
-		ModelFacade.addDeploymentLocation(comp, node);
+		Model.getCoreHelper().addDeploymentLocation(comp, node);
 	    }
 	    super.setEnclosingFig(encloser);
 

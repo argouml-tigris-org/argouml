@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * @since Oct 26, 2002
@@ -97,7 +96,7 @@ public class TestUMLModelElementClientDependencyListModel extends TestCase {
                 Model.getCoreFactory().buildDependency(elem, suppliers[i]);
         }
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeClientDependency(elem, dependencies[i]);
+            Model.getCoreHelper().removeClientDependency(elem, dependencies[i]);
         }
         assertEquals(5, model.getSize());
         assertEquals(dependencies[5], model.getElementAt(0));

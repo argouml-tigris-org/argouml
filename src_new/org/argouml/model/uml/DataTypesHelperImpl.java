@@ -27,8 +27,11 @@ package org.argouml.model.uml;
 import java.util.Iterator;
 
 import org.argouml.model.DataTypesHelper;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MExpressionEditor;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
@@ -180,6 +183,36 @@ class DataTypesHelperImpl implements DataTypesHelper {
 	}
 
 	return ((MMultiplicity) multiplicity).toString();
+    }
+
+    /**
+     * Sets the language of an expression.
+     *
+     * TODO: This operation is fooling the user
+     * in thinking that the body of the object is changed.
+     * Instead, a new object is created and as a side-effect the body is lost.
+     * There is no other way: a MExpression can not be altered,
+     * once created!
+     * So, this operation should return the created object instead!
+     * Or should it simply copy the body?
+     *
+     * @param handle is the expression
+     * @param language is the lang
+     */
+    public void setLanguage(Object handle, String language) {
+        if (handle instanceof MExpression) {
+            MExpressionEditor expressionEditor =
+                (MExpressionEditor)
+                	Model.getDataTypesFactory().
+                		createExpressionEditor(handle);
+            expressionEditor.setLanguage(language);
+            handle = expressionEditor.toExpression();
+            // TODO: Is something missing here?
+
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or language: " + language);
     }
 }
 

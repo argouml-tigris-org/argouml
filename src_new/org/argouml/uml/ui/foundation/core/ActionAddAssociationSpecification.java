@@ -54,7 +54,7 @@ public class ActionAddAssociationSpecification
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ModelFacade.setSpecifications(getTarget(), selected);
+        Model.getCoreHelper().setSpecifications(getTarget(), selected);
     }
 
     /**

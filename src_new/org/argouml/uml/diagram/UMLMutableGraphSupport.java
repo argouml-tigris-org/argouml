@@ -320,7 +320,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         }
 
         CommentEdge connection = new CommentEdge(from, to);
-        ModelFacade.addAnnotatedElement(comment, annotatedElement);
+        Model.getCoreHelper().addAnnotatedElement(comment, annotatedElement);
         return connection;
 
     }

@@ -68,8 +68,8 @@ public class TestModelFacade2 extends TestCase {
      */
     public void testSetName() {
         Object ob = Model.getCoreFactory().buildClass("initial");
-        ModelFacade.setName(ob, "correct");
-        ModelFacade.setName(ob, new String(new char[] {
+        Model.getCoreHelper().setName(ob, "correct");
+        Model.getCoreHelper().setName(ob, new String(new char[] {
             'i', 'n', 'c', 'o', 'r', 'r', 'e', 'c', 't', ':',
             Character.MAX_VALUE,
         }));
@@ -86,7 +86,7 @@ public class TestModelFacade2 extends TestCase {
 	    Model.getActivityGraphsFactory().createActivityGraph();
 	Object partition = Model.getActivityGraphsFactory().createPartition();
 
-	ModelFacade.setModelElementContainer(partition, container);
+	Model.getCoreHelper().setModelElementContainer(partition, container);
 
 	Collection collection = ModelFacade.getPartitions(container);
 	assertTrue(collection.contains(partition));
@@ -99,11 +99,11 @@ public class TestModelFacade2 extends TestCase {
 	Object cls = Model.getCoreFactory().buildClass();
 
 	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
-	ModelFacade.setTaggedValue(cls, "fooValue", "foo");
+	Model.getCoreHelper().setTaggedValue(cls, "fooValue", "foo");
 	assertEquals(ModelFacade.getValueOfTag(
 		ModelFacade.getTaggedValue(cls, "fooValue")), "foo");
-	ModelFacade.removeTaggedValue(cls, "fooValue");
-	ModelFacade.removeTaggedValue(cls, "nonExistingValue");
+	Model.getCoreHelper().removeTaggedValue(cls, "fooValue");
+	Model.getCoreHelper().removeTaggedValue(cls, "nonExistingValue");
 	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
     }
 
@@ -121,7 +121,7 @@ public class TestModelFacade2 extends TestCase {
 	            "TestStereotype",
 	            ModelFacade.getNamespace(cls));
 
-	ModelFacade.setStereotype(cls, stereotype);
+	Model.getCoreHelper().setStereotype(cls, stereotype);
 
 	Collection coll2 = ModelFacade.getStereotypes(cls);
 

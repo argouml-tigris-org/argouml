@@ -40,6 +40,9 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -57,7 +60,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
  * @since ARGO0.11.2
  * @author Thierry Lach
  */
-public class CollaborationsHelperImpl implements CollaborationsHelper {
+class CollaborationsHelperImpl implements CollaborationsHelper {
 
     /**
      * The model implementation.
@@ -390,7 +393,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
                 }
             }
         }
-        ModelFacade.addBase(role, base);
+        role.addBase(base);
         if (ModelFacade.getBases(role).size() == 1) {
             role.setAvailableContentses(base.getOwnedElements());
             role.setAvailableFeatures(base.getFeatures());
@@ -428,7 +431,7 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
         }
         Iterator it = ModelFacade.getBases(role).iterator();
         while (it.hasNext()) {
-            ModelFacade.removeBase(role, it.next());
+            removeBase(role, it.next());
         }
         it = bases.iterator();
         while (it.hasNext()) {
@@ -691,6 +694,288 @@ public class CollaborationsHelperImpl implements CollaborationsHelper {
 		   context instanceof MClassifier
 		|| context instanceof MOperation
 		/*|| context instanceof MModel*/);
+    }
+
+    /**
+     * This method removes a classifier from a classifier role.
+     *
+     * @param handle is the classifier role
+     * @param c is the classifier
+     */
+    public void removeBase(Object handle, Object c) {
+        if (handle instanceof MClassifierRole
+                && c instanceof MClassifier) {
+            ((MClassifierRole) handle).removeBase((MClassifier) c);
+            return;
+        }
+    	throw new IllegalArgumentException();
+    }
+
+    /**
+     * Remove a constraining element.
+     *
+     * @param handle The collaboration to remove a constraint to.
+     * @param constraint The constraint to remove.
+     */
+    public void removeConstrainingElement(Object handle,
+            					 Object constraint) {
+        if (handle instanceof MCollaboration
+                && constraint instanceof MModelElement) {
+            ((MCollaboration) handle).removeConstrainingElement(
+                    (MModelElement) constraint);
+            return;
+        }
+    
+        throw new IllegalArgumentException("handle: " + handle + " or constraint: " + constraint);
+    }
+
+    /**
+     * Removes a message from the interaction or association role.
+     *
+     * @param handle The interaction or association role to remove the
+     *               message from.
+     * @param message The message to remove.
+     */
+    public void removeMessage(Object handle, Object message) {
+        if (handle instanceof MInteraction
+                && message instanceof MMessage) {
+            ((MInteraction) handle).removeMessage((MMessage) message);
+            return;
+        }
+        if (handle instanceof MAssociationRole
+                && message instanceof MMessage) {
+            ((MAssociationRole) handle).removeMessage((MMessage) message);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or message: " + message);
+    }
+
+    /**
+     * Removes a successor message.
+     *
+     * @param handle the Message that needs to loose a successor
+     * @param mess the Message that is removed
+     */
+    public void removeMessage3(Object handle, Object mess) {
+        if (handle instanceof MMessage && mess instanceof MMessage) {
+            ((MMessage) handle).removeMessage3((MMessage) mess);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or mess: " + mess);
+    }
+
+    /**
+     * Removes a predecessor message.
+     *
+     * @param handle the Message that needs to loose a predecessor
+     * @param message the Message that is removed
+     */
+    public void removePredecessor(Object handle, Object message) {
+        if (handle instanceof MMessage && message instanceof MMessage) {
+            ((MMessage) handle).removePredecessor((MMessage) message);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or message: " + message);
+    }
+
+    /**
+     * Add a constraining element.
+     *
+     * @param handle The collaboration to add a constraint to.
+     * @param constraint The constraint to add.
+     */
+    public void addConstrainingElement(Object handle,
+            				      Object constraint) {
+        if (handle instanceof MCollaboration
+                && constraint instanceof MModelElement) {
+            ((MCollaboration) handle).addConstrainingElement(
+                    (MModelElement) constraint);
+            return;
+        }
+    
+        throw new IllegalArgumentException("handle: " + handle + " or constraint: " + constraint);
+    }
+
+    /**
+     * Adds an instance to a classifier role.
+     *
+     * @param classifierRole is the classifier role
+     * @param instance is the instance to add
+     */
+    public void addInstance(Object classifierRole, Object instance) {
+        if (classifierRole instanceof MClassifierRole
+                && instance instanceof MInstance) {
+            MClassifierRole clr = (MClassifierRole) classifierRole;
+            clr.addInstance((MInstance) instance);
+            return;
+        }
+        throw new IllegalArgumentException("classifierRole: " + classifierRole + " or instance: " + instance);
+    }
+
+    /**
+     * Add a message to an interaction or association role.
+     *
+     * @param handle The interaction or association role.
+     * @param elem The message.
+     */
+    public void addMessage(Object handle, Object elem) {
+        if (handle instanceof MInteraction
+                && elem instanceof MMessage) {
+            ((MInteraction) handle).addMessage((MMessage) elem);
+            return;
+        }
+        if (handle instanceof MAssociationRole
+                && elem instanceof MMessage) {
+            ((MAssociationRole) handle).addMessage((MMessage) elem);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or elem: " + elem);
+    }
+
+    /**
+     * Add Message to a predecessor Message.
+     *
+     * @param handle predecessor Message
+     * @param mess Message to be added
+     */
+    public void addMessage3(Object handle, Object mess) {
+        if (handle instanceof MMessage && mess instanceof MMessage) {
+            ((MMessage) handle).addMessage3((MMessage) mess);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or mess: " + mess);
+    }
+
+    /**
+     * Adds a predecessor to a message.
+     *
+     * @param handle the message
+     * @param predecessor is the predecessor
+     */
+    public void addPredecessor(Object handle, Object predecessor) {
+        if (handle != null
+            && handle instanceof MMessage
+            && predecessor != null
+            && predecessor instanceof MMessage) {
+            ((MMessage) handle).addPredecessor((MMessage) predecessor);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or predecessor: " + predecessor);
+    }
+
+    /**
+     * Sets the action to a message.
+     *
+     * @param handle is the message
+     * @param action is the action
+     */
+    public void setAction(Object handle, Object action) {
+        if (handle instanceof MMessage
+            && (action == null || action instanceof MAction)) {
+            ((MMessage) handle).setAction((MAction) action);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or action: " + action);
+    }
+
+    /**
+     * Set the context of an interaction.
+     *
+     * @param handle The element.
+     * @param col The context to set.
+     */
+    public void setContext(Object handle, Object col) {
+        if (handle instanceof MInteraction
+                && (col instanceof MCollaboration
+                        || col == null)) {
+            ((MInteraction) handle).setContext((MCollaboration) col);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or col: " + col);
+    }
+
+    /**
+     * @param handle Message
+     * @param messages Collection of predecessor messages
+     */
+    public void setMessages3(Object handle, Collection messages) {
+        if (handle instanceof MMessage) {
+            ((MMessage) handle).setMessages3(messages);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the collection of predecessing messages.
+     *
+     * @param handle Message
+     * @param predecessors Collection of Messages
+     */
+    public void setPredecessors(
+        Object handle,
+        Collection predecessors) {
+        if (handle instanceof MMessage) {
+            ((MMessage) handle).setPredecessors(predecessors);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or predecessors: " + predecessors);
+    }
+
+    /**
+     * Sets the represented classifier of some collaboration.
+     *
+     * @param handle the collaboration
+     * @param classifier is the classifier or null
+     */
+    public void setRepresentedClassifier(
+        Object handle,
+        Object classifier) {
+        if (handle instanceof MCollaboration
+            && ((classifier == null) || classifier instanceof MClassifier)) {
+            ((MCollaboration) handle).setRepresentedClassifier(
+                (MClassifier) classifier);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or classifier: " + classifier);
+    }
+
+    /**
+     * Sets the represented operation of some collaboration.
+     *
+     * @param handle the collaboration
+     * @param operation is the operation or null
+     */
+    public void setRepresentedOperation(
+        Object handle,
+        Object operation) {
+        if (handle instanceof MCollaboration
+            && ((operation == null) || operation instanceof MOperation)) {
+            ((MCollaboration) handle).setRepresentedOperation(
+                (MOperation) operation);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or operation: " + operation);
+    }
+
+    /**
+     * Sets the sender of some model element.<p>
+     *
+     * @param handle model element
+     * @param sender the sender
+     */
+    public void setSender(Object handle, Object sender) {
+        if (handle instanceof MMessage
+                && (sender instanceof MClassifierRole
+                        || sender == null)) {
+            ((MMessage) handle).setSender((MClassifierRole) sender);
+            return;
+        }
+        if (handle instanceof MStimulus && sender instanceof MInstance) {
+            ((MStimulus) handle).setSender((MInstance) sender);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle + " or sender: " + sender);
     }
 }
 

@@ -57,7 +57,8 @@ public class UMLExpressionExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#setExpression(java.lang.Object)
      */
     public void setExpression(Object expr) {
-        ModelFacade.setExpression(getContainer().getTarget(), expr);
+        Model.getStateMachinesHelper()
+        	.setExpression(getContainer().getTarget(), expr);
     }
 
     /**

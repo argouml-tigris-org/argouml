@@ -33,6 +33,7 @@ import java.util.Set;
 
 import org.argouml.model.UseCasesHelper;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
@@ -40,6 +41,7 @@ import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
 import ru.novosoft.uml.model_management.MSubsystem;
 
 /**
@@ -268,30 +270,297 @@ class UseCasesHelperImpl implements UseCasesHelper {
     /**
      * Sets the base usecase of a given extend. Updates the
      * extensionpoints of the extend too.
+     *
      * @param extend the given extend
      * @param base the base usecase
      */
     public void setBase(Object extend, Object base) {
-        if (extend == null || !(extend instanceof MExtend)) {
-            throw new IllegalArgumentException("extend");
-        }
-        if (base == null || !(base instanceof MUseCase)) {
+        if (base != null && !(base instanceof MUseCase)) {
             throw new IllegalArgumentException("base");
         }
 
-        MExtend theExtend = ((MExtend) extend);
-        if (base == theExtend.getBase()) {
+        if (extend == null) {
+            throw new IllegalArgumentException("extend");
+        }
+
+        if (extend instanceof MExtend) {
+            MExtend theExtend = ((MExtend) extend);
+            if (base == theExtend.getBase()) {
+                return;
+            }
+            Iterator it = theExtend.getExtensionPoints().iterator();
+            while (it.hasNext()) {
+                MExtensionPoint point = (MExtensionPoint) it.next();
+                point.removeExtend(theExtend);
+            }
+            MExtensionPoint point =
+                (MExtensionPoint)
+                nsmodel.getUseCasesFactory().buildExtensionPoint(base);
+            theExtend.setBase((MUseCase) base);
+            theExtend.addExtensionPoint(point);
+        } else  if (extend instanceof MInclude) {
+            MInclude theInclude = ((MInclude) extend);
+            if (base == theInclude.getBase()) {
+                return;
+            }
+            theInclude.setAddition((MUseCase) base);
+        } else {
+            throw new IllegalArgumentException();
+        }
+    }
+
+    /**
+     * Remove an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    public void removeExtend(Object elem, Object extend) {
+        if (elem instanceof MUseCase
+                && extend instanceof MExtend) {
+            ((MUseCase) elem).removeExtend((MExtend) extend);
             return;
         }
-        Iterator it = theExtend.getExtensionPoints().iterator();
-        while (it.hasNext()) {
-            MExtensionPoint point = (MExtensionPoint) it.next();
-            point.removeExtend(theExtend);
+        if (elem instanceof MExtensionPoint
+                && extend instanceof MExtend) {
+            ((MExtensionPoint) elem).removeExtend((MExtend) extend);
+            return;
         }
-        MExtensionPoint point =
-	    (MExtensionPoint)
-	    	nsmodel.getUseCasesFactory().buildExtensionPoint(base);
-        theExtend.setBase((MUseCase) base);
-        theExtend.addExtensionPoint(point);
+
+        throw new IllegalArgumentException("elem: " + elem
+                + " or extend: " + extend);
+    }
+
+    /**
+     * This method removes an Extension Point from a Use Case or an Extend.
+     *
+     * @param elem is The Use Case or Extend.
+     * @param ep is the extension point
+     */
+    public void removeExtensionPoint(Object elem, Object ep) {
+        if (elem instanceof MUseCase
+                && ep instanceof MExtensionPoint) {
+            ((MUseCase) elem).removeExtensionPoint((MExtensionPoint) ep);
+            return;
+        }
+        if (elem instanceof MExtend
+                && ep instanceof MExtensionPoint) {
+            ((MExtend) elem).removeExtensionPoint((MExtensionPoint) ep);
+            return;
+        }
+
+        throw new IllegalArgumentException("elem: " + elem + " or ep: " + ep);
+    }
+
+    /**
+     * Remove an include from a Use Case.
+     *
+     * @param usecase The Use Case.
+     * @param include The Include.
+     */
+    public void removeInclude(Object usecase, Object include) {
+        if (usecase instanceof MUseCase
+                && include instanceof MInclude) {
+            ((MUseCase) usecase).removeInclude((MInclude) include);
+            return;
+        }
+
+        throw new IllegalArgumentException("usecase: " + usecase
+                + " or include: " + include);
+    }
+
+    /**
+     * Add an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    public void addExtend(Object elem, Object extend) {
+        if (elem instanceof MUseCase
+                && extend instanceof MExtend) {
+            ((MUseCase) elem).addExtend((MExtend) extend);
+            return;
+        }
+        if (elem instanceof MExtensionPoint
+                && extend instanceof MExtend) {
+            ((MExtensionPoint) elem).addExtend((MExtend) extend);
+            return;
+        }
+
+        throw new IllegalArgumentException("elem: " + elem
+                + " or extend: " + extend);
+    }
+
+    /**
+     * Adds an extension point to some model element.
+     *
+     * @param handle is the model element
+     * @param extensionPoint is the extension point
+     */
+    public void addExtensionPoint(
+            Object handle,
+            Object extensionPoint) {
+        if (extensionPoint instanceof MExtensionPoint) {
+            if (handle instanceof MUseCase) {
+                ((MUseCase) handle).addExtensionPoint(
+                        (MExtensionPoint) extensionPoint);
+                return;
+            }
+            if (handle instanceof MExtend) {
+                ((MExtend) handle).addExtensionPoint(
+                        (MExtensionPoint) extensionPoint);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or extensionPoint: " + extensionPoint);
+    }
+
+    /**
+     * Add an include to a Use Case.
+     *
+     * @param usecase The Use Case.
+     * @param include The Include.
+     */
+    public void addInclude(Object usecase, Object include) {
+        if (usecase instanceof MUseCase
+                && include instanceof MInclude) {
+            ((MUseCase) usecase).addInclude((MInclude) include);
+            return;
+        }
+
+        throw new IllegalArgumentException("usecase: " + usecase
+                + " or include: " + include);
+    }
+
+    /**
+     * Sets the addition to an include.
+     * There is a bug in NSUML that reverses additions and bases for includes.
+     *
+     * @param handle Include
+     * @param useCase UseCase
+     */
+    public void setAddition(Object handle, Object useCase) {
+        if ((handle instanceof MBase) && ((MBase) handle).isRemoved()) {
+            throw new IllegalStateException("Operation on a removed object ["
+                    + handle + "]");
+        }
+        if ((useCase instanceof MBase) && ((MBase) useCase).isRemoved()) {
+            throw new IllegalStateException("Operation on a removed object ["
+                    + useCase + "]");
+        }
+
+        if (handle instanceof MInclude) {
+            // See issue 2034
+            ((MInclude) handle).setBase((MUseCase) useCase);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the condition of an extend.
+     *
+     * @param handle is the extend
+     * @param booleanExpression is the condition
+     */
+    public void setCondition(Object handle, Object booleanExpression) {
+        if (handle instanceof MExtend
+                && booleanExpression instanceof MBooleanExpression) {
+            ((MExtend) handle).setCondition(
+                    (MBooleanExpression) booleanExpression);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or booleanExpression: " + booleanExpression);
+    }
+
+    /**
+     * Set the extension of a usecase.
+     *
+     * @param handle Extend
+     * @param ext UseCase or null
+     */
+    public void setExtension(Object handle, Object ext) {
+        if ((handle instanceof MBase) && ((MBase) handle).isRemoved()) {
+            throw new IllegalStateException("Operation on a removed object ["
+                    + handle + "]");
+        }
+        if ((ext instanceof MBase) && ((MBase) ext).isRemoved()) {
+            throw new IllegalStateException("Operation on a removed object ["
+                    + ext + "]");
+        }
+
+        if (handle instanceof MExtend
+                && (ext == null || ext instanceof MUseCase)) {
+            ((MExtend) handle).setExtension((MUseCase) ext);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or ext: " + ext);
+    }
+
+    /**
+     * Sets the extension points of some use cases.
+     *
+     * @param handle the use case
+     * @param extensionPoints is the extension points
+     */
+    public void setExtensionPoints(
+            Object handle,
+            Collection extensionPoints) {
+        if (handle instanceof MUseCase && extensionPoints instanceof List) {
+            ((MUseCase) handle).setExtensionPoints(extensionPoints);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or extensionPoints: " + extensionPoints);
+    }
+
+    /**
+     * Set the collection of Include relationships for a usecase.
+     *
+     * @param handle UseCase
+     * @param includes the collection of Include relationships
+     */
+    public void setIncludes(Object handle, Collection includes) {
+        if (handle instanceof MUseCase) {
+            ((MUseCase) handle).setIncludes(includes);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or includes: " + includes);
+    }
+
+    /**
+     * Sets a location of some extension point.
+     *
+     * @param handle is the extension point
+     * @param loc is the location
+     */
+    public void setLocation(Object handle, String loc) {
+        if (handle instanceof MExtensionPoint) {
+            ((MExtensionPoint) handle).setLocation(loc);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set a Use Case for an Extension Point.
+     *
+     * @param elem The Extension Point.
+     * @param usecase The Use Case.
+     */
+    public void setUseCase(Object elem, Object usecase) {
+        if (elem instanceof MExtensionPoint
+                && (usecase instanceof MUseCase
+                        || usecase == null)) {
+            ((MExtensionPoint) elem).setUseCase((MUseCase) usecase);
+            return;
+        }
+
+        throw new IllegalArgumentException("elem: " + elem
+                + " or usecase: " + usecase);
     }
 }

@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
@@ -57,7 +57,7 @@ public class ActionSetBehavioralFeatureQuery extends UMLAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
                 Object m = /*(MGeneralizableElement)*/ target;
-                ModelFacade.setQuery(m, source.isSelected());
+                Model.getCoreHelper().setQuery(m, source.isSelected());
             }
         }
     }

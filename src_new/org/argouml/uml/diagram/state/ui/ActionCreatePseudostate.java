@@ -26,11 +26,12 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Hashtable;
 
-import org.argouml.ui.CmdCreateNode;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.CmdCreateNode;
 
 /**
- * An Action to create a Pseudostate of some kind
+ * An Action to create a Pseudostate of some kind.
  *
  *
  * @author jrobbins
@@ -69,7 +70,7 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     public Object makeNode() {
 	Object newNode = super.makeNode();
 	Object kind = _args.get("kind");
-	ModelFacade.setKind(newNode, kind);
+	Model.getCoreHelper().setKind(newNode, kind);
 
 	return newNode;
     }

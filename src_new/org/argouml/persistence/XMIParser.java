@@ -32,6 +32,7 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
@@ -154,7 +155,7 @@ public class XMIParser {
         while (oeIterator.hasNext()) {
             Object me = /*(MModelElement)*/ oeIterator.next();
             if (ModelFacade.getName(me) == null)
-                ModelFacade.setName(me, "");
+                Model.getCoreHelper().setName(me, "");
 	    /*
 	      if (me instanceof MClass) {
 	      // _proj.defineType((MClass) me);

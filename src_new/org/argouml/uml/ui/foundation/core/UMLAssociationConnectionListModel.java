@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
@@ -49,15 +50,16 @@ public class UMLAssociationConnectionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null)
+        if (getTarget() != null) {
             setAllElements(ModelFacade.getConnections(getTarget()));
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAAssociationEnd(o)
+        return ModelFacade.isAAssociationEnd(o)
             && ModelFacade.getConnections(getTarget()).contains(o);
     }
 
@@ -72,7 +74,7 @@ public class UMLAssociationConnectionListModel
         Object mem2 = c.get(index2);
         c.set(index1, mem2);
         c.set(index2, mem1);
-        ModelFacade.setConnections(assoc, c);
+        Model.getCoreHelper().setConnections(assoc, c);
         buildModelList();
     }
 }

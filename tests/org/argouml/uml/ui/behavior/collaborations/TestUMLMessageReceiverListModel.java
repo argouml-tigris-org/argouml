@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 /**
@@ -75,7 +74,7 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     public void testSetReceiver() {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
-        ModelFacade.setReceiver(elem, role);
+        Model.getCommonBehaviorHelper().setReceiver(elem, role);
         assertEquals(1, model.getSize());
         assertEquals(role, model.getElementAt(0));
     }
@@ -86,8 +85,8 @@ public class TestUMLMessageReceiverListModel extends TestCase {
     public void testRemoveReceiver() {
         Object role =
             Model.getCollaborationsFactory().createClassifierRole();
-        ModelFacade.setReceiver(elem, role);
-        ModelFacade.setReceiver(elem, null);
+        Model.getCommonBehaviorHelper().setReceiver(elem, role);
+        Model.getCommonBehaviorHelper().setReceiver(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

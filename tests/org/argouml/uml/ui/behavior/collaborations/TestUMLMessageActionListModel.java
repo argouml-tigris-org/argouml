@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactoryImpl;
 
@@ -78,7 +77,7 @@ public class TestUMLMessageActionListModel
      */
     public void testSetAction() {
         Object action = Model.getCommonBehaviorFactory().createAction();
-        ModelFacade.setAction(elem, action);
+        Model.getCollaborationsHelper().setAction(elem, action);
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
     }
@@ -88,8 +87,8 @@ public class TestUMLMessageActionListModel
      */
     public void testRemoveAction() {
         Object action = Model.getCommonBehaviorFactory().createAction();
-        ModelFacade.setAction(elem, action);
-        ModelFacade.setAction(elem, null);
+        Model.getCollaborationsHelper().setAction(elem, action);
+        Model.getCollaborationsHelper().setAction(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

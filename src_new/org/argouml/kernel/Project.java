@@ -200,7 +200,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         Object model =
             Model.getModelManagementFactory().createModel();
-        ModelFacade.setName(model, "untitledModel");
+        Model.getCoreHelper().setName(model, "untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
         addMember(model);
@@ -595,7 +595,7 @@ public class Project implements java.io.Serializable, TargetListener {
             LOG.debug("new Type defined!");
             cls =
                 Model.getCoreFactory().buildClass(getCurrentNamespace());
-            ModelFacade.setName(cls, s);
+            Model.getCoreHelper().setName(cls, s);
         }
         return cls;
     }

@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -62,8 +61,8 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
         Object class2 = Model.getCoreFactory().createClass();
         Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        ModelFacade.setNamespace(class1, m);
-        ModelFacade.setNamespace(class2, m);
+        Model.getCoreHelper().setNamespace(class1, m);
+        Model.getCoreHelper().setNamespace(class2, m);
         bases = new Object[10];
         for (int i = 0; i < 10; i++) {
             bases[i] =
@@ -73,12 +72,12 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
 	    Model.getCollaborationsFactory().createClassifierRole();
         Object role2 =
 	    Model.getCollaborationsFactory().createClassifierRole();
-        ModelFacade.addBase(role1, class1);
-        ModelFacade.addBase(role2, class2);
+        Model.getCollaborationsHelper().addBase(role1, class1);
+        Model.getCollaborationsHelper().addBase(role2, class2);
         Object col =
 	    Model.getCollaborationsFactory().createCollaboration();
-        ModelFacade.setNamespace(role1, col);
-        ModelFacade.setNamespace(role2, col);
+        Model.getCoreHelper().setNamespace(role1, col);
+        Model.getCoreHelper().setNamespace(role2, col);
         elem =
 	    Model.getCollaborationsFactory().buildAssociationRole(role1, role2);
         model.targetSet(new TargetEvent(this,
@@ -114,7 +113,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      * Test setting the Base.
      */
     public void testSetBase() {
-        ModelFacade.setBase(elem, bases[0]);
+        Model.getCollaborationsHelper().setBase(elem, bases[0]);
         assertTrue(model.getSelectedItem() == bases[0]);
     }
 
@@ -122,7 +121,7 @@ public class TestUMLAssociationRoleBaseComboBoxModel extends TestCase {
      * Test setting the Base to null.
      */
     public void testSetBaseToNull() {
-        ModelFacade.setBase(elem, null);
+        Model.getCollaborationsHelper().setBase(elem, null);
         assertNull(model.getSelectedItem());
     }
 

@@ -24,6 +24,7 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
@@ -46,7 +47,7 @@ public class UMLReceptionSpecificationDocument extends UMLPlainTextDocument {
      */
     protected void setProperty(String text) {
         if (ModelFacade.isAReception(getTarget())) {
-            ModelFacade.setSpecification(getTarget(), text);
+            Model.getCommonBehaviorHelper().setSpecification(getTarget(), text);
         }
 
     }

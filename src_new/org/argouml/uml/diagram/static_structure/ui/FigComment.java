@@ -177,7 +177,7 @@ public class FigComment
 	    Model.getCoreFactory().createComment();
         setOwner(comment); // Set it as the owner of the figure.
 	// Tell the annotated element, that it has a comment now.
-        ModelFacade.addComment(element, comment);
+        Model.getCoreHelper().addComment(element, comment);
 
         // Notes in statechart diagrams need a special treatment, cause
         // the nodes in them don't necessary have a namespace, where
@@ -195,11 +195,11 @@ public class FigComment
 		    (((UMLStateDiagram) TargetManager.getInstance()
 		            .getTarget()).getGraphModel());
 		// We are editing, so we set the Namespace directly.
-                ModelFacade.setNamespace(comment, gm.getNamespace());
+                Model.getCoreHelper().setNamespace(comment, gm.getNamespace());
             }
         } else {
 	    // Add the comment to the same namespace as the annotated element.
-            ModelFacade.setNamespace(comment,
+            Model.getCoreHelper().setNamespace(comment,
                     ModelFacade.getNamespace(element));
         }
 
@@ -459,7 +459,7 @@ public class FigComment
      */
     public final void storeNote(String note) {
         if (getOwner() != null) {
-            ModelFacade.setName(getOwner(), note);
+            Model.getCoreHelper().setName(getOwner(), note);
         }
     }
 

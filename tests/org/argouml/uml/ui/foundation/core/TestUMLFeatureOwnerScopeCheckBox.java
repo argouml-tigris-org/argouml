@@ -93,9 +93,9 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
 	}
         boolean selected = box.isSelected();
         if (selected) {
-            ModelFacade.setOwnerScope(elem, MScopeKind.INSTANCE);
+            Model.getCoreHelper().setOwnerScope(elem, MScopeKind.INSTANCE);
         } else {
-            ModelFacade.setOwnerScope(elem, MScopeKind.CLASSIFIER);
+            Model.getCoreHelper().setOwnerScope(elem, MScopeKind.CLASSIFIER);
         }
         assertEquals(!selected, box.isSelected());
     }

@@ -244,7 +244,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 		/*(MConstraint)*/theMAlConstraints.remove(nIdx);
 
             if (mc != null) {
-                ModelFacade.removeConstraint(theMMmeiTarget, mc);
+                Model.getCoreHelper().removeConstraint(theMMmeiTarget, mc);
             }
 
             fireConstraintRemoved(mc, nIdx);
@@ -411,24 +411,24 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                                 Object/*MConstraint*/ mc =
                                     Model.getCoreFactory()
 				        .createConstraint();
-                                ModelFacade.setName(mc, ocltCurrent
+                                Model.getCoreHelper().setName(mc, ocltCurrent
                                     .getConstraintName());
-                                ModelFacade.setBody(mc,
+                                Model.getCoreHelper().setBody(mc,
                                         Model.getDataTypesFactory()
                                         	.createBooleanExpression(
                                         	        "OCL",
                                         	        ocltCurrent
                                         	        .getExpression()));
-                                ModelFacade.addConstraint(theMMmeiTarget, mc);
+                                Model.getCoreHelper().addConstraint(theMMmeiTarget, mc);
 
                                 // the constraint _must_ be owned by a namespace
                                 if (ModelFacade.getNamespace(theMMmeiTarget)
                                         != null) {
-                                    ModelFacade.addOwnedElement(ModelFacade
+                                    Model.getCoreHelper().addOwnedElement(ModelFacade
                                             .getNamespace(theMMmeiTarget), mc);
                                 } else if (ModelFacade
                                         .getNamespace(mmeContext) != null) {
-                                    ModelFacade.addOwnedElement(ModelFacade
+                                    Model.getCoreHelper().addOwnedElement(ModelFacade
                                         .getNamespace(mmeContext),
                                         theMMcConstraint);
                                 }
@@ -449,12 +449,12 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                         theMMcConstraint =
                             Model.getCoreFactory().createConstraint();
 
-                        ModelFacade.setName(theMMcConstraint, "newConstraint");
-                        ModelFacade.setBody(theMMcConstraint,
+                        Model.getCoreHelper().setName(theMMcConstraint, "newConstraint");
+                        Model.getCoreHelper().setBody(theMMcConstraint,
                                 Model.getDataTypesFactory()
                                 	.createBooleanExpression("OCL", sData));
 
-                        ModelFacade.addConstraint(theMMmeiTarget,
+                        Model.getCoreHelper().addConstraint(theMMmeiTarget,
                                 theMMcConstraint);
 
                         // the constraint _must_ be owned by a namespace
@@ -463,24 +463,24 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                         Object contextNamespace =
                             ModelFacade.getNamespace(mmeContext);
                         if (targetNamespace != null) {
-                            ModelFacade.addOwnedElement(targetNamespace,
+                            Model.getCoreHelper().addOwnedElement(targetNamespace,
                                     theMMcConstraint);
                         } else if (contextNamespace != null) {
-                            ModelFacade.addOwnedElement(contextNamespace,
+                            Model.getCoreHelper().addOwnedElement(contextNamespace,
                                     theMMcConstraint);
                         }
 
                         theMAlConstraints.set(theMNIdx, theMMcConstraint);
                     } else {
                         mcOld = Model.getCoreFactory().createConstraint();
-                        ModelFacade.setName(mcOld, ModelFacade.getName(
+                        Model.getCoreHelper().setName(mcOld, ModelFacade.getName(
                                 theMMcConstraint));
-                        ModelFacade.setBody(mcOld, Model.getDataTypesFactory()
+                        Model.getCoreHelper().setBody(mcOld, Model.getDataTypesFactory()
                                 .createBooleanExpression("OCL",
                                         (String) ModelFacade.getBody(
                                                 ModelFacade.getBody(
                                                         theMMcConstraint))));
-                        ModelFacade.setBody(theMMcConstraint,
+                        Model.getCoreHelper().setBody(theMMcConstraint,
                                 Model.getDataTypesFactory()
                                 	.createBooleanExpression("OCL", sData));
                     }
@@ -518,18 +518,18 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                     // Set name
                     Object/*MConstraint*/ mcOld =
                         Model.getCoreFactory().createConstraint();
-                    ModelFacade.setName(mcOld,
+                    Model.getCoreHelper().setName(mcOld,
                             ModelFacade.getName(theMMcConstraint));
                     Object constraintBody =
                         ModelFacade.getBody(theMMcConstraint);
-                    ModelFacade.setBody(mcOld,
+                    Model.getCoreHelper().setBody(mcOld,
                             Model.getDataTypesFactory()
                                 .createBooleanExpression(
                                         "OCL",
                                         (String) ModelFacade.getBody(
                                                 constraintBody)));
 
-                    ModelFacade.setName(theMMcConstraint, sName);
+                    Model.getCoreHelper().setName(theMMcConstraint, sName);
 
                     fireConstraintNameChanged(theMNIdx, mcOld,
                             theMMcConstraint);

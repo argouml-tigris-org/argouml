@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * @since Oct 30, 2002
@@ -70,7 +69,7 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      */
     public void testSetUseCase() {
         Object usecase = Model.getUseCasesFactory().createUseCase();
-        ModelFacade.setUseCase(elem, usecase);
+        Model.getUseCasesHelper().setUseCase(elem, usecase);
         assertEquals(1, model.getSize());
         assertEquals(usecase, model.getElementAt(0));
     }
@@ -80,8 +79,8 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
      */
     public void testRemoveUseCase() {
         Object usecase = Model.getUseCasesFactory().createUseCase();
-        ModelFacade.setUseCase(elem, usecase);
-        ModelFacade.setUseCase(elem, null);
+        Model.getUseCasesHelper().setUseCase(elem, usecase);
+        Model.getUseCasesHelper().setUseCase(elem, null);
         assertEquals(0, model.getSize());
     }
 

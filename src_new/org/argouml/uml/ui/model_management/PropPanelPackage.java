@@ -138,14 +138,16 @@ public class PropPanelPackage extends PropPanelNamespace  {
                 lookupIcon("Delete")));
     }
 
-    /** add a package to the current package. */
+    /**
+     * Add a package to the current package.
+     */
     public void addPackage() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAPackage(target)) {
+        if (ModelFacade.isAPackage(target)) {
             Object/*MPackage*/ newPackage =
                 Model.getModelManagementFactory().createPackage();
             Object/*MPackage*/ currentPackage = target;
-            ModelFacade.addOwnedElement(currentPackage, newPackage);
+            Model.getCoreHelper().addOwnedElement(currentPackage, newPackage);
             TargetManager.getInstance().setTarget(newPackage);
         }
     }

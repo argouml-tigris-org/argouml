@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * @since Oct 29, 2002
@@ -72,7 +71,7 @@ public class TestUMLCollaborationRepresentedOperationListModel
      */
     public void testSetRepresentedOperation() {
         Object oper = Model.getCoreFactory().createOperation();
-        ModelFacade.setRepresentedOperation(elem, oper);
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
         assertEquals(1, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
@@ -82,8 +81,8 @@ public class TestUMLCollaborationRepresentedOperationListModel
      */
     public void testRemoveRepresentedOperation() {
         Object oper = Model.getCoreFactory().createOperation();
-        ModelFacade.setRepresentedOperation(elem, oper);
-        ModelFacade.setRepresentedOperation(elem, null);
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, oper);
+        Model.getCollaborationsHelper().setRepresentedOperation(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

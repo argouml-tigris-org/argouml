@@ -1516,7 +1516,7 @@ public class GeneratorCSharp extends Generator2
 	if (id == null) {
 	    id = (new UID().toString());
 	    // id = cls.getName() + "__" + static_count;
-	    ModelFacade.setUUID(cls, id);
+	    Model.getCoreHelper().setUUID(cls, id);
         }
 	// String s = "";
 	// s += INDENT + "// section " + id + " begin\n";

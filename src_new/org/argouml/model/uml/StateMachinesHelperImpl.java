@@ -32,15 +32,22 @@ import java.util.List;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.StateMachinesHelper;
 
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
+import ru.novosoft.uml.behavior.state_machines.MTimeEvent;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.MBooleanExpression;
+import ru.novosoft.uml.foundation.data_types.MTimeExpression;
 
 /**
  * Helper class for UML BehavioralElements::StateMachines Package.
@@ -305,6 +312,285 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
             throw new IllegalArgumentException(
                     "Argument is not a composite state");
         }
+    }
+
+    /**
+     * Remove a given subvertex from a given composite state.
+     *
+     * @param handle the composite state
+     * @param subvertex the StateVertex
+     */
+    public void removeSubvertex(Object handle, Object subvertex) {
+        if (handle instanceof MCompositeState
+            && subvertex instanceof MStateVertex) {
+            ((MCompositeState) handle).removeSubvertex(
+                    (MStateVertex) subvertex);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or subvertex: " + subvertex);
+    }
+
+    /**
+     * Add a subvertex to a composite state.
+     *
+     * @param handle the CompositeState
+     * @param subvertex the StateVertex
+     */
+    public void addSubvertex(Object handle, Object subvertex) {
+        if (handle instanceof MCompositeState
+            && subvertex instanceof MStateVertex) {
+            ((MCompositeState) handle).addSubvertex((MStateVertex) subvertex);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or subvertex: " + subvertex);
+    }
+
+    /**
+     * Makes a Composite State concurrent.
+     *
+     * @param handle the CompositState
+     * @param concurrent boolean
+     */
+    public void setConcurrent(Object handle, boolean concurrent) {
+        if (handle instanceof MCompositeState) {
+            ((MCompositeState) handle).setConcurent(concurrent);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Set the container of a statevertex.
+     *
+     * @param handle is the stateVertex
+     * @param compositeState is the container. Can be <code>null</code>.
+     */
+    public void setContainer(Object handle, Object compositeState) {
+        if (handle instanceof MStateVertex
+            && (compositeState == null
+                || compositeState instanceof MCompositeState)) {
+            ((MStateVertex) handle).setContainer(
+                (MCompositeState) compositeState);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or compositeState: " + compositeState);
+    }
+
+    /**
+     * Sets the do activity of a state.
+     *
+     * @param handle is the state
+     * @param value the activity. Can be <code>null</code>.
+     */
+    public void setDoActivity(Object handle, Object value) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
+            ((MState) handle).setDoActivity((MAction) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * Sets the effect of some transition.
+     *
+     * @param handle is the transition
+     * @param value is the effect. Can be <code>null</code>.
+     */
+    public void setEffect(Object handle, Object value) {
+        if (handle instanceof MTransition
+            && (value == null || value instanceof MAction)) {
+            ((MTransition) handle).setEffect((MAction) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * Sets the entry action of some state.
+     *
+     * @param handle is the state
+     * @param value is the action. Can be <code>null</code>.
+     */
+    public void setEntry(Object handle, Object value) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
+            ((MState) handle).setEntry((MAction) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * Sets the exit action of some state.
+     *
+     * @param handle is the state
+     * @param value is the action. Can be <code>null</code>.
+     */
+    public void setExit(Object handle, Object value) {
+        if (handle instanceof MState
+            && (value == null || value instanceof MAction)) {
+            ((MState) handle).setExit((MAction) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * Set the Expression of a Guard or ChangeEvent.
+     *
+     * @param handle Guard or ChangeEvent
+     * @param value BooleanExpression or null
+     */
+    public void setExpression(Object handle, Object value) {
+        if (handle instanceof MGuard
+                && (value == null || value instanceof MBooleanExpression)) {
+            ((MGuard) handle).setExpression((MBooleanExpression) value);
+            return;
+        }
+        if (handle instanceof MChangeEvent
+                && (value == null || value instanceof MBooleanExpression)) {
+            MChangeEvent ce = (MChangeEvent) handle;
+            ce.setChangeExpression((MBooleanExpression) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
+    }
+
+    /**
+     * Sets the guard of a transition.
+     *
+     * @param handle to the transition
+     * @param guard to be set. Can be null.
+     */
+    public void setGuard(Object handle, Object guard) {
+        if (handle instanceof MTransition
+                && (guard == null || guard instanceof MGuard)) {
+            ((MTransition) handle).setGuard((MGuard) guard);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or guard: " + guard);
+    }
+
+    /**
+     * @param handle is the target.
+     * @param intTrans is a collection of transitions.
+     */
+    public void setInternalTransitions(
+        Object handle,
+        Collection intTrans) {
+        if (handle instanceof MState) {
+            ((MState) handle).setInternalTransitions(intTrans);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle);
+    }
+
+    /**
+     * Sets the source state of some message.
+     *
+     * @param handle the message
+     * @param state the source state
+     */
+    public void setSource(Object handle, Object state) {
+        if (handle instanceof MTransition && state instanceof MStateVertex) {
+            ((MTransition) handle).setSource((MStateVertex) state);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or state: " + state);
+    }
+
+    /**
+     * Sets the state of an internal transition.
+     *
+     * @param handle the internal transition
+     * @param element the state that contains this transition
+     */
+    public void setState(Object handle, Object element) {
+        if (handle instanceof MTransition
+            && element instanceof MState) {
+            ((MTransition) handle).setState((MState) element);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or element: " + element);
+    }
+
+    /**
+     * Sets a state machine of some state or transition.
+     *
+     * @param handle is the state or transition
+     * @param stm is the state machine
+     */
+    public void setStateMachine(Object handle, Object stm) {
+        if (handle instanceof MState
+            && (stm == null || stm instanceof MStateMachine)) {
+            ((MState) handle).setStateMachine((MStateMachine) stm);
+            return;
+        }
+        if (handle instanceof MTransition
+            && (stm == null || stm instanceof MStateMachine)) {
+            ((MTransition) handle).setStateMachine((MStateMachine) stm);
+            return;
+        }
+    throw new IllegalArgumentException("handle: " + handle + " or stm: " + stm);
+    }
+
+    /**
+     * Set the collection of substates for a CompositeState.
+     *
+     * @param handle CompositeState
+     * @param subvertices collection of sub-StateVertexes
+     */
+    public void setSubvertices(Object handle, Collection subvertices) {
+        if (handle instanceof MCompositeState) {
+            ((MCompositeState) handle).setSubvertices(subvertices);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or subvertices: " + subvertices);
+    }
+
+    /**
+     * Sets the trigger event of a transition.
+     *
+     * @param handle is the transition
+     * @param event is the trigger event
+     */
+    public void setTrigger(Object handle, Object event) {
+        if (handle instanceof MTransition
+                && (event == null || event instanceof MEvent)) {
+            ((MTransition) handle).setTrigger((MEvent) event);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or event: " + event);
+    }
+
+    /**
+     * Sets the time-expression for a TimeEvent.
+     *
+     * @param handle Object (MTimeEvent)
+     * @param value Object (MTimeExpression)
+     */
+    public void setWhen(Object handle, Object value) {
+        if (handle instanceof MTimeEvent
+            && (value == null || value instanceof MTimeExpression)) {
+            ((MTimeEvent) handle).setWhen((MTimeExpression) value);
+            return;
+        }
+        throw new IllegalArgumentException("handle: " + handle
+                + " or value: " + value);
     }
 
 }

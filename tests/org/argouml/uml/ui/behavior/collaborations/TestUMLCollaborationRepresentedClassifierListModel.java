@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactoryImpl;
 
@@ -78,7 +77,7 @@ public class TestUMLCollaborationRepresentedClassifierListModel
      */
     public void testSetRepresentedOperation() {
         Object oper = Model.getCoreFactory().createClassifier();
-        ModelFacade.setRepresentedClassifier(elem, oper);
+        Model.getCollaborationsHelper().setRepresentedClassifier(elem, oper);
         assertEquals(1, model.getSize());
         assertEquals(oper, model.getElementAt(0));
     }
@@ -88,8 +87,8 @@ public class TestUMLCollaborationRepresentedClassifierListModel
      */
     public void testRemoveRepresentedOperation() {
 	Object oper = Model.getCoreFactory().createClassifier();
-        ModelFacade.setRepresentedClassifier(elem, oper);
-        ModelFacade.setRepresentedClassifier(elem, null);
+        Model.getCollaborationsHelper().setRepresentedClassifier(elem, oper);
+        Model.getCollaborationsHelper().setRepresentedClassifier(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     }

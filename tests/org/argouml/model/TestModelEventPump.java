@@ -83,7 +83,7 @@ public class TestModelEventPump extends TestCase {
         elem = Model.getCoreFactory().createClass();
         Project project = ProjectManager.getManager().getCurrentProject();
         Object model = project.getRoot();
-        ModelFacade.addOwnedElement(model, elem);
+        Model.getCoreHelper().addOwnedElement(model, elem);
         eventcalled = false;
         listener = new TestListener();
     }
@@ -122,7 +122,7 @@ public class TestModelEventPump extends TestCase {
                 				   new String[] {
 						       "isRoot",
         					   });
-        ModelFacade.setRoot(elem, true);
+        Model.getCoreHelper().setRoot(elem, true);
         assertTrue(eventcalled);
     }
 
@@ -150,7 +150,7 @@ public class TestModelEventPump extends TestCase {
                 				   new String[] {
 						       "parameter",
         					   });
-        ModelFacade.addParameter(
+        Model.getCoreHelper().addParameter(
                 elem,
                 Model.getCoreFactory().createParameter());
         assertTrue(eventcalled);
@@ -162,13 +162,13 @@ public class TestModelEventPump extends TestCase {
      */
     public void testRoleRemovedSetClass() {
         Object param = Model.getCoreFactory().createParameter();
-        ModelFacade.addParameter(elem, param);
+        Model.getCoreHelper().addParameter(elem, param);
         Model.getPump().addClassModelEventListener(listener,
                 				   elem.getClass(),
                 				   new String[] {
 						       "parameter",
         					   });
-        ModelFacade.removeParameter(elem, param);
+        Model.getCoreHelper().removeParameter(elem, param);
         assertTrue(eventcalled);
     }
 
@@ -177,7 +177,7 @@ public class TestModelEventPump extends TestCase {
      */
     public void testFireNonRegistredListener() {
         Model.getCoreFactory().createClass();
-        ModelFacade.addParameter(
+        Model.getCoreHelper().addParameter(
                 elem,
                 Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);
@@ -188,7 +188,7 @@ public class TestModelEventPump extends TestCase {
      * receive the event.
      */
     public void testListRoleItemSet() {
-        ModelFacade.addFeature(
+        Model.getCoreHelper().addFeature(
                 elem,
                 Model.getCoreFactory().createOperation());
         Model.getPump().addModelEventListener(listener,
@@ -196,7 +196,7 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
                 				  "feature",
         				      });
-        ModelFacade.setFeature(
+        Model.getCoreHelper().setFeature(
                 elem, 0, Model.getCoreFactory().createOperation());
         assertTrue(eventcalled);
     }
@@ -211,7 +211,7 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
                 				  "isRoot",
         				      });
-        ModelFacade.setRoot(elem, true);
+        Model.getCoreHelper().setRoot(elem, true);
         assertTrue(eventcalled);
     }
 
@@ -239,7 +239,7 @@ public class TestModelEventPump extends TestCase {
                 			      new String[] {
                 				  "parameter",
         				      });
-        ModelFacade.addParameter(
+        Model.getCoreHelper().addParameter(
                 elem,
                 Model.getCoreFactory().createParameter());
         assertTrue(eventcalled);
@@ -251,13 +251,13 @@ public class TestModelEventPump extends TestCase {
      */
     public void testRoleRemovedSet() {
         Object param = Model.getCoreFactory().createParameter();
-        ModelFacade.addParameter(elem, param);
+        Model.getCoreHelper().addParameter(elem, param);
         Model.getPump().addModelEventListener(listener,
                 			      elem,
                 			      new String[] {
                 				  "parameter",
         				      });
-        ModelFacade.removeParameter(elem, param);
+        Model.getCoreHelper().removeParameter(elem, param);
         assertTrue(eventcalled);
     }
 
@@ -276,7 +276,7 @@ public class TestModelEventPump extends TestCase {
                 				      new String[] {
 					       		  "isRoot",
         					      });
-        ModelFacade.addParameter(
+        Model.getCoreHelper().addParameter(
                 elem,
                 Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);
@@ -292,7 +292,7 @@ public class TestModelEventPump extends TestCase {
         };
         Model.getPump().addModelEventListener(listener, elem, map);
         Model.getPump().removeModelEventListener(listener, elem, map);
-        ModelFacade.addParameter(
+        Model.getCoreHelper().addParameter(
                 elem,
                 Model.getCoreFactory().createParameter());
         assertTrue(!eventcalled);

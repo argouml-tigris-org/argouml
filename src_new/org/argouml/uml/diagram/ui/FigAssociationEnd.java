@@ -149,12 +149,12 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         super.textEdited(ft);
 
         if (ft == srcRole) {
-            ModelFacade.setName(getOwner(), srcRole.getText());
+            Model.getCoreHelper().setName(getOwner(), srcRole.getText());
         } else if (ft == srcMult) {
             Object multi =
                 Model.getDataTypesFactory()
                     .createMultiplicity(srcMult.getText());
-            ModelFacade.setMultiplicity(getOwner(), multi);
+            Model.getCoreHelper().setMultiplicity(getOwner(), multi);
         }
     }
 

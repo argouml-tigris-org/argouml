@@ -27,6 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
@@ -57,7 +58,7 @@ public class ActionSetCompositeStateConcurrent extends UMLAction {
             Object target = source.getTarget();
             if (ModelFacade.isACompositeState(target)) {
                 Object compositeState = target;
-                ModelFacade.setConcurrent(
+                Model.getStateMachinesHelper().setConcurrent(
                         compositeState,
                         !ModelFacade.isConcurrent(compositeState));
             }

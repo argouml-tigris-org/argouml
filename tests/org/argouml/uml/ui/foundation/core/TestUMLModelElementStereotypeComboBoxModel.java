@@ -31,7 +31,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -64,7 +63,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
         elem = Model.getCoreFactory().createClass();
         Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        ModelFacade.setNamespace(elem, m);
+        Model.getCoreHelper().setNamespace(elem, m);
         stereotypes = new MStereotype[10];
         Object theModel =
             ProjectManager.getManager().getCurrentProject().getModel();
@@ -101,7 +100,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test setStereotype().
      */
     public void testSetBase() {
-        ModelFacade.setStereotype(elem, stereotypes[0]);
+        Model.getCoreHelper().setStereotype(elem, stereotypes[0]);
         assertTrue(model.getSelectedItem() == stereotypes[0]);
     }
 
@@ -109,7 +108,7 @@ public class TestUMLModelElementStereotypeComboBoxModel extends TestCase {
      * Test setStereotype() with null argument.
      */
     public void testSetBaseToNull() {
-        ModelFacade.setStereotype(elem, null);
+        Model.getCoreHelper().setStereotype(elem, null);
         assertNull(model.getSelectedItem());
     }
 

@@ -27,6 +27,7 @@ package org.argouml.language.cpp.generator;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -107,7 +108,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         String packageName = "pack";
         Object aPackage = Model.getModelManagementFactory().
             buildPackage(packageName, UUIDManager.getInstance().getNewUUID());
-        ModelFacade.setNamespace(getAClass(), aPackage);
+        Model.getCoreHelper().setNamespace(getAClass(), aPackage);
 
         tmpDir = new File(System.getProperty(SYSPROPNAME_TMPDIR));
     }
@@ -249,7 +250,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
     private void setUpOtherClassInOtherPackage() {
         otherPack = Model.getModelManagementFactory().buildPackage(
                         "otherpack", UUIDManager.getInstance().getNewUUID());
-        ModelFacade.setNamespace(otherPack, getModel());
+        Model.getCoreHelper().setNamespace(otherPack, getModel());
         otherClass = getFactory().buildClass("OtherClass", otherPack);
     }
 
@@ -259,8 +260,8 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
      * @param modelName name to give to the model
      */
     private void setUpNamespaces(String modelName) {
-        ModelFacade.setName(getModel(), modelName);
-        ModelFacade.setNamespace(getPack(), getModel());
+        Model.getCoreHelper().setName(getModel(), modelName);
+        Model.getCoreHelper().setNamespace(getPack(), getModel());
     }
 
     /**

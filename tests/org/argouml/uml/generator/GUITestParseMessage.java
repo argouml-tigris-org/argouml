@@ -30,7 +30,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 
@@ -62,11 +61,11 @@ public class GUITestParseMessage extends TestCase {
         Object cl3 = Model.getCollaborationsFactory().createClassifierRole();
         Object cl4 = Model.getCollaborationsFactory().createClassifierRole();
         Object cl5 = Model.getCollaborationsFactory().createClassifierRole();
-        ModelFacade.setNamespace(cl1, coll);
-        ModelFacade.setNamespace(cl2, coll);
-        ModelFacade.setNamespace(cl3, coll);
-        ModelFacade.setNamespace(cl4, coll);
-        ModelFacade.setNamespace(cl5, coll);
+        Model.getCoreHelper().setNamespace(cl1, coll);
+        Model.getCoreHelper().setNamespace(cl2, coll);
+        Model.getCoreHelper().setNamespace(cl3, coll);
+        Model.getCoreHelper().setNamespace(cl4, coll);
+        Model.getCoreHelper().setNamespace(cl5, coll);
 
         Object r1to2 =
             Model.getCollaborationsFactory().buildAssociationRole(cl1, cl2);

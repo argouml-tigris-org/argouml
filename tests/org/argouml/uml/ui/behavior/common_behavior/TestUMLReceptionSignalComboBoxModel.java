@@ -29,7 +29,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -60,10 +59,10 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
         signals = new Object[10];
         Object m = Model.getModelManagementFactory().createModel();
         p.setRoot(m);
-        ModelFacade.setNamespace(elem, m);
+        Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             signals[i] = Model.getCommonBehaviorFactory().createSignal();
-            ModelFacade.addOwnedElement(m, signals[i]);
+            Model.getCoreHelper().addOwnedElement(m, signals[i]);
         }
         model = new UMLReceptionSignalComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
@@ -96,7 +95,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      * Test setSignal().
      */
     public void testSetSignal() {
-        ModelFacade.setSignal(elem, signals[0]);
+        Model.getCommonBehaviorHelper().setSignal(elem, signals[0]);
         assertTrue(model.getSelectedItem() == signals[0]);
     }
 
@@ -104,7 +103,7 @@ public class TestUMLReceptionSignalComboBoxModel extends TestCase {
      * Test setSignal() with null argument.
      */
     public void testSetSignalToNull() {
-        ModelFacade.setSignal(elem, null);
+        Model.getCommonBehaviorHelper().setSignal(elem, null);
         assertNull(model.getSelectedItem());
     }
 

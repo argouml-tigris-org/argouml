@@ -387,8 +387,8 @@ public class CollaborationsFactoryImpl
                     + "null");
         }
         Object associationRole = createAssociationRole();
-        ModelFacade.setNamespace(associationRole, collaboration);
-        ModelFacade.addLink(associationRole, link);
+        nsmodel.getCoreHelper().setNamespace(associationRole, collaboration);
+        nsmodel.getCoreHelper().addLink(associationRole, link);
         return associationRole;
     }
 

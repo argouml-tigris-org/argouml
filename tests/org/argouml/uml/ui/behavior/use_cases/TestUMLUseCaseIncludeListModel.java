@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 
 /**
@@ -64,7 +63,7 @@ public class TestUMLUseCaseIncludeListModel
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getUseCasesFactory().createInclude();
-            ModelFacade.addInclude(getElem(), ext[i]);
+            Model.getUseCasesHelper().addInclude(getElem(), ext[i]);
         }
         return ext;
     }
@@ -74,7 +73,7 @@ public class TestUMLUseCaseIncludeListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ModelFacade.removeInclude(getElem(), elements[i]);
+            Model.getUseCasesHelper().removeInclude(getElem(), elements[i]);
         }
     }
 }

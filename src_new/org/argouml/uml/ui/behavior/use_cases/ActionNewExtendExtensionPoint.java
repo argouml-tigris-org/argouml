@@ -60,7 +60,7 @@ public class ActionNewExtendExtensionPoint
             Object point =
                 Model.getUseCasesFactory().buildExtensionPoint(
                         ModelFacade.getBase(getTarget()));
-            ModelFacade.addExtensionPoint(getTarget(), point);
+            Model.getUseCasesHelper().addExtensionPoint(getTarget(), point);
         }
     }
 

@@ -31,6 +31,7 @@ import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 /** A non-modal wizard to help the user change navigability
  *  of an association. */
@@ -126,8 +127,8 @@ public class WizNavigable extends UMLWizard {
 		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
 		Object ae1 = /*(MAssociationEnd)*/
 		    new ArrayList(ModelFacade.getConnections(asc)).get(1);
-		ModelFacade.setNavigable(ae0, choice == 0 || choice == 2);
-		ModelFacade.setNavigable(ae1, choice == 1 || choice == 2);
+		Model.getCoreHelper().setNavigable(ae0, choice == 0 || choice == 2);
+		Model.getCoreHelper().setNavigable(ae1, choice == 1 || choice == 2);
 	    }
 	    catch (Exception pve) {
 		LOG.error("could not set navigablity", pve);

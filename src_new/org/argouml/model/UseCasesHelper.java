@@ -119,4 +119,109 @@ public interface UseCasesHelper {
      * @param base the base usecase
      */
     void setBase(Object extend, Object base);
+
+    /**
+     * Remove an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    void removeExtend(Object elem, Object extend);
+
+    /**
+     * This method removes an Extension Point from a Use Case or an Extend.
+     *
+     * @param elem is The Use Case or Extend.
+     * @param ep is the extension point
+     */
+    void removeExtensionPoint(Object elem, Object ep);
+
+    /**
+     * Remove an include from a Use Case.
+     *
+     * @param usecase The Use Case.
+     * @param include The Include.
+     */
+    void removeInclude(Object usecase, Object include);
+
+    /**
+     * Add an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    void addExtend(Object elem, Object extend);
+
+    /**
+     * Adds an extension point to some model element.
+     *
+     * @param handle is the model element
+     * @param extensionPoint is the extension point
+     */
+    void addExtensionPoint(Object handle, Object extensionPoint);
+
+    /**
+     * Add an include to a Use Case.
+     *
+     * @param usecase The Use Case.
+     * @param include The Include.
+     */
+    void addInclude(Object usecase, Object include);
+
+    /**
+     * Sets the addition to an include.
+     * There is a bug in NSUML that reverses additions and bases for includes.
+     *
+     * @param handle Include
+     * @param useCase UseCase
+     */
+    void setAddition(Object handle, Object useCase);
+
+    /**
+     * Set the condition of an extend.
+     *
+     * @param handle is the extend
+     * @param booleanExpression is the condition
+     */
+    void setCondition(Object handle, Object booleanExpression);
+
+    /**
+     * Set the extension of a usecase.
+     *
+     * @param handle Extend
+     * @param ext UseCase or null
+     */
+    void setExtension(Object handle, Object ext);
+
+    /**
+     * Sets the extension points of some use cases.
+     *
+     * @param handle the use case
+     * @param extensionPoints is the extension points
+     */
+    void setExtensionPoints(Object handle, Collection extensionPoints);
+
+    /**
+     * Set the collection of Include relationships for a usecase.
+     *
+     * @param handle UseCase
+     * @param includes the collection of Include relationships
+     */
+    void setIncludes(Object handle, Collection includes);
+
+    /**
+     * Sets a location of some extension point.
+     *
+     * @param handle is the extension point
+     * @param loc is the location
+     */
+    void setLocation(Object handle, String loc);
+
+    /**
+     * Set a Use Case for an Extension Point.
+     *
+     * @param elem The Extension Point.
+     * @param usecase The Use Case.
+     */
+    void setUseCase(Object elem, Object usecase);
 }

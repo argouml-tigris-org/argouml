@@ -129,9 +129,9 @@ public class PropPanelOperation extends PropPanelFeature {
                     .createSignal();
                     //((MOperation)oper).getFactory().createSignal();
 
-            ModelFacade.addOwnedElement(ModelFacade.getNamespace(ModelFacade
+            Model.getCoreHelper().addOwnedElement(ModelFacade.getNamespace(ModelFacade
                     .getOwner(oper)), newSignal);
-            ModelFacade.addRaisedSignal(oper, newSignal);
+            Model.getCoreHelper().addRaisedSignal(oper, newSignal);
             TargetManager.getInstance().setTarget(newSignal);
         }
     }
@@ -171,7 +171,8 @@ public class PropPanelOperation extends PropPanelFeature {
 
 
     /**
-     * Appropriate namespace is the namespace of our class, not the class itself
+     * Appropriate namespace is the namespace of our class,
+     * not the class itself.
      *
      * @see org.argouml.uml.ui.PropPanel#getDisplayNamespace()
      */

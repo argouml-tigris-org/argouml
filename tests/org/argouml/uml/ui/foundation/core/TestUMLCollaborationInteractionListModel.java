@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 import org.argouml.uml.ui.behavior.collaborations.UMLCollaborationInteractionListModel;
 
@@ -68,7 +67,7 @@ public class TestUMLCollaborationInteractionListModel
         Object[] inter = new Object[10];
         for (int i = 0; i < 10; i++) {
             inter[i] = Model.getCollaborationsFactory().createInteraction();
-            ModelFacade.setContext(inter[i], getElem());
+            Model.getCollaborationsHelper().setContext(inter[i], getElem());
         }
         return inter;
     }

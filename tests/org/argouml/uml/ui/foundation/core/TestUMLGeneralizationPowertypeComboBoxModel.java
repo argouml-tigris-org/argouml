@@ -28,7 +28,6 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 
 /**
@@ -63,10 +62,10 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
         types = new Object[10];
         Object m = Model.getModelManagementFactory().createModel();
         ProjectManager.getManager().getCurrentProject().setRoot(m);
-        ModelFacade.setNamespace(elem, m);
+        Model.getCoreHelper().setNamespace(elem, m);
         for (int i = 0; i < 10; i++) {
             types[i] = Model.getCoreFactory().createClassifier();
-            ModelFacade.addOwnedElement(m, types[i]);
+            Model.getCoreHelper().addOwnedElement(m, types[i]);
         }
     }
 
@@ -95,7 +94,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      * Test setPowertype().
      */
     public void testSetPowertype() {
-        ModelFacade.setPowertype(elem, types[0]);
+        Model.getCoreHelper().setPowertype(elem, types[0]);
         assertTrue(model.getSelectedItem() == types[0]);
     }
 
@@ -103,7 +102,7 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      * Test setPowertype() with null argument.
      */
     public void testSetPowertypeToNull() {
-        ModelFacade.setPowertype(elem, null);
+        Model.getCoreHelper().setPowertype(elem, null);
         assertNull(model.getSelectedItem());
     }
 

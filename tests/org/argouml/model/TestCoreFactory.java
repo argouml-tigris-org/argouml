@@ -172,7 +172,7 @@ public class TestCoreFactory extends TestCase {
         Object class2 = Model.getCoreFactory().buildClass(model);
         Object assoc =
             Model.getCoreFactory().buildAssociation(class1, class2);
-        ModelFacade.addConnection(assoc,
+        Model.getCoreHelper().addConnection(assoc,
                 Model.getCoreFactory().createAssociationEnd());
         WeakReference class1wr = new WeakReference(class1);
         WeakReference assocwr = new WeakReference(assoc);
@@ -213,7 +213,7 @@ public class TestCoreFactory extends TestCase {
         Object dep =
             Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
-        ModelFacade.addClient(dep, class3);
+        Model.getCoreHelper().addClient(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
@@ -234,7 +234,7 @@ public class TestCoreFactory extends TestCase {
         Object dep =
             Model.getCoreFactory().buildDependency(class1, class2);
         Object class3 = Model.getCoreFactory().buildClass(model);
-        ModelFacade.addSupplier(dep, class3);
+        Model.getCoreHelper().addSupplier(dep, class3);
         WeakReference class1wr = new WeakReference(class1);
         WeakReference depwr = new WeakReference(dep);
         Model.getUmlFactory().delete(class1);
@@ -288,7 +288,7 @@ public class TestCoreFactory extends TestCase {
 		   !ModelFacade.getConstrainedElements(con).isEmpty());
 	assertTrue("Constraint is not set",
 	        !ModelFacade.getConstraints(elem).isEmpty());
-	ModelFacade.setNamespace(elem,
+	Model.getCoreHelper().setNamespace(elem,
 	        Model.getCoreFactory().createNamespace());
 	con = Model.getCoreFactory().buildConstraint(elem);
 	assertNotNull("Namespace is not set", ModelFacade.getNamespace(con));
