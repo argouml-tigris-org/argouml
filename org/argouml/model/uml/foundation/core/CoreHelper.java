@@ -42,6 +42,7 @@ import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
@@ -350,6 +351,7 @@ public class CoreHelper {
 	 */
 	public MDependency buildSupportDependency(MModelElement from, MModelElement to) {
 		MDependency dep = CoreFactory.getFactory().buildDependency(from, to);
+		MNamespace model = ProjectBrowser.TheInstance.getProject().getModel();
 		MStereotype stereo = ExtensionMechanismsFactory.getFactory().buildStereotype(dep, "support", ProjectBrowser.TheInstance.getProject().getModel());
 		return dep;
 	}

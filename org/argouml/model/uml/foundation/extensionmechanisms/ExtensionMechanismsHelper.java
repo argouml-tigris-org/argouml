@@ -23,6 +23,16 @@
 
 package org.argouml.model.uml.foundation.extensionmechanisms;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+
 /**
  * Helper class for UML Foundation::ExtensionMechanisms Package.
  *
@@ -49,5 +59,40 @@ public class ExtensionMechanismsHelper {
     public static ExtensionMechanismsHelper getHelper() {
         return SINGLETON;
     }
+    
+    /**
+     * Returns all stereotypes in some namespace
+     */    
+    public Collection getStereotypes(MNamespace ns) {
+    	Iterator it = ns.getOwnedElements().iterator();
+    	List l = new ArrayList();
+    	while (it.hasNext()) {
+    		Object o = it.next();
+    		if (o instanceof MStereotype) {
+    			l.add(o);
+    		}
+    	}
+    	return l;
+    }
+    
+    /**
+     * Finds a stereotype in some namespace. Returns null if no such stereotype is found.
+     */
+    public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
+    	String name = stereo.getName();
+    	String baseClass = stereo.getBaseClass();
+    	Iterator it = getStereotypes(ns).iterator();
+    	while (it.hasNext()) {
+    		Object o = it.next();
+    		if (o instanceof MStereotype && 
+    			((MStereotype)o).getName().equals(name) &&
+    			((MStereotype)o).getBaseClass().equals(baseClass)) {
+    			return (MStereotype)o;
+    		}
+    	}
+    	return null;
+    }
+    			
+    
 }
 
