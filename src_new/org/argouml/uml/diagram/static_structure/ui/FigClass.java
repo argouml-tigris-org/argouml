@@ -34,6 +34,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
@@ -1137,6 +1138,18 @@ public class FigClass extends FigNodeModelElement {
         }
 
         super.updateListeners(newOwner);
+    }
+
+    /**
+     * @see org.tigris.gef.presentation.Fig#postLoad()
+     */
+    public void postLoad() {      
+        super.postLoad();
+        Object owner = getOwner();
+        if (ModelFacade.isAbstract(owner)) {
+            Font font = _name.getFont();              
+            _name.setFont(font.deriveFont(Font.ITALIC));
+        }
     }
 
 } /* end class FigClass */

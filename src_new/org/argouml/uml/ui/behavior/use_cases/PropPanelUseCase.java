@@ -43,7 +43,6 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelModifiers;
@@ -152,7 +151,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
                 MUseCase useCase = UseCasesFactory.getFactory().createUseCase();
 
                 ns.addOwnedElement(useCase);
-                ProjectBrowser.getInstance().setTarget(useCase);
+                TargetManager.getInstance().setTarget(useCase);
             }
         }
     }
