@@ -492,7 +492,7 @@ class ActionSaveProjectAs extends ActionSaveProject {
 	  //p.setPathname(path);
 	  File f = new File(path + name);
 	  p.setURL(Util.fileToURL(f));
-
+	  pb.updateTitle();
 	  return super.trySave(false);
 	}
       }
