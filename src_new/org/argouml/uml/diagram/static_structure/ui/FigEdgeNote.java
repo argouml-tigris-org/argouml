@@ -36,6 +36,7 @@ import java.awt.event.MouseListener;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
@@ -108,5 +109,9 @@ public class FigEdgeNote
     }    
 
     protected boolean canEdit(Fig f) { return false; }
+    
+    public String toString() {
+        return Translator.localize("misc.comment-edge");
+    }
 
 } /* end class FigEdgeNote */
