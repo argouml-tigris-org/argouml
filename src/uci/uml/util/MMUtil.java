@@ -8,7 +8,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 public class MMUtil {
 

@@ -11,7 +11,7 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;

@@ -33,7 +33,7 @@ package uci.ui;
 
 import java.awt.*;
 import javax.swing.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 import java.lang.reflect.*;
 //import symantec.itools.awt.NumericSpinner;

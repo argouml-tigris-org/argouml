@@ -30,7 +30,7 @@
 
 package uci.uml.critics;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import uci.argo.kernel.*;
 import ru.novosoft.uml.foundation.core.*;

@@ -25,7 +25,7 @@ package uci.uml.util;
 
 import java.rmi.server.UID;
 import java.net.InetAddress;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;

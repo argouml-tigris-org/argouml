@@ -26,7 +26,7 @@ package uci.uml.ui;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 //import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;

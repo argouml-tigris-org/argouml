@@ -3,7 +3,7 @@ package uci.uml.visual;
 
 //import java.util.*;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.beans.*;
 

@@ -27,8 +27,7 @@
 
 package uci.graph;
 
-import com.sun.java.util.collections.*;
-import java.util.Enumeration;
+import java.util.*;
 
 /** This class is an example of an alternative way to implement
  * MutableGraphModel.  Needs-more-work: this code has not been used

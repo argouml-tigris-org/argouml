@@ -41,7 +41,7 @@
 
 package uci.ui;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Date;
 
 import javax.swing.table.TableModel;

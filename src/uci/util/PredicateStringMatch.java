@@ -23,7 +23,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.StringTokenizer;
 
 public class PredicateStringMatch implements Predicate {

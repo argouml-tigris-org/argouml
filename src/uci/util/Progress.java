@@ -31,7 +31,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 

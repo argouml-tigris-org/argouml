@@ -27,7 +27,7 @@ import uci.uml.ui.Project;
 import uci.xml.SAXParserBase;
 import uci.xml.XMLElement;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.io.*;
 import java.net.URL;
 
@@ -75,9 +75,9 @@ public class ArgoParser extends SAXParserBase {
     if (_dbg) System.out.println("NOTE: ArgoParser handleStartTag:" + e.getName());
     try {
       switch (_tokens.toToken(e.getName(), true)) {
-      case _tokens.TOKEN_argo: handleArgo(e); break;
-      case _tokens.TOKEN_documentation: handleDocumentation(e); break;
-      default: if (_dbg) 
+      case ArgoTokenTable.TOKEN_argo: handleArgo(e); break;
+      case ArgoTokenTable.TOKEN_documentation: handleDocumentation(e); break;
+      default: if (_dbg)
 	System.out.println("WARNING: unknown tag:" + e.getName());  break;
       }
     }
@@ -91,13 +91,13 @@ public class ArgoParser extends SAXParserBase {
     if (_dbg) System.out.println("NOTE: ArgoParser handleEndTag:" + e.getName()+".");
     try {
       switch (_tokens.toToken(e.getName(), false)) {
-      case _tokens.TOKEN_authorname : handleAuthorname(e); break;
-      case _tokens.TOKEN_version : handleVersion(e); break;
-      case _tokens.TOKEN_description : handleDescription(e); break;
-      case _tokens.TOKEN_searchpath : handleSearchpath(e); break;
-      case _tokens.TOKEN_member : handleMember(e); break;
-      case _tokens.TOKEN_historyfile : handleHistoryfile(e); break;
-      default : if (_dbg) 
+      case ArgoTokenTable.TOKEN_authorname : handleAuthorname(e); break;
+      case ArgoTokenTable.TOKEN_version : handleVersion(e); break;
+      case ArgoTokenTable.TOKEN_description : handleDescription(e); break;
+      case ArgoTokenTable.TOKEN_searchpath : handleSearchpath(e); break;
+      case ArgoTokenTable.TOKEN_member : handleMember(e); break;
+      case ArgoTokenTable.TOKEN_historyfile : handleHistoryfile(e); break;
+      default : if (_dbg)
 	System.out.println("WARNING: unknown end tag:" + e.getName()); break;
       }
     }

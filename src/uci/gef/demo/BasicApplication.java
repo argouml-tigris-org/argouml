@@ -34,7 +34,7 @@ package uci.gef.demo;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import com.sun.java.util.collections.Hashtable;
+import java.util.Hashtable;
 import uci.gef.*;
 import uci.graph.*;
 

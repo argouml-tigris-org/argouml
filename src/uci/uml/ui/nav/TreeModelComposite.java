@@ -23,7 +23,7 @@
 
 package uci.uml.ui.nav;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 //import java.util.*;
 import javax.swing.*;
 import javax.swing.event.*;

@@ -30,7 +30,7 @@
 
 package uci.argo.kernel;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import ru.novosoft.uml.*;
 import java.util.Enumeration;
 import java.util.Properties;

@@ -26,9 +26,7 @@
 package uci.uml.ui;
 
 
-import java.util.Enumeration;
-import java.util.Hashtable;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.FileOutputStream;
@@ -356,7 +354,7 @@ class ActionSaveProject extends UMLAction {
   public boolean trySave(boolean overwrite) {
     try {
       if (expander == null) {
-	com.sun.java.util.collections.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+	java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
 	expander = new OCLExpander(templates);
       }
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -413,7 +411,7 @@ class ActionSaveProjectAs extends UMLAction {
   protected static OCLExpander expander = null;
   public ActionSaveProjectAs() {
     super("Save Project As...", NO_ICON);
-    com.sun.java.util.collections.Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
+    java.util.Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
     expander = new OCLExpander(templates);
   }
 
@@ -752,6 +750,7 @@ class ActionSaveGraphics extends UMLAction {
 	chooser.addChoosableFileFilter( FileFilters.GIFFilter );
 	chooser.addChoosableFileFilter( FileFilters.PSFilter );
 	chooser.addChoosableFileFilter( FileFilters.EPSFilter );
+	chooser.addChoosableFileFilter( FileFilters.SVGFilter );
 	// concerning the following lines: is .GIF preferred?
 	chooser.setFileFilter( FileFilters.GIFFilter );
 	File def = new File(  defaultName + "."
@@ -773,6 +772,8 @@ class ActionSaveGraphics extends UMLAction {
 		cmd = new CmdSaveEPS();
 	    else if (FileFilters.GIFFilter._suffix.equals(extension)) 
 		cmd = new CmdSaveGIF();
+	    else if (FileFilters.SVGFilter._suffix.equals(extension)) 
+		cmd = new CmdSaveSVG();
 	    else {
 		pb.showStatus("Unknown graphics file type withextension "
 			      +extension);
@@ -1913,7 +1914,7 @@ class ActionMultiplicity extends UMLAction {
       Selection sel = (Selection) sels.firstElement();
       Fig f = sel.getContent();
       Object owner = ((FigEdgeModelElement) f).getOwner();
-      com.sun.java.util.collections.List ascEnds = ((MAssociation) owner).getConnections();
+      java.util.List ascEnds = ((MAssociation) owner).getConnections();
       MAssociationEnd ascEnd = null;
       if(str.equals("src"))
         ascEnd = (MAssociationEnd) ascEnds.get(0);
@@ -1940,7 +1941,7 @@ class ActionAggregation extends UMLAction {
       Selection sel = (Selection) sels.firstElement();
       Fig f = sel.getContent();
       Object owner = ((FigEdgeModelElement) f).getOwner();
-      com.sun.java.util.collections.List ascEnds = ((MAssociation) owner).getConnections();
+      java.util.List ascEnds = ((MAssociation) owner).getConnections();
       MAssociationEnd ascEnd = null;
       if(str.equals("src"))
         ascEnd = (MAssociationEnd) ascEnds.get(0);

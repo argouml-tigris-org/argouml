@@ -32,7 +32,7 @@
 package uci.gef;
 
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** Cmd to do nothing.  This might make some other code simpler.  For

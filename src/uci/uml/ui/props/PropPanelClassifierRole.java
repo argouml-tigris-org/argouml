@@ -33,7 +33,7 @@ package uci.uml.ui.props;
 //import jargo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -43,7 +43,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import uci.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;

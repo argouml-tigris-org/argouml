@@ -31,7 +31,7 @@
 
 package uci.uml.critics;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.ui.*;

@@ -34,7 +34,9 @@ SOURCES= \
 	CmdSaveGIF.java \
 	CmdSavePS.java \
 	CmdSaveEPS.java \
+	CmdSaveSVG.java \
 	PostscriptWriter.java \
+	SVGWriter.java \
 	CmdScroll.java \
 	CmdSelectAll.java \
 	CmdSelectInvert.java \

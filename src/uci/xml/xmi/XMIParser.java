@@ -26,7 +26,7 @@ package uci.xml.xmi;
 import uci.uml.ui.Project;
 
 import java.net.URL;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.PropertyVetoException;
 
 import org.xml.sax.*;

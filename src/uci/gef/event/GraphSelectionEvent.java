@@ -25,7 +25,7 @@
 
 package uci.gef.event;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.EventObject;
 
 

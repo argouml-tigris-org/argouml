@@ -23,7 +23,7 @@
 
 package uci.uml.generate;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.io.*;
 
 /** Stores preference information entered by the user. */

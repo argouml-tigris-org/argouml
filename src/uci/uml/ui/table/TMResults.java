@@ -25,7 +25,7 @@ package uci.uml.ui.table;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.table.*;

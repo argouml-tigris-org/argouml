@@ -26,10 +26,10 @@
 
 package uci.uml.generate;
 
-//import com.sun.java.util.collections.*;
+//import java.util.*;
 import java.io.*;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;

@@ -23,7 +23,7 @@
 
 package uci.uml.critics.patterns;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 import uci.argo.kernel.*;
 import uci.uml.critics.*;

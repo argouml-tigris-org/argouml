@@ -26,7 +26,7 @@ package uci.uml.util;
 
 // import java.util.*;
 import java.util.Enumeration;
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 import uci.util.*;
 import ru.novosoft.uml.foundation.core.*;

@@ -33,7 +33,7 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.beans.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 import uci.gef.*;
 import uci.uml.ui.*;

@@ -28,7 +28,7 @@ package uci.uml.ui;
  */
 
 import java.net.URL;
-import com.sun.java.util.collections.*;
+import java.util.*;
 //import java.util.*;
 import java.beans.*;
 import java.io.*;

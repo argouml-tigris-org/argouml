@@ -32,7 +32,7 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
@@ -329,7 +329,7 @@ public class FigClass extends FigNodeWithCompartments {
 	Iterator iter = strs.iterator();
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
-	    sf.addMElementListener(this);
+	    // sf.addMElementListener(this);
 	    attrStr += GeneratorDisplay.Generate(sf);
 	    if (iter.hasNext())
 	      attrStr += "\n";
@@ -342,7 +342,7 @@ public class FigClass extends FigNodeWithCompartments {
 	Iterator iter = behs.iterator();
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
-	    bf.addMElementListener(this);
+	    // bf.addMElementListener(this);
 	    operStr += GeneratorDisplay.Generate(bf);
 	    if (iter.hasNext())
 	      operStr += "\n";

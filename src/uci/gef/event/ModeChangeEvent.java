@@ -26,7 +26,7 @@
 package uci.gef.event;
 
 import java.util.EventObject;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 

@@ -34,7 +34,7 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.image.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.net.*;
 

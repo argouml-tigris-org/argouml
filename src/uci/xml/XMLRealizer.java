@@ -24,7 +24,7 @@
 package uci.xml;
 
 import org.w3c.dom.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 //import java.util.*;
 
 /**

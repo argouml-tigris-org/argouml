@@ -33,8 +33,7 @@ package uci.gef;
 import java.applet.*;
 import java.awt.*;
 import java.io.*;
-import com.sun.java.util.collections.*;
-import java.util.Enumeration;
+import java.util.*;
 
 
 /** Abstract class to draw arrow heads on the ends of FigEdges. */

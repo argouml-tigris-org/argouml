@@ -34,7 +34,7 @@ package uci.gef;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.beans.*;
 

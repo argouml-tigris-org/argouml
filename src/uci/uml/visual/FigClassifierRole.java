@@ -28,7 +28,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.beans.*;
 import java.awt.event.*;

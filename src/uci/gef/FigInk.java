@@ -35,7 +35,7 @@ package uci.gef;
 import java.applet.*;
 import java.awt.*;
 import java.io.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open

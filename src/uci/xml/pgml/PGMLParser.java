@@ -23,7 +23,7 @@
 
 package uci.xml.pgml;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.StringTokenizer;
 //import java.util.*;
 import java.awt.*;

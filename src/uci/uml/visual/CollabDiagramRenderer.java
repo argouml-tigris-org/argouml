@@ -30,7 +30,7 @@
 
 package uci.uml.visual;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 import uci.graph.*;
 import uci.gef.*;

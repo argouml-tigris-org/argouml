@@ -28,12 +28,12 @@ package uci.uml.generate;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 
 import uci.util.*;
 import uci.uml.util.UUIDManager;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;

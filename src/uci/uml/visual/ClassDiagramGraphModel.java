@@ -31,7 +31,7 @@
 
 package uci.uml.visual;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.beans.*;
 

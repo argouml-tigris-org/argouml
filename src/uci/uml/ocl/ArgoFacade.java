@@ -7,7 +7,7 @@ import ru.novosoft.uml.foundation.core.*;
 
 import uci.uml.util.MMUtil;
 import uci.uml.ui.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 public class ArgoFacade implements ModelFacade {
 
@@ -48,7 +48,7 @@ class ArgoAny implements Any {
       boolean isSet=false, isSequence=false; // cannot be Bag
 
       // first search for appropriate attributes
-      com.sun.java.util.collections.Collection attributes = MMUtil.SINGLETON.getAttributesInh(classifier);
+      java.util.Collection attributes = MMUtil.SINGLETON.getAttributesInh(classifier);
       Iterator iter = attributes.iterator();
       while (iter.hasNext() && foundAttribType == null) {
         MAttribute attr = (MAttribute)iter.next();
@@ -58,7 +58,7 @@ class ArgoAny implements Any {
       }
 
       // look for associations
-      com.sun.java.util.collections.Collection associationEnds = MMUtil.SINGLETON.getAssociateEndsInh(classifier);
+      java.util.Collection associationEnds = MMUtil.SINGLETON.getAssociateEndsInh(classifier);
       Iterator asciter = associationEnds.iterator();
       while (asciter.hasNext() && foundAssocType == null) {
         MAssociationEnd ae = (MAssociationEnd)asciter.next();
@@ -148,7 +148,7 @@ class ArgoAny implements Any {
       if (type != null) return type;
 
       MOperation foundOp = null;
-      com.sun.java.util.collections.Collection operations = MMUtil.SINGLETON.getOperations(classifier);
+      java.util.Collection operations = MMUtil.SINGLETON.getOperations(classifier);
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();

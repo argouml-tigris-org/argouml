@@ -27,7 +27,7 @@
 package uci.uml.ui;
 
 import java.io.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.StringTokenizer;
 import java.awt.*;
 import java.awt.event.*;

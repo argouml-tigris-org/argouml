@@ -26,10 +26,10 @@
 
 package uci.uml.generate;
 
-//import com.sun.java.util.collections.*;
+//import java.util.*;
 import java.io.*;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -133,7 +133,7 @@ public class GeneratorJava extends Generator {
     //needs-more-work: add user-defined copyright
     s += "// FILE: " + pathname.replace('\\','/') +"\n\n";
     if (packagePath.length() > 0) s += "package " + packagePath + ";\n";
-    s += "import com.sun.java.util.collections.*;\n";
+    s += "import java.util.*;\n";
 
     s += "\n";
     return s;

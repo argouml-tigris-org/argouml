@@ -35,10 +35,10 @@ import java.awt.*;               // ScrollPane, PopupMenu, MenuShortcut, etc.
 import java.awt.datatransfer.*;  // Clipboard, Transferable, DataFlavor, etc.
 import java.awt.event.*;         // New event model.
 import java.io.*;                // Object serialization streams.
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.util.zip.*;          // Data compression/decompression streams.
-import com.sun.java.util.collections.Vector;         // To store the scribble in.
+import java.util.Vector;         // To store the scribble in.
 import java.util.Properties;     // To store printing preferences in.
 import java.beans.*;
 

@@ -28,7 +28,7 @@
 
 package uci.gef;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.io.*;
 import java.awt.*;

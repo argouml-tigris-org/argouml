@@ -26,7 +26,7 @@
 
 package uci.uml.ui;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 
 import ru.novosoft.uml.model_management.*;

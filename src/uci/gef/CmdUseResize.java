@@ -32,7 +32,7 @@
 package uci.gef;
 
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** Set the current editor to use a SelectionResize on its current

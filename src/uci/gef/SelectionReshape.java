@@ -33,7 +33,7 @@ package uci.gef;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** A Selection that allows the user to reshape the selected Fig.

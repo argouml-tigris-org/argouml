@@ -23,10 +23,10 @@
 
 package uci.uml.generate;
 
-//import com.sun.java.util.collections.*;
+//import java.util.*;
 import java.beans.*;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.StringTokenizer;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;

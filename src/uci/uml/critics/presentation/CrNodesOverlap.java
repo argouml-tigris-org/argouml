@@ -28,7 +28,7 @@
 
 package uci.uml.critics.presentation;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.awt.*;
 //import javax.swing.*;
 

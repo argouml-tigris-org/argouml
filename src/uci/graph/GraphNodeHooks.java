@@ -26,7 +26,7 @@
 
 package uci.graph;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import java.beans.*;
 import uci.gef.Editor;

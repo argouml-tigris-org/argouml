@@ -23,7 +23,7 @@
 
 package uci.uml.ocl;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 //import java.util.*;
 import java.awt.*;

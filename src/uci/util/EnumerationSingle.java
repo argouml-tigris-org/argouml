@@ -31,7 +31,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** A enumeration that has exactly one element. Functially equivelant to:

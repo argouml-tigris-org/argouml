@@ -33,7 +33,7 @@ package uci.gef;
 
 import java.awt.event.*;
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** A Mode to process events from the Editor when the user is

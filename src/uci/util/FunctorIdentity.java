@@ -31,7 +31,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 /** A useful implementation of interface Functor that simply returns
  *  the same object that was passed to it.  Use this class when you

@@ -35,7 +35,7 @@ import java.beans.*;
 import java.lang.reflect.*;
 import java.awt.*;
 import javax.swing.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 // import ru.novosoft.uml.foundation.core.*;
 
 import uci.gef.Fig;

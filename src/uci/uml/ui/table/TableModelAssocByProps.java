@@ -23,7 +23,7 @@
 
 package uci.uml.ui.table;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 
 import uci.uml.visual.*;

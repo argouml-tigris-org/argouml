@@ -30,7 +30,7 @@
 
 package uci.uml.ui;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.awt.event.*;
 
 import uci.gef.*;

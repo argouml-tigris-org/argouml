@@ -32,7 +32,7 @@ package uci.uml.visual;
 
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 
 import uci.util.*;
@@ -344,7 +344,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
 	public void postProcessEdge() {
 		if (_newEdge instanceof MAssociation) {
-			com.sun.java.util.collections.List conn = ((MAssociation)_newEdge).getConnections();
+			java.util.List conn = ((MAssociation)_newEdge).getConnections();
 			MAssociationEnd ae0 = (MAssociationEnd) conn.get(0);
 			ae0.setAggregation(MAggregationKind.COMPOSITE);
 		}

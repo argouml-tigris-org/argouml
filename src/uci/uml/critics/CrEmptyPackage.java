@@ -32,7 +32,7 @@
 
 package uci.uml.critics;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import uci.argo.kernel.*;
 import uci.util.*;
 import ru.novosoft.uml.foundation.core.*;

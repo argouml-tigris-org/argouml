@@ -29,7 +29,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.model_management.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 
 /** This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of

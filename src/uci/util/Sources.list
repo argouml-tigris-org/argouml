@@ -16,5 +16,4 @@ SOURCES= \
 	Progress.java \
 	VectorSet.java \
 	Util.java \
-	UnexpectedException.java \
-	Converter.java
+	UnexpectedException.java

@@ -61,4 +61,7 @@ public class FileFilters {
   public static final SuffixFilter EPSFilter = new
   SuffixFilter("eps", "Encapsulated PostScript file");
 
+  public static final SuffixFilter SVGFilter = new
+  SuffixFilter("svg", "Scalable Vector Graphics file");
+
 } /* end class FileFilters */

@@ -5,7 +5,7 @@ package uci.uml.ui;
 import java.beans.*;
 import java.awt.*;
 import java.awt.event.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import uci.util.*;
 import uci.uml.ocl.*;
 import javax.swing.*;

@@ -31,7 +31,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** A enumeration that is always empty. Functially equivelant to:
@@ -68,7 +68,7 @@ implements Enumeration, Iterator, java.io.Serializable {
 
   public void remove()
   {
-    throw new com.sun.java.util.collections.UnsupportedOperationException();
+	  throw new java.util.NoSuchElementException();
   };
 
 } /* end class EnumerationEmpty */

@@ -30,7 +30,7 @@
 
 package uci.graph;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** This interface provides a facade to a net-level

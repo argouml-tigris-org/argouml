@@ -33,7 +33,7 @@ package uci.gef;
 
 //import java.util.Vector;
 import java.util.Enumeration;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.Serializable;

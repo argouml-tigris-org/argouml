@@ -27,7 +27,7 @@
 package uci.uml.ui;
 
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import javax.swing.*;
 
 /** A subclass of JPanel that can act as a tab in the DetailsPane or

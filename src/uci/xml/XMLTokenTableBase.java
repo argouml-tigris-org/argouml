@@ -23,7 +23,7 @@
 
 package uci.xml;
 
-import com.sun.java.util.collections.Hashtable;
+import java.util.Hashtable;
 //import java.util.Hashtable;
 
 /**

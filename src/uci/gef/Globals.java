@@ -35,7 +35,7 @@ import java.applet.*;
 import java.awt.*;
 import java.beans.*;
 import java.net.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 import uci.ui.*;
 

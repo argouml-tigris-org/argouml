@@ -31,7 +31,7 @@
 package uci.uml.visual;
 
 import java.awt.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 

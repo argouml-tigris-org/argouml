@@ -35,7 +35,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.applet.*;
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** A Panel that shows an array of little colored squares to allow the

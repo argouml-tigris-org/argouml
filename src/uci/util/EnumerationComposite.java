@@ -31,7 +31,7 @@
 
 package uci.util;
 
-import com.sun.java.util.collections.*;
+import java.util.*;
 import java.util.Enumeration;
 
 /** This class concatenates Enumerations.  Successive calls to
