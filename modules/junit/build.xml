@@ -325,32 +325,33 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="junit-init" depends="init">
 
      <property name="011202.xml" value="testmodels/01-12-02.xml"/>
-     <property name="model.dtd" value="testmodels/Model.dtd"/>
+     <property name="991015.dtd" value="testmodels/Model.dtd"/>
 
      <!--available file="${011202.xml}" property="011202.xml.available"/-->
-     <available file="${model.dtd}" property="model.dtd.available"/>
-  </target>
-
-  <!-- =================================================================== -->
-  <!-- Get the uml 1.3 model if necessary                                  -->
-  <!-- =================================================================== -->
-  <target name="junit-get-model" depends="junit-init"
-          unless="model.dtd.available">
-
-    <get src="http://cgi.omg.org/docs/formal/99-10-15.dtd"
-         dest="${model.dtd}"
-	 usetimestamp="true"
-	 verbose="false"
-	 ignoreerrors="true"/>
-
-     <!-- Check availability again - if the get worked, it will be there. -->
-     <available file="${model.dtd}" property="model.dtd.available"/>
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
   </target>
 
   <!-- =================================================================== -->
   <!-- Get the uml 1.3 dtd if necessary                                    -->
   <!-- =================================================================== -->
-  <target name="junit-get-011202" depends="junit-init, junit-get-model"
+  <target name="junit-get-991015-dtd" depends="junit-init"
+          unless="991015.dtd.available">
+
+    <get src="http://cgi.omg.org/docs/ad/99-10-15.dtd"
+         dest="${991015.dtd}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model if necessary                                  -->
+  <!-- =================================================================== -->
+  <target name="junit-get-011202-xml"
+          depends="junit-init, junit-get-991015-dtd"
           unless="011202.xml.available">
 
     <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
@@ -366,7 +367,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <!-- Prepare for the junit tests.                                        -->
   <!-- =================================================================== -->
-  <target name="junit-setup" depends="junit-get-011202, junit-get-model"/>
+  <target name="junit-setup" depends="junit-get-011202-xml,
+                                      junit-get-991015-dtd"/>
 
   <!-- =================================================================== -->
   <!-- Run the junit tests.                                                -->
