@@ -27,15 +27,11 @@ import org.argouml.uml.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLComboBoxEntry implements Comparable {
     private Object/*MModelElement*/ _element;
@@ -139,7 +135,7 @@ public class UMLComboBoxEntry implements Comparable {
                     targetName = ModelFacade.getName(ownedElement);
                     if (targetName != null && phantomName.equals(targetName)) {
                         if (ModelFacade.isAPackage(ownedElement)) {
-                            ns = (MPackage) ownedElement;
+                            ns = ownedElement;
                             break;
                         }
                     }
@@ -160,7 +156,7 @@ public class UMLComboBoxEntry implements Comparable {
         //    we need to possibly recreate the package structure
         //       in the target model
         if (_isPhantom && targetModel != null) {
-            Object/*MNamespace*/ targetNS = findNamespace(ModelFacade.getNamespace(_element), (MModel)targetModel);
+            Object/*MNamespace*/ targetNS = findNamespace(ModelFacade.getNamespace(_element), targetModel);
             Object/*MModelElement*/ clone = null;
             try {
                 clone = _element.getClass().getConstructor(new Class[] {}).newInstance(new Object[] {});

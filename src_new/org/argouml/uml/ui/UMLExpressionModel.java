@@ -27,8 +27,8 @@ import java.lang.reflect.*;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.data_types.MExpression;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
@@ -101,7 +101,7 @@ public final class UMLExpressionModel  {
             Object target = _container.getTarget();
             if (_getMethod != null && target != null) {
                 try {
-                    _expression = (MExpression) _getMethod.invoke(target, _noArgs);
+                    _expression = _getMethod.invoke(target, _noArgs);
                 }
                 catch (Exception e) {
                     cat.error(e.toString() + " in UMLExpressionModel.getExpression()", e);

@@ -31,8 +31,7 @@ import java.lang.reflect.*;
 import org.apache.log4j.Logger;
 import org.argouml.model.uml.AbstractWellformednessRule;
 import org.argouml.model.uml.UmlHelper;
-
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MBase;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

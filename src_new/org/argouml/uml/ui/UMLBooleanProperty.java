@@ -27,8 +27,7 @@ import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
 
 import org.apache.log4j.Logger;
-
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /** This abstract base class is used to define derived classes that interact
  * with the UMLRadioButton and UMLCheckBox user interface components.

@@ -38,15 +38,6 @@ import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHel
 import java.util.*;
 import java.beans.*;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.model_management.*;
-
-
 import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.Editor;
@@ -205,9 +196,9 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	    Collection ends = ModelFacade.getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
-		MLinkEnd ae = (MLinkEnd) iter.next();
-		if (canAddEdge(ae.getLink()))
-		    addEdge(ae.getLink());
+		Object/*MLinkEnd*/ le = iter.next();
+		if (canAddEdge(ModelFacade.getLink(le)))
+		    addEdge(ModelFacade.getLink(le));
 		return;
 	    }
 	}

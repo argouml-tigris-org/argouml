@@ -32,12 +32,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import org.argouml.model.ModelFacade;
-
-import ru.novosoft.uml.*;
-
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.MElementEvent;
 
 /** handles communication between the initial value JComboBox and the Collection.
  *  This class also causes NSUML to refresh and so keeps the diagram in synch
@@ -119,7 +114,7 @@ public class UMLInitialValueComboBox extends JComboBox
         Object target = _container.getTarget();
 	_isUpdating = true;
         if (org.argouml.model.ModelFacade.isAAttribute(target)) {
-            Object/*MExpression*/ initExpr = (MExpression) ModelFacade.getInitialValue(target);
+            Object/*MExpression*/ initExpr = ModelFacade.getInitialValue(target);
             if (initExpr != null) {
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);
@@ -129,8 +124,8 @@ public class UMLInitialValueComboBox extends JComboBox
                 setSelectedItem(null); // clear residual junk from the combo box.
             }
         } 
-        else if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            Object/*MExpression*/ initExpr = (MExpression) ModelFacade.getDefaultValue(target);
+        else if (ModelFacade.isAParameter(target)) {
+            Object/*MExpression*/ initExpr = ModelFacade.getDefaultValue(target);
             if (initExpr != null) {
                 Object init = ModelFacade.getBody(initExpr);
                 setSelectedItem(init);

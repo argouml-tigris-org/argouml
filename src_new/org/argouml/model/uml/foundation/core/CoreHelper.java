@@ -626,10 +626,10 @@ public class CoreHelper {
      * @param clazz
      * @return Collection
      */
-    public Collection getExtendedClassifiers(MGeneralizableElement clazz) {
+    public Collection getExtendedClassifiers(Object/*MGeneralizableElement*/ clazz) {
         if (clazz == null)
             return new ArrayList();
-        Iterator it = clazz.getGeneralizations().iterator();
+        Iterator it = ModelFacade.getGeneralizations(clazz).iterator();
         List list = new ArrayList();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();
@@ -647,9 +647,10 @@ public class CoreHelper {
      * @param parent
      * @return MGeneralization
      */
-    public MGeneralization getGeneralization(
-					     MGeneralizableElement child,
-					     MGeneralizableElement parent) {
+    public MGeneralization getGeneralization(Object achild,
+					     Object aparent) {
+        MGeneralizableElement child = (MGeneralizableElement)achild;
+        MGeneralizableElement parent = (MGeneralizableElement)aparent;
         if (child == null || parent == null)
             return null;
         Iterator it = child.getGeneralizations().iterator();
@@ -838,11 +839,11 @@ public class CoreHelper {
      * @param to
      * @return MAssociation
      */
-    public Collection getAssociations(MClassifier from, MClassifier to) {
+    public Collection getAssociations(Object/*MClassifier*/ from, Object/*MClassifier*/ to) {
         Set ret = new HashSet();
         if (from == null || to == null)
             return ret;
-        Iterator it = from.getAssociationEnds().iterator();
+        Iterator it = ModelFacade.getAssociationEnds(from).iterator();
         while (it.hasNext()) {
             MAssociationEnd end = (MAssociationEnd) it.next();
             MAssociation assoc = end.getAssociation();

@@ -27,7 +27,7 @@ import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * This class depends on {@link org.argouml.uml.ui.UMLExpressionModel}, therefore deprecated.

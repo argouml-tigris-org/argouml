@@ -28,7 +28,7 @@ import javax.swing.event.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * TODO: this class should be moved to package

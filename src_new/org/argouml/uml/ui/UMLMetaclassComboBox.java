@@ -30,7 +30,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.event.*;
 import java.lang.reflect.*;
-import ru.novosoft.uml.*;
+import ru.novosoft.uml.MElementEvent;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),

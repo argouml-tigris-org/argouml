@@ -30,10 +30,6 @@ import java.lang.reflect.*;
 import java.util.*;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
 /** An UMLTaggedBooleanProperty is a property which maintains a tagged value
  *  as a boolean field. It is e.g. used to work with UMLCheckbox.
  *
@@ -54,14 +50,14 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     
     public void setProperty(Object obj, boolean newState) {
         if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-            Object/*MModelElement*/ element = (MModelElement) obj;
+            Object/*MModelElement*/ element = obj;
             Iterator iter = ModelFacade.getTaggedValues(element);
             boolean found = false;
             if (iter != null) {
                 Object/*MTaggedValue*/ taggedValue;
                 
                 while (iter.hasNext()) {
-                    taggedValue = (MTaggedValue) iter.next();
+                    taggedValue = iter.next();
                     if (_tagName.equals(ModelFacade.getTag(taggedValue))) {
                         if (newState) {
                             ModelFacade.setValue(taggedValue, "true");
@@ -91,12 +87,12 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     public boolean getProperty(Object obj) {
         boolean state = false;
         if (ModelFacade.isAModelElement(obj)) {
-            Object/*MModelElement*/ element = (MModelElement) obj;
+            Object/*MModelElement*/ element = obj;
             Iterator iter = ModelFacade.getTaggedValues(element);
             if (iter != null) {
                 Object/*MTaggedValue*/ taggedValue;
                 while (iter.hasNext()) {
-                    taggedValue = (MTaggedValue) iter.next();
+                    taggedValue = iter.next();
                     if (_tagName.equals(ModelFacade.getTag(taggedValue))) {
                         String value = (String)ModelFacade.getValue(taggedValue);
                         if ("true".equals(value)) {
