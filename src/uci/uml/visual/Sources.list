@@ -58,6 +58,8 @@ SOURCES= \
 	FigComponent.java \
 	FigComponentInstance.java \
 	FigObject.java \
+	FigDeepHistoryState.java \
+	FigShallowHistoryState.java \
 	StateDiagramGraphModel.java \
 	StateDiagramRenderer.java \
 	UMLActivityDiagram.java \

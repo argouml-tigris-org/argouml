@@ -67,6 +67,7 @@ SOURCES= \
 	FigSpline.java \
 	FigText.java \
 	FigTextEditor.java \
+	FigPainter.java \
 	Geometry.java \
 	Globals.java \
 	Guide.java \

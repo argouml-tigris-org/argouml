@@ -1,4 +1,5 @@
 SOURCES= \
+	DialogConstraint.java \
 	AboutBox.java \
 	ActionCreatePseudostate.java \
 	ActionGoToDetails.java \

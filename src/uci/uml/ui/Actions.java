@@ -1078,20 +1078,19 @@ class ActionActivityDiagram extends UMLChangeAction {
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p = pb.getProject();
     try {
-      
-      if (!(pb.getDetailsTarget() instanceof MUseCase)) return;
-      MUseCase uc = (MUseCase) pb.getDetailsTarget();
-      String contextNameStr = uc.getName();
+      MNamespace ns=(MNamespace)pb.getDetailsTarget();
+      if (!(ns instanceof MUseCase) && (!(ns instanceof MClass))) return;
+	  String contextNameStr = ns.getName();
       if (contextNameStr == null) contextNameStr = "untitled";
       MActivityGraph am = new MActivityGraphImpl();
 	  am.setName(contextNameStr + "ActivityGraph");
       MCompositeState cs = new MCompositeStateImpl();
 	  cs.setName("activities_top");
-      cs.setNamespace(uc);
-      am.setNamespace(uc);
+      cs.setNamespace(ns);
+      am.setNamespace(ns);
       am.setTop(cs);
-      uc.addBehavior(am);
-      UMLActivityDiagram d = new UMLActivityDiagram(uc);
+      ns.addBehavior(am);
+      UMLActivityDiagram d = new UMLActivityDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
       pb.setTarget(d);
@@ -1105,7 +1104,7 @@ class ActionActivityDiagram extends UMLChangeAction {
     Project p = pb.getProject();
     Object target = pb.getDetailsTarget();
     return super.shouldBeEnabled() && p != null &&
-      (target instanceof MUseCase); // or MOperation
+      ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation
   }
 } /* end class ActionActivityDiagram */
 

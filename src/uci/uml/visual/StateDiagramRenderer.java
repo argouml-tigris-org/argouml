@@ -57,7 +57,8 @@ import ru.novosoft.uml.behavior.activity_graphs.*;
  *    Branch        ---  FigBranchState
  *    Fork          ---  FigForkState
  *    Join          ---  FigJoinState
- *    History       ---  FigHistoryState
+ *    DeepHistory       ---  FigDeepHistoryState
+ *    ShallowHistory       ---  FigShallowistoryState
  *  MTransition      ---  FigTransition
  *  more...
  *  </pre>
@@ -85,8 +86,9 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       else if (pState.getKind().equals(MPseudostateKind.JOIN))
 	return new FigJoinState(gm, node);
       else if (pState.getKind().equals(MPseudostateKind.SHALLOW_HISTORY))
-	return new FigHistoryState(gm, node);
-      else
+	return new FigShallowHistoryState(gm, node);
+      else if (pState.getKind().equals(MPseudostateKind.DEEP_HISTORY))
+	return new FigDeepHistoryState(gm, node);      else
 	System.out.println("found a type not known");
     }
     System.out.println("needs-more-work StateDiagramRenderer getFigNodeFor");

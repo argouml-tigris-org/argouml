@@ -44,11 +44,11 @@ include Makefile.config
 
 UCI_DIR=$(ARGO_DIR)/uci
 
-VER_NAME=argouml071
+VER_NAME=argouml072
 
-JAR_NAME=argouml071
+JAR_NAME=argouml072
 
-SRC_NAME=argosrc071
+SRC_NAME=argosrc072
 
 
 all: classes jar

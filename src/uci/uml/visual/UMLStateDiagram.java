@@ -74,8 +74,11 @@ public class UMLStateDiagram extends UMLDiagram {
   protected static Action _actionJoinPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.JOIN, "Join");
 
-  protected static Action _actionHistoryPseudoState =
+  protected static Action _actionShallowHistoryPseudoState =
   new ActionCreatePseudostate(MPseudostateKind.SHALLOW_HISTORY, "ShallowHistory");
+ 
+ protected static Action _actionDeepHistoryPseudoState =
+  new ActionCreatePseudostate(MPseudostateKind.DEEP_HISTORY, "DeepHistory");
 
 
   protected static Action _actionTransition =
@@ -173,7 +176,8 @@ public MStateMachine getStateMachine() {
     _toolBar.add(_actionBranchPseudoState);
     _toolBar.add(_actionForkPseudoState);
     _toolBar.add(_actionJoinPseudoState);
-    _toolBar.add(_actionHistoryPseudoState);
+    _toolBar.add(_actionShallowHistoryPseudoState);
+    _toolBar.add(_actionDeepHistoryPseudoState);
     _toolBar.addSeparator();
 
     _toolBar.add(Actions.AddInternalTrans);

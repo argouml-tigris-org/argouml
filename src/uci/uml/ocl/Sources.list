@@ -1,4 +1,5 @@
 SOURCES= \
+	ArgoFacade.java \
 	OCLEvaluator.java \
 	OCLExpander.java \
 	TemplateReader.java \

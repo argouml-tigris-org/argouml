@@ -7,6 +7,8 @@ package uci.sql;
 import java.sql.*;
 import java.io.*;
 import java.util.Properties;
+
+import uci.uml.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
@@ -56,41 +58,38 @@ public class DBWriter
 
     public void store(MModel model) {
 	
-	ResultSet RS = null;
-	Statement Stmt = null;
+	Statement stmt = null;
+	// this is TEMP CODE until UUIDs are set when obj is created !!!!!
+	UUIDManager.SINGLETON.createModelUUIDS((MNamespace)model);
 
 	try {
 	    System.out.println("Writing model: "+model.getName());
-	    Stmt = Conn.createStatement();
-            //Stmt.executeUpdate("INSERT INTO "+ Models +" VALUES (" + i + ", 'StringData" + i + "')");
+	    stmt = Conn.createStatement();
+		store(model,stmt);
 	}
 	catch (SQLException E) {
 	    System.out.println("error while executing!");
 	    System.out.println(E);
 	}
+
 	finally {
-	    if (RS != null) {
-		try {
-		    RS.close();
-		}
-		catch (SQLException SQLE) {}
-	    }
-	    
-	    if (Stmt != null) {
-		try {
-		    Stmt.close();
-		}
+	    if (stmt != null) {
+		try { stmt.close();}
 		catch (SQLException SQLE) {}
 	    }
 
 	    if (Conn != null) {
-		try {
-		    Conn.close();
-		}
+		try { Conn.close();}
 		catch (SQLException SQLE) {}
 	    }
 	}
     }
+
+	private void store(MModel model, Statement stmt) throws SQLException {
+		stmt.executeUpdate("REPLACE INTO tModel (uuid) VALUES ('" +model.getUUID()+ "')");
+		stmt.executeUpdate("REPLACE INTO tModelElement (uuid, name) VALUES ('" +model.getUUID()+ "','"+model.getName()+"')");
+	}
+		
 
     public void storeClass(MClass cls) throws SQLException {
     }

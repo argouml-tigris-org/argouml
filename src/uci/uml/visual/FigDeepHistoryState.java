@@ -21,9 +21,9 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: FigFinalState.java
-// Classes: FigFinalState
-// Original Author: ics125b spring 98
+// File: FigHistoryState.java
+// Classes: FigHistoryState
+// Original Author: jrobbins@ics.uci.edu
 // $Id$
 
 package uci.uml.visual;
@@ -41,11 +41,10 @@ import uci.uml.ui.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
 
 /** Class to display graphics for a UML MState in a diagram. */
 
-public class FigFinalState extends FigStateVertex {
+public class FigDeepHistoryState extends FigStateVertex {
 
   ////////////////////////////////////////////////////////////////
   // constants
@@ -53,69 +52,62 @@ public class FigFinalState extends FigStateVertex {
   public final int MARGIN = 2;
   public int x = 0;
   public int y = 0;
-  public int width = 20;
-  public int height = 20;
+  public int width = 24;
+  public int height = 24;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  FigCircle _bigPort;
-  FigCircle _inCircle;
-  FigCircle _outCircle;
+  /** The main label on this icon. */
+  FigText _name;
 
+  /** UML does not really use ports, so just define one big one so
+   *  that users can drag edges to or from any point in the icon. */
+
+  FigCircle _bigPort;
+
+  // add other Figs here aes needed
+
+  FigCircle _head;
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public FigFinalState() {
-    Color handleColor = Globals.getPrefs().getHandleColor();
-    _bigPort = new FigCircle(x,y,width,height, handleColor, Color.cyan);
-    _outCircle = new FigCircle(x,y,width,height, Color.black, Color.white);
-    _inCircle = new FigCircle(x+5,y+5,width-10,height-10, handleColor, Color.black);
+  public FigDeepHistoryState() {
+    _bigPort = new FigCircle(x, y, width, height, Color.cyan, Color.cyan);
+    _head = new FigCircle(x, y, width, height, Color.black, Color.white);
+    _name = new FigText(x+5, y+5, width-10, height-10);
+    _name.setText("H*");
+    _name.setTextColor(Color.black);
+    _name.setFilled(false);
+    _name.setLineWidth(0);
 
-    _outCircle.setLineWidth(1);
-    _inCircle.setLineWidth(0);
-
+    // add Figs to the FigNode in back-to-front order
     addFig(_bigPort);
-    addFig(_outCircle);
-    addFig(_inCircle);
+    addFig(_head);
+    addFig(_name);
 
     setBlinkPorts(false); //make port invisble unless mouse enters
     Rectangle r = getBounds();
   }
 
-  public FigFinalState(GraphModel gm, Object node) {
+  public String placeString() { return "H*"; }
+
+  public FigDeepHistoryState(GraphModel gm, Object node) {
     this();
     setOwner(node);
   }
 
   public Object clone() {
-    FigFinalState figClone = (FigFinalState) super.clone();
+    FigDeepHistoryState figClone = (FigDeepHistoryState) super.clone();
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigCircle) v.elementAt(0);
-    figClone._outCircle = (FigCircle) v.elementAt(1);
-    figClone._inCircle = (FigCircle) v.elementAt(2);
+    figClone._head = (FigCircle) v.elementAt(1);
+    figClone._name = (FigText) v.elementAt(2);
     return figClone;
   }
 
   ////////////////////////////////////////////////////////////////
   // Fig accessors
-
-  public Selection makeSelection() {
-      MPseudostate pstate = null;
-      Selection sel = null;
-      if (getOwner() != null) {
-	  pstate = (MPseudostate)getOwner();
-	  if (pstate.getContainer().getStateMachine() instanceof MActivityGraph) {
-	      sel = new SelectionActionState(this);
-		  ((SelectionActionState)sel).setOutgoingButtonEnabled(false);
-	  }
-	  else {
-	      sel = new SelectionState(this);
-		  ((SelectionState)sel).setOutgoingButtonEnabled(false);
-	  }
-      }
-	  return sel;
-  }
 
   public void setOwner(Object node) {
     super.setOwner(node);
@@ -125,24 +117,24 @@ public class FigFinalState extends FigStateVertex {
       ((MElementImpl)node).addMElementListener(this);
   }
 
-  /** Final states are fixed size. */
+  /** History states are fixed size. */
   public boolean isResizable() { return false; }
 
-//   public Selection makeSelection() {
-//     return new SelectionMoveClarifiers(this);
-//   }
+  public Selection makeSelection() {
+    return new SelectionMoveClarifiers(this);
+  }
 
-  public void setLineColor(Color col) { _outCircle.setLineColor(col); }
-  public Color getLineColor() { return _outCircle.getLineColor(); }
+  public void setLineColor(Color col) { _head.setLineColor(col); }
+  public Color getLineColor() { return _head.getLineColor(); }
 
-  public void setFillColor(Color col) { _inCircle.setFillColor(col); }
-  public Color getFillColor() { return _inCircle.getFillColor(); }
+  public void setFillColor(Color col) { _head.setFillColor(col); }
+  public Color getFillColor() { return _head.getFillColor(); }
 
   public void setFilled(boolean f) { }
   public boolean getFilled() { return true; }
 
-  public void setLineWidth(int w) { _outCircle.setLineWidth(w); }
-  public int getLineWidth() { return _outCircle.getLineWidth(); }
+  public void setLineWidth(int w) { _head.setLineWidth(w); }
+  public int getLineWidth() { return _head.getLineWidth(); }
 
   ////////////////////////////////////////////////////////////////
   // Event handlers
@@ -151,8 +143,6 @@ public class FigFinalState extends FigStateVertex {
   public void keyPressed(KeyEvent ke) { }
 
 
-  static final long serialVersionUID = -3506578343969467480L;
+  static final long serialVersionUID = 6572261327347541373L;
 
-} /* end class FigFinalState */
-
-
+} /* end class FigDeepHistoryState */

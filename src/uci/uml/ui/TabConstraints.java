@@ -46,14 +46,16 @@ import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.model_management.*;
 
+import tudresden.ocl.*;
+
 public class TabConstraints extends TabSpawnable
 implements TabModelTarget, DocumentListener, ActionListener,
   ListSelectionListener
 {
   ////////////////////////////////////////////////////////////////
   // instance variables
-  private MModelElementImpl _target;
-  private boolean _shouldBeEnabled = false;
+  private MModelElement _target;
+   private boolean _shouldBeEnabled = false;
   private boolean _updating = false;
   private TableModelConstraints _tableModel = new TableModelConstraints();
   private JTable _table = new JTable(4, 1);
@@ -242,14 +244,18 @@ implements TabModelTarget, DocumentListener, ActionListener,
   public void actionPerformed(ActionEvent ae) {
     Object src = ae.getSource();
     if (src == _addButton) {
-      Vector cs = new Vector(_target.getConstraints());
-      System.out.println("needs-more-work: add constraint dialog box");
-	  MConstraint c = new MConstraintImpl();
-	  c.setName("EnterName");
-	  c.setBody(new MBooleanExpression("OCL", "EnterExpression"));
-      cs.addElement(c);
-      _table.tableChanged(null);
-      _table.sizeColumnsToFit(0);
+	  DialogConstraint dialog = new DialogConstraint(ProjectBrowser.TheInstance);
+	  dialog.setVisible(true); 
+	  String result = dialog.getResultingExpression();
+	  if (result != null) {
+	      Vector cs = new Vector(_target.getConstraints());
+	      MConstraint c = new MConstraintImpl();
+	      c.setName("Constraint "+cs.size());
+	      c.setBody(new MBooleanExpression("OCL", result));
+	      _target.addConstraint(c);
+	      _table.tableChanged(null);
+	      _table.sizeColumnsToFit(1);
+	  }
       return;
     }
     if (src == _removeButton) {

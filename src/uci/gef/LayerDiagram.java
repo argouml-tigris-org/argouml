@@ -195,14 +195,25 @@ public class LayerDiagram extends Layer {
   // painting methods
 
   /** Paint all the Fig's that belong to this layer. */
-  public void paintContents(Graphics g) {
+  public void paintContents(Graphics g) {  // kept for backwards compatibility
+      paintContents(g,null);
+  }
+
+  /** Paint all the Fig's that belong to this layer using a given FigPainter.
+   *  If painter is null, the Fig's are painted directly.
+   */
+  public void paintContents(Graphics g, FigPainter painter) {
     Rectangle clip = g.getClipBounds();
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
-      Fig f = (Fig) figs.nextElement();
-      if (clip == null || f.getBounds().intersects(clip)) {
-	f.paint(g);
+      Fig fig = (Fig) figs.nextElement();
+      if (clip == null || fig.getBounds().intersects(clip)) {
+          if (painter==null)
+             fig.paint(g);
+          else
+             painter.paint(g,fig);
       }
+     
     }
   }
 

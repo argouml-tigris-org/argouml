@@ -137,7 +137,10 @@ public abstract class Layer implements java.io.Serializable {
   }
 
   /** Get and set methods */
-  public String getName() { return _name; }
+  public String getName() {
+	if (_name==null) return "";
+	else return _name;
+  }
   public void setName(String n) { _name = n; }
 
   public void setHidden(boolean b) { _hidden = b; }
@@ -236,12 +239,32 @@ public abstract class Layer implements java.io.Serializable {
   /** Paint this Layer on the given Graphics. Sublasses should define
    *  methods for paintContents, which is called from here if the Layer
    *  is not hidden. */
-  public void paint(Graphics g) {
-    if (_hidden) return;
-    if (! _grayed) paintContents(g); else paintGrayContents(g);
+//---BEGIN uni-hh changes
+//    public void paint(Graphics g) {
+//      if (_hidden) return;
+//      if (! _grayed) paintContents(g); else paintGrayContents(g);
+//    }
+  public void paint(Graphics g) {  // kept for backwards compatibility
+      paint(g,null);
   }
 
-  /** Abactract method to paint the contents of this layer, subclasses
+  /** Paint this Layer on the given Graphics using the given FigPainter.
+   *  Sublasses should define
+   *  methods for paintContents, which is called from here if the Layer
+   *  is not hidden. */
+  public void paint(Graphics g, FigPainter painter) {
+    if (_hidden) return;
+    if (! _grayed) paintContents(g,painter); else paintGrayContents(g);
+  }
+  /** Method to paint the contents of this layer using a given painter.
+   *  The default implementation ignores the painter.
+   */
+  public void paintContents(Graphics g, FigPainter painter) {
+      paintContents(g);
+  }
+//---END uni-hh changes
+  
+  /** Abstract method to paint the contents of this layer, subclasses
    *  must define this.  For example, LayerDiagram paints itself by
    *  painting a list of Figs and LayerGrid paints itself by painting
    *  a lot lines. */
