@@ -37,6 +37,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.diagram.ui.FigAssociation;
+import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigPermission;
@@ -115,7 +116,10 @@ public class ClassDiagramRenderer
             throw new IllegalArgumentException("A model edge must be supplied");
         }
         FigEdge newEdge = null;
-        if (ModelFacade.isAAssociation(edge)) {
+        if (ModelFacade.isAAssociationClass(edge)) {
+            FigAssociationClass ascCFig = new FigAssociationClass(edge, lay);
+            return ascCFig;
+        } else if (ModelFacade.isAAssociation(edge)) {
             FigAssociation ascFig = new FigAssociation(edge, lay);
             newEdge = ascFig;
         } else if (ModelFacade.isALink(edge)) {

@@ -770,6 +770,26 @@ public class ModelFacade {
     }
 
     /**
+    * Recognizer for AssociationClass.
+    *
+    * @param handle candidate
+    * @return true if handle is an AssociationClass
+    */
+    public static boolean isAAssociationClass(Object handle) {
+        return handle instanceof MAssociationClass;
+    }
+    
+    /**
+     * Recognizer for a Element that is Classifier and RelationShip
+     *
+     * @param handle candidate
+     * @return true if handle is a Classifier and a Relationship
+     */
+    public static boolean isAClassifierAndARelationship(Object handle) {
+        return ((handle instanceof MClassifier) && (handle instanceof MRelationship));
+    }
+    
+    /**
      * Recognizer for Classifier
      *
      * @param handle candidate

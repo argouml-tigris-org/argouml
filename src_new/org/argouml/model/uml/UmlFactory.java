@@ -243,7 +243,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	 ModelFacade.COMMENT},
 	{CommentEdge.class,            ModelFacade.COMMENT,
          ModelFacade.MODELELEMENT},
-        {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX}
+        {ModelFacade.TRANSITION,       ModelFacade.STATEVERTEX},
+        {ModelFacade.ASSOCIATION_CLASS, ModelFacade.CLASS}
     };
 
     /** Singleton instance.
@@ -524,11 +525,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
         Object connection = null;
         
         if (connectionType == ModelFacade.ASSOCIATION) {
-            connection = getCore().buildAssociation((MClassifier) fromElement, 
+            connection = getCore().buildAssociation(
+                       (MClassifier) fromElement, 
                        (MAggregationKind) fromStyle, 
                        (MClassifier) toElement, 
                        (MAggregationKind) toStyle, 
                        (Boolean) unidirectional);
+        } else if (connectionType == ModelFacade.ASSOCIATION_CLASS) {
+            connection = getCore().buildAssociationClass(
+                       (MClassifier) fromElement,
+                       (MClassifier) toElement);
         } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
             connection = getCollaborations()
                 .buildAssociationRole((MClassifierRole) fromElement, 

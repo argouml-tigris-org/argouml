@@ -103,6 +103,8 @@ public class ExplorerPopup extends JPopupMenu {
                 ModelFacade.isAModelElement(selectedItem);
 
             if (modelElementSelected) {
+                final boolean classifierAndRelationShipSelected =
+                    ModelFacade.isAClassifierAndARelationship(selectedItem);
                 final boolean classifierSelected = 
                     ModelFacade.isAClassifier(selectedItem);
                 final boolean dataTypeSelected = 
@@ -142,7 +144,7 @@ public class ExplorerPopup extends JPopupMenu {
                     ? ((UMLStateDiagram) activeDiagram).getStateMachine()
                     : null;
                 
-                if ((classifierSelected && !dataTypeSelected)
+                if ((classifierSelected && !dataTypeSelected && !classifierAndRelationShipSelected)
                         || (packageSelected && selectedItem != projectModel)
                         || (stateVertexSelected && stateDiagramActive
                             && diagramStateMachine == selectedStateMachine)

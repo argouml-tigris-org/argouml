@@ -75,8 +75,9 @@ public class FigAssociation extends FigEdgeModelElement {
     /**
      * Group for the FigTexts concerning the name and stereotype of the 
      * association itself.
+     * TODO provide getter instead and maybe setter if needed
      */
-    private FigTextGroup middleGroup = new FigTextGroup();
+    protected FigTextGroup middleGroup = new FigTextGroup();
     
     private FigText srcMult, srcRole;
     private FigText destMult, destRole;
