@@ -199,6 +199,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     _nodes.addElement(node);
     // needs-more-work: assumes public, user pref for default visibility?
       if (node instanceof MClassifier) {
+	System.out.println("setting namespace "+_model +" to element "+node);
 	_model.addOwnedElement((MClassifier) node);
       }
     fireNodeAdded(node);
