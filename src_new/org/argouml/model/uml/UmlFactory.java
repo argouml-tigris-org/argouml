@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.UmlModelEntity;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -153,7 +154,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
     /** Log4j logging category.
      */
     private Logger logger =
-	Logger.getLogger("org.argouml.model.uml.factory");
+    Logger.getLogger("org.argouml.model.uml.factory");
 
     /**
      * A map of valid connections keyed by the connection type.
@@ -232,7 +233,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private static final UmlFactory SINGLETON = new UmlFactory();
 
-	private static Hashtable elements;
+    private static Hashtable elements;
 
     /** Singleton instance access method.
      */
@@ -244,7 +245,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     private UmlFactory() {
         buildValidConnectionMap();
-		initializeFactoryMethods();
+        initializeFactoryMethods();
     }
 
     private void buildValidConnectionMap() {
@@ -256,7 +257,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
         for (int i = 0; i < VALID_CONNECTIONS.length; ++i) {
             connection = VALID_CONNECTIONS[i][0];
             ArrayList validItems =
-		(ArrayList) validConnectionMap.get(connection);
+        (ArrayList) validConnectionMap.get(connection);
             if (validItems == null) {
                 validItems = new ArrayList();
                 validConnectionMap.put(connection, validItems);
@@ -287,295 +288,297 @@ public class UmlFactory extends AbstractUmlModelFactory {
         }
     }
 
-	private void initializeFactoryMethods() {
-		MFactory factory = MFactory.getDefaultFactory();
-		elements = new Hashtable(80);
-		elements.put(
-			Uml.ABSTRACTION,
-			new ObjectCreateInfo(
-				MAbstraction.class,
-				factory,
-				"createAbstraction"));
-		elements.put(
-			Uml.ASSOCIATION,
-			new ObjectCreateInfo(
-				MAssociation.class,
-				factory,
-				"createAssociation"));
-		elements.put(
-			Uml.ASSOCIATION_ROLE,
-			new ObjectCreateInfo(
-				MAssociationRole.class,
-				factory,
-				"createAssociationRole"));
-		elements.put(
-			Uml.DEPENDENCY,
-			new ObjectCreateInfo(
-				MDependency.class,
-				factory,
-				"createDependency"));
-		elements.put(
-			Uml.EXTEND,
-			new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
-		elements.put(
-			Uml.GENERALIZATION,
-			new ObjectCreateInfo(
-				MGeneralization.class,
-				factory,
-				"createGeneralization"));
-		elements.put(
-			Uml.INCLUDE,
-			new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
-		elements.put(
-			Uml.LINK,
-			new ObjectCreateInfo(MLink.class, factory, "createLink"));
-		elements.put(
-			Uml.PERMISSION,
-			new ObjectCreateInfo(
-				MPermission.class,
-				factory,
-				"createPermission"));
-		elements.put(
-			Uml.USAGE,
-			new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
-		elements.put(
-			Uml.TRANSITION,
-			new ObjectCreateInfo(
-				MTransition.class,
-				factory,
-				"createTransition"));
-		elements.put(
-			Uml.ACTOR,
-			new ObjectCreateInfo(MActor.class, factory, "createActor"));
-		elements.put(
-			Uml.CLASS,
-			new ObjectCreateInfo(MClass.class, factory, "createClass"));
-		elements.put(
-			Uml.CLASSIFIER,
-			new ObjectCreateInfo(
-				MClassifier.class,
-				factory,
-				"createClassifier"));
-		elements.put(
-			Uml.CLASSIFIER_ROLE,
-			new ObjectCreateInfo(
-				MClassifierRole.class,
-				factory,
-				"createClassifierRole"));
-		elements.put(
-			Uml.COMPONENT,
-			new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
-		elements.put(
-			Uml.COMPONENT_INSTANCE,
-			new ObjectCreateInfo(
-				MComponentInstance.class,
-				CoreFactory.getFactory(),
-				"createComponentInstance"));
-		elements.put(
-			Uml.INSTANCE,
-			new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
-		elements.put(
-			Uml.INTERFACE,
-			new ObjectCreateInfo(MInterface.class, factory, "createInterface"));
-		elements.put(
-			Uml.NODE,
-			new ObjectCreateInfo(MNode.class, factory, "createNode"));
-		elements.put(
-			Uml.NODE_INSTANCE,
-			new ObjectCreateInfo(
-				MNodeInstance.class,
-				factory,
-				"createNodeInstance"));
-		elements.put(
-			Uml.OBJECT,
-			new ObjectCreateInfo(MObject.class, factory, "createObject"));
-		elements.put(
-			Uml.PACKAGE,
-			new ObjectCreateInfo(MPackage.class, factory, "createPackage"));
-		elements.put(
-			Uml.STATE,
-			new ObjectCreateInfo(MState.class, factory, "createState"));
-		elements.put(
-			Uml.COMPOSITE_STATE,
-			new ObjectCreateInfo(
-				MCompositeState.class,
-				factory,
-				"createCompositeState"));
-		elements.put(
-			Uml.PSEUDOSTATE,
-			new ObjectCreateInfo(
-				MPseudostate.class,
-				factory,
-				"createPseudostate"));
-		elements.put(
-			Uml.USE_CASE,
-			new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
-		elements.put(
-			Uml.ACTION,
-			new ObjectCreateInfo(MAction.class, factory, "createAction"));
-		elements.put(
-			Uml.ASSOCIATION_END,
-			new ObjectCreateInfo(
-				MAssociationEnd.class,
-				factory,
-				"createAssociationEnd"));
-		elements.put(
-			Uml.CALL_ACTION,
-			new ObjectCreateInfo(
-				MCallAction.class,
-				factory,
-				"createCallAction"));
-		elements.put(
-			Uml.NAMESPACE,
-			new ObjectCreateInfo(MNamespace.class, factory, "createNamespace"));
-		elements.put(
-			Uml.RECEPTION,
-			new ObjectCreateInfo(MReception.class, factory, "createReception"));
-		elements.put(
-			Uml.STEREOTYPE,
-			new ObjectCreateInfo(
-				MStereotype.class,
-				factory,
-				"createStereotype"));
-		elements.put(
-			Uml.ATTRIBUTE,
-			new ObjectCreateInfo(MAttribute.class, factory, "createAttribute"));
-		elements.put(
-			Uml.OPERATION,
-			new ObjectCreateInfo(MOperation.class, factory, "createOperation"));
-		elements.put(
-			Uml.MODEL,
-			new ObjectCreateInfo(MModel.class, factory, "createModel"));
-		elements.put(
-			Uml.DATATYPE,
-			new ObjectCreateInfo(MDataType.class, factory, "createDataType"));
+    private void initializeFactoryMethods() {
+        MFactory factory = MFactory.getDefaultFactory();
+        elements = new Hashtable(80);
+        elements.put(
+            Uml.ABSTRACTION,
+            new ObjectCreateInfo(
+                MAbstraction.class,
+                factory,
+                "createAbstraction"));
+        elements.put(
+            Uml.ASSOCIATION,
+            new ObjectCreateInfo(
+                MAssociation.class,
+                factory,
+                "createAssociation"));
+        elements.put(
+            Uml.ASSOCIATION_ROLE,
+            new ObjectCreateInfo(
+                MAssociationRole.class,
+                factory,
+                "createAssociationRole"));
+        elements.put(
+            Uml.DEPENDENCY,
+            new ObjectCreateInfo(
+                MDependency.class,
+                factory,
+                "createDependency"));
+        elements.put(
+            Uml.EXTEND,
+            new ObjectCreateInfo(MExtend.class, factory, "createExtend"));
+        elements.put(
+            Uml.GENERALIZATION,
+            new ObjectCreateInfo(
+                MGeneralization.class,
+                factory,
+                "createGeneralization"));
+        elements.put(
+            Uml.INCLUDE,
+            new ObjectCreateInfo(MInclude.class, factory, "createInclude"));
+        elements.put(
+            Uml.LINK,
+            new ObjectCreateInfo(MLink.class, factory, "createLink"));
+        elements.put(
+            Uml.PERMISSION,
+            new ObjectCreateInfo(
+                MPermission.class,
+                factory,
+                "createPermission"));
+        elements.put(
+            Uml.USAGE,
+            new ObjectCreateInfo(MUsage.class, factory, "createUsage"));
+        elements.put(
+            Uml.TRANSITION,
+            new ObjectCreateInfo(
+                MTransition.class,
+                factory,
+                "createTransition"));
+        elements.put(
+            Uml.ACTOR,
+            new ObjectCreateInfo(MActor.class, factory, "createActor"));
+        elements.put(
+            Uml.CLASS,
+            new ObjectCreateInfo(MClass.class, factory, "createClass"));
+        elements.put(
+            Uml.CLASSIFIER,
+            new ObjectCreateInfo(
+                MClassifier.class,
+                factory,
+                "createClassifier"));
+        elements.put(
+            Uml.CLASSIFIER_ROLE,
+            new ObjectCreateInfo(
+                MClassifierRole.class,
+                factory,
+                "createClassifierRole"));
+        elements.put(
+            Uml.COMPONENT,
+            new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
+        elements.put(
+            Uml.COMPONENT_INSTANCE,
+            new ObjectCreateInfo(
+                MComponentInstance.class,
+                CoreFactory.getFactory(),
+                "createComponentInstance"));
+        elements.put(
+            Uml.INSTANCE,
+            new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
+        elements.put(
+            Uml.INTERFACE,
+            new ObjectCreateInfo(MInterface.class, factory, "createInterface"));
+        elements.put(
+            Uml.NODE,
+            new ObjectCreateInfo(MNode.class, factory, "createNode"));
+        elements.put(
+            Uml.NODE_INSTANCE,
+            new ObjectCreateInfo(
+                MNodeInstance.class,
+                factory,
+                "createNodeInstance"));
+        elements.put(
+            Uml.OBJECT,
+            new ObjectCreateInfo(MObject.class, factory, "createObject"));
+        elements.put(
+            Uml.PACKAGE,
+            new ObjectCreateInfo(MPackage.class, factory, "createPackage"));
+        elements.put(
+            Uml.STATE,
+            new ObjectCreateInfo(MState.class, factory, "createState"));
+        elements.put(
+            Uml.COMPOSITE_STATE,
+            new ObjectCreateInfo(
+                MCompositeState.class,
+                factory,
+                "createCompositeState"));
+        elements.put(
+            Uml.PSEUDOSTATE,
+            new ObjectCreateInfo(
+                MPseudostate.class,
+                factory,
+                "createPseudostate"));
+        elements.put(
+            Uml.USE_CASE,
+            new ObjectCreateInfo(MUseCase.class, factory, "createUseCase"));
+        elements.put(
+            Uml.ACTION,
+            new ObjectCreateInfo(MAction.class, factory, "createAction"));
+        elements.put(
+            Uml.ASSOCIATION_END,
+            new ObjectCreateInfo(
+                MAssociationEnd.class,
+                factory,
+                "createAssociationEnd"));
+        elements.put(
+            Uml.CALL_ACTION,
+            new ObjectCreateInfo(
+                MCallAction.class,
+                factory,
+                "createCallAction"));
+        elements.put(
+            Uml.NAMESPACE,
+            new ObjectCreateInfo(MNamespace.class, factory, "createNamespace"));
+        elements.put(
+            Uml.RECEPTION,
+            new ObjectCreateInfo(MReception.class, factory, "createReception"));
+        elements.put(
+            Uml.STEREOTYPE,
+            new ObjectCreateInfo(
+                MStereotype.class,
+                factory,
+                "createStereotype"));
+        elements.put(
+            Uml.ATTRIBUTE,
+            new ObjectCreateInfo(MAttribute.class, factory, "createAttribute"));
+        elements.put(
+            Uml.OPERATION,
+            new ObjectCreateInfo(MOperation.class, factory, "createOperation"));
+        elements.put(
+            Uml.MODEL,
+            new ObjectCreateInfo(MModel.class, factory, "createModel"));
+        elements.put(
+            Uml.DATATYPE,
+            new ObjectCreateInfo(MDataType.class, factory, "createDataType"));
 
-		// NSUML does not have a factory method for this
-		elements.put(
-			Uml.ACTION_EXPRESSION,
-			new ObjectCreateInfo(
-				MActionExpression.class,
-				this,
-				"createActionExpression"));
+        // NSUML does not have a factory method for this
+        elements.put(
+            Uml.ACTION_EXPRESSION,
+            new ObjectCreateInfo(
+                MActionExpression.class,
+                this,
+                "createActionExpression"));
 
-		// NSUML cannot instantiate an Event object
-		// elements.put(Uml.EVENT, new NsumlObjectInfo(factory,MEvent.class, "createEvent"));
+        // NSUML cannot instantiate an Event object
+        // elements.put(Uml.EVENT, new NsumlObjectInfo(factory,MEvent.class, "createEvent"));
 
-		// NSUML cannot instantiate a State Vertex object
-		// elements.put(Uml.STATE_VERTEX, new NsumlObjectInfo(factory,MStateVertex.class, "createStateVertex"));
-	}
+        // NSUML cannot instantiate a State Vertex object
+        // elements.put(Uml.STATE_VERTEX, new NsumlObjectInfo(factory,MStateVertex.class, "createStateVertex"));
+    }
 
-	/**
-	 * @return boolean to indicate if the JMI Reflective Proxy over NSUML is created.
-	 */
-	public boolean isJmiProxyCreated() {
-		return jmiProxyCreated;
-	}
+    /**
+     * @return boolean to indicate if the JMI Reflective Proxy over NSUML is created.
+     */
+    public boolean isJmiProxyCreated() {
+        return jmiProxyCreated;
+    }
 
-	/**
-	 * @param jmiProxyCreated true to cause the JMI Reflective proxy over NSUML to be used.
-	 */
-	public void setJmiProxyCreated(boolean arg) {
-		this.jmiProxyCreated = arg;
-	}
+    /**
+     * @param arg true to cause the JMI Reflective proxy over NSUML to be used.
+     */
+    public void setJmiProxyCreated(boolean arg) {
+        this.jmiProxyCreated = arg;
+    }
     
     /** Create a new connection model element (a relationship or link)
      *  between any existing node model elements.
+     * 
+     *  @throws IllegalModelElementConnectionException
      */
     public Object buildConnection(Object connectionType, 
-				  Object fromElement, Object toElement)
-	throws IllegalModelElementConnectionException
+                  Object fromElement, Object toElement)
+    throws IllegalModelElementConnectionException
     {
         return buildConnection(connectionType,
-			       fromElement, null, toElement, null, null);
+                   fromElement, null, toElement, null, null);
     }
     
     public Object buildConnection(Object connectionType,
-				  Object fromElement, Object fromStyle,
-				  Object toElement, Object toStyle,
-				  Object unidirectional)
-	throws IllegalModelElementConnectionException
+                  Object fromElement, Object fromStyle,
+                  Object toElement, Object toStyle,
+                  Object unidirectional)
+    throws IllegalModelElementConnectionException
     {
 
         if (!isConnectionValid(connectionType, fromElement, toElement)) {
             throw new IllegalModelElementConnectionException(
-	            "Cannot make a "
-		    + connectionType.getClass().getName() 
-		    + " between a " + fromElement.getClass().getName() 
-		    + " and a " + toElement.getClass().getName());
+                "Cannot make a "
+            + connectionType.getClass().getName() 
+            + " between a " + fromElement.getClass().getName() 
+            + " and a " + toElement.getClass().getName());
         }
         
         Object connection = null;
         
         if (connectionType == ModelFacade.ASSOCIATION) {
             connection =
-		getCore().buildAssociation((MClassifier) fromElement, 
-					   (MAggregationKind) fromStyle, 
-					   (MClassifier) toElement, 
-					   (MAggregationKind) toStyle, 
-					   (Boolean) unidirectional);
+        getCore().buildAssociation((MClassifier) fromElement, 
+                       (MAggregationKind) fromStyle, 
+                       (MClassifier) toElement, 
+                       (MAggregationKind) toStyle, 
+                       (Boolean) unidirectional);
         } else if (connectionType == ModelFacade.ASSOCIATION_ROLE) {
             connection =
-		getCollaborations()
-		.buildAssociationRole((MClassifierRole) fromElement, 
-				      (MAggregationKind) fromStyle, 
-				      (MClassifierRole) toElement,
-				      (MAggregationKind) toStyle, 
-				      (Boolean) unidirectional);
+        getCollaborations()
+        .buildAssociationRole((MClassifierRole) fromElement, 
+                      (MAggregationKind) fromStyle, 
+                      (MClassifierRole) toElement,
+                      (MAggregationKind) toStyle, 
+                      (Boolean) unidirectional);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection =
-		getCore()
-		.buildGeneralization((MGeneralizableElement) fromElement,
-				     (MGeneralizableElement) toElement);
+        getCore()
+        .buildGeneralization((MGeneralizableElement) fromElement,
+                     (MGeneralizableElement) toElement);
         } else if (connectionType == ModelFacade.PERMISSION) {
             connection =
-		getCore().buildPermission((MModelElement) fromElement,
-					  (MModelElement) toElement);
+        getCore().buildPermission((MModelElement) fromElement,
+                      (MModelElement) toElement);
         } else if (connectionType == ModelFacade.USAGE) {
             connection =
-		getCore().buildUsage((MModelElement) fromElement,
-				     (MModelElement) toElement);
+        getCore().buildUsage((MModelElement) fromElement,
+                     (MModelElement) toElement);
         } else if (connectionType == ModelFacade.GENERALIZATION) {
             connection =
-		getCore()
-		.buildGeneralization((MGeneralizableElement) fromElement,
-				     (MGeneralizableElement) toElement);
+        getCore()
+        .buildGeneralization((MGeneralizableElement) fromElement,
+                     (MGeneralizableElement) toElement);
         } else if (connectionType == ModelFacade.DEPENDENCY) {
             connection = getCore().buildDependency(fromElement, toElement);
         } else if (connectionType == ModelFacade.ABSTRACTION) {
             connection =
-		getCore().buildRealization((MModelElement) fromElement,
-					   (MModelElement) toElement);
+        getCore().buildRealization((MModelElement) fromElement,
+                       (MModelElement) toElement);
         } else if (connectionType == ModelFacade.LINK) {
             connection = getCommonBehavior().buildLink((MInstance) fromElement,
-						       (MInstance) toElement);
+                               (MInstance) toElement);
         } else if (connectionType == ModelFacade.EXTEND) {
             // Extend, but only between two use cases. Remember we draw from the
             // extension port to the base port.
             connection = getUseCases().buildExtend((MUseCase) toElement,
-						   (MUseCase) fromElement);
+                           (MUseCase) fromElement);
         } else if (connectionType == ModelFacade.INCLUDE) {
             connection = getUseCases().buildInclude((MUseCase) fromElement,
-						    (MUseCase) toElement);
+                            (MUseCase) toElement);
         }
     
         if (connection == null) {
             throw new IllegalModelElementConnectionException(
-		    "Cannot make a " 
-		    + connectionType.getClass().getName() 
-		    + " between a " + fromElement.getClass().getName() 
-		    + " and a " + toElement.getClass().getName());
+            "Cannot make a " 
+            + connectionType.getClass().getName() 
+            + " between a " + fromElement.getClass().getName() 
+            + " and a " + toElement.getClass().getName());
         }
         
         return connection;
     }
     
     public boolean isConnectionValid(Object connectionType,
-				     Object fromElement, Object toElement)
+                     Object fromElement, Object toElement)
     {
         // Get the list of valid model item pairs for the given connection type
         ArrayList validItems =
-	    (ArrayList) validConnectionMap.get(connectionType);
+        (ArrayList) validConnectionMap.get(connectionType);
         if (validItems == null) {
             return false;
         }
@@ -585,8 +588,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
         while (it.hasNext()) {
             Class[] modeElementPair = (Class[]) it.next();
             if (modeElementPair[0].isInstance(fromElement)
-		&& modeElementPair[1].isInstance(toElement)) 
-	    {
+        && modeElementPair[1].isInstance(toElement)) 
+        {
                 return true;
             }
         }
@@ -710,8 +713,8 @@ public class UmlFactory extends AbstractUmlModelFactory {
      */
     public void delete(Object elem) {
         if (elem == null)
-	    throw new IllegalArgumentException("Element may not be null "
-					       + "in delete");
+        throw new IllegalArgumentException("Element may not be null "
+                           + "in delete");
         if (elem instanceof MElement) {
             getCore().deleteElement((MElement) elem);
             if (elem instanceof MModelElement) {
@@ -719,55 +722,55 @@ public class UmlFactory extends AbstractUmlModelFactory {
                 if (elem instanceof MFeature) {
                     deleteFeature((MFeature) elem);
                 } else if (elem instanceof MNamespace) {
-		    deleteNamespace((MNamespace) elem);
-		} 
-		// no else here to make sure MClassifier with
-		// its double inheritance goes ok
+            deleteNamespace((MNamespace) elem);
+        } 
+        // no else here to make sure MClassifier with
+        // its double inheritance goes ok
                 // no else here too to make sure MAssociationClass goes ok
-		
+        
                 if (elem instanceof MGeneralizableElement) {
-		    MGeneralizableElement ge = (MGeneralizableElement) elem;
+            MGeneralizableElement ge = (MGeneralizableElement) elem;
                     getCore().deleteGeneralizableElement(ge);
                     if (elem instanceof MStereotype) {
-			MStereotype s = (MStereotype) elem;
+            MStereotype s = (MStereotype) elem;
                         getExtensionMechanisms().deleteStereotype(s);
                     }
                 } // no else here to make sure MAssociationClass goes ok
-		
+        
                 if (elem instanceof MParameter) {
                     getCore().deleteParameter((MParameter) elem);
                 } else if (elem instanceof MConstraint) {
-		    getCore().deleteConstraint((MConstraint) elem);
-		} else if (elem instanceof MRelationship) {
-		    deleteRelationship((MRelationship) elem);
-		} else if (elem instanceof MAssociationEnd) {
-		    getCore().deleteAssociationEnd((MAssociationEnd) elem);
-		    if (elem instanceof MAssociationEndRole) {
-			getCollaborations().deleteAssociationEndRole((MAssociationEndRole) elem);
-		    }
-		} else if (elem instanceof MComment) {
-		    getCore().deleteComment((MComment) elem);
-		} else if (ModelFacade.isAAction(elem)) {
-		    deleteAction(elem);
-		} else if (elem instanceof MAttributeLink) {
-		    getCommonBehavior().deleteAttributeLink((MAttributeLink) elem);
-		} else if (elem instanceof MInstance) {
-		    deleteInstance((MInstance) elem);
-		} // no else to handle multiple inheritance of linkobject
+            getCore().deleteConstraint((MConstraint) elem);
+        } else if (elem instanceof MRelationship) {
+            deleteRelationship((MRelationship) elem);
+        } else if (elem instanceof MAssociationEnd) {
+            getCore().deleteAssociationEnd((MAssociationEnd) elem);
+            if (elem instanceof MAssociationEndRole) {
+            getCollaborations().deleteAssociationEndRole((MAssociationEndRole) elem);
+            }
+        } else if (elem instanceof MComment) {
+            getCore().deleteComment((MComment) elem);
+        } else if (ModelFacade.isAAction(elem)) {
+            deleteAction(elem);
+        } else if (elem instanceof MAttributeLink) {
+            getCommonBehavior().deleteAttributeLink((MAttributeLink) elem);
+        } else if (elem instanceof MInstance) {
+            deleteInstance((MInstance) elem);
+        } // no else to handle multiple inheritance of linkobject
 
                 if (elem instanceof MLink) {
                     getCommonBehavior().deleteLink((MLink) elem);
                 } else if (elem instanceof MLinkEnd) {
-		    getCommonBehavior().deleteLinkEnd((MLinkEnd) elem);
-		} else if (elem instanceof MInteraction) {
-		    getCollaborations().deleteInteraction((MInteraction) elem);
-		} else if (elem instanceof MMessage) {
-		    getCollaborations().deleteMessage((MMessage) elem);
-		} else if (elem instanceof MExtensionPoint) {
-		    getUseCases().deleteExtensionPoint((MExtensionPoint) elem);
-		} else if (elem instanceof MStateVertex) {
-		    deleteStateVertex((MStateVertex) elem);
-		}
+            getCommonBehavior().deleteLinkEnd((MLinkEnd) elem);
+        } else if (elem instanceof MInteraction) {
+            getCollaborations().deleteInteraction((MInteraction) elem);
+        } else if (elem instanceof MMessage) {
+            getCollaborations().deleteMessage((MMessage) elem);
+        } else if (elem instanceof MExtensionPoint) {
+            getUseCases().deleteExtensionPoint((MExtensionPoint) elem);
+        } else if (elem instanceof MStateVertex) {
+            deleteStateVertex((MStateVertex) elem);
+        }
 
                 if (elem instanceof MStateMachine) {
                     getStateMachines().deleteStateMachine((MStateMachine) elem);
@@ -775,33 +778,33 @@ public class UmlFactory extends AbstractUmlModelFactory {
                         getActivityGraphs().deleteActivityGraph((MActivityGraph) elem);
                     }
                 } else if (elem instanceof MTransition) {
-		    getStateMachines().deleteTransition((MTransition) elem);
-		} else if (elem instanceof MGuard) {
-		    getStateMachines().deleteGuard((MGuard) elem);
-		}
-		// else if (elem instanceof MEvent) {
-		//
-		//}
+            getStateMachines().deleteTransition((MTransition) elem);
+        } else if (elem instanceof MGuard) {
+            getStateMachines().deleteGuard((MGuard) elem);
+        }
+        // else if (elem instanceof MEvent) {
+        //
+        //}
             } else if (elem instanceof MPresentationElement) {
-		getCore().deletePresentationElement(
-			(MPresentationElement) elem);
-	    }
+        getCore().deletePresentationElement(
+            (MPresentationElement) elem);
+        }
         } else if (elem instanceof MTemplateParameter) {
-	    getCore().deleteTemplateParameter((MTemplateParameter) elem);
-	} else if (elem instanceof MTaggedValue) {
-	    getExtensionMechanisms().deleteTaggedValue((MTaggedValue) elem);
-	}
+        getCore().deleteTemplateParameter((MTemplateParameter) elem);
+    } else if (elem instanceof MTaggedValue) {
+        getExtensionMechanisms().deleteTaggedValue((MTaggedValue) elem);
+    }
 
         if (elem instanceof MPartition) {
             getActivityGraphs().deletePartition((MPartition) elem);
         } else if (elem instanceof MElementImport) {
-	    getModelManagement().deleteElementImport((MElementImport) elem);
-	}
+        getModelManagement().deleteElementImport((MElementImport) elem);
+    }
 
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
-	}
+    }
     }
 
     /**
@@ -816,16 +819,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
             if (elem instanceof MOperation) {
                 getCore().deleteOperation((MOperation) elem);
             } else if (elem instanceof MMethod) {
-		getCore().deleteMethod((MMethod) elem);
-	    } else if (elem instanceof MReception) {
-		getCommonBehavior().deleteReception((MReception) elem);
-	    }
+        getCore().deleteMethod((MMethod) elem);
+        } else if (elem instanceof MReception) {
+        getCommonBehavior().deleteReception((MReception) elem);
+        }
         } else if (elem instanceof MStructuralFeature) {
-	    getCore().deleteStructuralFeature((MStructuralFeature) elem);
-	    if (elem instanceof MAttribute) {
-		getCore().deleteAttribute((MAttribute) elem);
-	    }
-	}
+        getCore().deleteStructuralFeature((MStructuralFeature) elem);
+        if (elem instanceof MAttribute) {
+        getCore().deleteAttribute((MAttribute) elem);
+        }
+    }
     }
 
     /**
@@ -843,39 +846,39 @@ public class UmlFactory extends AbstractUmlModelFactory {
                     getCore().deleteAssociationClass((MAssociationClass) elem);
                 }
             } else if (elem instanceof MInterface) {
-		getCore().deleteInterface((MInterface) elem);
-	    } else if (elem instanceof MDataType) {
-		getCore().deleteDataType((MDataType) elem);
-	    } else if (elem instanceof MNode) {
-		getCore().deleteNode((MNode) elem);
-	    } else if (elem instanceof MComponent) {
-		getCore().deleteComponent((MComponent) elem);
-	    } else if (elem instanceof MSignal) {
-		getCommonBehavior().deleteSignal((MSignal) elem);
-		if (elem instanceof MException) {
-		    getCommonBehavior().deleteException((MException) elem);
-		}
-	    } else if (elem instanceof MClassifierRole) {
-		getCollaborations().deleteClassifierRole(
-		        (MClassifierRole) elem);
-	    } else if (elem instanceof MUseCase) {
-		getUseCases().deleteUseCase((MUseCase) elem);
-	    } else if (elem instanceof MActor) {
-		getUseCases().deleteActor((MActor) elem);
-	    } else if (elem instanceof MClassifierInState) {
-		getActivityGraphs().deleteClassifierInState(
-			(MClassifierInState) elem);
-	    }
+        getCore().deleteInterface((MInterface) elem);
+        } else if (elem instanceof MDataType) {
+        getCore().deleteDataType((MDataType) elem);
+        } else if (elem instanceof MNode) {
+        getCore().deleteNode((MNode) elem);
+        } else if (elem instanceof MComponent) {
+        getCore().deleteComponent((MComponent) elem);
+        } else if (elem instanceof MSignal) {
+        getCommonBehavior().deleteSignal((MSignal) elem);
+        if (elem instanceof MException) {
+            getCommonBehavior().deleteException((MException) elem);
+        }
+        } else if (elem instanceof MClassifierRole) {
+        getCollaborations().deleteClassifierRole(
+                (MClassifierRole) elem);
+        } else if (elem instanceof MUseCase) {
+        getUseCases().deleteUseCase((MUseCase) elem);
+        } else if (elem instanceof MActor) {
+        getUseCases().deleteActor((MActor) elem);
+        } else if (elem instanceof MClassifierInState) {
+        getActivityGraphs().deleteClassifierInState(
+            (MClassifierInState) elem);
+        }
         } else if (elem instanceof MCollaboration) {
-	    getCollaborations().deleteCollaboration((MCollaboration) elem);
-	} else if (elem instanceof MPackage) {
-	    getModelManagement().deletePackage((MPackage) elem);
-	    if (elem instanceof MModel) {
-		getModelManagement().deleteModel((MModel) elem);
-	    } else if (elem instanceof MSubsystem) {
-		getModelManagement().deleteSubsystem((MSubsystem) elem);
-	    }
-	}
+        getCollaborations().deleteCollaboration((MCollaboration) elem);
+    } else if (elem instanceof MPackage) {
+        getModelManagement().deletePackage((MPackage) elem);
+        if (elem instanceof MModel) {
+        getModelManagement().deleteModel((MModel) elem);
+        } else if (elem instanceof MSubsystem) {
+        getModelManagement().deleteSubsystem((MSubsystem) elem);
+        }
+    }
     }
 
     /**
@@ -888,29 +891,29 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MFlow) {
             getCore().deleteFlow((MFlow) elem);
         } else if (elem instanceof MGeneralization) {
-	    getCore().deleteGeneralization((MGeneralization) elem);
-	} else if (elem instanceof MAssociation) {
-	    getCore().deleteAssociation((MAssociation) elem);
-	    if (elem instanceof MAssociationRole) {
-		getCollaborations().deleteAssociationRole(
-			(MAssociationRole) elem);
-	    }
-	} else if (elem instanceof MDependency) {
-	    getCore().deleteDependency((MDependency) elem);
-	    if (ModelFacade.isAAbstraction(elem)) {
-		getCore().deleteAbstraction(elem);
-	    } else if (elem instanceof MBinding) {
-		getCore().deleteBinding((MBinding) elem);
-	    } else if (elem instanceof MUsage) {
-		getCore().deleteUsage((MUsage) elem);
-	    } else if (elem instanceof MPermission) {
-		getCore().deletePermission((MPermission) elem);
-	    }
-	} else if (elem instanceof MInclude) {
-	    getUseCases().deleteInclude((MInclude) elem);
-	} else if (elem instanceof MExtend) {
-	    getUseCases().deleteExtend((MExtend) elem);
-	}
+        getCore().deleteGeneralization((MGeneralization) elem);
+    } else if (elem instanceof MAssociation) {
+        getCore().deleteAssociation((MAssociation) elem);
+        if (elem instanceof MAssociationRole) {
+        getCollaborations().deleteAssociationRole(
+            (MAssociationRole) elem);
+        }
+    } else if (elem instanceof MDependency) {
+        getCore().deleteDependency((MDependency) elem);
+        if (ModelFacade.isAAbstraction(elem)) {
+        getCore().deleteAbstraction(elem);
+        } else if (elem instanceof MBinding) {
+        getCore().deleteBinding((MBinding) elem);
+        } else if (elem instanceof MUsage) {
+        getCore().deleteUsage((MUsage) elem);
+        } else if (elem instanceof MPermission) {
+        getCore().deletePermission((MPermission) elem);
+        }
+    } else if (elem instanceof MInclude) {
+        getUseCases().deleteInclude((MInclude) elem);
+    } else if (elem instanceof MExtend) {
+        getUseCases().deleteExtend((MExtend) elem);
+    }
     }
 
     /**
@@ -923,21 +926,21 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (ModelFacade.isAActionSequence(elem)) {
             getCommonBehavior().deleteActionSequence(elem);
         } else if (elem instanceof MCreateAction) {
-	    getCommonBehavior().deleteCreateAction((MCreateAction) elem);
-	} else if (elem instanceof MCallAction) {
-	    getCommonBehavior().deleteCallAction((MCallAction) elem);
-	} else if (elem instanceof MReturnAction) {
-	    getCommonBehavior().deleteReturnAction((MReturnAction) elem);
-	} else if (elem instanceof MSendAction) {
-	    getCommonBehavior().deleteSendAction((MSendAction) elem);
-	} else if (elem instanceof MTerminateAction) {
-	    getCommonBehavior().deleteTerminateAction((MTerminateAction) elem);
-	} else if (elem instanceof MUninterpretedAction) {
-	    getCommonBehavior().deleteUninterpretedAction(
-		    (MUninterpretedAction) elem);
-	} else if (elem instanceof MDestroyAction) {
-	    getCommonBehavior().deleteDestroyAction((MDestroyAction) elem);
-	}
+        getCommonBehavior().deleteCreateAction((MCreateAction) elem);
+    } else if (elem instanceof MCallAction) {
+        getCommonBehavior().deleteCallAction((MCallAction) elem);
+    } else if (elem instanceof MReturnAction) {
+        getCommonBehavior().deleteReturnAction((MReturnAction) elem);
+    } else if (elem instanceof MSendAction) {
+        getCommonBehavior().deleteSendAction((MSendAction) elem);
+    } else if (elem instanceof MTerminateAction) {
+        getCommonBehavior().deleteTerminateAction((MTerminateAction) elem);
+    } else if (elem instanceof MUninterpretedAction) {
+        getCommonBehavior().deleteUninterpretedAction(
+            (MUninterpretedAction) elem);
+    } else if (elem instanceof MDestroyAction) {
+        getCommonBehavior().deleteDestroyAction((MDestroyAction) elem);
+    }
     }
 
     /**
@@ -950,16 +953,16 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MDataValue) {
             getCommonBehavior().deleteDataValue((MDataValue) elem);
         } else if (elem instanceof MComponentInstance) {
-	    getCommonBehavior().deleteComponentInstance(
-		    (MComponentInstance) elem);
-	} else if (elem instanceof MNodeInstance) {
-	    getCommonBehavior().deleteNodeInstance((MNodeInstance) elem);
-	} else if (elem instanceof MObject) {
-	    getCommonBehavior().deleteObject((MObject) elem);
-	    if (elem instanceof MLinkObject) {
-		getCommonBehavior().deleteLinkObject((MLinkObject) elem);
-	    }
-	}
+        getCommonBehavior().deleteComponentInstance(
+            (MComponentInstance) elem);
+    } else if (elem instanceof MNodeInstance) {
+        getCommonBehavior().deleteNodeInstance((MNodeInstance) elem);
+    } else if (elem instanceof MObject) {
+        getCommonBehavior().deleteObject((MObject) elem);
+        if (elem instanceof MLinkObject) {
+        getCommonBehavior().deleteLinkObject((MLinkObject) elem);
+        }
+    }
         if (elem instanceof MUseCaseInstance) {
             getUseCases().deleteUseCaseInstance((MUseCaseInstance) elem);
         }
@@ -975,36 +978,36 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MPseudostate) {
             getStateMachines().deletePseudostate((MPseudostate) elem);
         } else if (elem instanceof MSynchState) {
-	    getStateMachines().deleteSynchState((MSynchState) elem);
-	} else if (elem instanceof MStubState) {
-	    getStateMachines().deleteStubState((MStubState) elem);
-	} else if (elem instanceof MState) {
-	    getStateMachines().deleteState((MState) elem);
-	    if (elem instanceof MCompositeState) {
-		getStateMachines().deleteCompositeState((MCompositeState) elem);
-		if (elem instanceof MSubmachineState) {
-		    getStateMachines().deleteSubmachineState(
-			    (MSubmachineState) elem);
-		    if (elem instanceof MSubactivityState) {
-			getActivityGraphs().deleteSubactivityState(
-			        (MSubactivityState) elem);
-		    }
-		}
-	    } else if (elem instanceof MSimpleState) {
-		getStateMachines().deleteSimpleState((MSimpleState) elem);
-		if (ModelFacade.isAActionState(elem)) {
-		    getActivityGraphs().deleteActionState(elem);
-		    if (elem instanceof MCallState) {
-			getActivityGraphs().deleteCallState((MCallState) elem);
-		    }
-		} else if (elem instanceof MObjectFlowState) {
-		    getActivityGraphs().deleteObjectFlowState(
-			    (MObjectFlowState) elem);
-		}
-	    } else if (elem instanceof MFinalState) {
-		getStateMachines().deleteFinalState((MFinalState) elem);
-	    }
-	}
+        getStateMachines().deleteSynchState((MSynchState) elem);
+    } else if (elem instanceof MStubState) {
+        getStateMachines().deleteStubState((MStubState) elem);
+    } else if (elem instanceof MState) {
+        getStateMachines().deleteState((MState) elem);
+        if (elem instanceof MCompositeState) {
+        getStateMachines().deleteCompositeState((MCompositeState) elem);
+        if (elem instanceof MSubmachineState) {
+            getStateMachines().deleteSubmachineState(
+                (MSubmachineState) elem);
+            if (elem instanceof MSubactivityState) {
+            getActivityGraphs().deleteSubactivityState(
+                    (MSubactivityState) elem);
+            }
+        }
+        } else if (elem instanceof MSimpleState) {
+        getStateMachines().deleteSimpleState((MSimpleState) elem);
+        if (ModelFacade.isAActionState(elem)) {
+            getActivityGraphs().deleteActionState(elem);
+            if (elem instanceof MCallState) {
+            getActivityGraphs().deleteCallState((MCallState) elem);
+            }
+        } else if (elem instanceof MObjectFlowState) {
+            getActivityGraphs().deleteObjectFlowState(
+                (MObjectFlowState) elem);
+        }
+        } else if (elem instanceof MFinalState) {
+        getStateMachines().deleteFinalState((MFinalState) elem);
+        }
+    }
     }
 
     /**
@@ -1017,12 +1020,12 @@ public class UmlFactory extends AbstractUmlModelFactory {
         if (elem instanceof MSignalEvent) {
             getStateMachines().deleteSignalEvent((MSignalEvent) elem);
         } else if (elem instanceof MCallEvent) {
-	    getStateMachines().deleteCallEvent((MCallEvent) elem);
-	} else if (elem instanceof MTimeEvent) {
-	    getStateMachines().deleteTimeEvent((MTimeEvent) elem);
-	} else if (elem instanceof MChangeEvent) {
-	    getStateMachines().deleteChangeEvent((MChangeEvent) elem);
-	}
+        getStateMachines().deleteCallEvent((MCallEvent) elem);
+    } else if (elem instanceof MTimeEvent) {
+        getStateMachines().deleteTimeEvent((MTimeEvent) elem);
+    } else if (elem instanceof MChangeEvent) {
+        getStateMachines().deleteChangeEvent((MChangeEvent) elem);
+    }
     }
 
     /**
@@ -1033,112 +1036,117 @@ public class UmlFactory extends AbstractUmlModelFactory {
     public void doCopyBase(MBase source, MBase target) {
     }
     
-	class ObjectCreateInfo {
-	
-		private Object factory;
+    class ObjectCreateInfo {
+    
+        private Object factory;
 
-		private String createMethod;
+        private String createMethod;
 
-		private Class javaClass;
+        private Class javaClass;
 
-//		ObjectCreateInfo (Class javaClass, Object fact, String meth) {
-//			this(javaClass, fact, meth, fact, meth);
-//		}
-		
-		ObjectCreateInfo (Class javaClass, Object fact, String meth) {
-			this.javaClass = javaClass;
-			this.factory = fact;
-			this.createMethod = meth;
-		}
-		/**
-		 * @return
-		 */
-		public Class getJavaClass() {
-			return javaClass;
-		}
+//        ObjectCreateInfo (Class javaClass, Object fact, String meth) {
+//            this(javaClass, fact, meth, fact, meth);
+//        }
+        
+        ObjectCreateInfo (Class cls, Object fact, String meth) {
+            this.javaClass = cls;
+            this.factory = fact;
+            this.createMethod = meth;
+        }
+        /**
+         * @return
+         */
+        public Class getJavaClass() {
+            return javaClass;
+        }
 
-		/**
-		 * @return
-		 */
-		public String getCreateMethod() {
-			return createMethod;
-		}
+        /**
+         * @return
+         */
+        public String getCreateMethod() {
+            return createMethod;
+        }
 
-		/**
-		 * @return
-		 */
-		public Object getFactory() {
-			return factory;
-		}
+        /**
+         * @return
+         */
+        public Object getFactory() {
+            return factory;
+        }
 
-	}
+    }
 
-	/** Create an empty but initialized instance of a UML ActionExpression.
-	 *  
-	 *  @return an initialized UML ActionExpression instance.
-	 */
-	public MActionExpression createActionExpression() {
-		MActionExpression expression = new MActionExpression("", "");
-		DataTypesFactory.getFactory().initialize(expression);
-		return expression;
-	}
+    /** Create an empty but initialized instance of a UML ActionExpression.
+     *  
+     *  @return an initialized UML ActionExpression instance.
+     */
+    public MActionExpression createActionExpression() {
+        MActionExpression expression = new MActionExpression("", "");
+        DataTypesFactory.getFactory().initialize(expression);
+        return expression;
+    }
 
-	/** Create a UML object from the implementation.
-	 * 
-	 * This will allow abstraction of the create mechanism at a single point.
-	 * 
-	 * @param entity name to create - must be implemented in {@link org.argouml.model.uml.Uml.Entity}
-	 * @throws InvalidObjectRequestException if it cannot create the class.
-	 */
-	public Object create(String entity) {
-		throw new RuntimeException("Not yet implemented");
-		// return create((Class) Uml.getUmlClassList().get(entity));
-	}
+    /** Create a UML object from the implementation name.
+     * 
+     * This will allow abstraction of the create mechanism at a single point.
+     * 
+     * @param entity name to create - must be implemented in 
+     * {@link org.argouml.model.uml.Uml.Entity}
+     * 
+     * @return the entity requested or null if unable to create
+     */
+    public Object create(String entity) {
+        throw new RuntimeException("Not yet implemented");
+        // return create((Class) Uml.getUmlClassList().get(entity));
+    }
 
-	/** Create a UML object from the implementation.
-	 * 
-	 * This will allow abstraction of the create mechanism at a single point.
-	 * 
-	 * @param entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
-	 * @throws InvalidObjectRequestException if it cannot create the class.
-	 */
-	public Object create(Uml.UmlEntity entity) {
-		ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
-		if (oi == null) {
-			return null;
-			// TODO decide if we want to throw an exception instead
-			// throw new InvalidObjectRequestException("Cannot identify the object type", entity);
-		}
-		String mName = oi.getCreateMethod();
-		// System.out.println("Method: " + mName);
-		Method method = null;
-		try {
-			method = oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
-														  new Class[] {} );
-		}
-		catch (Exception e) {
-			return null;
-			// TODO decide if we want to throw an exception instead
-			// throw new InvalidObjectRequestException("Cannot find creator method", entity, e);
-		}
+    /** Create a UML object from the implementation.
+     * 
+     * This will allow abstraction of the create mechanism at a single point.
+     * 
+     * @param entity Class to create - must implement
+     *        {@link org.argouml.model.uml.Uml.Entity}
+     * @return the created entity or null if unable to create
+     */
+    public Object create(UmlModelEntity entity) {
+        ObjectCreateInfo oi = (ObjectCreateInfo) elements.get(entity);
+        if (oi == null) {
+            return null;
+            // TODO decide if we want to throw an exception instead
+            // throw new InvalidObjectRequestException
+            //("Cannot identify the object type", entity);
+        }
+        String mName = oi.getCreateMethod();
+        Method method = null;
+        try {
+            method = oi.getFactory().getClass().getMethod(oi.getCreateMethod(),
+                                                          new Class[] {} );
+        }
+        catch (Exception e) {
+            return null;
+            // TODO decide if we want to throw an exception instead
+            // throw new InvalidObjectRequestException
+            //("Cannot find creator method", entity, e);
+        }
 
-		Object obj = null;
-		try {
-			obj = method.invoke(oi.getFactory(), new Object[] {} );
-		}
-		catch (Exception e) {
-			// TODO decide if we want to throw an exception instead
-			// throw new InvalidObjectRequestException("Cannot execute creator method", entity, e);
-			return null;
-		}
-		UmlFactory.getFactory().initialize(obj);
-		
-		// Allow for testing of the proxy capability
-		if (this.jmiProxyCreated) {
-			return RefBaseObjectProxy.newInstance(obj);
-		}
-		return obj;
-	}
+        Object obj = null;
+        try {
+            obj = method.invoke(oi.getFactory(), new Object[] {} );
+        }
+        catch (Exception e) {
+            // TODO decide if we want to throw an exception instead
+            // throw new InvalidObjectRequestException
+            //("Cannot execute creator method", entity, e);
+            return null;
+        }
+        UmlFactory.getFactory().initialize(obj);
+        
+        // Allow for testing of the proxy capability
+        if (this.jmiProxyCreated) {
+            return RefBaseObjectProxy.newInstance(obj);
+        }
+        return obj;
+    }
 
 }
 
