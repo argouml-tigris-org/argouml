@@ -10,13 +10,10 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.awt.event.ActionEvent;
-
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
-
 import org.tigris.gef.base.CmdSetMode;
 import org.tigris.gef.base.ModeCreatePolyEdge;
+
+import ru.novosoft.uml.behavior.common_behavior.MLink;
 
 public class ActionAddLink extends CmdSetMode {
    public ActionAddLink(Class actionClass, String name) {
