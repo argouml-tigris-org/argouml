@@ -80,4 +80,20 @@ public class TestModelFacade2 extends TestCase {
 	Collection collection = container.getPartitions();
 	assertTrue(collection.contains(partition));
     }
+
+    /**
+     * Test some Tagged Value functions.
+     */
+    public void testTaggedValue() {
+	UmlFactory fy = UmlFactory.getFactory();
+	Object cls = fy.getCore().buildClass();
+
+	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
+	ModelFacade.setTaggedValue(cls, "fooValue", "foo");
+	assertEquals(ModelFacade.getValueOfTag(
+		ModelFacade.getTaggedValue(cls, "fooValue")), "foo");
+	ModelFacade.removeTaggedValue(cls, "fooValue");
+	ModelFacade.removeTaggedValue(cls, "nonExistingValue");
+	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
+    }
 }

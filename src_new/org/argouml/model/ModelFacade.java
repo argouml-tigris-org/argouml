@@ -4702,6 +4702,25 @@ public class ModelFacade {
     }
 
     /**
+     * Removes a named tagged value from a model element, ie subsequent calls
+     * to getTaggedValue will return null for name, at least until a tagged
+     * value with that name has been added again.
+     *
+     * @param handle the model element to remove the tagged value from
+     * @param name the name of the tagged value
+     * @throws IllegalArgumentException if handle isn't a model element
+     */
+    public static void removeTaggedValue(Object handle, String name) {
+	if (handle instanceof MModelElement) {
+	    MModelElement me = (MModelElement) handle;
+	    me.removeTaggedValue(name);
+	    return;
+	}
+
+	illegalArgument(handle);
+    }
+
+    /**
      * Set the base of some model element.
      *
      * @param handle is the model element
