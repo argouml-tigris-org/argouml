@@ -172,9 +172,9 @@ public class ArgoFilePersister extends AbstractFilePersister {
         try {
             // read the argo 
             // the "true" means that members should be added.
-            ArgoParser.SINGLETON.readProject(url, true);
-            Project p = ArgoParser.SINGLETON.getProject();
-            ArgoParser.SINGLETON.setProject(null); // clear up project refs
+            ArgoParser.getInstance().readProject(url, true);
+            Project p = ArgoParser.getInstance().getProject();
+            ArgoParser.getInstance().setProject(null); // clear up project refs
             p.postLoad();
             return p;
         } catch (IOException e) {

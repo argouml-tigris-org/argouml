@@ -84,18 +84,21 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      *
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
-    public Vector getPorts(Object nodeOrEdge) {
-	Vector res = new Vector();  //wasteful!
-	if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isANodeInstance(nodeOrEdge))
+    public List getPorts(Object nodeOrEdge) {
+        Vector res = new Vector();  //wasteful!
+        if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (ModelFacade.isANodeInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
+        }
+    
 	if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAComponentInstance(nodeOrEdge)) 
+	if (ModelFacade.isAComponentInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
-	if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
-	if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
-	return res;
+        }
+        if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);    
+        if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
+        return res;
     }
 
     /** Return the node or edge that owns the given port 
@@ -111,7 +114,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * 
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
 	if (ModelFacade.isANode(port)) {
 	    Collection ends = ModelFacade.getAssociationEnds(port);
@@ -173,7 +176,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      * 
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
 	return new Vector(); // TODO:?
     }
 
@@ -269,7 +272,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public void addNode(Object node) {
         LOG.debug("adding class node!!");
 	if (!canAddNode(node)) return;
-	getNodes().addElement(node);
+	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
 	if (ModelFacade.isAModelElement(node) 
@@ -286,7 +289,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public void addEdge(Object edge) {
         LOG.debug("adding class edge!!!!!!");
 	if (!canAddEdge(edge)) return;
-	getEdges().addElement(edge);
+	getEdges().add(edge);
 	// TODO: assumes public
 	if (ModelFacade.isAModelElement(edge)) {
 	    ModelFacade.addOwnedElement(model, edge);

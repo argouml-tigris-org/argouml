@@ -286,7 +286,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             // FigNode to see if a port exists 
             Object foundPort = destFigNode.deepHitPort(x, y);
             if (foundPort == null) {
-                Iterator it = destFigNode.getPortFigs(null).iterator();
+                Iterator it = destFigNode.getPortFigs().iterator();
                 if (it.hasNext()) {
                     foundPort = ((Fig) it.next()).getOwner();
                 }

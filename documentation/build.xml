@@ -45,7 +45,7 @@ What tools do I need to use this build file?
        you need also to change those files. This is to be made as part 
        of the deployment of a new version of docbook-xsl.
     -->
-  <property name="docbook-xsl" value="docbook-xsl-1.60.1"/>
+  <property name="docbook-xsl" value="docbook-xsl-1.66.0"/>
 
   <property name="docbook-xsl-root" 
 	    value="${documentation.dir}/docbook-setup/${docbook-xsl}"/>

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -392,7 +393,7 @@ public class SequenceDiagramGraphModel
      * 
      * @see org.tigris.gef.graph.GraphModel#getNodes()
      */
-    public Vector getNodes() {
+    public List getNodes() {
         Vector allNodes = new Vector();
         Collection elements = ModelFacade.getOwnedElements(collaboration);
         Iterator it = elements.iterator();
@@ -433,7 +434,7 @@ public class SequenceDiagramGraphModel
      * 
      * @see org.tigris.gef.graph.GraphModel#getEdges()
      */
-    public Vector getEdges() {
+    public List getEdges() {
         Vector allEdges = new Vector();
         Iterator it = ModelFacade.getOwnedElements(collaboration).iterator();
         while (it.hasNext()) {
@@ -456,7 +457,7 @@ public class SequenceDiagramGraphModel
      * 
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
         Vector ports = new Vector();
         if (ModelFacade.isAObject(nodeOrEdge)) {
             ports.addAll(ModelFacade.getLinkEnds(nodeOrEdge));
@@ -494,7 +495,7 @@ public class SequenceDiagramGraphModel
      * 
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
         Vector res = new Vector();
         if (ModelFacade.isAObject(port)) {
             Iterator it = ModelFacade.getLinkEnds(port).iterator();
@@ -518,7 +519,7 @@ public class SequenceDiagramGraphModel
      * 
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
         Vector res = new Vector();
         if (ModelFacade.isAObject(port)) {
             Iterator it = ModelFacade.getLinkEnds(port).iterator();

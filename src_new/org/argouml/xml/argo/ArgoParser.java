@@ -28,21 +28,13 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.HashMap;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.apache.log4j.Logger;
-import org.argouml.cognitive.ProjectMemberTodoList;
 import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectMember;
-import org.argouml.model.uml.UmlHelper;
-import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
-import org.argouml.xml.xmi.XMIReader;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -59,7 +51,7 @@ public class ArgoParser extends SAXParserBase {
     /**
      * The singleton for this class.
      */
-    public static final ArgoParser SINGLETON = new ArgoParser();
+    private static final ArgoParser INSTANCE = new ArgoParser();
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -79,11 +71,15 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    public static final ArgoParser getInstance() {
+        return INSTANCE;   
+    }
+    
     /**
      * The constructor.
      * 
      */
-    protected ArgoParser() {
+    private ArgoParser() {
         super();
     }
 
@@ -120,12 +116,15 @@ public class ArgoParser extends SAXParserBase {
         if (theUrl == null) {
             throw new IllegalArgumentException("A URL must be supplied");
         }
-        InputStream is = url.openStream();
+        InputStream is = theUrl.openStream();
 
         readProject(theUrl, is, addTheMembers);
     }
 
     /**
+     * @param theUrl the url of the project to read
+     * @param is the inputStream
+     * @param addTheMembers true if the members are to be added
      * @throws IOException for a file problem
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
@@ -170,7 +169,7 @@ public class ArgoParser extends SAXParserBase {
             throw e;
         }
     }
-
+    
     /**
      * Get the project to which the URL is to be parsed.
      * @return the project
@@ -306,35 +305,6 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * Add a member to this project.
-     * 
-     * @param name The name of the member.
-     * @param type The type of the member. 
-     *         One of <tt>"pgml"</tt>, <tt>"xmi"</tt> or <tt>"todo"</tt>.
-     */
-    private void createProjectMember(String name, String type)
-        throws SAXException {
-        
-        ProjectMember pm = project.findMemberByName(name);
-        if (pm != null) {
-            return;
-        }
-        if ("pgml".equals(type)) {
-            pm = new ProjectMemberDiagram(name, project);
-        } else if ("xmi".equals(type)) {
-            pm = new ProjectMemberModel(name, project);
-        } else if ("todo".equals(type)) {
-            pm = new ProjectMemberTodoList(name, project);
-        } else {
-            throw new IllegalArgumentException("Unknown member type " + type);
-        }
-    
-        project.addMember(pm);
-    }
-
-    
-    
-    /**
      * @param e the element
      */
     protected void handleHistoryfile(XMLElement e) {
@@ -389,265 +359,16 @@ public class ArgoParser extends SAXParserBase {
         String name = element.getAttribute("name").trim();
         String type = element.getAttribute("type").trim();
         
+        MemberFilePersister memberParser = null;
+        
         if (type.equals("xmi")) {
-            try {
-                loadModel(openStreamAtXmi(url));
-            } catch (IOException e) {
-                throw new SAXException(e);
-            }
+            memberParser = new ModelMemberFilePersister(url, project);
+        } else if (type.equals("pgml")) {
+            memberParser = new DiagramMemberFilePersister();
+        } else if (type.equals("todo")) {
+            memberParser = new TodoListMemberFilePersister();
         }
+        memberParser.load();
     }
 
-    /**
-     * Opens the input stream of a URL and positions
-     * it at the start of the XMI.
-     * This is a first draft of this method.
-     * Work still in progress (Bob Tarling).
-     */
-    private InputStream openStreamAtXmi(URL theUrl) throws IOException {
-        XmlInputStream is = new XmlInputStream(theUrl.openStream(), "XMI");
-        return is;
-    }
-
-    /**
-     * Loads a model (XMI only) from an input source. BE ADVISED this
-     * method has a side effect. It sets _UUIDREFS to the model.
-     * 
-     * If there is a problem with the xmi file, an error is set in the
-     * getLastLoadStatus() field. This needs to be examined by the
-     * calling function.
-     *
-     * @return The model loaded
-     * @throws SAXException If the parser template is syntactically incorrect. 
-     * @param is the input stream to load from
-     */
-    private Object loadModel(InputStream is) throws SAXException {
-        
-        InputSource source = new InputSource(is);
-        Object mmodel = null;
-
-        // 2002-07-18
-        // Jaap Branderhorst
-        // changed the loading of the projectfiles to solve hanging 
-        // of argouml if a project is corrupted. Issue 913
-        // Created xmireader with method getErrors to check if parsing went well
-        XMIReader xmiReader = null;
-        try {
-            xmiReader = new XMIReader();
-            source.setEncoding("UTF-8");
-            mmodel = xmiReader.parseToModel(source);        
-        } catch (SAXException e) { // duh, this must be caught and handled
-            LOG.error("SAXException caught", e);
-            throw e;
-        } catch (ParserConfigurationException e) { 
-            LOG.error("ParserConfigurationException caught", e);
-            throw new SAXException(e);
-        } catch (IOException e) {
-            LOG.error("IOException caught", e);
-            throw new SAXException(e);
-        }
-
-        if (xmiReader.getErrors()) {
-            ArgoParser.SINGLETON.setLastLoadStatus(false);
-            ArgoParser.SINGLETON.setLastLoadMessage(
-                    "XMI file could not be parsed.");
-            LOG.error("XMI file could not be parsed.");
-            throw new SAXException(
-                    "XMI file could not be parsed.");
-        }
-
-        // This should probably be inside xmiReader.parse
-        // but there is another place in this source
-        // where XMIReader is used, but it appears to be
-        // the NSUML XMIReader.  When Argo XMIReader is used
-        // consistently, it can be responsible for loading
-        // the listener.  Until then, do it here.
-        UmlHelper.getHelper().addListenersToModel(mmodel);
-
-        project.addMember(mmodel);
-
-        project.setUUIDRefs(new HashMap(xmiReader.getXMIUUIDToObjectMap()));
-        return mmodel;
-    }
-
-    /**
-     * A BufferInputStream that is aware of XML structure.
-     * It can searches for the first occurence of a named tag
-     * and reads only the data (inclusively) from that tag
-     * to the matching end tag.
-     * The tag is not expected to be an empty tag.
-     * @author Bob Tarling
-     */
-    private class XmlInputStream extends BufferedInputStream {
-
-        private boolean xmiStarted;
-        private boolean inTag;
-        private StringBuffer currentTag = new StringBuffer();
-        private boolean endStream;
-        private String tagName;
-        private String endTagName;
-        
-        /**
-         * Construct a new XmiInputStream
-         * @param in the input stream to wrap.
-         * @param tag the tag name from which to start reading
-         */
-        public XmlInputStream(InputStream in, String theTag) {
-            super(in);
-            this.tagName = theTag;
-            this.endTagName = '/' + theTag;
-        }
-        
-        /**
-         * @see java.io.InputStream#read()
-         */
-        public synchronized int read() throws IOException {
-            
-            if (!xmiStarted) {
-                skipToTag();
-                xmiStarted = true;
-            }
-            if (endStream) {
-                return -1;
-            }
-            int ch = super.read();
-            endStream = isLastTag(ch);
-            return ch;
-        }
-        
-        /**
-         * @see java.io.InputStream#read(byte[], int, int)
-         */
-        public synchronized int read(byte[] b, int off, int len)
-            throws IOException {
-            
-            if (!xmiStarted) {
-                skipToTag();
-                xmiStarted = true;
-            }
-            if (endStream) {
-                return -1;
-            }
-            int read = super.read(b, off, len);
-            if (read == -1) {
-                return -1;
-            }
-            for (int i = 0; i < read; ++i) {
-                if (endStream) {
-                    b[i] = -1;
-                    read = i;
-                    return read;
-                }
-                endStream = isLastTag(b[i + off]);
-            }
-            return read;
-        }
-        
-        
-        
-        /**
-         * @see java.io.InputStream#read(byte[])
-         */
-        public int read(byte[] b) throws IOException {
-            
-            if (!xmiStarted) {
-                skipToTag();
-                xmiStarted = true;
-            }
-            if (endStream) {
-                b[0] = -1;
-                return -1;
-            }
-            int read = super.read(b);
-            if (read == -1) {
-                b[0] = -1;
-                return -1;
-            }
-            for (int i = 0; i < read; ++i) {
-                if (endStream) {
-                    read = i;
-                    b[i] = -1;
-                    if (i == 0) {
-                        return -1;
-                    } else {
-                        return i;
-                    }
-                }
-                endStream = isLastTag(b[i]);
-            }
-            return read;
-        }
-        
-        /**
-         * Determines if the character is the last character of the last tag of
-         * interest.
-         * Every character read after the first tag of interest should be passed
-         * through this method in order.
-         * 
-         * @param ch the character to test.
-         * @return true if this is the end of the last tag.
-         */
-        private boolean isLastTag(int ch) {
-            if (ch == '<') {
-                inTag = true;
-                currentTag.setLength(0);
-            } else if (ch == '>') {
-                inTag = false;
-                if (currentTag.toString().equals(endTagName)) {
-                    return true;
-                }
-            } else if (inTag) {
-                currentTag.append((char) ch);
-            }
-            return false;
-        }
-        
-        /**
-         * Keep on reading an input stream until a specific
-         * sequence of characters has ben read.
-         * This method assumes there is at least one match.
-         * @param search the characters to search for.
-         * @throws IOException
-         */
-        private void skipToTag() throws IOException {
-            char[] searchChars = tagName.toCharArray();
-            int i;
-            boolean found;
-            while (true) {
-                mark(tagName.length() + 3);
-                // Keep reading till we get the left bracket of an opening tag
-                while (realRead() != '<') {
-                    mark(tagName.length() + 3);
-                }
-                found = true;
-                // Compare each following character to see
-                // that it matches the tag we want
-                for (i = 0; i < tagName.length(); ++i) {
-                    if (realRead() != searchChars[i]) {
-                        found = false;
-                        break;
-                    }
-                }
-                int terminator = realRead();
-                // We also want to match with the right bracket of the tag or
-                // some other terminator
-                if (found && isNameTerminator((char) terminator)) {
-                    reset();
-                    return;
-                }
-            }
-        }
-
-        private boolean isNameTerminator(char ch) {
-            return (ch == '>' || Character.isWhitespace(ch));
-        }
-                        
-        private int realRead() throws IOException {
-            int read = super.read();
-            if (read == -1) {
-                throw new IOException("Tag " + tagName + " not found");
-            }
-            return read;
-        }
-    }
 } /* end class ArgoParser */

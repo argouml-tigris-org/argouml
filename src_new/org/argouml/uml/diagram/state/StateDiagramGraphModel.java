@@ -30,6 +30,7 @@ package org.argouml.uml.diagram.state;
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
@@ -113,7 +114,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * @return The ports.
      * @param nodeOrEdge The node or the edge.
      */
-    public Vector getPorts(Object nodeOrEdge) {
+    public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector(); //wasteful!
         if (ModelFacade.isAState(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
@@ -139,7 +140,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * 
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
-    public Vector getInEdges(Object port) {
+    public List getInEdges(Object port) {
         if (ModelFacade.isAStateVertex(port)) {
 	    return new Vector(ModelFacade.getIncomings(port));
 	}
@@ -151,7 +152,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
      * 
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
-    public Vector getOutEdges(Object port) {
+    public List getOutEdges(Object port) {
         if (ModelFacade.isAStateVertex(port)) {
 	    return new Vector(ModelFacade.getOutgoings(port));
 	}
@@ -248,7 +249,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         Object sv = /* (MStateVertex) */node;
 
         if (containsNode(sv)) return;
-        getNodes().addElement(sv);
+        getNodes().add(sv);
         // TODO: assumes public, user pref for default visibility?
         //if (sv.getNamespace() == null)
         //_namespace.addOwnedElement(sv);
@@ -271,8 +272,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         LOG.debug("adding statechart diagram edge!!!!!!");
 
         if (!canAddEdge(edge)) return;
-        Object tr = /* (MTransition) */edge;
-        getEdges().addElement(tr);
+        Object transition = /* (MTransition) */edge;
+        getEdges().add(transition);
         fireEdgeAdded(edge);
     }
 
