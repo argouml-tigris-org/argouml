@@ -73,8 +73,10 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
 import org.tigris.gef.util.VectorSet;
 
-/** The main window of the ArgoUML application. */
-
+/** The main window of the ArgoUML application.
+ *
+ * @stereotype singleton
+ */
 public class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
@@ -93,10 +95,7 @@ public class ProjectBrowser
     // class variables
 
     /**
-     * ArgoUML will not support this method of invocation of the projectbrowser
-     * very soon.
-     * @deprecated As of ArgoUml version 0.13.5, replaced by
-     *             {@link org.argouml.ui.ProjectBrowser#getInstance()}
+     * Member attribute to contain the singleton.
      */
     private static ProjectBrowser TheInstance;
 
