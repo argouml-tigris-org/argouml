@@ -16,7 +16,7 @@
      <bookinfo>
          <date>2001-11-10
          </date>
-         <title>ArgoUML Programmers Cookbook</title>
+         <title>Cookbook for Developers of ArgoUML</title>
          <subtitle>An introduction to ArgoUML Programming</subtitle>
          <authorgroup>
              <author>
@@ -80,7 +80,8 @@ Everyone who wants to contribute needs to know the
 what, where and how to write good quality code, but
 getting into it is a big challenge since there are
 hundreds of Java files. 
-This developer Cookbook is dedicated to all interested programmers and
+This Cookbook is dedicated to everyone interested in taking part
+in the ArgoUML project as such and
 should help to transfer the knowledge from the old experts to them.
 Please feel free to send more questions and/or answers to the 
 <ulink url="mailto:dev@argouml.tigris.org">dev mailing list</ulink>!
@@ -90,7 +91,7 @@ Please feel free to send more questions and/or answers to the
     <sect1>
       <title>About this Cookbook...</title>
       <para>
-This document, the ArgoUML Programmers Cookbook, is provided
+This document, the Cookbook for Developers of ArgoUML, is provided
 with the hopes of being helpful for the developers of ArgoUML when
 it comes to learning and understanding how ArgoUML work in order
 to improve on its functions and features. 
@@ -112,18 +113,22 @@ Information on how you should add modules and Plug-ins to ArgoUML.
 	<para>
 Some information that you, as a developer of ArgoUML,
 needs to know about how the project is organised and
-what requirements you need to fulfil in order to contribute.
+how to contribute.
 </para>
 
       </sect2>
       <sect2>
 	<title>In this Cookbook, you will not find...</title>
 	<para>
-Information on how to install and use ArgoUML.
+You will not find information on how to install and use ArgoUML.
 </para>
 	<para>
-Information on what UML is and if/how you should use it in your project.
-How to convince your project to use ArgoUML as a modelling tool.
+You will not find information on what UML is and if or how you should
+use it in your project.
+</para>
+	<para>
+You will not find information on how to convince your project to use
+ArgoUML as a modelling tool.
 </para>
       </sect2>
     </sect1>
@@ -2196,6 +2201,387 @@ in just this way.
 
 </chapter>
 
+  <chapter>
+    <title>CVS repository contents</title>
+    <para>
+This chapter describes what parts of the cvs repository is used for
+what purpose.
+This is a rather terse collection.
+Further details on specific part can sometimes be found elsewhere in
+this document.
+</para>
+    <para>
+This chapter is organised as the CVS repository itself and 
+everything is in alfabetical order.
+</para>
+    <para>
+<itemizedlist>
+	<listitem>
+	  <para><filename class="directory">build</filename></para>
+	  <para>Directory where the built things end up.</para>
+	  <para>
+There is actually no real need to keep this in cvs.
+It is there just as a place holder.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">conf</filename></para>
+	  <para>Not used. Empty.</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">documentation</filename></para>
+	  <para>Directory where the source of the documentation is.</para>
+	  <para>
+<itemizedlist>
+	      <listitem>
+		<para><filename class="directory">cookbook</filename></para>
+		<para>XML-source code for this cookbook.</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">docbook-setup</filename></para>
+		<para>
+XML Tools and configuration files used for the formatting of
+the documentation from the XML-source to HTML and PDF.
+</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">faq</filename></para>
+		<para>XML-source code for the User FAQ.</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">images</filename></para>
+		<para>Pictures for all documents are collected here.</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">javahelp</filename></para>
+		<para>Not used. Empty.</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">manual</filename></para>
+		<para>XML-source code for the User Manual.</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">quick-guide</filename></para>
+		<para>XML-source code for the Quick Guide.</para>
+	      </listitem>
+	    </itemizedlist>
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">extra</filename></para>
+	  <para>Not used. Empty.</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">lib</filename></para>
+	  <para>A set of jar files.</para>
+	  <para>
+Currently this directory contains both the jar files of products used
+by the ArgoUML
+(such as log4j, nsuml)
+and jar files of tools used in the building of ArgoUML and the 
+documentation
+(such as ant, antlr, fop).
+</para>
+	  <para>
+There is an ambition to move the jar files of the tools to the
+<filename class="directory">tools</filename>-directory
+eventually but when this is written (March 2002) this is not yet in effect.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">modules</filename></para>
+	  <para>Contains source level modules of ArgoUML.</para>
+	  <para>
+Source level modules are modules that can be compiled and deployed
+independantly (after) the rest of ArgoUML.
+Each module is located in its own subdirectory.
+This is the list as it looks now (beginning of March 2002).
+</para>
+	  <para>
+<itemizedlist>
+	      <listitem>
+		<para>jscheme</para>
+		<para>
+Module that allows to extend ArgoUML using scheme.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>junit</para>
+		<para>
+Module that is used during the development and contains all
+junit test cases as well as the junit infrastructure needed to run
+these tests.
+</para>
+	      </listitem>
+	      <listitem>
+		<para>menutest</para>
+		<para>
+Test module that tests the plugin interface for the menus.
+</para>
+	      </listitem>
+	    </itemizedlist>
+This is so far I had time. I will continue later. /Linus.
+</para>
+	</listitem>
+      </itemizedlist>
+</para>
+  </chapter>
+
+
+  <chapter id="documentation_what_goes_where">
+    <chapterinfo>
+      <abstract>
+	<para>
+This chapter contains written down ideas on what goes into what
+part of the documentation. These ideas are formulated by Linus Tolke.
+</para>
+      </abstract>
+      <authorgroup>
+	<author>
+	  <firstname>Linus</firstname>
+	  <surname>Tolke</surname>
+	</author>
+      </authorgroup>
+    </chapterinfo>
+    <title>Organisation of ArgoUML documentation</title>
+    <para>
+There are seven significantly different bits of documentation in the 
+ArgoUML project.
+By documentation I mean some information of the product that is 
+developed alongside the product and that has a persistant value.
+</para>
+    <orderedlist>
+      <listitem>
+	<para>The code, variablenames, class names</para>
+      </listitem>
+      <listitem>
+	<para>The javadoc</para>
+      </listitem>
+      <listitem>
+	<para>The cookbook</para>
+      </listitem>
+      <listitem>
+	<para>The web site in cvs</para>
+      </listitem>
+      <listitem>
+	<para>The manual and quick-guide</para>
+      </listitem>
+      <listitem>
+	<para>Help texts within the running ArgoUML</para>
+      </listitem>
+      <listitem>
+	<para>The FAQ</para>
+      </listitem>
+    </orderedlist>
+    <para>
+These different bits have all different purpose and audience and 
+the purpose of this chapter is to try to define that.
+</para>
+    <table>
+      <title>Bits of documentation</title>
+      <tgroup cols="4">
+	<thead>
+	  <row>
+	    <entry>Bit</entry>
+	    <entry>Audience</entry>
+	    <entry>Main purpose</entry>
+	    <entry>Contains</entry>
+	  </row>
+	</thead>
+	<tbody>
+	  <row>
+	    <!-- Bit -->
+	    <entry>The code</entry>
+
+	    <!-- Audience -->
+	    <entry>
+<orderedlist>
+		<listitem>
+		  <para>
+Other developers that will maintain and improve on the code.
+</para>
+		</listitem>
+		<listitem>
+		  <para>
+The compiler.
+</para>
+		</listitem>
+	      </orderedlist>
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Implement ArgoUML in a maintainable and understandable way.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+See <xref linkend="standards"/> for more information.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The javadoc</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Developers writing code that communicates or in other ways interact
+with this class.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Make it easy to see what the functions of every class are and how
+to use them.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Description of the functions of all classes, 
+all public and protected methods, variables, and constants.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The cookbook</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Developers writing code, maintaining the documentation or the web site.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Make it easy to learn how ArgoUML works and how to extend it.
+Be a collection of knowledge around how everything is set up.
+Be a store of the agreed solution around fundamental design decisions
+i.e. design decisions that are so big that it is meaningless to
+store them in the javadoc.
+Be a collection of knowledge around how and why the project makes
+certain decisions.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Instructions on how to add new functions and behaviour.
+Instructions on how to do the chores around maintenance 
+(build a release, publish a release, 
+build the documentation part of the release,
+test ArgoUML, test the documentation, ...).
+Agreed project rules like what level of quality is aimed for and
+description of processes that achieves that level.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The web site in cvs</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Everyone, i.e. developers in the project, users of the product,
+people searching for UML tools for the purpose of trying, testing,
+evaluating, and using the tools.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Be an entry point for the other parts of the documentation.
+Be the main download area for the ArgoUML product.
+Be the central point of the ArgoUML user community.
+Be the central point of the ArgoUML development project.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+References to all the other parts of the documentation.
+Current project information like the contents of the upcoming releases
+and the plan for the nearest future.
+Easy access illustration for users to be.
+Some illustrations that does not work well in the other 
+parts of the documentation. 
+This is done as a complement to the other parts. 
+Examples, tours and viewlets.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The manual and quick-guide</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+Persons that want to evaluate ArgoUML for the purpose of starting to use it.
+Persons that are training to use UML and ArgoUML.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Describe how ArgoUML is installed and used.
+Describe how UML is used with ArgoUML.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+Complete installation instructions for all supported installation schemes.
+Complete description on how to use ArgoUML in your project.
+Complete reference on how to use ArgoUML.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>Help texts within the running ArgoUML</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Give a quick help with a specific feature or button.
+Give short explanations of all commands and actions.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+A complete set of quick help and explanations.
+</entry>
+	  </row>
+
+	  <row>
+	    <!-- Bit -->
+	    <entry>The FAQ</entry>
+
+	    <!-- Audience -->
+	    <entry>
+Users of ArgoUML.
+Members of the users mailing list.
+</entry>
+
+	    <!-- Purpose -->
+	    <entry>
+Cope for shortcomings in ArgoUML, the help text, 
+the Manual and quick-guide and the web site.
+</entry>
+
+	    <!-- Contains -->
+	    <entry>
+A list of issues that are not addressed in the other part of the documentation.
+It is written in questions-answers-format and the contents is governed by
+the issues discussed recently in the user community.
+</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </chapter>
+
+
 <chapter id="cvs">
 <title>Employed CVS standards</title>
 <sect1 id="branches">
@@ -2585,6 +2971,11 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
     <para>
 The following chapters are moved here from the User FAQ. They need rework.
 </para>
+    <para>
+The current goal in this rework for this, the Screen Grabs chapter is to
+join or move each section into the 
+<xref linkend="inside_components"/>.
+</para>
     <sect1>
       <title>How to make Screen Grabs</title> 
   <para>There's nothing like show and tell when using software! Everyone likes screen grabs...here's how you can help out!</para> 
@@ -2644,256 +3035,6 @@ The following chapters are moved here from the User FAQ. They need rework.
     </sect1>
   </chapter>
 
-  <chapter>
-    <chapterinfo>
-      <abstract>
-	<para>
-This chapter contains written down ideas on what goes into what
-part of the documentation. These ideas are formulated by Linus Tolke.
-</para>
-      </abstract>
-      <authorgroup>
-	<author>
-	  <firstname>Linus</firstname>
-	  <surname>Tolke</surname>
-	</author>
-      </authorgroup>
-    </chapterinfo>
-    <title>Organisation of ArgoUML documentation</title>
-    <para>
-There are seven significantly different bits of documentation in the 
-ArgoUML project.
-By documentation I mean some information of the product that is 
-developed alongside the product and that has a persistant value.
-</para>
-    <orderedlist>
-      <listitem>
-	<para>The code, variablenames, class names</para>
-      </listitem>
-      <listitem>
-	<para>The javadoc</para>
-      </listitem>
-      <listitem>
-	<para>The cookbook</para>
-      </listitem>
-      <listitem>
-	<para>The web site in cvs</para>
-      </listitem>
-      <listitem>
-	<para>The manual and quick-guide</para>
-      </listitem>
-      <listitem>
-	<para>Help texts within the running ArgoUML</para>
-      </listitem>
-      <listitem>
-	<para>The FAQ</para>
-      </listitem>
-    </orderedlist>
-    <para>
-These different bits have all different purpose and audience and 
-the purpose of this chapter is to try to define that.
-</para>
-    <table>
-      <title>Bits of documentation</title>
-      <tgroup cols="4">
-	<thead>
-	  <row>
-	    <entry>Bit</entry>
-	    <entry>Audience</entry>
-	    <entry>Main purpose</entry>
-	    <entry>Contains</entry>
-	  </row>
-	</thead>
-	<tbody>
-	  <row>
-	    <!-- Bit -->
-	    <entry>The code</entry>
 
-	    <!-- Audience -->
-	    <entry>
-<orderedlist>
-		<listitem>
-		  <para>
-Other developers that will maintain and improve on the code.
-</para>
-		</listitem>
-		<listitem>
-		  <para>
-The compiler.
-</para>
-		</listitem>
-	      </orderedlist>
-</entry>
 
-	    <!-- Purpose -->
-	    <entry>
-Implement ArgoUML in a maintainable and understandable way.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-See <xref linkend="standards"/> for more information.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>The javadoc</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Developers writing code that communicates or in other ways interact
-with this class.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Make it easy to see what the functions of every class are and how
-to use them.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-Description of the functions of all classes, 
-all public and protected methods, variables, and constants.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>The cookbook</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Developers writing code, maintaining the documentation or the web site.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Make it easy to learn how ArgoUML works and how to extend it.
-Be a collection of knowledge around how everything is set up.
-Be a store of the agreed solution around fundamental design decisions
-i.e. design decisions that are so big that it is meaningless to
-store them in the javadoc.
-Be a collection of knowledge around how and why the project makes
-certain decisions.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-Instructions on how to add new functions and behaviour.
-Instructions on how to do the chores around maintenance 
-(build a release, publish a release, 
-build the documentation part of the release,
-test ArgoUML, test the documentation, ...).
-Agreed project rules like what level of quality is aimed for and
-description of processes that achieves that level.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>The web site in cvs</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Everyone, i.e. developers in the project, users of the product,
-people searching for UML tools for the purpose of trying, testing,
-evaluating, and using the tools.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Be an entry point for the other parts of the documentation.
-Be the main download area for the ArgoUML product.
-Be the central point of the ArgoUML user community.
-Be the central point of the ArgoUML development project.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-References to all the other parts of the documentation.
-Current project information like the contents of the upcoming releases
-and the plan for the nearest future.
-Easy access illustration for users to be.
-Some illustrations that does not work well in the other 
-parts of the documentation. 
-This is done as a complement to the other parts. 
-Examples, tours and viewlets.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>The manual and quick-guide</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Users of ArgoUML.
-Persons that want to evaluate ArgoUML for the purpose of starting to use it.
-Persons that are training to use UML and ArgoUML.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Describe how ArgoUML is installed and used.
-Describe how UML is used with ArgoUML.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-Complete installation instructions for all supported installation schemes.
-Complete description on how to use ArgoUML in your project.
-Complete reference on how to use ArgoUML.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>Help texts within the running ArgoUML</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Users of ArgoUML.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Give a quick help with a specific feature or button.
-Give short explanations of all commands and actions.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-A complete set of quick help and explanations.
-</entry>
-	  </row>
-
-	  <row>
-	    <!-- Bit -->
-	    <entry>The FAQ</entry>
-
-	    <!-- Audience -->
-	    <entry>
-Users of ArgoUML.
-Members of the users mailing list.
-</entry>
-
-	    <!-- Purpose -->
-	    <entry>
-Cope for shortcomings in ArgoUML, the help text, 
-the Manual and quick-guide and the web site.
-</entry>
-
-	    <!-- Contains -->
-	    <entry>
-A list of issues that are not addressed in the other part of the documentation.
-It is written in questions-answers-format and the contents is governed by
-the issues discussed recently in the user community.
-</entry>
-	  </row>
-	</tbody>
-      </tgroup>
-    </table>
-  </chapter>
 </book>
