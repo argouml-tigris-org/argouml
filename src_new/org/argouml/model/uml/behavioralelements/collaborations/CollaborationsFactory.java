@@ -200,6 +200,16 @@ public class CollaborationsFactory extends AbstractUmlModelFactory {
     	modelelement.setRepresentedClassifier(classifier);
     	return modelelement;
     }
+    
+    /**
+     * Builds an interaction belonging to some collaboration
+     */
+    public MInteraction buildInteraction(MCollaboration collab) {
+    	MInteraction inter = createInteraction();
+    	inter.setContext(collab);
+    	inter.setName("newInteraction");
+    	return inter;
+    }
 
 
 
