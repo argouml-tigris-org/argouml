@@ -67,15 +67,20 @@ public class TabDocumentation extends PropPanel {
         addField(new UMLCheckBox("",this,new UMLTaggedBooleanProperty("deprecated")),4,0,0);
 
         addCaption(Argo.localize(BUNDLE, "docpane.label.see") + ":",5,0,1);
-        addField(new UMLTextArea(this,new UMLTaggedTextProperty("see")),5,0,1);
+        UMLTextArea _see = new UMLTextArea(this,new UMLTaggedTextProperty("see"));
+        _see.setLineWrap(true);
+        _see.setWrapStyleWord(true);
+        JScrollPane spSee = new JScrollPane();
+        spSee.getViewport().add(_see);
+        addField(spSee,5,0,1);
 
         addCaption(Argo.localize(BUNDLE, "docpane.label.documentation") + ":",0,1,1);
         UMLTextArea _doc = new UMLTextArea(this,new UMLTaggedTextProperty("documentation"));
         _doc.setLineWrap(true);
         _doc.setWrapStyleWord(true);
-        addField(_doc,0,1,1);
-
-
+        JScrollPane spDocs = new JScrollPane();
+        spDocs.getViewport().add(_doc);
+        addField(spDocs,0,1,1);
   }
 
     public boolean shouldBeEnabled() {
