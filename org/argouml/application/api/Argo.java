@@ -272,7 +272,11 @@ public class Argo
 	    ConsoleAppender.SYSTEM_OUT));
 
 	// Add the throwable renderer
-	((Hierarchy) cat.getRootLogger().getHierarchy()).getRendererMap().put(Throwable.class, tr);
+	LoggerRepository lr = cat.getRootLogger().getLoggerRepository();
+	if (!(lr instanceof Hierarchy))
+	    throw new IllegalArgumentException("LoggerRepository "
+					       + "is not a Hierarchy");
+	((Hierarchy)lr).getRendererMap().put(Throwable.class, tr);
 
 	if (System.getProperty(ARGO_CONSOLE_SUPPRESS) != null) {
 	    cat.getRoot().getLoggerRepository().setThreshold(Level.OFF);

@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,7 +25,6 @@
 package org.argouml.xml;
 
 import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
 import org.xml.sax.*;
 import org.xml.sax.helpers.*;
@@ -148,7 +148,7 @@ public abstract class SAXParserBase extends HandlerBase {
     }
     else e = new XMLElement(name, atts);
 
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("START: " + name + " " + e);
         for (int i = 0; i < atts.getLength(); i++) {
@@ -167,7 +167,7 @@ public abstract class SAXParserBase extends HandlerBase {
 
   public void endElement(String name) throws SAXException {
     XMLElement e = _elements[-- _nElements];
-    if (cat.getPriority() != null && cat.getPriority().equals(Priority.DEBUG)) {
+    if (cat.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("END: " + e.getName() + " [" +
              e.getText() + "] " + e + "\n");

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -69,7 +70,6 @@ import org.argouml.uml.ProfileJava;
 import org.argouml.uml.diagram.static_structure.*;
 import org.argouml.uml.diagram.deployment.*;
 import org.apache.log4j.Category;
-import org.apache.log4j.Priority;
 import org.argouml.application.api.*;
 import org.argouml.util.MyTokenizer;
 import org.argouml.model.uml.foundation.core.*;
@@ -2459,7 +2459,7 @@ addBases:
 	args = new Vector();
     }
 
-    if (_cat.getPriority() != null && _cat.getPriority().equals(Priority.DEBUG)) {
+    if (_cat.isDebugEnabled()) {
         StringBuffer buf = new StringBuffer();
         buf.append("ParseMessage: " + s + "\n");
         buf.append("Message: ");
