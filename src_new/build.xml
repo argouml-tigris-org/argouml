@@ -895,6 +895,7 @@ ${Name} Build file
             <pathelement location="${antlrall.jar.path}" />
             <pathelement location="${log4j.jar.path}" />
             <pathelement location="${jh.jar.path}" />
+            <pathelement location="${junit.jar.path}" />
         </classpath>
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
