@@ -1,3 +1,4 @@
+<!-- $Id$ -->
 <head>
 <title>Project ArgoUML Members with Responsibilities</title>
 </head>
@@ -12,6 +13,7 @@ and have been doing work towards the 0.16 release:
 <UL>
 <LI>Linus Tolke
 (Responsibilities: Project leader,
+Market communicator, 
 Release Responsible all releases,
 Quality Engineer,
 <a href="#cookbook_editor">Editor of the Cookbook</a>,
@@ -21,7 +23,12 @@ Recruitment of new developers,
   Mailing list moderator for 
   the dev and 
   user-group-sweden mailing lists</a>,
-Market communicator, 
+<a href="#initial_owner">Issuezilla subcomponent owner for 
+  Internationalization,
+  Other (both in argouml and modules),
+  website/Java Web Start,
+  website/Contents,
+</a>,
 Web master for the User Site,
 <a href="#user_faq_editor">Editor of the users' FAQ</a>.)
 
@@ -36,11 +43,17 @@ Speciality: Tigris)
 <LI>Thierry Lach
 (Responsibility:
 <a href="#developer_role">Developer role</a>,
+<a href="#initial_owner">Issuezilla subcomponent owner for 
+  Build scripts and tools
+</a>,
 Specialities: Build process, source organization, Plug-ins)
 
 <LI>Thomas Neustupny
 (Responsibility:
 <a href="#developer_role">Developer role</a>,
+<a href="#initial_owner">Issuezilla subcomponent owner for 
+  CodeGeneration/ReverseEnginnering
+</a>,
 Specialities: Code Generation (CG), Reverse Engineering (RE) and
 Round-Trip Engineering (RTE))
 
@@ -62,7 +75,11 @@ Speciality: To-do items, in place parser)
 
 <LI>Alex Bagehot
 (Responsibility:
-<a href="#developer_role">Developer role</a>)
+<a href="#developer_role">Developer role</a>,
+<a href="#initial_owner">Issuezilla subcomponent owner for 
+  Explorer
+</a>,
+Speciality: Explorer, Reverse Engineering (RE))
 
 <LI>Steffen Zschaler
 (Responsibility:
@@ -77,6 +94,9 @@ Speciality: User Interface)
 <LI>Michiel van der Wulp
 (Responsibility:
 <a href="#user_manual_editor">Editor for the User Manual and Quick Guide</a>,
+<a href="#initial_owner">Issuezilla subcomponent owner for 
+  Documentation and Help
+</a>,
 <a href="#developer_role">Developer role</a>)
 
 <LI>Rene Marot
@@ -261,10 +281,40 @@ has the following responsibilities:
     of the ArgoUML product).
 </ul>
 
+<h4>
+  <a name="initial_owner">
+    Responsibility: Issuezilla subcomponent owner
+  </a>
+</h4>
+This role is registered by the Tigris framework (in the Issuezilla settings).
+<ul>
+<li>Default owner of all issues allocated on that subcomponent.
+    Because of this it is important to mark the issues as available for
+    anyone to work with. This is currently done by assigning them to
+    issues@argouml.
+<li>Make sure that all issues allocated on that subcomponent are in fact
+    problems (or things to do) within that area so that issues don't 
+    incorrectly land in that subcomponent.
+<li>Have a clear view of how the subcomponent is related to the source (in cvs)
+    and the definition of packages, modules, subsystems, or components within
+    ArgoUML.
+<li>Discuss this and updates to the subcomponent's Description to better
+    reflect this with the Project Leader.
+</ul>
+
+Other things that would be good but is beyond the scope of the responsibility:
+<ul>
+<li>Check the priority of all issues so that it is correct.
+<li>Investigate to make sure that the problem is understood.
+    This involves requesting new information from the reporter.
+<li>Work with the issues on that subcomponent.
+<li>Lead the team working in the area of that subcomponent.
+</ul>
+
 
 <HR>
 <ADDRESS>
-Last modified: 15 October 2003
+Last modified: 19 October 2003
 <BR>
 Please send any questions or comments about this web page
 or its content to 
