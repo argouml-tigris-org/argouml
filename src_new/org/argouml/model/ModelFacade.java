@@ -44,8 +44,20 @@ import org.tigris.gef.base.*;
 
 // Diagram model imports:
 import org.argouml.model.uml.foundation.core.*;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
+import org
+    .argouml
+    .model
+    .uml
+    .foundation
+    .extensionmechanisms
+    .ExtensionMechanismsFactory;
+import org
+    .argouml
+    .model
+    .uml
+    .foundation
+    .extensionmechanisms
+    .ExtensionMechanismsHelper;
 import org.argouml.uml.*;
 // import org.argouml.uml.diagram.ui.*;
 // import org.argouml.uml.diagram.deployment.ui.*;
@@ -100,6 +112,15 @@ public class ModelFacade {
         return handle instanceof MAssociation;
     }
 
+    /** Recognizer for AssociationEnd.
+     *
+     * @param handle candidate
+     * @returns true if handle is an AssociationEnd
+     */
+    public static boolean isAAssociationEnd(Object handle) {
+        return handle instanceof MAssociationEnd;
+    }
+
     /** Recognizer for AssociationRole
      *
      * @param handle candidate
@@ -140,7 +161,7 @@ public class ModelFacade {
     public static boolean isAClassifier(Object handle) {
         return handle instanceof MClassifier;
     }
-    
+
     /** Recognizer for Classifier
      *
      * @param handle candidate
@@ -203,7 +224,7 @@ public class ModelFacade {
     public static boolean isAModelElement(Object handle) {
         return handle instanceof MModelElement;
     }
-    
+
     /** Recognizer for Namespace
      *
      * @param handle candidate
@@ -240,7 +261,7 @@ public class ModelFacade {
     public static boolean isAStateMachine(Object handle) {
         return handle instanceof MStateMachine;
     }
-    
+
     /** Recognizer for StateVertex
      *
      * @param handle candidate
@@ -249,7 +270,7 @@ public class ModelFacade {
     public static boolean isAStateVertex(Object handle) {
         return handle instanceof MStateVertex;
     }
-    
+
     /** Recognizer for StructuralFeature
      *
      * @param handle candidate
@@ -258,7 +279,7 @@ public class ModelFacade {
     public static boolean isAStructuralFeature(Object handle) {
         return handle instanceof MStructuralFeature;
     }
-    
+
     /** Recognizer for Transition
      *
      * @param handle candidate
@@ -267,7 +288,6 @@ public class ModelFacade {
     public static boolean isATransition(Object handle) {
         return handle instanceof MTransition;
     }
-
 
     /** Recognizer for attributes that are changeable
      *
@@ -303,8 +323,29 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-        MStereotype createStereoType = ExtensionMechanismsFactory.getFactory().buildStereotype(new MOperationImpl(), "create");
-        return ExtensionMechanismsHelper.getHelper().isValidStereoType(handle, createStereoType);
+        MStereotype createStereoType =
+            ExtensionMechanismsFactory.getFactory().buildStereotype(
+                new MOperationImpl(),
+                "create");
+        return ExtensionMechanismsHelper.getHelper().isValidStereoType(
+            handle,
+            createStereoType);
+    }
+    
+    /**
+     * Returns true if a given associationend is a composite.
+     * @param handle
+     * @return boolean
+     */
+    public static boolean isComposite(Object handle) {
+        if (isAAssociationEnd(handle)) {
+            boolean composite = false;
+            MAssociationEnd end = (MAssociationEnd)handle;
+            if (end.getAggregation() != null && end.getAggregation().equals(MAggregationKind.COMPOSITE))
+                composite = true;
+            return composite;          
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for attributes that are initialized.
@@ -348,14 +389,14 @@ public class ModelFacade {
      */
     public static boolean isLeaf(Object handle) {
 
-	if (handle instanceof MGeneralizableElement) {
-	    return ((MGeneralizableElement)handle).isLeaf();
-	}
-    if (handle instanceof MOperation) {
-        return ((MOperation)handle).isLeaf();
-    }
-	// ...
-	throw new IllegalArgumentException("Unrecognized object " + handle);
+        if (handle instanceof MGeneralizableElement) {
+            return ((MGeneralizableElement)handle).isLeaf();
+        }
+        if (handle instanceof MOperation) {
+            return ((MOperation)handle).isLeaf();
+        }
+        // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
     /** Recognizer for Navigable elements
@@ -453,7 +494,7 @@ public class ModelFacade {
         if (handle instanceof MModelElement) {
             MModelElement element = (MModelElement)handle;
             MStereotype meSt = element.getStereotype();
-            
+
             if (meSt == null)
                 return false;
 
@@ -508,7 +549,7 @@ public class ModelFacade {
      */
     public static Collection getAssociationEnds(Object handle) {
         if (handle instanceof MClassifier) {
-            Collection endc = ((MClassifier)handle).getAssociationEnds();            
+            Collection endc = ((MClassifier)handle).getAssociationEnds();
             return endc;
         }
 
@@ -610,7 +651,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Returns the incoming transitions for some statevertex
      * @param handle
@@ -620,7 +661,8 @@ public class ModelFacade {
         if (isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getIncomings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + stateVertex);
+        throw new IllegalArgumentException(
+            "Unrecognized object " + stateVertex);
     }
 
     /**
@@ -662,7 +704,7 @@ public class ModelFacade {
     public static Collection getOperations(Object handle) {
         if (handle instanceof MClassifier) {
             MClassifier c = (MClassifier)handle;
-            
+
             return CoreHelper.getHelper().getOperations(c);
         }
 
@@ -687,7 +729,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /** Returns the list of Transitions outgoing from the given stateVertex.
      *
      * @param statevertex 
@@ -697,7 +739,8 @@ public class ModelFacade {
         if (ModelFacade.isAStateVertex(stateVertex)) {
             return ((MStateVertex)stateVertex).getOutgoings();
         }
-        throw new IllegalArgumentException("Unrecognized object " + stateVertex);
+        throw new IllegalArgumentException(
+            "Unrecognized object " + stateVertex);
     }
 
     /** The list of Associations Ends connected to this association end
@@ -770,7 +813,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Gets the source for some given transitions.
      * @param handle
@@ -797,7 +840,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Returns the stereotype belonging to some given modelelement
      * @param handle
@@ -853,7 +896,7 @@ public class ModelFacade {
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
-    
+
     /**
      * Returns the target of some transition
      * @param handle
@@ -867,6 +910,24 @@ public class ModelFacade {
     }
     
     /**
+     * Returns the upper bound of the multiplicity of the given handle (an
+     * associationend).
+     * @param handle
+     * @return int
+     */
+    public static int getUpper(Object handle) {
+        if (isAAssociationEnd(handle)) {
+            int upper = 0;
+            MAssociationEnd end = (MAssociationEnd)handle;
+            if (end.getMultiplicity() != null)
+                upper = end.getMultiplicity().getUpper();
+            return upper;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+   
+
+    /**
      * Returns the transitions belonging to the given handle. The handle can be
      * a statemachine or a composite state. If it's a statemachine the
      * transitions will be given back belonging to that statemachine. If it's a
@@ -875,11 +936,10 @@ public class ModelFacade {
      * @param handle
      * @return Collection
      */
-    public static Collection getTransitions(Object handle) {        
+    public static Collection getTransitions(Object handle) {
         if (isAStateMachine(handle)) {
             return ((MStateMachine)handle).getTransitions();
-        } else
-        if (isACompositeState(handle)) {
+        } else if (isACompositeState(handle)) {
             return ((MCompositeState)handle).getInternalTransitions();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
