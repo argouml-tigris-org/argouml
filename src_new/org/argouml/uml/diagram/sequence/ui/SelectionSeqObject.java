@@ -71,11 +71,8 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
-import ru.novosoft.uml.behavior.common_behavior.MObject;
-
 public class SelectionSeqObject extends SelectionWButtons  {
     protected static Logger cat = 
         Logger.getLogger(SelectionSeqObject.class);

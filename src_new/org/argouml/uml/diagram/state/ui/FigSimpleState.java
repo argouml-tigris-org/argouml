@@ -45,8 +45,6 @@ import org.tigris.gef.presentation.FigRRect;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.behavior.state_machines.MState;
-
 /** Class to display graphics for a UML MState in a diagram. */
 
 public class FigSimpleState extends FigState {
@@ -195,7 +193,7 @@ public class FigSimpleState extends FigState {
 	    Object state = getOwner();
 	    if (state == null) return;
 	    String s = ft.getText();
-	    ParserDisplay.SINGLETON.parseStateBody((MState)state, s);
+	    ParserDisplay.SINGLETON.parseStateBody(/*(MState)*/state, s);
 	}
     }
    

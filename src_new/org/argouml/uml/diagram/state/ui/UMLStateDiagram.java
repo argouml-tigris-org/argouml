@@ -58,7 +58,7 @@ public class UMLStateDiagram extends UMLDiagram {
     /**
      * this diagram needs to be deleted when its statemachine is deleted.
      */
-    MStateMachine theStateMachine;
+    Object theStateMachine;
 
     ////////////////
     // actions for toolbar
@@ -160,8 +160,8 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void initialize(Object o) {
         if (ModelFacade.isAStateMachine(o)) {
-            MStateMachine sm = (MStateMachine) o;
-            Object context = sm.getContext();
+            Object sm = /*(MStateMachine)*/ o;
+            Object context = ModelFacade.getContext(sm);
             Object contextNamespace = null;
             if (ModelFacade.isAClassifier(context)) {
                 contextNamespace = context;
@@ -196,7 +196,7 @@ public class UMLStateDiagram extends UMLDiagram {
      *
      * @author psager@tigris.org Jan. 24, 2oo2
      */
-    public void setup(Object namespace, MStateMachine sm) {
+    public void setup(Object namespace, Object/*MStateMachine*/ sm) {
         setNamespace(namespace);
 
         // add the diagram as a listener to the statemachine so
@@ -216,8 +216,8 @@ public class UMLStateDiagram extends UMLDiagram {
         lay.setGraphEdgeRenderer(rend);
     }
 
-    public MStateMachine getStateMachine() {
-        return (MStateMachine)((StateDiagramGraphModel) getGraphModel()).getMachine();
+    public Object getStateMachine() {
+        return /*(MStateMachine)*/((StateDiagramGraphModel) getGraphModel()).getMachine();
     }
 
     /**

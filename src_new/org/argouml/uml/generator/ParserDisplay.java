@@ -2001,7 +2001,7 @@ public class ParserDisplay extends Parser {
     /** parse user input for state bodies and assign the individual
      * lines to according actions or transistions.
      */
-    public void parseStateBody(MState st, String s) {
+    public void parseStateBody(Object st, String s) {
 	//remove all old transitions; TODO: this should be done better!!
 	ModelFacade.setEntry(st, null);
 	ModelFacade.setExit(st, null);
@@ -2016,7 +2016,7 @@ public class ParserDisplay extends Parser {
 	    else if (line.startsWith("exit")) parseStateExitAction(st, line);
 	    else if (line.startsWith("do")) parseStateDoAction(st, line);
 	    else {
-		MTransition t =
+		Object t =
 		    parseTransition(UmlFactory.getFactory().
 				    getStateMachines().createTransition(),
 				    line);
@@ -2025,22 +2025,22 @@ public class ParserDisplay extends Parser {
 		if (t == null) continue;
 		_cat.debug("just parsed:" + GeneratorDisplay.Generate(t));
 		ModelFacade.setStateMachine(t, ModelFacade.getStateMachine(st));
-		t.setTarget(st);
-		t.setSource(st);
+		ModelFacade.setTarget(t, st);
+		ModelFacade.setSource(t, st);
 		trans.add(t);
 	    }
 	}
 
 
-	Vector internals = new Vector(st.getInternalTransitions());
-	Vector oldinternals = new Vector(st.getInternalTransitions());
+	Vector internals = new Vector(ModelFacade.getInternalTransitions(st));
+	Vector oldinternals = new Vector(ModelFacade.getInternalTransitions(st));
 	internals.removeAll(oldinternals); //now the vector is empty
 
 	// don't forget to remove old internals!
 	for (int i = 0; i < oldinternals.size(); i++)
 	    UmlFactory.getFactory().delete(/*(MTransition)*/ oldinternals.elementAt(i));
 	internals.addAll(trans);
-	st.setInternalTransitions(trans);
+	ModelFacade.setInternalTransitions(st, trans);
     }
 
     public void parseStateEntyAction(Object st, String s) {
@@ -2068,7 +2068,7 @@ public class ParserDisplay extends Parser {
     }
 
     /** Parse a line of the form: "name: trigger [guard] / actions" */
-    public MTransition parseTransition(MTransition trans, String s) {
+    public Object parseTransition(Object/*MTransition*/ trans, String s) {
 	// strip any trailing semi-colons
 	s = s.trim();
 	if (s.length() == 0) return null;
@@ -2108,22 +2108,23 @@ public class ParserDisplay extends Parser {
 	if (trigger.length() > 0) {
 	    MEvent evt = parseEvent(trigger);
 	    if (evt != null) {
-		trans.setTrigger(/*(MCallEvent)*/ evt);
+		ModelFacade.setTrigger(trans, /*(MCallEvent)*/ evt);
 	    }
 	}
-	else
-	    trans.setTrigger(null);
+	else {
+	    ModelFacade.setTrigger(trans, null);
+        }
 
 	if (guard.length() > 0) {
 	    MGuard g = parseGuard(guard);
 	    if (g != null) {
 		ModelFacade.setName(g, "anon");
-		g.setTransition(trans);
-		trans.setGuard(g);
+		ModelFacade.setTransition(g, trans);
+		ModelFacade.setGuard(trans, g);
 	    }
 	}
 	else
-	    trans.setGuard(null);
+	    ModelFacade.setGuard(trans, null);
 
 	if (actions.length() > 0) {
 	    Object effect = /*(MCallAction)*/ parseAction(actions);

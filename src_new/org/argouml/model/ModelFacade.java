@@ -3625,6 +3625,15 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + target
 					   + " or " + stimulus);
     }
+    
+    public static void addSubvertex(Object handle, Object subvertex) {
+        if (handle instanceof MCompositeState && subvertex instanceof MStateVertex) {
+            ((MCompositeState) handle).addSubvertex((MStateVertex)subvertex);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
     /**
      * Adds a supplier classifier to some abstraction.
      * @param a abstraction
@@ -3900,7 +3909,7 @@ public class ModelFacade {
      * @param guard
      */
     public static void setGuard(Object handle, Object guard) {
-        if (handle instanceof MTransition && guard instanceof MGuard) {
+        if (handle instanceof MTransition && (guard == null || guard instanceof MGuard)) {
             ((MTransition)handle).setGuard((MGuard)guard);
             return;
         }
@@ -3910,13 +3919,29 @@ public class ModelFacade {
                                            + handle.toString());
     }
 
+    public static void setTransition(Object handle, Object trans) {
+        if (trans instanceof MTransition) {
+            if (handle instanceof MGuard) {
+                ((MGuard)handle).setTransition((MTransition)trans);
+                return;
+            }
+            if (handle instanceof MAction) {
+                ((MAction)handle).setTransition((MTransition)trans);
+                return;
+            }
+        }
+        throw new IllegalArgumentException("Object " + trans
+                                           + " cannot be owned by "
+                                           + handle);
+    }
+
     /**
      * Sets the trigger event of a transition.
      * @param handle
      * @param event
      */
     public static void setTrigger(Object handle, Object event) {
-        if (handle instanceof MTransition && event instanceof MEvent) {
+        if (handle instanceof MTransition && (event == null || event instanceof MEvent)) {
             ((MTransition)handle).setTrigger((MEvent)event);
             return;
         }
@@ -3957,6 +3982,15 @@ public class ModelFacade {
                                            " or " + inst);
     }
 
+    public static void setInternalTransitions(Object target, Collection intTrans) {
+        if (target instanceof MState) {
+            ((MState)target).setInternalTransitions(intTrans);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + target
+					   + " or " + intTrans);
+    }
+    
     public static void setMessages3(Object handle, Collection messages) {
         if (handle instanceof MMessage) {
             ((MMessage) handle).setMessages3(messages);
@@ -4365,17 +4399,16 @@ public class ModelFacade {
      * Set the container of a statevertex.
      * @param stateVertex
      */
-    public static void setContainer(Object stateVertex, Object container) {
-        if (stateVertex instanceof MStateVertex &&
-            container instanceof MCompositeState) {
-            ((MStateVertex)stateVertex)
-                .setContainer((MCompositeState)container);
+    public static void setContainer(Object handle, Object compositeState) {
+        if (handle instanceof MStateVertex && (compositeState == null ||
+                compositeState instanceof MCompositeState)) {
+            ((MStateVertex)handle).setContainer((MCompositeState)compositeState);
             return;
         }
-        throw new IllegalArgumentException("Unrecognized object " + stateVertex
-                                    +" or "+container);
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + compositeState);
     }
-    
+
     /**
      * Sets the dispatch action for some stimulus
      * @param handle

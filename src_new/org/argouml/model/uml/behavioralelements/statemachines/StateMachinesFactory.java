@@ -239,7 +239,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML Transition instance.
      */
-    public MTransition createTransition() {
+    public Object createTransition() {
         MTransition modelElement =
 	    MFactory.getDefaultFactory().createTransition();
 	super.initialize(modelElement);
@@ -297,19 +297,20 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      * @param dest
      * @return MTransition
      */
-    public MTransition buildTransition(MCompositeState owningState, 
+    public Object buildTransition(MCompositeState owningState, 
 				       MStateVertex source, MStateVertex dest) {
       	if (owningState != null && source != null && dest != null && 
 	    owningState.getSubvertices().contains(source) &&
 	    owningState.getSubvertices().contains(dest)) { 
-	    MTransition trans = createTransition();
+	    MTransition trans = (MTransition)createTransition();
 	    owningState.addInternalTransition(trans);
 	    trans.setSource(source);
 	    trans.setTarget(dest);
 	    return trans;
-      	} else 
+      	} else {
 	    throw new IllegalArgumentException("In buildTransition: "
 					       + "arguments not legal");
+        }
     }
     
     /**
@@ -448,7 +449,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MTransition buildInternalTransition(Object state) {
         if (state instanceof MState) {
-            MTransition trans = createTransition();
+            MTransition trans = (MTransition)createTransition();
             trans.setState((MState) state);
             trans.setSource((MState) state);
             trans.setTarget((MState) state);
@@ -467,7 +468,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MTransition buildTransition(Object source, Object target) {
         if (source instanceof MStateVertex && target instanceof MStateVertex) {
-            MTransition trans = createTransition();
+            MTransition trans = (MTransition)createTransition();
             trans.setSource((MStateVertex) source);
             trans.setTarget((MStateVertex) target);
             trans.setStateMachine(StateMachinesHelper.getHelper()

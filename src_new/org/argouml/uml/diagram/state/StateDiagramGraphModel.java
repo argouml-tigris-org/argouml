@@ -38,14 +38,8 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
-import ru.novosoft.uml.model_management.MElementImport;
-
 /** This class defines a bridge between the UML meta-model
  *  representation of the design and the GraphModel interface used by
  *  GEF.  This class handles only UML MState Digrams.  */
@@ -127,7 +121,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     public Object getSourcePort(Object edge) {
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
 	    return StateMachinesHelper.getHelper()
-		.getSource((MTransition) edge);
+		.getSource(/*(MTransition)*/ edge);
 	}
 	cat.debug("TODO getSourcePort of MTransition");
 	return null;
@@ -135,9 +129,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
     /** Return  the other end of an edge */
     public Object getDestPort(Object edge) {
-	if (org.argouml.model.ModelFacade.isATransition(edge)) {
+	if (ModelFacade.isATransition(edge)) {
 	    return StateMachinesHelper.getHelper()
-		.getDestination((MTransition) edge);
+		.getDestination(/*(MTransition)*/ edge);
 	}
 	cat.debug("TODO getDestPort of MTransition");
 	return null;
@@ -160,9 +154,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	if (_edges.contains(edge)) return false;
 	Object end0 = null, end1 = null;
 	if (org.argouml.model.ModelFacade.isATransition(edge)) {
-	    MTransition tr = (MTransition) edge;
-	    end0 = tr.getSource();
-	    end1 = tr.getTarget();
+	    Object tr = /*(MTransition)*/ edge;
+	    end0 = ModelFacade.getSource(tr);
+	    end1 = ModelFacade.getTarget(tr);
 	}
 
 	if (end0 == null || end1 == null) return false;
@@ -181,7 +175,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    cat.error("internal error: got past canAddNode");
 	    return;
 	}
-	MStateVertex sv = (MStateVertex) node;
+	Object sv = /*(MStateVertex)*/ node;
 
 	if (_nodes.contains(sv)) return;
 	_nodes.addElement(sv);
@@ -189,9 +183,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	//if (sv.getNamespace() == null)
 	//_namespace.addOwnedElement(sv);
 	// TODO: assumes not nested in another composite state
-	MCompositeState top = (MCompositeState) StateMachinesHelper.getHelper().getTop(getMachine());
+	Object top = /*(MCompositeState)*/ StateMachinesHelper.getHelper().getTop(getMachine());
 
-	top.addSubvertex(sv);
+	ModelFacade.addSubvertex(top, sv);
 	//       sv.setParent(top); this is done in setEnclosingFig!!
 	//      if ((sv instanceof MState) &&
 	//      (sv.getNamespace()==null))
@@ -204,7 +198,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	cat.debug("adding state diagram edge!!!!!!");
    
 	if (!canAddEdge(edge)) return;
-	MTransition tr = (MTransition) edge;
+	Object tr = /*(MTransition)*/ edge;
 	_edges.addElement(tr);
 	fireEdgeAdded(edge);
     }
@@ -215,7 +209,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    transen.addAll(ModelFacade.getIncomings(node));
 	    Iterator iter = transen.iterator();
 	    while (iter.hasNext()) {
-		MTransition dep = (MTransition) iter.next();
+		Object dep = /*(MTransition)*/ iter.next();
 		if (canAddEdge(dep))
 		    addEdge(dep);
 	    }
@@ -235,8 +229,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    cat.error("internal error not to sv");
 	    return false;
 	}
-	MStateVertex fromSV = (MStateVertex) fromPort;
-	MStateVertex toSV = (MStateVertex) toPort;
+	Object fromSV = /*(MStateVertex)*/ fromPort;
+	Object toSV = /*(MStateVertex)*/ toPort;
 
 	if (org.argouml.model.ModelFacade.isAFinalState(fromSV)) {
             return false;
@@ -263,8 +257,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 	    cat.error("internal error not to sv");
 	    return null;
 	}
-	MStateVertex fromSV = (MStateVertex) fromPort;
-	MStateVertex toSV = (MStateVertex) toPort;
+	Object fromSV = /*(MStateVertex)*/ fromPort;
+	Object toSV = /*(MStateVertex)*/ toPort;
 
 	if (org.argouml.model.ModelFacade.isAFinalState(fromSV))
 	    return null;
@@ -274,8 +268,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 		return null;
 
 	if (edgeClass == MTransition.class) {
-	    MTransition tr = null;
-	    MCompositeState comp = fromSV.getContainer();
+	    Object tr = null;
+	    Object comp = ModelFacade.getContainer(fromSV);
 	    tr = StateMachinesFactory.getFactory().buildTransition(fromSV,
 								   toSV);
 	    addEdge(tr);
@@ -297,8 +291,8 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
-	    MElementImport eo = (MElementImport) pce.getNewValue();
-	    MModelElement me = eo.getModelElement();
+	    Object eo = /*(MElementImport)*/ pce.getNewValue();
+	    Object me = ModelFacade.getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
 		if (org.argouml.model.ModelFacade.isAState(me)) removeNode(me);
