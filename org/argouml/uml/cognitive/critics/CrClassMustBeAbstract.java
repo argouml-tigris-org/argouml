@@ -1,4 +1,5 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,12 +33,10 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.*;
 
-import ru.novosoft.uml.foundation.core.*;
-
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.critics.*;
-import org.argouml.model.uml.UmlHelper;
-import org.argouml.uml.*;
+
+import org.argouml.model.ModelFacade;
 
 /** A critic to detect whether a non abstract class  
  *  contains abstract operations. It checks whether a non abstract class
@@ -54,21 +53,16 @@ public class CrClassMustBeAbstract extends CrUML {
     setKnowledgeTypes(Critic.KT_SEMANTICS);
   }
 
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClass)) return NO_PROBLEM;
-    MClass cls = (MClass) dm;
-    if (cls.isAbstract()) return NO_PROBLEM;
-    //    Collection beh = getInheritedBehavioralFeatures(cls);
-    Collection beh = UmlHelper.getHelper().getCore().getOperationsInh(cls);
-    Iterator enum = beh.iterator();
-    while (enum.hasNext()) {
-      MBehavioralFeature bf = (MBehavioralFeature) enum.next();
-      if (bf instanceof MOperation) {
-          if (((MOperation)bf).isAbstract()) return PROBLEM_FOUND;
-      }
+    public boolean predicate2(Object dm, Designer dsgr) {
+	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
+	if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
+	
+	Iterator enum = ModelFacade.getOperationsInh(dm);
+	while (enum.hasNext()) {
+	    if (ModelFacade.isAbstract(enum.next())) return PROBLEM_FOUND;
+	}
+	return NO_PROBLEM;
     }
-    return NO_PROBLEM;
-  }
 
 } /* end class CrClassMustBeAbstract.java */
 

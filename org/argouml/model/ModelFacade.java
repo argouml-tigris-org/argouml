@@ -53,6 +53,7 @@ import org.argouml.model.uml.foundation.core.*;
  * 
  * <p>Signature for all recognizers in this Facade:
  * public static boolean isA<TYPE>(Object handle)
+ * public static boolean is<PROPERTY>(Object handle)
  *
  * <p>Signature for all getters in this Facade:
  * public static Object get<TYPE>(Object handle) - 1..1
@@ -69,6 +70,29 @@ public class ModelFacade {
     }
 
     // Recognizer methods for the UML model (in alphabetic order)
+    /** Recognizer for abstract classes and operations.
+     *
+     * @param handle candidate
+     * @returns true if handle is abstract.
+     */
+    public static boolean isAbstract(Object handle) {
+	if (handle instanceof MOperation)
+	    return ((MOperation) handle).isAbstract();
+	if (handle instanceof MGeneralizableElement)
+	    return ((MGeneralizableElement) handle).isAbstract();
+	// ...
+	return false;
+    }
+
+    /** Recognizer for Class
+     *
+     * @param handle candidate
+     * @returns true if handle is a Class
+     */
+    public static boolean isAClass(Object handle) {
+	return handle instanceof MClass;
+    }
+
     /** Recognizer for Classifier
      *
      * @param handle candidate
@@ -95,14 +119,31 @@ public class ModelFacade {
      * else than a Classifier, an empty iterator is returned.
      *
      * @param handle classifier to examine.
-     * @return iterator with structural features.
+     * @return iterator with attributes.
      */
     public static Iterator getAttributes(Object handle) {
 	if (!(handle instanceof MClassifier)) return emptyIterator();
 
 	MClassifier c = (MClassifier) handle;
 
+	// TODO: We are converting back and forth between collections and
+	// iterators. I (Linus) prefer iterators.
 	return CoreHelper.getHelper().getAttributes(c).iterator();
+    }
+
+    /** The list of Operations of this classifier and all inherited.
+     *
+     * @param handle classifier to examine.
+     * @return iterator with operations.
+     */
+    public static Iterator getOperationsInh(Object handle) {
+	if (!(handle instanceof MClassifier)) return emptyIterator();
+
+	MClassifier c = (MClassifier) handle;
+
+	// TODO: We are converting back and forth between collections and
+	// iterators. I (Linus) prefer iterators.
+	return CoreHelper.getHelper().getOperationsInh(c).iterator();
     }
 
     // Common getters
