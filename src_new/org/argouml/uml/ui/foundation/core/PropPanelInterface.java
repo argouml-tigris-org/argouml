@@ -73,12 +73,12 @@ public class PropPanelInterface extends PropPanelClassifier {
     addCaption(Argo.localize("UMLMenu", "label.associations"),0,1,0.3);
     addField(connectScroll,0,1,0.3);
 
-    addCaption(Argo.localize("UMLMenu", "label.implements"),1,1,0.4);
-    JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
-    implementations.setForeground(Color.blue);
-    implementations.setVisibleRowCount(1);
-    implementations.setFont(smallFont);
-    addField(new JScrollPane(implementations),1,1,0.4);
+    //addCaption(Argo.localize("UMLMenu", "label.implements"),1,1,0.4);
+    //JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
+    //implementations.setForeground(Color.blue);
+    //implementations.setVisibleRowCount(1);
+    //implementations.setFont(smallFont);
+    // addField(new JScrollPane(implementations),1,1,0.4);
 
     addCaption("Specializations:",2,1,0.3);
     addField(derivedScroll,2,1,0.3);
