@@ -41,7 +41,7 @@ principally be avoided.</P>
 
 <H3>1. Be independent of development process methodologies</H3>
 
-Each development team follows their own development process. It might be oriented
+<P>Each development team follows their own development process. It might be oriented
 on one of the well known (RUP, Waterfall, XP), but it need not. The ArgoUML tool
 allows to choose the process freely. E.g., we should not assume that modeling
 happens before coding. Sometimes developers concentrate on coding only and are
@@ -104,7 +104,46 @@ makes it more simple.</P>
 <H2>Three subprojects</H2>
 <!----------------------->
 
-</H3>1. Refactoring of existing CG/RE</H3>
+<P>ArgoUML 0.10.1 already is capable of both reading and writing Java source code.
+Of course, it also reads and writes UML models; Novosoft's NSUML 0.4.19 provides
+the internal representation of the model. It is the technology, that makes
+ArgoUML 'understand' UML. On the other hand, the technology for 'understanding'
+Java source code is a parser generated with Antlr 2.7.1 from a Java grammar. The
+parser identifies all Java language constructs from the overall structure down to
+the atomic expressions. As a consequence, this enables us to build all desired
+features and implement the above presented vision.</P>
+
+<P>Next we will identify a few subprojects that will build upon that technology.
+The criterions for them is both a useful functionality in the sense of our vision
+as well as beeing helpful (reusable) in the other subprojects. In fact, they are
+meant to form a roadmap for the specification and implementation of the target
+language support in ArgoUML. We'll concentrate on Java as the target language,
+without forgetting to be easily applicable to other languages.
+
+<H3>1. Refactoring of existing CG/RE</H3>
+
+<P>In ArgoUML 0.10.1 exist two parsers that solve different tasks. One is for RE:
+it identifies the code pieces that need to be represented in the model (e.g.
+classes, operations, generalizations), collects relevant data and then calls
+appropriate model manipulating methods (e.g. addOperation(...), passing the method
+body). After a single pass of a source code file, all model elements for the
+static structure model are generated or, if existed before, updated. (An
+exception are associations, which needed a second path for some algorithmical
+reasons.) The other Java parser resides in CG, where it collects all pieces of
+code that can be associated with a model element, in order to replace it by code
+generated from the model. These two Java parsers need to be merged into one, that
+is capable of solving both tasks, and even more that is needed.</P>
+
+<P>Another tasks is to reorganize the implementation of the existing CG/RE
+functionality, such that subtasks are done by separate components, and such that
+extensibility and maintainability is optimized. This is important for supporting
+target languages other than Java. Also, there is need for a sophisticated 'glue'
+between those components, in the sense, that these components are optional,
+resulting in a useful behaviour for any combination of existing/nonexisting
+components. Of course, these components will be ArgoUML modules.</P>
+
+<P>...
+</P>
 
 <H3>2. Model Code Synchronizer</H3>
 
