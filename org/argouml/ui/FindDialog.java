@@ -51,30 +51,13 @@ import javax.swing.border.EtchedBorder;
 
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.cognitive.ChildGenFind;
 import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateStringMatch;
 import org.tigris.gef.util.PredicateType;
 
-import ru.novosoft.uml.behavior.common_behavior.MInstance;
-import ru.novosoft.uml.behavior.common_behavior.MLink;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.model_management.MPackage;
 
 /** this one of the few classes in Argo that is
  * self running.
@@ -314,27 +297,26 @@ public class FindDialog extends JDialog
     public void initTypes() {
         _type.addItem(PredicateMType.create());
 
-        _type.addItem(PredicateMType.create(MClass.class));
-        _type.addItem(PredicateMType.create(MInterface.class));
-        _type.addItem(PredicateMType.create(MActor.class));
-        _type.addItem(PredicateMType.create(MAssociation.class));
-        _type.addItem(PredicateMType.create(MAttribute.class));
-        _type.addItem(PredicateMType.create(MClassifier.class));
-        _type.addItem(PredicateMType.create(MCompositeState.class));
-        _type.addItem(PredicateMType.create(MDependency.class));
-        _type.addItem(PredicateMType.create(MGeneralization.class));
-        _type.addItem(PredicateMType.create(MInstance.class));
-        _type.addItem(PredicateMType.create(MInterface.class));
-        _type.addItem(PredicateMType.create(MLink.class));
-        _type.addItem(PredicateMType.create(MClass.class));
-        _type.addItem(PredicateMType.create(MPackage.class));
-        _type.addItem(PredicateMType.create(MOperation.class));
-        _type.addItem(PredicateMType.create(MPseudostate.class));
-        //    _type.addItem(PredicateMType.create(Realization.class));
-        _type.addItem(PredicateMType.create(MState.class));
-        _type.addItem(PredicateMType.create(MStateVertex.class));
-        _type.addItem(PredicateMType.create(MTransition.class));
-        _type.addItem(PredicateMType.create(MUseCase.class));
+        _type.addItem(PredicateMType.create(ModelFacade.CLASS));
+        _type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
+        _type.addItem(PredicateMType.create(ModelFacade.ACTOR));
+        _type.addItem(PredicateMType.create(ModelFacade.ASSOCIATION));
+        _type.addItem(PredicateMType.create(ModelFacade.ATTRIBUTE));
+        _type.addItem(PredicateMType.create(ModelFacade.CLASSIFIER));
+        _type.addItem(PredicateMType.create(ModelFacade.COMPOSITESTATE));
+        _type.addItem(PredicateMType.create(ModelFacade.DEPENDENCY));
+        _type.addItem(PredicateMType.create(ModelFacade.GENERALIZATION));
+        _type.addItem(PredicateMType.create(ModelFacade.INSTANCE));
+        _type.addItem(PredicateMType.create(ModelFacade.INTERFACE));
+        _type.addItem(PredicateMType.create(ModelFacade.LINK));
+        _type.addItem(PredicateMType.create(ModelFacade.CLASS));
+        _type.addItem(PredicateMType.create(ModelFacade.PACKAGE));
+        _type.addItem(PredicateMType.create(ModelFacade.OPERATION));
+        _type.addItem(PredicateMType.create(ModelFacade.PSEUDOSTATE));
+        _type.addItem(PredicateMType.create(ModelFacade.STATE));
+        _type.addItem(PredicateMType.create(ModelFacade.STATEVERTEX));
+        _type.addItem(PredicateMType.create(ModelFacade.TRANSITION));
+        _type.addItem(PredicateMType.create(ModelFacade.USE_CASE));
 
     }
 
@@ -487,24 +469,24 @@ class PredicateMType extends PredicateType
         return new PredicateMType(null, 0);
     }
 
-    public static PredicateType create(Class c0) {
+    public static PredicateType create(Object c0) {
         Class classes[] = new Class[1];
-        classes[0] = c0;
+        classes[0] = (Class)c0;
         return new PredicateMType(classes);
     }
 
-    public static PredicateType create(Class c0, Class c1) {
+    public static PredicateType create(Object c0, Object c1) {
         Class classes[] = new Class[2];
-        classes[0] = c0;
-        classes[1] = c1;
+        classes[0] = (Class)c0;
+        classes[1] = (Class)c1;
         return new PredicateMType(classes);
     }
 
-    public static PredicateType create(Class c0, Class c1, Class c2) {
+    public static PredicateType create(Object c0, Object c1, Object c2) {
         Class classes[] = new Class[3];
-        classes[0] = c0;
-        classes[1] = c1;
-        classes[2] = c2;
+        classes[0] = (Class)c0;
+        classes[1] = (Class)c1;
+        classes[2] = (Class)c2;
         return new PredicateMType(classes);
     }
 
