@@ -65,7 +65,9 @@ public class UMLMessagesInteractionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
     protected boolean isValid(MModelElement elem) {
-        return (elem instanceof MMessage && ((MMessage)elem).getInteraction() == getContainer().getTarget());
+        return (elem instanceof MMessage && 
+            (((MMessage)elem).getInteraction() == getContainer().getTarget()) ||
+                contains(elem));
     }
 
 }

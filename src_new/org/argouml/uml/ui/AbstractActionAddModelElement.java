@@ -100,6 +100,11 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      */
     protected abstract String getDialogTitle();
     
+    /**
+     * The action that has to be done by Argouml after the user clicks ok in the
+     * UMLAddDialog. 
+     * @param selected The choices the user has selected in the UMLAddDialog
+     */
     protected abstract void doIt(Vector selected);
 
     /**

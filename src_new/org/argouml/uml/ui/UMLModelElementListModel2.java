@@ -70,6 +70,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
+        System.out.println();
     }
 
     /**

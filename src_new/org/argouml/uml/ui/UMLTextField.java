@@ -162,7 +162,7 @@ public class UMLTextField
             if ((eventSource == null || eventSource == _target) && 
             	((event.getOldValue() == null && event.getNewValue() != null) ||
             	(event.getNewValue() == null && event.getOldValue() != null) ||
-            	(!event.getOldValue().equals(event.getNewValue())))) {
+            	(event.getOldValue()!= null && !event.getOldValue().equals(event.getNewValue())))) {
                 update();
                 // TextSetter textSetter = new TextSetter((String)event.getNewValue(), this);
 	            // SwingUtilities.invokeLater(textSetter);
