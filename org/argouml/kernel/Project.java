@@ -90,6 +90,7 @@ import org.argouml.uml.generator.GenerationPreferences;
 import org.argouml.util.ChangeRegistry;
 import org.argouml.util.SubInputStream;
 import org.argouml.util.Trash;
+import org.argouml.util.FileConstants;
 import org.argouml.xml.argo.ArgoParser;
 import org.argouml.xml.pgml.PGMLParser;
 import org.argouml.xml.xmi.XMIReader;
@@ -113,10 +114,6 @@ import ru.novosoft.uml.model_management.MModel;
 public class Project implements java.io.Serializable, TargetListener {
     ////////////////////////////////////////////////////////////////
     // constants
-    public static final String SEPARATOR = "/";
-    public final static String COMPRESSED_FILE_EXT = ".zargo";
-    public final static String UNCOMPRESSED_FILE_EXT = ".argo";
-    public final static String PROJECT_FILE_EXT = ".argo";
     public final static String TEMPLATES = "/org/argouml/templates/";
     public static String ARGO_TEE = "/org/argouml/xml/dtd/argo.tee";
     //public final static String EMPTY_PROJ = "EmptyProject" + FILE_EXT;
@@ -180,7 +177,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     public Project(URL url) {
         this();
-        _url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
+        _url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
         _saveRegistry = new UMLChangeRegistry();
 
     }
@@ -369,11 +366,13 @@ public class Project implements java.io.Serializable, TargetListener {
     public String getBaseName() {
         String n = getName();
 
-        if (n.endsWith(COMPRESSED_FILE_EXT)) {
-            return n.substring(0, n.length() - COMPRESSED_FILE_EXT.length());
+        if (n.endsWith(FileConstants.COMPRESSED_FILE_EXT)) {
+            return n.substring(0, n.length() - 
+                               FileConstants.COMPRESSED_FILE_EXT.length());
         }
-        if (n.endsWith(UNCOMPRESSED_FILE_EXT)) {
-            return n.substring(0, n.length() - UNCOMPRESSED_FILE_EXT.length());
+        if (n.endsWith(FileConstants.UNCOMPRESSED_FILE_EXT)) {
+            return n.substring(0, n.length() - 
+                               FileConstants.UNCOMPRESSED_FILE_EXT.length());
         }
         return n;
     }
@@ -402,7 +401,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     public void setURL(URL url) {
         if (url != null) {
-            url = Util.fixURLExtension(url, COMPRESSED_FILE_EXT);
+            url = Util.fixURLExtension(url, FileConstants.COMPRESSED_FILE_EXT);
         }
 
         cat.debug(
@@ -657,7 +656,8 @@ public class Project implements java.io.Serializable, TargetListener {
         BufferedWriter writer =
             new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-        ZipEntry zipEntry = new ZipEntry(getBaseName() + UNCOMPRESSED_FILE_EXT);
+        ZipEntry zipEntry = new ZipEntry(getBaseName() + 
+                                         FileConstants.UNCOMPRESSED_FILE_EXT);
         stream.putNextEntry(zipEntry);
         expander.expand(writer, this, "", "");
         writer.flush();
