@@ -24,86 +24,66 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.util.ConfigLoader;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
+public class PropPanelDependency extends PropPanelRelationship {
 
-public class PropPanelDependency extends PropPanelModelElement {
+    /**
+     * The scrollpane with the modelelement that is the supplier of this
+     * dependency
+     */
+    protected JScrollPane _supplierScroll;
+    /**
+     * The scrollpane with the modelelement that is the client of this
+     * dependency
+     */
+    protected JScrollPane _clientScroll;
 
+    /**
+     * 'default' constructor used if a modelelement is a child of dependency (or
+     * dependency itself) but does not have a proppanel of their own.
+     */
     public PropPanelDependency() {
-        super("Dependency",_dependencyIcon, 2);
-        
-        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MDependency.class};
-    	setNameEventListening(namesToWatch);
+        this("Dependency", ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MDependency.class;
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceComboBox);
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        add(LabelledLayout.getSeperator());
 
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
+        addField(Argo.localize("UMLMenu", "label.suppliers"), _supplierScroll);
+        addField(Argo.localize("UMLMenu", "label.clients"), _clientScroll);
 
-        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(namespaceComboBox,3,0,0);
-
-        addCaption("Suppliers:",0,1,0.5);
-        JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
-        suppliersList.setForeground(Color.blue);
-        suppliersList.setVisibleRowCount(1);
-        addField(new JScrollPane(suppliersList),0,1,0.5);
-
-        addCaption("Clients:",1,1,0.5);
-        JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
-        clientsList.setForeground(Color.blue);
-        clientsList.setVisibleRowCount(1);
-        addField(new JScrollPane(clientsList),1,1,0.5);
-
-
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _navBackIcon, Argo.localize("UMLMenu", "button.go-back"), "navigateBackAction", "isNavigateBackEnabled");
+        new PropPanelButton(this, buttonPanel, _navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"), "navigateForwardAction", "isNavigateForwardEnabled");
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-association"), "removeElement", null);
 
     }
+    
+    /**
+     * Constructor that should be used by subclasses to initialize the
+     * attributes a dependency has.
+     * @see org.argouml.uml.ui.PropPanel#PropPanel(String, Orientation)
+     */
+    protected PropPanelDependency(String name, Orientation orientation) {
+        super(name, orientation);
+        JList supplierList = new UMLLinkedList(new UMLDependencySupplierListModel(), true);
+        _supplierScroll = new JScrollPane(supplierList);
 
-    public Collection getSuppliers() {
-        Collection suppliers = null;
-        Object target = getTarget();
-        if(target instanceof MDependency) {
-            suppliers = ((MDependency) target).getSuppliers();
-        }
-        return suppliers;
+        JList clientList = new UMLLinkedList(new UMLDependencyClientListModel(), true);
+        _clientScroll = new JScrollPane(clientList);
     }
 
-    public void setSuppliers(Collection suppliers) {
-        Object target = getTarget();
-        if(target instanceof MDependency) {
-            ((MDependency) target).setSuppliers(suppliers);
-        }
-    }
-
-    public Collection getClients() {
-        Collection suppliers = null;
-        Object target = getTarget();
-        if(target instanceof MDependency) {
-            suppliers = ((MDependency) target).getClients();
-        }
-        return suppliers;
-    }
-
-    public void setClients(Collection suppliers) {
-        Object target = getTarget();
-        if(target instanceof MDependency) {
-            ((MDependency) target).setClients(suppliers);
-        }
-    }
 
 } /* end class PropPanelDependency */
-

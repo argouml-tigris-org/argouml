@@ -140,9 +140,13 @@ abstract public class PropPanelModelElement extends PropPanel {
         initialize();
     }
     
+    public PropPanelModelElement(String name, Orientation orientation) {
+        super(name, orientation);
+        initialize();
+    }
+    
     public PropPanelModelElement(String name, ImageIcon icon, int columns) {
         super(name,icon,columns);
-        Class mclass = MModelElement.class;
         initialize();
     }
     

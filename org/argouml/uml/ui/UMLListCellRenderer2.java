@@ -84,6 +84,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
                 Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
                 if (icon != null)
                     label.setIcon(icon);
+            } else {
+                // hack to make sure that the right hight is applied when no icon is used.
+                label = (JLabel) super.getListCellRendererComponent(list, name, index, isSelected, cellHasFocus);
             }
 
         }
