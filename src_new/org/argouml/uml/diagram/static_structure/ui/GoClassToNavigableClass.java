@@ -82,7 +82,7 @@ public class GoClassToNavigableClass extends AbstractGoRule {
       if (!otherEnd.isNavigable()) continue;
       if (res.contains(otherEnd.getType())) continue;
       res.addElement(otherEnd.getType());
-      // needs-more-work: handle n-way Associations
+      // TODO: handle n-way Associations
     }
     return res;
   }

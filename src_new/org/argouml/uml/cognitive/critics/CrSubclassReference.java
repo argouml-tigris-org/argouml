@@ -86,7 +86,7 @@ public class CrSubclassReference extends CrUML {
     while (descendEnum.hasMoreElements())
       descendants.addElement(descendEnum.nextElement());
 
-    //needs-more-work: GenNavigableClasses?
+    //TODO: GenNavigableClasses?
     int nAsc = asc.size();
     VectorSet offs = null;
     for (Iterator iter = asc.iterator(); iter.hasNext();) {

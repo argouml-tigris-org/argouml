@@ -223,7 +223,7 @@ public class Init {
       java.lang.Class edgeCls           = FigEdgeModelElement.class;
 
 
-      // needs-more-work: Agency should allow registration by interface
+      // TODO: Agency should allow registration by interface
       // useful for MAssociation.
 
       Agency.register(crAssocNameConflict, namespaceCls);
@@ -232,7 +232,7 @@ public class Init {
       Agency.register(crCircularAssocClass, assocClassCls);
       Agency.register(crCircularInheritance, genElementCls);
       Agency.register(crCircularComposition, classCls);
-      Agency.register(crClassMustBeAbstract, classCls); //needs-more-work
+      Agency.register(crClassMustBeAbstract, classCls); //TODO
       Agency.register(crCrossNamespaceAssoc, assocCls); // Jeremy Bennett fix
       Agency.register(crDupParamName, operCls);
       Agency.register(crDupRoleNames, assocCls);  // Jeremy Bennett fix
@@ -256,7 +256,7 @@ public class Init {
       Agency.register(clsNaming, actorCls);
       Agency.register(clsNaming, useCaseCls);
 
-      // needs-more-work: should be just CrMissingName with a
+      // TODO: should be just CrMissingName with a
       // customized description
       Agency.register(crMissingClassName, modelCls);
       Agency.register(crMissingAttrName, attrCls);

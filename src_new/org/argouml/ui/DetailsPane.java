@@ -143,7 +143,7 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 
   public JTabbedPane getTabs() { return _tabs; }
 
-    // needs-more-work: ToDoItem
+    // TODO: ToDoItem
     public boolean setToDoItem(Object item) {
         _item = item;
         for (int i = 0; i < _tabPanels.size(); i++) {
@@ -338,14 +338,14 @@ implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
 
   /** called when the user clicks once on a tab. */
   public void mySingleClick(int tab) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("single: " + _tabs.getComponentAt(tab).toString());
   }
 
   /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("double: " + _tabs.getComponentAt(tab).toString());
     JPanel t = (JPanel) _tabPanels.elementAt(tab);

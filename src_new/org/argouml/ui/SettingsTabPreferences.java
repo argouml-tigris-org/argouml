@@ -130,7 +130,7 @@ implements SettingsTabPanel {
     public String getModuleName() { return "SettingsTabPreferences"; }
     public String getModuleDescription() { return "Settings Tab for Preferences"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.VERSION; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
     public String getModuleKey() { return "module.settings.preferences"; }
 
     public String getTabKey() { return "tab.preferences"; }

@@ -34,7 +34,7 @@ import ru.novosoft.uml.model_management.*;
 
 /** Defines a checklist to help designers design better attributes.
  *  Basically, prompts them to think about various aspects of the
- *  design. Needs-More-Work: the checklist items are categorized, but
+ *  design. TODO: the checklist items are categorized, but
  *  those categories are not shown yet in the user interface. 
  *  @deprecated Now created by loading strings from 
  *     UMLCognitiveResourceBundle into a generic UMLChecklist instance

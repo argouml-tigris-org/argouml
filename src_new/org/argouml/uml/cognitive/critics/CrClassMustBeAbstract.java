@@ -61,7 +61,7 @@ public class CrClassMustBeAbstract extends CrUML {
     Iterator enum = beh.iterator();
     while (enum.hasNext()) {
       MBehavioralFeature bf = (MBehavioralFeature) enum.next();
-      //needs-more-work: abstract methods are not part of UML, only java
+      //TODO: abstract methods are not part of UML, only java
       //if (bf.getIsAbstract()) return PROBLEM_FOUND;
     }
     return NO_PROBLEM;

@@ -676,7 +676,7 @@ class ColumnExtends extends ColumnDescriptor {
   public void setValueFor(Object target, Object value) {  }  
   }*/ /* end class ColumnImplements */
 
-// needs-more-work: states and use cases!
+// TODO: states and use cases!
 
 class ColumnEntry extends ColumnDescriptor {
 	ColumnEntry() {

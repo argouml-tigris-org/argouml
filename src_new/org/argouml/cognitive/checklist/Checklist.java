@@ -98,7 +98,7 @@ public class Checklist implements java.io.Serializable {
   
   /** Sort the items by priority.
    *
-   *  Needs-More-Work: not done yet.  It has been pointed out that
+   *  TODO: not done yet.  It has been pointed out that
    *  sorting and priorities will probably be pretty arbitrary and hard
    *  to match with the Designer's (tacit) feelings about the
    *  importance of various items.  We are thinking about a

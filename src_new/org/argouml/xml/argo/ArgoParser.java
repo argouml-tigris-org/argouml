@@ -66,7 +66,7 @@ public class ArgoParser extends SAXParserBase {
     ////////////////////////////////////////////////////////////////
     // main parsing methods
 
-    // needs-more-work: should be able to merge an existing project into
+    // TODO: should be able to merge an existing project into
     // the current one.
 
     public synchronized void readProject(URL url) throws IOException {

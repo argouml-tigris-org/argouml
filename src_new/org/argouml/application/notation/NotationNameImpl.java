@@ -88,7 +88,7 @@ implements NotationName, ArgoModuleEventListener {
      *  in a combo box or other such visual location.
      */
     public String getTitle() {
-        // needs-more-work:  Currently this does not
+        // TODO:  Currently this does not
 	//                   differentiate from the configuration
 	//                   value.
         return getNotationNameString(_name, _version);

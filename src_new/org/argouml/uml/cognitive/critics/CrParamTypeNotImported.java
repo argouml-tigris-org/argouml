@@ -50,7 +50,7 @@ public class CrParamTypeNotImported extends CrUML {
 
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MBehavioralFeature)) return NO_PROBLEM;
-    // needs-more-work
+    // TODO
     return NO_PROBLEM;
   }
 

@@ -36,7 +36,7 @@ public class TablePanelUMLUseCaseDiagram extends TablePanel {
     super("UMLStateDiagram");    
   }
 
-  //needs-more-work: make pseudostate names read only
+  //TODO: make pseudostate names read only
   
   public void initTableModels() {
     _tableModels.addElement(new TableModelActorByProps());

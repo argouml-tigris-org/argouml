@@ -50,7 +50,7 @@ public class OperKeyword implements java.io.Serializable {
   public static OperKeyword KeywordFor(MOperation op) {
     MScopeKind sk = op.getOwnerScope();
     MCallConcurrencyKind ck = op.getConcurrency();
-    // needs-more-work final?
+    // TODO final?
     if (MCallConcurrencyKind.CONCURRENT.equals(ck)) {
       if (MScopeKind.CLASSIFIER.equals(ck)) return STATIC;
       return NONE;
@@ -81,10 +81,10 @@ public class OperKeyword implements java.io.Serializable {
     if (this == STATIC || this == STATFIN || this == STSYNC ||
 	this == SFSYNC)
       sk = MScopeKind.CLASSIFIER;
-      //needs-more-work: final
+      //TODO: final
       
       target.setConcurrency(ck);
       target.setOwnerScope(sk);
-      // needs-more-work: final
+      // TODO: final
   }
 } /* end class OperKeyword */

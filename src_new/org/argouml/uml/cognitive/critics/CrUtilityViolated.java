@@ -66,7 +66,7 @@ public class CrUtilityViolated extends CrUML {
       if (MScopeKind.INSTANCE.equals(sk))
 	return PROBLEM_FOUND;
     }
-    //needs-more-work?: don't count static or constants?
+    //TODO?: don't count static or constants?
     return NO_PROBLEM;
   }
 

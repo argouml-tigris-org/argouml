@@ -56,7 +56,7 @@ public class CrNoOperations extends CrUML {
     if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
     //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
-    //needs-more-work: different critic or special message for classes
+    //TODO: different critic or special message for classes
     //that inherit all ops but define none of their own.
 	
     Collection beh = getInheritedBehavioralFeatures(cls,0);
@@ -71,7 +71,7 @@ public class CrNoOperations extends CrUML {
       MScopeKind sk = bf.getOwnerScope();
       if (MScopeKind.INSTANCE.equals(sk)) return NO_PROBLEM;
     }
-    //needs-more-work?: don't count static or constants?
+    //TODO?: don't count static or constants?
     return PROBLEM_FOUND;
   }
 

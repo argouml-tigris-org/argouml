@@ -52,7 +52,7 @@ public class FigLink extends FigEdgeModelElement {
     setOwner(edge);
   }
 
-  // needs-more-work: should edit something...
+  // TODO: should edit something...
   protected boolean canEdit(Fig f) { return false; }
 
 

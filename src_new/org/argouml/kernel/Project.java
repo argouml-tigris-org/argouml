@@ -109,7 +109,7 @@ public class Project implements java.io.Serializable {
     //public String _pathname = "";
     //public String _filename = UNTITLED_FILE + FILE_EXT;
 
-    //needs-more-work should just be the directory to write
+    //TODO should just be the directory to write
     private URL _url = null;
     protected ChangeRegistry _saveRegistry;
 
@@ -210,7 +210,7 @@ public class Project implements java.io.Serializable {
      * an exception or by having the ArgoParser.SINGLETON.getLastLoadStatus()
      * set to not true.
      * <P>
-     * Needs-more-work: This method NEEDS a refactoring.
+     * TODO: This method NEEDS a refactoring.
      */
     public static Project loadProject(URL url) throws IOException, Exception {
         Project p = null;
@@ -428,7 +428,7 @@ public class Project implements java.io.Serializable {
 
     ////////////////////////////////////////////////////////////////
     // accessors
-    // needs-more-work
+    // TODO
 
     /**
      * Added Eugenio's patches to load 0.8.1 projects.
@@ -446,7 +446,7 @@ public class Project implements java.io.Serializable {
     }
 
     public String getName() {
-        // needs-more-work: maybe separate name
+        // TODO: maybe separate name
         if (_url == null) return UNTITLED_FILE;
         String name = _url.getFile();
         int i = name.lastIndexOf('/');
@@ -733,7 +733,7 @@ public class Project implements java.io.Serializable {
             e.printStackTrace();
         }
     
-        //needs-more-work: in future allow independent saving
+        //TODO: in future allow independent saving
         writer.close();
         // zos.close();
     
@@ -792,7 +792,7 @@ public class Project implements java.io.Serializable {
     public Hashtable getDefinedTypes() { return _definedTypes; }
     public void setDefinedTypes(Hashtable h) { _definedTypes = h; }
     public void defineType(MClassifier cls) {
-        //needs-more-work: should take namespaces into account!
+        //TODO: should take namespaces into account!
         // this is a hack because names are not always being assigned under argo-nsuml branch - JH
         String name = cls.getName();
         if (name == null) name = "anon";
@@ -918,20 +918,20 @@ public class Project implements java.io.Serializable {
     public void preSave() {
         for (int i = 0; i < _diagrams.size(); i++)
             ((Diagram)_diagrams.elementAt(i)).preSave();
-        // needs-more-work: is preSave needed for models?
+        // TODO: is preSave needed for models?
     }
 
     public void postSave() {
         for (int i = 0; i < _diagrams.size(); i++)
             ((Diagram)_diagrams.elementAt(i)).postSave();
-        // needs-more-work: is postSave needed for models?
+        // TODO: is postSave needed for models?
         setNeedsSave(false);
     }
 
     public void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
             ((Diagram)_diagrams.elementAt(i)).postLoad();
-        // needs-more-work: is postLoad needed for models?
+        // TODO: is postLoad needed for models?
         setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
         _UUIDRefs = null;
@@ -1006,7 +1006,7 @@ public class Project implements java.io.Serializable {
     }
 
     public void moveFromTrash(Object obj) {
-        cat.debug("needs-more-work: not restoring " + obj);
+        cat.debug("TODO: not restoring " + obj);
     }
 
     public boolean isInTrash(Object dm) {

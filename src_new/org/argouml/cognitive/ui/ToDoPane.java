@@ -200,7 +200,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
    *  otherwise. */
   public void valueChanged(TreeSelectionEvent e) {
     cat.debug("ToDoPane valueChanged");
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     Object sel = getSelectedObject();
     ProjectBrowser.TheInstance.setToDoItem(sel);
@@ -227,14 +227,14 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
 
 
 
-  // needs-more-work: what should the difference be between a single
+  // TODO: what should the difference be between a single
   // and double click?
 
   /** called when the user clicks once on an item in the tree. */
   public void mySingleClick(int row, TreePath path) {
     _clicksInToDoPane++;
     if (getSelectedObject() == null) return;
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("1: " + getSelectedObject().toString());
   }
@@ -250,7 +250,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
       ProjectBrowser.TheInstance.jumpToDiagramShowing(offs);
     }
 
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("2: " + getSelectedObject().toString());
   }

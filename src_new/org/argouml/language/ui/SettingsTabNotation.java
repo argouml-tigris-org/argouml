@@ -192,7 +192,7 @@ implements SettingsTabPanel {
   public String getModuleName() { return "SettingsTabNotation"; }
   public String getModuleDescription() { return "Settings Tab for Notation"; }
   public String getModuleAuthor() { return "ArgoUML Core"; }
-  public String getModuleVersion() { return ArgoVersion.VERSION; }
+  public String getModuleVersion() { return ArgoVersion.getVersion(); }
   public String getModuleKey() { return "module.settings.notation"; }
   public String getTabKey() { return "tab.notation"; }
   public String getTabResourceBundleKey() { return "CoreSettings"; }

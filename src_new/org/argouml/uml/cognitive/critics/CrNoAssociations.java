@@ -57,7 +57,7 @@ public class CrNoAssociations extends CrUML {
     
     //if (cls.containsStereotype(MStereotype.UTILITY)) return NO_PROBLEM;
     // stereotype <<record>>?
-    //needs-more-work: different critic or special message for classes
+    //TODO: different critic or special message for classes
     //that inherit all ops but define none of their own.
 
     Collection asc = getInheritedAssociationEnds(cls,0);

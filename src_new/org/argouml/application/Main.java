@@ -72,7 +72,7 @@ public class Main {
 
         // Synchronize the startup directory
         //
-        // needs-more-work:  This is a temporary hack.  The real change must
+        // TODO:  This is a temporary hack.  The real change must
         //                   be to never refer to Globals.getLastDirectory
         //                   or Globals.setLastDirectory within Argo, but
         //                   use Argo.getDirectory and Argo.setDirectory.

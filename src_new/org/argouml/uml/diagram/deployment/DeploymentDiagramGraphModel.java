@@ -137,7 +137,7 @@ implements VetoableChangeListener  {
 
   /** Return all edges going from given port */
   public Vector getOutEdges(Object port) {
-    return new Vector(); // needs-more-work?
+    return new Vector(); // TODO?
   }
 
 
@@ -150,7 +150,7 @@ implements VetoableChangeListener  {
        return CommonBehaviorHelper.getHelper().getSource((MLink)edge);
     }
     
-    cat.debug("needs-more-work getSourcePort");
+    cat.debug("TODO getSourcePort");
 
     return null;
   }
@@ -165,7 +165,7 @@ implements VetoableChangeListener  {
        return CommonBehaviorHelper.getHelper().getDestination((MLink)edge);
     }
     
-    cat.debug("needs-more-work getDestPort");
+    cat.debug("TODO getDestPort");
 
     return null;
   }
@@ -216,7 +216,7 @@ if(_edges.contains(edge)) return false;
     cat.debug("adding class node!!");
     if (!canAddNode(node)) return;
     _nodes.addElement(node);
-    // needs-more-work: assumes public, user pref for default visibility?
+    // TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
 	if (node instanceof MModelElement &&
 		((MModelElement)node).getNamespace() == null) {
@@ -230,7 +230,7 @@ if(_edges.contains(edge)) return false;
     cat.debug("adding class edge!!!!!!");
     if (!canAddEdge(edge)) return;
     _edges.addElement(edge);
-    // needs-more-work: assumes public
+    // TODO: assumes public
       if (edge instanceof MModelElement) {
 	_model.addOwnedElement((MModelElement) edge);
       }

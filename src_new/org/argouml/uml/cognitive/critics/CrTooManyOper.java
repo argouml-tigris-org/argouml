@@ -60,7 +60,7 @@ public class CrTooManyOper extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MClassifier)) return NO_PROBLEM;
     MClassifier cls = (MClassifier) dm;
-    // needs-more-work: consider inherited attributes?
+    // TODO: consider inherited attributes?
     int threshold = ((Integer)getArg(THRESHOLD)).intValue();
     Collection str = cls.getFeatures();
     if (str == null) return NO_PROBLEM;

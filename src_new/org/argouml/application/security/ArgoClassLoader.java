@@ -42,7 +42,7 @@ import java.io.DataInputStream;
 /** Argo custom classloader.
  *
  *  Much of the code that this is based upon is taken from the
- *  O'reilly book <cite>needs-more-work</cite>.
+ *  O'reilly book <cite>TODO</cite>.
  *
  *  @author Thierry Lach
  *  @since 0.9.4

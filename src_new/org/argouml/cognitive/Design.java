@@ -97,7 +97,7 @@ public class Design extends DesignMaterial {
   /** Critique a Design by critiquing each contained
    * DesignMaterial. <p>
    *
-   * Needs-More-Work: in the future Argo will use less tree walking
+   * TODO: in the future Argo will use less tree walking
    * and more trigger-driven critiquing. I.e., critiquing will be done
    * in response to specific manipulations in the editor.  */
   public void critique(Designer d) {

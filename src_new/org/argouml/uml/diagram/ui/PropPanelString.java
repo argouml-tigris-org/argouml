@@ -79,7 +79,7 @@ public class PropPanelString extends TabSpawnable implements TabModelTarget, Pro
 
     _nameField.getDocument().addDocumentListener(this);
     _nameField.setEditable(true);
-    // needs-more-work: set font?
+    // TODO: set font?
 
   }
 

@@ -120,7 +120,7 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     //   this needs to be overriden if the derived class
     //      wants to resort based on the name change
     public void propertySet(final MElementEvent event) {
-        //needs-more-work: update of listmodel is not correct!!
+        //TODO: update of listmodel is not correct!!
         //example: propertySet-event of classifier.setFeature(features)
 
         Object source = event.getSource();

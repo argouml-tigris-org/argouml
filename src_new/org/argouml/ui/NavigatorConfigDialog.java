@@ -234,7 +234,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
     _addRuleButton.setEnabled(false);
     _removeRuleButton.setEnabled(false);
 
-    // needs-more-work: should set up CellEditor for _persList to
+    // TODO: should set up CellEditor for _persList to
     // allow renaming.  Will this force me to use a JTable instead?
   }
 
@@ -296,7 +296,7 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   /**
    * Create a new perspective, add to the list.
    *
-   * needs-more-work: Not a robust naming scheme since duplicates
+   * TODO: Not a robust naming scheme since duplicates
    * are still possible; initPersPanel() mentions the need to allow editing.
    */
   public void doNewPers() {

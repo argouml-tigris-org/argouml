@@ -49,7 +49,7 @@ import org.argouml.cognitive.*;
  *  critics could produce feedback, but it would be more useful if
  *  only the first one did.  */
 
-// needs-more-work: maybe should stop at first, or find highest priority.
+// TODO: maybe should stop at first, or find highest priority.
 
 public class CompoundCritic extends Critic {
 

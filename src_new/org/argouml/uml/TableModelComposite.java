@@ -139,7 +139,7 @@ implements TableModelTarget {
     }
 
     if (_allowAddition && row >= _rowObjects.size()) {
-      //@ needs-more-work
+      //@ TODO
       //_rowObjects.addElement(val);
       fireTableStructureChanged();
     }

@@ -133,12 +133,12 @@ implements TabToDoTarget, ActionListener, DocumentListener {
       _nextButton.setEnabled(w != null ? w.canGoNext() : false);
       _finishButton.setEnabled(w != null ? w.canFinish() : false);
       
-      // needs-more-work: URLS are all wrong and TinyHTMLViewer from 
+      // TODO: URLS are all wrong and TinyHTMLViewer from 
       // GEF is currently not capable of rendering our documentation
       _helpButton.setEnabled(false);
     }
     else {
-      //_description.setText("needs-more-work");
+      //_description.setText("TODO");
       return;
     }
   }
@@ -184,7 +184,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
     String urlString = item.getMoreInfoURL();
     TinyHTMLViewer viewer = new TinyHTMLViewer("http://www.argouml.org/documentation/");
     viewer.setVisible(true);
-    //needs-more-work: display critic/wizard help;
+    //TODO: display critic/wizard help;
   }
 
   protected void updateTabToDo() {

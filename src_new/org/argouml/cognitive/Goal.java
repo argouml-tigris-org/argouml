@@ -27,7 +27,7 @@ import org.argouml.application.api.*;
 
 public class Goal {
 
-  // needs-more-work: values
+  // TODO: values
 
   ////////////////////////////////////////////////////////////////
   // constants

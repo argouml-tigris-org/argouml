@@ -109,7 +109,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   private Vector _warmQueue = new Vector();
 
   private ChildGenerator _cg = new ChildGenDMElements();
-  //needs-more-work: theInstance()
+  //TODO: theInstance()
 
   private static Object _CritiquingRoot;
 
@@ -139,7 +139,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   /** Start a separate thread to continually select and execute
    *  critics that are relevant to this designer's work. */
   public void spawnCritiquer(Object root) {
-    /* needs-more-work really should be a separate class */
+    /* TODO really should be a separate class */
     _critiquer = new Thread(this, "CritiquingThread");
     _critiquer.setDaemon(true);
     _critiquer.setPriority(Thread.currentThread().getPriority() - 1);
@@ -212,7 +212,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
     }
   }
 
-  // needs-more-work: what about when objects are first created?
+  // TODO: what about when objects are first created?
   public synchronized void critiqueASAP(Object dm, String reason) {
     long rCode = Critic.reasonCodeFor(reason);
       if (!_userWorking) return;
@@ -277,7 +277,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
   public boolean getAutoCritique() { return _autoCritique; }
   public void setAutoCritique(boolean b) { _autoCritique = b; }
 
-  /// needs-more-work: change to percentage of CPU time!
+  /// TODO: change to percentage of CPU time!
 
   protected long _lastCritique = 0;
   public int getCritiquingInterval() {
@@ -454,7 +454,7 @@ implements Poster, Runnable, PropertyChangeListener, MElementListener, java.io.S
 
   /** Used to determine which ToDoItems are urgent. */
   public int disruptiveThreshold() {
-    // needs-more-work: check prefs
+    // TODO: check prefs
     return 9;
   }
 

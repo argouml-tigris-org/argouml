@@ -53,7 +53,7 @@ implements PluggablePropertyPanel {
     public String getModuleName() { return "PropPanelModel"; }
     public String getModuleDescription() { return "Property Panel for Model"; }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.VERSION; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
     public String getModuleKey() { return "module.propertypanel.model"; }
 
 } /* end class PropPanelModel */

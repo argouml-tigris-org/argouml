@@ -147,7 +147,7 @@ implements ActionListener, MouseListener {
     _elementName.addItem("*");
     _diagramName.addItem("*");
 
-    // needs-more-work: add recent patterns
+    // TODO: add recent patterns
     GridBagLayout gb = new GridBagLayout();
     _nameLocTab.setLayout(gb);
 

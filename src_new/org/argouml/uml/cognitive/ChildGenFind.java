@@ -78,7 +78,7 @@ public class ChildGenFind implements ChildGenerator {
 //       if (behavior != null) behavior.elements();
 //     }
 
-//     // needs-more-work: associationclasses fit both of the next 2 cases
+//     // TODO: associationclasses fit both of the next 2 cases
 
     if (o instanceof MClassifier) {
       MClassifier cls = (MClassifier) o;

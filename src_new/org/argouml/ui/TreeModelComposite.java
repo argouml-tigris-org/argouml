@@ -76,7 +76,7 @@ implements TreeModel, Cloneable {
   }
 
   public void removeSubTreeModel(TreeModel tm) {
-    // needs-more-work: check for dangling prereqs
+    // TODO: check for dangling prereqs
     _subTreeModels.removeElement(tm);
   }
   

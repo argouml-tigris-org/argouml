@@ -186,15 +186,15 @@ public class GenericArgoMenuBar extends JMenuBar
 	}
 
     public void moduleUnloaded(ArgoModuleEvent event) {
-        // needs-more-work:  Disable menu
+        // TODO:  Disable menu
     }
 
     public void moduleEnabled(ArgoModuleEvent event) {
-        // needs-more-work:  Enable menu
+        // TODO:  Enable menu
     }
 
     public void moduleDisabled(ArgoModuleEvent event) {
-        // needs-more-work:  Disable menu
+        // TODO:  Disable menu
     }
   
 
@@ -309,7 +309,7 @@ public class GenericArgoMenuBar extends JMenuBar
         
         _edit.addSeparator();
         
-        // needs-more-work: confusing name change
+        // TODO: confusing name change
         JMenuItem deleteItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(deleteItem,"RemoveFromDiagram",'R');
         setAccelerator(deleteItem,delKey);

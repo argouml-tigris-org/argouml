@@ -247,7 +247,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
 	      Object node = iter.next();
 
 	      if (node instanceof MClassifier) {
-		  // Needs-more-work:
+		  // TODO:
 		  // This will only work for languages that have each node
 		  // in a separate files (one or more).
 		  String fn = generator.GenerateFile((MClassifier) node, path);
@@ -324,7 +324,7 @@ class TableModelClassChecks extends AbstractTableModel {
 	  continue;
       
       for (int j = 0; j < getLanguagesCount(); j++) {
-	  // Needs-more-work:
+	  // TODO:
 	  // if (cls.isSupposedToBeGeneratedAsLanguage(_languages.index(j)))
 	  //     _checked[j].add(cls);
 	  // else

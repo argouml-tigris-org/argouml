@@ -1258,7 +1258,7 @@ nextProp:
   }
 
   // Refactoring: static to denote that it doesn't use any class members.
-  // Needs-more-work:
+  // TODO:
   // Idea to move this to MMUtil together with the same function from
   // org/argouml/uml/ui/UMLComboBoxEntry.java
   // org/argouml/uml/cognitive/critics/WizOperName.java
@@ -1303,7 +1303,7 @@ nextProp:
    * Finds a MStereotype named name either in the subtree of the model
    * rooted at root, or in the the ProfileJava model.
    *
-   * <p>needs-more-work: Should create the MStereotype under root if it
+   * <p>TODO: Should create the MStereotype under root if it
    * isn't found.
    *
    * @param root A tree of MModelElements to search.
@@ -1591,7 +1591,7 @@ nextProp:
     }
     String nameStr = st.nextToken();
 
-    // needs-more-work: wasteful
+    // TODO: wasteful
      me.setName(nameStr);
 
     int namePos = s.indexOf(nameStr);
@@ -1724,7 +1724,7 @@ nextProp:
   }
 
   public void parseStateBody(MState st, String s) {
-      //remove all old transitions; needs-more-work: this should be done better!!
+      //remove all old transitions; TODO: this should be done better!!
       st.setEntry(null);
       st.setExit(null);
 
@@ -1937,7 +1937,7 @@ nextProp:
 	bases.add(base);
     }
 
-// Needs-more-work: What to do about object name???
+// TODO: What to do about object name???
 //    if (name != null)
 //	;
 
@@ -2550,7 +2550,7 @@ addBases:
 	Vector ops = getOperation(role.getBases(), fname.trim(),
 		mes.getAction().getActualArguments().size());
 
-	// Needs-more-work: Should someone choose one, if there are more
+	// TODO: Should someone choose one, if there are more
 	// than one?
 	if (mes.getAction() instanceof MCallAction) {
 	    MCallAction a = (MCallAction) mes.getAction();
@@ -2561,7 +2561,7 @@ addBases:
 	}
     }
 
-    // Needs-more-work: Predecessors is not implemented, because it
+    // TODO: Predecessors is not implemented, because it
     // causes some problems that I've not found an easy way to handle yet,
     // d00mst. The specific problem is that the notation currently is
     // ambiguous on second message after a thread split.

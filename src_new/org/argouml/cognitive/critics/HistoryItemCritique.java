@@ -28,9 +28,9 @@ import java.util.*;
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 
-// needs-more-work: how can this possibly be persistent?
-// needs-more-work: provide accessors
-// needs-more-work: define subclasses for: modification, criticism
+// TODO: how can this possibly be persistent?
+// TODO: provide accessors
+// TODO: define subclasses for: modification, criticism
 
 public class HistoryItemCritique extends HistoryItem {
 

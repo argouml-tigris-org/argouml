@@ -44,7 +44,7 @@ public interface FileGenerator {
    */
 	public final static String FILE_SEPARATOR = System.getProperty("file.separator");
     /** Generates a file for this classifier.
-     * Needs-more-work:
+     * TODO:
      * This will only work for languages that have each node
      * in a separate files (one or more).
      * @returns filename

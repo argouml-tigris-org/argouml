@@ -80,7 +80,7 @@ public class GoClassToAssocdClass extends AbstractGoRule {
 	otherEnd = (MAssociationEnd) allEnds.elementAt(0);
       if (otherEnd != null && !res.contains(otherEnd.getType()))
 	res.addElement(otherEnd.getType());
-      // needs-more-work: handle n-way Associations
+      // TODO: handle n-way Associations
     }
     return res;
   }

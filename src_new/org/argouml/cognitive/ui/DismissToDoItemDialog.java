@@ -134,7 +134,7 @@ public class DismissToDoItemDialog extends JDialog implements ActionListener {
     }
     if (e.getSource() == _explainButton) {
       cat.debug("I can explain!");
-      //needs-more-work: make a new history item
+      //TODO: make a new history item
       ToDoList list = Designer.TheDesigner.getToDoList();
       list.explicitlyResolve(_target, _explaination.getText());
       setVisible(false);

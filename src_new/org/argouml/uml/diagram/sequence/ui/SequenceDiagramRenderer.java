@@ -53,7 +53,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
   public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
     if (node instanceof MObject) return new FigSeqObject(gm, node);
     if (node instanceof MStimulus) return new FigSeqStimulus(gm, node);
-    cat.debug("needs-more-work SequenceDiagramRenderer getFigNodeFor");
+    cat.debug("TODO SequenceDiagramRenderer getFigNodeFor");
     return null;
   }
 
@@ -82,7 +82,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       return mlFig;
     }
 
-    cat.debug("needs-more-work SequenceDiagramRenderer getFigEdgeFor");
+    cat.debug("TODO SequenceDiagramRenderer getFigEdgeFor");
     return null;
   }
 

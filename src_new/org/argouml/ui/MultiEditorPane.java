@@ -181,7 +181,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
       JGraph jg = ((TabDiagram)curTab).getJGraph();
       jg.selectByOwnerOrFig(o);
     }
-    //needs-more-work: handle tables
+    //TODO: handle tables
   }
 
   ////////////////////////////////////////////////////////////////
@@ -189,7 +189,7 @@ implements ChangeListener, MouseListener, QuadrantPanel {
 
   /** called when the user selects a tab, by clicking or otherwise. */
   public void stateChanged(ChangeEvent e) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     if (_lastTab != null) { _lastTab.setVisible(false); }
     _lastTab = _tabs.getSelectedComponent();
@@ -218,14 +218,14 @@ implements ChangeListener, MouseListener, QuadrantPanel {
 
   /** called when the user clicks once on a tab. */
   public void mySingleClick(int tab) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("single: " + _tabs.getComponentAt(tab).toString());
   }
 
   /** called when the user clicks twice on a tab. */
   public void myDoubleClick(int tab) {
-    //needs-more-work: should fire its own event and ProjectBrowser
+    //TODO: should fire its own event and ProjectBrowser
     //should register a listener
     cat.debug("double: " + _tabs.getComponentAt(tab).toString());
     JPanel t = (JPanel) _tabPanels.elementAt(tab);

@@ -61,7 +61,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
     setLayout(new BorderLayout());
     _jgraph = new JGraph();
     _jgraph.setDrawingSize((612-30) * 2, (792-55-20)*2);
-    // needs-more-work: should update to size of diagram contents
+    // TODO: should update to size of diagram contents
 
     Globals.setStatusBar(ProjectBrowser.TheInstance);
     //_toolBar = d.getToolBar();
@@ -98,7 +98,7 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
       _shouldBeEnabled = false;
       return;
     }
-    // needs-more-work
+    // TODO
     // 2002-07-26
     // Jaap Branderhorst
     // Cool now we assume that's an UMLDiagram

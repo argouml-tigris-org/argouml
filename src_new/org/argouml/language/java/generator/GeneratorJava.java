@@ -60,7 +60,7 @@ import org.argouml.uml.generator.*;
  * placeholder for future development, I expect it to be totally
  * replaced. */
 
-// needs-more-work: always check for null!!!
+// TODO: always check for null!!!
 
 public class GeneratorJava extends Generator
 implements PluggableNotation, FileGenerator {
@@ -151,7 +151,7 @@ implements PluggableNotation, FileGenerator {
 	  }
 
     //String pathname = path + filename;
-    // needs-more-work: package, project basepath, tagged values to configure
+    // TODO: package, project basepath, tagged values to configure
 	Argo.log.info("Generating (new) " + f.getPath());
     String header = SINGLETON.generateHeader (cls, pathname, packagePath);
     String src = SINGLETON.generate (cls);
@@ -179,7 +179,7 @@ implements PluggableNotation, FileGenerator {
                                 String pathname,
                                 String packagePath) {
     StringBuffer sb = new StringBuffer(80);
-    //needs-more-work: add user-defined copyright
+    //TODO: add user-defined copyright
     if (VERBOSE_DOCS) sb.append("// FILE: ").append(pathname.replace('\\','/')).append("\n\n");
     if (packagePath.length() > 0) sb.append("package ").append(packagePath).append(";\n");
     sb.append("import java.util.*;\n");
@@ -331,11 +331,11 @@ implements PluggableNotation, FileGenerator {
 
   public String generateParameter(MParameter param) {
     StringBuffer sb = new StringBuffer(20);
-    //needs-more-work: qualifiers (e.g., const)
-    //needs-more-work: stereotypes...
+    //TODO: qualifiers (e.g., const)
+    //TODO: stereotypes...
     sb.append(generateClassifierRef(param.getType())).append(' ');
     sb.append(generateName(param.getName()));
-    //needs-more-work: initial value
+    //TODO: initial value
     return sb.toString();
   }
 
@@ -605,7 +605,7 @@ implements PluggableNotation, FileGenerator {
         }
         
         // add operations
-        // needs-more-work: constructors
+        // TODO: constructors
         Collection behs = MMUtil.SINGLETON.getOperations(cls);
         // 
          // 2002-06-08
@@ -766,7 +766,7 @@ implements PluggableNotation, FileGenerator {
             }
 
             // add operations
-            // needs-more-work: constructors
+            // TODO: constructors
             Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
             // 
             // 2002-06-08
@@ -1165,7 +1165,7 @@ implements PluggableNotation, FileGenerator {
 
 
   public String generateAssociationFrom(MAssociation a, MAssociationEnd ae) {
-    // needs-more-work: does not handle n-ary associations
+    // TODO: does not handle n-ary associations
     StringBuffer sb = new StringBuffer(80);
 
     /*
@@ -1399,7 +1399,7 @@ implements PluggableNotation, FileGenerator {
 
   public static final String ANY_RANGE = "0..*";
   //public static final String ANY_RANGE = "*";
-  // needs-more-work: user preference between "*" and "0..*"
+  // TODO: user preference between "*" and "0..*"
 
   public String generateMultiplicityRange(MMultiplicityRange mr) {
     Integer lower = new Integer(mr.getLower());
@@ -1546,7 +1546,7 @@ implements PluggableNotation, FileGenerator {
         return "Java Notation and Code Generator";
     }
     public String getModuleAuthor() { return "ArgoUML Core"; }
-    public String getModuleVersion() { return ArgoVersion.VERSION; }
+    public String getModuleVersion() { return ArgoVersion.getVersion(); }
     public String getModuleKey() { return "module.language.java.generator"; }
 
 /**

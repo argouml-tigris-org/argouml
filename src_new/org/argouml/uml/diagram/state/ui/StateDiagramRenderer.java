@@ -111,7 +111,7 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
                 cat.warn("found a type not known");
             }
         }
-        cat.debug("needs-more-work StateDiagramRenderer getFigNodeFor");
+        cat.debug("TODO StateDiagramRenderer getFigNodeFor");
         return null;
     }
 
@@ -124,7 +124,7 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
       return trFig;
     }
 
-    cat.debug("needs-more-work StateDiagramRenderer getFigEdgeFor");
+    cat.debug("TODO StateDiagramRenderer getFigEdgeFor");
     return null;
   }
 

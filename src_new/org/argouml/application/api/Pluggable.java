@@ -55,7 +55,7 @@ public interface Pluggable extends ArgoModule {
 
     public static final String PLUGIN_PREFIX = "org.argouml.application.api.Pluggable";
     //
-    // needs-more-work:  jdk1.2.2 has problems with the following static
+    // TODO:  jdk1.2.2 has problems with the following static
     //                   declaration.  jdk1.3 seems to be ok.  
     //
     // public static final String PLUGIN_PREFIX = Pluggable.class.getName();
