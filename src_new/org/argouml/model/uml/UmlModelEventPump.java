@@ -82,6 +82,8 @@ public final class UmlModelEventPump implements MElementListener {
 
     private EventTreeDefinition _definition = new EventTreeDefinition();
 
+    private static final Logger LOG = Logger.getLogger(UmlModelEventPump.class);
+
     /**
      * Singleton access method
      * @return UmlModelEventPump
@@ -586,7 +588,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void listRoleItemSet(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
-            listeners[i].listRoleItemSet(e);
+	    try {
+		listeners[i].listRoleItemSet(e);
+	    } catch (Exception re) {
+		LOG.error("Listener " + listeners[i]
+			  + " threw an unhandled Exception", re);
+	    }
         }
     }
 
@@ -605,7 +612,12 @@ public final class UmlModelEventPump implements MElementListener {
             || !(e.getNewValue().equals(e.getOldValue()))) {
             MElementListener[] listeners = getListenerList(e);
             for (int i = 0; i < listeners.length; i++) {
-                listeners[i].propertySet(e);
+		try {
+		    listeners[i].propertySet(e);
+		} catch (Exception re) {
+		    LOG.error("Listener " + listeners[i]
+			      + " threw an unhandled Exception", re);
+		}
             }
         }
     }
@@ -616,7 +628,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void recovered(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
-            listeners[i].recovered(e);
+	    try {
+		listeners[i].recovered(e);
+	    } catch (Exception re) {
+		LOG.error("Listener " + listeners[i]
+			  + " threw an unhandled Exception", re);
+	    }
         }
     }
 
@@ -626,7 +643,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void removed(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
-            listeners[i].removed(e);
+	    try {
+		listeners[i].removed(e);
+	    } catch (Exception re) {
+		LOG.error("Listener " + listeners[i]
+			  + " threw an unhandled Exception", re);
+	    }
         }
     }
 
@@ -636,7 +658,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void roleAdded(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
-            listeners[i].roleAdded(e);
+	    try {
+		listeners[i].roleAdded(e);
+	    } catch (Exception re) {
+		LOG.error("Listener " + listeners[i]
+			  + " threw an unhandled Exception", re);
+	    }
         }
     }
 
@@ -646,7 +673,12 @@ public final class UmlModelEventPump implements MElementListener {
     public void roleRemoved(MElementEvent e) {
         MElementListener[] listeners = getListenerList(e);
         for (int i = 0; i < listeners.length; i++) {
-            listeners[i].roleRemoved(e);
+	    try {
+		listeners[i].roleRemoved(e);
+	    } catch (Exception re) {
+		LOG.error("Listener " + listeners[i]
+			  + " threw an unhandled Exception", re);
+	    }
         }
     }
 
