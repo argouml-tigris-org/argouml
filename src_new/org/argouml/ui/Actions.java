@@ -1944,7 +1944,8 @@ class ActionMultiplicity extends UMLAction {
   String str = "";
   MMultiplicity mult = null;
   public ActionMultiplicity(MMultiplicity m, String s) {
-    super(m.getLower() + ".." + m.getUpper(), NO_ICON);
+      //super(m.getLower() + ".." + m.getUpper(), NO_ICON);
+    super(m.toString(), NO_ICON);
     str = s;
     mult = m;
   }
