@@ -45,7 +45,7 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigText;
-import ru.novosoft.uml.MElementEvent;
+
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -229,7 +229,7 @@ public class FigMessage extends FigNodeModelElement {
  */
   protected void updateArrow() {
   	MMessage mes = (MMessage) getOwner();
-    if (mes == null) return;
+    if (mes == null || getLayer() == null) return;
     MClassifierRole sender = mes.getSender();
     MClassifierRole receiver = mes.getReceiver();
     Fig senderPort = getLayer().presentationFor(sender);
