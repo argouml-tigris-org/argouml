@@ -41,18 +41,22 @@ import org.argouml.ui.SpacerPanel;
  */
 
 public class WizStepConfirm extends WizStep {
-    JTextArea _instructions = new JTextArea();
+    private JTextArea instructions = new JTextArea();
 
+    /**
+     * The constructor.
+     * 
+     */
     public WizStepConfirm() {
-	_instructions.setEditable(false);
-	_instructions.setBorder(null);
-	_instructions.setBackground(_mainPanel.getBackground());
-	_instructions.setWrapStyleWord(true);
+	instructions.setEditable(false);
+	instructions.setBorder(null);
+	instructions.setBackground(getMainPanel().getBackground());
+	instructions.setWrapStyleWord(true);
 
-	_mainPanel.setBorder(new EtchedBorder());
+	getMainPanel().setBorder(new EtchedBorder());
 
 	GridBagLayout gb = new GridBagLayout();
-	_mainPanel.setLayout(gb);
+	getMainPanel().setLayout(gb);
 
 	GridBagConstraints c = new GridBagConstraints();
 	c.ipadx = 3; c.ipady = 3;
@@ -61,13 +65,13 @@ public class WizStepConfirm extends WizStep {
 
 	JLabel image = new JLabel("");
 	//image.setMargin(new Insets(0, 0, 0, 0));
-	image.setIcon(WIZ_ICON);
+	image.setIcon(getWizardIcon());
 	image.setBorder(null);
 	c.gridx = 0;
 	c.gridheight = 4;
 	c.gridy = 0;
 	gb.setConstraints(image, c);
-	_mainPanel.add(image);
+	getMainPanel().add(image);
 
 	c.weightx = 1.0;
 	c.gridx = 2;
@@ -75,8 +79,8 @@ public class WizStepConfirm extends WizStep {
 	c.gridwidth = 3;
 	c.gridy = 0;
 	c.fill = GridBagConstraints.HORIZONTAL;
-	gb.setConstraints(_instructions, c);
-	_mainPanel.add(_instructions);
+	gb.setConstraints(instructions, c);
+	getMainPanel().add(instructions);
 
 	c.gridx = 1;
 	c.gridy = 1;
@@ -85,14 +89,20 @@ public class WizStepConfirm extends WizStep {
 	c.fill = GridBagConstraints.NONE;
 	SpacerPanel spacer = new SpacerPanel();
 	gb.setConstraints(spacer, c);
-	_mainPanel.add(spacer);
+	getMainPanel().add(spacer);
 
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param w the wizard
+     * @param instr the instructions
+     */
     public WizStepConfirm(Wizard w, String instr) {
 	this();
 	// store wizard?
-	_instructions.setText(instr);
+	instructions.setText(instr);
     }
 
 } /* end class WizStepConfirm */

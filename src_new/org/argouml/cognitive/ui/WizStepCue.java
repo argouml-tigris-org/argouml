@@ -41,20 +41,26 @@ import org.argouml.ui.SpacerPanel;
  */
 
 public class WizStepCue extends WizStep {
-    JTextArea _instructions = new JTextArea();
+    private JTextArea instructions = new JTextArea();
 
+    /**
+     * The constructor.
+     * 
+     * @param w the wizard
+     * @param cue the instructions (cue)
+     */
     public WizStepCue(Wizard w, String cue) {
 	// store wizard?
-	_instructions.setText(cue);
-	_instructions.setWrapStyleWord(true);
-	_instructions.setEditable(false);
-	_instructions.setBorder(null);
-	_instructions.setBackground(_mainPanel.getBackground());
+	instructions.setText(cue);
+	instructions.setWrapStyleWord(true);
+	instructions.setEditable(false);
+	instructions.setBorder(null);
+	instructions.setBackground(getMainPanel().getBackground());
 
-	_mainPanel.setBorder(new EtchedBorder());
+	getMainPanel().setBorder(new EtchedBorder());
 
 	GridBagLayout gb = new GridBagLayout();
-	_mainPanel.setLayout(gb);
+	getMainPanel().setLayout(gb);
 
 	GridBagConstraints c = new GridBagConstraints();
 	c.ipadx = 3; c.ipady = 3;
@@ -63,14 +69,14 @@ public class WizStepCue extends WizStep {
 
 	JLabel image = new JLabel("");
 	//image.setMargin(new Insets(0, 0, 0, 0));
-	image.setIcon(WIZ_ICON);
+	image.setIcon(getWizardIcon());
 	image.setBorder(null);
 	c.gridx = 0;
 	c.gridheight = GridBagConstraints.REMAINDER;
 	c.gridy = 0;
 	c.anchor = GridBagConstraints.NORTH;
 	gb.setConstraints(image, c);
-	_mainPanel.add(image);
+	getMainPanel().add(image);
 
 	c.weightx = 1.0;
 	c.gridx = 2;
@@ -78,8 +84,8 @@ public class WizStepCue extends WizStep {
 	c.gridwidth = 3;
 	c.gridy = 0;
 	c.fill = GridBagConstraints.HORIZONTAL;
-	gb.setConstraints(_instructions, c);
-	_mainPanel.add(_instructions);
+	gb.setConstraints(instructions, c);
+	getMainPanel().add(instructions);
 
 	c.gridx = 1;
 	c.gridy = 1;
@@ -88,7 +94,7 @@ public class WizStepCue extends WizStep {
 	c.fill = GridBagConstraints.NONE;
 	SpacerPanel spacer2 = new SpacerPanel();
 	gb.setConstraints(spacer2, c);
-	_mainPanel.add(spacer2);
+	getMainPanel().add(spacer2);
     }
 
 
