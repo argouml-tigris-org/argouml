@@ -394,7 +394,8 @@ public class FigUseCase extends FigNodeModelElement {
         addMenu.add(ActionAddExtensionPoint.singleton());
         addMenu.add(ActionAddNote.SINGLETON);
 
-        popUpActions.insertElementAt(addMenu, popUpActions.size() - 2);
+        popUpActions.insertElementAt(addMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Show menu to display/hide the extension point compartment. Placed
         // one before last, so the "Properties" entry is always last.
@@ -407,7 +408,8 @@ public class FigUseCase extends FigNodeModelElement {
             showMenu.add(ActionCompartmentDisplay.ShowExtPointCompartment);
         }
 
-        popUpActions.insertElementAt(showMenu, popUpActions.size() - 2);
+        popUpActions.insertElementAt(showMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
@@ -434,7 +436,8 @@ public class FigUseCase extends FigNodeModelElement {
 						     "setRoot",
 						     useCase));
 
-        popUpActions.insertElementAt(modifierMenu, popUpActions.size() - 2);
+        popUpActions.insertElementAt(modifierMenu, 
+            popUpActions.size() - POPUP_ADD_OFFSET);
 
         return popUpActions;
     }
