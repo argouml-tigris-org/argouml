@@ -1,4 +1,4 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// Copyright (c) 1996-03 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -404,7 +404,7 @@ public class ClassdiagramLayouter implements Layouter {
 
                     if (downlinks != null && downlinks.size()>1 &&
                         curNode.getUplinks().size() == 0) {
-                        System.out.println("Downlinks size: " + downlinks.size());
+                        
                         xOffset = 0;
                         for (int j=0; j<downlinks.size(); j++) {
                             ClassdiagramNode node = (ClassdiagramNode)
