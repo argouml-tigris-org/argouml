@@ -245,7 +245,11 @@ public class TestParserDisplay extends TestCase {
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr01, null);
-
+        
+        // organization and machine are no stereotypes for attributes...
+        // furthermore they are not part of the basic uml profile but of the (R)UP profile
+        // and are therefore not present by standard in ArgoUML atm.
+        /*
 		attr = UmlFactory.getFactory().getCore().buildAttribute();
 		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr10, "organization");
@@ -254,6 +258,7 @@ public class TestParserDisplay extends TestCase {
 		attr.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(attr, attr11, "machine");
 		checkStereotype(attr, attr01, "machine");
+        */
 	}
 
 	public void testOperationName() {
@@ -347,11 +352,13 @@ public class TestParserDisplay extends TestCase {
 		MClass cl = UmlFactory.getFactory().getCore().buildClass();
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+        // an operation is owned by its class and it's not possible to set the 
+        // namespace of the operation therefore
+		// op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(op, oper01, null);
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
-		op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
+		// op.setNamespace(ProjectManager.getManager().getCurrentProject().getModel());
 		checkStereotype(op, oper02, "create");
 
 		op = UmlFactory.getFactory().getCore().buildOperation(cl);
