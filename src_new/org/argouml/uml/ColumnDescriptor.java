@@ -352,7 +352,7 @@ class ColumnSrcMultiplicity extends ColumnDescriptor {
 	Vector conns = new Vector(((MAssociation) target).getConnections());
 	if (conns.size() == 2) {
 	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(0);
-	    MMultiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
+	    MMultiplicity m = (MMultiplicity)ParserDisplay.SINGLETON.parseMultiplicity(s);
 	    ae.setMultiplicity(m);
 	}
     }  
@@ -458,7 +458,7 @@ class ColumnDstMultiplicity extends ColumnDescriptor {
 	Vector conns = new Vector(((MAssociation) target).getConnections());
 	if (conns.size() == 2) {
 	    MAssociationEnd ae = (MAssociationEnd) conns.elementAt(1);
-	    MMultiplicity m = ParserDisplay.SINGLETON.parseMultiplicity(s);
+	    MMultiplicity m = (MMultiplicity)ParserDisplay.SINGLETON.parseMultiplicity(s);
 	    ae.setMultiplicity(m);
 	}
     }  
