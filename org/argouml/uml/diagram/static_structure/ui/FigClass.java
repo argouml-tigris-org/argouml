@@ -367,7 +367,7 @@ public class FigClass extends FigNodeModelElement {
      * First one is the rectangle for the entire operations box.
      */
     public FigGroup getOperationsFig() {
-        return (FigGroup)getFigAt(OPERATIONS_POSN);
+        return (FigGroup) getFigAt(OPERATIONS_POSN);
     }
     
     /**
@@ -375,7 +375,7 @@ public class FigClass extends FigNodeModelElement {
      * First one is the rectangle for the entire operations box.
      */
     public FigGroup getAttributesFig() {
-        return (FigGroup)getFigAt(ATTRIBUTES_POSN);
+        return (FigGroup) getFigAt(ATTRIBUTES_POSN);
     }
 
     /**
@@ -401,7 +401,8 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h =
 	    isCheckSize()
-	    ? ((ROWHEIGHT * Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
+	    ? ((ROWHEIGHT * Math
+	            .max(1, getAttributesFig().getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
@@ -439,7 +440,8 @@ public class FigClass extends FigNodeModelElement {
         Rectangle rect = getBounds();
         int h =
 	    isCheckSize()
-	    ? ((ROWHEIGHT * Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
+	    ? ((ROWHEIGHT * Math
+	            .max(1, getOperationsFig().getFigs(null).size() - 1) + 2)
 	       * rect.height
 	       / getMinimumSize().height)
 	    : 0;
@@ -524,7 +526,8 @@ public class FigClass extends FigNodeModelElement {
             // first element.
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, getAttributesFig().getFigs(null).size() - 1) + 1;
+		ROWHEIGHT * Math.max(1, 
+		        getAttributesFig().getFigs(null).size() - 1) + 1;
         }
 
         // Allow space for each of the operations we have
@@ -544,7 +547,8 @@ public class FigClass extends FigNodeModelElement {
             }
 
             aSize.height +=
-		ROWHEIGHT * Math.max(1, getOperationsFig().getFigs(null).size() - 1) + 1;
+		ROWHEIGHT * Math.max(1, 
+		        getOperationsFig().getFigs(null).size() - 1) + 1;
         }
 
         // we want to maintain a minimum width for the class
@@ -568,7 +572,8 @@ public class FigClass extends FigNodeModelElement {
      */
     public void setLineColor(Color lColor) {
         super.setLineColor(lColor);
-        getFigAt(BLINDER_POSN).setLineColor(getFigAt(BLINDER_POSN).getFillColor());
+        getFigAt(BLINDER_POSN)
+            .setLineColor(getFigAt(BLINDER_POSN).getFillColor());
     }
 
     /**
@@ -601,10 +606,12 @@ public class FigClass extends FigNodeModelElement {
         if (key == KeyEvent.VK_UP || key == KeyEvent.VK_DOWN) {
             CompartmentFigText ft = unhighlight();
             if (ft != null) {
-                int i = new Vector(getAttributesFig().getFigs(null)).indexOf(ft);
+                int i = new Vector(getAttributesFig().getFigs(null))
+                                            .indexOf(ft);
                 FigGroup fg = getAttributesFig();
                 if (i == -1) {
-                    i = new Vector(getOperationsFig().getFigs(null)).indexOf(ft);
+                    i = new Vector(getOperationsFig().getFigs(null))
+                                            .indexOf(ft);
                     fg = getOperationsFig();
                 }
                 if (i != -1) {
@@ -698,7 +705,9 @@ public class FigClass extends FigNodeModelElement {
         do {
             i--;
             while (i < 1) {
-                fgVec = (fgVec == getAttributesFig()) ? getOperationsFig() : getAttributesFig();
+                fgVec = (fgVec == getAttributesFig()) 
+                    ? getOperationsFig() 
+                    : getAttributesFig();
                 v = new Vector(fgVec.getFigs(null));
                 i = v.size() - 1;
             }
@@ -730,7 +739,9 @@ public class FigClass extends FigNodeModelElement {
         do {
             i++;
             while (i >= v.size()) {
-                fgVec = (fgVec == getAttributesFig()) ? getOperationsFig() : getAttributesFig();
+                fgVec = (fgVec == getAttributesFig()) 
+                    ? getOperationsFig() 
+                    : getAttributesFig();
                 v = new Vector(fgVec.getFigs(null));
                 i = 1;
             }
@@ -742,7 +753,8 @@ public class FigClass extends FigNodeModelElement {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#createFeatureIn(
+     * org.tigris.gef.presentation.FigGroup, java.awt.event.InputEvent)
      */
     protected void createFeatureIn(FigGroup fg, InputEvent ie) {
         CompartmentFigText ft = null;
@@ -1031,7 +1043,8 @@ public class FigClass extends FigNodeModelElement {
         } else {
             height = 1;
         }
-        aSize = updateFigGroupSize(getAttributesFig(), x, currentY, newW, height);
+        aSize = updateFigGroupSize(getAttributesFig(), x, currentY, 
+                newW, height);
 
         if (getAttributesFig().isVisible()) {
             currentY += aSize.height - 1; // -1 for 1 pixel overlap
@@ -1040,7 +1053,8 @@ public class FigClass extends FigNodeModelElement {
         // Finally update the bounds of the operations box
 
         aSize =
-	    updateFigGroupSize(getOperationsFig(), x, currentY, newW, newH + y - currentY);
+	    updateFigGroupSize(getOperationsFig(), x, currentY, 
+                newW, newH + y - currentY);
 
         // set bounds of big box
 
@@ -1092,7 +1106,8 @@ public class FigClass extends FigNodeModelElement {
                 highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
             }
-        } else if (f == getOperationsFig() && getOperationsFig().getHeight() > 0) {
+        } else if (f == getOperationsFig() 
+                     && getOperationsFig().getHeight() > 0) {
             // TODO: in future version of GEF call getFigs returning array
             Vector v = new Vector(getOperationsFig().getFigs(null));
             i = (v.size() - 1) * (me.getY() - f.getY() - 3)
