@@ -4511,7 +4511,7 @@ public class ModelFacade {
      * Sets a body of some method or expression.
      *
      * @param handle is the method, expression
-     * @param expr body
+     * @param expr is the body string for the expression
      */
     public static void setBody(Object handle, Object expr) {
         if (handle instanceof MMethod
@@ -4546,6 +4546,13 @@ public class ModelFacade {
     /**
      * Sets the language of an expression.
      *
+     * TODO: This operation is fooling the user  
+     * in thinking that the body of the object is changed. 
+     * Instead, a new object is created as a side-effect. 
+     * There is no other way: a MExpression can not be altered, 
+     * once created!
+     * So, this operation should return the created object instead! 
+     *
      * @param handle is the expression
      * @param expr is the lang
      *
@@ -4565,6 +4572,11 @@ public class ModelFacade {
 	illegalArgument(handle, expr);
     }
     
+    /**
+     * Gets the language attribute of an Expression.
+     * 
+     * @param handle is the Expression of which the language is retrieved
+     */
     public static String getLanguage(Object handle) {
         if (handle instanceof MExpression) {
             return ((MExpression) handle).getLanguage();
