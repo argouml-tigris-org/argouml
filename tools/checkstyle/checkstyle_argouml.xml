@@ -29,6 +29,13 @@
         <module name="GenericIllegalRegexp">
           <property name="format" value="needs?-?more-?work"/>
         </module>
+
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="/\*\* (needs documenting|to be documented|\s*) \*/"/>
+        </module>
+
  	<module name="HiddenField"/>
 
         <module name="IllegalImport"/>
