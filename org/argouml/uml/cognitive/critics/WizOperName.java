@@ -28,6 +28,8 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JPanel;
+
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.ModelFacade;
@@ -54,22 +56,23 @@ import org.argouml.model.uml.UmlFactory;
  * </pre>
  */
 public class WizOperName extends WizMEName {
-    boolean _possibleConstructor = false;
-    boolean _stereotypePathChosen;
+    private static final Logger LOG = Logger.getLogger(WizMEName.class);
+    private boolean possibleConstructor = false;
+    private boolean stereotypePathChosen;
 
-    protected String _option0 = "This is really a constructor.";
-    protected String _option1 = "This is not a constructor.";
-    protected WizStepChoice _step1 = null;
-    protected WizStepCue _step2 = null;
+    private String option0 = "This is really a constructor.";
+    private String option1 = "This is not a constructor.";
+    private WizStepChoice step1 = null;
+    private WizStepCue step2 = null;
 
-    protected Object _oldStereotype;
-    protected boolean _oldStereotypeIsSet = false;
+    private Object oldStereotype;
+    private boolean oldStereotypeIsSet = false;
 
     /**
      * @see org.argouml.kernel.Wizard#getNumSteps()
      */
     public int getNumSteps() {
-	if (_possibleConstructor) {
+	if (possibleConstructor) {
 	    return 2;
 	} else {
 	    return 1;
@@ -78,8 +81,8 @@ public class WizOperName extends WizMEName {
 
     private Vector getOptions() {
 	Vector res = new Vector();
-	res.addElement(_option0);
-	res.addElement(_option1);
+	res.addElement(option0);
+	res.addElement(option1);
 	return res;
     }
 
@@ -90,7 +93,7 @@ public class WizOperName extends WizMEName {
      * the oper is converted to a constructor.
      */
     public void setPossibleConstructor(boolean b) {
-        _possibleConstructor = b;
+        possibleConstructor = b;
     }
 
     /**
@@ -99,7 +102,7 @@ public class WizOperName extends WizMEName {
      * Create a new panel for the given step.
      */
     public JPanel makePanel(int newStep) {
-	if (!_possibleConstructor) {
+	if (!possibleConstructor) {
 	    return super.makePanel(newStep);
 	}
 
@@ -108,21 +111,21 @@ public class WizOperName extends WizMEName {
 	    return super.makePanel(newStep);
 
 	case 1:
-	    if (_step1 == null) {
-		_step1 = new WizStepChoice(this, _instructions, getOptions());
-		_step1.setTarget(_item);
+	    if (step1 == null) {
+		step1 = new WizStepChoice(this, instructions, getOptions());
+		step1.setTarget(_item);
 	    }
-	    return _step1;
+	    return step1;
 
 	case 2:
-	    if (_stereotypePathChosen) {
-		if (_step2 == null) {
-		    _step2 = 
+	    if (stereotypePathChosen) {
+		if (step2 == null) {
+		    step2 = 
 			new WizStepCue(this,
 				       "The operator is now a constructor.");
-		    _step2.setTarget(_item);
+		    step2.setTarget(_item);
 		}
-		return _step2;
+		return step2;
 	    } else {
 	        return super.makePanel(1);
 	    }
@@ -149,8 +152,8 @@ public class WizOperName extends WizMEName {
 	if (origStep == 1) {
 	    Object oper = getModelElement();
 
-	    if (_oldStereotypeIsSet) {
-		ModelFacade.setStereotype(oper, _oldStereotype);
+	    if (oldStereotypeIsSet) {
+		ModelFacade.setStereotype(oper, oldStereotype);
 	    }
 	}
     }
@@ -161,9 +164,11 @@ public class WizOperName extends WizMEName {
      * the first action.  Argo non-modal wizards should take action as
      * they do along, as soon as possible, they should not wait until
      * the final step.
+     *
+     * @see org.argouml.kernel.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-	if (!_possibleConstructor) {
+	if (!possibleConstructor) {
 	    super.doAction(oldStep);
 	    return;
 	}
@@ -171,8 +176,8 @@ public class WizOperName extends WizMEName {
 	switch (oldStep) {
 	case 1:
 	    int choice = -1;
-	    if (_step1 != null) {
-	        choice = _step1.getSelectedIndex();
+	    if (step1 != null) {
+	        choice = step1.getSelectedIndex();
 	    }
 	    
 	    switch (choice) {
@@ -181,16 +186,16 @@ public class WizOperName extends WizMEName {
 		        "nothing selected, should not get here");
 
 	    case 0:
-		_stereotypePathChosen = true;
+		stereotypePathChosen = true;
 		Object oper = getModelElement();
 
-		if (!_oldStereotypeIsSet) {
-		    _oldStereotype = null;
+		if (!oldStereotypeIsSet) {
+		    oldStereotype = null;
 		    if (ModelFacade.getStereotypes(oper).size() > 0) {
-                        _oldStereotype =
+                        oldStereotype =
 			    ModelFacade.getStereotypes(oper).iterator().next();
                     }
-		    _oldStereotypeIsSet = true;
+		    oldStereotypeIsSet = true;
 		}
 
                 // We need to find the stereotype with the name
@@ -232,13 +237,13 @@ public class WizOperName extends WizMEName {
 		try {
 		    ModelFacade.setStereotype(oper, theStereotype);
 		} catch (Exception pve) {
-		    cat.error("could not set stereotype", pve);
+		    LOG.error("could not set stereotype", pve);
 		}
 		return;
 
 	    case 1:
 		// Nothing to do.
-		_stereotypePathChosen = false;
+		stereotypePathChosen = false;
 		return;
 
 	    default:
@@ -246,7 +251,7 @@ public class WizOperName extends WizMEName {
 	    return;
 
 	case 2:
-	    if (!_stereotypePathChosen) {
+	    if (!stereotypePathChosen) {
 	        super.doAction(1);
 	    }
 	    return;

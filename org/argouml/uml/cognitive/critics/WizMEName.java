@@ -44,21 +44,31 @@ import org.tigris.gef.util.VectorSet;
  *  MModelElement to a better name. */
 
 public class WizMEName extends Wizard {
-    protected static Logger cat = Logger.getLogger(WizMEName.class);
+    private static final Logger LOG = Logger.getLogger(WizMEName.class);
 					   
-    protected String _instructions =
+    protected String instructions =
 	"Please change the name of the offending model element.";
-    protected String _label = Translator.localize("UMLMenu", "label.name");
-    protected String _suggestion = "suggestion";
-    protected String _origSuggest = "suggestion";
-    protected boolean _mustEdit = false;
+    private String label = Translator.localize("UMLMenu", "label.name");
+    private String suggestion = "suggestion";
+    private String origSuggest = "suggestion";
+    private boolean mustEdit = false;
 							       
-    protected WizStepTextField _step1 = null;
+    private WizStepTextField step1 = null;
 								   
+    /**
+     * The constructor.
+     * 
+     */
     public WizMEName() { }
 								       
+    /**
+     * @see org.argouml.kernel.Wizard#getNumSteps()
+     */
     public int getNumSteps() { return 1; }
 									   
+    /**
+     * @return the offending modelelement
+     */
     public Object getModelElement() {
 	if (_item != null) {
 	    VectorSet offs = _item.getOffenders();
@@ -70,8 +80,11 @@ public class WizMEName extends Wizard {
 	return null;
     }
 									       
+    /**
+     * @return the suggestion
+     */
     public String getSuggestion() {
-	if (_suggestion != null) return _suggestion;
+	if (suggestion != null) return suggestion;
 	Object me = getModelElement();
 	if (me != null) {
 	    String n = ModelFacade.getName(me);
@@ -79,53 +92,75 @@ public class WizMEName extends Wizard {
 	}
 	return "";
     }
-    public void setSuggestion(String s) { _origSuggest = _suggestion = s; }
+    
+    /**
+     * @param s the new suggestion
+     */
+    public void setSuggestion(String s) { 
+        origSuggest = s; 
+        suggestion = s; 
+    }
 
-    public void setInstructions(String s) { _instructions = s; }
+    /**
+     * @param s the instructions
+     */
+    public void setInstructions(String s) { instructions = s; }
 
-    public void setMustEdit(boolean b) { _mustEdit = b; }
+    public void setMustEdit(boolean b) { mustEdit = b; }
 
-    /** Create a new panel for the given step.  */
+    /** 
+     * Create a new panel for the given step.
+     * 
+     * @see org.argouml.kernel.Wizard#makePanel(int)
+     */
     public JPanel makePanel(int newStep) {
 	switch (newStep) {
 	case 1:
-	    if (_step1 == null) {
-		_step1 = new WizStepTextField(this, _instructions,
-					      _label, getSuggestion());
+	    if (step1 == null) {
+		step1 = new WizStepTextField(this, instructions,
+					      label, getSuggestion());
 	    }
-	    return _step1;
+	    return step1;
 	}
 	return null;
     }
 
-    /** Return false iff the user has not edited the text and they were
-     *  required to. */
+    /** 
+     * Return false iff the user has not edited the text and they were
+     * required to.
+     * 
+     * @see org.argouml.kernel.Wizard#canGoNext()
+     */
     public boolean canGoNext() {
 	if (!super.canGoNext()) return false;
-	if (_step1 != null) {
-	    boolean changed = _origSuggest.equals(_step1.getText());
-	    if (_mustEdit && !changed) return false;
+	if (step1 != null) {
+	    boolean changed = origSuggest.equals(step1.getText());
+	    if (mustEdit && !changed) return false;
 	}
 	return true;
     }
 
-    /** Take action at the completion of a step. For example, when the
-     *  given step is 0, do nothing; and when the given step is 1, do
-     *  the first action.  Argo non-modal wizards should take action as
-     *  they do along, as soon as possible, they should not wait until
-     *  the final step. */
+    /** 
+     * Take action at the completion of a step. For example, when the
+     * given step is 0, do nothing; and when the given step is 1, do
+     * the first action.  Argo non-modal wizards should take action as
+     * they do along, as soon as possible, they should not wait until
+     * the final step. 
+     * 
+     * @see org.argouml.kernel.Wizard#doAction(int)
+     */
     public void doAction(int oldStep) {
-	cat.debug("doAction " + oldStep);
+	LOG.debug("doAction " + oldStep);
 	switch (oldStep) {
 	case 1:
-	    String newName = _suggestion;
-	    if (_step1 != null) newName = _step1.getText();
+	    String newName = suggestion;
+	    if (step1 != null) newName = step1.getText();
 	    try {
 		Object me = getModelElement();
 		ModelFacade.setName(me, newName);
 	    }
 	    catch (Exception pve) {
-		cat.error("could not set name", pve);
+		LOG.error("could not set name", pve);
 	    }
 	}
     }
