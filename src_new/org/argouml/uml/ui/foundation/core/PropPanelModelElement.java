@@ -230,5 +230,5 @@ abstract public class PropPanelModelElement extends PropPanel {
         // no support yet for templateParameters
         // TODO support templateparameters
     }
-        
+
 }

@@ -28,6 +28,9 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import javax.swing.JCheckBox;
 
+import org.argouml.model.uml.UmlModelEventPump;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 
 /**
@@ -47,14 +50,16 @@ public abstract class UMLCheckBox2
 
     private UMLUserInterfaceContainer _container;
     private Object _target;
+    private String _propertySetName;
     
     /**
      * Constructor for UMLCheckBox2.
      * @param text
      * @param selected
      */
-    public UMLCheckBox2(UMLUserInterfaceContainer container, String text, Action a) {
+    public UMLCheckBox2(UMLUserInterfaceContainer container, String text, Action a, String propertySetName) {
         super(text);
+        _propertySetName = propertySetName;
         setContainer(container);
         addActionListener(a);
         setActionCommand((String)a.getValue(a.ACTION_COMMAND_KEY));
@@ -64,21 +69,22 @@ public abstract class UMLCheckBox2
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
      */
     public void targetChanged() {
-        buildModel();
+        setTarget(getContainer().getTarget());  
     }
 
     /**
      * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
      */
     public void targetReasserted() {
-        buildModel();
+        setTarget(getContainer().getTarget());  
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
-        buildModel();
+        if (e.getName().equals(_propertySetName))
+            buildModel();
     }
 
     /**
@@ -146,7 +152,16 @@ public abstract class UMLCheckBox2
      * @param target The target to set
      */
     public void setTarget(Object target) {
+        if (_target instanceof MBase) {
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+        }
         _target = target;
+        if (_target instanceof MBase) {
+             // UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
+             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _propertySetName);
+        }
+        if (_target != null)
+            buildModel();
     }
     
     /**

@@ -292,8 +292,6 @@ public abstract class UMLComboBoxModel2
      * @param target
      */
     protected void setTarget(Object target) {
-        if (_propertySetName == null || _propertySetName.equals("")) 
-            throw new IllegalStateException("propertySetname not set!");
         if (_target instanceof MBase) {
             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _propertySetName);
         }
