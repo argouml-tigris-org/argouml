@@ -729,7 +729,6 @@ class UmlFactoryImpl
         if (elem instanceof MBase) {
             ((MBase) elem).remove();
             UmlModelEventPump.getPump().cleanUp((MBase) elem);
-            UmlModelListener.getInstance().deleteElement(elem);
         }
     }
 

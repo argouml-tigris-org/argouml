@@ -83,8 +83,6 @@ public abstract class AbstractUmlModelFactory {
 
             ((MBase) handle).addMElementListener(pump);
             pump.addModelEventListener(Model.getEventAdapter(), handle);
-
-            UmlModelListener.getInstance().newElement(handle);
         }
     }
 }

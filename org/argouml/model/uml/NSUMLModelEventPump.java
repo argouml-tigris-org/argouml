@@ -34,8 +34,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import javax.swing.Action;
+
 import org.apache.log4j.Logger;
 import org.argouml.model.AbstractModelEventPump;
+import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
 
 import ru.novosoft.uml.MElementEvent;
@@ -69,6 +72,8 @@ class NSUMLModelEventPump
     private Map modelEventListeners;
     private Map classEventListeners;
 
+    private Action saveAction = null;
+    
     /**
      * Constructor for the NSUMLModelEventPump.<p>
      *
@@ -118,8 +123,7 @@ class NSUMLModelEventPump
         list.add(relay);
         listeners.put(listener, list);
     }
-
-
+    
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(
      * 		java.beans.PropertyChangeListener, java.lang.Object)
@@ -252,6 +256,23 @@ class NSUMLModelEventPump
             relay.delete();
         }
     }
+    
+    /**
+     * Register an Action with the pump that is used to perform saving.
+     * This action will be enabled by any change to the model.
+     * @param saveAction the action to enable on change to model.
+     */
+    public void setSaveAction(Action saveAction) {
+        this.saveAction = saveAction;
+    }
+    
+    /**
+     * Get the action that is registered with the pump that is used to perform saving.
+     * @return the relevant Action or null.
+     */
+    public Action getSaveAction() {
+        return saveAction;
+    }
 }
 
 
@@ -357,6 +378,10 @@ abstract class NSUMLEventListener implements MElementListener {
      * @param pce The event to send.
      */
     private void fire(PropertyChangeEvent pce) {
+        Action saveAction = Model.getPump().getSaveAction();
+        if (saveAction != null && !saveAction.isEnabled()) {
+            saveAction.setEnabled(true);
+        }
         PropertyChangeListener pcl = getListener();
         if (pcl != null) {
             pcl.propertyChange(pce);
