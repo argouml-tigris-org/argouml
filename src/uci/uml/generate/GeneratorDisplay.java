@@ -410,13 +410,14 @@ public class GeneratorDisplay extends Generator {
 
   public String generateMultiplicityRange(MMultiplicityRange mr) {
 
-    Integer lower = new Integer(mr.getLower());
-    Integer upper = new Integer(mr.getUpper());
-    if (lower == null && upper == null) return ANY_RANGE;
-    if (lower == null) return "*.."+ upper.toString();
-    if (upper == null) return lower.toString() + "..*";
-    if (lower.intValue() == upper.intValue()) return lower.toString();
-    return lower.toString() + ".." + upper.toString();
+      return mr.toString();
+//     Integer lower = new Integer(mr.getLower());
+//     Integer upper = new Integer(mr.getUpper());
+//     if (lower == null && upper == null) return ANY_RANGE;
+//     if (lower == null) return "*.."+ upper.toString();
+//     if (upper == null) return lower.toString() + "..*";
+//     if (lower.intValue() == upper.intValue()) return lower.toString();
+//     return lower.toString() + ".." + upper.toString();
   }
 
   public String generateState(MState m) {
