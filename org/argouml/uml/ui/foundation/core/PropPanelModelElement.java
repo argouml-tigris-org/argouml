@@ -106,6 +106,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     protected JList constraintList;
     protected JPanel namespaceVisibilityPanel;
     protected JCheckBox specializationCheckBox;
+    protected JList elementResidenceList;
     
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -216,6 +217,10 @@ abstract public class PropPanelModelElement extends PropPanel {
         namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
         
         specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox(this);
+        
+        // NSUML implements the association class element residence as a connecting class 
+        // between a component and the modelelement
+        elementResidenceList = new UMLLinkedList(this, new UMLModelElementElementResidenceListModel(this));
     }
         
 }
