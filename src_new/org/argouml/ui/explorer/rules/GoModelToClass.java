@@ -25,7 +25,6 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.model.ModelFacade;
