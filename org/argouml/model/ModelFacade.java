@@ -168,14 +168,14 @@ import ru.novosoft.uml.model_management.MSubsystem;
  *
  * Signatures for all getters are:
  * <ul>
- * <li>public Object getTYPE(Object handle) - 1..1
- * <li>public Iterator/Collection getTYPES(Object handle) - 0..*
+ * <li>public Object getROLENAME(Object handle) - 1..1
+ * <li>public Iterator/Collection getROLENAMEs(Object handle) - 0..*
  * <li>public String getName(Object handle) - Name
  * </ul>
  *
  * Signature to get a token is:
  * <ul>
- * <li>public Object getTOKENNAME() (all capitals).
+ * <li>public Object getTYPEToken().
  * </ul>
  *
  * The reason for having the tokens as methods is that it needs to be a
@@ -1773,7 +1773,7 @@ public class ModelFacade {
     }
 
     /**
-     * Recognizer for StubState
+     * Recognizer for StubState.
      *
      * @param handle candidate
      * @return true if handle is a StubState
@@ -1783,7 +1783,7 @@ public class ModelFacade {
     }
 
     /**
-     * Recognizer for SubmachineState
+     * Recognizer for SubmachineState.
      *
      * @param handle candidate
      * @return true if handle is a SubmachineState
@@ -1802,7 +1802,8 @@ public class ModelFacade {
         return handle instanceof MSubsystem;
     }
 
-    /** Recognizer for SynchState
+    /**
+     * Recognizer for SynchState.
      *
      * @param handle candidate
      * @return true if handle is a SynchState
@@ -1953,7 +1954,7 @@ public class ModelFacade {
     }
 
     /**
-     * Recognizer for ConcurrentRegion
+     * Recognizer for ConcurrentRegion.
      *
      * @param handle candidate
      * @return true if handle is a ConcurrentRegion
@@ -1966,7 +1967,7 @@ public class ModelFacade {
         return false;
     }
 
-    
+
     /**
      * Recognizer for constructor.
      *
