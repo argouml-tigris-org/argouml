@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// 4 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Icons for extend and
-// include relationships added.
-
 package org.argouml.uml.ui.foundation.core;
 
 import java.util.Vector;
@@ -36,6 +33,8 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+
+import org.apache.log4j.Logger;
 
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -56,60 +55,69 @@ import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
-abstract public class PropPanelModelElement extends PropPanel {
+public abstract class PropPanelModelElement extends PropPanel {
+
+    private static final Logger LOG =
+	Logger.getLogger(PropPanelModelElement.class);
 
     ////////////////////////////////////////////////////////////////
     // constants
 
-    protected static ImageIcon _objectIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Object");
-    protected static ImageIcon _componentInstanceIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ComponentInstance");
-    protected static ImageIcon _nodeInstanceIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NodeInstance");
-    protected static ImageIcon _instanceIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Instance");
-    protected static ImageIcon _linkIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Link");
-    protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
-    protected static ImageIcon _associationIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Association");
-    protected static ImageIcon _assocEndIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("AssociationEnd");
-    protected static ImageIcon _assocEndRoleIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("AssociationEndRole");
-    protected static ImageIcon _generalizationIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Generalization");
-    protected static ImageIcon _realizationIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
-    protected static ImageIcon _classIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Class");
-    protected static ImageIcon _collaborationIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Collaboration");
-    protected static ImageIcon _interfaceIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Interface");
-    protected static ImageIcon _addOpIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NewOperation");
-    protected static ImageIcon _addAttrIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NewAttribute");
-    protected static ImageIcon _addAssocIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Association");
-    protected static ImageIcon _packageIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Package");
-    protected static ImageIcon _modelIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Model");
-    protected static ImageIcon _innerClassIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("InnerClass");
-    protected static ImageIcon _nodeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Node");
-    protected static ImageIcon _componentIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Component");
-    protected static ImageIcon _dataTypeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DataType");
-    protected static ImageIcon _actorIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Actor");
-    protected static ImageIcon _useCaseIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("UseCase");
-    protected static ImageIcon _extendIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Extend");
-    protected static ImageIcon _extensionPointIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ExtensionPoint");
-    protected static ImageIcon _includeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Include");
-    protected static ImageIcon _dependencyIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Dependency");
-    protected static ImageIcon _permissionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Permission");
-    protected static ImageIcon _usageIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Usage");
-    protected static ImageIcon _parameterIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Parameter");
-    protected static ImageIcon _operationIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Operation");
-    protected static ImageIcon _signalIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SignalSending");
-    protected static ImageIcon _stereotypeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stereotype");
-    protected static ImageIcon _guardIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Guard");
-    protected static ImageIcon _transitionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Transition");
-    protected static ImageIcon _classifierRoleIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ClassifierRole");
-    protected static ImageIcon _associationRoleIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("AssociationRole");
-    protected static ImageIcon _callActionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CallAction");
-    protected static ImageIcon _eventIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Event");
-    protected static ImageIcon _interactionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Interaction");
+    protected static ImageIcon _objectIcon = lookupIcon("Object");
+    protected static ImageIcon _componentInstanceIcon =
+	lookupIcon("ComponentInstance");
+    protected static ImageIcon _nodeInstanceIcon = lookupIcon("NodeInstance");
+    protected static ImageIcon _instanceIcon = lookupIcon("Instance");
+    protected static ImageIcon _linkIcon = lookupIcon("Link");
+    protected static ImageIcon _stimulusIcon = lookupIcon("Stimulus");
+    protected static ImageIcon _associationIcon = lookupIcon("Association");
+    protected static ImageIcon _assocEndIcon = lookupIcon("AssociationEnd");
+    protected static ImageIcon _assocEndRoleIcon =
+	lookupIcon("AssociationEndRole");
+    protected static ImageIcon _generalizationIcon =
+	lookupIcon("Generalization");
+    protected static ImageIcon _realizationIcon = lookupIcon("Realization");
+    protected static ImageIcon _classIcon = lookupIcon("Class");
+    protected static ImageIcon _collaborationIcon = lookupIcon("Collaboration");
+    protected static ImageIcon _interfaceIcon = lookupIcon("Interface");
+    protected static ImageIcon _addOpIcon = lookupIcon("NewOperation");
+    protected static ImageIcon _addAttrIcon = lookupIcon("NewAttribute");
+    protected static ImageIcon _addAssocIcon = lookupIcon("Association");
+    protected static ImageIcon _packageIcon = lookupIcon("Package");
+    protected static ImageIcon _modelIcon = lookupIcon("Model");
+    protected static ImageIcon _innerClassIcon = lookupIcon("InnerClass");
+    protected static ImageIcon _nodeIcon = lookupIcon("Node");
+    protected static ImageIcon _componentIcon = lookupIcon("Component");
+    protected static ImageIcon _dataTypeIcon = lookupIcon("DataType");
+    protected static ImageIcon _actorIcon = lookupIcon("Actor");
+    protected static ImageIcon _useCaseIcon = lookupIcon("UseCase");
+    protected static ImageIcon _extendIcon = lookupIcon("Extend");
+    protected static ImageIcon _extensionPointIcon =
+	lookupIcon("ExtensionPoint");
+    protected static ImageIcon _includeIcon = lookupIcon("Include");
+    protected static ImageIcon _dependencyIcon = lookupIcon("Dependency");
+    protected static ImageIcon _permissionIcon = lookupIcon("Permission");
+    protected static ImageIcon _usageIcon = lookupIcon("Usage");
+    protected static ImageIcon _parameterIcon = lookupIcon("Parameter");
+    protected static ImageIcon _operationIcon = lookupIcon("Operation");
+    protected static ImageIcon _signalIcon = lookupIcon("SignalSending");
+    protected static ImageIcon _stereotypeIcon = lookupIcon("Stereotype");
+    protected static ImageIcon _guardIcon = lookupIcon("Guard");
+    protected static ImageIcon _transitionIcon = lookupIcon("Transition");
+    protected static ImageIcon _classifierRoleIcon =
+	lookupIcon("ClassifierRole");
+    protected static ImageIcon _associationRoleIcon =
+	lookupIcon("AssociationRole");
+    protected static ImageIcon _callActionIcon = lookupIcon("CallAction");
+    protected static ImageIcon _eventIcon = lookupIcon("Event");
+    protected static ImageIcon _interactionIcon = lookupIcon("Interaction");
     // added next one so someone can change the icon independant of callaction
-    protected static ImageIcon _actionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CallAction");
-    protected static ImageIcon _receptionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Reception");
-    protected static ImageIcon _commentIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Note");
-    protected static ImageIcon _messageIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Message");
-    protected static ImageIcon _flowIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Flow");
-    protected static ImageIcon _stateMachineIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("StateMachine");
+    protected static ImageIcon _actionIcon = lookupIcon("CallAction");
+    protected static ImageIcon _receptionIcon = lookupIcon("Reception");
+    protected static ImageIcon _commentIcon = lookupIcon("Note");
+    protected static ImageIcon _messageIcon = lookupIcon("Message");
+    protected static ImageIcon _flowIcon = lookupIcon("Flow");
+    protected static ImageIcon _stateMachineIcon = lookupIcon("StateMachine");
 
     private JScrollPane namespaceScroll;
     private JComboBox namespaceComboBox;
@@ -124,20 +132,34 @@ abstract public class PropPanelModelElement extends PropPanel {
     private JScrollPane elementResidenceScroll;
     private JTextField nameTextField;
 
-    private UMLModelElementNamespaceComboBoxModel 
-	namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
+    private UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel =
+	new UMLModelElementNamespaceComboBoxModel();
 
-    private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
-    private static UMLModelElementNamespaceListModel namespaceListModel = new UMLModelElementNamespaceListModel();
-    private static UMLModelElementClientDependencyListModel clientDependencyListModel = new UMLModelElementClientDependencyListModel();
-    private static UMLModelElementConstraintListModel constraintListModel = new UMLModelElementConstraintListModel();
-    private static UMLModelElementElementResidenceListModel elementResidenceListModel = new UMLModelElementElementResidenceListModel();
-    private static UMLModelElementNameDocument nameDocument = new UMLModelElementNameDocument();
-    private static UMLModelElementSourceFlowListModel sourceFlowListModel = new UMLModelElementSourceFlowListModel();
-    private static UMLModelElementSupplierDependencyListModel supplierDependencyListModel = new UMLModelElementSupplierDependencyListModel();
-    private static UMLModelElementTargetFlowListModel targetFlowListModel = new UMLModelElementTargetFlowListModel();
+    private static UMLModelElementStereotypeComboBoxModel
+	stereotypeComboBoxModel =
+	    new UMLModelElementStereotypeComboBoxModel();
+    private static UMLModelElementNamespaceListModel namespaceListModel =
+	new UMLModelElementNamespaceListModel();
+    private static UMLModelElementClientDependencyListModel
+	clientDependencyListModel =
+	    new UMLModelElementClientDependencyListModel();
+    private static UMLModelElementConstraintListModel constraintListModel =
+	new UMLModelElementConstraintListModel();
+    private static UMLModelElementElementResidenceListModel
+	elementResidenceListModel =
+	    new UMLModelElementElementResidenceListModel();
+    private static UMLModelElementNameDocument nameDocument =
+	new UMLModelElementNameDocument();
+    private static UMLModelElementSourceFlowListModel sourceFlowListModel =
+	new UMLModelElementSourceFlowListModel();
+    private static UMLModelElementSupplierDependencyListModel
+	supplierDependencyListModel =
+	    new UMLModelElementSupplierDependencyListModel();
+    private static UMLModelElementTargetFlowListModel targetFlowListModel =
+	new UMLModelElementTargetFlowListModel();
 
-    public PropPanelModelElement(String name, ImageIcon icon, Orientation orientation) {
+    public PropPanelModelElement(String name, ImageIcon icon,
+				 Orientation orientation) {
         super(name, icon, orientation);
     }
 
@@ -146,42 +168,54 @@ abstract public class PropPanelModelElement extends PropPanel {
     }
 
     /**
-     * Constructor that is used if no other proppanel can be found for a modelelement
-     * of some kind. Since this is the default
+     * Constructor that is used if no other proppanel can be found for
+     * a modelelement of some kind. Since this is the default
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"),
+		 getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+		 new UMLComboBoxNavigator(this,
+		         Translator.localize("UMLMenu",
+					     "tooltip.nav-stereo"),
+					  getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"),
+		 getNamespaceScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
-        addField(Translator.localize("UMLMenu", "label.source-flows"), getSourceFlowScroll());
-        addField(Translator.localize("UMLMenu", "label.target-flows"), getTargetFlowScroll());
+        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"),
+		 getSupplierDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.client-dependencies"),
+		 getClientDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.source-flows"),
+		 getSourceFlowScroll());
+        addField(Translator.localize("UMLMenu", "label.target-flows"),
+		 getTargetFlowScroll());
 
         addSeperator();
 
-        addField(Translator.localize("UMLMenu", "label.constraints"), getConstraintScroll());
-        addField(Translator.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
+        addField(Translator.localize("UMLMenu", "label.constraints"),
+		 getConstraintScroll());
+        addField(Translator.localize("UMLMenu", "label.namespace-visibility"),
+		 getNamespaceVisibilityPanel());
     }
 
     /**
-     * Calling this method navigates the target one level up, to the owner of
-     * the current target. In most cases this navigates to the owning namespace.
-     * In some cases it navigates to, for example, the owning composite state
-     * for some simple state.
+     * Calling this method navigates the target one level up, to the
+     * owner of the current target. In most cases this navigates to
+     * the owning namespace.  In some cases it navigates to, for
+     * example, the owning composite state for some simple state.
      */
     public void navigateUp() {
-        Object target = getTarget();
-        TargetManager.getInstance().setTarget(UmlHelper.getHelper().getOwner(getTarget()));
+        TargetManager.getInstance()
+	    .setTarget(UmlHelper.getHelper().getOwner(getTarget()));
     }
 
     public void navigateNamespace() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAModelElement(target)) {
+        if (ModelFacade.isAModelElement(target)) {
             Object elem = /*(MModelElement)*/ target;
             Object ns = ModelFacade.getNamespace(elem);
             if (ns != null) {
@@ -196,24 +230,51 @@ abstract public class PropPanelModelElement extends PropPanel {
     // THIS CLASS MUST NOT IMPLEMENT PluggablePropertyPanel.  These
     // are present to provide default implementations for any
     // property panel that extends this class.
+    /**
+     * @see PluggablePropertyPanel#getPropertyPanel()
+     */
     public PropPanel getPropertyPanel() {
         return this;
     }
+
+    /**
+     * @see ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() {
         return true;
     }
+
+    /**
+     * @see ArgoModule#getModulePopUpActions(Vector, Object)
+     */
     public Vector getModulePopUpActions(Vector v, Object o) {
         return null;
     }
+
+    /**
+     * @see ArgoModule#shutdownModule()
+     */
     public boolean shutdownModule() {
         return true;
     }
+
+    /**
+     * @see ArgoModule#initializeModule()
+     */
     public boolean initializeModule() {
-        ArgoModule.cat.debug("initializeModule()");
+        LOG.debug("initializeModule()");
         return true;
     }
+
+    /**
+     * @see ArgoModule#setModuleEnabled(boolean)
+     */
     public void setModuleEnabled(boolean enabled) {
     }
+
+    /**
+     * @see Pluggable#inContect(Object[])
+     */
     public boolean inContext(Object[] o) {
         return true;
     }
@@ -229,7 +290,11 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JComboBox getNamespaceComboBox() {
         if (namespaceComboBox == null) {
-            namespaceComboBox = new UMLSearchableComboBox(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON, true);
+            namespaceComboBox =
+		new UMLSearchableComboBox(
+		        namespaceComboBoxModel,
+			ActionSetModelElementNamespace.SINGLETON,
+			true);
         }
         return namespaceComboBox;
 
@@ -237,14 +302,18 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JComboBox getStereotypeBox() {
         if (stereotypeBox == null) {
-            stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
+            stereotypeBox =
+		new UMLComboBox2(stereotypeComboBoxModel,
+				 ActionSetModelElementStereotype.SINGLETON);
         }
         return stereotypeBox;
     }
 
     protected JScrollPane getSupplierDependencyScroll() {
         if (supplierDependencyScroll == null) {
-            JList supplierDependencyList = new UMLLinkedList(new UMLModelElementSupplierDependencyListModel());
+            JList supplierDependencyList =
+		new UMLLinkedList(
+		        new UMLModelElementSupplierDependencyListModel());
             supplierDependencyScroll = new JScrollPane(supplierDependencyList);
         }
         return supplierDependencyScroll;
@@ -252,7 +321,8 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getClientDependencyScroll() {
         if (clientDependencyScroll == null) {
-            JList clientDependencyList = new UMLLinkedList(clientDependencyListModel);
+            JList clientDependencyList =
+		new UMLLinkedList(clientDependencyListModel);
             clientDependencyScroll = new JScrollPane(clientDependencyList);
         }
         return clientDependencyScroll;
@@ -276,7 +346,10 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JScrollPane getConstraintScroll() {
         if (constraintScroll == null) {
-            JList constraintList = new UMLMutableLinkedList(constraintListModel, null, ActionNewModelElementConstraint.SINGLETON);
+            JList constraintList =
+		new UMLMutableLinkedList(
+		        constraintListModel, null,
+			ActionNewModelElementConstraint.SINGLETON);
             constraintScroll = new JScrollPane(constraintList);
         }
         return constraintScroll;
@@ -284,21 +357,25 @@ abstract public class PropPanelModelElement extends PropPanel {
 
     protected JPanel getNamespaceVisibilityPanel() {
         if (namespaceVisibilityPanel == null) {
-            namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
+            namespaceVisibilityPanel =
+		new UMLButtonPanel(
+			new UMLElementOwnershipVisibilityButtonGroup(this));
         }
         return namespaceVisibilityPanel;
     }
 
     protected JCheckBox getSpecializationCheckBox() {
         if (specializationCheckBox == null) {
-            specializationCheckBox = new UMLElementOwnershipSpecificationCheckBox();
+            specializationCheckBox =
+		new UMLElementOwnershipSpecificationCheckBox();
         }
         return specializationCheckBox;
     }
 
     protected JScrollPane getElementResidenceScroll() {
         if (elementResidenceScroll == null) {
-            JList elementResidenceList = new UMLLinkedList(elementResidenceListModel);
+            JList elementResidenceList =
+		new UMLLinkedList(elementResidenceListModel);
             elementResidenceScroll = new JScrollPane(elementResidenceList);
         }
         return elementResidenceScroll;
@@ -320,4 +397,14 @@ abstract public class PropPanelModelElement extends PropPanel {
         return nameDocument;
     }
 
+    /**
+     * Look up an icon.
+     *
+     * @param name the resource name.
+     * @return an ImageIcon corresponding to the given resource name.
+     */
+    private static ImageIcon lookupIcon(String name) {
+	return ResourceLoaderWrapper.getResourceLoaderWrapper()
+	    .lookupIconResource(name);
+    }
 }
