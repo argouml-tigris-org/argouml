@@ -422,40 +422,101 @@ public class MMUtil {
 		return usage;
 	}
 
-    public MOperation buildOperation(MClassifier cls){
-	//build the default operation
+    /**
+     * Constructs a default parameter and adds it to oper.
+     *
+     * @param oper 	The operation where it is added to. 
+     *			If null, it is not added.
+     * @return 		The newly created parameter.
+     */
+    public MParameter buildParameter() {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	MClassifier voidType = p.findType("void");
 
-	MParameter returnParameter = new MParameterImpl();
+	MParameter res = new MParameterImpl();
+	res.setName(null);
+	res.setStereotype(null);
+	res.setType(voidType);
+	res.setKind(MParameterDirectionKind.IN);
+	res.setDefaultValue(null);
+
+	return res;
+    }
+
+    public MParameter buildParameter(MBehavioralFeature oper) {
+	MParameter res = buildParameter();
+
+	if (oper != null)
+	    oper.addParameter(res);
+	return res;
+    }
+
+    public MParameter buildParameter(MEvent oper) {
+	MParameter res = buildParameter();
+
+	if (oper != null)
+	    oper.addParameter(res);
+	return res;
+    }
+
+    public MOperation buildOperation() {
+	//build the default operation
+	MOperation oper = new MOperationImpl();
+	oper.setName("newOperation");
+	oper.setStereotype(null);
+	oper.setOwner(null);
+	oper.setVisibility(MVisibilityKind.PUBLIC);
+	oper.setAbstract(false);
+	oper.setLeaf(false);
+	oper.setRoot(false);
+	oper.setQuery(false);
+	oper.setOwnerScope(MScopeKind.INSTANCE);
+	oper.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+
+	MParameter returnParameter = buildParameter(oper);
 	returnParameter.setKind(MParameterDirectionKind.RETURN);
-	returnParameter.setType(voidType);
 	returnParameter.setName("return");
 
-	MOperation oper = new MOperationImpl();
-	oper.addParameter(returnParameter);
-	oper.setName("newOperation");
-	oper.setVisibility(MVisibilityKind.PUBLIC);
+	return oper;
+    }
+
+    public MOperation buildOperation(MClassifier cls) {
+	MOperation oper = buildOperation();
 
 	cls.addFeature(oper);
 	return oper;
     }
 
 
-    public MAttribute buildAttribute(MClassifier cls){
+    public MAttribute buildAttribute() {
 	//build the default operation
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	MClassifier intType = p.findType("int");
-	MAttribute attr = cls.getFactory().createAttribute();
-	attr.setName("newAttr");
-	attr.setType(intType);
-	attr.setVisibility(MVisibilityKind.PUBLIC);
 
+	MAttribute attr = new MAttributeImpl();
+	attr.setName("newAttr");
+	attr.setMultiplicity(new MMultiplicity(1, 1));
+	attr.setStereotype(null);
+	attr.setOwner(null);
+	attr.setType(intType);
+	attr.setInitialValue(null);
+	attr.setVisibility(MVisibilityKind.PUBLIC);
+	attr.setOwnerScope(MScopeKind.INSTANCE);
+	attr.setChangeability(MChangeableKind.CHANGEABLE);
+	attr.setTaggedValue("transient", "false");
+	attr.setTaggedValue("volatile", "false");
+
+	return attr;
+    }
+
+    public MAttribute buildAttribute(MClassifier cls) {
+	MAttribute attr = buildAttribute();
 	cls.addFeature(attr);
 	return attr;
     }
+
 
     public MMessage buildMessage(MAssociationRole ar){
 	return buildMessage(ar, "");

@@ -165,9 +165,8 @@ public class PropPanelOperation extends PropPanelModelElement {
                     }
                 }
                 if(retParam == null) {
-                    retParam = new MParameterImpl();
+                    retParam = MMUtil.SINGLETON.buildParameter(oper);
                     retParam.setKind(MParameterDirectionKind.RETURN);
-                    oper.addParameter(retParam);
                 }
                 retParam.setType(type);
             }
@@ -239,9 +238,8 @@ public class PropPanelOperation extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MOperation) {
             MOperation oper = (MOperation) target;
-            MParameter newParam = oper.getFactory().createParameter();
+            MParameter newParam = MMUtil.SINGLETON.buildParameter(oper);
             newParam.setKind(MParameterDirectionKind.INOUT);
-            oper.addParameter(newParam);
             navigateTo(newParam);
         }
     }

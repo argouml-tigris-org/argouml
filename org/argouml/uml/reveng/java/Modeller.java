@@ -54,6 +54,7 @@ import org.argouml.ui.*;
 
 import org.argouml.ocl.OCLUtil;
 
+import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -814,7 +815,7 @@ public class Modeller
 
           else {
 
-        mParameter = new MParameterImpl();
+	      mParameter = MMUtil.SINGLETON.buildParameter();
 
         mParameter.setName("return");
 
@@ -838,7 +839,7 @@ public class Modeller
 
         Vector parameter = (Vector)i.next();
 
-        mParameter = new MParameterImpl();
+        mParameter = MMUtil.SINGLETON.buildParameter();
 
         mParameter.setName((String)parameter.elementAt(2));
 
@@ -1460,7 +1461,7 @@ public class Modeller
 
 	if(mOperation == null) {
 
-	    mOperation = new MOperationImpl();
+	    mOperation = MMUtil.SINGLETON.buildOperation();
 
 	    mOperation.setName(name);
 
@@ -1552,7 +1553,7 @@ public class Modeller
 
 	     getAssociationEnd(name, mClassifier) == null))) {
 
-	    mAttribute = new MAttributeImpl();
+	    mAttribute = MMUtil.SINGLETON.buildAttribute();
 
 	    mAttribute.setName(name);
 
