@@ -25,6 +25,7 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * This is the interface for rules that together make a model perspective
@@ -41,9 +42,15 @@ public interface PerspectiveRule {
     public String getRuleName();
     
     /**
-     * gets a collection of 'child' object for any 'parent' object in the
+     * gets a collection of 'child' objects for any 'parent' object in the
      * uml model, this creates the tree structure.
      */
     public Collection getChildren(Object parent);
     
+    /**
+     * gets a collection of objects for any 'parent' object in the
+     * uml model for which the tree structure must be recreated when
+     * they are changed.
+     */
+    public Set getDependencies(Object parent);
 }

@@ -26,7 +26,9 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
@@ -38,7 +40,7 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
 
     public Collection getChildren(Object parent) {
         
-        if (!(org.argouml.model.ModelFacade.isANamespace(parent)))
+        if (!ModelFacade.isANamespace(parent))
             return null;
         Collection ownedElements = ModelFacade.getOwnedElements(parent);
         Iterator it = ownedElements.iterator();
@@ -54,4 +56,12 @@ public class GoNamespaceToOwnedElements extends AbstractPerspectiveRule{
         return ret;
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isANamespace(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,6 +25,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
@@ -32,7 +34,8 @@ import org.argouml.model.ModelFacade;
 public class GoLinkStimuli extends AbstractPerspectiveRule{
     
     public Collection getChildren(Object parent) {
-	if (!(org.argouml.model.ModelFacade.isALink(parent))) return null;
+	if (!ModelFacade.isALink(parent))
+	    return null;
 	return ModelFacade.getStimuli(parent);
     }
 
@@ -43,4 +46,12 @@ public class GoLinkStimuli extends AbstractPerspectiveRule{
         return Translator.localize ("Tree", "misc.link.stimuli");
     }
 
+    public Set getDependencies(Object parent) {
+        if (ModelFacade.isALink(parent)) {
+	    Set set = new HashSet();
+	    set.add(parent);
+	    return set;
+	}
+	return null;
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.ui.explorer;
 
+import java.awt.EventQueue;
 import java.util.*;
 
 import javax.swing.tree.DefaultTreeModel;
@@ -49,10 +50,8 @@ import org.argouml.ui.explorer.rules.PerspectiveRule;
  * @author  alexb
  * @since 0.15.2
  */
-public class ExplorerTreeModel
-extends DefaultTreeModel
-implements TreeModelUMLEventListener,
-ItemListener{
+public class ExplorerTreeModel extends DefaultTreeModel
+		implements TreeModelUMLEventListener, ItemListener {
     
     /**
      * an array of 
@@ -77,6 +76,70 @@ ItemListener{
      */
     private Vector updatingChildren = new Vector();
 
+    /**
+     * A Runnable object that when executed does update some
+     * currently pending nodes.
+     */
+    ExplorerUpdater nodeUpdater = new ExplorerUpdater();
+
+    class ExplorerUpdater implements Runnable {
+	/**
+	 * The set of nodes pending being updated.
+	 */
+	private LinkedList pendingUpdates = new LinkedList();
+
+	/**
+	 * Is this object currently waiting to be run.
+	 */
+	private boolean hot;
+
+	public synchronized void schedule() {
+	    if (hot)
+		return;
+	    hot = true;
+	    EventQueue.invokeLater(this);
+	}
+
+	public synchronized void schedule(ExplorerTreeNode node) {
+	    if (!node.getPending()) {
+		pendingUpdates.add(node);
+		node.setPending(true);
+		if (hot)
+		    return;
+	    } else {
+		return;
+	    }
+	    hot = true;
+	    EventQueue.invokeLater(this);
+	}
+
+	public void run() {
+	    boolean done = false;
+
+	    synchronized (this) {
+		hot = false;
+	    }
+
+	    for (int i = 0; i < 100; i++) {
+		ExplorerTreeNode node = null;
+		synchronized (this) {
+		    if (!pendingUpdates.isEmpty()) {
+			node = (ExplorerTreeNode) pendingUpdates.removeFirst();
+			node.setPending(false);
+		    }
+		}
+		if (node == null) {
+		    done = true;
+		    break;
+		}
+		updateChildren(new TreePath(getPathToRoot(node)));
+	    }
+
+	    if (!done)
+		schedule();
+	}
+    };
+
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
 	super(null);
@@ -94,33 +157,28 @@ ItemListener{
      * a model element has changed in some way.
      */
     public void modelElementChanged(Object node) {
-
-	Object[] nodesArray = this.findNodes(node).toArray();
-
-	for (int x = 0; x < nodesArray.length; x++) {
-	    ExplorerTreeNode changeNode = (ExplorerTreeNode) nodesArray[x];
-	    nodeChanged(changeNode);
-
-	    Object path[] = getPathToRoot(changeNode);
-	    if (path.length > 0) {
-		Object newPath[] = new Object[path.length-1];
-		System.arraycopy(path, 0, newPath, 0, path.length-1);
-		updateChildren(new TreePath(newPath));
-	    }
-	}
+	traverseModified((TreeNode) getRoot(), node);
     }
     
     /**
      * a model element has been added to the model.
      */
     public void modelElementAdded(Object node) {
-        Iterator nodesIt = this.findNodes(node).iterator();
-        while(nodesIt.hasNext()){
-            DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode) nodesIt.next();
-	    updateChildren(new TreePath(getPathToRoot(changeNode)));
-        }
+	traverseModified((TreeNode) getRoot(), node);
     }
-    
+
+    private void traverseModified(TreeNode root, Object node) {
+	Enumeration children = root.children();
+	while (children.hasMoreElements()) {
+	    TreeNode child = (TreeNode) children.nextElement();
+	    traverseModified(child, node);
+	}
+
+	if (root instanceof ExplorerTreeNode) {
+	    ((ExplorerTreeNode) root).nodeModified(node);
+	}
+    }
+
     /**
      * a model element has been removed from the model.
      */
@@ -170,6 +228,7 @@ ItemListener{
 	Vector reordered = new Vector();
 	Vector newChildren = new Vector();
         Object modelElement = node.getUserObject();
+	Set deps = new HashSet();
 
 	// Avoid doing this too early in the initialization process
 	if (rules == null)
@@ -215,8 +274,10 @@ ItemListener{
         for (int x = 0; x < rules.length; x++) {
             Collection c = ((PerspectiveRule) rules[x])
 		    .getChildren(modelElement);
+            Set c2 = ((PerspectiveRule) rules[x])
+		    .getDependencies(modelElement);
 
-            if (c != null) {
+	    if (c != null) {
 		Iterator it = c.iterator();
 		while (it.hasNext()) {
 		    Object obj = it.next();
@@ -224,8 +285,13 @@ ItemListener{
 			newChildren.add(obj);
 		}
 	    }
+	    if (c2 != null) {
+		deps.addAll(c2);
+	    }
         }
 	Collections.sort(newChildren, order);
+	deps.addAll(newChildren);
+	node.setModifySet(deps);
 
 	Iterator cChlds = children.iterator();
 	Iterator nChlds = newChildren.iterator();

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,8 +28,10 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -42,35 +44,41 @@ import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
  * Go rule from represented operation to sequence diagram representing it
  * @author : jaap.branderhorst@xs4all.nl
  */
-public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule{
+public class GoClassifierToSequenceDiagram extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {        
-		return "Classifier->Sequence diagram";
+	return "Classifier->Sequence diagram";
     }
 
     /**
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-		if (org.argouml.model.ModelFacade.isAClassifier(parent)) {
-			 Collection col = ModelFacade.getCollaborations(parent);
-			 List ret = new ArrayList();
-			 Project p = ProjectManager.getManager().getCurrentProject();
-			 Iterator it = p.getDiagrams().iterator();
-			 while (it.hasNext()) {
-				 ArgoDiagram diagram = (ArgoDiagram) it.next();
-				 if (diagram instanceof UMLSequenceDiagram &&
-					 col.contains(((SequenceDiagramGraphModel)((UMLSequenceDiagram)diagram).getGraphModel()).getCollaboration())) {
-					 ret.add(diagram);
-				 }
-                
-			 }
-			 return ret;
-		 }
-		 return null;
+	if (org.argouml.model.ModelFacade.isAClassifier(parent)) {
+	    Collection col = ModelFacade.getCollaborations(parent);
+	    List ret = new ArrayList();
+	    Project p = ProjectManager.getManager().getCurrentProject();
+	    Iterator it = p.getDiagrams().iterator();
+
+	    while (it.hasNext()) {
+		ArgoDiagram diagram = (ArgoDiagram) it.next();
+		if (diagram instanceof UMLSequenceDiagram &&
+		    col.contains(((SequenceDiagramGraphModel)((UMLSequenceDiagram)diagram).getGraphModel()).getCollaboration())) {
+		    ret.add(diagram);
+		}
+	    }
+
+	    return ret;
+	}
+
+	return null;
     }
 
+    public Set getDependencies(Object parent) {
+        // TODO: What?
+	return null;
+    }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,6 +39,8 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
 
     private ExplorerTreeModel model;
     private boolean expanded;
+    private boolean pending;
+    private Set modifySet = Collections.EMPTY_SET;
 
     /** Creates a new instance of ExplorerTreeNode */
     public ExplorerTreeNode(Object userObj, ExplorerTreeModel model) {
@@ -53,6 +55,28 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
 	    expanded = true;
 	}
 	return super.isLeaf();
+    }
+
+    boolean getPending() {
+	return pending;
+    }
+
+    void setPending(boolean value) {
+	pending = value;
+    }
+
+    public void setModifySet(Set set) {
+	if (set == null || set.size() == 0)
+	    modifySet = Collections.EMPTY_SET;
+	else
+	    modifySet = set;
+    }
+
+    public void nodeModified(Object node) {
+	if (modifySet.contains(node))
+	    model.nodeUpdater.schedule(this);
+	if (node == getUserObject())
+	    model.nodeChanged(this);
     }
 
     /**
