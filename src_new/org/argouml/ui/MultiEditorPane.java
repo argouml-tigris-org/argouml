@@ -255,8 +255,9 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     				}
     			}
     			tabDia.getJGraph().setDiagram((Diagram)oldDia);
+    			break;
     		}	
-    		break;
+    		
     	}
     }
     			
