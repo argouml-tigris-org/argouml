@@ -36,12 +36,26 @@ package org.argouml.kernel;
  * @author Bob Tarling
  */
 public class SaveException extends PersistenceException {
+    /**
+     * The constructor.
+     * 
+     * @param message the message to be shown
+     * @param cause the cause of the exception
+     */
     public SaveException(String message, Throwable cause) {
         super(message, cause);
     }
+    
+    /**
+     * @param message the message to be shown
+     */
     public SaveException(String message) {
         super(message);
     }
+    
+    /**
+     * @param cause the cause of the exception
+     */
     public SaveException(Throwable cause) {
         super(cause);
     }
