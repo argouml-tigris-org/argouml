@@ -375,15 +375,14 @@ public class SVGWriter extends Graphics {
 	*/
     }
 
-
     private void drawOval( int x, int y, int w, int h, String style) {
 	Element oval = svg.createElement( "ellipse");
-	oval.setAttribute( "cx", ""+transformX( x));
-	oval.setAttribute( "cy", ""+transformY( y));
+	oval.setAttribute( "cx", ""+(transformX( x)+((double)scaleX( w))/2));
+	oval.setAttribute( "cy", ""+(transformY( y)+((double)scaleY( h))/2));
 	oval.setAttribute( "rx", ""+((double)scaleX( w))/2);
 	oval.setAttribute( "ry", ""+((double)scaleY( h))/2);
 	oval.setAttribute( "style", style);
-	root.appendChild( oval);	
+	root.appendChild( oval);
     }
 
     public void drawOval(int x, int y, int w, int h) {
