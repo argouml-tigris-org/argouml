@@ -1,0 +1,411 @@
+// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.application.api;
+import org.argouml.application.notation.*;
+// import org.argouml.language.*;
+// import org.argouml.uml.diagram.ui.*;
+// import org.argouml.language.java.*;
+// import org.argouml.language.uml.*;
+
+// import java.awt.*;
+import java.util.*;
+import java.beans.*;
+
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.behavior.activity_graphs.*;
+import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.use_cases.*;
+import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.model_management.*;
+
+import org.apache.log4j.*;
+
+/** Provides centralized methods dealing with notation.
+ *
+ *  @author Thierry Lach
+ *  @since 0.9.4
+ */
+
+public final class Notation
+implements PropertyChangeListener {
+
+  /** Define a static log4j category variable for ArgoUML notation.
+   */
+  public final static Category cat = Category.getInstance(NotationNameImpl.class.getPackage().getName()); 
+
+  /** The name of the uml 1.3 notation.
+   */
+  public static final NotationName NOTATION_UML_13 = makeNotation("Uml", "1.3");
+
+  /** The name of the java notation.
+   */
+  public static final NotationName NOTATION_JAVA = makeNotation("Java");
+
+  /** The name of the default notation.  The actual notation to use is
+   *  taken from the configuration using {@link #KEY_NOTATION}.
+   *  If there is not a value there, then {@link #NOTATION_UML_13} is used.
+   */
+  public static final NotationName NOTATION_DEFAULT = makeNotation("Default");
+
+  /** The configuration key for the preferred notation
+   */
+  public static final ConfigurationKey KEY_NOTATION = Configuration.makeKey("notation");
+
+  /** List of currently available notations.  In the future this will
+   *  be dynamically manipulated.
+   */
+  private static NotationName[] _notations = { NOTATION_DEFAULT,
+			                       NOTATION_JAVA,
+			                       NOTATION_UML_13 };
+
+  private static Notation SINGLETON = new Notation();
+
+  private Hashtable _providers = null;
+  private NotationProvider _defaultProvider = null;
+
+  private Notation() {
+      _providers = new Hashtable();
+      // _defaultNotation = org.argouml.language.uml.NotationUml;
+      Configuration.addListener(KEY_NOTATION, this);
+  }
+
+  /** Remove the notation change listener.
+   *  <code>finalize</code> should never happen, but play it safe.
+   */
+  public void finalize() {
+      Configuration.removeListener(KEY_NOTATION, this);
+  }
+
+  private NotationProvider getProvider(NotationName notation) {
+      return getDefaultProvider();
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // class accessors
+
+  protected String generateOperation(NotationName notation, MOperation op) {
+      return getProvider(notation).generateOperation(op);
+  }
+  protected String generateAttribute(NotationName notation, MAttribute attr) {
+      return getProvider(notation).generateAttribute(attr);
+  }
+  protected String generateParameter(NotationName notation, MParameter param) {
+      return getProvider(notation).generateParameter(param);
+  }
+  protected String generateName(NotationName notation, String name) {
+      return getProvider(notation).generateName(name);
+  }
+  protected String generatePackage(NotationName notation, MPackage pkg) {
+      return getProvider(notation).generatePackage(pkg);
+  }
+  protected String generateExpression(NotationName notation, MExpression expr) {
+      return getProvider(notation).generateExpression(expr);
+  }
+  protected String generateClassifier(NotationName notation, MClassifier cls) {
+      return getProvider(notation).generateClassifier(cls);
+  }
+  protected String generateStereotype(NotationName notation, MStereotype s) {
+      return getProvider(notation).generateStereotype(s);
+  }
+  protected String generateTaggedValue(NotationName notation, MTaggedValue s) {
+      return getProvider(notation).generateTaggedValue(s);
+  }
+  protected String generateAssociation(NotationName notation, MAssociation a) {
+      return getProvider(notation).generateAssociation(a);
+  }
+  protected String generateAssociationEnd(NotationName notation, MAssociationEnd ae) {
+      return getProvider(notation).generateAssociationEnd(ae);
+  }
+  protected String generateMultiplicity(NotationName notation, MMultiplicity m) {
+      return getProvider(notation).generateMultiplicity(m);
+  }
+  protected String generateState(NotationName notation, MState m) {
+      return getProvider(notation).generateState(m);
+  }
+  protected String generateStateBody(NotationName notation, MState stt) {
+      return getProvider(notation).generateStateBody(stt);
+  }
+  protected String generateTransition(NotationName notation, MTransition m) {
+      return getProvider(notation).generateTransition(m);
+  }
+  protected String generateAction(NotationName notation, MAction m) {
+      return getProvider(notation).generateAction(m);
+  }
+  protected String generateGuard(NotationName notation, MGuard m) {
+      return getProvider(notation).generateGuard(m);
+  }
+  protected String generateMessage(NotationName notation, MMessage m) {
+      return getProvider(notation).generateMessage(m);
+  }
+  protected String generateClassifierRef(NotationName notation, MClassifier m) {
+      return getProvider(notation).generateClassifierRef(m);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // static accessors
+
+  public static Notation getInstance() { return SINGLETON; }
+
+  public static String generateOperation(NotationContext ctx, MOperation op) {
+      return SINGLETON.generateOperation(Notation.getNotation(ctx), op);
+  }
+  public static String generateAttribute(NotationContext ctx, MAttribute attr) {
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx), attr);
+  }
+  public static String generateParameter(NotationContext ctx, MParameter param) {
+      return SINGLETON.generateParameter(Notation.getNotation(ctx), param);
+  }
+  public static String generatePackage(NotationContext ctx, MPackage p) {
+      return SINGLETON.generatePackage(Notation.getNotation(ctx), p);
+  }
+  public static String generateClassifier(NotationContext ctx, MClassifier cls) {
+      return SINGLETON.generateClassifier(Notation.getNotation(ctx), cls);
+  }
+  public static String generateStereotype(NotationContext ctx, MStereotype s) {
+      return SINGLETON.generateStereotype(Notation.getNotation(ctx), s);
+  }
+  public static String generateTaggedValue(NotationContext ctx, MTaggedValue s) {
+      return SINGLETON.generateTaggedValue(Notation.getNotation(ctx), s);
+  }
+  public static String generateAssociation(NotationContext ctx, MAssociation a) {
+      return SINGLETON.generateAssociation(Notation.getNotation(ctx), a);
+  }
+  public static String generateAssociationEnd(NotationContext ctx, MAssociationEnd ae) {
+      return SINGLETON.generateAssociationEnd(Notation.getNotation(ctx), ae);
+  }
+  public static String generateMultiplicity(NotationContext ctx, MMultiplicity m) {
+      return SINGLETON.generateMultiplicity(Notation.getNotation(ctx), m);
+  }
+  public static String generateState(NotationContext ctx, MState m) {
+      return SINGLETON.generateState(Notation.getNotation(ctx), m);
+  }
+  public static String generateStateBody(NotationContext ctx, MState m) {
+      return SINGLETON.generateStateBody(Notation.getNotation(ctx), m);
+  }
+  public static String generateTransition(NotationContext ctx, MTransition m) {
+      return SINGLETON.generateTransition(Notation.getNotation(ctx), m);
+  }
+  public static String generateAction(NotationContext ctx, MAction m) {
+      return SINGLETON.generateAction(Notation.getNotation(ctx), m);
+  }
+  public static String generateGuard(NotationContext ctx, MGuard m) {
+      return SINGLETON.generateGuard(Notation.getNotation(ctx), m);
+  }
+  public static String generateMessage(NotationContext ctx, MMessage m) {
+      return SINGLETON.generateMessage(Notation.getNotation(ctx), m);
+  }
+  public static String generateClassifierRef(NotationContext ctx,
+                                             MClassifier cls) {
+      return SINGLETON.generateClassifierRef(Notation.getNotation(ctx), cls);
+  }
+ 
+  /** Generate an arbitrary notation string for the context.
+   */
+  public static String generate(NotationContext ctx, Object o) {
+    if (o == null)
+      return "";
+    if (o instanceof MOperation)
+      return SINGLETON.generateOperation(Notation.getNotation(ctx),(MOperation) o);
+    if (o instanceof MAttribute)
+      return SINGLETON.generateAttribute(Notation.getNotation(ctx),(MAttribute) o);
+    if (o instanceof MParameter)
+      return SINGLETON.generateParameter(Notation.getNotation(ctx),(MParameter) o);
+    if (o instanceof MPackage)
+      return SINGLETON.generatePackage(Notation.getNotation(ctx),(MPackage) o);
+    if (o instanceof MClassifier)
+      return SINGLETON.generateClassifier(Notation.getNotation(ctx),(MClassifier) o);
+    if (o instanceof MExpression)
+      return SINGLETON.generateExpression(Notation.getNotation(ctx),(MExpression) o);
+    if (o instanceof String)
+      return SINGLETON.generateName(Notation.getNotation(ctx),(String) o);
+    // if (o instanceof String)
+    //   return SINGLETON.generateUninterpreted(Notation.getNotation(ctx),(String) o);
+    if (o instanceof MStereotype)
+      return SINGLETON.generateStereotype(Notation.getNotation(ctx),(MStereotype) o);
+    if (o instanceof MTaggedValue)
+      return SINGLETON.generateTaggedValue(Notation.getNotation(ctx),(MTaggedValue) o);
+    if (o instanceof MAssociation)
+      return SINGLETON.generateAssociation(Notation.getNotation(ctx),(MAssociation)o);
+    if (o instanceof MAssociationEnd)
+      return SINGLETON.generateAssociationEnd(Notation.getNotation(ctx),(MAssociationEnd)o);
+    if (o instanceof MMultiplicity)
+      return SINGLETON.generateMultiplicity(Notation.getNotation(ctx),(MMultiplicity)o);
+    if (o instanceof MState)
+      return SINGLETON.generateState(Notation.getNotation(ctx),(MState)o);
+    if (o instanceof MTransition)
+      return SINGLETON.generateTransition(Notation.getNotation(ctx),(MTransition)o);
+    if (o instanceof MAction)
+      return SINGLETON.generateAction(Notation.getNotation(ctx),(MAction)o);
+    if (o instanceof MCallAction)
+      return SINGLETON.generateAction(Notation.getNotation(ctx),(MAction)o);
+    if (o instanceof MGuard)
+      return SINGLETON.generateGuard(Notation.getNotation(ctx),(MGuard)o);
+    if (o instanceof MMessage)
+      return SINGLETON.generateMessage(Notation.getNotation(ctx),(MMessage)o);
+
+    if (o instanceof MModelElement)
+      return SINGLETON.generateName(Notation.getNotation(ctx),((MModelElement)o).getName());
+
+    if (o == null) return "";
+
+    return o.toString();
+  }
+
+    public static NotationName getNotation(NotationContext context) {
+        // needs-more-work: base it on the configuration.
+	// Make sure you check the ModelElement to see if it has
+	// an override on the notation.
+
+	// UML is the default language
+	// NotationName nn = context.getContextNotation();
+	// String s = Configuration.getString(KEY, DEFAULT_NOTATION_NAME);
+        return NOTATION_UML_13;
+    }
+
+    /** Called after the notation default property gets changed.
+     */
+    public void propertyChange(PropertyChangeEvent pce) {
+	// Needs-more-work: do we need to do anything else?
+        Argo.log.info ("Notation changed from : " + pce.getOldValue() +
+	                    " to " + pce.getNewValue());
+    }
+
+    public NotationProvider getDefaultProvider() {
+      if (_defaultProvider == null) {
+          // needs-more-work:  This must be the provider pointed to by the configuration,
+	  // or UML 13 if none.
+	  // 
+          // _defaultProvider = (NotationProvider)org.argouml.language.uml.NotationUml.getInstance();
+      }
+      return _defaultProvider;
+    }
+ 
+  ////////////////////////////////////////////////////////////////
+  // needs-more-work:  The following accessors are commented out
+  //                   and should be uncommented by those initially
+  //                   incorporating this code into production,
+  //                   only using those methods that are necessary.
+  ////////////////////////////////////////////////////////////////
+
+  // public static void parseOperationCompartment(NotationContext ctx, MClassifier cls, String s) {
+      // SINGLETON.getParser(Notation.getNotation(ctx)).parseOperationCompartment(cls, s);
+  // }
+
+  // public static void parseAttributeCompartment(NotationContext ctx, MClassifier cls, String s) {
+      // SINGLETON.getParser(Notation.getNotation(ctx)).parseAttributeCompartment(cls, s);
+  // }
+
+  // public static MOperation parseOperation(NotationContext ctx, String s) {
+      // return SINGLETON.getParser(Notation.getNotation(ctx)).parseOperation(s);
+  // }
+
+  // public static MAttribute parseAttribute(NotationContext ctx, String s) {
+      // return SINGLETON.getParser(Notation.getNotation(ctx)).parseAttribute(s);
+  // }
+
+  // public static String parseOutVisibility(NotationContext ctx, MFeature f, String s) { }
+
+  // public static String parseOutKeywords(NotationContext ctx, MFeature f, String s) { }
+
+  // public static String parseOutReturnType(NotationContext ctx, MOperation op, String s) { }
+
+  // public static String parseOutParams(NotationContext ctx, MOperation op, String s) { }
+
+  // public static String parseOutName(NotationContext ctx, MModelElement me, String s) { }
+
+  // public static String parseOutType(NotationContext ctx, MAttribute attr, String s) { }
+
+  // public static String parseOutInitValue(NotationContext ctx, MAttribute attr, String s) { }
+
+  // public static String parseOutColon(NotationContext ctx, String s) { }
+
+  // public static MParameter parseParameter(NotationContext ctx, String s) { }
+
+  // public static Package parsePackage(NotationContext ctx, String s) { }
+
+  // public static MClassImpl parseClassifier(NotationContext ctx, String s) { }
+
+  // public static MStereotype parseStereotype(NotationContext ctx, String s) { }
+
+  // public static MTaggedValue parseTaggedValue(NotationContext ctx, String s) { }
+
+   // public static MAssociation parseAssociation(NotationContext ctx, String s) { }
+
+   // public static MAssociationEnd parseAssociationEnd(NotationContext ctx, String s) { }
+
+  // public static MMultiplicity parseMultiplicity(NotationContext ctx, String s) { }
+
+  // public static MState parseState(NotationContext ctx, String s) { }
+
+  // public static void parseStateBody(NotationContext ctx, MState st, String s) { }
+
+  // public static void parseStateEntyAction(NotationContext ctx, MState st, String s) { }
+
+  // public static void parseStateExitAction(NotationContext ctx, MState st, String s) { }
+
+  // public static MTransition parseTransition(NotationContext ctx, MTransition trans, String s) { }
+
+  // public static void parseClassifierRole(NotationContext ctx, MClassifierRole cls, String s) { }
+
+  // public static void parseMessage(NotationContext ctx, MMessage mes, String s) { }
+
+  // public static void parseStimulus(NotationContext ctx, MStimulus sti, String s) { }
+
+  // public static MAction parseAction(NotationContext ctx, String s) { }
+
+  // public static MGuard parseGuard(NotationContext ctx, String s) { }
+
+  // public static MEvent parseEvent(NotationContext ctx, String s) { }
+
+  // public static void parseObject(NotationContext ctx, MObject obj, String s) { }
+
+  // public static void parseNodeInstance(NotationContext ctx, MNodeInstance noi, String s) { }
+
+  // public static void parseComponentInstance(NotationContext ctx, MComponentInstance coi, String s) { }
+
+  ////////////////////////////////////////////////////////////////
+  // Static workers for dealing with notation names.
+
+   /** List of available notations.
+    */
+   public static NotationName[] getAvailableNotations() {
+	return _notations;
+   }
+
+  /** Create an unversioned notation name.
+   */
+  public static NotationName makeNotation(String k1) {
+      return NotationNameImpl.makeNotation(k1, null);
+  }
+
+  /** Create a versioned notation name.
+   */
+  public static NotationName makeNotation(String k1, String k2) {
+      return NotationNameImpl.makeNotation(k1, k2);
+  }
+
+}
