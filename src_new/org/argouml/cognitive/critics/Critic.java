@@ -145,7 +145,7 @@ public class Critic implements Poster, Serializable {
     /** The icon representing the resource.
      */
     public static Icon DEFAULT_CLARIFIER =
-	ResourceLoaderWrapper.getResourceLoaderWrapper()
+	ResourceLoaderWrapper
 	    .lookupIconResource("PostIt0");
     protected Icon _clarifier = DEFAULT_CLARIFIER;
 
