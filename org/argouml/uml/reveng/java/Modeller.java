@@ -893,6 +893,22 @@ public class Modeller
 
             // Set the initial value for the attribute.
             if (initializer != null) {
+                
+                // we must remove line endings and tabs from the intializer
+                // strings, otherwise the classes will display horribly.
+                int index=0;
+                    index = initializer.indexOf("\n");
+                while(index != -1){
+                    initializer = initializer.substring(0, index)+initializer.substring(index+2,initializer.length());
+                    index = initializer.indexOf("\n");
+                }
+                
+                    index = initializer.indexOf("\t");
+                while(index != -1){
+                    initializer = initializer.substring(0, index)+initializer.substring(index+2,initializer.length());
+                    index = initializer.indexOf("\t");
+                }
+                
                 ModelFacade.setInitialValue(mAttribute,
 					    UmlFactory.getFactory().getDataTypes()
 					    .createExpression("Java",
@@ -1055,21 +1071,21 @@ public class Modeller
         if (mOperation == null) {
             mOperation =
 		UmlFactory.getFactory().getCore().buildOperation(parseState.getClassifier(), name);
-            Iterator it2 =
-		ProjectManager.getManager().getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
-            while (it2.hasNext()) {
-                Object listener = it2.next();
-                // UmlModelEventPump.getPump().removeModelEventListener(listener,
-                // mOperation);
-                UmlModelEventPump.getPump().addModelEventListener(listener,
-								  mOperation);
-                // UmlModelEventPump.getPump().removeModelEventListener(listener,
-                // mOperation.getParameter(0));
-                UmlModelEventPump.getPump()
-		    .addModelEventListener(listener,
-					   ModelFacade.getParameter(mOperation,
-								    0));
-            }
+//            Iterator it2 =
+//		ProjectManager.getManager().getCurrentProject().findFigsForMember(parseState.getClassifier()).iterator();
+//            while (it2.hasNext()) {
+//                Object listener = it2.next();
+//                // UmlModelEventPump.getPump().removeModelEventListener(listener,
+//                // mOperation);
+//                UmlModelEventPump.getPump().addModelEventListener(listener,
+//								  mOperation);
+//                // UmlModelEventPump.getPump().removeModelEventListener(listener,
+//                // mOperation.getParameter(0));
+//                UmlModelEventPump.getPump()
+//		    .addModelEventListener(listener,
+//					   ModelFacade.getParameter(mOperation,
+//								    0));
+//            }
         }
         return mOperation;
     }
