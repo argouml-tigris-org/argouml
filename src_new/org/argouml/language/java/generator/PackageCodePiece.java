@@ -95,21 +95,19 @@ public class PackageCodePiece extends NamedCodePiece
     /**
        Write the code this piece represents to file.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-    throws Exception
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack) throws Exception
     {
     ParseState parseState = (ParseState)parseStateStack.peek();
     MNamespace mNamespace = parseState.getNamespace();
 
-    if(mNamespace instanceof MModel) {
-        writer.write("// No package");
-    }
-    else {
+    if(!(mNamespace instanceof MModel)) {
         writer.write("package ");
         writer.write(GeneratorJava.getInstance().getPackageName(mNamespace));
         writer.write(";");
     }
+    // fast forward original code (overwriting)
+    ffCodePiece(reader,null);
     }
 }

@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 /*
+  taken from:
   JavaRE - Code generation and reverse engineering for UML and Java
   Author: Marcus Andersson andersson@users.sourceforge.net
 */
@@ -30,8 +31,8 @@
 package org.argouml.language.java.generator;
 
 import java.io.*;
-import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
+//import ru.novosoft.uml.foundation.core.*;
+import java.util.Stack;
 
 /**
    This is a code piece that has been identified by the parser to be
@@ -42,14 +43,53 @@ abstract public class NamedCodePiece extends CodePiece
     /**
        Write the code this piece represents to file. The stack in the
        parameter list contains the parser state when traversing up and
-       down in nested classes and interfaces.
+       down in nested classes and interfaces. The code that is written
+       is generated from the model, but if no appropriate model element
+       exists, then the original code is written in order to maintain
+       additionally source code.
 
+       @param reader Read original code from this.
        @param writer Write code to this.
-       @param namespaceStack Information with one stack frame for each
-                             classifier that the parser has descended into.
-       @param column The column in the output file currently at.  */
-    abstract public void write(Writer writer,
-                               Stack parseStateStack,
-                               int column)
-	throws Exception;
+       @param parseStateStack Information with one stack frame for each
+                              classifier that the parser has descended into. */
+    abstract public void write(BufferedReader reader,
+                               BufferedWriter writer,
+                               Stack parseStateStack) throws Exception;
+
+    /**
+       Read until the end of the code piece. As a precondition, the reader
+       must be positioned at the beginning of the code piece. If a writer
+       is given (not null), then everything that's read is written to the
+       writer. (Ususally, both reader and writer point to the same file).
+
+       @param reader Read original code from this.
+       @param writer Write code to this.  */
+    final public void ffCodePiece(BufferedReader reader,
+                                  BufferedWriter writer) throws Exception
+    {
+        int line = getStartLine();
+        int column = getStartPosition();
+        if (writer != null) {
+            while(line < getEndLine()) {
+                line++;
+                column = 0;
+                writer.write(reader.readLine());
+                writer.newLine();
+            }
+            while(column < getEndPosition()) {
+                column++;
+                writer.write(reader.read());
+            }
+        } else {
+            while(line < getEndLine()) {
+                line++;
+                column = 0;
+                reader.readLine();
+            }
+            while(column < getEndPosition()) {
+                column++;
+                reader.read();
+            }
+        }
+    }
 }

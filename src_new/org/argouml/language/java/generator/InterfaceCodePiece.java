@@ -104,60 +104,26 @@ public class InterfaceCodePiece extends NamedCodePiece
 
     /**
        Write the code this piece represents to file. This will add one
-       level to the stack.
+       level to the stack if the interface is in the model.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-	throws Exception
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack) throws Exception
     {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	MInterface mInterface = (MInterface)parseState.newClassifier(name);
+        ParseState parseState = (ParseState)parseStateStack.peek();
+        MInterface mInterface = (MInterface)parseState.newClassifier(name);
 
-	if(mInterface == null) {
-	    // Removed
-	    mInterface = UmlFactory.getFactory().getCore().createInterface();
-	    writer.write("REMOVED ");
-	}
-
-	parseStateStack.push(new ParseState(mInterface));
-
-  StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mInterface);
-
-  if (sbText != null) {
-    writer.write (sbText.toString());
-  }
-
-/*	if(GeneratorJava.generateConstraintEnrichedDocComment(mInterface, writer)) {
-	    for(int k=0; k<column; k++) {
-		writer.write(" ");
-	    }
-	}
-
-	if(mInterface.getVisibility() == MVisibilityKind.PUBLIC) {
-	    writer.write("public ");
-	}
-	else if(mInterface.getVisibility() == MVisibilityKind.PROTECTED) {
-	    writer.write("protected ");
-	}
-	else if(mInterface.getVisibility() == MVisibilityKind.PRIVATE) {
-	    writer.write("private ");
-	}
-	writer.write("interface " + mInterface.getName());
-
-	Collection generalizations = mInterface.getGeneralizations();
-	boolean first = false;
-	for(Iterator i = generalizations.iterator(); i.hasNext(); ) {
-	    if(first) {
-		writer.write(" extends ");
-		first = false;
-	    }
-	    else {
-		writer.write(", ");
-	    }
-	    writer.write(((MInterface)
-			      ((MGeneralization)i.next()).getParent()).
-			     getName());
-	}*/
+       if (mInterface != null) {
+           parseStateStack.push(new ParseState(mInterface));
+           StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart(mInterface);
+           if (sbText != null) {
+               writer.write (sbText.toString());
+           }
+            // dispose code piece in reader
+            ffCodePiece(reader,null);
+        } else {
+            // not in model, so write the original code
+            ffCodePiece(reader,writer);
+        }
     }
 }

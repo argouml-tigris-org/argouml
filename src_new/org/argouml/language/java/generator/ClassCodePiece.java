@@ -104,73 +104,26 @@ public class ClassCodePiece extends NamedCodePiece
 
     /**
        Write the code this piece represents to file. This adds a new
-       level to the stack.
+       level to the stack if the class is in the model.
     */
-    public void write(Writer writer,
-                      Stack parseStateStack,
-                      int column)
-	throws Exception
+    public void write(BufferedReader reader,
+                      BufferedWriter writer,
+                      Stack parseStateStack) throws Exception
     {
-	ParseState parseState = (ParseState)parseStateStack.peek();
-	MClass mClass = (MClass)parseState.newClassifier(name);
+       ParseState parseState = (ParseState)parseStateStack.peek();
+       MClass mClass = (MClass)parseState.newClassifier(name);
 
-	if(mClass == null) {
-	    // Removed
-	    mClass = UmlFactory.getFactory().getCore().buildClass();
-	    writer.write("REMOVED ");
-	}
-
-	parseStateStack.push(new ParseState(mClass));
-
-  StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart (mClass);
-
-  if (sbText != null) {
-    writer.write (sbText.toString());
-  }
-/*	if(GeneratorJava.generateConstraintEnrichedDocComment(mClass, writer)) {
-	    for(int k=0; k<column; k++) {
-		writer.write(" ");
-	    }
-	}
-
-	if(mClass.isAbstract()) {
-	    writer.write("abstract ");
-	}
-	if(mClass.isLeaf()) {
-	    writer.write("final ");
-	}
-	if(mClass.getVisibility() == MVisibilityKind.PUBLIC) {
-	    writer.write("public ");
-	}
-	else if(mClass.getVisibility() == MVisibilityKind.PROTECTED) {
-	    writer.write("protected ");
-	}
-	else if(mClass.getVisibility() == MVisibilityKind.PRIVATE) {
-	    writer.write("private ");
-	}
-	writer.write("class " + mClass.getName());
-
-	Collection generalizations = mClass.getGeneralizations();
-	if(generalizations.size() > 0) {
-	    writer.write(" extends " +
-			     ((MClass)
-			      ((MGeneralization)
-			       generalizations.toArray()[0]).
-			      getParent()).getName());
-	}
-
-	Collection abstractions = mClass.getClientDependencies();
-	boolean first = true;
-	for(Iterator i = abstractions.iterator(); i.hasNext(); ) {
-	    if(first) {
-		writer.write(" implements ");
-		first = false;
-	    }
-	    else {
-		writer.write(", ");
-	    }
-	    writer.write(((MModelElement)((MDependency)i.next()).
-			      getSuppliers().toArray()[0]).getName());
-	}*/
+       if (mClass != null) {
+           parseStateStack.push(new ParseState(mClass));
+           StringBuffer sbText = GeneratorJava.getInstance().generateClassifierStart(mClass);
+           if (sbText != null) {
+               writer.write (sbText.toString());
+           }
+            // dispose code piece in reader
+            ffCodePiece(reader,null);
+        } else {
+            // not in model, so write the original code
+            ffCodePiece(reader,writer);
+        }
     }
 }

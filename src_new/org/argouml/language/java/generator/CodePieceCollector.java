@@ -22,6 +22,7 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 /*
+  taken from:
   JavaRE - Code generation and reverse engineering for UML and Java
   Author: Marcus Andersson andersson@users.sourceforge.net
 */
@@ -75,7 +76,7 @@ public class CodePieceCollector
 
     /**
        Replace all the code pieces in a source file with new code from
-       the model.
+       the model, or maintain them if nothing is found in the model.
 
        @param source The source file.
        @param destination The destination file.
@@ -86,10 +87,8 @@ public class CodePieceCollector
                        MNamespace mNamespace)
 	throws Exception
     {
-	BufferedReader reader =
-	    new BufferedReader(new FileReader(source));
-	BufferedWriter writer =
-	    new BufferedWriter(new FileWriter(destination));
+	BufferedReader reader = new BufferedReader(new FileReader(source));
+	BufferedWriter writer = new BufferedWriter(new FileWriter(destination));
 	int line = 0;
 	int column = 0;
 	Stack parseStateStack = new Stack();
@@ -97,7 +96,7 @@ public class CodePieceCollector
 
 	for(Iterator i = codePieces.iterator(); i.hasNext(); ) {
 	    NamedCodePiece cp = (NamedCodePiece)i.next();
-	    // Copy until code piece
+	    // copy until code piece
 	    while(line < cp.getStartLine()) {
 		line++;
 		column = 0;
@@ -108,18 +107,10 @@ public class CodePieceCollector
 		writer.write(reader.read());
 		column++;
 	    }
-	    // Insert code piece
-	    cp.write(writer, parseStateStack, column);
-	    // Dispose code piece in reader
-	    while(line < cp.getEndLine()) {
-		line++;
-		column = 0;
-		reader.readLine();
-	    }
-	    while(column < cp.getEndPosition()) {
-		column++;
-		reader.read();
-	    }
+	    // write code piece
+	    cp.write(reader, writer, parseStateStack);
+	    line = cp.getEndLine();
+	    column = cp.getEndPosition();
 	}
 
 	// Copy the rest of the file
@@ -133,4 +124,3 @@ public class CodePieceCollector
 	writer.close();
     }
 }
-
