@@ -28,9 +28,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.UUIDManager;
+import org.argouml.uml.UUIDHelper;
 
 /**
  * An instances of this class is supposed to be attached to an instance
@@ -158,7 +157,7 @@ public class ItemUID
      */
     protected static String readObjectID(Object obj) {
         if (ModelFacade.isABase(obj)) {
-            return ProjectManager.getUUID(obj);
+            return UUIDHelper.getInstance().getUUID(obj);
         }
 	/*
 	// Want to use the "built in" UID of the MXxx instances
