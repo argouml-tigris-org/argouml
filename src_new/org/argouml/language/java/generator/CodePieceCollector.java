@@ -36,9 +36,17 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
+
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
+
 /**
    This class collects pieces of code when a source file is parsed,
    and then updates the file with new code from the model.
@@ -87,8 +95,17 @@ public class CodePieceCollector {
     public void filter(File source,
                        File destination,
                        Object/*MNamespace*/ mNamespace) throws Exception {
-	BufferedReader reader = new BufferedReader(new FileReader(source));
-	BufferedWriter writer = new BufferedWriter(new FileWriter(destination));
+	String encoding = null;
+      if ( Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
+	|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals(""))
+      	encoding = System.getProperty("file.encoding");
+	else
+      	encoding = Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING);
+      FileInputStream in = new FileInputStream(source);
+      FileOutputStream out = new FileOutputStream(destination);
+
+	BufferedReader reader = new BufferedReader(new InputStreamReader(in, encoding));
+	BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, encoding));
 	int line = 0;
 	int column = 0;
 	Stack parseStateStack = new Stack();
