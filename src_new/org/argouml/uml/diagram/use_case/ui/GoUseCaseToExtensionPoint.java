@@ -69,18 +69,17 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
   
 
     /**
-     * <p>Get the object at the root of the {@link JTree}.<p>
+     * Get the object at the root of the {@link JTree}.
      *
-     * <p><em>Warning</em>. This should never be invoked, since an extension
-     *   point cannot be the root of the tree. We print a rude message on the
-     *   console.</p>
+     * <p>
+     * <em>Warning</em>. This should never be invoked, since an extension
+     * point cannot be the root of the tree.
      *
      * @return  The object at the root of the tree
      */
-
     public Object getRoot() {
-        throw new Error(getClass().toString() +
-			": getRoot() should never be called");
+        throw
+	    new UnsupportedOperationException("getRoot should not be called");
     }
 
 
@@ -122,9 +121,8 @@ public class GoUseCaseToExtensionPoint implements TreeModel {
         // Give up (with a rude message) if we are not a use case
 
         if (!(parent instanceof MUseCase)) {
-            throw new Error(getClass().toString() +
-			    ": getChild() should not be called " +
-			    "with parent of type " + parent);
+            throw new UnsupportedOperationException
+		("getChild should not be called");
         }
 
         // Get the extension points, place in a vector and return the one asked

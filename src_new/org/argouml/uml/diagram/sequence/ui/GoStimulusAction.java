@@ -42,7 +42,8 @@ public class GoStimulusAction implements TreeModel {
   }
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 

@@ -39,7 +39,8 @@ public class GoMachineToTrans implements TreeModel {
   public String toString() { return "State Machine->Transition"; }
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -50,7 +51,8 @@ public class GoMachineToTrans implements TreeModel {
       Vector trans = new Vector(sm.getTransitions());
       return (trans == null) ? null : trans.elementAt(index);
     }
-    throw new Error("getChild should never be get here GoClassToTrans");
+    throw
+	new UnsupportedOperationException("getChild should never be get here");
   }
 
   public int getChildCount(Object parent) {

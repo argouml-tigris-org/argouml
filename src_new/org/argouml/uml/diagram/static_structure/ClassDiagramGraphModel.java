@@ -307,7 +307,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Contruct and add a new edge of a kind determined by the ports */
   public Object connect(Object fromPort, Object toPort) {
-      throw new Error("should not enter here! connect2");
+      throw new UnsupportedOperationException("should not enter here!");
   }
 
   /** Contruct and add a new edge of the given kind */
@@ -475,7 +475,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
           }
       }
     
-      throw new Error("should not enter here! connect3");
+      throw new UnsupportedOperationException("should not enter here!");
   }
 
 

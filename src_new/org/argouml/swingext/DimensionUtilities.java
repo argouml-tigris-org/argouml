@@ -16,7 +16,7 @@ public class DimensionUtilities {
     
     /** Creates a new instance of DimensionUtilities */
     private DimensionUtilities() {
-        throw new Error("ActionUtilities is just a container for static methods");
+        throw new UnsupportedOperationException("DimensionUtilities is just a container for static methods");
     }
 
     /**

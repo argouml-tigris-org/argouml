@@ -37,7 +37,7 @@ public class GoListToPriorityToItem implements TreeModel {
   // TreeModel implementation
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw new UnsupportedOperationException("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -57,7 +57,7 @@ public class GoListToPriorityToItem implements TreeModel {
 	}
       }
     }
-    throw new Error("getChild shouldnt get here GoListToPriorityToItem");
+    throw new IndexOutOfBoundsException("getChild shouldnt get here GoListToPriorityToItem");
   }
 
   public int getChildCount(Object parent) {

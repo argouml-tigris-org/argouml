@@ -39,7 +39,7 @@ public class GoModelToUseCase implements TreeModel {
   public String toString() { return "Package->Use Case"; }
   
   public Object getRoot() {
-    throw new Error("getRoot should never be called");
+    throw new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -52,7 +52,7 @@ public class GoModelToUseCase implements TreeModel {
 	if (index == 0) return me;
       }
     }
-    throw new Error("getChild should never get here GoModelToUseCase");
+    throw new UnsupportedOperationException("getChild should never get here");
   }
 
   public int getChildCount(Object parent) {

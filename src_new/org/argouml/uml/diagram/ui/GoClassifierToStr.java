@@ -43,7 +43,8 @@ public class GoClassifierToStr implements TreeModel {
   }
   
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   } 
   public void setRoot(Object r) { }
 
@@ -54,7 +55,8 @@ public class GoClassifierToStr implements TreeModel {
 	  Vector v = new Vector(behs);
       return v.elementAt(index);
 	}
-    throw new Error("getChild should never be get here GoClassifierToStr");
+    throw 
+	new UnsupportedOperationException("getChild should never be get here");
   }
   
   public int getChildCount(Object parent) {

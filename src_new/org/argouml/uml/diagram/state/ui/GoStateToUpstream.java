@@ -39,7 +39,8 @@ public class GoStateToUpstream implements TreeModel {
   public String toString() { return "State->Preceeding States"; }
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -49,7 +50,8 @@ public class GoStateToUpstream implements TreeModel {
       if (incoming == null) return null;
       return ((MTransition)incoming.elementAt(index)).getSource();
     }
-    throw new Error("getChild should never be get here GoStateToUpstream");
+    throw
+	new UnsupportedOperationException("getChild should never be get here");
   }
 
   // needs-more-work: should be a set

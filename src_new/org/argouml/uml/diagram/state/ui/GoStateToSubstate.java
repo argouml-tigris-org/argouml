@@ -39,7 +39,8 @@ public class GoStateToSubstate implements TreeModel {
   public String toString() { return "State->Substates"; }
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called: GoStateToSubstate");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 

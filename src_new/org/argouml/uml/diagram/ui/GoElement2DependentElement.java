@@ -43,7 +43,8 @@ public class GoElement2DependentElement implements TreeModel {
   }
 
   public Object getRoot() {
-      throw new Error("getRoot should never be called");
+      throw
+	  new UnsupportedOperationException("getRoot should never be called");
   }
   public void setRoot(Object r) { }
 
@@ -54,8 +55,8 @@ public class GoElement2DependentElement implements TreeModel {
       Vector clients = new Vector(((MDependency)deps.elementAt(index)).getClients());
       return clients.elementAt(0);
     }
-    throw new Error("getChild should never be get here "+
-		    "GoElement2ependentElement");
+    throw
+	new UnsupportedOperationException("getChild should never be get here");
   }
 
   public int getChildCount(Object parent) {
