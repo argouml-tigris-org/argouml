@@ -60,58 +60,61 @@ public class UMLTextField
     implements DocumentListener, UMLUserInterfaceComponent, FocusListener {
 
     /** logger */
-    private static Logger LOG = Logger.getLogger(UMLTextField.class);
+    private static final Logger LOG = Logger.getLogger(UMLTextField.class);
 
-    private UMLUserInterfaceContainer _container;
-    private UMLTextProperty _property;
+    private UMLUserInterfaceContainer theContainer;
+    private UMLTextProperty theProperty;
 
     /**
      * value of property when focus is gained
      */
-    protected String _oldPropertyValue;
+    private String oldPropertyValue;
 
     /**
      * true if text has changed since last focusgained
      */
-    protected boolean _textChanged = false;
+    private boolean textChanged = false;
 
     /**
      * true if changed via userinput
      */
-    protected boolean _viaUserInput = false;
+    private boolean viaUserInput = false;
 
     /**
      * true if it's the first exception in the handling of events,
      * prevents exception loops and thus hanging argouml
      */
-    protected boolean _firstException = true;
+    private boolean firstException = true;
 
     private class TextSetter implements Runnable {
-        String _text = null;
-        JTextField _field = null;
+        private String text = null;
+        private JTextField field = null;
         /**
          * @see java.lang.Runnable#run()
          */
         public void run() {
-            _field.setText(_text);
+            field.setText(text);
         }
         
-        public TextSetter(String textToSet, JTextField field) {
-	    _text = textToSet;
-	    _field = field;
+        public TextSetter(String textToSet, JTextField f) {
+	    text = textToSet;
+	    field = f;
         }
     }
 
-    Object _target;
-    Object/*MClassifier*/ _classifier;
+    private Object target;
+    private Object/*MClassifier*/ classifier;
 
     /**
      * Creates new BooleanChangeListener.<p>
+     * 
+     * @param container the container of UML user interface components
+     * @param property the property
      */
     public UMLTextField(UMLUserInterfaceContainer container,
 			UMLTextProperty property) {
-        _container = container;
-        _property = property;
+        theContainer = container;
+        theProperty = property;
         getDocument().addDocumentListener(this);
         // addActionListener(this);
         addFocusListener(this);
@@ -123,50 +126,71 @@ public class UMLTextField
 	 * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
 	 */
     public void targetChanged() {
-        _property.targetChanged();
+        theProperty.targetChanged();
         // update();
         
-        _target = _container.getTarget();
-        String newText = _property.getProperty(_container);
+        target = theContainer.getTarget();
+        String newText = theProperty.getProperty(theContainer);
         TextSetter textSetter = new TextSetter(newText, this);
         SwingUtilities.invokeLater(textSetter);
         
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent p1) {
         //        LOG.info("UMLTextField.roleAdded: event p1 happened...");
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
         //        LOG.info("UMLTextField.recovered: event p1 happened...");
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {
         //
         //   check the possibility that this is a promiscuous event
         Object eventSource = event.getSource();
-        _target = _container.getTarget();
-        if (_target == null) {
+        target = theContainer.getTarget();
+        if (target == null) {
             return;
         }
-        if (_property.isAffected(event)) {      
+        if (theProperty.isAffected(event)) {      
             //
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
-            if ((eventSource == null || eventSource == _target)
+            if ((eventSource == null || eventSource == target)
 		&& ((event.getOldValue() == null
 		     && event.getNewValue() != null)
 		    || (event.getNewValue() == null
@@ -199,7 +223,7 @@ public class UMLTextField
      */
     private void update() {
         String oldText = getText();
-        String newText = _property.getProperty(_container);
+        String newText = theProperty.getProperty(theContainer);
         // Update the text if we have changed from or to nothing, or if the old
         // and new text are different.
         
@@ -220,15 +244,15 @@ public class UMLTextField
         // the only reason to do this next bit is to update the diagrams. 
         // (according to the javadoc and what i see). This can be done in a 
         // better way, by searching the appropriate figs and update them
-        _target = _container.getTarget();
-        if (_target == null) {
+        target = theContainer.getTarget();
+        if (target == null) {
             return;
         }  
        
     
         Project p = ProjectManager.getManager().getCurrentProject();
 
-        Iterator it = p.findFigsForMember(_target).iterator();
+        Iterator it = p.findFigsForMember(target).iterator();
         while (it.hasNext()) {
             Fig o = (Fig) it.next();
            	
@@ -247,6 +271,9 @@ public class UMLTextField
         }
     }
     
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(final DocumentEvent p1) {
         // never happens since UMLTextFields don't support non-plain documents
         // handleEvent();
@@ -259,54 +286,60 @@ public class UMLTextField
      * @see javax.swing.event.DocumentListener#removeUpdate(DocumentEvent)
      */
     public void removeUpdate(final DocumentEvent p1) {
-        if (_viaUserInput) {	
-	    _textChanged = p1.getLength() > 0;
+        if (viaUserInput) {	
+	    textChanged = p1.getLength() > 0;
         }
         handleEvent();
     }
     
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(final DocumentEvent p1) {
         // this is hit after focusgained
         // we must check wether the text is really changed
-        if (_viaUserInput) {
-            _textChanged =
+        if (viaUserInput) {
+            textChanged =
                 // (_oldPropertyValue != null) &&
                     p1.getLength() > 0;
         }
         handleEvent();
     }
     
+    /**
+     * Handle the event.
+     */
     protected void handleEvent() {
         try {
-            if (_viaUserInput) {
-            	if (_textChanged) {
+            if (viaUserInput) {
+            	if (textChanged) {
 		    // next line dirty hack to enable the continuous updating 
 		    // of the textfields in the figs and in the navigator
-		    _textChanged = false;
+		    textChanged = false;
 		    // _property.setProperty(_container, _oldPropertyValue);
-		    _property.setProperty(_container, getText(), true);
+		    theProperty.setProperty(theContainer, getText(), true);
             	}
             }
             else {
-            	String proptext = _property.getProperty(_container);
+            	String proptext = theProperty.getProperty(theContainer);
             	String fieldtext = getText();
             	if (proptext != null && !proptext.equals(fieldtext)) {
-		    _property.setProperty(_container, proptext, false);
+		    theProperty.setProperty(theContainer, proptext, false);
             	}	
             }
         }
         catch (PropertyVetoException pv) {
             showException(pv);
-            TextSetter textSetter = new TextSetter(_oldPropertyValue, this);
+            TextSetter textSetter = new TextSetter(oldPropertyValue, this);
             SwingUtilities.invokeLater(textSetter);
         }
         catch (Exception ex) { 
             showException(ex);
-            if (_firstException) {
+            if (firstException) {
                 try {
-                    _property.setProperty(_container, _oldPropertyValue);
+                    theProperty.setProperty(theContainer, oldPropertyValue);
                     TextSetter textSetter =
-			new TextSetter(_oldPropertyValue, this);
+			new TextSetter(oldPropertyValue, this);
 		    SwingUtilities.invokeLater(textSetter);
                 }
                 catch (Exception e) {
@@ -314,7 +347,7 @@ public class UMLTextField
                     LOG.fatal(e);
                     System.exit(-1);
                 }
-                _firstException = false;
+                firstException = false;
             }
             else {
                 LOG.fatal("Repeating exception");
@@ -328,19 +361,22 @@ public class UMLTextField
      * @see java.awt.event.FocusListener#focusGained(FocusEvent)
      */
     public void focusGained(FocusEvent arg0) {
-        _oldPropertyValue = _property.getProperty(_container);
-        _textChanged = false;
-        _viaUserInput = true;
+        oldPropertyValue = theProperty.getProperty(theContainer);
+        textChanged = false;
+        viaUserInput = true;
     }
     /**
      * @see java.awt.event.FocusListener#focusLost(FocusEvent)
      */
     public void focusLost(FocusEvent arg0) {
         handleEvent();
-        _viaUserInput = false;
-        _textChanged = false;
+        viaUserInput = false;
+        textChanged = false;
     }
     
+    /**
+     * @param ex the exception to be shown
+     */
     protected void showException(Exception ex) {
         String message = ex.getMessage();
         // cant show the messagebox in this container

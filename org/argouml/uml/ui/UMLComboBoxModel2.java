@@ -53,23 +53,23 @@ public abstract class UMLComboBoxModel2
     extends AbstractListModel
     implements MElementListener, ComboBoxModel, TargetListener {
 
-    private static Logger log =
+    private static final Logger LOG =
         Logger.getLogger("org.argouml.uml.ui.UMLComboBoxModel2");
 
     /**
      * The taget of the comboboxmodel. This is some UML modelelement
      */
-    protected Object _target = null;
+    protected Object comboBoxTarget = null;
 
     /**
      * The list with objects that should be shown in the combobox
      */
-    private List _objects = new ArrayList();
+    private List objects = new ArrayList();
 
     /**
      * The selected object
      */
-    private Object _selectedObject = null;
+    private Object selectedObject = null;
 
     /**
      * Flag to indicate if the user may select "" as value in the combobox. If
@@ -77,7 +77,7 @@ public abstract class UMLComboBoxModel2
      * Makes sure that there is allways a "" in the list with objects so the
      * user has the oportunity to select this to clear the attribute.
      */
-    private boolean _clearable = false;
+    private boolean isClearable = false;
 
     /**
      * The name of the event with which NSUML sets the attribute that is shown
@@ -113,7 +113,7 @@ public abstract class UMLComboBoxModel2
         // it would be better that we don't need the container to get
         // the target this constructor can be without parameters as
         // soon as we improve targetChanged
-        _clearable = clearable;
+        isClearable = clearable;
         _propertySetName = propertySetName;
     }
 
@@ -132,7 +132,7 @@ public abstract class UMLComboBoxModel2
     public void propertySet(MElementEvent e) {
         if (e.getName().equals(_propertySetName)
             && e.getSource() == getTarget()
-	    && (_clearable || getChangedElement(e) != null))
+	    && (isClearable || getChangedElement(e) != null))
 	{
 	    Object elem = getChangedElement(e);
 	    if (!contains(elem))
@@ -169,7 +169,7 @@ public abstract class UMLComboBoxModel2
             Object o = getChangedElement(e);
             if (o instanceof Collection) { // this should not happen but
                 // you never know with NSUML
-                log.warn(
+                LOG.warn(
 			 "Collection added via roleAdded! The correct element"
 			 + "is probably not selected...");
                 Iterator it = ((Collection) o).iterator();
@@ -219,16 +219,16 @@ public abstract class UMLComboBoxModel2
     protected void setElements(Collection elements) {
         if (elements != null) {
             //removeAllElements();
-            if (!_objects.isEmpty()) {
-                fireIntervalRemoved(this, 0, _objects.size() - 1);
+            if (!objects.isEmpty()) {
+                fireIntervalRemoved(this, 0, objects.size() - 1);
             }
             //addAll(elements);
-            _objects = Collections.synchronizedList(new ArrayList(elements));
-            if (!_objects.isEmpty()) {
-                fireIntervalAdded(this, 0, _objects.size() - 1);
+            objects = Collections.synchronizedList(new ArrayList(elements));
+            if (!objects.isEmpty()) {
+                fireIntervalAdded(this, 0, objects.size() - 1);
             }
-            _selectedObject = null;
-            if (_clearable && !elements.contains("")) {
+            selectedObject = null;
+            if (isClearable && !elements.contains("")) {
                 addElement("");
             }
         } else
@@ -243,7 +243,7 @@ public abstract class UMLComboBoxModel2
      * @return MModelElement
      */
     protected Object getTarget() {
-        return _target;
+        return comboBoxTarget;
     }
 
     /**
@@ -285,14 +285,14 @@ public abstract class UMLComboBoxModel2
         Iterator it = col.iterator();
         Object o2 = getSelectedItem();
         _fireListEvents = false;
-        int oldSize = _objects.size();
+        int oldSize = objects.size();
         while (it.hasNext()) {
             Object o = it.next();
             addElement(o);
         }
         setSelectedItem(o2);
         _fireListEvents = true;
-        fireIntervalAdded(this, oldSize - 1, _objects.size() - 1);
+        fireIntervalAdded(this, oldSize - 1, objects.size() - 1);
     }
 
     /**
@@ -321,25 +321,25 @@ public abstract class UMLComboBoxModel2
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-            if (ModelFacade.isABase(_target)) {
-                eventPump.removeModelEventListener(this, _target,
+            if (ModelFacade.isABase(comboBoxTarget)) {
+                eventPump.removeModelEventListener(this, comboBoxTarget,
 						   _propertySetName);
             }
 
             if (ModelFacade.isABase(target)) {
-                _target = target;
+                comboBoxTarget = target;
                 // UmlModelEventPump.getPump()
                 // .removeModelEventListener(this, (MBase)_target,
                 // _propertySetName);
-                eventPump.addModelEventListener(this, _target,
+                eventPump.addModelEventListener(this, comboBoxTarget,
 						_propertySetName);
             } else {
-                _target = null;
+                comboBoxTarget = null;
             }
             _fireListEvents = false;
             removeAllElements();
             _fireListEvents = true;
-            if (_target != null) {
+            if (comboBoxTarget != null) {
                 _buildingModel = true;
                 buildModelList();
                 _buildingModel = false;
@@ -349,7 +349,7 @@ public abstract class UMLComboBoxModel2
                 }
                
             }
-            if (getSelectedItem() != null && _clearable) {
+            if (getSelectedItem() != null && isClearable) {
                 addElement(""); // makes sure we can select 'none'
             }
         }
@@ -369,8 +369,8 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ListModel#getElementAt(int)
      */
     public Object getElementAt(int index) {
-        if (index >= 0 && index < _objects.size())
-            return _objects.get(index);
+        if (index >= 0 && index < objects.size())
+            return objects.get(index);
         return null;
     }
 
@@ -378,31 +378,31 @@ public abstract class UMLComboBoxModel2
      * @see javax.swing.ListModel#getSize()
      */
     public int getSize() {
-        return _objects.size();
+        return objects.size();
     }
 
     public int getIndexOf(Object o) {
-        return _objects.indexOf(o);
+        return objects.indexOf(o);
     }
 
     public void addElement(Object o) {
-        if (!_objects.contains(o)) {
-            _objects.add(o);
-            fireIntervalAdded(this, _objects.size() - 1, _objects.size() - 1);
+        if (!objects.contains(o)) {
+            objects.add(o);
+            fireIntervalAdded(this, objects.size() - 1, objects.size() - 1);
         }
     }
 
     public void setSelectedItem(Object o) {
-        if ((_selectedObject != null && !_selectedObject.equals(o))
-            || (_selectedObject == null && o != null)) {
-            _selectedObject = o;
+        if ((selectedObject != null && !selectedObject.equals(o))
+            || (selectedObject == null && o != null)) {
+            selectedObject = o;
             fireContentsChanged(this, -1, -1);
         }
     }
 
     public void removeElement(Object o) {
-        int index = _objects.indexOf(o);
-        if (getElementAt(index) == _selectedObject) {
+        int index = objects.indexOf(o);
+        if (getElementAt(index) == selectedObject) {
             if (index == 0) {
                 setSelectedItem(getSize() == 1
 				? null
@@ -412,23 +412,23 @@ public abstract class UMLComboBoxModel2
             }
         }
         if (index >= 0) {
-            _objects.remove(index);
+            objects.remove(index);
             fireIntervalRemoved(this, index, index);
         }
     }
 
     public void removeAllElements() {
         int startIndex = 0;
-        int endIndex = Math.max(0, _objects.size() - 1);
+        int endIndex = Math.max(0, objects.size() - 1);
         // if (!_objects.isEmpty()) {
-        _objects.clear();
-        _selectedObject = null;
+        objects.clear();
+        selectedObject = null;
         fireIntervalRemoved(this, startIndex, endIndex);
         // }
     }
 
     public Object getSelectedItem() {
-        return _selectedObject;
+        return selectedObject;
     }
 
     /**
@@ -437,12 +437,12 @@ public abstract class UMLComboBoxModel2
      * @return boolean
      */
     public boolean contains(Object elem) {
-        if (_objects.contains(elem))
+        if (objects.contains(elem))
             return true;
         if (elem instanceof Collection) {
             Iterator it = ((Collection) elem).iterator();
             while (it.hasNext()) {
-                if (!_objects.contains(it.next()))
+                if (!objects.contains(it.next()))
                     return false;
             }
             return true;
@@ -527,7 +527,7 @@ public abstract class UMLComboBoxModel2
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        Object currentTarget = _target;
+        Object currentTarget = comboBoxTarget;
         Object oldTarget = e.getOldTargets().length > 0 ? e.getOldTargets()[0] : null;
         if (oldTarget instanceof Fig) {
             oldTarget = ((Fig)oldTarget).getOwner();
@@ -537,7 +537,7 @@ public abstract class UMLComboBoxModel2
                 UmlModelEventPump.getPump().removeModelEventListener(this,
                         currentTarget, _propertySetName);
             }
-            _target = e.getNewTarget();
+            comboBoxTarget = e.getNewTarget();
         }                
         // setTarget(e.getNewTarget());
     }

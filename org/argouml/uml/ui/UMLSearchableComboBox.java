@@ -28,7 +28,7 @@ import javax.swing.ComboBoxModel;
 import org.argouml.model.ModelFacade;
 
 /**
- * A searchable combobox. Searchable means that the user has only to type the
+ * A searchable combobox. Searchable means that the user only has to type the
  * starting of a modelelement name to select that modelelement. The first
  * modelelement that conforms to the typed text is selected.
  * @author jaap.branderhorst@xs4all.nl	
@@ -38,20 +38,22 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
 
     /**
      * Constructor for UMLSearchableComboBox.
-     * @param model
-     * @param selectAction
-     * @param showIcon
+     * @param model the model
+     * @param selectAction the action for selction
+     * @param showIcon true if we show an icon in the list
      */
-    public UMLSearchableComboBox(UMLComboBoxModel2 model, UMLAction selectAction, boolean showIcon) {
+    public UMLSearchableComboBox(UMLComboBoxModel2 model, 
+            UMLAction selectAction, boolean showIcon) {
         super(model, selectAction, showIcon);
     }
 
     /**
      * Constructor for UMLSearchableComboBox.
-     * @param arg0
-     * @param selectAction
+     * @param arg0 the model
+     * @param selectAction the action for selection
      */
-    public UMLSearchableComboBox(UMLComboBoxModel2 arg0, UMLAction selectAction) {
+    public UMLSearchableComboBox(UMLComboBoxModel2 arg0, 
+            UMLAction selectAction) {
         this(arg0, selectAction, true);
     }
 
@@ -74,8 +76,8 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
     /**
      * Does the actual searching. Returns the item found or null if there is no
      * item found.
-     * @param item
-     * @return Object
+     * @param item the string entered by the user
+     * @return Object the found object from the list, or null if none found
      */
     protected Object search(Object item) {
         String text = (String) item;
@@ -84,8 +86,9 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
             Object element = model.getElementAt(i);
             if (org.argouml.model.ModelFacade.isABase(element)) {
                 if (getRenderer() instanceof UMLListCellRenderer2) {
-                    String labelText = ((UMLListCellRenderer2) getRenderer()).makeText(element);
-                    if (labelText != null && labelText.startsWith(text)) {                        
+                    String labelText = ((UMLListCellRenderer2) getRenderer())
+                        .makeText(element);
+                    if (labelText != null && labelText.startsWith(text)) {
                         return element;
                     }
                 }

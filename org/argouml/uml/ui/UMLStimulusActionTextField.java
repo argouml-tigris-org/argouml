@@ -31,43 +31,79 @@ import ru.novosoft.uml.MElementEvent;
  * TODO: this class should be moved to package
  * org.argouml.uml.ui.behavior.common_behavior
  */
-public class UMLStimulusActionTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
+public class UMLStimulusActionTextField extends JTextField 
+    implements DocumentListener, UMLUserInterfaceComponent {
 
-    private UMLUserInterfaceContainer _container;
-    private UMLStimulusActionTextProperty _property;
+    private UMLUserInterfaceContainer theContainer;
+    private UMLStimulusActionTextProperty theProperty;
     
-    /** Creates new BooleanChangeListener */
-    public UMLStimulusActionTextField(UMLUserInterfaceContainer container, UMLStimulusActionTextProperty property) {
-        _container = container;
-        _property = property;
+    /** 
+     * Creates new BooleanChangeListener.
+     * 
+     * @param container the container of UML user interface components
+     * @param property the property 
+     */
+    public UMLStimulusActionTextField(UMLUserInterfaceContainer container, 
+            UMLStimulusActionTextProperty property) {
+        theContainer = container;
+        theProperty = property;
         getDocument().addDocumentListener(this);
         update();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
-        _property.targetChanged();
+        theProperty.targetChanged();
         update();
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
+     */
     public void targetReasserted() {
     }
     
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent p1) {
     }
+    
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {	
-        if (_property.isAffected(event)) {
+        if (theProperty.isAffected(event)) {
             //
             //   check the possibility that this is a promiscuous event
             Object eventSource = event.getSource();
-            Object target = _container.getTarget();
+            Object target = theContainer.getTarget();
             //
             //    if event source is unknown or 
             //       the event source is the container's target
@@ -82,7 +118,7 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
 	
         String oldText = getText();
 	
-        String newText = _property.getProperty(_container);
+        String newText = theProperty.getProperty(theContainer);
 
         if (oldText == null || newText == null || !oldText.equals(newText)) {
             if (oldText != newText) {
@@ -90,18 +126,30 @@ public class UMLStimulusActionTextField extends JTextField implements DocumentLi
             }
         }
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#changedUpdate(javax.swing.event.DocumentEvent)
+     */
     public void changedUpdate(final DocumentEvent p1) {
 
-        _property.setProperty(_container, getText());
+        theProperty.setProperty(theContainer, getText());
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#removeUpdate(javax.swing.event.DocumentEvent)
+     */
     public void removeUpdate(final DocumentEvent p1) {
 
-        _property.setProperty(_container, getText());
+        theProperty.setProperty(theContainer, getText());
     }
+    
+    /**
+     * @see javax.swing.event.DocumentListener#insertUpdate(javax.swing.event.DocumentEvent)
+     */
     public void insertUpdate(final DocumentEvent p1) {
 	
 	
-        _property.setProperty(_container, getText());
+        theProperty.setProperty(theContainer, getText());
 	
     }
 

@@ -38,12 +38,13 @@ import ru.novosoft.uml.MElementListener;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 28, 2002
  */
-public class UMLTextArea2 extends JTextArea implements MElementListener, TargettableModelView {
+public class UMLTextArea2 extends JTextArea 
+    implements MElementListener, TargettableModelView {
 
     
     /**
      * Constructor for UMLTextArea2.
-     * @param doc
+     * @param doc the plain text document
      */
     public UMLTextArea2(UMLPlainTextDocument doc) {
         super(doc);

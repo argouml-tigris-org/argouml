@@ -35,6 +35,10 @@ import org.argouml.model.ModelFacade;
  */
 public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
 
+    /**
+     * The constructor.
+     * 
+     */
     public UMLDeprecatedCheckBox() {
         super(null, new ActionBooleanTaggedValue("deprecated"), "deprecated");
     }
@@ -46,10 +50,10 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
 
-        String _tagName = "deprecated";
+        String tagName = "deprecated";
         setSelected(false);
 
-        Object tv = ModelFacade.getTaggedValue(getTarget(), _tagName);
+        Object tv = ModelFacade.getTaggedValue(getTarget(), tagName);
         if (tv != null) {
             String tag = ModelFacade.getValueOfTag(tv);
             if ("true".equals(tag)) setSelected(true);

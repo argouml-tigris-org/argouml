@@ -35,106 +35,151 @@ import ru.novosoft.uml.MElementEvent;
  *
  */
 public abstract class UMLExpressionModel2  {
-    protected static Logger LOG =
+    private static final Logger LOG =
             Logger.getLogger(UMLExpressionModel2.class);
 
-    protected UMLUserInterfaceContainer _container;
-    private String _propertyName;
-    private Object/*MExpression*/ _expression;
-    private boolean _mustRefresh;
-    private static final String _emptyStr = "";
+    private UMLUserInterfaceContainer container;
+    private String propertyName;
+    private Object/*MExpression*/ expression;
+    private boolean mustRefresh;
+    private static final String EMPTYSTRING = "";
 
-    public UMLExpressionModel2(UMLUserInterfaceContainer container, String propertyName) {
-        _container = container;
-        _propertyName = propertyName;
-        _mustRefresh = true;   
+    /**
+     * The constructor.
+     * 
+     * @param c the container of UML user interface components
+     * @param name the name of the property
+     */
+    public UMLExpressionModel2(UMLUserInterfaceContainer c, String name) {
+        container = c;
+        propertyName = name;
+        mustRefresh = true;   
     }
 
+    /**
+     * When the target is changed, we must refresh.
+     */
     public void targetChanged() {
-        _mustRefresh = true;
+        mustRefresh = true;
     }
 
+    /**
+     * @param event the event
+     * @return true if the property is affected
+     */
     public boolean propertySet(MElementEvent event) {
         boolean isAffected = false;
         String eventName = event.getName();
-        if (eventName != null && eventName.equals(_propertyName)) {
+        if (eventName != null && eventName.equals(propertyName)) {
             isAffected = true;
-            _mustRefresh = true;
+            mustRefresh = true;
         }
         return isAffected;
     }
 
-    public abstract Object  getExpression();
+    /**
+     * @return the expression
+     */
+    public abstract Object getExpression();
     
-    public abstract void setExpression(Object expression);
+    /**
+     * @param expr the expression
+     */
+    public abstract void setExpression(Object expr);
     
+    /**
+     * @return a new expression
+     */
     public abstract Object newExpression();
     
 
+    /**
+     * @return the language of the expression
+     */
     public String getLanguage() {
-        if (_mustRefresh) {
+        if (mustRefresh) {
             getExpression();
         }
-        if (_expression == null) {
-            return _emptyStr;
+        if (expression == null) {
+            return EMPTYSTRING;
         }
-        return ModelFacade.getLanguage(_expression);
+        return ModelFacade.getLanguage(expression);
     }
 
+    /**
+     * @return the body text of the expression
+     */
     public Object getBody() {
-        if (_mustRefresh) {
-            _expression=getExpression();
+        if (mustRefresh) {
+            expression = getExpression();
         }
-        if (_expression == null) {
-            return _emptyStr;
+        if (expression == null) {
+            return EMPTYSTRING;
         }
-        return ModelFacade.getBody(_expression);
+        return ModelFacade.getBody(expression);
     }
 
+    /**
+     * @param lang the language of the expression
+     */
     public void setLanguage(String lang) {
       
         boolean mustChange = true;
-        if (_expression != null) {
-            String oldValue = ModelFacade.getLanguage(_expression);
+        if (expression != null) {
+            String oldValue = ModelFacade.getLanguage(expression);
             if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
         }
         if (mustChange) {
             Object body = null;
-            if (_expression != null) {
-                body = ModelFacade.getBody(_expression);
+            if (expression != null) {
+                body = ModelFacade.getBody(expression);
             }
-            if (body == null) body = _emptyStr;
+            if (body == null) body = EMPTYSTRING;
 
             setExpression(lang, body);
         }
     }
 
+    /**
+     * @param body the body text of the expression
+     */
     public void setBody(Object body) {
         boolean mustChange = true;
-        if (_expression != null) {
-            Object oldValue = ModelFacade.getBody(_expression);
+        if (expression != null) {
+            Object oldValue = ModelFacade.getBody(expression);
             if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }
         }
         if (mustChange) {
             String lang = null;
-            if (_expression != null) {
-                lang = ModelFacade.getLanguage(_expression);
+            if (expression != null) {
+                lang = ModelFacade.getLanguage(expression);
             }
-            if (lang == null) lang = _emptyStr;
+            if (lang == null) lang = EMPTYSTRING;
 
             setExpression(lang, body);
         }
     }
 
+    /**
+     * @param lang the language of the expression
+     * @param body the body text of the expression
+     */
     private void setExpression(String lang, Object body) {
-        if (_expression == null) _expression = newExpression();
-        ModelFacade.setLanguage(_expression, lang);
-        ModelFacade.setBody(_expression, body);
-        setExpression(_expression);
+        if (expression == null) expression = newExpression();
+        ModelFacade.setLanguage(expression, lang);
+        ModelFacade.setBody(expression, body);
+        setExpression(expression);
+    }
+
+    /**
+     * @return the container
+     */
+    protected UMLUserInterfaceContainer getContainer() {
+        return container;
     }
 
 }
