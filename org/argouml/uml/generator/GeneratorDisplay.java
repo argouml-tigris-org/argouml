@@ -869,7 +869,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
                 if (s.length() > 0)
                 	s.append("\n");
                 MTransition trans = (MTransition)iter.next();
-                s.append(trans.getName()).append(" /").append(generateTransition((MTransition) iter.next()));
+                s.append(trans.getName()).append(" /").append(generateTransition(trans));
             }
         }
         return s.toString();
