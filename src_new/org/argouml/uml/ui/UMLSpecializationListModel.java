@@ -259,72 +259,7 @@ public class UMLSpecializationListModel extends UMLModelElementListModel  {
     }
     
 
-    /**
-     * <p>The action that occurs with the "Delete" pop up.</p>
-     *
-     * <p>Delete the generalization at the given index in the list from the
-     *   model. This is done by setting both ends (parent and child) to
-     *   null. Garbage collection will do the rest.</p>
-     *
-     * <p><em>Note</em>. We don't actually need to check the target PropPanel
-     *   is a generalisable element&mdash;given a generalization we can delete
-     *   it.</p>
-     *
-     * @param index  the index in the list of the  generalization to be
-     *               deleted.
-     */
-
-    public void delete(int index) {
-
-        MModelElement modElem = getModelElementAt(index);
-
-        // Only do this for a generalization
-
-        if (!(modElem instanceof MGeneralization)) {
-            return;
-        }
-
-        // Get the generalization and its two ends and namespace
-
-        MGeneralization gen = (MGeneralization) modElem;
-
-        MGeneralizableElement parent = gen.getParent();
-        MGeneralizableElement child  = gen.getChild();
-        MNamespace            ns     = gen.getNamespace();
-
-        // Remove the parent end of the relationship. Note we do not need to do
-        // anything about the generalization's child attribute - it will have
-        // been done by the removeSpecialization
-
-        if (parent != null) {
-            parent.removeSpecialization(gen);
-        }
-            
-        // Remove the child end of the relationship. Note we do not need to do
-        // anything about the generalization's parent attribute - it will have
-        // been done by the removeGeneralization
-
-        if (child != null) {
-            child.removeGeneralization(gen);
-        }
-            
-        // Finally remove from the namespace
-
-        if (ns != null) {
-            ns.removeOwnedElement(gen);
-        }
-
-        // Having removed a generalization, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Tell Swing this entry has gone
-
-        fireIntervalRemoved(this,index,index);
-    }
-
-    
+ 
     /**
      * <p>The action that occurs with the "MoveUp" pop up.</p>
      *
@@ -386,5 +321,38 @@ public class UMLSpecializationListModel extends UMLModelElementListModel  {
         }
     }
     
+    /**
+     *  This method builds a context (pop-up) menu for the list.  
+     *
+     *  @param popup popup menu
+     *  @param index index of selected list item
+     *  @return "true" if popup menu should be displayed
+     */
+    public boolean buildPopup(JPopupMenu popup,int index) {
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if(getModelElementSize() <= 0) {
+            open.setEnabled(false);
+            delete.setEnabled(false);
+        }
+
+        popup.add(open);
+        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
+        if(_upper >= 0 && getModelElementSize() >= _upper) {
+            add.setEnabled(false);
+        }
+        popup.add(add);
+        popup.add(delete);
+        /*
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
+        if(index == 0) moveUp.setEnabled(false);
+        popup.add(moveUp);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
+        if(index == getSize()-1) moveDown.setEnabled(false);
+        popup.add(moveDown);
+        */
+        return true;
+    }
 
 } /* End of class UMLSpecializationListModel */

@@ -39,6 +39,7 @@ package org.argouml.uml.ui;
 
 import java.util.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 
 import javax.swing.*;
 
@@ -278,52 +279,13 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
      */
 
     public void delete(int index) {
-
         MModelElement modElem = getModelElementAt(index);
-
-        // Only do this for a generalization
-
-        if (!(modElem instanceof MGeneralization)) {
-            return;
-        }
-
-        // Get the generalization and its two ends and namespace
-
-        MGeneralization gen = (MGeneralization) modElem;
-
-        MGeneralizableElement parent = gen.getParent();
-        MGeneralizableElement child  = gen.getChild();
-        MNamespace            ns     = gen.getNamespace();
-
-        // Remove the parent end of the relationship. Note we do not need to do
-        // anything about the generalization's child attribute - it will have
-        // been done by the removeSpecialization
-
-        if (parent != null) {
-            parent.removeSpecialization(gen);
-        }
-            
-        // Remove the child end of the relationship. Note we do not need to do
-        // anything about the generalization's parent attribute - it will have
-        // been done by the removeGeneralization
-
-        if (child != null) {
-            child.removeGeneralization(gen);
-        }
-            
-        // Finally remove from the namespace
-
-        if (ns != null) {
-            ns.removeOwnedElement(gen);
-        }
-
-        // Having removed a generalization, mark as needing saving
-
-        Project p = ProjectBrowser.TheInstance.getProject();
-        p.setNeedsSave(true);
-
-        // Tell Swing this entry has gone
-
+        Object target = ProjectBrowser.TheInstance.getTarget();
+        ProjectBrowser.TheInstance.setTarget(modElem);
+        ActionEvent event = new ActionEvent(this, 1, "delete");
+        ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+        ProjectBrowser.TheInstance.setTarget(target);
+        
         fireIntervalRemoved(this,index,index);
     }
 
@@ -387,6 +349,40 @@ public class UMLGeneralizationListModel extends UMLModelElementListModel  {
 
             fireContentsChanged(this,index,index+1);
         }
+    }
+    
+    /**
+     *  This method builds a context (pop-up) menu for the list.  
+     *
+     *  @param popup popup menu
+     *  @param index index of selected list item
+     *  @return "true" if popup menu should be displayed
+     */
+    public boolean buildPopup(JPopupMenu popup,int index) {
+        UMLUserInterfaceContainer container = getContainer();
+        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
+        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
+        if(getModelElementSize() <= 0) {
+            open.setEnabled(false);
+            delete.setEnabled(false);
+        }
+
+        popup.add(open);
+        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
+        if(_upper >= 0 && getModelElementSize() >= _upper) {
+            add.setEnabled(false);
+        }
+        popup.add(add);
+        popup.add(delete);
+        /*
+        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
+        if(index == 0) moveUp.setEnabled(false);
+        popup.add(moveUp);
+        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
+        if(index == getSize()-1) moveDown.setEnabled(false);
+        popup.add(moveDown);
+        */
+        return true;
     }
     
 
