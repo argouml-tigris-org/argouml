@@ -143,7 +143,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
     <property name="version" value="0.9.1"/>
-    <property name="year" value="2001"/>
+    <property name="year" value="2000"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
 
@@ -281,8 +281,13 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar"/>
-    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar"/>
+
+    <copy todir="${build.dir}/">
+      <fileset dir="${src.dir}" includes="README*" />
+    </copy>
+    
+    <zip zipfile="${Name}-${version}.zip" basedir="${build.dir}" includes="*.jar,README*"/>
+    <tar tarfile="${Name}-${version}.tar" basedir="${build.dir}" includes="*.jar,README*"/>
     <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar" />
     <delete file="${Name}-${version}.tar"/>
   </target>
@@ -293,8 +298,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="dist-src" depends="init">
     <echo message="Building the source distribution files (zip,tar)"/>
     <chmod file="${src.dir}/build.sh" perm="ugo+rx" />
-    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
-    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"/>
+    <zip zipfile="${Name}-${version}-src.zip" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
+    <tar tarfile="${Name}-${version}-src.tar" basedir="${src.dir}/.." includes="src_new/**" excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak **/ArgoUML*"/>
     <gzip zipfile="${Name}-${version}-src.tar.gz" src="${Name}-${version}-src.tar" />
     <delete file="${Name}-${version}-src.tar"/>
   </target>                                                                                                                                                                    
