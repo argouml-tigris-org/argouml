@@ -27,7 +27,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.Writer;
@@ -171,30 +170,21 @@ public class ArgoFilePersister extends AbstractFilePersister {
      */
     public Project loadProject(URL url) throws OpenException {
         try {
-            Project p = null;
             // read the argo 
-            try {
-                InputStream is = url.openStream();
-
-                // the "true" means that members should be added.
-                ArgoParser.SINGLETON.readProject(url, true);
-                p = ArgoParser.SINGLETON.getProject();
-                ArgoParser.SINGLETON.setProject(null); // clear up project refs
-
-                is.close();
-            } catch (IOException e) {
-                // exception can occur both due to argouml code as to J2SE
-                // code, so lets log it
-                LOG.error(e);
-                throw e;
-            }
+            // the "true" means that members should be added.
+            ArgoParser.SINGLETON.readProject(url, true);
+            Project p = ArgoParser.SINGLETON.getProject();
+            ArgoParser.SINGLETON.setProject(null); // clear up project refs
             p.postLoad();
             return p;
         } catch (IOException e) {
+            LOG.error("IOException", e);
             throw new OpenException(e);
         } catch (SAXException e) {
+            LOG.error("SAXException", e);
             throw new OpenException(e);
         } catch (ParserConfigurationException e) {
+            LOG.error("ParserConfigurationException", e);
             throw new OpenException(e);
         }
     }

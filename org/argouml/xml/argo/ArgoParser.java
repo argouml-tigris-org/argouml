@@ -24,6 +24,7 @@
 
 package org.argouml.xml.argo;
 
+import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -95,12 +96,15 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public synchronized void readProject(URL theUrl) throws IOException,
+    public void readProject(URL theUrl) throws IOException,
             ParserConfigurationException, SAXException {
+        
         if (theUrl == null) {
-            throw new IllegalArgumentException("No URL has been supplied");
+            throw new IllegalArgumentException("A URL must be supplied");
         }
-        readProject(theUrl, true);
+        url = theUrl;
+        addMembers = true;
+        readProject();
     }
 
     /**
@@ -110,9 +114,15 @@ public class ArgoParser extends SAXParserBase {
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    public synchronized void readProject(URL theUrl, boolean addTheMembers)
+    public void readProject(URL theUrl, boolean addTheMembers)
         throws IOException, ParserConfigurationException, SAXException {
-        readProject(url, addTheMembers);
+        
+        if (theUrl == null) {
+            throw new IllegalArgumentException("A URL must be supplied");
+        }
+        url = theUrl;
+        addMembers = addTheMembers;
+        readProject();
     }
 
     /**
@@ -123,19 +133,16 @@ public class ArgoParser extends SAXParserBase {
     }
 
     /**
-     * @param is the inputstream of the project to read
-     * @param addTheMembers true if the members are to be added
      * @throws IOException for a file problem
      * @throws ParserConfigurationException in case of a parser problem
      * @throws SAXException when parsing xml
      */
-    private void readProject(InputStream is, boolean addTheMembers)
+    private void readProject()
         throws IOException, SAXException, ParserConfigurationException {
 
+        InputStream is = url.openStream();
         lastLoadStatus = true;
         lastLoadMessage = "OK";
-
-        this.addMembers = addTheMembers;
 
         try {
             LOG.info("=======================================");
@@ -382,14 +389,31 @@ public class ArgoParser extends SAXParserBase {
         String type = element.getAttribute("type").trim();
         
         if (type.equals("xmi")) {
-            String filename = url.toString();
-            filename = filename.substring(0, filename.length() - 4) + "xmi";
             try {
-                loadModel(new URL(filename));
+                loadModel(openStreamAtXmi(url));
             } catch (IOException e) {
                 throw new SAXException(e);
             }
         }
+            
+            
+            
+            
+            
+//        if (type.equals("xmi")) {
+//            String filename = url.toString();
+//            filename = filename.substring(0, filename.length() - 4) + "xmi";
+//            try {
+//                loadModel(new URL(filename));
+//            } catch (IOException e) {
+//                throw new SAXException(e);
+//            }
+//        }
+        
+        
+        
+        
+        
 //            String xslt = 
 //                "<xsl:stylesheet version='1.0' " +
 //                        "xmlns:xsl='http://www.w3.org/1999/XSL/Transform' " +
@@ -418,6 +442,53 @@ public class ArgoParser extends SAXParserBase {
             
     }
 
+    /**
+     * Opens the input stream of a URL and positions
+     * it at the start of the XMI.
+     * This is a first draft of this method.
+     * Work still in progress (Bob Tarling).
+     */
+    private InputStream openStreamAtXmi(URL theUrl) throws IOException {
+        InputStream is = url.openStream();
+        BufferedInputStream bis = null;
+        if (is instanceof BufferedInputStream) {
+            bis = (BufferedInputStream) is;
+        } else {
+            bis = new BufferedInputStream(is);
+        }
+        readUntil(bis, "<member type=\"xmi\"");
+        while (bis.read() != '>');
+        return bis;
+    }
+
+    /**
+     * Keep on reading an input stream until a specific
+     * sequence of characters has ben read.
+     * This method assumes there is at least one match.
+     * @param is the input stream.
+     * @param search the characters to search for.
+     * @throws IOException
+     */
+    private void readUntil(InputStream is, String search) throws IOException {
+        char[] searchChars = search.toCharArray();
+        int i;
+        boolean found;
+        while (true) {
+            // Keep reading till we get the first character.
+            while (is.read() != searchChars[0]);
+            found = true;
+            // Compare each following character
+            for (i = 1; i < search.length(); ++i) {
+                if (is.read() != searchChars[i]) {
+                    found = false;
+                    break;
+                }
+            }
+            if (found) {
+                return;
+            }
+        }
+    }
     
     /**
      * Loads a model (XMI only) from a .zargo file. BE ADVISED this
@@ -439,7 +510,7 @@ public class ArgoParser extends SAXParserBase {
             LOG.info("Loading Model from " + theUrl);
         }
         InputStream is = theUrl.openStream();
-        return loadModel(new InputSource(is));
+        return loadModel(is);
     }
 
     /**
@@ -452,12 +523,11 @@ public class ArgoParser extends SAXParserBase {
      *
      * @return The model loaded
      * @throws SAXException If the parser template is syntactically incorrect. 
-     * @param project the project to load into
-     * @param source the source to load from
+     * @param is the input stream to load from
      */
-    private Object loadModel(InputSource source)
-        throws SAXException {
+    private Object loadModel(InputStream is) throws SAXException {
         
+        InputSource source = new InputSource(is);
         Object mmodel = null;
 
         // 2002-07-18
