@@ -1375,10 +1375,10 @@ public class ModelFacade {
      */
     public static Object getAssociation(Object end) {
         
-        if(!isAAssociation(end))
-            throw new IllegalArgumentException("Unrecognized object " + end);
-        
-        return ((MAssociationEnd) end).getAssociation();
+        if (end instanceof MAssociationEnd) {
+            return ((MAssociationEnd)end).getAssociation();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + end);
     }
     
     /**
@@ -1414,6 +1414,18 @@ public class ModelFacade {
         }
 
         //...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /** The list of association roles
+     *
+     * @param handle the object that we get the association roles from.
+     * @return Collection of association roles.
+     */
+    public static Collection getAssociationRoles(Object handle) {
+        if (handle instanceof MAssociation) {
+            return ((MAssociation) handle).getAssociationRoles();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -2471,6 +2483,18 @@ public class ModelFacade {
     }
 
     /**
+     * Returns the activator belonging to some message
+     * @param handle
+     * @return
+     */
+    public static Object getActivator(Object handle) {
+        if (handle instanceof MMessage) {
+            return ((MMessage) handle).getActivator();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
      * Returns the actual arguments for a given action.
      * @param handle
      * @return
@@ -2478,6 +2502,18 @@ public class ModelFacade {
     public static Collection getActualArguments(Object handle) {
         if (handle instanceof MAction) {
             return ((MAction) handle).getActualArguments();
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns an addition for a given inlcude.
+     * @param handle
+     * @return
+     */
+    public static Object getAddition(Object handle) {
+        if (handle instanceof MInclude) {
+            return ((MInclude) handle).getAddition();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
