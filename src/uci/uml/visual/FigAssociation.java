@@ -10,6 +10,11 @@ public class FigAssociation extends FigEdgeLine {
   public FigAssociation(Object edge) {
     super();
     setOwner(edge);
+
+    ArrowHeadDiamond endArrow = new ArrowHeadDiamond();
+    endArrow.setFillColor(Color.white);
+
+    setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
   }
 
