@@ -94,6 +94,8 @@ public class ActionNew extends UMLAction {
     Designer.disableCritiquing();
     Designer.clearCritiquing();
     p = ProjectManager.getManager().makeEmptyProject();
+    FindDialog.SINGLETON.doClearTabs();
+    FindDialog.SINGLETON.doResetFields();
     ProjectBrowser.TheInstance.setTarget(p.getDiagrams().toArray()[0]);
     Designer.enableCritiquing();
   }
