@@ -31,13 +31,13 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
-import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.kernel.ProjectManager;
 
 
 /** 
@@ -45,7 +45,7 @@ import org.argouml.kernel.ProjectManager;
  * 
  * @stereotype singleton
  */
-public class ActionDeleteFromDiagram extends UMLChangeAction {
+public class ActionDeleteFromDiagram extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables

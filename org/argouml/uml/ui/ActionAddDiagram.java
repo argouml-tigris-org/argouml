@@ -43,7 +43,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
  * namespace is valid to add the diagram to.
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class ActionAddDiagram extends UMLChangeAction {
+public abstract class ActionAddDiagram extends UMLAction {
     private static final Logger LOG = 
         Logger.getLogger(ActionAddDiagram.class);
 

@@ -32,7 +32,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 /** @stereotype singleton
  */
-public class ActionAddTopLevelPackage extends UMLChangeAction {
+public class ActionAddTopLevelPackage extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables

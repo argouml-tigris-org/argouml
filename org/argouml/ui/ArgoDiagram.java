@@ -29,8 +29,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.cognitive.ItemUID;
+import org.argouml.kernel.ChangeRegistry;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.util.ChangeRegistry;
 import org.argouml.model.ModelFacade;
 
 import org.tigris.gef.base.Diagram;

@@ -28,14 +28,14 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
  * @stereotype singleton
  * @author mkl	
  */
-public class ActionSetClassActive extends UMLChangeAction {
+public class ActionSetClassActive extends UMLAction {
 
     private static final ActionSetClassActive SINGLETON = 
         new ActionSetClassActive();

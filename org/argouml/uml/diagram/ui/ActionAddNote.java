@@ -36,7 +36,7 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
 import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
@@ -47,7 +47,7 @@ import org.tigris.gef.presentation.FigNode;
  *
  * @stereotype singleton
  */
-public class ActionAddNote extends UMLChangeAction {
+public class ActionAddNote extends UMLAction {
 
     private static final int DISTANCE = 80;
 
@@ -78,7 +78,8 @@ public class ActionAddNote extends UMLChangeAction {
         if (target == null || !(ModelFacade.isAModelElement(target))) {
             return;
         }
-        Object model = ProjectManager.getManager().getCurrentProject().getModel();
+        Object model = ProjectManager.getManager().getCurrentProject()
+            .getModel();
         Object comment =
             CoreFactory.getFactory().buildComment(target, model);
 

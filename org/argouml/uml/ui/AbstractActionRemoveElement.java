@@ -35,7 +35,7 @@ import org.argouml.i18n.Translator;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 25, 2003
  */
-public class AbstractActionRemoveElement extends UMLChangeAction {
+public class AbstractActionRemoveElement extends UMLAction {
     
     /**
      * The object that owns the object that must be removed (the

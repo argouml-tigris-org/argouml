@@ -28,14 +28,14 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since Jan 29, 2003
  */
-public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
+public class ActionSetStructuralFeatureTargetScope extends UMLAction {
 
     private static final ActionSetStructuralFeatureTargetScope SINGLETON =
 	new ActionSetStructuralFeatureTargetScope();

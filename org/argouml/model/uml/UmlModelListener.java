@@ -28,8 +28,8 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
 import javax.swing.Action;
+import javax.swing.event.EventListenerList;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 
 /**
@@ -40,12 +40,18 @@ import org.argouml.model.Model;
  * which means that the project becomes 'dirty', i.e. it needs saving. <p>
  * 
  * The UmlModelListener is a single listener that listens to all 
- * UML ModelElement events and changes
- * the "change flag" information of the Save action. <p>
+ * UML ModelElement events and on its turn, sends
+ * events out that indicate that the "change flag" of the Save action
+ * needs to be set. <p>
  * 
  * This class only keeps an eye on changes to the UML model - i.e. 
  * it does not notice changes done to e.g. the graph like moving an edge 
- * (when they do not also change the UML model), settings or the diagrams. 
+ * (when they do not also change the UML model), settings, todo items
+ * or the diagrams. <p>
+ * 
+ * The UmlModelListener only transfers information when the flag needs 
+ * to be set - it does not know its current status. That is a task for the
+ * listeners in the <code>listenerList</code>. 
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -58,6 +64,16 @@ public class UmlModelListener implements PropertyChangeListener {
      */
     private static final UmlModelListener INSTANCE = new UmlModelListener();
 
+    /**
+     * The listener list
+     */
+    private EventListenerList listenerList = new EventListenerList();
+
+    /**
+     * The name of the property that defines the save state.
+     */
+    public static final String SAVE_STATE_PROPERTY_NAME = "saveState";
+    
     /**
      * The action to enable when the model changes.
      */
@@ -90,23 +106,11 @@ public class UmlModelListener implements PropertyChangeListener {
     /**
      * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertyChange(PropertyChangeEvent evt) {
-        notifyModelChanged(evt);
-    }
-
-    /**
-     * Common model change notification process.
-     */
-    private void notifyModelChanged(PropertyChangeEvent pce) {
+    public void propertyChange(PropertyChangeEvent pce) {
         if (pce.getNewValue() != null
-            && !pce.getNewValue().equals(pce.getOldValue()))
-        {
-            if (saveAction != null) {
-                saveAction.setEnabled(true);
-                ProjectManager.getManager().notifySavePropertyChanged(true);
-            }
+            && !pce.getNewValue().equals(pce.getOldValue())) {
+            fireNeedsSavePropertyChanged();
         }
-    
     }
     
     /**
@@ -128,5 +132,52 @@ public class UmlModelListener implements PropertyChangeListener {
     public void deleteElement(Object elm) {
         Model.getPump().removeModelEventListener(this, elm);
     }
+    
+    
+    /**
+     * Adds a listener to the listener list.
+     * 
+     * @param listener The listener to add.
+     */
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        listenerList.add(PropertyChangeListener.class, listener);
+    }
+
+    /**
+     * Removes a listener from the listener list.
+     * 
+     * @param listener The listener to remove.
+     */
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        listenerList.remove(PropertyChangeListener.class, listener);
+    }
+
+    /**
+     * Fire an event to all members of the listener list.
+     * 
+     * @param propertyName the name of the event
+     * @param oldValue the old value - which we do not really know
+     * @param newValue the new value - which is <code>true</code>
+     */
+    private void fireNeedsSavePropertyChanged() 
+    {
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == PropertyChangeListener.class) {
+                // Lazily create the event:
+                PropertyChangeEvent event = new PropertyChangeEvent(
+                            this,
+                            SAVE_STATE_PROPERTY_NAME,
+                            new Boolean(false),
+                            new Boolean(true));
+                ((PropertyChangeListener) listeners[i + 1]).propertyChange(
+                    event);
+            }
+        }
+    }
+
 }
 

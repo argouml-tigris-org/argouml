@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.extension_mechanisms;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
 /**
@@ -35,7 +35,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  * @author mkl
  *  
  */
-public class ActionSetMetaClass extends UMLChangeAction {
+public class ActionSetMetaClass extends UMLAction {
 
     /**
      * The Singleton.
@@ -47,7 +47,7 @@ public class ActionSetMetaClass extends UMLChangeAction {
      * Constructor.
      */
     public ActionSetMetaClass() {
-        super("Set");
+        super("Set", HAS_ICON);
     }
 
     /**

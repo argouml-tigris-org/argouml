@@ -196,7 +196,7 @@ public class UMLAction extends AbstractAction {
      * @param s the string to be stripped from junk
      * @return the cleansed string
      */
-    protected static String stripJunk(String s) {
+    private static String stripJunk(String s) {
         String res = "";
         int len = s.length();
         for (int i = 0; i < len; i++) {

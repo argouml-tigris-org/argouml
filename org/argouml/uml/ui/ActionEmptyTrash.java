@@ -24,13 +24,14 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.util.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+
+import org.argouml.util.Trash;
 
 /** Action to empty the trashcan. 
  *  @stereotype singleton
  */
-public class ActionEmptyTrash extends UMLChangeAction {
+public class ActionEmptyTrash extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
     // static variables

@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
 /**
@@ -36,7 +36,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 * @author mvw
 * @stereotype singleton
 */
-public class ActionSetObjectFlowStateClassifier extends UMLChangeAction {
+public class ActionSetObjectFlowStateClassifier extends UMLAction {
 
     /**
      * <code>SINGLETON</code>

@@ -39,7 +39,7 @@ import org.argouml.ui.ProjectBrowser;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class AbstractActionAddModelElement extends UMLChangeAction {
+public abstract class AbstractActionAddModelElement extends UMLAction {
 
     private Object/*MModelElement*/ target;
     private boolean multiSelect = true;

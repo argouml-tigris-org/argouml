@@ -30,7 +30,7 @@ import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -38,7 +38,7 @@ import org.argouml.uml.ui.UMLRadioButtonPanel;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 4, 2003
  */
-public class ActionSetAssociationEndAggregation extends UMLChangeAction {
+public class ActionSetAssociationEndAggregation extends UMLAction {
 
     private static final ActionSetAssociationEndAggregation SINGLETON = 
 	new ActionSetAssociationEndAggregation();

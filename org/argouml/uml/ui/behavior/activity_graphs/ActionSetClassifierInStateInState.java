@@ -29,7 +29,7 @@ import java.util.Collection;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.ui.UMLChangeAction;
+import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
 /**
@@ -40,7 +40,7 @@ import org.argouml.uml.ui.UMLComboBox2;
  * @author mvw
  *
  */
-class ActionSetClassifierInStateInState extends UMLChangeAction {
+class ActionSetClassifierInStateInState extends UMLAction {
 
     /**
      * The constructor.

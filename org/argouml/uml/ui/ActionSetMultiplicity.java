@@ -34,7 +34,7 @@ import org.argouml.i18n.Translator;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 6, 2003
  */
-public abstract class ActionSetMultiplicity extends UMLChangeAction {
+public abstract class ActionSetMultiplicity extends UMLAction {
 
     /**
      * Constructor for ActionSetMultiplicity.
