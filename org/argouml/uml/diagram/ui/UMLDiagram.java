@@ -154,7 +154,7 @@ public abstract class UMLDiagram
       
       // add the diagram as a listener to the namspace so
       // that when the namespace is remove()d the diagram is deleted also.
-      UmlModelEventPump.getPump().addModelEventListener(this, _namespace);
+      UmlModelEventPump.getPump().addModelEventListener(this, _namespace, UmlModelEventPump.REMOVE);
   }
   
   public String getClassAndModelID() {
@@ -197,8 +197,8 @@ public abstract class UMLDiagram
    */
   public void removed(MElementEvent e){
       
-      ProjectManager.getManager().getCurrentProject().moveToTrash(this);
-      UmlModelEventPump.getPump().removeModelEventListener(this,_namespace);
+      UmlModelEventPump.getPump().removeModelEventListener(this,_namespace, UmlModelEventPump.REMOVE);
+      ProjectManager.getManager().getCurrentProject().moveToTrash(this);      
       
       Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
       ProjectBrowser.TheInstance.setTarget(newTarget);

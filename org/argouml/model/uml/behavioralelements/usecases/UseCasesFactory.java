@@ -23,10 +23,15 @@
 
 package org.argouml.model.uml.behavioralelements.usecases;
 
+import java.util.Iterator;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlHelper;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.use_cases.MActor;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
@@ -301,13 +306,18 @@ public class UseCasesFactory extends AbstractUmlModelFactory {
      
      public void deleteActor(MActor elem) {}
      
-     public void deleteExtend(MExtend elem) {}
+     public void deleteExtend(MExtend elem) {
+         UmlHelper.getHelper().deleteCollection(elem.getExtensionPoints());
+     }
      
      public void deleteExtensionPoint(MExtensionPoint elem) {}
      
      public void deleteInclude(MInclude elem) {}
      
-     public void deleteUseCase(MUseCase elem) {}
+     public void deleteUseCase(MUseCase elem) {
+         UmlHelper.getHelper().deleteCollection(elem.getExtends());
+         UmlHelper.getHelper().deleteCollection(elem.getIncludes());       
+     }
      
      public void deleteUseCaseInstance(MUseCaseInstance elem) {}
 
