@@ -30,7 +30,13 @@ import java.util.HashSet;
 import java.util.List;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.ui.ArgoDiagram;
+
+import org.tigris.gef.presentation.Fig;
 
 import junit.framework.TestCase;
 
@@ -44,12 +50,18 @@ public class TestTargetManager extends TestCase {
 
     private boolean targetAddedCalled;
     private Object  targetAddedTarget;
+    private Fig     targetAddedFigTarget;
+    private Object  targetAddedModelTarget;
     private Object  targetAddedObjects[];
     private boolean targetSetCalled;
     private Object  targetSetTarget;
+    private Fig     targetSetFigTarget;
+    private Object  targetSetModelTarget;
     private Object  targetSetObjects[];
     private boolean targetRemovedCalled;
     private Object  targetRemovedTarget;
+    private Fig     targetRemovedFigTarget;
+    private Object  targetRemovedModelTarget;
     private Object  targetRemovedObjects[];
 
     private class TestTargetListener implements TargetListener {
@@ -60,6 +72,8 @@ public class TestTargetManager extends TestCase {
 	public void targetAdded(TargetEvent e) {
 	    targetAddedCalled = true;
 	    targetAddedTarget = TargetManager.getInstance().getTarget();
+	    targetAddedFigTarget = TargetManager.getInstance().getFigTarget();
+	    targetAddedModelTarget = TargetManager.getInstance().getModelTarget();
 	    targetAddedObjects = e.getNewTargets();
 	}
 
@@ -69,6 +83,8 @@ public class TestTargetManager extends TestCase {
 	public void targetRemoved(TargetEvent e) {
 	    targetRemovedCalled = true;
 	    targetRemovedTarget = TargetManager.getInstance().getTarget();
+	    targetRemovedFigTarget = TargetManager.getInstance().getFigTarget();
+	    targetRemovedModelTarget = TargetManager.getInstance().getModelTarget();
 	    targetRemovedObjects = e.getNewTargets();
 	}
 
@@ -78,6 +94,8 @@ public class TestTargetManager extends TestCase {
 	public void targetSet(TargetEvent e) {
 	    targetSetCalled = true;
 	    targetSetTarget = TargetManager.getInstance().getTarget();
+	    targetSetFigTarget = TargetManager.getInstance().getFigTarget();
+	    targetSetModelTarget = TargetManager.getInstance().getModelTarget();
 	    targetSetObjects = e.getNewTargets();
 	}
 
@@ -362,6 +380,200 @@ public class TestTargetManager extends TestCase {
 	targetRemovedCalled = false;
 	TargetManager.getInstance().removeTarget(testObject);
 	assertTrue(!targetRemovedCalled);
+
+	TargetManager.getInstance().removeTargetListener(listener);
+    }
+
+    public void testGetFigTarget() {
+	final Object owner = new Object();
+	final Fig fig = new Fig(); fig.setOwner(owner);
+	Object test = new Object();
+	ArgoDiagram diag = new ArgoDiagram() {
+	    public Fig getContainingFig(Object obj) {
+		if (obj == owner)
+		    return fig;
+		return null;
+	    }};
+	Project p = ProjectManager.getManager().getCurrentProject();
+	p.addDiagram(diag);
+	TargetManager.getInstance().setTarget(diag);
+	List list1 = new ArrayList();
+	List list2 = new ArrayList(); list2.add(test);
+	List list3 = new ArrayList(); list3.add(owner); list3.add(test);
+
+	TargetListener listener = new TestTargetListener();
+	TargetManager.getInstance().addTargetListener(listener);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTarget(null);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTarget(owner);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertEquals(fig, targetSetFigTarget);
+
+	targetRemovedCalled = false;
+	TargetManager.getInstance().removeTarget(fig);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertTrue(!targetRemovedCalled);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	TargetManager.getInstance().setTarget(null);
+	targetAddedFigTarget = null;
+	TargetManager.getInstance().addTarget(test);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetAddedFigTarget);
+
+	TargetManager.getInstance().setTarget(null);
+	targetAddedFigTarget = null;
+	TargetManager.getInstance().addTarget(owner);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertEquals(fig, targetAddedFigTarget);
+
+	targetAddedFigTarget = null;
+	TargetManager.getInstance().addTarget(test);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertEquals(fig, targetAddedFigTarget);
+
+	targetRemovedCalled = false;
+	TargetManager.getInstance().removeTarget(null);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertTrue(!targetRemovedCalled);
+
+	targetRemovedFigTarget = null;
+	TargetManager.getInstance().removeTarget(test);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertEquals(fig, targetRemovedFigTarget);
+
+	TargetManager.getInstance().addTarget(test);
+	targetRemovedFigTarget = null;
+	TargetManager.getInstance().removeTarget(owner);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetRemovedFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTargets(list1);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTargets(list2);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTargets(list3);
+	assertEquals(fig, TargetManager.getInstance().getFigTarget());
+	assertEquals(fig, targetSetFigTarget);
+
+	targetSetFigTarget = null;
+	TargetManager.getInstance().setTargets(list2);
+	assertEquals(null, TargetManager.getInstance().getFigTarget());
+	assertEquals(null, targetSetFigTarget);
+
+	TargetManager.getInstance().removeTargetListener(listener);
+    }
+
+    public void testGetModelTarget() {
+	Object owner = CoreFactory.getFactory().buildClass();
+	Fig fig = new Fig(); fig.setOwner(owner);
+	Object test = new Object();
+
+	List list1 = new ArrayList();
+	List list2 = new ArrayList(); list2.add(test);
+	List list3 = new ArrayList(); list3.add(fig); list3.add(test);
+
+	TargetListener listener = new TestTargetListener();
+	TargetManager.getInstance().addTargetListener(listener);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTarget(null);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTarget(fig);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertEquals(owner, targetSetModelTarget);
+
+	targetRemovedCalled = false;
+	TargetManager.getInstance().removeTarget(owner);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertTrue(!targetRemovedCalled);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTarget(test);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
+
+	TargetManager.getInstance().setTarget(null);
+	targetAddedModelTarget = null;
+	TargetManager.getInstance().addTarget(test);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetAddedModelTarget);
+
+	TargetManager.getInstance().setTarget(null);
+	targetAddedModelTarget = null;
+	TargetManager.getInstance().addTarget(fig);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertEquals(owner, targetAddedModelTarget);
+
+	targetAddedModelTarget = null;
+	TargetManager.getInstance().addTarget(test);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertEquals(owner, targetAddedModelTarget);
+
+	targetRemovedCalled = false;
+	TargetManager.getInstance().removeTarget(null);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertTrue(!targetRemovedCalled);
+
+	targetRemovedModelTarget = null;
+	TargetManager.getInstance().removeTarget(test);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertEquals(owner, targetRemovedModelTarget);
+
+	TargetManager.getInstance().addTarget(test);
+	targetRemovedModelTarget = null;
+	TargetManager.getInstance().removeTarget(fig);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetRemovedModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTargets(list1);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTargets(list2);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTargets(list3);
+	assertEquals(owner, TargetManager.getInstance().getModelTarget());
+	assertEquals(owner, targetSetModelTarget);
+
+	targetSetModelTarget = null;
+	TargetManager.getInstance().setTargets(list2);
+	assertEquals(null, TargetManager.getInstance().getModelTarget());
+	assertEquals(null, targetSetModelTarget);
 
 	TargetManager.getInstance().removeTargetListener(listener);
     }
