@@ -520,15 +520,15 @@ implements VetoableChangeListener  {
         }
 
         // set the ends navigability see also Class ActionNavigability
-        if ( newNode instanceof MInterface)
+        if ( newNode instanceof MInterface){
             theEnd.setNavigable(true);
-        else
-            theEnd.setNavigable(false);
-
-        if ( otherNode instanceof MInterface)
-            theOtherEnd.setNavigable(true);
-        else
             theOtherEnd.setNavigable(false);
+        }
+
+        if ( otherNode instanceof MInterface){
+            theOtherEnd.setNavigable(true);
+            theEnd.setNavigable(false);
+        }
 
         //set the new end type!
         theEnd.setType((MClassifier)newNode);
@@ -540,6 +540,7 @@ implements VetoableChangeListener  {
    */
   private void rerouteGeneralization(Object newNode, Object oldNode, Object edge, boolean isSource) {
 
+      
   }
 
   /**
