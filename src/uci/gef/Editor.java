@@ -193,6 +193,20 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _layerManager.postLoad();
   }
 
+  /** Return true if the Grid layer is currently hidden. */
+  public boolean getGridHidden() {
+    boolean h = false;
+    Layer l = _layerManager.findLayerNamed( "Grid" );
+    if( l != null ) h = l.getHidden();
+    return h;
+  }
+
+  /** Set the hidden state of the Grid layer. */
+  public void setGridHidden( boolean b ) {
+    Layer l = _layerManager.findLayerNamed( "Grid" );
+    if( l != null ) l.setHidden( b );
+  }
+
   /** Clone the receiving editor. Called from ActionSpawn. Subclasses
    *  of Editor should override this method. */
   public Object clone() {

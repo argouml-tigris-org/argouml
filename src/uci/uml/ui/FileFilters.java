@@ -52,6 +52,9 @@ public class FileFilters {
   public static final FileFilter LogFilter = new
   SuffixFilter("log", "Argo usage log");
 
+  public static final FileFilter GIFFilter = new
+  SuffixFilter("gif", "GIF image");
+
 } /* end class FileFilters */
 
 

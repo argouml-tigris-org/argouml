@@ -31,6 +31,7 @@ SOURCES= \
 	CmdReorder.java \
 	CmdSave.java \
 	CmdSavePGML.java \
+	CmdSaveGIF.java \
 	CmdScroll.java \
 	CmdSelectAll.java \
 	CmdSelectInvert.java \

@@ -28,6 +28,7 @@ package uci.uml.ui;
 import java.util.*;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -71,6 +72,7 @@ public class Actions {
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
   //public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
+  public static UMLAction SaveGIF = new ActionSaveGIF();
   public static UMLAction Exit = new ActionExit();
 
   public static UMLAction Undo = new ActionUndo();
@@ -803,6 +805,99 @@ class ActionPrint extends UMLAction {
     }
   }
 } /* end class ActionPrint */
+
+
+/** Wraps a CmdSaveGIF to allow selection of an output file. */
+
+class ActionSaveGIF extends UMLAction {
+  public static final String separator = "/";
+
+  public ActionSaveGIF() {
+    super( "Save GIF...", NO_ICON);
+  }
+
+
+  public void actionPerformed( ActionEvent ae ) {
+    trySave( false );
+  }
+
+  public boolean trySave( boolean overwrite ) {
+    CmdSaveGIF cmd = new CmdSaveGIF();
+    Object target = ProjectBrowser.TheInstance.getTarget();
+    if( target instanceof Diagram ) {
+      String defaultName = ((Diagram)target).getName();
+      defaultName = Util.stripJunk(defaultName);
+
+      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // and directory stuff. More file handling is coming, I'm sure.
+
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      Project p =  pb.getProject();
+      try {
+	JFileChooser chooser = null;
+	try {
+	  if ( p != null && p.getURL() != null &&
+	       p.getURL().getFile().length() > 0 ) {
+	    String filename = p.getURL().getFile();
+	    if( !filename.startsWith( "/FILE1/+/" ) )
+	      chooser  = new JFileChooser( p.getURL().getFile() );
+	  }
+	}
+	catch( Exception ex ) {
+	    System.out.println( "exception in opening JFileChooser" );
+	    ex.printStackTrace();
+	  }
+
+	if( chooser == null ) chooser = new JFileChooser();
+
+	chooser.setDialogTitle( "Save Diagram as GIF: " + defaultName );
+	FileFilter filter = FileFilters.GIFFilter;
+	chooser.addChoosableFileFilter( filter );
+	chooser.setFileFilter( filter );
+	File def = new File(  defaultName + ".gif" ); // is .GIF preferred?
+	chooser.setSelectedFile( def );
+
+	int retval = chooser.showSaveDialog( pb );
+	if( retval == 0 ) {
+	  File theFile = chooser.getSelectedFile();
+	  if( theFile != null ) {
+	    String path = theFile.getParent();
+	    String name = theFile.getName();
+	    if( !path.endsWith( separator ) ) path += separator;
+	    pb.showStatus( "Writing " + path + name + "..." );
+	    if( theFile.exists() && !overwrite ) {
+	      System.out.println( "Are you sure you want to overwrite " + name + "?");
+	      String t = "Overwrite " + path + name;
+	      int response =
+		JOptionPane.showConfirmDialog(pb, t, t,
+					      JOptionPane.YES_NO_OPTION);
+	      if (response == JOptionPane.NO_OPTION) return false;
+	    }
+	    FileOutputStream fo = new FileOutputStream( theFile );
+	    cmd.setStream( fo );
+	    cmd.doIt();
+	    fo.close();
+	    pb.showStatus( "Wrote " + path + name );
+	    return true;
+	  }
+	}
+      }
+      catch( FileNotFoundException ignore ) 
+	{
+	  System.out.println( "got a FileNotFoundException" );
+	}
+      catch( IOException ignore ) 
+	{
+	  System.out.println( "got an IOException" );
+	  ignore.printStackTrace();
+	}
+    }
+
+    return false;
+  }
+} /* end class ActionSaveGIF */
+
+
 
 // class ActionAddToProj extends UMLAction {
 //   public ActionAddToProj() { super("Add To Project..."); }

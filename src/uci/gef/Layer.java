@@ -140,7 +140,7 @@ public abstract class Layer implements java.io.Serializable {
   public void setName(String n) { _name = n; }
 
   public void setHidden(boolean b) { _hidden = b; }
-  public boolean fetHidden() { return _hidden; }
+  public boolean getHidden() { return _hidden; }
 
   public void setGrayed(boolean b) { _grayed = b; }
   public boolean getGrayed() { return _grayed; }

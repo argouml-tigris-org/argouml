@@ -79,7 +79,7 @@ public class CrMissingClassName extends CrUML {
       int count = 1;
       if (me.getNamespace() != null)
 	count = me.getNamespace().getOwnedElement().size();
-      sug = "Class" + (count + 1);
+      sug = me.getOCLTypeStr() + (count + 1);
       ((WizMEName)w).setInstructions(ins);
       ((WizMEName)w).setSuggestion(sug);
     }

@@ -4,11 +4,9 @@ include ../Makefile.config
 
 all: classes archive
 
-classes: gefDir umlDir argoumlDir criticsDir
+classes: acmeDir gefDir umlDir argoumlDir criticsDir
 
-#swingDir
 
-#swingDir
 archive:: objdir gefDir umlDir argoumlDir criticsDir 
 	@if [ ! -d $(OUT_DIR)/xml/dtd ] ; \
 		then $(MKDIR) $(OUT_DIR)/xml/dtd ; \
@@ -23,8 +21,8 @@ archive:: objdir gefDir umlDir argoumlDir criticsDir
 	$(COPY) COPYRIGHT $(OUT_DIR)
 
 
-clean: gefDir umlDir argoumlDir criticsDir
-# swingDir
+clean: acmeDir gefDir umlDir argoumlDir criticsDir
+
 
 processDir:
 	@echo
@@ -33,6 +31,9 @@ processDir:
 	( $(CD) $(DIR) ; \
 	$(MAKE) $(TARGET) )
 
+
+ACME_DIRS= ../Acme          \
+	../Acme/JPM/Encoders 
 
 GEF_DIRS= util           \
 	gef              \
@@ -84,6 +85,13 @@ CRITICS_DIRS= uml/checklist       \
 #	$(SWING_DIR)/swing/text       \
 #	$(SWING_DIR)/swing/plaf/metal 
 
+
+acmeDir:
+	@echo
+	@echo
+	@echo "PROCESSING Acme ========================="
+	test ! -d ../Acme || for d in $(ACME_DIRS) ; do \
+		$(MAKE) TARGET=$(TARGET) DIR=$$d processDir ; done
 
 gefDir:
 	@echo

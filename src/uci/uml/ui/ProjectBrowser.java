@@ -263,6 +263,8 @@ implements IStatusBar {
     JMenuItem printItem = file.add(Actions.Print);
     printItem.setMnemonic('P');
     printItem.setAccelerator(ctrlP);
+    JMenuItem saveGIFItem = file.add(Actions.SaveGIF);
+    saveGIFItem.setMnemonic('G');
     //file.addSeparator();
     //file.add(_actionProjectInfo);
     file.addSeparator();
