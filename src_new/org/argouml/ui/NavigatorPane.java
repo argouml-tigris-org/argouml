@@ -161,8 +161,6 @@ public class NavigatorPane
         
         _combo.addItemListener(this);
         
-        _tree.setRootVisible(false);
-        _tree.setShowsRootHandles(true);
         _tree.addTreeSelectionListener(this);
         _tree.addMouseListener(new NavigatorMouseListener());
         _tree.addKeyListener(new NavigatorKeyListener());
