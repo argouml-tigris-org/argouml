@@ -37,13 +37,17 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 public class UMLComboBoxEntry implements Comparable {
     private MModelElement _element;
     private String _shortName;
+    
+    /** _longName is composed of an identifier and a name as in Class: String */
     private String _longName;
     private Profile _profile;
-    //
-    //  this will be the same as shortName
-    //    unless there is a
-    //    a name collision
+    
+    /** _display name will be the same as shortName unless there 
+     *  is a name collision */
     private String _displayName;
+    
+    /** i am not quite sure what _isPhantom means, it may be that it is an
+     *  entry that is not in the model list...pjs */
     private boolean _isPhantom;
 
     public UMLComboBoxEntry(MModelElement element,Profile profile,boolean isPhantom) {
@@ -73,7 +77,6 @@ public class UMLComboBoxEntry implements Comparable {
     public void updateName() {
         if(_element != null) {
             MNamespace ns = _element.getNamespace();
-
             _shortName = _profile.formatElement(_element,ns);
         }
     }
@@ -170,7 +173,7 @@ public class UMLComboBoxEntry implements Comparable {
     }
 
 
-    public void setElement(MModelElement element,boolean isPhantom) {
+    public void setElement(MModelElement element, boolean isPhantom) {
         _element = element;
         _isPhantom = isPhantom;
     }
