@@ -35,6 +35,10 @@ import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
 
 
+/**
+ * Rule for sorting the ToDo list: Decision -> Item.
+ *
+ */
 public class GoListToDecisionsToItems implements TreeModel {
   
     ////////////////////////////////////////////////////////////////
