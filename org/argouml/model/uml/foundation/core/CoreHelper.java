@@ -357,18 +357,19 @@ public class CoreHelper {
      * @param operation
      * @return Collection
      */
-    public Collection getReturnParameters(MOperation operation) {
+    public Collection getReturnParameters(Object operation) {
         Vector returnParams = new Vector();
         MParameter firstReturnParameter = null;
-        Iterator params = operation.getParameters().iterator();
+        Iterator params = ((MOperation)operation).getParameters().iterator();
         while (params.hasNext()) {
             MParameter parameter = (MParameter) params.next();
             if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
                 returnParams.add(parameter);
             }
         }
-        return (Collection) returnParams;
+        return returnParams;
     }
+    
     /**
      * Returns the operation that some method realized. Returns null if
      * object isn't a method or, possibly, if the method isn't properly

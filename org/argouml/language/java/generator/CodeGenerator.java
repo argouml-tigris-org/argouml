@@ -36,6 +36,7 @@ import java.util.Stack;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+import org.argouml.model.ModelFacade;
 
 
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -51,8 +52,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * It needs some work. See issue
  * http://argouml.tigris.org/issues/show_bug.cgi?id=435
  */
-class CodeGenerator
-{
+class CodeGenerator {
     /**
        Generate code for a class.
 
@@ -62,8 +62,7 @@ class CodeGenerator
     public static void generateClass(MClass mClass,
 				     BufferedReader reader,
 				     BufferedWriter writer)
-	throws Exception
-    {
+            throws Exception {
 	ClassCodePiece ccp = new ClassCodePiece(null, mClass.getName());
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClass.getNamespace()));
@@ -153,23 +152,22 @@ class CodeGenerator
        @param mClassifier The classifier the operation belongs to.
        @param writer The writer to write to.
     */
-    public static void generateOperation(MOperation mOperation,
-					 MClassifier mClassifier,
+    public static void generateOperation(Object mOperation,
+					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-	throws Exception
-    {
+            throws Exception {
 	OperationCodePiece ocp =
 	    new OperationCodePiece(new SimpleCodePiece(new StringBuffer(),
 						       0, 0, 0),
 				   new SimpleCodePiece(new StringBuffer(),
 						       0, 0, 0),
-				   mOperation.getName());
+				   ModelFacade.getName(mOperation));
 	Stack parseStateStack = new Stack();
 	parseStateStack.push(new ParseState(mClassifier));
 	ocp.write(reader, writer, parseStateStack);
 
-	if (mOperation.isAbstract() || org.argouml.model.ModelFacade.isAInterface(mClassifier)) {
+	if (ModelFacade.isAbstract(mOperation) || ModelFacade.isAInterface(mClassifier)) {
 	    writer.write(";\n");
 	}
 	else {
@@ -184,14 +182,13 @@ class CodeGenerator
      * @param mClassifier The classifier the attribute belongs to.
      * @param writer The writer to write to.
      */
-    public static void generateAttribute(MAttribute mAttribute,
-					 MClassifier mClassifier,
+    public static void generateAttribute(Object mAttribute,
+					 Object mClassifier,
 					 BufferedReader reader,
 					 BufferedWriter writer)
-	throws Exception
-    {
+            throws Exception {
 	Vector names = new Vector();
-	StringBuffer sbName = new StringBuffer(mAttribute.getName());
+	StringBuffer sbName = new StringBuffer(ModelFacade.getName(mAttribute));
 	names.addElement(new SimpleCodePiece(sbName, 0, 0, 0));
 	AttributeCodePiece acp =
 	    new AttributeCodePiece(null,
