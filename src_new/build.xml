@@ -445,6 +445,8 @@ Property files to be searched:
        </classpath>
     </javac>
 
+    <available file="${argo.tests.src}" type="dir" property="has.tests"/>
+    <antcall target="compile-tests-if-there"/>
   </target>
 
   <!-- =================================================================== -->
@@ -664,6 +666,10 @@ Property files to be searched:
 	<path refid="argo.compile.classpath"/>
       </classpath>
     </javac>
+  </target>
+
+  <target name="compile-tests-if-there" if="has.tests">
+    <antcall target="compile-tests"/>
   </target>
 
   <!-- =================================================================== -->
