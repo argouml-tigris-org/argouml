@@ -45,6 +45,8 @@ import uci.ui.Highlightable;
 
 
 public class ElementImpl implements Element, Highlightable {
+  private static int elementCount = 0;
+  public int elementID = newElementID();
   public Name _name = Name.UNSPEC;
   //% public TaggedValue _characteristic[];
   public Vector _characteristic = new Vector();
@@ -64,6 +66,38 @@ public class ElementImpl implements Element, Highlightable {
     try { setName(new Name(nameStr)); }
     catch (PropertyVetoException ex) { }
   }
+
+  public static int newElementID () {
+    return ++elementCount;
+  }
+
+  public Vector getNamedProperty(String propName) {
+    Class voidArray[] = {};
+    Object objArray[] = {};
+    java.lang.reflect.Method methodToCall = null;
+    Vector returnVector = new Vector();
+    String realName = null;
+
+    try {
+      realName = "get" + propName.substring(0,1).toUpperCase() + propName.substring(1, propName.length());
+      methodToCall = this.getClass().getMethod(realName, voidArray); 
+    } catch (NoSuchMethodException ne) {
+      System.err.println("NO method (" + realName + ") matched in getNamedProperty!");
+    }
+
+    try {
+    returnVector.addElement(methodToCall.invoke(this, objArray));
+    
+    if (returnVector.firstElement() instanceof Vector) returnVector = (Vector)(returnVector.firstElement());
+
+    } catch (Exception e) {
+      System.err.println("Not happy with invoke!");
+    }
+    
+    return returnVector;
+  } 
+
+  public String getId() { return "argo" + elementID; }
 
   public Vector getCharacteristic() { return (Vector) _characteristic;}
   public void setCharacteristic(Vector x) throws PropertyVetoException {

@@ -48,6 +48,7 @@ implements GeneralizableElement {
     super(new Name(nameStr));
   }
 
+
   public boolean getIsRoot() { return _isRoot; }
   public void setIsRoot(boolean x) throws PropertyVetoException {
     fireVetoableChange("isRoot", _isRoot, x);

@@ -24,7 +24,6 @@
 
 
 
-
 package uci.uml.ui;
 
 import java.util.*;
@@ -47,6 +46,7 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
 import uci.uml.Model_Management.*;
 import uci.uml.visual.*;
+import uci.uml.xmi.*;
 
 public class Actions {
 
@@ -57,6 +57,7 @@ public class Actions {
   public static UMLAction Open = new ActionOpen();
   public static UMLAction Save = new ActionSave();
   public static UMLAction SaveAs = new ActionSaveAs();
+  public static UMLAction SaveAsXMI = new ActionSaveAsXMI();
   public static UMLAction AddToProj = new ActionAddToProj();
   public static UMLAction Print = new ActionPrint();
   public static UMLAction Exit = new ActionExit();
@@ -250,6 +251,22 @@ class ActionSaveAs extends UMLAction {
     }
   }
 } /* end class ActionSaveAS */
+
+class ActionSaveAsXMI extends UMLAction {
+  public ActionSaveAsXMI() { super("Save As XMI"); }
+
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("Dump XMI now.");
+    Project p = ProjectBrowser.TheInstance.getProject();
+
+    XMITraverse.traverse(p);
+  }
+} /* end class ActionSaveAsXMI */
 
 class ActionPrint extends UMLAction {
   public ActionPrint() { super("Print..."); }

@@ -36,7 +36,6 @@ import uci.uml.Foundation.Data_Types.*;
 
 public class Pseudostate extends StateVertex {
   public PseudostateKind _kind;
-
   public Pseudostate() { }
   public Pseudostate(Name name, PseudostateKind kind) {
     super(name);
