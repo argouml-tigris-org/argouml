@@ -115,11 +115,12 @@ public class PropPanelTransition extends PropPanelTwoEnds {
     _triggerField.addFocusListener(this);
     _triggerField.addKeyListener(this);
     _triggerField.setFont(_stereoField.getFont());
-    _guardField.getDocument().addDocumentListener(this);
+    _guardField.addFocusListener(this);
     _guardField.setFont(_stereoField.getFont());
-    _effectField.getDocument().addDocumentListener(this);
+    _guardField.addFocusListener(this);
+    _effectField.addFocusListener(this);
     _effectField.setFont(_stereoField.getFont());
-
+    _effectField.addFocusListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -192,6 +193,10 @@ public class PropPanelTransition extends PropPanelTwoEnds {
 	super.focusLost(e);
 	if (e.getComponent() == _triggerField)
 	    setTargetTrigger();
+  	else if (e.getComponent() == _guardField)
+	    setTargetGuard();
+ 	else if (e.getComponent() == _effectField)
+	    setTargetEffect();
     }
 
 
