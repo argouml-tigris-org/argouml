@@ -60,6 +60,8 @@ implements DocumentListener, ItemListener, ChangeListener {
 
   SpacerPanel _spacer = new SpacerPanel();
 
+  boolean _ignoreEvents = false;
+  
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssoc() {
@@ -218,6 +220,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     boolean navA = endA.getIsNavigable();
     boolean navB = endB.getIsNavigable();
 
+    _ignoreEvents = true;
     _roleAField.setText(roleAStr);
     _roleBField.setText(roleBStr);
     _multAField.setSelectedItem(mA);
@@ -226,7 +229,7 @@ implements DocumentListener, ItemListener, ChangeListener {
     _aggBField.setSelectedItem(akB);
     _navAField.getModel().setSelected(navA);
     _navBField.getModel().setSelected(navB);
-    
+    _ignoreEvents = false;
   }
 
 
@@ -276,7 +279,8 @@ implements DocumentListener, ItemListener, ChangeListener {
     if (_target == null) return;
     AggregationKind aggA = (AggregationKind) _aggAField.getSelectedItem();
     AggregationKind aggB = (AggregationKind) _aggBField.getSelectedItem();
-    //if (aggA == null || aggB == null) return;
+    if (aggA == null) { System.out.println("null A!!!"); return;}
+    if (aggB == null) { System.out.println("null B!!!" + aggB.getClass()); return;} 
     Association asc = (Association) _target;
     Vector conns = asc.getConnection();
     if (conns == null || conns.size() != 2) return;
@@ -361,6 +365,7 @@ implements DocumentListener, ItemListener, ChangeListener {
   }
 
   public void itemStateChanged(ItemEvent e) {
+    if (_ignoreEvents) return;
     Object src = e.getSource();
 //     if (src == _visAField) {
 //       System.out.println("assoc vis A now is " +
@@ -382,7 +387,7 @@ implements DocumentListener, ItemListener, ChangeListener {
 			 _multBField.getSelectedItem());
       setMult();
     }
-    if (src == _aggAField) {
+    else if (src == _aggAField) {
       System.out.println("assoc agg A now is " +
 			 _aggAField.getSelectedItem());
       setAgg();
@@ -392,7 +397,6 @@ implements DocumentListener, ItemListener, ChangeListener {
 			 _aggBField.getSelectedItem());
       setAgg();
     }
-    
   }
 
 
