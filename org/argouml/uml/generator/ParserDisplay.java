@@ -2357,10 +2357,6 @@ public class ParserDisplay extends Parser {
             }
         } catch (NoSuchElementException nsee) {
             throw new ParseException("Unexpected end of attribute", s.length());
-        } catch (ParseException pre) {
-            LOG.error("parseexception", pre);
-
-            throw pre;
         }
 
         if (base != null) {
