@@ -219,7 +219,10 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
     if (tvs.size() <= rowIndex) {
       MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
       if (columnIndex == 0) tv.setTag((String)aValue);
-      if (columnIndex == 1) tv.setValue((String) aValue);
+      if (columnIndex == 1) {
+	  tv.setTag("");
+	  tv.setValue((String) aValue);
+      }
       tvs.addElement(tv);
 
       mEvent1 = new TableModelEvent(this, tvs.size()-1);
