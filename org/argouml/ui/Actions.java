@@ -677,6 +677,8 @@ class ActionImportFromSources extends UMLAction {
             //      FileFilter filter = FileFilters.ArgoFilter;
             //chooser.addChoosableFileFilter(filter);
             //chooser.setFileFilter(filter);
+	    
+	    chooser.setAccessory(Import.getConfigPanel());
 
             int retval = chooser.showOpenDialog(pb);
 
