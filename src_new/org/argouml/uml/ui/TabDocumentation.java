@@ -75,8 +75,10 @@ public class TabDocumentation extends PropPanel {
         //uses the new LabelledLayout;
         //TODO: the title of the prop panel is localized using the localisation of documentation
         //- should this change? (Raphael)
+        // MVW: I changed label.documentation into tab.documentation 
+        // to get rid of  ":" in the tab. 
         super(
-	      Translator.localize("label.documentation"),
+	      Translator.localize("tab.documentation"),
 	      (Configuration.getString(
                     Configuration.makeKey("layout", "tabdocumentation"))
                     .equals("West") ||
