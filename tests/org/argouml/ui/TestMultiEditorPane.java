@@ -1,5 +1,4 @@
-// $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,6 +21,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// $Id$
 package org.argouml.ui;
 
 import org.argouml.application.security.ArgoSecurityManager;
@@ -29,54 +29,43 @@ import org.argouml.application.security.ArgoSecurityManager;
 import junit.framework.TestCase;
 
 /**
- * @since Nov 23, 2002
  * @author jaap.branderhorst@xs4all.nl
+ * @since Apr 13, 2003
  */
-public class TestProjectBrowser extends TestCase {
+public class TestMultiEditorPane extends TestCase {
 
     /**
-     * Constructor for TestProjectBrowser.
+     * Constructor for TestMultiEditorPane.
      * @param arg0
      */
-    public TestProjectBrowser(String arg0) {
+    public TestMultiEditorPane(String arg0) {
         super(arg0);
     }
-
-    /**
-     * Tests wether it is possible to construct a standalone projectbrowser
-     */
-    public void testConstruction() {
-        ProjectBrowser pb;
-        try {
-            pb = new ProjectBrowser("test", false);
-            assertNotNull(ProjectBrowser.TheInstance);
-        } catch (java.lang.InternalError e) {
-            // This is when we cannot connect to the display system.
-            // The test is inconclusive
-        }
-    }
-
-    /**
-     * Tests the construction of the splashscreen
-     */
-    public void testSplashScreen() {
-        ProjectBrowser pb;
-        try {
-            pb = new ProjectBrowser("test", true);
-            assertNotNull(ProjectBrowser.TheInstance.getSplashScreen());
-        } catch (java.lang.NoClassDefFoundError e) {
-            // Some problem caused by the lack of display system.
-            // The test is inconclusive
-        }
-    }
     
-
     /**
      * @see junit.framework.TestCase#setUp()
      */
-    protected void setUp() throws Exception {
-        super.setUp();
-        ArgoSecurityManager.getInstance().setAllowExit(true);
-    }
-
+     protected void setUp() throws Exception {
+         super.setUp();
+         ArgoSecurityManager.getInstance().setAllowExit(true);
+     }
+     
+     protected void tearDown() throws Exception {
+         super.tearDown();
+         ArgoSecurityManager.getInstance().setAllowExit(false);
+     }
+     
+     /**
+      * Tests the construction of the multieditorpane. Can we construct a
+      * multieditorpane and even have an editor in it?
+      */
+     public void testConstruction() {
+         MultiEditorPane pane = new MultiEditorPane();
+         assertNotNull(pane);
+         assertNull(pane.getTarget());
+         assertEquals(pane.getComponents().length, 1);
+     }
+     
+     
+     
 }

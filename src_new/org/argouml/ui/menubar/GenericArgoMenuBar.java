@@ -46,7 +46,6 @@ import org.argouml.ui.ActionSaveConfiguration;
 import org.argouml.ui.ActionSettings;
 import org.argouml.ui.Actions;
 import org.argouml.ui.ArgoJMenu;
-import org.argouml.ui.MultiToolbar;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
 import org.argouml.uml.ui.ActionActivityDiagram;
 import org.argouml.uml.ui.ActionClassDiagram;
@@ -72,7 +71,6 @@ import org.argouml.uml.ui.ActionSaveProjectAs;
 import org.argouml.uml.ui.ActionSequenceDiagram;
 import org.argouml.uml.ui.ActionStateDiagram;
 import org.argouml.uml.ui.ActionUseCaseDiagram;
-import org.argouml.uml.ui.ActionZoom;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdAdjustGrid;
 import org.tigris.gef.base.CmdAdjustGuide;
@@ -158,7 +156,7 @@ public class GenericArgoMenuBar extends JMenuBar
     }
 
     static final protected String menuLocalize(String key) {
-        return Argo.localize("CoreMenu",key);
+        return Argo.localize("CoreMenu", key);
     }
 
     static final void setAccelerator(JMenuItem item,KeyStroke keystroke) {

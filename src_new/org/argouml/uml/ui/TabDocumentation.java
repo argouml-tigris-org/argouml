@@ -25,7 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.argouml.application.api.*;
-import org.argouml.ui.*;
+import org.argouml.uml.ui.*;
 import org.argouml.util.ConfigLoader;
 import org.argouml.swingext.LabelledLayout;
 import ru.novosoft.uml.foundation.core.*;

@@ -48,9 +48,9 @@ import org.tigris.gef.ui.ToolBar;
 
 /**
  * The TabDiagram is the tab in the multieditorpane that holds a diagram. The 
- * TabDiagram consists of a JGraph (with the figs) and of a toolbar. It is
- * possible to spawn objects of this class into a dialog via the spawn method of
- * its parent.
+ * TabDiagram consists of a JGraph (with the figs) and a toolbar. It is possible
+ * to spawn objects of this class into a dialog via the spawn method of its
+ * parent.
  */
 public class TabDiagram extends TabSpawnable
 implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
@@ -239,4 +239,22 @@ implements TabModelTarget, GraphSelectionListener, ModeChangeListener {
         }
     }
 
+}
+
+/**
+ * UMLJGraph is a JGraph that updates the Figs representing modelelements if
+ * they are in the clipping area.
+ * @author jaap.branderhorst@xs4all.nl
+ * @since Apr 13, 2003
+ */
+class ArgoJGraph extends JGraph {
+    
+     public boolean equals(Object o) {
+         if (o instanceof ArgoJGraph) {
+             ArgoJGraph a = (ArgoJGraph)o;
+            if (this._currentDiagramId.equals(a._currentDiagramId) &&
+                this.getEditor().equals(a.getEditor())) return true;
+         }
+         return false;
+     }
 }

@@ -315,7 +315,7 @@ public abstract class ConfigurationHandler {
   public final boolean getBoolean(ConfigurationKey key, boolean defaultValue) {
       loadIfNecessary();
       Boolean dflt = new Boolean(defaultValue);
-      Boolean b = new Boolean(getValue(key.getKey(), dflt.toString()));
+      Boolean b = key != null ? new Boolean(getValue(key.getKey(), dflt.toString())) : dflt;
       return b.booleanValue();
   }
 

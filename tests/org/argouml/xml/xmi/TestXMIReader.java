@@ -85,7 +85,7 @@ public class TestXMIReader extends TestCase {
         p = ProjectManager.getManager().makeEmptyProject();
         try {
             URL url = file.toURL();
-            Project.loadProject(url);
+            ProjectManager.getManager().loadProject(url);
         } catch (IOException io) {
             fail(io.getMessage());
         } catch (Exception ex) {

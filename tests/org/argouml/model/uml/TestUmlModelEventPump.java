@@ -26,9 +26,11 @@ package org.argouml.model.uml;
 
 import java.lang.ref.WeakReference;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 
 import junit.framework.TestCase;
+import junit.framework.TestListener;
 
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.kernel.ProjectManager;
@@ -38,6 +40,9 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MModelElementImpl;
 import ru.novosoft.uml.foundation.core.MOperationImpl;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MParameterImpl;
@@ -52,6 +57,9 @@ public class TestUmlModelEventPump extends TestCase {
     private MockModelEventListener listener;
     private boolean eventcalled;
     private TestListener listener2;
+    
+    public final static boolean TEST_PERFORMANCE = true;
+    public final static int PERFORMANCE_TEST_SIZE = 10000;
 
     
     private class TestListener implements MElementListener {
@@ -147,7 +155,7 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addModelEventListener(listener, elem, new String[] {"name"});
         assertTrue(!UmlModelEventPump.getPump().getListenerClassModelEventsMap().isEmpty());
         assertTrue(!UmlModelEventPump.getPump().getListenerModelEventsMap().isEmpty());
-        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name") instanceof Collection);
+        assertTrue(UmlModelEventPump.getPump().getListenerModelEventsMap().get(UmlModelEventPump.getPump().getKey(elem, "name")) instanceof Collection);
         assertTrue(((Collection)UmlModelEventPump.getPump().getListenerModelEventsMap().get(elem.hashCode() + "name")).contains(listener));
     }
    
@@ -481,6 +489,66 @@ public class TestUmlModelEventPump extends TestCase {
         UmlModelEventPump.getPump().addClassModelEventListener(listener2, elem.getClass());
         elem.removeParameter(param);
         assertTrue(eventcalled);
+    }
+    
+    /**
+     * Performance test for adding listeners, only run when TEST_PERFORMANCE ==
+     * true
+     */
+    public void testAddingListenersPerformance() {
+        if (TEST_PERFORMANCE) {
+            Date currentTime = new Date();            
+            MModelElement element = new MParameterImpl();
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                UmlModelEventPump.getPump().addModelEventListener(new TestListener(), element);
+            }
+            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+            System.out.println("Time elapsed while adding listeners: " + timeElapsed);
+        }
+    }
+    
+    /**
+     * Performance test for removing listeners, only run when TEST_PERFORMANCE
+     * == true
+     */
+    public void testRemoveListenersPerformance() {
+        if (TEST_PERFORMANCE) {                    
+            MModelElement element = new MParameterImpl();
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                UmlModelEventPump.getPump().addModelEventListener(new TestListener(), element);
+            }
+            Date currentTime = new Date();   
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                UmlModelEventPump.getPump().removeModelEventListener(new TestListener(), element);
+            }
+            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+            System.out.println("Time elapsed while removing listeners: " + timeElapsed);
+        }
+    }
+    
+    /**
+     * Tests the performance of firing roleremoved events to a single listener
+     * from a single source.
+     */
+    public void testRoleRemovedPerfomance() {
+        if (TEST_PERFORMANCE) {
+            MClass clazz = new MClassImpl();
+            MParameter[] parameters = new MParameter[PERFORMANCE_TEST_SIZE];
+            MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_DISABLED);
+            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+                parameters[i] = new MParameterImpl();
+                
+                clazz.addParameter(parameters[i]);
+                UmlModelEventPump.getPump().addModelEventListener(listener2, clazz, new String[] {"parameter"});
+            }
+            MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
+            Date currentTime = new Date();   
+           for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
+               clazz.removeParameter(parameters[i]);
+           }
+           long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+           System.out.println("Time elapsed while firing " + PERFORMANCE_TEST_SIZE + " RoleRemoved events: " + timeElapsed);
+        }
     }
     
     
