@@ -16,29 +16,33 @@ The target to change is <tt>setversion</tt>
 where you will need to change the
 property names accordingly.
 </p><p>
-For release 0.9.6 it should look like this:
+For release 0.9.8 it should look like this:
 <pre class="programlisting">
+  &lt;!-- These cannot be changed in .ant.properties --&gt;
   &lt;target name="setversion"&gt;
-    &lt;!-- These cannot be changed in .ant.properties --&gt;
-    &lt;property name="nextversion" value="0.9.7"/&gt;
-    &lt;property name="lastversion" value="0.9.6"/&gt;
+    &lt;property name="thisversion" value="0.9.8"/&gt;
   &lt;/target&gt;
 </pre>
 </p></li><li><p>Tag the whole cvs directory with the freeze tag!</p><p>
 Normally this tag is "VERSION_<i><tt>X_Y_Z</tt></i>_F",
-e.g. VERSION_0_9_6_F.
+e.g. VERSION_0_9_7_F.
 The according command line cvs command is 
 <b>cvs rtag VERSION_<i><tt>X_Y_Z</tt></i>_F argouml</b>.
 In case you make a mistake doing that (you shouldn't really), 
-you need to remove the tag you mistakenly put ther and start over.
+you need to remove the tag you mistakenly put there and start over.
 </p></li><li><p>Make sure you have a clean copy of the source!</p><p>
 This is done by checking out from the tag using the command
 <b>cvs co -r VERSION_<i><tt>X_Y_Z</tt></i>_F argouml</b>
 </p></li><li><p>Build the release with <b>build dist-release</b>!</p><p>
 The output should be the files
-ArgoUML-<i><tt>VERSION-TIMESTAMP</tt></i>.tar.gz and 
-ArgoUML-<i><tt>VERSION-TIMESTAMP</tt></i>.zip files in the top-level
-argouml directory.
+ArgoUML-<i><tt>VERSION</tt></i>-libs.tar.gz,
+ArgoUML-<i><tt>VERSION</tt></i>-libs.zip,
+ArgoUML-<i><tt>VERSION</tt></i>-src.tar.gz,
+ArgoUML-<i><tt>VERSION</tt></i>-src.zip,
+ArgoUML-<i><tt>VERSION</tt></i>.tar.gz, and
+ArgoUML-<i><tt>VERSION</tt></i>.zip
+in the top-level argouml directory.
+
 </p></li><li><p>Test the release!</p><p>
 Either the tar or zip-file is tested by unpacking, starting and then
 running through the test cases.
@@ -55,7 +59,7 @@ No problems shall be found.
 If the tests did not pass See <a href="ch02s04.html#release_process_test_failed" title="2.4.1. The release did not work">Section 2.4.1</a>.
 </p></li><li><p>Tag the whole repository with the release tag!</p><p>
 This tag is "VERSION_<i><tt>X_Y_Z</tt></i>",
-e.g. VERSION_0_9_6.
+e.g. VERSION_0_9_7.
 The according command line cvs command is 
 <b>cvs tag VERSION_<i><tt>X_Y_Z</tt></i></b>
 when your are standing in the

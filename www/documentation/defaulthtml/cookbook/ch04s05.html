@@ -1,6 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>4.5. Reverse Engineering</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s04.html" title="4.4. Diagrams"><link rel="next" href="ch04s06.html" title="4.6. Details Panel"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.5. Reverse Engineering</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="reverse"></a>4.5. Reverse Engineering</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_reverse"></a>4.5.1. How do I ...?</h3></div></div><p>...</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1735"></a>4.5.2. Which sources are involved?</h3></div></div><p>
+   <title>4.5. Reverse Engineering</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s04.html" title="4.4. Diagrams"><link rel="next" href="ch04s06.html" title="4.6. Details Panel"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.5. Reverse Engineering</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s04.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch04s06.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="reverse"></a>4.5. Reverse Engineering</h2></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="howdoi_reverse"></a>4.5.1. How do I ...?</h3></div></div><p>...</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1714"></a>4.5.2. Which sources are involved?</h3></div></div><p>
 The package org.argouml.uml.reveng is supposed to hold those classes
 that are common to all RE packages. At the moment this is the Import
 class which is mainly responsible to recognize directories, get their
@@ -13,7 +13,7 @@ metamodel objects then.
 The package org.argouml.uml.reveng.java holds the Java specific parts
 of the current RE code. C++ RE might go to org.argouml.uml.reveng.cc,
 or so...
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1742"></a>4.5.3. How is the grammar of the target language implemented?</h3></div></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1721"></a>4.5.3. How is the grammar of the target language implemented?</h3></div></div><p>
 It's a Antlr (<a href="http://www.antlr.org" target="_top">http://www.antlr.org</a>)
 grammar, based on the Antlr Java parser
 example. The main difference is the missing AST (Abstract Syntax Tree)
@@ -22,12 +22,12 @@ generation and treeparser. So the original example generates a AST
 ArgoUML code parses the source file and generates NSUML objects
 directly from the sources. This was done to avoid the memory usage
 of an AST and the frequent GC while parsing many source files.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1750"></a>4.5.4. Which model/diagramm elements are generated?</h3></div></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1729"></a>4.5.4. Which model/diagramm elements are generated?</h3></div></div><p>
 The *context classes hold the current context for a package, class
 etc. When the required information for a object is available, the
 corresponding NSUML object is created and passed to the DiagramInterface
 to visualize it.
-</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1755"></a>4.5.5. Which layout algorithm is used?</h3></div></div><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e1734"></a>4.5.5. Which layout algorithm is used?</h3></div></div><p>
 The classes in org.argouml.uml.diagram.static_structure.layout.* hold
 the Classdiagram layout code. No layout for other diagram types yet.
 It's based on a ranking scheme for classes and interfaces. The rank of
