@@ -57,7 +57,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
     private boolean _new = false;
     
     private AbstractActionAddModelElement _addAction = null;
-    private UMLChangeAction _newAction = null;
+    private AbstractActionNewModelElement _newAction = null;
     
     protected class PopupMenu extends JPopupMenu {
         public PopupMenu() {
@@ -66,12 +66,16 @@ public class UMLMutableLinkedList extends UMLLinkedList {
                 _addAction.setTarget((MModelElement)getContainer().getTarget());
                 add(_addAction);
             }
-            if (isDelete()) {
-                add(new ActionRemoveModelElement((MModelElement)getSelectedValue()));
-            }
             if (isNew()) {
+                _newAction.setTarget((MModelElement)getContainer().getTarget());
                 add(_newAction);
             }
+            if (isNew() || isAdd()) addSeparator();
+            if (isDelete()) {
+                ActionRemoveModelElement.SINGLETON.setElementToDelete((MModelElement)getSelectedValue());
+                add(ActionRemoveModelElement.SINGLETON);
+            }
+           
         }
     }
     
@@ -86,7 +90,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
         UMLUserInterfaceContainer container,
         UMLModelElementListModel2 dataModel,
         AbstractActionAddModelElement addAction,
-        UMLChangeAction newAction) {
+        AbstractActionNewModelElement newAction) {
         super(container, dataModel);
         setAddAction(addAction);
         setNewAction(newAction);
@@ -128,7 +132,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * Returns the addAction.
      * @return UMLChangeAction
      */
-    public UMLChangeAction getAddAction() {
+    public AbstractActionAddModelElement getAddAction() {
         return _addAction;
     }
 
@@ -136,7 +140,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * Returns the newAction.
      * @return UMLChangeAction
      */
-    public UMLChangeAction getNewAction() {
+    public AbstractActionNewModelElement getNewAction() {
         return _newAction;
     }
 
@@ -153,7 +157,7 @@ public class UMLMutableLinkedList extends UMLLinkedList {
      * Sets the newAction.
      * @param newAction The newAction to set
      */
-    public void setNewAction(UMLChangeAction newAction) {
+    public void setNewAction(AbstractActionNewModelElement newAction) {
         if (newAction != null) _new = true;
         _newAction = newAction;
     }

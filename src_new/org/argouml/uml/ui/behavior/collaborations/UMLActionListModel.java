@@ -22,66 +22,42 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui;
+package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.event.ActionEvent;
+import org.argouml.uml.ui.UMLModelElementListModel2;
+import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
-import org.argouml.application.api.Argo;
-import org.argouml.kernel.Project;
-import org.argouml.ui.ProjectBrowser;
-
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Action to delete modelelements from the model without navigating to/from them.
- * Used in UMLMutableList for deletion of modelelements from the list.
- * @since Oct 2, 2002
+ * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionRemoveModelElement extends UMLChangeAction {
+public class UMLActionListModel extends UMLModelElementListModel2 {
 
-    private MModelElement _elementToDelete = null;
-    
-    public final static ActionRemoveModelElement SINGLETON = new ActionRemoveModelElement();
     /**
-     * Constructor for ActionRemoveModelElement.
+     * Constructor for UMLActionListModel.
+     * @param container
      */
-    protected ActionRemoveModelElement() {
-        super(Argo.localize("CoreMenu", "Delete From Model"), true, NO_ICON);
+    public UMLActionListModel(UMLUserInterfaceContainer container) {
+        super(container);
     }
 
     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Project p = ProjectBrowser.TheInstance.getProject();
-        if (_elementToDelete != null && ActionRemoveFromModel.sureRemove(_elementToDelete))
-            p.moveToTrash(_elementToDelete);
-        _elementToDelete = null;
+    protected void buildModelList() {
+        removeAllElements();
+        addElement(((MMessage)getContainer().getTarget()).getAction());
     }
 
     /**
-     * Returns the modelelement to be deleted.
-     * @return MModelElement
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValid(ru.novosoft.uml.foundation.core.MModelElement)
      */
-    public MModelElement getElementToDelete() {
-        return _elementToDelete;
-    }
-
-    /**
-     * Sets the elementToDelete.
-     * @param elementToDelete The elementToDelete to set
-     */
-    public void setElementToDelete(MModelElement elementToDelete) {
-        _elementToDelete = elementToDelete;
-    }
-
-    /**
-     * @see javax.swing.Action#isEnabled()
-     */
-    public boolean isEnabled() {
-        return _elementToDelete != null;
+    protected boolean isValid(MModelElement elem) {
+        return elem instanceof MAction;
     }
 
 }

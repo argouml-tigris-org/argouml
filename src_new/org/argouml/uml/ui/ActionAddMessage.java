@@ -64,6 +64,7 @@ public class ActionAddMessage extends UMLChangeAction {
     	if (!(target instanceof MAssociationRole) && ((MAssociationRole)target).getNamespace() instanceof MCollaboration) return;
     	MAssociationRole ar = (MAssociationRole) target;
         this.addMessage(ar);
+        super.actionPerformed(ae);
     }
     
     /**
@@ -81,12 +82,6 @@ public class ActionAddMessage extends UMLChangeAction {
         GraphNodeRenderer gr = e.getGraphNodeRenderer();
         FigNode figMsg = gr.getFigNodeFor(gm, lay, msg);
         ((FigMessage)figMsg).addPathItemToFigAssociationRole(lay);
-        /*
-        lay.add(figMsg);
-        FigEdge figRole = (FigEdge)lay.presentationFor(ar);
-        figRole.addPathItem(figMsg, new PathConvPercent(figRole, 50, 10));
-        figRole.updatePathItemLocations();
-        */
         e.damageAll();                
         return msg;
     }

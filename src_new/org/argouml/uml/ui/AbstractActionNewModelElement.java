@@ -24,64 +24,40 @@
 // $header$
 package org.argouml.uml.ui;
 
-import java.awt.event.ActionEvent;
-
 import org.argouml.application.api.Argo;
-import org.argouml.kernel.Project;
-import org.argouml.ui.ProjectBrowser;
-
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * Action to delete modelelements from the model without navigating to/from them.
- * Used in UMLMutableList for deletion of modelelements from the list.
- * @since Oct 2, 2002
+ * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class ActionRemoveModelElement extends UMLChangeAction {
+public abstract class AbstractActionNewModelElement extends UMLChangeAction {
 
-    private MModelElement _elementToDelete = null;
+    private MModelElement _target;
     
-    public final static ActionRemoveModelElement SINGLETON = new ActionRemoveModelElement();
-    /**
-     * Constructor for ActionRemoveModelElement.
-     */
-    protected ActionRemoveModelElement() {
-        super(Argo.localize("CoreMenu", "Delete From Model"), true, NO_ICON);
-    }
-
-    /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
-    public void actionPerformed(ActionEvent e) {
-        super.actionPerformed(e);
-        Project p = ProjectBrowser.TheInstance.getProject();
-        if (_elementToDelete != null && ActionRemoveFromModel.sureRemove(_elementToDelete))
-            p.moveToTrash(_elementToDelete);
-        _elementToDelete = null;
-    }
-
-    /**
-     * Returns the modelelement to be deleted.
+    protected AbstractActionNewModelElement() {
+        super(Argo.localize("CoreMenu", "New"), true, NO_ICON);
+    }  
+    
+     /**
+     * Returns the target.
      * @return MModelElement
      */
-    public MModelElement getElementToDelete() {
-        return _elementToDelete;
+    public MModelElement getTarget() {
+        return _target;
     }
 
     /**
-     * Sets the elementToDelete.
-     * @param elementToDelete The elementToDelete to set
+     * Sets the target.
+     * @param target The target to set
      */
-    public void setElementToDelete(MModelElement elementToDelete) {
-        _elementToDelete = elementToDelete;
+    public void setTarget(MModelElement target) {
+        _target = target;
     }
 
     /**
      * @see javax.swing.Action#isEnabled()
      */
-    public boolean isEnabled() {
-        return _elementToDelete != null;
-    }
-
+    public abstract boolean isEnabled();
+       
 }

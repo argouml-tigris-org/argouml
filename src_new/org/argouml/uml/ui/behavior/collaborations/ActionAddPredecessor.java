@@ -36,23 +36,18 @@ import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Action to add a predecessor to some message.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class ActionAddPredecessor extends AbstractActionAddModelElement {
 
-    /**
-     * Constructor for ActionAddPredecessor.
-     * @param target
-     */
-    public ActionAddPredecessor(MModelElement target) {
-        super(target);
-    }
-
+    public final static ActionAddPredecessor SINGLETON = new ActionAddPredecessor();
+    
     /**
      * Constructor for ActionAddPredecessor.
      */
-    public ActionAddPredecessor() {
+    protected ActionAddPredecessor() {
         super();
     }
 
@@ -60,7 +55,7 @@ public class ActionAddPredecessor extends AbstractActionAddModelElement {
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getChoices()
      */
     protected Vector getChoices() {
-        if (getTarget() == null) throw new IllegalStateException("getChoices may not be called with null target");
+        if (getTarget() == null) return new Vector();
         Vector vec = new Vector();
         vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors((MMessage)getTarget()));
         return vec;

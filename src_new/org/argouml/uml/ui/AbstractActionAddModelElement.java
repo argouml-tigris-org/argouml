@@ -35,20 +35,19 @@ import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Abstract action that is the parent to all add actions that add the modelelements
+ * via the UMLAddDialog.
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class AbstractActionAddModelElement extends UMLChangeAction {
 
     private MModelElement _target;
+    private boolean _multiSelect = true;
+    private boolean _exclusive = true;
     
-    public AbstractActionAddModelElement(MModelElement target) {
-        this();
-        setTarget(target);
-    }
-    
-    public AbstractActionAddModelElement() {
-        super(Argo.localize("CoreMenu", "Add"), false, NO_ICON);
+    protected AbstractActionAddModelElement() {
+        super(Argo.localize("CoreMenu", "Add"), true, NO_ICON);
     }
         
 
@@ -73,35 +72,73 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        UMLAddDialog dialog = new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(), getMultiSelect(), getExclusive());
+        UMLAddDialog dialog = new UMLAddDialog(getChoices(), getSelected(), getDialogTitle(), isMultiSelect(), isExclusive());
         int result = dialog.showDialog(ProjectBrowser.TheInstance);
         if (result == JOptionPane.OK_OPTION) {
             doIt(dialog.getSelected());
         }
     }
     
+    /**
+     * Returns the choices the user has in the UMLAddDialog. The choices are 
+     * depicted on the left side of the UMLAddDialog (sorry Arabic users) and 
+     * can be moved via the buttons on the dialog to the right side. On the
+     * right side are the selected modelelements.
+     * @return Vector
+     */
     protected abstract Vector getChoices();
     
+    /**
+     * The modelelements allready selected BEFORE the dialog is shown.
+     * @return Vector
+     */
     protected abstract Vector getSelected();
     
+    /**
+     * Returns the title of the dialog.
+     * @return String
+     */
     protected abstract String getDialogTitle();
-    
-    protected boolean getMultiSelect() {
-        return true;
-    }
-    
-    protected boolean getExclusive() {
-        return true;
-    }
     
     protected abstract void doIt(Vector selected);
 
     /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
+     * Returns the exclusive.
+     * @return boolean
      */
-    public boolean shouldBeEnabled() {
-        super.shouldBeEnabled();
-        return !getChoices().isEmpty();
+    public boolean isExclusive() {
+        return _exclusive;
+    }
+
+    /**
+     * Returns the multiSelect.
+     * @return boolean
+     */
+    public boolean isMultiSelect() {
+        return _multiSelect;
+    }
+
+    /**
+     * Sets the exclusive.
+     * @param exclusive The exclusive to set
+     */
+    public void setExclusive(boolean exclusive) {
+        _exclusive = exclusive;
+    }
+
+    /**
+     * Sets the multiSelect.
+     * @param multiSelect The multiSelect to set
+     */
+    public void setMultiSelect(boolean multiSelect) {
+        _multiSelect = multiSelect;
+    }
+
+    /**
+     * @see javax.swing.Action#isEnabled()
+     */
+    public boolean isEnabled() {
+         return !getChoices().isEmpty();
     }
 
 }

@@ -32,6 +32,7 @@ package org.argouml.uml.ui.behavior.collaborations;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.MFactory;
@@ -62,51 +63,44 @@ public class PropPanelMessage extends PropPanelModelElement {
     super("Message",_messageIcon, ConfigLoader.getTabPropsOrientation());
 
     Class mclass = MMessage.class;
+    
+    Class[] namesToWatch = { MStereotype.class, MClassifierRole.class, 
+        MAction.class };
+    setNameEventListening(namesToWatch);
 
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
 
-	// no namespace since this class belongs to an interaction and namespace is therefore not of any interest
-    // addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
-    // addField(namespaceScroll,3,0,0);
-
-    UMLModelElementListModel senderModel=new UMLReflectionListModel(this, "sender",true,"getSender",null, null,null);
-    JList senderList = new UMLList(senderModel,true);
-    senderList.setForeground(Color.blue);
-    senderList.setFont(smallFont);
+    JList senderList = new UMLLinkedList(this, new UMLSenderListModel(this));
     senderList.setVisibleRowCount(1);
-    JScrollPane senderScroll = new JScrollPane(senderList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField("Sender:", senderScroll);
+    JScrollPane senderScroll = new JScrollPane(senderList);
+    addField(Argo.localize("UMLMenu", "label.sender"), senderScroll);
 
-    UMLModelElementListModel receiverModel=new UMLReflectionListModel(this, "receiver",true,"getReceiver",null, null,null);
-    JList receiverList = new UMLList(receiverModel,true);
-    receiverList.setForeground(Color.blue);
-    receiverList.setFont(smallFont);
+    JList receiverList = new UMLLinkedList(this, new UMLReceiverListModel(this));
     receiverList.setVisibleRowCount(1);
-    JScrollPane receiverScroll = new JScrollPane(receiverList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    JScrollPane receiverScroll = new JScrollPane(receiverList);
     addField(Argo.localize("UMLMenu", "label.receiver"), receiverScroll);
-
-    add(LabelledLayout.getSeperator());
    
-    /*
-    UMLModelElementListModel predecessorModel=new UMLReflectionListModel(this, "predecessor",true,"getPredecessor",null, null,null);
-    JList predecessorList = new UMLList(predecessorModel,true);
-    predecessorList.setForeground(Color.blue);
-    predecessorList.setFont(smallFont);
-    */  
+    add(LabelledLayout.getSeperator());
 
-    addField("Activator:", new UMLActivatorComboBox(this, new UMLActivatorComboBoxModel(this)));
+    addField(Argo.localize("UMLMenu", "label.activator"), new UMLActivatorComboBox(this, new UMLActivatorComboBoxModel(this)));
 
+    JList actionList = new UMLMutableLinkedList(this, new UMLActionListModel(this), null, ActionNewAction.SINGLETON);
+    actionList.setVisibleRowCount(1);
+    JScrollPane actionScroll = new JScrollPane(actionList);
+    addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
+/*
     UMLModelElementListModel actionModel=new UMLActionListModel(this, "action",true,"getAction",null,"addAction","deleteAction");
     JList actionList = new UMLList(actionModel,true);
     actionList.setForeground(Color.blue);
     actionList.setFont(smallFont);
     actionList.setVisibleRowCount(1);
     JScrollPane actionScroll = new JScrollPane(actionList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-    addField("Action:", actionScroll);
+    addField(Argo.localize("UMLMenu", "label.action"), actionScroll);
+    */
     
-    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLPredecessorListModel(this), new ActionAddPredecessor(), null));
-    addField("Predecessor:", predecessorScroll);
+    JScrollPane predecessorScroll = new JScrollPane(new UMLMutableLinkedList(this, new UMLPredecessorListModel(this), ActionAddPredecessor.SINGLETON, null));
+    addField(Argo.localize("UMLMenu", "label.predecessor"), predecessorScroll);
 
     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateInteraction",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
@@ -114,42 +108,6 @@ public class PropPanelMessage extends PropPanelModelElement {
     new PropPanelButton(this,buttonPanel,_actionIcon, Argo.localize("UMLMenu", "button.add-action"),"addAction","isAddActionEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete"),"removeElement",null);
  }
-
-    public MClassifierRole getSender() {
-        MClassifierRole sender = null;
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            sender = ((MMessage) target).getSender();
-        }
-        return sender;
-    }
-
-    public MClassifierRole getReceiver() {
-        MClassifierRole receiver = null;
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            receiver = ((MMessage) target).getReceiver();
-        }
-        return receiver;
-    }
-    
-    public MMessage getActivator() {
-        MMessage activator = null;
-        Object target = getTarget();
-        if(target instanceof MMessage) {
-            activator = ((MMessage) target).getActivator();
-        }
-        return activator;
-    }
-    
-    public java.util.List getPredecessor() {
-       java.util.Collection predecessor = null;
-       Object target = getTarget();
-       if(target instanceof MMessage) {
-	   predecessor = ((MMessage) target).getPredecessors();
-       }
-       return new Vector(predecessor);
-    }
     
     public MAction getAction() {
         MAction action = null;
@@ -202,59 +160,3 @@ public class PropPanelMessage extends PropPanelModelElement {
     }
 
 } /* end class PropPanelMessage */
-
-class UMLActionListModel extends UMLReflectionListModel {
-	/**
-	 * Constructor for UMLActionListModel.
-	 * @param container
-	 * @param property
-	 * @param showNone
-	 * @param getMethod
-	 * @param setMethod
-	 * @param addMethod
-	 * @param deleteMethod
-	 */
-	public UMLActionListModel(
-		UMLUserInterfaceContainer container,
-		String property,
-		boolean showNone,
-		String getMethod,
-		String setMethod,
-		String addMethod,
-		String deleteMethod) {
-		super(
-			container,
-			property,
-			showNone,
-			getMethod,
-			setMethod,
-			addMethod,
-			deleteMethod);
-	}
-	
-	
-
-	/**
-	 * @see org.argouml.uml.ui.UMLModelElementListModel#buildPopup(JPopupMenu, int)
-	 */
-	public boolean buildPopup(JPopupMenu popup, int index) {
-		UMLUserInterfaceContainer container = getContainer();
-		
-        UMLListMenuItem add = new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if (getModelElementSize() > 0) {
-        	add.setEnabled(false);
-        } else {
-        	open.setEnabled(false);
-        	delete.setEnabled(false);
-        }
-        popup.add(open);
-        popup.add(delete);
-        popup.add(add);
-        return true;
-	}
-	
-	
-
-}
