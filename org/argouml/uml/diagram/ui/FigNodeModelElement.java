@@ -446,8 +446,10 @@ public abstract class FigNodeModelElement
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
             }
-            icon.paintIcon(null, g, iconX, iconY);
-            iconX += icon.getIconWidth();
+            if (icon != null) {
+                icon.paintIcon(null, g, iconX, iconY);
+                iconX += icon.getIconWidth();
+            }
         }
         items = list.elementsForOffender(this);
         size = items.size();
@@ -458,8 +460,10 @@ public abstract class FigNodeModelElement
                 ((Clarifier) icon).setFig(this);
                 ((Clarifier) icon).setToDoItem(item);
             }
-            icon.paintIcon(null, g, iconX, iconY);
-            iconX += icon.getIconWidth();
+            if (icon!=null) {
+                icon.paintIcon(null, g, iconX, iconY);
+                iconX += icon.getIconWidth();
+            }
         }
     }
 
