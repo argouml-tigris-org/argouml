@@ -173,11 +173,10 @@ implements PluggableNotation, FileGenerator {
 
     s += "\n";
 
-    // check if the class has a base class
-    String baseClass = generateGeneralzation(cls.getGeneralizations());
-    if (!baseClass.equals("")){
-        s += "require_once \"";
-        s += baseClass + ".php\";\n";
+    // check if the class has a base class and add require statements
+    String stmts = generateRequireStatements(cls.getGeneralizations());
+    if (!"".equals(stmts)) {
+         s += stmts+"\n";;
     }
 
     // check if the class has dependencies
@@ -1002,8 +1001,10 @@ implements PluggableNotation, FileGenerator {
   // internal methods?
 
 
-  public String generateGeneralzation(Collection generalizations) {
-    if (generalizations == null) return "";
+  public Collection 
+      generateGeneralzationCollection(Collection generalizations) 
+  {
+    if (generalizations == null) return null;
     Collection classes = new ArrayList();
     Iterator enum = generalizations.iterator();
     while (enum.hasNext()) {
@@ -1012,8 +1013,18 @@ implements PluggableNotation, FileGenerator {
       // assert ge != null
       if (ge != null) classes.add(ge);
     }
-    return generateClassList(classes);
+    return classes;
   }
+
+  public String generateGeneralzation(Collection generalizations) {
+      return 
+          generateClassList(generateGeneralzationCollection(generalizations));
+  }
+
+    public String generateRequireStatements(Collection generalizations) {
+        return 
+            generateRequireStatementList(generateGeneralzationCollection(generalizations));
+    }
 
     //  public String generateSpecification(Collection realizations) {
 	public String generateSpecification(MClass cls) {
@@ -1036,6 +1047,17 @@ implements PluggableNotation, FileGenerator {
 		while (clsEnum.hasNext()) {
 			s += generateClassifierRef((MClassifier)clsEnum.next());
 			if (clsEnum.hasNext()) s += ", ";
+		}
+		return s;
+	}
+
+    public String generateRequireStatementList(Collection classifiers) {
+		String s = "";
+		if (classifiers == null) return "";
+		Iterator clsEnum = classifiers.iterator();
+		while (clsEnum.hasNext()) {
+			s += "require_once \""+generateClassifierRef((MClassifier)clsEnum.next())+".php\";\n";
+		
 		}
 		return s;
 	}
