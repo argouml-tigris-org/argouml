@@ -67,7 +67,7 @@ Modifications
     types of the <ulink
       url="http://www.omg.org/technology/documents/formal/uml.htm">
     UML&nbsp;1.3 standard</ulink>. It is written in Java and runs on every
-    computer which provides a Java 2 platform (Java 1.2 or newer).  It uses the
+    computer which provides a Java 2 platform of Java 1.3 or newer.  It uses the
     open file formats <ulink
       url="http://www.omg.org/technology/documents/formal/xmi.htm">XMI 
     </ulink> (XML Metadata Interchange format) (for model information) and

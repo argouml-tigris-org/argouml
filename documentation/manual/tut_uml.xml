@@ -777,7 +777,7 @@ Modifications
         <title>Downloading &argouml;</title>
 
         <para>Since &argouml; is written in 100% pure Java, it should run on
-          any machine with a Java Engine. Java2, version 1.2 or later is
+          any machine with a Java Engine. Java2, version 1.3 or later is
           needed. You may have this in place, but if not it can be downloaded
           free from Sun MicroSystems
           (<ulink url="http://www.sun.com">www.sun.com</ulink>). Note that you
