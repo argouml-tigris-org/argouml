@@ -80,6 +80,10 @@ public class StylePanelFigUseCase extends StylePanelFig {
 
     protected JLabel _displayLabel = new JLabel("Display: ");
 
+    /**
+     * Flag to indicate that a refresh is going on.
+     */
+    private boolean _refreshTransaction = false;
 
     ///////////////////////////////////////////////////////////////////////////
     //
@@ -153,6 +157,8 @@ public class StylePanelFigUseCase extends StylePanelFig {
 
     public void refresh() {
 
+        _refreshTransaction = true;
+        
         // Invoke the parent refresh first
 
         super.refresh();
@@ -160,6 +166,8 @@ public class StylePanelFigUseCase extends StylePanelFig {
         FigUseCase target = (FigUseCase) getTarget();
 
         _epCheckBox.setSelected(target.isExtensionPointVisible());
+        
+        _refreshTransaction = false;
     }
 
 
@@ -177,17 +185,21 @@ public class StylePanelFigUseCase extends StylePanelFig {
      */
 
     public void itemStateChanged(ItemEvent e) {
-        Object src = e.getSource();
+        if (!_refreshTransaction) {
+            Object src = e.getSource();
 
-        // If it was the check box, reset it, otherwise invoke the parent.
+            // If it was the check box, reset it, otherwise invoke the parent.
 
-        if (src == _epCheckBox) {
-            FigUseCase target = (FigUseCase) getTarget();
+            if (src == _epCheckBox) {
+                FigUseCase target = (FigUseCase) getTarget();
 
-            target.setExtensionPointVisible(_epCheckBox.isSelected());
-        }
-        else {
-            super.itemStateChanged(e);
+                target.setExtensionPointVisible(_epCheckBox.isSelected());
+            
+                markNeedsSave();
+            }
+            else {
+                super.itemStateChanged(e);
+            }
         }
     }
 

@@ -38,6 +38,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
 import org.apache.log4j.Logger;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.SpacerPanel;
 import org.argouml.ui.StylePanel;
 import org.tigris.gef.ui.ColorRenderer;
@@ -62,6 +64,11 @@ public class SPFigEdgeModelElement extends StylePanel
     SpacerPanel _spacer = new SpacerPanel();
     SpacerPanel _spacer2 = new SpacerPanel();
     SpacerPanel _spacer3 = new SpacerPanel();
+
+    /**
+     * Flag to indicate that a refresh is going on.
+     */
+    private boolean _refreshTransaction = false;
 
     ////////////////////////////////////////////////////////////////
     // contructors
@@ -152,6 +159,7 @@ public class SPFigEdgeModelElement extends StylePanel
     // accessors
 
     public void refresh() {
+        _refreshTransaction = true;
 	super.refresh();
 
 	String bboxStr = _target.getX() + ", " + _target.getY() + ", " +
@@ -163,6 +171,7 @@ public class SPFigEdgeModelElement extends StylePanel
 	else _lineField.setSelectedItem("No Line");
 
 	//_dashedField.setSelectedItem(_target.getDashedString());
+        _refreshTransaction = false;
     }
 
 
@@ -179,6 +188,7 @@ public class SPFigEdgeModelElement extends StylePanel
 	    int w = Integer.parseInt(st.nextToken());
 	    int h = Integer.parseInt(st.nextToken());
 	    _target.setBounds(x, y, w, h);
+        markNeedsSave();
 	}
 	catch (Exception ex) {
 	    cat.error("could not parse bounds string", ex);
@@ -189,10 +199,14 @@ public class SPFigEdgeModelElement extends StylePanel
     public void setTargetLine() {
 	Object c =  _lineField.getSelectedItem();
 	if (_target == null || c == null) return;
+    Color oldColor = _target.getLineColor();
 	_target.startTrans();
 	if (c instanceof Color) _target.setLineColor((Color) c);
 	_target.setLineWidth((c instanceof Color) ? 1 : 0);
 	_target.endTrans();
+    if (!c.equals(oldColor)) {
+        markNeedsSave();
+    }
     }
 
 
@@ -200,10 +214,12 @@ public class SPFigEdgeModelElement extends StylePanel
     // event handling
 
     public void insertUpdate(DocumentEvent e) {
-	cat.debug(getClass().getName() + " insertUpdate");
-	Document bboxDoc = _bboxField.getDocument();
-	if (e.getDocument() == bboxDoc) setTargetBBox();
-	super.insertUpdate(e);
+        if (!_refreshTransaction) {
+    	cat.debug(getClass().getName() + " insertUpdate");
+    	Document bboxDoc = _bboxField.getDocument();
+    	if (e.getDocument() == bboxDoc) setTargetBBox();
+    	super.insertUpdate(e);
+        }
     }
 
     public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
@@ -213,13 +229,24 @@ public class SPFigEdgeModelElement extends StylePanel
 
 
     public void itemStateChanged(ItemEvent e) {
-	Object src = e.getSource();
-	if (src == _lineField) setTargetLine();
-	//else if (src == _dashedField) setTargetDashed();
-	else super.itemStateChanged(e);
+        if (!_refreshTransaction) {
+            Object src = e.getSource();
+            if (src == _lineField) setTargetLine();
+            //else if (src == _dashedField) setTargetDashed();
+            else super.itemStateChanged(e);
+        }
     }
 
-
+    /**
+     * Called when some property of the target has changed through
+     * the style panel. Sets the save flag in the current project.
+    **/
+    protected void markNeedsSave() {
+        Project p = ProjectManager.getManager().getCurrentProject();
+        if (p != null) {      
+            p.setNeedsSave(true);
+        }
+    }
 
 } /* end class SPFigEdgeModelElement */
 
