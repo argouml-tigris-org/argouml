@@ -42,7 +42,7 @@ import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
@@ -715,8 +715,8 @@ public class FigInterface extends FigNodeModelElement {
     }
 
     /**
-     * Updates the operations box. Called from modelchanged if there is 
-     * a modelevent effecting the attributes and from renderingChanged in all 
+     * Updates the operations box. Called from modelchanged if there is
+     * a modelevent effecting the attributes and from renderingChanged in all
      * cases.
      */
     protected void updateOperations() {
@@ -726,7 +726,7 @@ public class FigInterface extends FigNodeModelElement {
             int xpos = _operBigPort.getX();
             int ypos = _operBigPort.getY();
             int ocounter = 1;
-            Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+            Collection behs = ModelFacade.getOperations(cls);
             if (behs != null) {
                 Iterator iter = behs.iterator();
                 Vector figs = _operVec.getFigs();

@@ -42,6 +42,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -81,7 +82,7 @@ import ru.novosoft.uml.model_management.MPackage;
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for outher languages.  This code is just a
  * placeholder for future development, I expect it to be totally
- * replaced. 
+ * replaced.
  * @stereotype singleton
  */
 
@@ -249,7 +250,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
     }
 
     /**
-     * Generates a string representation for the provided attribute. The string 
+     * Generates a string representation for the provided attribute. The string
      * representation will be of the form:
      * visibility name [multiplicity] : type-expression = initial-value {property-string}
      * Depending on settings in Notation visibility,
@@ -376,7 +377,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
         s += "{\n";
 
-        Collection strs = UmlHelper.getHelper().getCore().getStructuralFeatures(cls);
+        Collection strs = ModelFacade.getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";
@@ -401,7 +402,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
 
         // TODO: constructors
 
-        Collection behs = UmlHelper.getHelper().getCore().getOperations(cls);
+        Collection behs = ModelFacade.getOperations(cls);
         if (behs != null) {
             s += "\n";
             //s += "////////////////////////////////////////////////////////////////\n";
@@ -795,7 +796,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
 
     /**
      * Generates a multiplicity range. The standard getLower and getUpper defined on
-     * MMultiplicityRange give a -1 if the multiplicity is n or *. This method 
+     * MMultiplicityRange give a -1 if the multiplicity is n or *. This method
      * circumvents that behaviour.
      * @param mr
      * @return String

@@ -2,7 +2,10 @@ package org.argouml.ocl;
 
 import java.util.*;
 
-import tudresden.ocl.check.types.*;
+import tudresden.ocl.check.types.Any;
+import tudresden.ocl.check.types.Basic;
+import tudresden.ocl.check.types.Type;
+import tudresden.ocl.check.types.Type2;
 import tudresden.ocl.check.*;
 
 import ru.novosoft.uml.foundation.core.*;
@@ -10,13 +13,14 @@ import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.*;
 import org.argouml.uml.MMUtil;
 
-public class ArgoFacade implements ModelFacade {
-    
+public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
+
     public MClassifier target;
 
     public ArgoFacade(Object target) {
@@ -26,7 +30,7 @@ public class ArgoFacade implements ModelFacade {
 
     public Any getClassifier(String name) {
       Project p = ProjectManager.getManager().getCurrentProject();
-      
+
       if (target != null && target.getName().equals(name) ) {
         return new ArgoAny(target);
       }
@@ -41,18 +45,18 @@ public class ArgoFacade implements ModelFacade {
          *
          */
         MClassifier classifier = p.findTypeInModel(name, p.getModel());
-        
+
         if (classifier == null) {
           /**
            * Added search in defined types 2001-10-18 STEFFEN ZSCHALER.
            */
           classifier = (MClassifier) p.findType(name, false);
-          
+
           if (classifier == null) {
             throw new OclTypeException("cannot find classifier: "+name);
           }
         }
-        
+
         return new ArgoAny(classifier);
       }
     }
@@ -156,16 +160,16 @@ class ArgoAny implements Any, Type2 {
       return result;
     }
 
-    public Type navigateParameterizedQuery (String name, Type[] qualifiers) 
+    public Type navigateParameterizedQuery (String name, Type[] qualifiers)
       throws OclTypeException {
       return internalNavigateParameterized (name, qualifiers, true);
     }
-    
-    public Type navigateParameterized (String name, Type[] qualifiers) 
+
+    public Type navigateParameterized (String name, Type[] qualifiers)
       throws OclTypeException {
       return internalNavigateParameterized (name, qualifiers, false);
     }
-      
+
     public Type internalNavigateParameterized (final String name,
                                                final Type[] params,
                                                boolean fCheckIsQuery)
@@ -178,7 +182,7 @@ class ArgoAny implements Any, Type2 {
       if (type != null) return type;
 
       MOperation foundOp = null;
-      java.util.Collection operations = UmlHelper.getHelper().getCore().getOperations(classifier);
+      java.util.Collection operations = ModelFacade.getOperations(classifier);
       Iterator iter = operations.iterator();
       while (iter.hasNext() && foundOp == null){
           MOperation op = (MOperation)iter.next();
@@ -195,7 +199,7 @@ class ArgoAny implements Any, Type2 {
           throw new OclTypeException ("Non-query operations cannot be used in OCL expressions. (" + name + ")");
         }
       }
-      
+
       MParameter rp = UmlHelper.getHelper().getCore().getReturnParameter(foundOp);
 
       if (rp == null || rp.getType() == null) {
@@ -246,7 +250,7 @@ class ArgoAny implements Any, Type2 {
     protected Type getOclRepresentation(MClassifier foundType)
     {
       Type result = null;
-      
+
       if (foundType.getName().equals("int") || foundType.getName().equals("Integer")) {
           result = Basic.INTEGER;
       }
@@ -267,13 +271,13 @@ class ArgoAny implements Any, Type2 {
       if (result==null) {
         result=new ArgoAny(foundType);
       }
-      
+
       return result;
-    
+
     }
-        
+
     /**
-     *	@return true if the given MOperation names and parameters match the given name 
+     *	@return true if the given MOperation names and parameters match the given name
      *		and parameters
      */
     protected boolean operationMatchesCall(MOperation operation, String callName, Type[] callParams)
@@ -285,7 +289,7 @@ class ArgoAny implements Any, Type2 {
       List operationParameters = operation.getParameters();
       if (
         ! (((MParameter)operationParameters.get(0)).getKind().getValue()==MParameterDirectionKind._RETURN)
-      ) 
+      )
       {
         System.err.println(
 	  			"ArgoFacade$ArgoAny expects the first operation parameter to be the return type; this isn't the case"
@@ -305,7 +309,7 @@ class ArgoAny implements Any, Type2 {
       int index = 0;
       while (paramIter.hasNext())
       {
-			
+
         MParameter nextParam = (MParameter) paramIter.next();
 				MClassifier paramType = nextParam.getType();
 				Type operationParam = getOclRepresentation(paramType);

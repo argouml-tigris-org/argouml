@@ -66,6 +66,7 @@ import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MMethod;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MNode;
@@ -73,7 +74,6 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MRelationship;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
-import ru.novosoft.uml.foundation.core.MMethod;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
 import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -89,27 +89,24 @@ import ru.novosoft.uml.model_management.MPackage;
  * @stereotype singleton
  */
 public class CoreHelper {
+
     protected static Category cat = Category.getInstance(CoreHelper.class);
     /** Don't allow instantiation.
      */
+
     private CoreHelper() {
     }
     /** Singleton instance.
     */
+
     private static CoreHelper SINGLETON = new CoreHelper();
     /** Singleton instance access method.
      */
+
     public static CoreHelper getHelper() {
         return SINGLETON;
     }
-    /** This method returns if an object is a classifier.
-     *
-     * @param the object
-     * @return true if it's a classifier, false if not
-     */
-    public boolean isClassifier(Object o) {
-        return (o instanceof MClassifier);
-    }
+
     /** This method returns all Classifiers of which this class is a
      *	direct or indirect subtype.
      *
@@ -137,6 +134,7 @@ public class CoreHelper {
         while (!add.isEmpty());
         return result;
     }
+
     /** This method returns all Classifiers of which this class is a
      *	direct subtype.
      *
@@ -158,6 +156,7 @@ public class CoreHelper {
         }
         return result;
     }
+
     /** This method returns all opposite AssociationEnds of a given Classifier
      *
      * @param classifier the classifier you want to have the opposite association ends for
@@ -173,6 +172,7 @@ public class CoreHelper {
         }
         return result;
     }
+
     /** This method returns all opposite AssociationEnds of a given Classifier, including inherited
      *
      * @param classifier the classifier you want to have the opposite association ends for
@@ -187,24 +187,7 @@ public class CoreHelper {
         }
         return result;
     }
-    /** This method returns all attributes of a given Classifier.
-     *
-     * @param classifier the classifier you want to have the attributes for
-     * @return a collection of the attributes
-     */
-    public Collection getStructuralFeatures(Object classifier) {
-        Collection result = new ArrayList();
-        if (ModelFacade.isAClassifier(classifier)) {
-            MClassifier mclassifier = (MClassifier)classifier;
-            Iterator features = mclassifier.getFeatures().iterator();
-            while (features.hasNext()) {
-                MFeature feature = (MFeature)features.next();
-                if (ModelFacade.isAStructuralFeature(feature))
-                    result.add(feature);
-            }
-        }
-        return result;
-    }
+
     /** This method removes a feature from a classifier.
      *
      * @param classifier
@@ -269,7 +252,7 @@ public class CoreHelper {
      */
     public Collection getAttributesInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(getStructuralFeatures(classifier));
+        result.addAll(ModelFacade.getStructuralFeatures(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             MClassifier parent = (MClassifier)parents.next();
@@ -285,7 +268,7 @@ public class CoreHelper {
      */
     public Collection getOperationsInh(MClassifier classifier) {
         Collection result = new ArrayList();
-        result.addAll(getOperations(classifier));
+        result.addAll(ModelFacade.getOperations(classifier));
         Iterator parents = classifier.getParents().iterator();
         while (parents.hasNext()) {
             result.addAll(getOperationsInh((MClassifier)parents.next()));
@@ -432,6 +415,7 @@ public class CoreHelper {
                 ProjectManager.getManager().getCurrentProject().getModel());
         return dep;
     }
+
     /**
      * Returns all behavioralfeatures found in this element and its children
      * @return Collection
@@ -449,24 +433,7 @@ public class CoreHelper {
         }
         return list;
     }
-    /**
-     * Returns all features found in this classifier
-     * @return Collection
-     */
-    public Collection getFeatures(Object clazz) {
-        if (clazz != null && clazz instanceof MClassifier)
-            return ((MClassifier)clazz).getFeatures();
-        return new ArrayList();
-    }
-    /**
-     * Returns all owned elements found in this namespace
-     * @return Collection
-     */
-    public Collection getOwnedElements(Object ns) {
-        if (ns != null && ns instanceof MNamespace)
-            return ((MNamespace)ns).getOwnedElements();
-        return new ArrayList();
-    }
+
     /**
      * Returns all behavioralfeatures found in this classifier and its children
      * @return Collection
@@ -484,6 +451,7 @@ public class CoreHelper {
         }
         return features;
     }
+
     /**
      * Returns all behavioralfeatures found in the projectbrowser model
      * @return Collection
@@ -1281,6 +1249,7 @@ public class CoreHelper {
             return ns2;
         return getFirstSharedNamespace(ns1.getNamespace(), ns2.getNamespace());
     }
+
     /**
      * Returns all possible namespaces that may be selected by some given
      * modelelement m. Which namespaces are allowed, is decided in the method
@@ -1308,56 +1277,7 @@ public class CoreHelper {
         }
         return ret;
     }
-    /**
-     * Checks if the object is an interface.
-     * @param object
-     * @return boolean
-     */
-    public boolean isInterface(Object o) {
-        return (o instanceof MInterface);
-    }
-    /**
-     * Gets the name of a classifier.
-     * @param classifier
-     * @return name
-     */
-    public String getClassifierName(Object o) {
-        String name = null;
-        if (o instanceof MClassifier)
-            name = ((MClassifier)o).getName();
-        return name;
-    }
-    /**
-     * Returns all associated classes for some given classifier. Returns an
-     * empty collection if the given argument o is not a classifier. The given
-     * parameter is included in the returned collection if it has a self-
-     * referencing association.
-     * @param o
-     * @return Collection
-     */
-    public Collection getAssociatedClasses(Object o) {
-        Collection col = new ArrayList();
-        if (o instanceof MClassifier) {
-            MClassifier classifier = (MClassifier)o;
-            Collection ends = classifier.getAssociationEnds();
-            Iterator it = ends.iterator();
-            Set associations = new HashSet();
-            while (it.hasNext()) {
-                associations.add(((MAssociationEnd)it.next()).getAssociation());
-            }
-            Collection otherEnds = new ArrayList();
-            it = associations.iterator();
-            while (it.hasNext()) {
-                otherEnds.addAll(((MAssociation)it.next()).getConnections());
-            }
-            otherEnds.removeAll(ends);
-            it = otherEnds.iterator();
-            while (it.hasNext()) {
-                col.add(((MAssociationEnd)it.next()).getType());
-            }
-        }
-        return col;
-    }
+
     /**
      * Returns the base classes (that are the classes that do not have any
      * generalizations) for some given namespace. Personally, this seems a
@@ -1417,7 +1337,7 @@ public class CoreHelper {
         }
         throw new IllegalArgumentException("getChildren not called with generalization as argument");
     }
-    
+
     /**
      * Returns all interfaces that are realized by the given class or by its
      * superclasses. It's possible that interfaces occur twice in the collection
@@ -1431,7 +1351,7 @@ public class CoreHelper {
             if (ModelFacade.isAClass(o)) {
                 MClass clazz = (MClass)o;
                 Collection supDependencies = clazz.getClientDependencies();
-                Iterator it = supDependencies.iterator();               
+                Iterator it = supDependencies.iterator();
                 while (it.hasNext()) {
                     MDependency dependency = (MDependency)it.next();
                     MStereotype stereo = dependency.getStereotype();
@@ -1447,6 +1367,6 @@ public class CoreHelper {
                 }
             }
         }
-        return col;      
+        return col;
     }
 }

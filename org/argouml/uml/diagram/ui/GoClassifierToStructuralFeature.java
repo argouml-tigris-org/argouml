@@ -27,7 +27,6 @@ import java.util.Collection;
 
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.AbstractGoRule;
 
 public class GoClassifierToStructuralFeature extends AbstractGoRule {
@@ -35,21 +34,21 @@ public class GoClassifierToStructuralFeature extends AbstractGoRule {
   public String getRuleName() {
     return Argo.localize ("Tree", "misc.class.attribute");
   }
-  
 
-  public Collection getChildren(Object parent) { 
+
+  public Collection getChildren(Object parent) {
       if (ModelFacade.isAClassifier(parent)) {
-          return UmlHelper.getHelper().getCore().getStructuralFeatures(parent);
+          return ModelFacade.getStructuralFeatures(parent);
       }
       return null;
   }
-  
- 
+
+
 
   public boolean isLeaf(Object node) {
     return !(ModelFacade.isAClassifier(node) && getChildCount(node) > 0);
   }
 
- 
-  
+
+
 }

@@ -23,8 +23,8 @@
 
 package org.argouml.uml.reveng.java;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 /**
    This context is an outer class containing inner classes.
@@ -67,8 +67,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
         // Search in classifier
-        Object mInterface =
-            ModelManagementHelper.getHelper().lookupNamespaceFor(mClassifier,name);
+        Object mInterface = ModelFacade.lookupNamespaceFor(mClassifier,name);
 
 	if(mInterface == null) {
 	    // Try to find it via the classpath
@@ -76,7 +75,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelManagementHelper.getHelper().isModel(mPackage)) {
+		if(ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
@@ -115,7 +114,7 @@ class OuterClassifierContext extends Context
 	throws ClassifierNotFoundException
     {
 	// Search in classifier
-	Object iClassifier = ModelManagementHelper.getHelper().lookupNamespaceFor(mClassifier,name);
+	Object iClassifier = ModelFacade.lookupNamespaceFor(mClassifier,name);
 
 	if(iClassifier == null) {
 	    // Try to find it via the classpath
@@ -123,7 +122,7 @@ class OuterClassifierContext extends Context
 		Class classifier;
 
 		// Special case for model
-		if(ModelManagementHelper.getHelper().isModel(mPackage)) {
+		if(ModelFacade.isAModel(mPackage)) {
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
