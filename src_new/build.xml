@@ -681,7 +681,9 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Creates the distribution as an Mac OS X Application Bundle          -->
   <!-- =================================================================== -->
-  <target depends="package" description="Creates a MacOS X application bundle manually" name="dist-appbund">
+  <target name="dist-appbund" 
+          depends="package"
+          description="Creates a MacOS X application bundle manually">
      <property location="${argo.src.dir}/bin/appbund" name="app.source.dir"/>
      <property location="${argo.build.dir}/AppBundle" name="app.bundle.dir"/>
      <property location="${app.bundle.dir}/ArgoUML.app/Contents" name="bundle.contents.dir"/>
@@ -895,22 +897,31 @@ ${Name} Build file
     <!-- There are classes/test that actually test deprecated methods. -->
     <!-- They are listed here. -->
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
-    <javac debug="true" deprecation="false" destdir="${argo.tests.classes}" includes="**/GUITestProjectBrowser.java,**/*Deprecated.java" optimize="false" srcdir="${argo.tests.src}">
-        <classpath>
-            <pathelement location="${argo.build.classes}"/>
-            <pathelement location="${junit.jar.path}"/>
-	    <path refid="argo.compile.classpath"/>
-        </classpath>
+    <javac debug="true" 
+           deprecation="false"
+           optimize="false"
+           destdir="${argo.tests.classes}" 
+           includes="**/GUITestProjectBrowser.java,**/MockUMLUserInterfaceContainer,**/*Deprecated.java"
+           srcdir="${argo.tests.src}">
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
      </javac>
 
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
-    <javac debug="true" deprecation="true" destdir="${argo.tests.classes}" optimize="false" srcdir="${argo.tests.src}">
-        <classpath>
-            <pathelement location="${argo.build.classes}"/>
-            <pathelement location="${junit.jar.path}"/>
-	    <path refid="argo.compile.classpath"/>
-        </classpath>
-     </javac>
+    <javac debug="true" 
+           deprecation="true"
+           optimize="false" 
+           destdir="${argo.tests.classes}"
+           srcdir="${argo.tests.src}">
+      <classpath>
+        <pathelement location="${argo.build.classes}"/>
+        <pathelement location="${junit.jar.path}"/>
+	<path refid="argo.compile.classpath"/>
+      </classpath>
+    </javac>
   </target>
 
   <!-- =================================================================== -->
@@ -1056,12 +1067,10 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
   <!-- =================================================================== -->
-  <target depends="compile,junit-setup" name="run-with-test-panel">
-    <copy file="${argo.tests.src}/org/manifest.mf" todir="${argo.tests.classes}/org"/>
-    <jar basedir="${argo.tests.classes}" excludes="*.txt,*.bat,*.xml,*.sh" includes="org/argouml/**" jarfile="${argo.build.dir}/argo_junit_tests.jar" manifest="${argo.tests.classes}/org/manifest.mf"/>
-
+  <target name="run-with-test-panel" 
+          depends="compile,junit-setup"
+          description="Start the TestRunner with all test cases from ../tests loaded.">
     <echo message="--- Executing ${Name} ---"/>
-    <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="junit.swingui.TestRunner" fork="yes" taskname="argouml">
         <classpath>
 	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
@@ -1182,8 +1191,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- This can be used to find references to NS-UML in the code.          -->
   <!-- =================================================================== -->
 
-  <target depends="prepare,prerequisites,update-version,check-dependencies"
-          name="compile-without-nsuml"
+  <target name="compile-without-nsuml"
+          depends="prepare,prerequisites,update-version,check-dependencies"
           description="Compiles without nsuml.">
 
     <!-- create directories -->
