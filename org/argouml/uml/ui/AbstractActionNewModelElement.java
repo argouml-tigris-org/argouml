@@ -43,6 +43,11 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
         super(Translator.localize("action.new"), true, NO_ICON);
     }  
     
+    /**
+     * The constructor.
+     * 
+     * @param name the to be localized name of the action
+     */
     protected AbstractActionNewModelElement(String name) {
         super(name);
     }
