@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -46,17 +46,16 @@ public class UMLModelElementNamespaceListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        if (_target != null) {
+        if (ModelFacade.isAModelElement(_target)) {
             addElement(ModelFacade.getNamespace(_target));
         }
     }
-
     
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getNamespace(getTarget()) == element;
+        return ModelFacade.isAModelElement(getTarget())
+		&& ModelFacade.getNamespace(getTarget()) == element;
     }
-
 }

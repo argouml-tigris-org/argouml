@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,26 +54,21 @@ public class ActionSetExtendExtension extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        Object newExtension = null;
-        Object oldExtension = null;
-        Object extend = null;
+
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            newExtension = /*(MUseCase)*/ combo.getSelectedItem();
-            Object o = combo.getTarget();
-            if (org.argouml.model.ModelFacade.isAExtend(o)) {
-                extend = /*(MExtend)*/ o;
-                o = combo.getSelectedItem();
-                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
-                    newExtension = /*(MUseCase)*/ o;
-                    oldExtension = ModelFacade.getExtension(extend);
+            Object extend = /*(MExtend)*/ combo.getTarget();
+
+            if (ModelFacade.isAExtend(extend)) {
+		Object newExtension = /*(MUseCase)*/ combo.getSelectedItem();
+
+                if (ModelFacade.isAUseCase(newExtension)) {
+                    Object oldExtension = ModelFacade.getExtension(extend);
                     if (newExtension != oldExtension) {
                         ModelFacade.setExtension(extend, newExtension);
                     }
-                } else {
-                    if (o != null && o.equals("")) {
-                        ModelFacade.setExtension(extend, null);
-                    }
+                } else if ("".equals(newExtension)) {
+                    ModelFacade.setExtension(extend, null);
                 }
             }
         }

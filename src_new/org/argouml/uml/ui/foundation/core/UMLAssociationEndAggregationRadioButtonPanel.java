@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -60,19 +60,18 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
      * @see org.argouml.uml.ui.UMLRadioButtonPanel#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null) {
+        if (ModelFacade.isAAssociationEnd(getTarget())) {
             Object target = /*(MAssociationEnd)*/ getTarget();
             Object/*MAggregationKind*/ kind = ModelFacade.getAggregation(target);
             if (kind == null || kind.equals(ModelFacade.NONE_AGGREGATIONKIND)) {
                 setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
-            } else
-		if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
-		    setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
-		} else
-		    if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
-			setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
-		    } else
-			setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
+            } else if (kind.equals(ModelFacade.AGGREGATE_AGGREGATIONKIND)) {
+		setSelected(ActionSetAssociationEndAggregation.AGGREGATE_COMMAND); 
+	    } else if (kind.equals(ModelFacade.COMPOSITE_AGGREGATIONKIND)) {
+		setSelected(ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
+	    } else {
+		setSelected(ActionSetAssociationEndAggregation.NONE_COMMAND);
+	    }
         }
     }
 

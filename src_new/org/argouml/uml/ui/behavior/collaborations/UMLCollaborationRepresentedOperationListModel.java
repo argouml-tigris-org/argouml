@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,11 +48,9 @@ public class UMLCollaborationRepresentedOperationListModel
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isACollaboration(target)) {
-            Object col = /*(MCollaboration)*/ target;
-            removeAllElements();
-            if (ModelFacade.getRepresentedOperation(col) != null)
-                addElement(ModelFacade.getRepresentedOperation(col));
+	removeAllElements();
+        if (ModelFacade.isACollaboration(target)) {
+	    addElement(ModelFacade.getRepresentedOperation(target));
         }
     }
 
@@ -60,8 +58,8 @@ public class UMLCollaborationRepresentedOperationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAOperation(elem) && 
-            ModelFacade.getRepresentedOperation(getTarget()) == elem;
+        return ModelFacade.isACollaboration(getTarget())
+		&& ModelFacade.isAOperation(elem)
+		&& ModelFacade.getRepresentedOperation(getTarget()) == elem;
     }
-
 }

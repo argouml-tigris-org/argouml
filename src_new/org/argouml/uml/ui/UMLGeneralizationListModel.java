@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -112,7 +112,10 @@ public class UMLGeneralizationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-	return ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
+	return getTarget() != null
+		? ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+			getTarget().getClass())
+		: Collections.EMPTY_LIST;
     }
 
     /**
@@ -126,11 +129,9 @@ public class UMLGeneralizationListModel
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-	if (getTarget() == null) return new ArrayList();
-	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
-	    return CoreHelper.getHelper().getExtendedClassifiers(getTarget());
-	} else
-	    throw new IllegalStateException("In getSelected of UMLGeneralizaitonListModel: target is not an instanceof GeneralizbleElement");
+	return ModelFacade.isAGeneralizableElement(getTarget())
+		? CoreHelper.getHelper().getExtendedClassifiers(getTarget())
+		: new ArrayList();
     }
 
 } /* End of class UMLGeneralizationListModel */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,13 +47,12 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      */
     protected void buildModelList() {
         Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAReception(target)) {
+        if (ModelFacade.isAReception(target)) {
             Object rec = /*(MReception)*/ target;
             removeAllElements();
             setElements(ModelManagementHelper.getHelper().getAllModelElementsOfKind((Class)ModelFacade.SIGNAL));
             setSelectedItem(ModelFacade.getSignal(rec));      
         }
-         
     }
 
     /**
@@ -67,10 +66,9 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-        if (getTarget() != null) {
+        if (ModelFacade.isAReception(getTarget())) {
             return ModelFacade.getSignal(getTarget());
         }
         return null;
     }
-
 }

@@ -168,6 +168,7 @@ public class TabTaggedValues extends TabSpawnable
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
+	setTarget(e.getNewTarget());
     }
 
     /**
@@ -175,8 +176,7 @@ public class TabTaggedValues extends TabSpawnable
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
+	setTarget(e.getNewTarget());
     }
 
     /**
@@ -184,8 +184,7 @@ public class TabTaggedValues extends TabSpawnable
      *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        setTarget(e.getNewTarget());
-
+	setTarget(e.getNewTarget());
     }
 
 } /* end class TabTaggedValues */

@@ -68,8 +68,13 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         setElements(multiplicityList);
 	Object t = getTarget();
-	if (ModelFacade.isAModelElement(t))
-	    addElement(ModelFacade.getMultiplicity(t));
+	if (ModelFacade.isAModelElement(t)) {
+	    try {
+		addElement(ModelFacade.getMultiplicity(t));
+	    } catch (IllegalArgumentException iae) {
+		// Some ModelElements has Multiplicities, others don't
+	    }
+	}
     }    
 
     /**

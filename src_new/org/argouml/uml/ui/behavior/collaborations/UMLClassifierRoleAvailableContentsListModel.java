@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -53,9 +53,11 @@ public class UMLClassifierRoleAvailableContentsListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(
+	if (ModelFacade.isAClassifierRole(getTarget())) {
+	    setAllElements(
 		       CollaborationsHelper.getHelper().allAvailableContents(
 									     /*(MClassifierRole)*/ getTarget()));
+	}
     }
 
     /**
@@ -72,10 +74,9 @@ public class UMLClassifierRoleAvailableContentsListModel
 							      this,
 							      clazz,
 							      "ownedElement");
-        } else if (
-		   e.getName().equals("ownedElement")
-		   && ModelFacade.getBases(getTarget()).contains(
-									 e.getSource())) {
+        } else if (e.getName().equals("ownedElement")
+		   && ModelFacade.isAClassifierRole(getTarget())
+		   && ModelFacade.getBases(getTarget()).contains(e.getSource())) {
             addElement(getChangedElement(e));
         }
     }
@@ -85,50 +86,48 @@ public class UMLClassifierRoleAvailableContentsListModel
      * org.argouml.uml.ui.UMLModelElementListModel2#setTarget(java.lang.Object)
      */
     public void setTarget(Object target) {
-        target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || ModelFacade.isADiagram(target)) {
-            if (_target != null) {
-                Collection bases = ModelFacade.getBases(getTarget());
-                Iterator it = bases.iterator();
-                while (it.hasNext()) {
-                    Object base = /*(MBase)*/ it.next();
-                    UmlModelEventPump.getPump().removeModelEventListener(
-									 this,
-									 base,
-									 "ownedElement");
-                }
-                UmlModelEventPump.getPump().removeModelEventListener(
+	if (ModelFacade.isAClassifierRole(getTarget())) {
+	    Collection bases = ModelFacade.getBases(getTarget());
+	    Iterator it = bases.iterator();
+	    while (it.hasNext()) {
+ 		Object base = /*(MBase)*/ it.next();
+		UmlModelEventPump.getPump().removeModelEventListener(
 								     this,
-								     /*(MBase)*/ getTarget(),
-								     "base");
-            }
-            _target = target;
-            if (_target != null) {
-                Collection bases = ModelFacade.getBases(_target);
-                Iterator it = bases.iterator();
-                while (it.hasNext()) {
-                    Object base = /*(MBase)*/ it.next();
-                    UmlModelEventPump.getPump().addModelEventListener(
-								      this,
-								      base,
-								      "ownedElement");
-                }
-                // make sure we know it when a classifier is added as a base
-                UmlModelEventPump.getPump().addModelEventListener(
+								     base,
+								     "ownedElement");
+	    }
+	    UmlModelEventPump.getPump().removeModelEventListener(
+								 this,
+								 /*(MBase)*/ getTarget(),
+								 "base");
+	    _target = null;
+	}
+
+	removeAllElements();
+        _target = target instanceof Fig ? ((Fig) target).getOwner() : target;
+        if (ModelFacade.isAClassifierRole(_target)) {
+	    Collection bases = ModelFacade.getBases(_target);
+	    Iterator it = bases.iterator();
+	    while (it.hasNext()) {
+		Object base = /*(MBase)*/ it.next();
+		UmlModelEventPump.getPump().addModelEventListener(
 								  this,
-								  /*(MBase)*/ _target,
-								  "base");
-            }
-            if (_target != null) {
-                removeAllElements();
-                _buildingModel = true;
-                buildModelList();
-                _buildingModel = false;
-                if (getSize() > 0) {
-                    fireIntervalAdded(this, 0, getSize() - 1);
-                }
-            }
-        }
+								  base,
+								  "ownedElement");
+	    }
+	    // make sure we know it when a classifier is added as a base
+	    UmlModelEventPump.getPump().addModelEventListener(
+							      this,
+							      /*(MBase)*/ _target,
+							      "base");
+
+	    _buildingModel = true;
+	    buildModelList();
+	    _buildingModel = false;
+	    if (getSize() > 0) {
+		fireIntervalAdded(this, 0, getSize() - 1);
+	    }
+	}
     }
 
     /**
@@ -149,12 +148,10 @@ public class UMLClassifierRoleAvailableContentsListModel
 								 this,
 								 clazz,
 								 "ownedElement");
-        } else if (
-		   e.getName().equals("ownedElement")
-		   && ModelFacade.getBases(getTarget()).contains(
-									 e.getSource())) {
+        } else if (e.getName().equals("ownedElement")
+		   && ModelFacade.isAClassifierRole(getTarget())
+		   && ModelFacade.getBases(getTarget()).contains(e.getSource())) {
             removeElement(getChangedElement(e));
         }
     }
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -56,7 +56,7 @@ public class ActionSetElementOwnershipSpecification extends UMLChangeAction {
             Object target = source.getTarget();
             if (org.argouml.model.ModelFacade.isAModelElement(target)) {
                 Object m = /*(MModelElement)*/ target;
-                ModelFacade.setSpecification(m, !ModelFacade.isSpecification(m));
+                ModelFacade.setSpecification(m, source.isSelected());
             }
         }
     }

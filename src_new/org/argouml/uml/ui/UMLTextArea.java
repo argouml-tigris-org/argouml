@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -49,9 +49,11 @@ public class UMLTextArea
     private UMLUserInterfaceContainer _container;
 
     private UMLTextProperty _property;
-    private int counter = 0;
 
     public static final int MAX_KEY_STROKES = 10;
+
+    /** Flag set while updating the JTextArea */
+    private boolean isUpdating;
 
     /**
      * Creates a new UMLTextArea
@@ -111,11 +113,17 @@ public class UMLTextArea
     }
 
     private void update() {
-        String oldText = getText();
-        String newText = _property.getProperty(_container);
-        if (oldText == null || newText == null || !oldText.equals(newText)) {
-            setText(newText);
-        }
+	String oldText = getText();
+	String newText = _property.getProperty(_container);
+	if (!isUpdating || oldText == null || newText == null
+	    || !oldText.equals(newText)) {
+	    try {
+		isUpdating = true;
+		setText(newText);
+	    } finally {
+		isUpdating = false;
+	    }
+	}
     }
 
     public void changedUpdate(final DocumentEvent p1) {
@@ -131,11 +139,14 @@ public class UMLTextArea
     }
 
     protected void handleDocEvent() {
-        counter++; // to prevent continuously setting the property
-        if (counter >= MAX_KEY_STROKES) {
-            changeProperty();
-            counter = 0;
-        }
+	if (!isUpdating) {
+	    try {
+		isUpdating = true;
+		changeProperty();
+	    } finally {
+		isUpdating = false;
+	    }
+	}
     }
 
     protected void changeProperty() {
@@ -157,12 +168,10 @@ public class UMLTextArea
      * @see java.awt.event.FocusListener#focusGained(FocusEvent)
      */
     public void focusGained(FocusEvent arg0) {
-    	counter = 0;
     }
     /**
      * @see java.awt.event.FocusListener#focusLost(FocusEvent)
      */
     public void focusLost(FocusEvent arg0) {
-    	changeProperty();
     }
 }

@@ -124,7 +124,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      */
     protected Collection getChoices() {
         return ModelManagementHelper.getHelper()
-	    .getAllModelElementsOfKind(getTarget().getClass());
+	    .getAllModelElementsOfKind((Class) ModelFacade.EXTEND);
     }
 
     /**
@@ -141,12 +141,9 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getSelected()
      */
     protected Collection getSelected() {
-        if (ModelFacade.isAUseCase(getTarget())) {
-            return UseCasesHelper.getHelper().getExtendedUseCases(getTarget());
-        } else {
-            throw new IllegalStateException("target is not "
-					    + "an instanceof MUseCase");
-	}
+	return ModelFacade.isAUseCase(getTarget())
+		? UseCasesHelper.getHelper().getExtendedUseCases(getTarget())
+		: Collections.EMPTY_LIST;
     }
 
 } /* End of class UMLExtendListModel */

@@ -53,6 +53,7 @@ public class UMLMultiplicityComboBox
     private UMLUserInterfaceContainer _container;
     private Method _getMethod;
     private Method _setMethod;
+    private Class _objectClass;
 
 
     private static String[] _sMultiplicities = {
@@ -72,6 +73,7 @@ public class UMLMultiplicityComboBox
 
         setModel(new DefaultComboBoxModel(_sMultiplicities));
         _container = container;
+	_objectClass = elementClass;
 
 	setEditable(true);
 
@@ -126,6 +128,11 @@ public class UMLMultiplicityComboBox
     }
     
     private void update() {
+	Object targ = _container.getTarget();
+
+	if (targ == null || !_objectClass.isAssignableFrom(targ.getClass())) {
+	    return;
+	}
 
         try {
 	    Object mult = _getMethod.invoke(_container.getTarget(), _noArg);

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -102,9 +102,12 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      * @see org.argouml.uml.ui.UMLBinaryRelationListModel#getChoices()
      */
     protected Collection getChoices() {
-	if (org.argouml.model.ModelFacade.isAGeneralizableElement(getTarget())) {
+	if (ModelFacade.isAGeneralizableElement(getTarget())) {
 	    Object/*MGeneralizableElement*/ target = getTarget();
-	    if (ModelFacade.isLeaf(target)) return new ArrayList();
+	    if (ModelFacade.isLeaf(target)) {
+		return Collections.EMPTY_LIST;
+	    }
+
 	    Collection genElem = ModelManagementHelper.getHelper().getAllModelElementsOfKind(getTarget().getClass());
 	    List list = new ArrayList();
 	    Iterator it = genElem.iterator();
@@ -115,8 +118,9 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
 		}
 	    }
 	    return list;
-	} else 
-	    throw new IllegalStateException("In getChoices: target not instanceof MGeneralizableElement");
+	}
+
+	return Collections.EMPTY_LIST;
     }
 
     /**
@@ -131,7 +135,8 @@ public class UMLSpecializationListModel extends UMLBinaryRelationListModel {
      */
     protected Collection getSelected() {
 	Object/*MGeneralizableElement*/ target = getTarget();
-	return CoreHelper.getHelper().getExtendingElements(target);
+	return ModelFacade.isAGeneralizableElement(target)
+		? CoreHelper.getHelper().getExtendingElements(target)
+		: Collections.EMPTY_LIST;
     }
-
 } /* End of class UMLSpecializationListModel */

@@ -383,7 +383,7 @@ public class CoreHelper {
         Iterator params = ((MOperation) operation).getParameters().iterator();
         while (params.hasNext()) {
             MParameter parameter = (MParameter) params.next();
-            if ((parameter.getKind()).equals(MParameterDirectionKind.RETURN)) {
+            if (MParameterDirectionKind.RETURN.equals(parameter.getKind())) {
                 returnParams.add(parameter);
             }
         }

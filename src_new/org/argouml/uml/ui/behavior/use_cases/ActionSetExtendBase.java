@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -55,30 +55,24 @@ public class ActionSetExtendBase extends UMLChangeAction {
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
-        Object newBase = null;
-        Object oldBase = null;
-        Object extend = null;
+
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2) source;
-            newBase = /*(MUseCase)*/ combo.getSelectedItem();
-            Object o = combo.getTarget();
-            if (org.argouml.model.ModelFacade.isAExtend(o)) {
-                extend = /*(MExtend)*/ o;
-                o = combo.getSelectedItem();
-                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
-                    newBase = /*(MUseCase)*/ o;
-                    oldBase = ModelFacade.getBase(extend);
+            Object extend = /*(MExtend)*/ combo.getTarget();
+
+            if (ModelFacade.isAExtend(extend)) {
+                Object newBase = /*(MUseCase)*/ combo.getSelectedItem();
+
+                if (ModelFacade.isAUseCase(newBase)) {
+                    Object oldBase = ModelFacade.getBase(extend);
+
                     if (newBase != oldBase) {
                         ModelFacade.setBase(extend, newBase);
                     }
-                } else {
-                    if (o != null && o.equals("")) {
-                        ModelFacade.setBase(extend, null);
-                    }
+                } else if ("".equals(newBase)) {
+                    ModelFacade.setBase(extend, null);
                 }
-
             }
-
         }
     }
 }

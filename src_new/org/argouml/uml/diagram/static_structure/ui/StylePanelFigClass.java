@@ -108,12 +108,15 @@ public class StylePanelFigClass extends StylePanelFigNodeModelElement {
     // accessors
 
     public void refresh() {
-        _refreshTransaction = true;
-        super.refresh();
-        FigClass tc = (FigClass) _target;
-        _attrCheckBox.setSelected(tc.isAttributeVisible());
-        _operCheckBox.setSelected(tc.isOperationVisible());
-        _refreshTransaction = false;
+	_refreshTransaction = true;
+	super.refresh();
+
+	if (_target instanceof FigClass) {
+	    FigClass tc = (FigClass) _target;
+	    _attrCheckBox.setSelected(tc.isAttributeVisible());
+	    _operCheckBox.setSelected(tc.isOperationVisible());
+	}
+	_refreshTransaction = false;
     }
 
     ////////////////////////////////////////////////////////////////
