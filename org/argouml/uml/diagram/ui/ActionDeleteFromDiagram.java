@@ -34,6 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -124,12 +125,14 @@ public class ActionDeleteFromDiagram extends UMLAction {
             size = figs.size();
             for (int i = 0; i < size; i++) {
                 Fig f = (Fig) figs.elementAt(i);
-                if (f instanceof Connecter) {
-                    f.removeFromDiagram();
-                } else {
-                    graph.removeFig(f);
+                if (!(f.getOwner() instanceof CommentEdge)) {
+                    if (f instanceof Connecter) {
+                        f.removeFromDiagram();
+                    } else {
+                        graph.removeFig(f);
+                    }
+                    TargetManager.getInstance().removeHistoryElement(f);
                 }
-                TargetManager.getInstance().removeHistoryElement(f);
             }
         } catch (Exception ex) {
             LOG.error(
