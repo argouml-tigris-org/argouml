@@ -76,7 +76,7 @@ public class GeneratorJava extends Generator {
 
   public static String GenerateFile(MClassifier cls, String path) {
     // GenerateFile now returns the full path name of the
-    // the generated file. 
+    // the generated file.
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".java";
@@ -154,7 +154,7 @@ public class GeneratorJava extends Generator {
 	} else {
 		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
 	}
-		
+
 
     // name and params
     Vector params = new Vector(op.getParameters());
@@ -305,7 +305,7 @@ public class GeneratorJava extends Generator {
 	String tv = generateTaggedValues((MModelElement)bf);
 	if (tv.length() > 0) s += INDENT + tv;
 	s += generateConstraints((MModelElement)bf);
-	
+
 	// there is no ReturnType in behavioral feature (nsuml)
 	if (cls instanceof MClassImpl && bf instanceof MOperation) {
 	    s += generateMethodBody((MOperation)bf);
@@ -347,16 +347,16 @@ public class GeneratorJava extends Generator {
   public String generateTaggedValues(MModelElement e) {
     Collection tvs = e.getTaggedValues();
     if (tvs == null || tvs.size() == 0) return "";
-    String s = "// {";
-    int size = tvs.size();
-    MTaggedValue[] tvsarray = (MTaggedValue[])tvs.toArray();
-    for (int i = 0; i < size; i++) {
-      MTaggedValue tv = (MTaggedValue) tvsarray[i];
-      s += generateTaggedValue(tv);
-      if (i < size-1) s += ", ";
+    StringBuffer buf = new StringBuffer("// {");
+    Iterator iter = tvs.iterator();
+    while(iter.hasNext()) {
+        MTaggedValue tv = (MTaggedValue) iter.next();
+        buf.append(generateTaggedValue(tv));
+        //  don't add ", " after last entry
+        if(iter.hasNext()) buf.append(", ");
     }
-    s += "}\n";
-    return s;
+    buf.append("}\n");
+    return buf.toString();
   }
 
   public String generateTaggedValue(MTaggedValue tv) {
@@ -444,7 +444,7 @@ public class GeneratorJava extends Generator {
       s += "Vector "; //generateMultiplicity(m) + " ";
 
     s += " ";
-    
+
     String n = ae.getName();
     MAssociation asc = ae.getAssociation();
     String ascName = asc.getName();
@@ -511,7 +511,7 @@ public class GeneratorJava extends Generator {
 		}
 		return s;
 	}
-	
+
 	public String generateClassList(Collection classifiers) {
 		String s = "";
 		if (classifiers == null) return "";
