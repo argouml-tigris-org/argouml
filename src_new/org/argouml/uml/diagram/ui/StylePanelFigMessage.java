@@ -82,7 +82,6 @@ public class StylePanelFigMessage extends StylePanelFig {
 	String ad = (String) _arrowField.getSelectedItem();
 	int arrowDirection = FigMessage.ARROW_DIRECTIONS.indexOf(ad);
 	if (_target == null || arrowDirection == -1) return;
-	_target.startTrans();
 	((FigMessage) _target).setArrow(arrowDirection);
 	_target.endTrans();
     }

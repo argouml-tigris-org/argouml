@@ -68,7 +68,6 @@ public class FigTextGroup extends FigGroup {
             } else {
                 fig.setHeight(ROWHEIGHT);
             }
-            fig.startTrans();
             fig.setX(getX());
             fig.setY(getY() + height);
             fig.endTrans();
