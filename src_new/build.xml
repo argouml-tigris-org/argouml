@@ -395,19 +395,68 @@ Property files to be searched:
           description="Generate the antlr parsers.">
     <echo message="Generate parsers"/>
 
+    <uptodate property="parser1.is.current"
+              targetfile="${argo.src.dir}/org/argouml/uml/reveng/java/JavaTokenTypes.txt">
+      <srcfiles dir="${argo.src.dir}/org/argouml/uml/reveng/java">
+        <include name="java.g"/>
+      </srcfiles>
+    </uptodate>
+    <antcall target="generateparser1"/>
+
+    <uptodate property="parser2.is.current"
+              targetfile="${argo.src.dir}/org/argouml/language/java/generator/JavaTokenTypes.txt">
+      <srcfiles dir="${argo.src.dir}/org/argouml/language/java/generator">
+        <include name="java.g"/>
+      </srcfiles>
+    </uptodate>
+    <antcall target="generateparser2"/>
+
+  </target>
+
+  <target name="generateparser1" unless="parser1.is.current" depends="prepare">
+    <delete>
+      <fileset dir="org/argouml/uml/reveng/java">
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
     <java classname="antlr.Tool" classpath="${classpath}" fork="yes">
           <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
           <classpath>
 	          <path refid="antlr.runtime.classpath"/>
           </classpath>
     </java>
+  </target>
+
+  <target name="generateparser2" unless="parser2.is.current" depends="prepare">
+    <delete>
+      <fileset dir="org/argouml/language/java/generator">
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
     <java classname="antlr.Tool" classpath="${classpath}" fork="yes">
           <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
           <classpath>
 	          <path refid="antlr.runtime.classpath"/>
           </classpath>
     </java>
+  </target>
 
+  <target name="cleanparser"
+          description="Clean up the antlr parsers.">
+    <delete>
+      <fileset dir="org/argouml/uml/reveng/java">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+      <fileset dir="org/argouml/language/java/generator">
+        <include name="JavaLexer.java"/>
+        <include name="JavaRecognizer.java"/>
+        <include name="JavaTokenTypes.java"/>
+        <include name="JavaTokenTypes.txt"/>
+      </fileset>
+    </delete>
   </target>
 
   <!-- =================================================================== -->
@@ -480,7 +529,7 @@ Property files to be searched:
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-          depends="prepare,prerequisites,update-version,check-dependencies"
+          depends="prepare,prerequisites,update-version,check-dependencies,generateparser"
           description="Compile the sources.">
 
     <echo message="Compiling the sources"/>
@@ -650,6 +699,8 @@ Property files to be searched:
             <include name="argouml.sh"/>
         </fileset>
     </delete>
+
+    <antcall target="cleanparser"/>
   </target>
 
   <!-- =================================================================== -->
@@ -1055,30 +1106,15 @@ Deleting some files that are actually in the cvs repository so
 if this is run by misstake your changes to these files are lost and
 you will have to resurrect them using cvs update.
     </echo>
+    <antcall target="cleanparser"/>
+
     <delete>
-      <!-- Generated files -->
-      <fileset dir="org/argouml/uml/reveng/java">
-        <include name="JavaLexer.java"/>
-        <include name="JavaRecognizer.java"/>
-        <include name="JavaTokenTypes.java"/>
-      </fileset>
-      <fileset dir="org/argouml/language/java/generator">
-        <include name="JavaLexer.java"/>
-        <include name="JavaRecognizer.java"/>
-        <include name="JavaTokenTypes.java"/>
-      </fileset>
       <fileset dir="../modules/classfile/src/org/argouml/uml/reveng/classfile">
         <include name="ClassfileParser.java"/>
         <include name="ClassfileParserTokenTypes.java"/>
         <include name="ClassfileTokenTypes.java"/>
         <include name="ClassfileTreeParser.java"/>
         <include name="ClassfileTreeParserTokenTypes.java"/>
-      </fileset>
-
-      <!-- Other files where we are not interested to check them. -->
-      <fileset dir="org/argouml/i18n">
-        <include name="MenuResourceBundle*.java"/>
-        <include name="UMLCognitiveResourceBundle*.java"/>
       </fileset>
     </delete>
   </target>
