@@ -195,10 +195,20 @@ Usage: [options] [project-file]
   
   You can also set java settings which influence the behaviour of ArgoUML:
     -Duser.language    [e.g. en]
-    -Duser.region      [e.g. US]
+    -Duser.country     [e.g. US]
     -Dforce.nativelaf  [force ArgoUML to use the native look and feel. UNSUPPORTED]
     ]]>
     </programlisting>
+	
+	<para> A common problem is that the User Interface is shown in the wrong language. 
+	  Below is an easy way to switch back to the English UI. 
+	  Please be carefull: the language is in lowercase, 
+	  the country in uppercase!
+	</para>
+ 
+    <para><command>java -Duser.language=en -Duser.country=US -jar argouml.jar</command>
+    </para>
+
   </sect1>
   
   <sect1>

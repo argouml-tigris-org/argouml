@@ -876,7 +876,8 @@ or simply (double) clicking on the <literal>argouml.jar</literal> file works on 
             (see <xref linkend="s4.probsolving"/>).</para>
 
          <itemizedlist>
-            <listitem><para>
+            <listitem>
+				<para>
 Wrong language. 
 &argouml; attempts to find the language from the environment of the operating system 
 and uses that. 
@@ -884,16 +885,20 @@ If this language is not desired,
 another language can be chosen at startup of &argouml;.
 you will have to force &argouml; to think that the environment is set to another language.
 Normally &argouml; is started with: <literal>java&nbsp;-jar&nbsp;argouml.jar</literal>
-            </para>
-            <para>
+            	</para>
+				<para>
 &argouml; can be forced into thinking that the environment is set to another language as follows:
-            </para>
-            <para><literal>java&nbsp;-Duser.language=en&nbsp;-jar&nbsp;argouml.jar</literal>
-            </para>
-            <para>
+            	</para>
+				<para><literal>java&nbsp;-Duser.language=en&nbsp;-jar&nbsp;argouml.jar</literal>
+				</para>
+				<para>
 Currently, the languages German (de), English (en), Spanish (es), French (fr) and Russian (ru) are supported. 
 Selecting any other language will lead to the default language English.
-            </para></listitem>
+            	</para>
+				<para>Additionally, the country may be set to the US as follows:</para>
+				<para><literal>java&nbsp;-Duser.language=en&nbsp;-Duser.country=US&nbsp;-jar&nbsp;argouml.jar</literal>
+				</para>
+			</listitem>
          </itemizedlist>
 
       </sect3>
