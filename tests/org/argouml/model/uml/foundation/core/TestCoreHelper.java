@@ -26,6 +26,8 @@ package org.argouml.model.uml.foundation.core;
 
 import org.argouml.util.CheckUMLModelHelper;
 
+import ru.novosoft.uml.foundation.core.*;
+
 import junit.framework.TestCase;
 
 /**
@@ -52,4 +54,32 @@ public class TestCoreHelper extends TestCase {
             TestCoreFactory.allModelElements);
     }
 
+    public void testGetChildren() {
+	// Create an element with an element without children.
+	MGeneralizableElement ge = new MClassifierImpl();
+
+	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 0);
+
+	// Add one child.
+	MGeneralization g1 = new MGeneralizationImpl();
+	g1.setParent(ge);
+	g1.setChild(new MClassifierImpl());
+
+	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 1);
+	
+	// Add another child.
+	MGeneralization g2 = new MGeneralizationImpl();
+	g2.setParent(ge);
+	MGeneralizableElement ge2 = new MClassifierImpl();
+	g2.setChild(ge2);
+
+	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 2);
+
+	// Add grandchild.
+	MGeneralization g3 = new MGeneralizationImpl();
+	g3.setParent(ge2);
+	g3.setChild(new MClassifierImpl());
+
+	assertTrue(CoreHelper.getHelper().getChildren(ge).size() == 3);
+    }
 }
