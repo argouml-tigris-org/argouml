@@ -89,21 +89,6 @@ public class AboutBox extends JFrame {
 	versionBuf.append("depends on! We wouldn't be here without your work!\n");
 	versionBuf.append("\n");
 
-    versionBuf.append("\n--- Generated version information: ---\n");
-    versionBuf.append(org.argouml.util.Tools.getVersionInfo());
-
-      String saxFactory = System.getProperty("javax.xml.parsers.SAXParserFactory");
-      if(saxFactory != null) {
-        versionBuf.append("SAX Parser Factory " + saxFactory+ " specified using system property\n");
-      }
-      try {
-        versionBuf.append("SAX Parser Factory " +
-            javax.xml.parsers.SAXParserFactory.newInstance().getClass().getName() + " will be used.\n");
-      }
-      catch(Exception ex) {
-        versionBuf.append("Error determining SAX Parser Factory\n.");
-      }
-
     _version.setText(versionBuf.toString());
 
     _credits.setText("ArgoUML was developed by the following:\n"+

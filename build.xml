@@ -142,7 +142,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.9.3"/>
+    <property name="version" value="0.9.post3cvs"/>
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -277,6 +277,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
     <copy todir="${build.dir}">
       <fileset dir="${lib.dir}" />
     </copy>
+    <copy file="${src.dir}/README.txt" tofile="${build.dir}/README.txt" />
   </target>
 
   <!-- =================================================================== -->
@@ -310,8 +311,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist" depends="package">
     <echo message="Building the distribution files (zip,tar)"/>
-    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar ${src.dir}/README.txt"/>
-    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar ${src.dir}/README.txt"/>
+    <zip zipfile="../${Name}-${version}.zip" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
+    <tar tarfile="../${Name}-${version}.tar" basedir="${build.dir}" includes="gef.jar nsuml.jar xerces.jar ocl-argo.jar antlrall.jar argouml.jar README.txt"/>
     <gzip zipfile="../${Name}-${version}.tar.gz" src="../${Name}-${version}.tar" />
     <delete file="../${Name}-${version}.tar"/>
   </target>
