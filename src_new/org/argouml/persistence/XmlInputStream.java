@@ -30,6 +30,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.swing.event.EventListenerList;
+
 import org.apache.log4j.Logger;
 
 
@@ -55,7 +57,24 @@ public class XmlInputStream extends BufferedInputStream {
     private int instanceRequired;
     private int instanceCount;
     private byte[] buffer;
+    private EventListenerList listenerList = new EventListenerList();
+    
+    /**
+     * The number of bytes to be read between each progress
+     * event.
+     */
+    private long eventSpacing;
 
+    /**
+     * The number of characters read so far
+     */
+    private long readCount = 0;
+    
+    /**
+     * The expected stream length
+     */
+    private long length;
+    
     private static final Logger LOG =
         Logger.getLogger(XmlInputStream.class);
 
@@ -63,77 +82,22 @@ public class XmlInputStream extends BufferedInputStream {
      * Construct a new XmlInputStream
      * @param in the input stream to wrap.
      * @param theTag the tag name from which to start reading
-     * @param instance the instance of the matching tag to find
+     * @param length the expected length of the input stream
+     * @param eventSpacing the number of characers to read before
+     *        firing a progress event.
      */
-    public XmlInputStream(InputStream in, String theTag, int instance) {
-        this(in, theTag, null, false);
-        instanceRequired = instance;
-    }
-
-    /**
-     * Construct a new XmlInputStream
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     */
-    public XmlInputStream(InputStream in, String theTag) {
-        this(in, theTag, null, false);
-    }
-
-    /**
-     * Construct a new XmlInputStream
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     * @param attribs the attributes which must also match
-     */
-    public XmlInputStream(InputStream in, String theTag, Map attribs) {
-        this(in, theTag, attribs, false);
-    }
-
-    /**
-     * Construct a new XmlInputStream
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     * @param attribs the attributes which must also match
-     * @param instance the instance of the tag required (starting at zero)
-     */
-    public XmlInputStream(InputStream in,
-                          String theTag,
-                          Map attribs,
-                          int instance) {
-        this(in, theTag, attribs, false);
-        instanceRequired = instance;
-    }
-
-    /**
-     * Construct a new XmlInputStream
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     * @param child if true this will read only the children
-     *              of the named tag otherwise the named tag
-     *              and children are read.
-     */
-    public XmlInputStream(InputStream in, String theTag, boolean child) {
-        this(in, theTag, null, child);
-    }
-
-    /**
-     * Construct a new XmlInputStream
-     * @param in the input stream to wrap.
-     * @param theTag the tag name from which to start reading
-     * @param attribs the attributes which must also match
-     * @param child if true this will read only the children
-     *              of the named tag otherwise the named tag
-     *              and children are read.
-     */
-    public XmlInputStream(InputStream in,
-                          String theTag,
-                          Map attribs,
-                          boolean child) {
+    public XmlInputStream(
+            InputStream in, 
+            String theTag, 
+            long length, 
+            long eventSpacing) {
         super(in);
         this.tagName = theTag;
         this.endTagName = '/' + theTag;
-        this.attributes = attribs;
-        this.childOnly = child;
+        this.attributes = null;
+        this.childOnly = false;
+        this.length = length;
+        this.eventSpacing = eventSpacing;
     }
 
     /**
@@ -185,7 +149,7 @@ public class XmlInputStream extends BufferedInputStream {
         if (endStream) {
             return -1;
         }
-        int ch = super.read();
+        int ch = superRead();
         endStream = isLastTag(ch);
         return ch;
     }
@@ -204,15 +168,15 @@ public class XmlInputStream extends BufferedInputStream {
             return -1;
         }
 
-        int readCount;
-        for (readCount = 0; readCount < len; ++readCount) {
+        int count;
+        for (count = 0; count < len; ++count) {
             int read = read();
             if (read == -1) break;
-            b[readCount + off] = (byte) read;
+            b[count + off] = (byte) read;
         }
 
-        if (readCount > 0) {
-            return readCount;
+        if (count > 0) {
+            return count;
         } else {
             return -1;
         }
@@ -220,41 +184,6 @@ public class XmlInputStream extends BufferedInputStream {
 
 
 
-//    /**
-//     * @see java.io.InputStream#read(byte[])
-//     */
-//    public int read(byte[] b) throws IOException {
-//
-//        if (!xmlStarted) {
-//            skipToTag();
-//            xmlStarted = true;
-//        }
-//        if (endStream) {
-//            b[0] = -1;
-//            return -1;
-//        }
-//        int read = super.read(b);
-//        if (read == -1) {
-//            b[0] = -1;
-//            return -1;
-//        }
-//        for (int i = 0; i < read; ++i) {
-//            if (endStream) {
-//                read = i;
-//                b[i] = -1;
-//                copyBuffer(b, i);
-//                if (i == 0) {
-//                    return -1;
-//                } else {
-//                    return i;
-//                }
-//            } else {
-//                endStream = isLastTag(b[i]);
-//            }
-//        }
-//        return read;
-//    }
-//
     /**
      * Determines if the character is the last character of the last tag of
      * interest.
@@ -436,10 +365,45 @@ public class XmlInputStream extends BufferedInputStream {
     }
 
     private int realRead() throws IOException {
-        int read = super.read();
+        int read = superRead();
         if (read == -1) {
             throw new IOException("Tag " + tagName + " not found");
         }
         return read;
+    }
+
+    private int superRead() throws IOException {
+        int read = super.read();
+        if (read != -1 && eventSpacing != 0
+                && ++readCount % eventSpacing == 0) {
+            fireProgressEvent();
+        }
+        return read;
+    }
+    
+    private void fireProgressEvent() {
+        LOG.info("firing sub-progress event "+ readCount + " of " + length);
+        ProgressEvent event = null;
+        // Guaranteed to return a non-null array
+        Object[] listeners = listenerList.getListenerList();
+        // Process the listeners last to first, notifying
+        // those that are interested in this event
+        for (int i = listeners.length-2; i>=0; i-=2) {
+            if (listeners[i]==ProgressListener.class) {
+                // Lazily create the event:
+                if (event == null) {
+                    event = new ProgressEvent(this, readCount, length);
+                }
+                ((ProgressListener)listeners[i+1]).progress(event);
+            }
+        }
+    }
+    
+    public void addProgressListener(ProgressListener listener) {
+        listenerList.add(ProgressListener.class, listener);
+    }
+    
+    public void removeProgressListener(ProgressListener listener) {
+        listenerList.remove(ProgressListener.class, listener);
     }
 }

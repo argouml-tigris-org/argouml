@@ -44,9 +44,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-import javax.swing.JProgressBar;
-import javax.swing.text.JTextComponent;
-
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.kernel.Project;
@@ -251,9 +248,11 @@ public class ZargoFilePersister extends UmlFilePersister {
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
-     * javax.swing.JProgressBar, javax.swing.text.JTextComponent)
+     * org.argouml.persistence.ProgressListener)
      */
-    public Project doLoad(File file, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
+    public Project doLoad(File file)
+        throws OpenException {
+        
         try {
             File combinedFile = File.createTempFile("combinedzargo_", ".uml");
             LOG.info(
@@ -330,7 +329,7 @@ public class ZargoFilePersister extends UmlFilePersister {
             writer.close();
             LOG.info("Complated combining files");
             Project p = 
-                super.doLoad(combinedFile, progressBar, progressText);
+                super.doLoad(combinedFile);
             p.setURL(file.toURL());
             return p;
         } catch (IOException e) {

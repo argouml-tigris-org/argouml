@@ -40,8 +40,6 @@ import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
 
-import javax.swing.JProgressBar;
-import javax.swing.text.JTextComponent;
 import javax.xml.transform.Result;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
@@ -66,14 +64,35 @@ import org.xml.sax.SAXException;
  *
  * @author Bob Tarling
  */
-public class UmlFilePersister extends AbstractFilePersister {
+public class UmlFilePersister extends AbstractFilePersister
+        implements ProgressListener {
     /**
      * Logger.
      */
     private static final Logger LOG =
         Logger.getLogger(UmlFilePersister.class);
 
-    private static final String ARGO_TEE = "/org/argouml/persistence/argo2.tee";
+    /**
+     * The percentage completeness of phases complete.
+     * Does not include part-completed phases.
+     */
+    private int percentPhasesComplete = 0;
+    
+    /**
+     * The sections complete of a load or save.
+     */
+    private int phasesCompleted = 0;
+
+    /**
+     * The number of equals phases the progress will measure.
+     * It is assumed each phase will be of equal time.
+     * There is one phase for each upgrade from a previous
+     * version and one pahse for the final load.
+     */
+    private int progressPhaseCount = 0;
+    
+    private static final String ARGO_TEE
+        = "/org/argouml/persistence/argo2.tee";
 
     /**
      * The constructor.
@@ -188,7 +207,7 @@ public class UmlFilePersister extends AbstractFilePersister {
             Integer indent = new Integer(4);
 
             writer.println("<?xml version = \"1.0\" "
-                    + "encoding = \"" + "UTF-8" + "\" ?>");
+                    + "encoding = \"" + getEncoding() + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
@@ -196,8 +215,6 @@ public class UmlFilePersister extends AbstractFilePersister {
                     TemplateReader.getInstance().read(ARGO_TEE);
                 OCLExpander expander = new OCLExpander(templates);
                 expander.expand(writer, project, "  ");
-                // For next version of GEF:
-                // expander.expand(writer, project, "  ");
             } catch (FileNotFoundException e) {
                 throw new SaveException(e);
             } catch (ExpansionException e) {
@@ -259,17 +276,49 @@ public class UmlFilePersister extends AbstractFilePersister {
 
     /**
      * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
-     * javax.swing.JProgressBar, javax.swing.text.JTextComponent progressText)
+     * javax.swing.JProgressBar, org.argouml.persistence.ProgressListener)
      */
-    public Project doLoad(File file, JProgressBar progressBar, JTextComponent progressText) throws OpenException {
+    public Project doLoad(File file)
+        throws OpenException {
+        
+        XmlInputStream inputStream = null;
         try {
             Project p = new Project(file.toURL());
 
             // Run through any stylesheet upgrades
-            file = upgrade(file);
+            int fileVersion = getPersistenceVersionFromFile(file);
+            
+            if (fileVersion > PERSISTENCE_VERSION) {
+                //String Version = getArgoumlVersionFromFile(file);
+                throw new VersionException(
+                    "The file selected is from a more up to date version of "
+                    + "ArgoUML. Please install the latest version.");
+            }
+            
+            // The progress is split into equal sections, 1 for
+            // the load of the .uml file plus one for each
+            // version upgrade file
+            progressPhaseCount = (PERSISTENCE_VERSION - fileVersion) + 1;
+            phasesCompleted = 0;
+            
+            LOG.info("Loading uml file of version " + fileVersion);
+            while (fileVersion < PERSISTENCE_VERSION) {
+                ++fileVersion;
+                LOG.info("Upgrading to version " + fileVersion);
+                file = transform(file, fileVersion);
+                ++phasesCompleted;
+                percentPhasesComplete = (phasesCompleted * 100)
+                                        / progressPhaseCount;
+                fireProgressEvent(percentPhasesComplete);
+            }
 
-            XmlInputStream inputStream =
-                        new XmlInputStream(file.toURL().openStream(), "argo");
+            inputStream =
+                new XmlInputStream(
+                        file.toURL().openStream(),
+                        "argo",
+                        file.length(),
+                        100000);
+            inputStream.addProgressListener(this);
 
             ArgoParser parser = new ArgoParser();
             parser.readProject(p, inputStream);
@@ -301,23 +350,21 @@ public class UmlFilePersister extends AbstractFilePersister {
         } catch (SAXException e) {
             LOG.error("SAXException", e);
             throw new OpenException(e);
+        } finally {
+            if (inputStream != null) {
+                inputStream.removeProgressListener(this);
+            }
         }
     }
 
-    private File upgrade(File file) throws OpenException {
-        try {
-            int versionFromFile = Integer.parseInt(getVersion(file));
-
-            LOG.info("Loading uml file of version " + versionFromFile);
-            while (versionFromFile < PERSISTENCE_VERSION) {
-                ++versionFromFile;
-                LOG.info("Upgrading to version " + versionFromFile);
-                file = transform(file, versionFromFile);
-            }
-            return file;
-        } catch (IOException e) {
-            throw new OpenException(e);
+    private File upgrade(File file, int fileVersion) throws OpenException {
+        LOG.info("Loading uml file of version " + fileVersion);
+        while (fileVersion < PERSISTENCE_VERSION) {
+            ++fileVersion;
+            LOG.info("Upgrading to version " + fileVersion);
+            file = transform(file, fileVersion);
         }
+        return file;
     }
 
     /**
@@ -336,7 +383,6 @@ public class UmlFilePersister extends AbstractFilePersister {
             String upgradeFilesPath = "/org/argouml/persistence/upgrades/";
             String upgradeFile = "upgrade" + version + ".xsl";
 
-            // TODO: But should instead access a resource inside the jar
             String xsltFileName = upgradeFilesPath + upgradeFile;
             URL xsltUrl = UmlFilePersister.class.getResource(xsltFileName);
             LOG.info("Resource is " + xsltUrl);
@@ -350,7 +396,8 @@ public class UmlFilePersister extends AbstractFilePersister {
             TransformerFactory factory = TransformerFactory.newInstance();
             Transformer transformer = factory.newTransformer(xsltStreamSource);
 
-            File transformedFile = File.createTempFile("upgrade_" + version + "_", ".uml");
+            File transformedFile =
+                File.createTempFile("upgrade_" + version + "_", ".uml");
             transformedFile.deleteOnExit();
 
             String encoding = "UTF-8";
@@ -379,18 +426,37 @@ public class UmlFilePersister extends AbstractFilePersister {
      * @return The version number
      * @throws IOException
      */
-    private String getVersion(File file) throws IOException {
-        BufferedInputStream inputStream =
-            new BufferedInputStream(file.toURL().openStream());
-        BufferedReader reader =
-            new BufferedReader(new InputStreamReader(inputStream));
-        String rootLine = reader.readLine();
-        while (!rootLine.startsWith("<uml ")) {
-            rootLine = reader.readLine();
+    private int getPersistenceVersionFromFile(File file) throws OpenException {
+        BufferedInputStream inputStream = null;
+        BufferedReader reader = null;
+        try {
+            inputStream = new BufferedInputStream(file.toURL().openStream());
+            reader = new BufferedReader(new InputStreamReader(inputStream));
+            String rootLine = reader.readLine();
+            while (!rootLine.startsWith("<uml ")) {
+                rootLine = reader.readLine();
+                if (rootLine == null) {
+                    throw new OpenException(
+                            "Failed to find the root <uml> tag");
+                }
+            }
+            return Integer.parseInt(getVersion(rootLine));
+        } catch (IOException e) {
+            throw new OpenException(e);
+        } catch (NumberFormatException e) {
+            throw new OpenException(e);
+        } finally {
+            try {
+                if (inputStream != null) {
+                    inputStream.close();
+                }
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                // No more we can do here on failure
+            }
         }
-        inputStream.close();
-        reader.close();
-        return getVersion(rootLine);
     }
 
     /**
@@ -411,4 +477,14 @@ public class UmlFilePersister extends AbstractFilePersister {
         return version;
     }
 
+    /**
+     * @see org.argouml.persistence.ProgressListener#progress(org.argouml.persistence.ProgressEvent)
+     */
+    public void progress(ProgressEvent event) {
+        int percentPhasesLeft = 100 - percentPhasesComplete;
+        long position = event.getPosition();
+        long length = event.getLength();
+        long proportion = (position * percentPhasesLeft) / length;
+        fireProgressEvent(percentPhasesComplete + proportion);
+    }
 }

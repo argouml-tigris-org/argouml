@@ -21,31 +21,21 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.persistence;
 
-import java.io.File;
-
-import org.argouml.kernel.Project;
-
 /**
- * To persist a project to and from file storage.
- *
+ * An exception to be thrown when tryuing to read a file of an unknown
+ * version.
  * @author Bob Tarling
  */
-public interface ProjectFilePersister {
+public class VersionException extends OpenException {
 
     /**
-     * @param project the project to save
-     * @param file The file to write.
-     * @throws SaveException if anything goes wrong.
+     * Construct the exception with a message.
+     * @param message the message
      */
-    public void save(Project project, File file) throws SaveException;
-
-    /**
-     * @param file the file of the project to load.
-     * @return the Project
-     * 
-     * @throws OpenException when we fail to open from this url
-     */
-    public Project doLoad(File file) throws OpenException;
+    public VersionException(String message) {
+        super(message);
+    }
 }
