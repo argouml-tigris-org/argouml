@@ -435,6 +435,16 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   </target>
 
   <!-- =================================================================== -->
+  <!-- Zips the javadocs                                                   -->
+  <!-- Coincidentally (not) this file is suitable for adding to NetBeans   -->
+  <!-- =================================================================== -->
+  <target name="zip-docs" depends="prepare-docs">
+      <zip zipfile="${build.dir}/argo-javadocs.zip"
+           basedir="${docs.dir}">
+      </zip> 
+  </target>
+
+  <!-- =================================================================== -->
   <!-- Creates the distribution                                            -->
   <!-- =================================================================== -->
   <target name="dist" depends="package">
