@@ -35,7 +35,6 @@ import java.beans.PropertyVetoException;
 import java.util.Vector;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.Notation;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 
@@ -41,8 +41,8 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
      * Constructor for UMLEventParameterListModel.
      * @param container
      */
-    public UMLEventParameterListModel(UMLUserInterfaceContainer container) {
-        super(container, "parameter"); 
+    public UMLEventParameterListModel() {
+        super("parameter"); 
     }
 
     /**

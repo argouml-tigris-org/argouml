@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
@@ -42,8 +40,8 @@ public class UMLModelElementNamespaceListModel
      * Constructor for UMLModelElementNamespaceListModel.
      * @param container
      */
-    public UMLModelElementNamespaceListModel(UMLUserInterfaceContainer container) {
-        super(container, "namespace");
+    public UMLModelElementNamespaceListModel() {
+        super("namespace");
     }
 
     /**

@@ -25,13 +25,10 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 3, 2002
@@ -43,8 +40,8 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * Constructor for UMLMessageActionListModel.
      * @param container
      */
-    public UMLMessageActionListModel(UMLUserInterfaceContainer container) {
-        super(container, "action");
+    public UMLMessageActionListModel() {
+        super("action");
     }
 
     /**
@@ -52,7 +49,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getAction());
+        addElement(((MMessage)getTarget()).getAction());
     }
 
     

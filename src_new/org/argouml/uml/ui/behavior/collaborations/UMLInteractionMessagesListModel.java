@@ -24,21 +24,13 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.event.ActionEvent;
-import java.util.Collection;
 import java.util.Iterator;
 
-import javax.swing.JPopupMenu;
-
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * List model for messages on the interaction proppanel. 
@@ -51,8 +43,8 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      * Constructor for UMLInteractionMessagesListModel.
      * @param container
      */
-    public UMLInteractionMessagesListModel(UMLUserInterfaceContainer container) {
-        super(container, "message");
+    public UMLInteractionMessagesListModel() {
+        super("message");
     }
 
     /**
@@ -60,7 +52,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        Iterator it = ((MInteraction)getContainer().getTarget()).getMessages().iterator();
+        Iterator it = ((MInteraction)getTarget()).getMessages().iterator();
         while (it.hasNext()) {
             addElement(it.next());
         }
@@ -71,7 +63,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return elem instanceof MMessage && 
-            ((MMessage)elem).getInteraction() == getContainer().getTarget();
+            ((MMessage)elem).getInteraction() == getTarget();
     }
 
 }

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MState;
 
@@ -39,8 +39,8 @@ public class UMLStateDoActivityListModel extends UMLModelElementListModel2 {
      * Constructor for UMLStateDoActivityListModel.
      * @param container
      */
-    public UMLStateDoActivityListModel(UMLUserInterfaceContainer container) {
-        super(container, "doActivity");
+    public UMLStateDoActivityListModel() {
+        super("doActivity");
     }
 
     /**

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
@@ -40,8 +40,8 @@ public class UMLStateMachineSubmachineStateListModel
      * Constructor for UMLStateMachineSubmachineStateListModel.
      * @param container
      */
-    public UMLStateMachineSubmachineStateListModel(UMLUserInterfaceContainer container) {
-        super(container, "submachineState");
+    public UMLStateMachineSubmachineStateListModel() {
+        super("submachineState");
     }
 
     /**

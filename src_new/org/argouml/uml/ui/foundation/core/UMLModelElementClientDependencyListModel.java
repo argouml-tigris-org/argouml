@@ -25,10 +25,8 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -44,8 +42,8 @@ public class UMLModelElementClientDependencyListModel
      * Constructor for UMLModelElementClientDependencyListModel.
      * @param container
      */
-    public UMLModelElementClientDependencyListModel(UMLUserInterfaceContainer container) {
-        super(container, "clientDependency");
+    public UMLModelElementClientDependencyListModel() {
+        super("clientDependency");
     }
 
     /**

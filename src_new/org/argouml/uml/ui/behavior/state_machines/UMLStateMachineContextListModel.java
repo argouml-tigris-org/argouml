@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
@@ -42,9 +42,8 @@ public class UMLStateMachineContextListModel
      * @param container
      * @param eventName
      */
-    public UMLStateMachineContextListModel(
-        UMLUserInterfaceContainer container) {
-        super(container, "context");
+    public UMLStateMachineContextListModel() {
+        super("context");
     }
 
     

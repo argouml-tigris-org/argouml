@@ -217,26 +217,26 @@ abstract public class PropPanelModelElement extends PropPanel {
         nameField = new UMLTextField2(new UMLModelElementNameDocument());
         stereotypeBox = new UMLComboBox2(stereotypeComboBoxModel, ActionSetModelElementStereotype.SINGLETON);
         namespaceComboBox = new UMLComboBox2(namespaceComboBoxModel, ActionSetModelElementNamespace.SINGLETON);
-        JList namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel(this));
+        JList namespaceList = new UMLLinkedList(this, new UMLModelElementNamespaceListModel());
         namespaceList.setVisibleRowCount(1);
         namespaceScroll = new JScrollPane(namespaceList);
         
         // supplierDependencyList and clientDependencyList are not mutable atm
         // reason for this is that users would have an enormous choice if they 
         // are implemented as mutable
-        JList supplierDependencyList = new UMLLinkedList(this, new UMLModelElementSupplierDependencyListModel(this));
+        JList supplierDependencyList = new UMLLinkedList(this, new UMLModelElementSupplierDependencyListModel());
         supplierDependencyScroll = new JScrollPane(supplierDependencyList);
-        JList clientDependencyList = new UMLLinkedList(this, new UMLModelElementClientDependencyListModel(this));
+        JList clientDependencyList = new UMLLinkedList(this, new UMLModelElementClientDependencyListModel());
         clientDependencyScroll = new JScrollPane(clientDependencyList);
         
         // 2002-11-10 flows are not supported yet by the rest of argouml but 
         // included here for future compliance. For the same reason as
         // supplierDependency not mutable
-        JList sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel(this));
+        JList sourceFlowList = new UMLLinkedList(this, new UMLModelElementSourceFlowListModel());
         sourceFlowScroll = new JScrollPane(sourceFlowList);
-        JList targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel(this));
+        JList targetFlowList = new UMLLinkedList(this, new UMLModelElementTargetFlowListModel());
         targetFlowScroll = new JScrollPane(targetFlowList);
-        JList constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(this), null, ActionNewModelElementConstraint.SINGLETON);
+        JList constraintList = new UMLMutableLinkedList(this, new UMLModelElementConstraintListModel(), null, ActionNewModelElementConstraint.SINGLETON);
         constraintScroll = new JScrollPane(constraintList);
         namespaceVisibilityPanel = new UMLButtonPanel(new UMLElementOwnershipVisibilityButtonGroup(this));
         
@@ -244,7 +244,7 @@ abstract public class PropPanelModelElement extends PropPanel {
         
         // NSUML implements the association class element residence as a connecting class 
         // between a component and the modelelement
-        JList elementResidenceList = new UMLLinkedList(this, new UMLModelElementElementResidenceListModel(this));
+        JList elementResidenceList = new UMLLinkedList(this, new UMLModelElementElementResidenceListModel());
         elementResidenceScroll = new JScrollPane(elementResidenceList);
         // no support yet for templateParameters
         // TODO support templateparameters

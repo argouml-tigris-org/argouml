@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
@@ -41,8 +41,8 @@ public class UMLStateMachineTopListModel extends UMLModelElementListModel2 {
      * Constructor for UMLStateMachineTopListModel.
      * @param container
      */
-    public UMLStateMachineTopListModel(UMLUserInterfaceContainer container) {
-        super(container, "top");
+    public UMLStateMachineTopListModel() {
+        super("top");
     }
 
     /**

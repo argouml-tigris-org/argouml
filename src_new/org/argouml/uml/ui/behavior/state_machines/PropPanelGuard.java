@@ -63,7 +63,7 @@ public class PropPanelGuard extends PropPanelModelElement {
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
         addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
         
-        JList transitionList = new UMLLinkedList(this, new UMLGuardTransitionListModel(this));
+        JList transitionList = new UMLLinkedList(this, new UMLGuardTransitionListModel());
         addField(Argo.localize("UMLMenu", "label.transition"), new JScrollPane(transitionList));
         
         add(LabelledLayout.getSeperator());

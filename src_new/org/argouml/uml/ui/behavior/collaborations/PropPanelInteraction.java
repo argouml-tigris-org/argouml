@@ -23,8 +23,6 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.awt.Color;
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -32,7 +30,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
-import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 import org.argouml.util.ConfigLoader;
 
@@ -51,14 +48,14 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
         addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
         
-        JList contextList = new UMLLinkedList(this, new UMLInteractionContextListModel(this));
+        JList contextList = new UMLLinkedList(this, new UMLInteractionContextListModel());
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Argo.localize("UMLMenu", "label.context"), contextScroll);
         
         add(LabelledLayout.getSeperator());
        
-        JList messagesList = new UMLLinkedList(this, new UMLInteractionMessagesListModel(this));
+        JList messagesList = new UMLLinkedList(this, new UMLInteractionMessagesListModel());
       	JScrollPane messagesScroll= new JScrollPane(messagesList); 	
         addField(Argo.localize("UMLMenu", "label.messages"), messagesScroll);
     	

@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 
@@ -39,8 +39,8 @@ public class UMLTransitionTargetListModel extends UMLModelElementListModel2 {
      * Constructor for UMLStateMachineTopListModel.
      * @param container
      */
-    public UMLTransitionTargetListModel(UMLUserInterfaceContainer container) {
-        super(container, "target");
+    public UMLTransitionTargetListModel() {
+        super("target");
     }
 
     /**

@@ -33,6 +33,7 @@ import org.argouml.model.uml.UmlModelEventPump;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.MElementListener;
 
 /**
  * The model for a list that Mbases contains. The state of the MBase is still 
@@ -41,19 +42,17 @@ import ru.novosoft.uml.MElementEvent;
  * @since Oct 2, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public abstract class UMLModelElementListModel2 extends DefaultListModel implements UMLUserInterfaceComponent{
+public abstract class UMLModelElementListModel2 extends DefaultListModel implements TargetChangedListener, MElementListener {
 
     private String _eventName = null; 
-    private UMLUserInterfaceContainer _container = null;
     protected Object _target = null;
     
     /**
      * Constructor for UMLModelElementListModel2.
      */
-    public UMLModelElementListModel2(UMLUserInterfaceContainer container, String eventName) {
+    public UMLModelElementListModel2(String eventName) {
         super();
         setEventName(eventName);
-        setContainer(container);
     }
     
     /**
@@ -62,29 +61,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * class
      * @param container
      */
-    public UMLModelElementListModel2(UMLUserInterfaceContainer container) {
+    public UMLModelElementListModel2() {
         super();
-        setContainer(container);
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
-     */
-    public void targetChanged() {
-        // we must build a new list here
-        // we delegate that to the abstract method buildModelList to give
-        // the user of this library class some influence
-        
-        setTarget(getContainer().getTarget());
-    }
-
-    /**
-     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetReasserted()
-     */
-    public void targetReasserted() {
-        setTarget(getContainer().getTarget());
-    }
-
+    
     /**
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
@@ -162,23 +142,6 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
             }
         }
     }
-
-    /**
-     * Returns the container.
-     * @return UMLUserInterfaceContainer
-     */
-    protected UMLUserInterfaceContainer getContainer() {
-        return _container;
-    }
-
-    /**
-     * Sets the container.
-     * @param container The container to set
-     */
-    protected void setContainer(UMLUserInterfaceContainer container) {
-        _container = container;
-        setTarget(_container.getTarget());
-    }
     
     /**
      * Builds the list of elements. Called from targetChanged every time the 
@@ -215,10 +178,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * via the method setTarget().
      * @return MModelElement
      */
-    protected Object getTarget() {
-        if (_target == null) {
-            setTarget(getContainer().getTarget());
-        }
+    protected Object getTarget() {        
         return _target;
     }
     
@@ -258,7 +218,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * target.
      * @param target
      */
-    protected void setTarget(Object target) {
+    public void setTarget(Object target) {
         if (_eventName == null || _eventName.equals("")) 
             throw new IllegalStateException("eventName not set!");
         if (_target instanceof MBase) {
@@ -349,6 +309,20 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     protected void setEventName(String eventName) {
         _eventName = eventName;
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
+     */
+    public void targetChanged(Object newTarget) {
+        setTarget(newTarget);
+    }
+
+    /**
+     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
+     */
+    public void targetReasserted(Object newTarget) {
+        setTarget(newTarget);
     }
 
 }

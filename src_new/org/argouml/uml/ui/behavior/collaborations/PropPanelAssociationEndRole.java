@@ -24,23 +24,20 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.collaborations.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.uml.MMUtil;
-import org.argouml.util.*;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
+import org.argouml.util.ConfigLoader;
 
-import java.awt.*;
-import java.util.*;
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRole;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
 
@@ -57,7 +54,7 @@ public class PropPanelAssociationEndRole extends PropPanelAssociationEnd {
         addField(Argo.localize("UMLMenu", "label.name"), nameField);
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
         
-        JList baseList = new UMLLinkedList(this, new UMLAssociationEndRoleBaseListModel(this));
+        JList baseList = new UMLLinkedList(this, new UMLAssociationEndRoleBaseListModel());
         baseList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.base"), 
             new JScrollPane(baseList));

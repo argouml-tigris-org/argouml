@@ -29,10 +29,6 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.Vector;
-
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -46,9 +42,8 @@ import org.argouml.uml.ui.UMLMultiplicityComboBox;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
 import org.argouml.util.ConfigLoader;
+
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 public class PropPanelClassifierRole extends PropPanelClassifier {
@@ -67,7 +62,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     
     addField(Argo.localize("UMLMenu", "label.multiplicity"),new UMLMultiplicityComboBox(this,mclass));
     
-    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(this), ActionAddClassifierRoleBase.SINGLETON, null);
+    JList baseList = new UMLMutableLinkedList(this, new UMLClassifierRoleBaseListModel(), ActionAddClassifierRoleBase.SINGLETON, null);
     addField(Argo.localize("UMLMenu", "label.base"), new JScrollPane(baseList));
    
 
@@ -82,11 +77,11 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
     
     add(LabelledLayout.getSeperator());
      
-    JList availableContentsList = new UMLLinkedList(this, new UMLClassifierRoleAvailableContentsListModel(this));
+    JList availableContentsList = new UMLLinkedList(this, new UMLClassifierRoleAvailableContentsListModel());
     addField(Argo.localize("UMLMenu", "label.available-contents"), 
         new JScrollPane(availableContentsList));   
         
-    JList availableFeaturesList = new UMLLinkedList(this, new UMLClassifierRoleAvailableFeaturesListModel(this));
+    JList availableFeaturesList = new UMLLinkedList(this, new UMLClassifierRoleAvailableFeaturesListModel());
     addField(Argo.localize("UMLMenu", "label.available-features"), 
         new JScrollPane(availableFeaturesList));   
     /* 
@@ -101,53 +96,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
   }
 
 
-     public MClassifier getClassifier() {
-        MClassifier classifier = null;
-        Object target = getTarget();
-        if(target instanceof MClassifierRole) {
-	    //    UML 1.3 apparently has this a 0..n multiplicity
-	    Collection bases=((MClassifierRole)target).getBases();
-	    Iterator it=bases.iterator();
-	    if (it.hasNext())
-		classifier=(MClassifier)it.next();
-        }
-        return classifier;
-    }
-
-    public void setClassifier(MClassifier element) {
-	MClassifier classifier = null;
-        Object target = getTarget();
-        if(target instanceof MClassifierRole) {
-	    Vector bases=new Vector();
-	    bases.addElement(element);
-	    ((MClassifierRole)target).setBases(bases);	    
-	}
-    }
-
-
-    
-    
-    
-	
-	public MClassifier getBase() {
-		if (getTarget() != null) {
-			Vector list = new Vector();
-			list.addAll(((MClassifierRole)getTarget()).getBases());
-			if (list.size() > 0) {
-				return (MClassifier)list.get(0);
-			}
-		}
-		return null;
-	}
-	
-	public void setBase(MClassifier base) {
-		if (getTarget() != null) {
-			Vector list = new Vector();
-			list.add(base);
-			((MClassifierRole)getTarget()).setBases(list);
-		}
-	}
-
+   
 
 } /* end class PropPanelClassifierRole */
 

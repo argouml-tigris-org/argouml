@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
@@ -39,8 +39,8 @@ public class UMLStateVertexContainerListModel extends UMLModelElementListModel2 
      * Constructor for UMLStateVertexIncomingListModel.
      * @param container
      */
-    public UMLStateVertexContainerListModel(UMLUserInterfaceContainer container) {
-        super(container, "container");
+    public UMLStateVertexContainerListModel() {
+        super("container");
     }
 
     /**

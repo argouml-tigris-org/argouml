@@ -25,13 +25,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @since Oct 3, 2002
@@ -43,8 +39,8 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
      * Constructor for UMLMessageReceiverListModel.
      * @param container
      */
-    public UMLMessageReceiverListModel(UMLUserInterfaceContainer container) {
-        super(container, "receiver");
+    public UMLMessageReceiverListModel() {
+        super("receiver");
     }
 
     /**
@@ -52,7 +48,7 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(((MMessage)getContainer().getTarget()).getReceiver());
+        addElement(((MMessage)getTarget()).getReceiver());
     }
 
     /**

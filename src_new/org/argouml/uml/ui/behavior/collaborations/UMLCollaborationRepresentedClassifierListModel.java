@@ -24,16 +24,11 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import java.util.Iterator;
-
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * The list of classifiers represented by some collaboration as shown on the 
@@ -49,9 +44,8 @@ public class UMLCollaborationRepresentedClassifierListModel
      * @param container
      * @param propertyToSet
      */
-    public UMLCollaborationRepresentedClassifierListModel(
-        UMLUserInterfaceContainer container) {
-        super(container, "representedClassifier");
+    public UMLCollaborationRepresentedClassifierListModel() {
+        super("representedClassifier");
     }
 
     /**

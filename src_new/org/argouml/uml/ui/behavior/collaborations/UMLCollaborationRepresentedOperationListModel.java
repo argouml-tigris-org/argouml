@@ -25,12 +25,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MOperation;
 
 /**
@@ -46,8 +43,8 @@ public class UMLCollaborationRepresentedOperationListModel
      * Constructor for UMLCollaborationRepresentedOperationListModel.
      * @param container
      */
-    public UMLCollaborationRepresentedOperationListModel(UMLUserInterfaceContainer container) {
-        super(container, "representedOperation");
+    public UMLCollaborationRepresentedOperationListModel() {
+        super("representedOperation");
     }
 
     /**

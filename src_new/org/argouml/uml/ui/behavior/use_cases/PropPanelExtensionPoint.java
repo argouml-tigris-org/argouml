@@ -95,12 +95,12 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
         
         add(LabelledLayout.getSeperator());
         
-        JList usecaseList = new UMLLinkedList(this, new UMLExtensionPointUseCaseListModel(this));
+        JList usecaseList = new UMLLinkedList(this, new UMLExtensionPointUseCaseListModel());
         usecaseList.setVisibleRowCount(1);
         addField(Argo.localize("UMLMenu", "label.usecase"), 
             new JScrollPane(usecaseList));
         
-        JList extendList = new UMLLinkedList(this, new UMLExtensionPointExtendListModel(this));
+        JList extendList = new UMLLinkedList(this, new UMLExtensionPointExtendListModel());
         addField(Argo.localize("UMLMenu", "label.extend"), 
             new JScrollPane(extendList));
 

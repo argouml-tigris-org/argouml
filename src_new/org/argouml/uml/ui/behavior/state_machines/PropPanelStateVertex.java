@@ -74,12 +74,12 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         ImageIcon icon,
         Orientation orientation) {
         super(name, icon, orientation);
-        JList incomingList = new UMLLinkedList(this, new UMLStateVertexIncomingListModel(this));
+        JList incomingList = new UMLLinkedList(this, new UMLStateVertexIncomingListModel());
         incomingScroll = new JScrollPane(incomingList);
-        JList outgoingList = new UMLLinkedList(this, new UMLStateVertexOutgoingListModel(this));
+        JList outgoingList = new UMLLinkedList(this, new UMLStateVertexOutgoingListModel());
         outgoingScroll = new JScrollPane(outgoingList);
         
-        JList compositeList = new UMLLinkedList(this, new UMLStateVertexContainerListModel(this));
+        JList compositeList = new UMLLinkedList(this, new UMLStateVertexContainerListModel());
         compositeList.setVisibleRowCount(1);
         containerScroll = new JScrollPane(compositeList);
         

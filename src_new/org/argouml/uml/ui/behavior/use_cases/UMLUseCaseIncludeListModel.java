@@ -24,14 +24,9 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.util.Iterator;
-
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
@@ -44,8 +39,8 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
      * Constructor for UMLUseCaseIncludeListModel.
      * @param container
      */
-    public UMLUseCaseIncludeListModel(UMLUserInterfaceContainer container) {
-        super(container, "include");
+    public UMLUseCaseIncludeListModel() {
+        super("include");
     }
 
     /**

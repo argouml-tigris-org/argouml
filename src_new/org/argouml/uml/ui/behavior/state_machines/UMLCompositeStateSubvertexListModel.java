@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
@@ -40,8 +40,8 @@ public class UMLCompositeStateSubvertexListModel
      * Constructor for UMLStateMachineTransitionListModel.
      * @param container
      */
-    public UMLCompositeStateSubvertexListModel(UMLUserInterfaceContainer container) {
-        super(container, "subvertex");
+    public UMLCompositeStateSubvertexListModel() {
+        super("subvertex");
     }
 
     /**
