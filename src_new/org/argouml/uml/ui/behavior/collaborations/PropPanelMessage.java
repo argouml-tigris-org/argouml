@@ -24,6 +24,9 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
 
@@ -31,6 +34,7 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CommonBehaviorFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -93,8 +97,7 @@ public class PropPanelMessage extends PropPanelModelElement {
 
 	JList actionList =
 		 new UMLMutableLinkedList(new UMLMessageActionListModel(),
-					  null,
-					  ActionNewAction.getInstance());
+		         null, ActionNewActionForMessage.getInstance());
 	actionList.setVisibleRowCount(1);
 	JScrollPane actionScroll = new JScrollPane(actionList);
 	addField(Translator.localize("label.action"), actionScroll);
@@ -108,38 +111,35 @@ public class PropPanelMessage extends PropPanelModelElement {
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
-        new PropPanelButton(this, lookupIcon("Message"),
-	    Translator.localize("button.new-action"),
-	    "addAction",
-	    "isAddActionEnabled");
-	// ActionNewAction.SINGLETON.setTarget((MModelElement)getTarget());
-	// buttonPanel.add(new PropPanelButton2(this,
-	//     ActionNewAction.SINGLETON));
+
+        new PropPanelButton(this, lookupIcon("CallAction"),
+                Translator.localize("button.new-action"),
+                new ActionToolNewAction());
+        
         addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));    
     }
 
+    private class ActionToolNewAction extends AbstractActionNewModelElement {
 
-
-    /**
-     * @return the CallAction created
-     */
-    public Object addAction() {
-    	Object action = null;
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAMessage(target)) {
-            action = /*(MCallAction)*/ CommonBehaviorFactory.getFactory()
-                .buildAction(/*(MMessage)*/ target);
+        /**
+         * The constructor.
+         */
+        public ActionToolNewAction() {
+            super("button.new-action");
+            putValue(Action.NAME, Translator.localize("button.new-action"));
         }
-        return action;
-    }
 
-    /**
-     * @return true if we can create a new action for this message
-     */
-    public boolean isAddActionEnabled() {
-    	return (org.argouml.model.ModelFacade.isAMessage(getTarget())) 
-    	    && (ModelFacade.getAction(getTarget()) == null);
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (org.argouml.model.ModelFacade.isAMessage(target)) {
+                CommonBehaviorFactory.getFactory().buildAction(target);
+                super.actionPerformed(e);
+            }
+        }
     }
 
     /**
