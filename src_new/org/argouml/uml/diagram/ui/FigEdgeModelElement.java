@@ -62,6 +62,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlHelper;
@@ -71,7 +72,6 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.cmd.CmdSetPreferredSize;
-import org.argouml.uml.UUIDManager;
 import org.argouml.util.Trash;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
@@ -627,7 +627,7 @@ public abstract class FigEdgeModelElement
             if (org.argouml.model.ModelFacade.isAModelElement(newOwner)) {
                 Model.getPump().addModelEventListener(this, oldOwner);
                 
-                if (UUIDManager.getInstance().getUUID(newOwner) == null) {
+                if (ProjectManager.getUUID(newOwner) == null) {
                     ModelFacade.setUUID(newOwner,
 					UUIDManager.getInstance().getNewUUID());
 		}

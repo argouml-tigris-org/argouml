@@ -25,7 +25,7 @@
 package org.argouml.uml.diagram.static_structure.ui;
 
 import org.argouml.model.ModelFacade;
-import org.argouml.uml.UUIDManager;
+import org.argouml.model.UUIDManager;
 
 
 /**

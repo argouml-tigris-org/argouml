@@ -74,6 +74,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
+import org.argouml.model.UUIDManager;
 import org.argouml.model.uml.CoreHelper;
 import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlFactory;
@@ -82,7 +83,6 @@ import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.UUIDManager;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.util.Trash;
@@ -1220,7 +1220,7 @@ public abstract class FigNodeModelElement
         updateListeners(own);
         super.setOwner(own);
         if (ModelFacade.isAModelElement(own)
-                && UUIDManager.getInstance().getUUID(own) == null) {
+                && ProjectManager.getUUID(own) == null) {
             ModelFacade.setUUID(own, UUIDManager.getInstance().getNewUUID());
         }
         readyToEdit = true;

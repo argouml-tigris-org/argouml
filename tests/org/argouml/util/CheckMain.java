@@ -31,7 +31,7 @@ import java.net.MalformedURLException;
 import junit.framework.Assert;
 
 import org.argouml.application.Main;
-import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.ExitSecurityManager;
 
 /**
  * This class is a helper for testing things connected to the Main class.
@@ -47,7 +47,7 @@ public final class CheckMain {
      */
     public static void callMain(String[] args) {
         Main.main(args);
-        ArgoSecurityManager.getInstance().setAllowExit(true);
+        ExitSecurityManager.getInstance().setAllowExit(true);
     }
 
 

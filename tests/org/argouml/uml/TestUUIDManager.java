@@ -26,6 +26,8 @@
  */
 package org.argouml.uml;
 
+import org.argouml.model.UUIDManager;
+
 import junit.framework.TestCase;
 
 /**

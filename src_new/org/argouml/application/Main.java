@@ -49,12 +49,12 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.CommandLineInterface;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
-import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.AbstractCognitiveTranslator;
 import org.argouml.cognitive.Designer;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ExitSecurityManager;
 import org.argouml.moduleloader.ModuleLoader2;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.ui.Actions;
@@ -251,7 +251,7 @@ public class Main {
 	}
 
 	// From here on, we are not allowed to exit unpredictably.
-	ArgoSecurityManager.getInstance().setAllowExit(false);
+	ExitSecurityManager.getInstance().setAllowExit(false);
 
         if (doSplash) {
             SplashScreen splash = SplashScreen.getInstance();
@@ -546,7 +546,7 @@ public class Main {
          *  Once this is done, no one else
          *  can change "sun.awt.exception.handler".
          */
-        System.setSecurityManager(ArgoSecurityManager.getInstance());
+        System.setSecurityManager(ExitSecurityManager.getInstance());
 
         /*  The string <code>log4j.configuration</code> is the
          *  same string found in

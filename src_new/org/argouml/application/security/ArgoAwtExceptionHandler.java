@@ -24,6 +24,8 @@
 
 package org.argouml.application.security;
 
+import org.argouml.model.ExitSecurityException;
+
 /** 
  * Argo Awt Exception handler.
  *
@@ -53,7 +55,7 @@ public final class ArgoAwtExceptionHandler {
      *                   to "eat" it.
      */
     public void handle(Throwable t) throws Throwable {
-	if (t.getClass().equals(ArgoSecurityException.class)) {
+	if (t.getClass().equals(ExitSecurityException.class)) {
 	    // do nothing
             // _cat.error("Uncaught ArgoSecurityException:" + t);
 	    return;

@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.security;
+package org.argouml.model;
 
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.
@@ -56,10 +56,10 @@ import org.argouml.util.osdep.OsUtil;
  *  @since 0.9.4
  *  @stereotype singleton
  */
-public final class ArgoSecurityManager extends SecurityManager
+public final class ExitSecurityManager extends SecurityManager
 {
     private static final Logger LOG =
-	Logger.getLogger(ArgoSecurityManager.class);
+	Logger.getLogger(ExitSecurityManager.class);
 
     /**
      * true if we are allowed to exit.<p>
@@ -74,20 +74,20 @@ public final class ArgoSecurityManager extends SecurityManager
     private boolean allowExit = true;
 
     /** The only allowed instance. */
-    private static final ArgoSecurityManager SINGLETON =
-	new ArgoSecurityManager();
+    private static final ExitSecurityManager SINGLETON =
+	new ExitSecurityManager();
 
     /**
      * Accessor for the instance.
      *
      * @return the signleton
      */
-    public static final ArgoSecurityManager getInstance() {
+    public static final ExitSecurityManager getInstance() {
         return SINGLETON;
     }
 
     /** Don't allow it to be instantiated from the outside. */
-    private ArgoSecurityManager() {
+    private ExitSecurityManager() {
     }
 
     /**
@@ -116,7 +116,7 @@ public final class ArgoSecurityManager extends SecurityManager
 		      + " - '" + rp.getActions() + "'");
 	    if ("exitVM".equals(rp.getName())) {
 		if (!getInstance().getAllowExit()) {
-		    throw new ArgoSecurityException(true);
+		    throw new ExitSecurityException(true);
 		}
 	    }
 	}
