@@ -86,6 +86,9 @@ implements MenuListener {
 	    if (o instanceof NotationName) {
 		NotationName nn = (NotationName)o;
 	        JRadioButtonMenuItem mi = new JRadioButtonMenuItem(nn.getTitle());
+                if (nn.getIcon() != null) {
+                    mi.setIcon(nn.getIcon());
+                }
 		mi.addActionListener(this);
 		b.add(mi);
 		mi.setSelected(dflt.equals(nn));
