@@ -27,16 +27,12 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.ui.UMLAction;
 
 import org.tigris.gef.base.Globals;
-
-// TODO: Use ModelFacade instead of nsuml -tml
-import ru.novosoft.uml.model_management.MModelImpl;
 
 /**
  * ActionAddAllClassesFromModel enables pasting of an existing node into a 
@@ -84,7 +80,7 @@ public class ActionAddAllClassesFromModel extends UMLAction {
     /**
      * actionPerformed
      *
-     * Finds all of the classes within the same model as the
+     * Finds all of the classes within the same namespace as the
      * UMLClassDiagram that was given to me in my constructor and adds
      * them to the UMLClassDiagram.
      *
@@ -94,24 +90,21 @@ public class ActionAddAllClassesFromModel extends UMLAction {
      * Smart Information Flow Technologies.
      */
     public void actionPerformed(ActionEvent ae) {
-	
-	// Add all classes that are siblings of (in same model as) my
-	// UMLClasssDiagram
-	if( _object instanceof UMLClassDiagram ) {
-	    // TODO: This relies on nsuml, should use ModelFacade -tml
-	    MModelImpl model =
-		(MModelImpl) ((UMLClassDiagram) _object).getOwner();
-	    if ( ProjectManager.getManager().getCurrentProject().getModels()
-		 .contains(model) ) {
-		DiagramInterface diagram =
-		    new DiagramInterface( Globals.curEditor() );
-		diagram.setCurrentDiagram( (UMLClassDiagram) _object );
-		Iterator elements = model.getModelElementContents().iterator();
-		while ( elements.hasNext() ) {
-		    Object element = elements.next();
-		    if ( ModelFacade.isAClass(element) ) {
-			diagram.addClass( element , false );
-		    }
+
+	if ( _object instanceof UMLClassDiagram ) {
+
+	    // Use DiagramInterface to add classes to diagram
+	    DiagramInterface diagram =
+		new DiagramInterface( Globals.curEditor() );
+	    diagram.setCurrentDiagram( (UMLClassDiagram) _object );
+
+	    Object namespace = ((UMLClassDiagram) _object).getNamespace();
+	    Iterator elements =
+		ModelFacade.getOwnedElements( namespace ).iterator();
+	    while ( elements.hasNext() ) {
+		Object element = elements.next();
+		if ( ModelFacade.isAClass(element) ) {
+		    diagram.addClass( element , false );
 		}
 	    }
 	}
