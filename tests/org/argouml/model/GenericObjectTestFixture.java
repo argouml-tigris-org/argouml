@@ -26,7 +26,6 @@ package org.argouml.model;
 import java.util.HashMap;
 
 import org.argouml.model.uml.Uml;
-import org.argouml.model.uml.UmlFactory;
 
 import junit.framework.TestCase;
 
@@ -38,8 +37,6 @@ public abstract class GenericObjectTestFixture extends TestCase
 
     private HashMap truths = new HashMap();
     
-	private UmlFactory factory;
-
 	private boolean validated = false;
 
 	/**
@@ -57,8 +54,6 @@ public abstract class GenericObjectTestFixture extends TestCase
 	protected void setUp() throws Exception
 	{
 		super.setUp();
-		factory = UmlFactory.getFactory();
-
 		initializeTruth();
 	}
 
@@ -107,19 +102,12 @@ public abstract class GenericObjectTestFixture extends TestCase
     }
 
 	/**
-	 * @return
-	 */
-	public UmlFactory getFactory() {
-		return factory;
-	}
-
-	/**
 	 * Indicate if the class being tested should be a type of the testcase class.
 	 * 
 	 * @param class1
 	 * @param b
 	 */
-	protected void setTruth(Uml.UmlEntity class1, boolean b) {
+	protected void setTruth(ModelEntity class1, boolean b) {
         truths.put(class1, new Boolean(b));
 	}
 
@@ -181,7 +169,7 @@ public abstract class GenericObjectTestFixture extends TestCase
 	/**
 	 * @param class1
 	 */
-	private void runTruthTest(boolean result, Uml.UmlEntity class1) {
+	private void runTruthTest(boolean result, ModelEntity class1) {
         // TODO Look up class in truth table
         Boolean truth = (Boolean)truths.get(class1);
         if (truth == null) {

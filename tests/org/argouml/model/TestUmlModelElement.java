@@ -41,7 +41,7 @@ public class TestUmlModelElement extends GenericObjectTestFixture
 	}
 
     public void testModelElement() {
-    	Object me = getFactory().create(Uml.OBJECT);
+    	Object me = ModelFacade.getFacade().create(Uml.OBJECT);
     	assertNotNull("Didn't create object", me);
 		assertTrue("Should be a base", ModelFacade.isABase(me));
 		assertTrue("Should be a model element", ModelFacade.isAModelElement(me));

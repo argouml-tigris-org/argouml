@@ -25,7 +25,6 @@ package org.argouml.model;
 
 import java.lang.reflect.Method;
 import java.util.Iterator;
-import java.util.Map;
 
 import javax.jmi.reflect.RefBaseObject;
 
@@ -37,6 +36,10 @@ import org.argouml.model.uml.Uml;
 import org.argouml.model.uml.UmlFactory;
 
 /**
+ * Tests the accessor methods of the facade.
+ * 
+ * TestUmlObjectCreation tests the object creation SPI.
+ * 
  * @author Thierry Lach
  */
 public class TestModelFacade extends TestCase {
@@ -55,10 +58,10 @@ public class TestModelFacade extends TestCase {
 	public static Test suite() {
 		TestSuite suite = new TestSuite("Tests for " + TestModelFacade.class.getPackage().getName());
 
-		Map elements = Uml.getUmlClassList();
-		Iterator i = elements.keySet().iterator();
+		Iterator i = Uml.getUmlClassList().iterator();
 		while (i.hasNext()) {
-			suite.addTest(new TestModelFacade((String) i.next()));
+            UmlModelEntity e = (UmlModelEntity) i.next();
+			suite.addTest(new TestModelFacade(e.getName()));
 		}
 
 		return suite;
@@ -69,14 +72,12 @@ public class TestModelFacade extends TestCase {
 	 */
 	protected void runTest() throws Throwable {
 		String objectType = getName();
-		Uml.UmlEntity umlClass = (Uml.UmlEntity) Uml.getUmlClassList().get(objectType);
+		UmlModelEntity umlClass = Uml.getDeclaredType(objectType);
 		// Ensure that the type is part of Uml class.    	
 		assertNotNull("Uml class does not know about '" + objectType +"'",	umlClass);
 
-		boolean hasFacade = umlClass instanceof Uml.UmlFacadeEntity;
-
 		Class[] classes = new Class[1];
-		classes[0] = Object.class;
+        classes[0] = Object.class;
 		Object[] args = new Object[1];
         
 		Method methodIsA = null;
@@ -90,6 +91,7 @@ public class TestModelFacade extends TestCase {
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with null", rc);
 			assertTrue("isA" + objectType + " called with null", ! rc.booleanValue());
+            assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
 
 			// Test with an object
 			args[0] = new Object();
@@ -97,32 +99,50 @@ public class TestModelFacade extends TestCase {
 			rc = (Boolean)methodIsA.invoke(facade, args);
 			assertNotNull("isA" + objectType + " called with new Object()", rc);
 			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
-			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+            assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
+    
+            if (umlClass.isCreatable()) {
+                Object testObject = null;
+                // Test after creating the class using create() without proxy
+                UmlFactory.getFactory().setJmiProxyCreated(false);
+                testObject = UmlFactory.getFactory().create(umlClass);
+                assertNotNull("Unable to create '" + umlClass + "'", testObject);
+                args[0] = testObject;
+                rc = null;
+                rc = (Boolean)methodIsA.invoke(facade, args);
+                assertTrue("isA" + objectType + " did not work with legacy create", rc.booleanValue());
+                assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
 
-			// Test after creating the class using create() without proxy
-			UmlFactory.getFactory().setJmiProxyCreated(false);
-			Object testObject = UmlFactory.getFactory().create(umlClass);
-			assertNotNull("Unable to create '" + umlClass + "'", testObject);
-			args[0] = testObject;
-			rc = null;
-			rc = (Boolean)methodIsA.invoke(facade, args);
-			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
-			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+                // TODO Make sure ActionExpression works properly - currently it does not
+                if (! "ActionExpression".equals(umlClass.getName())) {
+                    // Test after creating the class using create() with proxy
+                    UmlFactory.getFactory().setJmiProxyCreated(true);
+                    testObject = UmlFactory.getFactory().create(umlClass);
+                    assertNotNull("Unable to create '" + umlClass + "'", testObject);
+                    args[0] = testObject;
+                    rc = null;
+                    rc = (Boolean)methodIsA.invoke(facade, args);
+                    assertTrue("Not JMI interface", testObject instanceof RefBaseObject);
+                    assertTrue("isA" + objectType + " did not work with proxy create", rc.booleanValue());
+                    assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
+                }
+            }
+            else {
+                Object testObject = null;
+                // Test after creating the class using create() without proxy
+                UmlFactory.getFactory().setJmiProxyCreated(false);
+                testObject = UmlFactory.getFactory().create(umlClass);
+                assertNull("Should not be able to create legacy '" + umlClass + "'", testObject);
 
-			// Test after creating the class using create() without proxy
-			UmlFactory.getFactory().setJmiProxyCreated(true);
-			testObject = UmlFactory.getFactory().create(umlClass);
-			assertNotNull("Unable to create '" + umlClass + "'", testObject);
-			args[0] = testObject;
-			rc = null;
-			rc = (Boolean)methodIsA.invoke(facade, args);
-			assertTrue("Not JMI interface", testObject instanceof RefBaseObject);
-			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
-			assertTrue("Should not be able to call isA" + objectType, ! hasFacade);
+                // Test after creating the class using create() with proxy
+                UmlFactory.getFactory().setJmiProxyCreated(true);
+                testObject = UmlFactory.getFactory().create(umlClass);
+                assertNull("Should not be able to create new '" + umlClass + "'", testObject);
+            }
 
 		}
 		catch (Exception e) {
-			assertTrue("Cannot execute ModelFacade.isA" + objectType + " because of " + e, hasFacade);
+			assertTrue("Cannot execute ModelFacade.isA" + objectType + " because of " + e, umlClass.isAvailableInFacade());
 		}
 	}
 

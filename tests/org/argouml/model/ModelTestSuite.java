@@ -36,7 +36,7 @@ public class ModelTestSuite {
 
 		suite.addTest(new TestSuite(TestUmlObjectCreation.class));
 
-		suite.addTest(new TestSuite(TestModelFacade.class));
+		suite.addTest(TestModelFacade.suite());
 
 		suite.addTest(new TestSuite(TestUmlModelElement.class));
 		suite.addTest(new TestSuite(TestUmlNamespace.class));

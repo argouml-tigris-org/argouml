@@ -41,7 +41,7 @@ public class TestUmlActor extends GenericObjectTestFixture
 	}
 
     public void testNamespace() {
-    	Object o = getFactory().create(Uml.ACTOR);
+    	Object o = ModelFacade.getFacade().create(Uml.ACTOR);
     	assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a actor", ModelFacade.isAActor(o));

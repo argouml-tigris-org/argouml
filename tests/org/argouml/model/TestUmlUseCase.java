@@ -41,7 +41,7 @@ public class TestUmlUseCase extends GenericObjectTestFixture
 	}
 
     public void testNamespace() {
-    	Object o = getFactory().create(Uml.USE_CASE);
+    	Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
     	assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));

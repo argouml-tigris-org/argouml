@@ -41,7 +41,7 @@ public class TestUmlModel extends GenericObjectTestFixture
 	}
 
     public void testNamespace() {
-    	Object o = getFactory().create(Uml.MODEL);
+    	Object o = ModelFacade.getFacade().create(Uml.MODEL);
     	assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
 		assertTrue("Should be a model", ModelFacade.isAModel(o));

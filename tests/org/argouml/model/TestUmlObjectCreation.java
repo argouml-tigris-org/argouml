@@ -88,7 +88,7 @@ public class TestUmlObjectCreation extends TestCase {
 	public TestUmlObjectCreation(String n) { super(n); }
 
 	private void runObjectFactoryType(boolean useProxy,
-	                                  Uml.UmlEntity c,
+	                                  UmlModelEntity c,
 	                                  Class expected,
 	                                  Object legacy,
 	                                  boolean runTest) {
@@ -96,10 +96,10 @@ public class TestUmlObjectCreation extends TestCase {
 		UmlFactory.getFactory().setJmiProxyCreated(useProxy);
 
 		assertTrue("Not a valid entity: " + c.getClass(),
-				   c instanceof Uml.UmlEntity);
+				   c instanceof UmlModelEntity);
 		
 		Object o = null;
-		o = factory.create(c);
+		o = ModelFacade.getFacade().create(c);
 		assertNotNull("Could not create " + c.getClass().getName(), o);
 		
 		// Make sure that the new create() mechanism gives the same class as the legacy create
@@ -122,7 +122,7 @@ public class TestUmlObjectCreation extends TestCase {
 		}
 	}
 	
-	private void testObjectFactoryType(Uml.UmlEntity c, Class expected, Object legacy, boolean runTest) {
+	private void testObjectFactoryType(UmlModelEntity c, Class expected, Object legacy, boolean runTest) {
         // Certain objects cannot be instantiated by NSUML.
         // We allow these to be part of the test list for completeness, but do not test them.
         if (! runTest) {
