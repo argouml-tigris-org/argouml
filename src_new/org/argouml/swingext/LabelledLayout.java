@@ -65,7 +65,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * @see #getHgap()
      * @see #setHgap(int)
      */
-    private int _hgap;
+    private int hgap;
     
     /**
      * This is the vertical gap (in pixels) which specifies the space
@@ -76,49 +76,54 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * @see #getVgap()
      * @see #setVgap(int)
      */
-    private int _vgap;
+    private int vgap;
 
     /**
      * The height of the child component with the largest height
      */
-    private int _largestHeight;
+    private int largestHeight;
     /**
      * The width of the child component with the largest width
      */
-    private int _largestWidth;
+    private int largestWidth;
     /**
      * The required cell width of the labels column
      */
-    private int _labelWidth;
+    private int labelWidth;
 
-    private boolean _ignoreSplitters;
+    private boolean ignoreSplitters;
 
     /**
      * Construct a new LabelledLayout.
      */
     public LabelledLayout() {
-        _ignoreSplitters = false;
-        _hgap = 0;
-        _vgap = 0;
+        ignoreSplitters = false;
+        hgap = 0;
+        vgap = 0;
     }
 
     /**
      * Construct a new LabelledLayout.
+     *
+     * @param ignore ignore splitters
      */
-    public LabelledLayout(boolean ignoreSplitters) {
-        _ignoreSplitters = ignoreSplitters;
-        _hgap = 0;
-        _vgap = 0;
+    public LabelledLayout(boolean ignore) {
+        ignoreSplitters = ignore;
+        hgap = 0;
+        vgap = 0;
     }
 
     /**
      * Construct a new horizontal LabelledLayout with the specified
      * cell spacing.
+     *
+     * @param h the horizontal gap
+     * @param v the vertical gap
      */
-    public LabelledLayout(int hgap, int vgap) {
-        _ignoreSplitters = false;
-        _hgap = hgap;
-        _vgap = vgap;
+    public LabelledLayout(int h, int v) {
+        ignoreSplitters = false;
+        hgap = h;
+        vgap = v;
     }
 
     /** 
@@ -148,6 +153,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * this labelled layout.  The preferred size is that all child
      * components are in one section at their own preferred size with
      * gaps and border indents.
+     *
+     * @see java.awt.LayoutManager#preferredLayoutSize(java.awt.Container)
      */
     public Dimension preferredLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
@@ -185,7 +192,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
 				(int) jlabel.getPreferredSize().getHeight();
                         }
                     }
-                    preferredHeight += childHeight + _vgap;
+                    preferredHeight += childHeight + vgap;
                 }
             }
             preferredWidth += insets.left + widestLabel + insets.right;
@@ -196,7 +203,11 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         }
     }
 
-    /* Required by LayoutManager. */
+    /** 
+     * Required by LayoutManager.
+     * 
+     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
+     */
     public Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             Insets insets = parent.getInsets();
@@ -215,13 +226,16 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                     if (childHeight < jlabel.getMinimumSize().getHeight()) {
                         childHeight = (int) jlabel.getMinimumSize().getHeight();
                     }
-                    minimumHeight += childHeight + _vgap;
+                    minimumHeight += childHeight + vgap;
                 }
             }
             return new Dimension(0, minimumHeight);
         }
     }
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             int sectionX = parent.getInsets().left;
@@ -232,11 +246,11 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
             for (int i = 0; i < parent.getComponentCount(); ++i) {
                 Component childComp = parent.getComponent(i);
                 if (childComp instanceof Seperator) {
-                    if (!_ignoreSplitters) {
+                    if (!ignoreSplitters) {
                         layoutSection(parent,
 				      sectionX, sectionWidth,
 				      components);
-                        sectionX += sectionWidth + _hgap;
+                        sectionX += sectionWidth + hgap;
                         components.clear();
                     }
                 } else {
@@ -255,7 +269,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
     private int getSectionCount(Container parent) {
         int sectionCount = 1;
         int componentCount = parent.getComponentCount();
-        if (!_ignoreSplitters) {
+        if (!ignoreSplitters) {
             for (int i = 0; i < componentCount; ++i) {
                 if (parent.getComponent(i) instanceof Seperator)
                     ++sectionCount;
@@ -270,7 +284,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * result is then divided equally by the section count.
      */
     private int getSectionWidth(Container parent, int sectionCount) {
-        return (getUsableWidth(parent) - (sectionCount - 1) * _hgap)
+        return (getUsableWidth(parent) - (sectionCount - 1) * hgap)
 	    / sectionCount;
     }
 
@@ -298,6 +312,9 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         }
 
         int childWidth, childHeight;
+        
+        /* TODO: labelWidth hides a field! Was this intentional? 
+        If so, refactor the name! */
         int labelWidth = 0;
         int unknownHeightCount = 0;
         int totalHeight = 0;
@@ -366,10 +383,10 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                     childHeight = (int) childComp.getMinimumSize().getHeight();
                 }
             }
-            totalHeight += childHeight + _vgap;
+            totalHeight += childHeight + vgap;
             rowHeights.add(new Integer(childHeight));
         }
-        totalHeight -= _vgap;
+        totalHeight -= vgap;
         
         Insets insets = parent.getInsets();
         int parentHeight = parent.getHeight() - (insets.top + insets.bottom);
@@ -399,8 +416,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                     jlabel.setBounds(sectionX, y, labelWidth,
 				     (int)
 				     jlabel.getPreferredSize().getHeight());
-                    componentWidth = sectionWidth - (labelWidth + _hgap);
-                    componentX = sectionX + labelWidth + _hgap;
+                    componentWidth = sectionWidth - (labelWidth + hgap);
+                    componentX = sectionX + labelWidth + hgap;
                 }
                 rowHeight = ((Integer) rowHeights.get(row)).intValue();
                 if (rowHeight == 0) {
@@ -418,7 +435,7 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
 			(int) childComp.getMaximumSize().getWidth();
                 }
                 childComp.setBounds(componentX, y, componentWidth, rowHeight);
-                y += rowHeight + _vgap;
+                y += rowHeight + vgap;
                 ++row;
             }
         }
@@ -434,24 +451,39 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
         return rowHeight;
     }
     
+    /**
+     * @return an invisible JPanel
+     */
     public static Seperator getSeperator() {
         return new Seperator();
     }
 
+    /**
+     * @return the horizontal gap
+     */
     public int getHgap() {
-        return _hgap;
+        return hgap;
     }
 
-    public void setHgap(int hgap) {
-        _hgap = hgap;
+    /**
+     * @param h the horizontal gap
+     */
+    public void setHgap(int h) {
+        hgap = h;
     }
 
+    /**
+     * @return the vertical gap
+     */
     public int getVgap() {
-        return _vgap;
+        return vgap;
     }
 
-    public void setVgap(int vgap) {
-        _vgap = vgap;
+    /**
+     * @param v the vertical gap
+     */
+    public void setVgap(int v) {
+        vgap = v;
     }
 }
 

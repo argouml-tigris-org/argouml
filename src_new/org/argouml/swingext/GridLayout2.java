@@ -222,58 +222,58 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * Construct a new GridLayout2 with the specified number of rows
      * and columns.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
      */
-    public GridLayout2(int rows, int cols) {
-	this(rows, cols, 0, 0);
+    public GridLayout2(int r, int c) {
+	this(r, c, 0, 0);
     }
 
     /**
      * Construct a new GridLayout2 with the specified number of rows
      * and columns and cell spacing.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
-     * @param hgap the horizontal gap between cells
-     * @param vgap the vertical gap between cells
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
+     * @param h the horizontal gap between cells
+     * @param v the vertical gap between cells
      */
-    public GridLayout2(int rows, int cols, int hgap, int vgap) {
-	if ((rows == 0) && (cols == 0)) {
+    public GridLayout2(int r, int c, int h, int v) {
+	if ((r == 0) && (c == 0)) {
 	    throw new IllegalArgumentException("rows and cols cannot "
 					       + "both be zero");
 	}
-	this.rows = rows;
-	this.cols = cols;
-	this.hgap = hgap;
-	this.vgap = vgap;
+	this.rows = r;
+	this.cols = c;
+	this.hgap = h;
+	this.vgap = v;
     }
 
     /**
      * Construct a new GridLayout2 with the specified number of rows
      * and columns and cell sizing scheme.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
-     * @param cellSizing the required cell sizing scheme
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
+     * @param cs the required cell sizing scheme
      */
-    public GridLayout2(int rows, int cols, int cellSizing) {
-	this(rows, cols, 0, 0, cellSizing);
+    public GridLayout2(int r, int c, int cs) {
+	this(r, c, 0, 0, cs);
     }
 
     /**
      * Construct a new GridLayout2 with the specified number of rows
      * and columns, cell spacing and cell sizing scheme.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
-     * @param hgap the horizontal gap between cells
-     * @param vgap the vertical gap between cells
-     * @param cellSizing the required cell sizing scheme
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
+     * @param h the horizontal gap between cells
+     * @param v the vertical gap between cells
+     * @param cs the required cell sizing scheme
      */
-    public GridLayout2(int rows, int cols, int hgap, int vgap, int cellSizing) {
-        this(rows, cols, hgap, vgap);
-        this.cellSizing = cellSizing;
+    public GridLayout2(int r, int c, int h, int v, int cs) {
+        this(r, c, h, v);
+        this.cellSizing = cs;
     }
 
     /**
@@ -281,18 +281,18 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * and columns, cell spacing, cell sizing scheme and filling
      * scheme.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
-     * @param hgap the horizontal gap between cells
-     * @param vgap the vertical gap between cells
-     * @param cellSizing the required cell sizing scheme
-     * @param fill the required cell filling scheme
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
+     * @param h the horizontal gap between cells
+     * @param v the vertical gap between cells
+     * @param cs the required cell sizing scheme
+     * @param f the required cell filling scheme
      */
-    public GridLayout2(int rows, int cols, int hgap, int vgap,
-		       int cellSizing, int fill)
+    public GridLayout2(int r, int c, int h, int v,
+		       int cs, int f)
     {
-        this(rows, cols, hgap, vgap, cellSizing);
-        this.fill = fill;
+        this(r, c, h, v, cs);
+        this.fill = f;
     }
 
     /**
@@ -300,18 +300,18 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * and columns, cell spacing, cell sizing scheme and component
      * sizing and anchoring scheme.
      *
-     * @param rows the number of rows in the layout
-     * @param cols the number of columns in the layout
-     * @param hgap the horizontal gap between cells
-     * @param vgap the vertical gap between cells
-     * @param cellSizing the required cell sizing scheme
-     * @param fill the required cell filling scheme
-     * @param anchor the required anchoring of a child component within its cell
+     * @param r the number of rows in the layout
+     * @param c the number of columns in the layout
+     * @param h the horizontal gap between cells
+     * @param v the vertical gap between cells
+     * @param cs the required cell sizing scheme
+     * @param f the required cell filling scheme
+     * @param a the required anchoring of a child component within its cell
      */
-    public GridLayout2(int rows, int cols, int hgap, int vgap,
-		       int cellSizing, int fill, int anchor) {
-        this(rows, cols, hgap, vgap, cellSizing, fill);
-        this.anchor = anchor;
+    public GridLayout2(int r, int c, int h, int v,
+		       int cs, int f, int a) {
+        this(r, c, h, v, cs, f);
+        this.anchor = a;
     }
 
 
@@ -421,7 +421,11 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
         }
     }
 
-    /* Required by LayoutManager. */
+    /** 
+     * Required by LayoutManager.
+     * 
+     * @see java.awt.LayoutManager#minimumLayoutSize(java.awt.Container)
+     */
     public Dimension minimumLayoutSize(Container parent) {
         synchronized (parent.getTreeLock()) {
             int componentCount = parent.getComponentCount();
@@ -470,6 +474,9 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
         }
     }
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent) {
         synchronized (parent.getTreeLock()) {
             int ncomponents = parent.getComponentCount();
@@ -557,19 +564,20 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
 
 
     protected Dimension calculateSizes(Container parent, 
-				       int colWidth[], int rowHeight[],
+				       int theColWidth[], int theRowHeight[],
 				       int actualRows, int actualCols,
-				       int largestWidth, int largestHeight)
+				       int theLargestWidth, 
+                                       int theLargestHeight)
     {
         int w = 0;
         int h = 0;
         if (cellSizing == GridLayout2.ROWCOLPREFERRED) {
-            for (int c = 0; c < actualCols; ++c) w += colWidth[c];
-            for (int r = 0; r < actualRows; ++r) h += rowHeight[r];
+            for (int c = 0; c < actualCols; ++c) w += theColWidth[c];
+            for (int r = 0; r < actualRows; ++r) h += theRowHeight[r];
         }
         else {
-            w = largestWidth * actualCols;
-            h = largestHeight * actualRows;
+            w = theLargestWidth * actualCols;
+            h = theLargestHeight * actualRows;
         }
 
         Insets insets = parent.getInsets();
@@ -639,43 +647,67 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
         comp.setBounds(xAnchor, yAnchor, componentWidth, componentHeight);
     }
 
+    /**
+     * @return the number of rows
+     */
     public int getRows() {
         return rows;
     }
 
-    public void setRows(int rows) {
-	if ((rows == 0) && (this.cols == 0)) {
+    /**
+     * @param r the number of rows. It can not be zero.
+     */
+    public void setRows(int r) {
+	if ((r == 0) && (this.cols == 0)) {
 	    throw new IllegalArgumentException("rows and cols cannot "
 					       + "both be zero");
 	}
-	this.rows = rows;
+	this.rows = r;
     }
 
+    /**
+     * @return the number of columns
+     */
     public int getColumns() {
         return cols;
     }
 
-    public void setCols(int cols) {
-	if ((cols == 0) && (this.rows == 0)) {
+    /**
+     * @param c the number of columns. It can not be zero.
+     */
+    public void setCols(int c) {
+	if ((c == 0) && (this.rows == 0)) {
 	    throw new IllegalArgumentException("rows and cols cannot "
 					       + "both be zero");
 	}
-	this.cols = cols;
+	this.cols = c;
     }
 
+    /**
+     * @return the horizontal gap
+     */
     public int getHgap() {
         return hgap;
     }
 
-    public void setHgap(int hgap) {
-        this.hgap = hgap;
+    /**
+     * @param h the horizontal gap
+     */
+    public void setHgap(int h) {
+        this.hgap = h;
     }
 
+    /**
+     * @return the vertical gap
+     */
     public int getVgap() {
         return vgap;
     }
 
-    public void setVgap(int vgap) {
-        this.vgap = vgap;
+    /**
+     * @param v the vertical gap
+     */
+    public void setVgap(int v) {
+        this.vgap = v;
     }
 }

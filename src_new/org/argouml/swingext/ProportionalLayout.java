@@ -42,20 +42,36 @@ public class ProportionalLayout extends LineLayout {
 
     protected Hashtable componentTable;
 
+    /**
+     * The constructor.
+     */
     public ProportionalLayout() {
         this(HORIZONTAL);
     }
 
+    /**
+     * The constructor. 
+     * 
+     * @param orientation the orientation
+     */
     public ProportionalLayout(Orientation orientation) {
         super(orientation);
         componentTable = new Hashtable();
     }
 
+    /**
+     * @see java.awt.LayoutManager2#addLayoutComponent(java.awt.Component, 
+     * java.lang.Object)
+     */
     public final void addLayoutComponent(Component comp, Object constraints) {
         if (constraints == null) constraints = "";
         addLayoutComponent((String) constraints, comp);
     }
 
+    /**
+     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, 
+     * java.awt.Component)
+     */
     public void addLayoutComponent(String name, Component comp) {
         try {
 	    componentTable.put(comp, name.toString());
@@ -65,16 +81,22 @@ public class ProportionalLayout extends LineLayout {
         }
     }
 
+    /**
+     * @see java.awt.LayoutManager#removeLayoutComponent(java.awt.Component)
+     */
     public void removeLayoutComponent(Component comp) {
         componentTable.remove(comp);
     }
 
+    /**
+     * @see java.awt.LayoutManager#layoutContainer(java.awt.Container)
+     */
     public void layoutContainer(Container parent) {
         // Find the total proportional size of all visible components
         double totalProportionalLength = 0;
         int totalLength;
 
-        totalLength = _orientation.getLengthMinusInsets(parent);
+        totalLength = orientation.getLengthMinusInsets(parent);
 
         Enumeration enumKeys = componentTable.keys();
         while (enumKeys.hasMoreElements()) {
@@ -85,7 +107,7 @@ public class ProportionalLayout extends LineLayout {
                     totalProportionalLength += Double.parseDouble(size);
                 }
                 else {
-                    totalLength -= _orientation.getLength(comp);
+                    totalLength -= orientation.getLength(comp);
                 }
             }
         }
@@ -106,11 +128,11 @@ public class ProportionalLayout extends LineLayout {
                     if (length < 0) length = 0;
                 }
                 else {
-                    length = _orientation.getLength(comp);
+                    length = orientation.getLength(comp);
                 }
-                comp.setSize(_orientation.setLength(parent.getSize(), length));
+                comp.setSize(orientation.setLength(parent.getSize(), length));
                 comp.setLocation(loc);
-                loc = _orientation.addToPosition(loc, length);
+                loc = orientation.addToPosition(loc, length);
             }
         }
     }

@@ -53,22 +53,41 @@ public class NewspaperLayout extends GridLayout2 {
 
     private int gridWidth;
 
+    /**
+     * The constructor.
+     */
     public NewspaperLayout() {
         this(1, 0, 0, 0, 0);
     }
 
+    /**
+     * The constructor.
+     * 
+     * @param rows the number of rows
+     * @param cols the number of columns
+     */
     public NewspaperLayout(int rows, int cols) {
         this(rows, cols, 0, 0, 0);
     }
 
-    public NewspaperLayout(int rows, int cols, int hgap, int vgap, int gridGap)
+    /**
+     * The constructor.
+     * 
+     * @param rows the number of rows
+     * @param cols the number of columns
+     * @param hgap the horizontal gap
+     * @param vgap the vertical gap
+     * @param gg the grid gap
+     */
+    public NewspaperLayout(int rows, int cols, int hgap, int vgap, int gg)
     {
         super(rows, cols, hgap, vgap, ROWCOLPREFERRED, NONE, NORTHWEST);
-        this.gridGap = gridGap;
+        this.gridGap = gg;
     }
 
     /**
-     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, java.awt.Component)
+     * @see java.awt.LayoutManager#addLayoutComponent(java.lang.String, 
+     * java.awt.Component)
      */
     public void addLayoutComponent(String name, Component comp) {
     }
@@ -104,6 +123,11 @@ public class NewspaperLayout extends GridLayout2 {
         return new Dimension(insets.right + gridWidth + insets.left, 0);
     }
 
+    /**
+     * TODO: This is never used, and not part of the interface LayoutContainer.
+     * @param parent the container
+     * @return the dimension
+     */
     public Dimension maximumLayoutSize(Container parent) {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }
