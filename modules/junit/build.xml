@@ -247,6 +247,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="antlrall.jar" />
                 <include name="log4j.jar" />
                 <include name="gef.jar" />
+                <include name="swidgets.jar" />
                 <include name="i18n.jar" />
             </fileset>
             <fileset dir="${module.lib.dir}">

@@ -298,6 +298,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
                 <include name="log4j.jar" />
                 <include name="nsuml.jar" />
                 <include name="ocl-argo.jar" />
+                <include name="swidgets.jar" />
                 <include name="toolbar.jar" />
                 <include name="xerces.jar" />
             </fileset>

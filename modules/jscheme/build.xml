@@ -28,6 +28,7 @@ You are not running ANT 1.4.1
   <path id="argo.classpath">
     <pathelement location="${argo.root.dir}/build/argouml.jar" />
     <pathelement location="${argo.root.dir}/build/xerces.jar" />
+    <pathelement location="${argo.root.dir}/build/swidgets.jar" />
     <pathelement location="${argo.root.dir}/build/nsuml.jar" />
     <pathelement location="${argo.root.dir}/build/ocl-argo.jar" />
     <pathelement location="${argo.root.dir}/build/gef.jar" />
