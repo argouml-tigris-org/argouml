@@ -109,7 +109,8 @@ public class CrObjectWithoutComponent extends CrUML {
 	    Fig enclosing = fo.getEnclosingFig();
 	    if (enclosing == null
 		|| (!(Model.getFacade().isAComponent(enclosing.getOwner())
-		|| Model.getFacade().isAComponentInstance(enclosing.getOwner())))) {
+		|| Model.getFacade().isAComponentInstance(
+		        enclosing.getOwner())))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);

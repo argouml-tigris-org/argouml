@@ -75,7 +75,8 @@ public class CrDisambigStateName extends CrUML {
 	    Iterator elems = oes.iterator();
 	    while (elems.hasNext()) {
 		Object eo = /*(MElementImport)*/ elems.next();
-		Object me = /*(MModelElement)*/ Model.getFacade().getModelElement(eo);
+		Object me = /*(MModelElement)*/ 
+		    Model.getFacade().getModelElement(eo);
 		if (!(Model.getFacade().isAClassifier(me))) continue;
 		if (me == state) continue;
 		String meName = Model.getFacade().getName(me);

@@ -64,7 +64,7 @@ public class WizAddConstructor extends UMLWizard {
 
 	switch (oldStep) {
 	case 1:
-	    String newName = suggestion;
+	    String newName = getSuggestion();
 	    if (step1 != null) {
 	        newName = step1.getText();
 	    }
@@ -82,7 +82,8 @@ public class WizAddConstructor extends UMLWizard {
 	    oper =
 	        Model.getCoreFactory().buildOperation(me, model,
 	                voidType, newName, propertyChangeListeners);
-	    Model.getCoreHelper().setStereotype(oper, getCreateStereotype(oper));
+	    Model.getCoreHelper()
+	        .setStereotype(oper, getCreateStereotype(oper));
 	    TargetManager.getInstance().setTargets(savedTargets);
 	}
     }
@@ -138,7 +139,7 @@ public class WizAddConstructor extends UMLWizard {
 	    if (step1 == null) {
 		step1 =
 		    new WizStepTextField(this, instructions,
-		            		 label, getSuggestion());
+		            		 label, offerSuggestion());
 	    }
 	    return step1;
         }

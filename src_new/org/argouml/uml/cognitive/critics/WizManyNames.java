@@ -106,7 +106,8 @@ public class WizManyNames extends UMLWizard {
 		int size = mes.size();
 		for (int i = 0; i < size; i++) {
 		    Object me = /*(MModelElement)*/ mes.elementAt(i);
-		    Model.getCoreHelper().setName(me, (String) newNames.elementAt(i));
+		    Model.getCoreHelper().setName(me, 
+		            (String) newNames.elementAt(i));
 		}
 	    }
 	    catch (Exception pve) {

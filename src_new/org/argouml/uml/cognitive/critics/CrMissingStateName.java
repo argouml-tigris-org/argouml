@@ -57,7 +57,8 @@ public class CrMissingStateName extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!Model.getFacade().isAStateVertex(dm))
 	    return NO_PROBLEM;
-        if (Model.getFacade().isACompositeState(dm) && Model.getFacade().isTop(dm))
+        if (Model.getFacade().isACompositeState(dm) 
+                && Model.getFacade().isTop(dm))
             return NO_PROBLEM;
         if (Model.getFacade().isAFinalState(dm))
             return NO_PROBLEM;

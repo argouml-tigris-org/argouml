@@ -126,8 +126,10 @@ public class WizNavigable extends UMLWizard {
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 		Object ae1 = /*(MAssociationEnd)*/
 		    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
-		Model.getCoreHelper().setNavigable(ae0, choice == 0 || choice == 2);
-		Model.getCoreHelper().setNavigable(ae1, choice == 1 || choice == 2);
+		Model.getCoreHelper().setNavigable(ae0, 
+		        choice == 0 || choice == 2);
+		Model.getCoreHelper().setNavigable(ae1, 
+		        choice == 1 || choice == 2);
 	    }
 	    catch (Exception pve) {
 		LOG.error("could not set navigablity", pve);

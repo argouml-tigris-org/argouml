@@ -52,7 +52,8 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(Model.getFacade().isAClass(dm)) && !(Model.getFacade().isAInterface(dm))) {
+	if (!(Model.getFacade().isAClass(dm)) 
+            && !(Model.getFacade().isAInterface(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object cls = /*(MClassifier)*/ dm;

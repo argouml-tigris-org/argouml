@@ -61,7 +61,7 @@ public class WizAddInstanceVariable extends UMLWizard {
 
         switch (oldStep) {
         case 1:
-            String newName = suggestion;
+            String newName = getSuggestion();
             if (step1 != null) {
                 newName = step1.getText();
             }
@@ -109,7 +109,7 @@ public class WizAddInstanceVariable extends UMLWizard {
 	    if (step1 == null) {
 		step1 =
 		    new WizStepTextField(this, instructions,
-		            label, getSuggestion());
+		            label, offerSuggestion());
 	    }
 	    return step1;
         }

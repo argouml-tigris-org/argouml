@@ -42,7 +42,7 @@ public abstract class UMLWizard extends Wizard {
     /**
      * The suggestion string.
      */
-    protected String suggestion;
+    private String suggestion;
 
     /**
      * The constructor.
@@ -79,7 +79,7 @@ public abstract class UMLWizard extends Wizard {
     /**
      * @return the suggestion string
      */
-    public String getSuggestion() {
+    public String offerSuggestion() {
         if (suggestion != null) return suggestion;
         Object me = getModelElement();
         if (me != null) {
@@ -96,4 +96,10 @@ public abstract class UMLWizard extends Wizard {
 	suggestion = s;
     }
 
+    /**
+     * @return returns the suggestion string
+     */
+    public String getSuggestion() {
+        return suggestion;
+    }
 }

@@ -121,8 +121,8 @@ public class CrComponentWithoutNode extends CrUML {
 		}
 		offs.addElement(fc);
 	    } else if (fc.getEnclosingFig() != null
-		     && (((Model.getFacade().getDeploymentLocations(fc.getOwner())
-			  == null)
+		     && (((Model.getFacade()
+		             .getDeploymentLocations(fc.getOwner()) == null)
 			 || (((Model.getFacade()
                                 .getDeploymentLocations(fc.getOwner()).size())
 			     == 0))))) {

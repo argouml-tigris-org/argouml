@@ -131,7 +131,8 @@ public class ChildGenFind implements ChildGenerator {
 	    Object s = /*(MState)*/ o;
 	    //Vector interns = s.getInternalTransition();
 	    //if (interns != null) return interns.elements();
-	    return new Vector(Model.getFacade().getInternalTransitions(s)).elements();
+	    return new Vector(
+                Model.getFacade().getInternalTransitions(s)).elements();
 	}
 
 	if (Model.getFacade().isATransition(o)) {

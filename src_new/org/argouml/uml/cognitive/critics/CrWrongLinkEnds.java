@@ -117,7 +117,8 @@ public class CrWrongLinkEnds extends CrUML {
 		Iterator it = ends.iterator();
 		while (it.hasNext()) {
                     Object instance = Model.getFacade().getInstance(it.next());
-                    Collection residencies = Model.getFacade().getResidents(instance);
+                    Collection residencies = 
+                        Model.getFacade().getResidents(instance);
 		    if (residencies != null
 			&& (residencies.size() > 0))
 			count = count + 2;

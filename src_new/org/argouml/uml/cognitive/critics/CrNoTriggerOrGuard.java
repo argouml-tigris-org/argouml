@@ -67,9 +67,10 @@ public class CrNoTriggerOrGuard extends CrUML {
 	if (hasTrigger) return NO_PROBLEM;
 	boolean noGuard = (g == null
             || Model.getFacade().getExpression(g) == null
-            || Model.getFacade().getBody(Model.getFacade().getExpression(g)) == null
-            || Model.getFacade().getBody(Model.getFacade().getExpression(g)).toString()
-                                .length() == 0);
+            || Model.getFacade().getBody(
+                Model.getFacade().getExpression(g)) == null
+            || Model.getFacade().getBody(
+                Model.getFacade().getExpression(g)).toString().length() == 0);
 	if (noGuard) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

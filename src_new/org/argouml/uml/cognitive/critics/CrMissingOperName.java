@@ -72,8 +72,8 @@ public class CrMissingOperName extends CrUML {
 		Object a = /*(MOperation)*/ me;
 		int count = 1;
 		if (Model.getFacade().getOwner(a) != null)
-		    count = Model.getFacade().getFeatures(Model.getFacade().getOwner(a))
-		                                                    .size();
+		    count = Model.getFacade().getFeatures(
+		            Model.getFacade().getOwner(a)).size();
 		sug = "oper" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);
