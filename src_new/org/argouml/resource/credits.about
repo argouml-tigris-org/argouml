@@ -1,0 +1,65 @@
+ArgoUML was developed by the following:
+Project Lead:
+  Jason Robbins (Collab.net)
+  
+Version 0.9 release managers:
+  Toby Baier (University of Hamburg, Germany)
+  Marko Boger (GentleWare)
+  
+Module Owners (contact these people for contributions):
+  GEF: Thorsten Sturm (thorsten.sturm@gentleware.de)
+  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)
+  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)
+  Plugin-support: Thierry Lach (thierry_lach@hotmail.com)
+  Java RE: Andreas Rueckert (a_rueckert@gmx.net)
+  Roundtrip engineering, UML notation: Thomas Neustupny (thn-d@gmx.de)
+  Knowledge support: Jason Robbins (jrobbins@collab.net)
+  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)
+  FAQ: Dennis Daniels (denny_d@hotmail.com)
+  Website: Markus Klink (mkl@baba9.com)
+  
+Contributing Developers (in no special order):
+  Eugenio Alvarez
+  Marcus Andersson
+  Curt Arnold
+  Toby Baier
+  Dennis Daniels
+  Clemens Eichler
+  Frank Finger
+  David Glaser
+  Jim Holt
+  Will Howery
+  Markus Klink
+  Thierry Lach
+  Luc Maisonobe
+  Thomas Neustupny
+  Edwin Park
+  Andreas Rueckert
+  Phil Sager
+  Thomas Schaumburg
+  Frank Wienberg
+  Stuart Zakon
+
+Credits for previous versions:
+
+Researchers:  
+  Jason Robbins
+  David Redmiles
+  David Hilbert
+
+Developers and Testers:  
+  Jason Robbins
+  Adam Gauthier
+  Adam Bonner
+  David Hilbert
+  ICS 125 team Spring 1996
+  ICS 125 teams Spring 1998
+
+Contributing Developers:
+  Scott Guyer
+  Piotr Kaminski
+  Nick Santucci
+  Eric Lefevre
+  Sean Chen
+  Jim Holt
+  Steve Poole
