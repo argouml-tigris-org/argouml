@@ -97,8 +97,14 @@ public class UMLStateDiagram extends UMLDiagram {
  *  will load properly.
  */
   public UMLStateDiagram() {
-    String name = "state diagram " + _StateDiagramSerial;
-    _StateDiagramSerial++;
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "state diagram " + _StateDiagramSerial;
+        _StateDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
     try { setName(name); } catch (PropertyVetoException pve) { }
   }
 

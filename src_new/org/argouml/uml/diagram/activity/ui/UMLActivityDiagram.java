@@ -94,8 +94,14 @@ public class UMLActivityDiagram extends UMLDiagram {
   protected static int _ActivityDiagramSerial = 1;
 
   public UMLActivityDiagram() {
-    String name = "activity diagram " + _ActivityDiagramSerial;
-    _ActivityDiagramSerial++;
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "activity diagram " + _ActivityDiagramSerial;
+        _ActivityDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
     try { setName(name); }
     catch (PropertyVetoException pve) { }
   }

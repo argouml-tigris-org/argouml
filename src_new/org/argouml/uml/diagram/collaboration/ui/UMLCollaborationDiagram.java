@@ -73,7 +73,15 @@ public class UMLCollaborationDiagram extends UMLDiagram {
 
 
   public UMLCollaborationDiagram() {
-    try { setName("collaboration diagram " + _CollaborationDiagramSerial++); }
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "collaboration diagram " + _CollaborationDiagramSerial;
+        _CollaborationDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
+    try { setName(name); }
     catch (PropertyVetoException pve) { }
   }
 

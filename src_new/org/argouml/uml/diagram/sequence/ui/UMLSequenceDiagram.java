@@ -85,7 +85,15 @@ public class UMLSequenceDiagram extends UMLDiagram {
 
 
   public UMLSequenceDiagram() {
-    try { setName("Sequence diagram " + _SequenceDiagramSerial++); }
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "Sequence diagram " + _SequenceDiagramSerial;
+        _SequenceDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
+    try { setName(name); }
     catch (PropertyVetoException pve) { }
   }
 

@@ -67,7 +67,15 @@ public class UMLDeploymentDiagram extends UMLDiagram {
 
 
   public UMLDeploymentDiagram() {
-    try { setName("deployment diagram " + _DeploymentDiagramSerial++); 
+  	String name = null;
+  	Object[] args = {name};
+  	do {
+        name = "deployment diagram " + _DeploymentDiagramSerial;
+        _DeploymentDiagramSerial++;
+        args[0] = name;
+    }
+    while (vetoCheck("name", args));
+    try { setName(name); 
     }
     catch (PropertyVetoException pve) { }
   }
