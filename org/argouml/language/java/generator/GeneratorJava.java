@@ -1942,7 +1942,16 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
-        return generateState(actionState);
+        String ret = "";
+        Object action = Model.getFacade().getEntry(actionState);
+        if (action != null) {
+            Object expression = Model.getFacade().getScript(action);
+            if (expression != null) {
+                ret = generateExpression(expression);
+            }
+        }
+        return ret;
     }
+
 
 }
