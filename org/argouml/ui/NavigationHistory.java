@@ -32,7 +32,10 @@ import org.argouml.model.ModelFacade;
 
 /**
 *    This class implements a navigation history
-*
+* 
+ * @deprecated since 0.15.2 replace with TargetManager,
+ *             remove in 0.15.3
+ *
 *    @author Curt Arnold
 *    @since 0.9
 */

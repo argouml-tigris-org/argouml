@@ -42,6 +42,9 @@ import org.apache.log4j.Logger;
  * element in a perspective are returned.  Only the returned children
  * are shown for some tree element.
  *
+ * <p>Since the new Explorer implemnentation,
+ *    the only method used in go rules is the getChildren() method.
+ *
  *
  * @author jaap.branderhorst@xs4all.nl
  */
