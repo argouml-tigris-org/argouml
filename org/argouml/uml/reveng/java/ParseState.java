@@ -204,10 +204,11 @@ class ParseState
        classifier in the model.
     */
     public void removeObsoleteFeatures()
-    {
-	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
-	    ModelFacade.removeFeature(classifier, i.next());
-	}
+	{
+    	if (obsoleteFeatures == null) return;
+    	for (Iterator i = obsoleteFeatures.iterator(); i.hasNext(); ) {
+    		ModelFacade.removeFeature(classifier, i.next());
+    	}
     }
 
     /**
@@ -215,13 +216,14 @@ class ParseState
        classifier in the model.
     */
     public void removeObsoleteInnerClasses()
-    {
-	for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
-	    Object element = i.next();
-	    if (ModelFacade.isAClassifier(element)) {
-                CoreFactory.getFactory().deleteClassifier(element);
-	    }
-	}
+	{
+    	if ( obsoleteInnerClasses == null) return;
+		for (Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
+			Object element = i.next();
+			if (ModelFacade.isAClassifier(element)) {
+				CoreFactory.getFactory().deleteClassifier(element);
+			}
+		}
     }
 
     /**
