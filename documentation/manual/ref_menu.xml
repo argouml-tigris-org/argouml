@@ -2075,387 +2075,387 @@ v           new datatypes in their own right (the default) or as their base
       <itemizedlist>
         <listitem><para><literal>Resolve Association Name
           Conflict</literal>. See
-          <xref linkend="s2.ref.critics_assoc_name_conflict"/>
+          <xref linkend="critics.CrAssocNameConflict"/>
         </para></listitem>
 
         <listitem><para><literal>Revise Attribute Names to Avoid
           Conflict</literal>. See
-          <xref linkend="s2.ref.critics_attr_name_conflict"/>
+          <xref linkend="critics.CrAttrNameConflict"/>
         </para></listitem>
 
         <listitem><para><literal>Change Names or Signatures in
           &lt;artifact&gt;</literal>. See
-          <xref linkend="s2.ref.critics_oper_name_conflict"/>
+          <xref linkend="critics.CrOperNameConflict"/>
         </para></listitem>
 
         <listitem><para><literal>Circular
           Association</literal>. See
-          <xref linkend="s2.ref.critics_circular_assoc_class"/>
+          <xref linkend="critics.CrCircularAssocClass"/>
         </para></listitem>
 
         <listitem><para><literal>Remove &lt;artifact&gt;'s Circular
           Inheritance</literal>. See
-          <xref linkend="s2.ref.critics_circular_inheritance"/>
+          <xref linkend="critics.CrCircularInheritance"/>
         </para></listitem>
 
         <listitem><para><literal>Remove Circular
           Composition</literal>. See
-          <xref linkend="s2.ref.critics_circular_composition"/>
+          <xref linkend="critics.CrCircularComposition"/>
         </para></listitem>
 
         <listitem><para><literal>Class Must be
           Abstract</literal>. See
-          <xref linkend="s2.ref.critics_class_must_be_abstract"/>
+          <xref linkend="critics.CrClassMustBeAbstract"/>
         </para></listitem>
 
         <listitem><para><literal>Classifier not in Namespace of its
           Association</literal>. See
-          <xref linkend="s2.ref.critics_cross_namespace_assoc"/>
+          <xref linkend="critics.CrCrossNamespaceAssoc"/>
         </para></listitem>
 
         <listitem><para><literal>Duplicate Parameter
           Name</literal>. See
-          <xref linkend="s2.ref.critics_dup_param_name"/>
+          <xref linkend="critics.CrDupParamName"/>
         </para></listitem>
 
         <listitem><para><literal>Duplicate end (role)
           names for &lt;Association&gt;</literal>. See
-          <xref linkend="s2.ref.critics_dup_role_names"/>
+          <xref linkend="critics.CrDupRoleNames"/>
         </para></listitem>
 
         <listitem><para><literal>Remove final keyword or remove
           subclasses</literal>. See
-          <xref linkend="s2.ref.critics_final_subclassed"/>
+          <xref linkend="critics.CrFinalSubclassed"/>
         </para></listitem>
 
         <listitem><para><literal>Illegal Generalization
           </literal>. See
-          <xref linkend="s2.ref.critics_illegal_generalization"/>
+          <xref linkend="critics.CrIllegalGeneralization"/>
         </para></listitem>
 
         <listitem><para><literal>Remove Unneeded Realizes from
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_already_realizes"/>
+          <xref linkend="critics.CrAlreadyRealizes"/>
         </para></listitem>
 
         <listitem><para><literal>Operations in Interfaces must be
           public</literal>. See
-          <xref linkend="s2.ref.critics_inteface_all_public"/>
+          <xref linkend="critics.CrIntefaceAllPublic"/>
         </para></listitem>
 
         <listitem><para><literal>Interfaces may only have
           operations</literal>. See
-          <xref linkend="s2.ref.critics_interface_oper_only"/>
+          <xref linkend="critics.CrInterfaceOperOnly"/>
         </para></listitem>
 
         <listitem><para><literal>Two aggregate ends (roles) in binary
           association</literal>. See
-          <xref linkend="s2.ref.critics_multiple_agg"/>
+          <xref linkend="critics.CrMultipleAgg"/>
         </para></listitem>
 
         <listitem><para><literal>Make &lt;association&gt;
           Navigable</literal>. See
-          <xref linkend="s2.ref.critics_unnavigable_assoc"/>
+          <xref linkend="critics.CrUnnavigableAssoc"/>
         </para></listitem>
 
         <listitem><para><literal>Aggregate end (role) in 3-way (or more)
           Association</literal>. See
-          <xref linkend="s2.ref.critics_n_way_agg"/>
+          <xref linkend="critics.CrNWayAgg"/>
         </para></listitem>
 
         <listitem><para><literal>Remove Navigation from Interface
           &lt;association&gt;</literal>. See
-          <xref linkend="s2.ref.critics_nav_from_interface"/>
+          <xref linkend="critics.CrNavFromInterface"/>
         </para></listitem>
 
         <listitem><para><literal>Role name conflicts with
           member</literal>. See
-          <xref linkend="s2.ref.critics_name_conflict_a_c"/>
+          <xref linkend="critics.CrNameConflictAC"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Name</literal> (classes and
           interfaces). See
-          <xref linkend="s2.ref.critics_missing_class_name"/>
+          <xref linkend="critics.CrMissingClassName"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Unique Name for
           &lt;artifact&gt;</literal> (classes and interfaces). See
-          <xref linkend="s2.ref.critics_disambig_class_name"/>
+          <xref linkend="critics.CrDisambigClassName"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a name</literal> (attributes). See
-          <xref linkend="s2.ref.critics_missing_attr_name"/>
+          <xref linkend="critics.CrMissingAttrName"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a name</literal> (operations). See
-          <xref linkend="s2.ref.critics_missing_oper_name"/>
+          <xref linkend="critics.CrMissingOperName"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Name</literal> (states). See
-          <xref linkend="s2.ref.critics_missing_state_name"/>
+          <xref linkend="critics.CrMissingStateName"/>
         </para></listitem>
 
         <listitem><para><literal>Add Instance Variables to
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_instance_variables"/>
+          <xref linkend="critics.CrNoInstanceVariables"/>
         </para></listitem>
 
         <listitem><para><literal>Add Associations to
           &lt;artifact&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_associations"/>
+          <xref linkend="critics.CrNoAssociations"/>
         </para></listitem>
 
         <listitem><para><literal>Add Operations to
           &lt;artifact&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_operations"/>
+          <xref linkend="critics.CrNoOperations"/>
         </para></listitem>
 
         <listitem><para><literal>Add Constructor to
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_constructor_needed"/>
+          <xref linkend="critics.CrConstructorNeeded"/>
         </para></listitem>
 
         <listitem><para><literal>Add Elements to Package
           &lt;package&gt;</literal>. See
-          <xref linkend="s2.ref.critics_empty_package"/>
+          <xref linkend="critics.CrEmptyPackage"/>
         </para></listitem>
 
         <listitem><para><literal>Wrap DataType</literal>. See
-          <xref linkend="s2.ref.critics_non_agg_data_type"/>
+          <xref linkend="critics.CrNonAggDataType"/>
         </para></listitem>
 
         <listitem><para><literal>Import Parameter Type into
           Class</literal>. See
-          <xref linkend="s2.ref.critics_param_type_not_imported"/>
+          <xref linkend="critics.CrParamTypeNotImported"/>
         </para></listitem>
 
         <listitem><para><literal>Define Concrete
           (Sub)Class</literal>. See
-          <xref linkend="s2.ref.critics_useless_abstract"/>
+          <xref linkend="critics.CrUselessAbstract"/>
         </para></listitem>
 
         <listitem><para><literal>Define Class to Implement
           &lt;interface&gt;</literal>. See
-          <xref linkend="s2.ref.critics_useless_interface"/>
+          <xref linkend="critics.CrUselessInterface"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Unique Name for
           &lt;state&gt;</literal> (states). See
-          <xref linkend="s2.ref.critics_disambig_state_name"/>
+          <xref linkend="critics.CrDisambigStateName"/>
         </para></listitem>
 
         <listitem><para><literal>Revise Name to Avoid
           Confusion</literal>. See
-          <xref linkend="s2.ref.critics_name_confusion"/>
+          <xref linkend="critics.CrNameConfusion"/>
         </para></listitem>
 
         <listitem><para><literal>Remove Reference to Specific
           Subclass</literal>. See
-          <xref linkend="s2.ref.critics_subclass_reference"/>
+          <xref linkend="critics.CrSubclassReference"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Legal
           Name</literal>. See
-          <xref linkend="s2.ref.critics_illegal_name"/>
+          <xref linkend="critics.CrIllegalName"/>
         </para></listitem>
 
         <listitem><para><literal>Change &lt;artifact&gt; to a Non-Reserved
           Word</literal>. See
-          <xref linkend="s2.ref.critics_reserved_name"/>
+          <xref linkend="critics.CrReservedName"/>
         </para></listitem>
 
         <listitem><para><literal>Change Multiple Inheritance to
           interfaces</literal>. See
-          <xref linkend="s2.ref.critics_multiple_inheritance"/>
+          <xref linkend="critics.CrMultipleInheritance"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce Associations on
           &lt;artifact&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_assoc"/>
+          <xref linkend="critics.CrTooManyAssoc"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce Attributes on
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_attr"/>
+          <xref linkend="critics.CrTooManyAttr"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce Operations on
           &lt;artifact&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_oper"/>
+          <xref linkend="critics.CrTooManyOper"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce Transitions on
           &lt;state&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_transitions"/>
+          <xref linkend="critics.CrTooManyTransitions"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce States in machine
           &lt;diagram&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_states"/>
+          <xref linkend="critics.CrTooManyStates"/>
         </para></listitem>
 
         <listitem><para><literal>Reduce Classes in diagram
           &lt;diagram&gt;</literal>. See
-          <xref linkend="s2.ref.critics_too_many_classes"/>
+          <xref linkend="critics.CrTooManyClasses"/>
         </para></listitem>
 
         <listitem><para><literal>Add Transitions to
           &lt;state&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_transitions"/>
+          <xref linkend="critics.CrNoTransitions"/>
         </para></listitem>
 
         <listitem><para><literal>Add Incoming Transitions to
           &lt;state&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_incoming_transitions"/>
+          <xref linkend="critics.CrNoIncomingTransitions"/>
         </para></listitem>
 
         <listitem><para><literal>Add Outgoing Transitions from
           &lt;state&gt;</literal>. See
-          <xref linkend="s2.ref.critics_no_outgoing_transitions"/>
+          <xref linkend="critics.CrNoOutgoingTransitions"/>
         </para></listitem>
 
         <listitem><para><literal>Remove Extra Initial
           States</literal>. See
-          <xref linkend="s2.ref.critics_multiple_initial_states"/>
+          <xref linkend="critics.CrMultipleInitialStates"/>
         </para></listitem>
 
         <listitem><para><literal>Place an Initial
           State</literal>. See
-          <xref linkend="s2.ref.critics_no_initial_state"/>
+          <xref linkend="critics.CrNoInitialState"/>
         </para></listitem>
 
         <listitem><para><literal>Add Trigger or Guard to
           Transition</literal>. See
-          <xref linkend="s2.ref.critics_no_trigger_or_guard"/>
+          <xref linkend="critics.CrNoTriggerOrGuard"/>
         </para></listitem>
 
         <listitem><para><literal>Change Join
           Transitions</literal>. See
-          <xref linkend="s2.ref.critics_invalid_join"/>
+          <xref linkend="critics.CrInvalidJoin"/>
         </para></listitem>
 
         <listitem><para><literal>Change Fork
           Transitions</literal>. See
-          <xref linkend="s2.ref.critics_invalid_fork"/>
+          <xref linkend="critics.CrInvalidFork"/>
         </para></listitem>
 
         <listitem><para><literal>Change Branch
           Transitions</literal>. See
-          <xref linkend="s2.ref.critics_invalid_branch"/>
+          <xref linkend="critics.CrInvalidBranch"/>
         </para></listitem>
 
         <listitem><para><literal>Add Guard to
           Transition</literal>. See
-          <xref linkend="s2.ref.critics_no_guard"/>
+          <xref linkend="critics.CrNoGuard"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Better Operation
           Name</literal>. See
-          <xref linkend="s2.ref.critics_unconventional_oper_name"/>
+          <xref linkend="critics.CrUnconventionalOperName"/>
         </para></listitem>
 
         <listitem><para><literal>Choose a Better Attribute
           Name</literal>. See
-          <xref linkend="s2.ref.critics_unconventional_attr_name"/>
+          <xref linkend="critics.CrUnconventionalAttrName"/>
         </para></listitem>
 
         <listitem><para><literal>Capitalise Class Name
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_unconventional_class_name"/>
+          <xref linkend="critics.CrUnconventionalClassName"/>
         </para></listitem>
 
         <listitem><para><literal>Revise Package Name
           &lt;package&gt;</literal>. See
-          <xref linkend="s2.ref.critics_unconventional_pack_name"/>
+          <xref linkend="critics.CrUnconventionalPackName"/>
         </para></listitem>
 
         <listitem><para><literal>Consider using Singleton Pattern for
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_consider_singleton"/>
+          <xref linkend="critics.CrConsiderSingleton"/>
         </para></listitem>
 
         <listitem><para><literal>Singleton Stereotype Violated in
           &lt;class&gt;</literal>. See
-          <xref linkend="s2.ref.critics_singleton_violated"/>
+          <xref linkend="critics.CrSingletonViolated"/>
         </para></listitem>
 
         <listitem><para><literal>Nodes normally have no
           enclosers</literal>. See
-          <xref linkend="s2.ref.critics_node_inside_element"/>
+          <xref linkend="critics.CrNodeInsideElement"/>
         </para></listitem>
 
         <listitem><para><literal>NodeInstances normally have no
           enclosers</literal>. See
-          <xref linkend="s2.ref.critics_node_instance_inside_element"/>
+          <xref linkend="critics.CrNodeInstanceInsideElement"/>
         </para></listitem>
 
         <listitem><para><literal>Components normally are inside
           nodes</literal>. See
-          <xref linkend="s2.ref.critics_component_without_node"/>
+          <xref linkend="critics.CrComponentWithoutNode"/>
         </para></listitem>
 
         <listitem><para><literal>ComponentInstances normally are inside
           nodes</literal>. See
-          <xref linkend="s2.ref.critics_comp_instance_without_node"/>
+          <xref linkend="critics.CrCompInstanceWithoutNode"/>
         </para></listitem>
 
         <listitem><para><literal>Classes normally are inside
           components</literal>. See
-          <xref linkend="s2.ref.critics_class_without_component"/>
+          <xref linkend="critics.CrClassWithoutComponent"/>
         </para></listitem>
 
         <listitem><para><literal>Interfaces normally are inside
           components</literal>. See
-          <xref linkend="s2.ref.critics_interface_without_component"/>
+          <xref linkend="critics.CrInterfaceWithoutComponent"/>
         </para></listitem>
 
         <listitem><para><literal>Objects normally are inside
           components</literal>. See
-          <xref linkend="s2.ref.critics_object_without_component"/>
+          <xref linkend="critics.CrObjectWithoutComponent"/>
         </para></listitem>
 
         <listitem><para><literal>LinkEnds have not the same
           locations</literal>. See
-          <xref linkend="s2.ref.critics_wrong_link_ends"/>
+          <xref linkend="critics.CrWrongLinkEnds"/>
         </para></listitem>
 
         <listitem><para><literal>Set classifier</literal> (deployment
           diagram). See
-          <xref linkend="s2.ref.critics_instance_without_classifier"/>
+          <xref linkend="critics.CrInstanceWithoutClassifier"/>
         </para></listitem>
 
         <listitem><para><literal>Missing
           return-actions</literal>. See
-          <xref linkend="s2.ref.critics_call_without_return"/>
+          <xref linkend="critics.CrCallWithoutReturn"/>
         </para></listitem>
 
         <listitem><para><literal>Missing
           call(send)-action</literal>. See
-          <xref linkend="s2.ref.critics_return_without_call"/>
+          <xref linkend="critics.CrReturnWithoutCall"/>
         </para></listitem>
 
         <listitem><para><literal>No Stimuli on these
           links</literal>. See
-          <xref linkend="s2.ref.critics_link_without_stimulus"/>
+          <xref linkend="critics.CrLinkWithoutStimulus"/>
         </para></listitem>
 
         <listitem><para><literal>Set classifier</literal> (sequence
           diagram). See
-          <xref linkend="s2.ref.critics_seq_instance_without_classifier"/>
+          <xref linkend="critics.CrSeqInstanceWithoutClassifier"/>
         </para></listitem>
 
         <listitem><para><literal>Wrong position of these
           stimuli</literal>. See
-          <xref linkend="s2.ref.critics_stimulus_with_wrong_position"/>
+          <xref linkend="critics.CrStimulusWithWrongPosition"/>
         </para></listitem>
 
         <listitem><para><literal>Clean Up Diagram</literal>. See
-          <xref linkend="s2.ref.critics_nodes_overlap"/>
+          <xref linkend="critics.CrNodesOverlap"/>
         </para></listitem>
 
         <listitem><para><literal>Make Edge More
           Visible</literal>. See
-          <xref linkend="s2.ref.critics_zero_length_edge"/>
+          <xref linkend="critics.CrZeroLengthEdge"/>
         </para></listitem>
       </itemizedlist>
 

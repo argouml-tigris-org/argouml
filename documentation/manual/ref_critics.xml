@@ -20,6 +20,14 @@ Modifications
 
 -->
 
+<!--
+Notes for this document!
+
+The sect2-tags' id field are in synch with a generated url in the class
+org.argouml.cognitive.critics.Critic. Please don't change them unless 
+you change that class at the same time (and think through the deployment).
+-->
+
 <chapter id="ch.ref.critics">
   <title>The Critics</title>
 
@@ -93,7 +101,7 @@ Modifications
     <para>The current version of &argouml; has three critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_non_agg_data_type">
+    <sect2 id="critics.CrNonAggDataType">
       <title>Wrap DataType</title>
 
       <para>DataTypes are not full classes within UML 1.3. They can only have
@@ -122,14 +130,14 @@ Modifications
       </itemizedlist>
     </sect2> 
     
-    <sect2 id="s2.ref.critics_too_many_classes">
+    <sect2 id="critics.CrTooManyClasses">
       <title>Reduce Classes in diagram &lt;diagram&gt;</title>
 
       <para>Suggestion to improve readability by having fewer classes on a
         diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_nodes_overlap">
+    <sect2 id="critics.CrNodesOverlap">
       <title>Clean Up Diagram</title>
 
       <para>Suggestion that the diagram could be improved by moving artifacts
@@ -145,14 +153,14 @@ Modifications
     <para>These are critics concerning the naming of artifacts. The current
       version of &argouml; has 18 critics in this category.</para>
 
-    <sect2 id="s2.ref.critics_assoc_name_conflict">
+    <sect2 id="critics.CrAssocNameConflict">
       <title>Resolve Association Name Conflict</title>
 
       <para>Suggestion that two association names in the same namespace have
         the same name. This is not permitted in UML.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_attr_name_conflict">
+    <sect2 id="critics.CrAttrNameConflict">
       <title>Revise Attribute Names to Avoid Conflict</title>
 
       <para>Suggestion that two attribute names of a class have the same
@@ -162,7 +170,7 @@ Modifications
         through a generalization relationship.</para></note>
     </sect2>
 
-    <sect2 id="s2.ref.critics_oper_name_conflict">
+    <sect2 id="critics.CrOperNameConflict">
       <title>Change Names or Signatures in &lt;artifact&gt;</title>
 
       <para>Two operations in &lt;artifact&gt; have the same signature. This
@@ -196,7 +204,7 @@ Modifications
         together.</para></note>
     </sect2>
 
-    <sect2 id="s2.ref.critics_dup_role_names">
+    <sect2 id="critics.CrDupRoleNames">
       <title>Duplicate End (Role) Names for &lt;Association:&gt;</title>
 
       <para>The specified association has two (or more) ends (roles) with the
@@ -211,7 +219,7 @@ Modifications
       menu or the property sheet.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_name_conflict_a_c">
+    <sect2 id="critics.CrNameConflictAC">
       <title>Role name conflicts with member</title>
 
       <para>A suggestions that good design avoids role names for associations
@@ -220,7 +228,7 @@ Modifications
         generation problems.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_missing_class_name">
+    <sect2 id="critics.CrMissingClassName">
       <title>Choose a Name (Classes and Interfaces)</title>
 
       <para>The class or interface concerned has been
@@ -229,7 +237,7 @@ Modifications
         interfaces and classes are named.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_disambig_class_name">
+    <sect2 id="critics.CrDisambigClassName">
       <title>Choose a Unique Name for &lt;artifact&gt; (Classes and
         Interfaces)</title>
 
@@ -238,7 +246,7 @@ Modifications
         valid code generation.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_missing_attr_name">
+    <sect2 id="critics.CrMissingAttrName">
       <title>Choose a Name (Attributes)</title>
 
       <para>The attribute concerned has been given no name (it will appear in
@@ -246,7 +254,7 @@ Modifications
         requires that all attributes are named.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_missing_oper_name">
+    <sect2 id="critics.CrMissingOperName">
       <title>Choose a Name (Operations)</title>
 
       <para>The operation concerned has been given no name (it will appear in
@@ -254,7 +262,7 @@ Modifications
         requires that all operations are named.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_missing_state_name">
+    <sect2 id="critics.CrMissingStateName">
       <title>Choose a Name (States)</title>
 
       <para>The state concerned has been given no name (it will appear in the
@@ -262,7 +270,7 @@ Modifications
         that all states are named.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_disambig_state_name">
+    <sect2 id="critics.CrDisambigStateName">
       <title>Choose a Unique Name for &lt;artifact&gt; (States)</title>
 
       <para>Suggestion that the state specified has the same name as another
@@ -270,7 +278,7 @@ Modifications
         valid code generation.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_name_confusion">
+    <sect2 id="critics.CrNameConfusion">
       <title>Revise Name to Avoid Confusion</title>
 
       <para>Two names in the same namespace have very similar names (differing
@@ -287,7 +295,7 @@ Modifications
         <xref linkend="ch.ref.todopane"/>).</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_illegal_name">
+    <sect2 id="critics.CrIllegalName">
       <title>Choose a Legal Name</title>
 
       <para>All artifact names in &argouml; must use only letters, digits and
@@ -295,7 +303,7 @@ Modifications
         requirement.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_reserved_name">
+    <sect2 id="critics.CrReservedName">
       <title>Change &lt;artifact&gt; to a Non-Reserved Word</title>
 
       <para>Suggestion that this artifact's name is the same as a reserved word
@@ -303,7 +311,7 @@ Modifications
         permitted.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_unconventional_oper_name">
+    <sect2 id="critics.CrUnconventionalOperName">
       <title>Choose a Better Operation Name</title>
 
       <para>Suggestion that an operation has not followed the naming convention
@@ -321,14 +329,14 @@ Modifications
         <xref linkend="ch.ref.todopane"/>).</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_unconventional_attr_name">
+    <sect2 id="critics.CrUnconventionalAttrName">
       <title>Choose a Better Attribute Name</title>
 
       <para>Suggestion that an attribute has not followed the naming convention
         that attribute names begin with lower case letters.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_unconventional_class_name">
+    <sect2 id="critics.CrUnconventionalClassName">
       <title>Capitalize Class Name &lt;class&gt;</title>
 
       <para>Suggestion that a class has not followed the naming convention that
@@ -338,7 +346,7 @@ Modifications
         convention should apply to interfaces.</para></note>
     </sect2>
 
-    <sect2 id="s2.ref.critics_unconventional_pack_name">
+    <sect2 id="critics.CrUnconventionalPackName">
       <title>Revise Package Name &lt;artifact&gt;</title>
 
       <para>Suggestion that a package has not followed the naming convention of
@@ -361,10 +369,10 @@ Modifications
       <title>Revise Attribute Names to Avoid Conflict</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_attr_name_conflict"/>).</para>
+        (see <xref linkend="critics.CrAttrNameConflict"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_instance_variables">
+    <sect2 id="critics.CrNoInstanceVariables">
       <title>Add Instance Variables to &lt;class&gt;</title>
 
       <para>Suggestion that no instance variables have been specified for the
@@ -382,7 +390,7 @@ Modifications
         <xref linkend="ch.ref.todopane"/>).</para></warning>
     </sect2>
 
-    <sect2 id="s2.ref.critics_constructor_needed">
+    <sect2 id="critics.CrConstructorNeeded">
       <title>Add Constructor to &lt;class&gt;</title>
 
       <para>You have not yet defined a constructor for class
@@ -415,7 +423,7 @@ Modifications
         this parameter to meet the Java/C++ convention.</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_too_many_attr">
+    <sect2 id="critics.CrTooManyAttr">
       <title>Reduce Attributes on &lt;class&gt;</title>
 
       <para>Suggestion that the class has too many attributes for a good
@@ -438,7 +446,7 @@ Modifications
     <para>The current version of &argouml; has three critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_inteface_all_public">
+    <sect2 id="critics.CrIntefaceAllPublic">
       <title>Operations in Interfaces must be public</title>
 
       <para>Suggestion that there is no point in having non-public operations
@@ -446,7 +454,7 @@ Modifications
         class.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_interface_oper_only">
+    <sect2 id="critics.CrInterfaceOperOnly">
       <title>Interfaces may only have operations</title>
 
       <para>Suggestion that an interfaces has attributes defined. The UML
@@ -458,7 +466,7 @@ Modifications
         XMI created by another tool.</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_subclass_reference">
+    <sect2 id="critics.CrSubclassReference">
       <title>Remove Reference to Specific Subclass</title>
 
       <para>Suggestion that in a good design, a class should not reference its
@@ -481,14 +489,14 @@ Modifications
     <para>The current version of &argouml; has 14 critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_too_many_transitions">
+    <sect2 id="critics.CrTooManyTransitions">
       <title>Reduce Transitions on &lt;state&gt;</title>
 
       <para>Suggestion given state is involved in so many transitions it may be
         a maintenance bottleneck.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_too_many_states">
+    <sect2 id="critics.CrTooManyStates">
       <title>Reduce States in machine &lt;machine&gt;</title>
 
       <para>Suggestion that the given state machine has so many states as to be
@@ -496,28 +504,28 @@ Modifications
         machines, or using a hierarchy).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_transitions">
+    <sect2 id="critics.CrNoTransitions">
       <title>Add Transitions to &lt;state&gt;</title>
 
       <para>Suggestion that the given state requires both incoming and outgoing
         transitions.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_incoming_transitions">
+    <sect2 id="critics.CrNoIncomingTransitions">
       <title>Add Incoming Transitions to &lt;artifact&gt;</title>
 
       <para>Suggestion that the given state requires incoming
         transitions.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_outgoing_transitions">
+    <sect2 id="critics.CrNoOutgoingTransitions">
       <title>Add Outgoing Transitions from &lt;artifact&gt;</title>
 
       <para>Suggestion that the given state requires outgoing
         transitions.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_multiple_initial_states">
+    <sect2 id="critics.CrMultipleInitialStates">
       <title>Remove Extra Initial States</title>
 
       <para>Suggestion that there is more than one initial state in the state
@@ -525,21 +533,21 @@ Modifications
         UML.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_initial_state">
+    <sect2 id="critics.CrNoInitialState">
       <title>Place an Initial State</title>
 
       <para>Suggestion that there is no initial state in the state machine or
         composite state.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_trigger_or_guard">
+    <sect2 id="critics.CrNoTriggerOrGuard">
       <title>Add Trigger or Guard to Transition</title>
 
       <para>Suggestion that a transition is missing either a trigger or guard,
         one at least of which is required for it to be taken.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_invalid_join">
+    <sect2 id="critics.CrInvalidJoin">
       <title>Change Join Transitions</title>
 
       <para>Suggestion that the join pseudostate has an invalid number of
@@ -547,7 +555,7 @@ Modifications
         incoming.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_invalid_fork">
+    <sect2 id="critics.CrInvalidFork">
       <title>Change Fork Transitions</title>
 
       <para>Suggestion that the fork pseudostate has an invalid number of
@@ -555,7 +563,7 @@ Modifications
         outgoing.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_invalid_branch">
+    <sect2 id="critics.CrInvalidBranch">
       <title>Change Branch Transitions</title>
 
       <para>Suggestion that the branch pseudostate has an invalid number of
@@ -563,7 +571,7 @@ Modifications
         outgoing.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_guard">
+    <sect2 id="critics.CrNoGuard">
       <title>Add Guard to Transition</title>
 
       <para>Suggestion that the transition requires a guard.</para>
@@ -578,10 +586,10 @@ Modifications
       <title>Clean Up Diagram</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_nodes_overlap"/>).</para>
+        (see <xref linkend="critics.CrNodesOverlap"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_zero_length_edge">
+    <sect2 id="critics.CrZeroLengthEdge">
       <title>Make Edge More Visible</title>
 
       <para>Suggestion that an edge artifact such as an association or
@@ -603,7 +611,7 @@ Modifications
       critics associated with deployment and sequence diagrams. The current
       version of &argouml; has 16 critics in this category.</para>
 
-    <sect2 id="s2.ref.critics_consider_singleton">
+    <sect2 id="critics.CrConsiderSingleton">
       <title>Consider using Singleton Pattern for &lt;class&gt;</title>
 
       <para><emphasis>class</emphasis> has no non-static attributes nor any
@@ -644,10 +652,10 @@ Modifications
 
       <para>For the definition of a constructor under the UML 1.3 standard, and
         extensions to that definition accepted by &argouml; see
-        <xref linkend="s2.ref.critics_constructor_needed"/>.</para>
+        <xref linkend="critics.CrConstructorNeeded"/>.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_singleton_violated">
+    <sect2 id="critics.CrSingletonViolated">
       <title>Singleton Stereotype Violated in &lt;class&gt;</title>
 
       <para>This class is marked with the &laquo;singleton&raquo; stereotype,
@@ -655,7 +663,7 @@ Modifications
         (&argouml; will also accept &laquo;Singleton&raquo; stereotype as
         defining a singleton). A singleton class can have at most one instance.
         This means that the class must meet the design criteria for a singleton
-        (see <xref linkend="s2.ref.critics_consider_singleton"/>).</para>
+        (see <xref linkend="critics.CrConsiderSingleton"/>).</para>
 
       <para>Whenever you mark a class with a stereotype, the class should
         satisfy all constraints of the stereotype.  This is an important part
@@ -668,10 +676,10 @@ Modifications
         properties tab.</para>
 
       <para>To apply the singleton pattern you should follow the directions in
-        <xref linkend="s2.ref.critics_consider_singleton"/>.</para>
+        <xref linkend="critics.CrConsiderSingleton"/>.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_node_inside_element">
+    <sect2 id="critics.CrNodeInsideElement">
       <title>Nodes normally have no enclosers</title>
 
       <para>A suggestion that nodes should not be drawn inside other artifacts
@@ -679,7 +687,7 @@ Modifications
         object.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_node_instance_inside_element">
+    <sect2 id="critics.CrNodeInstanceInsideElement">
       <title>NodeInstances normally have no enclosers</title>
 
       <para>A suggestion that node instances should not be drawn inside other
@@ -687,7 +695,7 @@ Modifications
         physical object.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_component_without_node">
+    <sect2 id="critics.CrComponentWithoutNode">
       <title>Components normally are inside nodes</title>
 
       <para>A suggestion that components represent the logical entities within
@@ -695,7 +703,7 @@ Modifications
         shown on the deployment diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_comp_instance_without_node">
+    <sect2 id="critics.CrCompInstanceWithoutNode">
       <title>ComponentInstances normally are inside nodes</title>
 
       <para>A suggestion that component instances represent the logical
@@ -704,7 +712,7 @@ Modifications
         diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_class_without_component">
+    <sect2 id="critics.CrClassWithoutComponent">
       <title>Classes normally are inside components</title>
 
       <para>A suggestion that classes, as artifacts making up components,
@@ -712,7 +720,7 @@ Modifications
         diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_interface_without_component">
+    <sect2 id="critics.CrInterfaceWithoutComponent">
       <title>Interfaces normally are inside components</title>
 
       <para>A suggestion that interfaces, as artifacts making up components,
@@ -720,7 +728,7 @@ Modifications
         diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_object_without_component">
+    <sect2 id="critics.CrObjectWithoutComponent">
       <title>Objects normally are inside components</title>
 
       <para>A suggestion that objects, as instances of artifacts making up
@@ -728,7 +736,7 @@ Modifications
         the deployment diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_wrong_link_ends">
+    <sect2 id="critics.CrWrongLinkEnds">
       <title>LinkEnds have not the same locations</title>
 
       <para>A suggestion that a link (e.g. association) connecting objects on a
@@ -737,28 +745,28 @@ Modifications
         sense.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_instance_without_classifier">
+    <sect2 id="critics.CrInstanceWithoutClassifier">
       <title>Set classifier (Deployment Diagram)</title>
 
       <para>Suggestion that there is an instance (object) without an associated
         classifier (class, datatype) on a deployment diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_call_without_return">
+    <sect2 id="critics.CrCallWithoutReturn">
       <title>Missing return-actions</title>
 
       <para>Suggestion that a sequence diagram has a send or call action
         without a corresponding return action.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_return_without_call">
+    <sect2 id="critics.CrReturnWithoutCall">
       <title>Missing call(send)-action</title>
 
       <para>Suggestion that a sequence diagram has a return action, but no
         preceding call or send action.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_link_without_stimulus">
+    <sect2 id="critics.CrLinkWithoutStimulus">
       <title>No Stimuli on these links</title>
 
       <para>Suggestion that a sequence diagram has a link connecting objects
@@ -773,14 +781,14 @@ Modifications
         &argouml;.</para></warning>
     </sect2>
 
-    <sect2 id="s2.ref.critics_seq_instance_without_classifier">
+    <sect2 id="critics.CrSeqInstanceWithoutClassifier">
       <title>Set Classifier (Sequence Diagram)</title>
 
       <para>Suggestion that there is an object without an associated classifier
         (class, datatype) on a sequence diagram.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_stimulus_with_wrong_position">
+    <sect2 id="critics.CrStimulusWithWrongPosition">
       <title>Wrong position of these stimuli</title>
 
       <para>Suggestion that the initiation of send/call-return message
@@ -800,7 +808,7 @@ Modifications
     <para>The current version of &argouml; has seven critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_circular_assoc_class">
+    <sect2 id="critics.CrCircularAssocClass">
       <title>Circular Association</title>
 
       <para>Suggestion that an association class has roles that refer back
@@ -812,7 +820,7 @@ Modifications
         class were created.</para></warning>
     </sect2>
 
-    <sect2 id="s2.ref.critics_unnavigable_assoc">
+    <sect2 id="critics.CrUnnavigableAssoc">
       <title>Make &lt;association&gt; Navigable</title>
 
       <para>Suggestion that the association referred to is not navigable in
@@ -820,7 +828,7 @@ Modifications
         obvious meaning in any practical design.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_nav_from_interface">
+    <sect2 id="critics.CrNavFromInterface">
       <title>Remove Navigation from Interface via &lt;association&gt;</title>
 
       <para>Associations involving an interface can be not be navigable in the
@@ -854,7 +862,7 @@ Modifications
         triggered.</para></warning>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_associations">
+    <sect2 id="critics.CrNoAssociations">
       <title>Add Associations to &lt;artifact&gt;</title>
 
       <para>Suggestion that the specified artifact (actor, use case or class)
@@ -866,10 +874,10 @@ Modifications
       <title>Remove Reference to Specific Subclass</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_subclass_reference"/>).</para>
+        (see <xref linkend="critics.CrSubclassReference"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_too_many_assoc">
+    <sect2 id="critics.CrTooManyAssoc">
       <title>Reduce Associations on &lt;artifact&gt;
         </title>
 
@@ -882,7 +890,7 @@ Modifications
       <title>Make Edge More Visible</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_zero_length_edge"/>).</para>
+        (see <xref linkend="critics.CrZeroLengthEdge"/>).</para>
     </sect2>
   </sect1>
 
@@ -908,7 +916,7 @@ Modifications
     <para>The current version of &argouml; has two critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_cross_namespace_assoc">
+    <sect2 id="critics.CrCrossNamespaceAssoc">
       <title>Classifier not in Namespace of its Association</title>
 
       <para>One of the well-formedness rules in UML 1.3 for associations, is
@@ -930,7 +938,7 @@ Modifications
         namespace hierarchy.</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_empty_package">
+    <sect2 id="critics.CrEmptyPackage">
       <title>Add Elements to Package &lt;package&gt;</title>
 
       <para>Suggestion that the specified package has no content. Good design
@@ -957,7 +965,7 @@ Modifications
       <title>Clean Up Diagram</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_nodes_overlap"/>).</para>
+        (see <xref linkend="critics.CrNodesOverlap"/>).</para>
     </sect2>
   </sect1>
 
@@ -976,24 +984,24 @@ Modifications
       <title>Change Names or Signatures in &lt;artifact&gt;</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_oper_name_conflict"/>).</para>
+        (see <xref linkend="critics.CrOperNameConflict"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_class_must_be_abstract">
+    <sect2 id="critics.CrClassMustBeAbstract">
       <title>Class Must be Abstract</title>
 
       <para>Suggestion that a class that inherits or defines abstract
         operations must be marked abstract.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_no_operations">
+    <sect2 id="critics.CrNoOperations">
       <title>Add Operations to &lt;class&gt;</title>
 
       <para>Suggestion that the specified class has no operations defined. This
         is required for the class to be useful in a design.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_too_many_oper">
+    <sect2 id="critics.CrTooManyOper">
       <title>Reduce Operations on &lt;artifact&gt;</title>
 
       <para>Suggestion that the artifact (class or interface) has too many
@@ -1012,7 +1020,7 @@ Modifications
     <para>The current version of &argouml; has one critic in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_multiple_inheritance">
+    <sect2 id="critics.CrMultipleInheritance">
       <title>Change Multiple Inheritance to interfaces</title>
 
       <para>Suggestion that a class has multiple generalizations, which is
@@ -1047,10 +1055,10 @@ Modifications
       <title>Revise Attribute Names to Avoid Conflict</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_attr_name_conflict"/>).</para>
+        (see <xref linkend="critics.CrAttrNameConflict"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_circular_inheritance">
+    <sect2 id="critics.CrCircularInheritance">
       <title>Remove &lt;class&gt;'s Circular Inheritance</title>
 
       <para>Suggestion that a class inherits from itself, through a chain of
@@ -1065,17 +1073,17 @@ Modifications
       <title>Class Must be Abstract</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_class_must_be_abstract"/>).</para>
+        (see <xref linkend="critics.CrClassMustBeAbstract"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_final_subclassed">
+    <sect2 id="critics.CrFinalSubclassed">
       <title>Remove final keyword or remove subclasses</title>
 
       <para>Suggestion that a class that is final has specializations, which is
         not permitted in UML.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_illegal_generalization">
+    <sect2 id="critics.CrIllegalGeneralization">
       <title>Illegal Generalization</title>
 
       <para>Suggestion that there is a generalization between artifacts of
@@ -1088,7 +1096,7 @@ Modifications
         other than &argouml;.</para></caution>
     </sect2>
 
-    <sect2 id="s2.ref.critics_already_realizes">
+    <sect2 id="critics.CrAlreadyRealizes">
       <title>Remove Unneeded Realizes from &lt;class&gt;</title>
 
       <para>Suggestion that the specified class has a realization relationship
@@ -1097,14 +1105,14 @@ Modifications
         example). Good design deprecates such duplication.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_useless_abstract">
+    <sect2 id="critics.CrUselessAbstract">
       <title>Define Concrete (Sub)Class</title>
 
       <para>Suggestion that a class is abstract with no concrete subclasses,
         and so can never be realized.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_useless_interface">
+    <sect2 id="critics.CrUselessInterface">
       <title>Define Class to Implement &lt;interface&gt;</title>
 
       <para>Suggestion that the interface referred to has no influence on the
@@ -1116,14 +1124,14 @@ Modifications
       <title>Change Multiple Inheritance to interfaces</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_multiple_inheritance"/>).</para>
+        (see <xref linkend="critics.CrMultipleInheritance"/>).</para>
     </sect2>
 
     <sect2>
       <title>Make Edge More Visible</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_zero_length_edge"/>).</para>
+        (see <xref linkend="critics.CrZeroLengthEdge"/>).</para>
     </sect2>
   </sect1>
 
@@ -1138,7 +1146,7 @@ Modifications
     <para>The current version of &argouml; has six critics in this
       category.</para>
 
-    <sect2 id="s2.ref.critics_circular_composition">
+    <sect2 id="critics.CrCircularComposition">
       <title>Remove Circular Composition</title>
 
       <para>Suggestion that there is a series of composition relationships
@@ -1146,7 +1154,7 @@ Modifications
         permitted.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_dup_param_name">
+    <sect2 id="critics.CrDupParamName">
       <title>Duplicate Parameter Name</title>
 
       <para>Suggestion that a parameter list to an operation or event has two
@@ -1154,7 +1162,7 @@ Modifications
         permitted.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_multiple_agg">
+    <sect2 id="critics.CrMultipleAgg">
       <title>Two Aggregate Ends (Roles) in Binary Association</title>
 
       <para>Only one end (role) of a binary association can be aggregate or
@@ -1192,7 +1200,7 @@ Modifications
         relationship is many-to-many.</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_n_way_agg">
+    <sect2 id="critics.CrNWayAgg">
       <title>Aggregate End (Role) in 3-way (or More) Association</title>
 
       <para>Three-way (or more) associations can not have aggregate ends
@@ -1211,10 +1219,10 @@ Modifications
       <title>Wrap DataType</title>
 
       <para>This critic is discussed under an earlier design issues category
-        (see <xref linkend="s2.ref.critics_non_agg_data_type"/>).</para>
+        (see <xref linkend="critics.CrNonAggDataType"/>).</para>
     </sect2>
 
-    <sect2 id="s2.ref.critics_param_type_not_imported">
+    <sect2 id="critics.CrParamTypeNotImported">
       <title>Import Parameter Type into Class</title>
 
       <para>Suggestion that the type of a parameter used within an operation of
