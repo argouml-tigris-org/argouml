@@ -29,8 +29,15 @@
 
 package org.argouml.uml.generator;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.EOFException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -84,11 +91,27 @@ public abstract class AbstractSection
                 String sectionId = getSectId(line);
                 if (sectionId != null) {
                     String content = (String) mAry.get(sectionId);
-                    fw.write(line + "\n");
                     if (content != null) {
+                        fw.write(line + "\n");
                         fw.write(content);
+                        // read until the end section is found, discard 
+                        // generated content
+                        String endSectionId = null;
+                        do {
+                            line = fr.readLine();
+                            if (line == null) {
+                                throw new EOFException(
+                                        "Reached end of file while looking " 
+                                        + "for the end of section with ID = \"" 
+                                        + sectionId + "\"!");
+                            }
+                            endSectionId = getSectId(line);
+                        } while (endSectionId == null);
+                        if (!endSectionId.equals(sectionId))
+                            LOG.error("Mismatch between sectionId (\"" 
+                                    + sectionId + "\") and endSectionId (\"" 
+                                    + endSectionId + "\")!");
                     }
-                    line = fr.readLine(); // read end section;
                     mAry.remove(sectionId);
                 }
                 fw.write(line);
