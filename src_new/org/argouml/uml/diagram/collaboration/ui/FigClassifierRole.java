@@ -45,10 +45,12 @@ import org.argouml.application.api.Notation;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
+
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
+import org.tigris.gef.base.Selection;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -502,6 +504,10 @@ public class FigClassifierRole extends FigNodeModelElement {
             updateNameText();
         } else
             super.modelChanged(mee);
+    }
+
+    public Selection makeSelection() {
+        return new SelectionClassifierRole(this);
     }
 
 } /* end class FigClassifierRole */
