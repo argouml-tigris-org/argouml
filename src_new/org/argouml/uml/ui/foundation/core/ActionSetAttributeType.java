@@ -27,6 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLChangeAction;
 import org.argouml.uml.ui.UMLComboBox2;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -72,6 +73,7 @@ public class ActionSetAttributeType extends UMLChangeAction {
             }
         }
         if (newClassifier != oldClassifier && attr != null) {
+            ModelManagementHelper.getHelper().moveElement(newClassifier, attr.getModel());
             attr.setType(newClassifier);
         }
         
