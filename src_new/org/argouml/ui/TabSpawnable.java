@@ -24,11 +24,24 @@
 
 package org.argouml.ui;
 
+import java.awt.BorderLayout;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JDialog;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
+import org.argouml.cognitive.ui.TabToDo;
+import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.cognitive.ui.WizStep;
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
+import org.argouml.uml.diagram.ui.TabDiagram;
+import org.argouml.uml.ui.TabModelTarget;
 
 /**
  * A subclass of JPanel that can act as a tab in the DetailsPane or
@@ -148,26 +161,23 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
      * 
      * <p>
      * The spawned/cloned tab will be a JFrame. Currently this feature is
-     * disabled for ArgoUML and spawn always returns null to indicate that
-     * spawning failed. Code should behave though as if spawning might work at a
+     * disabled for ArgoUML, except for the find dialog. 
+     * Code should behave though as if spawning might work at a
      * later stage.
      * 
      * @return a copy of the frame or null if not clone-able.
      */
     public TabSpawnable spawn() {
 
-        // TODO: this disables spawning
-        return null;
-        
-/*        JDialog f = new JDialog(ProjectBrowser.getInstance());
+        JDialog f = new JDialog(ProjectBrowser.getInstance());
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(Translator.localize(BUNDLE, title));
         TabSpawnable newPanel = (TabSpawnable) clone();
         if (newPanel == null) return null; //failed to clone
 
-        if (newPanel instanceof TabToDoTarget) {
-            TabToDoTarget me = (TabToDoTarget) this;
-            TabToDoTarget it = (TabToDoTarget) newPanel;
+        if (newPanel instanceof TabToDo) {
+            TabToDo me = (TabToDo) this;
+            TabToDo it = (TabToDo) newPanel;
             it.setTarget(me.getTarget());
         } else if (newPanel instanceof TabModelTarget) {
             TabModelTarget me = (TabModelTarget) this;
@@ -196,7 +206,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
                 ((JTabbedPane) getParent()).remove(this);
 
         return newPanel;
-*/    
+   
     }
 
 } /* end class TabSpawnable */
