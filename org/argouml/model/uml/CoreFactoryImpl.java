@@ -1225,9 +1225,6 @@ public class CoreFactoryImpl
         if (parent.getParents().contains(child)) {
             return null;
         }
-        if (!child.getClass().equals(parent.getClass())) {
-            return null;
-        }
         Iterator it = parent.getGeneralizations().iterator();
         while (it.hasNext()) {
             MGeneralization gen = (MGeneralization) it.next();
