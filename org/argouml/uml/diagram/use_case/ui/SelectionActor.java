@@ -118,12 +118,12 @@ public class SelectionActor extends SelectionWButtons {
     boolean reverse = false;
     switch (hand.index) {
     case 12: //add assoc
-      edgeClass = MAssociationImpl.class;
+      edgeClass = MAssociation.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add assoc
-      edgeClass = MAssociationImpl.class;
+      edgeClass = MAssociation.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;

@@ -129,23 +129,23 @@ public class SelectionObject extends SelectionWButtons {
     boolean reverse = false;
     switch (hand.index) {
     case 10: //add link
-      edgeClass = MLinkImpl.class;
+      edgeClass = MLink.class;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add link
-      edgeClass = MLinkImpl.class;
+      edgeClass = MLink.class;
       reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
     case 12: //add link
-      edgeClass = MLinkImpl.class;
+      edgeClass = MLink.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add link
-      edgeClass = MLinkImpl.class;
+      edgeClass = MLink.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
