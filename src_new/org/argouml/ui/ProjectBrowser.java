@@ -856,7 +856,9 @@ public class ProjectBrowser
 
     public void targetSet(TargetEvent e) {
         Object target = e.getNewTarget();
-        if (target instanceof UMLDiagram) {
+        if (target instanceof ArgoDiagram) {
+	    ProjectManager.getManager().getCurrentProject().
+		setActiveDiagram((ArgoDiagram)target);
             updateTitle();
         }
     }    
