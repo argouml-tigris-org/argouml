@@ -1,0 +1,86 @@
+// $Id$
+// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies. This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason. IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+package org.argouml.uml.ui;
+
+import java.awt.event.ActionEvent;
+
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
+
+/**
+ * An action which can be used to create arbritary tagged values which hold
+ * boolean data. It is designed (and implicitly) relies on a UMLCheckBox2.
+ * 
+ * @see UMLCheckBox2
+ * @author mkl
+ *  
+ */
+public class ActionBooleanTaggedValue extends UMLChangeAction {
+
+    private String _tagName;
+
+    /**
+     * The constructor takes the name of the tagged value as a string, which
+     * will hold boolean data.
+     * 
+     * @param tagName
+     *            the name of the taggedvalue containing boolean values.
+     */
+    public ActionBooleanTaggedValue(String tagName) {
+        super("Set", NO_ICON);
+        _tagName = tagName;
+    }
+
+    /**
+     * set the taggedvalue according to the condition of the checkbox. The
+     * taggedvalue will be created if not existing.
+     * 
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+     */
+    public void actionPerformed(ActionEvent e) {
+        super.actionPerformed(e);
+        if (!(e.getSource() instanceof UMLCheckBox2)) return;
+
+        UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
+        Object obj = source.getTarget();
+
+        if (!org.argouml.model.ModelFacade.isAModelElement(obj)) return;
+
+        boolean newState = source.isSelected();
+
+        Object taggedValue = ModelFacade.getTaggedValue(obj, _tagName);
+        if (taggedValue == null) {
+            taggedValue = UmlFactory.getFactory().getExtensionMechanisms()
+                    .createTaggedValue();
+            ModelFacade.setTag(taggedValue, _tagName);
+            ModelFacade.addTaggedValue(obj, taggedValue);
+        }
+        if (newState) {
+            ModelFacade.setValue(taggedValue, "true");
+        } else {
+            ModelFacade.setValue(taggedValue, "false");
+        }
+    }
+}
