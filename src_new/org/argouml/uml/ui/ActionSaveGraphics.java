@@ -61,7 +61,7 @@ public class ActionSaveGraphics extends UMLAction {
     }
 
     public boolean trySave( boolean overwrite ) {
-	Object target = ProjectBrowser.TheInstance.getTarget();
+	Object target = ProjectBrowser.TheInstance.getActiveDiagram();
 	if( target instanceof Diagram ) {
 	    String defaultName = ((Diagram)target).getName();
 	    defaultName = Util.stripJunk(defaultName);
