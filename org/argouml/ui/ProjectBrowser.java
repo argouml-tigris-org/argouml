@@ -581,12 +581,13 @@ public class ProjectBrowser
             if (panel != null)
                 return panel;
         }
-        //I'd prefer to throw this exception here but doing Argo currently
+        //TODO I'd prefer to throw this exception here but doing Argo currently
         //falls over - needs more investigation Bob Tarling 8 Dec 2002
         //throw new IllegalArgumentException("No such tab named " + tabName);
         return null;
     }
 
+    //TODO Bob Tarling 8 June 2003: What is dms?
     public void jumpToDiagramShowing(VectorSet dms) {
         if (dms.size() == 0)
             return;
@@ -626,9 +627,7 @@ public class ProjectBrowser
             setTarget(first);
         }
         // making it possible to jump to the modelroot
-        if (first
-            .equals(
-                ProjectManager.getManager().getCurrentProject().getRoot())) {
+        if (first.equals(ProjectManager.getManager().getCurrentProject().getRoot())) {
             setTarget(first);
         }
     }
