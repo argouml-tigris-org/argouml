@@ -299,6 +299,8 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <target name="clean" depends="init">
     <delete file="${user.lib.dir}/ext/${module.jarfile.name}"/>
     <delete file="${argo.build.dir}/ext/${module.jarfile.name}"/>
+    <delete file="${user.lib.dir}/ext/junit.jar"/>
+    <delete file="${argo.build.dir}/ext/junit.jar"/>
     <delete dir="${module.build.dir}"/>
   </target>
 
@@ -306,8 +308,14 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Move the jar file into the extension directory.                     -->
   <!-- =================================================================== -->
   <target name="install" depends="package">
-    <copy file="${module.jarfile}" todir="${argo.build.dir}/ext"/>
-    <copy file="${module.jarfile}" todir="${user.lib.dir}/ext"/>
+    <copy todir="${argo.build.dir}/ext">
+      <fileset dir="${module.lib.dir}" includes="junit.jar"/>
+      <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
+    </copy>
+    <copy todir="${user.lib.dir}/ext">
+      <fileset dir="${module.lib.dir}" includes="junit.jar"/>
+      <fileset dir="${module.build.dir}" includes="${module.jarfile.name}"/>
+    </copy>
   </target>
 
 </project>
