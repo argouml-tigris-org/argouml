@@ -1,0 +1,99 @@
+(Not necessarily in priority sequence)
+
+1.  Test under unix.
+
+2.  Update commentary text at beginning of build.xml files.
+
+3.  Determine behavior if using ant pre 1.4.1 version.
+    Is there a way of catching it and bailing out with a warning?
+
+4.  See if setting argo.tools.dir in build.properties with current
+    load order of properties file will allow appropriate override.
+    Rephrasing the issue, if ${argo.tools.dir} is referenced in a
+    property file before it is set, will it still be expanded correctly?
+    (Late-breaking-news: according to ant documentation these are
+    expanded when file is loaded.)
+
+    If not,
+        4a.  Move locations from default.properties
+             into default.location.properties
+
+        5b.  Allow override of locations with build.location.properties
+             and ${user.home}/argouml.build.location.properties
+
+5.  Make sure that all the changes of ${version} to ${build.version}
+    didn't break anything.
+
+6.  Make sure dist works properly.
+
+7.  Add executable mode setting in tar creation.
+
+8.  Copy the jars from their individual ${x.jar.path} locations.
+    Make sure they are copied to a versionless name.
+
+9.  Consider changing basedir to always be ${argo.root.dir}
+    - that might eliminate many of the properties issues.
+    For example, that means that argouml/src_new/build.xml
+    would have its basedir="..", and the default tools directory
+    woud be ${basedir}/tools .
+
+10. Add local-ant-*.bat and local-build-*.bat files to cvs branch.
+    (Do not merge into CVSHEAD).
+
+11. Lay foundation for javadoc integration.
+
+    Will javadoc be built in the documentation directory or will that
+    directory be reserved for the manuals?
+
+    Will javadoc be part of the core distribution or will it be an
+    optional module/plugin?
+
+    Answers to these may influence final location of the docbook-setup
+    directory (currently argouml/documentation/docbook-setup).
+
+12. Rename the docbook-setup directory to include the version (1.49
+    according to Jeremy).
+
+13. Make sure all modules build and run properly under new mechanism.
+
+14. Force pdf documentation to fail if jimi-1.0.jar is not found.
+
+15. Determine if we could handle the custom fop build that uses jimi
+    in a better way.  Consider changing the name.  What would be
+    a good approach?
+
+16. Document the correct way to write property files to use the
+    hierarchical property structure.
+
+17. Figure out the version of jh.jar.
+
+18. Figure out the version of ocl-argo.jar.
+
+19. Figure out the version of antlrall.jar.
+
+20. Get license for gef.
+
+21. Get license for antlr.
+
+22. Get license for ocl-argo.
+
+23. Get license for javahelp.
+
+24. Create license file for Argo.
+
+25. Consider moving antlrall.jar to tools and distributing only
+    the runtime for antlr.  Will this perhaps address the
+    missing antlr.Debug class issue on r/e of argo source?
+
+26. Create template directory structure for modules.
+    Create /source/argouml/modules/build.xml that allows creation
+    of a new module based upon the template, automatically
+    filling out the properties files with reasonable defaults.
+
+27. Run a one-time conversion of ${user.home}/.ant.properties and
+    ${user.home}/.argo.ant.properties
+    into ${user.home}/argouml.build.properties.  This may require
+    building a class in tools since the <concat> task is not available
+    until ant 1.5, but perhaps this can be done somehow
+    using <echo file="${user.home}/argouml.build.properties" append="true">
+
