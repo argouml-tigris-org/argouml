@@ -7,13 +7,13 @@
 	<primary>Internationalization</primary>
       </indexterm>
       <indexterm>
-	<primary>i18n</primary>
+	<primary>I18n</primary>
       </indexterm>
       <indexterm>
 	<primary>Localization</primary>
       </indexterm>
       <indexterm>
-	<primary>l10n</primary>
+	<primary>L10n</primary>
       </indexterm>
       <indexterm>
 	<primary>ResourceBundles</primary>
@@ -52,8 +52,7 @@ This is set up in <classname>org.argouml.application.Main</classname>.
       <sect2>
 	<title>Organizing translators</title>
 	<indexterm>
-	  <primary>Language</primary>
-	  <secondary>teams</secondary>
+	  <primary>Language teams</primary>
 	</indexterm>
 	<indexterm>
 	  <primary>Translators</primary>

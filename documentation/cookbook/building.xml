@@ -140,8 +140,10 @@ saxon for building documentation from docbook format.
 	  <listitem>
 	    <indexterm>
 	      <primary>Docbook</primary>
-	      <secondary>XSL stylesheets</secondary>
 	    </indexterm>
+            <indexterm>
+	      <primary>XSL stylesheets</primary>
+            </indexterm>
 	    <para>
 Docbook XSL stylesheets.
 </para>
@@ -473,8 +475,7 @@ or want to compile and run again.
 	    <secondary>Cygwin</secondary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Cygwin</primary>
-	    <secondary>Compilation</secondary>
+	    <primary>Cygwin Compilation</primary>
 	  </indexterm>
 	  <para>
 If you do this from Cygwin you work just like for Unix.
@@ -525,8 +526,7 @@ you do just before you commit.
 	<sect3>
 	  <title>Building javadoc</title>
 	  <indexterm>
-	    <primary>Javadoc</primary>
-	    <secondary>building</secondary>
+	    <primary>Javadoc building</primary>
 	  </indexterm>
 	  <indexterm>
 	    <primary>Building</primary>
@@ -867,8 +867,7 @@ The testcases java source code is located under
 	    <secondary>writing</secondary>
 	  </indexterm>
 	  <indexterm>
-	    <primary>Writing</primary>
-	    <secondary>testcases</secondary>
+	    <primary>Writing testcases</primary>
 	  </indexterm>
 	  <para>
 Now this will make all you java-enthusiasts go nuts!

@@ -399,8 +399,7 @@ problems found by themselves and others.
     <title>ArgoUML Design, The Big Picture</title>
 
     <indexterm>
-      <primary>ArgoUML</primary>
-      <secondary>Design</secondary>
+      <primary>ArgoUML Design</primary>
     </indexterm>
     <para>
 Currently this is more of a base for discussion and
@@ -2708,5 +2707,7 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
 </chapter>
 
   &processes;
+
+  <index/>
 
 </book>
