@@ -30,6 +30,7 @@ import javax.swing.Action;
 import org.apache.log4j.Category;
 
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 
@@ -179,7 +180,7 @@ public abstract class UMLDiagram
    * clicking on the diagram tab).
    */
   public ToolBar getToolBar() {
-    // initToolBar();
+    initToolBar();
     return _toolBar;
   }
   
@@ -193,11 +194,17 @@ public abstract class UMLDiagram
   /**
    * This diagram listens to events from is namespace ModelElement;
    * When the modelelement is removed, we also want to delete this diagram too.
+   * <p>There is also a risk that if this diagram was the one shown in the
+   * diagram panel, then it will remain after it has been deleted. so
+   * we need to deselect this diagram.
    */
   public void removed(MElementEvent e){
       
       ProjectManager.getManager().getCurrentProject().moveToTrash(this);
       UmlModelEventPump.getPump().removeModelEventListener(this,_namespace);
+      
+      Object newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
+      ProjectBrowser.TheInstance.setTarget(newTarget);
   }
   
   /**
