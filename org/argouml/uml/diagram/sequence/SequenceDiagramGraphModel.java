@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -204,7 +202,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 
     public void addNodeRelatedEdges(Object node) {
 	if ( org.argouml.model.ModelFacade.isAInstance(node) ) {
-	    Collection ends = ((MInstance) node).getLinkEnds();
+	    Collection ends = ModelFacade.getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		MLinkEnd ae = (MLinkEnd) iter.next();

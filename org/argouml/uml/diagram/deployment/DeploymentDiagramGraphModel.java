@@ -260,7 +260,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    }
 	}
 	if ( ModelFacade.isAInstance(node) ) {
-	    Collection ends = ((MInstance) node).getLinkEnds();
+	    Collection ends = ModelFacade.getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		MLinkEnd ae = (MLinkEnd) iter.next();

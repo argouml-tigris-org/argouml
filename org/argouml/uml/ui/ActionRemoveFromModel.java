@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -45,7 +43,6 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 
-import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 
@@ -156,7 +153,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         Object newTarget = null;
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         if (ModelFacade.isABase(target)) {
-            newTarget = ((MBase) target).getModelElementContainer();
+            newTarget = ModelFacade.getModelElementContainer(target);
         } else if (ModelFacade.isADiagram(target)) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
             if (target != firstDiagram)

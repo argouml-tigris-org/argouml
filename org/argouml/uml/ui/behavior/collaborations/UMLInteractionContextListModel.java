@@ -28,7 +28,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 /**
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -57,7 +56,7 @@ public class UMLInteractionContextListModel
      */
     protected boolean isValidElement(MBase elem) {
         return org.argouml.model.ModelFacade.isACollaboration(elem) && 
-            ((MCollaboration) elem).getInteractions().contains(getTarget());
+            ModelFacade.getInteractions(elem).contains(getTarget());
     }
 
 }

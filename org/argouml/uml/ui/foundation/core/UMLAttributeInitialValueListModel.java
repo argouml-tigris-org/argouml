@@ -26,11 +26,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MAttribute;
-
 /**
  * @author jaap.branderhorst@xs4all.nl
  * @since 29 jan 2003
@@ -52,7 +51,7 @@ public class UMLAttributeInitialValueListModel
     protected void buildModelList() {
 	if (_target != null) {
 	    removeAllElements();
-	    addElement(((MAttribute) getTarget()).getInitialValue());
+	    addElement(ModelFacade.getInitialValue(getTarget()));
 	}
     }
 
@@ -60,7 +59,7 @@ public class UMLAttributeInitialValueListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-	return ((MAttribute) getTarget()).getInitialValue() == element;
+	return ModelFacade.getInitialValue(getTarget()) == element;
     }
 
 }

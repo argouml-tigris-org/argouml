@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -28,11 +25,10 @@
 // $Id$
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-
-import ru.novosoft.uml.behavior.collaborations.MMessage;
 
 /**
  * 
@@ -55,7 +51,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
     protected void buildModelList() {
         if (org.argouml.model.ModelFacade.isAMessage(getTarget())) {
             removeAllElements();
-            addElement(((MMessage) getTarget()).getInteraction());
+            addElement(ModelFacade.getInteraction(getTarget()));
         }
     }
 
@@ -63,7 +59,7 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return org.argouml.model.ModelFacade.isAInteraction(element) && ((MMessage) getTarget()).getInteraction() == element;
+        return org.argouml.model.ModelFacade.isAInteraction(element) && ModelFacade.getInteraction(getTarget()) == element;
     }
 
 }

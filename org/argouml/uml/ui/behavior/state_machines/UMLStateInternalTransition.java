@@ -25,11 +25,10 @@
 // $header$
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.state_machines.MState;
-
 /**
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -48,14 +47,14 @@ public class UMLStateInternalTransition extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MState) getTarget()).getInternalTransitions());
+        setAllElements(ModelFacade.getInternalTransitions(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(MBase element) {
-        return ((MState) getTarget()).getInternalTransitions().contains(element);
+        return ModelFacade.getInternalTransitions(getTarget()).contains(element);
     }
 
 }

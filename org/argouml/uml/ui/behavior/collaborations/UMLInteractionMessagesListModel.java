@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -25,14 +24,12 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.ModelFacade;
 import java.util.Iterator;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.collaborations.MInteraction;
-import ru.novosoft.uml.behavior.collaborations.MMessage;
-
 /**
  * List model for messages on the interaction proppanel. 
  * 
@@ -53,7 +50,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         removeAllElements();
-        Iterator it = ((MInteraction) getTarget()).getMessages().iterator();
+        Iterator it = ModelFacade.getMessages(getTarget()).iterator();
         while (it.hasNext()) {
             addElement(it.next());
         }
@@ -64,7 +61,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return org.argouml.model.ModelFacade.isAMessage(elem) && 
-            ((MMessage) elem).getInteraction() == getTarget();
+            ModelFacade.getInteraction(elem) == getTarget();
     }
 
 }

@@ -48,8 +48,6 @@ import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.model_management.MPackage;
-
 /** @stereotype singleton
  */
 public class ChildGenRelated implements ChildGenerator {
@@ -64,7 +62,7 @@ public class ChildGenRelated implements ChildGenerator {
 	Vector res = new Vector();
 		
 	if (ModelFacade.isAPackage(o)) {
-	    Collection ownedElements = ((MPackage) o).getOwnedElements();
+	    Collection ownedElements = ModelFacade.getOwnedElements(o);
 	    if (ownedElements != null)
 		return null;
 	}

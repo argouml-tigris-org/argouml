@@ -65,7 +65,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      */
     protected boolean isValidElement(MBase elem) {
         return org.argouml.model.ModelFacade.isAMessage(elem) && 
-            ((MMessage) elem).getInteraction() == ((MMessage) getTarget()).getInteraction() &&
+            ModelFacade.getInteraction(elem) == ModelFacade.getInteraction(getTarget()) &&
             ModelFacade.getActivator(elem) == ModelFacade.getActivator(getTarget());
     }
 

@@ -49,7 +49,6 @@ import ru.novosoft.uml.foundation.core.MAssociationEnd;
 
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MDependency;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
 import ru.novosoft.uml.foundation.core.MGeneralization;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -272,7 +271,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	}
 	else if (ModelFacade.isAGeneralization(edge)) {
 	    end0 = ModelFacade.getChild(edge);
-	    end1 = ((MGeneralization) edge).getParent();
+	    end1 = ModelFacade.getParent(edge);
 	}
 	else if (org.argouml.model.ModelFacade.isADependency(edge)) {
 	    Collection clients = ModelFacade.getClients(edge);
@@ -351,7 +350,7 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 		    // return;
 		}
 	    }
-	    Collection sp = ((MGeneralizableElement) node).getSpecializations();
+	    Collection sp = ModelFacade.getSpecializations(node);
 	    iter = sp.iterator();
 	    while (iter.hasNext()) {
 		MGeneralization s = (MGeneralization) iter.next();
