@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -48,9 +48,9 @@ public class GenCompositeClasses implements ChildGenerator {
 	Object cls = /*(MClassifier)*/ o;
 	Vector ends = new Vector(ModelFacade.getAssociationEnds(cls));
 	if (ends == null) return res.elements();
-	Iterator enum = ends.iterator();
-	while (enum.hasNext()) {
-	    Object ae = /*(MAssociationEnd)*/ enum.next();
+	Iterator assocEnds = ends.iterator();
+	while (assocEnds.hasNext()) {
+	    Object ae = /*(MAssociationEnd)*/ assocEnds.next();
 	    if (ModelFacade.COMPOSITE_AGGREGATIONKIND.equals(ModelFacade.getAggregation(ae))) {
 		Object asc = ModelFacade.getAssociation(ae);
 		ArrayList conn = new ArrayList(ModelFacade.getConnections(asc));
