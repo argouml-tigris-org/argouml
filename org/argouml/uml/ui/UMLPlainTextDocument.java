@@ -40,13 +40,6 @@ import ru.novosoft.uml.MElementListener;
  * its goal and will perform better therefore. Furthermore, it only reacts to 
  * events that are meant for this model which improves maintainability and 
  * performance. 
- * TODO: make this model independant from proppanel by designing a mechanisme
- * that can replace thirthpartyeventlistener.
- * TODO: make this model independant from GUI components to pass on targetChanged
- * and targetreasserted events by designing a mechanisme that can extend 
- * UMLChangeDispatch so UMLUserInterfaceComponents don't have to be java.awt.components
- * anymore to get targetChanged events.
- * TODO: remove the dependance on the panel to get the target.
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
  */

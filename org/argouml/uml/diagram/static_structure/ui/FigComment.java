@@ -472,8 +472,11 @@ public class FigComment extends FigNodeModelElement implements VetoableChangeLis
     protected void updateNameText() {
         if (getOwner() != null) {            
         	String text = ((MComment)getOwner()).getName();    	
-        	if (text != null)
+        	if (text != null) {
         		_text.setText(text);
+                calcBounds();
+                setBounds(getBounds());
+        	}
         }
     }
 

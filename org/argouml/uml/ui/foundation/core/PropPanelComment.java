@@ -29,11 +29,8 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLTextArea;
-import org.argouml.uml.ui.UMLTextProperty;
+import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.util.ConfigLoader;
-
-import ru.novosoft.uml.foundation.core.MComment;
 
 /**
  * Proppanel for comments (notes). The text of the comment is kept in the name of
@@ -49,7 +46,7 @@ public class PropPanelComment extends PropPanelModelElement {
      */
     public PropPanelComment() {
         super("Comment", _commentIcon, ConfigLoader.getTabPropsOrientation());
-        UMLTextArea text = new UMLTextArea(this, new UMLTextProperty(MComment.class, "name","getName","setName"));
+        UMLTextArea2 text = new UMLTextArea2(new UMLModelElementNameDocument());
         text.setLineWrap(true);
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);

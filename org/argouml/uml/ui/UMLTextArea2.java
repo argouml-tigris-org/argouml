@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,27 +21,30 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
+// $Id$
 package org.argouml.uml.ui;
 
-import javax.swing.JTextField;
+import javax.swing.JTextArea;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- * @since Oct 6, 2002
- * @author jaap.branderhorst@xs4all.nl
+ * A JTextArea especially made to represent UMLPlainTextDocuments. 
+ * TODO: refactor the UMLChangeDispatch class so this class can be replaced with
+ * ordinary JTextAreas.
+ * @author jaap.branderhorst@xs4all.nl	
+ * @since Dec 28, 2002
  */
-public class UMLTextField2
-    extends JTextField
-    implements TargetChangedListener, MElementListener {
-        
+public class UMLTextArea2 extends JTextArea implements MElementListener, TargetChangedListener {
+
+    
     /**
-     * Constructor for UMLTextField2.
+     * Constructor for UMLTextArea2.
+     * @param doc
      */
-    public UMLTextField2(UMLPlainTextDocument doc) {
-        super(doc, null, 0);
+    public UMLTextArea2(UMLPlainTextDocument doc) {
+        super(doc);
     }
 
     /**
@@ -69,21 +72,21 @@ public class UMLTextField2
      * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).listRoleItemSet(e);
+        ((UMLPlainTextDocument)getDocument()).listRoleItemSet(e);            
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).removed(e);
+        ((UMLPlainTextDocument)getDocument()).removed(e);     
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
-        ((UMLPlainTextDocument)getDocument()).recovered(e);
+        ((UMLPlainTextDocument)getDocument()).recovered(e);     
     }
 
     /**
@@ -101,5 +104,3 @@ public class UMLTextField2
     }
 
 }
-
-
