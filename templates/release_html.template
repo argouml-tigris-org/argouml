@@ -74,4 +74,27 @@ binary distribution, including all libaries
 </TD><TD>
 </TD></TR>
 
+
+<TR><TH COLSPAN=2>Java Web Start versions</TH></TR>
+
+<TR><TD>
+<a href="@URLROOT@/jws/argouml.jnlp">Java Web Start</a>
+</TD><TD>
+Default (language from your environment)
+</TD></TR>
+
+<TR><TD>
+<a href="@URLROOT@/jws/argouml-en.jnlp">Java Web Start (en)</a>
+</TD><TD>
+Using English GUI
+</TD></TR>
+
+<TR><TD>
+<a href="@URLROOT@/jws/argouml-de.jnlp">Java Web Start (de)</a>
+</TD><TD>
+Using German GUI
+</TD></TR>
+
+
+
 </TABLE>
