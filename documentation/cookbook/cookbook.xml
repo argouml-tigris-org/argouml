@@ -1247,211 +1247,6 @@ problems found by themselves and others.
      </para>
  </sect1>
 </chapter>
-
-  <chapter id="requirements">
-    <chapterinfo>
-      <authorgroup>
-	<author>
-	  <firstname>Linus</firstname>
-	  <surname>Tolke</surname>
-	</author>
-      </authorgroup>
-    </chapterinfo>
-    <title>ArgoUML requirements</title>
-
-    <para>
-This chapter contains a description on how ArgoUML should work
-and behave for the users.
-</para>
-
-    <para>
-These things might not be implemented yet and the solutions
-might not even be clear but it is a definition of the goal.
-</para>
-    <para>
-The fact that it is not implemented or doesn't work as stated here
-should be registered as a bug 
-in the bug registering tool.
-</para>
-
-    <sect1>
-      <title>Requirements for Look and feel</title>
-      <para>
-This describes how the ArgoUML look and feel shall behave.
-</para>
-      <para>
-<orderedlist>
-	  <listitem>
-	    <para>
-When multiple visual components are showing the same model element
-they shall be updated in a consistent manner throught the application.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-As soon as the model element changes then all views shall update.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-For text fields the update of model element shall not
-take place until the field has looses focus.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-Pressing escape in a field that is edited shall 
-restore the value in the text field to that value when the field got
-focus, the field should then lose focus without updating the model
-element.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If a text field requires parsing to extract particular values or
-confirm its validity then it shall
-appear in red while the field remains invalid.
-</para>
-	    <para>
-As soon as it becomes valid it should revert to the normal field colour.
-</para>
-	    <para>
-A consequence of this is that the field must be parsed and checked to
-be valid on each keystroke without updating any model element.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-When the field loses focus and the text is valid then the model
-element should be updated.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-If the field loses focus while it is invalid then the field should be
-returned to its original state as if the escape key was pressed. 
-There
-should be an audible warning and a user friendly error message
-displayed in red in the status bar followed by the text that the user
-attempted to parse.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-There shall be no indication of an exception on the screen or in the
-log if it has occured merely because of a user mistyping or not being
-aware of UML syntax.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>
-All text fields shall have context sensitive help.
-</para>
-	    <para>
-As follows:
-<orderedlist>
-		<listitem>
-		  <para>
-A tooltip that explains the data and format expected by the
-particular field.
-</para>
-		  <para>
-This can be omitted when there is a header stating the data of
-the field and the format is obvious.
-</para>
-		</listitem>
-		<listitem>
-		  <para>
-Pressing F1 or choosing help from the menu shall display a popup
-window explaining for data and format required by the current input
-field. 
-Input focus shall be left on the field during any user
-interaction with the popup (dragging, scrolling or closing).
-</para>
-		</listitem>
-	      </orderedlist>
-</para>
-
-	  </listitem>
-	</orderedlist>
- 
-</para>
-    </sect1>
-
-    <sect1>
-      <title>Requirements for UML</title>
-      <para>
-<orderedlist>
-	  <listitem>
-	    <para>
-ArgoUML shall be a correct implementation of the UML 1.3 model.
-</para>
-	  </listitem>
-	  <listitem>
-	    <para>
-ArgoUML shall implement everything in the UML 1.3 model.
-</para>
-	  </listitem>
-	</orderedlist>
-</para>
-    </sect1>
-
-    <sect1>
-      <title>Requirements on java and jvm</title>
-      <para>
-<orderedlist>
-	  <listitem>
-	    <para>Choice of JRE</para>
-	    <para>
-It shall be possible to run ArgoUML with any Java2 compliant JRE.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>Download and start</para>
-	    <para>
-It shall be possible to install ArgoUML locally on the machine
-and use without Internet connection.
-</para>
-	  </listitem>
-
-	  <listitem>
-	    <para>Console output</para>
-	    <para>
-Logging or tracing information shall not be written to the console
-or to any file unless explicitly turned on by the user.
-</para>
-	  </listitem>
-	</orderedlist>
-</para>
-    </sect1>
-
-    <sect1>
-      <title>Requirements set up for the benefit of the development of ArgoUML</title>
-      <para>
-<orderedlist>
-	  <listitem>
-	    <para>Logging</para>
-	    <para>
-The code shall contain entries logging important information
-for the purpose of helping Developers of ArgoUML in finding problems
-in ArgoUML itself.
-</para>
-	  </listitem>
-	</orderedlist>
-</para>
-    </sect1>
-
-  </chapter>
-
-
 <chapter id="components">
     <title>ArgoUML Components</title>
 
@@ -2507,14 +2302,12 @@ behaviour of the other.
 	<para>
 The classes involved in this particular example have all been well
 commented and have full Javadoc descriptions, to help when examining
-the code. 
-You will need to read the description here in conjunction
+the code. You wil need to read the description here in conjunction
 with looking at the code.
 </para>
 
-      </sect2>
-      <sect2>
-	<title>Adding the property panel</title>
+	<sect3>
+	  <title>Adding the property panel</title>
 
 	  <para>
 Property Panels are found as class PropPanelXXX.java, where XXX is the
@@ -2636,8 +2429,8 @@ A set of check boxes for modifiers. Supported by the
 
 	  <para>Examples of these in more detail now follow.</para>
 
-	<sect3>
-	  <title>Adding a simple list field</title>
+	  <sect4>
+	    <title>Adding a simple list field</title>
 
 	    <para>
 For example We need to add a field to the use case property panel for
@@ -2671,8 +2464,8 @@ The list model should be a subclass of
 <literal>ElementListener</literal> interface.
 </para>
 
-	  <sect4>
-	    <title>The list model</title>
+	    <sect5>
+	      <title>The list model</title>
 
 	      <para>
 In out example we create UMLExtendListModel. Its constructor should
@@ -3387,11 +3180,11 @@ The last argument is ignored!
 		  </listitem>
 		</varlistentry>
 	      </variablelist>
+	    </sect5>
 	  </sect4>
-	</sect3>
 
-	<sect3>
-	  <title>Building the field</title>
+	  <sect4>
+	    <title>Building the field</title>
 
 	    <para>
 By convention the background of the list is set to the same as the
@@ -3426,10 +3219,10 @@ the caption only of the last field in each column should be given a
 non-zero value.
 </para>
 
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Adding Property Tab Toolbar Buttons</title>
+	  <sect4>
+	    <title>Adding Property Tab Toolbar Buttons</title>
 
 	    <para>
 These are added by creating new instances of
@@ -3493,10 +3286,10 @@ point</quote> button, with a method
 <literal>newExtensionPoint</literal> that we provide to create a new
 use case.
 </para>
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Support for stereotypes</title>
+	  <sect4>
+	    <title>Support for stereotypes</title>
 
 	    <para>
 The PropPanel should override the following (note the spelling of the
@@ -3514,10 +3307,10 @@ the target in the <literal>PropPanel</literal>.
 This is used to determine what stereotypes may be shown for this
 property panel.
 </para>
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Other sorts of fields</title>
+	  <sect4>
+	    <title>Other sorts of fields</title>
 
 	    <para>
 Another sort of field that may be useful is the ComboBox.
@@ -3571,153 +3364,11 @@ and we define the methods <literal>isAcceptableUseCase</literal>,
 <literal>getBase</literal> and <literal>setBase</literal> in
 <literal>PropPanelExtend</literal>.
 </para>
+	  </sect4>
 	</sect3>
 
 	<sect3>
-	  <title>How UMLTextField works</title>
-	  <para>
-This information is provided by Jaap Branderhorst (September 2002).
-</para>
-
-	  <para>
-<classname>UMLTextField</classname> implements several kinds of 
-event listeners:
-<itemizedlist>
-	      <listitem>
-		<para><interfacename>MMelementListener</interfacename></para>
-	      </listitem>
-	      <listitem>
-		<para><interfacename>DocumentListener</interfacename></para>
-	      </listitem>
-	      <listitem>
-		<para><interfacename>FocusListener</interfacename></para>
-	      </listitem>
-	    </itemizedlist>
-Furthermore it is a <classname>UMLUserInterfaceComponent</classname>.
-</para>
-
-	  <para>
-Since it is an <classname>UMLUserInterfaceComponent</classname>
-it must implement <methodname>targetChanged</methodname> and
-<methodname>targetReasserted</methodname>.
-<methodname>TargetChanged</methodname> is called everytime the 
-<classname>UMLTextField</classname> is selected. 
-<methodname>targetReasserted</methodname> is of no interest for 
-<classname>UMLTextField</classname>.
-It plays a role in keeping history but since history 
-is not really implemented at the moment in ArgoUML 
-it is of no interest.
-<methodname>targetChanged</methodname> does two things:
-<itemizedlist>
-	      <listitem>
-		<para>
-It calls the <methodname>targetChanged</methodname> method 
-of the <classname>UMLTextProperty</classname> this 
-<classname>UMLTextfield</classname> is showing.
-</para>
-	      </listitem>
-	      <listitem>
-		<para>
-It calls the <methodname>update</methodname> method.
-The <methodname>update</methodname> method is described further on.
-</para>
-	      </listitem>
-	    </itemizedlist>
-</para>
-
-	  <para>
-Besides <classname>UMLUserInterfaceComponent</classname>
-there are several other interfaces of interest. 
-One of them is <interfacename>MMElementListener</interfacename>.
-</para>
-
-	  <para>
-Every time a <interfacename>MModelElement</interfacename> is
-changed this will fire an <classname>MEvent</classname>
-to <classname>UMLChangeDispatch</classname>.
-<classname>UMLChangeDispatch</classname> will dispatch 
-these events to all containers implementing
-<interfacename>UMLUserInterfaceComponents</interfacename>
-interested in this event, including <classname>UMLTextField</classname>.
-It will also dispatch the event to all childs of an interested container
-implementing
-<interfacename>UMLUserInterfaceComponent</interfacename>.
-By this it is only necessary to register a 
-<classname>PropPanel</classname> which holds an 
-<classname>UMLTextField</classname> at 
-<classname>UMLChangeDispatch</classname> to
-dispatch the event to the <classname>UMLTextField</classname> too.
-<interfacename>MMelementListener</interfacename>
-knows several methods of which only one is of interest to
-<classname>UMLTextField</classname>s:
-<itemizedlist>
-	      <listitem>
-		<para>propertySet</para>
-		<para>
-Called everytime a property in a 
-<classname>MModelElement</classname> is set. 
-This method calls 
-<methodname>update</methodname> too if the 
-<classname>UMLTextProperty</classname> really is affected.
-</para>
-	      </listitem>
-	    </itemizedlist>
-</para>
-
-	  <para>
-Furthermore <classname>UMLTextField</classname> implements
-<interfacename>DocumentListener</interfacename>. 
-This is very typical for <classname>UMLTextField</classname>.
-At the moment it is not possible to change the style of
-the text in the <classname>UMLTextField</classname>.
-Therefore the method <methodname>changedUpdate</methodname> does not
-have a body.
-This method is only called when a <classname>DocumentEvent</classname>
-occurs that changes the style/layout of the text.
-The methods <methodname>insertUpdate</methodname>
-and <methodname>removeUpdate</methodname> are respectively called when a
-character is added to the document 
-<classname>UMLTextField</classname> contains or removed. 
-Since both methods are called when there is true userinput 
-and when the contents of the document are changed programmaticaly,
-the methods distinguish between them.
-<methodname>InsertUpdate</methodname> and 
-<methodname>removeUpdate</methodname>
-are both handled via the protected method 
-<methodname>handleEvent</methodname>.
-<methodname>HandleEvent</methodname> updates the property in 
-<classname>UMLTextProperty</classname> if it is really changed.
-If the update comes via userinput, it is checked if it is valid input. 
-If it is not, a <classname>JOptionPane</classname> is shown with '
-a warning and the change is not commited into the model.
-If it is not via userinput, the input is not checked and the
-property is set. If the property is set, the update method is called.
-</para>
-
-	  <para>
-The implementation of <interfacename>FocusListener</interfacename>
-makes sure that the checking of userinput only happens when focus is lost.
-Otherwise, it would not be possible to enter 'intermediate' values 
-that are not legal. 
-For instance, say the value class is not legal. 
-Without the implementation of <interfacename>FocusListener</interfacename>,
-it would not be possible to enter classdiagram since
-handleEvent would popup a warning messagebox.
-</para>
-
-	  <para>
-The method <methodname>update</methodname> updates both the actual
-<classname>JTextfield</classname> as the diagram as soon
-as some property is set. 
-The updating of the diagram is done by calling the
-<methodname>damage</methodname> method of the figs that
-represent the property on the diagram.
-</para>
-	</sect3>
-      </sect2>
-
-      <sect2>
-	<title>How to add a new Fig</title>
+	  <title>How to add a new Fig</title>
 
 	  <para>
 The new item must be added to the toolbar. Both the graph model and
@@ -3725,8 +3376,8 @@ diagram renderer for the diagram will need modifying for any new fig
 object.
 </para>
 
-	<sect3>
-	  <title>Adding to the toolbar</title>
+	  <sect4>
+	    <title>Adding to the toolbar</title>
 
 	    <para>
 Find the diagram object in
@@ -3797,10 +3448,10 @@ as an argument, and sets up a graph model
 renderer (<literal>UseCaseDigramRenderer</literal>) for nodes and
 edges.
 </para>
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Changing the graph model</title>
+	  <sect4>
+	    <title>Changing the graph model</title>
 
 	    <para>
 The graph model is the bridge between the UML meta-model
@@ -3819,10 +3470,10 @@ The graph model is defined as a child of the GEF class
 <literal>VetoableChangeListener</literal> (Java) and
 <literal>MElementListener</literal> (NSUML).
 </para>
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Changing the renderer</title>
+	  <sect4>
+	    <title>Changing the renderer</title>
 
 	    <para>
 The renderer is responsible for creating graphic figs as required on
@@ -3846,10 +3497,10 @@ In our example, we must extend <literal>getFigEdgeFor()</literal> so
 it can handle NSUML MExtend objects (producing a
 <literal>FigExtend</literal>).
 </para>
-	</sect3>
+	  </sect4>
 
-	<sect3>
-	  <title>Creating a new Fig</title>
+	  <sect4>
+	    <title>Creating a new Fig</title>
 
 	    <para>
 New objects that are to appear on a diagram will require new Fig
@@ -3866,6 +3517,7 @@ should provide a method canEdit() to indicate whether the Fig can be
 edited. It should provide an event handler modelChanged() to cope with
 advice that the model has changed.
 </para>
+	  </sect4>
 	</sect3>
       </sect2>
     </sect1>
@@ -4053,10 +3705,9 @@ copying from another <filename>TabYYY.java</filename>
 (e.g. <classname>TabSrc</classname>, <classname>TabStyle</classname>).
 Then register your <classname>TabXXX</classname> in
 <filename>org/argouml/argo.ini</filename>
-by adding a line giving the compass point to place the tab.
-Like - 
+by adding a line like
 <programlisting>
-south: 	TabXXX
+details: 	TabXXX
 </programlisting>
 </para>
 	    </listitem>
@@ -4100,11 +3751,6 @@ Remove the line for the tab from
       <indexterm>
 	<primary>ResourceBundles</primary>
       </indexterm>
-      <para>
-The internationalization is currently changing from ListResourceBundles
-to Property files. This chapter is not updated to fit the change.
-Please read carefully.
-</para>
       <para>
 In ArgoUML internationalization (sometimes called i18n) is done using
 the ListResourceBundle-classes and parts of it is handled by the 
@@ -5588,117 +5234,6 @@ code works also with the additions on that branch.
       </sect2>
 
 </sect1>
-
-    <sect1>
-      <title>Other CVS comments</title>
-      <para>
-This is included in the cookbook because it seems that there are
-persons within the project that don't have the in-depth knowledge
-of CVS nor the interest or need to acquire it.
-For that reason some simple questions are answered here to set
-the ground rule for use of CVS in the project.
-</para>
-      <itemizedlist>
-	<listitem>
-	  <para>
-Why do I get double lines?
-Why do I get ^M at the end of each line?
-Why do I get the whole checked out file on a single line?
-</para>
-	  <para>
-CVS is line oriented.
-It stores in the repository the concept of a new line
-after each line.
-It is the CVS clients (the program you have installed on you machine) 
-responsibility to convert the conceptual new line to the correct new
-line character on your system.
-<note>
-	      <para>
-This is only so for normal files (not marked with -kb in cvs).
-</para>
-	    </note>
-</para>
-	  <para>
-If files are moved from one system to another or for that matter
-checked out on one system and used and edited on another (NFS, SMB, ...)
-this is not done correctly.
-There could also be CVS clients out there, not doing this correctly. 
-</para>
-	  <para>
-Systems known to the author (Linus) are Unix uses LF, DOS/Windows uses CR-LF,
-Mac uses CR.
-</para>
-	  <para>
-Most of the time this really doesn't matter because the editors and
-java compiler on all systems is very forgiving.
-</para>
-	  <para>
-There are however some cases when this is cumbersome.
-</para>
-	  <orderedlist>
-	    <listitem>
-	      <para>When an editor (or developer) decides to "fix-it".</para>
-	      <para>
-This means that the editor (or the user) goes through the file and
-removes ^M on every line or something else that touches every line 
-in the file.
-</para>
-	      <para>
-This is a problem because the subsequent commit will also touch every
-line in the file making that file unmergeable.
-This means that every developer that had it modified in a branch or in
-a checked out copy will have no help from cvs when doing his merging.
-</para>
-	      <para>
-Remember that you never know what other developers are working with.
-</para>
-	      <para>
-This is fixed by not doing any such fixes and doing a cvs diff before
-each check in so that your editor has not done this for you.
-</para>
-	    </listitem>
-	    <listitem>
-	      <para>When cvs clients and file systems are not in sync</para>
-	      <para>
-This could result in one of several things. 
-Either each line get an extra empty line when commited,
-or the whole file turns out to be on the same line.
-</para>
-	      <para>
-This is the case on several files in the repository at the moment
-(August 2002, Linus) and can be cumbersome for the developers.
-</para>
-	      <para>
-These cases should be fixed because the files are no longer
-readable.
-For the first case, removing every other line (the empty ones)
-can in some cases be done without cvs having problems with
-merging later on.
-For the second case, with a single long line, this will be very
-problematic so even though it might cause problems for other
-developers it is better do this as soon as possible.
-</para>
-	      <para>
-When this is fixed, let the fix be the only thing done in that commit.
-</para>
-	      <para>
-To avoid this in the future, always do a cvs diff before doing your
-change to make sure that only the lines that you have actually
-modified will be changed by cvs and not the whole file.
-</para>
-	    </listitem>
-	  </orderedlist>
-	  <para>
-Files that are binary that shall be stored in cvs shall be marked
-as binary.
-They are marked with the admin flag -kb.
-This means that the line ending conversion mechanism will not be applied
-on those files and they will be exactly the same on all systems.
-This is good for jars, gifs, and other such files.
-</para>
-	</listitem>
-      </itemizedlist>
-    </sect1>
 </chapter>
 
 
@@ -6002,6 +5537,7 @@ Information lost.
 Functions not working.
 Strange behavior.
 Exceptions logged.
+Excessive logging.
 </para>
 	    </listitem>
 	    <listitem>
@@ -6017,7 +5553,6 @@ UI not updated.
 	      <para>
 Spelling errors.
 Ugly icons.
-Excessive logging.
 </para>
 	    </listitem>
 	  </itemizedlist>

@@ -3,7 +3,7 @@
 <HEAD>
 <TITLE>Target Language Support in ArgoUML</TITLE>
 <META NAME="Author" CONTENT="Thomas Neustupny">
-<META NAME="Keywords" CONTENT="ArgoUML,UML,code,generation,reverse,round-trip,forward,engineering">
+<META NAME="Keywords" CONTENT="ArgoUML,UML,code,generation,reverse,round-trip,engineering">
 <META NAME="Description" CONTENT="Target Language Support in ArgoUML">
 </HEAD>
 
@@ -63,7 +63,7 @@ source code related settings.</P>
 to dealing with target source code. The user will always know what this
 UML tool does with his/her sources. Everything claims to be easy understandable.
 Which means: every step results in a meaningful tool response (e.g. messages).
-Decisions are made by the user, and ArgoUML presents the options in a clear way.</P>
+Decisions made made by the user, and ArgoUML presents them in a clear way.</P>
 
 <H3>4. Be powerful</H3>
 
@@ -71,7 +71,7 @@ Decisions are made by the user, and ArgoUML presents the options in a clear way.
 changes could occur: either in the model (not only in the static, but also
 in the dynamic!) or in the source files. Whenever such a change requires
 synchronization, the user should be at least guided in this step. Ideally,
-this should happen automatically if no decisions have to be made. ArgoUML has
+this should happen automatically if no decisions has to be made. ArgoUML has
 full control when a single model element is changed. In this case, source code
 synchronization could be invoked immediatelly; still it's not easy, since all
 source files might be affected. However, since this is well implemented, ArgoUML
@@ -98,7 +98,7 @@ described requirements cannot be implemented as a monolithic feature monster.
 Instead, the functionality is divided into subcomponents. Each of them can
 be implemented separately and are useful even if the others are missing.
 By this, target language support can be achieved in smaller steps, which
-makes it more simplen to implement.</P>
+makes it more simple.</P>
 
 
 <H2>Three subprojects</H2>
@@ -128,9 +128,9 @@ classes, operations, generalizations), collects relevant data and then calls
 appropriate model manipulating methods (e.g. addOperation(...), passing the method
 body). After a single pass of a source code file, all model elements for the
 static structure model are generated or, if existed before, updated. (An
-exception are associations, which need a second path for some algorithmical
+exception are associations, which needed a second path for some algorithmical
 reasons.) The other Java parser resides in CG, where it collects all pieces of
-code that can be associated with a model element, in order to replace them by code
+code that can be associated with a model element, in order to replace it by code
 generated from the model. These two Java parsers need to be merged into one, that
 is capable of solving both tasks, and even more that is needed.</P>
 
@@ -164,7 +164,7 @@ components. Of course, these components will be ArgoUML modules.</P>
 <PRE>
      +-----------------------+         +---------------------------------+
      |           A           |         |                B                |
-     +-----------------------+         +---------------------------------+
+     +-----------------------+       1 +---------------------------------+
      |- ok : boolean = false |-------->|- minValue : int = -1000         |
      |- x : int              |     blob|- maxvalue : int = 1000          |
      +-----------------------+         +---------------------------------+
@@ -179,8 +179,8 @@ components. Of course, these components will be ArgoUML modules.</P>
 <P>The corresponding source code files are the following:</P>
 
 <PRE>
- 1  package a.package_;
- 2  import another.package_;
+ 1  package a.package;
+ 2  import another.package;
  3  public class A {
  4    private boolean ok = false;
  5    private int x;
@@ -203,7 +203,7 @@ components. Of course, these components will be ArgoUML modules.</P>
 
 
 <PRE>
- 1  package another.package_;
+ 1  package another.package;
  2  public class B {
  3    private int minValue = -1000;
  4    private int maxValue = 1000;

@@ -28,6 +28,8 @@ import java.awt.event.ActionEvent;
 import org.argouml.kernel.Project;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.ui.FigNodeModelElement;
+
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -58,8 +60,8 @@ public class ActionAddAttribute extends UMLChangeAction {
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
-
 	MAttribute attr = UmlFactory.getFactory().getCore().buildAttribute(cls);
+	attr.addMElementListener((FigNodeModelElement)pb.getActiveDiagram().presentationFor(cls));
 	pb.getNavPane().addToHistory(attr);
 	pb.setTarget(attr);
 	pb.getNavPane().forceUpdate();

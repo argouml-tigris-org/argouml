@@ -21,8 +21,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * This should be a non negative integer.
      *
      * @serial
-     * @see getHgap()
-     * @see setHgap()
+     * @see #getHgap()
+     * @see #setHgap(int)
      */
     private int hgap;
     /**
@@ -31,8 +31,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
      * This should be a non negative integer.
      *
      * @serial
-     * @see getVgap()
-     * @see setVgap()
+     * @see #getVgap()
+     * @see #setVgap(int)
      */
     private int vgap;
 

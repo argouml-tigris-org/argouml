@@ -88,8 +88,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * This should be a non negative integer.
      *
      * @serial
-     * @see getHgap()
-     * @see setHgap()
+     * @see #getHgap()
+     * @see #setHgap(int)
      */
     private int hgap;
     /**
@@ -98,8 +98,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * This should be a non negative integer.
      *
      * @serial
-     * @see getVgap()
-     * @see setVgap()
+     * @see #getVgap()
+     * @see #setVgap(int)
      */
     private int vgap;
     /**
@@ -110,8 +110,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * dimension depends on the other dimension.
      *
      * @serial
-     * @see getRows()
-     * @see setRows()
+     * @see #getRows()
+     * @see #setRows(int)
      */
     private int rows;
     /**
@@ -122,8 +122,8 @@ public class GridLayout2 implements LayoutManager, java.io.Serializable {
      * dimension depends on the other dimension.
      *
      * @serial
-     * @see getColumns()
-     * @see setColumns()
+     * @see #getColumns()
+     * @see #setCols(int)
      */
     private int cols;
 

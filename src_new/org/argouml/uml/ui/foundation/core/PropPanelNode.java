@@ -115,8 +115,8 @@ public class PropPanelNode extends PropPanelClassifier {
     }
     
     /**
-	 * @see org.argouml.uml.ui.foundation.core.PropPanelClassifier#getGeneralizationChoices()
-	 */
+     * @see org.argouml.model.uml.foundation.core.CoreHelper#getAllNodes()
+     */
 	protected Vector getGeneralizationChoices() {
 		Vector choices = new Vector();
 		choices.addAll(CoreHelper.getHelper().getAllNodes());

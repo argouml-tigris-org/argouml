@@ -101,8 +101,10 @@ public class ActionSaveProject extends UMLAction {
           new Object[] {file}
         );
       pb.showStatus (sStatus);
-
+		
+	  
       p.save(overwrite, file);
+      	
 
       sStatus = MessageFormat.format (
           Argo.localize ("Actions", "template.save_project.status_wrote"),
@@ -144,6 +146,21 @@ public class ActionSaveProject extends UMLAction {
         );
       
       ioe.printStackTrace();
+    }
+    catch (Exception ex) {
+    	String sMessage = MessageFormat.format (
+          Argo.localize ("Actions", "template.save_project.general_exception"),
+          new Object[] {ex.getMessage()}
+        );
+      
+      JOptionPane.showMessageDialog (
+          pb,
+          sMessage,
+          Argo.localize ("Actions", "text.save_project.general_exception_title"),
+          JOptionPane.ERROR_MESSAGE
+        );
+      
+      ex.printStackTrace();
     }
     
     return false;

@@ -592,7 +592,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *   changes or removals on any object that on the same event queue as the
      *   target that is assignable to one of the metaclasses.</p>
      *
-     * <p>Reworked to use {@link #AddThirdPartyEventListening(Object[])}, so
+     * <p>Reworked to use {@link #addThirdPartyEventListening(Object[])}, so
      *   removing the need for NSUML promiscuous listeners.</p>
      *
      * <p><em>Note</em>. Despite the name, the old implementation tried to

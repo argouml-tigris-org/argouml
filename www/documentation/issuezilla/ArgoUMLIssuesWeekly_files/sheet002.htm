@@ -27,7 +27,7 @@ function fnUpdateTabs()
   if (parent.window.g_iIEVer>=4) {
    if (parent.document.readyState=="complete"
     && parent.frames['frTabs'].document.readyState=="complete")
-   parent.fnSetActiveSheet(4);
+   parent.fnSetActiveSheet(3);
   else
    window.setTimeout("fnUpdateTabs();",150);
  }

@@ -241,7 +241,7 @@ class ColumnStereotype extends ColumnDescriptor {
     if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
 	String stereoName = (String) value;
-	MStereotype s = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype((MModelElement)target, stereoName);
+	MStereotype s = UmlFactory.getFactory().getExtensionMechanisms().buildStereotype((MModelElement)target, stereoName, ((MModelElement)target).getNamespace());
   }
 } /* end class ColumnStereotype */
 

@@ -37,24 +37,42 @@
 
 package org.argouml.uml.diagram.sequence.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.MouseEvent;
+import java.util.Collection;
+import java.util.Hashtable;
+import java.util.Iterator;
+
 import javax.swing.Icon;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.util.*;
-
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.sequence.*;
+import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
+import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeCreatePolyEdge;
+import org.tigris.gef.base.ModeManager;
+import org.tigris.gef.base.ModeModify;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
+import org.tigris.gef.util.ResourceLoader;
+
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
+import ru.novosoft.uml.behavior.common_behavior.MObject;
 
 public class SelectionSeqObject extends SelectionWButtons  {
 
@@ -227,7 +245,16 @@ public class SelectionSeqObject extends SelectionWButtons  {
     edgeShape.addPoint(newFCCenter.x, yPos);
     Object newEdge = null;
    
-    if (buttonCode == 10) newEdge = addLinkStimulusCall(mgm, cls, newNode);
+    if (buttonCode == 10) {
+    	
+    	Mode mode = new ModeCreatePolyEdge();
+    	Hashtable args = new Hashtable();
+    	args.put("action", MCallAction.class);
+    	args.put("edgeClass", MLink.class);
+    	mode.init(args);
+    	Globals.mode(mode);
+    	newEdge = addLinkStimulusCall(mgm, cls, newNode);
+    }
     else if (buttonCode == 11) newEdge = addLinkStimulusReturn(mgm, cls, newNode);
 
     MLink link = (MLink) newEdge;
@@ -264,10 +291,11 @@ public class SelectionSeqObject extends SelectionWButtons  {
 
   public Object addLinkStimulusCall(MutableGraphModel mgm, MObject cls,
           MObject newCls) {
+          	
     Editor ce = Globals.curEditor();
     ModeManager modeManager = ce.getModeManager();
     Mode mode = (Mode)modeManager.top();
-    mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MCallActionImpl.class);
+    mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MCallAction.class);
 
     return mgm.connect(cls, newCls, MLink.class);
   }
@@ -277,7 +305,7 @@ public class SelectionSeqObject extends SelectionWButtons  {
     Editor ce = Globals.curEditor();
     ModeManager modeManager = ce.getModeManager();
     Mode mode = (Mode)modeManager.top();
-    mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MReturnActionImpl.class);
+    mode.setArg("action", ru.novosoft.uml.behavior.common_behavior.MReturnAction.class);
     return mgm.connect(cls, newCls, MLink.class);
   }
 

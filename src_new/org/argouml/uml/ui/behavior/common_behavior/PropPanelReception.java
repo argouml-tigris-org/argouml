@@ -62,12 +62,7 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(modPanel,4,0,0);
         
         addCaption(Argo.localize("UMLMenu", "label.signal"),1,1,0);
-        JList signalList = new UMLList(new UMLSignalListModel(this),true);
-        signalList.setBackground(getBackground());
-        signalList.setForeground(Color.blue);
-        signalList.setVisibleRowCount(1);
-        JScrollPane signalScroll = new JScrollPane(signalList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(signalScroll,1,1,0);   
+        addField(new UMLSignalComboBox(this, new UMLSignalComboBoxModel(this)),1,1,0);
         
         // TODO: make it possible to select a classifier that has this reception
         addCaption(Argo.localize("UMLMenu", "label.owner"),2,1,0);
@@ -78,9 +73,9 @@ public class PropPanelReception extends PropPanelModelElement {
         addField(specificationScroll, 3, 1, 1);
         
         new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-		new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-		new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-		new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);		
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-operation"),"removeElement",null);		
 		
         
 	}
@@ -131,42 +126,6 @@ public class PropPanelReception extends PropPanelModelElement {
 		}
 	}
 
-}
-
-/**
- * Model for the signal the reception belongs to. Returns only the signal.
- * 
- * @author jaap.branderhorst
- */
-class UMLSignalListModel extends UMLModelElementListModel {
-	
-    public UMLSignalListModel(UMLUserInterfaceContainer container) {
-        super(container,"signal",false);
-    }
-    
-    protected int recalcModelElementSize() {
-        int size = 1;
-        MModelElement ns = getModelElementAt(0);
-        if(ns == null) {
-            size = 0;
-        }
-        return size;
-    }
-    
-    protected MModelElement getModelElementAt(int index) {
-        Object target = getTarget();
-        if(target instanceof MReception) {
-            return ((MReception)target).getSignal();
-        }
-        return null;
-    }
-    
-    public boolean buildPopup(JPopupMenu popup,int index) {
-        UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        return true;
-    }
-    
 }
 
 class UMLClassifierComboBox extends UMLComboBox {

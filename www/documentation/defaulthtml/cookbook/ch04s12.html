@@ -1,11 +1,6 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>4.12. The JUnit test cases</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s11.html" title="4.11. Logging"><link rel="next" href="ch05.html" title="Chapter 5. CVS repository contents"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.12. The JUnit test cases</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e4729"></a>4.12. The JUnit test cases</h2></div></div><a class="indexterm" name="d0e4732"></a><a class="indexterm" name="d0e4735"></a><a class="indexterm" name="d0e4738"></a><p>
-ArgoUML has a set of automatic test caess using JUnit-framework
-for testing the insides of the code.
-The purpose of these are to help in pin-pointing problems with
-code changes already before even starting ArgoUML.
-</p><p>
+   <title>4.12. The JUnit module</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.49"><link rel="home" href="index.html" title="Cookbook for Developers of ArgoUML"><link rel="up" href="ch04.html" title="Chapter 4. Inside the components"><link rel="previous" href="ch04s11.html" title="4.11. Logging"><link rel="next" href="ch05.html" title="Chapter 5. CVS repository contents"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">4.12. The JUnit module</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch04s11.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter 4. Inside the components</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch05.html">Next</a></td></tr></table><hr></div><div class="sect1"><div class="titlepage"><div><h2 class="title" style="clear: both"><a name="d0e4733"></a>4.12. The JUnit module</h2></div></div><a class="indexterm" name="d0e4736"></a><a class="indexterm" name="d0e4739"></a><a class="indexterm" name="d0e4742"></a><p>
 The JUnit module is an ArgoUML module that is used to contain all 
 Unit Test Cases.
 The reason for it being a module is that the classes contained need
@@ -16,8 +11,6 @@ The module is available from CVS under
 <tt>modules/junit</tt>
 and the used version of the JUnit framework is also available there
 (under <tt>modules/junit/lib</tt>).
-</p><p>
-This location will probably change in the future.
 </p><p>
 The Java package structure under 
 <tt>modules/junit/src</tt>
@@ -71,19 +64,7 @@ If you only want to run one of your newly written test cases and not
 all the test cases, give the class name of your test case instead of
 "TestAll" like
 <tt>org.argouml.<i><tt>x.y</tt></i>.Test<i><tt>z</tt></i></tt>.
-</p><p>
-This will probably change in the future simplifying it to the 
-following even simpler description:
-</p><div class="orderedlist"><ol type="1"><li><p>Check out all you need to build ArgoUML</p></li><li><p>
-Build ArgoUML and run the JUnit test cases using
-<b>build run-all-junit-tests</b>
-</p></li><li><p>
-Verify that all the tests are Run and that there are 
-no "Errors" and no "Failures".
-</p><p>
-If there are "Errors" or "Failures" they you can hopefully easily
-pinpoint the problem.
-</p></li></ol></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4873"></a>4.12.2. How to write a test case</h3></div></div><a class="indexterm" name="d0e4876"></a><a class="indexterm" name="d0e4879"></a><a class="indexterm" name="d0e4882"></a><p>
+</p></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4856"></a>4.12.2. How to write a test case</h3></div></div><a class="indexterm" name="d0e4859"></a><a class="indexterm" name="d0e4862"></a><a class="indexterm" name="d0e4865"></a><p>
 Now this will make all you java-enthusiasts go nuts!
 We have both classnames and method names that need to have a special
 syntax.
@@ -120,7 +101,7 @@ They serve as a guarantee that the public interface of a class will
 ever loose any of the functionality provided by its signature in an
 uncontrolled way in just the same way as the test-methods serve as a
 guarantee that no features will ever be lost.
-</p><div class="example"><p><b>Example 4.5. A complete example</b></p><a class="indexterm" name="d0e4916"></a><p>
+</p><div class="example"><p><b>Example 4.5. A complete example</b></p><a class="indexterm" name="d0e4899"></a><p>
 <pre class="programlisting">
 package org.argouml.uml.ui;
 import junit.framework.*;
@@ -169,7 +150,7 @@ public class TestUMLAction extends TestCase {
     }
 }
 </pre>
-</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4926"></a>4.12.3. The TestAll class</h3></div></div><a class="indexterm" name="d0e4929"></a><p>
+</p></div></div><div class="sect2"><div class="titlepage"><div><h3 class="title"><a name="d0e4909"></a>4.12.3. The TestAll class</h3></div></div><a class="indexterm" name="d0e4912"></a><p>
 The TestAll class goes through all directories under 
 <tt>modules/junit/build/classes</tt>
 and finds all class-files beginning with "Test".

@@ -52,8 +52,7 @@ import java.net.InetAddress;
  *
  *  One of the areas this is necessary is to protect from the
  *  {@link java.lang.System#exit(int)} or
- *  <!-- for some reason, java.lang.Runtime#exit is not found by javadoc -->
- *  java.lang.Runtime.exit(int) calls.
+ *  {@java.lang.Runtime#exit(int)} calls.
  *
  *  Another is to prevent modules from replacing the awt exception
  *  trapping hook so that we are able to properly catch any
@@ -62,6 +61,7 @@ import java.net.InetAddress;
  *
  *  @author Thierry Lach
  *  @since 0.9.4
+ *  @stereotype singleton
  */
 public final class ArgoSecurityManager extends SecurityManager
 {

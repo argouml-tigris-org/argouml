@@ -51,7 +51,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Paste", "Paste" },  
 	{"Settings...", "Settings..."},
         {"Remove From Diagram", "Remove From Diagram" },  
-        {"Delete From Model", "Delete" },  
+        {"Delete From Model", "Delete From Model" },  
         {"Empty Trash", "Empty Trash" },  
         {"Navigate Back", "Navigate Back" },  
         {"Navigate Forward", "Navigate Forward" },  
@@ -159,11 +159,11 @@ public class MenuResourceBundle extends ListResourceBundle {
         { "Shortcut_Copy", KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK) },
         { "Shortcut_Paste", KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK) },
         { "Shortcut_Cut", KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK) },
-        { "Shortcut_Remove_From_Diagram", KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK) },
+        { "Shortcut_Remove_From_Diagram", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, KeyEvent.CTRL_MASK) },
         { "Shortcut_Find", KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0) },
         { "Shortcut_Generate_All", KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0) },
         { "Shortcut_Exit", KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK) },
-        { "Shortcut_Delete", KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0)}
+        { "Shortcut_Delete", KeyStroke.getKeyStroke(KeyEvent.VK_R, 0)}
 
    };
 

@@ -46,26 +46,13 @@
 <sect2 id="modules_vs_plugins">
 <title>Differences between modules and plugins</title>
 <para>
-The ArgoUML tool provides a basis
-for UML design and potentially an executable architecture 
-environment for other applications.
-This is solved by clear interfaces between the ArgoUML core
-and the extensions.
-Extensions are called modules and the classes within the modules
-that attach to ArgoUML core are called plugins.
-</para>
-<para>
 <itemizedlist>
 <listitem>
 <para>Modules</para>
 <para>
-A module is a collection of classes and resource files that can
-be enabled and disabled in ArgoUML.
-Currently this is decided by the modules' availability when ArgoUML starts 
-but in the future it could be made possible to enable modules from within 
-a running ArgoUML.
-</para>
-<para>
+The ArgoUML tool provides a basis
+for UML design and potentially an executable architecture 
+environment for other applications.
 This module system is the extension capability to the ArgoUML tool. 
 It will give developers of ArgoUML and 
 developers of applications running within the ArgoUML architecture
@@ -78,20 +65,14 @@ with the open source UML tool.
 </para>
 
 <para>
-The module extensions will load when ArgoUML starts.
+The module extensions will load when ArgoUML starts
+and receive events from the ArgoUML system.
 When the modules are loaded
 they have the capability of attaching
 to internal ArgoUML architectural elements.
-Once the plugins are attached,
-the plugins will receive calls at the right moment and
+Once the module is attached,
+the module will receive calls at the right moment and
 can perform the correct action at that point.
-</para>
-
-<para>
-Modules can be internal and external.
-The only difference is that the internal modules are part of
-the <filename>argouml.jar</filename> and the external are
-delivered as separate jar-files.
 </para>
 </listitem>
 
@@ -112,19 +93,8 @@ that each simplify the addition of one kind of object.
 Examples <classname>PluggableMenu</classname>, 
 <classname>PluggableNotation</classname>.
 </para>
-<para>
-One Module can implement several <classname>Pluggable</classname> interfaces.
-</para>
 </listitem>
 </itemizedlist>
-</para>
-<para>
-This is essentially and implementation of the Dynamic Linkage pattern 
-as described in
-Patterns in Java Volume 1 by Mark Grand ISBN 0-471-25839-3.
-The whole of ArgoUML Core is the Environment,
-the classes inheriting <classname>Pluggable</classname> are the
-AbstractLoadableClass.
 </para>
 
 </sect2>

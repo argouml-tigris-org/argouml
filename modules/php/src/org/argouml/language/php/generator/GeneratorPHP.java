@@ -83,7 +83,7 @@ implements PluggableNotation, FileGenerator {
     String name = cls.getName();
     if (name == null || name.length() == 0) return null;
     String filename = name + ".php";
-    if (!path.endsWith(FILE_SEPARATOR)) path += FILE_SEPARATOR;
+    if (!path.endsWith(fileSep)) path += fileSep;
 
     String packagePath = cls.getNamespace().getName();
     MNamespace parent = cls.getNamespace().getNamespace();
@@ -108,7 +108,7 @@ implements PluggableNotation, FileGenerator {
 	  int index = packagePath.indexOf(".", lastIndex+1);
 	  if (index == -1)
 		  index = packagePath.length();
-      path += packagePath.substring(lastIndex+1, index) + FILE_SEPARATOR;
+      path += packagePath.substring(lastIndex+1, index) + fileSep;
 	  lastIndex = index;
 	} while (true);
     String pathname = path + filename;
