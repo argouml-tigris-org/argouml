@@ -309,7 +309,7 @@ class ActionOpenProject extends UMLAction {
 
       String directory = Globals.getLastDirectory();
       JFileChooser chooser = new JFileChooser(directory);
-     	
+
       if (chooser == null) chooser = new JFileChooser();
 
       chooser.setDialogTitle("Open Project");
@@ -518,12 +518,12 @@ class ActionLoadModelFromDB extends UMLAction {
 	public ActionLoadModelFromDB() {
 		super("Load model from DB", NO_ICON);
 	}
-	
+
 	public void actionPerformed(ActionEvent e) {
 	  // when the action is performed, i.e. someone clicked on the menuitem,
 	  // create a new DBLoader, ask the user for the models name to load,
 	  // then load it and put it into an empty project.
-		
+
 		String modelName = JOptionPane.showInputDialog("What is the name of the model?");
 		if ((modelName == null)|| (modelName.equals(""))) return;
 		DBLoader loader = new DBLoader();
@@ -545,13 +545,13 @@ class ActionLoadModelFromDB extends UMLAction {
 		try {
 			java.io.InputStream is = new java.io.FileInputStream(configFile);
 			props.load(is);
-		}	
+		}
 		catch (java.io.IOException e) {
 			return false;
 		}
 		return true;
 	}
-	
+
 } /* end class ActionLoadModelFromDB */
 
 
@@ -568,11 +568,11 @@ class ActionStoreModelToDB extends UMLAction {
 	  // then store it. Simple as this.
 
 	  DBWriter writer = new DBWriter();
-	  
+
 	  if (writer.hasConnection()) {
 	      ProjectBrowser pb = ProjectBrowser.TheInstance;
 	      Project p =  pb.getProject();
-	      
+
 	      MNamespace nm = p.getCurrentNamespace();
 	      if (!(nm instanceof MModel)) {
 		  JOptionPane.showMessageDialog(null, "Error", "Current Namespace is not a Model", JOptionPane.ERROR_MESSAGE);
@@ -608,13 +608,13 @@ class ActionStoreModelToDB extends UMLAction {
 		try {
 			java.io.InputStream is = new java.io.FileInputStream(configFile);
 			props.load(is);
-		}	
+		}
 		catch (java.io.IOException e) {
 			return false;
 		}
 		return true;
 	}
-	
+
 } /* end class ActionStoreModelToDB */
 
 class ActionPrint extends UMLAction {
@@ -653,7 +653,7 @@ class ActionSaveGIF extends UMLAction {
       String defaultName = ((Diagram)target).getName();
       defaultName = Util.stripJunk(defaultName);
 
-      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // FIX - It's probably worthwhile to abstract and factor this chooser
       // and directory stuff. More file handling is coming, I'm sure.
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -707,11 +707,11 @@ class ActionSaveGIF extends UMLAction {
 	  }
 	}
       }
-      catch( FileNotFoundException ignore ) 
+      catch( FileNotFoundException ignore )
 	{
 	  System.out.println( "got a FileNotFoundException" );
 	}
-      catch( IOException ignore ) 
+      catch( IOException ignore )
 	{
 	  System.out.println( "got an IOException" );
 	  ignore.printStackTrace();
@@ -742,7 +742,7 @@ class ActionSaveGraphics extends UMLAction {
       String defaultName = ((Diagram)target).getName();
       defaultName = Util.stripJunk(defaultName);
 
-      // FIX - It's probably worthwhile to abstract and factor this chooser 
+      // FIX - It's probably worthwhile to abstract and factor this chooser
       // and directory stuff. More file handling is coming, I'm sure.
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
@@ -784,13 +784,13 @@ class ActionSaveGraphics extends UMLAction {
 	    String extension=SuffixFilter.getExtension(name);
 
 	    CmdSaveGraphics cmd=null;
-	    if (FileFilters.PSFilter._suffix.equals(extension)) 
+	    if (FileFilters.PSFilter._suffix.equals(extension))
 		cmd = new CmdSavePS();
-	    else if (FileFilters.EPSFilter._suffix.equals(extension)) 
+	    else if (FileFilters.EPSFilter._suffix.equals(extension))
 		cmd = new CmdSaveEPS();
-	    else if (FileFilters.GIFFilter._suffix.equals(extension)) 
+	    else if (FileFilters.GIFFilter._suffix.equals(extension))
 		cmd = new CmdSaveGIF();
-	    //else if (FileFilters.SVGFilter._suffix.equals(extension)) 
+	    //else if (FileFilters.SVGFilter._suffix.equals(extension))
 		//cmd = new CmdSaveSVG();
 	    else {
 		pb.showStatus("Unknown graphics file type withextension "
@@ -817,11 +817,11 @@ class ActionSaveGraphics extends UMLAction {
 	  }
 	}
       }
-      catch( FileNotFoundException ignore ) 
+      catch( FileNotFoundException ignore )
 	{
 	  System.out.println( "got a FileNotFoundException" );
 	}
-      catch( IOException ignore ) 
+      catch( IOException ignore )
 	{
 	  System.out.println( "got an IOException" );
 	  ignore.printStackTrace();
@@ -879,7 +879,16 @@ class ActionCut extends UMLAction {
 class ActionCopy extends UMLChangeAction {
   public ActionCopy() { super("Copy"); }
   public boolean shouldBeEnabled() {
-    int size = Globals.curEditor().getSelectionManager().selections().size();
+    int size = 0;
+    try {
+      size = Globals.curEditor().getSelectionManager().selections().size();
+    }
+    //
+    //   this can happen when running in a debugger, not sure why
+    //
+    catch(Exception e) {
+      size = 0;
+    }
     return (size > 0);
   }
   public void actionPerformed(ActionEvent ae) {
@@ -908,9 +917,15 @@ class ActionPaste extends UMLChangeAction {
 class ActionDeleteFromDiagram extends UMLChangeAction {
   public ActionDeleteFromDiagram() { super("Remove From Diagram", NO_ICON); }
   public boolean shouldBeEnabled() {
-    Editor ce = Globals.curEditor();
-    Vector figs = ce.getSelectionManager().getFigs();
-    return figs.size() > 0;
+    int size = 0;
+    try {
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      size = figs.size();
+    }
+    catch(Exception e) {
+    }
+    return size > 0;
   }
   public void actionPerformed(ActionEvent ae) {
     Editor ce = Globals.curEditor();
@@ -927,10 +942,14 @@ class ActionRemoveFromModel extends UMLChangeAction {
     Object target = pb.getDetailsTarget();
     if (target instanceof MModelElement) return true;
 
+    int size = 0;
+    try {
     // needs-more-work: trashing diagrams
-    Editor ce = Globals.curEditor();
-    Vector figs = ce.getSelectionManager().getFigs();
-    int size = figs.size();
+      Editor ce = Globals.curEditor();
+      Vector figs = ce.getSelectionManager().getFigs();
+      size = figs.size();
+    }
+    catch(Exception e) {}
     if (size > 0) return true;
     //     for (int i = 0; i < size; i++) {
     //       Fig f = (Fig) figs.elementAt(i);
@@ -952,22 +971,26 @@ class ActionRemoveFromModel extends UMLChangeAction {
 
     // needs-more-work: trashing diagrams
     else {
-      Editor ce = Globals.curEditor();
-      Vector figs = ce.getSelectionManager().getFigs();
-      int size = figs.size();
-      for (int i = 0; i < size; i++) {
+      int size = 0;
+      try {
+        Editor ce = Globals.curEditor();
+        Vector figs = ce.getSelectionManager().getFigs();
+        size = figs.size();
+        for (int i = 0; i < size; i++) {
 		  Fig f = (Fig) figs.elementAt(i);
 		  Object owner = f.getOwner();
 		  if (owner instanceof MModelElement) {
 			  if (!sureRemove((MModelElement)owner)) return;
 		  }
-      }
-      for (int i = 0; i < size; i++) {
+        }
+        for (int i = 0; i < size; i++) {
 		  Fig f = (Fig) figs.elementAt(i);
 		  Object owner = f.getOwner();
 		  if (owner == null) f.delete();
 		  else if (owner instanceof MModelElement) p.moveToTrash(owner);
+        }
       }
+      catch(Exception ex) {}
     }
     super.actionPerformed(ae);
   }
@@ -1453,12 +1476,12 @@ class ActionAddInternalTrans extends UMLChangeAction {
 	t.setTarget(st);
 	MStateMachine sm = (MStateMachine)st.getStateMachine();
 	sm.addTransition(t);
-	
+
 	// which nsuml-Event to generate as default? is SignalEvent ok?
 	MEvent triggerEvent = new MSignalEventImpl();
 	triggerEvent.setName("event");
 	t.setTrigger(triggerEvent);
-	
+
 	MGuard guard = new MGuardImpl();
 	guard.setName("condition");
 	t.setGuard(guard);
@@ -1585,7 +1608,7 @@ class ActionAddOperation extends UMLChangeAction {
 
 class ActionAddMessage extends UMLChangeAction {
 	public ActionAddMessage() { super("Add Message"); }
-	
+
 	public void actionPerformed(ActionEvent ae) {
 		ProjectBrowser pb = ProjectBrowser.TheInstance;
 		Object target = pb.getDetailsTarget();
@@ -1604,17 +1627,17 @@ class ActionAddMessage extends UMLChangeAction {
 		Selection cf = (Selection) figs.firstElement();
 		FigEdge curFig = (FigEdge) cf.getContent();
 		Point center = curFig.center();
-		
+
 		String nextStr = "" + (cd.getNumMessages() + 1);
 		MMessage msg = new MMessageImpl();
 		msg.setName(nextStr);
 		Collection ascEnds = ar.getConnections();
-		
+
 		if (ascEnds.size() != 2 ) return;
 		Iterator iter = ascEnds.iterator();
 		MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
 		MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
-		
+
 		// by default the "first" Classifierrole is the Sender,
 		// should be configurable in PropPanelMessage!
 		MClassifierRole crSrc = (MClassifierRole)aer1.getType();
@@ -1640,13 +1663,13 @@ class ActionAddMessage extends UMLChangeAction {
 		lay.add(pers);
 		super.actionPerformed(ae);
 	}
-	
+
 	public boolean shouldBeEnabled() {
 		ProjectBrowser pb = ProjectBrowser.TheInstance;
 		Object target = pb.getDetailsTarget();
 		return super.shouldBeEnabled() && target instanceof MAssociationRole;
 	}
-} 
+}
 
 
 /* end class ActionAddMessage */
@@ -1721,19 +1744,21 @@ class ActionGenerateOne extends UMLAction {
 
   public boolean shouldBeEnabled() {
     if (!super.shouldBeEnabled()) return false;
-    Editor ce = org.tigris.gef.base.Globals.curEditor();
-    Vector sels = ce.getSelectionManager().getFigs();
-    java.util.Enumeration enum = sels.elements();
     boolean foundOne = false;
-    while (enum.hasMoreElements()) {
-      Fig f = (Fig) enum.nextElement();
-      Object owner = f.getOwner();
-      if (!(owner instanceof MClass) && !(owner instanceof MInterface))
-	continue;
-      MClassifier cls = (MClassifier) owner;
-      String name = cls.getName();
-      if (name == null || name.length() == 0) return false;
-      foundOne = true;
+    Editor ce = org.tigris.gef.base.Globals.curEditor();
+    if(ce != null) {
+      Vector sels = ce.getSelectionManager().getFigs();
+      java.util.Enumeration enum = sels.elements();
+      while (enum.hasMoreElements()) {
+        Fig f = (Fig) enum.nextElement();
+        Object owner = f.getOwner();
+        if (!(owner instanceof MClass) && !(owner instanceof MInterface))
+          continue;
+        MClassifier cls = (MClassifier) owner;
+        String name = cls.getName();
+        if (name == null || name.length() == 0) return false;
+        foundOne = true;
+      }
     }
     return foundOne;
   }
@@ -1962,7 +1987,7 @@ class ActionMultiplicity extends UMLAction {
         ascEnd = (MAssociationEnd) ascEnds.get(0);
       else
         ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size()-1);
-      ascEnd.setMultiplicity(mult); 
+      ascEnd.setMultiplicity(mult);
     }
   }
   public boolean shouldBeEnabled() { return true; }
@@ -1989,7 +2014,7 @@ class ActionAggregation extends UMLAction {
         ascEnd = (MAssociationEnd) ascEnds.get(0);
       else
         ascEnd = (MAssociationEnd) ascEnds.get(ascEnds.size()-1);
-      ascEnd.setAggregation(agg); 
+      ascEnd.setAggregation(agg);
     }
   }
   public boolean shouldBeEnabled() { return true; }

@@ -139,5 +139,14 @@ public class PropPanelSignal extends PropPanelClassifier {
         }
     }
 
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Signal") ||
+            baseClass.equals("Classifier") ||
+            baseClass.equals("GeneralizableElement") ||
+            baseClass.equals("Namespace");
+    }
+  
+
 } /* end class PropPanelSignal */
 

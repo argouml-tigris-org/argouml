@@ -320,6 +320,14 @@ public class PropPanelOperation extends PropPanel {
             }
         }
     }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Operation") ||
+            baseClass.equals("BehavioralFeature") ||
+            baseClass.equals("Feature");
+    }
+  
+
         
 } /* end class PropPanelOperation */
 

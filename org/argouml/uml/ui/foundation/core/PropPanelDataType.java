@@ -33,10 +33,12 @@ import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
 
+import org.tigris.gef.util.Util;
 
 
 public class PropPanelDataType extends PropPanelClassifier {
 
+  private static ImageIcon _dataTypeIcon = Util.loadIconResource("DataType");
 
   ////////////////////////////////////////////////////////////////
   // contructors
@@ -44,26 +46,26 @@ public class PropPanelDataType extends PropPanelClassifier {
     super("DataType Properties",2);
 
     Class mclass = MDataType.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,2,0,0);
-    
+
     addCaption(new JLabel("Implements:"),3,0,0);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);    
+    implementsList.setForeground(Color.blue);
     addField(implementsList,3,0,0);
 
     addCaption(new JLabel("Modifiers:"),4,0,0);
@@ -74,35 +76,35 @@ public class PropPanelDataType extends PropPanelClassifier {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,5,0,0);
-    
+
     addCaption(new JLabel("Derived:"),6,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,6,0,1);
-    
+
     addCaption(new JLabel("Literals:"),1,1,0.5);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.5);
-    
-    
+
+
     addCaption(new JLabel("Operations:"),0,1,0.5);
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.5);
-    
+
     JPanel buttonBorder = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
-    
+
     new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add enumeration literal","addAttribute",null);
@@ -110,6 +112,7 @@ public class PropPanelDataType extends PropPanelClassifier {
     new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete class","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_dataTypeIcon,"New data type","newDataType",null);
   }
 
     public void addOperation() {
@@ -122,7 +125,7 @@ public class PropPanelDataType extends PropPanelClassifier {
             navigateTo(oper);
         }
     }
-    
+
     public void addAttribute() {
         Object target = getTarget();
         if(target instanceof MClassifier) {
@@ -157,9 +160,9 @@ public class PropPanelDataType extends PropPanelClassifier {
                         }
                         classifier.setStereotype(stereo);
                     }
-                }        
+                }
             }
-            
+
             MAttribute attr = classifier.getFactory().createAttribute();
             attr.setOwnerScope(MScopeKind.CLASSIFIER);
             attr.setChangeability(MChangeableKind.FROZEN);
@@ -169,5 +172,21 @@ public class PropPanelDataType extends PropPanelClassifier {
             navigateTo(attr);
         }
     }
-  
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("DataType") ||
+            baseClass.equals("Classifier") ||
+            baseClass.equals("GeneralizableElement");
+    }
+
+    public void newDataType() {
+        Object target = getTarget();
+        if(target instanceof MDataType) {
+            MDataType dt = (MDataType) target;
+            MNamespace ns = dt.getNamespace();
+            MDataType newDt = dt.getFactory().createDataType();
+            ns.addOwnedElement(newDt);
+            navigateTo(newDt);
+        }
+    }
 } /* end class PropPanelDataType */

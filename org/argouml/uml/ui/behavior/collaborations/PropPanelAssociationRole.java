@@ -36,13 +36,13 @@ public class PropPanelAssociationRole extends PropPanel {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  
+
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelAssociationRole() {
     super("Association Role Properties",2);
-    
+
     Class mclass = MAssociationRole.class;
 
     addCaption(new JLabel("Name:"),0,0,0);
@@ -57,36 +57,36 @@ public class PropPanelAssociationRole extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,2,0,0);
-        
+
     addCaption(new JLabel("Modifiers:"),3,0,0);
-    
+
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox("Abstract",this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox("Final",this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox("Root",this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,3,0,0);
-        
+
     addCaption(new JLabel("Extends:"),4,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,4,0,0);
-    
+
     addCaption(new JLabel("Derived:"),5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),5,0,1);
-    
-    
+
+
     addCaption(new JLabel("AssociationRole Ends:"),0,1,1);
     JList assocEndList = new UMLList(new UMLReflectionListModel(this,"connection",true,"getAssociationEnds","setAssociationEnds","addAssociationEnd",null),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);
     addField(assocEndList,0,1,1);
-        
+
 
   }
 
@@ -98,7 +98,7 @@ public class PropPanelAssociationRole extends PropPanel {
         }
         return ends;
     }
-    
+
     public void setAssociationEnds(Collection ends) {
         Object target = getTarget();
         if(target instanceof MAssociationRole) {
@@ -112,7 +112,7 @@ public class PropPanelAssociationRole extends PropPanel {
             ((MAssociationRole) target).setConnections(list);
         }
     }
-    
+
     public Object addAssociationEnd(Integer index) {
         Object target = getTarget();
         MAssociationEndRole newEnd = null;
@@ -122,6 +122,10 @@ public class PropPanelAssociationRole extends PropPanel {
         }
         return newEnd;
     }
-        
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("AssociationRole");
+    }
+
 
 } /* end class PropPanelAssociationRole */

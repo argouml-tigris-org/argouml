@@ -31,7 +31,7 @@ import ru.novosoft.uml.foundation.core.*;
 public class UMLInitialValueComboBox extends JComboBox implements ActionListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
-    
+
     /** Creates new BooleanChangeListener */
     public UMLInitialValueComboBox(UMLUserInterfaceContainer container) {
         super();
@@ -46,7 +46,7 @@ public class UMLInitialValueComboBox extends JComboBox implements ActionListener
 
     public void targetReasserted() {
     }
-    
+
     public void roleAdded(final MElementEvent p1) {
     }
     public void recovered(final MElementEvent p1) {
@@ -70,18 +70,18 @@ public class UMLInitialValueComboBox extends JComboBox implements ActionListener
             }
         }
     }
-    
+
     private void update() {
     }
-    
+
     private void updateDefaults() {
         Object target = _container.getTarget();
         if(target instanceof MAttribute) {
             Profile profile = _container.getProfile();
-            setModel(new DefaultComboBoxModel(profile.getInitialValues(((MAttribute) target).getType())));
+//            setModel(new DefaultComboBoxModel(profile.getInitialValues(((MAttribute) target).getType())));
         }
     }
-    
+
     public void actionPerformed(final ActionEvent event) {
         Object selected = getSelectedItem();
     }

@@ -66,26 +66,26 @@ public class PropPanelPackage extends PropPanelNamespace {
     super("Package Properties",2);
 
     Class mclass = MPackage.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,2,0,0);
-    
+
     addCaption(new JLabel("Implements:"),3,0,0);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);    
+    implementsList.setForeground(Color.blue);
     addField(implementsList,3,0,0);
 
     addCaption(new JLabel("Modifiers:"),4,0,0);
@@ -101,15 +101,15 @@ public class PropPanelPackage extends PropPanelNamespace {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,5,0,0);
-    
+
     addCaption(new JLabel("Derived:"),6,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,6,0,1);
-    
+
 //    double ygrowth = 0.2;
 //    addCaption(new JLabel("Packages:"),0,1,ygrowth);
 //    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedElement",true),true);
@@ -134,7 +134,7 @@ public class PropPanelPackage extends PropPanelNamespace {
 //    genList.setForeground(Color.blue);
 //    genList.setVisibleRowCount(1);
 //    addField(new JScrollPane(genList),3,1,ygrowth);
-    
+
 //    addCaption(new JLabel("Stereotypes:"),4,1,ygrowth);
 //    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedElement",true),true);
 //    stereoList.setForeground(Color.blue);
@@ -142,16 +142,16 @@ public class PropPanelPackage extends PropPanelNamespace {
 //    addField(new JScrollPane(stereoList),4,1,ygrowth);
 
     addCaption(new JLabel("Owned Elements"),0,1,1);
-    UMLOwnedElementRootNode root = new UMLOwnedElementRootNode(this,"ownedElement",false);    
+    UMLOwnedElementRootNode root = new UMLOwnedElementRootNode(this,"ownedElement",false);
     UMLTreeModel model = new UMLTreeModel(this,root);
     root.setModel(model);
-    addField(new UMLTree(this,model,true),0,1,1);
-    
+    addField(new JScrollPane(new UMLTree(this,model,true)),0,1,1);
+
     JPanel buttonBorder = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
-    
+
     new PropPanelButton(this,buttonPanel,_classIcon,"Add class","addClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_interfaceIcon,"Add interface","addInterface",null);
@@ -160,7 +160,7 @@ public class PropPanelPackage extends PropPanelNamespace {
     new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     _stereotypeButton = new PropPanelButton(this,buttonPanel,_stereotypeIcon,"Add stereotype","addStereotype",null);
     _stereotypeButton.setEnabled(false);
-    
+
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete package","removeElement",null);
     new PropPanelButton(this,buttonPanel,_actorIcon,"Add actor","addActor",null);
     new PropPanelButton(this,buttonPanel,_useCaseIcon,"Add use case","addUseCase",null);
@@ -168,11 +168,11 @@ public class PropPanelPackage extends PropPanelNamespace {
     new PropPanelButton(this,buttonPanel,_associationIcon,"Add association","addAssociation",null);
     new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    
+
 //    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
 //    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
-    
-    
+
+
   }
 
     public void addStereotype() {
@@ -184,7 +184,7 @@ public class PropPanelPackage extends PropPanelNamespace {
             navigateTo(stereo);
         }
     }
-    
+
     public void addActor() {
         Object target = getTarget();
         if(target instanceof MPackage) {
@@ -194,7 +194,7 @@ public class PropPanelPackage extends PropPanelNamespace {
             navigateTo(actor);
         }
     }
-    
+
     public void addUseCase() {
         Object target = getTarget();
         if(target instanceof MPackage) {
@@ -204,7 +204,7 @@ public class PropPanelPackage extends PropPanelNamespace {
             navigateTo(useCase);
         }
     }
-    
+
     public void addGeneralization() {
         Object target = getTarget();
         if(target instanceof MPackage) {
@@ -214,7 +214,7 @@ public class PropPanelPackage extends PropPanelNamespace {
             navigateTo(element);
         }
     }
-    
+
 
         public void addAssociation() {
         Object target = getTarget();
@@ -226,7 +226,7 @@ public class PropPanelPackage extends PropPanelNamespace {
         }
     }
 
-    
+
     public String formatElement(MModelElement element) {
         String formatted = null;
         Object target = getTarget();
@@ -236,56 +236,63 @@ public class PropPanelPackage extends PropPanelNamespace {
         }
         return getProfile().formatElement(element,ns);
     }
-    
+
     public void addPackage(MModelElement element) {
         addPackage();
     }
-  
+
     public void addDataType(MModelElement element) {
         addDataType();
     }
-    
+
     public void addActor(MModelElement element) {
         addActor();
     }
-    
+
     public void addInterface(MModelElement element) {
         addInterface();
     }
-    
+
     public void addUseCase(MModelElement element) {
         addUseCase();
     }
-    
+
     public void addAssociation(MModelElement element) {
         addAssociation();
     }
-    
+
     public void deleteElement(MModelElement element) {
         element.remove();
     }
-    
+
     public void addStereotype(MModelElement element) {
         addStereotype();
     }
-    
+
     public void openElement(MModelElement element) {
     }
-    
+
     public void navigateElement(MModelElement element) {
         navigateTo(element);
     }
-    
+
     public void addClass(MModelElement element) {
         addClass();
     }
-    
+
     public void addGeneralization(MModelElement element) {
         addGeneralization();
     }
-    
+
     public void addRealization(MModelElement element) {
         addRealization();
     }
-    
+
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Package") ||
+            baseClass.equals("Namespace");
+    }
+
+
 } /* end class PropPanelPackage */

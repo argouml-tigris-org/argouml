@@ -46,7 +46,7 @@ public class PropPanelGuard extends PropPanel {
         super("State Properties",2);
 
         Class mclass = MGuard.class;
-    
+
         addCaption(new JLabel("Name:"),0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
@@ -58,15 +58,15 @@ public class PropPanelGuard extends PropPanel {
         JList transitionList = new UMLList(new UMLReflectionListModel(this,"transition",false,"getTransition",null,null,null),true);
         addLinkField(transitionList,2,0,0);
 
-        UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression", 
+        UMLExpressionModel expressionModel = new UMLExpressionModel(this,MGuard.class,"expression",
             MBooleanExpression.class,"getExpression","setExpression");
-        
+
         addCaption(new JLabel("Expression:"),0,1,1);
         addField(new UMLExpressionBodyField(expressionModel,true),0,1,1);
-        
+
         addCaption(new JLabel("Language:"),1,1,0);
         addField(new UMLExpressionLanguageField(expressionModel,false),1,1,0);
-    
+
   }
 
     public MTransition getTransition() {
@@ -77,7 +77,10 @@ public class PropPanelGuard extends PropPanel {
         }
         return transition;
     }
-    
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Guard");
+    }
 
 } /* end class PropPanelState */
 

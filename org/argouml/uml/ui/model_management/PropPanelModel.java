@@ -33,6 +33,13 @@ public class PropPanelModel extends PropPanelPackage {
   public PropPanelModel() {
     super();
   }
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Model") ||
+            baseClass.equals("Package") ||
+            baseClass.equals("Namespace") ||
+            baseClass.equals("GeneralizableElement");
+    }
 
-  
+
+
 } /* end class PropPanelModel */

@@ -32,4 +32,10 @@ public class PropPanelObject extends PropPanelInstance {
     public PropPanelObject() {
         super();
     }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Object");
+    }
+  
+
 }

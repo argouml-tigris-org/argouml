@@ -75,14 +75,14 @@ public class PropPanelDependency extends PropPanel {
         }
         return suppliers;
     }
-    
+
     public void setSuppliers(Collection suppliers) {
         Object target = getTarget();
         if(target instanceof MDependency) {
             ((MDependency) target).setSuppliers(suppliers);
         }
     }
-    
+
     public Collection getClients() {
         Collection suppliers = null;
         Object target = getTarget();
@@ -91,14 +91,17 @@ public class PropPanelDependency extends PropPanel {
         }
         return suppliers;
     }
-    
+
     public void setClients(Collection suppliers) {
         Object target = getTarget();
         if(target instanceof MDependency) {
             ((MDependency) target).setClients(suppliers);
         }
     }
-    
-  
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Dependency");
+    }
+
 } /* end class PropPanelDependency */
 

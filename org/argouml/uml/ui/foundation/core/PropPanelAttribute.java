@@ -42,29 +42,31 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 public class PropPanelAttribute extends PropPanel {
 
     private static ImageIcon _attributeIcon = Util.loadIconResource("AddAttribute");
-    
+
     public PropPanelAttribute() {
         super("Attribute Properties",2);
 
         Class mclass = MAttribute.class;
-        
+
         //
         //   this will cause the components on this page to be notified
         //      anytime a stereotype, namespace, operation, etc
         //      has its name changed or is removed anywhere in the model
-        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };        
+        Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
         setNameEventListening(namesToWatch);
-        
+
 
         addCaption(new JLabel("Name:"),0,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
         addCaption(new JLabel("Type:"),1,0,0);
-        addField(new UMLClassifierComboBox(this,MClassifier.class,null,"type","getType","setType",false),1,0,0);
+        UMLComboBoxModel typeModel = new UMLComboBoxModel(this,"isAcceptibleType",
+            "type","getType","setType",false,MClassifier.class,true);
+        addField(new UMLComboBox(typeModel),1,0,0);
 
         addCaption(new JLabel("Multiplicity:"),2,0,0);
         addField(new UMLMultiplicityComboBox(this,MAttribute.class),2,0,0);
-        
+
         addCaption(new JLabel("Stereotype:"),3,0,0);
         JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
         addField(stereotypeBox,3,0,0);
@@ -72,14 +74,14 @@ public class PropPanelAttribute extends PropPanel {
         addCaption(new JLabel("Owner:"),4,0,1);
         JList ownerList = new UMLList(new UMLReflectionListModel(this,"owner",false,"getOwner",null,null,null),true);
         addLinkField(ownerList,4,0,0);
-        
-        
+
+
         addCaption(new JLabel("Initial Value:"),0,1,0);
         addField(new UMLInitialValueComboBox(this),0,1,0);
-        
+
         addCaption(new JLabel("Visibility:"),1,1,0);
         addField(new UMLVisibilityPanel(this,mclass,3,false),1,1,0);
-        
+
         addCaption(new JLabel("Modifiers:"),2,1,1);
         JPanel modPanel = new JPanel(new GridLayout(0,2));
         modPanel.add(new UMLCheckBox("static",this,new UMLEnumerationBooleanProperty("ownerscope",mclass,"getOwnerScope","setOwnerScope",MScopeKind.class,MScopeKind.CLASSIFIER,MScopeKind.INSTANCE)));
@@ -87,13 +89,13 @@ public class PropPanelAttribute extends PropPanel {
         modPanel.add(new UMLCheckBox("transient",this,new UMLTaggedBooleanProperty("transient")));
         modPanel.add(new UMLCheckBox("volatile",this,new UMLTaggedBooleanProperty("volatile")));
         addField(modPanel,2,1,0);
-        
+
         JPanel buttonBorder = new JPanel(new BorderLayout());
         JPanel buttonPanel = new JPanel(new GridLayout(0,2));
         buttonBorder.add(buttonPanel,BorderLayout.NORTH);
         add(buttonBorder,BorderLayout.EAST);
-    
-        
+
+
         new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete attribute","removeElement",null);
         new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateUp",null);
         new PropPanelButton(this,buttonPanel,_attributeIcon,"New attribute","newAttribute",null);
@@ -102,7 +104,7 @@ public class PropPanelAttribute extends PropPanel {
         new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
     }
 
-    
+
     /**
      *    Gets the type of the current target.  This method is called
      *    by UMLClassifierComboBox which invokes methods on the container
@@ -117,14 +119,18 @@ public class PropPanelAttribute extends PropPanel {
         }
         return type;
     }
-    
+
     public void setType(MClassifier type) {
         Object target = getTarget();
         if(target instanceof MAttribute) {
             ((MAttribute) target).setType(type);
         }
     }
-            
+
+    public boolean isAcceptibleType(MModelElement element) {
+      return element instanceof MClassifier;
+    }
+
     public Object getOwner() {
         Object owner = null;
         Object target = getTarget();
@@ -133,7 +139,7 @@ public class PropPanelAttribute extends PropPanel {
         }
         return owner;
     }
-    
+
     public void newAttribute() {
         Object target = getTarget();
         if(target instanceof MAttribute) {
@@ -145,7 +151,7 @@ public class PropPanelAttribute extends PropPanel {
             }
         }
     }
-    
+
     public void navigateUp() {
         Object target = getTarget();
         if(target instanceof MAttribute) {
@@ -154,5 +160,11 @@ public class PropPanelAttribute extends PropPanel {
                 navigateTo(owner);
             }
         }
+    }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Attribute") ||
+            baseClass.equals("StructuralFeature") ||
+            baseClass.equals("Feature");
     }
 } /* end class PropPanelAttribute */

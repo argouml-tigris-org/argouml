@@ -101,5 +101,11 @@ public class PropPanelPseudostate extends PropPanel {
   }
 
 
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Pseudostate");
+    }
+  
+
+
 } /* end class PropPanelPseudostate */
 

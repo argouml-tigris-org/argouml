@@ -30,31 +30,31 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.argouml.uml.ui.*;
 
 
-public class PropPanelInterface extends PropPanel {
+public class PropPanelInterface extends PropPanelClassifier {
 
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelInterface() {
     super("Interface Properties",2);
-    
+
     Class mclass = MInterface.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
-    
+
 
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
     addField(extendsList,2,0,0);
-    
+
 
     addCaption(new JLabel("Modifiers:"),3,0,0);
 
@@ -70,47 +70,78 @@ public class PropPanelInterface extends PropPanel {
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
     addField(namespaceList,4,0,0);
-    
+
     addCaption(new JLabel("Derived:"),5,0,0);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     JScrollPane derivedScroll = new JScrollPane(derivedList);
     addField(derivedScroll,5,0,0);
-    
+
     addCaption(new JLabel("Implementations:"),6,0,1);
     JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    implementations.setForeground(Color.blue);    
+    implementations.setForeground(Color.blue);
     implementations.setVisibleRowCount(1);
     addField(new JScrollPane(implementations),6,0,1);
-    
-    
+
+
     addCaption(new JLabel("Operations:"),0,1,0.3);
     JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
     opsList.setForeground(Color.blue);
     opsList.setVisibleRowCount(1);
     JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.25);
-    
+
     addCaption(new JLabel("Attributes:"),1,1,0.3);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
     attrList.setForeground(Color.blue);
     attrList.setVisibleRowCount(1);
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.25);
-    
+
     addCaption(new JLabel("Associations:"),2,1,0.4);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
     addField(new JScrollPane(connectList),2,1,0.25);
-    
-    
-    
+
+
+    JPanel buttonBorder = new JPanel(new BorderLayout());
+    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
+    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
+    add(buttonBorder,BorderLayout.EAST);
+
+    new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_generalizationIcon,"Add generalization","addGeneralization",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon,"Go back","navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete interface","removeElement",null);
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,"Go forward","navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,"New interface","newInterface",null);
+
   }
 
-  
+  public void newInterface() {
+    Object target = getTarget();
+    if(target instanceof MInterface) {
+        MInterface iface = (MInterface) target;
+        MInterface newInterface = iface.getFactory().createInterface();
+        iface.getNamespace().addOwnedElement(newInterface);
+        navigateTo(newInterface);
+    }
+  }
+
+
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        return baseClass.equals("Interface") ||
+            baseClass.equals("Classifier") ||
+            baseClass.equals("GeneralizableElement");
+    }
+
+
 } /* end class PropPanelInterface */
 

@@ -86,7 +86,7 @@ public class UMLEnumerationBooleanProperty extends UMLBooleanProperty {
         if(_getMethod != null && element != null) {
             try {
                 Object retval = _getMethod.invoke(element,_noArg);
-                if(_enumClass.isInstance(retval) && 
+                if(retval != null && 
                     (retval == _trueArg[0] || retval.equals(_trueArg[0]))) {
                     state = true;
                 }

@@ -48,20 +48,20 @@ public class PropPanelActor extends PropPanelClassifier {
     super("Actor Properties",2);
 
     Class mclass = MActor.class;
-    
+
     addCaption(new JLabel("Name:"),0,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
 
-    
+
     addCaption(new JLabel("Stereotype:"),1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
     addField(stereotypeBox,1,0,0);
-    
+
     addCaption(new JLabel("Extends:"),2,0,0);
 
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     addLinkField(extendsList,2,0,0);
-    
+
     addCaption(new JLabel("Modifiers:"),3,0,0);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
@@ -73,31 +73,31 @@ public class PropPanelActor extends PropPanelClassifier {
     addCaption(new JLabel("Namespace:"),4,0,0);
     JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
     addLinkField(namespaceList,4,0,0);
-    
+
     addCaption(new JLabel("Derived:"),5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
     //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);    
+    derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),5,0,1);
-    
+
     addCaption(new JLabel("Associations:"),0,1,0.5);
     JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
     connectList.setForeground(Color.blue);
     connectList.setVisibleRowCount(1);
     addField(new JScrollPane(connectList),0,1,0.5);
-    
+
     addCaption(new JLabel("Implements:"),1,1,0.5);
     JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
     implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);    
+    implementsList.setForeground(Color.blue);
     addField(implementsList,1,1,0.5);
-    
+
     JPanel buttonBorder = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
     buttonBorder.add(buttonPanel,BorderLayout.NORTH);
     add(buttonBorder,BorderLayout.EAST);
-    
+
     new PropPanelButton(this,buttonPanel,_addOpIcon,"Add operation","addOperation",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,"Go up","navigateNamespace",null);
     new PropPanelButton(this,buttonPanel,_addAttrIcon,"Add attribute","addAttribute",null);
@@ -108,10 +108,10 @@ public class PropPanelActor extends PropPanelClassifier {
     new PropPanelButton(this,buttonPanel,_deleteIcon,"Delete actor","removeElement",null);
     new PropPanelButton(this,buttonPanel,_realizationIcon,"Add realization","addRealization",null);
     new PropPanelButton(this,buttonPanel,_classIcon,"New actor","newActor",null);
-    
 
-    
-    
+
+
+
   }
 
 
@@ -125,5 +125,14 @@ public class PropPanelActor extends PropPanelClassifier {
             }
         }
     }
+
+    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+        boolean isAcceptible = baseClass.equals("Actor");
+        if(!isAcceptible) {
+            isAcceptible = super.isAcceptibleBaseMetaClass(baseClass);
+        }
+        return isAcceptible;
+    }
+
 
 } /* end class PropActor */
