@@ -77,7 +77,7 @@ public class LastRecentlyUsedMenuList {
     
     /**     * menuitems actually created and added to menu
      */
-    private JMenuItem[] menuItems = new JMenuItem[maxCount];
+    private JMenuItem[] menuItems;
 
     /**
      * Array of conf keys for accessing the stored entries
