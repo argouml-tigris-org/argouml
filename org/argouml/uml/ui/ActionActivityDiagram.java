@@ -1,6 +1,3 @@
-
-
-
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -35,7 +32,6 @@ import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
-import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
@@ -62,7 +58,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
         MActivityGraph graph =
 	    ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement) target);
         if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
-            ns = ((MBehavioralFeature) target).getNamespace();
+            ns = ModelFacade.getNamespace(target);
         }
         UMLActivityDiagram d = new UMLActivityDiagram((MNamespace) ns, graph);
         return d;

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,6 +25,7 @@
 package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -66,8 +66,8 @@ public class ActionAddMessage extends UMLChangeAction {
     	Object target =  TargetManager.getInstance().getModelTarget();
     
     	
-    	if (!(org.argouml.model.ModelFacade.isAAssociationRole(target))
-	    && org.argouml.model.ModelFacade.isACollaboration(((MAssociationRole) target).getNamespace()))
+    	if (!(ModelFacade.isAAssociationRole(target))
+	    && ModelFacade.isACollaboration(ModelFacade.getNamespace(target)))
 	    return;
     	MAssociationRole ar = (MAssociationRole) target;
         this.addMessage(ar);
@@ -98,7 +98,7 @@ public class ActionAddMessage extends UMLChangeAction {
 
     public boolean shouldBeEnabled() {
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled() && org.argouml.model.ModelFacade.isAAssociationRole(target);
+	return super.shouldBeEnabled() && ModelFacade.isAAssociationRole(target);
     }
     
 }  /* end class ActionAddMessage */

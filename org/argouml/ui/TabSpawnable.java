@@ -36,6 +36,7 @@ import javax.swing.SwingUtilities;
 import org.apache.log4j.Category;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.ui.TabToDoTarget;
+import org.argouml.swingext.Orientable;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.diagram.ui.TabDiagram;
 import org.argouml.uml.ui.TabModelTarget;
@@ -45,10 +46,7 @@ import org.argouml.uml.ui.TabModelTarget;
  *  generate a separate window of the same size and with the same
  *  contents.  This is almost like "tearing off" a tab.
  */
-public class TabSpawnable
-    extends JPanel
-    implements Cloneable, org.argouml.swingext.Orientable
-{
+public class TabSpawnable extends JPanel implements Cloneable, Orientable {
         
     private Category cat = Category.getInstance(TabSpawnable.class);
     

@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,6 +25,7 @@
 // $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.UMLComboBoxModel2;
@@ -75,7 +75,7 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(ru.novosoft.uml.MBase)
      */
     protected boolean isValidElement(Object element) {
-        return org.argouml.model.ModelFacade.isAUseCase(element) && ((MInclude) getTarget()).getNamespace() == ((MUseCase) element).getNamespace();
+        return ModelFacade.isAUseCase(element) && ModelFacade.getNamespace(getTarget()) == ModelFacade.getNamespace(element);
     }
 
 }

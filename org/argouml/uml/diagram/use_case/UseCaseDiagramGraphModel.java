@@ -494,7 +494,7 @@ public class UseCaseDiagramGraphModel
          * NEW CODE:
          */
 	if (((org.argouml.model.ModelFacade.isAActor(node)) || (org.argouml.model.ModelFacade.isAUseCase(node))) && 
-	    (((MModelElement) node).getNamespace() == null)) {
+	    (ModelFacade.getNamespace(node) == null)) {
 	    // end NEW CODE
             cat.debug("setting namespace " + _model +
 		      " to element " + node);
@@ -528,7 +528,7 @@ public class UseCaseDiagramGraphModel
         // Add the element and place it in the namespace of the model
         _edges.addElement(edge);
 
-        if (((MModelElement) edge).getNamespace() == null) {
+        if (ModelFacade.getNamespace(edge) == null) {
             _model.addOwnedElement((MModelElement) edge);
         }
 

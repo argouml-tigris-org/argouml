@@ -44,7 +44,7 @@ abstract public class Profile {
      *    @return a string representing the model element
      */
     abstract public String formatElement(MModelElement element,
-					 MNamespace namespace);
+					 Object namespace);
     /**
      *   This method produces a string the represents the collection
      *   of model elements in the context of the specified namespace.
@@ -53,6 +53,6 @@ abstract public class Profile {
      *   @return a string representing the collection
      */
     abstract public String formatCollection(Iterator iter,
-					    MNamespace namespace);
+					    Object namespace);
     abstract public MModel getProfileModel();
 }
