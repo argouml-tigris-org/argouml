@@ -135,7 +135,7 @@ ArgoUML as a modelling tool.
   </chapter>
 
      <chapter id="buildingandtools">
-     <title>Building and Tools</title>
+    <title>Building from source</title>
     <para>
 If you are in a hurry:
 <programlisting>
@@ -179,7 +179,8 @@ It is also recommended that you check out GEF from <ulink url="http://gef.tigris
 	<itemizedlist>
 	  <listitem>
 	    <para>
-CVS for obtaining the latest files via internet
+CVS for obtaining the latest files via internet and fetching
+and sending in source code updates.
 </para>
 	  </listitem>
 	  <listitem>
@@ -393,7 +394,7 @@ the javadoc documentation is generated and put into
 	<para>
 This describes how the documentation arrives on the web site.
 </para>
-	<sect3>
+	<sect3 id="how_the_web_site_works">
 	  <title>How the ArgoUML web site works</title>
 	  <para>
 Tigris provides the ArgoUML site to be edited through cvs. Everything
@@ -675,7 +676,7 @@ Markus Klink will provide in-depth descriptions here.
     <title>ArgoUML Components</title>
 
     <sect1>
-      <title>Argo Initialization</title>
+      <title>ArgoUML Initialization</title>
       <sect2>
 	<title>Which sources are involved?</title>
 	<para>
@@ -2300,13 +2301,13 @@ This is the list as it looks now (beginning of March 2002).
 	  <para>
 <itemizedlist>
 	      <listitem>
-		<para>jscheme</para>
+		<para><filename class="directory">jscheme</filename></para>
 		<para>
 Module that allows to extend ArgoUML using scheme.
 </para>
 	      </listitem>
 	      <listitem>
-		<para>junit</para>
+		<para><filename class="directory">junit</filename></para>
 		<para>
 Module that is used during the development and contains all
 junit test cases as well as the junit infrastructure needed to run
@@ -2314,13 +2315,43 @@ these tests.
 </para>
 	      </listitem>
 	      <listitem>
-		<para>menutest</para>
+		<para><filename class="directory">menutest</filename></para>
 		<para>
 Test module that tests the plugin interface for the menus.
 </para>
 	      </listitem>
+	      <listitem>
+		<para><filename class="directory">php</filename></para>
+		<para>
+Language generating, Notation and reverse engineering for PHP.
+</para>
+	      </listitem>
 	    </itemizedlist>
-This is so far I had time. I will continue later. /Linus.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">src</filename></para>
+	  <para>
+Old and no longer used source code.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">src_new</filename></para>
+	  <para>
+All source code for ArgoUML including pictures of icons.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">tools</filename></para>
+	  <para>
+Currently empty. Will contain all tools used during the build process.
+</para>
+	</listitem>
+	<listitem>
+	  <para><filename class="directory">www</filename></para>
+	  <para>
+This is all the static contents of the web site. 
+See <xref linkend="how_the_web_site_works"/>.
 </para>
 	</listitem>
       </itemizedlist>
@@ -2965,6 +2996,210 @@ LINK: <ulink url="http://www.cocons.org/publications/CCL_plugin_for_ArgoUML.pdf"
     </sect1>
 </chapter>
 
+  <chapter>
+    <title>Processes for the ArgoUML project</title>
+    <para>
+This chapter contains processes used when working with the 
+ArgoUML project.
+</para>
+    <para>
+These processes are provided with the hope of being helpful for
+the members of the project and if they feel too complicated,
+ambitious or overworked, please raise the issue of simplifying
+them on the 
+<ulink url="mailto:dev@argouml.tigris.org">developers' mailing list</ulink>.
+</para>
+    <para>
+Currently all of the processes regards how to handle the
+Issues when the problems are already solved.
+
+That is because the author of these processes (Linus Tolke)
+feels that the biggest need for processes is around those parts.
+
+Hopefully this process will give use the means to Close with good
+quality most of the 270 issues that are currently RESOLVED 
+(end February 2002).
+</para>
+    <sect1>
+      <title>The big picture for Issues</title>
+      <para>
+Here is the big picture of the life of an Issue.
+</para>
+      <mediaobject>
+	<imageobject>
+	  <imagedata fileref="images/cookbook/IssueBigPicture.gif" format="GIF"/>
+	</imageobject>
+      </mediaobject>
+      <para>
+The rest of the section handles the processes that take the Issue form
+the Resolved level and further down.
+</para>
+    </sect1>
+    <sect1 id="verify_resolved_fixed">
+      <title>How to verify an Issue that is FIXED</title>
+      <para>
+This can be performed by anyone.
+There might be special skills involved but it differs widely depending
+on the nature of the Issue.
+</para>
+      <para>
+Do the following:
+</para>
+      <orderedlist>
+	<listitem id="verify_resolved_fixed_start">
+	  <para>
+Pick any Issue that is RESOLVED/FIXED or WORKSFORME and that you have
+not raised, nor solved.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=FIXED&amp;resolution=WORKSFORME">The list to pick from</ulink>.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Run the 0.9.6 release of ArgoUML as provided for downloads.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Test the problem in the issue and verify that the problem is no longer
+there or the feature is provided.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Do one of the following:
+</para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+If the problem is gone, the feature is present put the Issue in
+Status VERIFIED.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+If the problem is still there, the feature does not work, put the
+Issue in Status REOPENED with a description of what is still there, is
+still missing.
+</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+	<listitem>
+	  <para>
+If you during this, has discovered other problems that the ones that
+are stated in the Issue, create new Issues stating those new problems
+according to the rule for creating Issues.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Do this as many times as you like until there are no Issues left.
+</para>
+	</listitem>
+      </orderedlist>
+    </sect1>
+    <sect1 id="verify_resolved_invalid">
+      <title>How to verify an Issue that is rejected</title>
+      <para>
+This can be performed by anyone.
+There might be special skills involved but it differs widely depending
+on the nature of the Issue.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=VERIFIED">The list to pick from</ulink>.
+</para>
+      <para>
+Do the following:
+</para>
+      <orderedlist>
+	<listitem id="verify_resolved_invalid_start">
+	  <para>
+Pick any issued that is RESOLVED/(INVALID, WONTFIX, or DUPLICATE) that
+you have not raised nor solved.
+<ulink url="http://argouml.tigris.org/issues/buglist.cgi?component=argouml&amp;issue_status=RESOLVED&amp;resolution=INVALID&amp;resolution=WONTFIX&amp;resolution=DUPLICATE">The list to pick from</ulink>.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Read through the description provided.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Do one of the following:
+</para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+If you agree with the statement and feel that the Resolution is correct
+put the Issue in Status VERIFIED.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+If you don't agree, put the Issue in status REOPENED and give a
+description as to why you don't agree.
+</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+	<listitem>
+	  <para>
+Do this as many times as you like until there are no Issues left.
+</para>
+	</listitem>
+      </orderedlist>
+    </sect1>
+    <sect1 id="close_verified_issue">
+      <title>How to Close an Issue</title>
+      <para>
+This is performed by the person that originally raised the Issue
+or by the QA responsible for that area.
+This can also be done by someone who would raise the issue but
+did not because it was already present in Issuesilla.
+</para>
+      <orderedlist>
+	<listitem>
+	  <para>
+Pick any Issue that is Verified and that you have raised or that you
+have found and refrained from raising because somebody else already
+had written it.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+See that you are satisfied with the solution.
+This could involve reading through the resolution and 
+starting the tool to verify it.
+</para>
+	</listitem>
+	<listitem>
+	  <para>
+Do one of the following:
+</para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+If you are satisfied, put the Issue in Status CLOSED.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+If you are not satisfied but the problem is solved as it is written in
+the Issue, put the Issue in Status CLOSED and open a new Issue with
+the rest of the problem.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+If you are not satisfied and the problem is not solved, put the Issue
+in status REOPENED with a description on what you are not satisfied
+with.
+</para>
+	    </listitem>
+	  </itemizedlist>
+	</listitem>
+      </orderedlist>
+    </sect1>
+  </chapter>
 
  <chapter>
   <title>Screen Grabs</title> 
