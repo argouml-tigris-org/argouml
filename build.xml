@@ -1039,11 +1039,7 @@ ${Name} Build file
                                       junit-get-011202-xml,
                                       junit-get-991015-dtd"/>
 
-
-  <!-- =================================================================== -->
-  <!-- Run the junit tests.                                                -->
-  <!-- =================================================================== -->
-  <target name="tests" depends="compile,junit-setup">
+  <target name="junit-report-clean">
     <mkdir dir="${argo.tests.reports}/junit/output"/>
     <mkdir dir="${argo.tests.reports}/junit/output/html"/>
     <delete>
@@ -1052,7 +1048,23 @@ ${Name} Build file
            <include name="TEST-*.txt"/>
         </fileset>
     </delete>
+  </target>
 
+  <target name="junit-report-create">
+    <junitreport todir="${argo.tests.reports}/junit/output">
+      <fileset dir="${argo.tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames"
+              todir="${argo.tests.reports}/junit/output/html"/>
+    </junitreport>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="tests" depends="compile,junit-setup,junit-report-clean">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -1090,21 +1102,56 @@ ${Name} Build file
       </test>
 -->
     </junit>
- 
- 
-    <junitreport todir="${argo.tests.reports}/junit/output">
-  		<fileset dir="${argo.tests.reports}/junit/output">
-    		<include name="TEST-*.xml"/>
-  		</fileset>
-  		<report format="frames"
-                        todir="${argo.tests.reports}/junit/output/html"/>
-
-	</junitreport>
-
+    <antcall target="junit-report-create"/>
 
   </target>
 
-  <!-- Start ArgoUML with JUnit test cases from ../tests. -->
+  <!-- =================================================================== -->
+  <!-- Run the junit tests, the ones that include GUI stuff.               -->
+  <!-- =================================================================== -->
+  <target name="guitests" depends="compile,junit-setup,junit-report-clean">
+    <!-- ant 1.4 uses printsummary="true"                          -->
+    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
+    <!-- This should never be committed as "withOutAndErr", but    -->
+    <!-- this comment is in case it gets committed by accident.    -->
+
+    <!-- TODO:  This should be contained in default.properties     -->
+    <!--        and overridable in build.properties so that        -->
+    <!--        individual users can set as wanted.                -->
+    <!--        That is part of issue 579.                         -->
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           maxmemory="48M"
+           fork="yes">
+	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+	<sysproperty key="log4j.configuration"
+		     value="org/argouml/resource/default.lcf"/>
+        <classpath>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/**/GUITest*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="junit-report-create"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the both kind of tests.                                         -->
+  <!-- =================================================================== -->
+  <target name="alltests" 
+          depends="compile,junit-setup,tests,guitests"/>
+
+  <!-- =================================================================== -->
+  <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
+  <!-- =================================================================== -->
   <target name="run-with-test-panel" depends="compile,junit-setup">
     <copy file="${argo.tests.src}/org/manifest.mf"
           todir="${argo.tests.classes}/org"/>
