@@ -40,7 +40,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
     /**
      * The singleton.
      */
-    public static ActionAddTopLevelPackage SINGLETON =
+    public static final ActionAddTopLevelPackage SINGLETON =
 	new ActionAddTopLevelPackage(); 
 
 

@@ -63,7 +63,7 @@ public class ActionSaveProject extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionSaveProject SINGLETON = new ActionSaveProject(); 
+    public static final ActionSaveProject SINGLETON = new ActionSaveProject(); 
 
     /**
      * To persist to and from zargo (zipped file) storage.

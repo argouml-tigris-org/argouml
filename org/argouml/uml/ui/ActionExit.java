@@ -47,7 +47,7 @@ public class ActionExit extends UMLAction
     /**
      * The singleton.
      */
-    public static ActionExit SINGLETON = new ActionExit();
+    public static final ActionExit SINGLETON = new ActionExit();
  
     /** remember if this form is already active, so that it does
         not popup twice.

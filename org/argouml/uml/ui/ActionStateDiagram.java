@@ -43,7 +43,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
     /**
      * The singleton.
      */
-    public static ActionStateDiagram SINGLETON = new ActionStateDiagram();
+    public static final ActionStateDiagram SINGLETON = new ActionStateDiagram();
     
     private static final Logger LOG = 
         Logger.getLogger(ActionStateDiagram.class);

@@ -49,7 +49,7 @@ public class ActionNew extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionNew SINGLETON = new ActionNew(); 
+    public static final ActionNew SINGLETON = new ActionNew(); 
 
     ////////////////////////////////////////////////////////////////
     // constructors
