@@ -36,6 +36,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
@@ -127,12 +128,11 @@ public class PropPanelDataType extends PropPanelClassifier {
                 }
             }
 
-            MAttribute attr = classifier.getFactory().createAttribute();
+            MAttribute attr = MMUtil.SINGLETON.buildAttribute(classifier);
             attr.setOwnerScope(MScopeKind.CLASSIFIER);
             attr.setChangeability(MChangeableKind.FROZEN);
             attr.setVisibility(MVisibilityKind.PUBLIC);
             attr.setType(classifier);
-            classifier.addFeature(attr);
             navigateTo(attr);
         }
     }

@@ -908,7 +908,7 @@ class ColumnReturn extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-	MParameter rp = new MParameterImpl();
+        MParameter rp = MMUtil.SINGLETON.buildParameter();
 	rp.setType(rt);
 	MMUtil.SINGLETON.setReturnParameter(op, rp);
   }

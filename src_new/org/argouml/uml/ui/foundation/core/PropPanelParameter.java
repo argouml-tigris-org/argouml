@@ -28,6 +28,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import javax.swing.*;
+import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import java.awt.*;
 
@@ -130,9 +131,8 @@ public class PropPanelParameter extends PropPanelModelElement {
         if(target instanceof MParameter) {
             feature = ((MParameter) target).getBehavioralFeature();
             if(feature != null) {
-                MParameter newParam = feature.getFactory().createParameter();
+                MParameter newParam = MMUtil.SINGLETON.buildParameter(feature);
                 newParam.setKind(MParameterDirectionKind.INOUT);
-                feature.addParameter(newParam);
                 navigateTo(newParam);
             }
         }

@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -98,9 +99,8 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         Object target = getTarget();
         if(target instanceof MEvent) {
             MEvent ev = (MEvent) target;
-            MParameter newParam = ev.getFactory().createParameter();
+            MParameter newParam = MMUtil.SINGLETON.buildParameter(ev);
             newParam.setKind(MParameterDirectionKind.INOUT);
-            ev.addParameter(newParam);
             navigateTo(newParam);
         }
     }
