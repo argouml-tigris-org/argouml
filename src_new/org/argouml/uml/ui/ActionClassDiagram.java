@@ -42,7 +42,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
     /**
      * The singleton.
      */
-    public static ActionClassDiagram SINGLETON = new ActionClassDiagram();
+    public static final ActionClassDiagram SINGLETON = new ActionClassDiagram();
 
     ////////////////////////////////////////////////////////////////
     // constructors

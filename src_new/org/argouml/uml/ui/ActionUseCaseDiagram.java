@@ -37,7 +37,8 @@ public class ActionUseCaseDiagram extends ActionAddDiagram {
     /**
      * The singleton.
      */
-    public static ActionUseCaseDiagram SINGLETON = new ActionUseCaseDiagram();
+    public static final ActionUseCaseDiagram SINGLETON = 
+        new ActionUseCaseDiagram();
 
     private static final Logger LOG = 
         Logger.getLogger(ActionUseCaseDiagram.class);

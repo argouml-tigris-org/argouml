@@ -49,7 +49,8 @@ public class ActionSetSourcePath extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionSetSourcePath SINGLETON = new ActionSetSourcePath();
+    public static final ActionSetSourcePath SINGLETON = 
+        new ActionSetSourcePath();
 
     //public static final String separator = "/";
     //System.getProperty("file.separator");

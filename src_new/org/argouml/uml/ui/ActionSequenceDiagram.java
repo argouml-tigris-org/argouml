@@ -52,7 +52,8 @@ public class ActionSequenceDiagram extends UMLChangeAction {
     /**
      * The singleton.
      */
-    public static ActionSequenceDiagram SINGLETON = new ActionSequenceDiagram();
+    public static final ActionSequenceDiagram SINGLETON = 
+        new ActionSequenceDiagram();
 
     ////////////////////////////////////////////////////////////////
     // constructors

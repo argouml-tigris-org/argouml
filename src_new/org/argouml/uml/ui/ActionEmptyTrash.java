@@ -38,7 +38,7 @@ public class ActionEmptyTrash extends UMLChangeAction {
     /**
      * The singleton.
      */
-    public static ActionEmptyTrash SINGLETON = new ActionEmptyTrash(); 
+    public static final ActionEmptyTrash SINGLETON = new ActionEmptyTrash(); 
 
 
     ////////////////////////////////////////////////////////////////

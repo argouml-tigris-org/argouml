@@ -46,7 +46,7 @@ public class ActionAddPackage  extends UMLAction {
     /**
      * The singleton.
      */
-    public static ActionAddPackage SINGLETON = new ActionAddPackage();
+    public static final ActionAddPackage SINGLETON = new ActionAddPackage();
     
     ////////////////////////////////////////////////////////////////
     // constructors

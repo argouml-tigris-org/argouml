@@ -49,7 +49,8 @@ public class ActionSaveProjectAs extends ActionSaveProject {
     /**
      * The singleton.
      */
-    public static ActionSaveProjectAs SINGLETON = new ActionSaveProjectAs();
+    public static final ActionSaveProjectAs SINGLETON = 
+        new ActionSaveProjectAs();
 
     //public static final String separator = "/";
     //System.getProperty("file.separator");
