@@ -44,7 +44,17 @@ import org.argouml.cognitive.Designer;
 
 public abstract class ControlMech implements Serializable {
 
+    /**
+     * The constructor.
+     * 
+     */
     public ControlMech() { }
+    
+    /**
+     * @param c the critic
+     * @param d the designer
+     * @return true f the critic is relevant for the given designer
+     */
     public boolean isRelevant(Critic c, Designer d) {
 	return true;
     }
