@@ -64,7 +64,6 @@ import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
-import ru.novosoft.uml.foundation.core.MDependency;
 import ru.novosoft.uml.foundation.core.MElement;
 import ru.novosoft.uml.foundation.core.MElementResidence;
 import ru.novosoft.uml.foundation.core.MFeature;

@@ -28,8 +28,6 @@ import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MFeature;
-
 /**
  * @since Jan 29, 2002
  * @author jaap.branderhorst@xs4all.nl

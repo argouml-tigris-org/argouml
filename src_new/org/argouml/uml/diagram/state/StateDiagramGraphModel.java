@@ -45,7 +45,6 @@ import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 import ru.novosoft.uml.model_management.MElementImport;
 
