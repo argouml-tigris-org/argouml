@@ -60,6 +60,7 @@ import org.argouml.persistence.*;
 import org.argouml.cognitive.*;
 import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.ui.*;
+import org.argouml.swingext.ActionUtilities;
 
 //
 //   Template reader, has nothing to do with OCL
@@ -86,6 +87,7 @@ public class Actions {
 
 
   public static UMLAction Print = new ActionPrint();
+  public static UMLAction PageSetup = new ActionPageSetup();
 
   public static UMLAction Undo = new ActionUndo();
   public static UMLAction Redo = new ActionRedo();
@@ -117,6 +119,7 @@ public class Actions {
   public static UMLAction MoreInfo = new ActionMoreInfo();
   public static UMLAction Snooze = new ActionSnooze();
 
+  public static UMLAction SystemInfo = new ActionSystemInfo();
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
 
   /**
@@ -157,10 +160,10 @@ public class Actions {
 /** print the current active diagram.
  */
 class ActionPrint extends UMLAction {
+  CmdPrint cmd = new CmdPrint();
   public ActionPrint() { super("Print..."); }
 
   public void actionPerformed(ActionEvent ae) {
-    CmdPrint cmd = new CmdPrint();
     Object target = ProjectBrowser.TheInstance.getActiveDiagram();
     if (target instanceof Diagram) {
       String n = ((Diagram)target).getName();
@@ -168,7 +171,20 @@ class ActionPrint extends UMLAction {
       cmd.doIt();
     }
   }
+  public CmdPrint getCmdPrint() {
+    return cmd;
+  }
 } /* end class ActionPrint */
+
+/** Page setup for printing.
+ */
+class ActionPageSetup extends UMLAction {
+  public ActionPageSetup() { super("Page Setup...", NO_ICON); }
+
+  public void actionPerformed(ActionEvent ae) {
+    ((ActionPrint)Actions.Print).getCmdPrint().doPageSetup();
+  }
+} /* end class ActionPageSetup */
 
 
 ////////////////////////////////////////////////////////////////
@@ -440,12 +456,38 @@ class ActionSnooze extends ToDoItemAction {
 
 ////////////////////////////////////////////////////////////////
 // general user interface actions
+/**
+ * System information dialog. 
+ */
+class ActionSystemInfo extends UMLAction {
+  public ActionSystemInfo() { super("System Information", NO_ICON); }
 
+  public void actionPerformed(ActionEvent ae) {
+    JFrame jFrame = (JFrame)ActionUtilities.getActionRoot(ae);
+    SystemInfoDialog sysInfoDialog = new SystemInfoDialog(jFrame,true);
+    Dimension siDim = sysInfoDialog.getSize();
+    Dimension pbDim = jFrame.getSize();
+    if ( siDim.width > pbDim.width/2 ) {
+      sysInfoDialog.setSize(pbDim.width/2,siDim.height+45);
+    } else {
+      sysInfoDialog.setSize(siDim.width,siDim.height+45);
+    }
+    sysInfoDialog.setLocationRelativeTo(jFrame);
+    sysInfoDialog.show();
+  }
+  public boolean shouldBeEnabled() { return true; }
+} /* end class ActionSystemInfo */
+
+/**
+ * About Argo/UML dialog.
+ */
 class ActionAboutArgoUML extends UMLAction {
   public ActionAboutArgoUML() { super("About Argo/UML", NO_ICON); }
 
   public void actionPerformed(ActionEvent ae) {
-    AboutBox box = new AboutBox();
+    JFrame jFrame = (JFrame)ActionUtilities.getActionRoot(ae);
+    AboutBox box = new AboutBox(jFrame,true);
+    box.setLocationRelativeTo(jFrame);
     box.show();
   }
   public boolean shouldBeEnabled() { return true; }
