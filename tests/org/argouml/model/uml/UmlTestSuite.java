@@ -42,6 +42,13 @@ public class UmlTestSuite {
         suite.addTestSuite(TestUml.class);
         suite.addTestSuite(TestCopyHelper.class);
         suite.addTestSuite(TestUmlModelEventPump.class);
+
+		suite.addTest(new TestSuite(TestUmlModelElement.class));
+		suite.addTest(new TestSuite(TestUmlNamespace.class));
+		suite.addTest(new TestSuite(TestUmlModel.class));
+		suite.addTest(new TestSuite(TestUmlUseCase.class));
+		suite.addTest(new TestSuite(TestUmlActor.class));
+
         return suite;
     }
 

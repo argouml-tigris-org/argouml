@@ -21,30 +21,31 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.model.uml;
 
-import org.argouml.model.uml.Uml;
+import org.argouml.model.ModelFacade;
+
 
 /**
  * @author Thierry Lach
  */
-public class TestUmlModel extends GenericObjectTestFixture
+public class TestUmlUseCase extends GenericUmlObjectTestFixture
 {
 	/**
 	 * Constructor for FakeUmlModelFacadeTest.
 	 * @param arg0
 	 */
-	public TestUmlModel(String arg0)
+	public TestUmlUseCase(String arg0)
 	{
-		super(arg0);
+		super(arg0, Uml.USE_CASE);
 		validateTestClassIsGeneric(this);
 	}
 
     public void testNamespace() {
-    	Object o = ModelFacade.getFacade().create(Uml.MODEL);
+    	Object o = ModelFacade.getFacade().create(Uml.USE_CASE);
     	assertNotNull("Didn't create object", o);
 		assertTrue("Should be a base", ModelFacade.isABase(o));
-		assertTrue("Should be a model", ModelFacade.isAModel(o));
+		assertTrue("Should be a use case", ModelFacade.isAUseCase(o));
 		runTruthTests(o);
     }
 
@@ -53,8 +54,8 @@ public class TestUmlModel extends GenericObjectTestFixture
 		setTruth(Uml.MODEL_ELEMENT, true);
 		setTruth(Uml.GENERALIZABLE_ELEMENT, true);
 		setTruth(Uml.NAMESPACE, true);
-		setTruth(Uml.PACKAGE, true);
-		setTruth(Uml.MODEL, true);
+		setTruth(Uml.CLASSIFIER, true);
+		setTruth(Uml.USE_CASE, true);
     }
 
 }

@@ -23,6 +23,8 @@
 
 package org.argouml.model;
 
+import org.argouml.model.uml.*;
+
 import junit.framework.Test;
 import junit.framework.TestSuite;
 
@@ -37,12 +39,6 @@ public class ModelTestSuite {
 		suite.addTest(new TestSuite(TestUmlObjectCreation.class));
 
 		suite.addTest(TestModelFacade.suite());
-
-		suite.addTest(new TestSuite(TestUmlModelElement.class));
-		suite.addTest(new TestSuite(TestUmlNamespace.class));
-		suite.addTest(new TestSuite(TestUmlModel.class));
-		suite.addTest(new TestSuite(TestUmlUseCase.class));
-		suite.addTest(new TestSuite(TestUmlActor.class));
 
 		return suite;
 	}

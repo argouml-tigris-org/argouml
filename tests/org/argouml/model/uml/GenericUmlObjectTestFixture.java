@@ -21,11 +21,12 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.model.uml;
 
 import java.util.HashMap;
 
-import org.argouml.model.uml.Uml;
+import org.argouml.model.ModelEntity;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
 
 import junit.framework.TestCase;
@@ -33,20 +34,24 @@ import junit.framework.TestCase;
 /**
  * @author Thierry Lach
  */
-public abstract class GenericObjectTestFixture extends TestCase
+public abstract class GenericUmlObjectTestFixture extends TestCase
 {
 
     private HashMap truths = new HashMap();
     
 	private boolean validated = false;
 
+	private ModelEntity entity;
+
 	/**
 	 * Constructor for GenericObjectFixture.
 	 * @param arg0
 	 */
-	public GenericObjectTestFixture(String arg0)
+	public GenericUmlObjectTestFixture(String arg0,
+	                                ModelEntity ent)
 	{
 		super(arg0);
+		entity = ent;
 	}
 
 	/*
@@ -178,6 +183,13 @@ public abstract class GenericObjectTestFixture extends TestCase
         	truth = Boolean.FALSE;        
         }
         runTruthTest(result, truth.booleanValue());
+	}
+
+	/**
+	 * @return
+	 */
+	public ModelEntity getEntity() {
+		return entity;
 	}
 
 }

@@ -21,14 +21,15 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.model;
+package org.argouml.model.uml;
 
-import org.argouml.model.uml.Uml;
+import org.argouml.model.ModelFacade;
+
 
 /**
  * @author Thierry Lach
  */
-public class TestUmlNamespace extends GenericObjectTestFixture
+public class TestUmlNamespace extends GenericUmlObjectTestFixture
 {
 	/**
 	 * Constructor for FakeUmlModelFacadeTest.
@@ -36,7 +37,7 @@ public class TestUmlNamespace extends GenericObjectTestFixture
 	 */
 	public TestUmlNamespace(String arg0)
 	{
-		super(arg0);
+		super(arg0, Uml.NAMESPACE);
 		validateTestClassIsGeneric(this);
 	}
 
