@@ -967,7 +967,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if (Model.getFacade().isABase(obj)) {
             // an object that can be represented
             Collection allFigs = findAllPresentationsFor(obj, true);
-            removeAllFigs(allFigs);
+            removeFigs(allFigs);
 
             Model.getUmlFactory().delete(obj);
 
@@ -1009,7 +1009,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 obj = ((Fig) obj).getOwner();
             }
             if (obj instanceof CommentEdge) {
-                removeAllFigs(findAllPresentationsFor(obj, false));
+                removeFigs(findAllPresentationsFor(obj, false));
                 ((CommentEdge) obj).delete();
             }
         }
@@ -1032,9 +1032,10 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @param c a collection of figs
+     * Remove this given Figs from their diagrams.
+     * @param c a collection of Figs
      */
-    private void removeAllFigs(Collection c) {
+    private void removeFigs(Collection c) {
         Iterator i = c.iterator();
         while (i.hasNext()) {
             Fig obj = (Fig) i.next();
