@@ -43,11 +43,11 @@ public class SettingsResourceBundle_fr extends ListResourceBundle {
     */
 
    static final Object[][] _contents = {
-        {"button_apply", "Appliquer"},
-        {"button_cancel", "Annuler"},
-        {"button_ok", "OK"},
+        {"button.apply", "Appliquer"},
+        {"button.cancel", "Annuler"},
+        {"button.ok", "OK"},
 
-        {"caption_settings", "Param\u00e9trages"},
+        {"caption.settings", "Param\u00e9trages"},
 
         {"label_edem", "Rendre compte des statistiques d'utilisation"},
         {"label_email", "Adresse \u00e9lectronique :"},
