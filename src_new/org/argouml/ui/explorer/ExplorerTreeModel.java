@@ -36,6 +36,8 @@ import javax.swing.tree.TreeNode;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import org.apache.log4j.Logger;
+
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.explorer.rules.PerspectiveRule;
@@ -52,6 +54,9 @@ import org.argouml.ui.explorer.rules.PerspectiveRule;
  */
 public class ExplorerTreeModel extends DefaultTreeModel
 		implements TreeModelUMLEventListener, ItemListener {
+
+    private static final Logger LOG =
+	Logger.getLogger(ExplorerTreeModel.class);
 
     /**
      * an array of 
@@ -216,6 +221,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
                 removeNodeFromParent(changeNode);
             }
         }
+
+	traverseModified((TreeNode) getRoot(), node);
     }
 
     /**
@@ -255,6 +262,9 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	Vector newChildren = new Vector();
         Object modelElement = node.getUserObject();
 	Set deps = new HashSet();
+	Vector weakNodes = new Vector();
+	Vector pendingWeakNodes = new Vector();
+	Vector pendingWeakObjects = new Vector();
 
 	// Avoid doing this too early in the initialization process
 	if (rules == null)
@@ -265,6 +275,8 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    return;
 	updatingChildren.add(node);
 
+	// Enumerate the current children of node to find out which now sorts
+	// in different order, since these must be moved
 	Enumeration enChld = node.children();
 	while (enChld.hasMoreElements()) {
 	    Object child = enChld.nextElement();
@@ -272,9 +284,12 @@ public class ExplorerTreeModel extends DefaultTreeModel
 		Object obj = ((DefaultMutableTreeNode) child).getUserObject();
 		if (children.size() > 0) {
 		    Object obj0 = children.get(children.size() - 1);
-		    if (order.compare(obj0, obj) > 0)
+		    if (order.compare(obj0, obj) > 0) {
 			reordered.add(child);
-		    else
+			// Avoid our deinitialization here
+			// The node will be added back to the tree below
+			super.removeNodeFromParent((MutableTreeNode) child);
+		    } else
 			children.add(obj);
 		} else {
 		    children.add(obj);
@@ -282,8 +297,11 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    }
 	}
 
+	// For each reordered node, find it's new position among the current
+	// children and move it there
         for (int x = 0; x < reordered.size(); x++) {
-	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) reordered.get(x);
+	    DefaultMutableTreeNode child =
+		    (DefaultMutableTreeNode) reordered.get(x);
 	    Object obj = child.getUserObject();
 	    int ip = Collections.binarySearch(children, obj, order);
 
@@ -292,12 +310,13 @@ public class ExplorerTreeModel extends DefaultTreeModel
 
 	    int cidx = node.getIndex(child);
 
-	    // Avoid our initialization/deinitialization here
-	    super.removeNodeFromParent(child);
+	    // Avoid our initialization here
 	    super.insertNodeInto(child, node, ip);
 	    children.add(ip, obj);
 	}
 
+	// Collect the current set of objects that should be children to
+	// this node
         for (int x = 0; x < rules.length; x++) {
             Collection c = ((PerspectiveRule) rules[x])
 		    .getChildren(modelElement);
@@ -308,18 +327,41 @@ public class ExplorerTreeModel extends DefaultTreeModel
 		Iterator it = c.iterator();
 		while (it.hasNext()) {
 		    Object obj = it.next();
-		    if (!newChildren.contains(obj))
+		    if (obj == null) {
+			LOG.warn("PerspectiveRule " + rules[x] + " wanted to "
+				 + "add null to the explorer tree!");
+		    } else if (!newChildren.contains(obj)) {
 			newChildren.add(obj);
+		    }
 		}
 	    }
+
 	    if (c2 != null) {
 		deps.addAll(c2);
 	    }
         }
+
+	// Order the new children, the dependencies cannot and
+	// need not be ordered
 	Collections.sort(newChildren, order);
 	deps.addAll(newChildren);
 	node.setModifySet(deps);
 
+	// Update the children to node by walking through the sorted list of
+	// children and the sorted list of children to be (in order to avoid
+	// unneccessarily touching tree nodes)
+	// Method:
+	//  Let cc be 'the first' object in the current list of children
+	//  Let nc be 'the first' object in the new list of children
+	//  Let r be -1 if cc sorts before nc, 0 if arbitrary order
+	//        and 1 if cc sorts after nc
+	//  If r < 0 then then cc should be removed
+	//  If r = 0 then
+	//    Advance both cc and nc through the arbitrary field,
+	//    adding and removing as required but no more
+	//    Weak node handling makes some other things easy, but here
+	//    it becomes a true pain.
+	//  If r > 0 then nc is new and we add it to children
 	Iterator cChlds = children.iterator();
 	Iterator nChlds = newChildren.iterator();
 	Object cc = null, nc = null;
@@ -343,24 +385,90 @@ public class ExplorerTreeModel extends DefaultTreeModel
 	    }
 
 	    /* Always null at least one of cc and nc in every path */
-	    if (r == 0) {
-		/* Objects cc and nc sorts arbitrary */
+	    if (r == 0 && cc == nc) {
+		cc = nc = null;
 		cldIdx++;
-		if (cc == nc)
-		    nc = null;
-		cc = null; /* postspone adding nc */
+	    } else if (r == 0) {
+		/* Objects cc and nc sorts arbitrary */
+		Object cObj = cc;
+
+		weakNodes.clear();
+		pendingWeakObjects.clear();
+		pendingWeakNodes.clear();
+
+		do {
+		    if (cc instanceof WeakExplorerNode) {
+			weakNodes.add(cc);
+			if (!newChildren.contains(cc)) {
+			    // Note that these Vectors are parallell,
+			    // one contains the object and the other the node
+			    // at the same index (which is important)
+			    pendingWeakNodes.add(getChild(node, cldIdx));
+			    pendingWeakObjects.add(cc);
+			}
+			cldIdx++;
+		    } else {
+			if (!newChildren.contains(cc)) {
+			    removeNodeFromParent(
+				    (MutableTreeNode) node.getChildAt(cldIdx));
+			} else {
+			    cldIdx++;
+			}
+		    }
+
+		    if (cChlds.hasNext())
+			cc = cChlds.next();
+		    else
+			cc = null;
+		} while (cc != null
+			 && (nc == null || order.compare(cc, nc) == 0));
+
+		do {
+		    if (!children.contains(nc)) {
+			boolean doAdd = true;
+			if (weakNodes != null
+			    && nc instanceof WeakExplorerNode) {
+			    for (int x = 0; x < weakNodes.size(); x++) {
+				if (((WeakExplorerNode) weakNodes.get(x)).subsumes(nc)) {
+				    int i = pendingWeakObjects.indexOf(weakNodes.get(x));
+				    doAdd = false;
+				    pendingWeakNodes.remove(i);
+				    pendingWeakObjects.remove(i);
+				    break;
+				}
+			    }
+			}
+
+			if (doAdd) {
+			    ExplorerTreeNode newNode =
+				    new ExplorerTreeNode(nc, this);
+			    insertNodeInto(newNode, node, cldIdx);
+			    cldIdx++;
+			}
+		    }
+
+		    if (nChlds.hasNext())
+			nc = nChlds.next();
+		    else
+			nc = null;
+		} while (nc != null
+			 && (cObj == null || order.compare(cObj, nc) == 0));
+
+		for (int x = 0; x < pendingWeakNodes.size(); x++) {
+		    removeNodeFromParent(
+			    (MutableTreeNode) pendingWeakNodes.get(x));
+		    cldIdx--;
+		}
 	    } else if (r < 0) {
 		/* cc were smaller, so it is not in nChlds -> remove */
 		removeNodeFromParent((MutableTreeNode) node.getChildAt(cldIdx));
 		cc = null;
-	    } else if (!children.contains(nc)) {
+	    } else {
 		/* cc were greater, so nc is not in cChlds -> add */
 		ExplorerTreeNode newNode = new ExplorerTreeNode(nc, this);
 		insertNodeInto(newNode, node, cldIdx);
 		nc = null;
 		cldIdx++;
-	    } else {
-		nc = null;
 	    }
 	}
 	updatingChildren.remove(node);
