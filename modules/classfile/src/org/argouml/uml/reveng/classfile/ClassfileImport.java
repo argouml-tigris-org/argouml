@@ -24,24 +24,25 @@
 
 package org.argouml.uml.reveng.classfile;
 
-import java.io.*;
 import org.argouml.kernel.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.layout.*;
 import org.argouml.uml.reveng.*;
-import org.argouml.uml.reveng.classfile.ui.*;
-import org.tigris.gef.base.*;
-import ru.novosoft.uml.model_management.*;
-import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.util.jar.*;
-import java.util.zip.*;
 import org.argouml.util.FileFilters;
 import org.argouml.util.SuffixFilter;
 import org.argouml.util.ClassFileFilter;
 
+import org.tigris.gef.base.*;
+
+import ru.novosoft.uml.model_management.*;
+
+import java.io.*;
+import java.awt.*;
+import java.util.*;
+import java.util.jar.*;
+import java.util.zip.*;
+import javax.swing.*;
 
 /**
  * This is the main class for the classfile import.
@@ -60,12 +61,7 @@ public class ClassfileImport extends FileImportSupport {
     private static ClassfileImport _INSTANCE = new ClassfileImport();
 
     // Create a interface to the current diagram
-    org.argouml.uml.reveng.DiagramInterface _diagram;// = new org.argouml.uml.reveng.DiagramInterface(Globals.curEditor());
-
-    //private JComponent   configPanel = null;
-    //private JCheckBox    _descend;
-    //private JRadioButton _attribute;
-    //private JRadioButton _datatype;
+    org.argouml.uml.reveng.DiagramInterface _diagram;
 
     /** The files that needs a second RE pass. */
     private ArrayList _secondPassFiles;
@@ -73,14 +69,8 @@ public class ClassfileImport extends FileImportSupport {
     // The current project.
     private Project _currentProject = null;
 
-    // A status window for the import process.
-    //private RevEngStatusDialog _status = null;
-
     private Import _import;
  
-    ///////////////////////////////////////////////////////
-    // Methods
-
     /**
      * Return the singleton instance of the Import class.
      *
@@ -90,111 +80,6 @@ public class ClassfileImport extends FileImportSupport {
 	return _INSTANCE;
     }
 
-    /**
-     * Get the panel that lets the user set reverse engineering
-     * parameters.
-     *
-    public JComponent getConfigPanel() {
-
-	if(configPanel == null) {
-	    JPanel general = new JPanel();
-	    general.setLayout(new GridBagLayout());
-
-	    _descend = new JCheckBox("Descend directories recursively.");
-	    _descend.setSelected(true);
-	    general.add(_descend,
-			new GridBagConstraints(GridBagConstraints.RELATIVE,
-					       GridBagConstraints.RELATIVE,
-					       GridBagConstraints.REMAINDER,
-					       GridBagConstraints.REMAINDER,
-					       1.0, 1.0,
-					       GridBagConstraints.NORTHWEST,
-					       GridBagConstraints.NONE,
-					       new Insets(5, 5, 5, 5),
-					       0, 0));
-
-	    JTabbedPane tab = new JTabbedPane();
-	    tab.add(general, "General");
-
-	    JPanel java = new JPanel();
-            java.setLayout(new GridBagLayout());
-
-            JLabel attributeLabel = new JLabel("Java attributes modelled as");
-            java.add(attributeLabel,
-                            new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                                   GridBagConstraints.RELATIVE,
-                                                   GridBagConstraints.REMAINDER,
-                                                   1,
-                                                   1.0, 0.0,
-                                                   GridBagConstraints.NORTHWEST,
-                                                   GridBagConstraints.NONE,
-                                                   new Insets(5, 5, 0, 5),
-                                                   0, 0));
-            ButtonGroup group1 = new ButtonGroup();
-            _attribute =
-                new JRadioButton("UML attributes.");
-            _attribute.setSelected(true);
-            group1.add(_attribute);
-            java.add(_attribute,
-                      new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.REMAINDER,
-                                             1,
-                                             1.0, 0.0,
-                                             GridBagConstraints.NORTHWEST,
-                                             GridBagConstraints.NONE,
-                                             new Insets(0, 5, 0, 5),
-                                             0, 0));
-            JRadioButton association =
-                new JRadioButton("UML associations.");
-            group1.add(association);
-            java.add(association,
-                      new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.REMAINDER,
-                                             1,
-                                             1.0, 0.0,
-                                             GridBagConstraints.NORTHWEST,
-                                             GridBagConstraints.NONE,
-                                             new Insets(0, 5, 5, 5),
-                                             0, 0));
-
-            ButtonGroup group2 = new ButtonGroup();
-            _datatype =
-                new JRadioButton("Arrays modelled as datatypes.");
-            _datatype.setSelected(true);
-            group2.add(_datatype);
-            java.add(_datatype,
-                      new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.REMAINDER,
-                                             1,
-                                             1.0, 0.0,
-                                             GridBagConstraints.NORTHWEST,
-                                             GridBagConstraints.NONE,
-                                             new Insets(5, 5, 0, 5),
-                                             0, 0));
-            JRadioButton multi =
-                new JRadioButton("Arrays modelled with multiplicity 1..n.");
-            group2.add(multi);
-            java.add(multi,
-                      new GridBagConstraints(GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.RELATIVE,
-                                             GridBagConstraints.REMAINDER,
-                                             GridBagConstraints.REMAINDER,
-                                             1.0, 1.0,
-                                             GridBagConstraints.NORTHWEST,
-                                             GridBagConstraints.NONE,
-                                             new Insets(0, 5, 5, 5),
-                                             0, 0));
-
-	    tab.add(java, "Java classfile");
-	    configPanel = tab;
-	}
-	return configPanel;
-    }
-    */
-    
     public void parseFile( Project p, Object o, DiagramInterface diagram, Import _import)
 	throws Exception {
 		if (o instanceof File ) {
@@ -215,24 +100,12 @@ public class ClassfileImport extends FileImportSupport {
 	_secondPassFiles = new ArrayList();
 	_currentProject = p;
 
-	// Create a new status window and pass the total number of files to import.
-	//_status = new RevEngStatusDialog();
-	//_status.show();
-
-	// Start the 1st pass.
-	//_status.startPass("Starting first pass", countFiles(f, true));
-
 	// Process the current file. If it's a directory, process all the file in it.
 	processFile(f, true);
-
-	// End first pass.
-	//_status.endPass("First pass completed");
 
 	int secondPassCount = count2ndPassFiles(_secondPassFiles);
 
         if(secondPassCount > 0) {
-
-	    //_status.startPass("Reparse files with unknown types", secondPassCount);
 
 	    // Process all the files, that need a second pass.
 	    for(Iterator i = _secondPassFiles.iterator(); i.hasNext();) {
@@ -243,13 +116,9 @@ public class ClassfileImport extends FileImportSupport {
 		} else {
 		    File nextFile = (File)next;
                     String fileName = nextFile.getName();
-		    //_status.startFile(fileName);
 		    do2ndFilePass(new FileInputStream(nextFile), fileName);
-		    //_status.endFile();
 		}
 	    }
-
-	    //_status.endPass("Reparse completed");
 	}
 
 	// Layout the modified diagrams.
@@ -301,7 +170,6 @@ public class ClassfileImport extends FileImportSupport {
 	String [] files = f.list();  // Get the content of the directory
 
 	for( int i = 0; i < files.length; i++) {
-	    //total += countFiles( new File( f, files[i]), _descend.isSelected());
 	    total += countFiles( new File( f, files[i]), _import.isDiscendDirectoriesRecursively());
             
         }
@@ -343,15 +211,12 @@ public class ClassfileImport extends FileImportSupport {
 	    } else {
 		if( f.getName().endsWith(".class")) {
                     String fileName = f.getName();
-		    //_status.startFile(fileName);          // Show the filename in the status window.
 		    try {
 			parseFile(new FileInputStream(f), fileName);   // Try to parse this file.
 		    } catch(Exception e1) {
-			// System.out.println("Exception: " + e1.getMessage());
-			// e1.printStackTrace();
+			 e1.printStackTrace();
 			_secondPassFiles.add(f);
 		    }
-		    //_status.endFile();
 		}
 	    }
 	}
@@ -368,15 +233,11 @@ public class ClassfileImport extends FileImportSupport {
     protected void processDirectory(File f) throws Exception {
 	boolean doSubdirs = _import.isDiscendDirectoriesRecursively();
 
-	//_status.enterDirectory(f.getName());
-
 	String [] files = f.list();  // Get the content of the directory
 
 	for( int i = 0; i < files.length; i++) {
 	    processFile( new File( f, files[i]), doSubdirs);
 	}
-
-	//_status.leaveDirectory();
     }
 
     /**
@@ -388,13 +249,10 @@ public class ClassfileImport extends FileImportSupport {
 	JarFile jarfile = new JarFile(f);
 	ArrayList jar_secondPassFiles = new ArrayList();  // A second pass buffer just for this jar.
 
-	//_status.openJar(f.getName());  // Show the opening of the jar file in the status window.
-
 	for( Enumeration e=jarfile.entries(); e.hasMoreElements(); ) {
 	    ZipEntry entry = (ZipEntry)e.nextElement();
 	    String entryName = entry.getName();
 	    if( ! entry.isDirectory() && entryName.endsWith(".class")) {
-		//_status.startFile(entryName);          // Show the filename in the status window.
 		try {
 		    parseFile(jarfile.getInputStream(entry), entryName);
 		} catch(Exception e1) {
@@ -405,13 +263,9 @@ public class ClassfileImport extends FileImportSupport {
 		    e1.printStackTrace();
 		    jar_secondPassFiles.add(entryName);  // Store the entry to be parsed a 2nd time.
 		}
-		//_status.endFile();
-
 		Thread.sleep(10);
 	    }
 	}
-
-	//_status.closeJar();  // Show the closing of the jar file.
 
 	// If there are files to parse again, add the jar to the 2nd pass.
 	if( ! jar_secondPassFiles.isEmpty()) {
@@ -432,15 +286,10 @@ public class ClassfileImport extends FileImportSupport {
 	    Iterator iterator = secondPassBuffer.iterator();
 	    JarFile jarfile = new JarFile( (File)iterator.next());
 
-	    //_status.openJar(jarfile.getName());  // Show the opening of the jar file in the status window.
-
 	    while(iterator.hasNext()) {
 		String filename = (String)iterator.next();
-		//_status.startFile(filename);
 		do2ndFilePass(jarfile.getInputStream(jarfile.getEntry(filename)), filename);
-		//_status.endFile();
 	    }
-	    //_status.closeJar();  // Show the closing of the jar file.
 	    jarfile.close();
 	}
     }
@@ -475,10 +324,12 @@ public class ClassfileImport extends FileImportSupport {
         parser.classfile();
 
         // Create a modeller for the parser
-        org.argouml.uml.reveng.java.Modeller modeller = new org.argouml.uml.reveng.java.Modeller((MModel)_currentProject.getModel(),
-												 _diagram, _import,
-												 attribute.isSelected(),
-												 datatype.isSelected(), fileName);
+        org.argouml.uml.reveng.java.Modeller modeller = 
+            new org.argouml.uml.reveng.java.Modeller(
+                    (MModel)_currentProject.getModel(),
+		    _diagram, _import,
+                    attribute.isSelected(),
+                    datatype.isSelected(), fileName);
 
 	// do something with the tree
 	ClassfileTreeParser tparser = new ClassfileTreeParser();
