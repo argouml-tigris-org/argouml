@@ -44,8 +44,8 @@ public class PropPanelButton2 extends JButton implements UMLUserInterfaceCompone
      * @param a
      */
     public PropPanelButton2(UMLUserInterfaceContainer container, Action a) {
-        super(); // canot use the action constructor since we have to support 1.2.2
-        setAction(a);
+        super(a);
+        setText(""); // just the icon and possibly a tooltip
         setContainer(container);
     }
 
