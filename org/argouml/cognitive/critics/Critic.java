@@ -309,7 +309,7 @@ public class Critic implements Poster, Serializable {
 	// For now I (Linus) just comment it out.
 	// cat.debug("applying critic: " + _headline);
 	if (predicate(dm, dsgr)) {
-	    cat.debug("predicate() returned true, creating ToDoItem");
+//	    cat.debug("predicate() returned true, creating ToDoItem");
 	    _numCriticsFired++;
 	    ToDoItem item = toDoItem(dm, dsgr);
 	    postItem(item, dm, dsgr);
@@ -511,15 +511,16 @@ public class Critic implements Poster, Serializable {
      *  Critic encapsulates some information you may need to override
      *  this method. */
     public boolean isRelevantToDecisions(Designer dsgr) {
-	cat.debug(this);
+//	cat.debug(this);
+//        boolean isDebugEnabled = cat.isDebugEnabled();
 	Enumeration enum = getSupportedDecisions().elements();
 	while (enum.hasMoreElements()) {
 	    Decision d = (Decision) enum.nextElement();
-	    if (cat.isDebugEnabled())
-		cat.debug(d + " " + d.getPriority());
-	    //if (dsgr.isConsidering(d)) return true;
-	    if (d.getPriority() > 0 && d.getPriority() <= getPriority())
+	    if (d.getPriority() > 0 && d.getPriority() <= getPriority()){
+                
+//                if(isDebugEnabled) cat.debug(d + " " + d.getPriority());
 		return true;
+            }
 	}
 	return false;
     }

@@ -78,7 +78,7 @@ public class UUIDManager {
 		s += (new Byte(b[i])).longValue() + "-";
 	}
 	s += uid.toString();
-	cat.debug("new UUID: " + s);
+//	cat.debug("new UUID: " + s);
 	return s;
     }
 

@@ -174,7 +174,7 @@ public class CrUML extends Critic {
      * No recursive expansion.
      */
     public String expand(String res, VectorSet offs) {
-	cat.debug("expanding: " + res);
+//	cat.debug("expanding: " + res);
 
 	if (offs.size() == 0) return res;
 
@@ -193,7 +193,7 @@ public class CrUML extends Critic {
 	    if (matchPos > 0) beginning.append(res.substring(0, matchPos));
 	    String expr = res.substring(matchPos + OCL_START.length(), endExpr);
 	    String evalStr = OCLEvaluator.SINGLETON.evalToString(off1, expr);
-	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
+//	    cat.debug("expr='" + expr + "' = '" + evalStr + "'");
 	    if (expr.endsWith("") && evalStr.equals(""))
 		evalStr = "(anon)";
 	    beginning.append(evalStr);

@@ -29,6 +29,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+import java.util.Collection;
 import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
@@ -52,10 +53,13 @@ public class CrEmptyPackage extends CrUML {
     }
 
     public boolean predicate2(Object dm, Designer dsgr) {
-	cat.debug("predicate2 on " + dm);
+//	cat.debug("predicate2 on " + dm);
 	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
-	Iterator enum = ModelFacade.getOwnedElements(dm).iterator();
-	if (!enum.hasNext()) return PROBLEM_FOUND;
+	Collection elems = ModelFacade.getOwnedElements(dm);
+	if (elems.size() == 0){
+            cat.debug("PROBLEM_FOUND on " + dm);
+            return PROBLEM_FOUND;
+        }
 	return NO_PROBLEM;
     }
 

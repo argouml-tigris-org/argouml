@@ -718,7 +718,7 @@ public class Modeller
     public void addBodyToOperation(Object op, String body)
     {
         if (op == null || !ModelFacade.isAOperation(op)) {
-            cat.warn("adding body failed: no operation!");
+//            cat.warn("adding body failed: no operation!");
             return;
         }
         if (body == null || body.length() == 0)
@@ -1295,9 +1295,9 @@ public class Modeller
 				      String sJavaDocs) {
 	if ((sJavaDocs != null) &&
 	    (sJavaDocs.trim().length() >= 5 )) {
-	    cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \""
-		       + sJavaDocs
-		       + "\"");
+//	    cat.debug ("Modeller.addDocumentationTag: sJavaDocs = \""
+//		       + sJavaDocs
+//		       + "\"");
 
 	    StringBuffer sbPureDocs = new StringBuffer(80);
 
@@ -1366,9 +1366,9 @@ public class Modeller
 			    sCurrentTagName = sJavaDocs.substring(j + 1, 
 								  nTemp);
 
-			    cat.debug (
-				       "Modeller.addDocumentationTag (starting tag): " +
-				       "current tag name: " + sCurrentTagName);
+//			    cat.debug (
+//				       "Modeller.addDocumentationTag (starting tag): " +
+//				       "current tag name: " + sCurrentTagName);
 
 			    int nTemp1 = sJavaDocs.indexOf ('\n', ++nTemp);
 			    if (nTemp1 == -1) {
@@ -1380,9 +1380,9 @@ public class Modeller
 
 			    sCurrentTagData =
 				sJavaDocs.substring (nTemp, nTemp1);
-			    cat.debug (
-				       "Modeller.addDocumentationTag (starting tag): " +
-				       "current tag data: " + sCurrentTagData);
+//			    cat.debug (
+//				       "Modeller.addDocumentationTag (starting tag): " +
+//				       "current tag data: " + sCurrentTagData);
 
 			    nStartPos = nTemp1;
 			}
@@ -1399,23 +1399,23 @@ public class Modeller
 			    if (sCurrentTagName != null) {
 				sbPureDocs.append(sJavaDocs.substring(nStartPos,
 								      nTemp));
-				cat.debug (
-					   "Modeller.addDocumentationTag (continuing tag): nTemp = " 
-					   + nTemp
-					   + ", nStartPos = " 
-					   + nStartPos);
+//				cat.debug (
+//					   "Modeller.addDocumentationTag (continuing tag): nTemp = " 
+//					   + nTemp
+//					   + ", nStartPos = " 
+//					   + nStartPos);
 				sCurrentTagData +=
 				    " " +
 				    sJavaDocs.substring (nStartPos, nTemp);
-				cat.debug (
-					   "Modeller.addDocumentationTag (continuing tag): tag data = " +
-					   sCurrentTagData);
+//				cat.debug (
+//					   "Modeller.addDocumentationTag (continuing tag): tag data = " +
+//					   sCurrentTagData);
 			    }
 			    else {
-				cat.debug ("Modeller.addDocumentationTag: nTemp = "
-					   + nTemp
-					   + ", nStartPos = "
-					   + nStartPos);
+//				cat.debug ("Modeller.addDocumentationTag: nTemp = "
+//					   + nTemp
+//					   + ", nStartPos = "
+//					   + nStartPos);
 				sbPureDocs.append(sJavaDocs.substring(nStartPos,
 								      nTemp));
 			    }
@@ -1429,7 +1429,7 @@ public class Modeller
 	    }
 
 	    sJavaDocs = sbPureDocs.toString();
-	    cat.debug(sJavaDocs);
+//	    cat.debug(sJavaDocs);
 	    /*
 	     * After this, we have the documentation text, but
 	     * unfortunately, there's still a trailing '/' left. If
@@ -1492,10 +1492,10 @@ public class Modeller
     }
 
     public void addCall(String method, String obj) {
-	if (obj.equals(""))
-	    cat.debug("Add call to method " + method);
-	else
-	    cat.debug("Add call to method " + method + " in " + obj);
+//	if (obj.equals(""))
+//	    cat.debug("Add call to method " + method);
+//	else
+//	    cat.debug("Add call to method " + method + " in " + obj);
     }
 
 }
