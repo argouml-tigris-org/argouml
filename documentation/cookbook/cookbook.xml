@@ -3593,7 +3593,7 @@ Throughout we shall use the example of adding the UML Extend
 relationship to a use case diagram. This allows two Use Cases to be
 joined by a dotted arrow labelled
 <literal>&laquo;extend&raquo;</literal> to show that one extends the
-behaviour of the other.
+behavior of the other.
 </para>
 
 	<para>
@@ -3612,7 +3612,7 @@ with looking at the code.
 	  <para>
 Property Panels are found as class PropPanelXXX.java, where XXX is the
 UML metaclass. They are in sub-packages of org.argouml.uml.ui
-corresponding to the XXX NSUML packages, which in turn corresponds to
+corresponding to the XXX NSUML packages, which in turn correspond to
 their section in the chapter 2 of the UML 1.3 spec. This packaging is
 essential for their lookup through Java reflection.
 </para>
@@ -3711,7 +3711,7 @@ A non-editable text box, with a pop-up menu that allows opening,
 addition, deletion, moving up and moving down of entries. For example
 the Generalizations field. Supported by the <literal>UMLList</literal>
 class. The list model is usually provided by a sub-class of
-<literal>UMLModelElementListModel</literal>. There there is a varient
+<literal>UMLModelElementListModel</literal>. There is a varient
 <literal>UMLModelElementListLinkModel</literal> which adds a link
 option to the pop-up menu, allowing connection to existing model
 elements (used for the Extension Points field for
@@ -3733,7 +3733,7 @@ A set of check boxes for modifiers. Supported by the
 	  <title>Adding a simple list field</title>
 
 	    <para>
-For example We need to add a field to the use case property panel for
+For example we need to add a field to the use case property panel for
 the extends relationships that derive from this use case.
 </para>
 
@@ -3768,7 +3768,7 @@ The list model should be a subclass of
 	    <title>The list model</title>
 
 	      <para>
-In out example we create UMLExtendListModel. Its constructor should
+In our example we create UMLExtendListModel. Its constructor should
 take three arguments:
 </para>
 
@@ -4069,7 +4069,7 @@ just navigates to that element.
 Build a pop-up menu for the list and return whether it should be
 displayed. Any actions will be associated with the item at the given
 index in the list.
-This is build using <literal>UMLListMenuItem</literal>, which can
+This is built using <literal>UMLListMenuItem</literal>, which can
 record the index, rather than plain <literal>JListItem</literal>. 
 The default provides open, add, delete, move up and move down, with
 add disabled if there are already as many elements as the upper bound
@@ -4772,7 +4772,7 @@ and <methodname>removeUpdate</methodname> are respectively called when a
 character is added to the document 
 <classname>UMLTextField</classname> contains or removed. 
 Since both methods are called when there is true userinput 
-and when the contents of the document are changed programmaticaly,
+and when the contents of the document are changed programmatically,
 the methods distinguish between them.
 <methodname>InsertUpdate</methodname> and 
 <methodname>removeUpdate</methodname>
@@ -4835,7 +4835,7 @@ This will be a subclass of UMLDiagram (in
 Each toolbar action is declared as a protected static field of class
 <literal>Action</literal>, initiated as a 
 <literal>new CmdCreateNode</literal> (for nodal UML elements) or a
-<literal>new CmdSetMode</literal> (for behaviour, or creation of line
+<literal>new CmdSetMode</literal> (for behavior, or creation of line
 UML elements). These classes are part of the GEF library.
 </para>
 
@@ -4868,7 +4868,7 @@ protected static Action _actionAssoc =
 </para>
 
 	    <para>
-The first argument is a GEF class that defines the type of behaviour
+The first argument is a GEF class that defines the type of behavior
 wanted (in this case creating a poly-edge). The second and third
 arguments are a named parameter used by
 <literal>ModeCreatePolyEdge</literal> ("edgeClass") and its value
@@ -5049,7 +5049,7 @@ The package org.argouml.uml.reveng is supposed to hold those classes
 that are common to all RE packages. At the moment this is the Import
 class which is mainly responsible to recognize directories, get their
 content and parse every known source file in them. These are only java
-files at them moment, but there might be other languages like C++ in
+files at the moment, but there might be other languages like C++ in
 the future. With this concept you could mix several languages within
 a project. The DiagramInterface is used to visualize generated NSUML
 metamodel objects then.
@@ -5063,10 +5063,10 @@ or so...
       <sect2>
 	<title>How is the grammar of the target language implemented?</title>
 	<para>
-It's a Antlr (<ulink url="http://www.antlr.org">http://www.antlr.org</ulink>)
+It's an Antlr (<ulink url="http://www.antlr.org">http://www.antlr.org</ulink>)
 grammar, based on the Antlr Java parser
 example. The main difference is the missing AST (Abstract Syntax Tree)
-generation and treeparser. So the original example generates a AST
+generation and treeparser. So the original example generates an AST
 (a treelike data structure) and then traverses this tree, while the
 ArgoUML code parses the source file and generates NSUML objects
 directly from the sources. This was done to avoid the memory usage
@@ -5077,7 +5077,7 @@ of an AST and the frequent GC while parsing many source files.
 	<title>Which model/diagram elements are generated?</title>
 	<para>
 The *context classes hold the current context for a package, class
-etc. When the required information for a object is available, the
+etc. When the required information for an object is available, the
 corresponding NSUML object is created and passed to the DiagramInterface
 to visualize it.
 </para>
@@ -5101,7 +5101,7 @@ rank(0)=1st row. rank(1) =2nd row (below the 1st one) etc. Example:
 	  </imageobject>
 	</mediaobject>
 	<para>
-In the next diagramm, a link goes to a object that is not in the row
+In the next diagramm, a link goes to an object that is not in the row
 above:
 </para>
 	<mediaobject>
@@ -5119,9 +5119,9 @@ target and link to them:
 	  </imageobject>
 	</mediaobject>
 	<para>
-The object are sorted within their row then to minimize crossing links
-then. Compute the average value of the vertical positions of all linked
-object in the row above. Example: we have 2 ranks 0 and 1 with 3
+The objects are sorted within their row then to minimize crossing links
+between them. Compute the average value of the vertical positions of all linked
+objects in the row above. Example: we have 2 ranks, 0 and 1, with 3
 classes each:
 </para>
 	<blockquote>
@@ -5157,7 +5157,7 @@ F -> A and B
 </para>
 	</blockquote>
 	<para>
-Compute the average value of the indexes:
+Compute the average value of the indices:
 </para>
 	<blockquote>
 	  <para>
@@ -5186,7 +5186,7 @@ So the placement is:
 A B C
 </para>
 	  <para>
-(here are the links, but I can't hardly paint them as ASCIIs)
+(here are the links, but I can hardly paint them as ASCIIs)
 </para>
 	  <para>
 F E D
@@ -5207,7 +5207,7 @@ They are each different in level of support and implementation
 language.
 </para>
       <para>
-Currently C++ has no reverse engineering but only code generation 
+Currently C++ has no reverse engineering but only code generation
 (and a very simple one at that).
 Java class files has only reverse engineering.
 </para>
@@ -5243,7 +5243,7 @@ The GUI Framework is located in <classname>org.argouml.???</classname>.
 The GUI Framework is a Layer 1 component. See <xref linkend="layer1"></xref>.
 </para>
       <para>
-This is implemented directly on top of the Swing and Java2.
+This is implemented directly on top of Swing and Java2.
 </para>
 
       <sect2 id="howdoi_detailspanel">
@@ -5285,7 +5285,7 @@ Remove the line for the tab from
 	<primary>Help system</primary>
       </indexterm>
       <para>
-Purpose - to provide the menu actions that starts the help and other
+Purpose - to provide the menu actions that start the help and other
 documentation.
 To provide infrastructure that makes context sensitive help possible.
 </para>
@@ -5368,7 +5368,7 @@ This is set up in <classname>org.argouml.application.Main</classname>.
 	<para>
 The problems with internationalization are not so much the technical
 problems as to how it works but more so the problems are with
-getting, keeping and coordinating the correct compentences to do
+getting, keeping and coordinating the correct competences to do
 the job.
 This comes from the fact that by necessity the different
 persons working with internationalization have different native languages
@@ -5392,7 +5392,7 @@ gettext and cannot use the same tools.
 	<para>
 To get things done, we organize our own Language Teams with ArgoUML.
 Each language teams are actually just one or several persons that
-know that language and is eager to work with translating ArgoUML.
+know that language and are eager to work with translating ArgoUML.
 </para>
 	<para>
 The language team has the following responsibilities:
@@ -5412,7 +5412,7 @@ is under fast development.
 The terminology used shall be correct.
 </para>
 	      <para>
-This requires work in keeping up with the current litterature in the
+This requires work in keeping up with the current literature in the
 domain of ArgoUML.
 </para>
 	    </listitem>
@@ -5430,7 +5430,7 @@ Each such thing is a Defect and shall be corrected.
 	    </listitem>
 	    <listitem>
 	      <para>
-See that the used libraries also provides their part in that language.
+See that the used libraries also provide their part in that language.
 </para>
 	      <para>
 This is mostly GEF since GEF is central both when it comes to 
@@ -5488,7 +5488,7 @@ is a no-issue.)
 	    <para>User environment translation</para>
 	    <para>
 This is the next level of ambition that can be set out by a 
-Language Team that works really well and has plenty of translating
+Language Team that works really well and has plenty of translation
 resources left.
 </para>
 	    <para>
@@ -5522,13 +5522,13 @@ also includes the javadoc comments in the code of ArgoUML and
 design documentation of included packages such as GEF, NSUML...
 </para>
 	    <para>
-For translating the javadoc there exists no good tools.
+For translating the javadoc there exist no good tools.
 </para>
 	    <para>
 This is pointless unless we have identified an extremely large
 developer base willing to take on big parts of of the ArgoUML
 development that is
-speaking one specific language and where most of them does not
+speaking one specific language and where most of them do not
 know English.
 </para>
 	    <para>
@@ -5539,7 +5539,7 @@ it is a decision not only concerning that language team but the whole
 ArgoUML development community.
 </para>
 	    <para>
-Maybe I (Linus Tolke) has gone a little over the top now in trying 
+Maybe I (Linus Tolke) have gone a little over the top now in trying 
 to define things far off the side of the planet.
 It is probably just me but I find a weird pleasure in encouraging people
 to strive for unreachable goals.
@@ -5556,7 +5556,7 @@ to strive for unreachable goals.
 	      <para>
 Run the JUnit test cases.
 See <xref linkend="run_junit_testcases"/>.
-This will verify that all tags are in synch between different
+This will verify that all tags are in sync between different
 translations.
 </para>
 	    </listitem>
@@ -5566,7 +5566,7 @@ translations.
 The Language Teams are loosely defined by
 the web page of language teams on the Tigris site.
 As soon as the language code and names (at least one) are in place
-the teams is created.
+the team is created.
 </para>
 	      <para>
 From that point it is the Language Teams responsibility to 
@@ -5660,9 +5660,9 @@ The name for the domain is most often specified in a variable like
     protected static final String BUNDLE = <replaceable>Domain</replaceable>;
 </programlisting>
 or
-<programlistingco>
+<programlisting>
     protected static final String RESOURCE_BUNDLE = <replaceable>Domain</replaceable>;
-</programlistingco>
+</programlisting>
 in a base class to what you are doing and there is 
 a convenience method in the class
 <classname>org.argouml.application.api.Argo</classname>
@@ -5773,7 +5773,7 @@ The Property panels will be located in
 The Property panels is a Layer 2 component. See <xref linkend="layer2"></xref>.
 </para>
       <para>
-Currently the PropPanels for the diagrams is in
+Currently the PropPanels for the diagrams are in
 <classname>org.argouml.uml.diagram.ui</classname>
 and the property panels for the other object are in
 <classname>org.argouml.uml.ui.<replaceable>NS-UML path</replaceable></classname>.
@@ -6373,7 +6373,7 @@ certain decisions.
 
 	    <!-- Contains -->
 	    <entry>
-Instructions on how to add new functions and behaviour.
+Instructions on how to add new functions and behavior.
 Instructions on how to do the chores around maintenance
 (build a release, publish a release,
 build the documentation part of the release,
