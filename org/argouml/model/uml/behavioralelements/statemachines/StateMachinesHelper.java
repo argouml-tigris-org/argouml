@@ -30,13 +30,10 @@ import java.util.Iterator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
-import ru.novosoft.uml.behavior.common_behavior.MAction;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MStubState;
 import ru.novosoft.uml.behavior.state_machines.MSubmachineState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
@@ -90,73 +87,9 @@ public class StateMachinesHelper {
         return trans.getTarget();
     }
 
-    /**
-     * Couples a given action to the given state as being the exit action. To 
-     * decouple ArgoUML as much as possible from the NSUML model, the parameters
-     * of the method are of type Object.
-     * @param state
-     * @param action
-     */
-    public void setActionAsExit(Object state, Object action) {
-        if (state == null || !(state instanceof MState)) {
-            throw new IllegalArgumentException("State either null or not an instance of MState");
-        }
-        if (action == null || !(action instanceof MAction)) {
-            throw new IllegalArgumentException("Action either null or not an instance of MAction");
-        }
-        ((MState) state).setExit((MAction) action);
-    }
+    
 
-    /**
-     * Couples a given action to the given state as being the entry action. To 
-     * decouple ArgoUML as much as possible from the NSUML model, the parameters
-     * of the method are of type Object.
-     * @param state
-     * @param action
-     */
-    public void setActionAsEntry(Object state, Object action) {
-        if (state == null || !(state instanceof MState)) {
-            throw new IllegalArgumentException("State either null or not an instance of MState");
-        }
-        if (action == null || !(action instanceof MAction)) {
-            throw new IllegalArgumentException("Action either null or not an instance of MAction");
-        }
-        ((MState) state).setEntry((MAction) action);
-    }
-
-    /**
-     * Couples a given action to the given state as being the do activity action. To 
-     * decouple ArgoUML as much as possible from the NSUML model, the parameters
-     * of the method are of type Object.
-     * @param state
-     * @param action
-     */
-    public void setActionAsDoActivity(Object state, Object action) {
-        if (state == null || !(state instanceof MState)) {
-            throw new IllegalArgumentException("State either null or not an instance of MState");
-        }
-        if (action == null || !(action instanceof MAction)) {
-            throw new IllegalArgumentException("Action either null or not an instance of MAction");
-        }
-        ((MState) state).setDoActivity((MAction) action);
-    }
-
-    /**
-     * Couples a given action to the given transition as being the effect
-     * of the transition. To decouple ArgoUML as much as possible from the NSUML
-     * model, the parameters of the method are of type Object.
-     * @param state
-     * @param action
-     */
-    public void setActionAsEffect(Object transition, Object action) {
-        if (transition == null || !(transition instanceof MTransition)) {
-            throw new IllegalArgumentException("Transition either null or not an instance of MTransition");
-        }
-        if (action == null || !(action instanceof MAction)) {
-            throw new IllegalArgumentException("Action either null or not an instance of MAction");
-        }
-        ((MTransition) transition).setEffect((MAction) action);
-    }
+    
 
     /**
      * Gets the statemachine that contains the given parameter oState. Traverses

@@ -41,7 +41,7 @@ import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.graph.GraphModel;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
+
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
@@ -1412,7 +1412,8 @@ class ColumnAction extends ColumnDescriptor {
     MStimulus sti = (MStimulus) target;
     String _value = (String) value;
     if (_value != null) {
-      ((MAction)sti.getDispatchAction()).setName(_value);
+        Object dispatchaction = ModelFacade.getDispatchAction(sti);
+        ModelFacade.setName(dispatchaction, _value);
     }
   }
 
