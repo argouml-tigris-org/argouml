@@ -119,7 +119,7 @@ public class GenericArgoMenuBar extends JMenuBar
         return Argo.localize("CoreMenu",key);
     }
 
-    static final protected void setAccelerator(JMenuItem item,KeyStroke keystroke) {
+    static final void setAccelerator(JMenuItem item,KeyStroke keystroke) {
         if(keystroke != null) {
             item.setAccelerator(keystroke);
         }
@@ -210,7 +210,6 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke ctrlC = KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.CTRL_MASK);
         KeyStroke ctrlV = KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_MASK);
         KeyStroke ctrlX = KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.CTRL_MASK);
-        KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
 
         KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
@@ -295,7 +294,7 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
-        editToolbar.add((ActionCut.SINGLETON));
+        editToolbar.add(ActionCut.SINGLETON);
         
         JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
         setMnemonic(copyItem,"Copy",'C');
@@ -305,18 +304,18 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
-        editToolbar.add((ActionPaste.SINGLETON));
+        editToolbar.add(ActionPaste.SINGLETON);
         
         _edit.addSeparator();
         
-        // TODO: confusing name change
-        JMenuItem deleteItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
-        setMnemonic(deleteItem,"RemoveFromDiagram",'R');
-        setAccelerator(deleteItem,delKey);
+        JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
+        setMnemonic(removeItem,"Remove",'R');
+        editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
         
-        JMenuItem removeItem = _edit.add(ActionRemoveFromModel.SINGLETON);
-        setMnemonic(removeItem,"DeleteFromModel",'D');
-        setAccelerator(removeItem,ctrlR);
+        JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
+        setMnemonic(deleteItem,"Delete",'D');
+        setAccelerator(deleteItem,delKey);
+        editToolbar.add(ActionRemoveFromModel.SINGLETON);
         
         JMenuItem emptyItem = _edit.add(ActionEmptyTrash.SINGLETON);
         

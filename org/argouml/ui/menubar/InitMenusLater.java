@@ -58,6 +58,9 @@ class InitMenusLater implements Runnable {
   }
 
   public void run() {
+    KeyStroke ctrlR = KeyStroke.getKeyStroke(KeyEvent.VK_R, KeyEvent.CTRL_MASK);
+    KeyStroke ctrlL = KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK);
+
     KeyStroke F1 = KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0);
     KeyStroke F2 = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
     KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
@@ -92,8 +95,9 @@ class InitMenusLater implements Runnable {
 
     align.add(new CmdAlign(CmdAlign.ALIGN_TOPS));
     align.add(new CmdAlign(CmdAlign.ALIGN_BOTTOMS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS));
-    align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS));
+    GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_RIGHTS)),ctrlR);
+    GenericArgoMenuBar.setAccelerator(align.add(new CmdAlign(CmdAlign.ALIGN_LEFTS)),ctrlL);
+
     align.add(new CmdAlign(CmdAlign.ALIGN_H_CENTERS));
     align.add(new CmdAlign(CmdAlign.ALIGN_V_CENTERS));
     align.add(new CmdAlign(CmdAlign.ALIGN_TO_GRID));

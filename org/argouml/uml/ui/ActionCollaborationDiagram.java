@@ -31,6 +31,7 @@ import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.ui.*;
+import org.argouml.i18n.Translator;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.collaborations.*;
@@ -49,7 +50,9 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
 
     public static ActionCollaborationDiagram SINGLETON = new ActionCollaborationDiagram(); 
     
-    private ActionCollaborationDiagram() { super("CollaborationDiagram"); }
+    private ActionCollaborationDiagram() {
+        super(Translator.localize("CoreMenu", "CollaborationDiagram"));
+    }
 
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace)

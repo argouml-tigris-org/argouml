@@ -136,11 +136,8 @@ public class UMLSequenceDiagram extends UMLDiagram {
   /** initialize the toolbar for this diagram type */
   protected void initToolBar() {
     _toolBar = new ToolBar();
-    _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-//     _toolBar.add(Actions.Cut);
-//     _toolBar.add(Actions.Copy);
-//     _toolBar.add(Actions.Paste);
-//     _toolBar.addSeparator();
+      _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+  //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
     _toolBar.add(_actionSelect);
     _toolBar.add(_actionBroom);

@@ -30,6 +30,7 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFacto
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.*;
+import org.argouml.i18n.Translator;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -55,7 +56,9 @@ public class ActionStateDiagram extends ActionAddDiagram {
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    private ActionStateDiagram() { super("StateDiagram"); }
+    private ActionStateDiagram() {
+        super(Translator.localize("CoreMenu", "StateDiagram"));
+    }
     
     protected ActionStateDiagram(String name) { super(name); }
 

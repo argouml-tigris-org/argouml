@@ -248,15 +248,8 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         // Create a toolbar
 
         _toolBar = new ToolBar();
-        _toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
-        // The Cut/Copy/Past tools would go here, but are currently not
-        // working, so commented out.
-
-        // _toolBar.add(Actions.Cut);
-        // _toolBar.add(Actions.Copy);
-        // _toolBar.add(Actions.Paste);
-        // _toolBar.addSeparator();
+        //_toolBar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        _toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
         // Select and broom
 

@@ -33,8 +33,6 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import org.argouml.cognitive.ui.*;
 
-import org.tigris.gef.ui.ToolBar;
-
 import org.argouml.kernel.*;
 import org.argouml.cognitive.*;
 import org.argouml.ui.*;
@@ -92,8 +90,8 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 //     _snoozeButton.setFont(new Font("Dialog", Font.PLAIN, 9));
 //     add(buttonPane, BorderLayout.NORTH);
 
-    ToolBar toolBar = new ToolBar();
-    toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
+    Toolbar toolBar = new Toolbar(JToolBar.VERTICAL);
+    //toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
     toolBar.add(_actionNewToDoItem);
     toolBar.add(_actionResolve);
     toolBar.add(_actionEmailExpert);

@@ -41,8 +41,22 @@ public class Toolbar extends JToolBar {
     
     /** Creates a new instance of Toolbar */
     public Toolbar(String title) {
-        //setBorder(BorderFactory.createBevelBorder(BevelBorder.RAISED));
         this.setFloatable(true);
+        this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        this.setMargin(new Insets(0,0,0,0));
+    }
+    
+    /** Creates a new instance of Toolbar */
+    public Toolbar() {
+        super();
+        this.setFloatable(false);
+        this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        this.setMargin(new Insets(0,0,0,0));
+    }
+    
+    public Toolbar(int orientation) {
+        super(orientation);
+        this.setFloatable(false);
         this.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
         this.setMargin(new Insets(0,0,0,0));
     }

@@ -69,7 +69,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   // vector of TreeModels
   protected Vector _perspectives = new Vector();
 
-  protected ToolBar _toolbar = new ToolBar();
+  protected ToolBar _toolbar;
   protected JComboBox _combo = new JComboBox();
 
   protected ToDoList _root = null;
@@ -91,8 +91,12 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
   // constructors
 
   public ToDoPane() {
+    _toolbar = new ToolBar();
+    _toolbar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+
     setLayout(new BorderLayout());
-    _toolbar.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+    JPanel toolbarPanel = new JPanel(new BorderLayout());
+    toolbarPanel.add(_toolbar, BorderLayout.WEST);
     //_toolbar.add(new JLabel("Group by "));
     _toolbar.add(_combo);
     _flatButton = _toolbar.addToggle(_flatView, "Flat", "Hierarchical", "Flat");
@@ -102,7 +106,7 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener,
     ImageIcon flatIcon = ResourceLoader.lookupIconResource("Flat", "Flat");
     _flatButton.setIcon(hierarchicalIcon);
     _flatButton.setSelectedIcon(flatIcon);
-    add(_toolbar, BorderLayout.NORTH);
+    add(toolbarPanel, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
 
