@@ -50,6 +50,7 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"Copy", "Copy" },
         {"Paste", "Paste" },
 	{"Settings...", "Settings..."},
+        {"Set Source Path...", "Set Source Path..." },
         {"Delete From Diagram", "Delete From Diagram" },
         {"Erase From Model", "Erase From Model" },
         {"Empty Trash", "Empty Trash" },
