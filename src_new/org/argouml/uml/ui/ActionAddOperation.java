@@ -68,7 +68,9 @@ public class ActionAddOperation extends UMLChangeAction {
 	// need to add FigClass as modeleventlistener to oper
 	// FigClass can be the selected class if this was called from within the diagram
 	oper.addMElementListener((FigNodeModelElement)pb.getActiveDiagram().presentationFor(cls));
+	pb.getNavPane().addToHistory(oper);
 	pb.setTarget(oper);
+	pb.getNavPane().forceUpdate();
 	super.actionPerformed(ae);
     }
 
