@@ -51,6 +51,8 @@ public class LookAndFeelMgr {
         Category.getInstance(LookAndFeelMgr.class);
 
     public static final LookAndFeelMgr SINGLETON = new LookAndFeelMgr();
+
+    public static final String METAL_PLAF = "javax.swing.plaf.metal.MetalLookAndFeel";
     
     private static final int THEME_NOT_SET = -1;
     private static final int THEME_DEFAULT = 0;
@@ -122,12 +124,12 @@ public class LookAndFeelMgr {
     }
     
     public String determineLookAndFeel() {
-        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
+        //if ("true".equals(System.getProperty("force.nativelaf","false"))) {
             return UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
-            return "javax.swing.plaf.metal.MetalLookAndFeel";
-        }
+        //}
+        //else {
+        //    return METAL_PLAF;
+        //}
     }
     
     public void setCurrentTheme(String arg) {
