@@ -64,23 +64,23 @@ class InitMenusLater implements Runnable {
 
     /**
      * Constructs this new runnable to initialize the submenus.
-     * @param align the alignment submenu
-     * @param distribute the distribution submenu
-     * @param reorder the reorder submenu
-     * @param nudge the nudge submenu
-     * @param layout the layout submenu
+     * @param a the alignment submenu
+     * @param d the distribution submenu
+     * @param r the reorder submenu
+     * @param n the nudge submenu
+     * @param l the layout submenu
      * @param editTabs the edit tabs submenu
      */
-    public InitMenusLater(JMenu align, JMenu distribute,
-			  JMenu reorder, JMenu nudge,
-			  JMenu layout
+    public InitMenusLater(JMenu a, JMenu d,
+			  JMenu r, JMenu n,
+			  JMenu l
                           //, JMenu editTabs  // Issue 2321 and 2322
                           ) {
-	this.align = align;
-	this.distribute = distribute;
-	this.reorder = reorder;
-	this.nudge = nudge;
-	this.layout = layout;
+	this.align = a;
+	this.distribute = d;
+	this.reorder = r;
+	this.nudge = n;
+	this.layout = l;
 	//this.editTabs = editTabs;  
     }
 
