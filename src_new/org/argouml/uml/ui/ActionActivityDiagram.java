@@ -25,8 +25,9 @@ package org.argouml.uml.ui;
 
 import org.apache.log4j.Category;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
-import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.foundation.core.MBehavioralFeature;
@@ -49,7 +50,8 @@ public class ActionActivityDiagram extends ActionStateDiagram {
     /**
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
-    public ArgoDiagram createDiagram(MNamespace ns, Object target) {
+    public UMLDiagram createDiagram(MNamespace ns) {
+        Object target = ProjectBrowser.TheInstance.getTarget();
         MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)target);
         if (target instanceof MBehavioralFeature) {
             ns = ((MBehavioralFeature)target).getNamespace();
