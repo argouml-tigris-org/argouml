@@ -23,9 +23,11 @@
 
 package org.argouml.uml.ui;
 
-public interface TabModelTarget {
-  public void setTarget(Object o);
-  public Object getTarget();
-  public void refresh();
-  public boolean shouldBeEnabled();
+import org.argouml.ui.TabTarget;
+
+/**
+ * Empty interface used to tag Tabbed panels that accept a Model Element Target.
+ */
+public interface TabModelTarget extends TabTarget{
+
 }

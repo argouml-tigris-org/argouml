@@ -453,8 +453,13 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         SwingUtilities.invokeLater(new UMLChangeDispatch(this, 0));
     }
 
-    public boolean shouldBeEnabled() {
-        return (_modelElement != null);
+    public boolean shouldBeEnabled(Object target) {
+
+        if (target instanceof MModelElement) {
+                return true;
+        }
+        else
+            return false;
     }
 
     public void propertySet(MElementEvent mee) {
