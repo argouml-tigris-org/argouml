@@ -25,14 +25,14 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.ModelManagementHelper;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -71,11 +71,11 @@ public class UMLGeneralizationPowertypeComboBoxModel
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
 	    Object model = /*(MModel)*/ it.next();
-	    elements.addAll(ModelManagementHelper.getHelper()
+	    elements.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(model, 
                         ModelFacade.CLASSIFIER));
         }
-        elements.addAll(ModelManagementHelper.getHelper()
+        elements.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(p.getDefaultModel(), 
                         ModelFacade.CLASSIFIER));
         setElements(elements);

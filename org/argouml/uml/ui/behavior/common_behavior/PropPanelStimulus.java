@@ -28,8 +28,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -178,7 +178,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             Object stimulus = /*(MStimulus)*/ target;
             Object link = ModelFacade.getCommunicationLink(stimulus);
             if (link == null) {
-                link = UmlFactory.getFactory().getCommonBehavior().createLink();
+                link = Model.getUmlFactory().getCommonBehavior().createLink();
                 //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     ModelFacade.addStimulus(link, stimulus);

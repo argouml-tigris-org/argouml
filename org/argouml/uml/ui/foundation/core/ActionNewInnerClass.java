@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -55,7 +55,7 @@ public class ActionNewInnerClass extends AbstractActionNewModelElement {
         Object target = TargetManager.getInstance().getModelTarget();
         if (org.argouml.model.ModelFacade.isAClassifier(target)) {
             Object classifier = /* (MClassifier) */target;
-            Object inner = CoreFactory.getFactory().buildClass(classifier);
+            Object inner = Model.getCoreFactory().buildClass(classifier);
             TargetManager.getInstance().setTarget(inner);
             super.actionPerformed(e);
         }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -27,70 +27,83 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+
 import javax.swing.JPanel;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * A wizard to help the user change the name of an operation to a better name.
- * Same as WizMEName expect that it handles the special case where 
- * the operation instead should be made a constructor of the class.
- * This is helpful in languages where constructors have names that
- * do not agree with the convention for method names (i.e. Java).<p>
+ * Same as WizMEName expect that it handles the special case where the operation
+ * instead should be made a constructor of the class. This is helpful in
+ * languages where constructors have names that do not agree with the convention
+ * for method names (i.e. Java).<p>
  *
- * Path looks like this for the case when it is not supposed to be a 
+ * Path looks like this for the case when it is not supposed to be a
  * constructor:
+ * 
  * <pre>
- * step0 -> step1
+ * 
+ *  step0 -&gt; step1
+ *  
  * </pre>
- *
- * Path looks like this for the case when it is supposed to be a
- * constructor:
+ * 
+ * Path looks like this for the case when it is supposed to be a constructor:
+ * 
  * <pre>
- * step0 -> step1 -> step2 (OK! in the case converted to constructor)
- *                -> step2 (same as step1 in the scenario above)
+ * 
+ *  step0 -&gt; step1 -&gt; step2 (OK! in the case converted to constructor)
+ *                 -&gt; step2 (same as step1 in the scenario above)
+ *  
  * </pre>
  */
 public class WizOperName extends WizMEName {
     private static final Logger LOG = Logger.getLogger(WizMEName.class);
+
     private boolean possibleConstructor = false;
+
     private boolean stereotypePathChosen;
 
     private String option0 = "This is really a constructor.";
+
     private String option1 = "This is not a constructor.";
+
     private WizStepChoice step1 = null;
+
     private WizStepCue step2 = null;
 
     private Object oldStereotype;
+
     private boolean oldStereotypeIsSet = false;
 
     /**
      * @see org.argouml.cognitive.ui.Wizard#getNumSteps()
      */
     public int getNumSteps() {
-	if (possibleConstructor) {
-	    return 2;
-	} else {
-	    return 1;
-	}
+        if (possibleConstructor) {
+            return 2;
+        } else {
+            return 1;
+        }
     }
 
     private Vector getOptions() {
-	Vector res = new Vector();
-	res.addElement(option0);
-	res.addElement(option1);
-	return res;
+        Vector res = new Vector();
+        res.addElement(option0);
+        res.addElement(option1);
+        return res;
     }
 
-    /** 
+    /**
      * Method to tell the Wizard what path it should work with.
-     *
-     * @param b setToConstructor is true if we shall take the path where
-     * the oper is converted to a constructor.
+     * 
+     * @param b
+     *            setToConstructor is true if we shall take the path where the
+     *            oper is converted to a constructor.
      */
     public void setPossibleConstructor(boolean b) {
         possibleConstructor = b;
@@ -98,175 +111,166 @@ public class WizOperName extends WizMEName {
 
     /**
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
-     *
+     * 
      * Create a new panel for the given step.
      */
     public JPanel makePanel(int newStep) {
-	if (!possibleConstructor) {
-	    return super.makePanel(newStep);
-	}
+        if (!possibleConstructor) {
+            return super.makePanel(newStep);
+        }
 
-	switch (newStep) {
-	case 0:
-	    return super.makePanel(newStep);
+        switch (newStep) {
+        case 0:
+            return super.makePanel(newStep);
 
-	case 1:
-	    if (step1 == null) {
-		step1 = 
-		    new WizStepChoice(this, getInstructions(), getOptions());
-		step1.setTarget(getToDoItem());
-	    }
-	    return step1;
+        case 1:
+            if (step1 == null) {
+                step1 = new WizStepChoice(this, getInstructions(), getOptions());
+                step1.setTarget(getToDoItem());
+            }
+            return step1;
 
-	case 2:
-	    if (stereotypePathChosen) {
-		if (step2 == null) {
-		    step2 = 
-			new WizStepCue(this,
-				       "The operator is now a constructor.");
-		    step2.setTarget(getToDoItem());
-		}
-		return step2;
-	    } else {
-	        return super.makePanel(1);
-	    }
-	}
-	return null;
+        case 2:
+            if (stereotypePathChosen) {
+                if (step2 == null) {
+                    step2 = new WizStepCue(this,
+                            "The operator is now a constructor.");
+                    step2.setTarget(getToDoItem());
+                }
+                return step2;
+            } else {
+                return super.makePanel(1);
+            }
+        }
+        return null;
     }
 
     /**
-     * There is a possibility that the next step forward takes another path
-     * in this wizard. To allow for this we must destroy the path already 
-     * traveled by.
-     * TODO:
-     * I (Linus) would say that this is really a problem with the Wizard 
-     * implementation since I believe it should be possible to explore a 
+     * There is a possibility that the next step forward takes another path in
+     * this wizard. To allow for this we must destroy the path already traveled
+     * by. TODO: I (Linus) would say that this is really a problem with the
+     * Wizard implementation since I believe it should be possible to explore a
      * path in the wizard and then go back.
-     *
+     * 
      * @see org.argouml.cognitive.ui.Wizard#undoAction(int)
      */
     public void undoAction(int origStep) {
-	super.undoAction(origStep);
-	if (getStep() >= 1) {
-	    removePanel(origStep);
-	}
-	if (origStep == 1) {
-	    Object oper = getModelElement();
+        super.undoAction(origStep);
+        if (getStep() >= 1) {
+            removePanel(origStep);
+        }
+        if (origStep == 1) {
+            Object oper = getModelElement();
 
-	    if (oldStereotypeIsSet) {
-		ModelFacade.setStereotype(oper, oldStereotype);
-	    }
-	}
+            if (oldStereotypeIsSet) {
+                ModelFacade.setStereotype(oper, oldStereotype);
+            }
+        }
     }
 
-    /** 
-     * Take action at the completion of a step. For example, when the
-     * given step is 0, do nothing; and when the given step is 1, do
-     * the first action.  Argo non-modal wizards should take action as
-     * they do along, as soon as possible, they should not wait until
-     * the final step.
-     *
+    /**
+     * Take action at the completion of a step. For example, when the given step
+     * is 0, do nothing; and when the given step is 1, do the first action. Argo
+     * non-modal wizards should take action as they do along, as soon as
+     * possible, they should not wait until the final step.
+     * 
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
-	if (!possibleConstructor) {
-	    super.doAction(oldStep);
-	    return;
-	}
+        if (!possibleConstructor) {
+            super.doAction(oldStep);
+            return;
+        }
 
-	switch (oldStep) {
-	case 1:
-	    int choice = -1;
-	    if (step1 != null) {
-	        choice = step1.getSelectedIndex();
-	    }
-	    
-	    switch (choice) {
-	    case -1:
-		throw new IllegalArgumentException(
-		        "nothing selected, should not get here");
+        switch (oldStep) {
+        case 1:
+            int choice = -1;
+            if (step1 != null) {
+                choice = step1.getSelectedIndex();
+            }
 
-	    case 0:
-		stereotypePathChosen = true;
-		Object oper = getModelElement();
+            switch (choice) {
+            case -1:
+                throw new IllegalArgumentException(
+                        "nothing selected, should not get here");
 
-		if (!oldStereotypeIsSet) {
-		    oldStereotype = null;
-		    if (ModelFacade.getStereotypes(oper).size() > 0) {
-                        oldStereotype =
-			    ModelFacade.getStereotypes(oper).iterator().next();
+            case 0:
+                stereotypePathChosen = true;
+                Object oper = getModelElement();
+
+                if (!oldStereotypeIsSet) {
+                    oldStereotype = null;
+                    if (ModelFacade.getStereotypes(oper).size() > 0) {
+                        oldStereotype = ModelFacade.getStereotypes(oper)
+                                .iterator().next();
                     }
-		    oldStereotypeIsSet = true;
-		}
+                    oldStereotypeIsSet = true;
+                }
 
                 // We need to find the stereotype with the name
                 // "create" and the base class BehavioralFeature in
                 // the model. If there is none then we create one and
                 // put it there.
-		Object m = ModelFacade.getModel(oper);
+                Object m = ModelFacade.getModel(oper);
                 Object theStereotype = null;
-                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator();
-                     iter.hasNext();) {
+                for (Iterator iter = ModelFacade.getOwnedElements(m).iterator(); iter
+                        .hasNext();) {
                     Object candidate = iter.next();
-		    if (!(ModelFacade.isAStereotype(candidate))) {
-		        continue;
-		    }
+                    if (!(ModelFacade.isAStereotype(candidate))) {
+                        continue;
+                    }
                     if (!("create".equals(ModelFacade.getName(candidate)))) {
                         continue;
                     }
-                    if (!("BehavioralFeature".equals(
-			    ModelFacade.getBaseClass(candidate)))) {
+                    if (!("BehavioralFeature".equals(ModelFacade
+                            .getBaseClass(candidate)))) {
                         continue;
-		    }
+                    }
                     theStereotype = candidate;
                     break;
                 }
                 if (theStereotype == null) {
-                    theStereotype =
-			UmlFactory.getFactory().getExtensionMechanisms()
-			    .createStereotype();
-		    ModelFacade.setName(theStereotype, "create");
-		    // theStereotype.setStereotype(???);
-		    ModelFacade.setBaseClass(theStereotype,
-					     "BehavioralFeature");
-		    Object targetNS =
-			findNamespace(ModelFacade.getNamespace(oper),
-				      ModelFacade.getModel(oper));
+                    theStereotype = Model.getUmlFactory()
+                            .getExtensionMechanisms().createStereotype();
+                    ModelFacade.setName(theStereotype, "create");
+                    // theStereotype.setStereotype(???);
+                    ModelFacade
+                            .setBaseClass(theStereotype, "BehavioralFeature");
+                    Object targetNS = findNamespace(ModelFacade
+                            .getNamespace(oper), ModelFacade.getModel(oper));
                     ModelFacade.addOwnedElement(targetNS, theStereotype);
-		}
+                }
 
-		try {
-		    ModelFacade.setStereotype(oper, theStereotype);
-		} catch (Exception pve) {
-		    LOG.error("could not set stereotype", pve);
-		}
-		return;
+                try {
+                    ModelFacade.setStereotype(oper, theStereotype);
+                } catch (Exception pve) {
+                    LOG.error("could not set stereotype", pve);
+                }
+                return;
 
-	    case 1:
-		// Nothing to do.
-		stereotypePathChosen = false;
-		return;
+            case 1:
+                // Nothing to do.
+                stereotypePathChosen = false;
+                return;
 
-	    default:
-	    }
-	    return;
+            default:
+            }
+            return;
 
-	case 2:
-	    if (!stereotypePathChosen) {
-	        super.doAction(1);
-	    }
-	    return;
-	    
-	default:
-	}
+        case 2:
+            if (!stereotypePathChosen) {
+                super.doAction(1);
+            }
+            return;
+
+        default:
+        }
     }
-    
-    
+
     // TODO:
-    // Move to MMUtil or some other common place and merge with 
+    // Move to MMUtil or some other common place and merge with
     // UMLComboBoxEntry::findNamespace()
-    private static Object findNamespace(Object phantomNS,
-					Object targetModel) {
+    private static Object findNamespace(Object phantomNS, Object targetModel) {
         Object ns = null;
         Object targetParentNS = null;
         if (phantomNS == null) {
@@ -280,8 +284,8 @@ public class WizOperName extends WizMEName {
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements =
-		ModelFacade.getOwnedElements(targetParentNS);
+            Collection ownedElements = ModelFacade
+                    .getOwnedElements(targetParentNS);
             String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
@@ -299,7 +303,7 @@ public class WizOperName extends WizMEName {
                 }
             }
             if (ns == null) {
-                ns = UmlFactory.getFactory().getCore().createNamespace();
+                ns = Model.getUmlFactory().getCore().createNamespace();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);
             }

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.UmlHelper;
+import org.argouml.model.Model;
 
 /**
  * Rule for Summary->Association.
@@ -52,7 +52,7 @@ public class GoSummaryToAssociation extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 	if (parent instanceof AssociationsNode) {
-	    return UmlHelper.getHelper().getCore()
+	    return Model.getUmlHelper().getCore()
                 .getAssociations(((AssociationsNode) parent).getParent());
 	}
 	return null;

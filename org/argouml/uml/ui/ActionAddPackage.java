@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 
 import java.awt.event.ActionEvent;
 
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 
@@ -66,7 +66,7 @@ public class ActionAddPackage  extends UMLAction {
         Object namespace =
 	    TargetManager.getInstance().getModelTarget();
         ModelFacade.addOwnedElement(namespace,
-            UmlFactory.getFactory().getModelManagement().createPackage());
+            Model.getUmlFactory().getModelManagement().createPackage());
     }
     
 }

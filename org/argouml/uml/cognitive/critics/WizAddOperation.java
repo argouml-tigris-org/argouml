@@ -31,7 +31,7 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 
 /**
  * A wizard to add operations to a classifier.
@@ -68,7 +68,7 @@ public class WizAddOperation extends UMLWizard {
 	        .getCurrentProject().getModel();
 	    Object voidType = ProjectManager.getManager()
 	        .getCurrentProject().findType("void");
-	    UmlFactory.getFactory().getCore().buildOperation(me, model, 
+	    Model.getUmlFactory().getCore().buildOperation(me, model, 
 	            voidType, newName, propertyChangeListeners);
         }
     }

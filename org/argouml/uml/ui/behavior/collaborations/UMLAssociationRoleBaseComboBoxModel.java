@@ -24,8 +24,9 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -48,7 +49,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(CollaborationsHelper.getHelper().getAllPossibleBases(
+        setElements(Model.getCollaborationsHelper().getAllPossibleBases(
                 /*(MAssociationRole)*/ getTarget())); 
     }
 
@@ -66,7 +67,7 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return CollaborationsHelper.getHelper().getAllPossibleBases(
+        return Model.getCollaborationsHelper().getAllPossibleBases(
                 /*(MAssociationRole)*/ getTarget()).contains(element);
     }
 

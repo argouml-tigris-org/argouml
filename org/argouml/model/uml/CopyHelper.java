@@ -22,14 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $Id$
-
 package org.argouml.model.uml;
 
-import java.lang.reflect.*;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MClassImpl;
@@ -50,12 +50,14 @@ class CopyFunction {
     private final Method method;
 
     public CopyFunction(Object obj, Method m) {
-	if (m == null)
+	if (m == null) {
 	    throw new NullPointerException();
+	}
 
 	// If obj is null then it must be a static function
-	if (obj == null && !Modifier.isStatic(m.getModifiers()))
+	if (obj == null && !Modifier.isStatic(m.getModifiers())) {
 	    throw new NullPointerException();
+	}
 
 	object = obj;
 	method = m;
@@ -82,8 +84,8 @@ class CopyFunction {
  * @author Michael Stockman
  * @since 0.13.2
  */
-public final class CopyHelper {
-    private static final Logger LOG = 
+final class CopyHelper {
+    private static final Logger LOG =
         Logger.getLogger(CopyHelper.class);
 
     private static CopyHelper theInstance;
@@ -95,23 +97,23 @@ public final class CopyHelper {
 
 	add(MPackageImpl.class,
 	    MPackage.class,
-	    ModelManagementFactory.getFactory(),
+	    Model.getModelManagementFactory(),
 	    "copyPackage");
 	add(MClassImpl.class,
 	    MClass.class,
-	    CoreFactory.getFactory(),
+	    Model.getCoreFactory(),
 	    "copyClass");
 	add(MDataTypeImpl.class,
 	    MDataType.class,
-	    CoreFactory.getFactory(),
+	    Model.getCoreFactory(),
 	    "copyDataType");
 	add(MInterfaceImpl.class,
 	    MInterface.class,
-	    CoreFactory.getFactory(),
+	    Model.getCoreFactory(),
 	    "copyInterface");
 	add(MStereotypeImpl.class,
 	    MStereotype.class,
-	    ExtensionMechanismsFactory.getFactory(),
+	    Model.getExtensionMechanismsFactory(),
 	    "copyStereotype");
     }
 
@@ -119,13 +121,14 @@ public final class CopyHelper {
      * @return get the helper
      */
     public static CopyHelper getHelper() {
-	if (theInstance == null)
+	if (theInstance == null) {
 	    theInstance = new CopyHelper();
+	}
 	return theInstance;
     }
 
     /**
-     * Adds a copy handler for objects of type <i>type</i>.
+     * Adds a copy handler for objects of a given type.
      * Since copy functions could be either instance or static
      * functions, if obj is an instance of Class then the function
      * is assumed to be static and will be looked up in obj. Otherwise
@@ -139,7 +142,7 @@ public final class CopyHelper {
      */
     private void add(Class type, Class param, Object obj, String name) {
 	Method m;
-	Class params[] = {param, MNamespace.class};
+	Class[] params = {param, MNamespace.class};
 
 	try {
 	    if (obj instanceof Class) {
@@ -170,7 +173,7 @@ public final class CopyHelper {
      * @param anelement is the element to copy.
      * @param ans the namespace
      * @return a copy of element, or null.
-     * 
+     *
      * @throws NullPointerException if element is null.
      */
     public Object/*MModelElement*/ copy(Object/*MModelElement*/ anelement,
@@ -181,13 +184,13 @@ public final class CopyHelper {
 	CopyFunction f =
 	    (CopyFunction) copyfunctions.get(element.getClass());
 	if (f == null) {
-	    LOG.warn("CopyHelper is unable to copy element of " 
+	    LOG.warn("CopyHelper is unable to copy element of "
 		     + "type: " + element.getClass());
 	    return null;
 	}
 
 	try {
-	    Object args[] = {element, ns};
+	    Object[] args = {element, ns};
 	    return (MModelElement) f.getMethod().invoke(f.getObject(), args);
 	} catch (Exception e) {
 	    LOG.error("CopyHelper copy method exception", e);

@@ -31,8 +31,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -96,12 +96,12 @@ public class ActionGenerateAll extends UMLAction {
 	    while (selectedObjects.hasNext()) {
 		Object selected = selectedObjects.next();
 		if (ModelFacade.isAPackage(selected)) {
-		    addCollection(ModelManagementHelper.getHelper()
+		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
 		                      ModelFacade.CLASS),
 				  classes);
-		    addCollection(ModelManagementHelper.getHelper()
+		    addCollection(Model.getModelManagementHelper()
 				  .getAllModelElementsOfKind(
                                       selected,
 			              ModelFacade.INTERFACE),

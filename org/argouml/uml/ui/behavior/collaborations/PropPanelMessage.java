@@ -31,8 +31,8 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CommonBehaviorFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -134,7 +134,7 @@ public class PropPanelMessage extends PropPanelModelElement {
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
             if (org.argouml.model.ModelFacade.isAMessage(target)) {
-                CommonBehaviorFactory.getFactory().buildAction(target);
+                Model.getCommonBehaviorFactory().buildAction(target);
                 super.actionPerformed(e);
             }
         }

@@ -31,13 +31,11 @@ import java.awt.Rectangle;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
-
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.ModeManager;
@@ -228,7 +226,7 @@ public class SelectionObject extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return UmlFactory.getFactory().getCommonBehavior().createObject();
+        return Model.getUmlFactory().getCommonBehavior().createObject();
     }
 
 } /* end class SelectionObject */

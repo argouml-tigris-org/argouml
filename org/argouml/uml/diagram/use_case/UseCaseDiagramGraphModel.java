@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,8 +32,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 
 /**
@@ -46,9 +46,11 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 public class UseCaseDiagramGraphModel
         extends UMLMutableGraphSupport
         implements VetoableChangeListener {
-    
-    private static final Logger LOG = 
-        Logger.getLogger(UseCaseDiagramGraphModel.class);	
+    /**
+     * Logger.
+     */
+    private static final Logger LOG =
+        Logger.getLogger(UseCaseDiagramGraphModel.class);
     /**
      * The "home" UML model of this diagram, not all ModelElements in
      * this graph are in the home model, but if they are added and
@@ -85,8 +87,9 @@ public class UseCaseDiagramGraphModel
      * @param namespace  The namespace to use for this graph model
      */
     public void setNamespace(Object namespace) {
-        if (!ModelFacade.isANamespace(namespace))
+        if (!ModelFacade.isANamespace(namespace)) {
             throw new IllegalArgumentException();
+        }
 	model = namespace;
     }
 
@@ -114,8 +117,7 @@ public class UseCaseDiagramGraphModel
 
         if (ModelFacade.isAActor(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
-        }
-        else if (ModelFacade.isAUseCase(nodeOrEdge)) {
+        } else if (ModelFacade.isAUseCase(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
 
@@ -234,7 +236,7 @@ public class UseCaseDiagramGraphModel
     public Object getSourcePort(Object edge) {
         
         if (ModelFacade.isARelationship(edge)) {
-            return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+            return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 
         // Don't know what to do otherwise

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ModeCreateEdgeAndNode.java
-// Classes: ModeCreateEdgeAndNode
-// Original Author: jrobbins
-// $Id$
-
 package org.argouml.uml.diagram.ui;
 
 import java.awt.Color;
@@ -40,8 +35,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -57,7 +52,8 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
 
-/** A Mode to interpret user input while creating an edge.  Basically
+/**
+ *  A Mode to interpret user input while creating an edge.  Basically
  *  mouse down starts creating an edge from a source port Fig, mouse
  *  motion paints a rubberband line, mouse up finds the destination port
  *  and finishes creating the edge and makes an FigEdge and sends
@@ -66,8 +62,10 @@ import org.tigris.gef.presentation.Handle;
  *  The argument "edgeClass" determines the type if edge to suggest
  *  that the Editor's GraphModel construct.  The GraphModel is
  *  responsible for acutally making an edge in the underlying model
- *  and connecting it to other model elements. */
-
+ *  and connecting it to other model elements.
+ * 
+ * @author jrobbins
+ */
 public class ModeCreateEdgeAndNode extends ModeCreate {
     private static final Logger LOG =
         Logger.getLogger(ModeCreateEdgeAndNode.class);
@@ -257,7 +255,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
             }
             if (newNode instanceof GraphNodeHooks)
 		((GraphNodeHooks) newNode).initialize(_args);
-            UmlFactory.getFactory().addListenersToModelElement(newNode);
+            Model.getUmlFactory().addListenersToModelElement(newNode);
             if (mgm.canAddNode(newNode)) {
                 GraphNodeRenderer renderer = editor.getGraphNodeRenderer();
                 Layer lay = editor.getLayerManager().getActiveLayer();

@@ -27,8 +27,9 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.tigris.gef.presentation.Fig;
@@ -52,7 +53,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(CollaborationsHelper.getHelper()
+        setAllElements(Model.getCollaborationsHelper()
                 .allAvailableFeatures(getTarget()));
     }
 

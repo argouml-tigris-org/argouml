@@ -24,8 +24,8 @@
 
 package org.argouml.uml.diagram.state.ui;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -73,8 +73,8 @@ public abstract class FigStateVertex extends FigNodeModelElement {
                 && (ModelFacade.isACompositeState(encloser.getOwner()))) {
             compositeState = encloser.getOwner();
         } else {
-            compositeState = StateMachinesHelper.getHelper().getTop(
-                    StateMachinesHelper.getHelper()
+            compositeState = Model.getStateMachinesHelper().getTop(
+                    Model.getStateMachinesHelper()
                             .getStateMachine(stateVertex));
         }
         if (compositeState != null)

@@ -42,7 +42,6 @@ import org.argouml.application.api.Notation;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -101,7 +100,7 @@ public class FigInterface extends FigNodeModelElement
      * variable (rather than local to the method).<p>
      */
     private Object resident =
-        UmlFactory.getFactory().getCore().createElementResidence();
+        Model.getUmlFactory().getCore().createElementResidence();
 
     /**
      * Text highlighted by mouse actions on the diagram.<p>

@@ -30,8 +30,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -86,7 +86,7 @@ public class ActionGenerateProjectCode extends UMLAction {
 	if (ns == null) return;
 	while (ModelFacade.getNamespace(ns) != null) 
 	    ns = ModelFacade.getNamespace(ns);
-	Collection elems = ModelManagementHelper.getHelper()
+	Collection elems = Model.getModelManagementHelper()
 	    .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
 	//Project p = ProjectManager.getManager().getCurrentProject();
 	//Collection elems =

@@ -28,8 +28,8 @@ import java.util.Collection;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -108,7 +108,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
             Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
             Object model = ProjectManager.getManager().getCurrentProject().getModel();
             TargetManager.getInstance().setTarget(
-                    UmlFactory.getFactory().getCore().buildAttribute(owner, model, intType, propertyChangeListeners));
+                    Model.getUmlFactory().getCore().buildAttribute(owner, model, intType, propertyChangeListeners));
         }
 
     }

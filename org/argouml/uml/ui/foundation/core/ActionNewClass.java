@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -58,7 +58,7 @@ public class ActionNewClass extends AbstractActionNewModelElement {
             Object classifier = target;
             Object ns = ModelFacade.getNamespace(classifier);
             if (ns != null) {
-                Object peer = CoreFactory.getFactory().buildClass(ns);
+                Object peer = Model.getCoreFactory().buildClass(ns);
                 TargetManager.getInstance().setTarget(peer);
                 super.actionPerformed(e);
             }

@@ -27,8 +27,8 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
@@ -75,7 +75,7 @@ public class ActionSequenceDiagram extends UMLAction {
             owner = ModelFacade.getNamespace(target);
         }
         Object collaboration =
-            UmlFactory.getFactory().getCollaborations().buildCollaboration(
+            Model.getUmlFactory().getCollaborations().buildCollaboration(
                 owner,
                 target);
         UMLSequenceDiagram diagram = new UMLSequenceDiagram(collaboration);

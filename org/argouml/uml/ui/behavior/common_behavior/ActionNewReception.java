@@ -29,8 +29,8 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CommonBehaviorFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -66,7 +66,7 @@ public class ActionNewReception extends AbstractActionNewModelElement {
             throw new IllegalArgumentException(
                     "Argument classifier is null or not a classifier");
         Object reception = 
-            CommonBehaviorFactory.getFactory().buildReception(classifier);
+            Model.getCommonBehaviorFactory().buildReception(classifier);
         TargetManager.getInstance().setTarget(reception);
     }
 }

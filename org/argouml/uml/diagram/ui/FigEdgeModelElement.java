@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,9 +62,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreHelper;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ActionAutoResize;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
@@ -645,7 +642,7 @@ public abstract class FigEdgeModelElement
         if (own != null) {
             Trash.SINGLETON.addItemFrom(getOwner(), null);
             if (org.argouml.model.ModelFacade.isAModelElement(own)) {
-                UmlFactory.getFactory().delete(own);
+                Model.getUmlFactory().delete(own);
             }
         }
         Iterator it = getPathItemFigs().iterator();
@@ -873,7 +870,7 @@ public abstract class FigEdgeModelElement
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return UmlHelper.getHelper().getSource(getOwner());
+            return Model.getUmlHelper().getSource(getOwner());
         }
         return null;
     }
@@ -887,7 +884,7 @@ public abstract class FigEdgeModelElement
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return CoreHelper.getHelper().getDestination(getOwner());
+            return Model.getCoreHelper().getDestination(getOwner());
         }
         return null;
     }

@@ -24,8 +24,9 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -56,7 +57,7 @@ public class UMLMessageActivatorComboBoxModel extends UMLComboBoxModel2 {
             Object mes = /*(MMessage)*/ target;
             removeAllElements();
             // fill the list with items
-            setElements(CollaborationsHelper.getHelper()
+            setElements(Model.getCollaborationsHelper()
                     .getAllPossibleActivators(mes));
         }
     }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,9 +28,8 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -81,7 +80,7 @@ public class ActionAddNote extends UMLAction {
         Object model = ProjectManager.getManager().getCurrentProject()
             .getModel();
         Object comment =
-            CoreFactory.getFactory().buildComment(target, model);
+            Model.getCoreFactory().buildComment(target, model);
 
         // calculate the position of the comment
         ArgoDiagram diagram =
@@ -105,7 +104,7 @@ public class ActionAddNote extends UMLAction {
                     if (y < 0) {
                         y = elemFig.getY() + elemFig.getHeight() + DISTANCE;
                         if (y + fig.getHeight() > drawingArea.getHeight()) {
-                            UmlFactory.getFactory().delete(comment);
+                            Model.getUmlFactory().delete(comment);
                             return;
                         }
                     }
@@ -119,7 +118,7 @@ public class ActionAddNote extends UMLAction {
 	      Point endPoint = new Point(elemFig.getX() + elemFig.getWidth(), 
 	          elemFig.getY() + elemFig.getHeight());
             */
-            UmlFactory.getFactory().delete(comment);
+            Model.getUmlFactory().delete(comment);
             return;
         }
         fig.setLocation(x, y);

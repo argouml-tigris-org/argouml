@@ -24,13 +24,12 @@
 
 package org.argouml.uml.ui;
 
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.StateMachinesFactory;
-import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.apache.log4j.Logger;
 
 /** Action to create a new statechart diagram.
  * @stereotype singleton
@@ -70,7 +69,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
     public UMLDiagram createDiagram(Object handle) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object/*MStateMachine*/ machine =
-            StateMachinesFactory.getFactory().buildStateMachine(target);
+            Model.getStateMachinesFactory().buildStateMachine(target);
         UMLStateDiagram d =
             new UMLStateDiagram(ModelFacade.getNamespace(machine), machine);
         return d;
@@ -83,7 +82,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
         return super.shouldBeEnabled()
-            && StateMachinesHelper.getHelper().isAddingStatemachineAllowed(
+            && Model.getStateMachinesHelper().isAddingStatemachineAllowed(
                     TargetManager.getInstance().getModelTarget());
     }
     
@@ -97,7 +96,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        return StateMachinesHelper.getHelper()
+        return Model.getStateMachinesHelper()
             .isAddingStatemachineAllowed(handle);
     }
 

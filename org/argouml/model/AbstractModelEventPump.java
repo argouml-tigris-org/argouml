@@ -35,7 +35,7 @@ import java.beans.PropertyChangeListener;
  *
  * @author Linus Tolke
  */
-abstract class AbstractModelEventPump {
+public abstract class AbstractModelEventPump {
 
     /**
      * @see org.argouml.model.ModelEventPump#addModelEventListener(

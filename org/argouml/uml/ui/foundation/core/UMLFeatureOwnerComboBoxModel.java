@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -55,7 +55,7 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#buildModelList()
      */
     protected void buildModelList() {
-        setElements(ModelManagementHelper.getHelper()
+        setElements(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(ModelFacade.CLASSIFIER));
     }
 

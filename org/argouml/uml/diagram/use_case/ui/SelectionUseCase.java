@@ -32,7 +32,7 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -245,9 +245,9 @@ public class SelectionUseCase extends SelectionWButtons {
     protected Object getNewNode(int buttonCode) {
         Object newNode = null;
         if (buttonCode == 10 || buttonCode == 11)
-            newNode = UmlFactory.getFactory().getUseCases().createUseCase();
+            newNode = Model.getUmlFactory().getUseCases().createUseCase();
         else
-            newNode = UmlFactory.getFactory().getUseCases().createActor();
+            newNode = Model.getUmlFactory().getUseCases().createActor();
         return newNode;
     }
 

@@ -29,21 +29,32 @@ import java.awt.Point;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.dnd.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragGestureEvent;
+import java.awt.dnd.DragGestureListener;
+import java.awt.dnd.DragGestureRecognizer;
+import java.awt.dnd.DragSource;
+import java.awt.dnd.DragSourceDragEvent;
+import java.awt.dnd.DragSourceDropEvent;
+import java.awt.dnd.DragSourceEvent;
+import java.awt.dnd.DragSourceListener;
+import java.awt.dnd.DropTarget;
+import java.awt.dnd.DropTargetDragEvent;
+import java.awt.dnd.DropTargetEvent;
+import java.awt.dnd.DropTargetListener;
 import java.awt.event.InputEvent;
-
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
-import javax.swing.tree.TreePath;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
 /**
  * This class extends the default Argo JTree with Drag and drop capabilities.
@@ -269,7 +280,7 @@ public class DnDExplorerTree
 		        .getLastPathComponent()).getUserObject();
             
             boolean isValid =
-		UmlHelper.getHelper().getCore().isValidNamespace(src, dest);
+		Model.getUmlHelper().getCore().isValidNamespace(src, dest);
             
             if (isValid) {
                 return null;

@@ -26,8 +26,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.Editor;
@@ -87,7 +87,7 @@ public class ActionAddMessage extends UMLAction {
      */
     private void addMessage(Object associationrole) {
         Object collaboration = ModelFacade.getNamespace(associationrole);
-        Object message = UmlFactory.getFactory().getCollaborations()
+        Object message = Model.getUmlFactory().getCollaborations()
                 .buildMessage(collaboration, associationrole);
         Editor e = Globals.curEditor();
         GraphModel gm = e.getGraphModel();

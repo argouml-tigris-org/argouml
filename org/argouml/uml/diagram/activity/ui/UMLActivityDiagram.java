@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,9 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UMLActivityDiagram.java
-// Classes: UMLActivityDiagram
-
 package org.argouml.uml.diagram.activity.ui;
 
 import java.beans.PropertyVetoException;
@@ -32,25 +29,23 @@ import java.beans.PropertyVetoException;
 import javax.swing.Action;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.activity.ActivityDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.ActionCreatePseudostate;
 import org.argouml.uml.diagram.ui.RadioAction;
 import org.argouml.uml.diagram.ui.UMLDiagram;
-
 import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 /**
  * The Activity diagram.<p>
- * 
+ *
  * TODO: Finish the work on swimlanes, callstates, subactivity states.
  */
 public class UMLActivityDiagram extends UMLDiagram {
@@ -74,7 +69,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     private Action actionSubactivityState;
 
     /**
-     * Constructor
+     * Constructor.
      */
     public UMLActivityDiagram() {
         try {
@@ -318,8 +313,9 @@ public class UMLActivityDiagram extends UMLDiagram {
      */
     protected Action getActionNewSwimlane() {
         if (actionNewSwimlane == null) {
-            actionNewSwimlane = new CmdCreateNode(ModelFacade.PARTITION, 
-                "Create a new swimlane");
+            actionNewSwimlane =
+                new CmdCreateNode(ModelFacade.PARTITION,
+                        	  "Create a new swimlane");
         }
         return actionNewSwimlane;
     }
@@ -360,7 +356,7 @@ public class UMLActivityDiagram extends UMLDiagram {
     protected Action getActionSubactivityState() {
         if (actionSubactivityState == null) {
             actionSubactivityState = new RadioAction(
-                    new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE, 
+                    new CmdCreateNode(ModelFacade.SUBACTIVITYSTATE,
                                                 "SubactivityState"));
         }
         return actionSubactivityState;
@@ -379,16 +375,21 @@ public class UMLActivityDiagram extends UMLDiagram {
         }
         return actionTransition;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
     public boolean needsToBeRemoved() {
         Object context = ModelFacade.getContext(getStateMachine());
-        if (context == null) return true;
-        if (UmlFactory.getFactory().isRemoved(getStateMachine())) return true;
-        if (UmlFactory.getFactory().isRemoved(getNamespace())) return true;
+        if (context == null) {
+            return true;
+        }
+        if (Model.getUmlFactory().isRemoved(getStateMachine())) {
+            return true;
+        }
+        if (Model.getUmlFactory().isRemoved(getNamespace())) {
+            return true;
+        }
         return false;
     }
-    
 } /* end class UMLActivityDiagram */

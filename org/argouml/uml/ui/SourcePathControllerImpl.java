@@ -25,12 +25,12 @@
 package org.argouml.uml.ui;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.ArrayList;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 
 /**
  * Implements the source path controller. 
@@ -107,7 +107,7 @@ public class SourcePathControllerImpl implements SourcePathController {
      */
     public Collection getAllModelElementsWithSourcePath() {
         Collection elems =
-            ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+            Model.getModelManagementHelper().getAllModelElementsOfKind(
                 ModelFacade.MODELELEMENT);
         
         ArrayList mElemsWithSrcPath = new ArrayList();

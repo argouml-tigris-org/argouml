@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,6 +21,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ui;
 
 import java.lang.reflect.InvocationTargetException;
@@ -35,7 +36,8 @@ import javax.swing.Action;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.Model;
+import org.argouml.model.UmlFactory;
 
 /**
  * Command to create nodes with the appropriate modelelement. The modelelement
@@ -43,7 +45,7 @@ import org.argouml.model.uml.UmlFactory;
  * no-parameter build method, the create method corresponding to the
  * modelelement is used.
  * 
- * @see org.argouml.model.uml.CoreFactory
+ * @see org.argouml.model.uml.CoreFactoryImpl
  * @author jaap.branderhorst@xs4all.nl
  */
 public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
@@ -56,6 +58,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
 
     private static Vector factoryMethods = new Vector();
     static {
+        // TODO: Is this the correct way to do this after refactoring the
+        //       model component? Please review! /Linus
         Method[] methodArray = UmlFactory.class.getMethods();
         for (int i = 0; i < methodArray.length; i++) {
             if (methodArray[i].getName().startsWith("get")
@@ -175,8 +179,8 @@ public class CmdCreateNode extends org.tigris.gef.base.CmdCreateNode {
             }
             Iterator it = factoryMethods.iterator();
             while (it.hasNext()) {
-                Object factory = ((Method) it.next()).invoke(UmlFactory
-                        .getFactory(), new Object[] {});
+                Object factory = ((Method) it.next()).invoke(Model
+                        .getUmlFactory(), new Object[] {});
                 List createMethods = Arrays.asList(factory.getClass()
                         .getMethods());
                 Iterator it2 = createMethods.iterator();

@@ -23,10 +23,12 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import org.argouml.uml.*;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
+import org.argouml.uml.Profile;
 
 /**
  * A combobox entry.
@@ -173,7 +175,7 @@ public class UMLComboBoxEntry implements Comparable {
                 }
             }
             if (ns == null) {
-                ns = UmlFactory.getFactory().getModelManagement()
+                ns = Model.getUmlFactory().getModelManagement()
                     .createPackage();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);

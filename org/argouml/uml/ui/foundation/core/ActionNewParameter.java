@@ -28,7 +28,7 @@ import java.awt.event.ActionEvent;
 import java.util.Collection;
 
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.uml.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -62,7 +62,7 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
         Object model = ProjectManager.getManager().getCurrentProject().getModel();
         Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
         Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(target);
-        Object param = CoreFactory.getFactory().buildParameter(target, model, voidType, propertyChangeListeners);
+        Object param = Model.getCoreFactory().buildParameter(target, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(param);
     }
 

@@ -38,7 +38,6 @@ import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ArgoJMenu;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
@@ -246,12 +245,12 @@ public class FigAssociation extends FigEdgeModelElement {
 	    ModelFacade.setName(destAE, destRole.getText());
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
-	    Object multi = UmlFactory.getFactory().getDataTypes()
+	    Object multi = Model.getUmlFactory().getDataTypes()
 			   .createMultiplicity(srcMult.getText());
 	    ModelFacade.setMultiplicity(srcAE, multi);
 	} else if (ft == destMult) {
 	    Object destAE = (conn.toArray())[1];
-	    Object multi = UmlFactory.getFactory().getDataTypes()
+	    Object multi = Model.getUmlFactory().getDataTypes()
 			   .createMultiplicity(destMult.getText());
 	    ModelFacade.setMultiplicity(destAE, multi);
 	}

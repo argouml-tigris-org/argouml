@@ -28,8 +28,9 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -56,7 +57,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected Vector getChoices() {
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper()
+        vec.addAll(Model.getCollaborationsHelper()
                 .getAllPossibleBases(getTarget()));
         return vec;
     }
@@ -83,7 +84,7 @@ public class ActionAddClassifierRoleBase extends AbstractActionAddModelElement {
      */
     protected void doIt(Vector selected) {
         Object role = /*(MClassifierRole)*/ getTarget();
-        CollaborationsHelper.getHelper().setBases(role, selected);
+        Model.getCollaborationsHelper().setBases(role, selected);
     }
         
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,9 +26,9 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import java.awt.event.ActionEvent;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.CommonBehaviorFactory;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * Action to build a new action to some message.
@@ -37,16 +37,18 @@ import org.argouml.uml.ui.AbstractActionNewModelElement;
  * @stereotype singleton
  */
 public class ActionNewActionForMessage extends AbstractActionNewModelElement {
-
-    private static final ActionNewActionForMessage SINGLETON = 
+    /**
+     * Logger.
+     */
+    private static final ActionNewActionForMessage SINGLETON =
         new ActionNewActionForMessage();
-    
+
     /**
      * The constructor.
      */
     public ActionNewActionForMessage() {
         super();
-    }    
+    }
 
     /**
      * @see
@@ -54,10 +56,9 @@ public class ActionNewActionForMessage extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        CommonBehaviorFactory.getFactory().buildAction(/*(MMessage)*/ 
-                getTarget());
+        Model.getCommonBehaviorFactory().buildAction(getTarget());
     }
-    
+
     /**
      * @see javax.swing.Action#isEnabled()
      */

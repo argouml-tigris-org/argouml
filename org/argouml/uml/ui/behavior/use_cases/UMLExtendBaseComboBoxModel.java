@@ -24,8 +24,8 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -54,7 +54,7 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object extend = /*(MExtend)*/ getTarget();
         if (extend == null) return;
-        setElements(ModelManagementHelper.getHelper()
+        setElements(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind((Class) ModelFacade.USE_CASE));
         if (ModelFacade.getExtension(extend) != null) {
             removeElement(ModelFacade.getExtension(extend));

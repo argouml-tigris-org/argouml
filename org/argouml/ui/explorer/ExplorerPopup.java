@@ -34,8 +34,8 @@ import javax.swing.JPopupMenu;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.ui.ActionGoToDetails;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
@@ -47,7 +47,6 @@ import org.argouml.uml.ui.ActionAddPackage;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.ActionSetSourcePath;
 import org.argouml.uml.ui.UMLAction;
-
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.PopupGenerator;
 
@@ -135,7 +134,7 @@ public class ExplorerPopup extends JPopupMenu {
                     
                 final Object selectedStateMachine
                     = (stateVertexSelected)
-                    ? StateMachinesHelper.getHelper()
+                    ? Model.getStateMachinesHelper()
 		          .getStateMachine(selectedItem)
                     : null;
                 

@@ -31,8 +31,8 @@ import javax.swing.JScrollPane;
 import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -142,7 +142,7 @@ public class PropPanelPackage extends PropPanelNamespace  {
     public void addPackage() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAPackage(target)) {
-            Object/*MPackage*/ newPackage =  UmlFactory.getFactory().
+            Object/*MPackage*/ newPackage =  Model.getUmlFactory().
                 getModelManagement().createPackage();
             Object/*MPackage*/ currentPackage = target;
             ModelFacade.addOwnedElement(currentPackage, newPackage);

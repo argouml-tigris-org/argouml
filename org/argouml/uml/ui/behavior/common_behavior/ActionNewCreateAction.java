@@ -28,7 +28,7 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.CommonBehaviorFactory;
+import org.argouml.model.Model;
 
 /**
  * @since Dec 15, 2002
@@ -52,7 +52,7 @@ public class ActionNewCreateAction extends ActionNewAction {
      * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */
     protected Object createAction() {
-        return CommonBehaviorFactory.getFactory().createCreateAction();
+        return Model.getCommonBehaviorFactory().createCreateAction();
     }
 
 

@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -53,7 +53,7 @@ public class ActionNewSimpleState extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        StateMachinesFactory.getFactory().buildSimpleState(getTarget());
+        Model.getStateMachinesFactory().buildSimpleState(getTarget());
     }
 
     /**

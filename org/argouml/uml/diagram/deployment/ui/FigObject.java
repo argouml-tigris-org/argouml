@@ -36,8 +36,8 @@ import java.beans.PropertyVetoException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Selection;
@@ -55,7 +55,7 @@ public class FigObject extends FigNodeModelElement {
 
     private FigRect cover;
     private Object resident =
-	UmlFactory.getFactory().getCore().createElementResidence();
+	Model.getUmlFactory().getCore().createElementResidence();
 
 
     ////////////////////////////////////////////////////////////////

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,25 +22,18 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: Modeller.java
-// Classes: Modeller
-// Original Author: Marcus Andersson andersson@users.sourceforge.net
-
 package org.argouml.uml.reveng.java;
 
 import java.util.Collection;
+import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
-import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.reveng.Import;
@@ -49,9 +42,10 @@ import org.tigris.gef.base.Globals;
 /**
  * Modeller maps Java source code(parsed/recognised by ANTLR) to UML model
  * elements, it applies some of the semantics in JSR26.
+ *
+ * @author Marcus Andersson
  */
-public class Modeller
-{
+public class Modeller {
     /**
      * Logger.<p>
      */
@@ -195,7 +189,7 @@ public class Modeller
 	      fileName.length()-5);
             */
             
-            component = UmlFactory.getFactory().getCore().createComponent();
+            component = Model.getUmlFactory().getCore().createComponent();
             ModelFacade.setName(component, fileName);
         }
         
@@ -260,7 +254,7 @@ public class Modeller
             
             // a component already exists,
             // so delete the latest one(the duplicate)
-            UmlFactory.getFactory().delete(parseState.getComponent());
+            Model.getUmlFactory().delete(parseState.getComponent());
         // change the parse state to the existing one.
             parseState.addComponent(component);
         }
@@ -292,7 +286,7 @@ public class Modeller
             
             // try find an existing permission
             Iterator dependenciesIt =
-                UmlHelper.getHelper().getCore()
+                Model.getUmlHelper().getCore()
 		    .getDependencies(mPackage, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
@@ -308,7 +302,7 @@ public class Modeller
             // if no existing permission was found.
             if (perm == null) {
 		perm =
-		    UmlFactory.getFactory().getCore()
+		    Model.getUmlFactory().getCore()
 		        .buildPermission(parseState.getComponent(), mPackage);
 		String newName =
 		    ModelFacade.getName(parseState.getComponent())
@@ -328,7 +322,7 @@ public class Modeller
                 
                 // try find an existing permission
                 Iterator dependenciesIt =
-		    UmlHelper.getHelper().getCore()
+		    Model.getUmlHelper().getCore()
                         .getDependencies(mClassifier,
 					 parseState.getComponent())
                             .iterator();
@@ -345,7 +339,7 @@ public class Modeller
                 // if no existing permission was found.
                 if (perm == null) {
                     perm =
-			UmlFactory.getFactory().getCore()
+			Model.getUmlFactory().getCore()
 			    .buildPermission(parseState.getComponent(),
 					     mClassifier);
 		    String newName =
@@ -389,7 +383,7 @@ public class Modeller
                          String javadoc)
     {
         Object mClass =
-	    addClassifier(UmlFactory.getFactory().getCore().createClass(),
+	    addClassifier(Model.getUmlFactory().getCore().createClass(),
 			  name, modifiers, javadoc);
 
         ModelFacade.setAbstract(mClass,
@@ -500,7 +494,7 @@ public class Modeller
                              String javadoc)
     {
         Object mInterface =
-	    addClassifier(UmlFactory.getFactory().getCore().createInterface(),
+	    addClassifier(Model.getUmlFactory().getCore().createInterface(),
 			  name,
 			  modifiers,
 			  javadoc);
@@ -583,7 +577,7 @@ public class Modeller
             
             // try find an existing residency
             Iterator dependenciesIt =
-		UmlHelper.getHelper().getCore()
+		Model.getUmlHelper().getCore()
                     .getDependencies(mClassifier, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
@@ -604,9 +598,9 @@ public class Modeller
                 
                 // therefore temporarily use a non-standard hack:
                 //if (parseState.getComponent() == null) addComponent();
-                residentDep = CoreFactory.getFactory()
+                residentDep = Model.getCoreFactory()
 		    .buildDependency(parseState.getComponent(), mClassifier);
-                UmlFactory.getFactory().getExtensionMechanisms()
+                Model.getUmlFactory().getExtensionMechanisms()
 		    .buildStereotype(
 				     residentDep,
 				     "resident",
@@ -766,7 +760,7 @@ public class Modeller
 		    .getCurrentProject().findType("void");
 		Collection propertyChangeListeners = ProjectManager.getManager()
 		    .getCurrentProject().findFigsForMember(mOperation);
-		mParameter = UmlFactory.getFactory().getCore().buildParameter(
+		mParameter = Model.getUmlFactory().getCore().buildParameter(
 		        mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter, "return");
 		ModelFacade.setKindToReturn(mParameter);
@@ -798,7 +792,7 @@ public class Modeller
                     .getCurrentProject().findType("void");
                 Collection propertyChangeListeners = ProjectManager.getManager()
                     .getCurrentProject().findFigsForMember(mOperation);
-                mParameter = UmlFactory.getFactory().getCore().buildParameter(
+                mParameter = Model.getUmlFactory().getCore().buildParameter(
                         mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter,
 				    (String) parameter.elementAt(2));
@@ -868,7 +862,7 @@ public class Modeller
         Object method = getMethod(ModelFacade.getName(op));
         parseState.feature(method);
         ModelFacade.setBody(method,
-			    UmlFactory.getFactory().getDataTypes()
+			    Model.getUmlFactory().getDataTypes()
 			    .createProcedureExpression("Java",
 						       body));
 	// Add the method to it's specification.
@@ -969,7 +963,7 @@ public class Modeller
                 }
                 
 		Object newInitialValue = 
-		    UmlFactory.getFactory().getDataTypes()
+		    Model.getUmlFactory().getDataTypes()
 		        .createExpression("Java",
 					  initializer);
                 ModelFacade.setInitialValue(mAttribute, newInitialValue);
@@ -1019,7 +1013,7 @@ public class Modeller
         mGeneralization = ModelFacade.getGeneralization(child, parent);
         if (mGeneralization == null) {
             mGeneralization =
-		CoreFactory.getFactory().buildGeneralization(child, parent,
+		Model.getCoreFactory().buildGeneralization(child, parent,
 							     name);
         }
         if (mGeneralization != null) {
@@ -1060,7 +1054,7 @@ public class Modeller
         }
 
         if (mAbstraction == null) {
-            mAbstraction = UmlFactory.getFactory().getCore().buildAbstraction(
+            mAbstraction = Model.getUmlFactory().getCore().buildAbstraction(
                    name, 
                    parent, 
                    child);
@@ -1080,7 +1074,7 @@ public class Modeller
 	Object mPackage = searchPackageInModel(name);
 	if (mPackage == null) {
 	    mPackage =
-		UmlFactory.getFactory().getModelManagement()
+		Model.getUmlFactory().getModelManagement()
 		    .buildPackage(getRelativePackageName(name), name);
 	    ModelFacade.setNamespace(mPackage, model);
 
@@ -1136,7 +1130,7 @@ public class Modeller
             Object voidType = ProjectManager.getManager()
                 .getCurrentProject().findType("void");
             mOperation =
-        		UmlFactory.getFactory().getCore().buildOperation(
+        		Model.getUmlFactory().getCore().buildOperation(
                         cls, mdl, voidType, name, propertyChangeListeners);
 //            Iterator it2 =
 //		  ProjectManager.getManager().getCurrentProject()
@@ -1171,7 +1165,7 @@ public class Modeller
     {
         Object mMethod = parseState.getMethod(name);
         if (mMethod == null) {
-            mMethod = UmlFactory.getFactory().getCore().buildMethod(name);
+            mMethod = Model.getUmlFactory().getCore().buildMethod(name);
             ModelFacade.addFeature(parseState.getClassifier(), mMethod);
         }
         return mMethod;
@@ -1208,7 +1202,7 @@ public class Modeller
                 .getCurrentProject().findType("int");
             Object mdl = ProjectManager.getManager()
                 .getCurrentProject().getModel();
-            mAttribute = UmlFactory.getFactory().getCore()
+            mAttribute = Model.getUmlFactory().getCore()
                 .buildAttribute(cls, mdl, intType, propertyChangeListeners);
             ModelFacade.setName(mAttribute, name);
         }
@@ -1238,7 +1232,7 @@ public class Modeller
             String newName = ModelFacade.getName(parseState.getClassifier())
                     + " -> " + ModelFacade.getName(mClassifier);
 
-            Object mAssociation = CoreFactory.getFactory().buildAssociation(
+            Object mAssociation = Model.getCoreFactory().buildAssociation(
                     mClassifier, true, parseState.getClassifier(), false,
                     newName);
             mAssociationEnd = ModelFacade.getAssociationEnd(mClassifier,
@@ -1259,7 +1253,7 @@ public class Modeller
 
 	if (mStereotype == null || !ModelFacade.isAStereotype(mStereotype)) {
 	    mStereotype =
-		UmlFactory.getFactory().getExtensionMechanisms()
+		Model.getUmlFactory().getExtensionMechanisms()
 		    .buildStereotype(name, model);
 	}
 
@@ -1282,13 +1276,13 @@ public class Modeller
         Collection models =
             ProjectManager.getManager().getCurrentProject().getModels();
         Collection stereos =
-            UmlHelper.getHelper().getExtensionMechanisms()
+            Model.getUmlHelper().getExtensionMechanisms()
 	        .getAllPossibleStereotypes(models, me);
         if (stereos != null && stereos.size() > 0) {
             Iterator iter = stereos.iterator();
             while (iter.hasNext()) {
                 Object mStereotype = iter.next();
-                if (UmlHelper.getHelper().getExtensionMechanisms()
+                if (Model.getUmlHelper().getExtensionMechanisms()
 		        .isStereotypeInh(mStereotype, name, baseClass))
 		    return mStereotype;
             }
@@ -1327,7 +1321,7 @@ public class Modeller
             Object tv = i.next();
             if (ModelFacade.getValueOfTag(tv).equals(
 			ModelFacade.GENERATED_TAG)) {
-                UmlFactory.getFactory().delete(tv);
+                Model.getUmlFactory().delete(tv);
             }
         }
     }
@@ -1494,10 +1488,10 @@ public class Modeller
 		body = sContext + " post " + sTagData;
 	    }
 	    Object bexpr =
-		UmlFactory.getFactory().getDataTypes()
+		Model.getUmlFactory().getDataTypes()
 		    .createBooleanExpression("OCL", body);
 	    Object mc =
-		UmlFactory.getFactory().getCore().buildConstraint(name, bexpr);
+		Model.getUmlFactory().getCore().buildConstraint(name, bexpr);
 	    ModelFacade.addConstraint(me, mc);
 	    if (ModelFacade.getNamespace(me) != null) {
 		// Apparently namespace management is not supported

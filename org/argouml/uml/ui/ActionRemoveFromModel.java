@@ -34,8 +34,8 @@ import javax.swing.JOptionPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.StateMachinesHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -99,7 +99,7 @@ public class ActionRemoveFromModel extends UMLAction {
         if (ModelFacade.isAAssociationEnd(target)) {
             return ModelFacade.getOtherAssociationEnds(target).size() > 1;
         }
-        if (StateMachinesHelper.getHelper().isTopState(target)) {
+        if (Model.getStateMachinesHelper().isTopState(target)) {
             /* we can not delete a "top" state, 
              * it comes and goes with the statemachine. Issue 2655.
              */

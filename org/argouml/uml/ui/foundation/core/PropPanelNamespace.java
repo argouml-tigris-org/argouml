@@ -27,13 +27,11 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JScrollPane;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.ModelManagementFactory;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
-
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -77,7 +75,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = CoreFactory.getFactory().buildClass();
+            Object ownedElem = Model.getCoreFactory().buildClass();
             ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
@@ -90,7 +88,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = CoreFactory.getFactory().createInterface();
+            Object ownedElem = Model.getCoreFactory().createInterface();
             ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }
@@ -103,7 +101,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = ModelManagementFactory.getFactory()
+            Object ownedElem = Model.getModelManagementFactory()
                 .createPackage();
             ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);

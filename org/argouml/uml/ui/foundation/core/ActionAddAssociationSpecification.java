@@ -24,11 +24,11 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
-import org.argouml.model.uml.ModelManagementHelper;
+import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -61,7 +61,7 @@ public class ActionAddAssociationSpecification
     protected Vector getChoices() {
         Vector ret = new Vector();
         if (getTarget() != null) {
-            ret.addAll(ModelManagementHelper.getHelper()
+            ret.addAll(Model.getModelManagementHelper()
                 .getAllModelElementsOfKind(ModelFacade.CLASSIFIER));
         }
         return ret;

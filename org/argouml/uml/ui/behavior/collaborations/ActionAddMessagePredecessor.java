@@ -26,10 +26,11 @@
 package org.argouml.uml.ui.behavior.collaborations;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import java.util.Vector;
 
-import org.argouml.model.uml.CollaborationsHelper;
+import org.argouml.model.uml.CollaborationsHelperImpl;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -56,7 +57,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         if (getTarget() == null) return new Vector();
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper()
+        vec.addAll(Model.getCollaborationsHelper()
                 .getAllPossiblePredecessors(getTarget()));
         return vec;
     }

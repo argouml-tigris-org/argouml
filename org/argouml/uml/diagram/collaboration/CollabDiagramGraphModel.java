@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: CollabDiagramGraphModel.java
-// Classes: CollabDiagramGraphModel
-// Original Author: agauthie@ics.uci.edu
-
 package org.argouml.uml.diagram.collaboration;
 
 import java.beans.PropertyChangeEvent;
@@ -34,17 +30,18 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.model.uml.CoreHelper;
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
-/** This class defines a bridge between the UML meta-model
- *  representation of the design and the GraphModel interface used by
- *  GEF.  This class handles only UML Use Case Digrams.  */
-
+/**
+ * This class defines a bridge between the UML meta-model
+ * representation of the design and the GraphModel interface used by
+ * GEF.  This class handles only UML Use Case Digrams.
+ */
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
@@ -136,7 +133,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getSourcePort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	}
 	LOG.debug("TODO: getSourcePort");
 	return null;
@@ -148,7 +145,7 @@ public class CollabDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination(edge);
+	    return Model.getCoreHelper().getDestination(edge);
 	}
 	LOG.debug("TODO: getDestPort");
 	return null;

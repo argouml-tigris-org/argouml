@@ -34,10 +34,6 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.uml.CoreHelper;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.UmlException;
-import org.argouml.model.uml.UmlFactory;
 import org.tigris.gef.base.Diagram;
 
 import ru.novosoft.uml.MBase;
@@ -811,7 +807,7 @@ public class ModelFacade {
      */
     public static Object create(ModelEntity entity) {
         if (entity instanceof UmlModelEntity) {
-            return UmlFactory.getFactory().create((UmlModelEntity) entity);
+            return Model.getUmlFactory().create((UmlModelEntity) entity);
         }
         return null;
     }
@@ -1978,7 +1974,7 @@ public class ModelFacade {
             if (ModelFacade.getStereotypes(handle).size() > 0) {
                 stereo = ModelFacade.getStereotypes(handle).iterator().next();
             }
-            if (ExtensionMechanismsHelper.getHelper()
+            if (Model.getExtensionMechanismsHelper()
                     .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
                 return true;
             }
@@ -1986,12 +1982,12 @@ public class ModelFacade {
         }
         if (isAMethod(handle)) {
             Object specification =
-                CoreHelper.getHelper().getSpecification(handle);
+                Model.getCoreHelper().getSpecification(handle);
             if (ModelFacade.getStereotypes(specification).size() > 0) {
                 stereo =
                     ModelFacade.getStereotypes(specification).iterator().next();
             }
-            if (ExtensionMechanismsHelper.getHelper()
+            if (Model.getExtensionMechanismsHelper()
                     .isStereotypeInh(stereo, "create", "BehavioralFeature")) {
                 return true;
             }
@@ -3734,7 +3730,7 @@ public class ModelFacade {
 
             // TODO: We are converting back and forth between collections and
             // iterators. I (Linus) prefer iterators.
-            return CoreHelper.getHelper().getOperationsInh(c).iterator();
+            return Model.getCoreHelper().getOperationsInh(c).iterator();
         }
 
         // ...
@@ -5724,7 +5720,7 @@ public class ModelFacade {
          */
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor =
-		(MExpressionEditor) UmlFactory.getFactory().getDataTypes()
+		(MExpressionEditor) Model.getUmlFactory().getDataTypes()
 		    .createExpressionEditor(handle);
             expressionEditor.setBody((String) expr);
             expressionEditor.toExpression();
@@ -5751,7 +5747,7 @@ public class ModelFacade {
     public static void setLanguage(Object handle, String language) {
         if (handle instanceof MExpression) {
             MExpressionEditor expressionEditor = (MExpressionEditor)
-                UmlFactory.getFactory().getDataTypes().
+                Model.getUmlFactory().getDataTypes().
                     createExpressionEditor(handle);
             expressionEditor.setLanguage(language);
             handle = expressionEditor.toExpression();

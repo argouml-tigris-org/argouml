@@ -31,8 +31,8 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -66,7 +66,7 @@ class ActionAddParameter extends AbstractActionNewModelElement {
                 Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
                 Collection propertyChangeListeners = ProjectManager.getManager().getCurrentProject().findFigsForMember(feature);
                 TargetManager.getInstance().setTarget(
-                        CoreFactory.getFactory().buildParameter(feature, model, voidType, propertyChangeListeners));
+                        Model.getCoreFactory().buildParameter(feature, model, voidType, propertyChangeListeners));
                 super.actionPerformed(e);
             }
         }

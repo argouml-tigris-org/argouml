@@ -32,9 +32,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateNamespace;
@@ -177,7 +176,7 @@ public class PropPanelExtend extends PropPanelModelElement {
         // Set the condition body.
 
         ModelFacade.setCondition(target,
-				 UmlFactory.getFactory().getDataTypes()
+				 Model.getUmlFactory().getDataTypes()
 				     .createBooleanExpression(null, condBody));
     }
 
@@ -211,7 +210,7 @@ public class PropPanelExtend extends PropPanelModelElement {
                 Object ns = ModelFacade.getNamespace(target);
                 if (ns != null) {
                     if (ModelFacade.getBase(target) != null) {
-                        Object extensionPoint = UseCasesFactory.getFactory()
+                        Object extensionPoint = Model.getUseCasesFactory()
                             .buildExtensionPoint(ModelFacade.getBase(target));
                         ModelFacade.addExtensionPoint(target, extensionPoint);
                         TargetManager.getInstance().setTarget(extensionPoint);

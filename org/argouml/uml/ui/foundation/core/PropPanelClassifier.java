@@ -34,14 +34,12 @@ import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.behavior.common_behavior.ActionNewReception;
-
 import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
@@ -149,7 +147,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             Object model = ProjectManager.getManager().getCurrentProject().getModel();
             Object voidType = ProjectManager.getManager().getCurrentProject().findType("void");
             Object newOper =
-                UmlFactory.getFactory().getCore().buildOperation(
+                Model.getUmlFactory().getCore().buildOperation(
                     /*(MClassifier)*/ target, model, voidType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(newOper);
         }
@@ -167,7 +165,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
             Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
             Object model = ProjectManager.getManager().getCurrentProject().getModel();
             Object attr =
-                UmlFactory.getFactory().getCore().buildAttribute(cls, model, intType, propertyChangeListeners);
+                Model.getUmlFactory().getCore().buildAttribute(cls, model, intType, propertyChangeListeners);
             TargetManager.getInstance().setTarget(attr);
         }
     }
@@ -197,7 +195,7 @@ public abstract class PropPanelClassifier extends PropPanelNamespace {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = CoreFactory.getFactory().createDataType();
+            Object ownedElem = Model.getCoreFactory().createDataType();
             ModelFacade.addOwnedElement(ns, ownedElem);
             TargetManager.getInstance().setTarget(ownedElem);
         }

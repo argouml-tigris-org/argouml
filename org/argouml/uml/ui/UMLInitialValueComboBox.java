@@ -29,8 +29,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JComboBox;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 import ru.novosoft.uml.MElementEvent;
 
@@ -97,14 +97,14 @@ public class UMLInitialValueComboBox extends JComboBox
                 Object target = theContainer.getTarget();
                 if (org.argouml.model.ModelFacade.isAAttribute(target)) {
                     Object/*MExpression*/ itemExpr =
-			UmlFactory.getFactory().getDataTypes()
+			Model.getUmlFactory().getDataTypes()
 			    .createExpression("Java", item);
                     ModelFacade.setInitialValue(target, itemExpr);
                     update();
                 }
                 else if (org.argouml.model.ModelFacade.isAParameter(target)) {
                     Object/*MExpression*/ itemExpr =
-			UmlFactory.getFactory().getDataTypes()
+			Model.getUmlFactory().getDataTypes()
 			    .createExpression("Java", item);
                     ModelFacade.setDefaultValue(target, itemExpr);
                     update();

@@ -27,9 +27,8 @@ package org.argouml.uml.ui.foundation.core;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -76,11 +75,11 @@ public class ActionSetModelElementStereotype extends UMLAction {
         if (newStereo != oldStereo && target != null) {
 	    if (newStereo != null) {
 		newStereo = /*(MStereotype)*/
-		    ModelManagementHelper.getHelper().getCorrespondingElement(
+		    Model.getModelManagementHelper().getCorrespondingElement(
 				  newStereo,
 				  ModelFacade.getModel(target));
 	    }
-            ExtensionMechanismsHelper.getHelper()
+            Model.getExtensionMechanismsHelper()
                 .setStereoType(target, newStereo);
             super.actionPerformed(e);
         }

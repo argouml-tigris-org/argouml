@@ -26,8 +26,8 @@ package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
 
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
@@ -119,7 +119,7 @@ public final class ActionAddExtensionPoint extends UMLAction {
         // invoke the superclass action method.
 
 	Object ep =
-            UmlFactory.getFactory().getUseCases()
+            Model.getUmlFactory().getUseCases()
             	.buildExtensionPoint(target);
 
         TargetManager.getInstance().setTarget(ep);

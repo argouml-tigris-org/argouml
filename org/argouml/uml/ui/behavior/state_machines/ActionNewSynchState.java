@@ -29,7 +29,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.StateMachinesFactory;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
 /**
@@ -54,7 +54,7 @@ public class ActionNewSynchState extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
-        StateMachinesFactory.getFactory().buildSynchState(getTarget());
+        Model.getStateMachinesFactory().buildSynchState(getTarget());
     }
 
     /**

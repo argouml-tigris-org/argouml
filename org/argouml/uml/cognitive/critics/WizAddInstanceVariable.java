@@ -31,8 +31,8 @@ import javax.swing.JPanel;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 
 /**
  * A wizard to add attributes to a classifier
@@ -72,7 +72,7 @@ public class WizAddInstanceVariable extends UMLWizard {
                 .getCurrentProject().findType("int");
             Object model = ProjectManager.getManager()
                 .getCurrentProject().getModel();
-            attr = UmlFactory.getFactory().getCore()
+            attr = Model.getUmlFactory().getCore()
                 .buildAttribute(me, model, intType, propertyChangeListeners);
             ModelFacade.setName(attr, newName);
         }

@@ -27,11 +27,11 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.FileInputStream;
-import java.io.InputStreamReader;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -42,9 +42,10 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.ocl.ArgoFacade;
 import org.argouml.uml.DocumentationManager;
 import org.argouml.uml.generator.FileGenerator;
@@ -53,9 +54,6 @@ import org.argouml.uml.generator.Generator2;
 import tudresden.ocl.OclTree;
 import tudresden.ocl.parser.analysis.DepthFirstAdapter;
 import tudresden.ocl.parser.node.AConstraintBody;
-
-import org.argouml.application.api.Configuration;
-
 import antlr.ANTLRException;
 
 /**
@@ -273,7 +271,7 @@ public class GeneratorJava
 
                     // check the return parameter types
                     it =
-                        UmlHelper.getHelper()
+                        Model.getUmlHelper()
 			    .getCore()
 			        .getReturnParameters(/*(MOperation)*/mFeature)
 			            .iterator();
@@ -471,7 +469,7 @@ public class GeneratorJava
 
         // pick out return type
         Object/*MParameter*/ rp =
-	    UmlHelper.getHelper().getCore().getReturnParameter(op);
+	    Model.getUmlHelper().getCore().getReturnParameter(op);
         if (rp != null && !constructor) {
             Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
             if (returnType == null) {
@@ -954,7 +952,7 @@ public class GeneratorJava
 
             // pick out return type
             Object/*MParameter*/ rp =
-                UmlHelper.getHelper().getCore().getReturnParameter(op);
+                Model.getUmlHelper().getCore().getReturnParameter(op);
             if (rp != null) {
                 Object/*MClassifier*/ returnType = ModelFacade.getType(rp);
                 return generateDefaultReturnStatement(returnType);
@@ -1531,12 +1529,15 @@ public class GeneratorJava
         Integer upper = new Integer(ModelFacade.getUpper(mr));
         if (lower.intValue() == -1 && upper.intValue() == -1)
             return ANY_RANGE;
-        if (lower.intValue() == -1)
+        if (lower.intValue() == -1) {
             return "*.." + upper.toString();
-        if (upper.intValue() == -1)
+        }
+        if (upper.intValue() == -1) {
             return lower.toString() + "..*";
-        if (lower.intValue() == upper.intValue())
+        }
+        if (lower.intValue() == upper.intValue()) {
             return lower.toString();
+        }
         return lower.toString() + ".." + upper.toString();
 
     }
@@ -1553,10 +1554,12 @@ public class GeneratorJava
      */
     public String generateObjectFlowState(Object m) {
         Object c = ModelFacade.getType(m);
-        if (c == null) return "";
+        if (c == null) {
+            return "";
+        }
         return ModelFacade.getName(c);
     }
-    
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
      */
@@ -1569,30 +1572,35 @@ public class GeneratorJava
 
         if (entryAction != null) {
             String entryStr = generate(entryAction);
-            if (entryStr.length() > 0)
+            if (entryStr.length() > 0) {
                 sb.append("entry / ").append(entryStr);
+            }
         }
         if (doAction != null) {
             String doStr = generate(doAction);
             if (doStr.length() > 0) {
-                if (sb.length() > 0)
+                if (sb.length() > 0) {
                     sb.append(LINE_SEPARATOR);
+                }
                 sb.append("do / ").append(doStr);
             }
         }
         if (exitAction != null) {
             String exitStr = generate(exitAction);
-            if (sb.length() > 0)
+            if (sb.length() > 0) {
                 sb.append(LINE_SEPARATOR);
-            if (exitStr.length() > 0)
+            }
+            if (exitStr.length() > 0) {
                 sb.append("exit / ").append(exitStr);
+            }
         }
         Collection trans = ModelFacade.getInternalTransitions(m);
         if (trans != null) {
             Iterator iter = trans.iterator();
             while (iter.hasNext()) {
-                if (sb.length() > 0)
+                if (sb.length() > 0) {
                     sb.append(LINE_SEPARATOR);
+                }
                 sb.append(generateTransition(iter.next()));
             }
         }
@@ -1616,13 +1624,16 @@ public class GeneratorJava
         String t = generate(ModelFacade.getTrigger(m));
         String g = generate(ModelFacade.getGuard(m));
         String e = generate(ModelFacade.getEffect(m));
-        if (sb.length() > 0)
+        if (sb.length() > 0) {
             sb.append(": ");
+        }
         sb.append(t);
-        if (g.length() > 0)
+        if (g.length() > 0) {
             sb.append(" [").append(g).append(']');
-        if (e.length() > 0)
+        }
+        if (e.length() > 0) {
             sb.append(" / ").append(e);
+        }
         return sb.toString();
 
         /*  String s = m.getName();
@@ -1663,8 +1674,9 @@ public class GeneratorJava
      */
     public String generateGuard(Object m) {
         //return generateExpression(ModelFacade.getExpression(m));
-        if (m != null && ModelFacade.getExpression(m) != null)
+        if (m != null && ModelFacade.getExpression(m) != null) {
             return generateExpression(ModelFacade.getExpression(m));
+        }
         return "";
     }
 
@@ -1672,32 +1684,37 @@ public class GeneratorJava
      * @see org.argouml.application.api.NotationProvider2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object m) {
-        if (m == null)
+        if (m == null) {
             return "";
+        }
         return generateName(ModelFacade.getName(m)) + "::"
 	    + generateAction(ModelFacade.getAction(m));
     }
 
     /**
-     * Generates the text for a (trigger) event. 
-     * 
+     * Generates the text for a (trigger) event.
+     *
      * @author MVW
      * @param m Object of any MEvent kind
      * @return The generated event (as a String).
      */
     public String generateEvent(Object m) {
-        if (ModelFacade.isAChangeEvent(m))
-            return "when(" 
-                + generateExpression(ModelFacade.getExpression(m)) 
+        if (ModelFacade.isAChangeEvent(m)) {
+            return "when("
+                + generateExpression(ModelFacade.getExpression(m))
                 + ")";
-        if (ModelFacade.isATimeEvent(m))
-            return "after(" 
-                + generateExpression(ModelFacade.getExpression(m)) 
+        }
+        if (ModelFacade.isATimeEvent(m)) {
+            return "after("
+                + generateExpression(ModelFacade.getExpression(m))
                 + ")";
-        if (ModelFacade.isASignalEvent(m))
+        }
+        if (ModelFacade.isASignalEvent(m)) {
             return generateName(ModelFacade.getName(m));
-        if (ModelFacade.isACallEvent(m))
+        }
+        if (ModelFacade.isACallEvent(m)) {
             return generateName(ModelFacade.getName(m));
+        }
         return "";
     }
 
@@ -1726,14 +1743,16 @@ public class GeneratorJava
     public String getPackageName(Object namespace) {
         if (namespace == null
 	    || !ModelFacade.isANamespace(namespace)
-	    || ModelFacade.getNamespace(namespace) == null)
+	    || ModelFacade.getNamespace(namespace) == null) {
             return "";
+        }
         String packagePath = ModelFacade.getName(namespace);
         while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
-            if (ModelFacade.getNamespace(namespace) != null)
+            if (ModelFacade.getNamespace(namespace) != null) {
                 packagePath =
 		    ModelFacade.getName(namespace) + '.' + packagePath;
+            }
         }
         return packagePath;
     }
@@ -1744,7 +1763,7 @@ public class GeneratorJava
      * @param mClassifier The classifier to update from.
      * @param file The file to update.
      */
-    private static void update(Object mClassifier, File file) 
+    private static void update(Object mClassifier, File file)
     	throws IOException, ANTLRException {
 
         LOG.info("Parsing " + file.getPath());
@@ -1768,8 +1787,9 @@ public class GeneratorJava
         File origFile = new File(file.getAbsolutePath());
         File newFile = new File(file.getAbsolutePath() + ".updated");
         File backupFile = new File(file.getAbsolutePath() + ".backup");
-        if (backupFile.exists())
+        if (backupFile.exists()) {
             backupFile.delete();
+        }
         //cat.info("Generating " + newFile.getPath());
         isInUpdateMode = true;
         cpc.filter(file, newFile, ModelFacade.getNamespace(mClassifier));
@@ -1858,12 +1878,14 @@ public class GeneratorJava
     /**
      * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
      */
-    public boolean isModuleEnabled() { return true; }
-    
+    public boolean isModuleEnabled() {
+        return true;
+    }
+
     /**
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
-    public String generateActionState(Object actionState) {       
+    public String generateActionState(Object actionState) {
         return generateState(actionState);
     }
 

@@ -33,8 +33,8 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ModelManagementHelper;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -77,7 +77,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 
 	while (it2.hasNext()) {
 	    Object obj = it2.next();
-	    Object path = ModelManagementHelper.getHelper().getPath(obj);
+	    Object path = Model.getModelManagementHelper().getPath(obj);
 	    if (!paths.contains(path)) {
 	        paths.add(path);
 	        elements.add(obj);
@@ -113,7 +113,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 	    addAllUniqueModelElementsFrom(
 		elements,
 		paths,
-		ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+		Model.getModelManagementHelper().getAllModelElementsOfKind(
 			model,
 			(Class) ModelFacade.CLASSIFIER));
         }
@@ -121,7 +121,7 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 	addAllUniqueModelElementsFrom(
 	    elements,
 	    paths,
-	    ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+	    Model.getModelManagementHelper().getAllModelElementsOfKind(
 		    p.getDefaultModel(),
 		    (Class) ModelFacade.CLASSIFIER));
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,20 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ClassDiagramRenderer.java
-// Classes: ClassDiagramRenderer
-// Original jrobbins@ics.uci.edu
-// $Id$
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import java.util.Collection;
 
 import org.apache.log4j.Logger;
-
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.ExtensionMechanismsHelper;
-import org.argouml.model.uml.UmlHelper;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigAssociationClass;
 import org.argouml.uml.diagram.ui.FigDependency;
@@ -43,7 +36,6 @@ import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigPermission;
 import org.argouml.uml.diagram.ui.FigRealization;
 import org.argouml.uml.diagram.ui.FigUsage;
-
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
@@ -77,6 +69,8 @@ import org.tigris.gef.presentation.FigNode;
  *  Dependency       ---  FigDependency
  *  Link             ---  FigLink
  * </pre>
+ *
+ * @author jrobbins
  */
 public class ClassDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
@@ -175,7 +169,7 @@ public class ClassDiagramRenderer
                 }
             } 
             if (stereotype != null
-                    && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
+                    && Model.getExtensionMechanismsHelper().isStereotypeInh(
                             stereotype, "realize", "Abstraction")) {
                 if (LOG.isDebugEnabled() ) {
                     LOG.debug("is a realisation");
@@ -209,11 +203,11 @@ public class ClassDiagramRenderer
         } else {
             if (newEdge.getSourcePortFig() == null) {
                 setSourcePort(newEdge, (FigNode) lay.presentationFor(
-                        UmlHelper.getHelper().getSource(edge)));
+                        Model.getUmlHelper().getSource(edge)));
             }
             if (newEdge.getDestPortFig() == null) {
                 setDestPort(newEdge, (FigNode) lay.presentationFor(
-                        UmlHelper.getHelper().getDestination(edge)));
+                        Model.getUmlHelper().getDestination(edge)));
             }
             if (newEdge.getSourcePortFig() == null 
                     || newEdge.getDestPortFig() == null ) {
@@ -229,12 +223,12 @@ public class ClassDiagramRenderer
         edge.setSourcePortFig(source);
         edge.setSourceFigNode(source);
     }
-    
+
     private void setDestPort(FigEdge edge, FigNode dest) {
         edge.setDestPortFig(dest);
         edge.setDestFigNode(dest);
     }
-    
+
     static final long serialVersionUID = 675407719309039112L;
 
 } /* end class ClassDiagramRenderer */

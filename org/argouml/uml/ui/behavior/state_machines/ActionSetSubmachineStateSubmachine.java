@@ -27,7 +27,7 @@ package org.argouml.uml.ui.behavior.state_machines;
 import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.uml.StateMachinesHelper;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -54,7 +54,7 @@ public class ActionSetSubmachineStateSubmachine extends UMLAction {
         super.actionPerformed(e);
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) e.getSource();
-            StateMachinesHelper.getHelper().setStatemachineAsSubmachine(
+            Model.getStateMachinesHelper().setStatemachineAsSubmachine(
                     box.getTarget(), box.getSelectedItem());
         }
     }

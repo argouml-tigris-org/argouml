@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,9 +25,9 @@
 
 package org.argouml.language.java.generator;
 
+import org.argouml.model.CoreFactory;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.model.uml.UmlFactory;
 
 /** A file of information about the Java language.  This is used to
  *  fill in the offered data types in variable and operation
@@ -77,14 +77,14 @@ public class JavaUML {
      * @return CoreFactory
      */
     private static CoreFactory getCore() {
-	return UmlFactory.getFactory().getCore();
+	return Model.getUmlFactory().getCore();
     }
 
     /**
      * This UML Model contains the Java standard elements.
      */
     private static Object/*MModel*/ javastandards =
-	UmlFactory.getFactory().getModelManagement().createModel();
+	Model.getUmlFactory().getModelManagement().createModel();
 
     static {
         ModelFacade.setName(STRING_CLASS, "String");

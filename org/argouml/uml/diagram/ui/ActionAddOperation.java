@@ -33,7 +33,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
@@ -83,7 +82,7 @@ public class ActionAddOperation extends UMLAction {
 	    .getCurrentProject().getModel();
 	Object voidType = ProjectManager.getManager()
 	    .getCurrentProject().findType("void");
-	Object oper = UmlFactory.getFactory().getCore()
+	Object oper = Model.getUmlFactory().getCore()
 	    .buildOperation(cls, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -26,14 +26,16 @@ package org.argouml.uml.diagram.deployment;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.VetoableChangeListener;
-import java.util.*;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Vector;
+
+import org.apache.log4j.Logger;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
-
-import org.argouml.model.uml.CommonBehaviorHelper;
-import org.argouml.model.uml.CoreHelper;
-import org.apache.log4j.Logger;
 
 /**
  * This class defines a bridge between the UML meta-model
@@ -44,8 +46,10 @@ import org.apache.log4j.Logger;
  *
  */
 public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
-    implements VetoableChangeListener 
-{
+    implements VetoableChangeListener {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	    Logger.getLogger(DeploymentDiagramGraphModel.class);
 
@@ -59,8 +63,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    /** get the homemodel
-     * 
+    /**
+     * Get the homemodel.
+     *
      * @see org.argouml.uml.diagram.UMLMutableGraphSupport#getNamespace()
      */
     public Object getNamespace() { return model; }
@@ -187,10 +192,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getSourcePort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getSource(/*(MRelationship)*/ edge);
+	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	} else
 	    if (ModelFacade.isALink(edge)) {
-		return CommonBehaviorHelper.getHelper().getSource(edge);
+		return Model.getCommonBehaviorHelper().getSource(edge);
 	    }
     
 	LOG.debug("TODO: getSourcePort");
@@ -205,9 +210,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public Object getDestPort(Object edge) {
 	if (ModelFacade.isARelationship(edge)) {
-	    return CoreHelper.getHelper().getDestination(edge);
+	    return Model.getCoreHelper().getDestination(edge);
 	} else if (ModelFacade.isALink(edge)) {
-	    return CommonBehaviorHelper.getHelper()
+	    return Model.getCommonBehaviorHelper()
 		.getDestination(/*(MLink)*/ edge);
 	}
     
@@ -247,13 +252,13 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	if (containsEdge(edge)) return false;
 	Object end0 = null, end1 = null;
 	if (ModelFacade.isARelationship(edge)) {
-	    end0 = CoreHelper.getHelper().getSource(edge);
-	    end1 = CoreHelper.getHelper().getDestination(edge);
+	    end0 = Model.getCoreHelper().getSource(edge);
+	    end1 = Model.getCoreHelper().getDestination(edge);
 	}
 	else if (ModelFacade.isALink(edge)) {
-	    end0 = CommonBehaviorHelper.getHelper().getSource(edge);
+	    end0 = Model.getCommonBehaviorHelper().getSource(edge);
 	    end1 =
-		CommonBehaviorHelper.getHelper().getDestination(edge);
+		Model.getCommonBehaviorHelper().getDestination(edge);
 	} else if (edge instanceof CommentEdge) {
 	    end0 = ((CommentEdge) edge).getSource();
 	    end1 = ((CommentEdge) edge).getDestination();
@@ -364,18 +369,37 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	    Object me = ModelFacade.getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		LOG.debug("model removed " + me);
-		if (ModelFacade.isANode(me)) removeNode(me);
-		if (ModelFacade.isANodeInstance(me)) removeNode(me);
-		if (ModelFacade.isAComponent(me)) removeNode(me);
-		if (ModelFacade.isAComponentInstance(me)) removeNode(me);
-		if (ModelFacade.isAClass(me)) removeNode(me);
-		if (ModelFacade.isAInterface(me)) removeNode(me);
-		if (ModelFacade.isAObject(me)) removeNode(me);
-		if (ModelFacade.isAAssociation(me)) removeEdge(me);
-		if (ModelFacade.isADependency(me)) removeEdge(me);
-		if (ModelFacade.isALink(me)) removeEdge(me);
-	    }
-	    else {
+		if (ModelFacade.isANode(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isANodeInstance(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAComponent(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAComponentInstance(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAClass(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAInterface(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAObject(me)) {
+		    removeNode(me);
+		}
+		if (ModelFacade.isAAssociation(me)) {
+		    removeEdge(me);
+		}
+		if (ModelFacade.isADependency(me)) {
+		    removeEdge(me);
+		}
+		if (ModelFacade.isALink(me)) {
+		    removeEdge(me);
+		}
+	    } else {
 		LOG.debug("model added " + me);
 	    }
 	}
