@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.ui;
 
 import org.argouml.application.security.ArgoSecurityManager;
@@ -47,7 +47,14 @@ public class TestProjectBrowser extends TestCase {
      * Tests wether it is possible to construct a standalone projectbrowser
      */
     public void testConstruction() {
-        ProjectBrowser pb = new ProjectBrowser("test", false);
+	ProjectBrowser pb;
+	try {
+	    pb = new ProjectBrowser("test", false);
+	} catch (java.lang.InternalError e) {
+	    // This is when we cannot connect to the display system.
+	    // The test is inconclusive
+	    return;
+	}
         assertNotNull(pb.TheInstance);
     }
     
@@ -55,7 +62,14 @@ public class TestProjectBrowser extends TestCase {
      * Tests the construction of the splashscreen
      */
     public void testSplashScreen() {
-        ProjectBrowser pb = new ProjectBrowser("test", true);
+	ProjectBrowser pb;
+	try {
+	    pb = new ProjectBrowser("test", true);
+	} catch (java.lang.NoClassDefFoundError e) {
+	    // Some problem caused by the lack of display system.
+	    // The test is inconclusive
+	    return;
+	}
         assertNotNull(pb.TheInstance.getSplashScreen());
     }
 

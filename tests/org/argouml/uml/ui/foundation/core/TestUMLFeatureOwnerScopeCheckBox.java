@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -21,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.uml.foundation.core.CoreFactory;
@@ -59,7 +59,15 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
         elem = CoreFactory.getFactory().createAttribute();
         MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
         mockcomp.setTarget(elem);
-        box = new UMLFeatureOwnerScopeCheckBox(mockcomp);
+	
+	// If we cannot create the box, we assume that it is because
+	// there is no GUI available.
+	// If so, all tests are inconclusive.
+	try {
+	    box = new UMLFeatureOwnerScopeCheckBox(mockcomp);
+	} catch (java.lang.InternalError e) {
+	    return;
+	}
     }
 
     /**
@@ -79,6 +87,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      */
     public void testDoClick() {
         MScopeKind spec = elem.getOwnerScope();
+	if (box == null) return; // Inconclusive
         box.doClick();
         assertEquals(MScopeKind.CLASSIFIER, elem.getOwnerScope());
     }
@@ -88,6 +97,7 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      * checkbox
      */
     public void testPropertySet() {
+	if (box == null) return; // Inconclusive
         boolean selected = box.isSelected();
         if (selected) 
             elem.setOwnerScope(MScopeKind.INSTANCE);

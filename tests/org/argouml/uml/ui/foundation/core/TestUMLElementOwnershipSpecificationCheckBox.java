@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -55,6 +56,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
      */
     public void testDoClick() {
         boolean spec = elem.isSpecification();
+	if (box == null) return; // Inconclusive
         box.doClick();
         assertTrue("click did not work!", spec != elem.isSpecification());
     }
@@ -64,6 +66,7 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
      * checkbox
      */
     public void testPropertySet() {
+	if (box == null) return; // Inconclusive
         boolean selected = box.isSelected();
         elem.setSpecification(!selected);
         assertTrue("elem change did not work!", selected != box.isSelected());
@@ -79,7 +82,15 @@ public class TestUMLElementOwnershipSpecificationCheckBox extends TestCase {
         elem = new MClassImpl();
         MockUMLUserInterfaceContainer mockcomp = new MockUMLUserInterfaceContainer();
         mockcomp.setTarget(elem);
-        box = new UMLElementOwnershipSpecificationCheckBox(mockcomp);
+
+	// If we cannot create the box, we assume that it is because
+	// there is no GUI available.
+	// If so, all tests are inconclusive.
+	try {
+	    box = new UMLElementOwnershipSpecificationCheckBox(mockcomp);
+	} catch (java.lang.InternalError e) {
+	    return;
+	}
         elem.addMElementListener(box);
     }
 
