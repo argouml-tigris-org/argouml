@@ -43,53 +43,53 @@ import ru.novosoft.uml.model_management.MModel;
 public class TestCollaborationsFactory extends TestCase {
 
     static String[] allModelElements =
-    {
-	"AssociationEndRole",
-	"AssociationRole",
-	"ClassifierRole",
-	"Collaboration",
-	"Interaction",
-	"Message",
-    };
+        {
+            "AssociationEndRole",
+            "AssociationRole",
+            "ClassifierRole",
+            "Collaboration",
+            "Interaction",
+            "Message",
+            };
 
     public TestCollaborationsFactory(String n) {
-	super(n);
+        super(n);
     }
 
     public void testSingleton() {
 
-	Object o1 = CollaborationsFactory.getFactory();
+        Object o1 = CollaborationsFactory.getFactory();
 
-	Object o2 = CollaborationsFactory.getFactory();
+        Object o2 = CollaborationsFactory.getFactory();
 
-	assertTrue("Different singletons", o1 == o2);
+        assertTrue("Different singletons", o1 == o2);
 
     }
 
     public void testCreates() {
 
-	String[] objs = {
-	    "AssociationEndRole",
-	    "AssociationRole",
-	    "ClassifierRole",
-	    "Collaboration",
-	    "Interaction",
-	    "Message",
-	    null 
-	};
+        String[] objs =
+            {
+                "AssociationEndRole",
+                "AssociationRole",
+                "ClassifierRole",
+                "Collaboration",
+                "Interaction",
+                "Message",
+                null };
 
-	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     CollaborationsFactory.getFactory(),
-					     objs);
+        CheckUMLModelHelper.createAndRelease(
+            this,
+            CollaborationsFactory.getFactory(),
+            objs);
 
     }
 
     public void testDeleteComplete() {
-	CheckUMLModelHelper.deleteComplete(
-					   this,
-					   CollaborationsFactory.getFactory(),
-					   allModelElements);
+        CheckUMLModelHelper.deleteComplete(
+            this,
+            CollaborationsFactory.getFactory(),
+            allModelElements);
     }
 
     /** test to check whether elements which are attached to a
@@ -99,47 +99,49 @@ public class TestCollaborationsFactory extends TestCase {
      */
     public void testDeleteClassifierRole() {
 
-	MModel model = ModelManagementFactory.getFactory().createModel();
-	MCollaboration collab =
-	    CollaborationsFactory.getFactory().buildCollaboration(model);
-	MClassifierRole cr1 =
-	    CollaborationsFactory.getFactory().createClassifierRole();
-	MClassifierRole cr2 =
-	    CollaborationsFactory.getFactory().createClassifierRole();
-	MAssociationRole role =
-	    CollaborationsFactory.getFactory().buildAssociationRole(cr1, cr2);
-	MInteraction inter =
-	    CollaborationsFactory.getFactory().buildInteraction(collab);
-	MMessage mes =
-	    CollaborationsFactory.getFactory().buildMessage(inter, role);
+        MModel model = ModelManagementFactory.getFactory().createModel();
+        MCollaboration collab =
+            CollaborationsFactory.getFactory().buildCollaboration(model);
+        MClassifierRole cr1 =
+            CollaborationsFactory.getFactory().createClassifierRole();
+        MClassifierRole cr2 =
+            CollaborationsFactory.getFactory().createClassifierRole();
+        MAssociationRole role =
+            CollaborationsFactory.getFactory().buildAssociationRole(cr1, cr2);
+        MInteraction inter =
+            CollaborationsFactory.getFactory().buildInteraction(collab);
+        MMessage mes =
+            (MMessage)CollaborationsFactory.getFactory().buildMessage(
+                inter,
+                role);
 
-	WeakReference cr1wr = new WeakReference(cr1);
-	WeakReference rolewr = new WeakReference(role);
-	WeakReference interwr = new WeakReference(inter);
-	WeakReference meswr = new WeakReference(mes);
+        WeakReference cr1wr = new WeakReference(cr1);
+        WeakReference rolewr = new WeakReference(role);
+        WeakReference interwr = new WeakReference(inter);
+        WeakReference meswr = new WeakReference(mes);
 
-	UmlFactory.getFactory().delete(cr1);
-	cr1 = null;
-	role = null;
-	inter = null;
-	mes = null;
-	System.gc();
-	assertNull("ClassifierRole not removed", cr1wr.get());
-	assertNull("AssociationRole not removed", rolewr.get());
-	// Interaction should not be removed when removing classifierrole...
-	// maybe if the last message is removed from the interaction but even
-	// then it's doubtfull since it will probably lead to backward compatibility 
-	// problems in save formats.
-	// assertNull("Interaction not removed", interwr.get());
-	assertNull("Message not removed", meswr.get());
+        UmlFactory.getFactory().delete(cr1);
+        cr1 = null;
+        role = null;
+        inter = null;
+        mes = null;
+        System.gc();
+        assertNull("ClassifierRole not removed", cr1wr.get());
+        assertNull("AssociationRole not removed", rolewr.get());
+        // Interaction should not be removed when removing classifierrole...
+        // maybe if the last message is removed from the interaction but even
+        // then it's doubtfull since it will probably lead to backward compatibility 
+        // problems in save formats.
+        // assertNull("Interaction not removed", interwr.get());
+        assertNull("Message not removed", meswr.get());
 
     }
     /* (non-Javadoc)
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
-	super.setUp();
-	ArgoSecurityManager.getInstance().setAllowExit(true);
+        super.setUp();
+        ArgoSecurityManager.getInstance().setAllowExit(true);
         UmlFactory.getFactory().setGuiEnabled(false);
     }
 }
