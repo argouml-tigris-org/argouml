@@ -21,23 +21,32 @@ public class Operation extends BehavioralFeature {
 
   public Operation(Classifier returnType, String nameStr) {
     this(nameStr);
-    addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+    try {
+      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+    }
+    catch (PropertyVetoException pve) { }
   }
   
   public Operation(Classifier returnType, String nameStr,
 		   Classifier arg1Type, String arg1Name) {
     this(nameStr);
-    addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-    addParameter(new Parameter(arg1Type, arg1Name));
+    try {
+      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type, arg1Name));
+    }
+    catch (PropertyVetoException pve) { }
   }
 
   public Operation(Classifier returnType, String nameStr,
 		   Classifier arg1Type, String arg1Name,
 		   Classifier arg2Type, String arg2Name) {
     this(nameStr);
-    addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-    addParameter(new Parameter(arg1Type, arg1Name));
-    addParameter(new Parameter(arg2Type, arg2Name));
+    try {
+      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type, arg1Name));
+      addParameter(new Parameter(arg2Type, arg2Name));
+    }
+    catch (PropertyVetoException pve) { }
   }
 
   public Operation(Classifier returnType, String nameStr,
@@ -45,10 +54,13 @@ public class Operation extends BehavioralFeature {
 		   Classifier arg2Type, String arg2Name,
 		   Classifier arg3Type, String arg3Name) {
     this(nameStr);
-    addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
-    addParameter(new Parameter(arg1Type, arg1Name));
-    addParameter(new Parameter(arg2Type, arg2Name));
-    addParameter(new Parameter(arg3Type, arg3Name));
+    try {
+      addParameter(new Parameter(returnType, Parameter.RETURN_NAME));
+      addParameter(new Parameter(arg1Type, arg1Name));
+      addParameter(new Parameter(arg2Type, arg2Name));
+      addParameter(new Parameter(arg3Type, arg3Name));
+    }
+    catch (PropertyVetoException pve) { }
   }
 
   public Uninterpreted getSpecification() { return _specification; }
