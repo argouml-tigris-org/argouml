@@ -28,9 +28,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.CoreFactory;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -39,9 +36,9 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.util.ConfigLoader;
+
 /**
- * TODO: this property panel needs refactoring to remove dependency on
- *       old gui components.
+ * The property panel for parameters.
  */
 public class PropPanelParameter extends PropPanelModelElement {
 
@@ -58,13 +55,13 @@ public class PropPanelParameter extends PropPanelModelElement {
 	      "Parameter",
 	      lookupIcon("Parameter"),
 	      ConfigLoader.getTabPropsOrientation());
-        Class[] namesToWatch = {
-	    (Class) ModelFacade.STEREOTYPE,
-	    (Class) ModelFacade.OPERATION,
-	    (Class) ModelFacade.PARAMETER,
-	    (Class) ModelFacade.CLASSIFIER 
-	};
-        setNameEventListening(namesToWatch);
+//        Class[] namesToWatch = {
+//	    (Class) ModelFacade.STEREOTYPE,
+//	    (Class) ModelFacade.OPERATION,
+//	    (Class) ModelFacade.PARAMETER,
+//	    (Class) ModelFacade.CLASSIFIER 
+//	};
+//        setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"), 
                 getNameTextField());
@@ -81,11 +78,11 @@ public class PropPanelParameter extends PropPanelModelElement {
                 new UMLComboBox2(new UMLParameterTypeComboBoxModel(), 
                         ActionSetParameterType.getInstance()));
 
-        addField("Initial Value:", new UMLInitialValueComboBox(this));
+        addField(Translator.localize("label.parameter.default-value"), 
+                new UMLInitialValueComboBox(this));
         
-        //      TODO: i18n
-        add(new UMLParameterDirectionKindRadioButtonPanel("ParameterKind:", 
-                true));
+        add(new UMLParameterDirectionKindRadioButtonPanel(
+                Translator.localize("label.parameter.kind"), true));
 
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
@@ -94,94 +91,6 @@ public class PropPanelParameter extends PropPanelModelElement {
                 new ActionAddParameter());
         new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
             "action.delete-from-model"), new ActionRemoveFromModel());
-    }
-
-    /**
-     * @return the type of the parameter
-     */
-    public Object getType() {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            return org.argouml.model.ModelFacade.getType(target);
-        }
-        return null;
-    }
-
-    /**
-     * @param type the type of the parameter
-     */
-    public void setType(Object/*MClassifier*/ type) {
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            ModelFacade.setType(target, type);
-        }
-    }
-
-    /**
-     * @param type the given parameter type
-     * @return true if the given type is acceptable for the parameter 
-     *         (i.e. it is a Classifier)
-     */
-    public boolean isAcceptibleType(Object/*MModelElement*/ type) {
-	return org.argouml.model.ModelFacade.isAClassifier(type);
-    }
-
-    /**
-     * @return the behaviouralfeature of this parameter
-     */
-    public Object getBehavioralFeature() {
-        Object feature = null;
-        Object target = getTarget();
-        if (ModelFacade.isAParameter(target)) {
-            feature = ModelFacade.getBehavioralFeature(target);
-        }
-        return feature;
-    }
-
-    /**
-     * Create a new datatype.
-     */
-    public void addDataType() {
-        Object target = getTarget();
-        if (ModelFacade.isANamespace(target)) {
-            Object ns = /*(MNamespace)*/ target;
-            Object ownedElem = CoreFactory.getFactory().createDataType();
-            ModelFacade.addOwnedElement(ns, ownedElem);
-            TargetManager.getInstance().setTarget(ownedElem);
-        }
-    }
-
-
-    /**
-     * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
-     */
-    public void navigateUp() {
-        Object feature = getBehavioralFeature();
-        if (feature != null) {
-            TargetManager.getInstance().setTarget(feature);
-        }
-    }
-
-    /**
-     * Add a new parameter. 
-     */
-    public void addParameter() {
-        Object feature = null;
-        Object target = getTarget();
-        if (ModelFacade.isAParameter(target)) {
-            feature = ModelFacade.getBehavioralFeature(target);
-            if (feature != null) {
-                TargetManager.getInstance().setTarget(CoreFactory.getFactory()
-                        .buildParameter(feature));
-            }
-        }
-    }
-
-    /**
-     * @param element (ignored)
-     */
-    public void addDataType(Object/*MModelElement*/ element) {
-        addDataType();
     }
     
     /**

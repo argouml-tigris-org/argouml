@@ -25,8 +25,6 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.event.ActionEvent;
-import java.util.Collection;
-import java.util.Iterator;
 
 import javax.swing.Action;
 import javax.swing.JPanel;
@@ -61,13 +59,14 @@ public class PropPanelOperation extends PropPanelFeature {
         super("Operation", lookupIcon("Operation"), ConfigLoader
                 .getTabPropsOrientation());
 
-        //
-        //   this will cause the components on this page to be notified
-        //      anytime a stereotype, namespace, operation, etc
-        //      has its name changed or is removed anywhere in the model
-        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
-            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER };
-        setNameEventListening(namesToWatch);
+        /* This will cause the components on this page to be notified
+         * anytime a stereotype, namespace or classifier
+         * has its name, ownedElement or baseClass changed 
+         * anywhere in the model. */
+//        Class[] namesToWatch = {(Class) ModelFacade.STEREOTYPE,
+//            (Class) ModelFacade.NAMESPACE, (Class) ModelFacade.CLASSIFIER,
+//            (Class) ModelFacade.PARAMETER};
+//        setNameEventListening(namesToWatch);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -115,100 +114,6 @@ public class PropPanelOperation extends PropPanelFeature {
                 new ActionNewRaisedSignal());
         new PropPanelButton(this, lookupIcon("Delete"), Translator.localize(
             "action.delete-from-model"), new ActionRemoveFromModel());
-    }
-
-    /**
-     * @return the returntype of the operation
-     */
-    public Object getReturnType() {
-        Object type = null;
-        Object target = getTarget();
-        if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            Collection params = org.argouml.model.ModelFacade
-                    .getParameters(target);
-            if (params != null) {
-                Iterator iter = params.iterator();
-                Object param;
-                while (iter.hasNext()) {
-                    param = /* (MParameter) */iter.next();
-                    if (ModelFacade.getKind(param) 
-                            == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
-                        type = ModelFacade.getType(param);
-                        break;
-                    }
-                }
-            }
-        }
-        return type;
-    }
-
-    /**
-     * @param type the returntype of the operation
-     */
-    public void setReturnType(Object/* MClassifier */type) {
-        Object target = getTarget();
-        if (ModelFacade.isAOperation(target)) {
-            Object oper = /* (MOperation) */target;
-            Collection params = ModelFacade.getParameters(oper);
-            Object param;
-            //
-            //   remove first (hopefully only) return parameters
-            //
-            if (type == null) {
-                if (params != null) {
-                    Iterator iter = params.iterator();
-                    while (iter.hasNext()) {
-                        param = /* (MParameter) */iter.next();
-                        if (ModelFacade.getKind(param)  
-                                == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
-                            ModelFacade.removeParameter(oper, param);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                Object retParam = null;
-                if (params != null) {
-                    Iterator iter = params.iterator();
-                    while (iter.hasNext()) {
-                        param = /* (MParameter) */iter.next();
-                        if (ModelFacade.getKind(param) 
-                                == ModelFacade.RETURN_PARAMETERDIRECTIONKIND) {
-                            retParam = param;
-                            break;
-                        }
-                    }
-                }
-                if (retParam == null) {
-                    retParam = UmlFactory.getFactory().getCore()
-                            .buildParameter(oper,
-                                    ModelFacade.RETURN_PARAMETERDIRECTIONKIND);
-                }
-                ModelFacade.setType(retParam, type);
-            }
-        }
-    }
-
-    /**
-     * @return the raised signals of this operation
-     */
-    public Collection getRaisedSignals() {
-        Collection signals = null;
-        Object target = getTarget();
-        if (ModelFacade.isAOperation(target)) {
-            signals = ModelFacade.getRaisedSignals(target);
-        }
-        return signals;
-    }
-
-    /**
-     * @param signals the raised signals of this operation
-     */
-    public void setRaisedSignals(Collection signals) {
-        Object target = getTarget();
-        if (ModelFacade.isAOperation(target)) {
-            ModelFacade.setRaisedSignals(target, signals);
-        }
     }
 
     /**

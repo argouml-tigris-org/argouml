@@ -76,7 +76,8 @@ public abstract class UMLModelElementListModel2
     /**
      * Constructor for UMLModelElementListModel2.
      *
-     * @param name the event name
+     * @param name the name of the event to listen to, which triggers us 
+     *             to update the list model from the UML data
      */
     public UMLModelElementListModel2(String name) {
         super();
