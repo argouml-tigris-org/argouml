@@ -35,11 +35,11 @@ import uci.uml.ui.*;
 public class GoProjectModel implements TreeModelPrereqs {
 
   public String toString() { return "Project->Package"; }
-  
+
   public Object getRoot() {
     System.out.println("getRoot should never be called");
     return null;
-  } 
+  }
   public void setRoot(Object r) { }
 
   public Object getChild(Object parent, int index) {
@@ -49,14 +49,14 @@ public class GoProjectModel implements TreeModelPrereqs {
     System.out.println("getChild should never be get here GoProjectModel");
     return null;
   }
-  
+
   public int getChildCount(Object parent) {
     if (parent instanceof Project) {
       return ((Project) parent).getModels().size();
     }
     return 0;
   }
-  
+
   public int getIndexOfChild(Object parent, Object child) {
     if (parent instanceof Project) {
       Vector models = ((Project)parent).getModels();

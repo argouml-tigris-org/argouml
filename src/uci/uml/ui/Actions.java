@@ -636,10 +636,9 @@ class ActionOpenProject extends UMLAction {
 
 class ActionSaveProject extends UMLAction {
   protected static OCLExpander expander = null;
+  public static String ARGO_TEE = "/uci/xml/dtd/argo.tee";
   public ActionSaveProject() {
     super("Save Project");
-    Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/argo.tee");
-    expander = new OCLExpander(templates);
   }
 
   public void actionPerformed(ActionEvent e) {
@@ -648,6 +647,10 @@ class ActionSaveProject extends UMLAction {
 
   public boolean trySave(boolean overwrite) {
     try {
+      if (expander == null) {
+	Hashtable templates = TemplateReader.readFile(ARGO_TEE);
+	expander = new OCLExpander(templates);
+      }
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p =  pb.getProject();
       //       String name = p.getFilename();

@@ -1,0 +1,4 @@
+Manifest-Version: 2.0
+Main-Class: uci.uml.Main
+Class-Path: xml4j.jar
+Created-By: 1.2 (Sun Microsystems Inc.)

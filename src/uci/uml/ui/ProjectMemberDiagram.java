@@ -47,8 +47,13 @@ public class ProjectMemberDiagram extends ProjectMember {
 
   public static final String MEMBER_TYPE = "pgml";
   public static final String FILE_EXT = "." + MEMBER_TYPE;
-  public static final OCLExpander expander =
-  new OCLExpander(TemplateReader.readFile("/uci/xml/dtd/PGML.tee"));
+  public static final String PGML_TEE = "/uci/xml/dtd/PGML.tee";
+
+
+  ////////////////////////////////////////////////////////////////
+  // static variables
+
+  public static OCLExpander expander = null;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -87,6 +92,9 @@ public class ProjectMemberDiagram extends ProjectMember {
   }
 
   public void save(String path, boolean overwrite) {
+    if (expander == null)
+      expander = new OCLExpander(TemplateReader.readFile(PGML_TEE));
+
     if (!path.endsWith("/")) path += "/";
     String fullpath = path + getName();
     try {

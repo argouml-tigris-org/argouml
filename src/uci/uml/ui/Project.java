@@ -280,7 +280,8 @@ public class Project implements java.io.Serializable {
 	return;
       }
       else System.out.println("memberURL = " + memberURL);
-      ProjectMember pm;
+      ProjectMember pm = findMemberByName(name);
+      if (pm != null) return;
       if ("pgml".equals(type))
 	pm = new ProjectMemberDiagram(name, this);
       else if ("xmi".equals(type))
@@ -300,6 +301,7 @@ public class Project implements java.io.Serializable {
   }
 
   public void addMember(Model m) throws PropertyVetoException {
+    if (_models.contains(m)) return;
     ProjectMember pm = new ProjectMemberModel(m, this);
     addModel(m);
     // got past the veto, add the member
@@ -309,7 +311,7 @@ public class Project implements java.io.Serializable {
   public void addModel(Namespace m) throws PropertyVetoException {
     // fire indeterminate change to avoid copying vector
     getVetoSupport().fireVetoableChange("Models", _models, null);
-    _models.addElement(m);
+    if (! _models.contains(m)) _models.addElement(m);
     setCurrentNamespace(m);
     _needsSave = true;
   }
@@ -331,6 +333,14 @@ public class Project implements java.io.Serializable {
   public void removeMember(Diagram d) throws PropertyVetoException {
     removeDiagram(d);
     _members.removeElement(d);
+  }
+
+  public ProjectMember findMemberByName(String name) {
+    for (int i = 0; i < _members.size(); i++) {
+      ProjectMember pm = (ProjectMember) _members.elementAt(i);
+      if (name.equals(pm.getName())) return pm;
+    }
+    return null;
   }
 
   public static Project load(URL url) throws IOException, org.xml.sax.SAXException {

@@ -50,8 +50,8 @@ public class ProjectMemberModel extends ProjectMember {
 
   public static final String MEMBER_TYPE = "xmi";
   public static final String FILE_EXT = "." + MEMBER_TYPE;
-  public static final OCLExpander expander =
-  new OCLExpander(TemplateReader.readFile("/uci/xml/dtd/XMI.tee"));
+  public static final String XMI_TEE = "/uci/xml/dtd/XMI.tee";
+  public static OCLExpander expander = null;
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -93,11 +93,8 @@ public class ProjectMemberModel extends ProjectMember {
   }
 
   public void save(String path, boolean overwrite) {
-    //System.out.println("save model:" + filename);
-
-    //@@@: just for rapid edig-compile-debug 
-    //Hashtable templates = TemplateReader.readFile("/uci/xml/dtd/XMI.tee");
-    //OCLExpander expander = new OCLExpander(templates);
+    if (expander == null)
+      expander = new OCLExpander(TemplateReader.readFile(XMI_TEE));
 
     if (!path.endsWith("/")) path += "/";
     String fullpath = path + getName();
