@@ -30,7 +30,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import javax.swing.JComboBox;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.uml.ui.PropPanelButton;
@@ -58,18 +58,18 @@ public class PropPanelInclude extends PropPanelModelElement {
     public PropPanelInclude() {
         super("Include", ConfigLoader.getTabPropsOrientation());
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"),
-            new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"),
+            new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         addSeperator();
 
         JComboBox baseBox = new UMLComboBox2(new UMLIncludeBaseComboBoxModel(), ActionSetIncludeBase.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.usecase-base"), baseBox);
+        addField(Translator.localize("UMLMenu", "label.usecase-base"), baseBox);
 
         JComboBox additionBox = new UMLComboBox2(new UMLIncludeAdditionComboBoxModel(), ActionSetIncludeAddition.SINGLETON);
-        addField(Argo.localize("UMLMenu", "label.addition"), additionBox);
+        addField(Translator.localize("UMLMenu", "label.addition"), additionBox);
 
    /*
         // FIXME - Why is this code commented out - is there work to do here - Bob Tarling
@@ -93,7 +93,7 @@ public class PropPanelInclude extends PropPanelModelElement {
         // Add the toolbar. Just the four basic buttons for now.
 
         new PropPanelButton(this, buttonPanel, _navUpIcon,
-                            Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+                Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon,
                             localize("Delete"), "removeElement", null);
     }

@@ -37,9 +37,9 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
-import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
@@ -158,21 +158,21 @@ abstract public class PropPanelModelElement extends PropPanel {
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
-        addField(Argo.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
-        addField(Argo.localize("UMLMenu", "label.source-flows"), getSourceFlowScroll());
-        addField(Argo.localize("UMLMenu", "label.target-flows"), getTargetFlowScroll());
+        addField(Translator.localize("UMLMenu", "label.supplier-dependencies"), getSupplierDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.client-dependencies"), getClientDependencyScroll());
+        addField(Translator.localize("UMLMenu", "label.source-flows"), getSourceFlowScroll());
+        addField(Translator.localize("UMLMenu", "label.target-flows"), getTargetFlowScroll());
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.constraints"), getConstraintScroll());
-        addField(Argo.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
+        addField(Translator.localize("UMLMenu", "label.constraints"), getConstraintScroll());
+        addField(Translator.localize("UMLMenu", "label.namespace-visibility"), getNamespaceVisibilityPanel());
     }
 
     /**

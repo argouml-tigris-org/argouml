@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLTextArea2;
 import org.argouml.util.ConfigLoader;
@@ -52,8 +52,8 @@ public class PropPanelComment extends PropPanelModelElement {
         JScrollPane pane = new JScrollPane(text);
         addField("Text: ", pane);
         
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);   
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-class"), "removeElement", null);      
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);   
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-class"), "removeElement", null);      
     }
 
 }

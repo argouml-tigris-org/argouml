@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
@@ -43,7 +43,7 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
      * @param propertySetName
      */
     public UMLStructuralFeatureTargetScopeCheckBox() {
-        super(Argo.localize("UMLMenu", "label.classifier"), 
+        super(Translator.localize("UMLMenu", "label.classifier"), 
 	      ActionSetStructuralFeatureTargetScope.SINGLETON, 
 	      "targetScope");
     }

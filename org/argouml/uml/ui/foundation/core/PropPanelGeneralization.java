@@ -27,7 +27,7 @@ package org.argouml.uml.ui.foundation.core;
 import javax.swing.JScrollPane;
 
 import org.apache.log4j.Logger;
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.targetmanager.TargetManager;
@@ -58,10 +58,10 @@ public class PropPanelGeneralization extends PropPanelModelElement {
         Class[] namesToWatch = {(Class)ModelFacade.STEREOTYPE, (Class)ModelFacade.NAMESPACE, (Class)ModelFacade.CLASSIFIER };
         setNameEventListening(namesToWatch);
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField("Discriminator:", new UMLTextField(this, new UMLTextProperty(mclass, "discriminator", "getDiscriminator", "setDiscriminator")));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
         addSeperator();
 
@@ -79,7 +79,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
 
         addField("Powertype:", new UMLComboBox2(new UMLGeneralizationPowertypeComboBoxModel(), ActionSetGeneralizationPowertype.SINGLETON));
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
         new PropPanelButton(this, buttonPanel, _deleteIcon, localize("Delete generalization"), "removeElement", null);
     }
 

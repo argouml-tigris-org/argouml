@@ -29,7 +29,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 
@@ -65,16 +65,16 @@ public class PropPanelParameter extends PropPanelModelElement {
 	};
         setNameEventListening(namesToWatch);
 
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
 
         JList namespaceList = new UMLList(new UMLReflectionListModel(this, "behaviorialfeature", false, "getBehavioralFeature", null, null, null), true);
         namespaceList.setVisibleRowCount(1);
-        addLinkField(Argo.localize("UMLMenu", "label.owner"), new JScrollPane(namespaceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
+        addLinkField(Translator.localize("UMLMenu", "label.owner"), new JScrollPane(namespaceList, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER));
 
         addSeperator();
 
-        addField(Argo.localize("UMLMenu", "label.type"), new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
+        addField(Translator.localize("UMLMenu", "label.type"), new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
 
         addField("Initial Value:", new UMLInitialValueComboBox(this));
 
@@ -99,10 +99,10 @@ public class PropPanelParameter extends PropPanelModelElement {
 
 	addField("Kind:", kindPanel);
 
-	new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateUp", null);
-	new PropPanelButton(this, buttonPanel, _parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"), "addParameter", null);
-	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Argo.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
-	new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-parameter"), "removeElement", null);
+	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
+	new PropPanelButton(this, buttonPanel, _parameterIcon, Translator.localize("UMLMenu", "button.add-parameter"), "addParameter", null);
+	//	new PropPanelButton(this,buttonPanel,_dataTypeIcon, Translator.localize("UMLMenu", "button.add-datatype"),"addDataType",null);
+	new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-parameter"), "removeElement", null);
 
     }
 

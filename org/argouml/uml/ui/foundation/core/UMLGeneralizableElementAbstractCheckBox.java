@@ -25,8 +25,8 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -43,7 +43,7 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
      * @param propertySetName
      */
     public UMLGeneralizableElementAbstractCheckBox() {
-        super(Argo.localize("UMLMenu", "label.abstract"), ActionSetGeneralizableElementAbstract.SINGLETON, "isAbstract");
+        super(Translator.localize("UMLMenu", "label.abstract"), ActionSetGeneralizableElementAbstract.SINGLETON, "isAbstract");
     }
 
     /**

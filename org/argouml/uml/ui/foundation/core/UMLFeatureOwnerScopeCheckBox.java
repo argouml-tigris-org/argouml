@@ -25,8 +25,8 @@
 // $header$
 package org.argouml.uml.ui.foundation.core;
 
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
-import org.argouml.application.api.Argo;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -42,7 +42,7 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
      * @param a
      */
     public UMLFeatureOwnerScopeCheckBox() {
-        super(Argo.localize("UMLMenu", "static"), ActionSetFeatureOwnerScope.SINGLETON, "ownerScope");
+        super(Translator.localize("UMLMenu", "static"), ActionSetFeatureOwnerScope.SINGLETON, "ownerScope");
     }
 
     /**

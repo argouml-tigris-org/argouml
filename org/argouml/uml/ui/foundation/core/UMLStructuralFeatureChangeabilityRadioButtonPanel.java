@@ -28,7 +28,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -42,9 +42,9 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.changeability-addonly"), ActionSetChangeability.ADDONLY_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.changeability-changeable"), ActionSetChangeability.CHANGEABLE_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.changeability-frozen"), ActionSetChangeability.FROZEN_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-addonly"), ActionSetChangeability.ADDONLY_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-changeable"), ActionSetChangeability.CHANGEABLE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.changeability-frozen"), ActionSetChangeability.FROZEN_COMMAND);
     }
 
     /**

@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.swingext.Orientation;
 import org.argouml.uml.ui.UMLCheckBox2;
 import org.argouml.uml.ui.UMLComboBox2;
@@ -100,7 +100,7 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
      */
     public UMLRadioButtonPanel getChangeabilityRadioButtonPanel() {
         if (_changeabilityRadioButtonPanel == null) {
-            _changeabilityRadioButtonPanel = new UMLStructuralFeatureChangeabilityRadioButtonPanel(Argo.localize("UMLMenu", "label.changeability"), true);
+            _changeabilityRadioButtonPanel = new UMLStructuralFeatureChangeabilityRadioButtonPanel(Translator.localize("UMLMenu", "label.changeability"), true);
         }
 	return _changeabilityRadioButtonPanel;        
     }

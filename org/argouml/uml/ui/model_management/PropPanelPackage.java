@@ -24,9 +24,8 @@
 
 package org.argouml.uml.ui.model_management;
 
-import org.argouml.application.api.Argo;
-
 import org.argouml.swingext.Orientation;
+import org.argouml.i18n.Translator;
 import org.argouml.model.uml.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
@@ -75,11 +74,11 @@ public class PropPanelPackage extends PropPanelNamespace  {
      * should override to place the elements the way they want.
      */
     protected void placeElements() {
-        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
-        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
-        addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
+        addField(Translator.localize("UMLMenu", "label.name"), getNameTextField());
+        addField(Translator.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Translator.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
+        addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        addField(Argo.localize("UMLMenu", "label.visibility"), getNamespaceVisibilityPanel());
+        addField(Translator.localize("UMLMenu", "label.visibility"), getNamespaceVisibilityPanel());
 
         // TODO: facilitate importedElements.
         
@@ -90,16 +89,16 @@ public class PropPanelPackage extends PropPanelNamespace  {
         _modifiersPanel.add(
                             new UMLGeneralizableElementRootCheckBox());
         
-        addField(Argo.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
+        addField(Translator.localize("UMLMenu", "label.modifiers"), _modifiersPanel);
         addSeperator();
-        addField(Argo.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
-        addField(Argo.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
+        addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+        addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
         addSeperator();
-        addField(Argo.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
+        addField(Translator.localize("UMLMenu", "label.owned-elements"), getOwnedElementsScroll());
 
-        new PropPanelButton(this, buttonPanel, _navUpIcon, Argo.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
-        new PropPanelButton(this, buttonPanel, _packageIcon, Argo.localize("UMLMenu", "button.add-package"), "addPackage", null);
-        new PropPanelButton(this, buttonPanel, _deleteIcon, Argo.localize("UMLMenu", "button.delete-package"), "removeElement", "isRemovableElement");
+        new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
+        new PropPanelButton(this, buttonPanel, _packageIcon, Translator.localize("UMLMenu", "button.add-package"), "addPackage", null);
+        new PropPanelButton(this, buttonPanel, _deleteIcon, Translator.localize("UMLMenu", "button.delete-package"), "removeElement", "isRemovableElement");
     }
 
 

@@ -28,7 +28,7 @@ package org.argouml.uml.ui.foundation.core;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.argouml.application.api.Argo;
+import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -42,9 +42,9 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
     private static Map labelTextsAndActionCommands = new HashMap();
 
     static {
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.aggregationkind-aggregate"), ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.aggregationkind-composite"), ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
-        labelTextsAndActionCommands.put(Argo.localize("UMLMenu", "label.aggregationkind-none"), ActionSetAssociationEndAggregation.NONE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-aggregate"), ActionSetAssociationEndAggregation.AGGREGATE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-composite"), ActionSetAssociationEndAggregation.COMPOSITE_COMMAND);
+        labelTextsAndActionCommands.put(Translator.localize("UMLMenu", "label.aggregationkind-none"), ActionSetAssociationEndAggregation.NONE_COMMAND);
     }
 
     /**
