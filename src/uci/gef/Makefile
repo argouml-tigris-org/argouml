@@ -26,6 +26,9 @@ CLASSES = \
 	ArrowHeadDiamond.class \
 	ArrowHeadNone.class \
 	ArrowHeadTriangle.class \
+	ArrowHeadGreater.class \
+	ArrowHeadHalfTriangle.class \
+	ArrowHeadQualifier.class \
 	Cmd.class \
 	CmdAdjustGrid.class \
 	CmdAdjustGuide.class \
@@ -65,6 +68,7 @@ CLASSES = \
 	FigCircle.class \
 	FigEdge.class \
 	FigEdgeLine.class \
+	FigEdgeLineDotted.class \
 	FigEdgeRectiline.class \
 	FigGroup.class \
 	FigImage.class \

@@ -51,6 +51,8 @@ public class FigLine extends Fig {
   protected int _x2;
   protected int _y2;
 
+  protected boolean _dashed;
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -83,6 +85,16 @@ public class FigLine extends Fig {
     _x1 = x1; _y1 = y1; _x2 = x2; _y2 = y2;
     calcBounds();
     firePropChange("bounds", null, null);
+  }
+
+  /** Set line to be dashed or not **/
+  public void setDashed(boolean now_dashed) {
+    _dashed = now_dashed;
+  }
+
+  /** Get the dashed attribute **/
+  public boolean getDashed() {
+    return _dashed;
   }
 
   public int getX1() { return _x1; }
@@ -227,12 +239,72 @@ public class FigLine extends Fig {
   /** Paint this line object. */
   public void paint(Graphics g) {
     if (_lineWidth > 0) {
-      g.setColor(_lineColor);
-      g.drawLine(_x1, _y1, _x2, _y2);
+      if (_dashed) {
+        int i;
+        int length = getPerimeterLength();
+        Point end = new Point(_x2, _y2);
+        Point start = new Point(_x1, _y1);
+        int bottom;
+        g.setColor(_lineColor);
+        for (i=0; i < length;)
+        {
+            Point topPoint = pointAlongPerimeter(i);
+            i += 5;
+            Point bottomPoint = pointAlongPerimeter(i);
+            g.drawLine(topPoint.x, topPoint.y, bottomPoint.x, bottomPoint.y );
+            i += 5;
+        }
+      }
+      else {
+        g.setColor(_lineColor);
+        g.drawLine(_x1, _y1, _x2, _y2);
+
+        
+      }
    }
+ }
+/*
+ protected Point getOffsetAmount(Point p1, Point p2, int offset) {
+   // slope of the line we're finding the normal to
+   // is slope, and the normal is the negative reciprocal
+   // slope is (p1.y - p2.y) / (p1.x - p2.x)
+   // so recip is - (p1.x - p2.x) / (p1.y - p2.y)
+
+   int recipnumerator = (p1.x - p2.x) * -1;
+   int recipdenominator = (p1.y - p2.y);
+
+   // find the point offset on the line that gives a 
+   // correct offset
+
+   double a = offset / Math.sqrt(recipnumerator * recipnumerator +
+		  recipdenominator * recipdenominator);
+   Point newPoint = new Point((int) (recipdenominator * a),
+       (int) (recipnumerator * a));
+
+   //System.out.println("p1=" + p1 + " p2=" + p2 + " off=" + offset);
+   //System.out.println("a=" + a + " rn=" + recipnumerator +
+   //" rd=" + recipdenominator + " nP=" + newPoint);
+
+   return newPoint;
+ }
+
+ public Point getPoint() {
+   int figLength = _pathFigure.getPerimeterLength();
+   int pointToGet = (int) (figLength * percent);
+
+   Point linePoint = _pathFigure.pointAlongPerimeter(pointToGet);
+
+   //System.out.println("lP=" + linePoint + " ptG=" + pointToGet +
+   //" figLen=" + figLength);
+
+   Point offsetAmount =
+     getOffsetAmount(_pathFigure.pointAlongPerimeter(pointToGet + 5),
+	      _pathFigure.pointAlongPerimeter(pointToGet - 5), offset);
+
+   return new Point(linePoint.x + offsetAmount.x,
+	     linePoint.y + offsetAmount.y);
   }
-
-
+*/
   /** Reply true iff the given point is "near" the line. Nearness
    *  allows the user to more easily select the line with the
    *  mouse. Needs-More-Work: I should probably have two functions
