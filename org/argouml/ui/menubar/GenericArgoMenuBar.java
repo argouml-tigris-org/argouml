@@ -96,10 +96,6 @@ public class GenericArgoMenuBar extends JMenuBar
     private Toolbar _viewToolbar;
     private Toolbar _createDiagramToolbar;
     
-    private Toolbar _navigateToolbar;
-
-    //protected JMenu _import = null;
-
     /** Edit menu
      */
     protected JMenu _edit = null;
@@ -258,6 +254,8 @@ public class GenericArgoMenuBar extends JMenuBar
         KeyStroke F3 = KeyStroke.getKeyStroke(KeyEvent.VK_F3, 0);
         KeyStroke F7 = KeyStroke.getKeyStroke(KeyEvent.VK_F7, 0);
         KeyStroke altF4 = KeyStroke.getKeyStroke(KeyEvent.VK_F4, KeyEvent.ALT_MASK);
+        KeyStroke altLeft = KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_MASK);
+        KeyStroke altRight = KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_MASK);
 
         KeyStroke delKey  = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0);
         KeyStroke ctrlDel = KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, KeyEvent.CTRL_MASK);
@@ -290,7 +288,7 @@ public class GenericArgoMenuBar extends JMenuBar
         //appendPluggableMenus(_import, PluggableMenu.KEY_FILE_IMPORT);
         _file.add(ActionImportFromSources.SINGLETON);
         _file.addSeparator();
-        
+    
         JMenuItem printItem = _file.add(Actions.Print);
         setMnemonic(printItem,"Print",'P');
         setAccelerator(printItem,ctrlP);
@@ -307,12 +305,17 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _edit = (JMenu) add(new JMenu(menuLocalize("Edit")));
         setMnemonic(_edit,"Edit",'E');
-        _editToolbar = new Toolbar("Edit Toolbar");
 
         _select = new JMenu(menuLocalize("Select"));
         _edit.add(_select);
         JMenuItem selectAllItem = _select.add(new CmdSelectAll());
         setAccelerator(selectAllItem,ctrlA);
+        _select.addSeparator();
+        JMenuItem backItem = _select.add(NavigateTargetBackAction.getInstance());
+        //setAccelerator(backItem,altLeft);
+        JMenuItem forwardItem = _select.add(NavigateTargetForwardAction.getInstance());
+        //setAccelerator(forwardItem,altRight);
+        _select.addSeparator();
         JMenuItem selectNextItem = _select.add(new CmdSelectNext(false));
         //tab
         JMenuItem selectPrevItem = _select.add(new CmdSelectNext(true));
@@ -330,24 +333,20 @@ public class GenericArgoMenuBar extends JMenuBar
         JMenuItem cutItem = _edit.add(ActionCut.SINGLETON);
         setMnemonic(cutItem,"Cut",'X');
         setAccelerator(cutItem,ctrlX);
-        _editToolbar.add(ActionCut.SINGLETON);
 
         JMenuItem copyItem = _edit.add(ActionCopy.SINGLETON);
         setMnemonic(copyItem,"Copy",'C');
         setAccelerator(copyItem,ctrlC);
-        _editToolbar.add(ActionCopy.SINGLETON);
 
         JMenuItem pasteItem = _edit.add(ActionPaste.SINGLETON);
         setMnemonic(pasteItem,"Paste",'V');
         setAccelerator(pasteItem,ctrlV);
-        _editToolbar.add(ActionPaste.SINGLETON);
 
         _edit.addSeparator();
 
         JMenuItem removeItem = _edit.add(ActionDeleteFromDiagram.SINGLETON);
         setMnemonic(removeItem,"Remove",'R');
         setAccelerator(removeItem,delKey);
-        _editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
 
         JMenuItem deleteItem = _edit.add(ActionRemoveFromModel.SINGLETON);
         setMnemonic(deleteItem,"Delete",'D');
@@ -363,12 +362,10 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _view = (ArgoJMenu) add(new ArgoJMenu(menuLocalize("View")));
         setMnemonic(_view,"View",'V');
-        _viewToolbar = new Toolbar("View Toolbar");
 
         _view.add(Actions.GotoDiagram);
         JMenuItem findItem =  _view.add(Actions.Find);
         setAccelerator(findItem,F3);
-        _viewToolbar.add((Actions.Find));
 
         _view.addSeparator();
 
@@ -399,6 +396,7 @@ public class GenericArgoMenuBar extends JMenuBar
 
         _view.addSeparator();
         _view.add(org.argouml.language.ui.ActionNotation.getInstance().getMenu());
+
 
         appendPluggableMenus(_view, PluggableMenu.KEY_VIEW);
 
@@ -527,6 +525,15 @@ public class GenericArgoMenuBar extends JMenuBar
      *
      */
     public org.argouml.swingext.Toolbar getEditToolbar() {
+        if (_editToolbar == null) {
+            _editToolbar = new Toolbar("Edit Toolbar");
+            _editToolbar.add(ActionCut.SINGLETON);
+            _editToolbar.add(ActionCopy.SINGLETON);
+            _editToolbar.add(ActionPaste.SINGLETON);
+            _editToolbar.add(ActionDeleteFromDiagram.SINGLETON);
+            _editToolbar.add(NavigateTargetBackAction.getInstance());
+            _editToolbar.add(NavigateTargetForwardAction.getInstance());
+        }
         return _editToolbar;
     }
     
@@ -538,27 +545,14 @@ public class GenericArgoMenuBar extends JMenuBar
         return _fileToolbar;
     }
     
-    /** Getter for property _viewToolbar.
-     * @return Value of property _viewToolbar.
-     *
+    /** Getter for the view toolbar.
+     * @return the view toolbar.
      */
-    public org.argouml.swingext.Toolbar getViewToolbar() {
+    public Toolbar getViewToolbar() {
+        if (_viewToolbar == null) {
+            _viewToolbar = new Toolbar("View Toolbar");
+            _viewToolbar.add((Actions.Find));
+        }
         return _viewToolbar;
     }
-    
-    
-    /**
-     * Getter for the navigate toolbar, the toolbar via which users can browse
-     * through the targets.
-     * @return
-     */
-    public Toolbar getNavigateToolbar() {
-        if (_navigateToolbar == null) {
-            _navigateToolbar = new Toolbar("Navigation Toolbar");
-            _navigateToolbar.add(NavigateTargetBackAction.getInstance());
-            _navigateToolbar.add(NavigateTargetForwardAction.getInstance());
-        }
-        return _navigateToolbar;
-    }
-
 }
