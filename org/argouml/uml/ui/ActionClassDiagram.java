@@ -72,7 +72,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
             LOG.error("No namespace as argument");
             LOG.error(handle);
             throw new IllegalArgumentException(
-                "The argument " + handle + "is not a namespace.");
+                "The argument " + handle + " is not a namespace.");
         }
         return true;       
     }
