@@ -40,7 +40,6 @@ import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelpe
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 
-import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -351,9 +350,9 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport
     {
       
 	if (isSource)
-	    ((MTransition) edge).setSource((MState) newNode);
+	    ModelFacade.setSource(edge, newNode);
 	else
-	    ((MTransition) edge).setTarget((MState) newNode);
+	    ModelFacade.setTarget(edge, newNode);
           
     }
   

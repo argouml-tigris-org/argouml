@@ -32,7 +32,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
 
 /**
@@ -54,7 +53,7 @@ public class ActionAddAssociationSpecification extends AbstractActionAddModelEle
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#doIt(java.util.Vector)
      */
     protected void doIt(Vector selected) {
-        ((MAssociationEnd) getTarget()).setSpecifications(selected);
+        ModelFacade.setSpecifications(getTarget(), selected);
     }
 
     /**

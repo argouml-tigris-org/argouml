@@ -95,8 +95,9 @@ public class MultiEditorPane
         for (int i = 0; i < _tabPanels.size(); i++) {
             String title = "tab";
             JPanel t = (JPanel) _tabPanels.elementAt(i);
-            if (t instanceof TabSpawnable)
+            if (t instanceof TabSpawnable) {
                 title = ((TabSpawnable) t).getTitle();
+            }
             _tabs.addTab("As " + title, t);
             _tabs.setEnabledAt(i, false);
             if (t instanceof TargetListener) {
@@ -104,8 +105,6 @@ public class MultiEditorPane
 		    .addTargetListener((TargetListener) t);
             }
         } /* end for */
-
-        
 
         _tabs.addChangeListener(this);
         _tabs.addMouseListener(this);

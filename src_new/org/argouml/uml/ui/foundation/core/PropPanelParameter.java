@@ -127,7 +127,7 @@ public class PropPanelParameter extends PropPanelModelElement {
     public void setType(MClassifier type) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAParameter(target)) {
-            ((MParameter) target).setType(type);
+            ModelFacade.setType(target, type);
         }
     }
 

@@ -400,7 +400,7 @@ public class PropPanelOperation extends PropPanelModelElement {
     public void setRaisedSignals(Collection signals) {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAOperation(target)) {
-            ((MOperation) target).setRaisedSignals(signals);
+            ModelFacade.setRaisedSignals(target, signals);
         }
     }
 

@@ -56,8 +56,6 @@ import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
 
-import ru.novosoft.uml.foundation.core.MNode;
-
 /**
  * TODO: this property panel needs refactoring to remove dependency on
  *       old gui components.
@@ -109,8 +107,7 @@ public class PropPanelNode extends PropPanelClassifier {
     public void setResidents(Collection components) {
         Object target = getTarget();
         if (ModelFacade.isANode(target)) {
-            ((MNode) target).setResidents(components);
+            ModelFacade.setResidents(target, components);
         }
     }
 } /* end class PropPanelNode */
-
