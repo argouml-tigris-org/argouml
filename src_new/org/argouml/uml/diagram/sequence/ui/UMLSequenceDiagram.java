@@ -41,8 +41,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-
-import org.tigris.gef.base.*;
+import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.ui.*;
 
