@@ -1461,6 +1461,17 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
     
+    /** returns the receptions of a signal
+     * @param handle
+     * @return receptions
+     */
+    public static Collection getReceptions(Object handle) {
+        if (handle instanceof MSignal) {
+            return ((MSignal)handle).getReceptions();
+        }
+        throw new IllegalArgumentException("Unrecognized handle: + handle");
+    }
+
     /**
      * Returns the recurense iteration expression of an action
      * @param handle

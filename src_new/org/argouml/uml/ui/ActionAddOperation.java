@@ -28,13 +28,13 @@ import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.behavior.common_behavior.MSignal;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
 
@@ -65,7 +65,7 @@ public class ActionAddOperation extends UMLChangeAction {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target =  TargetManager.getInstance().getModelTarget();
-	if (!(target instanceof MClassifier)) return;
+	if (!(ModelFacade.isAClassifier(target))) return;
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
         TargetManager.getInstance().setTarget(oper);
@@ -82,6 +82,8 @@ public class ActionAddOperation extends UMLChangeAction {
     public boolean shouldBeEnabled() {
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target =  TargetManager.getInstance().getModelTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier && !(target instanceof MSignal);
+	return super.shouldBeEnabled() && 
+        ModelFacade.isAClassifier(target) && 
+        !(ModelFacade.isASignal(target));
     }
 } /* end class ActionAddOperation */
