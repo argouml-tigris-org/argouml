@@ -141,6 +141,7 @@ C:\Work>set JAVA_HOME=<replaceable>C:\Programs\jdkwhatever</replaceable>
 C:\Work>set ANT_HOME=C:\Work\argouml
 C:\Work>cd argouml\src_new
 C:\Work\argouml\src_new>build run
+
 </programlisting>
 A window from the newly compiled ArgoUML opens after a while!
 </para>
@@ -767,15 +768,18 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 					</imageobject>
 				</mediaobject>
 <itemizedlist>
-<listitem><para>Critics and other cognitive tools (see <xref linkend="critics"/>)</para></listitem>
+<listitem><para>User Interface <!-- (see <xref linkend="ui"/>) --></para></listitem>
 <listitem><para>Diagrams (see <xref linkend="diagrams"/>)</para></listitem>
+<listitem><para>GEF</para></listitem>
 <listitem><para>Model</para></listitem>
 <listitem><para>Saving/Loading</para></listitem>
 <listitem><para>Notation (see <xref linkend="notation"/>)</para></listitem>
 <listitem><para>Code Generation</para></listitem>
 <listitem><para>Reverse Engineering (see <xref linkend="reverse"/>)</para></listitem>
+<listitem><para>ocl</para></listitem>
 <listitem><para>Help System (see <xref linkend="help"/>)</para></listitem>
 <listitem><para>Internationalization (see <xref linkend="internationalization"/>)</para></listitem>
+<listitem><para>Critics and other cognitive tools (see <xref linkend="critics"/>)</para></listitem>
 <listitem><para>Plugin-Module API (see <xref linkend="plugins"/>)</para></listitem>
 <listitem><para>Logging (see <xref linkend="logging"/>)</para></listitem>
 </itemizedlist>
@@ -1066,7 +1070,8 @@ programming in Argo/UML.
 <sect1 id="critics">
 <title>Critics and other cognitive tools</title>
       <para id="comp-critics-purpose">
-Purpose - to provide help for the User.
+Purpose - to provide cognitive help for the User.
+This help is based on the current model that the User works with.
 </para>
       <para>
 This module contains the following main class types:
@@ -1100,38 +1105,51 @@ found by the Critics.
 </para>
 	</listitem>
       </itemizedlist>
-      <para>
+      <sect2>
+	<title>Collaborations for Critics and cognitive tools</title>
+	<para>
 The module communicates with/uses the other parts of ArgoUML like this:
 </para>
-      <itemizedlist>
-	<listitem><para id="comp-critics-to-comp-diagrams">Diagrams</para>
+	<sect3 id="comp-critics-to-comp-diagrams">
+	  <title>Diagrams</title>
 	  <para>
 Stepping through the model and examining it using get-calls.
 Wizard could modify the model the using set-calls to Fig-objects.
 </para>
-	</listitem>
-	<listitem><para id="comp-critics-to-comp-model">Model</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-model">
+	  <title>Model</title>
 	  <para>
 Stepping through the model and examining it using get-calls.
 Wizard could modify the model the using set-calls to the model and 
 creating new model elements.
 </para>
-</listitem>
-	<listitem><para id="comp-critics-to-comp-saveload">Saving/Loading - not at all</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-saveload">
+	  <title>Saving/Loading - not at all</title>
 	  <para>
 Eventually the user created To Do Items needs to be saved as well as
 information on what Critiques that have been snoozed.
 </para>
-	</listitem>
-	<listitem><para id="comp-critics-to-comp-notation">Notation - not at all</para></listitem>
-	<listitem><para id="comp-critics-to-comp-codegenreveng">Code Generation and Reverse Engineering - not at all</para></listitem>
-	<listitem><para id="comp-critics-to-comp-help">Help System</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-notation">
+	  <title>Notation</title>
+	  <para>Not at all</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-codegenreveng">
+	  <title>Code Generation and Reverse Engineering</title>
+	  <para>Not at all</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-help">
+	  <title>Help System</title>
 	  <para>
 The help system is fired by the ToDoItems and Wizards when
 a longer explanation is required.
 </para>
-	</listitem>
-	<listitem><para id="comp-critics-to-comp-internationalization">Internationalization - 
+	</sect3>
+	<sect3 id="comp-critics-to-comp-internationalization">
+	  <title>Internationalization</title>
+	  <para>
 <classname>org.argouml.uml.cognitive.UMLCognitiveResourceBundle<replaceable>_ll_RR</replaceable></classname></para>
 	  <para>
 Since the whole module contains a lot of texts describing
@@ -1151,20 +1169,24 @@ and
 <classname>org.argouml.pattern.cognitive.PatternCognitiveResourceBundled</classname>
 with friends to be created futher down the road.
 </para>
-</listitem>
-	<listitem><para id="comp-critics-to-comp-plugins">Plugin-Module API - currently not</para>
+	</sect3>
+	<sect3 id="comp-critics-to-comp-plugins">
+	  <title>Plugin-Module API - currently not</title>
 	  <para>
 There is a <classname>PluggableCritic</classname> 
 the purpose of which is to add new Critics
 but that is not yet used.
 </para>
-	</listitem>
-	<listitem>
-	  <para id="comp-critics-to-comp-logging">
-Logging - logging is made using instance org.argouml.cognitive.critics
+	</sect3>
+	<sect3 id="comp-critics-to-comp-logging">
+	  <title>Logging</title>
+	  <para>
+Logging is made using instance org.argouml.cognitive.critics
 </para>
-	</listitem>
-      </itemizedlist>
+	</sect3>
+      </sect2>
+      <sect2>
+	<title>Main classes</title>
 <para>Here is an illustration of the main classes implementing critics</para>
 <mediaobject>
 					<imageobject>
@@ -1212,6 +1234,7 @@ Checklists are located in the package org.argouml.cognitive.checklist.
 Helper classes for To Do Items, To Do Pane, Wizards and the Knowledge Types
 is located in the package org.argouml.cognitive.ui.
 </para>
+      </sect2>
 
 <sect2 id="howdoi_critics">
 <title>How do I ...?</title>
