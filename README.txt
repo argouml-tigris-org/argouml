@@ -7,8 +7,8 @@ First, you need Java2 installed, get it from
   http://java.sun.com 
 for your platform. 
 
-Any Java2 JDK or JRE should work. Our preferred version is JDK 1.4.x, 
-but JDK 1.2.x and JDK 1.3.x should also work. Please let us know if you 
+Any recent Java2 JDK or JRE should work. Our preferred version is JDK 1.4.x, 
+but JDK 1.3.x should also work. Please let us know if you 
 experience any JDK related problems. Try typing "java" in a console window 
 to see if Java is successfully installed. 
 You should get a list of your options. If not, try reinstalling Java.
