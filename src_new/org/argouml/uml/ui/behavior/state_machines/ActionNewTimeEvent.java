@@ -47,7 +47,7 @@ public class ActionNewTimeEvent extends ActionNewEvent {
      * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent()
      */
     protected Object createEvent() {
-        return StateMachinesFactory.getFactory().createTimeEvent();
+        return StateMachinesFactory.getFactory().buildTimeEvent();
     }
 
 }

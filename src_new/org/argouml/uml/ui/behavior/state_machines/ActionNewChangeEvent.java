@@ -47,7 +47,7 @@ public class ActionNewChangeEvent extends ActionNewEvent {
      * @see org.argouml.uml.ui.behavior.state_machines.ActionNewEvent#createEvent()
      */
     protected Object createEvent() {
-        return StateMachinesFactory.getFactory().createChangeEvent();
+        return StateMachinesFactory.getFactory().buildChangeEvent();
     }
 
 }
