@@ -1,24 +1,33 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: NetNode.java
 // Classes: NetNode
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
@@ -26,7 +35,6 @@ package uci.gef;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.*;
 import java.util.*;
 import java.beans.*;
 
@@ -35,15 +43,13 @@ import uci.graph.*;
 /** This class models a node in our underlying connected graph
  *  model. Nodes have ports that are their connection points to other
  *  nodes. Arcs from one port to another.
- *  <A HREF="../features.html#graph_representation_nodes">
- *  <TT>FEATURE: graph_representation_nodes</TT></A>
  *
  * @see NetEdge
  * @see NetPort
  */
 
 public abstract class NetNode extends NetPrimitive
-implements MouseListener, GraphNodeHooks  {
+implements MouseListener, GraphNodeHooks, java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -76,7 +82,7 @@ implements MouseListener, GraphNodeHooks  {
    *  information. <p>
    *
    * Needs-More-Work: what is the class protocol design here? */
-  public void initialize(Hashtable args) { }
+  public abstract void initialize(Hashtable args);
 
   ////////////////////////////////////////////////////////////////
   // accessors
@@ -162,12 +168,6 @@ implements MouseListener, GraphNodeHooks  {
   public void mouseEntered(MouseEvent me) { }
   public void mouseExited(MouseEvent me) { }
   
-  /** Pop up a meny showing a list of options/commands for this
-   *  node. This is not currently availible because AWT 1.0.2 does not
-   *  support pop up menus. */
-  public void popNodeMenu() {
-    System.out.println("now showing a menu of node options");
-  }
 
   /** Edit this NetNode in some application specific way. Typically
    *  open a dialog box to edit some attributes of the
@@ -175,7 +175,7 @@ implements MouseListener, GraphNodeHooks  {
    *  for my system of node attributes. */
   public void editNode() {
     Globals.startPropertySheet();
-    Globals.curEditor().updatePropertySheet();
+    Globals.curEditor().getSelectionManager().updatePropertySheet();
   }
 
   ////////////////////////////////////////////////////////////////

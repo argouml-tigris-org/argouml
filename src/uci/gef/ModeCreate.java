@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: ModeCreate.java
 // Classes: ModeCreate
@@ -27,20 +36,37 @@ import java.awt.*;
 import java.awt.event.*;
 
 /** Abstract superclass for all Mode's that create new
- *  Fig's. This class factors our shared code that would
- *  otherwise be duplicated in its subclasses. On a mouse down the new
- *  item is created in memory. On mouse drag the new item is resized
- *  via its createDrag() method. On mouse up the new item is
- *  officially added to the document being edited in the parent
+ *  Figs.  This class factors our shared code that would
+ *  otherwise be duplicated in its subclasses.  On a mouse down the new
+ *  item is created in memory.  On mouse drag the new item is resized
+ *  via its createDrag() method.  On mouse up the new item is
+ *  officially added to the Layer being edited in the parent
  *  Editor, the item is selected, and the Editor is placed in the next
- *  Mode (usually ModeSelect). Subclasses override various of these
+ *  Mode (usually ModeSelect).  Subclasses override various of these
  *  event handlers to give specific behaviors, for example,
- *  ModeCreateArc handles dragging differently.
+ *  ModeCreateEdge handles dragging differently.
  *
- * @see ModeCreateArc
- * @see ModeCreateFigRect */
+ * @see ModeCreateEdge
+ * @see ModeCreateFigRect
+ * @see ModeCreateFigRRect
+ * @see ModeCreateFigLine
+ * @see ModeCreateFigCircle
+ * @see ModeCreateFigPoly
+ * @see ModeCreateFigInk
+ * @see ModeCreateFigText
+ * @see ModeCreateFigImage
+ */
 
 public abstract class ModeCreate extends Mode {
+  ////////////////////////////////////////////////////////////////
+  // static variables
+
+  /** The default size of a Fig if the user simply clicks instead of
+   *  dragging out a size. */
+  protected static int _defaultWidth = 32, _defaultHeight = 32;
+
+
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -58,12 +84,22 @@ public abstract class ModeCreate extends Mode {
   public ModeCreate() { super(); }
 
   ////////////////////////////////////////////////////////////////
+  // accessors
+
+  /** By default all creation modes use CROSSHAIR_CURSOR. */
+  public Cursor getInitialCursor() {
+    return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+  }
+
+  
+  ////////////////////////////////////////////////////////////////
   // event handlers
 
   private Point snapPt = new Point(0, 0);
 
   /** On mouse down, make a new Fig in memory. */
   public void mousePressed(MouseEvent me) {
+    if (me.getModifiers() == InputEvent.BUTTON3_MASK) return;
     start();
     synchronized (snapPt) {
       snapPt.move(me.getX(), me.getY());
@@ -73,13 +109,17 @@ public abstract class ModeCreate extends Mode {
     }
     _newItem = createNewItem(me, anchorX, anchorY);
     me.consume();
+    setCursor(Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR));
   }
 
   /** On mouse drag, resize the new item as the user moves the
-   *  mouse. Maybe the Fig createDrag() method should be removed
+   *  mouse.  Maybe the Fig createDrag() method should be removed
    *  and I should call dragHandle(). That would elimiate one method
    *  from each oif several classes, but dragging during creation is
-   *  not really the same thing as dragging after creation... */
+   *  not really the same thing as dragging after creation....<p>
+   *
+   *  Note: _newItem has not been added to any Layer yet. So you cannot
+   *  use _newItem.damage(), instead use _editor.damaged(_newItem). */
   public void mouseDragged(MouseEvent me) {
     _editor.damaged(_newItem);
     creationDrag(me.getX(), me.getY());
@@ -101,20 +141,11 @@ public abstract class ModeCreate extends Mode {
     me.consume();
   }
 
-  /** The default size of a Fig if the user simply clicks instead of
-   *   dragging.
-   *  <A HREF="../features.html#default_initial_size">
-   *  <TT>FEATURE: default_initial_size</TT></A>
-   */
-  protected static int _defaultWidth = 32, _defaultHeight = 32;
-
   /** Update the new item to reflect the new mouse position. By
    *  default let the new item set its size, subclasses may
    *  override. If the user simply clicks instead of dragging then use
    *  the default size. If the user actually drags out a Fig, then
    *  use its size as the new default size.
-   *  <A HREF="../features.html#default_initial_size">
-   *  <TT>FEATURE: default_initial_size</TT></A>
    *
    * @see ModeCreateFigLine#creationDrag */
   protected void creationDrag(int x, int y) {
@@ -151,10 +182,10 @@ public abstract class ModeCreate extends Mode {
   ////////////////////////////////////////////////////////////////
   // ModeCreate API
 
-  /** Construct a new Fig to be added to the
-   *  Editor. Typically, subclasses will make a new instance of some Fig
-   *  based on the given mouse down event and the state of the parent
-   *  Editor (specifically, its default graphical attributes). */
+  /** Abstact method to construct a new Fig to be added to the Editor.
+   *  Typically, subclasses will make a new instance of some Fig based
+   *  on the given mouse down event and the state of the parent Editor
+   *  (specifically, its default graphical attributes). */
   public abstract Fig createNewItem(MouseEvent me, int snapX, int snapY);
 
 } /* end class ModeCreate */

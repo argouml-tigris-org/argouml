@@ -1,8 +1,13 @@
 package uci.uml.ui;
 
 import java.util.*;
-import uci.uml.Model_Management.Model;
+import java.beans.*;
+
+import uci.uml.Model_Management.*;
+import uci.uml.Foundation.Core.*;
 import uci.gef.Layer;
+import uci.gef.Diagram;
+import uci.gef.Fig;
 
 public class Project {
   ////////////////////////////////////////////////////////////////
@@ -13,8 +18,8 @@ public class Project {
   public Vector _models = new Vector(); //instances of Model
   public Vector _diagrams = new Vector(); // instances of LayerDiagram
   public boolean _needsSave = false;
-  public Vector _trash = new Vector(); // instances of ModelElement
-
+  public Model _curModel = null;
+  public VetoableChangeSupport _vetoSupport = new VetoableChangeSupport(this);
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -39,13 +44,22 @@ public class Project {
     // needs-more-work: maybe separate name
     return _filename;
   }
-  public void setName(String n) {_filename = n; }
+  public void setName(String n) throws PropertyVetoException {
+    _vetoSupport.fireVetoableChange("Name", _filename, n);
+    _filename = n;
+  }
 
   public String getFilename() { return _filename; }
-  public void setFilename(String n) {_filename = n; }
+  public void setFilename(String n) throws PropertyVetoException {
+    _vetoSupport.fireVetoableChange("Filename", _filename, n);
+    _filename = n;
+  }
 
   public String getPathname() { return _pathname; }
-  public void setPathname(String n) { _pathname = n; }
+  public void setPathname(String n) throws PropertyVetoException {
+    _vetoSupport.fireVetoableChange("Pathname", _pathname, n);    
+    _pathname = n;
+  }
 
   public boolean getNeedsSave() { return _needsSave; }
   public void setNeedsSave(boolean ns) { _needsSave = ns; }
@@ -53,16 +67,56 @@ public class Project {
 
   
   public Vector getModels() { return _models; }
-  public void addModel(Model m) {
+  public void addModel(Model m) throws PropertyVetoException {
+    _vetoSupport.fireVetoableChange("Models", _models, m);
     _models.addElement(m);
+    setCurrentModel(m);
     _needsSave = true;
   }
 
+  public void setCurrentModel(Model m) { _curModel = m; }
+  public Model getCurrentModel() { return _curModel; }
+
   public Vector getDiagrams() { return _diagrams; }
-  public void addDiagram(Layer lay) {
-    _diagrams.addElement(lay);
+  public void addDiagram(Diagram d) throws PropertyVetoException {
+    _vetoSupport.fireVetoableChange("Diagrams", _diagrams, d);
+    _diagrams.addElement(d);
     _needsSave = true;
   }
-  
-  
+
+  public void addVetoableChangeListener(VetoableChangeListener l) {
+    _vetoSupport.removeVetoableChangeListener(l);
+    _vetoSupport.addVetoableChangeListener(l);
+  }
+
+  public void removeVetoableChangeListener(VetoableChangeListener l) {
+    _vetoSupport.removeVetoableChangeListener(l);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // trash related methos
+  public void moveToTrash(Object obj) {
+    System.out.println("needs-more-work: trashing " + obj);
+    if (obj instanceof ModelElement) {
+      ModelElement me = (ModelElement) obj;
+      try { me.setElementOwnership(null); }
+      catch (PropertyVetoException pve) {
+	System.out.println("Project got a PropertyVetoException");
+      }
+      Enumeration diagramEnum = _diagrams.elements();
+      while (diagramEnum.hasMoreElements()) {
+	Diagram d = (Diagram) diagramEnum.nextElement();
+	Fig f = d.getLayer().presentationFor(me);
+	if (f != null) {
+	  System.out.println("trashing model element from diagram");
+	  d.getLayer().remove(f);
+	}
+      } /* end while */
+    }
+  }
+
+  public void moveFromTrash(Object obj) {
+    System.out.println("needs-more-work: not restoring " + obj);
+  }
+
 } /* end class Project */

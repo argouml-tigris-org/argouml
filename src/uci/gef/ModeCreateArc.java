@@ -1,24 +1,33 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: ModeCreateArc.java
 // Classes: ModeCreateArc
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
@@ -73,7 +82,7 @@ public class ModeCreateArc extends ModeCreate {
    *  create a rubberband line to show during the interaction. */
   public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
     return new FigLine(snapX, snapY, 0, 0,
-		       Globals.getPrefs().rubberbandAttrs());
+		       Globals.getPrefs().getRubberbandColor());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -107,55 +116,58 @@ public class ModeCreateArc extends ModeCreate {
     GraphModel gm = _editor.getGraphModel();
     if (!(gm instanceof MutableGraphModel)) f = null;
     MutableGraphModel mgm = (MutableGraphModel) gm;
-
-    if (f != null) {
-      if (f instanceof FigNode) {
-	FigNode destFigNode = (FigNode) f;
-	/* If its a FigNode, then check within the  */
-	/* FigNode to see if a port exists */
-	Object foundPort = destFigNode.deepHitPort(x, y);
-
-	if (foundPort != null && foundPort != _startPort) {
-	  Fig destPortFig = destFigNode.getPortFig(foundPort);
-	  Class edgeClass = (Class) getArg("edgeClass");
-	  if (edgeClass != null)
-	    _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
-	  else
-	    _newEdge = mgm.connect(_startPort, foundPort);
+    // needs-more-work: class cast exception
+    
+    if (f instanceof FigNode) {
+      FigNode destFigNode = (FigNode) f;
+      /* If its a FigNode, then check within the  */
+      /* FigNode to see if a port exists */
+      Object foundPort = destFigNode.deepHitPort(x, y);
+      
+      if (foundPort != null && foundPort != _startPort) {
+	Fig destPortFig = destFigNode.getPortFig(foundPort);
+	Class edgeClass = (Class) getArg("edgeClass");
+	if (edgeClass != null)
+	  _newEdge = mgm.connect(_startPort, foundPort, edgeClass);
+	else
+	  _newEdge = mgm.connect(_startPort, foundPort);
+	
+	if (null != _newEdge) {
+	  LayerManager lm = _editor.getLayerManager();
+	  // 	    FigEdge pers = (FigEdge) lm.presentationFor(_newEdge);
+	  // 	    if (pers == null)
+	  //	    FigEdge pers =
+	  //  ((NetEdge)_newEdge).presentationFor(lm.getActiveLayer());
+	  //GraphEdgeRenderer rend = _editor.getGraphEdgeRenderer();
+	  // needs-more-work: pass in the layer
+	  //FigEdge pers = rend.getFigEdgeFor(mgm, null, _newEdge);
+	  //pers.sourcePortFig(_startPortFig);
+	  //pers.destPortFig(destPortFig);
+	  //pers.sourceFigNode(_sourceFigNode);
+	  //pers.destFigNode(destFigNode);
+	  //if (Dbg.on) Dbg.assert(pers != null, "FigEdge not found");
+	  //_editor.add(pers); // adds it to the property sheet's universe
+	  _newItem.damage();
+	  _sourceFigNode.damage();
+	  destFigNode.damage();
+	  _newItem = null;
+	  // if (pers != null) {
+	  // 	      pers.reorder(CmdReorder.SEND_TO_BACK,
+	  // 			   _editor.getLayerManager().getActiveLayer());
+	  // 	      _editor.getSelectionManager().select(pers);
+	  //}
 	  
-	  if (null != _newEdge) {
-	    LayerManager lm = _editor.getLayerManager();
-// 	    FigEdge pers = (FigEdge) lm.presentationFor(_newEdge);
-// 	    if (pers == null)
-	    //	    FigEdge pers =
-	    //  ((NetEdge)_newEdge).presentationFor(lm.getActiveLayer());
-	    GraphEdgeRenderer rend = _editor.getGraphEdgeRenderer();
-	    // needs-more-work: pass in the layer
-	    //FigEdge pers = rend.getFigEdgeFor(mgm, null, _newEdge);
-	    //pers.sourcePortFig(_startPortFig);
-	    //pers.destPortFig(destPortFig);
-	    //pers.sourceFigNode(_sourceFigNode);
-	    //pers.destFigNode(destFigNode);
-	    //if (Dbg.on) Dbg.assert(pers != null, "FigEdge not found");
-	    //_editor.add(pers); // adds it to the property sheet's universe
-	    _newItem.damage();
-	    _newItem = null;
-	    // if (pers != null) {
-// 	      pers.reorder(CmdReorder.SEND_TO_BACK,
-// 			   _editor.getLayerManager().getActiveLayer());
-// 	      _editor.getSelectionManager().select(pers);
-	    //}
-
-	    Fig pers = _editor.getLayerManager().getActiveLayer().
-	      presentationFor(_newEdge);
-	    if (pers != null) _editor.getSelectionManager().select(pers);
-	    done();
-	    me.consume();
-	    return;
-	  }
+	  Fig pers = _editor.getLayerManager().getActiveLayer().
+	    presentationFor(_newEdge);
+	  if (pers != null) _editor.getSelectionManager().select(pers);
+	  done();
+	  me.consume();
+	  return;
 	}
       }
     }
+    System.out.println("clean dirt!");
+    _sourceFigNode.damage();
     _newItem.damage();
     _newItem = null;
     done();

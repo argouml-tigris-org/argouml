@@ -1,24 +1,32 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: FigNode.java
 // Classes: FigNode
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
@@ -26,27 +34,23 @@ package uci.gef;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.io.Serializable;
 import java.beans.*;
 
 import uci.util.*;
 import uci.ui.*;
 import uci.graph.*;
 
-/** Class to display graphics for a NetNode in a diagram.
- *  <A HREF="../features.html#graph_visualization_nodes">
- *  <TT>FEATURE: graph_visualization_nodes</TT></A>
- *  <A HREF="../features.html#graph_visualization_ports">
- *  <TT>FEATURE: graph_visualization_ports</TT></A>
- */
+/** Class to present a node (such as a NetNode) in a diagram. */
 
 public class FigNode extends FigGroup
-implements MouseListener, PropertyChangeListener {
+implements MouseListener, PropertyChangeListener, Serializable {
   ////////////////////////////////////////////////////////////////
   // constants
   
   /** Constants useful for determining what side (north, south, east,
-   * or west) a port is located on. Maybe this should really be in
-   * FigNode. */
+   *  or west) a port is located on. Maybe this should really be in
+   *  FigNode. */
   public static final double ang45 = Math.PI / 4;
   public static final double ang135 = 3*Math.PI / 4;
   public static final double ang225 = 5*Math.PI / 4;
@@ -62,19 +66,22 @@ implements MouseListener, PropertyChangeListener {
   /** True when we want to draw the user's attention to this FigNode. */
   protected boolean _highlight = false;
 
+  /** A Vector of FigEdges that need to be rerouted when this FigNode
+   *  moves. */
   protected Vector _figEdges = new Vector(); 
   
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Constructs a new FigNode on the given node with the
-   *  given Fig's. */
+  /** Constructs a new FigNode on the given node with the given owner. */
   public FigNode(Object node) {
     setOwner(node);
     if (node instanceof GraphNodeHooks)
       ((GraphNodeHooks)node).addPropertyChangeListener(this);
   }
 
+  /** Constructs a new FigNode on the given node with the given owner
+   *  and Figs. */
   public FigNode(Object node, Vector figs) {
     this(node);
     setFigs(figs);
@@ -84,10 +91,7 @@ implements MouseListener, PropertyChangeListener {
   // accessors
 
   /** Set the property of highlighting ports when the user moves the
-   *  mouse over this FigNode.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+   *  mouse over this FigNode. */
   public void setBlinkPorts(boolean b) {
     _blinkPorts = b;
     hidePorts();
@@ -95,57 +99,32 @@ implements MouseListener, PropertyChangeListener {
   public boolean getBlinkPorts() { return _blinkPorts; }
 
 
+  /** Adds a FigEdge to the list of them that need to be rerouted when
+   *  this FigNode moves. */
   public void addFigEdge(FigEdge fe) { _figEdges.addElement(fe); }
+
+  /** removes a FigEdge from the list of them that need to be rerouted when
+   *  this FigNode moves. */
   public void removeFigEdge(FigEdge fe) { _figEdges.removeElement(fe); }
 
-  /** Reply a collection of FigEdge's for all the edges that
-   *  are connected to ports of the node being
-   *  displayed. Needs-More-Work: this code is really slow. */
-
-//   protected Vector figEdges() {
-//     Vector figEdges = new Vector();
-//     if (!(_layer instanceof LayerPerspective)) return figEdges;
-//     GraphModel gm = ((LayerPerspective)_layer).getGraphModel();
-//     Vector edges = new Vector();
-//     Enumeration figEnum =  elements();
-//     while (figEnum.hasMoreElements()) {
-//       Fig f = (Fig) figEnum.nextElement();
-//       Object port = f.getOwner();
-//       if (port == null) continue;
-//       Vector ins = gm.getInEdges(port);
-//       Enumeration inEnum = ins.elements();
-//       while (inEnum.hasMoreElements()) edges.addElement(inEnum.nextElement());
-
-//       Vector outs = gm.getInEdges(port);
-//       Enumeration outEnum = outs.elements();
-//       while (outEnum.hasMoreElements()) edges.addElement(outEnum.nextElement());
-//     }
-//     figEnum = _layer.elements();
-//     while (figEnum.hasMoreElements()) {
-//       Fig f = (Fig) figEnum.nextElement();
-//       Object owner = f.getOwner();
-//       if (owner != null && edges.contains(owner)) {
-// 	figEdges.addElement(f);
-//       }
-//     }
-//     return figEdges;
-//   }
-
-  public void setOwner(Object own) {
+  /** Sets the owner (an node in some underlying model). If the given
+   *  node implements GraphNodeHooks, then the FigNode will register
+   *  itself as a listener on the node. */
+  public void setOwner(Object node) {
     Object oldOwner = getOwner();
     if (oldOwner != null && oldOwner instanceof GraphNodeHooks) {
       ((GraphNodeHooks)oldOwner).removePropertyChangeListener(this);
     }
-    if (own instanceof GraphNodeHooks) {
-      ((GraphNodeHooks)own).addPropertyChangeListener(this);
+    if (node instanceof GraphNodeHooks) {
+      ((GraphNodeHooks)node).addPropertyChangeListener(this);
     }
-    super.setOwner(own);
+    super.setOwner(node);
   }
 
   ////////////////////////////////////////////////////////////////
   // Editor API
 
-  /** When a FigNode is damaged, all of its arcs may need repainting. */
+  /** When a FigNode is damaged, all of its edges may need repainting. */
   public void startTrans() {
     Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
@@ -155,6 +134,7 @@ implements MouseListener, PropertyChangeListener {
     super.startTrans();
   }
 
+  /** When a FigNode is damaged, all of its edges may need repainting. */
   public void endTrans() {
     Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
@@ -164,6 +144,7 @@ implements MouseListener, PropertyChangeListener {
     super.endTrans();
   }
 
+  /** When a FigNode is deleted, all of its edges are deleted. */
   public void delete() {
     Enumeration arcPers = _figEdges.elements();
     while (arcPers.hasMoreElements()) {
@@ -173,54 +154,49 @@ implements MouseListener, PropertyChangeListener {
     super.delete();
   }
 
+  /** When a FigNode is disposed, all of its edges are disposed. */
+  public void dispose() {
+    Enumeration arcPers = _figEdges.elements();
+    while (arcPers.hasMoreElements()) {
+      Fig f = (Fig) arcPers.nextElement();
+      f.dispose();
+    }
+    super.dispose();
+  }
+
 
   ////////////////////////////////////////////////////////////////
   // ports
 
-  /** Adds a port into the current FigNode.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Sets the port (some object in an underlying model) for Fig f.  f
+   *  must already be contained in the FigNode. f will now represent
+   *  the given port. */
   public void bindPort(Object port, Fig f) {
     Fig oldPortFig = getPortFig(port);
     if (oldPortFig != null) oldPortFig.setOwner(null); //?
     f.setOwner(port);
-    //if (!_ports.contains(port)) _ports.addElement(port);
   }
 
-  /** Removes a port from the current FigNode.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Removes a port from the current FigNode. */
   public void removePort(Fig rep) {
-    if (rep.getOwner() != null) {
-      //_ports.removeElement(rep.getOwner());
-      rep.setOwner(null);
-    }
+    if (rep.getOwner() != null) rep.setOwner(null);
   }
 
-  /** Reply the NetPort associated with the Fig under the mouse, or
-   *  null if there is none.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Reply the NetPort associated with the topmost Fig under the mouse, or
+   *  null if there is none. */
   public final Object hitPort(Point p) { return hitPort(p.x, p.y); }
 
-  /** Reply the port that "owns" the Fig under the given point, or
-   *  null if none.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Reply the port that "owns" the topmost Fig under the given point, or
+   *  null if none. */
   public Object hitPort(int x, int y) {
-    Fig f = hitFig(new Rectangle(x, y, 1, 1)); //?
-    if (f != null) {
-      Object own = f.getOwner();
-      return own;
-    }
-    return null;
+    Fig f = hitFig(new Rectangle(x, y, 1, 1));
+    if (f != null) return f.getOwner();
+    else return null;
   }
 
-
+  /** Reply a port for the topmost Fig that actually has a port. This
+   *  allows users to drag edges to or from ports that are hidden by
+   *  other Figs. */
   public Object deepHitPort(int x, int y) {
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
@@ -232,10 +208,7 @@ implements MouseListener, PropertyChangeListener {
     return null;
   }
   
-  /** Reply the Fig that displays the given NetPort.
-   *  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Reply the Fig that displays the given NetPort. */
   public Fig getPortFig(Object np) {
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
@@ -245,13 +218,13 @@ implements MouseListener, PropertyChangeListener {
     return null;
   }
 
-  /** Reply a list of Fig's that have a NetPort as their owner */
+  /** Reply a Vector of Fig's that have some port as their owner */
   public Vector getPortFigs() {
     Vector res = new Vector();
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
-      if (f.getOwner() instanceof NetPort) res.addElement(f);
+      if (f.getOwner() != null) res.addElement(f);
     }
     return res;
   }
@@ -305,7 +278,10 @@ implements MouseListener, PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // painting methods
 
-  /** Paints the FigNode to the given Graphics. */
+  /** Paints the FigNode to the given Graphics. Calls super.paint to
+   *  paint all the Figs contained in the FigNode. Also can draw a
+   *  highlighting rectangle around the FigNode. Needs-more-work:
+   *  maybe I should implement LayerHighlight instead. */
   public void paint(Graphics g) {
     super.paint(g);
     if (_highlight) {
@@ -318,6 +294,8 @@ implements MouseListener, PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // notifications and updates
 
+  /** The node object that this FigNode is presenting has changed
+   *  state, or been disposed or highlighted. */
   public void propertyChange(PropertyChangeEvent pce) {
     System.out.println("FigNode got a PropertyChangeEvent");
     String pName = pce.getPropertyName();
@@ -330,12 +308,9 @@ implements MouseListener, PropertyChangeListener {
   }
 
   
-  /**  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Make the port Figs visible. Used when blinkingPorts is true. */
   public void showPorts() {
     startTrans();
-    //    Color c = Globals.getPrefs().highlightColor();
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
@@ -347,9 +322,7 @@ implements MouseListener, PropertyChangeListener {
     endTrans();
   }
 
-  /**  <A HREF="../features.html#graph_visualization_ports">
-   *  <TT>FEATURE: graph_visualization_ports</TT></A>
-   */
+  /** Make the port Figs invisible. Used when blinkingPorts is true. */
   public void hidePorts() {
     startTrans();
     Enumeration figs = elements();
@@ -367,19 +340,24 @@ implements MouseListener, PropertyChangeListener {
   // event handlers
 
   /** If the mouse enters this FigNode's bbox and the
-   *  _blinkPorts flag is set, then display ports. */
+   *  _blinkPorts flag is set, then show ports. */
   public void mouseEntered(MouseEvent me) {
     if (_blinkPorts) showPorts();
   }
 
   /** If the mouse exits this FigNode's bbox and the
-   *  _blinkPorts flag is set, then unhighlight ports. */
+   *  _blinkPorts flag is set, then hide ports. */
   public void mouseExited(MouseEvent me) {
     if (_blinkPorts) hidePorts();
   }
 
+  /** Do nothing when mouse is pressed in FigNode. */
   public void mousePressed(MouseEvent me) { }
+
+  /** Do nothing when mouse is released in FigNode. */
   public void mouseReleased(MouseEvent me) { }
+
+  /** Do nothing when mouse is clicked in FigNode. */
   public void mouseClicked(MouseEvent me) { }
 
 } /* end class FigNode */

@@ -1,3 +1,29 @@
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 // copyright
 
 package uci.gef;
@@ -6,6 +32,7 @@ import java.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
+import com.sun.java.swing.border.*;
 import com.sun.java.swing.event.*;
 
 import uci.ui.*;
@@ -18,13 +45,17 @@ public class JGraph extends JPanel implements Cloneable {
   ////////////////////////////////////////////////////////////////
   // instance variables
   protected Editor _editor;
-
+  
+//  protected JPanel _graphPanel = new JGraphInternalPane();  
+//   protected  ToolBar _toolbar = new PaletteFig();
   
   ////////////////////////////////////////////////////////////////
   // constructor
 
   public JGraph() { this(new DefaultGraphModel()); }
-  
+
+  public JGraph(Diagram d) { this(new Editor(d)); }
+
   public JGraph(GraphModel gm) { this(new Editor(gm, null)); }
 //     super(false); // not double buffered
 //     _editor = new Editor(gm, this);
@@ -37,15 +68,22 @@ public class JGraph extends JPanel implements Cloneable {
     super(false); // not double buffered
     _editor = ed;
 
+//     _graphPanel.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
 //     setLayout(new BorderLayout());
-//     add(_graphPanel, BorderLayout.CENTER);
+//     _graphPanel.setPreferredSize(new Dimension(500, 500));
+//     add(new JScrollPane(_graphPanel), BorderLayout.CENTER);
 //     add(_toolbar, BorderLayout.NORTH);
+//     _editor.setAwtComponent(_graphPanel);
+//     _graphPanel.addMouseListener(_editor);
+//     _graphPanel.addMouseMotionListener(_editor);
+//     _graphPanel.addKeyListener(_editor);
 
     _editor.setAwtComponent(this);
     addMouseListener(_editor);
     addMouseMotionListener(_editor);
     addKeyListener(_editor);
-    setUpKeys();
+
+    initKeys();
   }
 
   public Object clone() {
@@ -53,7 +91,7 @@ public class JGraph extends JPanel implements Cloneable {
     return newJGraph;
   }
 
-  public void setUpKeys() {
+  public void initKeys() {
     int shift = KeyEvent.SHIFT_MASK;
     int ctrl = KeyEvent.CTRL_MASK;
     int ctrlShift = KeyEvent.CTRL_MASK | KeyEvent.SHIFT_MASK;
@@ -95,6 +133,13 @@ public class JGraph extends JPanel implements Cloneable {
 
   public Editor getEditor() { return _editor; }
 
+  public void setDiagram(Diagram d) {
+    if (d == null) return;
+    _editor.getLayerManager().replaceActiveLayer(d.getLayer());
+    _editor.getSelectionManager().deselectAll();
+    _editor.damageAll();
+  }
+
   public void setGraphModel(GraphModel gm) { _editor.setGraphModel(gm); }
   public GraphModel getGraphModel() { return _editor.getGraphModel(); }
 
@@ -120,7 +165,8 @@ public class JGraph extends JPanel implements Cloneable {
 //     _toolbar = tb;
 //     if (_toolbar != null) add(_toolbar, BorderLayout.NORTH);
 //   }
-  
+
+
   
   ////////////////////////////////////////////////////////////////
   // events
@@ -153,7 +199,16 @@ public class JGraph extends JPanel implements Cloneable {
    *  <A HREF="../features.html#selections">
    *  <TT>FEATURE: selections</TT></A>
    */
-  public void select(Fig f) { _editor.getSelectionManager().select(f); }
+  public void select(Fig f) {
+    if (f == null) deselectAll();
+    else _editor.getSelectionManager().select(f);
+  }
+
+  public void selectByOwner(Object owner) {
+    Layer lay = _editor.getLayerManager().getActiveLayer();
+    if (lay instanceof LayerDiagram)
+      select(((LayerDiagram)lay).presentationFor(owner));
+  }
 
   /** Remove the given item from this editors selections.
    *  <A HREF="../features.html#selections">
@@ -199,3 +254,10 @@ public class JGraph extends JPanel implements Cloneable {
   }
 
 } /* end class JGraph */
+
+
+// class JGraphInternalPane extends JPanel {
+//   public Dimension getPreferredSize() { return new Dimension(300, 400); }
+//   public Dimension getMinimumSize() { return new Dimension(300, 400); }
+//   public Dimension getSize() { return new Dimension(300, 400); }
+// }

@@ -9,17 +9,25 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.border.*;
 import com.sun.java.swing.plaf.basic.*;
 
+import uci.gef.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Model_Management.*;
 
 public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
-  // clas variables
+  // class variables
   protected ImageIcon _AttributeIcon = loadIconResource("Attribute");
   protected ImageIcon _OperationIcon = loadIconResource("Operation");
   protected ImageIcon _ClassIcon = loadIconResource("Class");
   protected ImageIcon _PackageIcon = loadIconResource("Package");
   protected ImageIcon _AssociationIcon = loadIconResource("Association");
+  protected ImageIcon _AssociationIcon2 = loadIconResource("Association2");
+  protected ImageIcon _AssociationIcon3 = loadIconResource("Association3");
+  protected ImageIcon _AssociationIcon4 = loadIconResource("Association4");
+  protected ImageIcon _AssociationIcon5 = loadIconResource("Association5");
+  protected ImageIcon _GeneralizationIcon = loadIconResource("Generalization");
+  protected ImageIcon _RealizationIcon = loadIconResource("Realization");
+  protected ImageIcon _ClassDiagramIcon = loadIconResource("ClassDiagram");
   
 
   ////////////////////////////////////////////////////////////////
@@ -42,7 +50,17 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
       if (value instanceof uci.uml.Foundation.Core.Class) lab.setIcon(_ClassIcon);
       if (value instanceof Package) lab.setIcon(_PackageIcon);
       if (value instanceof Association) lab.setIcon(_AssociationIcon);
+      if (value instanceof Generalization) lab.setIcon(_GeneralizationIcon);
+      //if (value instanceof Realization) lab.setIcon(_RealizationIcon);
+      if (value instanceof Diagram) lab.setIcon(_ClassDiagramIcon);
       lab.setToolTipText(value.toString());
+
+      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      if (pb != null) {
+	Object mainTarget = pb.getTarget();
+	if (value != mainTarget) lab.setBorder(null);
+	else lab.setBorder(LineBorder.createGrayLineBorder());
+      }
     }
     return r;
   }
@@ -63,7 +81,7 @@ public class UMLTreeCellRenderer extends BasicTreeCellRenderer {
   }
 
   protected static String imageName(String name) {
-    return "/Images/Tree" + stripJunk(name) + ".gif";
+    return "/uci/Images/Tree" + stripJunk(name) + ".gif";
   }
   
   protected static String stripJunk(String s) {

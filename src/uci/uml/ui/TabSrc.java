@@ -13,6 +13,7 @@ import com.sun.java.swing.text.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.generate.*;
+import uci.uml.Foundation.Core.ModelElement;
 
 
 public class TabSrc extends TabText {
@@ -28,7 +29,7 @@ public class TabSrc extends TabText {
 
   protected String genText() {
     System.out.println("TabSrc getting src for " + _target);
-    Object modelObject = null;
+    Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
@@ -40,7 +41,7 @@ public class TabSrc extends TabText {
 
   protected void parseText(String s) {
     System.out.println("TabSrc   setting src for "+ _target);
-    Object modelObject = null;
+    Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
@@ -48,6 +49,17 @@ public class TabSrc extends TabText {
     if (modelObject == null) return;
     System.out.println("TabSrc   setting src for " + modelObject);
     //Parser.ParseAndUpdate(modelObject, s);
+  }
+
+  public void setTarget(Object t) {
+    super.setTarget(t);
+
+    _shouldBeEnabled = false;
+    if (t instanceof ModelElement) _shouldBeEnabled = true;
+    if (t instanceof Fig) {
+      if (((Fig)t).getOwner() instanceof ModelElement)
+	_shouldBeEnabled = true;
+    }
   }
 
   

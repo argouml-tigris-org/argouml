@@ -1,6 +1,7 @@
 package uci.uml.ui;
 
 import java.util.*;
+import java.beans.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
@@ -8,17 +9,90 @@ import com.sun.java.swing.tree.*;
 
 import uci.util.*;
 import uci.argo.kernel.*;
+import uci.uml.Foundation.Core.*;
+import uci.uml.Foundation.Data_Types.*;
+import uci.uml.Model_Management.*;
+import uci.uml.visual.*;
+
+public class Actions {
+
+  static Vector _allActions = new Vector(100);
+  
+
+  public static UMLAction New = new ActionNew();
+  public static UMLAction Open = new ActionOpen();
+  public static UMLAction Save = new ActionSave();
+  public static UMLAction SaveAs = new ActionSaveAs();
+  public static UMLAction AddToProj = new ActionAddToProj();
+  public static UMLAction Print = new ActionPrint();
+  public static UMLAction Exit = new ActionExit();
+
+  public static UMLAction Undo = new ActionUndo();
+  public static UMLAction Redo = new ActionRedo();
+  public static UMLAction Cut = new ActionCut();
+  public static UMLAction Copy = new ActionCopy();
+  public static UMLAction Paste = new ActionPaste();
+
+  public static UMLAction NavUp = new ActionNavUp();
+  public static UMLAction NavDown = new ActionNavDown();
+  public static UMLAction NextTab = new ActionNextTab();
+  public static UMLAction PrevTab = new ActionPrevTab();
+  public static UMLAction ShowDiagramTab = new ActionShowDiagramTab();
+  public static UMLAction ShowTableTab = new ActionShowTableTab();
+  public static UMLAction ShowTextTab = new ActionShowTextTab();
+  public static UMLAction AddToFavs = new ActionAddToFavs();
+  //public static UMLAction DefinePerspective = new ActionDefinePerspective();
+
+  
+  public static UMLAction CreateMultiple = new ActionCreateMultiple();
+  public static UMLAction ClassWizard = new ActionClassWizard();
+  public static UMLAction Class = new ActionClass();
+  public static UMLAction Interface = new ActionInterface();
+  public static UMLAction Attr = new ActionAttr();
+  public static UMLAction Oper = new ActionOper();
+
+  public static UMLAction Model = new ActionModel();
+  public static UMLAction ClassDiagram = new ActionClassDiagram();
+
+
+  public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
+  
+
+  public static UMLAction AutoCritique = new ActionAutoCritique();
+  public static UMLAction OpenDecisions = new ActionOpenDecisions();
+  public static UMLAction OpenGoals = new ActionOpenGoals();
+  public static UMLAction OpenCritics = new ActionOpenCritics();
+
+  public static UMLAction NewToDoItem = new ActionNewToDoItem();
+  public static UMLAction Resolve = new ActionResolve();
+  public static UMLAction EmailExpert = new ActionEmailExpert();
+  public static UMLAction MoreInfo = new ActionMoreInfo();
+  public static UMLAction Hush = new ActionHush();
+  public static UMLAction FixItNext = new ActionFixItNext();
+  public static UMLAction FixItBack = new ActionFixItBack();
+  public static UMLAction FixItFinish = new ActionFixItFinish();
+
+
+  public static void updateAllEnabled() {
+    java.util.Enumeration actions = _allActions.elements();
+    while (actions.hasMoreElements()) {
+      UMLAction a = (UMLAction) actions.nextElement();
+      a.updateEnabled();
+    }
+  }
+
+  
+}  /* end class Actions */
+
 
 class UMLAction extends AbstractAction {
 
-  protected static Vector _allActions = new Vector(100);
-  
   public UMLAction(String name) { this(name, true); }
   
   public UMLAction(String name, boolean global) { 
     super(name, loadIconResource(imageName(name), name));
     putValue(Action.SHORT_DESCRIPTION, name);
-    if (global) _allActions.addElement(this);
+    if (global) Actions._allActions.addElement(this);
   }
 
   protected static ImageIcon loadIconResource(String imgName, String desc) {
@@ -33,16 +107,9 @@ class UMLAction extends AbstractAction {
   }
 
   protected static String imageName(String name) {
-    return "/Images/" + stripJunk(name) + ".gif";
+    return "/uci/Images/" + stripJunk(name) + ".gif";
   }
   
-  public static void updateAllEnabled() {
-    Enumeration actions = _allActions.elements();
-    while (actions.hasMoreElements()) {
-      UMLAction a = (UMLAction) actions.nextElement();
-      a.updateEnabled();
-    }
-  }
 
   /** Perform the work the action is supposed to do. */
   // needs-more-work: should actions run in their own threads?
@@ -51,10 +118,11 @@ class UMLAction extends AbstractAction {
     StatusBar sb = ProjectBrowser.TheInstance.getStatusBar();
     sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
     History.TheHistory.addItem("pushed " + getValue(Action.NAME));
-    UMLAction.updateAllEnabled();
+    Actions.updateAllEnabled();
   }
 
 
+  public void updateEnabled(Object target) { setEnabled(shouldBeEnabled()); }
   public void updateEnabled() { setEnabled(shouldBeEnabled()); }
 
   /** return true if this action should be available to the user. This
@@ -147,10 +215,6 @@ class ActionCopy extends UMLAction {
 class ActionPaste extends UMLAction {
   public ActionPaste() { super("Paste"); }
 } /* end class ActionPaste */
-
-class ActionDelete extends UMLAction {
-  public ActionDelete() { super("Delete"); }
-} /* end class ActionDelete */
 
 
 class ActionNavUp extends UMLAction {
@@ -252,6 +316,127 @@ class ActionClass extends UMLAction {
   
 } /* end class ActionClass */
 
+class ActionInterface extends UMLAction {
+  uci.gef.Cmd _cmdCreateNode = new
+  uci.gef.CmdCreateNode(uci.uml.Foundation.Core.Interface.class, "Interface");
+  
+  public ActionInterface() { super("Interface"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making interface...");
+    _cmdCreateNode.doIt();
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+  
+} /* end class ActionInterface */
+
+class ActionAttr extends UMLAction {
+  public ActionAttr() { super("Attribute"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making Attribute...");
+  }
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    return super.shouldBeEnabled() && target instanceof Classifier;
+  }
+  
+} /* end class ActionAttr */
+
+class ActionOper extends UMLAction {
+  public ActionOper() { super("Operation"); }
+
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    if (!(target instanceof Classifier)) return;
+    Classifier cls = (Classifier) target;
+    System.out.println("making Operation...");
+    try {
+      Operation oper = new Operation("NewOperation");
+      oper.setVisibility(VisibilityKind.PUBLIC);
+      cls.addBehavioralFeature(oper);
+    }
+    catch (PropertyVetoException pve) {
+      System.out.println("PropertyVetoException in ActionOper");
+    }
+  }
+  public boolean shouldBeEnabled() {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Object target = pb.getTarget();
+    return super.shouldBeEnabled() && target instanceof Classifier;
+  }
+  
+} /* end class ActionOper */
+
+
+class ActionModel extends UMLAction {
+  //uci.gef.Cmd _cmdCreateNode = new
+  //uci.gef.CmdCreateNode(uci.uml.Model_Management.Model.class, "Model");
+  // needs-more-work: need FigModel and UMLPackageDiagram
+  
+  public ActionModel() { super("Model"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making model...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      p.addModel(new Model());
+    }
+    catch (PropertyVetoException pve) { }    
+  }
+  
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+  
+} /* end class ActionModel */
+
+
+class ActionClassDiagram extends UMLAction {
+  public ActionClassDiagram() { super("ClassDiagram"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("making class diagram...");
+    //_cmdCreateNode.doIt();
+    Project p = ProjectBrowser.TheInstance.getProject();
+    try {
+      p.addDiagram(new UMLClassDiagram(p.getCurrentModel()));
+    }
+    catch (PropertyVetoException pve) { }
+  }
+  public boolean shouldBeEnabled() {
+    Project p = ProjectBrowser.TheInstance.getProject();
+    return super.shouldBeEnabled() && p != null;
+  }
+  
+} /* end class ActionModel */
+
+
+////////////////////////////////////////////////////////////////
+
+
+class ActionAboutArgoUML extends UMLAction {
+  public ActionAboutArgoUML() { super("About Argo/UML"); }
+
+  public void actionPerformed(ActionEvent e) {
+    System.out.println("opening about box...");
+    Project p = ProjectBrowser.TheInstance.getProject();
+  }
+  public boolean shouldBeEnabled() { return true; }
+  
+} /* end class ActionAboutArgoUML */
+
+
+////////////////////////////////////////////////////////////////
+
+
 class ActionAutoCritique extends UMLAction {
   public ActionAutoCritique() { super("Toggle Auto-Critique"); }
   public void actionPerformed(ActionEvent e) {
@@ -264,15 +449,23 @@ class ActionAutoCritique extends UMLAction {
 } /* end class ActionAutoCritique */
 
 class ActionOpenDecisions extends UMLAction {
-  public ActionOpenDecisions() { super("Open Decisions..."); }
+  public ActionOpenDecisions() { super("Design Issues..."); }
+  public void actionPerformed(ActionEvent e) {
+    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
+    d.show();
+  }  
 } /* end class ActionOpenDecisions */
 
 class ActionOpenGoals extends UMLAction {
-  public ActionOpenGoals() { super("Open Goals..."); }
+  public ActionOpenGoals() { super("Design Goals..."); }
+  public void actionPerformed(ActionEvent e) {
+    GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
+    d.show();
+  }  
 } /* end class ActionOpenGoals */
 
 class ActionOpenCritics extends UMLAction {
-  public ActionOpenCritics() { super("Open Critics..."); }
+  public ActionOpenCritics() { super("Browse Critics..."); }
 } /* end class ActionOpenCritics */
 
 
@@ -298,9 +491,17 @@ class ToDoItemAction extends UMLAction {
   }  
 }
 
-class ActionFixIt extends ToDoItemAction {
-  public ActionFixIt() { super("Fix It..."); }
-} /* end class ActionFixIt */
+class ActionFixItNext extends ToDoItemAction {
+  public ActionFixItNext() { super("Fix It Next..."); }
+} /* end class ActionFixItNext */
+
+class ActionFixItBack extends ToDoItemAction {
+  public ActionFixItBack() { super("Fix It Back..."); }
+} /* end class ActionFixItBack */
+
+class ActionFixItFinish extends ToDoItemAction {
+  public ActionFixItFinish() { super("Fix It Finish..."); }
+} /* end class ActionFixItFinish */
 
 class ActionResolve extends ToDoItemAction {
   public ActionResolve() { super("Resolve Item..."); }
@@ -322,7 +523,7 @@ class ActionEmailExpert extends ToDoItemAction {
 } /* end class ActionEmailExpert */
 
 class ActionMoreInfo extends ToDoItemAction {
-  public ActionMoreInfo() { super("Mode Info..."); }
+  public ActionMoreInfo() { super("More Info..."); }
 } /* end class ActionMoreInfo */
 
 class ActionHush extends ToDoItemAction {

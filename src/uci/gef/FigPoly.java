@@ -1,20 +1,30 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 // File: FigPoly.java
 // Classes: FigPoly
@@ -28,16 +38,13 @@ import java.util.*;
 import uci.ui.*;
 import uci.util.*;
 
-/** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys contain
- *  a set of points that define the polygon, the index of one point
- *  that was selected by the user most recently, a boolean to
+/** Primitive Fig to paint Polygons on a LayerDiagram. FigPolys
+ *  contain a set of points that define the polygon, a boolean to
  *  determine if the polygon should be constrained to rectilinear
  *  (strict horizontal and vertical) segments, and a number of handles
  *  that cannot be moved by user dragging. A FigPoly is not closed
  *  unless the last point equals the first point. Thus, FigPolys can
  *  be used to represent polylines such as FigEdgeRectilinear.
- *  <A HREF="../features.html#basic_shapes_polygon">
- *  <TT>FEATURE: basic_shapes_polygon</TT></A>
  *
  * @see ActionRemoveVertex
  * @see ActionInsertVertex
@@ -48,10 +55,6 @@ public class FigPoly extends Fig {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** The index of the last handle that the user touched. Pressing
-   *  delete while a handle is selected will remove one point from the
-   *  polygon. A value of -1 means that no handle is selected. */
-
   /** The total number of points. */
   protected int _npoints = 0;
 
@@ -61,7 +64,7 @@ public class FigPoly extends Fig {
   /** The array of y coordinates. */
   protected int _ypoints[] = new int[4];
 
-  /** flag to control how the polygon is drawn */
+  /** Flag to control how the polygon is drawn */
   protected boolean _rectilinear = false;
 
   /** The number of handles at each end of the polygon that cannot be
@@ -80,45 +83,42 @@ public class FigPoly extends Fig {
     setLineColor(lineColor);
   }
 
+  /** Construct a new FigPoly w/ the given line color and fill color. */
   public FigPoly(Color lineColor, Color fillColor) {
     super();
     setLineColor(lineColor);
     setFillColor(fillColor);
   }
 
-  /** Construct a new FigPoly w/ the given attributes. */
-  public FigPoly(Hashtable gAttrs) {
-    super();
-    //put(gAttrs);
-  }
+  /** Construct a new FigPoly. */
+   public FigPoly() { super(); }
 
-  /** Construct a new FigPoly w/ the given point and attributes. */
-  public FigPoly(int x, int y, Hashtable gAttrs) {
-    this(gAttrs);
+  /** Construct a new FigPoly w/ the given point. */
+  public FigPoly(int x, int y) {
+    this();
     addPoint(x, y);
   }
 
   ////////////////////////////////////////////////////////////////
   // invariant
 
+  /** Class invarient to make sure this object is in a valid
+   *  state. Useful for debugging. */
   public boolean OK() {
-    return super.OK() && _npoints > 0 &&
-      _xpoints != null && _ypoints != null;
+    return super.OK() && _npoints > 0 && _xpoints != null && _ypoints != null;
     // and bounds are up to date
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-
-
   /** Get the current vector of points as a java.awt.Polygon. */
-  public Polygon polygon() {
+  public Polygon getPolygon() {
     return new Polygon(_xpoints, _ypoints, _npoints);
   }
 
   /** Set the current vector of points. */
-  public void polygon(Polygon p) {
+  public void setPolygon(Polygon p) {
     _npoints = p.npoints;
     _xpoints = new int[_npoints];
     _ypoints = new int[_npoints];
@@ -128,25 +128,24 @@ public class FigPoly extends Fig {
   }
 
   /** Return the number of points in this polygon */
-  public int npoints() { return _npoints; }
   public int getNumPoints() { return _npoints; }
 
   /** Return true if the polygon should be constrained to rectilinear
    *  segments.  */
-  public boolean rectilinear() { return _rectilinear; }
+  public boolean getRectilinear() { return _rectilinear; }
 
   /** Set the rectilinear flag. Setting this flag to true will not
    *  change the current shape of the polygon, instead future dragging
    *  by the user will move near-by points to be rectilinear. */
-  public void rectilinear(boolean r) { _rectilinear = r; }
+  public void setRectilinear(boolean r) { _rectilinear = r; }
 
   /** Reply the number of fixed handles. 0 indicates that the end
    *  points of the polygon cannot be dragged by the user. */
-  public int fixedHandles() { return _fixedHandles; }
+  public int getFixedHandles() { return _fixedHandles; }
 
   /** Set the number of points near each end of the polygon that
    *  cannot be dragged by the user. */
-  public void fixedHandles(int n) { _fixedHandles = n; }
+  public void setFixedHandles(int n) { _fixedHandles = n; }
 
   ////////////////////////////////////////////////////////////////
   // geomertric manipulations
@@ -166,9 +165,10 @@ public class FigPoly extends Fig {
   }
 
   /** Change the position of the object from were it is to were it is
-   *  plus dx or dy. Often called when an object is dragged. This could
-   *  be very useful if local-coordinate systems are used because
-   *  deltas need less transforming... maybe.  */
+   *  plus dx or dy. Often called when an object is dragged. This
+   *  could be very useful if local-coordinate systems are used
+   *  because deltas need less transforming... maybe. Fires
+   *  PropertyChange with "bounds".  */
   public void translate(int dx, int dy) {
     Rectangle oldBounds = getBounds();
     for (int i = 0; i < _npoints; ++i) {
@@ -179,7 +179,7 @@ public class FigPoly extends Fig {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
-  /** Add a point to this polygon. */
+  /** Add a point to this polygon. Fires PropertyChange with "bounds". */
   public void addPoint(int x, int y) {
     growIfNeeded();
     _xpoints[_npoints] = x;
@@ -203,8 +203,9 @@ public class FigPoly extends Fig {
   }
 
   /** Move the point indicated by the given Handle object to the given
-   *  location. Fixed handles cannot be moved, unless ov is set to true
-   *  to override the fixed handle constaint. */
+   *  location. Fixed handles cannot be moved, unless ov is set to
+   *  true to override the fixed handle constaint.  Fires
+   *  PropertyChange with "bounds".*/
   public void moveVertex(Handle h, int x, int y, boolean ov) {
     int i = h.index;
     if (!_rectilinear) { _xpoints[i] = x; _ypoints[i] = y; }
@@ -261,6 +262,9 @@ public class FigPoly extends Fig {
     _npoints += 2;
   }
 
+  /** Removes the point at index i. Needs-More-Work: this can mess up
+   *  rectilinear polygons so that they have one non-rectilinear
+   *  segment. Fires PropertyChange with "bounds". */
   public void removePoint(int i) {
     // needs-more-work: this assertion has been violated, track it down
     if (Dbg.on) Dbg.assert(i >= 0 && i < _npoints, "point not found");
@@ -282,6 +286,9 @@ public class FigPoly extends Fig {
     firePropChange("bounds", oldBounds, getBounds());
   }
 
+  /** Inserts a point at index i. Needs-More-Work: this can mess up
+   *  rectilinear polygons so that they have one non-rectilinear
+   *  segment. Fires PropertyChange with "bounds". */
   public void insertPoint(int i, int x, int y) {
     growIfNeeded();
     int tmp[] = new int[_npoints];
@@ -310,6 +317,7 @@ public class FigPoly extends Fig {
     }
   }
 
+  /** return the point at index i. */
   public Point getPoints(int i) { return new Point(_xpoints[i], _ypoints[i]); }
 
   
@@ -319,7 +327,8 @@ public class FigPoly extends Fig {
   }
 
 
-  // needs-more-work: untested
+  /** Returns the point that other connected Figs should attach to. By
+   *  default, returns the point closest to anotherPt. */
   public Point connectionPoint(Point anotherPt) {
     return Geometry.ptClosestTo(_xpoints, _ypoints, _npoints, anotherPt);
   }
@@ -345,7 +354,7 @@ public class FigPoly extends Fig {
   // selection methods
 
 
-  /** Reply the index of the vertex that the given point is near. */
+  /** Reply the index of the vertex that the given mouse point is near. */
   protected int findHandle(int x, int y) {
     int HAND_SIZE = Selection.HAND_SIZE;
     int xs[] = _xpoints;
@@ -353,41 +362,43 @@ public class FigPoly extends Fig {
     for (int i = 0; i < _npoints; ++i) {
       if (x >= xs[i] - HAND_SIZE/2 && y >= ys[i] - HAND_SIZE/2 &&
 	  x <= xs[i] + HAND_SIZE/2 && y <= ys[i] + HAND_SIZE/2) {
-	//@ _selectedHandle = i;
 	return i;
       }
     }
-    //@ _selectedHandle = -1;
     return -1;
   }
 
-  /** Reply true iff the given point is inside a filled FigPoly, or it
-   *  is near this FigPoly, or it is near a vertex of this FigPoly, or
-   *  it is near a line segment of this FigPoly (regardless of line
-   *  width). */
+  /** Reply true iff the given point is inside this FigPoly. */
 
-  //? does polygon.contains rewally work? need to call Geometry?
+  //? does polygon.contains really work? need to call Geometry?
   public boolean contains(int x, int y) {
-    Polygon p = polygon();
+    Polygon p = getPolygon();
     return p.contains(x, y);
   }
 
 
-
+  /** Returns the array of X coordinates of points */
   public int[] getXs() { return _xpoints; }
+  /** Returns the array of Y coordinates of points */
   public int[] getYs() { return _ypoints; }
 
+  /** Sets the FigPoly's bounding box to the given coordinates. Scales
+   *  all points into the new bounding box. Fires PropertyChange with
+   *  "bounds". */
   public void setBounds(int x, int y, int w, int h) {
+    Rectangle oldBounds = getBounds();
     if (w > 0 && h > 0) {
       for (int i = 0; i < _npoints; ++i) {
 	_xpoints[i] = x + ((_xpoints[i] - _x) * w) / _w;
 	_ypoints[i] = y + ((_ypoints[i] - _y) * h) / _h;
       }
       _x = x; _y = y; _w = w; _h = h;
+      firePropChange("bounds", oldBounds, getBounds());
     }
   }
 
-
+  /** Returns the length of the perimeter of the polygon, which is the
+   *  sum of all the lengths of its segments. */
   public int getPerimeterLength() {
     // needs-more-work: should I cache this value?
     int len = 0;
@@ -400,17 +411,19 @@ public class FigPoly extends Fig {
     return len;
   }
 
+  /** Returns a point along the perimeter at distance dist from the
+   *  start of the polygon. */
   public Point pointAlongPerimeter(int dist) {
     for (int i = 0; i < _npoints - 1; ++i) {
       int dx = _xpoints[i+1] - _xpoints[i];
       int dy = _ypoints[i+1] - _ypoints[i];
       int segLen = (int)Math.sqrt(dx*dx + dy*dy);
-      if (dist < segLen)
-	  {
+      if (dist < segLen) {
         if (segLen != 0)
-		  return new Point(_xpoints[i] + (dx * dist) / segLen, _ypoints[i] + (dy * dist) / segLen);
-		else
-		  return new Point(_xpoints[i], _ypoints[i]);
+	  return new Point(_xpoints[i] + (dx * dist) / segLen,
+			   _ypoints[i] + (dy * dist) / segLen);
+	else
+	  return new Point(_xpoints[i], _ypoints[i]);
       }
       else
         dist -= segLen;
@@ -419,7 +432,7 @@ public class FigPoly extends Fig {
     return new Point(_xpoints[0], _ypoints[0]);
   }
 
-
+  /** FigPolys are resizeable and reshapable, but not rotatable (yet). */
   public boolean isResizable() { return true; }
   public boolean isReshapable() { return true; }
   public boolean isRotatable() { return false; }
@@ -428,8 +441,13 @@ public class FigPoly extends Fig {
   ////////////////////////////////////////////////////////////////
   // internal utility functions
 
+  /** Return the number of corners of the given rectangle that are
+   *  conatined within this polygon.
+   *
+   * @see Fig#hit
+   */
   protected int countCornersContained(int x, int y, int w, int h) {
-    Polygon p = polygon();
+    Polygon p = getPolygon();
     int cornersHit = 0;
     if (p.contains(x, y)) cornersHit++;
     if (p.contains(x + w, y)) cornersHit++;
@@ -438,9 +456,10 @@ public class FigPoly extends Fig {
     return cornersHit;
   }
 
+  /** Update the bounding box. */
   protected void calcBounds() {
     //needs-more-work: could be faster, dont alloc polygon
-    Rectangle polyBounds = polygon().getBounds();
+    Rectangle polyBounds = getPolygon().getBounds();
     _x = polyBounds.x;
     _y = polyBounds.y;
     _w = polyBounds.width;

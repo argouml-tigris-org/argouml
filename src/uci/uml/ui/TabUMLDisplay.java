@@ -11,6 +11,7 @@ import com.sun.java.swing.text.*;
 //import com.sun.java.swing.border.*;
 
 import uci.util.*;
+import uci.uml.Foundation.Core.ModelElement;
 import uci.uml.generate.*;
 
 
@@ -18,7 +19,7 @@ public class TabUMLDisplay extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabUMLDisplay() {
-    setTitle("Text");
+    setTitle("Pseudocode");
     System.out.println("making TabUMLDisplay");
   }
 
@@ -26,7 +27,7 @@ public class TabUMLDisplay extends TabText {
   // accessors
 
   protected String genText() {
-    if (_target == null) return "nothing selected";
+    if (!(_target instanceof ModelElement)) return "nothing selected";
     return GeneratorDisplay.Generate(_target);
   }
 
@@ -35,6 +36,11 @@ public class TabUMLDisplay extends TabText {
     System.out.println("TabUMLDisplay parsing text:" + s);
   }
   
+
+  public void setTarget(Object t) {
+    super.setTarget(t);
+    _shouldBeEnabled = (t instanceof ModelElement);
+  }
 
 
   

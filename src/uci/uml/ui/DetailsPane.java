@@ -10,6 +10,7 @@ import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
+import uci.gef.*;
 
 public class DetailsPane extends JPanel
 implements ChangeListener, MouseListener {
@@ -29,7 +30,7 @@ implements ChangeListener, MouseListener {
   /** Target is the currently selected object from the UML Model,
    *  usually selected from a Fig in the diagram or from the
    *  navigation panel. */
-  protected Object _target = null;
+  protected Object _target = "this is set to null in contructor";
 
   // vector of TreeModels
   protected JTabbedPane _tabs = new JTabbedPane();
@@ -67,7 +68,7 @@ implements ChangeListener, MouseListener {
 	_tabs.addTab(title, t);
       }
     } /* end for */
-    
+    setTarget(null);
     _tabs.addMouseListener(this);
   }
     
@@ -89,6 +90,11 @@ implements ChangeListener, MouseListener {
 
 
   public void setTarget(Object target) {
+    if (target instanceof Fig && ((Fig)target).getOwner() != null)
+      target = ((Fig)target).getOwner();
+    int firstEnabled = -1;
+    boolean jumpToFirstEnabledTab = false;
+    int currentTab = _tabs.getSelectedIndex();
     if (_target == target) return;
     _target = target;
     for (int i = 0; i < _tabPanels.size(); i++) {
@@ -96,10 +102,21 @@ implements ChangeListener, MouseListener {
       if (tab instanceof TabModelTarget) {
 	TabModelTarget tabMT = (TabModelTarget) tab;
 	tabMT.setTarget(_target);
-	_tabs.setEnabledAt(i, tabMT.shouldBeEnabled());
+	boolean shouldEnable = tabMT.shouldBeEnabled();
+	_tabs.setEnabledAt(i, shouldEnable);
+	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+	if (currentTab == i && !shouldEnable) {
+	  jumpToFirstEnabledTab = true;
+	}
       }
     }
+    if (jumpToFirstEnabledTab && firstEnabled != -1)
+      _tabs.setSelectedIndex(firstEnabled);
+
+    if (jumpToFirstEnabledTab && firstEnabled == -1)
+      _tabs.setSelectedIndex(0);
   }
+  
   public Object getTarget() { return _target; }
 
   public Dimension getMinimumSize() { return new Dimension(100, 100); }

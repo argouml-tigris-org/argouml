@@ -5,13 +5,18 @@ import uci.argo.kernel.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import uci.util.*;
-import uci.ui.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 // import com.sun.java.swing.text.*;
 // import com.sun.java.swing.border.*;
+
+import uci.util.*;
+import uci.ui.*;
+import uci.gef.*;
+import uci.uml.Foundation.Core.*;
+import uci.uml.Model_Management.*;
+
 
 public class ProjectBrowser extends JFrame
 implements IStatusBar {
@@ -30,39 +35,47 @@ implements IStatusBar {
   
   // Actions
   // file menu
-  protected static Action _actionNew = new ActionNew();
-  protected static Action _actionOpen = new ActionOpen();
-  protected static Action _actionSave = new ActionSave();
-  protected static Action _actionSaveAs = new ActionSaveAs();
+  protected static Action _actionNew =  Actions.New;
+  protected static Action _actionOpen = Actions.Open;
+  protected static Action _actionSave = Actions.Save;
+  protected static Action _actionSaveAs = Actions.SaveAs;
   // -----
-  protected static Action _actionAddToProj = new ActionAddToProj();
+  protected static Action _actionAddToProj = Actions.AddToProj;
   // -----
-  protected static Action _actionPrint = new ActionPrint();
+  protected static Action _actionPrint = Actions.Print;
   // -----
-  protected static Action _actionExit = new ActionExit();
+  protected static Action _actionExit = Actions.Exit;
 
   // edit menu
-  protected static Action _actionUndo = new ActionUndo();
-  protected static Action _actionRedo = new ActionRedo();
-  protected static Action _actionCut = new ActionCut();
-  protected static Action _actionCopy = new ActionCopy();
-  protected static Action _actionPaste = new ActionPaste();
-  protected static Action _actionDelete = new ActionDelete();
+  protected static Action _actionUndo = Actions.Undo;
+  protected static Action _actionRedo = Actions.Redo;
+  protected static Action _actionCut = Actions.Cut;
+  protected static Action _actionCopy = Actions.Copy;
+  protected static Action _actionPaste = Actions.Paste;
+  protected static Action _actionDelete = new CmdDelete();
+  protected static Action _actionDispose = new CmdDispose();
 
   // view menu
-  protected static Action _actionNavUp = new ActionNavUp();
-  protected static Action _actionNavDown = new ActionNavDown();
-  protected static Action _actionNextTab = new ActionNextTab();
-  protected static Action _actionPrevTab = new ActionPrevTab();
-  protected static Action _actionShowDiagramTab = new ActionShowDiagramTab();
-  protected static Action _actionShowTableTab = new ActionShowTableTab();
-  protected static Action _actionShowTextTab = new ActionShowTextTab();
-  protected static Action _actionAddToFavs = new ActionAddToFavs();
+  protected static Action _actionNavUp = Actions.NavUp;
+  protected static Action _actionNavDown = Actions.NavDown;
+  protected static Action _actionNextTab = Actions.NextTab;
+  protected static Action _actionPrevTab = Actions.PrevTab;
+  protected static Action _actionShowDiagramTab = Actions.ShowDiagramTab;
+  protected static Action _actionShowTableTab = Actions.ShowTableTab;
+  protected static Action _actionShowTextTab = Actions.ShowTextTab;
+  protected static Action _actionAddToFavs = Actions.AddToFavs;
 
   // create menu
-  protected static Action _actionCreateMultiple = new ActionCreateMultiple();
-  // -----
-  protected static Action _actionClass = new ActionClass();
+  protected static Action _actionCreateMultiple = Actions.CreateMultiple;
+  // ----- diagrams
+  protected static Action _actionClassDiagram = Actions.ClassDiagram;
+  // ----- model elements
+  protected static Action _actionModel = Actions.Model;
+  protected static Action _actionClass = Actions.Class;
+  protected static Action _actionInterface = Actions.Interface;
+  protected static Action _actionAttr = Actions.Attr;
+  protected static Action _actionOper = Actions.Oper;
+  // -----  shapes
   protected static Action _actionRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRect.class, "Rectangle");
   protected static Action _actionRRectangle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigRRect.class, "RRect");
   protected static Action _actionCircle = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigCircle.class, "Circle");
@@ -72,12 +85,15 @@ implements IStatusBar {
   protected static Action _actionInk = new uci.gef.CmdSetMode(uci.gef.ModeCreateFigInk.class, "Ink");
 
   // critique menu
-  protected static Action _actionAutoCritique = new ActionAutoCritique();
-  protected static Action _actionOpenDecisions = new ActionOpenDecisions();
-  protected static Action _actionOpenGoals = new ActionOpenGoals();
-  protected static Action _actionOpenCritics = new ActionOpenCritics();
+  protected static Action _actionAutoCritique = Actions.AutoCritique;
+  protected static Action _actionOpenDecisions = Actions.OpenDecisions;
+  protected static Action _actionOpenGoals = Actions.OpenGoals;
+  protected static Action _actionOpenCritics = Actions.OpenCritics;
 
-  
+
+  // Help menu
+  protected static Action _actionAboutArgoUML = Actions.AboutArgoUML;
+
   ////////////////////////////////////////////////////////////////
   // instance variables
 
@@ -173,6 +189,7 @@ implements IStatusBar {
     edit.add(_actionPaste);
     edit.addSeparator();
     edit.add(_actionDelete);
+    edit.add(_actionDispose);
 
     JMenu view = (JMenu) _menuBar.add(new JMenu("View"));
     // maybe should be Navigate instead of view
@@ -193,14 +210,25 @@ implements IStatusBar {
     create.setMnemonic('C');
     create.add(_actionCreateMultiple);
     create.addSeparator();
-    create.add(_actionClass);
-    create.add(_actionRectangle);
-    create.add(_actionRRectangle);
-    create.add(_actionCircle);
-    create.add(_actionLine);
-    create.add(_actionText);
-    create.add(_actionPoly);
-    create.add(_actionInk);
+
+    JMenu createDiagrams = (JMenu) create.add(new JMenu("Diagrams"));
+    createDiagrams.add(_actionClassDiagram);
+
+    JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
+    createModelElements.add(_actionModel);
+    createModelElements.add(_actionClass);
+    createModelElements.add(_actionInterface);
+    createModelElements.add(_actionAttr);
+    createModelElements.add(_actionOper);
+
+    JMenu createFig = (JMenu) create.add(new JMenu("Shapes"));
+    createFig.add(_actionRectangle);
+    createFig.add(_actionRRectangle);
+    createFig.add(_actionCircle);
+    createFig.add(_actionLine);
+    createFig.add(_actionText);
+    createFig.add(_actionPoly);
+    createFig.add(_actionInk);
 
     Menu critique = (Menu) _menuBar.add(new Menu("Critique"));
     critique.setMnemonic('R');
@@ -208,7 +236,15 @@ implements IStatusBar {
     critique.addSeparator();
     critique.add(_actionOpenDecisions);
     critique.add(_actionOpenGoals);
-    critique.add(_actionOpenCritics); 
+    critique.add(_actionOpenCritics);
+
+    // Help Menu
+    JMenu help = new JMenu("Help");
+    help.setMnemonic('H');
+    help.add(_actionAboutArgoUML);
+    //_menuBar.setHelpMenu(help);
+    _menuBar.add(help);
+    
   }
 
 
@@ -235,7 +271,7 @@ implements IStatusBar {
     _project = p;
     _navPane.setRoot(_project);
     setTitle(getAppName() + " - " + _project.getName());
-    UMLAction.updateAllEnabled();
+    Actions.updateAllEnabled();
     // update all panes
   }
   public Project getProject() { return _project; }
@@ -264,9 +300,28 @@ implements IStatusBar {
     return _toDoPane.getPerspectives();
   }
 
-
+  public void select(Object o) {
+    _multiPane.select(o);
+  }
+  
   public void setTarget(Object o) {
     _multiPane.setTarget(o);
+    _detailsPane.setTarget(o);
+    if (o instanceof Model) _project.setCurrentModel((Model)o);
+    if (o instanceof ModelElement) {
+      ElementOwnership eo = ((ModelElement)o).getElementOwnership();
+      if (eo == null) { System.out.println("no path to model"); return; }
+      while (!(eo.getNamespace() instanceof Model)) {
+	eo = eo.getNamespace().getElementOwnership();
+      }
+      _project.setCurrentModel((Model)eo.getNamespace());
+    }
+    Actions.updateAllEnabled();
+  }
+
+  public Object getTarget() {
+    if (_multiPane == null) return null;
+    return _multiPane.getTarget();
   }
 
   public void setToDoItem(Object o) {

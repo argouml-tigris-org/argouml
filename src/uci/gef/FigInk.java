@@ -1,20 +1,30 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 // File: FigInk.java
 // Classes: FigInk
@@ -29,63 +39,34 @@ import java.io.*;
 import java.util.*;
 
 /** Primitive Fig to paint Ink on a LayerDiagram. Ink is like an open
- *  polygon with no fill. The main difference between FigInk and
+ *  polygon with no fill.  The main difference between FigInk and
  *  FigPoly is in the way that they are created.
- *  <A HREF="../features.html#basic_shapes_ink">
- *  <TT>FEATURE: basic_shapes_ink</TT></A>
  *
  * @see FigPoly
  * @see ModeCreateFigInk */
 
 public class FigInk extends FigPoly {
 
-//   /** Construct a new FigInk w/ the given line color,
-//    *  and fill color. */
-//   public FigInk(Color lineColor, Color fillColor) {
-//     super(lineColor, fillColor);
-//     _filled = false;
-//   }
-
-//   /** Construct a new FigInk w/ the given line color. */
-//   public FigInk(Color lineColor) {
-//     super(lineColor);
-//     _filled = false;
-//   }
-
   /** Construct a new FigInk w/ the given attributes. */
-  public FigInk(Hashtable gAttrs) { super(gAttrs); _filled = false;}
+  public FigInk() { super(); _filled = false;}
 
   /** Construct a new FigInk w/ the given point and attributes. */
-  public FigInk(int x, int y, Hashtable gAttrs) {
-    super(x, y, gAttrs);
+  public FigInk(int x, int y) {
+    super(x, y);
     _filled = false;
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  /** Line width of ink must be at least 1. Since Java does not support
-   *  thicker lines, it will always be 1. */
-  public void setLineWidth(int w) { _lineWidth = 1; }
+  /** Line width of ink must be always be 1, so do nothing  */
+  public void setLineWidth(int w) { }
 
-  /** FigInks can never be filled, do nothing. */
-  public void setFilled(boolean f) { _filled = false; }
+  /** FigInks can never be filled, so do nothing. */
+  public void setFilled(boolean f) { }
 
-  /** FigInks can never be rectilinear, do nothing. */
-  public void rectilinear(boolean r) { _rectilinear = false; }
-
-  ////////////////////////////////////////////////////////////////
-  // painting methods
-
-  // needs-more-work: could this be eliminated? see FigPoly.paint()
-  public void paint(Graphics g) {
-    // FigInk's are never filled
-    if (_lineWidth > 0) {
-      g.setColor(_lineColor);
-      g.drawPolyline(_xpoints, _ypoints, _npoints);
-    }
-  }
-
+  /** FigInks can never be rectilinear, so do nothing. */
+  public void setRectilinear(boolean r) { }
 
   public boolean contains(int x, int y) {
     return super.findHandle(x, y) != -1;

@@ -29,10 +29,29 @@ implements ChangeListener, MouseListener {
   // constructors
 
   public MultiEditorPane() {
+    System.out.println("mainkng MultiEditorPane");
+    _tabPanels.addElement(new TabUMLDisplay());
+    _tabPanels.addElement(new TabSrc());
+    _tabPanels.addElement(new TabDiagram());
+    _tabPanels.addElement(new TabTable());
+    _tabPanels.addElement(new TabHash());
+    
     setLayout(new BorderLayout());
     add(_tabs, BorderLayout.CENTER);
+
+    _tabs.addChangeListener(this);
+    for (int i = 0; i < _tabPanels.size(); i++) {
+      String title = "tab";
+      JPanel t = (JPanel) _tabPanels.elementAt(i);
+      if (t instanceof TabSpawnable)
+	title = ((TabSpawnable)t).getTitle();
+      _tabs.addTab("As " + title, t);
+    } /* end for */
+
+
     _tabs.addChangeListener(this);
     _tabs.addMouseListener(this);
+    setTarget(null);
   }
 
 
@@ -43,42 +62,29 @@ implements ChangeListener, MouseListener {
   public Dimension getMinimumSize() { return new Dimension(100, 100); }
   public Dimension getPreferredSize() { return new Dimension(400, 400); }
 
-  public void setTarget(Object t) {
-    String prevSelectedTabTitle = "no editor";
-    
-    if (t == _target) return;
-    // remove old tabs
-    int oldSelection = _tabs.getSelectedIndex();
-    if (oldSelection >= 0) 
-      prevSelectedTabTitle = _tabs.getTitleAt(oldSelection);
-    for (int i = _tabs.getTabCount() - 1; i >= 0; --i) _tabs.removeTabAt(i);
-    _tabPanels.removeAllElements();
-    
-    _target = t;
-
-    // add new tabs
-    // uci.beans.EditorManager?
-    _tabPanels.addElement(new TabUMLDisplay());
-    _tabPanels.addElement(new TabText());
-    _tabPanels.addElement(new TabHash());
-    _tabPanels.addElement(new ClassDiagramEditor());
-
-    Enumeration tabPanelEnum = _tabPanels.elements();
-    while (tabPanelEnum.hasMoreElements()) {
-      JPanel p = (JPanel) tabPanelEnum.nextElement();
-      String title = "tab";
-      if (p instanceof TabSpawnable) title = ((TabSpawnable)p).getTitle();
-      // needs-more-work: tab icons
-      _tabs.addTab(title, p);
-      if (p instanceof TabModelTarget)
-	((TabModelTarget)p).setTarget(_target);
+  public void setTarget(Object target) {
+    int firstEnabled = -1;
+    boolean jumpToFirstEnabledTab = false;
+    int currentTab = _tabs.getSelectedIndex();
+    if (_target == target) return;
+    _target = target;
+    for (int i = 0; i < _tabPanels.size(); i++) {
+      JPanel tab = (JPanel) _tabPanels.elementAt(i);      
+      if (tab instanceof TabModelTarget) {
+	TabModelTarget tabMT = (TabModelTarget) tab;
+	tabMT.setTarget(_target);
+	boolean shouldEnable = tabMT.shouldBeEnabled();
+	_tabs.setEnabledAt(i, shouldEnable);
+	if (shouldEnable && firstEnabled == -1) firstEnabled = i;
+	if (currentTab == i && !shouldEnable) {
+	  jumpToFirstEnabledTab = true;
+	}
+      }
     }
-      
-    
-    int correspondingTab = _tabs.indexOfTab(prevSelectedTabTitle);
-    if (correspondingTab >= 0)
-      _tabs.setSelectedIndex(correspondingTab);
+    if (jumpToFirstEnabledTab && firstEnabled != -1 )
+      _tabs.setSelectedIndex(firstEnabled);
   }
+    
 
   public Object getTarget() { return _target; }
 
@@ -86,7 +92,17 @@ implements ChangeListener, MouseListener {
   ////////////////////////////////////////////////////////////////
   // actions
 
-
+  public void select(Object o) {
+    Component curTab = _tabs.getSelectedComponent();
+    System.out.println("select?" + curTab);
+    if (curTab instanceof TabDiagram) {
+      System.out.println("selectByOwner");
+      ((TabDiagram)curTab).getJGraph().selectByOwner(o);
+    }
+    //needs-more-work: handle tables
+    
+  }
+  
   ////////////////////////////////////////////////////////////////
   // event handlers
 

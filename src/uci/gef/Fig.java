@@ -1,24 +1,32 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: Fig.java
 // Classes: Fig
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
@@ -32,16 +40,19 @@ import uci.util.*;
 import uci.ui.*;
 import uci.graph.*;
 
-/** This class is the base class for basic drawing objects
- *  such as rectangles, lines, text, circles, etc. Also, class FigGroup
+/** This class is the base class for basic drawing objects such as
+ *  rectangles, lines, text, circles, etc. Also, class FigGroup
  *  implements a composite figure. Fig's are Diagram elements that can
  *  be placed in any LayerDiagram. Fig's are also used to define the
- *  look of FigNode's on NetNode's.<p>
- *
- *  <A HREF="../features.html#basic_shapes">
- *  <TT>FEATURE: basic_shapes</TT></A>.
+ *  look of FigNodes on NetNodes.<p>
  *
  * @see FigRect
+ * @see FigRRect
+ * @see FigPoly
+ * @see FigInk
+ * @see FigImage
+ * @see FigNode
+ * @see FigEdge
  * @see FigLine
  * @see FigText
  * @see FigCircle */
@@ -52,51 +63,42 @@ implements java.io.Serializable  {
   ////////////////////////////////////////////////////////
   // instance variables
 
-  /** The Layer that this Fig is in.  Each
-   *  Fig can be in exactly one Layer, but there can be
-   *  multiple Editors on a given Layer. */
+  /** The Layer that this Fig is in.  Each Fig can be in exactly one
+   *  Layer, but there can be multiple Editors on a given Layer. */
   protected Layer _layer = null;
 
-  /** True if this object is locked and cannot be moved by the user.
-   *  Needs-More-Work: not implemented yet.
-   *  <A HREF="../features.html#locked_objects">
-   *  <TT>FEATURE: locked_objects</TT></A>
-   */
+  /** True if this object is locked and cannot be moved by the user. */
   protected boolean _locked = false;
 
-  /** owner of fig object. Owners are underlying objects that "own"
-   *  the graphical Fig's that represent them. For example,
-   *  a FigNode and FigEdge keep a pointer to the net-level
-   *  object that they represent. Also, any Fig can have NetPort as an
-   *  owner. */
+  /** Owners are underlying objects that "own" the graphical Fig's
+   *  that represent them. For example, a FigNode and FigEdge keep a
+   *  pointer to the net-level object that they represent. Also, any
+   *  Fig can have NetPort as an owner.
+   *
+   * @see FigNode#setOwner
+   * @see FigNode#bindPort
+   */
   private Object _owner;
 
-  // //   transient protected PropertyChangeSupport _changes =
-  // //   new PropertyChangeSupport(this);
-  
+  /** Coordinates of the Fig's bounding box. It is the responsibility
+   *  of subclasses to make sure that these values are ALWAYS up-to-date. */
   protected int _x;
   protected int _y;
   protected int _w;
   protected int _h;
 
-  /** Graphical attributes of figures. Other code that is accessing
-   *  these attruibutes should use the get and set functions for
-   *  graphical attributes.
-   *
-   * @see Fig#get */
-
   /** Outline color of fig object. */
   protected Color _lineColor = Color.black;
+  
   /** Fill color of fig object. */
   protected Color _fillColor = Color.white;
+
   /** Thickness of line around object, for now limited to 0 or 1. */
   protected int _lineWidth = 1;
+
   /** True if the object should fill in its area. */
   protected boolean _filled = true;
-//   /** Future color of shadows. */
-//   protected Color _shadowColor = Color.gray;
-//   /** Future offset of shadows. */
-//   protected Point _shadowOffset = new Point(0, 0);
+
 
   ////////////////////////////////////////////////////////////////
   // static initializer
@@ -119,7 +121,7 @@ implements java.io.Serializable  {
   ////////////////////////////////////////////////////////////////
   // constuctors
 
-  /** Construct a new Fig with the given attributes and number of handles. */
+  /** Construct a new Fig with the given bounds, colors, and owner. */
   public Fig(int x, int y, int w, int h,
 		 Color lineColor, Color fillColor, Object own) {
     _x = x; _y = y; _w = w; _h = h;
@@ -128,11 +130,12 @@ implements java.io.Serializable  {
     setOwner(own);
   }
 
-  /** Construct a new Fig with the given attributes and number of handles. */
+  /** Construct a new Fig with the given bounds and colors. */
   public Fig(int x, int y, int w, int h, Color lineColor, Color fillColor) {
     this(x, y, w, h, lineColor, fillColor, null);
   }
 
+  /** Construct a new Fig with the given bounds. */
   public Fig(int x, int y, int w, int h) {
     this(x, y, w, h, Color.black, Color.white, null);
   }
@@ -140,27 +143,36 @@ implements java.io.Serializable  {
   /** Most subclasses will not use this constructor, it is only useful
    *  for subclasses that redefine most of the infrastructure provided
    *  by class Fig. */
-  public Fig() { } // needs-more-work: needed?
+  public Fig() { }
 
   ////////////////////////////////////////////////////////////////
   // invariant
 
+  /** Check class invariants to make sure the Fig is in a valid state.
+   *  This is useful for debugging. needs-more-work. */
   public boolean OK() {
-    // super.OK() //?
+    // super.OK() /
     return _lineWidth >= 0 && _lineColor != null && _fillColor != null;
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void assignLayer(Layer lay) { _layer = lay; } //?
+  //public void assignLayer(Layer lay) { _layer = lay; } //?
+  /** Sets the Layer that this Fig belongs to. Fires PropertyChangeEvent
+   *  "layer". */
   public void setLayer(Layer lay) {
     firePropChange("layer", _layer, lay);
     _layer = lay;
   }
   public Layer getLayer() { return _layer; }
 
-  public void assignLocked(boolean b) { _locked = b; } //?
+  //public void assignLocked(boolean b) { _locked = b; } //?
+
+  /** Sets whether this Fig is locked or not.  Most Cmds check to see
+   *  if Figs are locked and will not request modifications to locked
+   *  Figs. Fires PropertyChangeEvent
+   *  "locked". */
   public void setLocked(boolean b) {
     firePropChange("locked", _locked, b);
     _locked = b;
@@ -168,7 +180,8 @@ implements java.io.Serializable  {
   public boolean getLocked() { return _locked; }
 
 
-  /** Get and set the owner object of this Fig */
+  /** Sets the owner object of this Fig. Fires PropertyChangeEvent
+   *  "owner" */
   public void setOwner(Object own) {
     firePropChange("owner", _owner, own);
     _owner = own;
@@ -177,7 +190,11 @@ implements java.io.Serializable  {
 
   /** Internal function to change the line color attribute. Other code
    *  should use put(String key, Object value). */
-  public void assignLineColor(Color col) { _lineColor = col; } //?
+  //public void assignLineColor(Color col) { _lineColor = col; } //?
+
+  /** Sets the color to be used if the lineWidth is > 0. If col is
+   *  null, sets the lineWidth to 0.  Fires PropertyChangeEvent
+   *  "lineColor", or "lineWidth".*/
   public void setLineColor(Color col) {
     if (col != null) {
       firePropChange("lineColor", _lineColor, col);
@@ -192,7 +209,11 @@ implements java.io.Serializable  {
 
   /** Internal function to change the fill color attribute. Other code
    *  should use put(String key, Object value). */
-  public void assignFillColor(Color col) { _fillColor = col; } //?
+  //public void assignFillColor(Color col) { _fillColor = col; } //?
+
+  /** Sets the color that will be used if the Fig is filled.  If col
+   *  is null, turns off filling. Fires PropertyChangeEvent
+   *  "fillColor", or "filled".*/
   public void setFillColor(Color col) {
     if (col != null) {
       firePropChange("fillColor", _fillColor, col);
@@ -207,7 +228,10 @@ implements java.io.Serializable  {
 
   /** Internal function to change the whether fill color attribute is used.
    *  Other code should use put(String key, Object value). */
-  public void assignFilled(boolean f) { _filled = f; } //?
+  //public void assignFilled(boolean f) { _filled = f; } //?
+
+  /** Sets a flag to either fill the Fig with its fillColor or
+   *  not. Fires PropertyChangeEvent "filled". */
   public void setFilled(boolean f) {
     firePropChange("filled", _filled, f);
     _filled = f;
@@ -216,9 +240,13 @@ implements java.io.Serializable  {
 
   /** Internal function to change the line width attribute is used.
    *  Other code should use put(String key, Object value). */
-  public void assignLineWidth(int w) { //?
-    _lineWidth = Math.max(0, Math.min(1, w));
-  }
+  //public void assignLineWidth(int w) { //?
+  //  _lineWidth = Math.max(0, Math.min(1, w));
+  // }
+
+  /** Set the line width. Zero means lines are not draw. One draws
+   *  them one pixel wide. Larger widths are not yet supported. Fires
+   *  PropertyChangeEvent "lineWidth". */
   public void setLineWidth(int w) {
     int newLW = Math.max(0, Math.min(1, w));
     firePropChange("lineWidth", _lineWidth, newLW);
@@ -234,9 +262,11 @@ implements java.io.Serializable  {
 //   public void setShadowOffset(Point p) { _shadowOffset = p; }
 //   public Point getShadowOffset() { return _shadowOffset; }
 
+  /** Draw the Fig on a PrintGraphics. This just calls paint. */
   public void print(Graphics g) { paint(g); }
 
-  /** Method to paint this Fig.  By default it paints an "empty" space. */
+  /** Method to paint this Fig.  By default it paints an "empty"
+   *  space, subclasses should override this method. */
   public void paint(Graphics g) {
     g.setColor(Color.pink);
     g.fillRect(_x, _y, _w, _h);
@@ -247,13 +277,16 @@ implements java.io.Serializable  {
   /** Return a Rectangle that completely encloses this Fig. */
   public Rectangle getBounds() { return new Rectangle(_x, _y, _w, _h); }
 
+  /** Reshape the given rectangle to be my bounding box. */
   public void stuffBounds(Rectangle r) { r.reshape(_x, _y, _w, _h); }
 
+  /** Change my bounding box to the given Rectangle. Just calls
+   *  setBounds(x, y, w, h). */
   public final void setBounds(Rectangle r) {
     setBounds(r.x, r.y, r.width, r.height);
   }
 
-  // make this a bottle-neck method?
+  /** Set the bounds of this Fig. Fires PropertyChangeEvent "bounds". */
   public void setBounds(int x, int y, int w, int h) {
     Rectangle oldBounds = getBounds();
     _x = x; _y = y; _w = w; _h = h;
@@ -265,21 +298,19 @@ implements java.io.Serializable  {
   // Editor API
 
 
-  /** Remove this Fig from the document being edited by the
-   *  given editor.
-   *  <A HREF="../features.html#removing_objects_delete">
-   *  <TT>FEATURE: removing_objects_delete</TT></A>
-   */
+  /** Remove this Fig from the Layer being edited by the
+   *  given editor. */
   public void delete() {
     if (_layer != null) { _layer.deleted(this); }
     setOwner(null);
   }
 
-  /** Simple Figs have no underlying model, so they are just
-   *  deleted. Figs that graphically present some part of an 
-   *  underlying model should NOT delete themselves, instead they 
-   *  should ask the model to dispose, and IF it does then the figs 
-   *  will be notified. */
+  /** Delete whatever application object this Fig is representing, the
+   *  Fig itself should automatically be deleted as a side-effect. Simple
+   *  Figs have no underlying model, so they are just deleted. Figs
+   *  that graphically present some part of an underlying model should
+   *  NOT delete themselves, instead they should ask the model to
+   *  dispose, and IF it does then the figs will be notified. */
   public void dispose() {
     Object own = getOwner();
     if (own instanceof GraphNodeHooks) ((GraphNodeHooks)own).dispose();
@@ -288,37 +319,43 @@ implements java.io.Serializable  {
     else delete();
   }
 
+  /** Returns true if this Fig can be moved around by the user. */
   public boolean isMovable() { return true; }
+
+  /** Returns true if this Fig can be resized by the user. */
   public boolean isResizable() { return true; }
+
+  /** Returns true if this Fig can be reshaped by the user. */
   public boolean isReshapable() { return false; }
+
+  /** Returns true if this Fig can be rotated by the user. */
   public boolean isRotatable() { return false; }
 
+  /** This Fig has changed in some way, tell its Layer to record my
+   *  bounding box as a damaged region so that I will eventualy be
+   *  redrawn. This method can be called directly, but using
+   *  startTrans() and endTrans() instead is generally faster,
+   *  simpler, and better avoids "screen dirt". */
   public void damage() { if (_layer != null) _layer.damaged(this); }
 
   
-  /** This indicates that some Cmd is starting a manipulation on
-   *  the receiving Fig and that redrawing must take place
-   *  at the objects old location. This is implemented by notifying the
-   *  Observer's of this object that it has changed. That will eventually
-   *  result in damage regions being added to all editors that are
-   *  displaying this object.<p>
-   *
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   *  <A HREF="../features.html#viewable_properties">
-   *  <TT>FEATURE: viewable_properties</TT></A>
-   */
+  /** This indicates that some Cmd is starting a manipulation on the
+   *  receiving Fig and that redrawing must take place at the objects
+   *  old location. This adds a damage region to all editors that are
+   *  displaying this Fig. This method also locks the RedrawManager so
+   *  that no redraws will take place during the transaction.  Locking
+   *  the RedrawManager is key to avoiding "screen dirt". Each call to
+   *  startTrans() MUST be matched with a call to endTrans(). */
   public void startTrans() {
     damage();
     RedrawManager.lock(); // helps avoid dirt
   }
 
-  /** This is called after an Cmd mondifies a Fig and
-   *  the Fig needs to be redrawn in its new position. Each
-   *  endTrans shuold be paired with one startTrans(). <p>
-   *  <A HREF="../features.html#visual_updates">
-   *  <TT>FEATURE: visual_updates</TT></A>
-   */
+  /** This is called after an Cmd mondifies a Fig and the Fig needs to
+   * be redrawn in its new position. This also unlocks the
+   * RedrawManager. In general, endTrans() should be * paired with a
+   * startTrans(), although it is alright to have extra calls to
+   * endTrans(). */
   public void endTrans() {
     damage();
     RedrawManager.unlock();  // helps avoid dirt
@@ -331,24 +368,24 @@ implements java.io.Serializable  {
   /** Margin between this Fig and automatically routed arcs. */
   public final int BORDER = 8;
 
-  /** Reply a rectangle that arcs shoulc not route through. Basically
+  /** Reply a rectangle that arcs should not route through. Basically
    *  this is the bounding box plus some margin around all egdes. */
   public Rectangle routingRect() {
     return new Rectangle(_x-BORDER, _y-BORDER, _w+BORDER*2, _h+BORDER*2);
   }
 
-  /** change the back-to-front ordering of a Fig in
+  /** Change the back-to-front ordering of a Fig in
    *  LayerDiagram. Should the Fig have any say in it?
    *
    * @see LayerDiagram#reorder
    * @see CmdReorder */
   public void reorder(int func, Layer lay) { lay.reorder(this, func); }
 
-  /** Change the position of the object from were it is
-   *  to were it is plus dx or dy. Often called when an object is
-   *  dragged. This could be very useful if local-coordinate systems are
-   *  used because deltas need less transforming... maybe. */
-  // should this call setBounds?
+  /** Change the position of the object from were it is to were it is
+   *  plus dx and dy. Often called when an object is dragged. This
+   *  could be very useful if local-coordinate systems are used
+   *  because deltas need less transforming... maybe. Fires property
+   *  "bounds". */
   public void translate(int dx, int dy) {
     Rectangle oldBounds = getBounds();
     _x += dx; _y += dy;
@@ -356,15 +393,25 @@ implements java.io.Serializable  {
   }
 
 
-  /** Move the FigNode to the given position. */
+  /** Move the Fig to the given position. */
   public final void setLocation(Point p) { setLocation(p.x, p.y); }
-  public Point getLocation() { return new Point(_x, _y); }
 
+  /** Move the Fig to the given position. By default translates the
+   *  Fig so that the upper left corner of its bounding box is at the
+   *  location. Fires property "bounds".*/
   public void setLocation(int x, int y) { translate(x - _x, y - _y); }
 
+  /** Returns a point that is the upper left corner of the Fig's
+   *  bounding box. */
+  public Point getLocation() { return new Point(_x, _y); }
 
+  /** Returns the size of the Fig. */
   public Dimension getSize() { return new Dimension(_w, _h); }
+
+  /** Sets the size of the Fig. Fires property "bounds". */
   public final void setSize(Dimension d) { setSize(d.width, d.height); }
+
+  /** Sets the size of the Fig. Fires property "bounds". */
   public void setSize(int w, int h) {
     setBounds(_x, _y, w, h);
   }
@@ -383,7 +430,7 @@ implements java.io.Serializable  {
   public void setHeight(int h) { setBounds(_x, _y, _w, h); }
   public int getHeight() { return _h; }
 
-  /** Get and set the points along the path */
+  /** Get and set the points along a path for Figs that are path-like. */
   public void setPoints(Point[] ps) { }
   public Point[] getPoints() { return new Point[0]; }
   public final void setPoints(int i, Point p) { setPoints(i, p.x, p.y); }
@@ -398,12 +445,18 @@ implements java.io.Serializable  {
   public int[] getYs() { return new int[0]; }
   public void setYs(int[] ys) { }
 
-  public void addPoint(int x, int y) { } //@
-  public void insertPoint(int i, int x, int y) { } //@
-  public void removePoint(int i) { } //@
+  public void addPoint(int x, int y) { }
+  public void insertPoint(int i, int x, int y) { } 
+  public void removePoint(int i) { }
 
+  /** Return the length of the path around this Fig. By default,
+   *  returns the perimeter of the Fig's bounding box.  Subclasses
+   *  like FigPoly have more specific logic. */
   public int getPerimeterLength() { return _w + _w + _h + _h; }
 
+  /** Return a point at the given distance along the path around this
+   *  Fig. By default, uses perimeter of the Fig's bounding
+   *  box. Subclasses like FigPoly have more specific logic. */
   public Point pointAlongPerimeter(int dist) {
     if (dist < _w && dist >= 0)
       return new Point(_x + (dist), _y);
@@ -417,11 +470,8 @@ implements java.io.Serializable  {
       return new Point(_x, _y);
   }
 
-  /** Align this Fig with the given rectangle. Some
-   *  subclasses may need to know the editor that initiated this action.
-   *  <A HREF="../features.html#align_objects">
-   *  <TT>FEATURE: align_objects</TT></A>
-   */
+  /** Align this Fig with the given rectangle. Some subclasses may
+   *  need to know the editor that initiated this action.  */
   public void align(Rectangle r, int direction, Editor ed) {
     Rectangle bbox = getBounds();
     int dx = 0, dy = 0;
@@ -460,10 +510,10 @@ implements java.io.Serializable  {
   }
 
 
-  /** Reply true if the given point is inside the given
-   *  Fig. By default reply true if the pint is in my
-   *  bounding box. Subclasses like FigCircle and FigEdge do
-   *  more specific checks.
+  /** Reply true if the given point is inside the given Fig. By
+   *  default reply true if the point is in my bounding
+   *  box. Subclasses like FigCircle and FigEdge do more specific
+   *  checks.
    *
    * @see FigCircle
    * @see FigEdge */
@@ -475,20 +525,32 @@ implements java.io.Serializable  {
    *  calling contains(int x, int y). */
   public final boolean contains(Point p) { return contains(p.x, p.y); }
 
+  /** Reply true if the all four corners of the given rectangle are
+   *  inside this Fig, as determined by contains(int x, int y). */
   public boolean contains(Rectangle r) {
     return countCornersContained(r.x, r.y, r.width, r.height) == 4;
   }
 
+  /** Reply true if the entire Fig is contained within the given
+   *  Rectangle. This can be used by ModeSelect to select Figs that
+   *  are totally within the selection rectangle. */
   public boolean within(Rectangle r) {
     return r.contains(_x, _y) && r.contains(_x + _w, _y + _h);
   }
 
+  /** Reply true if the given rectangle contains some pixels of the
+   *  Fig. This is used to determine if the user is trying to select
+   *  this Fig. Rather than ask if the mouse point is in the Fig, I
+   *  use a small rectangle around the mouse point so that small
+   *  objects and lines are easier to select. */
   public boolean hit(Rectangle r) {
     int cornersHit = countCornersContained(r.x, r.y, r.width, r.height);
     if (_filled) return cornersHit > 0;
     else return cornersHit > 0 && cornersHit < 4;
   }
 
+  /** Reply the number of corners of the given rectangle that are
+   *  inside this Fig, as determined by contains(int x, int y). */
   protected int countCornersContained(int x, int y, int w, int h) {
     int cornersHit = 0;
     if (contains(x, y)) cornersHit++;
@@ -498,27 +560,25 @@ implements java.io.Serializable  {
     return cornersHit;
   }
 
-
   /** Reply true if the object intersects the given rectangle. Used
-   *  for selective redrawing and for multiple selections. <p>
-   *  needs-more-work: we probably need a within(Rectangle) operation
-   *  to do marquee selection properly. */
+   *  for selective redrawing and by ModeSelect to select all Figs
+   *  that are partly within the selection rectangle. */
   public boolean intersects(Rectangle r) { return getBounds().intersects(r); }
 
-  /** return the center of the given figure. By default the center is
-   *  the center of the bounding box. Subclasses may want to define
+  /** Return the center of the given Fig. By default the center is the
+   *  center of its bounding box. Subclasses may want to define
    *  something else. */
   public Point center() {
     Rectangle bbox = getBounds();
     return new Point(bbox.x + bbox.width/2, bbox.y + bbox.height/2);
   }
 
-  /** return a point that should be used for arcs that to toward the
-   *  given point. For example, you may want the arc to end on the edge
-   *  of a port that is nearest the given point. By default this is
-   *  center(). */
-  //  public Point connectionPoint(Point anotherPt) { return center(); }
-
+  /** Return a point that should be used for arcs that to toward the
+   *  given point. By default, this makes arcs end on the edge that is
+   *  nearest the given point.
+   *
+   * needs-more-work: define gravity points, berths
+   */
   public Point connectionPoint(Point anotherPt) {
     return Geometry.ptClosestTo(getBounds(), anotherPt);
   }
@@ -528,7 +588,7 @@ implements java.io.Serializable  {
    *  the anchor point. Needs-More-Work: do I really need this
    *  function?
    *
-   * @see FigLine#drag */
+   * @see FigLine#createDrag */
   public void createDrag(int anchorX, int anchorY, int x, int y,
 			 int snapX, int snapY) {
     int newX = Math.min(anchorX, snapX);
@@ -541,7 +601,7 @@ implements java.io.Serializable  {
   /** Update the bounds of this Fig.  By default it is assumed that
    *  the bounds have already been updated, so this does nothing.
    *
-   * @see FigText */
+   * @see FigText#calcBounds */
   protected void calcBounds() { }
 
 
@@ -549,31 +609,29 @@ implements java.io.Serializable  {
   // updates
 
   /** The specified PropertyChangeListeners <b>propertyChange</b>
-   * method will be called each time the value of any bound property
-   * is changed.  The PropertyListener object is addded to a list of
-   * PropertyChangeListeners managed by the JellyBean, it can be
-   * removed with removePropertyChangeListener.  Note: the JavaBeans
-   * specification does not require PropertyChangeListeners to run in
-   * any particular order.
+   *  method will be called each time the value of any bound property
+   *  is changed.  Note: the JavaBeans specification does not require
+   *  PropertyChangeListeners to run in any particular order. <p>
    *
-   * @see #removePropertyChangeListener
-   * @param l the PropertyChangeListener */
+   *  Since most Fig's will never have any listeners, and I want Figs
+   *  to be fairly light-weight objects, listeners are kept in a
+   *  global Hashtable, keyed by Fig.  NOTE: It is important that all
+   *  listeners eventually remove themselves, otherwise this will
+   *  prevent garbage collection. */
   public void addPropertyChangeListener(PropertyChangeListener l) {
-    // _changes.addPropertyChangeListener(l);
     Globals.addPropertyChangeListener(this, l);
   }
 
   /** Remove this PropertyChangeListener from the JellyBeans internal
-   * list.  If the PropertyChangeListener isn't on the list, silently
-   * do nothing.
-   * 
-   * @see #addPropertyChangeListener
-   * @param l the PropertyChangeListener */
+   *  list.  If the PropertyChangeListener isn't on the list, silently
+   *  do nothing.
+   */
   public void removePropertyChangeListener(PropertyChangeListener l) {
-    //_changes.removePropertyChangeListener(l);
     Globals.removePropertyChangeListener(this, l);
   }
 
+  /** Creates a PropertyChangeEvent and calls all registered listeners
+   *  propertyChanged() method. */
   protected void firePropChange(String propName, Object oldV, Object newV) {
     Globals.firePropChange(this, propName, oldV, newV);
   }

@@ -7,12 +7,11 @@ import java.io.Serializable;
 import com.sun.java.swing.tree.*;
 import com.sun.java.swing.event.*;
 
-public abstract class NavPerspective implements Serializable, TreeModel {
+public abstract class NavPerspective extends TreeModelComposite
+implements Serializable, TreeModel {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
-
-  protected Object _root;
 
   protected EventListenerList _listenerList = new EventListenerList();
 
@@ -23,39 +22,6 @@ public abstract class NavPerspective implements Serializable, TreeModel {
   ////////////////////////////////////////////////////////////////
   // TreeModel implementation
   
-  public Object getRoot() { return _root; }
-  public void setRoot(Object r) { _root = r; }
-
-
-  public Object getChild(Object parent, int index) {
-    // handle trash
-    return null;
-  }
-  
-  public int getChildCount(Object parent) {
-    // handle trash
-    return 0;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    // handle trash
-    return 0;
-  }
-
-
-  /**
-   * Returns true if <I>node</I> is a leaf.  It is possible for this method
-   * to return false even if <I>node</I> has no children.  A directory in a
-   * filesystem, for example, may contain no files; the node representing
-   * the directory is not a leaf, but it also has no children.
-   *
-   * @param   node    a node in the tree, obtained from this data source
-   * @return  true if <I>node</I> is a leaf
-   */
-  public boolean isLeaf(Object node) {
-    if (node instanceof Trash) return false;
-    return true;
-  }
 
   /**
    * Messaged when the user has altered the value for the item identified
@@ -153,6 +119,11 @@ public abstract class NavPerspective implements Serializable, TreeModel {
     }
   }
 
+
+  protected void fireTreeStructureChanged(Object source, Object[] path) {
+    fireTreeStructureChanged(source, path, null, null);
+  }
+
   /*
    * Notify all listeners that have registered interest for
    * notification on this event type.  The event instance 
@@ -187,6 +158,5 @@ public abstract class NavPerspective implements Serializable, TreeModel {
   public void removeTreeModelListener(TreeModelListener l) {
     _listenerList.remove(TreeModelListener.class, l);
   }
-  
 
 } /* end class NavPerspective */

@@ -21,7 +21,11 @@ public class ToDoByPoster extends ToDoPerspective {
 //       _pseudoNodes.addElement(new ToDoPseudoNode(list, pred));
 //     }
 //   }
-  
+
+  public String toString() { return "Poster"; }
+
+
+
 } /* end class ToDoByPoster */
 
 

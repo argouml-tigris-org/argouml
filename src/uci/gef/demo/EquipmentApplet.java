@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: EquipmentApplet.java
 // Classes: EquipmentApplet
@@ -25,6 +34,7 @@ package uci.gef.demo;
 
 import java.applet.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 import uci.util.*;
 import uci.gef.*;
@@ -55,20 +65,10 @@ public class EquipmentApplet extends Applet {
   protected static int _drawAreaHeight = 300;
 
   /** The net-level model to edit */
-  //private NetList net;
   private GraphModel gm;
 
-  /** The example palette, shows Nodes for computer equipment */
-  Palette palette;
-
   /** The palette of shapes and selection tool */
-  Palette shapePalette;
-
-  /** The overall palette window */
-  Palette masterPalette;
-
-  /** The overall palette window */
-  PaletteTop topPalette;
+  EquipmentPalette palette;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -77,10 +77,7 @@ public class EquipmentApplet extends Applet {
   public EquipmentApplet() {
     System.out.println("making an example");
     gm = new DefaultGraphModel();
-    //net.name("Sample Network");
-
-    //palette = new EquipmentPalette();
-    //shapePalette = new PaletteFig();
+    palette = new EquipmentPalette();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -105,20 +102,11 @@ public class EquipmentApplet extends Applet {
     JGraphFrame jgf = new JGraphFrame(gm);
     Globals.setStatusBar(jgf);
     jgf.setTitle("EquipmentApplet");
+    jgf.setToolBar(palette);
+    // make the delete key remove elements from the underlying GraphModel
+    jgf.getGraph().bindKey(new CmdDispose(), KeyEvent.VK_DELETE, 0);
+
     jgf.show();
-    //
-    Vector pals = new Vector();
-    pals.addElement(palette);
-    pals.addElement(shapePalette);
-    masterPalette = new PaletteSticky(new PaletteCompound(pals));
-    topPalette = new PaletteTop(masterPalette);
-    topPalette.definePanel();
-    Frame palFrame = new Frame();
-    palFrame.setLayout(new BorderLayout());
-    palFrame.add("Center", topPalette);
-    palFrame.move(400, 10);
-    palFrame.pack();
-    palFrame.show();
   }
 
   ////////////////////////////////////////////////////////////////
@@ -142,12 +130,8 @@ public class EquipmentApplet extends Applet {
   /** When the user closes this window try to free up as many objects
    * as possible. */
   public void destroy() {
-    if (null != topPalette) topPalette.close();
-    masterPalette = null;
-    topPalette = null;
     gm = null;
     palette = null;
-    shapePalette = null;
   }
 
   /** reply a breif string that describes this applet in the "About"

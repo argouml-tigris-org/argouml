@@ -10,13 +10,12 @@ import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
 import uci.util.*;
+import uci.ui.*;
 import uci.argo.kernel.*;
 
 
 public class ToDoPane extends JPanel
-implements ItemListener, TreeSelectionListener, MouseListener
-  //  ToDoListListener
-{
+implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // constants
   
@@ -33,6 +32,7 @@ implements ItemListener, TreeSelectionListener, MouseListener
   // vector of TreeModels
   protected Vector _perspectives = new Vector();
 
+  protected ToolBar _toolbar = new ToolBar();
   protected JComboBox _combo = new JComboBox();
   protected ToDoList _root = null;
   protected ToDoPerspective _curPerspective = null;
@@ -43,15 +43,20 @@ implements ItemListener, TreeSelectionListener, MouseListener
 
   public ToDoPane() {
     setLayout(new BorderLayout());
-    add(_combo, BorderLayout.NORTH);
+    _toolbar.add(new JLabel("Group by "));
+    _toolbar.add(_combo);
+    add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
     
     _tree.setRootVisible(false);
     _tree.setShowsRootHandles(true);
     _tree.addTreeSelectionListener(this);
+    _tree.setCellRenderer(new ToDoTreeRenderer());
 
     _tree.addMouseListener(this);
+
+    Designer.TheDesigner.getToDoList().addToDoListListener(this);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -142,10 +147,33 @@ implements ItemListener, TreeSelectionListener, MouseListener
     //System.out.println("2: " + getSelectedObject().toString());
   }
 
-//   public void toDoListChanged(ToDoListEvent tdle) {
-//     System.out.println("toDoListChanged in ToDoPane");
-//     updateTree();
-//   }
+  ////////////////////////////////////////////////////////////////
+  // DecisionModelListener implementation
+
+
+  ////////////////////////////////////////////////////////////////
+  // GoalListener implementation
+
+
+  ////////////////////////////////////////////////////////////////
+  // ToDoListListener implementation
+
+  public void toDoItemAdded(ToDoListEvent tde) {
+    if (_curPerspective instanceof ToDoListListener) 
+      ((ToDoListListener)_curPerspective).toDoItemAdded(tde);
+  }
+
+  public void toDoItemRemoved(ToDoListEvent tde) {
+    if (_curPerspective instanceof ToDoListListener)
+      ((ToDoListListener)_curPerspective).toDoItemRemoved(tde);
+  }
+  
+  public void toDoListChanged(ToDoListEvent tde) { 
+    if (_curPerspective instanceof ToDoListListener)
+      ((ToDoListListener)_curPerspective).toDoListChanged(tde);
+  }
+  
+
 
   ////////////////////////////////////////////////////////////////
   // internal methods

@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: FlexibleApplet.java
 // Classes: FlexibleApplet
@@ -26,8 +35,9 @@ package uci.gef.demo;
 import java.applet.*;
 import java.awt.*;
 import java.util.*;
-import uci.util.*;
+import com.sun.java.swing.*;
 
+import uci.util.*;
 import uci.gef.*;
 import uci.graph.*;
 
@@ -50,7 +60,7 @@ import uci.graph.*;
  *  or OMT), etc.
  *
  * @see Editor
- * @see Palette
+ * @see PaletteFig
  * @see Cmd
  * @see Mode
  * @see Layer
@@ -65,33 +75,20 @@ public class FlexibleApplet extends Applet {
   // instance variables
 
   protected static boolean _spawnFrame = true;
-  protected static boolean _spawnPalette = true;
   protected static int _drawAreaWidth = 400;
   protected static int _drawAreaHeight = 300;
   protected static String _loadDocument;
 
-  /** The Editor window */
-  private Editor ed;
-
   /** The net-level model to edit */
-  //private NetList net;
   private GraphModel gm;
 
   /** The example palette, shows SampleNode */
-  Palette palette;
+  SamplePalette palette;
 
   /** The palette of shapes and selection tool */
-  Palette shapePalette;
+  PaletteFig shapePalette;
 
-  /** The palette of attributes for shapes. Needed because applets
-  /** cannot have menus when embedded in the browser page. */
-  Palette attrPalette;
 
-  /** The overall palette window */
-  Palette masterPalette;
-
-  /** The overall palette window */
-  PaletteTop topPalette;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -99,11 +96,6 @@ public class FlexibleApplet extends Applet {
   /** Construct a new FlexibleApplet */
   public FlexibleApplet() {
     System.out.println("making an example");
-    gm = new DefaultGraphModel();
-    //net.name("Sample Network");
-//     palette = new SamplePalette();
-//     //shapePalette = new PaletteFig();
-//     attrPalette = new PaletteAttr();
   }
 
 
@@ -124,51 +116,39 @@ public class FlexibleApplet extends Applet {
     _drawAreaWidth = 400;
     _drawAreaHeight = 300;
     _spawnFrame = "true".equals(applet.getParameter("SpawnFrame"));
-    _spawnPalette = "true".equals(applet.getParameter("SpawnPalette"));
     String widthStr = applet.getParameter("DrawAreaWidth");
     if (widthStr != null) _drawAreaWidth = Integer.parseInt(widthStr);
     String heightStr = applet.getParameter("DrawAreaHeight");
     if (heightStr != null) _drawAreaHeight = Integer.parseInt(heightStr);
     _loadDocument = applet.getParameter("LoadDocument");
     System.out.println("SpawnFrame= " + _spawnFrame);
-    System.out.println("SpawnPalette= " + _spawnPalette);
     System.out.println("DrawArea= " + _drawAreaWidth + " by " +
 		       _drawAreaHeight);
     System.out.println("LoadDocument= " + _loadDocument);
   }
 
-  public void setupWindows() {
-//     Dimension drawAreaSize = new Dimension(_drawAreaWidth, _drawAreaHeight);
-//     JGraph jGraph = new JGraph(gm);
-//     jGraph.resize(drawAreaSize);
-//     if (_spawnFrame) {
-//       System.out.println("spawning frame");
-//       Frame drawingFrame = new ForwardingFrame(ed, drawAreaSize);
-//       ed.frame(drawingFrame);
-//       drawingFrame.add("Center", jGraph);
-//       drawingFrame.pack();
-//       drawingFrame.move(10, 10);
-//       drawingFrame.show();
-//     }
-//     else add("Center", jGraph);
-//     Vector pals = new Vector();
-//     pals.addElement(palette);
-//     pals.addElement(shapePalette);
-//     if (!_spawnPalette) pals.addElement(attrPalette);
-//     masterPalette = new PaletteSticky(new PaletteCompound(pals));
-//     topPalette = new PaletteTop(masterPalette);
-//     topPalette.definePanel();
-//     if (_spawnPalette) {
-//       System.out.println("spawning palette");
-//       Frame paletteFrame = new Frame();
-//       paletteFrame.setTitle("Palette");
-//       topPalette.frame(paletteFrame);
-//       paletteFrame.add("Center", topPalette);
-//       paletteFrame.pack();
-//       paletteFrame.move(10 + drawAreaSize.width, 10);
-//       paletteFrame.show();
-//     }
-//     else add("East", topPalette);
+  public void initWindows() {
+     Dimension drawAreaSize = new Dimension(_drawAreaWidth, _drawAreaHeight);
+     JGraph jg = new JGraph(gm);
+     jg.resize(drawAreaSize);
+     jg.setPreferredSize(drawAreaSize);
+
+     if (_spawnFrame) {
+       System.out.println("spawning frame");
+//        JGraphFrame jgf = new JGraphFrame(gm);
+//        jgf.setToolBar(palette);
+//        jgf.show();
+       JFrame f = new JFrame();
+       f.getContentPane().setLayout(new BorderLayout());
+       f.getContentPane().add(palette, BorderLayout.NORTH);
+       f.getContentPane().add(jg, BorderLayout.CENTER);
+       f.resize(drawAreaSize);
+       f.show();
+     }
+     else {
+       add("North", palette);
+       add("Center", jg);
+     }
   }
 
   ////////////////////////////////////////////////////////////////
@@ -182,8 +162,11 @@ public class FlexibleApplet extends Applet {
    *  also registers some well known Cmd's as an example. */
   public void init() {
     Globals.setApplet(this);
+    gm = new DefaultGraphModel();
+    palette = new SamplePalette();
+    shapePalette = new PaletteFig();
     parseParams(this);
-    setupWindows();
+    initWindows();
     Cmd.register(new CmdSave());
     Cmd.register(new CmdOpen());
     Cmd.register(new CmdDispose());
@@ -202,15 +185,9 @@ public class FlexibleApplet extends Applet {
   /** When the user closes this window try to free up as many objects
    *  as possible. */
   public void destroy() {
-    if (null != topPalette) topPalette.close();
-    //if (null != ed) ed.close();
-    masterPalette = null;
-    topPalette = null;
-    ed = null;
     gm = null;
     palette = null;
     shapePalette = null;
-    attrPalette = null;
   }
 
   /** Reply a breif string that describes this applet in the "About"

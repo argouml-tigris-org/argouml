@@ -1,75 +1,79 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: ModeCreateFigInk.java
 // Classes: ModeCreateFigInk
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
 
 import java.awt.event.MouseEvent;
 
-/** A Mode to interpert user input while creating a FigInk.
- *  <A HREF="../features.html#basic_shapes_ink">
- *  <TT>FEATURE: basic_shapes_ink</TT></A>
- */
+/** A Mode to interpert user input while creating a FigInk. When
+ *  creating a FigInk, new points are being added on mouseDragged, and
+ *  a single mouseReleased ends the Mode.  A new point is added
+ *  whenever the mouse moves a minimum distance. */
 
 public class ModeCreateFigInk extends ModeCreate {
 
   ////////////////////////////////////////////////////////////////
-  // instance variables
-
+  // constants
+  
+  /** the minium distance that the mouse must move before a new point
+   *  is added. */
   public static final int MIN_DELTA = 4;
 
+  
+  ////////////////////////////////////////////////////////////////
+  // instance variables
+
+  /** The position of the last point that was added. */
   protected int _lastX, _lastY;
 
   ////////////////////////////////////////////////////////////////
   // Mode API
 
-  public String instructions() {
-    return "Drag to draw a stream of ink";
-  }
+  public String instructions() { return "Drag to draw a stream of ink"; }
 
   ////////////////////////////////////////////////////////////////
   // ModeCreate API
 
-  /** Create a new FigRect instance based on the given mouse down
+  /** Create a new FigInk instance based on the given mouse down
    *  event and the state of the parent Editor. */
   public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigInk p = new FigInk(snapX, snapY, _editor.graphAttrs());
+    FigInk p = new FigInk(snapX, snapY);
     _lastX = snapX; _lastY = snapY;
     return p;
   }
 
+  protected void creationDrag(int x, int y) { }
+
   ////////////////////////////////////////////////////////////////
   // Event handlers
-
-  /** Mouse up means that the user is done. */
-  public void mouseReleased(MouseEvent me) {
-    _editor.damaged(_newItem);
-    // do not call creationDrag()
-    _editor.add(_newItem);
-    _editor.getSelectionManager().select(_newItem);
-    _newItem = null;
-    done();
-    me.consume();
-  }
 
   /** Dragging adds points to the ink. */
   public void mouseDragged(MouseEvent me) {

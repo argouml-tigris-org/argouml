@@ -1,24 +1,32 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: Editor.java
 // Classes: Editor
-// Original Author: ics125b spring 1996
+// Original Author: ics125 spring 1996
 // $Id$
 
 package uci.gef;
@@ -27,6 +35,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.Serializable;
+import com.sun.java.swing.*;
 
 import uci.util.*;
 import uci.graph.*;
@@ -123,9 +132,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    */
   protected Guide _guide = new GuideGrid(8);
 
-  /** Default graphical attributes for newly created objects. */
-  protected Hashtable _graphAttrs;
-
   /** <A HREF="../features.html#event_skipping">
    *  <TT>FEATURE: event_skipping</TT></A>
    */
@@ -137,8 +143,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   protected Fig _curFig = null;     // _focusFig //?
 
-  protected transient Frame _frame;
-  private transient  Component _awt_component;
+  private transient Component _awt_component;
 
   /** Each Editor has a RedrawManager that executes in a separate
    *  thread of control to update damaged regions of the display.
@@ -150,48 +155,14 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   protected transient RedrawManager _redrawer = new RedrawManager(this);
 
 
+  //protected boolean canPeekEvents = false;
+  
   ////////////////////////////////////////////////////////////////
   /// methods related to editor state: graphical attributes, modes, view
 
-  /** Editors have a set of graphical attributes just like individual
-   *  Fig' do. The editor uses these attributes to define
-   *  the defaults for newly created Fig's.
-   *
-   * @see Fig */
-  public Hashtable graphAttrs() { return _graphAttrs; }
-
-  public Object get(String key) { return _graphAttrs.get(key); }
-  public Object get(String key, Object def) {
-    Object res = get(key);
-    if (null != res) return res;
-    return def;
-  }
-
-  public boolean put(String key, Object value) {
-    _graphAttrs.put(key, value);
-    return true;
-  }
-
-  public void put(Hashtable newAttrs) {
-    Enumeration cur = newAttrs.keys();
-    while (cur.hasMoreElements()) {
-      String key = (String) cur.nextElement();
-      Object val = newAttrs.get(key);
-      put(key, val);
-    }
-  }
-
-  public Enumeration keysIn(String category) {
-    return (new Vector()).elements();
-  }
-
-  public boolean canPut(String key) { return true; }
 
   /** Set the current user interface mode to the given Mode
-   *  instance.
-   *  <A HREF="../features.html#editing_modes">
-   *  <TT>FEATURE: editing_modes</TT></A>
-   */
+   *  instance. */
   public void mode(Mode m) {
     _modeManager.push(m);
     m.setEditor(this);
@@ -212,14 +183,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /** Return the LayerComposite that holds the diagram being edited. */
   public LayerManager getLayerManager() { return _layerManager; }
-
-  /** Set the LayerManager that holds the diagram being edited. */
-// //   public void setLayerManager(LayerManager lm) {
-// //     if (_layerManager != null) _layerManager.removeEditor(this);
-// //     _layerManager = lm;
-// //     _layerManager.addEditor(this);
-// //     if (getGraphics() != null) paint(getGraphics());
-// //   }
 
   public int gridSize() { return 16; } // Needs-More-Work: prefs
 
@@ -302,11 +265,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  if any */
 
   protected void setUnderMouse(MouseEvent me) {
-//     if (me.getID() != MouseEvent.MOUSE_MOVED &&
-// 	me.getID() != MouseEvent.MOUSE_DRAGGED)
-//       return;
-    //what about entered and exit?
-    
     Object node = null;
     int x = me.getX(), y = me.getY();
     Fig f = hit(x, y);
@@ -339,15 +297,9 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   // Guide and layout related commands
 
   /** Modify the given point to be on the guideline (In this case, a
-   *  gridline).
-   *  <A HREF="../features.html#snap_to_guide">
-   *  <TT>FEATURE: snap_to_guide</TT></A>
-   */
+   *  gridline). */
   public void snap(Point p) { if (_guide != null) _guide.snap(p); }
 
-  /** <A HREF="../features.html#snap_to_guide">
-   *  <TT>FEATURE: snap_to_guide</TT></A>
-   */
   public Guide getGuide() { return _guide; }
   public void setGuide(Guide g) { _guide = g; }
 
@@ -370,41 +322,42 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   }
 
   /** Construct a new Editor to edit the given NetList */
-  //public Editor(NetList net, Component awt_comp) { this(net, awt_comp, null); }
-
   public Editor(GraphModel gm, Component awt_comp) {
     this(gm, awt_comp, null);
-    // needs-more-work: set graph model
   }
 
-  //public Editor(NetList net) { this(net, null, null); }
   public Editor(GraphModel gm) { this(gm, null, null); }
 
   public Editor() { this(null, null, null); }
 
-  //public Editor(NetList net, Component awt_comp, Layer lay) {
+  public Editor(Diagram d) { this(d.getGraphModel(), null, d.getLayer()); }
+
   public Editor(GraphModel gm, Component awt_comp, Layer lay) {
     _awt_component = awt_comp;
     defineLayers(gm, lay);
-    _graphAttrs = new Hashtable();
 
-    // //_modeManager.setEditor(this);
-    //mode(new ModeExampleKeys(this));
     mode(new ModeSelect(this));
+    mode(new ModePopup(this));
     Globals.curEditor(this);
   }
 
-  //protected void defineLayers(NetList net, Layer lay) {
   protected void defineLayers(GraphModel gm, Layer lay) {
     _layerManager.addLayer(new LayerGrid());
     //_layerManager.addLayer(new LayerPageBreaks());
     // the following line is an example of another "grid"
-    // _layerManager.addLayer(new LayerPolar());
+    //_layerManager.addLayer(new LayerPolar());
     if (lay != null) _layerManager.addLayer(lay);
     else if (gm == null) _layerManager.addLayer(new LayerDiagram("Example"));
     else _layerManager.addLayer(new LayerPerspective("untitled", gm));
   }
 
+
+  public void preSave() { }
+  public void postSave() { }
+  public void postLoad() {
+    if (_redrawer == null) _redrawer = new RedrawManager(this);;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // recording damage to the display for later repair
 
@@ -501,18 +454,6 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
 
   ////////////////////////////////////////////////////////////////
-  // property sheet methods
-
-  public void updatePropertySheet() {
-    if (Globals.curEditor() != this) return;
-    if (_selectionManager.size() != 1) Globals.propertySheetSubject(null);
-    else {
-      Fig f = (Fig) getSelectionManager().getFigs().elementAt(0);
-      Globals.propertySheetSubject(f);
-    }
-  }
-
-  ////////////////////////////////////////////////////////////////
   // Frame and panel related methods
 
   public Component getAwtComponent() { return _awt_component; }
@@ -520,9 +461,29 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     _awt_component = c;
   }
 
+  public void setCursor(Cursor c) {
+    if (getAwtComponent() != null) getAwtComponent().setCursor(c);
+  }
+  
   public Graphics getGraphics() {
     if (_awt_component == null) return null;
     return _awt_component.getGraphics();
+
+//     Graphics g = _awt_component.getGraphics();
+//     if ((g != null) && (_awt_component instanceof JComponent)) {
+// 	JComponent parent = (JComponent) _awt_component;
+// 	Rectangle bounds = parent.getBounds();
+// 	if (parent instanceof JViewport) {
+// 	  Point position = ((JViewport) parent).getViewPosition();
+// 	  g.clipRect(bounds.x + position.x, bounds.y + position.y ,
+// 		     bounds.width-1, bounds.height-1);
+// 	}
+// 	else {
+// 	  g.clipRect(bounds.x, bounds.y ,
+// 		     bounds.width-1, bounds.height-1);
+// 	}
+//       }
+//     return g;
   }
     
   public Frame findFrame() {
@@ -542,7 +503,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     return _awt_component.createImage(w, h);
   }
 
-  public Color getBackground() { return _awt_component.getBackground(); }
+  public Color getBackground() {
+    if (_awt_component == null) return Color.lightGray;
+    return _awt_component.getBackground();
+  }
 
 
   ////////////////////////////////////////////////////////////////
@@ -635,15 +599,17 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 
   /**
    * Invoked when a mouse button is pressed on a component and then 
-     * dragged.  Mouse drag events will continue to be delivered to
-     * the component where the first originated until the mouse button is
-     * released (regardless of whether the mouse position is within the
-     * bounds of the component).
-     */
+   * dragged.  Mouse drag events will continue to be delivered to
+   * the component where the first originated until the mouse button is
+   * released (regardless of whether the mouse position is within the
+   * bounds of the component).
+   */
   public void mouseDragged(MouseEvent me) {
-    AWTEvent nextEvent = _awt_component.getToolkit().
-      getSystemEventQueue().peekEvent();
-    if (nextEvent != null && nextEvent.getID() == me.getID()) return; //needs-more-work 
+    AWTEvent nextEvent = null;
+//     if (canPeekEvents) {
+//       nextEvent = _awt_component.getToolkit().getSystemEventQueue().peekEvent();
+//       if (nextEvent != null && nextEvent.getID() == me.getID()) return;
+//     }
     RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);
@@ -658,9 +624,11 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
      * (with no buttons no down).
      */
   public void mouseMoved(MouseEvent me) {
-    AWTEvent nextEvent = _awt_component.getToolkit().
-      getSystemEventQueue().peekEvent();
-    if (nextEvent != null && nextEvent.getID() == me.getID()) return; //needs-more-work 
+    AWTEvent nextEvent = null;
+//     if (canPeekEvents) {
+//       nextEvent = _awt_component.getToolkit().getSystemEventQueue().peekEvent();
+//       if (nextEvent != null && nextEvent.getID() == me.getID()) return;
+//     }
     RedrawManager.lock();
     Globals.curEditor(this);
     setUnderMouse(me);

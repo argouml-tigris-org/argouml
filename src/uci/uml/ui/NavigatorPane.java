@@ -4,12 +4,13 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
-import uci.util.*;
 import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 //import com.sun.java.swing.border.*;
 
+import uci.ui.ToolBar;
+import uci.util.*;
 
  
 public class NavigatorPane extends JPanel
@@ -20,6 +21,7 @@ implements ItemListener, TreeSelectionListener {
   // vector of TreeModels
   protected Vector _perspectives = new Vector(); 
 
+  protected ToolBar _toolbar = new ToolBar();
   protected JComboBox _combo = new JComboBox();
   protected Object _root = null;
   protected NavPerspective _curPerspective = null;
@@ -30,7 +32,9 @@ implements ItemListener, TreeSelectionListener {
 
   public NavigatorPane() {
     setLayout(new BorderLayout());
-    add(_combo, BorderLayout.NORTH);
+    _toolbar.add(new JLabel("Perspective "));
+    _toolbar.add(_combo);
+    add(_toolbar, BorderLayout.NORTH);
     add(new JScrollPane(_tree), BorderLayout.CENTER);
     _combo.addItemListener(this);
     _tree.setRootVisible(false);
@@ -59,7 +63,7 @@ implements ItemListener, TreeSelectionListener {
     else setCurPerspective((NavPerspective) pers.elementAt(0));
     
     _combo.removeAllItems();
-    Enumeration persEnum = _perspectives.elements();
+    java.util.Enumeration persEnum = _perspectives.elements();
     while (persEnum.hasMoreElements()) 
       _combo.addItem(persEnum.nextElement());
     updateTree();
@@ -93,7 +97,7 @@ implements ItemListener, TreeSelectionListener {
   public void valueChanged(TreeSelectionEvent e) {
     //needs-more-work: should fire its own event and ProjectBrowser
     //should register a listener
-    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    //ProjectBrowser.TheInstance.setTarget(getSelectedObject());
   }
 
 
@@ -106,7 +110,7 @@ implements ItemListener, TreeSelectionListener {
     //should register a listener
     if (getSelectedObject() == null) return;
     System.out.println("single: " + getSelectedObject().toString());
-    ProjectBrowser.TheInstance.setTarget(getSelectedObject());
+    ProjectBrowser.TheInstance.select(getSelectedObject());
   }
 
   /** called when the user clicks twice on an item in the tree. */ 

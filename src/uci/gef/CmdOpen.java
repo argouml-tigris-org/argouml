@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED `AS IS' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: CmdOpen.java
 // Classes: CmdOpen
@@ -27,21 +36,10 @@ import java.util.*;
 import java.awt.*;
 import java.io.*;
 
-
-
-
-/** Cmd to Load a previously saved document document. 
- *  <A HREF="../features.html#load_and_save">
- *  <TT>FEATURE: load_and_save</TT></A>
- *  <A HREF="../features.html#cross_development_environments">
- *  <TT>FEATURE: cross_development_environments</TT></A>
- *  <A HREF="../bugs.html#save_memory_hog">
- *  <FONT COLOR=660000><B>BUG: save_memory_hog</B></FONT></A>
- *  <A HREF="../bugs.html#saved_file_versioning">
- *  <FONT COLOR=660000><B>BUG: saved_file_versioning</B></FONT></A>
+/** Cmd to Load a previously saved document document. The loaded
+ *  editor is displayed in a new JGraphFrame.
  *
- * @see CmdSave
- */
+ * @see CmdSave */
 
 public class CmdOpen extends Cmd implements FilenameFilter {
 
@@ -64,33 +62,35 @@ public class CmdOpen extends Cmd implements FilenameFilter {
       fd.show();
       String filename = fd.getFile(); // blocking
       String path = fd.getDirectory(); // blocking
+
       if (filename != null) {
     	Globals.showStatus("Reading " + path + filename + "...");
-    	FileInputStream f = new FileInputStream(path + filename);
-    	ObjectInput s = new ObjectInputStream(f);
-    	System.out.println("Cmd load...");
-    	Editor ed = (Editor)s.readObject();
-    	System.out.println("load done, showing editor");
-	System.out.println(ed.toString());
-	System.out.println(ed.getLayerManager().toString());
+    	FileInputStream fis = new FileInputStream(path + filename);
+    	ObjectInput s = new ObjectInputStream(fis);
+    	//System.out.println("Cmd load...");
+    	Editor ed = (Editor) s.readObject();
+	ed.postLoad();
+	if (fis != null) fis.close();   
+	//System.out.println("load done, showing editor");
+	//System.out.println(ed.toString());
+	//System.out.println(ed.getLayerManager().toString());
     	Globals.showStatus("Read " + path + filename);
-    	//ed.show();
-	//ed.setTitle(filename);
-    	f.close();
+	JGraphFrame jgf = new JGraphFrame(path + filename, ed);
+	Object d = getArg("dimension");
+	if (d instanceof Dimension) jgf.resize((Dimension)d);
+	jgf.setVisible(true);
      }
     }
     catch (FileNotFoundException ignore) {
       System.out.println("got an FileNotFoundException");
      }
-    //    catch (ClassMismatchException ignore) {
-    //      System.out.println("got an ClassMismatchException");
-    //     }
     catch (java.lang.ClassNotFoundException ignore) {
       System.out.println("got an ClassNotFoundException");
      }
     catch (IOException ignore) {
       System.out.println("got an IOException");
     }
+   
   }
 
   /** Only let the user select files that match the filter. This does

@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: FigEdge.java
 // Classes: FigEdge
@@ -31,11 +40,10 @@ import java.beans.*;
 import uci.util.*;
 import uci.graph.*;
 
-/** A Fig that paints arcs between ports.
- *  <A HREF="../features.html#graph_visualization_arcs">
- *  <TT>FEATURE: graph_visualization_arcs</TT></A>
- *  <A HREF="../bugs.html#arc_translate">
- *  <FONT COLOR=660000><B>BUG: arc_translate</B></FONT></A>
+/** Abastract Fig class for representing edges between ports.
+ *
+ *  @see FigEdgeLine
+ *  @see FigEdgeRectiline
  */
 
 public abstract class FigEdge extends Fig implements PropertyChangeListener {
@@ -43,28 +51,34 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** Fig presenting the edge's from port . */
+  /** Fig presenting the edge's from-port . */
   protected Fig _sourcePortFig;
-  /** Fig presenting the edge's to port. */
+  /** Fig presenting the edge's to-port. */
   protected Fig _destPortFig;
-  /** FigNode presenting the edge's from port's parent node. */
+  /** FigNode presenting the edge's from-port's parent node. */
   protected FigNode _sourceFigNode;
-  /** FigNode presenting the edge's to port's parent node. */
+  /** FigNode presenting the edge's to-port's parent node. */
   protected FigNode _destFigNode;
   /** Fig that presents the edge. */
   protected Fig _fig;
+  /** True if the FigEdge should be drawn from the nearest point of
+   *  each port Fig. */
   protected boolean _useNearest = false;
+  /** True when the FigEdgde should be drawn highlighted. */
   protected boolean _highlight = false;
   /** The ArrowHead at the start of the line */
-  ArrowHead _arrowHeadStart = new ArrowHeadNone();
+  protected ArrowHead _arrowHeadStart = new ArrowHeadNone();
   /** The ArrowHead at the end of the line */
-  ArrowHead _arrowHeadEnd = new ArrowHeadNone();
+  protected ArrowHead _arrowHeadEnd = new ArrowHeadNone();
   /** The items that are accumulated along the path, a vector. */
-  Vector _pathItems = new Vector();
+  protected Vector _pathItems = new Vector();
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
+  /** Contruct a new FigEdge with the given source and destination
+   *  port figs and FigNodes.  The new FigEdge will represent the
+   *  given edge (an object from some underlying model). */
   public FigEdge(Fig s, Fig d, FigNode sfn, FigNode dfn, Object edge) {
     _sourcePortFig = s;
     _destPortFig = d;
@@ -74,17 +88,27 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     _fig = makeEdgeFig();
   }
 
+  /** Contruct a new FigEdge without any underlying edge. */
   public FigEdge() { _fig = makeEdgeFig(); }
 
+  /** Abstract method to make the Fig that will be drawn for this
+   *  FigEdge. In FigEdgeLine this method constructs a FigLine. In
+   *  FigEdgeRectiline, this method constructs a FigPoly. */
   protected abstract Fig makeEdgeFig();
 
   ////////////////////////////////////////////////////////////////
   // accessors
 
+  /** Return the Fig that will be drawn. */
+  public Fig getFig() { return _fig; }
+
+  /** Get the Fig reprenting this FigEdge's from-port. */ 
   public void sourcePortFig(Fig fig) { _sourcePortFig = fig; }
 
+  /** Get the Fig reprenting this FigEdge's to-port. */ 
   public void destPortFig(Fig fig) { _destPortFig = fig; }
 
+  /** Set the FigNode reprenting this FigEdge's from-node. */ 
   public void sourceFigNode(FigNode fn) {
     // assert fn != null
     if (_sourceFigNode != null) _sourceFigNode.removeFigEdge(this);
@@ -92,6 +116,7 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     fn.addFigEdge(this);
   }
 
+  /** Set the FigNode reprenting this FigEdge's to-node. */ 
   public void destFigNode(FigNode fn) {
     // assert fn != null
     if (_destFigNode != null) _destFigNode.removeFigEdge(this);
@@ -99,6 +124,8 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     fn.addFigEdge(this);
   }
 
+  /** Set the edge (some object in an underlying model) that this
+   *  FigEdge should represent. */
   public void setOwner(Object own) {
     Object oldOwner = getOwner();
     if (oldOwner != null && oldOwner instanceof GraphEdgeHooks) {
@@ -110,48 +137,63 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     super.setOwner(own);
   }
 
+  /** Get the ArrowHead at the start of this FigEdge. */
   public ArrowHead getSourceArrowHead() { return _arrowHeadStart; }
 
+  /** Get the ArrowHead at the end of this FigEdge. */
   public ArrowHead getDestArrowHead() { return _arrowHeadEnd; }
 
+  /** Set the ArrowHead at the start of this FigEdge. */
   public void setSourceArrowHead(ArrowHead newArrow) {
     _arrowHeadStart = newArrow;
   }
 
+  /** Set the ArrowHead at the end of this FigEdge. */
   public void setDestArrowHead(ArrowHead newArrow) {
     _arrowHeadEnd = newArrow;
   }
 
+  /** Return the vector of path items on this FigEdge. */
   public Vector getPathItemsRaw() { return _pathItems; }
 
+  /** Return the path item on this FigEdge closest to the given
+   *  location. needs-more-work: not implemented yet. */
   public Fig getPathItem(PathConv pointOnPath) { 
     // needs-more-work: Find the closest Fig to this point
     return null;
   }
 
+  /** Add a new path item to this FigEdge. newPath indicates both the
+   *  location and the Fig (usually FigText) that should be drawn. */
   public void addPathItem(Fig newFig, PathConv newPath) {
     _pathItems.addElement(new PathItem(newFig, newPath));
   }
 
+  /** Removes the given path item. */
   public void removePathItem(PathItem goneItem) {
     _pathItems.removeElement(goneItem);    
   }
 
+  /** Get and set the flag about using Fig connection points rather
+   *  than centers. */
   public boolean getBetweenNearestPoints() { return _useNearest; }
   public void setBetweenNearestPoints(boolean un) { _useNearest = un; }
 
   ////////////////////////////////////////////////////////////////
   // Routing related methods
 
+  /** Method to compute the route a FigEdge should follow.  By defualt
+   *  this does nothing. Sublcasses, like FigEdgeRectiline override
+   *  this method. */
   protected void computeRoute() { }
 
   ////////////////////////////////////////////////////////////////
   // Fig API
 
-  /** Reply the bounding box for this edge. */
+  /** Reply the bounding box for this FigEdge. */
   public Rectangle getBounds() { return _fig.getBounds(); }
 
-  //needed?
+  /** Update my bounding box */
   protected void calcBounds() {
     _fig.calcBounds();
     _x = _fig.getX();
@@ -160,15 +202,10 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     _h = _fig.getHeight();
   }
 
-  /** Reply true iff this edge contains the given point.
-   * @see Fig#contains */
   public boolean contains(int x, int y) { return _fig.contains(x, y); }
 
-  /** Reply true iff this arc intersects the given rectangle. */
   public boolean intersects(Rectangle r) { return _fig.intersects(r); }
 
-  /** Reply true iff this edge  contains the given point.
-   * @see Fig#contains */
   public boolean hit(Rectangle r) { return _fig.hit(r); }
 
   public int getPerimeterLength() { return _fig.getPerimeterLength(); }
@@ -204,15 +241,19 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
   ////////////////////////////////////////////////////////////////
   // display methods
 
-  protected void drawArrowHead(Graphics g) {
+  /** Paint ArrowHeads on this FigEdge. Called from paint().
+   *  Determines placement and orientation by using
+   *  pointAlongPerimeter(). */
+  protected void paintArrowHeads(Graphics g) {
     _arrowHeadStart.setFillColor(Color.white);
-    //System.out.println("p0= " + pointAlongPerimeter(0) + " len= " + getPerimeterLength() + " pE= " + pointAlongPerimeter(getPerimeterLength()));
     _arrowHeadStart.paint(g, pointAlongPerimeter(5), pointAlongPerimeter(0));
     _arrowHeadEnd.paint(g, pointAlongPerimeter(getPerimeterLength() - 6),
 			pointAlongPerimeter(getPerimeterLength() - 1));
   }
 
-  protected void drawPathItems(Graphics g) {
+
+  /** Paint any labels that are located relative to this FigEdge. */
+  protected void paintPathItems(Graphics g) {
     Vector pathVec = getPathItemsRaw();
 
     for (int i = 0; i < pathVec.size(); i++) {
@@ -224,16 +265,13 @@ public abstract class FigEdge extends Fig implements PropertyChangeListener {
     } 
   }
 
-  /** Paint this object. */
-  // needs-more-work: take Highlight into account
+  /** Paint this FigEdge.  Needs-more-work: take Highlight into account */
   public void paint(Graphics g) {
     computeRoute();
     _fig.paint(g);
-    drawArrowHead(g);
-    drawPathItems(g);
+    paintArrowHeads(g);
+    paintPathItems(g);
   }
-
-
 
   
   ////////////////////////////////////////////////////////////////

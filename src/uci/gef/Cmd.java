@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: Action.java
 // Classes: Action
@@ -27,35 +36,39 @@ import java.util.*;
 import java.awt.event.*;
 import com.sun.java.swing.*;
 
-/** Abstract class for all editor actions. The editor serves as a
+/** Abstract class for all editor commands. The editor serves as a
  *  command shell for executing actions in much the same way that a
- *  DOS or UNIX commmand command shell executes programs. Each action
+ *  DOS or UNIX commmand command shell executes programs. Each command
  *  can have a Hashtable of "command-line" arguments and also look at
- *  global variables (its environment). Once an instance of an Action
- *  is made, it can be sent the doIt() and undoIt() messages to perform
+ *  global variables (its environment). Once an instance of a Cmd is
+ *  made, it can be sent the doIt() and undoIt() messages to perform
  *  that action. <p>
- *  needs-more-work: canDoIt, canUndoIt predicates control graying. <p>
- *  needs-more-work: Editor will keep a history of recent actions for
- *  undo. <p>
- *  <A HREF="../features.html#editing_actions">
- *  <TT>FEATURE: editing_actions</TT></A>
- *  <A HREF="../features.html#undo_and_redo">
- *  <TT>FEATURE: undo_and_redo</TT></A>
+ *
+ *  Since this is subclassed from class AbstractAction in the Swing
+ *  user interface library, Cmd objects can be easily added to menus
+ *  and toolbars. <p>
+ *
+ *  needs-more-work: canDoIt, canUndoIt predicates control
+ *  graying. <p>
+ *  
+ *  needs-more-work: Editor will keep a history of recent
+ *  actions for undo. <p>
+ *
  * @see Editor
- * @see ExecuteActionWindow
- */
+ * @see ExecuteActionWindow */
+
 public abstract class Cmd extends AbstractAction
 implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  /** Arguments that configure the Action instance. */
+  /** Arguments that configure the Cmd instance. */
   protected Hashtable _args;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new Action with the given arguments */
+  /** Construct a new Cmd with the given arguments */
   public Cmd(Hashtable args, String name) {
     super(name, loadIconResource(imageName(name), name));
     _args = args;
@@ -80,7 +93,7 @@ implements java.io.Serializable {
   }
 
   protected static String imageName(String name) {
-    return "/Images/" + stripJunk(name) + ".gif";
+    return "/uci/Images/" + stripJunk(name) + ".gif";
   }
 
   protected static String stripJunk(String s) {
@@ -96,9 +109,11 @@ implements java.io.Serializable {
   ////////////////////////////////////////////////////////////////
   // enabling and disabling
 
+  /** Determine if this Cmd should be shown as grayed out in menus and
+   *  toolbars. */
   public void updateEnabled() { setEnabled(shouldBeEnabled()); }
 
-  /** return true if this action should be available to the user. This
+  /** Return true if this action should be available to the user. This
    *  method should examine the ProjectBrowser that owns it.  Sublass
    *  implementations of this method should always call
    *  super.shouldBeEnabled first. */

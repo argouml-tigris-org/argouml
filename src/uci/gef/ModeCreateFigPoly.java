@@ -1,20 +1,28 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: ModeCreateFigPoly.java
 // Classes: ModeCreateFigPoly
@@ -29,20 +37,21 @@ import java.awt.event.MouseEvent;
 /** A Mode to interpert user input while creating a FigPoly. All of
  *  the actual event handling is inherited from ModeCreate. This class
  *  just implements the differences needed to make it specific to
- *  Polys.
- *  <A HREF="../features.html#basic_shapes_polygon">
- *  <TT>FEATURE: basic_shapes_polygon</TT></A>
- */
+ *  polygons. */
 
 public class ModeCreateFigPoly extends ModeCreate {
+
   ////////////////////////////////////////////////////////////////
   // instance variables
+
+  /** The number of points added so far. */
   protected int _npoints = 0;
   protected int _lastX, _lastY, _startX, _startY;
   protected Handle _handle = new Handle(-1);
 
   ////////////////////////////////////////////////////////////////
   // Mode API
+  
   public String instructions() {
     return "Click to add a point; Double-click to finish";
   }
@@ -51,9 +60,9 @@ public class ModeCreateFigPoly extends ModeCreate {
   // ModeCreate API
 
   /** Create a new FigRect instance based on the given mouse down
-   * event and the state of the parent Editor. */
+   *  event and the state of the parent Editor. */
   public Fig createNewItem(MouseEvent me, int snapX, int snapY) {
-    FigPoly p = new FigPoly(snapX, snapY, _editor.graphAttrs());
+    FigPoly p = new FigPoly(snapX, snapY);
     p.addPoint(snapX, snapY); // add the first point twice
     _startX = _lastX = snapX; _startY = _lastY = snapY;
     _npoints = 2;
@@ -82,7 +91,7 @@ public class ModeCreateFigPoly extends ModeCreate {
     if (_npoints > 2 && nearLast(x, y)) {
       FigPoly p = (FigPoly) _newItem;
       _editor.damaged(_newItem);
-      _handle.index = p.npoints() - 1;
+      _handle.index = p.getNumPoints() - 1;
       p.moveVertex(_handle, _startX, _startY, true);
       _npoints = 0;
       _editor.damaged(p);
@@ -108,7 +117,7 @@ public class ModeCreateFigPoly extends ModeCreate {
     _editor.damaged(_newItem); // startTrans?
     Point snapPt = new Point(x, y);
     _editor.snap(snapPt);
-    _handle.index = p.npoints() - 1;
+    _handle.index = p.getNumPoints() - 1;
     p.moveVertex(_handle, snapPt.x, snapPt.y, true);
     _editor.damaged(_newItem); // endTrans?
     me.consume();

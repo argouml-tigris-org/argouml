@@ -21,6 +21,9 @@ public class ToDoByType extends ToDoPerspective {
 //       _pseudoNodes.addElement(new ToDoPseudoNode(list, pred));
 //     }
 //   }
+
+  public String toString() { return "Type"; }
+
   
 } /* end class ToDoByType */
 

@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: LayerGrid.java
 // Classes: LayerGrid
@@ -28,16 +37,15 @@ import java.awt.*;
 
 /** Paint a background drawing guide consisting of horizontal and
  *  vertical lines in a neutral color. This feature is common to many
- *  drawing applications (e.g., MacDraw). LayerGrid is in concept a
+ *  drawing applications (e.g., MacDraw).  LayerGrid is in concept a
  *  Layer, just like any other so it can be composed, locked, grayed,
  *  hidden, and reordered. <p>
  *
  *  Needs-More-Work: Since I am using image stamping and AWT does not
- *  support transparent pixels, any layer underneath an instance of
+ *  support transparent pixels, any Layer underneath an instance of
  *  LayerGrid will not be seen. Image stamping is nice because it is
- *  fast, but I need to think of some other fast way to do it... <p>
- *  <A HREF="../features.html#visual_grids">
- *  <TT>FEATURE: visual_grids</TT></A> */
+ *  fast, but I need to think of some other fast way to do it... */
+
 
 public class LayerGrid extends Layer {
 
@@ -101,7 +109,7 @@ public class LayerGrid extends Layer {
   // painting methods
 
   /** Paint the grid lines or dots by repeatedly bitblting a
-   * precomputed 'stamp' onto the given Graphics */
+   *  precomputed 'stamp' onto the given Graphics */
   public synchronized void paintContents(Graphics g) {
     // This line is for printing under Java 1.1
     if (g instanceof PrintGraphics) {
@@ -219,11 +227,11 @@ public class LayerGrid extends Layer {
     _style = (_style + 1) % NUM_STYLES;
     _stamp = null;
     switch (_style) {
-    case 0: hidden(false); _paintLines = true; _spacing = 16; break;
-    case 1: hidden(false); _paintLines = true; _spacing = 8; break;
-    case 2: hidden(false); _paintLines = false; _spacing = 16; break;
-    case 3: hidden(false); _paintLines = false; _spacing = 32; break;
-    case 4: hidden(true); break;
+    case 0: setHidden(false); _paintLines = true; _spacing = 16; break;
+    case 1: setHidden(false); _paintLines = true; _spacing = 8; break;
+    case 2: setHidden(false); _paintLines = false; _spacing = 16; break;
+    case 3: setHidden(false); _paintLines = false; _spacing = 32; break;
+    case 4: setHidden(true); break;
     }
     refreshEditors();
   }

@@ -7,7 +7,7 @@ import com.sun.java.swing.*;
 import com.sun.java.swing.event.*;
 import com.sun.java.swing.tree.*;
 
-import uci.ui.*;
+import uci.ui.ToolBar;
 import uci.util.*;
 import uci.argo.kernel.*;
 
@@ -16,16 +16,18 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
   ////////////////////////////////////////////////////////////////
   // static variables
 
-  public UMLAction _actionNewToDoItem = new ActionNewToDoItem();
-  public ToDoItemAction _actionFixIt = new ActionFixIt();
-  public ToDoItemAction _actionResolve = new ActionResolve();
-  public ToDoItemAction _actionEmailExpert = new ActionEmailExpert();
-  public ToDoItemAction _actionMoreInfo = new ActionMoreInfo();
-  public ToDoItemAction _actionHush = new ActionHush();
+  public UMLAction _actionNewToDoItem = Actions.NewToDoItem;
+  public UMLAction _actionResolve = Actions.Resolve;
+  public UMLAction _actionEmailExpert = Actions.EmailExpert;
+  public UMLAction _actionMoreInfo = Actions.MoreInfo;
+  public UMLAction _actionHush = Actions.Hush;
+  public UMLAction _actionFixItNext = Actions.FixItNext;
+  public UMLAction _actionFixItBack = Actions.FixItBack;
+  public UMLAction _actionFixItFinish = Actions.FixItFinish;
   
   ////////////////////////////////////////////////////////////////
   // instance variables
-  Object _target;  //ToDoItem
+  Object _target;  //not ToDoItem
 //   JButton _newButton = new JButton("New");
 //   JButton _resolveButton = new JButton("Resolve");
 //   JButton _fixItButton = new JButton("FixIt");  //html
@@ -61,11 +63,15 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
     ToolBar toolBar = new ToolBar();
     toolBar.setLayout(new BoxLayout(toolBar, BoxLayout.Y_AXIS));
     toolBar.add(_actionNewToDoItem);
-    toolBar.add(_actionFixIt);
     toolBar.add(_actionResolve);
     toolBar.add(_actionEmailExpert);
     toolBar.add(_actionMoreInfo);
     toolBar.add(_actionHush);
+    toolBar.addSeparator();
+    
+    toolBar.add(_actionFixItNext);
+    toolBar.add(_actionFixItBack);
+    toolBar.add(_actionFixItFinish);
 
     //     addTool(toolBar, "New");
     //     addTool(toolBar, "FixIt");
@@ -103,24 +109,27 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
       //_description.setEnabled(false);
       _description.setText("No ToDoItem selected");
     }
-    else {
-      if (_target instanceof ToDoPseudoNode) {
-	_description.setText(((ToDoPseudoNode)_target).getDescription());
-	return;
-      }
+    else if (_target instanceof ToDoItem) {
       ToDoItem tdi = (ToDoItem) _target;
       _description.setEnabled(true);
       _description.setText(tdi.getDescription()); // getDescription()
     }
+    else {
+      _description.setText("needs-more-work");
+      return;
+    }
+
   }
   public Object getTarget() { return _target; }
 
   protected void updateActionsEnabled() {
-    _actionFixIt.updateEnabled(_target);
     _actionResolve.updateEnabled(_target);
     _actionEmailExpert.updateEnabled(_target);
     _actionMoreInfo.updateEnabled(_target);
     _actionHush.updateEnabled(_target);
+    _actionFixItNext.updateEnabled(_target);
+    _actionFixItBack.updateEnabled(_target);
+    _actionFixItFinish.updateEnabled(_target);
   }
 
   

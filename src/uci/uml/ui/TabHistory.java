@@ -14,6 +14,14 @@ import uci.argo.kernel.*;
 
 public class TabHistory extends TabSpawnable
 implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
+
+  ////////////////////////////////////////////////////////////////
+  // class variables
+  protected ImageIcon _CritiqueIcon = loadIconResource("PostIt0");
+  protected ImageIcon _ResolveIcon = loadIconResource("PostIt100");
+  protected ImageIcon _ManipIcon = loadIconResource("PostIt100");
+  protected ImageIcon _HistoryItemIcon = loadIconResource("Rectangle");
+
   
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -55,7 +63,8 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
    * @param e the event that characterizes the change.
    */
   public void valueChanged(ListSelectionEvent e) {
-    System.out.println("user selected " + _list.getSelectedValue());
+    // needs-more-work: called on each critique!
+    //System.out.println("user selected " + _list.getSelectedValue());
   }
 
 
@@ -71,13 +80,24 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
   {
     String s = value.toString();
     _label.setText(s);
-    _label.setIcon(isSelected ? _manuipIcon : _criticFiredIcon);
     _label.setBackground(isSelected ?
 			 MetalLookAndFeel.getTextHighlightColor() :
     			 MetalLookAndFeel.getWindowBackground());
     _label.setForeground(isSelected ?
 			 MetalLookAndFeel.getHighlightedTextColor() :
 			 MetalLookAndFeel.getUserTextColor());
+    if (value instanceof HistoryItemManipulation) {
+      _label.setIcon(_ManipIcon);
+    }
+    else if (value instanceof HistoryItemCritique) {
+      _label.setIcon(_CritiqueIcon);
+    }
+    else if (value instanceof HistoryItemResolve) {
+      _label.setIcon(_ResolveIcon);
+    }
+    else if (value instanceof HistoryItem) {
+      _label.setIcon(_HistoryItemIcon);
+    }
     return _label;
   }
 
@@ -94,61 +114,91 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   public void mouseDragged(MouseEvent me) { }
 
+
+  ////////////////////////////////////////////////////////////////
+  // utility functions
+  
+  protected static ImageIcon loadIconResource(String name) {
+    String imgName = imageName(name);
+    ImageIcon res = null;
+    try {
+      java.net.URL imgURL = UMLTreeCellRenderer.class.getResource(imgName);
+      return new ImageIcon(imgURL);
+    }
+    catch (Exception ex) {
+      return new ImageIcon(name);
+    }
+  }
+
+  protected static String imageName(String name) {
+    return "/uci/Images/" + stripJunk(name) + ".gif";
+  }
+  
+  protected static String stripJunk(String s) {
+    String res = "";
+    int len = s.length();
+    for (int i = 0; i < len; i++) {
+      char c = s.charAt(i);
+      if (Character.isJavaLetterOrDigit(c)) res += c;
+    }
+    return res;
+  }
+  
   ////////////////////////////////////////////////////////////////
   // inner classes
   
-  protected Icon _manuipIcon = new ManipIcon();
+//   protected Icon _manuipIcon = new ManipIcon();
 
-  protected Icon _criticFiredIcon = new FiredIcon();
+//   protected Icon _criticFiredIcon = new FiredIcon();
 
-  protected Icon _criticResolvedIcon = new ResolvedIcon();
+//   protected Icon _criticResolvedIcon = new ResolvedIcon();
 
 } /* end class TabHistory */
 
 
-class ManipIcon implements Icon {
-  public void paintIcon(Component c, Graphics g, int x, int y) {
-    int w = getIconWidth(), h = getIconHeight();
-    g.setColor(Color.black);
-    Polygon p = new Polygon();
-    p.addPoint(x, y + h);
-    p.addPoint(x + w/2+1, y);
-    p.addPoint(x + w, y + h);
-    g.fillPolygon(p);
-  }
-  public int getIconWidth() { return 9; }
-  public int getIconHeight() { return 9; }
-}
+// class ManipIcon implements Icon {
+//   public void paintIcon(Component c, Graphics g, int x, int y) {
+//     int w = getIconWidth(), h = getIconHeight();
+//     g.setColor(Color.black);
+//     Polygon p = new Polygon();
+//     p.addPoint(x, y + h);
+//     p.addPoint(x + w/2+1, y);
+//     p.addPoint(x + w, y + h);
+//     g.fillPolygon(p);
+//   }
+//   public int getIconWidth() { return 9; }
+//   public int getIconHeight() { return 9; }
+// }
 
 
-class FiredIcon implements Icon {
-  public void paintIcon(Component c, Graphics g, int x, int y) {
-    int w = getIconWidth(), h = getIconHeight();
-    g.setColor(Color.black);
-    Polygon p = new Polygon();
-    p.addPoint(x+1, y + h/2+1);
-    p.addPoint(x + w, y);
-    p.addPoint(x + w, y + h);
-    g.fillPolygon(p);
-  }
-  public int getIconWidth() { return 9; }
-  public int getIconHeight() { return 9; }
-}
+// class FiredIcon implements Icon {
+//   public void paintIcon(Component c, Graphics g, int x, int y) {
+//     int w = getIconWidth(), h = getIconHeight();
+//     g.setColor(Color.black);
+//     Polygon p = new Polygon();
+//     p.addPoint(x+1, y + h/2+1);
+//     p.addPoint(x + w, y);
+//     p.addPoint(x + w, y + h);
+//     g.fillPolygon(p);
+//   }
+//   public int getIconWidth() { return 9; }
+//   public int getIconHeight() { return 9; }
+// }
 
 
-class ResolvedIcon implements Icon {
-  public void paintIcon(Component c, Graphics g, int x, int y) {
-    int w = getIconWidth(), h = getIconHeight();
-    g.setColor(Color.black);
-    Polygon p = new Polygon();
-    p.addPoint(x+1, y + h/2+1);
-    p.addPoint(x + w, y);
-    p.addPoint(x + w, y + h);
-    g.fillPolygon(p);
-  }
-  public int getIconWidth() { return 9; }
-  public int getIconHeight() { return 9; }
-}
+// class ResolvedIcon implements Icon {
+//   public void paintIcon(Component c, Graphics g, int x, int y) {
+//     int w = getIconWidth(), h = getIconHeight();
+//     g.setColor(Color.black);
+//     Polygon p = new Polygon();
+//     p.addPoint(x+1, y + h/2+1);
+//     p.addPoint(x + w, y);
+//     p.addPoint(x + w, y + h);
+//     g.fillPolygon(p);
+//   }
+//   public int getIconWidth() { return 9; }
+//   public int getIconHeight() { return 9; }
+// }
 
 class HistoryListModel implements ListModel, HistoryListener {
   ////////////////////////////////////////////////////////////////

@@ -17,33 +17,31 @@ public class TabDocs extends TabText {
   ////////////////////////////////////////////////////////////////
   // constructor
   public TabDocs() {
-    setTitle("Docs");
+    setTitle("Javadocs");
     System.out.println("making TabDocs");
   }
 
   ////////////////////////////////////////////////////////////////
   // accessors
   protected String genText() {
-    System.out.println("Docstab getting docs for " + _target);
-    Object modelObject = null;
+    //System.out.println("Docstab getting docs for " + _target);
+    Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return null;
-    System.out.println("Docstab getting docs for " + modelObject);
     return DocumentationManager.getDocs(modelObject);
   }
 
   protected void parseText(String s) {
-    System.out.println("Docstab   setting docs for "+ _target);
-    Object modelObject = null;
+    //System.out.println("Docstab   setting docs for "+ _target);
+    Object modelObject = _target;
     if (_target instanceof FigNode)
       modelObject = ((FigNode)_target).getOwner();
     if (_target instanceof FigEdge)
       modelObject = ((FigEdge)_target).getOwner();
     if (modelObject == null) return;
-    System.out.println("Docstab   setting docs for " + modelObject);
     DocumentationManager.setDocs(modelObject, s);
   }
 

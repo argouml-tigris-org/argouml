@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED `AS IS' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 
 // File: CmdSave.java
@@ -31,14 +40,12 @@ import java.io.*;
 
 
 /** Cmd to save the current document to a binary file using Sun's
- *  ObjectSerialization library availible from <a href =
- *  "http://chatsubo.javasoft.com/current/serial/-1.html">
- *  java.sun.com</a>. The written file contains the Editor object and
- *  all objects reachable through instance variables of the Editor
- *  (e.g., the selections, the views, the contents of the views, the
- *  net-level description of the graph, etc.).  UI objects such as
- *  Windows, Frames, Panels, and Images are not stored because I have
- *  marked those instance variables as transient in the source
+ *  ObjectSerialization library. The written file contains the Editor
+ *  object and all objects reachable through instance variables of the
+ *  Editor (e.g., the selections, the views, the contents of the
+ *  views, the net-level description of the graph, etc.).  UI objects
+ *  such as Windows, Frames, Panels, and Images are not stored because
+ *  I have marked those instance variables as transient in the source
  *  code. <p>
  *
  *  One advantage of this approach to saving and loading is that
@@ -54,16 +61,6 @@ import java.io.*;
  *  program that uses ObjectSerialization. At this time GEF provides no
  *  support for saving or loading textual representations of documents
  *  that could be used in other tools.<p>
- *  <A HREF="../features.html#load_and_save">
- *  <TT>FEATURE: load_and_save</TT></A>
- *  <A HREF="../features.html#cross_development_environments">
- *  <TT>FEATURE: cross_development_environments</TT></A>
- *  <A HREF="../bugs.html#save_memory_hog">
- *  <FONT COLOR=660000><B>BUG: save_memory_hog</B></FONT></A>
- *  <A HREF="../bugs.html#saved_file_versioning">
- *  <FONT COLOR=660000><B>BUG: saved_file_versioning</B></FONT></A>
- *  <A HREF="../bugs.html#save_under_jdk1_0_2">
- *  <FONT COLOR=660000><B>BUG: save_under_jdk1_0_2</B></FONT></A>
  *
  * @see CmdOpen */
 
@@ -93,7 +90,9 @@ public class CmdSave extends Cmd implements FilenameFilter {
      	FileOutputStream f = new FileOutputStream(path + filename);
      	ObjectOutput s = new ObjectOutputStream(f);
     	System.out.println("Cmd save...");
+	ce.preSave();
     	s.writeObject(ce);
+	ce.postSave();
     	System.out.println("save done");
     	Globals.showStatus("Wrote " + path + filename);
     	f.close();

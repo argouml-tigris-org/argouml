@@ -1,20 +1,28 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
 // File: FigEdgeRectiline.java
 // Classes: FigEdgeRectiline
@@ -30,7 +38,7 @@ import java.awt.*;
  *  automatically routes a rectilinear edge. The routing is not very
  *  good. It avoids the source and sink nodes and no other nodes. It is
  *  basically case-analysis, and some of the cases are wrong or
- *  missing. In any case, the user can edit the edge by dragging
+ *  missing. Anyway, the user can edit the edge by dragging
  *  handles. The 0th and last handles are fixed in position so that
  *  they stay connected to ports. If the user drags a handle next to a
  *  fixed handle, a new vertex is automatically inserted.
@@ -50,11 +58,12 @@ public class FigEdgeRectiline extends FigEdge {
   ////////////////////////////////////////////////////////////////
   // FigEdge API
 
-  /** Instanciate a FigPoly with its rectilinear flag set. */
+  /** Instanciate a FigPoly with its rectilinear flag set. By default
+   *  the FigPoly is black and the FigEdge has now ArrowHeads. */
   protected Fig makeEdgeFig() {
     FigPoly res = new FigPoly(Color.black);
-    res.rectilinear(true);
-    res.fixedHandles(1);
+    res.setRectilinear(true);
+    res.setFixedHandles(1);
     res.setFilled(false);
     return res;
   }
@@ -90,11 +99,7 @@ public class FigEdgeRectiline extends FigEdge {
   } /* end computeRoute */
 
   /** Internal function to actually compute the layout of the line if
-   *  it has never been done on that line before.
-   *  <A HREF="../bugs.html#rectilinear_arc_constraints">
-   *  <FONT COLOR=660000><B>BUG: rectilinear_arc_constraints</B></FONT></A>
-   *  <A HREF="../bugs.html#rectilinear_arc_points">
-   *  <FONT COLOR=660000><B>BUG: rectilinear_arc_points</B></FONT></A> */
+   *  it has never been done on that line before. */
   protected void layoutEdge() {
     int npoints = 0;
     int xpoints[] = new int[16];
@@ -135,7 +140,7 @@ public class FigEdgeRectiline extends FigEdge {
     //   if (dstSector == 1 || dstSector == -1) {
     // xpoints[npoints] = dstPt.x; ypoints[npoints++] = dstPt.y; }
     Polygon routePoly = new Polygon(xpoints, ypoints, npoints);
-    ((FigPoly)_fig).polygon(routePoly);
+    ((FigPoly)_fig).setPolygon(routePoly);
   }
 
   /** Reply a point on the given routing rect that is "straight out"

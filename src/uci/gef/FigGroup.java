@@ -1,20 +1,30 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
+
 
 // File: FigGroup.java
 // Classes: FigGroup
@@ -26,11 +36,7 @@ package uci.gef;
 import java.util.*;
 import java.awt.*;
 
-/** This class implements a basic composite figure that holds a list
- *  of Figs.
- *  <A HREF="../features.html#basic_shapes_group">
- *  <TT>FEATURE: basic_shapes_group</TT></A>
- */
+/** This class implements a group of Figs. */
 
 public class FigGroup extends Fig {
 
@@ -38,19 +44,19 @@ public class FigGroup extends Fig {
   // instance variables
 
   /** The Fig's contained in this FigGroup */
-  //? use array instead?
+  //? use array for speed?
   protected Vector _figs;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /** Construct a new FigGroup that holds no Fig's. */
+  /** Construct a new FigGroup that holds no Figs. */
   public FigGroup() {
     super();
     _figs = new Vector();
   }
 
-  /** Construct a new FigGroup that holds the given Fig's. */
+  /** Construct a new FigGroup that holds the given Figs. */
   public FigGroup(Vector figs) {
     super();
     _figs = figs;
@@ -60,25 +66,42 @@ public class FigGroup extends Fig {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  /** Reply an Enumeration of the Fig's contained in this FigGroup. */
+  /** Reply an Enumeration of the Figs contained in this FigGroup. */
   public Enumeration elements() { return _figs.elements(); }
 
-  /** Add a Fig to the list.  New Figs are added on the top. */
+  /** Add a Fig to the group.  New Figs are added on the top. */
   public void addFig(Fig p) { _figs.addElement(p); calcBounds(); }
 
-  /** Reply the list of Fig's. */
+  /** Reply the Vector of Figs. */
   public Vector getFigs() { return _figs; }
 
-  public void setFigs(Vector figs) { _figs = figs; calcBounds(); }
+  /** Set the Vector of Figs in this group. Fires PropertyChange with "bounds". */
+  public void setFigs(Vector figs) {
+    Rectangle oldBounds = getBounds();
+    _figs = figs;
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  }
 
 
-  /** Delete a Fig from the list */
-  public void deleteFig(Fig p) { _figs.removeElement(p); calcBounds(); }
+  /** Delete a Fig from the group. Fires PropertyChange with "bounds". */
+  public void deleteFig(Fig p) {
+    Rectangle oldBounds = getBounds();
+    _figs.removeElement(p);
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  }
 
-  /** Delete all Fig's from the list. */
-  public void removeAll() { _figs.removeAllElements(); calcBounds(); }
+  /** Delete all Fig's from the group. Fires PropertyChange with "bounds".*/
+  public void removeAll() {
+    Rectangle oldBounds = getBounds();
+    _figs.removeAllElements();
+    calcBounds();
+    firePropChange("bounds", oldBounds, getBounds());
+  }
 
 
+  /** Groups are resizable, but not reshapable, and not rotatable (for now). */
   public boolean isResizable() { return true; }
   public boolean isReshapable() { return false; }
   public boolean isRotatable() { return false; }
@@ -101,10 +124,12 @@ public class FigGroup extends Fig {
     return res;
   }
 
+  /** Returns true if any Fig in the group contains the given point. */
   public boolean contains(int x, int y) {
     return hitFig(new Rectangle(x, y, 0, 0)) != null;
   }
 
+  /** Returns true if any Fig in the group hits the given rect. */
   public boolean hit(Rectangle r) { return hitFig(r) != null; }
 
   /** Translate all the Fig in the list by the given offset. */
@@ -117,7 +142,10 @@ public class FigGroup extends Fig {
     _x += dx; _y += dy; // no need to call calcBounds();
   }
 
+  /** Set the bounding box to the given rect. Figs in the group are
+   *  scaled to fit. Fires PropertyChange with "bounds" */
   public void setBounds(int x, int y, int w, int h) {
+    Rectangle oldBounds = getBounds();
     Enumeration figs = _figs.elements();
     while (figs.hasMoreElements()) {
       Fig f = (Fig) figs.nextElement();
@@ -128,12 +156,13 @@ public class FigGroup extends Fig {
       f.setBounds(newX, newY, newW, newH);
     }
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
+    firePropChange("bounds", oldBounds, getBounds());
   }
 
   ////////////////////////////////////////////////////////////////
   // display methods
 
-  /** Paint all the Fig's in this list. */
+  /** Paint all the Figs in this group. */
   public void paint(Graphics g) {
     Enumeration figs = elements();
     while (figs.hasMoreElements()) {
@@ -142,7 +171,7 @@ public class FigGroup extends Fig {
     }
   }
 
-  /** Accumulate a bounding box for all the Fig's in the list. */
+  /** Accumulate a bounding box for all the Figs in the group. */
   public void calcBounds() {
     Rectangle bbox; // could be blank final
     Enumeration figs = _figs.elements();

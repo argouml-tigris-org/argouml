@@ -1,20 +1,29 @@
-// Copyright (c) 1995, 1996 Regents of the University of California.
-// All rights reserved.
-//
-// This software was developed by the Arcadia project
-// at the University of California, Irvine.
-//
-// Redistribution and use in source and binary forms are permitted
-// provided that the above copyright notice and this paragraph are
-// duplicated in all such forms and that any documentation,
-// advertising materials, and other materials related to such
-// distribution and use acknowledge that the software was developed
-// by the University of California, Irvine.  The name of the
-// University may not be used to endorse or promote products derived
-// from this software without specific prior written permission.
-// THIS SOFTWARE IS PROVIDED ``AS IS'' AND WITHOUT ANY EXPRESS OR
-// IMPLIED WARRANTIES, INCLUDING, WITHOUT LIMITATION, THE IMPLIED
-// WARRANTIES OF MERCHANTIBILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+// Copyright (c) 1996-98 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation for educational, research and non-profit
+// purposes, without fee, and without a written agreement is hereby granted,
+// provided that the above copyright notice and this paragraph appear in all
+// copies. Permission to incorporate this software into commercial products may
+// be obtained by contacting the University of California. David F. Redmiles
+// Department of Information and Computer Science (ICS) University of
+// California Irvine, California 92697-3425 Phone: 714-824-3823. This software
+// program and documentation are copyrighted by The Regents of the University
+// of California. The software program and documentation are supplied "as is",
+// without any accompanying services from The Regents. The Regents do not
+// warrant that the operation of the program will be uninterrupted or
+// error-free. The end-user understands that the program was developed for
+// research purposes and is advised not to rely exclusively on the program for
+// any reason. IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY
+// PARTY FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES,
+// INCLUDING LOST PROFITS, ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS
+// DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY
+// DISCLAIMS ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+// WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE
+// SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 
 // File: ModeManager.java
 // Classes: ModeManager
@@ -29,11 +38,10 @@ import java.util.*;
 import java.io.Serializable;
 import uci.util.*;
 
-/** ModeManager is a composite Mode that is made up of several other
- *  Modes.  Events are passed to the submodes for handling.  The
- *  submodes are prioritized according to their order on the stack,
- *  i.e., the last mode added gets the first chance to handle an
- *  Event.  */
+/** ModeManager keeps track of all the Modes for a given Editor.
+ *  Events are passed to the Modes for handling.  The submodes are
+ *  prioritized according to their order on a stack, i.e., the last
+ *  Mode added gets the first chance to handle an Event.  */
 
 public class ModeManager
 implements Serializable, MouseListener, MouseMotionListener, KeyListener {
@@ -48,25 +56,20 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  system and should be faster, use an array instead of a Vector.*/
   private Vector _modes = new Vector();
 
+  /** The Editor that owns this ModeManager. */
   public Editor _editor;
 
-  /** Set the parent Editor of this Mode */
+  /** Set the parent Editor of this ModeManager */
   public void setEditor(Editor w) { _editor = w; }
 
-  /** Get the parent Editor of this Mode */
+  /** Get the parent Editor of this ModeManager */
   public Editor getEditor() { return _editor; }
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  /**  Construct an empty ModeManager. */
+  /**  Construct a ModeManager with no modes. */
   public ModeManager(Editor ed) { _editor = ed; }
-
-// //   /**  Construct a ModeManager with the given mode(s). */
-// //   public ModeManager(Mode m1) { push(m1); }
-
-// //   /**  Construct a ModeManager with the given mode(s). */
-// //   public ModeManager(Mode m1, Mode m2) { push(m1); push(m2); }
 
   ////////////////////////////////////////////////////////////////
   //  accessors
@@ -83,8 +86,8 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     else return (Mode)_modes.lastElement();
   }
 
-  /** Add the given mode to the composite iff another instance
-   * of the same class is not already on the stack. */
+  /** Add the given Mode to the stack iff another instance
+   *  of the same class is not already on the stack. */
   public void push(Mode newMode) {
     Class newModeClass = newMode.getClass();
     Enumeration subs = _modes.elements();
@@ -112,45 +115,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
   ////////////////////////////////////////////////////////////////
   // event handlers
 
-  /** Pass the event to each mode in the stack until one handles it. */
-  public boolean handleEvent(Event e) {
-    System.out.println("old handleEvent called in ModeManager");
-    return true;
-//     boolean res = super.handleEvent(e);
-//     for (int i = _modes.size() - 1; i >= 0 && !res; --i) {
-//       Mode m = ((Mode)_modes.elementAt(i));
-//       if (Dbg.on) Dbg.log("DebugDispatch2", "passing event to mode #" + i);
-//       try { res = m.handleEvent(e); }
-//       catch (java.lang.Throwable ex) {
-// 	System.out.println("While passing event " + e.toString() +
-// 			   " to mode " + m.toString() +
-// 			   " the following error occured:");
-// 	ex.printStackTrace();
-//       }
-//     }
-//     return res;
-  }
-
-  /** Give each Mode a chance to prehandle the event. */
-  public void preHandleEvent(Event e) {
-//     checkModeTransitions(e);
-//     for (int i = 1; i < _modes.size(); ++i) {
-//       //DebugLog.log("DebugDispatch2", "prehandeling event with mode #" + i);
-//       ((Mode)_modes.elementAt(i)).preHandleEvent(e);
-//     }
-//     super.preHandleEvent(e);
-  }
-
-  /** Give each Mode a chance to posthandle the event. */
-  public void postHandleEvent(Event e) {
-//     super.postHandleEvent(e);
-//     for (int i = _modes.size() - 1; i >= 0; --i) {
-//       //DebugLog.log("DebugDispatch2", "posthandeling event with mode #" + i);
-//       ((Mode)_modes.elementAt(i)).postHandleEvent(e);
-//     }
-  }
-
-
+  /** Pass events to all modes in order, until one consumes it. */
   public void keyTyped(KeyEvent ke) {
     checkModeTransitions(ke);    
     for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
@@ -159,7 +124,10 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Do nothing, this event are not passed to the Modes. */
   public void keyReleased(KeyEvent ke) { }
+
+  /** Pass events to all modes in order, until one consumes it. */
   public void keyPressed(KeyEvent ke) {
     for (int i = _modes.size() - 1; i >= 0 && !ke.isConsumed(); --i) {
       Mode m = ((Mode)_modes.elementAt(i));
@@ -167,6 +135,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
   
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseMoved(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
       Mode m = ((Mode)_modes.elementAt(i));
@@ -174,6 +143,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseDragged(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
       Mode m = ((Mode)_modes.elementAt(i));
@@ -181,6 +151,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseClicked(MouseEvent me) {
     checkModeTransitions(me);    
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
@@ -189,6 +160,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mousePressed(MouseEvent me) {
     checkModeTransitions(me);
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
@@ -197,6 +169,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseReleased(MouseEvent me) {
     checkModeTransitions(me);    
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
@@ -205,6 +178,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseEntered(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
       Mode m = ((Mode)_modes.elementAt(i));
@@ -212,6 +186,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
     }
   }
 
+  /** Pass events to all modes in order, until one consumes it. */
   public void mouseExited(MouseEvent me) {
     for (int i = _modes.size() - 1; i >= 0 && !me.isConsumed(); --i) {
       Mode m = ((Mode)_modes.elementAt(i));
@@ -231,8 +206,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
    *  transition from ModeSelect to ModeModify here, but there are too
    *  many interactions, so that code is still in ModeSelect. */
   public void checkModeTransitions(InputEvent ie) {
-    if ((top() instanceof ModeSelect || top() instanceof ModeModify)
-	&& ie.getID() == MouseEvent.MOUSE_PRESSED) {
+    if (!top().canExit() && ie.getID() == MouseEvent.MOUSE_PRESSED) {
       MouseEvent me = (MouseEvent) ie;
       int x = me.getX(), y = me.getY();
       Fig underMouse = _editor.hit(x, y);
@@ -240,7 +214,7 @@ implements Serializable, MouseListener, MouseMotionListener, KeyListener {
 	Object startPort = ((FigNode) underMouse).hitPort(x, y);
 	if (startPort != null) {
 	  //user clicked on a port, now drag an edge
-	  Mode createArc = new ModeCreateArc(_editor);
+	  Mode createArc = new ModeCreateEdge(_editor);
 	  push(createArc);
 	  createArc.mousePressed(me);
 	}
