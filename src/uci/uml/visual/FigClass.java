@@ -55,7 +55,6 @@ public class FigClass extends FigNodeWithCompartments {
 
   protected FigCompartment _attr;
   protected FigCompartment _oper;
-  protected FigRect _bigPort;
 
   ////////////////////////////////////////////////////////////////
   // constructors

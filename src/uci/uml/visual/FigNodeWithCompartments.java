@@ -106,9 +106,10 @@ public abstract class FigNodeWithCompartments extends FigNodeModelElement {
     return displayed;
   }
 
-  /** Returns a list of the regular Figs enclosed, without the FigCompartments, or the FigRect. */
+  /** Returns a list of the regular Figs enclosed, without the
+   *  FigCompartments, or the FigRect. */
   // added by Eric Lefevre 25 Mar 1999
-  public Vector getRegularFigs() { 
+  public Vector getRegularFigs() {
     Vector figs = (Vector)getFigs().clone(); // was getEnclosedFigs()
     figs.removeElement(_bigPort);
     for (int i=0; i<getCompartments().size(); i++ )
