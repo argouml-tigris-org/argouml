@@ -34,6 +34,7 @@ import javax.swing.tree.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.graph.presentation.*;
+import org.tigris.gef.presentation.Fig;
 
 import org.argouml.application.api.*;
 import org.argouml.util.*;
@@ -233,5 +234,31 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     }
 
     public int getQuadrant() { return Q_TOP_RIGHT; }
+    
+    /**
+     * Removes all figs from all diagrams for some object obj.
+     * @param obj
+     */
+    public void removePresentationFor(Object obj, Vector diagrams) {
+    	for (int i = 0; i < _tabs.getComponentCount() ; i++) {
+    		Component comp = _tabs.getComponentAt(i);
+    		if (comp instanceof TabDiagram) {
+    			TabDiagram tabDia = (TabDiagram)comp;
+    			Object oldDia = tabDia.getTarget();
+    			Iterator it = diagrams.iterator();
+    			while (it.hasNext()) {
+    				Diagram diagram = (Diagram)it.next();
+    				Fig aFig = diagram.presentationFor(obj);
+    				if (aFig != null) {
+    					tabDia.getJGraph().setDiagram(diagram);
+    					aFig.delete();
+    				}
+    			}
+    			tabDia.getJGraph().setDiagram((Diagram)oldDia);
+    		}	
+    		break;
+    	}
+    }
+    			
 
 } /* end class MultiEditorPane */
