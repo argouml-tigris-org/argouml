@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.model.Model;
@@ -35,12 +34,26 @@ import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
 public class TestUMLModelElementSupplierDependencyListModel
     extends AbstractUMLModelElementListModel2Test {
 
+    private Object from;
+    private Object to;
+
     /**
      * Constructor for TestUMLModelElementSupplierDependencyListModel.
+     *
      * @param arg0 is the name of the test case.
      */
     public TestUMLModelElementSupplierDependencyListModel(String arg0) {
         super(arg0);
+    }
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() throws Exception {
+        super.setUp();
+
+        from = Model.getCoreFactory().createClass();
+        to = Model.getCoreFactory().createClass();
     }
 
     /**
@@ -63,7 +76,7 @@ public class TestUMLModelElementSupplierDependencyListModel
     protected Object[] fillModel() {
         Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
-            ext[i] = Model.getCoreFactory().createDependency();
+            ext[i] = Model.getCoreFactory().buildDependency(from, to);
             Model.getCoreHelper().addSupplierDependency(getElem(), ext[i]);
         }
         return ext;
@@ -74,7 +87,9 @@ public class TestUMLModelElementSupplierDependencyListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            Model.getCoreHelper().removeSupplierDependency(getElem(), elements[i]);
+            Model.getCoreHelper().removeSupplierDependency(
+                    getElem(),
+                    elements[i]);
         }
     }
 

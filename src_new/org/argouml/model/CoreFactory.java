@@ -34,13 +34,6 @@ import java.util.Collection;
  */
 public interface CoreFactory {
     /**
-     * Create an empty but initialized instance of a UML Abstraction.
-     *
-     * @return an initialized UML Abstraction instance.
-     */
-    Object createAbstraction();
-
-    /**
      * Build an empty but initialized instance of a UML Abstraction
      * with a given name.
      *
@@ -50,20 +43,6 @@ public interface CoreFactory {
      * @param client the client of the abstraction
      */
     Object buildAbstraction(String name, Object supplier, Object client);
-
-    /**
-     * Create an empty but initialized instance of a UML Association.
-     *
-     * @return an initialized UML Association instance.
-     */
-    Object createAssociation();
-
-    /**
-     * Create an empty but initialized instance of a UML AssociationClass.
-     *
-     * @return an initialized UML AssociationClass instance.
-     */
-    Object createAssociationClass();
 
     /**
      * Create an empty but initialized instance of a UML AssociationEnd.
@@ -129,13 +108,6 @@ public interface CoreFactory {
     Object createDataType();
 
     /**
-     * Create an empty but initialized instance of a UML Dependency.
-     *
-     * @return an initialized UML Dependency instance.
-     */
-    Object createDependency();
-
-    /**
      * Create an empty but initialized instance of a UML ElementResidence.
      *
      * @return an initialized UML ElementResidence instance.
@@ -148,13 +120,6 @@ public interface CoreFactory {
      * @return an initialized UML Flow instance.
      */
     Object createFlow();
-
-    /**
-     * Create an empty but initialized instance of a UML Generalization.
-     *
-     * @return an initialized UML Generalization instance.
-     */
-    Object createGeneralization();
 
     /**
      * Create an empty but initialized instance of a UML Interface.
@@ -453,11 +418,11 @@ public interface CoreFactory {
      * Builds a generalization between a parent and a child. Does not check if
      * multiple inheritance is allowed for the current notation.
      *
-     * @param child1 is the child
-     * @param parent1 is the parent
+     * @param child is the child
+     * @param parent is the parent
      * @return MGeneralization
      */
-    Object buildGeneralization(Object child1, Object parent1);
+    Object buildGeneralization(Object child, Object parent);
 
 
     /**

@@ -39,6 +39,9 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     private Object[] types;
     private UMLGeneralizationPowertypeComboBoxModel model;
     private Object elem;
+    private Object child;
+    private Object parent;
+    private Object namespace;
 
     /**
      * Constructor for TestUMLGeneralizationPowertypeComboBoxModel.
@@ -53,7 +56,10 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        elem = Model.getCoreFactory().createGeneralization();
+        namespace = Model.getCoreFactory().createNamespace();
+        child = Model.getCoreFactory().buildClass("child", namespace);
+        parent = Model.getCoreFactory().buildClass("parent", namespace);
+        elem = Model.getCoreFactory().buildGeneralization(child, parent);
         model = new UMLGeneralizationPowertypeComboBoxModel();
         model.targetSet(new TargetEvent(this,
 					"set",
@@ -75,6 +81,9 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
+        Model.getUmlFactory().delete(child);
+        Model.getUmlFactory().delete(parent);
+        Model.getUmlFactory().delete(namespace);
         for (int i = 0; i < 10; i++) {
             Model.getUmlFactory().delete(types[i]);
         }

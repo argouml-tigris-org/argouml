@@ -116,7 +116,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Abstraction instance.
      */
-    public Object createAbstraction() {
+    private Object createAbstraction() {
 	Object modelElement =
 	    MFactory.getDefaultFactory().createAbstraction();
 	super.initialize(modelElement);
@@ -153,7 +153,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Association instance.
      */
-    public Object createAssociation() {
+    private Object createAssociation() {
 	MAssociation modelElement =
 	    MFactory.getDefaultFactory().createAssociation();
 	super.initialize(modelElement);
@@ -165,7 +165,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML AssociationClass instance.
      */
-    public Object createAssociationClass() {
+    private Object createAssociationClass() {
 	MAssociationClass modelElement =
 	    MFactory.getDefaultFactory().createAssociationClass();
 	super.initialize(modelElement);
@@ -283,7 +283,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Dependency instance.
      */
-    public Object createDependency() {
+    private Object createDependency() {
 	MDependency modelElement =
 	    MFactory.getDefaultFactory().createDependency();
 	super.initialize(modelElement);
@@ -318,7 +318,7 @@ public class CoreFactoryImpl
      *
      * @return an initialized UML Generalization instance.
      */
-    public Object createGeneralization() {
+    private Object createGeneralization() {
 	MGeneralization modelElement =
 	    MFactory.getDefaultFactory().createGeneralization();
 	super.initialize(modelElement);
@@ -471,9 +471,7 @@ public class CoreFactoryImpl
 					       + "the classifiers does not "
 					       + "belong to a namespace");
         }
-        MAssociation assoc =
-            (MAssociation)
-            	nsmodel.getCoreFactory().createAssociation();
+        MAssociation assoc = (MAssociation) createAssociation();
         assoc.setName("");
         assoc.setNamespace(
                 (MNamespace) nsmodel.getCoreHelper()
@@ -539,9 +537,7 @@ public class CoreFactoryImpl
         				       + "the classifiers does not "
         				       + "belong to a namespace");
         }
-        MAssociation assoc =
-            (MAssociation)
-            	nsmodel.getCoreFactory().createAssociation();
+        MAssociation assoc = (MAssociation) createAssociation();
         assoc.setName("");
         assoc.setNamespace((MNamespace)
         		   nsmodel.getCoreHelper().getFirstSharedNamespace(ns1,
@@ -1233,14 +1229,15 @@ public class CoreFactoryImpl
                 return null;
             }
         }
+
         if (parent.getNamespace() == null) {
-            return null;
+            throw new IllegalArgumentException("parent has no namespace");
         }
         if (parent.isLeaf()) {
-            return null;
+            throw new IllegalArgumentException("parent is leaf");
         }
         if (child.isRoot()) {
-            return null;
+            throw new IllegalArgumentException("child is root");
         }
 
         MGeneralization gen = (MGeneralization) createGeneralization();
@@ -1448,8 +1445,7 @@ public class CoreFactoryImpl
 	    || supplier.getNamespace() == null) {
 	    throw new IllegalArgumentException("faulty arguments.");
 	}
-	Object realization =
-	    nsmodel.getCoreFactory().createAbstraction();
+	Object realization = createAbstraction();
 	MNamespace nsc = client.getNamespace();
 	MNamespace nss = supplier.getNamespace();
 	MNamespace ns = null;

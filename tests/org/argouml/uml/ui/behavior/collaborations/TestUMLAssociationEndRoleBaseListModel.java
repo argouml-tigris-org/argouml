@@ -24,9 +24,13 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -63,7 +67,14 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
 
         elem = Model.getCollaborationsFactory().createAssociationEndRole();
 
-        baseAssoc = Model.getCoreFactory().createAssociation();
+        Object classNamespace = Model.getCoreFactory().createNamespace();
+        baseAssoc =
+            Model.getCoreFactory().buildAssociation(
+                    Model.getCoreFactory().buildClass("from", classNamespace),
+                    false,
+                    Model.getCoreFactory().buildClass("to", classNamespace),
+                    true,
+                    "association");
         Model.getCoreHelper().addOwnedElement(collaboration, baseAssoc);
 
         Object from =
@@ -92,7 +103,16 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
     protected void tearDown() throws Exception {
         Model.getUmlFactory().delete(elem);
         Model.getUmlFactory().delete(assocRole);
+
+        Collection connections = ModelFacade.getConnections(baseAssoc);
         Model.getUmlFactory().delete(baseAssoc);
+
+        Iterator iter = connections.iterator();
+        while (iter.hasNext()) {
+            Model.getUmlFactory().delete(iter.next());
+        }
+        connections = null;
+
         Model.getUmlFactory().delete(baseEnd);
         model = null;
         super.tearDown();
