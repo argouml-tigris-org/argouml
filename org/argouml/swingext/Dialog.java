@@ -170,6 +170,17 @@ public abstract class Dialog extends JDialog implements ActionListener {
         _buttonPanel.add(button);
     }
     
+    /**
+     * Adds a new button to the set of available option buttons on the dialog.
+     * The button will appear at the specified index.
+     * 
+     * @param button the button to add to the dialog.
+     * @param index  index at which to insert new button (0 for first button)
+     **/
+    public void addButton(JButton button, int index) {
+        _buttonPanel.add(button, index);
+    }    
+    
     protected JButton getOkButton() {
         return _okButton;
     }
