@@ -26,10 +26,9 @@
 
 package org.argouml.ui.explorer.rules;
 
-import org.argouml.model.ModelFacade;
 import java.util.Collection;
 
-import org.argouml.ui.AbstractGoRule;
+import org.argouml.model.ModelFacade;
 
 /**
  * PerspectiveRule to navigate from statemachine to

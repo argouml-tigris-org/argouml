@@ -25,9 +25,8 @@
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
-import org.argouml.model.ModelFacade;
 
-import org.argouml.ui.AbstractGoRule;
+import org.argouml.model.ModelFacade;
 /**
  * PerspectiveRule to navigate from behavioral
  * feature to statemachine.  Causes statemachine to be shown as child

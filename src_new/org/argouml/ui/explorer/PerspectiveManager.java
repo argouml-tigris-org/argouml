@@ -142,6 +142,8 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToDoActivity());
         packagePerspective.addRule(new GoStateToEntry());
         packagePerspective.addRule(new GoStateToExit());
+		packagePerspective.addRule(new GoClassifierToSequenceDiagram());
+		packagePerspective.addRule(new GoOperationToSequenceDiagram());
         
         ExplorerPerspective diagramPerspective = 
             new ExplorerPerspective("combobox.item.diagram-centric");

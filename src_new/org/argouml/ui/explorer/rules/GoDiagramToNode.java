@@ -26,7 +26,6 @@ package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
 
-import org.argouml.ui.AbstractGoRule;
 import org.tigris.gef.base.Diagram;
 
 public class GoDiagramToNode implements PerspectiveRule {

@@ -24,14 +24,12 @@
 
 package org.argouml.ui.explorer.rules;
 
-import java.util.Collection;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
+
 import org.argouml.model.ModelFacade;
-
-
-import org.argouml.ui.AbstractGoRule;
 
 public class GoClassToNavigableClass implements PerspectiveRule {
 

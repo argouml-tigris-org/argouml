@@ -66,8 +66,7 @@ import org.tigris.gef.base.ModeCreatePolyEdge;
  */
 
 public class UMLUseCaseDiagram extends UMLDiagram {
-    protected static Logger cat =
-        Logger.getLogger(UMLUseCaseDiagram.class);
+    protected static Logger cat = Logger.getLogger(UMLUseCaseDiagram.class);
 
     // Actions specific to the use case diagram toolbar
 
@@ -91,31 +90,35 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     //CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
     //MAssociation.class, "Association");
     protected static Action _actionAssociation =
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
-                                false, "Association");
+        new ActionAddAssociation(
+            ModelFacade.NONE_AGGREGATIONKIND,
+            false,
+            "Association");
     protected static Action _actionAggregation =
         new ActionAddAssociation(
-				 ModelFacade.AGGREGATE_AGGREGATIONKIND,
-				 false,
-				 "Aggregation");
+            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+            false,
+            "Aggregation");
     protected static Action _actionComposition =
         new ActionAddAssociation(
-				 ModelFacade.COMPOSITE_AGGREGATIONKIND,
-				 false,
-				 "Composition");
+            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+            false,
+            "Composition");
     protected static Action _actionUniAssociation =
-        new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
-                                true, "UniAssociation");
+        new ActionAddAssociation(
+            ModelFacade.NONE_AGGREGATIONKIND,
+            true,
+            "UniAssociation");
     protected static Action _actionUniAggregation =
         new ActionAddAssociation(
-				 ModelFacade.AGGREGATE_AGGREGATIONKIND,
-				 true,
-				 "UniAggregation");
+            ModelFacade.AGGREGATE_AGGREGATIONKIND,
+            true,
+            "UniAggregation");
     protected static Action _actionUniComposition =
         new ActionAddAssociation(
-				 ModelFacade.COMPOSITE_AGGREGATIONKIND,
-				 true,
-				 "UniComposition");
+            ModelFacade.COMPOSITE_AGGREGATIONKIND,
+            true,
+            "UniComposition");
 
     /**
      * <p>Tool to create a generalization between UML artifacts using a
@@ -123,10 +126,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
     protected static Action _actionGeneralize =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.GENERALIZATION,
-		       "Generalization");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.GENERALIZATION,
+            "Generalization");
 
     /**
      * <p>Tool to create an extend relationship between UML use cases using a
@@ -134,10 +137,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
     protected static Action _actionExtend =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.EXTEND,
-		       "Extend");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.EXTEND,
+            "Extend");
 
     /**
      * <p>Tool to create an include relationship between UML use cases using a
@@ -145,10 +148,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      */
     protected static Action _actionInclude =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.INCLUDE,
-		       "Include");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.INCLUDE,
+            "Include");
 
     /**
      * <p>Tool to create a dependency between UML artifacts using a
@@ -157,10 +160,10 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
     protected static Action _actionDependency =
         new CmdSetMode(
-		       ModeCreatePolyEdge.class,
-		       "edgeClass",
-		       (Class)ModelFacade.DEPENDENCY,
-		       "Dependency");
+            ModeCreatePolyEdge.class,
+            "edgeClass",
+            (Class)ModelFacade.DEPENDENCY,
+            "Dependency");
     /**
      * <p>A static counter of the use case index (used in constructing a unique
      *   name for each new diagram.</p>
@@ -185,8 +188,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     public UMLUseCaseDiagram() {
         try {
             setName(getNewDiagramName());
-        } catch (PropertyVetoException pve) {
-        }
+        } catch (PropertyVetoException pve) {}
     }
 
     /**
@@ -200,25 +202,24 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @param m  the desired namespace for this diagram.
      */
     public UMLUseCaseDiagram(Object m) {
-        
+
         this();
-        
-        if(!ModelFacade.isANamespace(m))
+
+        if (!ModelFacade.isANamespace(m))
             throw new IllegalArgumentException();
-        
+
         setNamespace(m);
     }
 
     public UMLUseCaseDiagram(String name, Object namespace) {
         this(namespace);
-        
-        if(!ModelFacade.isANamespace(namespace))
+
+        if (!ModelFacade.isANamespace(namespace))
             throw new IllegalArgumentException();
-        
+
         try {
             setName(name);
-        } catch (PropertyVetoException v) {
-        }
+        } catch (PropertyVetoException v) {}
     }
 
     /**
@@ -248,29 +249,25 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
             cat.error(
-		      "Illegal argument. Object " + handle
-		      + " is not a namespace");
+                "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
-					       "Illegal argument. Object "
-					       + handle
-					       + " is not a namespace");
+                "Illegal argument. Object " + handle + " is not a namespace");
         }
-        Object m = /*(MNamespace)*/ handle;
+        Object m = /*(MNamespace)*/
+        handle;
         super.setNamespace(m);
 
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
         gm.setNamespace(m);
-        setGraphModel(gm);
-
-        LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
+        LayerPerspective lay =
+            new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
+        UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
+        lay.setGraphNodeRenderer(rend);
+        lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
 
         // The renderer should be a singleton
 
-        UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
-
-        lay.setGraphNodeRenderer(rend);
-        lay.setGraphEdgeRenderer(rend);
     }
 
     /**
@@ -278,37 +275,40 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * graphic triggers
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
-            _actionActor,
-            _actionUseCase, null,
-            getAssociationActions(),
-            _actionDependency,
-            _actionGeneralize,
-            _actionExtend,
-            _actionInclude, null,
-            ActionAddExtensionPoint.singleton(), null,
-            ActionAddNote.SINGLETON
-        };
+        Object actions[] =
+            {
+                _actionActor,
+                _actionUseCase,
+                null,
+                getAssociationActions(),
+                _actionDependency,
+                _actionGeneralize,
+                _actionExtend,
+                _actionInclude,
+                null,
+                ActionAddExtensionPoint.singleton(),
+                null,
+                ActionAddNote.SINGLETON };
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = {
-        {_actionAssociation, _actionUniAssociation},
-	{_actionAggregation, _actionUniAggregation},
-	{_actionComposition, _actionUniComposition}
+        Object actions[][] = { { _actionAssociation, _actionUniAssociation }, {
+                _actionAggregation, _actionUniAggregation }, {
+                _actionComposition, _actionUniComposition }
         };
 
         return actions;
     }
-    
 
     protected static String getNewDiagramName() {
         String name = null;
         name = "Use Case Diagram " + _UseCaseDiagramSerial;
         _UseCaseDiagramSerial++;
-        if (!(ProjectManager.getManager().getCurrentProject()
-	      .isValidDiagramName(name))) {
+        if (!(ProjectManager
+            .getManager()
+            .getCurrentProject()
+            .isValidDiagramName(name))) {
             name = getNewDiagramName();
         }
         return name;

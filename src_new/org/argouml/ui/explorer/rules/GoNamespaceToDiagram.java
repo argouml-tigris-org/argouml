@@ -33,9 +33,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.AbstractGoRule;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
-import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 /**
  * Shows the diagrams as children of their namespace. 
@@ -64,11 +62,7 @@ public class GoNamespaceToDiagram implements PerspectiveRule {
                     if (ModelFacade.isABehavioralFeature(context)) {
                     	continue;
                     }
-                }
-                // patch for 0.14 stability to disable SD's
-                if (diagram instanceof UMLSequenceDiagram) {
-                    continue;
-                }
+                }                
                 if (diagram.getNamespace() == namespace) {
                     returnList.add(diagram);
                 }
