@@ -45,10 +45,10 @@ import uci.uml.Model_Management.*;
 public class CrDisambigClassName extends CrUML {
 
   public CrDisambigClassName() {
-    setHeadline("Choose a Unique Name for {name}");
+    setHeadline("Choose a Unique Name for <ocl>self</ocl>");
     sd("Every class and interface within a package must have a unique "+
        "name. There are at least two elements in this package named "+
-       "\"{name}\".\n\n"+
+       "\"<ocl>self</ocl>\".\n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
        "To fix this, use the \"Next>\" button, or manually select one of the "+

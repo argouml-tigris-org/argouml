@@ -39,37 +39,37 @@ public class ChInstance extends UMLChecklist {
 
   public ChInstance() {
   setNextCategory("General");
-  addItem("Does this instance {name} clearly describe the instance?");
+  addItem("Does this instance <ocl>self</ocl> clearly describe the instance?");
 
   setNextCategory("Naming");
-  addItem("Does the name '{name}' clearly describe the instance?");
-  addItem("Does '{name}' denote a state rather than an activity?");
-  addItem("Could the name '{name}' be misinterpreted to mean something else?");
+  addItem("Does the name '<ocl>self</ocl>' clearly describe the instance?");
+  addItem("Does '<ocl>self</ocl>' denote a state rather than an activity?");
+  addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
 
   setNextCategory("Structure");
-  addItem("Should {name} be its own state or could it be merged with "+
+  addItem("Should <ocl>self</ocl> be its own state or could it be merged with "+
 	  "another state?");
-  addItem("Does {name} do exactly one thing and do it well?");
-  addItem("Could {name} be broken down into two or more states?");
-  addItem("Could you write a characteristic equation for {name}?");
-  addItem("Does {name} belong in this state machine or another?");
-  addItem("Should {name} be be an initial state?");
-  addItem("Is some state in another machine exclusive with {name}?");
+  addItem("Does <ocl>self</ocl> do exactly one thing and do it well?");
+  addItem("Could <ocl>self</ocl> be broken down into two or more states?");
+  addItem("Could you write a characteristic equation for <ocl>self</ocl>?");
+  addItem("Does <ocl>self</ocl> belong in this state machine or another?");
+  addItem("Should <ocl>self</ocl> be be an initial state?");
+  addItem("Is some state in another machine exclusive with <ocl>self</ocl>?");
 
   setNextCategory("Actions");
-  addItem("What action should be preformed on entry into {name}?");
-  addItem("Should some attribute be updated on entry into {name}?");
-  addItem("What action should be preformed on exit from {name}?");
-  addItem("Should some attribute be updated on exit from {name}?");
-  addItem("What action should be preformed while in {name}?");
-  addItem("Do state-actions maintain {name} as the current state?");
+  addItem("What action should be preformed on entry into <ocl>self</ocl>?");
+  addItem("Should some attribute be updated on entry into <ocl>self</ocl>?");
+  addItem("What action should be preformed on exit from <ocl>self</ocl>?");
+  addItem("Should some attribute be updated on exit from <ocl>self</ocl>?");
+  addItem("What action should be preformed while in <ocl>self</ocl>?");
+  addItem("Do state-actions maintain <ocl>self</ocl> as the current state?");
 
   setNextCategory("Transitions");
-  addItem("Should there be another transition into {name}?");
-  addItem("Can all the transitions into {name} be used?");
+  addItem("Should there be another transition into <ocl>self</ocl>?");
+  addItem("Can all the transitions into <ocl>self</ocl> be used?");
   addItem("Could some incoming transitions be combined?");
-  addItem("Should there be another transition out of {name}?");
-  addItem("Can all the transitions out of {name} be used?");
+  addItem("Should there be another transition out of <ocl>self</ocl>?");
+  addItem("Can all the transitions out of <ocl>self</ocl> be used?");
   addItem("Is each outgoing transition exclusive?");
   addItem("Could some outgoing transitions be combined?");
   }

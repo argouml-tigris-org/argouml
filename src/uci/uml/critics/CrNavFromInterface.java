@@ -40,7 +40,7 @@ import uci.uml.Behavioral_Elements.Collaborations.*;
 public class CrNavFromInterface extends CrUML {
 
   public CrNavFromInterface() {
-    setHeadline("Remove Navigation from Interface {name}");
+    setHeadline("Remove Navigation from Interface <ocl>self</ocl>");
     sd("Associations involving an Interface can be not be naviagable in "+
        "the direction from the Interface.  This is because interfaces do "+
        "contain only operation declarations and cannot hold pointers to "+

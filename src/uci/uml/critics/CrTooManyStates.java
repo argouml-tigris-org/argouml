@@ -49,8 +49,8 @@ public class CrTooManyStates extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrTooManyStates() {
-    setHeadline("Reduce States in machine {name}");
-    sd("There are too many States in {name}.  If one state machine "+
+    setHeadline("Reduce States in machine <ocl>self</ocl>");
+    sd("There are too many States in <ocl>self</ocl>.  If one state machine "+
        "has too many states it may become very difficult for humans "+
        "to understand. \n\n"+
        "Defining an understandable set of states is an important "+

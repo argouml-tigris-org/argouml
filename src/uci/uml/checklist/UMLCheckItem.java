@@ -31,12 +31,12 @@ import uci.util.*;
 import uci.argo.checklist.*;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
-import uci.uml.util.*;
+import uci.uml.ocl.OCLEvaluator;
 
 /** A special kind of CheckItem that can replace OCL expressions with
  *  their values in the generated advice.
  *
- * @see uci.uml.util.UMLDescription */
+ * @see uci.uml.ocl.OCLEvaluator */
 
 public class UMLCheckItem extends CheckItem {
 
@@ -46,9 +46,25 @@ public class UMLCheckItem extends CheckItem {
     super(c, d, m, p);
   }
 
-  
-  public String expand(String desc, Object dm) {
-    return UMLDescription.expand(desc, dm);
+
+  public String expand(String res, Object dm) {
+    int searchPos = 0;
+    int matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+
+    // replace all occurances of OFFENDER with the name of the first offender
+    while (matchPos != -1) {
+      int endExpr = res.indexOf(OCLEvaluator.OCL_END, matchPos + 1);
+      String expr = res.substring(matchPos + OCLEvaluator.OCL_START.length(),
+				  endExpr);
+      String evalStr = OCLEvaluator.evalToString(dm, expr);
+      //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
+      res = res.substring(0, matchPos) +
+	evalStr +
+	res.substring(endExpr + OCLEvaluator.OCL_END.length());
+      searchPos = endExpr + 1;
+      matchPos = res.indexOf(OCLEvaluator.OCL_START, searchPos);
+    }
+    return res;
   }
-  
+
 } /* end class UMLCheckItem */

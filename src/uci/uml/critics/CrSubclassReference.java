@@ -43,7 +43,7 @@ public class CrSubclassReference extends CrUML {
 
   public CrSubclassReference() {
     setHeadline("Remove Reference to Specific Subclass");
-    sd("Class {name} has a reference to one of it's subclasses. "+
+    sd("Class <ocl>self</ocl> has a reference to one of it's subclasses. "+
        "Normally all subclasses should be treated \"equally\" by "+
        "the superclass.  This allows for addition of new subclasses "+
        "without modification to the superclass. \n\n"+

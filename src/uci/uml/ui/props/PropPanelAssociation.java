@@ -195,8 +195,8 @@ implements DocumentListener, ItemListener, ChangeListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     Association asc = (Association) t;
     Vector conns = asc.getConnection();
     if (conns == null) return; //set fields to blanks?
@@ -268,6 +268,7 @@ implements DocumentListener, ItemListener, ChangeListener {
 
   public void setTargetVisibility() {
     if (_target == null) return;
+    if (_inChange) return;
 //     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
 //     Attribute attr = (Attribute) _target;
 //     attr.setVisibility(vk);

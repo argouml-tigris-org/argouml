@@ -155,8 +155,8 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     MMClass cls = (MMClass) t;
 
     VisibilityKind vk = VisibilityKind.PUBLIC;
@@ -204,6 +204,7 @@ implements ItemListener, DocumentListener {
 
   public void setTargetExtends() {
     if (_target == null) return;
+    if (_inChange) return;
     Object base = _extendsField.getSelectedItem();
     //System.out.println("needs-more-work: baseClass = " + base);
     // needs-more-work: this could involve changes to the graph model
@@ -211,6 +212,7 @@ implements ItemListener, DocumentListener {
 
   public void setTargetVisibility() {
     if (_target == null) return;
+    if (_inChange) return;
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     MMClass cls = (MMClass) _target;
     ElementOwnership oe = cls.getElementOwnership();
@@ -219,6 +221,7 @@ implements ItemListener, DocumentListener {
 
   public void setTargetKeywords() {
     if (_target == null) return;
+    if (_inChange) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
       //System.out.println("keywords are null");

@@ -2,6 +2,6 @@ SOURCES= \
 	GenAncestorClasses.java \
 	GenCompositeClasses.java \
 	GenDescendantClasses.java \
-	SuperclassGen.java \
-	UMLDescription.java
+	SuperclassGen.java
+
 

@@ -30,7 +30,7 @@ import java.util.*;
 import javax.swing.*;
 
 
-class Swatch implements Icon {
+public class Swatch implements Icon {
   protected static Hashtable _swatches = new Hashtable();
 
   Color _color = Color.black;

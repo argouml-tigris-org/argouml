@@ -33,7 +33,7 @@ package uci.uml.critics;
 import uci.util.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
-import uci.uml.util.*;
+import uci.uml.ocl.OCLEvaluator;
 import uci.uml.Foundation.Core.*;
 import uci.uml.Foundation.Data_Types.*;
 
@@ -156,13 +156,35 @@ public class CrUML extends Critic {
   ////////////////////////////////////////////////////////////////
   // display related methods
 
+  public static String OCL_START = "<ocl>";
+  public static String OCL_END = "</ocl>";
+
+
 
   public String expand(String res, VectorSet offs) {
     //System.out.println("expanding: " + res);
     if (offs.size() == 0) return res;
     Object off1 = offs.firstElement();
     if (!(off1 instanceof Element)) return res;
-    return UMLDescription.expand(res, off1);
+
+    int searchPos = 0;
+    int matchPos = res.indexOf(OCL_START, searchPos);
+
+    // replace all occurances of OFFENDER with the name of the first offender
+    while (matchPos != -1) {
+      int endExpr = res.indexOf(OCL_END, matchPos + 1);
+      String expr = res.substring(matchPos + OCL_START.length(), endExpr);
+      String evalStr = OCLEvaluator.evalToString(off1, expr);
+      //System.out.println("expr='" + expr + "' = '" + evalStr + "'");
+      if (expr.endsWith("") && evalStr.equals(""))
+	evalStr = "(anon)";
+      res = res.substring(0, matchPos) +
+	evalStr +
+	res.substring(endExpr + OCL_END.length());
+      searchPos = endExpr + 1;
+      matchPos = res.indexOf(OCL_START, searchPos);
+    }
+    return res;
   }
 
 } /* end class CrUML */

@@ -49,8 +49,8 @@ public class CrTooManyOper extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrTooManyOper() {
-    setHeadline("Reduce Operations on {name}");
-    sd("There are too many Operations on class {name}.  Whenever one class "+
+    setHeadline("Reduce Operations on <ocl>self</ocl>");
+    sd("There are too many Operations on class <ocl>self</ocl>.  Whenever one class "+
        "becomes too central to the design it may become a maintenance "+
        "bottleneck that must be updated frequently. \n\n"+
        "Defining the operations of objects is an important "+

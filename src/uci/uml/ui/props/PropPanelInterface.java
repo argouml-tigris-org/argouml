@@ -104,8 +104,8 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     Interface inf = (Interface) t;
 
     VisibilityKind vk = inf.getElementOwnership().getVisibility();
@@ -119,6 +119,7 @@ implements DocumentListener, ItemListener {
 
   public void setTargetExtends() {
     if (_target == null) return;
+    if (_inChange) return;
     Object base = _extendsField.getSelectedItem();
     System.out.println("base = " + base);
     // needs-more-work: this could involve changes to the graph model
@@ -126,6 +127,7 @@ implements DocumentListener, ItemListener {
 
   public void setTargetVisibility() {
     if (_target == null) return;
+    if (_inChange) return;
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     Interface inf = (Interface) _target;
     inf.getElementOwnership().setVisibility(vk);

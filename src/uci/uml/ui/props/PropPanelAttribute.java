@@ -155,8 +155,8 @@ implements DocumentListener, ItemListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     Attribute attr = (Attribute) t;
 
     Vector offeredTypes = getOfferedTypes();
@@ -191,6 +191,7 @@ implements DocumentListener, ItemListener {
 
   public void setTargetVisibility() {
     if (_target == null) return;
+    if (_inChange) return;
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     Attribute attr = (Attribute) _target;
     try {
@@ -201,6 +202,7 @@ implements DocumentListener, ItemListener {
 
   public void setTargetKeywords() {
     if (_target == null) return;
+    if (_inChange) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
       //System.out.println("keywords are null");
@@ -237,6 +239,7 @@ implements DocumentListener, ItemListener {
 
   public void setTargetType() {
     if (!(_target instanceof Attribute)) return;
+    if (_inChange) return;
     Attribute attr = (Attribute) _target;
     Object sel = _typeField.getSelectedItem();
     Classifier cls;

@@ -46,12 +46,12 @@ import uci.uml.Model_Management.*;
 public class CrEmptyPackage extends CrUML {
 
   public CrEmptyPackage() {
-    setHeadline("Add Elements to Package {name}");
-    sd("You have not yet put anything in package {name}. "+
+    setHeadline("Add Elements to Package <ocl>self</ocl>");
+    sd("You have not yet put anything in package <ocl>self</ocl>. "+
        "Normally packages contain groups of related classes.\n\n"+
        "Defining and using packages is key to making a maintainable "+
        "design. \n\n"+
-       "To fix this, select package {name} in the navigator panel and add  "+
+       "To fix this, select package <ocl>self</ocl> in the navigator panel and add  "+
        "diagrams or model elements such as classes or use cases. ");
        
     addSupportedDecision(CrUML.decMODULARITY);

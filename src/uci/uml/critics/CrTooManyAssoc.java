@@ -49,8 +49,8 @@ public class CrTooManyAssoc extends CrUML {
   ////////////////////////////////////////////////////////////////
   // constructor
   public CrTooManyAssoc() {
-    setHeadline("Reduce Associations on {name}");
-    sd("There are too many Associations on class {name}.  Whenever one class "+
+    setHeadline("Reduce Associations on <ocl>self</ocl>");
+    sd("There are too many Associations on class <ocl>self</ocl>.  Whenever one class "+
        "becomes too central to the design it may become a maintenance "+
        "bottleneck that must be updated frequently. \n\n"+
        "Defining the associations between objects is an important "+

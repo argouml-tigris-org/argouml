@@ -141,8 +141,8 @@ implements ItemListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     Operation oper = (Operation) _target;
 
     VisibilityKind vk = oper.getVisibility();
@@ -177,6 +177,7 @@ implements ItemListener {
 
   public void setTargetVisibility() {
     if (_target == null) return;
+    if (_inChange) return;
     VisibilityKind vk = (VisibilityKind) _visField.getSelectedItem();
     Operation oper = (Operation) _target;
     try {
@@ -190,6 +191,7 @@ implements ItemListener {
   
   public void setTargetKeywords() {
     if (_target == null) return;
+    if (_inChange) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
       //System.out.println("keywords are null");
@@ -237,6 +239,7 @@ implements ItemListener {
 
   public void setTargetType() {
     if (_target == null) return;
+    if (_inChange) return;
     Operation op = (Operation) _target;
     Object rtObj = _typeField.getSelectedItem();
     Classifier rt = null;

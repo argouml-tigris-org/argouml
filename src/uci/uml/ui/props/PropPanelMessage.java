@@ -120,8 +120,8 @@ implements ItemListener, DocumentListener {
   // accessors
 
   /** Set the values to be shown in all widgets based on model */
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     Message m = (Message) t;
     String ua = ((UninterpretedAction) m.getAction()).getBody();
     //UninterpretedAction uaNew = new UninterpretedAction(ua);
@@ -156,6 +156,7 @@ implements ItemListener, DocumentListener {
 
   protected void setTargetActionString(String s) {
     if (_target == null) return;
+    if (_inChange) return;
     try {
       UninterpretedAction ua = new UninterpretedAction(s);
       ((Message)_target).setAction(ua); 

@@ -123,49 +123,53 @@ implements TabModelTarget, DocumentListener {
   // accessors
 
   public void setTarget(Object t) {
-    _target = t;
     try {
       _inChange = true;
-      ModelElement me = (ModelElement) _target;
-      String n = me.getName().getBody();
-      // this is a small hack to get the text to update for an empty string
-      if (n.equals("")) _nameField.setText(" ");
-      _nameField.setText(n);
-      _nameField.setCaretPosition(0);
-      Vector stereos = me.getStereotype();
-      JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
-      if (stereos != null && stereos.size() == 1) {
-	Stereotype s = (Stereotype) stereos.firstElement();
-	String stereoName = s.getName().getBody();
-	// needs-more-work: select from list
-	_stereoField.setSelectedItem(s);
-	ed.setText(stereoName);
-      }
-      else {
-	_stereoField.setSelectedItem(null);
-	ed.setText("");
-      }
-      Namespace ns = me.getNamespace();
-      ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
-      if (ns != null) {
-	String namespaceName = ns.getName().getBody();
-	while (ns.getNamespace() != null) {
-	  namespaceName = ns.getNamespace().getName().getBody() +
-	    "." + namespaceName;
-	  ns = ns.getNamespace();
-	}
-
-	// needs-more-work: select from list
-	_namespaceField.setSelectedItem(ns);
-	ed.setText(namespaceName);
-      }
-      else {
-	_namespaceField.setSelectedItem(null);
-	ed.setText("");
-      }
+      setTargetInternal(t);
     }
     finally {
       _inChange = false;
+    }
+  }
+
+  protected void setTargetInternal(Object t) {
+    _target = t;
+    ModelElement me = (ModelElement) _target;
+    String n = me.getName().getBody();
+    // this is a small hack to get the text to update for an empty string
+    if (n.equals("")) _nameField.setText(" ");
+    _nameField.setText(n);
+    _nameField.setCaretPosition(0);
+    Vector stereos = me.getStereotype();
+    JTextField ed = (JTextField) _stereoField.getEditor().getEditorComponent();
+    if (stereos != null && stereos.size() == 1) {
+      Stereotype s = (Stereotype) stereos.firstElement();
+      String stereoName = s.getName().getBody();
+      // needs-more-work: select from list
+      _stereoField.setSelectedItem(s);
+      ed.setText(stereoName);
+    }
+    else {
+      _stereoField.setSelectedItem(null);
+      ed.setText("");
+    }
+    Namespace ns = me.getNamespace();
+    ed = (JTextField) _namespaceField.getEditor().getEditorComponent();
+    if (ns != null) {
+      String namespaceName = ns.getName().getBody();
+      while (ns.getNamespace() != null) {
+	namespaceName = ns.getNamespace().getName().getBody() +
+	  "." + namespaceName;
+	ns = ns.getNamespace();
+      }
+      
+      // needs-more-work: select from list
+      _namespaceField.setSelectedItem(ns);
+      ed.setText(namespaceName);
+    }
+    else {
+      _namespaceField.setSelectedItem(null);
+      ed.setText("");
     }
   }
 
@@ -188,24 +192,25 @@ implements TabModelTarget, DocumentListener {
 
   protected void setTargetStereotype() {
     if (_target == null) return;
+    if (_inChange) return;
     try {
-    ModelElement me = (ModelElement) _target;
-    // needs-more-work: find predefined stereotype
-    Component ed = _stereoField.getEditor().getEditorComponent();
-    String stereoName = ((JTextField)ed).getText();
-    Namespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
-    Stereotype s = null;
-    ElementOwnership eo = m.findElementNamed(stereoName);
-    if (eo != null && eo.getModelElement() instanceof Stereotype)
-      s = (Stereotype) eo.getModelElement();
-    else {
-      s = new Stereotype(stereoName);
-      m.addPublicOwnedElement(s);
-    }
-    Vector stereos = new Vector();
-    stereos.addElement(s);
-    //System.out.println("setting stereotype");
-    me.setStereotype(stereos);
+      ModelElement me = (ModelElement) _target;
+      // needs-more-work: find predefined stereotype
+      Component ed = _stereoField.getEditor().getEditorComponent();
+      String stereoName = ((JTextField)ed).getText();
+      Namespace m = ProjectBrowser.TheInstance.getProject().getCurrentNamespace();
+      Stereotype s = null;
+      ElementOwnership eo = m.findElementNamed(stereoName);
+      if (eo != null && eo.getModelElement() instanceof Stereotype)
+	s = (Stereotype) eo.getModelElement();
+      else {
+	s = new Stereotype(stereoName);
+	m.addPublicOwnedElement(s);
+      }
+      Vector stereos = new Vector();
+      stereos.addElement(s);
+      //System.out.println("setting stereotype");
+      me.setStereotype(stereos);
     }
     catch (PropertyVetoException pve) { }
   }

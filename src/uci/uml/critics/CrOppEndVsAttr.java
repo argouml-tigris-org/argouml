@@ -47,8 +47,8 @@ public class CrOppEndVsAttr extends CrUML {
 
   public CrOppEndVsAttr() {
     setHeadline("Rename Role or Attribute");
-    sd("One of the attributes of {name} has the same name as "+
-       "{name}'s role in an association.  Attributes and roles "+
+    sd("One of the attributes of <ocl>self</ocl> has the same name as "+
+       "<ocl>self</ocl>'s role in an association.  Attributes and roles "+
        "should have distinct names.  "+
        "This may because of an inherited attribute. \n\n"+
        "Clear and unambiguous names are key to code generation and producing "+

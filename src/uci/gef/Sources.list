@@ -47,7 +47,6 @@ SOURCES= \
 	CmdUseRotate.java \
 	Diagram.java \
 	Editor.java \
-	ExecuteCmdWindow.java \
 	Fig.java \
 	FigCircle.java \
 	FigEdge.java \
@@ -113,7 +112,6 @@ SOURCES= \
 	PredFigNodeInRect.java \
 	Prefs.java \
 	PrefsEditor.java \
-	RedrawManager.java \
 	Selection.java \
 	SelectionLowerRight.java \
 	SelectionManager.java \

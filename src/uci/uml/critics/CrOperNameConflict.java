@@ -41,7 +41,7 @@ import uci.uml.Foundation.Data_Types.*;
 public class CrOperNameConflict extends CrUML {
 
   public CrOperNameConflict() {
-    setHeadline("Change Names or Signatures in {name}");
+    setHeadline("Change Names or Signatures in <ocl>self</ocl>");
     sd("Two operations have the exact same signature.  "+
        "Operations must have distinct signatures.  A signature is the combination "+
        "of the operation's name, and parameter types. \n\n"+

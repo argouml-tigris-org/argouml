@@ -28,7 +28,69 @@ import java.awt.*;
 import java.lang.reflect.*;
 import java.lang.*;
 
+import uci.uml.Foundation.Core.Element;
+import uci.uml.Foundation.Core.Feature;
+import uci.uml.Foundation.Data_Types.Name;
+import uci.uml.Foundation.Data_Types.Expression;
+
+// stereotype <<utility>>
 public class OCLEvaluator {
+  ////////////////////////////////////////////////////////////////
+  // constants
+  public static String OCL_START = "<ocl>";
+  public static String OCL_END = "</ocl>";
+  public static String GET_NAME_EXPR_1 = "self";
+  public static String GET_NAME_EXPR_2 = "self.name.body";
+  public static String GET_OWNER_EXPR = "self.owner";
+
+  ////////////////////////////////////////////////////////////////
+  // static variables
+  protected static Hashtable _scratchBindings = new Hashtable();
+  protected static StringBuffer _strBuf = new StringBuffer(100);
+
+  ////////////////////////////////////////////////////////////////
+  // static methods
+  public static synchronized String evalToString(Object self, String expr) {
+    String res = null;
+    if (GET_NAME_EXPR_1.equals(expr) && self instanceof Element) {
+      res = ((Element)self).getName().getBody();
+      if (res == null || "".equals(res)) res = "(anon)";
+    }
+    if (GET_NAME_EXPR_2.equals(expr) && self instanceof Element) {
+      res = ((Element)self).getName().getBody();
+      if (res == null || "".equals(res)) res = "(anon)";
+    }
+    if (GET_OWNER_EXPR.equals(expr) && self instanceof Feature) {
+      res = ((Feature)self).getOwner().getName().getBody();
+      if (res == null || "".equals(res)) res = "(anon)";
+    }
+    if (res == null) res = evalToString(self, expr, ", ");
+    return res;
+  }
+
+  public static synchronized String evalToString(Object self,
+						 String expr, String sep) {
+    _scratchBindings.put("self", self);
+    Vector values = eval(_scratchBindings, expr);
+    _strBuf.setLength(0);
+    int size = values.size();
+    for (int i = 0; i < size; i++) {
+      Object v = values.elementAt(i);
+      if (v instanceof Element) {
+	v = ((Element)v).getName().getBody();
+	if ("".equals(v)) v = "(anon)";
+      }
+      if (v instanceof Expression) {
+	v = ((Expression)v).getBody().getBody();
+	if ("".equals(v)) v = "(unspecified)";
+      }
+      if (! "".equals(v)) {
+	_strBuf.append(v);
+	if (i < size - 1) _strBuf.append(sep);
+      }
+    }
+    return _strBuf.toString();
+  }
 
   public static Vector eval(Hashtable bindings, String expr) {
     int firstPos = expr.indexOf(".");
@@ -91,7 +153,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod("get" + toTitleCase(property), null);
       o = m.invoke(target, null); // getter methods take no args =>  null
-      //            System.out.println("Trying to get method " + toTitleCase(property));
+      // System.out.println("Trying to get method " + toTitleCase(property));
       return  o;
     }
     catch ( NoSuchMethodException e ) {}
@@ -109,7 +171,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod( property, null);
       o = m.invoke(target, null);
-      //            System.out.println("Trying to get method " + toTitleCase(property));
+      // System.out.println("Trying to get method " + toTitleCase(property));
       return o;
     }
     catch ( NoSuchMethodException e ) {}
@@ -127,7 +189,7 @@ public class OCLEvaluator {
     try {
       m = target.getClass().getMethod( toTitleCase(property), null);
       o = m.invoke(target, null);
-      //            System.out.println("Trying to get method" + property);
+      // System.out.println("Trying to get method" + property);
       return o;
     } catch ( Exception e ) {}
 

@@ -41,45 +41,45 @@ public class ChOperation extends UMLChecklist {
 
   public ChOperation() {
   setNextCategory("Naming");
-  addItem("Does the name '{name}' clearly describe the operation?");
-  addItem("Is '{name}' a verb or verb phrase?");
-  addItem("Could the name '{name}' be misinterpreted to mean something else?");
-  addItem("Does {name} do one thing and do it well?");
+  addItem("Does the name '<ocl>self</ocl>' clearly describe the operation?");
+  addItem("Is '<ocl>self</ocl>' a verb or verb phrase?");
+  addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
+  addItem("Does <ocl>self</ocl> do one thing and do it well?");
 
 
   setNextCategory("Encoding");
-  addItem("Is the return type '{returns}' too restrictive to represent all "+
-	  "possible values returned by {name}?"); 
-  addItem("Does '{returns}' allow return values that could never be correct?");
-  addItem("Could {name} be combined with some other operation of "+
-	  "{owner} (e.g., {owner.behavioralFeature})?");
-  addItem("Could {name} be broken down into two or more parts (e.g., pre-process, "+
+  addItem("Is the return type '<ocl>self.returnType</ocl>' too restrictive to represent all "+
+	  "possible values returned by <ocl>self</ocl>?"); 
+  addItem("Does '<ocl>self.returnType</ocl>' allow return values that could never be correct?");
+  addItem("Could <ocl>self</ocl> be combined with some other operation of "+
+	  "<ocl>self.owner</ocl> (e.g., <ocl sep=', '>self.owner.behavioralFeature</ocl>)?");
+  addItem("Could <ocl>self</ocl> be broken down into two or more parts (e.g., pre-process, "+
 	  "main processing, and post-processing)?");
-  addItem("Could {name} be replaced by a series of client calls to "+
+  addItem("Could <ocl>self</ocl> be replaced by a series of client calls to "+
 	  "simpler operations?");
-  addItem("Could {name} be combined with other operations to reduce the "+
+  addItem("Could <ocl>self</ocl> be combined with other operations to reduce the "+
 	  "number of calls clients must make?");
 
   setNextCategory("Value");
-  addItem("Can {name} handle all possible inputs?");
+  addItem("Can <ocl>self</ocl> handle all possible inputs?");
   addItem("Are there special case inputs that must be handled separately?");
-  addItem("Could you write an expression to check if the arguments to {name} "+
+  addItem("Could you write an expression to check if the arguments to <ocl>self</ocl> "+
 	  "are correct? Plausible?");
-  addItem("Can you express the preconditions of {name}?");
-  addItem("Can you express the postconditions of {name}?");
-  addItem("How will {name} behave if preconditions are violated?");
-  addItem("How will {name} behave if postconditions cannot be achieved?");
+  addItem("Can you express the preconditions of <ocl>self</ocl>?");
+  addItem("Can you express the postconditions of <ocl>self</ocl>?");
+  addItem("How will <ocl>self</ocl> behave if preconditions are violated?");
+  addItem("How will <ocl>self</ocl> behave if postconditions cannot be achieved?");
   
   setNextCategory("Location");
-  addItem("Could {name} be defined in a different class that is associated "+
-	  "with {owner}?");
-  addItem("Could {name} be moved up the inheritance hierarchy to apply to "+
-	  "{owner} and to other classes?");
-  addItem("Does {name} apply to all instances of class {owner} including "+
+  addItem("Could <ocl>self</ocl> be defined in a different class that is associated "+
+	  "with <ocl>self.owner</ocl>?");
+  addItem("Could <ocl>self</ocl> be moved up the inheritance hierarchy to apply to "+
+	  "<ocl>self.owner</ocl> and to other classes?");
+  addItem("Does <ocl>self</ocl> apply to all instances of class <ocl>self.owner</ocl> including "+
 	  "instances of subclasses?");
-  addItem("Could {name} be eliminated from the model?");
+  addItem("Could <ocl>self</ocl> be eliminated from the model?");
   addItem("Is there another operation in the model that should be revised "+
-	  "or eliminated because it serves the same purpose as {name}?");
+	  "or eliminated because it serves the same purpose as <ocl>self</ocl>?");
 
 
   // side effects, recursion, case analysis, ...

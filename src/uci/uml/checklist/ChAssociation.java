@@ -37,35 +37,35 @@ public class ChAssociation extends UMLChecklist {
 
   public ChAssociation() {
   setNextCategory("Naming");
-  addItem("Does the name '{name}' clearly describe the class?");
-  addItem("Is '{name}' a noun or noun phrase?");
-  addItem("Could the name '{name}' be misinterpreted to mean something else?");
+  addItem("Does the name '<ocl>self</ocl>' clearly describe the class?");
+  addItem("Is '<ocl>self</ocl>' a noun or noun phrase?");
+  addItem("Could the name '<ocl>self</ocl>' be misinterpreted to mean something else?");
 
 
   setNextCategory("Encoding");
-  addItem("Should {name} be its own class or a simple attribute of "+
+  addItem("Should <ocl>self</ocl> be its own class or a simple attribute of "+
 	  "another class?");
-  addItem("Does {name} do exactly one thing and do it well?");
-  addItem("Could {name} be broken down into two or more classes?");
+  addItem("Does <ocl>self</ocl> do exactly one thing and do it well?");
+  addItem("Could <ocl>self</ocl> be broken down into two or more classes?");
 
   setNextCategory("Value");
-  addItem("Do all attributes of {name} start with meaningful values?");
+  addItem("Do all attributes of <ocl>self</ocl> start with meaningful values?");
   addItem("Could you write an invariant for this class?");
   addItem("Do all constructors establish the class invariant?");
   addItem("Do all operations maintain the class invariant?");
 
   setNextCategory("Location");
-  addItem("Could {name} be defined in a different location in the class "+
+  addItem("Could <ocl>self</ocl> be defined in a different location in the class "+
 	  "hierarchy?");
-  addItem("Have you planned to have subclasses of {name}?");
-  addItem("Could {name} be eliminated from the model?");
+  addItem("Have you planned to have subclasses of <ocl>self</ocl>?");
+  addItem("Could <ocl>self</ocl> be eliminated from the model?");
   addItem("Is there another class in the model that should be revised "+
-	  "or eliminated because it serves the same purpose as {name}?");
+	  "or eliminated because it serves the same purpose as <ocl>self</ocl>?");
 
   setNextCategory("Updates");
-  addItem("For what reasons will an instance of {name} be updated?");
+  addItem("For what reasons will an instance of <ocl>self</ocl> be updated?");
   addItem("Is there some other object that must be updated whenever "+
-	  "{name} is updated?");
+	  "<ocl>self</ocl> is updated?");
 
   }
 

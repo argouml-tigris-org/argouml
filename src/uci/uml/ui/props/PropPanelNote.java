@@ -87,16 +87,6 @@ implements DocumentListener, ItemListener {
   }
 
   ////////////////////////////////////////////////////////////////
-  // accessors
-
-  /** Set the values to be shown in all widgets based on model */
-  public void setTarget(Object t) {
-    super.setTarget(t);
-    // set the values to be shown in all widgets based on model
-  }
-
-
-  ////////////////////////////////////////////////////////////////
   // event handlers
 
 

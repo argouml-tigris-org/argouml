@@ -43,7 +43,7 @@ import uci.uml.util.*;
 public class CrCircularInheritance extends CrUML {
 
   public CrCircularInheritance() {
-    setHeadline("Remove {name}'s Circular Inheritance");
+    setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
     sd("Inheritances relationships cannot have cycles. \n\n"+
        "A legal class inheritance hierarchy is needed for code generation "+
        "and the correctness of the design. \n\n"+

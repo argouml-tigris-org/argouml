@@ -4,7 +4,7 @@
   <XMI.header>
     <XMI.documentation>
       <XMI.exporter>Argo/UML</XMI.exporter>
-      <XMI.exporterVersion>0.6.0</XMI.exporterVersion> 
+      <XMI.exporterVersion>0.7.0</XMI.exporterVersion> 
     </XMI.documentation>
     <XMI.metamodel name="uml" version="1.1"/>
   </XMI.header>
@@ -1279,7 +1279,6 @@
                     <Guard XMI.id = "S.101294">
                       <name></name>
                       <visibility XMI.value = "public"/>
-                      <expression></expression>
                     </Guard>
                   </guard>
                   <effect>
@@ -1348,7 +1347,6 @@
                     <Guard XMI.id = "S.101302">
                       <name></name>
                       <visibility XMI.value = "public"/>
-                      <expression></expression>
                     </Guard>
                   </guard>
                   <effect>
@@ -1866,6 +1864,373 @@
           </requiredTag>
         </Stereotype>
       </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101306">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100705" /> </stereotype>
+          <subtype> <XMI.reference target="S.100675"/> </subtype>
+          <!-- subtype is: Check Schedule -->
+          <supertype> <XMI.reference target="S.100676"/> </supertype>
+          <!-- supertype is: Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101307">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101308">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101309">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101310">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <UseCase XMI.id = "S.101311">
+          <name>Secure Log In</name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+        </UseCase>
+      </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101312">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100037" /> </stereotype>
+          <subtype> <XMI.reference target="S.101311"/> </subtype>
+          <!-- subtype is: Secure Log In -->
+          <supertype> <XMI.reference target="S.100676"/> </supertype>
+          <!-- supertype is: Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101313">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100705" /> </stereotype>
+          <subtype> <XMI.reference target="S.100673"/> </subtype>
+          <!-- subtype is: Close a Course -->
+          <supertype> <XMI.reference target="S.101311"/> </supertype>
+          <!-- supertype is: Secure Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101314">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100705" /> </stereotype>
+          <subtype> <XMI.reference target="S.100670"/> </subtype>
+          <!-- subtype is: Open a Course -->
+          <supertype> <XMI.reference target="S.101311"/> </supertype>
+          <!-- supertype is: Secure Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101315">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100705" /> </stereotype>
+          <subtype> <XMI.reference target="S.100674"/> </subtype>
+          <!-- subtype is: Configure Course Info -->
+          <supertype> <XMI.reference target="S.101311"/> </supertype>
+          <!-- supertype is: Secure Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Generalization XMI.id = "S.101316">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <discriminator>
+          </discriminator>
+          <stereotype> <XMI.reference target="S.100705" /> </stereotype>
+          <subtype> <XMI.reference target="S.100671"/> </subtype>
+          <!-- subtype is: Check Enrollment -->
+          <supertype> <XMI.reference target="S.101311"/> </supertype>
+          <!-- supertype is: Secure Log In -->
+        </Generalization>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101317">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101318">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101319">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101320">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101321">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101322">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101323">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101324">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101325">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101326">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101327">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101328">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101329">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101330">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101331">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
+      <ownedElement>
+        <Stereotype XMI.id = "S.101332">
+          <name></name>
+          <visibility XMI.value = "public"/>
+          <isAbstract XMI.value="false"/>
+          <isLeaf XMI.value="false"/>
+          <isRoot XMI.value="false"/>
+          <baseClass>
+          </baseClass>
+          <icon/>
+          <requiredTag>
+          </requiredTag>
+        </Stereotype>
+      </ownedElement>
     </Model>
     <Class XMI.id = "S.100024">
       <name>Stack</name>
@@ -1990,13 +2355,6 @@
       <isRoot XMI.value="false"/>
       <isActive XMI.value = "false"/>
     </Class>
-    <DataType XMI.id = "S.100006">
-      <name>int</name>
-      <visibility XMI.value = "public"/>
-      <isAbstract XMI.value="false"/>
-      <isLeaf XMI.value="false"/>
-      <isRoot XMI.value="false"/>
-    </DataType>
     <Class XMI.id = "S.100003">
       <name>String</name>
       <visibility XMI.value = "public"/>
@@ -2005,6 +2363,13 @@
       <isRoot XMI.value="false"/>
       <isActive XMI.value = "false"/>
     </Class>
+    <DataType XMI.id = "S.100006">
+      <name>int</name>
+      <visibility XMI.value = "public"/>
+      <isAbstract XMI.value="false"/>
+      <isLeaf XMI.value="false"/>
+      <isRoot XMI.value="false"/>
+    </DataType>
     <Class XMI.id = "S.100014">
       <name>Boolean</name>
       <visibility XMI.value = "public"/>

@@ -142,8 +142,8 @@ public class PropPanelUseCase extends PropPanel {
   // accessors
 
   /** Set the values to be shown in all widgets based on model */
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     UseCase uc = (UseCase) t;
     // set the values to be shown in all widgets based on model
 

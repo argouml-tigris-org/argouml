@@ -42,7 +42,7 @@ public class CrSignatureConflict extends CrUML {
 
   public CrSignatureConflict() {
     setHeadline("Resolve Signature Conflict");
-    sd("Two operations of {name} have same signature.  A signature "+
+    sd("Two operations of <ocl>self</ocl> have same signature.  A signature "+
        "consists of the operation's name and the number and types of "+
        "its parameters.\n\n"+
        "Operations must have distinct signatures for code generation to "+

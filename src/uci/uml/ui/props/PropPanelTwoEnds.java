@@ -101,8 +101,8 @@ public abstract class PropPanelTwoEnds extends PropPanel {
     add(_spacer);
   }
 
-  public void setTarget(Object target) {
-    super.setTarget(target);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     _srcLabel.setText(getSourceLabel());
     _srcField.setText(getSourceValue());
     _dstLabel.setText(getDestLabel());

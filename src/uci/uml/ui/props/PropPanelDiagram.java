@@ -52,6 +52,7 @@ implements TabModelTarget, DocumentListener {
   Object _target;
   JLabel _nameLabel = new JLabel("Name: ");
   JTextField _nameField = new JTextField();
+  boolean _inChange = false;
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -87,6 +88,16 @@ implements TabModelTarget, DocumentListener {
   // accessors
 
   public void setTarget(Object t) {
+    try {
+      _inChange = true;
+      setTargetInternal(t);
+    }
+    finally {
+      _inChange = false;
+    }
+  }
+
+  protected void setTargetInternal(Object t) {
     _target = t;
     if (!(_target instanceof Diagram)) return;
     Diagram d = (Diagram) _target;

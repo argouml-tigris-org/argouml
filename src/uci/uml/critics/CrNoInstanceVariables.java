@@ -47,15 +47,15 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 public class CrNoInstanceVariables extends CrUML {
 
   public CrNoInstanceVariables() {
-    setHeadline("Add Instance Variables to {name}");
-    sd("You have not yet specified instance variables for {name}. "+
+    setHeadline("Add Instance Variables to <ocl>self</ocl>");
+    sd("You have not yet specified instance variables for <ocl>self</ocl>. "+
        "Normally classes have instance variables that store state "+
        "information for each instance. Classes that provide only "+
        "static attributes and methods should be stereotyped <<utility>>.\n\n"+
        "Defining instance variables needed to complete the information "+
        "representation part of your design. \n\n"+
        "To fix this, press the \"Next>\" button, or add instance "+
-       "variables by dobule clicking on {name} in the navigator pane and "+
+       "variables by dobule clicking on <ocl>self</ocl> in the navigator pane and "+
        "using the Create menu to make a new attribute. ");
 
     addSupportedDecision(CrUML.decSTORAGE);

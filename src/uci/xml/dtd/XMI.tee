@@ -33,7 +33,7 @@
   <XMI.header>
     <XMI.documentation>
       <XMI.exporter>Argo/UML</XMI.exporter>
-      <XMI.exporterVersion>0.6.0</XMI.exporterVersion> 
+      <XMI.exporterVersion>0.7.0</XMI.exporterVersion> 
     </XMI.documentation>
     <XMI.metamodel name="uml" version="1.1"/>
   </XMI.header>

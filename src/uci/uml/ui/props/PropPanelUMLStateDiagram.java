@@ -85,8 +85,8 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void setTarget(Object t) {
-    super.setTarget(t);
+  protected void setTargetInternal(Object t) {
+    super.setTargetInternal(t);
     if (!(_target instanceof UMLStateDiagram)) return;
     UMLStateDiagram d = (UMLStateDiagram) _target;
     StateDiagramGraphModel sdgm = (StateDiagramGraphModel) d.getGraphModel();
@@ -103,6 +103,7 @@ public class PropPanelUMLStateDiagram extends PropPanelDiagram {
 
 
   protected void setTargetName() {
+    if (_inChange) return;
     if (!(_target instanceof Diagram)) return;
     try {
       ((Diagram)_target).setName(_nameField.getText());

@@ -43,10 +43,10 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 public class CrDisambigStateName extends CrUML {
 
   public CrDisambigStateName() {
-    setHeadline("Choose a Unique Name for {name}");
+    setHeadline("Choose a Unique Name for <ocl>self</ocl>");
     sd("Every state within a state machine must have a unique "+
        "name. There are at least two states in this machine named "+
-       "\"{name}\".\n\n"+
+       "\"<ocl>self</ocl>\".\n\n"+
        "Clear and unambiguous naming is key to code generation and "+
        "the understandability and maintainability of the design. \n\n"+
        "To fix this, use the \"Next>\" button, or manually select one of the "+

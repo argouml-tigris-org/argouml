@@ -40,14 +40,14 @@ import uci.uml.Behavioral_Elements.State_Machines.*;
 public class CrNoTransitions extends CrUML {
 
   public CrNoTransitions() {
-    setHeadline("Add Transitions to {name}");
-    sd("State {name} has no Incoming or Outgoing transitions. "+
+    setHeadline("Add Transitions to <ocl>self</ocl>");
+    sd("State <ocl>self</ocl> has no Incoming or Outgoing transitions. "+
        "Normally states have both incoming and outgoing transitions. \n\n"+
        "Defining complete state transitions is needed to complete the behavioral "+
        "specification part of your design.  \n\n"+
        "To fix this, press the \"Next>\" button, or add transitions manually "+
        "by clicking on transition tool in the tool bar and dragging from "+
-       "another state to {name} or from {name} to another state. ");
+       "another state to <ocl>self</ocl> or from <ocl>self</ocl> to another state. ");
 
     addSupportedDecision(CrUML.decSTATE_MACHINES);
     setKnowledgeTypes(Critic.KT_COMPLETENESS);

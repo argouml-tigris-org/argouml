@@ -183,8 +183,8 @@ public class CrReservedName extends CrUML {
   // constructor
 
   public CrReservedName() {
-    setHeadline("Change {name} to a Non-Reserved Word");
-    sd("\"{name}\" is a reserver word or very close to one.  The "+
+    setHeadline("Change <ocl>self</ocl> to a Non-Reserved Word");
+    sd("\"<ocl>self</ocl>\" is a reserver word or very close to one.  The "+
        "names of model elements must not conflict with "+
        "reserved words of programming languages or UML.\n\n"+
        "Using legal names is needed to generate compilable code. \n\n"+

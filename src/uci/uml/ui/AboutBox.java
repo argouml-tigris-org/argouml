@@ -76,7 +76,7 @@ public class AboutBox extends JFrame {
 //     _contact.setFont(ctrlFont);
 
     _version.setText("Argo/UML Version 0.7.0\n"+
-		     "Built on April 21, 1999\n"+
+		     "Built on April 22, 1999\n"+
 		     "\n"+
 		     "Includes:\n"+
 		     "  GEF v0.6.3\n"+

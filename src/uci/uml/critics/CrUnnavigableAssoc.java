@@ -43,12 +43,12 @@ import uci.uml.Model_Management.*;
 public class CrUnnavigableAssoc extends CrUML {
 
   public CrUnnavigableAssoc() {
-    setHeadline("Make {name} Navigable");
-    sd("The Association {name} is not navigable in any direction. "+
+    setHeadline("Make <ocl>self</ocl> Navigable");
+    sd("The Association <ocl>self</ocl> is not navigable in any direction. "+
        "All associations should be navigable at least one way.\n\n"+
        "Setting the navigablility of associations allows your code to access "+
        "data by following pointers. \n\n"+
-       "To fix this, select association \"{name}\" in the diagram or "+
+       "To fix this, select association \"<ocl>self</ocl>\" in the diagram or "+
        "navigator panel and click the properties tab.  Then use the "+
        "checkboxes at the bottom of the properties panel to turn on "+
        "navigablility. ");

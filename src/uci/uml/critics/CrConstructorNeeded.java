@@ -45,15 +45,15 @@ import uci.uml.Foundation.Extension_Mechanisms.*;
 public class CrConstructorNeeded extends CrUML {
 
   public CrConstructorNeeded() {
-    setHeadline("Add Constructor to {name}");
-    sd("You have not yet defined a constructor for class {name}. "+
+    setHeadline("Add Constructor to <ocl>self</ocl>");
+    sd("You have not yet defined a constructor for class <ocl>self</ocl>. "+
        "Constructors initialize new instances such that their "+
        "attributes have valid values.  This class probably needs a constructor "+
        "because not all of its attributes have initial values. \n\n"+
        "Defining good constructors is key to establishing class invariants, and "+
        "class invariants are a powerful aid in writing solid code. \n\n"+
        "To fix this, press the \"Next>\" button, or add a constructor manually "+
-       "by clicking on {name} in the navigator pane and "+
+       "by clicking on <ocl>self</ocl> in the navigator pane and "+
        "using the Create menu to make a new constructor. ");
 
     addSupportedDecision(CrUML.decSTORAGE);

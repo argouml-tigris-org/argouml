@@ -47,7 +47,7 @@ public class CrOppEndConflict extends CrUML {
 
   public CrOppEndConflict() {
     setHeadline("Rename Association Roles");
-    sd("Two roles of {name} have the same name. "+
+    sd("Two roles of <ocl>self</ocl> have the same name. "+
        "Roles must have distinct names.  This may because of an inherited "+
        "attribute. \n\n"+
        "Clear and unambiguous names are key to code generation and producing "+

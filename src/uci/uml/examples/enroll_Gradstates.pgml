@@ -128,13 +128,13 @@
       strokecolor="-16777216"
     >
       <moveto x="136"
-              y="186" />
+              y="184" />
       <lineto x="205"
-              y="186" />
+              y="184" />
     </path>
     <text name="Fig2.4"
       x="138"
-      y="189"
+      y="187"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -194,13 +194,13 @@
       strokecolor="-16777216"
     >
       <moveto x="136"
-              y="74" />
+              y="72" />
       <lineto x="205"
-              y="74" />
+              y="72" />
     </path>
     <text name="Fig3.4"
       x="138"
-      y="77"
+      y="75"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -260,13 +260,13 @@
       strokecolor="-16777216"
     >
       <moveto x="442"
-              y="74" />
+              y="72" />
       <lineto x="511"
-              y="74" />
+              y="72" />
     </path>
     <text name="Fig4.4"
       x="444"
-      y="77"
+      y="75"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -326,13 +326,13 @@
       strokecolor="-16777216"
     >
       <moveto x="436"
-              y="178" />
+              y="176" />
       <lineto x="511"
-              y="178" />
+              y="176" />
     </path>
     <text name="Fig5.4"
       x="438"
-      y="181"
+      y="179"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -392,13 +392,13 @@
       strokecolor="-16777216"
     >
       <moveto x="442"
-              y="330" />
+              y="328" />
       <lineto x="511"
-              y="330" />
+              y="328" />
     </path>
     <text name="Fig6.4"
       x="444"
-      y="333"
+      y="331"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -500,13 +500,13 @@
       strokecolor="-16777216"
     >
       <moveto x="120"
-              y="306" />
+              y="304" />
       <lineto x="351"
-              y="306" />
+              y="304" />
     </path>
     <text name="Fig8.4"
       x="122"
-      y="309"
+      y="307"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -567,13 +567,13 @@
       strokecolor="-16777216"
     >
       <moveto x="128"
-              y="330" />
+              y="328" />
       <lineto x="197"
-              y="330" />
+              y="328" />
     </path>
     <text name="Fig9.4"
       x="130"
-      y="333"
+      y="331"
       fill="0"
       fillcolor="-1"
       stroke="0"
@@ -634,13 +634,13 @@
       strokecolor="-16777216"
     >
       <moveto x="264"
-              y="330" />
+              y="328" />
       <lineto x="346"
-              y="330" />
+              y="328" />
     </path>
     <text name="Fig10.4"
       x="266"
-      y="333"
+      y="331"
       fill="0"
       fillcolor="-1"
       stroke="0"
