@@ -43,8 +43,6 @@ import javax.swing.ListSelectionModel;
  */
 public class UMLLinkedList extends UMLList2 {
     
-    private UMLLinkMouseListener mouseListener;
-
     /**
      * Constructor for UMLLinkedList.
      * 
@@ -57,7 +55,7 @@ public class UMLLinkedList extends UMLList2 {
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         setForeground(Color.blue);
         setSelectionForeground(Color.blue.darker());
-        mouseListener = new UMLLinkMouseListener(this);
+        UMLLinkMouseListener mouseListener = new UMLLinkMouseListener(this);
         addMouseListener(mouseListener);
     }
     
