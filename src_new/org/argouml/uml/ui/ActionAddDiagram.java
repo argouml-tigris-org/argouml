@@ -61,7 +61,28 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      */
     public void actionPerformed(ActionEvent e) {       
         Project p = ProjectManager.getManager().getCurrentProject();
-        // find the right namespace for the diagram
+        Object ns = findNamespace();
+        
+        if (ns != null && isValidNamespace(ns)) {
+            UMLDiagram diagram = createDiagram(ns);
+            p.addMember(diagram);
+            TargetManager.getInstance().setTarget(diagram);
+            //TODO: make the explorer listen to project member property
+            //changes...  to eliminate coupling on gui.
+            ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
+            super.actionPerformed(e);
+        } else {
+            LOG.error("No valid namespace found");
+            throw new IllegalStateException("No valid namespace found");
+        }
+    }
+
+    /**
+     * Find the right namespace for the diagram.
+     * @return the namespace or null
+     */
+    private Object findNamespace() {
+        Project p = ProjectManager.getManager().getCurrentProject();
         Object target = TargetManager.getInstance().getModelTarget();
         Object ns = null;
         if (target == null || !ModelFacade.isABase(target)) {
@@ -81,45 +102,7 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
         if (ns == null) {
             ns = p.getRoot();
         }
-        if (ns != null && isValidNamespace(ns)) {
-            UMLDiagram diagram = createDiagram(ns);
-            p.addMember(diagram);
-            TargetManager.getInstance().setTarget(diagram);
-            //TODO: make the explorer listen to project member property
-            //changes...  to eliminate coupling on gui.
-            ExplorerEventAdaptor.getInstance().modelElementAdded(ns);
-            super.actionPerformed(e);
-        } else {
-            LOG.error("No valid namespace found");
-            throw new IllegalStateException("No valid namespace found");
-        }
-        // Issue 1722 Removed following code so we allways get the
-        // correct namespace of the diagram (via the getContainer
-        // method).
-        /*    
-        if (ModelFacade.isABase(target)) {
-            MBase base = (MBase)target;
-            base.getModelElementContainer();
-        }
-        }
-        }
-        MNamespace ns = null;
-        if (target instanceof MNamespace) {
-            ns = (MNamespace) target;
-        }
-        if (ns == null || !isValidNamespace(ns))
-            ns = ProjectManager.getManager().getCurrentProject().getModel();
-            
-        if (isValidNamespace(ns)) {
-            ArgoDiagram diagram = createDiagram(ns);
-            p.addMember(diagram);
-            ProjectBrowser.getInstance().getNavigatorPane()
-                .addToHistory(diagram);
-            ProjectBrowser.getInstance().setTarget(diagram);
-            ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
-            super.actionPerformed(e);
-        }
-        */
+        return ns;
     }
 
     /**
@@ -137,7 +120,5 @@ public abstract class ActionAddDiagram extends UMLChangeAction {
      * @return UMLDiagram
      */
     public abstract UMLDiagram createDiagram(Object ns);
-    
-    
 
 }
