@@ -2074,11 +2074,14 @@ Auxiliary parts of the components can reside somewhere else.
 	</itemizedlist>
 </para>
       <para>
-Each component has a single Facade object that is used by
-all other components when using this component.
-The Facade object is called
+Each component has a single Facade class that can be used by
+all other components when using the component.
+The Facade class is called
 <classname><replaceable>ComponentName</replaceable>Facade</classname>
 and is located in the component package.
+How it is used is primarily documented in the class file itself 
+(as javadoc) but the more complex picture is documented in the
+Cookbook (in <xref linkend="inside_components"></xref>).
 </para>
       <para>
 Each component can also have one or several plug-in interfaces.
@@ -2096,7 +2099,7 @@ Example:
       <para>
 If the component uses a callback-technique
 the callback is always made to an interface.
-The interface is also in component package and it is called
+The interface is also in the component package and it is called
 <classname><replaceable>ComponentName</replaceable><replaceable>Plug-inType</replaceable>Interface</classname>.
 Example:
 <classname>ModelDiagramInterface</classname>,
@@ -2108,6 +2111,80 @@ Example:
 	    <imagedata fileref="images/cookbook/ComponentDiagram.gif" format="gif"/>
 	  </imageobject>
         </mediaobject>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Relationship of the components</title>
+
+      <para>
+Each component that is used by other components provide
+two ways for other components to use them:
+        <itemizedlist>
+          <listitem>
+            <para>
+The Facade class
+</para>
+            <para>
+The use of Facade class is not wide spread in ArgoUML.
+This is because ArgoUML is traditionally built as a whole
+and no components were clearly defined.
+</para>
+            <para>
+A Facade class provides the most common functions other components
+want to do when using that components to reduce the need of having
+to use anything else but the Facade class.
+The Facade class should be very much more stable than the component
+itself.
+Methods in the Facade should change really slowly and only be 
+removed after several months (and one stable release) of deprecation.
+</para>
+            <para>
+The Facade class is documented in the class file itself (as javadoc)
+and the more complex picture (if needed) is documented in the
+Cookbook (in <xref linkend="inside_components"></xref>).
+</para>
+          </listitem>
+          <listitem>
+            <para>
+Calls to public methods
+</para>
+            <para>
+Traditionally components interface through public methods and
+public variables.
+For this reason, always exercise extreme caution when changing
+the signature of a public method. 
+(See <xref linkend="groundrules"></xref>.)
+</para>
+            <para>
+This way of communicating is still to be used when it is not
+convenient to use the Facade for a specific use of that component.
+</para>
+          </listitem>
+        </itemizedlist>
+For each component X in ArgoUML that uses the component Y 
+the designer of that component X, 
+must decide if he wants to use calls to public methods
+when using the component Y 
+(putting a set of import org.argouml.Y.internals.blabla.*; statements
+in each file in the files of component X that uses component Y)
+or just use the Facade class of component Y
+(putting only one import org.argouml.Y.YFacade; 
+in each file in the component X that uses component Y).
+</para>
+            <para>
+The public calls solution 
+makes the component X depending on the component Y meaning
+that when we change the insides of the component Y we must also change
+component X.
+The facade calls solution
+doesn't make the component X depending on the component Y
+but just the Facade of component Y.
+</para>
+            <para>
+If the public calls solution or facade calls solution is used
+shall be described in the Cookbook's description of component X
+in the list of used components.
 </para>
     </sect1>
 
@@ -3089,6 +3166,9 @@ existing build methods and utility methods in the helpers.
 One reason for this is that the eventlisteners for
 the newly create modelelement are setup correctly.
 </para>
+        <para>
+TODO: Am I allowed to call the factories from any thread?
+</para>
       </sect2>
       <sect2>
 	<title>Helpers</title>
@@ -3114,6 +3194,9 @@ that correspond to different sections in the UML
 specification.
 Then you have to look in both corresponding helpers and you
 will probably find what you are searching for.
+</para>
+        <para>
+TODO: Am I allowed to call the helpers from any thread?
 </para>
       </sect2>
 
@@ -3210,6 +3293,11 @@ and the property changed in the model.
 Therefore most listeners that need MEvents are only interested in one
 type of MEvent since they are only interested in the status of 1
 property.
+</para>
+        <para>
+TODO: What thread will I receive my event in? 
+What locks will be held by the Model while I receive my event i.e.
+is there something I cannot do from the event thread?
 </para>
 	  <para>
 In the case described above (the most common one) you only have to
