@@ -1182,8 +1182,8 @@ public class Modeller
 	    }
 	}
         if (mAttribute == null) {
-            mAttribute = 
-                UmlFactory.getFactory().getCore().buildAttribute(parseState.getClassifier());
+            mAttribute = UmlFactory.getFactory().getCore()
+                .buildAttribute(parseState.getClassifier());
             ModelFacade.setName(mAttribute, name);
         }
         return mAttribute;
@@ -1203,8 +1203,8 @@ public class Modeller
                 .iterator(); i.hasNext();) {
             Object ae = i.next();
             if (name.equals(ModelFacade.getName(ae))
-                    && ModelFacade.getType(ModelFacade.getOppositeEnd(ae)) == parseState
-                            .getClassifier()) {
+                && ModelFacade.getType(ModelFacade.getOppositeEnd(ae)) 
+                    == parseState.getClassifier()) {
                 mAssociationEnd = ae;
             }
         }
