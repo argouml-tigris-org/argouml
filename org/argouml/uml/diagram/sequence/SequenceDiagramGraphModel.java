@@ -44,6 +44,12 @@ import ru.novosoft.uml.model_management.*;
 
 
 import org.tigris.gef.graph.*;
+import org.tigris.gef.base.Mode;
+import org.tigris.gef.base.ModeManager;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+
+
 
 
 /** This class defines a bridge between the UML meta-model
@@ -214,7 +220,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   /** Contruct and add a new edge of the given kind */
   public Object connect(Object fromPort, Object toPort,
 			java.lang.Class edgeClass) {
-    //try {
+  
     if (edgeClass == MLinkImpl.class &&
       (fromPort instanceof MObject && toPort instanceof MObject)) {
       MLink ml = new MLinkImpl();
@@ -225,13 +231,53 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       ml.addConnection(le0);
       ml.addConnection(le1);
       addEdge(ml);
+     
+      // add stimulus with given action, taken from global mode
+      Editor curEditor = Globals.curEditor();
 
+      if (ml.getStimuli()==null || ml.getStimuli().size() == 0) {
+        ModeManager modeManager = curEditor.getModeManager();
+        Mode mode = (Mode)modeManager.top();
+        Hashtable args = mode.getArgs();
+        if ( args != null ) {
+          MAction action=null;
+          // get "action"-Class taken from global mode
+          Class actionClass = (Class) args.get("action");
+          if (actionClass != null) {
+            try { action = (MAction) actionClass.newInstance(); }
+            catch (java.lang.IllegalAccessException ignore) { }
+            catch (java.lang.InstantiationException ignore) { }
+            if (action != null)  {
+              // determine action type of arguments in mode
+              action.setName("new action");
+
+              if (action instanceof MSendAction || action instanceof MReturnAction) {
+                action.setAsynchronous(true);
+              } else {
+                action.setAsynchronous(false);
+              }
+              // create stimulus
+              MStimulus stimulus = new MStimulusImpl();
+              stimulus.setName("");
+              //set sender and receiver
+              stimulus.setSender((MObject)fromPort);
+              stimulus.setReceiver((MObject)toPort);
+              // set action type
+              stimulus.setDispatchAction(action);
+              // add stimulus to link
+              ml.addStimulus(stimulus);
+              // add new modelelements: stimulus and action to namesapce
+              _Sequence.addOwnedElement(stimulus);
+              _Sequence.addOwnedElement(action);
+            }
+          }
+        }
+      }
       return ml;
-      }
-      else {
-	    System.out.println("Incorrect edge");
-	    return null;
-      }
+    } else {
+      System.out.println("Incorrect edge");
+      return null;
+    }
     //}
     //catch (java.beans.PropertyVetoException ex) { }
     //System.out.println("should not enter here! connect3");
