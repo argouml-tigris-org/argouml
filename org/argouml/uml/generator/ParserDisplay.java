@@ -1117,9 +1117,8 @@ nextProp:
 
       // don't forget to remove old internals!
       for (int i = 0; i < oldinternals.size(); i++)
-	  ((MTransition)oldinternals.elementAt(i)).remove();
+      UmlFactory.getFactory().getStateMachines().removeTransition((MTransition)oldinternals.elementAt(i));
       internals.addAll(trans);
-
       st.setInternalTransitions(trans);
   }
 

@@ -32,6 +32,7 @@ package org.argouml.uml.ui.model_management;
 
 import org.argouml.application.api.*;
 import org.argouml.application.ArgoVersion;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 import java.awt.*;
@@ -221,7 +222,7 @@ implements PluggablePropertyPanel {
     }
 
     public void deleteElement(MModelElement element) {
-        element.remove();
+        UmlFactory.getFactory().remove(element);
         // 2002-07-15
         // Jaap Branderhorst
         // Force an update of the navigation pane to solve issue 323

@@ -169,7 +169,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	 * in the uml factories.
 	 * @param modelelement
 	 */
-    public void remove(MModelElement modelelement) {
+    public void remove(MBase modelelement) {
 	    try {
 			Vector factoryMethods = new Vector();
 			Method[] methodArray = UmlFactory.class.getMethods();
@@ -206,7 +206,7 @@ public class UmlFactory extends AbstractUmlModelFactory {
 	 * @param modelelement the modelelement we want to know the name of
 	 * @return String
 	 */
-	private String getCreateClassName(MModelElement modelelement) {
+	private String getCreateClassName(MBase modelelement) {
 		String name = modelelement.getClass().getName();
 		name = name.substring(name.lastIndexOf('.')+2, name.length());
 		if (name.endsWith("Impl")) {

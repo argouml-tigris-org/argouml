@@ -27,6 +27,8 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import java.util.*;
 
+import org.argouml.model.uml.UmlFactory;
+
 /**
    The parse state keep control of data during parsing.
 */
@@ -195,7 +197,7 @@ class ParseState
 	for(Iterator i = obsoleteInnerClasses.iterator(); i.hasNext(); ) {
 	    MModelElement element = (MModelElement)i.next();
 	    if(element instanceof MClassifier) {
-		element.remove();
+	    	UmlFactory.getFactory().getCore().removeClassifier((MClassifier)element);
 	    }
 	}	
     }
