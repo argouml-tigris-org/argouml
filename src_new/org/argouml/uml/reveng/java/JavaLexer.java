@@ -59,7 +59,7 @@ public class JavaLexer extends antlr.CharScanner implements JavaTokenTypes, Toke
      * Override makeToken to store the whitespaces in the
      * special Argo tokens.
      */
-    protected Token makeToken(int t) {
+    public Token makeToken(int t) {
         Token tok = super.makeToken(t);
 
         ((ArgoToken)tok).setWhitespace( getWhitespaceBuffer());
@@ -105,55 +105,55 @@ public JavaLexer(InputBuffer ib) {
 public JavaLexer(LexerSharedInputState state) {
 	super(state);
 	literals = new Hashtable();
+	literals.put(new ANTLRHashString("byte", this), new Integer(48));
+	literals.put(new ANTLRHashString("public", this), new Integer(59));
+	literals.put(new ANTLRHashString("case", this), new Integer(89));
+	literals.put(new ANTLRHashString("short", this), new Integer(50));
+	literals.put(new ANTLRHashString("break", this), new Integer(84));
+	literals.put(new ANTLRHashString("while", this), new Integer(82));
+	literals.put(new ANTLRHashString("new", this), new Integer(134));
+	literals.put(new ANTLRHashString("instanceof", this), new Integer(117));
+	literals.put(new ANTLRHashString("implements", this), new Integer(73));
+	literals.put(new ANTLRHashString("synchronized", this), new Integer(65));
+	literals.put(new ANTLRHashString("float", this), new Integer(52));
+	literals.put(new ANTLRHashString("package", this), new Integer(41));
+	literals.put(new ANTLRHashString("return", this), new Integer(86));
+	literals.put(new ANTLRHashString("throw", this), new Integer(88));
+	literals.put(new ANTLRHashString("null", this), new Integer(133));
+	literals.put(new ANTLRHashString("threadsafe", this), new Integer(64));
 	literals.put(new ANTLRHashString("protected", this), new Integer(60));
+	literals.put(new ANTLRHashString("class", this), new Integer(67));
+	literals.put(new ANTLRHashString("throws", this), new Integer(77));
+	literals.put(new ANTLRHashString("do", this), new Integer(83));
+	literals.put(new ANTLRHashString("super", this), new Integer(130));
+	literals.put(new ANTLRHashString("transient", this), new Integer(62));
 	literals.put(new ANTLRHashString("native", this), new Integer(63));
+	literals.put(new ANTLRHashString("interface", this), new Integer(69));
+	literals.put(new ANTLRHashString("final", this), new Integer(39));
+	literals.put(new ANTLRHashString("if", this), new Integer(79));
+	literals.put(new ANTLRHashString("double", this), new Integer(54));
+	literals.put(new ANTLRHashString("volatile", this), new Integer(66));
+	literals.put(new ANTLRHashString("catch", this), new Integer(93));
+	literals.put(new ANTLRHashString("try", this), new Integer(91));
+	literals.put(new ANTLRHashString("int", this), new Integer(51));
+	literals.put(new ANTLRHashString("for", this), new Integer(81));
+	literals.put(new ANTLRHashString("extends", this), new Integer(68));
+	literals.put(new ANTLRHashString("boolean", this), new Integer(47));
+	literals.put(new ANTLRHashString("char", this), new Integer(49));
+	literals.put(new ANTLRHashString("private", this), new Integer(58));
+	literals.put(new ANTLRHashString("default", this), new Integer(90));
+	literals.put(new ANTLRHashString("false", this), new Integer(132));
+	literals.put(new ANTLRHashString("this", this), new Integer(129));
+	literals.put(new ANTLRHashString("static", this), new Integer(61));
+	literals.put(new ANTLRHashString("abstract", this), new Integer(40));
+	literals.put(new ANTLRHashString("continue", this), new Integer(85));
+	literals.put(new ANTLRHashString("finally", this), new Integer(92));
+	literals.put(new ANTLRHashString("else", this), new Integer(80));
+	literals.put(new ANTLRHashString("import", this), new Integer(43));
+	literals.put(new ANTLRHashString("void", this), new Integer(46));
+	literals.put(new ANTLRHashString("switch", this), new Integer(87));
 	literals.put(new ANTLRHashString("true", this), new Integer(131));
 	literals.put(new ANTLRHashString("long", this), new Integer(53));
-	literals.put(new ANTLRHashString("byte", this), new Integer(48));
-	literals.put(new ANTLRHashString("break", this), new Integer(84));
-	literals.put(new ANTLRHashString("new", this), new Integer(134));
-	literals.put(new ANTLRHashString("float", this), new Integer(52));
-	literals.put(new ANTLRHashString("volatile", this), new Integer(66));
-	literals.put(new ANTLRHashString("import", this), new Integer(43));
-	literals.put(new ANTLRHashString("private", this), new Integer(58));
-	literals.put(new ANTLRHashString("this", this), new Integer(129));
-	literals.put(new ANTLRHashString("final", this), new Integer(39));
-	literals.put(new ANTLRHashString("short", this), new Integer(50));
-	literals.put(new ANTLRHashString("while", this), new Integer(82));
-	literals.put(new ANTLRHashString("implements", this), new Integer(73));
-	literals.put(new ANTLRHashString("extends", this), new Integer(68));
-	literals.put(new ANTLRHashString("switch", this), new Integer(87));
-	literals.put(new ANTLRHashString("throw", this), new Integer(88));
-	literals.put(new ANTLRHashString("return", this), new Integer(86));
-	literals.put(new ANTLRHashString("synchronized", this), new Integer(65));
-	literals.put(new ANTLRHashString("char", this), new Integer(49));
-	literals.put(new ANTLRHashString("if", this), new Integer(79));
-	literals.put(new ANTLRHashString("else", this), new Integer(80));
-	literals.put(new ANTLRHashString("null", this), new Integer(133));
-	literals.put(new ANTLRHashString("double", this), new Integer(54));
-	literals.put(new ANTLRHashString("case", this), new Integer(89));
-	literals.put(new ANTLRHashString("void", this), new Integer(46));
-	literals.put(new ANTLRHashString("false", this), new Integer(132));
-	literals.put(new ANTLRHashString("class", this), new Integer(67));
-	literals.put(new ANTLRHashString("static", this), new Integer(61));
-	literals.put(new ANTLRHashString("boolean", this), new Integer(47));
-	literals.put(new ANTLRHashString("finally", this), new Integer(92));
-	literals.put(new ANTLRHashString("for", this), new Integer(81));
-	literals.put(new ANTLRHashString("super", this), new Integer(130));
-	literals.put(new ANTLRHashString("package", this), new Integer(41));
-	literals.put(new ANTLRHashString("transient", this), new Integer(62));
-	literals.put(new ANTLRHashString("catch", this), new Integer(93));
-	literals.put(new ANTLRHashString("default", this), new Integer(90));
-	literals.put(new ANTLRHashString("public", this), new Integer(59));
-	literals.put(new ANTLRHashString("throws", this), new Integer(77));
-	literals.put(new ANTLRHashString("interface", this), new Integer(69));
-	literals.put(new ANTLRHashString("int", this), new Integer(51));
-	literals.put(new ANTLRHashString("threadsafe", this), new Integer(64));
-	literals.put(new ANTLRHashString("try", this), new Integer(91));
-	literals.put(new ANTLRHashString("do", this), new Integer(83));
-	literals.put(new ANTLRHashString("continue", this), new Integer(85));
-	literals.put(new ANTLRHashString("instanceof", this), new Integer(117));
-	literals.put(new ANTLRHashString("abstract", this), new Integer(40));
 caseSensitiveLiterals = true;
 setCaseSensitive(true);
 }
@@ -1087,7 +1087,8 @@ tryAgain:
 		}
 		}
 		}
-		_ttype = Token.SKIP;
+		addWhitespace(new String(text.getBuffer(),_begin,text.length()-_begin));
+				  _ttype = Token.SKIP;
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
@@ -1140,7 +1141,9 @@ tryAgain:
 			}
 		}
 		}
-		_ttype = Token.SKIP; newline();
+		addWhitespace(new String(text.getBuffer(),_begin,text.length()-_begin));
+				  _ttype = Token.SKIP;
+				  newline();
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));
@@ -1255,7 +1258,8 @@ tryAgain:
 		} while (true);
 		}
 		match("*/");
-		_ttype = Token.SKIP;
+		addWhitespace(new String(text.getBuffer(),_begin,text.length()-_begin));
+				  _ttype = Token.SKIP;
 		if ( _createToken && _token==null && _ttype!=Token.SKIP ) {
 			_token = makeToken(_ttype);
 			_token.setText(new String(text.getBuffer(), _begin, text.length()-_begin));

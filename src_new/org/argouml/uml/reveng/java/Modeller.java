@@ -3,7 +3,7 @@
 /*
   JavaRE - Code generation and reverse engineering for UML and Java
   Copyright (C) 2000 Marcus Andersson andersson@users.sourceforge.net
-  
+
   This library is free software; you can redistribute it and/or modify
   it under the terms of the GNU Lesser General Public License as
   published by the Free Software Foundation; either version 2.1 of the
@@ -17,7 +17,7 @@
   You should have received a copy of the GNU Lesser General Public
   License along with this library; if not, write to the Free Software
   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307
-  USA 
+  USA
 
 */
 
@@ -35,13 +35,13 @@ import ru.novosoft.uml.foundation.data_types.*;
    This class receives calls from the parser and builds the UML
    model.
 */
-public class Modeller 
-{ 
+public class Modeller
+{
     /** Current working model. */
     private MModel model;
 
     private DiagramInterface _diagram;
-    
+
     /** The package which the currentClassifier belongs to. */
     private MPackage currentPackage;
 
@@ -59,7 +59,7 @@ public class Modeller
 
     /**
        Create a new modeller.
-       
+
        @param model The model to work with.
     */
     public Modeller(MModel model,
@@ -87,7 +87,7 @@ public class Modeller
 
     /**
        Called from the parser when a package clause is found.
-       
+
        @param name The name of the package.
     */
     public void addPackage(String name)
@@ -98,7 +98,7 @@ public class Modeller
 	String ownerPackageName, currentName = name;
 	while( ! "".equals(ownerPackageName = getPackageName(currentName))) {
 	    getDiagram().selectClassDiagram( getPackage(ownerPackageName), ownerPackageName);
-	    getDiagram().addPackage(getPackage(currentName)); 	    
+	    getDiagram().addPackage(getPackage(currentName));
 	    currentName = ownerPackageName;
 	}
 
@@ -124,12 +124,12 @@ public class Modeller
 	String packageName = getPackageName(name);
 	String classifierName = getClassifierName(name);
 	MPackage mPackage = getPackage(packageName);
-	
+
 	if(classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
 	}
 	else {
-	    MClassifier mClassifier = 
+	    MClassifier mClassifier =
 		(new PackageContext(null, mPackage)).get(classifierName);
 	    parseState.addClassifierContext(mClassifier);
 	}
@@ -137,14 +137,14 @@ public class Modeller
 
     /**
        Called from the parser when a class declaration is found.
-       
-       @param name The name of the class.  
-       @param modifiers A sequence of class modifiers.  
-       @param superclass Zero or one string with the name of the 
-                         superclass. Can be fully qualified or 
+
+       @param name The name of the class.
+       @param modifiers A sequence of class modifiers.
+       @param superclass Zero or one string with the name of the
+                         superclass. Can be fully qualified or
 			 just a simple class name.
        @param interfaces Zero or more strings with the names of implemented
-                         interfaces. Can be fully qualified or just a 
+                         interfaces. Can be fully qualified or just a
 			 simple interface name.
        @param javadoc The javadoc comment. null or "" if no comment available.
     */
@@ -165,7 +165,7 @@ public class Modeller
 	    MClass parentClass = (MClass)getContext(superclassName)
 		.get(getClassifierName(superclassName));
 
-	    MGeneralization mGeneralization = 
+	    MGeneralization mGeneralization =
 		getGeneralization(currentPackage, parentClass, mClass);
 	    mGeneralization.setParent(parentClass);
 	    mGeneralization.setChild(mClass);
@@ -177,7 +177,7 @@ public class Modeller
 	    MInterface mInterface = getContext(interfaceName)
 		.getInterface(getClassifierName(interfaceName));
 
-	    MAbstraction mAbstraction = 
+	    MAbstraction mAbstraction =
 		getAbstraction(currentPackage, mInterface, mClass);
 	    if(mAbstraction.getSuppliers().size() == 0) {
 		mAbstraction.addSupplier(mInterface);
@@ -185,7 +185,7 @@ public class Modeller
 	    }
 	    mAbstraction.setNamespace(currentPackage);
 	    mAbstraction.setStereotype(getStereotype("realize"));
-	}	    
+	}
     }
 
     /**
@@ -208,11 +208,11 @@ public class Modeller
 
     /**
        Called from the parser when an interface declaration is found.
-       
-       @param name The name of the interface.  
-       @param modifiers A sequence of interface modifiers.  
-       @param interfaces Zero or more strings with the names of extended 
-                         interfaces. Can be fully qualified or just a 
+
+       @param name The name of the interface.
+       @param modifiers A sequence of interface modifiers.
+       @param interfaces Zero or more strings with the names of extended
+                         interfaces. Can be fully qualified or just a
 			 simple interface name.
        @param javadoc The javadoc comment. "" if no comment available.
     */
@@ -231,7 +231,7 @@ public class Modeller
 	    MInterface parentInterface = getContext(interfaceName)
 		.getInterface(getClassifierName(interfaceName));
 
-	    MGeneralization mGeneralization = 
+	    MGeneralization mGeneralization =
 		getGeneralization(currentPackage, parentInterface, mInterface);
 	    mGeneralization.setParent(parentInterface);
 	    mGeneralization.setChild(mInterface);
@@ -241,7 +241,7 @@ public class Modeller
 
     /**
        Common code used by addClass and addInterface.
-       
+
        @param newClassifier Supply one if none is found in the model.
        @param name Name of the classifier.
        @param modifiers String of modifiers.
@@ -283,7 +283,7 @@ public class Modeller
 	getTaggedValue(mClassifier, "documentation").setValue(javadoc);
 
 	return mClassifier;
-    }	
+    }
 
     /**
        Called from the parser when a classifier is completely parsed.
@@ -300,7 +300,7 @@ public class Modeller
 		getDiagram().addClass((MClass)classifier);
 	    }
 	}
-	
+
 	// Remove operations and attributes not in source
 	parseState.removeObsoleteFeatures();
 
@@ -316,11 +316,12 @@ public class Modeller
        @param modifiers A sequence of operation modifiers.
        @param returnType The return type of the operation.
        @param name The name of the operation as a string
-       @param parameters A number of vectors, each representing a 
+       @param parameters A number of vectors, each representing a
                          parameter.
        @param javadoc The javadoc comment. null or "" if no comment available.
+       @returns The operation.
     */
-    public void addOperation(short modifiers,
+    public MOperation addOperation(short modifiers,
                              String returnType,
 			     String name,
                              Vector parameters,
@@ -341,17 +342,17 @@ public class Modeller
 	setVisibility(mOperation, modifiers);
 	if((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
 	    mOperation.setConcurrency(MCallConcurrencyKind.GUARDED);
-	} else if(mOperation.getConcurrency() == 
+	} else if(mOperation.getConcurrency() ==
 		  MCallConcurrencyKind.GUARDED) {
 	    mOperation.setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
-	}	    
+	}
 
 
-	for(Iterator i = mOperation.getParameters().iterator(); 
+	for(Iterator i = mOperation.getParameters().iterator();
 	    i.hasNext(); ) {
 	    mOperation.removeParameter((MParameter)i.next());
 	}
-	
+
 	MParameter mParameter;
 	String typeName;
 	MPackage mPackage;
@@ -360,14 +361,14 @@ public class Modeller
 	if(returnType == null) {
 	    // Constructor
 	    mOperation.setStereotype(getStereotype("create"));
-	    setScope(mOperation, JavaRecognizer.ACC_STATIC);	    
+	    setScope(mOperation, JavaRecognizer.ACC_STATIC);
 	}
 	else {
 	    mParameter = new MParameterImpl();
 	    mParameter.setName("return");
 	    mParameter.setKind(MParameterDirectionKind.RETURN);
 	    mOperation.addParameter(mParameter);
-	    
+
 	    mClassifier =
 		getContext(returnType).get(getClassifierName(returnType));
 	    mParameter.setType(mClassifier);
@@ -379,17 +380,40 @@ public class Modeller
 	    mParameter.setName((String)parameter.elementAt(2));
 	    mParameter.setKind(MParameterDirectionKind.IN);
 	    mOperation.addParameter(mParameter);
-	    
+
 	    typeName = (String)parameter.elementAt(1);
 	    mClassifier =
 		getContext(typeName).get(getClassifierName(typeName));
 	    mParameter.setType(mClassifier);
 	}
+	return mOperation;
+    }
+
+    /**
+       Called from the parser to add a method body to an operation.
+       (At the moment, an operation will have exactly one body.)
+
+       @param op An operation.
+       @param body A method body.
+    */
+    public void addBodyToOperation(Object op, String body)
+    {
+		if (op == null || !(op instanceof MOperation)) {
+			System.out.println("adding body failed: no operation!");
+		    return;
+		}
+		if (body == null || body.length() == 0)
+		    return;
+
+		MOperation operation = (MOperation)op;
+		MMethod method = new MMethodImpl();
+		method.setBody(new MProcedureExpression("Java",body));
+		operation.addMethod(method);
     }
 
     /**
        Called from the parser when an attribute is found.
-       
+
        @param modifiers A sequence of attribute modifiers.
        @param typeSpec The attribute's type.
        @param variable The name of the attribute.
@@ -408,7 +432,7 @@ public class Modeller
 	    typeSpec = typeSpec.substring(0, typeSpec.indexOf('['));
 	    multiplicity = MMultiplicity.M1_N;
 	}
-	    
+
 	MClassifier mClassifier =
 	    getContext(typeSpec).get(getClassifierName(typeSpec));
 	MAttribute mAttribute = getAttribute(name, initializer, mClassifier);
@@ -424,15 +448,15 @@ public class Modeller
 	    setScope(mAttribute, modifiers);
 	    setVisibility(mAttribute, modifiers);
 	    mAttribute.setMultiplicity(multiplicity);
-	    
+
 	    mAttribute.setType(mClassifier);
-	    
+
 	    // Set the initial value for the attribute.
 	    if(initializer != null) {
 		mAttribute.setInitialValue(new MExpression("Java",
 							   initializer));
 	    }
-	    
+
 	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
 		mAttribute.setChangeability(MChangeableKind.FROZEN);
 	    }
@@ -442,9 +466,9 @@ public class Modeller
 	    }
 	}
 	else {
-	    MAssociationEnd mAssociationEnd = 
+	    MAssociationEnd mAssociationEnd =
 		getAssociationEnd(name, mClassifier);
-	    
+
 	    if((javadoc==null) || "".equals(javadoc)) {
 		javadoc = "/** */";
 	    }
@@ -453,9 +477,9 @@ public class Modeller
 	    setScope(mAssociationEnd, modifiers);
 	    setVisibility(mAssociationEnd, modifiers);
 	    mAssociationEnd.setMultiplicity(multiplicity);
-	    
+
 	    mAssociationEnd.setType(mClassifier);
-	    
+
 	    if((modifiers & JavaRecognizer.ACC_FINAL) > 0) {
 		mAssociationEnd.setChangeability(MChangeableKind.FROZEN);
 	    }
@@ -464,15 +488,15 @@ public class Modeller
 		    mAssociationEnd.getChangeability() == null) {
 		mAssociationEnd.setChangeability(MChangeableKind.CHANGEABLE);
 	    }
-	    
+
 	    mAssociationEnd.setNavigable(true);
-	}	    
+	}
     }
 
     /**
        Find a generalization in the model. If it does not exist, a
        new generalization is created.
-       
+
        @param mPackage Look in this package.
        @param parent The superclass.
        @param child The subclass.
@@ -552,27 +576,27 @@ public class Modeller
 	    mPackage = new MPackageImpl();
 	    mPackage.setName(getRelativePackageName(name));
 	    mPackage.setNamespace(model);
-	    
+
 	    // Find the owner for this package.
 	    if("".equals(getPackageName(name))) {
 		model.addOwnedElement(mPackage);
 	    }
 	    else {
 		getPackage(getPackageName(name)).addOwnedElement(mPackage);
-	    }	
+	    }
 	}
 	if(mPackage.getUUID() == null) {
 	    mPackage.setUUID(name);
-	}		
+	}
 	return mPackage;
     }
 
     /**
      * Search recursivly for nested packages in the model. So if you
      * pass a package org.argouml.kernel , this method searches for a package
-     * kernel, that is owned by a package argouml, which is owned by a 
+     * kernel, that is owned by a package argouml, which is owned by a
      * package org. This method is required to nest the parsed packages.
-     * 
+     *
      * @param name The fully qualified package name of the package we are searching for.
      * @return The found package or null, if it is not in the model.
      */
@@ -590,7 +614,7 @@ public class Modeller
        not found, a new is created.
 
        @param name The name of the operation.
-       @returns The operation found or created.  
+       @returns The operation found or created.
     */
     private MOperation getOperation(String name)
     {
@@ -612,7 +636,7 @@ public class Modeller
        @param initializer The initializer code.
        @param mClassifier The type, used when checking for existing
                           association.
-       @returns The attribute found or created.  
+       @returns The attribute found or created.
     */
     private MAttribute getAttribute(String name,
 				    String initializer,
@@ -670,20 +694,20 @@ public class Modeller
 
     /**
        Get the stereotype with a specific name.
-       
+
        @param name The name of the stereotype.
        @returns The stereotype.
     */
     private MStereotype getStereotype(String name)
     {
 	MStereotype mStereotype = (MStereotype)model.lookup(name);
-	
+
 	if(mStereotype == null) {
 	    mStereotype = new MStereotypeImpl();
 	    mStereotype.setName(name);
 	    mStereotype.setNamespace(model);
 	}
-	
+
 	return mStereotype;
     }
 
@@ -711,7 +735,7 @@ public class Modeller
 
     /**
        Get the package name from a fully specified classifier name.
-       
+
        @param name A fully specified classifier name.
        @returns The package name.
     */
@@ -725,7 +749,7 @@ public class Modeller
 	    return name.substring(0, lastDot);
 	}
     }
-    
+
     /**
      * Get the relative package name from a fully qualified
      * package name. So if the parameter is 'org.argouml.kernel'
@@ -744,7 +768,7 @@ public class Modeller
 
     /**
        Get the classifier name from a fully specified classifier name.
-       
+
        @param name A fully specified classifier name.
        @returns The classifier name.
     */
@@ -761,9 +785,9 @@ public class Modeller
 
     /**
        Set the visibility for a model element.
-       
+
        @param element The model element.
-       @param modifiers A sequence of modifiers which may contain 
+       @param modifiers A sequence of modifiers which may contain
                         'private', 'protected' or 'public'.
     */
     private void setVisibility(MModelElement element,
@@ -782,9 +806,9 @@ public class Modeller
 
     /**
        Set the scope for a feature.
-       
+
        @param feature The feature.
-       @param modifiers A sequence of modifiers which may contain 
+       @param modifiers A sequence of modifiers which may contain
                         'static'.
     */
     private void setScope(MFeature feature,
@@ -800,9 +824,9 @@ public class Modeller
 
     /**
        Set the scope for an association end.
-       
+
        @param mAssociationEnd The end.
-       @param modifiers A sequence of modifiers which may contain 
+       @param modifiers A sequence of modifiers which may contain
                         'static'.
     */
     private void setScope(MAssociationEnd mAssociationEnd, short modifiers)
@@ -818,7 +842,7 @@ public class Modeller
     /**
        Get the context for a classifier name that may or may not be
        fully qualified.
-       
+
        @param name The classifier name.
     */
     private Context getContext(String name)
@@ -829,6 +853,6 @@ public class Modeller
 	    context = new PackageContext(context, getPackage(packageName));
 	}
 	return context;
-    }	
+    }
 
 }

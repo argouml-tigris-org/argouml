@@ -144,12 +144,63 @@ tokens {
 	void setModeller(Modeller modeller) {
 	    _modeller = modeller;
         }
+	
+        // A reference to the last added MOperation (here: method)
+        private Object _currentMethod = null;
+
+	/**
+	 * get reference to the last added MOperation (here: method)
+	 */
+	Object getMethod() {
+	    return _currentMethod;
+	}
+
+	/**
+	 * set reference to the last added MOperation (here: method)
+	 */
+	void setMethod(Object method) {
+	    _currentMethod = method;
+        }
+
+        // A method body
+        private String _methodBody = null;
+
+	/**
+	 * get last method body
+	 */
+	String getBody() {
+	    return _methodBody;
+	}
+
+	/**
+	 * set last method body
+	 */
+	void setBody(String body) {
+	    _methodBody = body;
+        }
 
 	// A flag to indicate if we track the tokens for a expression.
 	private boolean      _trackExpression  = false;	
 
+	// A flag to indicate if we are inside a compoundStatement
+	private boolean      _inCompoundStatement  = false;	
+
 	// A string buffer for the current expression.
     	private StringBuffer _expressionBuffer = new StringBuffer();   
+
+	/**
+	 * set if we are inside a compoundStatement
+	 */
+	void setIsInCompoundStatement(boolean flag) {
+	    _inCompoundStatement = flag;
+	}
+
+	/**
+	 * check if we are inside a compoundStatement
+	 */
+	boolean isInCompoundStatement() {
+	    return _inCompoundStatement;
+	}
 
 	/**
 	 * Activate the tracking of expressions.
@@ -178,13 +229,21 @@ tokens {
             return result;
         }      
 
+	/**
+     	 * Appends to a tracked expression. (used to restore it)
+     	 */
+    	public void appendExpression(String expr) {
+            _expressionBuffer.append(expr);
+        }      
+
 	public void match(int t) throws MismatchedTokenException, TokenStreamException {
             String text = ((ArgoToken)LT(1)).getWhitespace() + LT(1).getText();
 
             super.match(t);
 
-            if(_trackExpression)
-                _expressionBuffer.append(text);
+            // '== 0' to avoid the following when backtracking
+            if(_trackExpression && inputState.guessing==0)
+                appendExpression(text);
     	}     
 }
 
@@ -396,6 +455,9 @@ field
 	:	// method, constructor, or variable declaration
 		mods=modifiers
 		(	ctorHead[mods] compoundStatement // constructor
+			{getModeller().addBodyToOperation(getMethod(),getBody());
+			 setMethod(null);
+			 setBody(null);}
 		|	classDefinition["", mods]       // inner class
 		|	interfaceDefinition["", mods]   // inner interface
 		|	t=typeSpec         // method or variable declaration(s)
@@ -410,8 +472,11 @@ field
 				  // get the list of exceptions that this method is declared to throw
 				  (throwsClause)?
 
-				  ( compoundStatement | SEMI )
-				) {getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()); }
+				  (compoundStatement | SEMI)
+				) {setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+				   getModeller().addBodyToOperation(getMethod(),getBody());
+				   setMethod(null);
+				   setBody(null);}
 			|	classVariableDefinitions[getJavadocComment(), mods, t] SEMI
 			)
 		)
@@ -459,7 +524,19 @@ declaratorBrackets returns [String b=""]
 	;
 
 varInitializer returns [String expression=null]
-	:	( ASSIGN {activateExpressionTracking();} initializer {deactivateExpressionTracking(); expression=getExpression();})?
+{String trackedSoFar = null;}
+	:	( ASSIGN
+		  {trackedSoFar=getExpression();
+		   if (!isInCompoundStatement())
+		     activateExpressionTracking();}
+		  initializer
+		  {expression=getExpression();
+		   if (isInCompoundStatement()) {
+		     activateExpressionTracking();
+		     appendExpression(trackedSoFar);
+		     appendExpression(expression);
+		   } else
+		     deactivateExpressionTracking();})?
 	;
 
 // This is an initializer used to set up an array.
@@ -500,8 +577,8 @@ ctorHead[ short mods]
 		// parse the formal parameter declarations.
 		LPAREN param=parameterDeclarationList RPAREN
 
-		{ getModeller().addOperation(mods, null, 
-			name.getText(), param, getJavadocComment()); }
+		{ setMethod(getModeller().addOperation(mods, null, 
+			name.getText(), param, getJavadocComment())); }
 
 		// get the list of exceptions that this method is
 		// declared to throw
@@ -555,9 +632,17 @@ parameterModifier returns [short mods=0;]
 //      it starts a new scope for variable definitions
 
 compoundStatement
+{boolean isOutestCompStat = !isInCompoundStatement();}
 	:	LCURLY
-			// include the (possibly-empty) list of statements
-			(statement)*
+		{if (isOutestCompStat) {
+		   setIsInCompoundStatement(true);
+		   activateExpressionTracking();}}
+		// include the (possibly-empty) list of statements
+		(statement)*
+		{if (isOutestCompStat) {
+		   setBody(getExpression());
+		   deactivateExpressionTracking();
+		   setIsInCompoundStatement(false);}}
 		RCURLY
 	;
 
@@ -1073,7 +1158,7 @@ options {
      * Override makeToken to store the whitespaces in the
      * special Argo tokens.
      */
-    protected Token makeToken(int t) {
+    public Token makeToken(int t) {
         Token tok = super.makeToken(t);
 
         ((ArgoToken)tok).setWhitespace( getWhitespaceBuffer());
@@ -1169,14 +1254,17 @@ WS	:	(	' '
 			)
 			{ newline(); }
 		)
-		{ _ttype = Token.SKIP; }
+		{ addWhitespace($getText);
+		  $setType(Token.SKIP); }
 	;
 
 // Single-line comments
 SL_COMMENT
 	:	"//"
 		(~('\n'|'\r'))* ('\n' | '\r'('\n')?)?
-		{$setType(Token.SKIP); newline();}
+		{ addWhitespace($getText);
+		  $setType(Token.SKIP);
+		  newline(); }
 	;
 
 // javadoc comments
@@ -1235,7 +1323,8 @@ ML_COMMENT
 		|	~('*'|'\n'|'\r')
 		)*
 		"*/"
-		{$setType(Token.SKIP);}
+		{ addWhitespace($getText);
+		  $setType(Token.SKIP); }
 	;
 
 // character literals
