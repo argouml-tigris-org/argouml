@@ -48,6 +48,7 @@ import org.argouml.kernel.*;
 import org.argouml.ui.*;
 import org.argouml.cognitive.*;
 import org.argouml.uml.*;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 
@@ -147,7 +148,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
       }
       popUpActions.insertElementAt(critiques, 0);
     }
-    popUpActions.addElement(Actions.Properties);
+    popUpActions.addElement(ActionProperties.SINGLETON);
     return popUpActions;
   }
 
