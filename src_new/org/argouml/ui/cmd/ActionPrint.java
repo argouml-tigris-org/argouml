@@ -26,6 +26,10 @@ package org.argouml.ui.cmd;
 
 import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
+
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.uml.ui.UMLAction;
 import org.tigris.gef.base.CmdPrint;
@@ -36,34 +40,21 @@ import org.tigris.gef.base.Diagram;
 // file menu actions
 /** print the current active diagram.
  */
-public class ActionPrint extends UMLAction {
-
-    private final CmdPrint cmd = new CmdPrint();
+public class ActionPrint extends AbstractAction {
 
     /**
      * The constructor.
      */
     public ActionPrint() {
-        super("action.print", HAS_ICON);
+        super(Translator.localize("action.print"), ResourceLoaderWrapper
+                .lookupIconResource(Translator.getImageBinding("Print"),
+                        Translator.localize("action.print")));
     }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
-	Object target =
-	    ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-	if (target instanceof Diagram) {
-	    String n = ((Diagram) target).getName();
-	    cmd.setDiagramName(n);
-	    cmd.doIt();
-	}
-    }
-
-    /**
-     * @return the command to print
-     */
-    public CmdPrint getCmdPrint() {
-	return cmd;
+        PrintManager.getInstance().print();
     }
 } /* end class ActionPrint */
