@@ -461,10 +461,12 @@ ArgoUML project doesn't include the developing of Java classes for
 the purpose of storing, saving and loading an UML Model.
 That work is done by NSUML and is used by ArgoUML.
 </para>
+<!--
 	    <para>
 See <xref linkend="nsuml"/> for some reading tips on how to learn
 the insides of NSUML.
 </para>
+-->
 	  </listitem>
 
 	  <listitem>
@@ -1961,6 +1963,244 @@ in ArgoUML itself.
 <chapter id="components">
     <title>ArgoUML Components</title>
 
+    <indexterm>
+      <primary>component</primary>
+    </indexterm>
+    <para>
+The code within ArgoUML is separated in components 
+that each have a responsibility.
+</para>
+    <indexterm>
+      <primary>layer</primary>
+    </indexterm>
+    <para>
+Currently this is more of a base for discussion and
+ambition but hopefully this will mature and 
+prove useful.
+</para>
+
+    <para>
+The components are organized in layers.
+The purpose of the layers is to keep a clear view
+of what components provide services to others
+and to allow us to know how much is involved
+when testing each component.
+</para>
+    <para>
+This chapter contains 
+a list of all components and what layer they are in
+and the definition of the responsibility of each component.
+</para>
+    <para>
+The following chapter contains an in-detail description
+of each component with an up-to-date-view of what classes
+and files that currently constitute that component.
+</para>
+
+    <sect1>
+      <title>Definition of layer</title>
+
+      <para>
+Layers are used to organize and 
+clairify the relationships between the different components
+within ArgoUML.
+</para>
+
+      <para>
+ArgoUML is built from the bottom and up.
+Components on a higher level are relying on components
+on a lower level and never the other way around.
+A component cannot even rely on a component in the same layer.
+</para>
+
+      <para>
+This means that when testing a component,
+it can always be tested with just that component and
+components on lower levels.
+</para>
+
+    </sect1>
+
+    <sect1>
+      <title>Layer 0 - Description of components</title>
+      <para>
+Layer 0 contains some infrastructure components that
+just are there for every other layer to use.
+</para>
+      <itemizedlist>
+
+	<listitem>
+	  <para>Logging</para>
+	  <indexterm>
+	    <primary>Logging</primary>
+	  </indexterm>
+	  <para>
+Calls can be spread all over that would go through some rule set
+and then end up on file, on the output or not at all.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>Internationalization</para>
+	  <para>
+This is the set of files that is a repository of localized strings.
+Every other module uses these strings in all communcations with
+the user.
+</para>
+	</listitem>
+
+	<listitem>
+	  <para>JRE with utils</para>
+	  <para>
+Every other component can use the classes available with the JRE.
+</para>
+	</listitem>
+
+      </itemizedlist>
+    </sect1>
+
+    <sect1>
+      <title>Layer 1 - Description of components</title>
+      <para>
+Layer 1 is the lowest layer.
+The components in this layer does not rely on any other part
+(except layer 0)
+of ArgoUML to do their work.
+They can all be tested in full individually 
+i.e. independant of any other component.
+</para>
+      <para>
+<itemizedlist>
+
+	  <listitem>
+	    <para>The Model</para>
+	    <indexterm>
+	      <primary>Model</primary>
+	    </indexterm>
+	    <para>
+The Model contains a modifyable view of the UML model
+and the diagrams.
+</para>
+	    <para>
+The Model presents several different views
+and access methods for the information.
+Among other things, the information can be saved,
+loaded, examined, and observed.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>To do items</para>
+	    <para>
+This is the To do items. They can be created, deleted and saved.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>The GUI framework</para>
+	    <para>
+This is the framework with menus, tabs, and panes
+available for the other
+components to fill with actions and contents.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Help system</para>
+	    <para>
+Not yet implemented.
+</para>
+	    <para>
+This is the component that the other components can call
+to present some help for the user.
+</para>
+	  </listitem>
+
+	</itemizedlist>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Layer 2 - Description of components.</title>
+      <para>
+These components rely on components of layer 1 in order to their
+work.
+</para>
+
+      <para>
+        <itemizedlist>
+	  <listitem>
+	    <para>Diagrams</para>
+	    <para>
+This is the diagram view of the model.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Property panels</para>
+	    <para>
+This is the prop panel view of the model.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Navigator pane</para>
+	    <para>
+This is the navigator pane view of the model.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Pluggable interface</para>
+	    <para>
+This is the interface where it is possible to plug in all other stuff
+into ArgoUML.
+</para>
+	  </listitem>
+	</itemizedlist>
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Layer 3 - Definitions of components</title>
+      <para>
+These components are primarily connected through the 
+pluggable interfaces meaning that they can be
+individually disabled.
+</para>
+
+      <para>
+	<itemizedlist>
+
+	  <listitem>
+	    <para>Code generation, Reverse engineering - Java</para>
+	    <para>
+This is the ArgoUML connection to the java language.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Critics and checklists</para>
+	    <para>
+This is the critics.
+</para>
+	  </listitem>
+
+	  <listitem>
+	    <para>Other languages</para>
+	    <para>
+Languages are plugged into 
+the notation,
+the import, 
+and code generation.
+</para>
+	  </listitem>
+
+	</itemizedlist>
+</para>
+    </sect1>
+
+<!-- Has to be rewritten to fit the new concepts.
     <sect1>
       <title>ArgoUML Initialization</title>
       <sect2>
@@ -2014,7 +2254,9 @@ or a newly generated project (see Project.makeEmptyProject()).
 </para>
       </sect2>
     </sect1>
-
+-->
+<!--
+Has to be rewritten.
     <sect1>
       <title>Which Objects live during a typical session?</title>
       <para>
@@ -2027,7 +2269,9 @@ or a newly generated project (see Project.makeEmptyProject()).
 (visual component, model, controller, ...)
 </para>
     </sect1>
+-->
 
+<!--
     <sect1 id="bigger_components">
     <title>The bigger picture, ArgoUML and supporting libraries</title>
 <indexterm><primary>Libraries</primary></indexterm>
@@ -2046,7 +2290,9 @@ or a newly generated project (see Project.makeEmptyProject()).
 </itemizedlist>
 </para>
 </sect1>
+-->
 
+<!-- Move to chapter 5.
     <sect1 id="nsuml">
       <title>NS-UML</title>
       <sect2>
@@ -2111,7 +2357,9 @@ very helpful.
 </para>
       </sect2>
     </sect1>
+-->
 
+<!-- This is taken care of.
 <sect1 id="small">
 <title>The smaller components, inside ArgoUML</title>
 <para>
@@ -2122,7 +2370,7 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 					</imageobject>
 				</mediaobject>
 <itemizedlist>
-<listitem><para>User Interface <!-- (see <xref linkend="ui"/>) --></para></listitem>
+<listitem><para>User Interface</para></listitem>
 <listitem><para>Diagrams (see <xref linkend="diagrams"/>)</para></listitem>
 <listitem><para>GEF</para></listitem>
 <listitem><para>Model</para></listitem>
@@ -2139,12 +2387,16 @@ ArgoUML itself breaks down into several components. The graphic does not reflect
 </itemizedlist>
 </para>
 </sect1>
+-->
+
+<!-- This will be totally different.
     <sect1>
       <title>Collaboration table between components</title>
       <para>
 Here is a table that lists all components within ArgoUML against each other
 so that you easily can find where that specific collaboration is described
 (if at all) in this cookbook.
+-->
 <!--
 For the document maintainer:
 Please stick to the component names as they are written 
@@ -2155,6 +2407,7 @@ Every component has a purpose at componentname-purpose.
 Every interface has a description at componentname-to-componentname
 (origin-to-destination). Example comp-critics-to-comp-model.
 -->
+<!--
 </para>
       <table>
 	<title>Collaboration table</title>
@@ -2390,6 +2643,7 @@ Every interface has a description at componentname-to-componentname
 	</tgroup>
       </table>
     </sect1>
+-->
 <!--
 
 Empty chapter that would be written for every component.
@@ -2505,6 +2759,9 @@ YYY
 
 <chapter id="inside_components">
 <title>Inside the components</title>
+    <para>
+This chapter is not yet updated to discuss layers.
+</para>
 <para>...</para>
 <sect1 id="general">
 <title>General information</title>
