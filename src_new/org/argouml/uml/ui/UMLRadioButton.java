@@ -32,20 +32,30 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
-public class UMLRadioButton extends JRadioButton implements ItemListener, UMLUserInterfaceComponent {
+public class UMLRadioButton extends JRadioButton implements ItemListener, 
+                                                            UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
     private UMLBooleanProperty _property;
     
     /** Creates new BooleanChangeListener */
-    public UMLRadioButton(String label,UMLUserInterfaceContainer container,UMLBooleanProperty property) {
+    public UMLRadioButton(String label,UMLUserInterfaceContainer container,
+                          UMLBooleanProperty property) {
         super(label);
         _container = container;
         _property = property;
         addItemListener(this);
         update();
     }
-
+    
+    public UMLRadioButton(String label,UMLUserInterfaceContainer container,
+                          UMLBooleanProperty property, boolean select) {
+        super(label, select);
+        _container = container;
+        _property = property;
+        addItemListener(this);
+        update();
+    }
     public void itemStateChanged(final ItemEvent event) {
 //		System.out.println(getAccessibleContext().getAccessibleName()+" itemStateChanged "+event.getStateChange());
         _property.setProperty(_container.getTarget(),event.getStateChange() == ItemEvent.SELECTED);
