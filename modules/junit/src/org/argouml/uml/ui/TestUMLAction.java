@@ -53,7 +53,6 @@ public class TestUMLAction extends TestCase {
     private void compileTestStatics() {
 	boolean t1 = UMLAction.HAS_ICON;
 	boolean t2 = UMLAction.NO_ICON;
-	UMLAction.getShortcut(new String());
 	UMLAction.getMnemonic(new String());
     }
 

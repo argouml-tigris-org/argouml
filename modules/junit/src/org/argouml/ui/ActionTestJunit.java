@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,7 @@
 
 package org.argouml.ui;
 
+import org.argouml.i18n.Translator;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 
@@ -66,7 +67,7 @@ public class ActionTestJunit extends UMLAction
      * singleton pattern).
      */
     protected ActionTestJunit() {
-	super(Argo.localize(Argo.MENU_BUNDLE, "Test Panel..."), false);
+	super(Translator.localize("Test Panel..."), false);
 	_failed = false;
     }
 
@@ -167,8 +168,7 @@ public class ActionTestJunit extends UMLAction
 	}
 
         if (_menuItem == null) {
-            _menuItem = new JMenuItem(Argo.localize(Argo.MENU_BUNDLE,
-	                                            "Test Panel..."));
+            _menuItem = new JMenuItem(Translator.localize("Test Panel..."));
 	    _menuItem.addActionListener(this);
 	}
         return _menuItem;
