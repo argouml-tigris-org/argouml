@@ -1424,6 +1424,7 @@ public class NSUMLModelFacade implements Facade {
         Object stereo = null;
         Iterator iter = getStereotypes(operation).iterator();
         while (iter.hasNext()) {
+            stereo = iter.next();
             if (nsmodel.getExtensionMechanismsHelper().isStereotypeInh(
                     stereo,
                     "create",
