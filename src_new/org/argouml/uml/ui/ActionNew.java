@@ -25,46 +25,64 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+
+import org.tigris.gef.util.Localizer;
+
 import java.awt.event.*;
+import java.text.MessageFormat;
+
 import javax.swing.*;
 
 public class ActionNew extends UMLAction {
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
+  ////////////////////////////////////////////////////////////////
+  // static variables
 
-    public static ActionNew SINGLETON = new ActionNew(); 
+  public static ActionNew SINGLETON = new ActionNew(); 
 
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-    ////////////////////////////////////////////////////////////////
-    // constructors
+  protected ActionNew() { super("New..."); }
 
-    protected ActionNew() { super("New..."); }
+  ////////////////////////////////////////////////////////////////
+  // main methods
 
-    ////////////////////////////////////////////////////////////////
-    // main methods
+  public void actionPerformed(ActionEvent e) {
+    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    Project p = pb.getProject();
 
-    public void actionPerformed(ActionEvent e) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	if (p != null && p.needsSave()) {
-	    String t = "Save changes to " + p.getName();
-	    int response =
-		JOptionPane.showConfirmDialog(pb, t, t,
-					      JOptionPane.YES_NO_CANCEL_OPTION);
-	    if (response == JOptionPane.CANCEL_OPTION) return;
-	    if (response == JOptionPane.YES_OPTION) {
-		boolean safe = false;
-		if (ActionSaveProject.SINGLETON.shouldBeEnabled())
-		    safe = ActionSaveProject.SINGLETON.trySave(true);
-		if (!safe)
-		    safe = ActionSaveProjectAs.SINGLETON.trySave(false);
-		if (!safe) return;
-	    }
-	    //needs-more-work: if you cancel the save it should cancel open
-	}
-	p = Project.makeEmptyProject();
-	pb.setProject(p);
-	ProjectBrowser.TheInstance.setTitle("Untitled");
+    if (p != null && p.needsSave()) {
+      String t = MessageFormat.format (
+          Localizer.localize ("Actions", "template.new_project.save_changes_to"),
+          new Object[] {p.getName()}
+        );
+      int response = JOptionPane.showConfirmDialog (
+          pb,
+          t,
+          t,
+          JOptionPane.YES_NO_CANCEL_OPTION
+        );
+
+      if (response == JOptionPane.CANCEL_OPTION) return;
+      if (response == JOptionPane.YES_OPTION) {
+        boolean safe = false;
+
+        if (ActionSaveProject.SINGLETON.shouldBeEnabled()) {
+          safe = ActionSaveProject.SINGLETON.trySave (true);
+        }
+        if (!safe) {
+          safe = ActionSaveProjectAs.SINGLETON.trySave (false);
+        }          
+        if (!safe) return;
+      }
+      //needs-more-work: if you cancel the save it should cancel open
+      // Steffen Zschaler 01/10/2002 - Well, it does, doesn't it? trySave will
+      // return false in that case...
     }
+
+    p = Project.makeEmptyProject();
+    pb.setProject (p);
+    ProjectBrowser.TheInstance.setTitle ("Untitled");
+  }
 } /* end class ActionNew */

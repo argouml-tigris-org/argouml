@@ -57,7 +57,17 @@ public class ActionResourceBundle_de extends ListResourceBundle {
        "werden können.\n" +
        "Eine \"stabile\" Version finden Sie unter www.argouml.org. Danke."},
     {"text.save_as_project.unstable_release_title", "Warnung"},
-    {"text.save_as_project.chooser_title", "Projekt speichern: "}
+    {"text.save_as_project.chooser_title", "Projekt speichern: "},
+    {"template.new_project.save_changes_to", "Änderungen in {0} speichern?"},
+    {"template.open_project.save_changes_to", "Änderungen in {0} speichern?"},
+    {"text.open_project.chooser_title", "Projekt öffnen"},
+    {"template.open_project.status_read", "{0} gelesen."},
+    {"text.remove_from_model.will_remove_from_diagrams", "\nEs wird aus allen Diagrammen entfernt werden."},
+    {"text.remove_from_model.will_remove_subdiagram", "\nSeine Unterdiagramme werden ebenfalls entfernt werden."},
+    {"text.remove_from_model.anon_element_name", "dieses Element"},
+    {"template.remove_from_model.confirm_delete", "Sind Sie sicher, daß Sie {0} entfernen wollen?{1}"},
+    {"text.remove_from_model.confirm_delete_title", "Sind Sie sicher?"},
+    {"template.exit.save_changes_to", "Änderungen in {0} speichern?"}
   };
   
   public Object[][] getContents() {
