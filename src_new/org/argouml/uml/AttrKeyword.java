@@ -29,6 +29,14 @@ import java.beans.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
+/** This class  handles the
+ * none
+ * static
+ * final
+ * static final
+ * transient
+ * for the UML foundation data type
+ */
 public class AttrKeyword implements java.io.Serializable {
   public static final AttrKeyword NONE = new AttrKeyword("none");
   public static final AttrKeyword STATIC = new AttrKeyword("static");

@@ -23,32 +23,76 @@
 
 package org.argouml.util;
 
+/** This class handles the the various file extensions.
+ * It's not clear whether all of these are supported
+ * for input or output or a mixture of both.
+ * There is no file open>pgml/svg/xmi/log/gif
+ * and there is no known way to save only a log or
+ * an xmi out of Argo.
+ */
 public class FileFilters {
 
   ////////////////////////////////////////////////////////////////
   // constants
 
+    /** this is for .argo files
+     * this is a very simple xml file used to tell
+     * Argo how to read the contents of the project
+     * folder.
+     */    
   public static final SuffixFilter ArgoFilter = new
   SuffixFilter("argo", "Argo project file");
 
+  /** zargo. a zipped file with myproject.argo/myproject.pgml
+   * and myproject.xmi
+   *
+   * There are known issues with saving, particularly
+   * losing the xmi at save time.
+   * see issue
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
+   */  
   public static final SuffixFilter ZArgoFilter = new
   SuffixFilter("zargo", "Zipped Argo Project");
 
+  /** see
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=410
+   * there are known problems with saving the xmi
+   *
+   * It is also being considered to save out individual
+   * xmi's from individuals diagrams to make
+   * it easier to modularize the output of Argo.
+   */  
   public static final SuffixFilter XMIFilter = new
   SuffixFilter("xmi", "XML Metadata Interchange");
 
+  /** This is for Precision Graphics Markup Language
+   * a very old and now mostly dead standard.
+   * see W3C.org for more info
+   */  
   public static final SuffixFilter PGMLFilter = new
   SuffixFilter("pgml", "Argo diagram");
 
+  /** This should read or write a config file
+   * but as yet not fully implemented.
+   */  
   public static final SuffixFilter ConfigFilter = new
   SuffixFilter("config", "Argo configutation file");
 
+  /** History Filter...Argo has trouble with remembering
+   * things at times. Maybe this filter helps.
+   * status is unknown. last reveiwed 8 months ago.
+   */  
   public static final SuffixFilter HistFilter = new
   SuffixFilter("hist", "Argo history file");
 
   public static final SuffixFilter LogFilter = new
   SuffixFilter("log", "Argo usage log");
 
+  /** This writes the GIF file, known issues
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=396
+   * http://argouml.tigris.org/issues/show_bug.cgi?id=407
+   *
+   */  
   public static final SuffixFilter GIFFilter = new
   SuffixFilter("gif", "GIF image");
 
@@ -58,6 +102,26 @@ public class FileFilters {
   public static final SuffixFilter EPSFilter = new
   SuffixFilter("eps", "Encapsulated PostScript file");
 
+  /** SVG is the standard set by the W3C re vector graphics
+   * The current output for SVG goes through GEF.
+   * The output is considered to be 'poor' in
+   * quality and builds multiple duplicate artifacts
+   * in the SVG output.
+   *
+   * SVG is considered very useful for documentation
+   * generation over standard raster images like
+   * gif (a patented format), jpg and png.
+   *
+   * It is possible to embed links within SVG to
+   * other areas in the svg or on the web. This
+   * means that javadocs generated with SVG based
+   * diagrams will have links to the classes from
+   * within the diagram!
+   * Not too mention zooming and animation (animation
+   * is considered very useful for modeling the
+   * behaviors of a class for example in state or
+   * sequence diagrams.
+   */  
   public static final SuffixFilter SVGFilter = new
   SuffixFilter("svg", "Scalable Vector Graphics file");
 

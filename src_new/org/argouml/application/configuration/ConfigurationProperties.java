@@ -31,9 +31,17 @@ import java.net.*;
 import javax.swing.*;
 
 /**
- *   This class provides a user configuration based upon properties files.
- *
- *   @author Thierry Lach
+ *  This class provides a user configuration based upon properties files.
+ * Eventually this configuration file will be
+ * available to users via a GUI interface to
+ * set keyboards
+ * memory allocations
+ * which modules to load
+ * user preferences
+ * font sizes
+ * user names and data
+ * etc.*
+ * @author Thierry Lach
  */
 public class ConfigurationProperties extends ConfigurationHandler {
 

@@ -28,6 +28,8 @@ import java.io.File;
 import javax.swing.*;
 import javax.swing.filechooser.*;
 
+/** <B>Currently only .zargos are supported</B>
+ */
 public class ArgoFileFilter extends FileFilter {
 
 
@@ -49,10 +51,12 @@ public class ArgoFileFilter extends FileFilter {
     }
 
     /**
-     * Return the extension portion of the file's name . 
+     * Return the extension portion of the file's name .
      *
      * @see #getExtension
      * @see FileFilter#accept
+     * @param f is the file name
+     * @return
      */
      public String getExtension(File f) {
        if (f == null) return null;
@@ -65,8 +69,11 @@ public class ArgoFileFilter extends FileFilter {
     }
 
 
+     /**
+      * @return  */     
     public String getDescription() {
-      return "Argo v0.5.2 file format (*.argo)";
+      return "Argo v0.5.2 file format (*.argo)";// shouldn't this be updated if in fact the user
+      //gets this message, maybe getArgoVersion instead?
     }
 
 }
