@@ -73,6 +73,10 @@ public class ActionSetGeneralizationPowertype extends UMLAction {
             }
         }
         if (newClassifier != oldClassifier && gen != null) {
+            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
+                .getCorrespondingElement(
+                        newClassifier,
+                        Model.getFacade().getModel(gen));
             Model.getCoreHelper().setPowertype(gen, newClassifier);
         }
 
