@@ -738,25 +738,22 @@ or a newly generated project (see Project.makeEmptyProject()).
 </itemizedlist>
 </para>
 </sect1>
-<!--
-<sect1 id="nsuml">
-<title>NS-UML</title>
-<para>
-<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/cookbook/nsuml_foundation"/>
-					</imageobject>
-</mediaobject>
+
+    <sect1 id="nsuml">
+      <title>NS-UML</title>
+      <para>
+Tip for understanding NS-UML (from Jeremy Bennett):
 </para>
-<para>
-<mediaobject>
-					<imageobject>
-						<imagedata format="GIF" fileref="images/cookbook/nsuml_behaviour"/>
-					</imageobject>
-</mediaobject>
+      <para>
+I found that building a javadoc for the NSUML source was quite helpful.
+There are some comments in key places, and it allows you to see what
+operations are available.
 </para>
-</sect1>
--->
+      <para>
+Its not part of their standard distribution, so you have to write a small
+script to do it.
+</para>
+    </sect1>
 
 <sect1 id="small">
 <title>The smaller components, inside ArgoUML</title>
@@ -1549,6 +1546,24 @@ classes, methods and attributes are to be shown in diagrams
 and property panels.
 </para>
       <para>
+The interfaces <classname>NotationProvider</classname> and 
+<classname>NotationContext</classname> are used to
+provide linkages to different code generators.
+A class which can ask for different notations, such as the source box,
+or a <classname>FigClass</classname>, extends 
+<classname>NotationContext</classname>. 
+When processed, a <classname>NotationContext</classname> gets asked
+what <classname>NotationName</classname> it wants or null to indicate
+it doesn't care.
+If the <classname>NotationName</classname> is null, then the value of
+the menu selection "Edit->Notation" are used. 
+The <classname>NotationName</classname> is
+used to find the correct <classname>NotationProvider</classname>.
+That <classname>NotationProvider</classname> gets called, and the
+results are passed to the <classname>NotationContext</classname> for
+it to do what it needs.
+</para>
+      <para>
 This module contains the following main class types:
 </para>
       <itemizedlist>
@@ -1851,6 +1866,77 @@ Remove the line for the tab from
 </sect1>
 
 &cookbookmodules;
+
+    <sect1>
+      <title>How are modules organised in in the java code</title>
+      <para>
+The previous section describes how modules and plugins are 
+connected on the java level totally independant of how they
+are actually linked into ArgoUML.
+</para>
+      <para>
+Within the ArgoUML project some parts of the code are for
+different reasons developed and kept separate from the main
+ArgoUML source code.
+These parts can be modules or plugins on the java level but
+on the source code level they are called modules.
+This section describes how they are organised and how you 
+create such source-code modules.
+</para>
+
+      <sect2 id="howdoi_source_code_modules">
+	<title>How do I ...?</title>
+	<para>
+	  <itemizedlist>
+	    <listitem>
+	      <para>
+...create a new source-code module.
+</para>
+	      <para>
+Suggestion, copy from the 
+<filename class="directory">junit</filename>
+module as described here.
+</para>
+	      <para>
+Make a copy of
+<filename class="directory">argouml/modules/junit</filename>
+into 
+<filename class="directory">argouml/modules/<replaceable>yourname</replaceable></filename>.
+</para>
+	      <para>
+Remove <filename class="libraryfile">junit.jar</filename>
+from
+<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/lib</filename>.
+</para>
+	      <para>
+Add any jar you need to 
+<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/lib</filename>.
+</para>
+	      <para>
+Edit
+<filename class="directory">argouml/modules/<replaceable>yourname</replaceable>/module.properties</filename>
+</para>
+	      <para>
+Edit references to
+<filename class="libraryfile">junit.jar</filename> in
+<filename>argouml/modules/<replaceable>yourname</replaceable>/build.xml</filename>
+to any new jars you need.
+</para>
+	      <para>
+Edit <filename>argouml/modules/yourname/src/org/manifest.mf</filename>.
+</para>
+	      <para>
+Reorganize the source files as necessary.
+Something like org.argouml.<replaceable>yourname</replaceable>
+as the package root.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para>
+      </sect2>
+    </sect1>
+
+
 &cookbooklogging;
 
     <sect1>
