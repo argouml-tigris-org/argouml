@@ -106,7 +106,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.addFig(_srcRole);
     _srcGroup.addFig(_srcOrdering);
     _srcGroup.addFig(_srcMult);    
-    addPathItem(_srcGroup, new PathConvPercent(this, 15, 0));
+    addPathItem(_srcGroup, new PathConvPercent(this, 85, 0));
     
     _destMult = new FigText(10, 10, 90, 20);
     _destMult.setFont(LABEL_FONT);
@@ -135,7 +135,7 @@ public class FigAssociation extends FigEdgeModelElement {
     _destGroup.addFig(_destRole);
     _destGroup.addFig(_destMult);
     _destGroup.addFig(_destOrdering);
-      addPathItem(_destGroup, new PathConvPercent(this, 85, 0));
+      addPathItem(_destGroup, new PathConvPercent(this, 15, 0));
     
     setBetweenNearestPoints(true);
   }
@@ -212,8 +212,8 @@ public class FigAssociation extends FigEdgeModelElement {
 
     super.modelChanged();
 
-    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
-    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
+    MAssociationEnd ae0 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[0];
+    MAssociationEnd ae1 =  (MAssociationEnd)((Object[])(as.getConnections()).toArray())[1];
     
     FigNode oldDest = (FigNode)getDestFigNode();
     FigNode oldSource = (FigNode)getSourceFigNode();
