@@ -45,20 +45,20 @@ import org.argouml.model.ModelFacade;
  *
  * Path looks like this for the case when it is not supposed to be a
  * constructor:
- * 
+ *
  * <pre>
- * 
+ *
  *  step0 -&gt; step1
- *  
+ *
  * </pre>
- * 
+ *
  * Path looks like this for the case when it is supposed to be a constructor:
- * 
+ *
  * <pre>
- * 
+ *
  *  step0 -&gt; step1 -&gt; step2 (OK! in the case converted to constructor)
  *                 -&gt; step2 (same as step1 in the scenario above)
- *  
+ *
  * </pre>
  */
 public class WizOperName extends WizMEName {
@@ -100,7 +100,7 @@ public class WizOperName extends WizMEName {
 
     /**
      * Method to tell the Wizard what path it should work with.
-     * 
+     *
      * @param b
      *            setToConstructor is true if we shall take the path where the
      *            oper is converted to a constructor.
@@ -111,7 +111,7 @@ public class WizOperName extends WizMEName {
 
     /**
      * @see org.argouml.cognitive.ui.Wizard#makePanel(int)
-     * 
+     *
      * Create a new panel for the given step.
      */
     public JPanel makePanel(int newStep) {
@@ -125,8 +125,8 @@ public class WizOperName extends WizMEName {
 
         case 1:
             if (step1 == null) {
-                step1 = new WizStepChoice(this, getInstructions(), 
-                        getOptions());
+                step1 =
+                    new WizStepChoice(this, getInstructions(), getOptions());
                 step1.setTarget(getToDoItem());
             }
             return step1;
@@ -134,8 +134,9 @@ public class WizOperName extends WizMEName {
         case 2:
             if (stereotypePathChosen) {
                 if (step2 == null) {
-                    step2 = new WizStepCue(this,
-                            "The operator is now a constructor.");
+                    step2 =
+                        new WizStepCue(this,
+                                "The operator is now a constructor.");
                     step2.setTarget(getToDoItem());
                 }
                 return step2;
@@ -152,7 +153,7 @@ public class WizOperName extends WizMEName {
      * by. TODO: I (Linus) would say that this is really a problem with the
      * Wizard implementation since I believe it should be possible to explore a
      * path in the wizard and then go back.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#undoAction(int)
      */
     public void undoAction(int origStep) {
@@ -174,7 +175,7 @@ public class WizOperName extends WizMEName {
      * is 0, do nothing; and when the given step is 1, do the first action. Argo
      * non-modal wizards should take action as they do along, as soon as
      * possible, they should not wait until the final step.
-     * 
+     *
      * @see org.argouml.cognitive.ui.Wizard#doAction(int)
      */
     public void doAction(int oldStep) {
@@ -202,8 +203,8 @@ public class WizOperName extends WizMEName {
                 if (!oldStereotypeIsSet) {
                     oldStereotype = null;
                     if (ModelFacade.getStereotypes(oper).size() > 0) {
-                        oldStereotype = ModelFacade.getStereotypes(oper)
-                                .iterator().next();
+                        oldStereotype =
+                            ModelFacade.getStereotypes(oper).iterator().next();
                     }
                     oldStereotypeIsSet = true;
                 }
@@ -231,14 +232,16 @@ public class WizOperName extends WizMEName {
                     break;
                 }
                 if (theStereotype == null) {
-                    theStereotype = Model.getUmlFactory()
-                            .getExtensionMechanisms().createStereotype();
+                    theStereotype =
+                        Model.getExtensionMechanismsFactory()
+                        	.createStereotype();
                     ModelFacade.setName(theStereotype, "create");
                     // theStereotype.setStereotype(???);
                     ModelFacade
                             .setBaseClass(theStereotype, "BehavioralFeature");
-                    Object targetNS = findNamespace(ModelFacade
-                            .getNamespace(oper), ModelFacade.getModel(oper));
+                    Object targetNS =
+                        findNamespace(ModelFacade.getNamespace(oper),
+                                      ModelFacade.getModel(oper));
                     ModelFacade.addOwnedElement(targetNS, theStereotype);
                 }
 
@@ -285,8 +288,8 @@ public class WizOperName extends WizMEName {
             //
             //   see if there is already an element with the same name
             //
-            Collection ownedElements = ModelFacade
-                    .getOwnedElements(targetParentNS);
+            Collection ownedElements =
+                ModelFacade.getOwnedElements(targetParentNS);
             String phantomName = ModelFacade.getName(phantomNS);
             String targetName;
             if (ownedElements != null) {

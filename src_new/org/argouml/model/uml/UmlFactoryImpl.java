@@ -37,7 +37,6 @@ import org.argouml.model.ActivityGraphsFactory;
 import org.argouml.model.CollaborationsFactory;
 import org.argouml.model.CommonBehaviorFactory;
 import org.argouml.model.CoreFactory;
-import org.argouml.model.DataTypesFactory;
 import org.argouml.model.ExtensionMechanismsFactory;
 import org.argouml.model.IllegalModelElementConnectionException;
 import org.argouml.model.ModelFacade;
@@ -377,7 +376,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             new ObjectCreateInfo(MComponent.class, factory, "createComponent"));
         elements.put(Uml.COMPONENT_INSTANCE,
             new ObjectCreateInfo(MComponentInstance.class,
-                nsmodel.getCommonBehaviorFactory(),
+                getCommonBehavior(),
                 "createComponentInstance"));
         elements.put(Uml.INSTANCE,
             new ObjectCreateInfo(MInstance.class, factory, "createInstance"));
@@ -605,18 +604,8 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      *
      * @return the ExtensionMechanisms factory instance.
      */
-    public ExtensionMechanismsFactory getExtensionMechanisms() {
+    private ExtensionMechanismsFactory getExtensionMechanisms() {
         return nsmodel.getExtensionMechanismsFactory();
-    }
-
-    /**
-     * Returns the package factory for the UML
-     * package Foundation::DataTypes.
-     *
-     * @return the DataTypes factory instance.
-     */
-    public DataTypesFactory getDataTypes() {
-        return nsmodel.getDataTypesFactory();
     }
 
     /**
@@ -675,7 +664,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
      *
      * @return the ActivityGraphs factory instance.
      */
-    public ActivityGraphsFactory getActivityGraphs() {
+    private ActivityGraphsFactory getActivityGraphs() {
         return nsmodel.getActivityGraphsFactory();
     }
 
@@ -781,7 +770,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 } else if (elem instanceof MMessage) {
                     getCollaborations().deleteMessage(elem);
                 } else if (elem instanceof MExtensionPoint) {
-                    getUseCases().deleteExtensionPoint((MExtensionPoint) elem);
+                    getUseCases().deleteExtensionPoint(elem);
                 } else if (elem instanceof MStateVertex) {
                     deleteStateVertex((MStateVertex) elem);
                 }
@@ -890,9 +879,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             } else if (elem instanceof MClassifierRole) {
                 getCollaborations().deleteClassifierRole(elem);
             } else if (elem instanceof MUseCase) {
-                getUseCases().deleteUseCase((MUseCase) elem);
+                getUseCases().deleteUseCase(elem);
             } else if (elem instanceof MActor) {
-                getUseCases().deleteActor((MActor) elem);
+                getUseCases().deleteActor(elem);
             } else if (elem instanceof MClassifierInState) {
                 getActivityGraphs().deleteClassifierInState(elem);
             }
@@ -937,9 +926,9 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
                 getCore().deletePermission(elem);
             }
         } else if (elem instanceof MInclude) {
-            getUseCases().deleteInclude((MInclude) elem);
+            getUseCases().deleteInclude(elem);
         } else if (elem instanceof MExtend) {
-            getUseCases().deleteExtend((MExtend) elem);
+            getUseCases().deleteExtend(elem);
         }
     }
 
@@ -991,7 +980,7 @@ class UmlFactoryImpl extends AbstractUmlModelFactory implements UmlFactory {
             }
         }
         if (elem instanceof MUseCaseInstance) {
-            getUseCases().deleteUseCaseInstance((MUseCaseInstance) elem);
+            getUseCases().deleteUseCaseInstance(elem);
         }
     }
 

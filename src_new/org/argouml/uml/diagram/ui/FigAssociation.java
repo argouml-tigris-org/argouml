@@ -52,31 +52,31 @@ import org.tigris.gef.presentation.FigText;
 
 
 /**
- * This class represents an association Fig on a diagram
+ * This class represents an association Fig on a diagram.
  *
  */
 public class FigAssociation extends FigEdgeModelElement {
-   
+
     // TODO: should be part of some preferences object
     private static final boolean SUPPRESS_BIDIRECTIONAL_ARROWS = true;
 
     /**
-     * Group for the FigTexts concerning the source association end
+     * Group for the FigTexts concerning the source association end.
      */
     private FigTextGroup srcGroup = new FigTextGroup();
 
     /**
-     * Group for the FigTexts concerning the dest association end
+     * Group for the FigTexts concerning the dest association end.
      */
     private FigTextGroup destGroup = new FigTextGroup();
 
     /**
-     * Group for the FigTexts concerning the name and stereotype of the 
+     * Group for the FigTexts concerning the name and stereotype of the
      * association itself.
      * TODO: provide getter instead and maybe setter if needed
      */
     private FigTextGroup middleGroup = new FigTextGroup();
-    
+
     private FigText srcMult, srcRole;
     private FigText destMult, destRole;
     private FigText srcOrdering, destOrdering;
@@ -87,20 +87,20 @@ public class FigAssociation extends FigEdgeModelElement {
 
     /**
      * Main constructor
-     * 
+     *
      * Don't call this constructor directly. It is public since this
      * is necessary for loading. Use the FigAssociation(Object, Layer)
      * constructor instead!
      */
     public FigAssociation() {
         super();
-    
+
         // lets use groups to construct the different text sections at
         // the association
         middleGroup.addFig(getNameFig());
         middleGroup.addFig(getStereotypeFig());
         addPathItem(middleGroup, new PathConvPercent(this, 50, 25));
-    
+
         srcMult = new FigText(10, 10, 90, 20);
         srcMult.setFont(getLabelFont());
         srcMult.setTextColor(Color.black);
@@ -132,7 +132,7 @@ public class FigAssociation extends FigEdgeModelElement {
         srcGroup.addFig(srcOrdering);
         addPathItem(srcMult, new PathConvPercentPlusConst(this, 0, 15, 15));
         addPathItem(srcGroup, new PathConvPercentPlusConst(this, 0, 35, -15));
-   
+
         destMult = new FigText(10, 10, 90, 20);
         destMult.setFont(getLabelFont());
         destMult.setTextColor(Color.black);
@@ -166,7 +166,7 @@ public class FigAssociation extends FigEdgeModelElement {
 		    new PathConvPercentPlusConst(this, 100, -15, 15));
         addPathItem(destGroup,
 		    new PathConvPercentPlusConst(this, 100, -35, -15));
-    
+
         setBetweenNearestPoints(true);
         // next line necessary for loading
         setLayer(ProjectManager.getManager().getCurrentProject()
@@ -174,7 +174,8 @@ public class FigAssociation extends FigEdgeModelElement {
     }
 
     /**
-     * Constructor that hooks the Fig to an existing UML element
+     * Constructor that hooks the Fig to an existing UML element.
+     *
      * @param edge the UMl element
      * @param lay the layer
      */
@@ -215,11 +216,11 @@ public class FigAssociation extends FigEdgeModelElement {
 		setDestPortFig(destNode);
 	    }
 	    if (srcNode != null) {
-		setSourceFigNode(srcNode); 
-		setSourcePortFig(srcNode);  
+		setSourceFigNode(srcNode);
+		setSourcePortFig(srcNode);
 	    }
 	}
-   
+
 	modelChanged(null);
     }
 
@@ -230,12 +231,16 @@ public class FigAssociation extends FigEdgeModelElement {
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#textEdited(org.tigris.gef.presentation.FigText)
      */
     protected void textEdited(FigText ft) {
-	
-        if (getOwner() == null) return;
+
+        if (getOwner() == null) {
+            return;
+        }
 	super.textEdited(ft);
 
 	Collection conn = ModelFacade.getConnections(getOwner());
-	if (conn == null || conn.size() == 0) return;
+	if (conn == null || conn.size() == 0) {
+	    return;
+	}
 
 	if (ft == srcRole) {
 	    Object srcAE = (conn.toArray())[0];
@@ -245,29 +250,31 @@ public class FigAssociation extends FigEdgeModelElement {
 	    ModelFacade.setName(destAE, destRole.getText());
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
-	    Object multi = Model.getUmlFactory().getDataTypes()
-			   .createMultiplicity(srcMult.getText());
+	    Object multi =
+	        Model.getDataTypesFactory()
+	        	.createMultiplicity(srcMult.getText());
 	    ModelFacade.setMultiplicity(srcAE, multi);
 	} else if (ft == destMult) {
 	    Object destAE = (conn.toArray())[1];
-	    Object multi = Model.getUmlFactory().getDataTypes()
-			   .createMultiplicity(destMult.getText());
+	    Object multi =
+	        Model.getDataTypesFactory()
+	        	.createMultiplicity(destMult.getText());
 	    ModelFacade.setMultiplicity(destAE, multi);
 	}
     }
-  
+
     private void updateEnd(FigText multiToUpdate, FigText roleToUpdate,
 			   FigText orderingToUpdate,
 			   Object end) {
-                               
+
         if (!ModelFacade.isAAssociationEnd(end)) {
             throw new IllegalArgumentException();
 	}
-        
+
 	Object multi = ModelFacade.getMultiplicity(end);
 	String name = ModelFacade.getName(end);
 	Object order = ModelFacade.getOrdering(end);
-        String visi = ""; 
+        String visi = "";
         Object stereo = null;
         if (ModelFacade.isNavigable(end)
 	    && (ModelFacade.isAClass(ModelFacade.getType(end))
@@ -277,15 +284,16 @@ public class FigAssociation extends FigEdgeModelElement {
         if (ModelFacade.getStereotypes(end).size() > 0) {
             stereo = ModelFacade.getStereotypes(end).iterator().next();
         }
-    
+
 	multiToUpdate.setText(Notation.generate(this, multi));
 	orderingToUpdate.setText(getOrderingName(order));
 	if (stereo != null) {
 	    roleToUpdate.setText(Notation.generate(this, stereo)
 				 + " " + visi
 				 + Notation.generate(this, name));
-	} else
+	} else {
 	    roleToUpdate.setText(visi + Notation.generate(this, name));
+	}
     }
 
     /**
@@ -294,13 +302,15 @@ public class FigAssociation extends FigEdgeModelElement {
     protected void modelChanged(PropertyChangeEvent e) {
 	super.modelChanged(e);
 	Object associationEnd = getOwner(); //MAssociation
-	if (associationEnd == null || getLayer() == null) return;
-        
+	if (associationEnd == null || getLayer() == null) {
+	    return;
+	}
+
         if (e == null || e.getPropertyName().equals("isAbstract")) {
             updateAbstract();
             damage();
         }
-    
+
 	//MAssociationEnd
 	Object ae0 =
 	    ((ModelFacade.getConnections(associationEnd)).toArray())[0];
@@ -309,7 +319,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    ((ModelFacade.getConnections(associationEnd)).toArray())[1];
 	updateEnd(srcMult, srcRole, srcOrdering, ae0);
 	updateEnd(destMult, destRole, destOrdering, ae1);
-    
+
 	boolean srcNav = ModelFacade.isNavigable(ae0);
 	boolean destNav = ModelFacade.isNavigable(ae1);
 	if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS) {
@@ -342,7 +352,7 @@ public class FigAssociation extends FigEdgeModelElement {
      * @return the ArrowHead chosen
      */
     private ArrowHead chooseArrowHead(Object ak, boolean nav) {
-        
+
 	ArrowHead arrow = ArrowHeadNone.TheInstance;
 
 	if (nav) {
@@ -378,12 +388,12 @@ public class FigAssociation extends FigEdgeModelElement {
 	int rSquared = (int) (.3 * length);
 
 	// max distance is set at 100 pixels, (rSquared = 100^2)
-	if ( rSquared > 100 ) {
+	if (rSquared > 100) {
 	    rSquared = 10000;
         } else {
 	    rSquared *= rSquared;
         }
-        
+
 	int srcDeterminingFactor =
 	    getSquaredDistance(me.getPoint(), firstPoint);
 	int destDeterminingFactor =
@@ -399,26 +409,25 @@ public class FigAssociation extends FigEdgeModelElement {
             multMenu.add(ActionMultiplicity.getSrcMultZeroToOne());
             multMenu.add(ActionMultiplicity.getSrcMultOneToMany());
             multMenu.add(ActionMultiplicity.getSrcMultZeroToMany());
-            popUpActions.insertElementAt(multMenu, 
+            popUpActions.insertElementAt(multMenu,
                 popUpActions.size() - POPUP_ADD_OFFSET);
 
             ArgoJMenu aggMenu = new ArgoJMenu("menu.popup.aggregation");
-        
+
 	    aggMenu.add(ActionAggregation.getSrcAggNone());
 	    aggMenu.add(ActionAggregation.getSrcAgg());
 	    aggMenu.add(ActionAggregation.getSrcAggComposite());
-	    popUpActions.insertElementAt(aggMenu, 
+	    popUpActions.insertElementAt(aggMenu,
 					 (popUpActions.size()
 					  - POPUP_ADD_OFFSET));
-	}
-	else if (destDeterminingFactor < rSquared) {
+	} else if (destDeterminingFactor < rSquared) {
             ArgoJMenu multMenu =
 		new ArgoJMenu("menu.popup.multiplicity");
 	    multMenu.add(ActionMultiplicity.getDestMultOne());
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToOne());
 	    multMenu.add(ActionMultiplicity.getDestMultOneToMany());
 	    multMenu.add(ActionMultiplicity.getDestMultZeroToMany());
-	    popUpActions.insertElementAt(multMenu, 
+	    popUpActions.insertElementAt(multMenu,
 					 (popUpActions.size()
 					  - POPUP_ADD_OFFSET));
 
@@ -426,7 +435,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	    aggMenu.add(ActionAggregation.getDestAggNone());
 	    aggMenu.add(ActionAggregation.getDestAgg());
 	    aggMenu.add(ActionAggregation.getDestAggComposite());
-	    popUpActions.insertElementAt(aggMenu, 
+	    popUpActions.insertElementAt(aggMenu,
 					 (popUpActions.size()
 					  - POPUP_ADD_OFFSET));
 	}
@@ -447,7 +456,7 @@ public class FigAssociation extends FigEdgeModelElement {
                     && ModelFacade.isAClassifier(ModelFacade.getType(ascEnd))) {
                 ArgoJMenu navMenu =
 		    new ArgoJMenu("menu.popup.navigability");
-        
+
 		navMenu.add(ActionNavigability.newActionNavigability(
                     ascStart,
 		    ascEnd,
@@ -461,7 +470,7 @@ public class FigAssociation extends FigEdgeModelElement {
                     ascEnd,
                     ActionNavigability.ENDTOSTART));
 
-		popUpActions.insertElementAt(navMenu, 
+		popUpActions.insertElementAt(navMenu,
 					     (popUpActions.size()
 					      - POPUP_ADD_OFFSET));
 	    }
@@ -470,36 +479,48 @@ public class FigAssociation extends FigEdgeModelElement {
 	return popUpActions;
     }
 
-    /** Returns the name of the OrderingKind.
+    /**
+     * Returns the name of the OrderingKind.
+     *
      * @return "{ordered}", "{sorted}" or "" if null or "unordered"
      */
     private String getOrderingName(Object orderingKind) {
-	if (orderingKind == null) return "";
-	if (ModelFacade.getName(orderingKind) == null) return ""; 
-	if ("".equals(ModelFacade.getName(orderingKind))) return "";
-	if ("unordered".equals(ModelFacade.getName(orderingKind))) return "";
-        
+	if (orderingKind == null) {
+	    return "";
+	}
+	if (ModelFacade.getName(orderingKind) == null) {
+	    return "";
+	}
+	if ("".equals(ModelFacade.getName(orderingKind))) {
+	    return "";
+	}
+	if ("unordered".equals(ModelFacade.getName(orderingKind))) {
+	    return "";
+	}
+
 	return "{" + ModelFacade.getName(orderingKind) + "}";
     }
 
     /**
-     * Updates the name if modelchanged receives an "isAbstract" event
+     * Updates the name if modelchanged receives an "isAbstract" event.
      */
     protected void updateAbstract() {
         Rectangle rect = getBounds();
-        if (getOwner() == null)
+        if (getOwner() == null) {
             return;
+        }
         Object assoc =  getOwner();
-        if (ModelFacade.isAbstract(assoc))
+        if (ModelFacade.isAbstract(assoc)) {
             getNameFig().setFont(getItalicLabelFont());
-        else
+        } else {
             getNameFig().setFont(getLabelFont());
+        }
         super.updateNameText();
         setBounds(rect.x, rect.y, rect.width, rect.height);
     }
-    
+
     static final long serialVersionUID = 9100125695919853919L;
-  
+
     /**
      * @see org.tigris.gef.presentation.Fig#paint(java.awt.Graphics)
      */
@@ -509,7 +530,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
         if (sourceArrowHead != null && destArrowHead != null) {
 	    sourceArrowHead.setLineColor(getLineColor());
-	    destArrowHead.setLineColor(getLineColor());   
+	    destArrowHead.setLineColor(getLineColor());
         }
         super.paint(g);
     }

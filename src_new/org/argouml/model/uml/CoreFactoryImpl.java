@@ -932,8 +932,8 @@ public class CoreFactoryImpl
         MAttribute attr = (MAttribute) createAttribute();
         attr.setName("newAttr");
         attr.setMultiplicity(
-                (MMultiplicity) nsmodel.getUmlFactory()
-                	.getDataTypes().createMultiplicity(1, 1));
+                (MMultiplicity) nsmodel.getDataTypesFactory()
+                	.createMultiplicity(1, 1));
         attr.setStereotype(null);
         attr.setOwner(null);
         attr.setType(intType);
@@ -1293,8 +1293,8 @@ public class CoreFactoryImpl
 	    }
 	}
 	if (notation != null && notation.getName() != null) {
-	    method.setBody((MProcedureExpression)
-	            nsmodel.getUmlFactory().getDataTypes()
+	    method.setBody(
+	            (MProcedureExpression) nsmodel.getDataTypesFactory()
 	            	.createProcedureExpression(notation.getName(), body));
 	}
 	return method;

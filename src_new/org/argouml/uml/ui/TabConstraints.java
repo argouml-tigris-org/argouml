@@ -79,7 +79,6 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
     /**
      * The constructor.
-     * 
      */
     public TabConstraints() {
         super("tab.constraints");
@@ -89,7 +88,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         mOcleEditor = new OCLEditor();
         mOcleEditor.setOptionMask(OCLEditor.OPTIONMASK_TYPECHECK
                    /*|  //removed to workaround problems with autosplit
-                     OCLEditor.OPTIONMASK_AUTOSPLIT*/ );
+                     OCLEditor.OPTIONMASK_AUTOSPLIT*/);
         mOcleEditor.setDoAutoSplit(false);
         setToolbarRollover(true);
         setToolbarFloatable(false);
@@ -107,7 +106,9 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         getOclToolbar().putClientProperty("JToolBar.isRollover", Boolean.TRUE);
     }
 
-    /** Set the toolbar floating style
+    /**
+     * Set the toolbar floating style.
+     *
      * @param enable If true then the toolbar can be floated and docked
      */
     private void setToolbarFloatable(boolean enable) {
@@ -127,11 +128,11 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
     }
 
     //TabModelTarget interface methods
-    
+
     /**
-     * Should this tab be activated for the current target element?
+     * Should this tab be activated for the current target element?<p>
      *
-     * <p>Argo only supports constraints for Classes and Features
+     * Argo only supports constraints for Classes and Features
      * (eg. Attributes and Operations) currently.
      *
      * @see org.argouml.ui.TabTarget#shouldBeEnabled(java.lang.Object)
@@ -228,7 +229,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             return representationFor(nIdx);
         }
 
-        /** 
+        /**
          * Remove the specified constraint from the model.
          *
          * @param nIdx the index of the constraint to be removed.
@@ -250,22 +251,21 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         }
 
         /**
-         * Add a fresh constraint to the model.
-         * 
-         * <p>There are 2 restrictions on what can be parsed, given
+         * Add a fresh constraint to the model.<p>
+         *
+         * There are 2 restrictions on what can be parsed, given
          * the current OCL grammar:
          * <ol>
-         *   <li>Class names must have a capital first letter.</li>
+         *   <li>Class names must have a capital first letter.
          *   <li>Feature name must have a lower case first letter.
-         *   </li>
          * </ol>
          */
         public void addConstraint() {
 
             // check ocl parsing constraints
             /*
-             * TODO: sz9: I think this should read 
-             * mmeContext = 
+             * TODO: sz9: I think this should read
+             * mmeContext =
              *      OclUtil.getInnerMostEnclosingNamespace(m_mmeiTarget);
              */
             Object/*MModelElement*/ mmeContext = theMMmeiTarget;
@@ -413,20 +413,23 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 				        .createConstraint();
                                 ModelFacade.setName(mc, ocltCurrent
                                     .getConstraintName());
-                                ModelFacade.setBody(mc, Model.getUmlFactory()
-                                    .getDataTypes().createBooleanExpression(
-                                        "OCL", ocltCurrent.getExpression()));
+                                ModelFacade.setBody(mc,
+                                        Model.getDataTypesFactory()
+                                        	.createBooleanExpression(
+                                        	        "OCL",
+                                        	        ocltCurrent
+                                        	        .getExpression()));
                                 ModelFacade.addConstraint(theMMmeiTarget, mc);
 
                                 // the constraint _must_ be owned by a namespace
-                                if (ModelFacade.getNamespace(theMMmeiTarget) 
+                                if (ModelFacade.getNamespace(theMMmeiTarget)
                                         != null) {
                                     ModelFacade.addOwnedElement(ModelFacade
                                             .getNamespace(theMMmeiTarget), mc);
                                 } else if (ModelFacade
                                         .getNamespace(mmeContext) != null) {
                                     ModelFacade.addOwnedElement(ModelFacade
-                                        .getNamespace(mmeContext), 
+                                        .getNamespace(mmeContext),
                                         theMMcConstraint);
                                 }
 
@@ -443,43 +446,43 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                     if (theMMcConstraint == null) {
                         // New constraint, first time setData is called
-                        theMMcConstraint = Model.getUmlFactory().getCore()
-                            .createConstraint();
+                        theMMcConstraint =
+                            Model.getCoreFactory().createConstraint();
 
                         ModelFacade.setName(theMMcConstraint, "newConstraint");
-                        ModelFacade.setBody(theMMcConstraint, Model
-                            .getUmlFactory().getDataTypes()
-                                .createBooleanExpression("OCL", sData));
+                        ModelFacade.setBody(theMMcConstraint,
+                                Model.getDataTypesFactory()
+                                	.createBooleanExpression("OCL", sData));
 
-                        ModelFacade.addConstraint(theMMmeiTarget, 
+                        ModelFacade.addConstraint(theMMmeiTarget,
                                 theMMcConstraint);
 
                         // the constraint _must_ be owned by a namespace
-                        Object targetNamespace = 
+                        Object targetNamespace =
                             ModelFacade.getNamespace(theMMmeiTarget);
-                        Object contextNamespace = 
+                        Object contextNamespace =
                             ModelFacade.getNamespace(mmeContext);
                         if (targetNamespace != null) {
-                            ModelFacade.addOwnedElement(targetNamespace, 
+                            ModelFacade.addOwnedElement(targetNamespace,
                                     theMMcConstraint);
                         } else if (contextNamespace != null) {
-                            ModelFacade.addOwnedElement(contextNamespace, 
+                            ModelFacade.addOwnedElement(contextNamespace,
                                     theMMcConstraint);
                         }
 
                         theMAlConstraints.set(theMNIdx, theMMcConstraint);
                     } else {
-                        mcOld = Model.getUmlFactory().getCore()
-                            .createConstraint();
+                        mcOld = Model.getCoreFactory().createConstraint();
                         ModelFacade.setName(mcOld, ModelFacade.getName(
                                 theMMcConstraint));
-                        ModelFacade.setBody(mcOld, Model.getUmlFactory()
-                                .getDataTypes().createBooleanExpression("OCL", 
-                                    (String) ModelFacade.getBody(ModelFacade
-                                            .getBody(theMMcConstraint))));
-                        ModelFacade.setBody(theMMcConstraint, Model
-                            .getUmlFactory().getDataTypes()
-                                .createBooleanExpression("OCL", sData));
+                        ModelFacade.setBody(mcOld, Model.getDataTypesFactory()
+                                .createBooleanExpression("OCL",
+                                        (String) ModelFacade.getBody(
+                                                ModelFacade.getBody(
+                                                        theMMcConstraint))));
+                        ModelFacade.setBody(theMMcConstraint,
+                                Model.getDataTypesFactory()
+                                	.createBooleanExpression("OCL", sData));
                     }
 
                     fireConstraintDataChanged(theMNIdx, mcOld, 
@@ -515,19 +518,20 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
                     // Set name
                     Object/*MConstraint*/ mcOld =
                         Model.getUmlFactory().getCore().createConstraint();
-                    ModelFacade.setName(mcOld, 
+                    ModelFacade.setName(mcOld,
                             ModelFacade.getName(theMMcConstraint));
-                    Object constraintBody = 
+                    Object constraintBody =
                         ModelFacade.getBody(theMMcConstraint);
                     ModelFacade.setBody(mcOld,
-                            Model.getUmlFactory().getDataTypes()
+                            Model.getDataTypesFactory()
                                 .createBooleanExpression(
-                                "OCL",
-                                (String) ModelFacade.getBody(constraintBody)));
+                                        "OCL",
+                                        (String) ModelFacade.getBody(
+                                                constraintBody)));
 
                     ModelFacade.setName(theMMcConstraint, sName);
 
-                    fireConstraintNameChanged(theMNIdx, mcOld, 
+                    fireConstraintNameChanged(theMNIdx, mcOld,
                             theMMcConstraint);
 
                     // Also set name in constraint body -- Added 03/14/2001
@@ -536,8 +540,9 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
                         Object/*MModelElement*/ mmeContext = theMMmeiTarget;
                         while (!(ModelFacade.isAClassifier(mmeContext))) {
-                            mmeContext = ModelFacade
-                                .getModelElementContainer(mmeContext);
+                            mmeContext =
+                                ModelFacade.getModelElementContainer(
+                                        mmeContext);
                         }
 
                         constraintBody = ModelFacade.getBody(theMMcConstraint);

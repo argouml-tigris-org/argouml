@@ -32,10 +32,9 @@ import org.argouml.model.ModelFacade;
 /**
  * An action which can be used to create arbritary tagged values which hold
  * boolean data. It is designed (and implicitly) relies on a UMLCheckBox2.
- * 
+ *
  * @see UMLCheckBox2
  * @author mkl
- *  
  */
 public class ActionBooleanTaggedValue extends UMLAction {
 
@@ -44,7 +43,7 @@ public class ActionBooleanTaggedValue extends UMLAction {
     /**
      * The constructor takes the name of the tagged value as a string, which
      * will hold boolean data.
-     * 
+     *
      * @param theTagName
      *            the name of the taggedvalue containing boolean values.
      */
@@ -56,7 +55,7 @@ public class ActionBooleanTaggedValue extends UMLAction {
     /**
      * set the taggedvalue according to the condition of the checkbox. The
      * taggedvalue will be created if not existing.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent e) {
@@ -76,8 +75,8 @@ public class ActionBooleanTaggedValue extends UMLAction {
 
         Object taggedValue = ModelFacade.getTaggedValue(obj, tagName);
         if (taggedValue == null) {
-            taggedValue = Model.getUmlFactory().getExtensionMechanisms()
-                    .createTaggedValue();
+            taggedValue =
+                Model.getExtensionMechanismsFactory().createTaggedValue();
             ModelFacade.setTag(taggedValue, tagName);
             ModelFacade.addTaggedValue(obj, taggedValue);
         }

@@ -24,10 +24,9 @@
 
 package org.argouml.model.uml;
 
-import org.argouml.model.Model;
-import org.argouml.model.UmlFactory;
-
 import junit.framework.TestCase;
+
+import org.argouml.model.UmlFactory;
 
 
 /**
@@ -37,86 +36,125 @@ import junit.framework.TestCase;
  */
 public class TestUmlFactory extends TestCase {
     /**
-     * Constructor
+     * Constructor.
      *
      * @param arg0 is the test name.
      */
     public TestUmlFactory(String arg0) { super(arg0); }
 
     /**
-     * Testing the delete method.<p>
+     * The ModelImplementation for these tests.
+     */
+    private NSUMLModelImplementation nsmodel;
+
+    /**
+     * The UmlFactory for these tests.
+     */
+    private UmlFactory fy;
+
+    /**
+     * @see junit.framework.TestCase#setUp()
+     */
+    public void setUp() {
+        nsmodel = new NSUMLModelImplementation();
+	fy = nsmodel.getUmlFactory();
+    }
+
+    /**
+     * Testing the delete method for Core.<p>
      *
      * Reasoning: Everything that is created is supposed to be able to be
      * deleted.
      */
-    public void testDelete() {
-	UmlFactory fy = Model.getUmlFactory();
-
-	//	fy.delete(fy.getCore().
-	fy.delete(fy.getCore().createAbstraction());
-	fy.delete(fy.getCore().createAssociation());
-	fy.delete(fy.getCore().createAssociationClass());
-	fy.delete(fy.getCore().createAssociationEnd());
-	fy.delete(fy.getCore().createAttribute());
-	fy.delete(fy.getCore().createBinding());
-	fy.delete(fy.getCore().createClass());
-	fy.delete(fy.getCore().createClassifier());
-	fy.delete(fy.getCore().createComment());
-	fy.delete(fy.getCore().createComponent());
-	fy.delete(fy.getCore().createConstraint());
-	fy.delete(fy.getCore().createDataType());
-	fy.delete(fy.getCore().createDependency());
-	fy.delete(fy.getCore().createElementResidence());
-	fy.delete(fy.getCore().createFlow());
-	fy.delete(fy.getCore().createGeneralization());
-	fy.delete(fy.getCore().createInterface());
-	fy.delete(fy.getCore().createMethod());
-	fy.delete(fy.getCore().createNamespace());
-	fy.delete(fy.getCore().createNode());
-	fy.delete(fy.getCore().createOperation());
-	fy.delete(fy.getCore().createParameter());
-	fy.delete(fy.getCore().createPermission());
-	fy.delete(fy.getCore().createRelationship());
-	fy.delete(fy.getCore().createTemplateParameter());
-	fy.delete(fy.getCore().createUsage());
-
-	fy.delete(fy.getActivityGraphs().createActionState());
-	fy.delete(fy.getActivityGraphs().createActivityGraph());
-	fy.delete(fy.getActivityGraphs().createCallState());
-	fy.delete(fy.getActivityGraphs().createClassifierInState());
-	fy.delete(fy.getActivityGraphs().createObjectFlowState());
-	fy.delete(fy.getActivityGraphs().createPartition());
-	fy.delete(fy.getActivityGraphs().createSubactivityState());
-
-	fy.delete(fy.getUseCases().createExtend());
-	fy.delete(fy.getUseCases().createExtensionPoint());
-	fy.delete(fy.getUseCases().createActor());
-	fy.delete(fy.getUseCases().createInclude());
-	fy.delete(fy.getUseCases().createUseCase());
-	fy.delete(fy.getUseCases().createUseCaseInstance());
-
-	fy.delete(fy.getStateMachines().createCallEvent());
-	fy.delete(fy.getStateMachines().createChangeEvent());
-	fy.delete(fy.getStateMachines().createCompositeState());
-	fy.delete(fy.getStateMachines().createFinalState());
-	fy.delete(fy.getStateMachines().createGuard());
-	fy.delete(fy.getStateMachines().createPseudostate());
-	fy.delete(fy.getStateMachines().createSignalEvent());
-	fy.delete(fy.getStateMachines().createSimpleState());
-	fy.delete(fy.getStateMachines().createState());
-	fy.delete(fy.getStateMachines().createStateMachine());
-	fy.delete(fy.getStateMachines().createStubState());
-	fy.delete(fy.getStateMachines().createSubmachineState());
-	fy.delete(fy.getStateMachines().createSynchState());
-	fy.delete(fy.getStateMachines().createTimeEvent());
-	fy.delete(fy.getStateMachines().createTransition());
-
-
-	// TODO:
-	// CollaborationsFactory
-	// CommonBehaviorFactory
-	// DataTypesFactory
-	// ExtensionMechanismsFactory
-	// ModelManagementFactory
+    public void testDeleteCore() {
+	//	fy.delete(nsmodel.getCoreFactory().
+	fy.delete(nsmodel.getCoreFactory().createAbstraction());
+	fy.delete(nsmodel.getCoreFactory().createAssociation());
+	fy.delete(nsmodel.getCoreFactory().createAssociationClass());
+	fy.delete(nsmodel.getCoreFactory().createAssociationEnd());
+	fy.delete(nsmodel.getCoreFactory().createAttribute());
+	fy.delete(nsmodel.getCoreFactory().createBinding());
+	fy.delete(nsmodel.getCoreFactory().createClass());
+	fy.delete(nsmodel.getCoreFactory().createClassifier());
+	fy.delete(nsmodel.getCoreFactory().createComment());
+	fy.delete(nsmodel.getCoreFactory().createComponent());
+	fy.delete(nsmodel.getCoreFactory().createConstraint());
+	fy.delete(nsmodel.getCoreFactory().createDataType());
+	fy.delete(nsmodel.getCoreFactory().createDependency());
+	fy.delete(nsmodel.getCoreFactory().createElementResidence());
+	fy.delete(nsmodel.getCoreFactory().createFlow());
+	fy.delete(nsmodel.getCoreFactory().createGeneralization());
+	fy.delete(nsmodel.getCoreFactory().createInterface());
+	fy.delete(nsmodel.getCoreFactory().createMethod());
+	fy.delete(nsmodel.getCoreFactory().createNamespace());
+	fy.delete(nsmodel.getCoreFactory().createNode());
+	fy.delete(nsmodel.getCoreFactory().createOperation());
+	fy.delete(nsmodel.getCoreFactory().createParameter());
+	fy.delete(nsmodel.getCoreFactory().createPermission());
+	fy.delete(nsmodel.getCoreFactory().createRelationship());
+	fy.delete(nsmodel.getCoreFactory().createTemplateParameter());
+	fy.delete(nsmodel.getCoreFactory().createUsage());
     }
+
+    /**
+     * Testing the delete method for ActivityGraphs.<p>
+     *
+     * Reasoning: Everything that is created is supposed to be able to be
+     * deleted.
+     */
+    public void testDeleteActivityGraphs() {
+	fy.delete(nsmodel.getActivityGraphsFactory().createActionState());
+	fy.delete(nsmodel.getActivityGraphsFactory().createActivityGraph());
+	fy.delete(nsmodel.getActivityGraphsFactory().createCallState());
+	fy.delete(nsmodel.getActivityGraphsFactory().createClassifierInState());
+	fy.delete(nsmodel.getActivityGraphsFactory().createObjectFlowState());
+	fy.delete(nsmodel.getActivityGraphsFactory().createPartition());
+	fy.delete(nsmodel.getActivityGraphsFactory().createSubactivityState());
+    }
+
+    /**
+     * Testing the delete method for UseCases.<p>
+     *
+     * Reasoning: Everything that is created is supposed to be able to be
+     * deleted.
+     */
+    public void testDeleteUseCases() {
+	fy.delete(nsmodel.getUseCasesFactory().createExtend());
+	fy.delete(nsmodel.getUseCasesFactory().createExtensionPoint());
+	fy.delete(nsmodel.getUseCasesFactory().createActor());
+	fy.delete(nsmodel.getUseCasesFactory().createInclude());
+	fy.delete(nsmodel.getUseCasesFactory().createUseCase());
+	fy.delete(nsmodel.getUseCasesFactory().createUseCaseInstance());
+    }
+
+    /**
+     * Testing the delete method for StateMachines.<p>
+     *
+     * Reasoning: Everything that is created is supposed to be able to be
+     * deleted.
+     */
+    public void testDeleteStateMachines() {
+	fy.delete(nsmodel.getStateMachinesFactory().createCallEvent());
+	fy.delete(nsmodel.getStateMachinesFactory().createChangeEvent());
+	fy.delete(nsmodel.getStateMachinesFactory().createCompositeState());
+	fy.delete(nsmodel.getStateMachinesFactory().createFinalState());
+	fy.delete(nsmodel.getStateMachinesFactory().createGuard());
+	fy.delete(nsmodel.getStateMachinesFactory().createPseudostate());
+	fy.delete(nsmodel.getStateMachinesFactory().createSignalEvent());
+	fy.delete(nsmodel.getStateMachinesFactory().createSimpleState());
+	fy.delete(nsmodel.getStateMachinesFactory().createState());
+	fy.delete(nsmodel.getStateMachinesFactory().createStateMachine());
+	fy.delete(nsmodel.getStateMachinesFactory().createStubState());
+	fy.delete(nsmodel.getStateMachinesFactory().createSubmachineState());
+	fy.delete(nsmodel.getStateMachinesFactory().createSynchState());
+	fy.delete(nsmodel.getStateMachinesFactory().createTimeEvent());
+	fy.delete(nsmodel.getStateMachinesFactory().createTransition());
+    }
+
+    // TODO:
+    // CollaborationsFactory
+    // CommonBehaviorFactory
+    // DataTypesFactory
+    // ExtensionMechanismsFactory
+    // ModelManagementFactory
 }

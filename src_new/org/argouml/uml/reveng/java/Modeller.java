@@ -57,39 +57,58 @@ public class Modeller {
     private Object model;
 
     private DiagramInterface diagram;
-    
-    /** Current import session */
+
+    /**
+     * Current import session.
+     */
     private Import importSession;
 
-    /** The package which the currentClassifier belongs to. */
+    /**
+     * The package which the currentClassifier belongs to.
+     */
     private Object currentPackage;
-    
-    /** Last package name used in addPackage().
+
+    /**
+     * Last package name used in addPackage().
      * It is null for classes wich are not packaged.
      * Used in popClassifier() to create diagram for that
-     * packaget. 
+     * packaget.
      */
     private String currentPackageName;
 
-    /** Keeps the data that varies during parsing. */
+    /**
+     * Keeps the data that varies during parsing.
+     */
     private ParseState parseState;
 
-    /** Stack up the state when descending inner classes. */
+    /**
+     * Stack up the state when descending inner classes.
+     */
     private Stack parseStateStack;
 
-    /** Only attributes will be generated. */
+    /**
+     * Only attributes will be generated.
+     */
     private boolean noAssociations;
 
-    /** Arrays will be modelled as unique datatypes. */
+    /**
+     * Arrays will be modelled as unique datatypes.
+     */
     private boolean arraysAsDatatype;
 
-    /** the name of the file being parsed */
+    /**
+     * The name of the file being parsed.
+     */
     private String fileName;
-    
-    /** Arbitrary attributes */
+
+    /**
+     * Arbitrary attributes.
+     */
     private Hashtable attributes = new Hashtable();
-    
-    /** Create a new modeller.
+
+    /**
+     * Create a new modeller.
+     *
      * @param diag the interface to the diagram to add nodes and edges to
      * @param imp The current Import session.
      * @param noAss whether associations are modelled as attributes
@@ -103,8 +122,7 @@ public class Modeller {
 		    Import imp,
 		    boolean noAss,
 		    boolean arraysAsDT,
-		    String fName)
-    {
+		    String fName) {
 	model = m;
 	noAssociations = noAss;
 	arraysAsDatatype = arraysAsDT;
@@ -123,7 +141,7 @@ public class Modeller {
     public Object getAttribute(String key) {
         return attributes.get(key);
     }
-    
+
     /**
      * @param key the key of the attribute
      * @param value the value for the attribute
@@ -131,8 +149,8 @@ public class Modeller {
     public void setAttribute(String key, Object value) {
         attributes.put(key, value);
     }
-    
-    
+
+
     /**
      * Get the current diagram.
      *
@@ -169,16 +187,16 @@ public class Modeller {
      * if there will be a package statement.<p>
      */
     public void addComponent() {
-        
+
         // try and find the component in the current package
         // to cope with repeated imports
         // [this will never work if a package statmeent exists:
-        // because the package statement is parsed after the component is 
+        // because the package statement is parsed after the component is
         // identified]
         Object component = ModelFacade.lookupIn(currentPackage, fileName);
-        
+
         if (component == null) {
-        
+
             // remove the java specific ending (per JSR 26).
             // BUT we can't do this because then the component will be confused
             // with its class with the same name when invoking
@@ -188,25 +206,24 @@ public class Modeller {
 	      fileName = fileName.substring(0,
 	      fileName.length()-5);
             */
-            
+
             component = Model.getUmlFactory().getCore().createComponent();
             ModelFacade.setName(component, fileName);
         }
-        
+
         parseState.addComponent(component);
-        
+
         // set the namespace of the component, in the event
         // that the source file does not have a package stmt
         ModelFacade.setNamespace(parseState.getComponent(), model);
     }
-    
-    /**
-       Called from the parser when a package clause is found.
 
-       @param name The name of the package.
-    */
-    public void addPackage(String name)
-    {
+    /**
+     * Called from the parser when a package clause is found.
+     *
+     * @param name The name of the package.
+     */
+    public void addPackage(String name) {
 	// Add a package figure for this package to the owners class
 	// diagram, if it's not in the diagram yet. I do this for all
 	// the class diagrams up to the top level, since I need
@@ -227,10 +244,11 @@ public class Modeller {
 	// Save src_path in the upper package
 	Object mPackage = getPackage(currentName);
 	if (importSession.getSrcPath() != null
-	    && ModelFacade.getTaggedValue(mPackage, "src_path") == null)
+	    && ModelFacade.getTaggedValue(mPackage, "src_path") == null) {
 	    ModelFacade.setTaggedValue(mPackage, "src_path",
 				       importSession.getSrcPath());
-		
+	}
+
 	// Find or create a MPackage NSUML object for this package.
 	mPackage = getPackage(name);
         currentPackageName = name;
@@ -241,17 +259,17 @@ public class Modeller {
 
         // Delay diagram creation until any classifier (class or
         // interface) will be found
-        
+
         //set the namespace of the component
         // check to see if there is already a component defined:
         Object component = ModelFacade.lookupIn(currentPackage, fileName);
-        
+
         if (component == null) {
-            
+
             // set the namespace of the component
             ModelFacade.setNamespace(parseState.getComponent(), currentPackage);
         } else {
-            
+
             // a component already exists,
             // so delete the latest one(the duplicate)
             Model.getUmlFactory().delete(parseState.getComponent());
@@ -261,12 +279,11 @@ public class Modeller {
     }
 
     /**
-       Called from the parser when an import clause is found.
-
-       @param name The name of the import. Can end with a '*'.
-    */
-    public void addImport(String name)
-    {
+     * Called from the parser when an import clause is found.
+     *
+     * @param name The name of the import. Can end with a '*'.
+     */
+    public void addImport(String name) {
         // only do imports on the 2nd pass.
         Object level = this.getAttribute("level");
         if (level != null) {
@@ -274,7 +291,7 @@ public class Modeller {
                 return;
             }
         }
-        
+
 	String packageName = getPackageName(name);
 	String classifierName = getClassifierName(name);
 	Object mPackage = getPackage(packageName);
@@ -283,22 +300,22 @@ public class Modeller {
 	if (classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
             Object perm = null;
-            
+
             // try find an existing permission
             Iterator dependenciesIt =
                 Model.getUmlHelper().getCore()
 		    .getDependencies(mPackage, parseState.getComponent())
 		        .iterator();
             while (dependenciesIt.hasNext()) {
-                
+
                 Object dependency = dependenciesIt.next();
                 if (ModelFacade.isAPermission(dependency)) {
-                    
+
                     perm = dependency;
                     break;
                 }
             }
-            
+
             // if no existing permission was found.
             if (perm == null) {
 		perm =
@@ -319,7 +336,7 @@ public class Modeller {
 		    (new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
                 Object perm = null;
-                
+
                 // try find an existing permission
                 Iterator dependenciesIt =
 		    Model.getUmlHelper().getCore()
@@ -327,15 +344,15 @@ public class Modeller {
 					 parseState.getComponent())
                             .iterator();
                 while (dependenciesIt.hasNext()) {
-                    
+
                     Object dependency = dependenciesIt.next();
                     if (ModelFacade.isAPermission(dependency)) {
-                        
+
                         perm = dependency;
                         break;
                     }
                 }
-                
+
                 // if no existing permission was found.
                 if (perm == null) {
                     perm =
@@ -380,8 +397,7 @@ public class Modeller {
                          short modifiers,
                          String superclassName,
                          Vector interfaces,
-                         String javadoc)
-    {
+                         String javadoc) {
         Object mClass =
 	    addClassifier(Model.getUmlFactory().getCore().createClass(),
 			  name, modifiers, javadoc);
@@ -405,8 +421,7 @@ public class Modeller {
 		    getContext(superclassName)
 		        .get(getClassifierName(superclassName));
 		getGeneralization(currentPackage, parentClass, mClass);
-	    }
-	    catch (ClassifierNotFoundException e) {
+	    } catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
 		// model/classpath then information will be lost from
 		// source files, because the classifier cannot be
@@ -419,7 +434,7 @@ public class Modeller {
 	}
 
 	if (interfaces != null) {
-	    for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+	    for (Iterator i = interfaces.iterator(); i.hasNext();) {
 		String interfaceName = (String) i.next();
 		try {
 		    Object mInterface =
@@ -434,8 +449,7 @@ public class Modeller {
 		    ModelFacade.setNamespace(mAbstraction, currentPackage);
 		    ModelFacade.setStereotype(mAbstraction,
 					      getStereotype("realize"));
-		}
-		catch (ClassifierNotFoundException e) {
+		} catch (ClassifierNotFoundException e) {
 		    // Currently if a classifier cannot be found in the
 		    // model/classpath then information will be lost from
 		    // source files, because the classifier cannot be
@@ -468,8 +482,7 @@ public class Modeller {
 		     ModelFacade.isAClass(mClassifier) ? type : null,
 		     interfaces,
 		     "");
-        }
-        catch (ClassifierNotFoundException e) {
+        } catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class poping will mismatch.
             addClass(name, (short) 0, null, new Vector(), "");
             LOG.warn("Modeller.java: an anonymous class was created "
@@ -491,14 +504,13 @@ public class Modeller {
     public void addInterface(String name,
                              short modifiers,
                              Vector interfaces,
-                             String javadoc)
-    {
+                             String javadoc) {
         Object mInterface =
 	    addClassifier(Model.getUmlFactory().getCore().createInterface(),
 			  name,
 			  modifiers,
 			  javadoc);
-        
+
         // only do generalizations and realizations on the 2nd pass.
         Object level = this.getAttribute("level");
         if (level != null) {
@@ -506,16 +518,15 @@ public class Modeller {
                 return;
             }
         }
-        
-        for (Iterator i = interfaces.iterator(); i.hasNext(); ) {
+
+        for (Iterator i = interfaces.iterator(); i.hasNext();) {
             String interfaceName = (String) i.next();
             try {
                 Object parentInterface =
 		    getContext(interfaceName)
 		        .getInterface(getClassifierName(interfaceName));
                 getGeneralization(currentPackage, parentInterface, mInterface);
-            }
-            catch (ClassifierNotFoundException e) {
+            } catch (ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -600,7 +611,7 @@ public class Modeller {
                 //if (parseState.getComponent() == null) addComponent();
                 residentDep = Model.getCoreFactory()
 		    .buildDependency(parseState.getComponent(), mClassifier);
-                Model.getUmlFactory().getExtensionMechanisms()
+                Model.getExtensionMechanismsFactory()
 		    .buildStereotype(
 				     residentDep,
 				     "resident",
@@ -862,9 +873,9 @@ public class Modeller {
         Object method = getMethod(ModelFacade.getName(op));
         parseState.feature(method);
         ModelFacade.setBody(method,
-			    Model.getUmlFactory().getDataTypes()
-			    .createProcedureExpression("Java",
-						       body));
+			    Model.getDataTypesFactory()
+			    	.createProcedureExpression("Java",
+			    	        		   body));
 	// Add the method to it's specification.
         ModelFacade.addMethod(op, method);
 
@@ -963,7 +974,7 @@ public class Modeller {
                 }
                 
 		Object newInitialValue = 
-		    Model.getUmlFactory().getDataTypes()
+		    Model.getDataTypesFactory()
 		        .createExpression("Java",
 					  initializer);
                 ModelFacade.setInitialValue(mAttribute, newInitialValue);
@@ -1253,7 +1264,7 @@ public class Modeller {
 
 	if (mStereotype == null || !ModelFacade.isAStereotype(mStereotype)) {
 	    mStereotype =
-		Model.getUmlFactory().getExtensionMechanisms()
+		Model.getExtensionMechanismsFactory()
 		    .buildStereotype(name, model);
 	}
 
@@ -1488,10 +1499,10 @@ public class Modeller {
 		body = sContext + " post " + sTagData;
 	    }
 	    Object bexpr =
-		Model.getUmlFactory().getDataTypes()
+		Model.getDataTypesFactory()
 		    .createBooleanExpression("OCL", body);
 	    Object mc =
-		Model.getUmlFactory().getCore().buildConstraint(name, bexpr);
+		Model.getCoreFactory().buildConstraint(name, bexpr);
 	    ModelFacade.addConstraint(me, mc);
 	    if (ModelFacade.getNamespace(me) != null) {
 		// Apparently namespace management is not supported
@@ -1639,8 +1650,9 @@ public class Modeller {
 				       sCurrentTagData);
 	    }
 	    else {
-		sJavaDocs = sJavaDocs.substring (0, 
-		                    sJavaDocs.lastIndexOf ('/') - 1);
+		sJavaDocs =
+		    sJavaDocs.substring (0, 
+		            sJavaDocs.lastIndexOf ('/') - 1);
 		if (sJavaDocs.length() > 0) {
 		    if (sJavaDocs.charAt (sJavaDocs.length() - 1) == '\n') {
 			sJavaDocs =
@@ -1648,8 +1660,9 @@ public class Modeller {
 		    }
 		}
 	    }
-	    if (sJavaDocs.endsWith("/"))
-		sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
+	    if (sJavaDocs.endsWith("/")) {
+	        sJavaDocs = sJavaDocs.substring(0, sJavaDocs.length() - 1);
+	    }
 
 	    // Do special things:
 	    // Now store documentation text
@@ -1668,14 +1681,14 @@ public class Modeller {
 	}
     }
 
-    /** 
+    /**
      * This method currently does nothing.<p>
      *
      * Once we start reverse engineering interactions, this is used.
      *
      * @param method The method name called.
      * @param obj The object it is called in.
-     */    
+     */
     public void addCall(String method, String obj) {
     }
 

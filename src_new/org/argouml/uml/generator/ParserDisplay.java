@@ -47,7 +47,7 @@ import org.argouml.util.MyTokenizer;
 /**
  * Interface specifying the operation to take when a PropertySpecialString is
  * matched.
- * 
+ *
  * @author Michael Stockman
  * @since 0.11.2
  * @see PropertySpecialString
@@ -55,35 +55,34 @@ import org.argouml.util.MyTokenizer;
 interface PropertyOperation {
     /**
      * Invoked by PropertySpecialString when it has matched a property name.
-     * 
+     *
      * @param element
      *            The element on which the property was set.
      * @param value
      *            The value of the property, may be null if no value was given.
      */
-    public void found(Object element, String value);
+    void found(Object element, String value);
 }
 
 /**
- * Declares a string that should take special action when it is found as a
- * property in {@link ParserDisplay#setProperties ParserDisplay.setProperties}.
- * 
- * <p>
- * <b>Example: </b>
- * 
+ * Declares a string that should take special action when it is found
+ * as a property in
+ * {@link ParserDisplay#setProperties ParserDisplay.setProperties}.<p>
+ *
+ * <em>Example:</em>
+ *
  * <pre>
  * attributeSpecialStrings[0] = new PropertySpecialString(&quot;frozen&quot;,
  *         new PropertyOperation() {
  *             public void found(Object element, String value) {
  *                 if (ModelFacade.isAStructuralFeature(element))
- *                     ModelFacade.setChangeable(element, 
+ *                     ModelFacade.setChangeable(element,
  *                          (value != null &amp;&amp; value
  *                             .equalsIgnoreCase(&quot;false&quot;)));
  *             }
  *         });
  * </pre>
- * 
- * <p>
+ *
  * Taken from the ParserDisplay constructor. It creates a PropertySpecialString
  * that is invoken when the String "frozen" is found as a property name. Then
  * the found mehod in the anonymous inner class defined on the 2nd line is
@@ -91,7 +90,7 @@ interface PropertyOperation {
  * specified by the user. In this case it does a setChangeability on an
  * attribute instead of setting a tagged value, which would not have the desired
  * effect.
- * 
+ *
  * @author Michael Stockman
  * @since 0.11.2
  * @see PropertyOperation
@@ -106,7 +105,7 @@ class PropertySpecialString {
      * Constructs a new PropertySpecialString that will invoke the
      * action in op when {@link #invoke(Object, String, String)} is
      * called with name equal to str and then return true from invoke.
-     * 
+     *
      * @param str
      *            The name of this PropertySpecialString.
      * @param propop
@@ -123,17 +122,18 @@ class PropertySpecialString {
      * invoke for a property. If it returns true, then setProperties
      * may assume that all required actions have been taken and stop
      * searching.
-     * 
+     *
      * @param pname
      *            The name of a property.
      * @param value
      *            The value of a property.
-     * @return <tt>true</tt> if an action is performed, otherwise
-     *         <tt>false</tt>.
+     * @return <code>true</code> if an action is performed, otherwise
+     *         <code>false</code>.
      */
     public boolean invoke(Object element, String pname, String value) {
-        if (!name.equalsIgnoreCase(pname))
+        if (!name.equalsIgnoreCase(pname)) {
             return false;
+        }
         op.found(element, value);
         return true;
     }
@@ -143,16 +143,18 @@ class PropertySpecialString {
  * This class is responsible for the parsing of the text that the user entered
  * on the display, i.e. the diagram. Consequently, the UML elements represented
  * by the text are created or adapted.<p>
- * 
+ *
  * There is a certain relation in namegiving with the class GeneratorDisplay,
  * which generates a textual representation of UML elements for displaying on
  * diagrams.
- * 
+ *
  * @stereotype singleton
  */
 
 public class ParserDisplay extends Parser {
-    /** The one and only ParserDisplay */
+    /**
+     * The one and only ParserDisplay.
+     */
     public static final ParserDisplay SINGLETON = new ParserDisplay();
 
     /**
@@ -160,35 +162,47 @@ public class ParserDisplay extends Parser {
      */
     private static final Logger LOG = Logger.getLogger(ParserDisplay.class);
 
-    /** The array of special properties for attributes */
-    private PropertySpecialString attributeSpecialStrings[];
+    /**
+     * The array of special properties for attributes.
+     */
+    private PropertySpecialString[] attributeSpecialStrings;
 
-    /** The vector of CustomSeparators to use when tokenizing attributes */
+    /**
+     * The vector of CustomSeparators to use when tokenizing attributes.
+     */
     private Vector attributeCustomSep;
 
-    /** The array of special properties for operations */
-    private PropertySpecialString operationSpecialStrings[];
+    /**
+     * The array of special properties for operations.
+     */
+    private PropertySpecialString[] operationSpecialStrings;
 
-    /** The vector of CustomSeparators to use when tokenizing attributes */
+    /**
+     * The vector of CustomSeparators to use when tokenizing attributes.
+     */
     private Vector operationCustomSep;
 
-    /** The vector of CustomSeparators to use when tokenizing parameters */
+    /**
+     * The vector of CustomSeparators to use when tokenizing parameters.
+     */
     private Vector parameterCustomSep;
 
     /**
-     * The character with a meaning as a visibility at the start of an attribute
+     * The character with a meaning as a visibility at the start
+     * of an attribute.
      */
     private static final String VISIBILITYCHARS = "+#-";
 
     /**
      * Constructs the object contained in SINGLETON and initializes some
      * instance variables.
-     * 
+     *
      * @see #SINGLETON
      */
     private ParserDisplay() {
         attributeSpecialStrings = new PropertySpecialString[2];
-        attributeSpecialStrings[0] = new PropertySpecialString("frozen",
+        attributeSpecialStrings[0] =
+            new PropertySpecialString("frozen",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAStructuralFeature(element)) {
@@ -202,7 +216,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        attributeSpecialStrings[1] = new PropertySpecialString("addonly",
+        attributeSpecialStrings[1] =
+            new PropertySpecialString("addonly",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAStructuralFeature(element)) {
@@ -222,7 +237,8 @@ public class ParserDisplay extends Parser {
         attributeCustomSep.add(MyTokenizer.PAREN_EXPR_STRING_SEPARATOR);
 
         operationSpecialStrings = new PropertySpecialString[8];
-        operationSpecialStrings[0] = new PropertySpecialString("sequential",
+        operationSpecialStrings[0] =
+            new PropertySpecialString("sequential",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     if (ModelFacade.isAOperation(element)) {
@@ -231,7 +247,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[1] = new PropertySpecialString("guarded",
+        operationSpecialStrings[1] =
+            new PropertySpecialString("guarded",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind = ModelFacade.GUARDED_CONCURRENCYKIND;
@@ -241,17 +258,21 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setConcurrency(element, kind);
                 }
             });
-        operationSpecialStrings[2] = new PropertySpecialString("concurrent",
+        operationSpecialStrings[2] =
+            new PropertySpecialString("concurrent",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind = ModelFacade.CONCURRENT_CONCURRENCYKIND;
-                    if (value != null && value.equalsIgnoreCase("false"))
-                            kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
-                    if (ModelFacade.isAOperation(element))
-                            ModelFacade.setConcurrency(element, kind);
+                    if (value != null && value.equalsIgnoreCase("false")) {
+                        kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
+                    }
+                    if (ModelFacade.isAOperation(element)) {
+                        ModelFacade.setConcurrency(element, kind);
+                    }
                 }
             });
-        operationSpecialStrings[3] = new PropertySpecialString("concurrency",
+        operationSpecialStrings[3] =
+            new PropertySpecialString("concurrency",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     Object kind = ModelFacade.SEQUENTIAL_CONCURRENCYKIND;
@@ -263,7 +284,8 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setConcurrency(element, kind);
                 }
             });
-        operationSpecialStrings[4] = new PropertySpecialString("abstract",
+        operationSpecialStrings[4] =
+            new PropertySpecialString("abstract",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isAbstract = true;
@@ -275,7 +297,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[5] = new PropertySpecialString("leaf",
+        operationSpecialStrings[5] =
+            new PropertySpecialString("leaf",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isLeaf = true;
@@ -287,7 +310,8 @@ public class ParserDisplay extends Parser {
                     }
                 }
             });
-        operationSpecialStrings[6] = new PropertySpecialString("query",
+        operationSpecialStrings[6] =
+            new PropertySpecialString("query",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isQuery = true;
@@ -297,7 +321,8 @@ public class ParserDisplay extends Parser {
                             ModelFacade.setQuery(element, isQuery);
                 }
             });
-        operationSpecialStrings[7] = new PropertySpecialString("root",
+        operationSpecialStrings[7] =
+            new PropertySpecialString("root",
                 new PropertyOperation() {
                 public void found(Object element, String value) {
                     boolean isRoot = true;
@@ -323,10 +348,10 @@ public class ParserDisplay extends Parser {
 
     /**
      * Parse an extension point.<p>
-     * 
+     *
      * The syntax is "name: location", "name:", "location" or "". The fields of
      * the extension point are updated appropriately.
-     * 
+     *
      * @param useCase The use case that owns this extension point
      * @param ep      The extension point concerned
      * @param text    The text to parse
@@ -355,17 +380,17 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parses a model element, ie reads a string on the format: <br>
-     *     [ << stereotype >>] [name] 
-     * <br> and assigns the properties to the passed MModelElement.
-     * 
-     * @param me   The MModelElement <i>text </i> describes.
+     * Parses a model element, ie reads a string on the format:<pre>
+     *     [ &lt;&lt; stereotype &gt;&gt;] [name] 
+     * </pre> and assigns the properties to the passed MModelElement.
+     *
+     * @param me   The ModelElement <em>text</em> describes.
      * @param text A String on the above format.
      * @throws ParseException
      *             when it detects an error in the attribute string. See also
      *             ParseError.getErrorOffset().
      */
-    public void parseModelElement(Object/* MModelElement */me, String text)
+    public void parseModelElement(Object me, String text)
         throws ParseException {
         MyTokenizer st;
 
@@ -380,35 +405,42 @@ public class ParserDisplay extends Parser {
                 token = st.nextToken();
 
                 if ("<<".equals(token)) {
-                    if (stereotype != null)
+                    if (stereotype != null) {
                         throw new ParseException("Element cannot have "
                                 + "two stereotypes", st.getTokenIndex());
+                    }
 
                     stereotype = "";
                     while (true) {
                         token = st.nextToken();
-                        if (">>".equals(token))
+                        if (">>".equals(token)) {
                             break;
+                        }
                         stereotype += token;
                     }
                 } else if ("::".equals(token)) {
-                    if (name != null)
+                    if (name != null) {
                         name = name.trim();
+                    }
 
-                    if (path != null && (name == null || "".equals(name)))
+                    if (path != null && (name == null || "".equals(name))) {
                         throw new ParseException("Element cannot have "
                                 + "anonymous qualifiers", st.getTokenIndex());
+                    }
 
-                    if (path == null)
+                    if (path == null) {
                         path = new Vector();
-                    if (name != null)
+                    }
+                    if (name != null) {
                         path.add(name);
+                    }
                     name = null;
                 } else {
-                    if (name != null)
+                    if (name != null) {
                         throw new ParseException("Element cannot have "
                                 + "two word names or qualifiers", st
                                 .getTokenIndex());
+                    }
 
                     name = token;
                 }
@@ -420,21 +452,25 @@ public class ParserDisplay extends Parser {
             throw pre;
         }
 
-        if (name != null)
+        if (name != null) {
             name = name.trim();
+        }
 
-        if (path != null && (name == null || "".equals(name)))
+        if (path != null && (name == null || "".equals(name))) {
             throw new ParseException("Qualified names must end with a name", 0);
+        }
 
-        if (name != null)
+        if (name != null) {
             ModelFacade.setName(me, name);
+        }
 
         if (stereotype != null) {
             stereotype = stereotype.trim();
             Object stereo = getStereotype(me, stereotype);
 
-            if (stereo != null)
+            if (stereo != null) {
                 ModelFacade.setStereotype(me, stereo);
+            }
             else if ("".equals(stereotype))
                 ModelFacade.setStereotype(me, null);
         }
@@ -1089,7 +1125,8 @@ public class ParserDisplay extends Parser {
                 ModelFacade.setType(p, getType(type.trim(), ns));
 
             if (value != null) {
-                Object initExpr = Model.getUmlFactory().getDataTypes()
+                Object initExpr =
+                    Model.getDataTypesFactory()
                         .createExpression(
                                 Notation.getDefaultNotation().toString(),
                                 value.trim());
@@ -1382,7 +1419,8 @@ public class ParserDisplay extends Parser {
         }
 
         if (value != null) {
-            Object initExpr = Model.getUmlFactory().getDataTypes()
+            Object initExpr =
+                Model.getDataTypesFactory()
                     .createExpression(Notation.getDefaultNotation().toString(),
                             value.trim());
             ModelFacade.setInitialValue(attr, initExpr);
@@ -1390,10 +1428,9 @@ public class ParserDisplay extends Parser {
 
         if (multiplicity != null) {
             try {
-                ModelFacade
-                        .setMultiplicity(attr, Model.getUmlFactory()
-                                .getDataTypes().createMultiplicity(
-                                        multiplicity.trim()));
+                ModelFacade.setMultiplicity(attr,
+                        Model.getDataTypesFactory()
+                        	.createMultiplicity(multiplicity.trim()));
             } catch (IllegalArgumentException iae) {
                 throw new ParseException("Bad multiplicity (" + iae + ")",
                         multindex);
@@ -1556,11 +1593,10 @@ public class ParserDisplay extends Parser {
 
     /**
      * Finds a stereotype named name either in the subtree of the model rooted
-     * at root, or in the the ProfileJava model.
-     * 
-     * <p>
+     * at root, or in the the ProfileJava model.<p>
+     *
      * TODO: Should create the stereotype under root if it isn't found.
-     * 
+     *
      * @param obj
      *            A MModelElements to find a suitable stereotype for.
      * @param name
@@ -1572,8 +1608,9 @@ public class ParserDisplay extends Parser {
         Object stereo;
 
         stereo = recFindStereotype(obj, root, name);
-        if (stereo != null)
+        if (stereo != null) {
             return stereo;
+        }
 
         stereo = recFindStereotype(obj, ProfileJava.getInstance()
                 .getProfileModel(), name);
@@ -1803,16 +1840,17 @@ public class ParserDisplay extends Parser {
 
 
     /**
-     * Parse a line of the form: "entry /action" and create an action. 
-     * We do not need to check for the presence of the word "entry" - that 
+     * Parse a line of the form: "entry /action" and create an action.
+     * We do not need to check for the presence of the word "entry" - that
      * is done by the caller.
-     * 
+     *
      * @param st  the state object
      * @param s   the string to be parsed
      */
     private void parseStateEntryAction(Object st, String s) {
-        if (s.indexOf("/") > -1)
+        if (s.indexOf("/") > -1) {
             s = s.substring(s.indexOf("/") + 1).trim();
+        }
         Object oldEntry = ModelFacade.getEntry(st);
         if (oldEntry == null) {
             ModelFacade.setEntry(st, buildNewCallAction(s));
@@ -1822,18 +1860,19 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a line of the form: "exit /action" and create an action. 
-     * We do not need to check for the presence of the word "exit" - that 
+     * Parse a line of the form: "exit /action" and create an action.
+     * We do not need to check for the presence of the word "exit" - that
      * is done by the caller.
-     * 
+     *
      * @param st
      *            the state object
      * @param s
      *            the string to be parsed
      */
     private void parseStateExitAction(Object st, String s) {
-        if (s.indexOf("/") > -1)
+        if (s.indexOf("/") > -1) {
             s = s.substring(s.indexOf("/") + 1).trim();
+        }
         Object oldExit = ModelFacade.getExit(st);
         if (oldExit == null) {
             ModelFacade.setExit(st, buildNewCallAction(s));
@@ -1862,51 +1901,55 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a transition description line of the form:<br>
-     *    "event-signature [guard-condition] / action-expression". <p> 
+     * Parse a transition description line of the form:<pre>
+     *    "event-signature [guard-condition] / action-expression".
+     * </pre>
      * 
      * If the last character of this line
      * is a ";", then it is ignored.<p>
-     *  
+     *
      * The "event-signature" may be one of the 4
-     * formats:<p> 
-     *      ChangeEvent: "when(condition)"   <br> 
-     *      TimeEvent: "after(duration)"     <br>
-     *      CallEvent: "a(parameter-list)".  <br>
-     *      SignalEvent: any string without ().<p>
-     * 
-     * Remark: The UML standard does not make a distinction between 
-     * the syntax of a CallEvent and SignalEvent: 
-     * both may have parameters between (). 
+     * formats:<ul>
+     * <li> ChangeEvent: "when(condition)"
+     * <li> TimeEvent: "after(duration)"
+     * <li> CallEvent: "a(parameter-list)".
+     * <li> SignalEvent: any string without ().
+     * </ul>
+     *
+     * Remark: The UML standard does not make a distinction between
+     * the syntax of a CallEvent and SignalEvent:
+     * both may have parameters between ().
      * For simplicity and user-friendlyness, we chose for this distinction.
-     * If a user wants parameters for a SignalEvent, 
+     * If a user wants parameters for a SignalEvent,
      * then he may add them in the properties panels, but not on the diagram.<p>
-     * 
-     * An alternative solution would be to create a CallEvent by default, 
+     *
+     * An alternative solution would be to create a CallEvent by default,
      * and when editing an existing event, do not change the type.<p>
-     * 
-     * TODO: This function fails when the event-signature contains a "[" 
+     *
+     * TODO: This function fails when the event-signature contains a "["
      * or a "/".
-     * 
+     *
      * @param trans the transition object to which this string applies
      * @param s     the string to be parsed
      * @return      the transition object
      * @throws ParseException when no matching [] are found
-     * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object, 
+     * @see org.argouml.uml.generator.Parser#parseTransition(java.lang.Object,
      *      java.lang.String)
      */
-    public Object parseTransition(Object trans, String s) 
+    public Object parseTransition(Object trans, String s)
         throws ParseException {
         s = s.trim();
-        
+
         int a = s.indexOf("[");
         int b = s.indexOf("]");
         int c = s.indexOf("/");
-        if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) 
+        if (((a < 0) && (b >= 0)) || ((b < 0) && (a >= 0)) || (b < a)) { 
             throw new ParseException("No matching brackets [] found.", 0);
-        if ((c >= 0) && (c < b))
+        }
+        if ((c >= 0) && (c < b)) {
             throw new ParseException("Found a ']' after a '/'", 0);
-        
+        }
+
         StringTokenizer tokenizer = new StringTokenizer(s, "[/");
         String eventSignature = null;
         String guardCondition = null;
@@ -2139,9 +2182,9 @@ public class ParserDisplay extends Parser {
                  * Why? (MVW)*/
                 g = Model.getUmlFactory().getStateMachines().createGuard();
                 if (g != null) {
-                    ModelFacade.setExpression(g, Model.getUmlFactory()
-                            .getDataTypes().createBooleanExpression(
-                                    "", guard));
+                    ModelFacade.setExpression(g,
+                            Model.getDataTypesFactory()
+                            	.createBooleanExpression("", guard));
                     ModelFacade.setName(g, "anon");
                     ModelFacade.setTransition(g, trans);
                     //ModelFacade.setGuard(trans, g); //NSUML does this (?)
@@ -2158,9 +2201,9 @@ public class ParserDisplay extends Parser {
                 //hence a less elegant workaround that works:
                 if (expr != null)
                     language = ModelFacade.getLanguage(expr);
-                ModelFacade.setExpression(g, Model.getUmlFactory()
-                        .getDataTypes().createBooleanExpression(
-                                language, guard));
+                ModelFacade.setExpression(g,
+                        Model.getDataTypesFactory()
+                        	.createBooleanExpression(language, guard));
                 /* TODO: In this case, the properties panel 
                  is not updated
                  with the changed expression! */
@@ -2200,17 +2243,18 @@ public class ParserDisplay extends Parser {
             if (effect == null) { // case 1
                 effect = Model.getUmlFactory().getCommonBehavior()
                     .createCallAction();
-                ModelFacade.setScript(effect, Model.getUmlFactory()
-                        .getDataTypes().createActionExpression(
-                                ""/*language*/, actions));
+                ModelFacade.setScript(effect,
+                        Model.getDataTypesFactory()
+                        	.createActionExpression(""/*language*/,
+                        	        		actions));
                 ModelFacade.setName(effect, "anon");
                 ModelFacade.setEffect(trans, effect);
             } else { // case 2
                 String language = ModelFacade.getLanguage(ModelFacade
                         .getScript(effect));
-                ModelFacade.setScript(effect, Model.getUmlFactory()
-                        .getDataTypes().createActionExpression(
-                                language, actions));
+                ModelFacade.setScript(effect,
+                        Model.getDataTypesFactory()
+                        	.createActionExpression(language, actions));
             }
         } else { // case 3 & 4
             if (effect == null) {
@@ -2737,9 +2781,9 @@ public class ParserDisplay extends Parser {
                 else
                     guard = "*" + guard;
             }
-            Object/* MIterationExpression */expr = Model.getUmlFactory()
-                    .getDataTypes().createIterationExpression(
-                            Notation.getDefaultNotation().toString(), guard);
+            Object expr =
+                Model.getDataTypesFactory().createIterationExpression(
+                        Notation.getDefaultNotation().toString(), guard);
             ModelFacade.setRecurrence(ModelFacade.getAction(mes), expr);
         }
 
@@ -2790,7 +2834,8 @@ public class ParserDisplay extends Parser {
             if (ModelFacade.getScript(ModelFacade.getAction(mes)) == null
                     || !expr.equals(ModelFacade.getBody(ModelFacade
                             .getScript(ModelFacade.getAction(mes))))) {
-                Object e = Model.getUmlFactory().getDataTypes()
+                Object e =
+                    Model.getDataTypesFactory()
                         .createActionExpression(
                                 Notation.getDefaultNotation().toString(),
                                 expr.trim());
@@ -2817,7 +2862,8 @@ public class ParserDisplay extends Parser {
                               ModelFacade.getBody(ModelFacade.getValue(arg)))) {
                     String value = (args.get(i) != null ? (String) args.get(i)
                             : "");
-                    Object e = Model.getUmlFactory().getDataTypes()
+                    Object e =
+                        Model.getDataTypesFactory()
                             .createExpression(
                                     Notation.getDefaultNotation().toString(),
                                     value.trim());
@@ -3000,11 +3046,12 @@ public class ParserDisplay extends Parser {
                 }
                 throw new ParseException("Could not find predecessor", 0);
             }
-            GeneratorDisplay.MsgPtr ptr = 
+            GeneratorDisplay.MsgPtr ptr =
                 GeneratorDisplay.getInstance().new MsgPtr();
             GeneratorDisplay.getInstance().recCountPredecessors(mes, ptr);
-            if (ptr.message != null && !pre.contains(ptr.message))
+            if (ptr.message != null && !pre.contains(ptr.message)) {
                 pre.add(ptr.message);
+            }
             ModelFacade.setPredecessors(mes, pre);
         }
     }
@@ -3019,10 +3066,12 @@ public class ParserDisplay extends Parser {
      */
     private boolean isBadPreMsg(Object ans, Object chld) {
         while (chld != null) {
-            if (ans == chld)
+            if (ans == chld) {
                 return true;
-            if (isPredecessorMsg(ans, chld, 100))
+            }
+            if (isPredecessorMsg(ans, chld, 100)) {
                 return true;
+            }
             chld = ModelFacade.getActivator(chld);
         }
         return false;
@@ -3032,7 +3081,7 @@ public class ParserDisplay extends Parser {
      * Examines the call tree from suc to see if pre is a predecessor. This
      * function is recursive and md specifies the maximum level of recursions
      * allowed.
-     * 
+     *
      * @param pre
      *            MMessage
      * @param suc
@@ -3042,10 +3091,12 @@ public class ParserDisplay extends Parser {
         Iterator it = ModelFacade.getPredecessors(suc).iterator();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
-            if (m == pre)
+            if (m == pre) {
                 return true;
-            if (md > 0 && isPredecessorMsg(pre, m, md - 1))
+            }
+            if (md > 0 && isPredecessorMsg(pre, m, md - 1)) {
                 return true;
+            }
         }
         return false;
     }
@@ -3054,10 +3105,10 @@ public class ParserDisplay extends Parser {
      * Walks a call tree from a root node following the directions given in path
      * to a destination node. If the destination node cannot be reached, then
      * null is returned.
-     * 
+     *
      * @param root The root of the call tree.
      * @param path The path to walk in the call tree.
-     * @return The message at the end of path, or <tt>null</tt>.
+     * @return The message at the end of path, or <code>null</code>.
      */
     private Object walkTree(Object root, Vector path) {
         int i;
@@ -3081,8 +3132,9 @@ public class ParserDisplay extends Parser {
                         ModelFacade.getMessages4(root), root, null).iterator();
                 // Things are strange if there are more than one candidate root,
                 // it has no obvious interpretation in terms of a call tree.
-                if (!it.hasNext())
+                if (!it.hasNext()) {
                     return null;
+                }
                 root = /* (MMessage) */it.next();
             }
         }
@@ -3092,7 +3144,7 @@ public class ParserDisplay extends Parser {
     /**
      * Examines a collection to see if any message has the given message as an
      * activator.
-     * 
+     *
      * @param r
      *            MClassifierRole
      * @param m
@@ -3110,7 +3162,7 @@ public class ParserDisplay extends Parser {
 
     /**
      * Inserts message s as the p'th successor of message m.
-     * 
+     *
      * @param m
      *            MMessage
      * @param s
@@ -3118,10 +3170,11 @@ public class ParserDisplay extends Parser {
      */
     private void insertSuccessor(Object m, Object s, int p) {
         Vector v = new Vector(ModelFacade.getMessages3(m));
-        if (v.size() > p)
+        if (v.size() > p) {
             v.insertElementAt(s, p);
-        else
+        } else {
             v.add(s);
+        }
         ModelFacade.setMessages3(m, v);
     }
 
@@ -3135,8 +3188,9 @@ public class ParserDisplay extends Parser {
             it.next();
             steps--;
         }
-        if (it.hasNext())
+        if (it.hasNext()) {
             return /* (MMessage) */it.next();
+        }
         return null;
     }
 
@@ -3152,8 +3206,9 @@ public class ParserDisplay extends Parser {
         while (steps > 0) {
             Iterator it = ModelFacade.getMessages3(r).iterator();
             do {
-                if (!it.hasNext())
+                if (!it.hasNext()) {
                     return (strict ? null : r);
+                }
                 r = /* (MMessage) */it.next();
             } while (ModelFacade.getActivator(r) != act);
             steps--;
@@ -3166,26 +3221,35 @@ public class ParserDisplay extends Parser {
      * has the activator a (may be null) and has no predecessor with the same
      * activator. If veto isn't null, then the message in veto will not be
      * included in the Collection of candidates.
+     *
+     * @param c The collection.
+     * @param a The message.
+     * @param veto The veto message.
+     * @return The found roots.
      */
-    private Collection findCandidateRoots(Collection c, Object/* MMessage */a,
-            Object/* MMessage */veto) {
+    private Collection findCandidateRoots(Collection c, Object a,
+            Object veto) {
         Iterator it = c.iterator();
         Vector v = new Vector();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
-            if (m == veto)
+            if (m == veto) {
                 continue;
-            if (ModelFacade.getActivator(m) != a)
+            }
+            if (ModelFacade.getActivator(m) != a) {
                 continue;
+            }
             Iterator it2 = ModelFacade.getPredecessors(m).iterator();
             boolean candidate = true;
             while (it2.hasNext()) {
                 Object m2 = /* (MMessage) */it2.next();
-                if (ModelFacade.getActivator(m2) == a)
+                if (ModelFacade.getActivator(m2) == a) {
                     candidate = false;
+                }
             }
-            if (candidate)
+            if (candidate) {
                 v.add(m);
+            }
         }
         return v;
     }
@@ -3198,8 +3262,9 @@ public class ParserDisplay extends Parser {
         Vector v = new Vector();
         while (it.hasNext()) {
             Object m = /* (MMessage) */it.next();
-            if (ModelFacade.getActivator(m) == a)
+            if (ModelFacade.getActivator(m) == a) {
                 v.add(m);
+            }
         }
         return v;
     }
@@ -3213,10 +3278,12 @@ public class ParserDisplay extends Parser {
         Iterator it = c.iterator();
         while (it.hasNext()) {
             Object msg = /* (MMessage) */it.next();
-            String gname = GeneratorDisplay.getInstance()
-                    .generateMessageNumber(msg);
-            if (compareMsgNumbers(gname, n))
+            String gname =
+                GeneratorDisplay.getInstance()
+                	.generateMessageNumber(msg);
+            if (compareMsgNumbers(gname, n)) {
                 return msg;
+            }
         }
         return null;
     }
@@ -3247,16 +3314,18 @@ public class ParserDisplay extends Parser {
             ibv = 0;
             for (; i < len; i++) {
                 char c = n1.charAt(i);
-                if (c < '0' || c > '9')
+                if (c < '0' || c > '9') {
                     break;
+                }
                 ibv *= 10;
                 ibv += c - '0';
             }
             isv = 0;
             for (; i < len; i++) {
                 char c = n1.charAt(i);
-                if (c < 'a' || c > 'z')
+                if (c < 'a' || c > 'z') {
                     break;
+                }
                 isv *= 26;
                 isv += c - 'a';
             }
@@ -3264,8 +3333,9 @@ public class ParserDisplay extends Parser {
             jbv = 0;
             for (; j < jlen; j++) {
                 char c = n2.charAt(j);
-                if (c < '0' || c > '9')
+                if (c < '0' || c > '9') {
                     break;
+                }
                 jbv *= 10;
                 jbv += c - '0';
             }
@@ -3284,13 +3354,15 @@ public class ParserDisplay extends Parser {
 
             if (i < len && n1.charAt(i) != '.') {
                 return false;
-            } else
+            } else {
                 i++;
+            }
 
             if (j < jlen && n2.charAt(j) != '.') {
                 return false;
-            } else
+            } else {
                 j++;
+            }
         }
         return true;
     }
@@ -3309,8 +3381,9 @@ public class ParserDisplay extends Parser {
         Vector options = new Vector();
         Iterator it;
 
-        if (name == null || name.length() == 0)
+        if (name == null || name.length() == 0) {
             return options;
+        }
 
         it = c.iterator();
         while (it.hasNext()) {
@@ -3319,27 +3392,32 @@ public class ParserDisplay extends Parser {
             Iterator it2 = oe.iterator();
             while (it2.hasNext()) {
                 Object me = /* (MModelElement) */it2.next();
-                if (!(ModelFacade.isAOperation(me)))
+                if (!(ModelFacade.isAOperation(me))) {
                     continue;
+                }
 
                 Object op = /* (MOperation) */me;
-                if (!name.equals(ModelFacade.getName(op)))
+                if (!name.equals(ModelFacade.getName(op))) {
                     continue;
-                if (params != countParameters(op))
+                }
+                if (params != countParameters(op)) {
                     continue;
+                }
                 options.add(op);
             }
         }
-        if (options.size() > 0)
+        if (options.size() > 0) {
             return options;
+        }
 
         it = c.iterator();
         if (it.hasNext()) {
             String expr = name + "(";
             int i;
             for (i = 0; i < params; i++) {
-                if (i > 0)
+                if (i > 0) {
                     expr += ", ";
+                }
                 expr += "param" + (i + 1);
             }
             expr += ")";
@@ -3347,14 +3425,19 @@ public class ParserDisplay extends Parser {
             // parameters and operations to the figs that represent
             // them
             Object cls = /* (MClassifier) */it.next();
-            Collection propertyChangeListeners = ProjectManager.getManager()
-                .getCurrentProject().findFigsForMember(cls);
-            Object model = ProjectManager.getManager()
-                .getCurrentProject().getModel();
-            Object voidType = ProjectManager.getManager()
-                .getCurrentProject().findType("void");
-            Object op = Model.getUmlFactory().getCore()
-                .buildOperation(cls, model, voidType, propertyChangeListeners);
+            Collection propertyChangeListeners =
+                ProjectManager.getManager()
+                	.getCurrentProject().findFigsForMember(cls);
+            Object model =
+                ProjectManager.getManager()
+                	.getCurrentProject().getModel();
+            Object voidType =
+                ProjectManager.getManager()
+                	.getCurrentProject().findType("void");
+            Object op =
+                Model.getCoreFactory()
+                	.buildOperation(cls, model, voidType,
+                	        propertyChangeListeners);
 
             try {
                 parseOperation(expr, op);
@@ -3378,8 +3461,9 @@ public class ParserDisplay extends Parser {
 
         while (it.hasNext()) {
             Object p = it.next();
-            if (ModelFacade.isReturn(p))
+            if (ModelFacade.isReturn(p)) {
                 continue;
+            }
             count++;
         }
 
@@ -3396,8 +3480,9 @@ public class ParserDisplay extends Parser {
         t = s.length();
         for (i = 0; i < t; i++) {
             char c = s.charAt(i);
-            if (c < 'a' || c > 'z')
+            if (c < 'a' || c > 'z') {
                 throw new NumberFormatException();
+            }
             v *= 26;
             v += c - 'a';
         }
@@ -3414,15 +3499,16 @@ public class ParserDisplay extends Parser {
         t = s.length();
         for (i = 0; i < t; i++) {
             char c = s.charAt(i);
-            if (c < '0' || c > '9')
+            if (c < '0' || c > '9') {
                 break;
+            }
         }
         return i;
     }
 
     /**
-     * Parse a line of the form: "name: action"
-     * 
+     * Parse a line of the form: "name: action".
+     *
      * @param sti
      *            the stimulus object to which the string applies
      * @param s
@@ -3431,17 +3517,21 @@ public class ParserDisplay extends Parser {
     public void parseStimulus(Object sti, String s) {
         // strip any trailing semi-colons
         s = s.trim();
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
-        if (s.charAt(s.length() - 1) == ';')
+        }
+        if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
+        }
 
         //cut trailing string "new Action"
         s = s.trim();
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
-        if (s.endsWith("new Action"))
+        }
+        if (s.endsWith("new Action")) {
             s = s.substring(0, s.length() - 10);
+        }
 
         String name = "";
         String action = "";
@@ -3454,8 +3544,9 @@ public class ParserDisplay extends Parser {
                         .trim();
             } else
                 action = actionfirst;
-        } else
+        } else {
             name = s;
+        }
 
         Object act = ModelFacade.getDispatchAction(sti);
         ModelFacade.setName(act, action);
@@ -3463,10 +3554,12 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a textual representatation of an Object, i.e. a line of the form:
-     * <br>       "name: base-classes"
-     * <br> with "base-classes" a comma-seperated list of class names.
-     * 
+     * Parse a textual representatation of an Object,
+     * i.e. a line of the form:<ul>
+     * <li>       "name: base-classes"
+     * <li> with "base-classes" a comma-seperated list of class names.
+     * </ul>
+     *
      * @param obj
      *            the UML Object to be parsed.
      * @param s
@@ -3476,10 +3569,12 @@ public class ParserDisplay extends Parser {
         // strip any trailing semi-colons
         s = s.trim();
 
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
-        if (s.charAt(s.length() - 1) == ';')
+        }
+        if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
+        }
 
         String name = "";
         String bases = "";
@@ -3509,7 +3604,7 @@ public class ParserDisplay extends Parser {
 
     /**
      * Parse a line of the form: "name : base-node".
-     * 
+     *
      * @param noi
      *            the node instance on which the string applies.
      * @param s
@@ -3518,10 +3613,12 @@ public class ParserDisplay extends Parser {
     public void parseNodeInstance(Object noi, String s) {
         // strip any trailing semi-colons
         s = s.trim();
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
-        if (s.charAt(s.length() - 1) == ';')
+        }
+        if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
+        }
 
         String name = "";
         String bases = "";
@@ -3542,8 +3639,9 @@ public class ParserDisplay extends Parser {
             while (tokenizer.hasMoreElements()) {
                 String newBase = tokenizer.nextToken();
                 Object cls = ModelFacade.lookupIn(ns, newBase.trim());
-                if (cls != null)
+                if (cls != null) {
                     v.add(cls);
+                }
             }
         }
 
@@ -3553,8 +3651,8 @@ public class ParserDisplay extends Parser {
     }
 
     /**
-     * Parse a line of the form: "name : base-component"
-     * 
+     * Parse a line of the form: "name : base-component".
+     *
      * @param coi
      *            the component instance on which the string applies.
      * @param s
@@ -3563,10 +3661,12 @@ public class ParserDisplay extends Parser {
     public void parseComponentInstance(Object coi, String s) {
         // strip any trailing semi-colons
         s = s.trim();
-        if (s.length() == 0)
+        if (s.length() == 0) {
             return;
-        if (s.charAt(s.length() - 1) == ';')
+        }
+        if (s.charAt(s.length() - 1) == ';') {
             s = s.substring(0, s.length() - 2);
+        }
 
         String name = "";
         String bases = "";
@@ -3587,8 +3687,9 @@ public class ParserDisplay extends Parser {
             while (tokenizer.hasMoreElements()) {
                 String newBase = tokenizer.nextToken();
                 Object cls = ModelFacade.lookupIn(ns, newBase.trim());
-                if (cls != null)
+                if (cls != null) {
                     v.add(cls);
+                }
             }
         }
 
@@ -3599,16 +3700,16 @@ public class ParserDisplay extends Parser {
 
     /**
      * This builds a CallAction with default attributes. But without Operation!
-     * 
+     *
      * @author MVW
      * @param s
      *            string representing the Script of the Action
      */
     private Object buildNewCallAction(String s) {
-        Object a = Model.getUmlFactory().getCommonBehavior()
-                .createCallAction();
-        Object ae = Model.getUmlFactory().getDataTypes()
-                .createActionExpression("Java", s);
+        Object a =
+            Model.getCommonBehaviorFactory().createCallAction();
+        Object ae =
+            Model.getDataTypesFactory().createActionExpression("Java", s);
         ModelFacade.setScript(a, ae);
         ModelFacade.setName(a, "anon");
         return a;
@@ -3627,23 +3728,25 @@ public class ParserDisplay extends Parser {
         if (ae != null) {
             language = ModelFacade.getLanguage(ae);
             String body = (String) ModelFacade.getBody(ae);
-            if (body.equals(s)) return;
+            if (body.equals(s)) {
+                return;
+            }
         }
-        ae = Model.getUmlFactory().getDataTypes().createActionExpression(
-                language, s);
+        ae = Model.getDataTypesFactory().createActionExpression(language, s);
         ModelFacade.setScript(old, ae);
     }
 
     /**
-     * this deletes modelelements, and swallows null without barking
-     * 
+     * This deletes modelelements, and swallows null without barking.
+     *
      * @author MVW
      * @param obj
      *            the modelelement to be deleted
      */
     private void delete(Object obj) {
-        if (obj != null)
+        if (obj != null) {
             Model.getUmlFactory().delete(obj);
+        }
     }
 
     /**
@@ -3657,32 +3760,34 @@ public class ParserDisplay extends Parser {
         Object entry = ModelFacade.getEntry(actionState);
         String language = "";
         if (entry == null) {
-            entry = Model.getCommonBehaviorFactory()
-                .buildUninterpretedAction(actionState);
+            entry =
+                Model.getCommonBehaviorFactory()
+                	.buildUninterpretedAction(actionState);
         } else {
             language = ModelFacade.getLanguage(ModelFacade.getScript(entry));
         }
-        Object actionExpression = Model.getDataTypesFactory()
-            .createActionExpression(language, s);
+        Object actionExpression =
+            Model.getDataTypesFactory().createActionExpression(language, s);
         ModelFacade.setScript(entry, actionExpression);
        return actionState;
     }
-    
+
     /**
      * An objectFlowState is represented on a diagram by 2 strings:
      * 1. Classifier name
      * 2. State name
      * This function solely handles 1.
-     * 
+     *
      * @param s the string to be parsed
      * @param objectFlowState the input object
-     * @throws ParseException when the input should be rejected 
+     * @throws ParseException when the input should be rejected
      *         (i.e. when the classifier does not exist)
      */
     public void parseObjectFlowState1(String s, Object objectFlowState)
         throws ParseException {
-        
-        Object c = Model.getActivityGraphsHelper()
+
+        Object c =
+            Model.getActivityGraphsHelper()
                     .findClassifierByName(objectFlowState, s);
         if (c != null) {
             ModelFacade.setType(objectFlowState, c);
@@ -3690,28 +3795,28 @@ public class ParserDisplay extends Parser {
             throw new ParseException("Classifier not found", 0);
         }
     }
-    
+
     /**
      * An objectFlowState is represented on a diagram by 2 strings:
      * 1. Classifier name
      * 2. State name
      * This function solely handles 2.
-     * 
+     *
      * @param s the string to be parsed
      * @param objectFlowState the input object
-     * @throws ParseException when the input should be rejected 
+     * @throws ParseException when the input should be rejected
      *         (i.e. when the classifier or the state do not exist)
      */
-    public void parseObjectFlowState2(String s, Object objectFlowState) 
+    public void parseObjectFlowState2(String s, Object objectFlowState)
         throws ParseException {
-        
+
         Object c = ModelFacade.getType(objectFlowState); // get the classifier
         if (c != null) {
             if (ModelFacade.isAClassifierInState(c)) {
                 if ((s == "") || (s == null)) {
-                    // the State of a ClassifierInState is removed, 
+                    // the State of a ClassifierInState is removed,
                     // so let's reduce it to a Classifier.
-                    ModelFacade.setType(objectFlowState, 
+                    ModelFacade.setType(objectFlowState,
                             ModelFacade.getType(c));
                     Model.getUmlFactory().delete(c);
                     return; // the model is changed - our job is done
@@ -3727,32 +3832,32 @@ public class ParserDisplay extends Parser {
                 }
                 /* Now we have to see if any state in any statemachine of c is
                 named s. If so, then we only have to link the state to c. */
-                Object state = 
+                Object state =
                     Model.getActivityGraphsHelper().findStateByName(c, s);
                 if (state != null) {
-                    ModelFacade.addInState(c, state); 
+                    ModelFacade.addInState(c, state);
                     // the model is changed - our job is done
                 } else {
-                    // no state named s is found, so we have to 
+                    // no state named s is found, so we have to
                     // reject the user's input
                     throw new ParseException("State not found", 0);
                 }
             } else { // then c is a "normal" Classifier
                 // let's create a new ClassifierInState with the correct links
-                Object state = 
+                Object state =
                     Model.getActivityGraphsHelper().findStateByName(c, s);
                 if (state != null) {
                     Model.getActivityGraphsFactory()
                                     .buildClassifierInState(c, state);
                     // the model is changed - our job is done
                 } else {
-                    // no state named s is found, so we have to 
+                    // no state named s is found, so we have to
                     // reject the user's input
                     throw new ParseException("State not found", 0);
                 }
             }
         } else {
-            // if no classifier has been set, then entering a state is 
+            // if no classifier has been set, then entering a state is
             // not useful, so the user's input has to be rejected.
             throw new ParseException("Classifier not found", 0);
         }

@@ -25,9 +25,9 @@
 package org.argouml.model.uml;
 
 import org.argouml.model.ActivityGraphsFactory;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.activity_graphs.MActionState;
 import ru.novosoft.uml.behavior.activity_graphs.MActivityGraph;
 import ru.novosoft.uml.behavior.activity_graphs.MCallState;
 import ru.novosoft.uml.behavior.activity_graphs.MClassifierInState;
@@ -156,9 +156,13 @@ public class ActivityGraphsFactoryImpl
      * Builds an activity graph owned by the given context.<p>
      *
      * @param theContext is a ModelElement that will own the graph.
-     * @return the new MActivityGraph as Object
+     * @return the new ActivityGraph as Object
      */
     public Object buildActivityGraph(Object theContext) {
+        if (!(theContext instanceof MModelElement)) {
+            throw new IllegalArgumentException();
+        }
+
         MModelElement context = (MModelElement) theContext;
     	if (context != null
 	    && (context instanceof MBehavioralFeature
@@ -192,67 +196,109 @@ public class ActivityGraphsFactoryImpl
      * @return Object the newly build objectflow state
      */
     public Object buildObjectFlowState(Object compositeState) {
-        if (compositeState instanceof MCompositeState) {
-            Object state = createObjectFlowState();
-            ((MObjectFlowState) state).setContainer(
-                    (MCompositeState) compositeState);
-            return state;
+        if (!(compositeState instanceof MCompositeState)) {
+            throw new IllegalArgumentException();
         }
-        return null;
+
+        MObjectFlowState state = (MObjectFlowState) createObjectFlowState();
+        state.setContainer((MCompositeState) compositeState);
+        return state;
     }
 
     /**
      * Builds a ClassifierInState. Links it to the 2 required objects:
      * the classifier that forms the type of this classifierInState,
      * and the state.
+     *
      * @param classifier the classifier (type)
      * @param state the state (inState)
-     * @return the newly build classifierInState
+     * @return the newly build ClassifierInState
      */
     public Object buildClassifierInState(Object classifier, Object state) {
-        if (classifier instanceof MClassifier && state instanceof MState) {
-            Object c = createClassifierInState();
-            ModelFacade.setType(c, classifier);
-            ModelFacade.addInState(c, state);
+        if (!(classifier instanceof MClassifier)) {
+            throw new IllegalArgumentException();
         }
-        return null;
+        if (!(state instanceof MState)) {
+            throw new IllegalArgumentException();
+        }
+
+        MClassifierInState c =
+            (MClassifierInState) createClassifierInState();
+        c.setType((MClassifier) classifier);
+        c.addInState((MState) state);
+        return c;
     }
 
 
     /**
      * @param elem the ActionState to be deleted
      */
-    public void deleteActionState(Object elem) { }
+    public void deleteActionState(Object elem) {
+        if (!(elem instanceof MActionState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the ActivityGraph to be deleted
      */
-    public void deleteActivityGraph(Object elem) { }
+    public void deleteActivityGraph(Object elem) {
+        if (!(elem instanceof MActivityGraph)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the CallState to be deleted
      */
-    public void deleteCallState(Object elem) { }
+    public void deleteCallState(Object elem) {
+        if (!(elem instanceof MCallState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the ClassifierInState to be deleted
      */
-    public void deleteClassifierInState(Object elem) { }
+    public void deleteClassifierInState(Object elem) {
+        if (!(elem instanceof MClassifierInState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem ObjectFlowState
      */
-    public void deleteObjectFlowState(Object elem) { }
+    public void deleteObjectFlowState(Object elem) {
+        if (!(elem instanceof MObjectFlowState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem Partition
      */
-    public void deletePartition(Object elem) { }
+    public void deletePartition(Object elem) {
+        if (!(elem instanceof MPartition)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem SubactivityState
      */
-    public void deleteSubactivityState(Object elem) { }
+    public void deleteSubactivityState(Object elem) {
+        if (!(elem instanceof MSubactivityState)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
 }
 
