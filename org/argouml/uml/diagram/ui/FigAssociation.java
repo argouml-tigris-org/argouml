@@ -222,8 +222,8 @@ public class FigAssociation extends FigEdgeModelElement {
     FigNode oldDest = (FigNode)getDestFigNode();
     FigNode oldSource = (FigNode)getSourceFigNode();
     
-    FigNode dest = (FigNode)getLayer().presentationFor(ae0.getType());
-    FigNode src = (FigNode)getLayer().presentationFor(ae1.getType());
+    FigNode dest = (FigNode)getLayer().presentationFor(ae1.getType());
+    FigNode src = (FigNode)getLayer().presentationFor(ae0.getType());
     boolean dontSetFigs = false;
     if (oldDest != null && oldDest.equals(dest)) {
         if (oldSource != null && oldSource.equals(src)) {
@@ -232,9 +232,6 @@ public class FigAssociation extends FigEdgeModelElement {
     } else {
         if (oldDest != null && oldDest.equals(src)) {
             if (oldSource != null && oldSource.equals(dest)) {
-                FigNode tempDest = dest;
-                dest = src;
-                src = tempDest;
                 dontSetFigs = true;
             } else {
                 FigNode tempSrc = src;
@@ -246,30 +243,24 @@ public class FigAssociation extends FigEdgeModelElement {
     
     if (!dontSetFigs) {
         if (dest != null) {
-            setDestFigNode((FigNode)getLayer().presentationFor(ae0.getType()));
-            setDestPortFig(getLayer().presentationFor(ae0.getType()));
+            setDestFigNode((FigNode)getLayer().presentationFor(ae1.getType()));
+            setDestPortFig(getLayer().presentationFor(ae1.getType()));
         }
         if (src != null) {
-            setSourceFigNode((FigNode)getLayer().presentationFor(ae1.getType())); 
-            setSourcePortFig(getLayer().presentationFor(ae1.getType()));  
+            setSourceFigNode((FigNode)getLayer().presentationFor(ae0.getType())); 
+            setSourcePortFig(getLayer().presentationFor(ae0.getType()));  
+        }
+        computeRoute();
+        calcBounds();
+        Iterator editors = getLayer().getEditors().iterator();
+        while (editors.hasNext()) {
+            ((Editor)editors.next()).damageAll(); 
         }
     }
     MMultiplicity mult0 = ae0.getMultiplicity();
     MMultiplicity mult1 = ae1.getMultiplicity();
     _srcMult.setText(Notation.generate(this, mult0));
-    // 2002-07-22
-    // Jaap Branderhorst
-    // changed next line to show 1..1 multiplicity. Old code
-    // if ((mult0 == null) || (MMultiplicity.M1_1).equals(mult0)) _srcMult.setText("");
-    // new code
-    // if (mult0 == null) _srcMult.setText("");
     _destMult.setText(Notation.generate(this, mult1));
-   // 2002-07-22
-    // Jaap Branderhorst
-    // changed next line to show 1..1 multiplicity. Old code
-    // if ((mult1 == null) || (MMultiplicity.M1_1).equals(mult1)) _srcMult.setText("");
-    // new code
-    // if (mult1 == null) _srcMult.setText("");
 
     _srcRole.setText(Notation.generate(this, ae0.getName()));
     _destRole.setText(Notation.generate(this, ae1.getName()));
@@ -309,10 +300,15 @@ public class FigAssociation extends FigEdgeModelElement {
     _srcGroup.calcBounds();
     _destGroup.calcBounds();
     _middleGroup.calcBounds();
-    //Object oldOwner = ProjectBrowser.TheInstance.getTarget();
     /*
-    ProjectBrowser.TheInstance.setTarget(getOwner());
-    ProjectBrowser.TheInstance.setTarget(oldOwner);
+    if (!dontSetFigs) {
+        computeRoute();
+        calcBounds();
+        Iterator editors = getLayer().getEditors().iterator();
+        while (editors.hasNext()) {
+            ((Editor)editors.next()).damageAll(); 
+        }
+    }
     */
     
   }
