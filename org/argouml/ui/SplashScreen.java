@@ -32,6 +32,7 @@ import java.util.Vector;
 import javax.swing.JPanel;
 import javax.swing.JWindow;
 import javax.swing.border.EtchedBorder;
+import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.ui.IStatusBar;
 
 // import org.tigris.gef.util.*;
@@ -43,7 +44,16 @@ public class SplashScreen extends JWindow
 
     protected StatusBar _statusBar = new StatusBar();
 
+    static private SplashScreen INSTANCE = new SplashScreen("Loading ArgoUML...", "Splash");
 
+    static public SplashScreen getInstance() {
+        return INSTANCE;
+    }
+    
+    /**
+     * Deprecated 0.15 will become private in release 0.16.
+     * Use SplashScreen.getInstance() instead
+     */
     public SplashScreen(String title, String iconName) {
 	super();
 

@@ -265,7 +265,7 @@ public class Main {
 	}
 
         if (doSplash) {
-            SplashScreen splash = pb.getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             if (urlToOpen == null)
                 splash.getStatusBar().showStatus("Making Default Project");
             else
@@ -301,7 +301,7 @@ public class Main {
             pb.setTitle("Untitled");
 
         if (doSplash) {
-            SplashScreen splash = pb.getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             splash.getStatusBar().showStatus("Loading modules");
             splash.getStatusBar().showProgress(75);
         }
@@ -313,7 +313,7 @@ public class Main {
         st.mark("open window");
 
         if (doSplash) {
-            SplashScreen splash = pb.getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             splash.getStatusBar().showStatus("Opening Project Browser");
             splash.getStatusBar().showProgress(95);
         }
@@ -325,7 +325,7 @@ public class Main {
             
         st.mark("close splash");
         if (doSplash) {
-            SplashScreen splash = pb.getSplashScreen();
+            SplashScreen splash = SplashScreen.getInstance();
             splash.setVisible(false);
             splash.dispose();
             splash = null;
