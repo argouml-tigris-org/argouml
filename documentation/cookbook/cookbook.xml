@@ -304,7 +304,7 @@ Information on how you should add modules and Plug-ins to ArgoUML.
 </para>
 	<para>
 Information that you, as a developer of ArgoUML,
-need to know about how the project is organised and
+need to know about how the project is organized and
 how to contribute.
 </para>
 
@@ -5390,7 +5390,7 @@ simply benefit from the gettext communities since we don't use
 gettext and cannot use the same tools.
 </para>
 	<para>
-To get things done, we organise our own Language Teams with ArgoUML.
+To get things done, we organize our own Language Teams with ArgoUML.
 Each language teams are actually just one or several persons that
 know that language and is eager to work with translating ArgoUML.
 </para>
@@ -5913,7 +5913,7 @@ Beware that there might be more than one Fig Element per
 &cookbookmodules;
 
     <sect1>
-      <title>How are modules organised in in the java code</title>
+      <title>How are modules organized in in the java code</title>
     <para>
 This section is not yet updated to discuss layers.
 </para>
@@ -5928,7 +5928,7 @@ different reasons developed and kept separate from the main
 ArgoUML source code.
 These parts can be modules or plugins on the java level but
 on the source code level they are called modules.
-This section describes how they are organised and how you 
+This section describes how they are organized and how you 
 create such source-code modules.
 </para>
 
@@ -6039,12 +6039,12 @@ as the package root.
 This chapter describes what parts of the CVS repository is used for
 what purpose.
 This is a rather terse collection.
-Further details on specific part can sometimes be found elsewhere in
+Further details on specific parts can sometimes be found elsewhere in
 this document.
 </para>
     <para>
-This chapter is organised as the CVS repository itself and 
-everything is in alfabetical order.
+This chapter is organized as the CVS repository itself and
+everything is in alphabetical order.
 </para>
     <para>
 <itemizedlist>
@@ -6111,12 +6111,12 @@ by the ArgoUML
 These are distributed with argouml and have licenses that allow this.
 For clarity the README files and licenses and other distribution
 details of each used jar will also be stored in this directory.
-(Quick summary: BSD License, Apache License are LGPL are OK, GPL is not.)
+(Quick summary: BSD License, Apache License, LGPL are OK, GPL is not.)
 Don't forget to arrange for the modules version and license information
 to appear when starting ArgoUML and in the About box.
 </para>
           <para>
-Take care also to make version of these librairies explicit,
+Take care also to make the versions of these libraries explicit,
 so as to allow people building from sources to figure out
 exact dependencies. Easiest way is to rename the files to
 include versioning informations, the same way as shared
@@ -6131,7 +6131,7 @@ etc...
 Source level modules are modules that can be compiled and deployed
 independantly (after) the rest of ArgoUML.
 Each module is located in its own subdirectory.
-This is the list as it looks now (beginning of March 2002).
+This is the list as it looks now (March 2003).
 </para>
 	  <para>
 <itemizedlist>
@@ -6144,9 +6144,14 @@ Module that allows to extend ArgoUML using scheme.
 	      <listitem>
 		<para><filename class="directory">junit</filename></para>
 		<para>
-Module that is used during the development and contains all
+Module that is used during the development and contains 
 junit test cases as well as the junit infrastructure needed to run
 these tests.
+</para>
+		<para>
+These tests are the ones that needs the GUI to run. 
+The JUnit tests that can run without the GUI are located in 
+the directory <filename class="directory">tests</filename>.
 </para>
 	      </listitem>
 	      <listitem>
@@ -6159,6 +6164,18 @@ Test module that tests the plugin interface for the menus.
 		<para><filename class="directory">php</filename></para>
 		<para>
 Language generating, Notation and reverse engineering for PHP.
+</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">cpp</filename></para>
+		<para>
+Code generation for C++.
+</para>
+	      </listitem>
+	      <listitem>
+		<para><filename class="directory">csharp</filename></para>
+		<para>
+Code generation for C#.
 </para>
 	      </listitem>
 	    </itemizedlist>
@@ -6210,7 +6227,7 @@ allow distribution.
 	<listitem>
 	  <para><filename class="directory">www</filename></para>
 	  <para>
-This is all the static contents of the web site. 
+This is all the static contents of the web site.
 See <xref linkend="how_the_web_site_works"/>.
 </para>
 	</listitem>
@@ -6236,9 +6253,9 @@ part of the documentation. These ideas are formulated by Linus Tolke.
     </chapterinfo>
     <title>Organisation of ArgoUML documentation</title>
     <para>
-There are seven significantly different bits of documentation in the 
+There are seven significantly different bits of documentation in the
 ArgoUML project.
-By documentation I mean some information of the product that is 
+By documentation I mean some information of the product that is
 developed alongside the product and that has a persistant value.
 </para>
     <orderedlist>
@@ -6265,7 +6282,7 @@ developed alongside the product and that has a persistant value.
       </listitem>
     </orderedlist>
     <para>
-These different bits have all different purpose and audience and 
+These different bits have all different purpose and audience and
 the purpose of this chapter is to try to define that.
 </para>
     <table>
@@ -6329,7 +6346,7 @@ to use them.
 
 	    <!-- Contains -->
 	    <entry>
-Description of the functions of all classes, 
+Description of the functions of all classes,
 all public and protected methods, variables, and constants.
 </entry>
 	  </row>
@@ -6357,8 +6374,8 @@ certain decisions.
 	    <!-- Contains -->
 	    <entry>
 Instructions on how to add new functions and behaviour.
-Instructions on how to do the chores around maintenance 
-(build a release, publish a release, 
+Instructions on how to do the chores around maintenance
+(build a release, publish a release,
 build the documentation part of the release,
 test ArgoUML, test the documentation, ...).
 Agreed project rules like what level of quality is aimed for and
@@ -6391,7 +6408,7 @@ References to all the other parts of the documentation.
 Current project information like the contents of the upcoming releases
 and the plan for the nearest future.
 Easy access illustration for users to be.
-Some illustrations that does not work well in the other 
+Some illustrations that do not work well in the other 
 parts of the documentation. 
 This is done as a complement to the other parts. 
 Examples, tours.
@@ -6506,7 +6523,7 @@ This goes for all changes, even changes in comments.
 
 	  <listitem>
 	    <para>
-If you changes include removing files make a clean compile.
+If your changes include removing files make a clean compile.
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
 </para>
@@ -6514,7 +6531,7 @@ If you changes include removing files make a clean compile.
 
 	  <listitem>
 	    <para>
-If you changes include removing public or protected operations and
+If your changes include removing public or protected operations and
 attributes make a clean compile
 (<command>build clean</command> followed by
 <command>build run</command> or <command>build package</command>).
@@ -6553,7 +6570,7 @@ If in doubt, run all JUnit test cases.
 	  <listitem>
 	    <para>
 Do a <command>cvs update</command> in src_new to make sure that 
-you do not forget to commit any file and to make sure that noone 
+you do not forget to commit any file and to make sure that no one 
 else has commited anything in the mean time.
 </para>
 	    <para>
@@ -6801,7 +6818,7 @@ Move the checked out copy that you are working on to the main branch:
 		</listitem>
 		<listitem>
 		  <para>
-Merge the changes from the branch into you checked out copy:
+Merge the changes from the branch into your checked out copy:
 <command>cvs update -j <replaceable>work_xxxyyy_myname</replaceable></command>
 		  </para>
 		</listitem>
@@ -6810,7 +6827,7 @@ Merge the changes from the branch into you checked out copy:
 Compile and run all your tests again.
 		  </para>
 		  <para>
-This is to verify that the merge was all right, noone else had done any changes
+This is to verify that the merge was all right, no one else had done any changes
 that in the meantime that has in any way modified the work made in the branch.
 		  </para>
 		</listitem>
@@ -6855,7 +6872,7 @@ Update your copy of argouml to be on that branch:
 		    </para>
 		    <para>
 Make sure that your copy does not have any uncommited code or else your
-your uncommited code will be present in your checked out copy on the branch.
+uncommited code will be present in your checked out copy on the branch.
 This could, on the other hand, be useful if you want to test if your uncommited
 code works also with the additions on that branch.
 		    </para>
@@ -6911,7 +6928,7 @@ Mac uses CR.
 </para>
 	  <para>
 Most of the time this really doesn't matter because the editors and
-java compiler on all systems is very forgiving.
+java compiler on all systems are very forgiving.
 </para>
 	  <para>
 There are however some cases when this is cumbersome.
@@ -6943,7 +6960,7 @@ each check in so that your editor has not done this for you.
 	      <para>When cvs clients and file systems are not in sync</para>
 	      <para>
 This could result in one of several things. 
-Either each line get an extra empty line when commited,
+Either each line gets an extra empty line when commited,
 or the whole file turns out to be on the same line.
 </para>
 	      <para>
@@ -6958,7 +6975,7 @@ can in some cases be done without cvs having problems with
 merging later on.
 For the second case, with a single long line, this will be very
 problematic so even though it might cause problems for other
-developers it is better do this as soon as possible.
+developers it is better to do this as soon as possible.
 </para>
 	      <para>
 When this is fixed, let the fix be the only thing done in that commit.
@@ -7347,7 +7364,7 @@ noticing that this problem was fixed.
 	<secondary>Resolving</secondary>
       </indexterm>
       <para>
-This can be performed by persons that has the Developer role 
+This can be performed by persons that have the Developer role 
 in the project.
 Persons without the Developer role can do most of the work but they
 need a person with the the role to actually commit the work.
@@ -7371,7 +7388,7 @@ needs to be solved.
 	  <para>
 Look at your personal schedule and how much time you have during the
 next couple of weeks and compare that to the amount of time you think
-you will need to spend, solving the issue.
+you will need to spend for solving the issue.
 Compare this to the release plan to see what release your contribution
 will fit in.
 </para>
@@ -7692,7 +7709,7 @@ with.
       <para>
 ArgoUML uses some product internally and is to some respect very 
 dependant on the well functioning of these products.
-This is products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
+This are products like GEF, NS-UML, ocl, log4j, xerces, jre, ...
 </para>
       <para>
 Occasionally a bug found in ArgoUML is found to be a problem in one
@@ -7814,7 +7831,8 @@ join or move each section into the
       </sect2>
       <sect2>
 	<title>Linux</title> 
-  <para>There's a number of screen shots apps under Linux though they escape me now!</para> 
+  <para>There's a number of screen shots apps under Linux.
+  In KDE you kan use <comand>ksnapshot</command>. In Gnome you can use <command>Take a Screenshot</command> from the "Action" menu.</para>
       </sect2>
     </sect1>
     <sect1>
