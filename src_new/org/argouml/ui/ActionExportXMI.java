@@ -26,33 +26,23 @@ package org.argouml.ui;
 
 import java.awt.event.ActionEvent;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.text.MessageFormat;
 import java.util.Vector;
 
 import javax.swing.JFileChooser;
 import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.Project;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.ProjectMember;
-import org.argouml.persistence.MemberFilePersister;
-import org.argouml.persistence.ModelMemberFilePersister;
-import org.argouml.uml.ProjectMemberModel;
-import org.argouml.uml.ui.UMLAction;
+import org.argouml.uml.ui.ActionFileOperations;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
  * @author jaap.branderhorst@xs4all.nl
  * Jun 7, 2003
  */
-public final class ActionExportXMI extends UMLAction implements PluggableMenu {
+public final class ActionExportXMI extends ActionFileOperations implements PluggableMenu {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionExportXMI.class);
@@ -63,7 +53,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
      * Constructor.
      */
     private ActionExportXMI() {
-        super("action.export-project-as-xmi", NO_ICON);
+        super("action.export-project-as-xmi");
     }
 
     /**
@@ -207,40 +197,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 
         int result = chooser.showSaveDialog(ProjectBrowser.getInstance());
         if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = chooser.getSelectedFile();
-
-            Project currentProject =
-                ProjectManager.getManager().getCurrentProject();
-            ProjectMember member =
-                currentProject.getMembers().getMember(ProjectMemberModel.class);
-
-            try {
-                Writer writer = new FileWriter(selectedFile);
-                MemberFilePersister persister
-                    = new ModelMemberFilePersister();
-                persister.save(member, writer, null);
-            } catch (Exception ex) {
-                String sMessage =
-                    MessageFormat.format(Translator.localize(
-                    	"optionpane.save-project-general-exception"),
-                    	new Object[] {
-                            ex.getMessage(),
-                    	});
-
-                String sTitle =
-                    Translator.localize(
-                	"optionpane."
-                	+ "save-project-general-exception-title"
-                    );
-
-                JOptionPane.showMessageDialog(
-                    ProjectBrowser.getInstance(),
-                    sMessage,
-                    sTitle,
-                    JOptionPane.ERROR_MESSAGE);
-
-                LOG.error(sMessage, ex);
-            }
+            loadProject(chooser.getSelectedFile(), true);
         }
     }
 }
