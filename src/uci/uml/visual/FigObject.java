@@ -1,3 +1,33 @@
+// Copyright (c) 1996-99 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+// File: FigObject.java
+// Classes: FigObject
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
 
 package uci.uml.visual;
 
@@ -18,7 +48,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.model_management.*;
 
-/** Class to display graphics for a UML collaboration in a diagram. */
+/** Class to display graphics for a UML Object in a diagram. */
 
 public class FigObject extends FigNodeModelElement {
 
@@ -30,6 +60,7 @@ public class FigObject extends FigNodeModelElement {
 
   FigRect _bigPort;
   FigRect _cover;
+  public MElementResidence resident = new MElementResidenceImpl();
 
   // add other Figs here aes needed
 
@@ -117,7 +148,7 @@ public class FigObject extends FigNodeModelElement {
 
     _bigPort.setBounds(x, y, w, h);
     _cover.setBounds(x, y, w, h);
-    _name.setBounds(x, y, nameMin.width+10, nameMin.height);
+    _name.setBounds(x, y, nameMin.width+10, nameMin.height+4);
 
     //_bigPort.setBounds(x+1, y+1, w-2, h-2);
     _x = x; _y = y; _w = w; _h = h;
@@ -129,15 +160,43 @@ public class FigObject extends FigNodeModelElement {
 
   
   ////////////////////////////////////////////////////////////////
-  // event handlers
+  // user interaction methods
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
     super.textEdited(ft);
-//    MMObject cls = (MMObject) getOwner();
-//    if (ft == _name) {
-//       String s = ft.getText();
-//      ParserDisplay.SINGLETON.parseMMObject(cls, s);
-//    }
+    MObject obj = (MObject) getOwner();
+    if (ft == _name) {
+      String s = ft.getText().trim();
+      if (s.length()>0 && (s.endsWith(":"))) {
+        s = s.substring(0, (s.length() - 1));
+      }
+      ParserDisplay.SINGLETON.parseObject(obj, s);
+    }
+  }
+
+  protected void modelChanged() {
+    super.modelChanged();
+    MObject obj = (MObject) getOwner();
+    if (obj == null) return;
+    String nameStr = "";
+    if (obj.getName() != null) {
+      nameStr = obj.getName().trim();
+    }
+    Collection col = obj.getClassifiers();
+    Iterator it = col.iterator();
+    String baseStr = "";
+    while (it.hasNext()) {
+        baseStr = ((MClassifier)it.next()).getName();
+    }
+    if (_readyToEdit) {
+      if( nameStr == "" && baseStr == "")
+	_name.setText("");
+      else
+	_name.setText(nameStr.trim() + " : " + baseStr);
+    }
+    Dimension nameMin = _name.getMinimumSize();
+    Rectangle r = getBounds();
+    setBounds(r.x, r.y, nameMin.width+10, nameMin.height+4);
   }
 
   public void setEnclosingFig(Fig encloser) {
@@ -145,46 +204,33 @@ public class FigObject extends FigNodeModelElement {
     if (!(getOwner() instanceof MModelElement)) return;
     if (getOwner() instanceof MObjectImpl) {
       MObject me = (MObject) getOwner();
-      MComponentInstance mcomp = null;
+      MComponentInstance mcompInst = null;
+      MComponent mcomp = null;
 
       if (encloser != null && (encloser.getOwner() instanceof MComponentInstanceImpl)) {
-        mcomp = (MComponentInstance) encloser.getOwner();
+        mcompInst = (MComponentInstance) encloser.getOwner();
+        me.setComponentInstance(mcompInst);
       }
-      try {
-        if(mcomp != null) {
-          me.setComponentInstance(mcomp);
-        }
-        else {
-          if (me.getComponentInstance() != null) {
-            me.setComponentInstance(null);
-          }
+      else {
+        if (me.getComponentInstance() != null) {
+          me.setComponentInstance(null);
         }
       }
-      catch (Exception e) {
-        System.out.println("could not set package");
+      if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+        mcomp = (MComponent) encloser.getOwner();
+        MObject obj = (MObject) getOwner();
+        resident.setImplementationLocation(mcomp);
+        resident.setResident(obj);
+      }
+      else {
+        if (resident.getImplementationLocation() != null) {
+          resident.setImplementationLocation(null);
+          resident.setResident(null);
+        }
       }
     }
   }
 
-  protected void modelChanged() {
-    super.modelChanged();
-//    MMObject cr = (MMObject) getOwner();
-//    if (cr == null) return;
-//    String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
-//    String baseString = cr.getBaseString().trim();
-//    if (_readyToEdit) {
-//      if( nameStr == "" && baseString == "")
-//	_name.setText("");
-//      else
-//	_name.setText(nameStr.trim() + " : " + baseString);
-//    }
-  }
-
-//  public void keyPressed(KeyEvent ke) {}
-
-
-
-
   static final long serialVersionUID = -185736690375678962L;
 
-} /* end class FigMMObject */
+} /* end class FigObject */

@@ -37,6 +37,9 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.model_management.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
+import uci.uml.visual.*;
+import uci.gef.*;
+import uci.graph.*;
 import uci.uml.util.MMUtil;
 
 public class ParserDisplay extends Parser {
@@ -187,7 +190,8 @@ public class ParserDisplay extends Parser {
 	//System.out.println("setting return type: " + rtStr);
 	MParameter param = new MParameterImpl();
 	param.setType(rt);
-	MMUtil.SINGLETON.setReturnParameter(op, param);
+	op.setReturnParameter(param);
+    if ((op.getReturnParameter()).getType() != rt) System.out.println("rt not set");
     return s.substring(firstSpace+1);
   }
 
@@ -473,5 +477,211 @@ public class ParserDisplay extends Parser {
     return se;
   }
 
+  /** Parse a line of the form: "name: base-class" */
+  public void parseObject(MObject obj, String s) {
+    // strip any trailing semi-colons
+    s = s.trim();
+    if (s.length() == 0) return;
+    if (s.charAt(s.length()-1) == ';')
+      s = s.substring(0, s.length() - 2);
+
+    String name = "";
+    String basefirst = "";
+    String base = "";
+    if (s.indexOf(":", 0) > -1) {
+      name = s.substring(0, s.indexOf(":")).trim();
+      basefirst = s.substring(s.indexOf(":") + 1).trim();
+      if (basefirst.indexOf(":", 0) > 1) {
+        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
+      }
+      else base = basefirst;
+    }
+    else {
+      name = s;
+    }
+
+    Collection col = obj.getClassifiers();
+    if ((col != null) && (col.size()>0)) { 
+      Iterator itcol = col.iterator(); 
+      while (itcol.hasNext()) { 
+        MClassifier cls = (MClassifier) itcol.next(); 
+        obj.removeClassifier(cls); 
+      } 
+    } 
+
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    Vector v = new Vector();
+    MClass classifier = new MClassImpl();
+    GraphModel model = null;
+    int size = diagrams.size();
+    for (int i=0; i<size; i++) {
+      Object o = diagrams.elementAt(i);
+      if (!(o instanceof Diagram)) continue;
+      if (o instanceof MModel) continue;
+      Diagram d = (Diagram) o;
+      model = d.getGraphModel(); 
+      if (!(model instanceof ClassDiagramGraphModel || model instanceof DeploymentDiagramGraphModel)) continue;
+       
+      Vector nodes = model.getNodes();
+      int si = nodes.size();
+      for (int j=0; j<si; j++) {
+        MModelElement node = (MModelElement) nodes.elementAt(j);
+        if (node != null && (node instanceof MClassImpl)) {
+          MClass mclass = (MClass) node;
+          if (mclass.getNamespace() != obj.getNamespace()) continue;
+          String class_name = mclass.getName();
+          if (class_name != null && (class_name.equals(base))) {
+            v.addElement(mclass);
+            obj.setClassifiers(v);
+            obj.setName(new String(name)); 
+            return; 
+          }      
+        }
+      }
+    }
+    classifier.setName(base);
+    
+    v.addElement(classifier);
+    obj.setClassifiers(v);
+    obj.setName(new String(name));
+
+  }
+
+  /** Parse a line of the form: "name : base-node" */ 
+  public void parseNodeInstance(MNodeInstance noi, String s) { 
+    // strip any trailing semi-colons 
+    s = s.trim(); 
+    if (s.length() == 0) return; 
+    if (s.charAt(s.length()-1) == ';') 
+      s = s.substring(0, s.length() - 2); 
+ 
+
+    String name = ""; 
+    String basefirst = "";
+    String base = ""; 
+    if (s.indexOf(":", 0) > -1) { 
+      name = s.substring(0, s.indexOf(":")).trim(); 
+      basefirst = s.substring(s.indexOf(":") + 1).trim();
+      if (basefirst.indexOf(":", 0) > 1) {
+        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
+      }
+      else base = basefirst;
+    } 
+    else { 
+      name = s; 
+    } 
+ 
+    Collection col = noi.getClassifiers(); 
+    if ((col != null) && (col.size()>0)) {  
+      Iterator itcol = col.iterator();  
+      while (itcol.hasNext()) {  
+        MClassifier cls = (MClassifier) itcol.next();  
+        noi.removeClassifier(cls);  
+      }  
+    }  
+ 
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
+    Vector v = new Vector(); 
+    MNode no = new MNodeImpl(); 
+    GraphModel model = null; 
+    int size = diagrams.size(); 
+    for (int i=0; i<size; i++) { 
+      Object o = diagrams.elementAt(i); 
+      if (!(o instanceof Diagram)) continue; 
+      if (o instanceof MModel) continue; 
+      Diagram d = (Diagram) o; 
+      model = d.getGraphModel();  
+      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
+        
+      Vector nodes = model.getNodes(); 
+      int si = nodes.size(); 
+      for (int j=0; j<si; j++) { 
+        MModelElement node = (MModelElement) nodes.elementAt(j); 
+        if (node != null && (node instanceof MNodeImpl)) { 
+          MNode mnode = (MNode) node; 
+          if (mnode.getNamespace() != noi.getNamespace()) continue;
+          String node_name = mnode.getName(); 
+          if (node_name != null && (node_name.equals(base))) { 
+            v.addElement(mnode); 
+            noi.setClassifiers(v); 
+            return;  
+          }       
+        } 
+      } 
+    } 
+    no.setName(base);     
+    v.addElement(no); 
+    noi.setClassifiers(v);
+    noi.setName(new String(name)); 
+ 
+  } 
+
+  /** Parse a line of the form: "name : base-component" */ 
+  public void parseComponentInstance(MComponentInstance coi, String s) { 
+    // strip any trailing semi-colons 
+    s = s.trim(); 
+    if (s.length() == 0) return; 
+    if (s.charAt(s.length()-1) == ';') 
+      s = s.substring(0, s.length() - 2); 
+ 
+    String name = ""; 
+    String basefirst = "";
+    String base = ""; 
+    if (s.indexOf(":", 0) > -1) { 
+      name = s.substring(0, s.indexOf(":")).trim(); 
+      basefirst = s.substring(s.indexOf(":") + 1).trim();
+      if (basefirst.indexOf(":", 0) > 1) {
+        base = basefirst.substring(0, basefirst.indexOf(":")).trim();
+      }
+      else base = basefirst;
+    } 
+    else { 
+      name = s; 
+    } 
+ 
+    Collection col = coi.getClassifiers(); 
+    if ((col != null) && (col.size()>0)) {  
+      Iterator itcol = col.iterator();  
+      while (itcol.hasNext()) {  
+        MClassifier cls = (MClassifier) itcol.next();  
+        coi.removeClassifier(cls);  
+      }  
+    }  
+ 
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams(); 
+    Vector v = new Vector(); 
+    MComponent co = new MComponentImpl(); 
+    GraphModel model = null; 
+    int size = diagrams.size(); 
+    for (int i=0; i<size; i++) { 
+      Object o = diagrams.elementAt(i); 
+      if (!(o instanceof Diagram)) continue; 
+      if (o instanceof MModel) continue; 
+      Diagram d = (Diagram) o; 
+      model = d.getGraphModel();  
+      if (!(model instanceof DeploymentDiagramGraphModel)) continue; 
+        
+      Vector nodes = model.getNodes(); 
+      int si = nodes.size(); 
+      for (int j=0; j<si; j++) { 
+        MModelElement node = (MModelElement) nodes.elementAt(j); 
+        if (node != null && (node instanceof MComponentImpl)) { 
+          MComponent mcomp = (MComponent) node; 
+          if (mcomp.getNamespace() != coi.getNamespace()) continue;
+          String comp_name = mcomp.getName(); 
+          if (comp_name != null && (comp_name.equals(base))) { 
+            v.addElement(mcomp); 
+            coi.setClassifiers(v); 
+            return;  
+          }       
+        } 
+      } 
+    } 
+    co.setName(base);     
+    v.addElement(co); 
+    coi.setClassifiers(v);
+    coi.setName(new String(name)); 
+ 
+  } 
 
 } /* end class ParserDisplay */

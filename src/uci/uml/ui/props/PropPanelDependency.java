@@ -53,8 +53,6 @@ public class PropPanelDependency extends PropPanelTwoEnds {
   public PropPanelDependency() {
     super("Dependency");
 
-    remove(_nameField);
-    remove(_nameLabel);
   }
 
 

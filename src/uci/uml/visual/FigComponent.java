@@ -1,3 +1,34 @@
+// Copyright (c) 1996-99 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+// File: FigComponent.java
+// Classes: FigComponent
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.visual;
 
 import java.awt.*;
@@ -16,9 +47,14 @@ import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+
+/** Class to display graphics for a UML Component in a diagram. */
 
 public class FigComponent extends FigNodeModelElement {
 
+  ////////////////////////////////////////////////////////////////
+  // instance variables
   public static int OVERLAP = 4;
   
   protected FigRect _bigPort;
@@ -26,6 +62,10 @@ public class FigComponent extends FigNodeModelElement {
   protected FigRect _upperRect;
   protected FigRect _lowerRect;
   protected FigText _stereo;
+
+
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
   public FigComponent() {
     _bigPort = new FigRect(10, 10, 120, 80, Color.cyan, Color.cyan);
@@ -43,6 +83,7 @@ public class FigComponent extends FigNodeModelElement {
 
     _name.setLineWidth(0);
     _name.setFilled(false);
+    _name.setText("");
     
     addFig(_bigPort);
     addFig(_cover);
@@ -53,6 +94,7 @@ public class FigComponent extends FigNodeModelElement {
 
     Rectangle r = getBounds();
     setBounds(r.x, r.y, r.width, r.height);
+    
   }
 
   public FigComponent(GraphModel gm, Object node) {
@@ -63,10 +105,6 @@ public class FigComponent extends FigNodeModelElement {
   public String placeString() { 
     return "new Component"; 
   }
-
-
-
-  // Needs more work!!
 
   public Object clone() {
     FigComponent figClone = (FigComponent) super.clone();
@@ -81,12 +119,15 @@ public class FigComponent extends FigNodeModelElement {
     return figClone;
   }
  
+  ////////////////////////////////////////////////////////////////
+  // acessors
+
   public void setUnderline(boolean b) {
     _name.setUnderline(b);
   }
 
   public void setLineColor(Color c) {
-//     super.setLineColor(c);
+     //super.setLineColor(c);
      _cover.setLineColor(c);
      _stereo.setFilled(false);
      _stereo.setLineWidth(0);
@@ -125,9 +166,14 @@ public class FigComponent extends FigNodeModelElement {
 
     Dimension stereoDim = _stereo.getMinimumSize();
     Dimension nameDim = _name.getMinimumSize();
-
-    _upperRect.setBounds(x-10, y+h/6, 20, 10);
-    _lowerRect.setBounds(x-10, y+3*h/6, 20, 10); 
+    if (h<50) {
+      _upperRect.setBounds(x-10, y+h/6, 20, 10);
+      _lowerRect.setBounds(x-10, y+3*h/6, 20, 10); 
+    }
+    else {
+      _upperRect.setBounds(x-10, y+13, 20, 10);
+      _lowerRect.setBounds(x-10, y+39, 20, 10); 
+    }
 
     _stereo.setBounds(x+1, y+1, w-2, stereoDim.height);
     _name.setBounds(x+1, y + stereoDim.height - OVERLAP + 1, w-2, nameDim.height);
@@ -135,6 +181,9 @@ public class FigComponent extends FigNodeModelElement {
     firePropChange("bounds", oldBounds, getBounds());
     updateEdges();
   }
+
+  ////////////////////////////////////////////////////////////////
+  // user interaction methods
 
   public void mouseClicked(MouseEvent me) {
     super.mouseClicked(me);
@@ -153,6 +202,20 @@ public class FigComponent extends FigNodeModelElement {
 
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
+
+    Vector figures = getEnclosedFigs();
+    elementOrdering(figures);
+
+    Vector contents = getLayer().getContents();
+    int contentsSize = contents.size();
+    for (int j=0; j<contentsSize; j++) {
+      Object o = contents.elementAt(j);
+      if (o instanceof FigEdgeModelElement) {
+        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+        figedge.getLayer().bringToFront(figedge);
+      }
+    }
+
     if (!(getOwner() instanceof MModelElementImpl)) return;
     if (getOwner() instanceof MComponentImpl) {
       MComponent me = (MComponent) getOwner();
@@ -161,6 +224,15 @@ public class FigComponent extends FigNodeModelElement {
       if (encloser != null && (encloser.getOwner() instanceof MNodeImpl)) {
         mnode = (MNode) encloser.getOwner();
       }
+      if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
+        MComponent comp = (MComponent) encloser.getOwner();
+        Collection compNodes = comp.getDeploymentLocations();
+        Iterator it = compNodes.iterator();
+        while (it.hasNext()) {
+          mnode = (MNode) it.next();
+        }
+      }
+          
       try {
 
         Collection nodes = me.getDeploymentLocations();  
@@ -174,7 +246,8 @@ public class FigComponent extends FigNodeModelElement {
 
         if(mnode != null && (!(nodes.contains(mnode)))) {
           me.addDeploymentLocation(mnode);
-        }                   
+        }
+        setNode(figures);                   
       }
       catch (Exception e) {
         System.out.println("could not set package");
@@ -182,27 +255,46 @@ public class FigComponent extends FigNodeModelElement {
     }
   }
 
+  public void setNode(Vector figures) {
+    int size = figures.size();
+    if (figures != null && (size > 0)) {
+      for (int i=0; i<size; i++) {
+        Object o = figures.elementAt(i);
+        if (o instanceof FigComponent) {
+          FigComponent figcomp = (FigComponent) o;
+          figcomp.setEnclosingFig(this);
+        }
+      }
+    }    
+  }
 
   public boolean getUseTrapRect() { return true; }
 	
+
+  ////////////////////////////////////////////////////////////////
+  // internal methods
+
   protected void modelChanged() {
     super.modelChanged();
     updateStereotypeText();
   }
 
   public void updateStereotypeText() {
-//    MClassifier mcl = (MClassifier) getOwner();
-//    if (mcl == null) return;
-//    Vector stereos = mcl.getStereotype();
-//    if (stereos == null || stereos.size() == 0) {
-//      _stereo.setText("");
-//      return;
-//    }
-//    String stereoStr = ((MStereotype) stereos.elementAt(0)).getName();
-//    if (stereoStr.length() == 0) _stereo.setText("");
-//    else _stereo.setText("<<" + stereoStr + ">>");
+    MComponent comp = (MComponent) getOwner();
+    if (comp == null) return;
+    MStereotype stereo = comp.getStereotype();
+    if (stereo == null) {
+      _stereo.setText("");
+      return;
+    }
+    if (stereo != null) {
+      String stereoStr = stereo.getName();
+      if (stereoStr.length() == 0) _stereo.setText("");
+      else _stereo.setText("<<" + stereoStr + ">>");
+    }
   }
 
   static final long serialVersionUID = 1647392857462847651L;
 
-}
+} /* end class FigComponent */
+

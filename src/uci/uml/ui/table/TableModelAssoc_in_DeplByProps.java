@@ -21,6 +21,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// File: TableModelAssoc_in_DeplByProps.java
+// Classes: TableModelAssoc_in_DeplByProps
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.ui.table;
 
 import com.sun.java.util.collections.*;

@@ -21,6 +21,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// File: TableModelObjectByProps.java
+// Classes: TableModelObjectByProps
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.ui.table;
 
 import com.sun.java.util.collections.*;
@@ -38,13 +45,14 @@ class TableModelObjectByProps extends TableModelComposite {
 
   public void initColumns() {
     addColumn(ColumnDescriptor.Name);
-    addColumn(ColumnDescriptor.Base);
+    addColumn(ColumnDescriptor.BaseForObject);
+    addColumn(ColumnDescriptor.ImplLocation);
     addColumn(ColumnDescriptor.ComponentInstance);
     addColumn(ColumnDescriptor.MStereotype);
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponentInstanceImpl)) return new Vector();
+    if (!(t instanceof UMLDeploymentDiagram || t instanceof MComponentInstanceImpl || t instanceof MComponentImpl)) return new Vector();
     if (t instanceof UMLDeploymentDiagram) {
       UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
       Vector nodes = d.getNodes();
@@ -56,7 +64,7 @@ class TableModelObjectByProps extends TableModelComposite {
       }
       return res;
     }
-    else {
+    else if (t instanceof MComponentInstance) {
       MComponentInstance d = (MComponentInstance) t;
       Vector res = new Vector();
       Collection residences = d.getResidents();
@@ -68,6 +76,20 @@ class TableModelObjectByProps extends TableModelComposite {
       }
       return res;
     }
+    else {
+      MComponent d = (MComponent) t;
+      Vector res = new Vector();
+      Collection elementResidences = d.getResidentElements();
+      Iterator it = elementResidences.iterator();
+      while (it.hasNext()) {
+        MElementResidence residence = (MElementResidence) it.next();
+        MModelElement node = (MModelElement) residence.getResident();
+        if (node instanceof MObjectImpl) res.addElement(node);
+
+      }
+      return res;
+    }
+      
   }
 
   public String toString() { return "Objects vs. Properties"; }

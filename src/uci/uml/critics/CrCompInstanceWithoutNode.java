@@ -25,7 +25,7 @@
 
 // File: CrCompInstanceWithoutNode.java
 // Classes: CrCompInstanceWithoutNode
-// Original Author: jrobbins@ics.uci.edu
+// Original Author: 5eichler@informatik.uni-hamburg.de
 // $Id$
 
 package uci.uml.critics;
@@ -41,82 +41,85 @@ import uci.graph.*;
 import uci.ui.*;
 import uci.uml.visual.*;
 
+/**
+ * A critic to detect when there are component-instances that
+ * are not inside a node-instance
+ **/
+
 public class CrCompInstanceWithoutNode extends CrUML {
 
   public CrCompInstanceWithoutNode() {
-    setHeadline("Components normally are inside nodes");
+    setHeadline("ComponentInstances normally are inside nodes");
     sd("There are node-instances in the Diagram. So you have got a real\n"+
-         " deployment-diagram, and in deployment-diagrams component-instances\n"+
+         " deployment-diagram, and in deployment-diagrams Component-instances\n"+
          " normally resides on node-instances.");
-    addSupportedDecision(CrUML.decCONTAINMENT);
+    addSupportedDecision(CrUML.decPATTERNS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MComponentInstanceImpl)) return NO_PROBLEM;
-    MComponentInstance comp = (MComponentInstance) dm;
-    boolean isNode = false;
-    MNodeInstance node = comp.getNodeInstance();
-    if (node != null) {
-      return NO_PROBLEM;
-    }
-    else {
-      Editor ed = Globals.curEditor();
-      Vector res = ed.getGraphModel().getNodes();
-      Iterator it = res.iterator();
-      while (it.hasNext()) {
-        MModelElement element = (MModelElement) it.next();
-        if (element instanceof MNodeInstanceImpl) {
-          isNode = true;
-        }
-      }
-    } 
-    if (isNode) return PROBLEM_FOUND;
-    else return NO_PROBLEM;
+    if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
+    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
+    VectorSet offs = computeOffenders(dd); 
+    if (offs == null) return NO_PROBLEM; 
+    return PROBLEM_FOUND; 
   }
 
-  public ToDoItem toDoItem(Object dm, Designer dsgr) {
-    MComponentInstance comp = (MComponentInstance) dm;
-    VectorSet offs = computeOffenders(comp);
-    return new ToDoItem(this, offs, dsgr);
-  }
-
+  public ToDoItem toDoItem(Object dm, Designer dsgr) { 
+    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
+    VectorSet offs = computeOffenders(dd); 
+    return new ToDoItem(this, offs, dsgr); 
+  } 
+ 
   public boolean stillValid(ToDoItem i, Designer dsgr) { 
     if (!isActive()) return false; 
     VectorSet offs = i.getOffenders(); 
-    MComponentInstance comp = (MComponentInstance) offs.firstElement(); 
-    //if (!predicate(dm, dsgr)) return false; 
-    VectorSet newOffs = computeOffenders(comp); 
+    UMLDeploymentDiagram dd = (UMLDeploymentDiagram) offs.firstElement();
+       //if (!predicate(dm, dsgr)) return false; 
+    VectorSet newOffs = computeOffenders(dd); 
     boolean res = offs.equals(newOffs); 
     return res; 
   } 
 
-  public VectorSet computeOffenders(MComponentInstance comp) {
-    VectorSet res = null;
-    MNodeInstance n = comp.getNodeInstance(); 
-    if (n != null) { 
-      return res; 
-    } 
+  /**
+   * If there are component-instances that have no enclosing FigMNodeInstance
+   * the returned vector-set is not null. Then in the vector-set
+   * are the UMLDeploymentDiagram and all FigComponentInstances with no
+   * enclosing FigMNodeInstance
+   **/
+  public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 
-    Editor ed = Globals.curEditor();
-    Enumeration figs = ed.figs();
-    while (figs.hasMoreElements()) {
-      FigNode f = (FigNode) figs.nextElement();
-      if (f instanceof FigComponentInstance) {
-        FigComponentInstance fignode = (FigComponentInstance) f;
-        MComponentInstance node = (MComponentInstance) fignode.getOwner();
-        if (node == comp ) {
-          if (res == null) {
-            res = new VectorSet();
-            res.addElement(comp); 
-          }
-          res.addElement(fignode);
-          break;
+    Vector figs = dd.getLayer().getContents();
+    VectorSet offs = null;
+    int size = figs.size();
+    boolean isNode = false;
+    for (int j=0; j<size; j++) {
+      Object obj = figs.elementAt(j);
+      if (obj instanceof FigMNodeInstance) isNode = true;
+    }
+    for (int i=0; i<size; i++) {
+      Object obj = figs.elementAt(i);
+      if (!(obj instanceof FigComponentInstance)) continue;
+      FigComponentInstance fc = (FigComponentInstance) obj;
+      if (fc.getEnclosingFig() == null && isNode == true) {
+        if (offs == null) {
+          offs = new VectorSet();
+          offs.addElement(dd);
         }
+        offs.addElement(fc);
       }
+      else if (fc.getEnclosingFig() != null &&
+                 (((MComponentInstance)fc.getOwner()).getNodeInstance() == null)) {
+        if (offs == null) {
+          offs = new VectorSet();
+          offs.addElement(dd);
+        }
+        offs.addElement(fc);
+      }
+     
     }
 
-    return res;
-  }
+    return offs; 
+  } 
 
 } /* end class CrCompInstanceWithoutNode.java */
 

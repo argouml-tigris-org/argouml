@@ -111,6 +111,13 @@ public class Init {
 
   public static Critic crComponentWithoutNode = new CrComponentWithoutNode();
   public static Critic crCompInstanceWithoutNode = new CrCompInstanceWithoutNode();
+  public static Critic crClassWithoutComponent = new CrClassWithoutComponent();
+  public static Critic crInterfaceWithoutComponent = new CrInterfaceWithoutComponent();
+  public static Critic crObjectWithoutComponent = new CrObjectWithoutComponent();
+  public static Critic crNodeInsideElement = new CrNodeInsideElement();
+  public static Critic crNodeInstanceInsideElement = new CrNodeInstanceInsideElement();
+  public static Critic crWrongLinkEnds = new CrWrongLinkEnds();
+  public static Critic crInstanceWithoutClassifier = new CrInstanceWithoutClassifier();
 
   // from UML 1.1 Semantics spec
 
@@ -155,39 +162,37 @@ public class Init {
   /** static initializer, register all appropriate critics */
   public static void init() {
 //     try {
-      java.lang.Class modelCls = MModel.class;
+      java.lang.Class modelCls = MModelImpl.class;
       java.lang.Class modelElementCls = MModelElementImpl.class;
-      java.lang.Class classCls = MClass.class;
-      java.lang.Class classifierCls = MClassifier.class;
-      java.lang.Class interfaceCls = MInterface.class;
-      java.lang.Class attrCls = MAttribute.class;
-      java.lang.Class operCls = MOperation.class;
-      java.lang.Class iassocCls = MAssociation.class;
-      java.lang.Class assocCls = MAssociation.class;
-      java.lang.Class assocEndCls = MAssociationEnd.class;
-      java.lang.Class assocClassCls = MAssociationClass.class;
+      java.lang.Class classCls = MClassImpl.class;
+      java.lang.Class classifierCls = MClassifierImpl.class;
+      java.lang.Class interfaceCls = MInterfaceImpl.class;
+      java.lang.Class attrCls = MAttributeImpl.class;
+      java.lang.Class operCls = MOperationImpl.class;
+      java.lang.Class iassocCls = MAssociationImpl.class;
+      java.lang.Class assocCls = MAssociationImpl.class;
+      java.lang.Class assocEndCls = MAssociationEndImpl.class;
+      java.lang.Class assocClassCls = MAssociationClassImpl.class;
       java.lang.Class namespaceCls = MNamespaceImpl.class;
       java.lang.Class genElementCls = MGeneralizableElementImpl.class;
-      java.lang.Class genCls = MGeneralization.class;
-      java.lang.Class datatypeCls = MDataType.class;
+      java.lang.Class genCls = MGeneralizationImpl.class;
+      java.lang.Class datatypeCls = MDataTypeImpl.class;
 
-      java.lang.Class useCaseCls = MUseCase.class;
-      java.lang.Class actorCls = MActor.class;
+      java.lang.Class useCaseCls = MUseCaseImpl.class;
+      java.lang.Class actorCls = MActorImpl.class;
 
-      java.lang.Class stateVertexCls = MStateVertex.class;
-      java.lang.Class stateCls = MState.class;
-      java.lang.Class compositieStateCls = MCompositeState.class;
-      java.lang.Class pseudostateCls = MPseudostate.class;
-      java.lang.Class transitionCls = MTransition.class;
-      //java.lang.Class stateMachineCls = MStateMachine.class;
-
-      java.lang.Class componentCls = MComponentImpl.class;
-      java.lang.Class componentInstanceCls = MComponentInstanceImpl.class;
+      java.lang.Class stateVertexCls = MStateVertexImpl.class;
+      java.lang.Class stateCls = MStateImpl.class;
+      java.lang.Class compositieStateCls = MCompositeStateImpl.class;
+      java.lang.Class pseudostateCls = MPseudostateImpl.class;
+      java.lang.Class transitionCls = MTransitionImpl.class;
+      //java.lang.Class stateMachineCls = MStateMachineImpl.class;
 
       java.lang.Class diagramCls        = UMLDiagram.class;
       java.lang.Class classDiagramCls   = UMLClassDiagram.class;
       java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
       java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
+      java.lang.Class deploymentDiagramCls = UMLDeploymentDiagram.class;     
       java.lang.Class nodeCls           = FigNodeModelElement.class;
       java.lang.Class edgeCls           = FigEdgeModelElement.class;
 
@@ -204,7 +209,7 @@ public class Init {
       Agency.register(crClassMustBeAbstract, classCls); //needs-more-work
       Agency.register(crCrossNamespaceAssoc, assocClassCls);
       Agency.register(crDupParamName, operCls);
-      Agency.register(crDupRoleNames, assocCls);
+//      Agency.register(crDupRoleNames, assocCls);
       Agency.register(crFinalSubclassed, classCls);
       Agency.register(crIllegalGeneralization, genCls);
       Agency.register(crAlreadyRealizes, classCls);
@@ -240,7 +245,7 @@ public class Init {
       Agency.register(crConstructorNeeded, classCls);
       Agency.register(crEmptyPackage, modelCls);
       Agency.register(crNonAggDataType, datatypeCls);
-      Agency.register(crOppEndConflict, classifierCls);
+//      Agency.register(crOppEndConflict, classifierCls);
       Agency.register(crParamTypeNotImported, operCls);
       Agency.register(crSignatureConflict, classifierCls);
       Agency.register(crUselessAbstract, classCls);
@@ -248,7 +253,7 @@ public class Init {
       Agency.register(crDisambigStateName, stateCls);
       Agency.register(crNameConfusion, classifierCls);
       Agency.register(crNameConfusion, stateCls);
-      Agency.register(crMergeClasses, classCls);
+//      Agency.register(crMergeClasses, classCls);
       Agency.register(crSubclassReference, classCls);
       Agency.register(crIllegalName, classCls);
       Agency.register(crIllegalName, interfaceCls);
@@ -262,7 +267,7 @@ public class Init {
       Agency.register(crReservedName, stateCls);
       Agency.register(crReservedName, assocCls);
       Agency.register(crMultiInherit, classCls);
-      Agency.register(crConflictingComposites, classifierCls);
+//      Agency.register(crConflictingComposites, classifierCls);
       Agency.register(crTooManyAssoc, classCls);
       Agency.register(crTooManyAttr, classCls);
       Agency.register(crTooManyOper, classCls);
@@ -291,8 +296,15 @@ public class Init {
       Agency.register(crConsiderSingleton, classCls);
       Agency.register(crSingletonViolated, classCls);
 
-      Agency.register(crComponentWithoutNode, componentCls);
-      Agency.register(crCompInstanceWithoutNode, componentInstanceCls);
+      Agency.register(crNodeInsideElement, deploymentDiagramCls);
+      Agency.register(crNodeInstanceInsideElement, deploymentDiagramCls);
+      Agency.register(crComponentWithoutNode, deploymentDiagramCls);
+      Agency.register(crCompInstanceWithoutNode, deploymentDiagramCls);
+      Agency.register(crClassWithoutComponent, deploymentDiagramCls);
+      Agency.register(crInterfaceWithoutComponent, deploymentDiagramCls);
+      Agency.register(crObjectWithoutComponent, deploymentDiagramCls);
+      Agency.register(crWrongLinkEnds, deploymentDiagramCls);
+      Agency.register(crInstanceWithoutClassifier, deploymentDiagramCls);
 
       Agency.register(crNodesOverlap, diagramCls);
       Agency.register(crZeroLengthEdge, edgeCls);

@@ -41,7 +41,6 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
-import uci.uml.util.MMUtil;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -265,17 +264,9 @@ public class FigClass extends FigNodeWithCompartments {
       }
     }
 
-    if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
-      MComponent component = (MComponent) encloser.getOwner();
-      MClass cl = (MClass) getOwner();
-      resident.setImplementationLocation(component);
-      resident.setResident(cl);
-    }
-    else {
-      resident.setImplementationLocation(null);
-      resident.setResident(null);
-    }     
-
+    // The next if-clause is important for the Deployment-diagram
+    // it detects if the enclosing fig is a component, in this case
+    // the ImplementationLocation will be set for the owning MClass
     if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
       MComponent component = (MComponent) encloser.getOwner();
       MClass cl = (MClass) getOwner();
@@ -318,13 +309,11 @@ public class FigClass extends FigNodeWithCompartments {
     super.modelChanged();
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
-	String clsNameStr = "";
-	if (cls.getName() != null)
-		clsNameStr = GeneratorDisplay.Generate(cls.getName());
-    Collection attributes = MMUtil.SINGLETON.getAttributes(cls);
+    //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
+    Collection strs = cls.getStructuralFeatures();
     String attrStr = "";
-    if (attributes != null) {
-	Iterator iter = attributes.iterator();
+    if (strs != null) {
+	Iterator iter = strs.iterator();
       while (iter.hasNext()) {
 	    MStructuralFeature sf = (MStructuralFeature) iter.next();
 	    attrStr += GeneratorDisplay.Generate(sf);
@@ -332,10 +321,11 @@ public class FigClass extends FigNodeWithCompartments {
 	      attrStr += "\n";
       }
     }
-    Collection operations = MMUtil.SINGLETON.getOperations(cls);
+    Collection behs = cls.getFeatures();
+    behs.removeAll(strs);
     String operStr = "";
-    if (operations != null) {
-	Iterator iter = operations.iterator();
+    if (behs != null) {
+	Iterator iter = behs.iterator();
       while (iter.hasNext()) {
 	    MBehavioralFeature bf = (MBehavioralFeature) iter.next();
 	    operStr += GeneratorDisplay.Generate(bf);

@@ -152,29 +152,28 @@ public class SelectionClass extends SelectionWButtons {
     Dimension minSize = _content.getMinimumSize();
     int minWidth = minSize.width, minHeight = minSize.height;
     Class edgeClass = null;
-    Class nodeClass = MClassImpl.class;
+    Class nodeClass = ru.novosoft.uml.foundation.core.MClass.class;
     int bx = mX, by = mY;
     boolean reverse = false;
     switch (hand.index) {
     case 10: //add superclass
-      edgeClass = MGeneralizationImpl.class;
-	  // reverse, because buildGeneralization takes parent first!
-      reverse = true;
+      edgeClass = ru.novosoft.uml.foundation.core.MGeneralizationImpl.class;
       by = cy;
       bx = cx + cw/2;
       break;
     case 11: //add subclass
-      edgeClass = MGeneralizationImpl.class;
+      edgeClass = ru.novosoft.uml.foundation.core.MGeneralizationImpl.class;
+      reverse = true;
       by = cy + ch;
       bx = cx + cw/2;
       break;
     case 12: //add assoc
-      edgeClass = MAssociationImpl.class;
+      edgeClass = ru.novosoft.uml.foundation.core.MAssociationImpl.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add assoc
-      edgeClass = MAssociationImpl.class;
+      edgeClass = ru.novosoft.uml.foundation.core.MAssociationImpl.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
@@ -185,7 +184,6 @@ public class SelectionClass extends SelectionWButtons {
     }
     if (edgeClass != null && nodeClass != null) {
       Editor ce = Globals.curEditor();
-      System.out.println("dragHandle creates ModeCreateEdgeAndNode "+hand.index+ " reverse = "+reverse);
       ModeCreateEdgeAndNode m = new
 	ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, _useComposite);
       m.setup((FigNode)_content, _content.getOwner(), bx, by, reverse);
@@ -263,12 +261,12 @@ public class SelectionClass extends SelectionWButtons {
 
   public Object addSuperClass(MutableGraphModel mgm, MClass cls,
 			    MClass newCls) {
-    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
+    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
   }
 
   public Object addSubClass(MutableGraphModel mgm, MClass cls,
 			    MClass newCls) {
-    return mgm.connect(cls, newCls, MGeneralizationImpl.class);
+    return mgm.connect(newCls, cls, MGeneralizationImpl.class);
   }
 
   public Object addAssocClassRight(MutableGraphModel mgm, MClass cls,

@@ -155,6 +155,23 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 
   public Vector getEnclosedFigs() { return _enclosedFigs; }
 
+  /** Update the order of this fig and the order of the
+   *    figs that are inside of this fig */
+  public void elementOrdering(Vector figures) {
+    int size = figures.size();
+    getLayer().bringToFront(this);
+    if (figures != null && (size > 0)) {
+      for (int i=0; i<size; i++) {
+        Object o = figures.elementAt(i);
+        if (o instanceof FigNodeModelElement) {
+          FigNodeModelElement fignode = (FigNodeModelElement) o;
+          Vector enclosed = fignode.getEnclosedFigs();
+          fignode.elementOrdering(enclosed);
+        }
+      }
+    }
+  }
+
   public Selection makeSelection() {
     return new SelectionNodeClarifiers(this);
   }

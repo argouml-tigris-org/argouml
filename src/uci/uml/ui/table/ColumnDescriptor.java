@@ -27,6 +27,8 @@ import com.sun.java.util.collections.*;
 import java.beans.*;
 
 import uci.gef.*;
+import uci.graph.*;
+import uci.uml.visual.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -38,7 +40,6 @@ import ru.novosoft.uml.behavior.collaborations.*;
 import uci.uml.generate.*;
 import uci.uml.ui.ProjectBrowser;
 import uci.uml.ui.Project;
-import uci.uml.util.MMUtil;
 
 public abstract class ColumnDescriptor {
   ////////////////////////////////////////////////////////////////
@@ -67,6 +68,12 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor DstMult = new ColumnDstMultiplicity();
   public static ColumnDescriptor DstNav  = new ColumnDstNavigability();
 
+  public static ColumnDescriptor Supplier = new ColumnSupplier();
+  public static ColumnDescriptor Client = new ColumnClient();
+
+  public static ColumnDescriptor SrcLinkType = new ColumnSrcLinkType();
+  public static ColumnDescriptor DstLinkType = new ColumnDstLinkType();
+
   public static ColumnDescriptor Entry   = new ColumnEntry();
   public static ColumnDescriptor Exit    = new ColumnExit();
   public static ColumnDescriptor Parent  = new ColumnParent();
@@ -85,9 +92,12 @@ public abstract class ColumnDescriptor {
   public static ColumnDescriptor AttrKeyword = new ColumnAttrKeyword();
 
   public static ColumnDescriptor CompNode = new ColumnCompNode();
+  public static ColumnDescriptor CompNodeInstance = new ColumnCompNodeInstance();
   public static ColumnDescriptor ImplLocation = new ColumnImplLocation();
   public static ColumnDescriptor ComponentInstance = new ColumnComponentInstance();
-  public static ColumnDescriptor Base = new ColumnBase();
+  public static ColumnDescriptor BaseForObject = new ColumnBaseForObject();
+  public static ColumnDescriptor BaseForComponentInstance = new ColumnBaseForComponentInstance();
+  public static ColumnDescriptor BaseForNodeInstance = new ColumnBaseForNodeInstance();
 
 
   
@@ -185,12 +195,9 @@ class ColumnFeatureVis extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (target instanceof MFeature) {
       MVisibilityKind vk = ((MFeature)target).getVisibility();
-	  if (vk != null) {
-		  if (vk.equals(MVisibilityKind.PRIVATE)) return "private";
-		  if (vk.equals(MVisibilityKind.PROTECTED)) return "protected";
-		  if (vk.equals(MVisibilityKind.PUBLIC)) return "public";
-	  }
-	}
+	  if (vk != null)
+		  return vk.toString();
+    }
     return "N/A";
   }
 
@@ -436,6 +443,91 @@ class ColumnDstNavigability extends ColumnDescriptor {
   }  
 } /* end class ColumnDstNavigability */
 
+class ColumnSupplier extends ColumnDescriptor {
+  ColumnSupplier() { super("Supplier", String.class, false); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MDependency)) return "N/A";
+    String name = "";
+    Collection conns = ((MDependency) target).getSuppliers();
+    if (conns != null && (conns.size() == 1)) {
+      Iterator it = conns.iterator();
+      while (it.hasNext()) {
+        MModelElement element = (MModelElement) it.next();
+          if (element != null && element.getName() != null) {	
+            name = element.getName();
+          }
+       }
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }
+} /* end class ColumnSupplier */
+
+class ColumnClient extends ColumnDescriptor {
+  ColumnClient() { super("Client", String.class, false); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MDependency)) return "N/A";
+    String name = "";
+    Collection conns = ((MDependency) target).getClients();
+    if (conns != null && (conns.size() == 1)) {
+      Iterator it = conns.iterator();
+      while (it.hasNext()) {
+        MModelElement element = (MModelElement) it.next();
+          if (element != null && element.getName() != null) {	
+            name = element.getName();
+          }
+       }
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }
+} /* end class ColumnClient */
+
+class ColumnSrcLinkType extends ColumnDescriptor {
+  ColumnSrcLinkType() { super("SrcType", String.class, false); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MLink)) return "N/A";
+    String name = "";
+    Vector conns = new Vector(((MLink) target).getConnections());
+    if (conns.size() == 2) {
+      MLinkEnd le = (MLinkEnd) conns.elementAt(0);
+	  if (le != null && le.getInstance() != null && le.getInstance().getName() != null) {
+                  	name = le.getInstance().getName();
+                  }
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }  
+} /* end class ColumnSrcLinkType */
+
+class ColumnDstLinkType extends ColumnDescriptor {
+  ColumnDstLinkType() { super("DstType", String.class, false); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MLink)) return "N/A";
+    String name = "";
+    Vector conns = new Vector(((MLink) target).getConnections());
+    if (conns.size() == 2) {
+      MLinkEnd le = (MLinkEnd) conns.elementAt(1);
+	  if (le != null && le.getInstance() != null && le.getInstance().getName() != null) {
+                  	name = le.getInstance().getName();
+                  }
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }  
+} /* end class ColumnDstLinkType */
 
 class ColumnAbstract extends ColumnDescriptor {
   ColumnAbstract() { super("Abstract", Boolean.class, true); }
@@ -787,9 +879,8 @@ class ColumnReturn extends ColumnDescriptor {
   public Object getValueFor(Object target) {
     if (!(target instanceof MOperation)) return "";
     MOperation op = (MOperation) target;
-	MParameter returnParameter = MMUtil.SINGLETON.getReturnParameter(op);
-	if (returnParameter != null && returnParameter.getType() != null) {
-		MClassifier returnType = returnParameter.getType();
+	if (op.getReturnParameter() != null && op.getReturnParameter().getType() != null) {
+		MClassifier returnType = (op.getReturnParameter()).getType();
 		GeneratorDisplay gd = GeneratorDisplay.SINGLETON;
 		return gd.generateClassifierRef(returnType);
 	}
@@ -807,7 +898,7 @@ class ColumnReturn extends ColumnDescriptor {
     ParserDisplay pd = ParserDisplay.SINGLETON;
 	MParameter rp = new MParameterImpl();
 	rp.setType(rt);
-	MMUtil.SINGLETON.setReturnParameter(op, rp);
+	op.setReturnParameter(rp);
   }
 } /* end class ColumnReturn */
 
@@ -924,43 +1015,71 @@ class ColumnCompNode extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MComponentImpl)) return;
-    if (!(value instanceof MNodeImpl)) return;
-    MNode node = (MNode) value;
-    MComponent co = (MComponent) target;
-//    node.set(co);
   }  
 
 } /* end class ColumnCompNode */
+
+
+class ColumnCompNodeInstance extends ColumnDescriptor {
+  ColumnCompNodeInstance() { super("NodeInstance", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MComponentInstanceImpl)) return null;
+    MComponentInstance co = (MComponentInstance) target;
+    MNodeInstance node = co.getNodeInstance();
+    String name = "";
+    if (node != null) {
+      name = node.getName();
+    }
+    return name;
+  }
+
+  public void setValueFor(Object target, Object value) {
+  }  
+
+} /* end class ColumnCompNodeInstance */
 
 class ColumnImplLocation extends ColumnDescriptor {
   ColumnImplLocation() { super("ImplementationLocation", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MClassifierImpl)) return null;
-    MClassifier co = (MClassifier) target;
+    if (!(target instanceof MClassifierImpl || target instanceof MObjectImpl)) return null;
     String name = "";
-    Collection residences = co.getElementResidences();  
-    if (co != null) {
-      Iterator it = residences.iterator();
-      while (it.hasNext()) {
-        MElementResidence residence = (MElementResidence) it.next();
-        MModelElement element = residence.getResident();
-        if (element == co) {
-         MComponent component = residence.getImplementationLocation();
-         name = component.getName();
+    if (target instanceof MClassifierImpl) {
+      MClassifier co = (MClassifier) target;
+      Collection residences = co.getElementResidences();  
+      if (residences != null) {
+        Iterator it = residences.iterator();
+        while (it.hasNext()) {
+          MElementResidence residence = (MElementResidence) it.next();
+          MModelElement element = residence.getResident();
+          if (element == co) {
+             MComponent component = residence.getImplementationLocation();
+             name = component.getName();
+          }
         }
       }
     }
+    else if (target instanceof MObjectImpl) {
+      MObject obj = (MObject) target;
+      Collection residences = obj.getElementResidences();  
+      if (residences != null) {
+        Iterator it = residences.iterator();
+        while (it.hasNext()) {
+          MElementResidence residence = (MElementResidence) it.next();
+          MModelElement element = residence.getResident();
+          if (element == obj) {
+            MComponent component = residence.getImplementationLocation();
+            name = component.getName();
+          }
+        }
+      }
+    }
+      
     return name;
   }    
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MClassifierImpl)) return;
-    if (!(value instanceof MComponentImpl)) return;
-    MComponent co = (MComponent) value;
-    MClassifier cls = (MClassifier) target;
-//    node.set(co);
   }  
 
 } /* end class ColumnImplLocation */
@@ -980,35 +1099,231 @@ class ColumnComponentInstance extends ColumnDescriptor {
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MObjectImpl)) return;
-    if (!(value instanceof MComponentInstanceImpl)) return;
-    MComponent co = (MComponent) value;
-    MObject object = (MObject) target;
-//    node.set(co);
   }  
 
 } /* end class ColumnComponentInstance */
 
-class ColumnBase extends ColumnDescriptor {
-  ColumnBase() { super("Base", String.class, true); }
+class ColumnBaseForObject extends ColumnDescriptor {
+  ColumnBaseForObject() { super("Base", String.class, true); }
   
   public Object getValueFor(Object target) {
-    if (!(target instanceof MObjectImpl)) return null;
-    MObject co = (MObject) target;
-    String name = "";
-    if (co.getUMLClassName() != null) {
-      name = co.getUMLClassName().trim();
+    if (!(target instanceof MInstanceImpl)) return null;
+    MInstance in = (MInstance) target;
+    String instance_base = "";
+    Collection col = in.getClassifiers();
+    if (col != null && (col.size()>0)) {
+      Iterator it = col.iterator();
+      while (it.hasNext()) {
+        MClassifier cls = (MClassifier)it.next();
+        if (cls != null && (cls.getName() != null)) {
+          instance_base = cls.getName();
+  
+        }
+      }
     }
-    return name;
+    return instance_base;
   }
 
   public void setValueFor(Object target, Object value) {
-    if (!(target instanceof MObjectImpl)) return;
+    if (!(target instanceof MInstanceImpl)) return;
     if (!(value instanceof String)) return;
-    String str = (String) value;
-    MObject object = (MObject) target;
-//    node.set(co);
+    MObject tt = (MObject) target;
+    String _value = (String) value;
+    MClass classifier = new MClassImpl(); 
+    Collection col = tt.getClassifiers();
+    if ((col != null) && (col.size()>0)) { 
+      Iterator itcol = col.iterator(); 
+      while (itcol.hasNext()) { 
+        MClassifier cls = (MClassifier) itcol.next(); 
+        tt.removeClassifier(cls); 
+      } 
+    } 
+
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    GraphModel model = null;
+    Vector v = new Vector();
+    int size = diagrams.size();
+    for (int i=0; i<size; i++) {
+      Object o = diagrams.elementAt(i);
+      if (!(o instanceof Diagram)) continue;
+      if (o instanceof MModel) continue;
+      Diagram d = (Diagram) o;
+      model = d.getGraphModel(); 
+
+      if (!(model instanceof ClassDiagramGraphModel || model instanceof DeploymentDiagramGraphModel)) continue;
+       
+      Vector nodes = model.getNodes();
+      int s = nodes.size();
+      for (int j=0; j<s; j++) {
+        MModelElement node = (MModelElement) nodes.elementAt(j);
+        if (node != null && (node instanceof MClassImpl)) {
+          MClass mclass = (MClass) node;
+          if (mclass.getNamespace() != tt.getNamespace()) continue;
+          String class_name = mclass.getName();
+          if (class_name != null && (class_name.equals(_value))) {
+            v.addElement(mclass);
+            tt.setClassifiers(v);
+            return; 
+          }      
+        }
+      }
+    }
+
+    classifier.setName(_value);
+    v.addElement(classifier);
+    tt.setClassifiers(v);
+    
   }  
 
-} /* end class ColumnBase */
+} /* end class ColumnBaseForObject */
+
+class ColumnBaseForComponentInstance extends ColumnDescriptor {
+  ColumnBaseForComponentInstance() { super("Base", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MInstanceImpl)) return null;
+    MInstance in = (MInstance) target;
+    String instance_base = "";
+    Collection col = in.getClassifiers();
+    if (col != null && (col.size()>0)) {
+      Iterator it = col.iterator();
+      while (it.hasNext()) {
+        MClassifier cls = (MClassifier)it.next();
+        if (cls != null && (cls.getName() != null)) {
+          instance_base = cls.getName();
+  
+        }
+      }
+    }
+    return instance_base;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MInstanceImpl)) return;
+    if (!(value instanceof String)) return;
+    MComponentInstance tt = (MComponentInstance) target;
+    String _value = (String) value;
+    MComponent classifier = new MComponentImpl(); 
+    Collection col = tt.getClassifiers();
+    if ((col != null) && (col.size()>0)) { 
+      Iterator itcol = col.iterator(); 
+      while (itcol.hasNext()) { 
+        MClassifier cls = (MClassifier) itcol.next(); 
+        tt.removeClassifier(cls); 
+      } 
+    } 
+
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    GraphModel model = null;
+    Vector v = new Vector();
+    int size = diagrams.size();
+    for (int i=0; i<size; i++) {
+      Object o = diagrams.elementAt(i);
+      if (!(o instanceof Diagram)) continue;
+      if (o instanceof MModel) continue;
+      Diagram d = (Diagram) o;
+      model = d.getGraphModel(); 
+
+      if (!(model instanceof DeploymentDiagramGraphModel)) continue;
+       
+      Vector nodes = model.getNodes();
+      int s = nodes.size();
+      for (int j=0; j<s; j++) {
+        MModelElement node = (MModelElement) nodes.elementAt(j);
+        if (node != null && (node instanceof MComponentImpl)) {
+          MComponent mcomp = (MComponent) node;
+          if (mcomp.getNamespace() != tt.getNamespace()) continue;
+          String comp_name = mcomp.getName();
+          if (comp_name != null && (comp_name.equals(_value))) {
+            v.addElement(mcomp);
+            tt.setClassifiers(v);
+            return; 
+          }      
+        }
+      }
+    }
+
+    classifier.setName(_value);
+    v.addElement(classifier);
+    tt.setClassifiers(v);
+    
+  }  
+
+} /* end class ColumnBaseForComponentInstance */
+
+
+class ColumnBaseForNodeInstance extends ColumnDescriptor {
+  ColumnBaseForNodeInstance() { super("Base", String.class, true); }
+  
+  public Object getValueFor(Object target) {
+    if (!(target instanceof MInstanceImpl)) return null;
+    MInstance in = (MInstance) target;
+    String instance_base = "";
+    Collection col = in.getClassifiers();
+    if (col != null && (col.size()>0)) {
+      Iterator it = col.iterator();
+      while (it.hasNext()) {
+        MClassifier cls = (MClassifier)it.next();
+        if (cls != null && (cls.getName() != null)) {
+          instance_base = cls.getName();
+  
+        }
+      }
+    }
+    return instance_base;
+  }
+
+  public void setValueFor(Object target, Object value) {
+    if (!(target instanceof MInstanceImpl)) return;
+    if (!(value instanceof String)) return;
+    MNodeInstance tt = (MNodeInstance) target;
+    String _value = (String) value;
+    MNode classifier = new MNodeImpl(); 
+    Collection col = tt.getClassifiers();
+    if ((col != null) && (col.size()>0)) { 
+      Iterator itcol = col.iterator(); 
+      while (itcol.hasNext()) { 
+        MClassifier cls = (MClassifier) itcol.next(); 
+        tt.removeClassifier(cls); 
+      } 
+    } 
+
+    Vector diagrams = ProjectBrowser.TheInstance.getProject().getDiagrams();
+    GraphModel model = null;
+    Vector v = new Vector();
+    int size = diagrams.size();
+    for (int i=0; i<size; i++) {
+      Object o = diagrams.elementAt(i);
+      if (!(o instanceof Diagram)) continue;
+      if (o instanceof MModel) continue;
+      Diagram d = (Diagram) o;
+      model = d.getGraphModel(); 
+
+      if (!(model instanceof DeploymentDiagramGraphModel)) continue;
+       
+      Vector nodes = model.getNodes();
+      int s = nodes.size();
+      for (int j=0; j<s; j++) {
+        MModelElement node = (MModelElement) nodes.elementAt(j);
+        if (node != null && (node instanceof MNodeImpl)) {
+          MNode mnode = (MNode) node;
+          if (mnode.getNamespace() != tt.getNamespace()) continue;
+          String node_name = mnode.getName();
+          if (node_name != null && (node_name.equals(_value))) {
+            v.addElement(mnode);
+            tt.setClassifiers(v);
+            return; 
+          }      
+        }
+      }
+    }
+
+    classifier.setName(_value);
+    v.addElement(classifier);
+    tt.setClassifiers(v);
+    
+  }  
+
+} /* end class ColumnBaseForNodeInstance */
+
 

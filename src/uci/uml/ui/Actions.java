@@ -1308,11 +1308,11 @@ class ActionStateDiagram extends UMLChangeAction {
 		sm.setName(contextNameStr + "StateMachine");
 		MCompositeState cs = new MCompositeStateImpl();
 		cs.setName("state_machine_top");
-		cs.setNamespace(cls.getNamespace());
-		sm.setNamespace(cls.getNamespace());
+		cs.setNamespace(cls);
+		sm.setNamespace(cls);
 		sm.setTop(cs);
 		cls.addBehavior(sm);
-		UMLStateDiagram d = new UMLStateDiagram(cls, sm);
+		UMLStateDiagram d = new UMLStateDiagram();
 		p.addMember(d);
 		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 		pb.setTarget(d);
@@ -1372,23 +1372,11 @@ class ActionCollaborationDiagram extends UMLChangeAction {
   public ActionCollaborationDiagram() { super("CollaborationDiagram"); }
 
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
+    Project p = ProjectBrowser.TheInstance.getProject();
     try {
 		MCollaboration c = new MCollaborationImpl();
 		c.setName("Collaboration");
-		MInteraction i = new MInteractionImpl();
-		i.setName("default Interaction");
-		c.addInteraction(i);
-		//p.addModel(c);
-		if (p.getModels().size() == 1) {
-			MModel model = (MModel)(p.getModels().elementAt(0));
-			model.addOwnedElement(c);
-		}
-		else {
-			System.out.println("Since when does Argo support multiple models per project???");
-			return;
-		}
+		p.addModel(c);
 		UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
 		p.addMember(d);
 		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -1694,7 +1682,6 @@ class ActionAddMessage extends UMLChangeAction {
 		// at the moment there can be only one Interaction per Collaboration
 		Iterator iter2 = interactions.iterator();
 		((MInteraction)iter2.next()).addMessage(msg);
-		collab.addOwnedElement(msg);
 		FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
 		Collection messages = ar.getMessages();
 		int size = messages.size();

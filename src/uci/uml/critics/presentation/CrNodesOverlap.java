@@ -36,7 +36,7 @@ import uci.argo.kernel.*;
 import uci.util.*;
 import uci.gef.*;
 import uci.uml.critics.*;
-import uci.uml.visual.FigNodeModelElement;
+import uci.uml.visual.*;
 
 
 /** A critic to detect when a class can never have instances (of
@@ -108,12 +108,23 @@ public class CrNodesOverlap extends CrUML {
 	if (!(o_j instanceof FigNode)) continue;
 	FigNode fn_j = (FigNode) o_j;
 	if (fn_j.intersects(bounds_i)) {
-	  if (fn_i instanceof FigNodeModelElement) {
-	    if (((FigNodeModelElement)fn_i).getEnclosingFig() == fn_j) continue;
-	  }
-	  if (fn_j instanceof FigNodeModelElement) {
-	    if (((FigNodeModelElement)fn_j).getEnclosingFig() == fn_i) continue;
-	  }
+                  if (!(d instanceof UMLDeploymentDiagram)) {   
+  	    if (fn_i instanceof FigNodeModelElement) {
+	      if (((FigNodeModelElement)fn_i).getEnclosingFig() == fn_j) continue;
+	    }
+	    if (fn_j instanceof FigNodeModelElement) {
+	      if (((FigNodeModelElement)fn_j).getEnclosingFig() == fn_i) continue;
+	    }
+        }
+        // In DeploymentDiagrams the situation is not the same as in other diagrams
+        // only classes, interfaces and objects can intersect each other while they are
+        // not the EnclosingFig, so you have to prouve only these elements.
+        else {
+          if ((!((fn_i instanceof  FigClass) || (fn_i instanceof FigInterface) || 
+                (fn_i instanceof FigObject))) || 
+             (!((fn_j instanceof  FigClass) || (fn_j instanceof FigInterface) || 
+                (fn_j instanceof FigObject)))) continue;
+        }            
 	  if (offs == null) {
 	    offs = new VectorSet();
 	    offs.addElement(d);

@@ -1,3 +1,34 @@
+// Copyright (c) 1996-99 The Regents of the University of California. All
+// Rights Reserved. Permission to use, copy, modify, and distribute this
+// software and its documentation without fee, and without a written
+// agreement is hereby granted, provided that the above copyright notice
+// and this paragraph appear in all copies.  This software program and
+// documentation are copyrighted by The Regents of the University of
+// California. The software program and documentation are supplied "AS
+// IS", without any accompanying services from The Regents. The Regents
+// does not warrant that the operation of the program will be
+// uninterrupted or error-free. The end-user understands that the program
+// was developed for research purposes and is advised not to rely
+// exclusively on the program for any reason.  IN NO EVENT SHALL THE
+// UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT,
+// SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, INCLUDING LOST PROFITS,
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE. THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY
+// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
+// UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
+
+
+// File: FigMNodeInstance.java
+// Classes: FigMNodeInstance
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.visual;
 
 import java.awt.*;
@@ -13,14 +44,24 @@ import uci.argo.kernel.*;
 import uci.uml.ui.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.behavior.common_behavior.*; 
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
+/** Class to display graphics for a UML NodeInstance in a diagram. */
+
 public class FigMNodeInstance extends FigNodeModelElement {
+
+
+  ////////////////////////////////////////////////////////////////
+  // instance variables
 
   protected FigRect _bigPort;
   protected FigCube _cover;
   protected FigRect _test;
+
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
   public FigMNodeInstance() {
     _bigPort = new FigRect(10, 10, 200, 180);
@@ -48,9 +89,6 @@ public class FigMNodeInstance extends FigNodeModelElement {
 
   public String placeString() { return "new NodeInstance"; }
 
-
-  // Needs more work!!
-
   public Object clone() {
     FigMNodeInstance figClone = (FigMNodeInstance) super.clone();
     Vector v = figClone.getFigs();
@@ -60,6 +98,9 @@ public class FigMNodeInstance extends FigNodeModelElement {
     figClone._test = (FigRect) v.elementAt(3);
     return figClone;
   }	
+
+  ////////////////////////////////////////////////////////////////
+  // acessors
 
   public void setLineColor(Color c) {
 //     super.setLineColor(c);
@@ -98,30 +139,71 @@ public class FigMNodeInstance extends FigNodeModelElement {
     updateEdges();
   }
 
+  ////////////////////////////////////////////////////////////////
+  // user interaction methods
+
   public void mouseClicked(MouseEvent me) {
     super.mouseClicked(me);
     setLineColor(Color.black);
   }
 
-/*
+
   public void setEnclosingFig(Fig encloser) {
     super.setEnclosingFig(encloser);
-    if (!(getOwner() instanceof ModelElement)) return;
-    MMNode me = (MMNode) getOwner();
-
-    if (encloser != null && (encloser.getOwner() instanceof ModelElement)) {
-      Rectangle oldBounds = getBounds();
-      Rectangle ownerBounds = encloser.getBounds();
-      Rectangle newBounds = getNewBounds(ownerBounds);
-      setBounds(newBounds.x, newBounds.y, newBounds.width, newBounds.height);
-      firePropChange("bounds", oldBounds, getBounds());
+    Vector figures = getEnclosedFigs();
+    elementOrdering(figures);
+    Vector contents = getLayer().getContents();
+    int contentsSize = contents.size();
+    for (int j=0; j<contentsSize; j++) {
+      Object o = contents.elementAt(j);
+      if (o instanceof FigEdgeModelElement) {
+        FigEdgeModelElement figedge = (FigEdgeModelElement) o;
+        figedge.getLayer().bringToFront(figedge);
+      }
     }
 
   }
-*/
+
+  protected void textEdited(FigText ft) throws PropertyVetoException { 
+    super.textEdited(ft); 
+    MNodeInstance noi = (MNodeInstance) getOwner(); 
+    if (ft == _name) { 
+      String s = ft.getText().trim();
+      if (s.length()>0) {
+        s = s.substring(0, (s.length() - 1)); 
+      }
+      ParserDisplay.SINGLETON.parseNodeInstance(noi, s); 
+    } 
+  } 
+ 
+  protected void modelChanged() { 
+//    super.modelChanged(); 
+    MNodeInstance noi = (MNodeInstance) getOwner(); 
+    if (noi == null) return; 
+    String nameStr = ""; 
+    if (noi.getName() != null) { 
+      nameStr = noi.getName().trim(); 
+    } 
+    Collection col = noi.getClassifiers(); 
+    Iterator it = col.iterator(); 
+    String baseStr = ""; 
+    while (it.hasNext()) { 
+        baseStr = ((MClassifier)it.next()).getName(); 
+    } 
+    if (_readyToEdit) { 
+      if( nameStr == "" && baseStr == "") 
+	_name.setText(""); 
+      else 
+	_name.setText(nameStr.trim() + " : " + baseStr); 
+    } 
+    Dimension nameMin = _name.getMinimumSize(); 
+    Rectangle r = getBounds(); 
+    setBounds(r.x, r.y, r.width, r.height); 
+  } 
 
   public boolean getUseTrapRect() { return true; }
 	
   static final long serialVersionUID = 8822005566372687713L;
 
-}
+} /* end class FigMNodeInstance */
+

@@ -465,6 +465,19 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     	}
       }
 
+      else if ((fromPort instanceof MObjectImpl) && (toPort instanceof MObjectImpl)) {
+	MObject fromObj = (MObject) fromPort;
+	MObject toObj = (MObject) toPort; 
+   	
+	if (edgeClass == MDependencyImpl.class) {
+		MDependency dep = new MAbstractionImpl();
+		dep.addSupplier(fromObj);
+		dep.addClient(toObj);
+		addEdge(dep);
+		return dep;
+	}
+
+      }
 
       else {
 	  System.out.println("Incorrect edge");

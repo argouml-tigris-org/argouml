@@ -21,6 +21,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// File: TableModelClass_in_DeplByProps.java
+// Classes: TableModelClass_in_DeplByProps
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.ui.table;
 
 import com.sun.java.util.collections.*;
@@ -54,7 +61,7 @@ class TableModelClass_in_DeplByProps extends TableModelComposite {
       int size = nodes.size();
       for (int i = 0; i < size; i++) {
         Object node = nodes.elementAt(i);
-        if (node instanceof MClass) res.addElement(node);
+        if (node instanceof MClassImpl) res.addElement(node);
       }
       return res;
     }
@@ -66,7 +73,7 @@ class TableModelClass_in_DeplByProps extends TableModelComposite {
       while (it.hasNext()) {
         MElementResidence residence = (MElementResidence) it.next();
         MModelElement node = (MModelElement) residence.getResident();
-        if (node instanceof MClassifier) res.addElement(node);
+        if (node instanceof MClassImpl) res.addElement(node);
 
       }
       return res;

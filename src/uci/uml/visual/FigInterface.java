@@ -41,7 +41,7 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 
-/** Class to display graphics for a UML Class in a diagram. */
+/** Class to display graphics for a UML Interface in a diagram. */
 
 public class FigInterface extends FigNodeModelElement {
 
@@ -185,6 +185,10 @@ public class FigInterface extends FigNodeModelElement {
 	m = (MNamespace) ((UMLDiagram)pb.getTarget()).getNamespace();
       }
     }
+
+    // The next if-clause is important for the Deployment-diagram
+    // it detects if the enclosing fig is a component, in this case
+    // the ImplementationLocation will be set for the owning MInterface
     if (encloser != null && (encloser.getOwner() instanceof MComponentImpl)) {
       MComponent component = (MComponent) encloser.getOwner();
       MInterface in = (MInterface) getOwner();

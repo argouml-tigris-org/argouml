@@ -111,6 +111,7 @@ implements IStatusBar {
   protected static Action _actionStateDiagram = Actions.StateDiagram;
   protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
   protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
+  protected static Action _actionDeploymentDiagram = Actions.DeploymentDiagram;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.MModel;

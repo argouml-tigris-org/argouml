@@ -21,6 +21,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+
+// File: TableModelComponentByProps.java
+// Classes: TableModelComponentByProps
+// Original Author: 5eichler@informatik.uni-hamburg.de
+// $Id$
+
+
 package uci.uml.ui.table;
 
 import com.sun.java.util.collections.*;
@@ -43,16 +50,29 @@ class TableModelComponentByProps extends TableModelComposite {
   }
 
   public Vector rowObjectsFor(Object t) {
-    if (!(t instanceof UMLDeploymentDiagram)) return new Vector();
-    UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
-    Vector nodes = d.getNodes();
-    Vector res = new Vector();
-    int size = nodes.size();
-    for (int i = 0; i < size; i++) {
-      Object node = nodes.elementAt(i);
-      if (node instanceof MComponentImpl) res.addElement(node);
+    if (!(t instanceof UMLDeploymentDiagram || t instanceof MNodeImpl)) return new Vector();
+    if (t instanceof UMLDeploymentDiagram) {
+      UMLDeploymentDiagram d = (UMLDeploymentDiagram) t;
+      Vector nodes = d.getNodes();
+      Vector res = new Vector();
+      int size = nodes.size();
+      for (int i = 0; i < size; i++) {
+        Object node = nodes.elementAt(i);
+        if (node instanceof MComponentImpl) res.addElement(node);
+      }
+      return res;
     }
-    return res;
+    else {
+      MNode n = (MNode) t;
+      Vector res = new Vector();
+      Collection residences = n.getResidents();
+      Iterator it = residences.iterator();
+      while (it.hasNext()) {
+        MClassifier cls = (MClassifier) it.next();
+        if (cls instanceof MComponentImpl) res.addElement(cls);
+      }
+      return res;
+    }
   }
 
   public String toString() { return "Components vs. Properties"; }
