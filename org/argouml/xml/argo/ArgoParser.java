@@ -30,6 +30,7 @@ import java.net.URL;
 import org.argouml.kernel.Project;
 import org.argouml.xml.SAXParserBase;
 import org.argouml.xml.XMLElement;
+import org.xml.sax.*;
 
 public class ArgoParser extends SAXParserBase {
 
@@ -68,7 +69,7 @@ public class ArgoParser extends SAXParserBase {
         //
         //  a SAX exception could have been generated
         //    because of another exception.
-        //    Get the initial exception to display the 
+        //    Get the initial exception to display the
         //    location of the true error
         Exception ex = saxEx.getException();
         if(ex == null) {

@@ -4,14 +4,13 @@ echo
 echo "Argo Build System (borrowed from FOP)"
 echo "-------------------------------------"
 echo
-JAVA_HOME:/usr/java/jdk1.3
 PATH=$PATH:$JAVA_HOME/bin
 ARGO_HOME=$HOME/argo09/argouml
 ANT_HOME=/usr/share/java
 NSUML_HOME=$ARGO_HOME/lib
 XML_HOME=$NSUML_HOME
 OCL_HOME=$NSUML_HOME
-LOCALCLASSPATH=$NSUML_HOME/nsuml.jar:$ANT_HOME/ant.jar:$NSUML_HOME/xerces.jar:$OCL_HOME/ocl-argo.jar
+LOCALCLASSPATH=$NSUML_HOME/nsuml.jar:$ANT_HOME/ant.jar:$NSUML_HOME/xerces.jar:$OCL_HOME/ocl-argo.jar:$JAVA_HOME/lib/tools.jar
 
 #if [ "$JAVA_HOME" = "" ] ; then
 #  echo "ERROR: JAVA_HOME not found in your environment."
