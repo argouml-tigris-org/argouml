@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 
 import javax.swing.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -109,35 +110,35 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
     }
     
     public void addDatatype(int index) {
-        addElement(new MDataTypeImpl(),index);
+        addElement(MFactory.getDefaultFactory().createDataType(),index);
     }
     
     public void addClass(int index) {
-        addElement(new MClassImpl(),index);
+        addElement(MFactory.getDefaultFactory().createClass(),index);
     }
     
     public void addInterface(int index) {
-        addElement(new MInterfaceImpl(),index);
+        addElement(MFactory.getDefaultFactory().createInterface(),index);
     }
     
     public void addException(int index) {
-        addElement(new MExceptionImpl(),index);
+        addElement(MFactory.getDefaultFactory().createException(),index);
     }
     
     public void addSignal(int index) {
-        addElement(new MSignalImpl(),index);
+        addElement(MFactory.getDefaultFactory().createSignal(),index);
     }
     
     public MModelElement createModelElement() {
-        return new MClassImpl();
+        return MFactory.getDefaultFactory().createClass();
     }
     
     public void addActor(int index) {
-        addElement(new MActorImpl(),index);
+        addElement(MFactory.getDefaultFactory().createActor(),index);
     }
     
     public void addUseCase(int index) {
-        addElement(new MUseCaseImpl(),index);
+        addElement(MFactory.getDefaultFactory().createUseCase(),index);
     }
         
 }

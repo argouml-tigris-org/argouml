@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Icon;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -173,7 +174,7 @@ public class SelectionState extends SelectionWButtons {
     if (!(gm instanceof StateDiagramGraphModel)) return;
     StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;
 
-    MState newNode = new MStateImpl();
+    MState newNode = MFactory.getDefaultFactory().createState();
     if (!mgm.canAddNode(newNode)) return;
 
     //mgm.getNamespace().addOwnedElement(newNode);

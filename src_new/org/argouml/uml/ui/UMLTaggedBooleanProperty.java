@@ -63,7 +63,7 @@ public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
             }
                 
             if(!found) {
-                 MTaggedValue taggedValue = new MTaggedValueImpl();
+                 MTaggedValue taggedValue = MFactory.getDefaultFactory().createTaggedValue();
                  taggedValue.setTag(_tagName);
                  if(newState) {
                       taggedValue.setValue("true");

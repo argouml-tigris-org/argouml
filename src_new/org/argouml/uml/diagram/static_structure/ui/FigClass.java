@@ -39,6 +39,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -100,7 +101,8 @@ public class FigClass extends FigNodeModelElement {
    *   diagram. Not clear why it is public, or even why it is an instance
    *   variable (rather than local to the method).</p>
    */
-  public MElementResidence resident = new MElementResidenceImpl();
+  public MElementResidence resident = MFactory.getDefaultFactory().createElementResidence();
+
 
   /**
    * <p>Text highlighted by mouse actions on the diagram.</p>

@@ -30,6 +30,7 @@ import java.util.*;
 import java.beans.*;
 
 import org.argouml.uml.UUIDManager;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
@@ -45,38 +46,38 @@ public class JavaUML {
 
   // java.lang
 
-  public static MClass STRING_CLASS = new MClassImpl();
+  public static MClass STRING_CLASS = MFactory.getDefaultFactory().createClass();
 
-  public static MDataType VOID_TYPE = new MDataTypeImpl();
-  public static MDataType CHAR_TYPE = new MDataTypeImpl();
-  public static MDataType INT_TYPE = new MDataTypeImpl();
-  public static MDataType BOOLEAN_TYPE = new MDataTypeImpl();
-  public static MDataType BYTE_TYPE = new MDataTypeImpl();
-  public static MDataType LONG_TYPE = new MDataTypeImpl();
-  public static MDataType FLOAT_TYPE = new MDataTypeImpl();
-  public static MDataType DOUBLE_TYPE = new MDataTypeImpl();
+  public static MDataType VOID_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType CHAR_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType INT_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType BOOLEAN_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType BYTE_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType LONG_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType FLOAT_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType DOUBLE_TYPE = MFactory.getDefaultFactory().createDataType();
 
-  public static MClass CHAR_CLASS = new MClassImpl();
-  public static MClass INT_CLASS = new MClassImpl();
-  public static MClass BOOLEAN_CLASS = new MClassImpl();
-  public static MClass BYTE_CLASS = new MClassImpl();
-  public static MClass LONG_CLASS = new MClassImpl();
-  public static MClass FLOAT_CLASS = new MClassImpl();
-  public static MClass DOUBLE_CLASS = new MClassImpl();
+  public static MClass CHAR_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass INT_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass BOOLEAN_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass BYTE_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass LONG_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass FLOAT_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass DOUBLE_CLASS = MFactory.getDefaultFactory().createClass();
 
 
   // java.awt
-  public static MClass RECTANGLE_CLASS = new MClassImpl();
-  public static MClass POINT_CLASS = new MClassImpl();
-  public static MClass COLOR_CLASS = new MClassImpl();
+  public static MClass RECTANGLE_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass POINT_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass COLOR_CLASS = MFactory.getDefaultFactory().createClass();
 
 
   // java.util
-  public static MClass VECTOR_CLASS = new MClassImpl();
-  public static MClass HASHTABLE_CLASS = new MClassImpl();
-  public static MClass STACK_CLASS = new MClassImpl();
+  public static MClass VECTOR_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass HASHTABLE_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass STACK_CLASS = MFactory.getDefaultFactory().createClass();
 
-	public static MModel javastandards = new MModelImpl();
+	public static MModel javastandards = MFactory.getDefaultFactory().createModel();
 
   static{
    STRING_CLASS.setName("String");

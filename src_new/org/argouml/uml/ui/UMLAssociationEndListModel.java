@@ -25,6 +25,7 @@
 package org.argouml.uml.ui;
 import ru.novosoft.uml.*;
 import javax.swing.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
@@ -85,7 +86,7 @@ public class UMLAssociationEndListModel extends UMLModelElementListModel  {
         Object target = getTarget();
         if(target instanceof MAssociation) {
             MAssociation assoc = (MAssociation) target;
-            MAssociationEnd assocEnd = new MAssociationEndImpl();
+            MAssociationEnd assocEnd = MFactory.getDefaultFactory().createAssociationEnd();
             assoc.addConnection(assocEnd);
             fireIntervalAdded(this,index,index);
             navigateTo(assocEnd);

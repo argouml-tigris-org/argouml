@@ -25,6 +25,7 @@ package org.argouml.pattern.cognitive.critics;
 
 import java.util.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -33,7 +34,7 @@ import org.argouml.uml.cognitive.critics.*;
 
 public class PatternStereotypes {
 
-  public static final MStereotype Singleton = new MStereotypeImpl();
+  public static final MStereotype Singleton = MFactory.getDefaultFactory().createStereotype();
 	static{ Singleton.setName("Singleton"); }
   
 } /* end class PatternStereotypes */

@@ -27,6 +27,7 @@ import org.argouml.kernel.*;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
 import org.argouml.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -52,11 +53,11 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
-	    MCollaboration c = new MCollaborationImpl();
+	    MCollaboration c = MFactory.getDefaultFactory().createCollaboration();
 	    c.setUUID(UUIDManager.SINGLETON.getNewUUID());
 	    c.setName("Collaboration");
 	    p.getModel().addOwnedElement(c);
-	    MInteraction interaction = new MInteractionImpl();
+	    MInteraction interaction = MFactory.getDefaultFactory().createInteraction();
 	    interaction.setName("default Interaction");
 	    c.addInteraction(interaction);
 	    UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);

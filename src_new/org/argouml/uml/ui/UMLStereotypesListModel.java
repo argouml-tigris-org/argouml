@@ -23,6 +23,7 @@
 
 
 package org.argouml.uml.ui;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.foundation.core.*;
 
@@ -57,7 +58,7 @@ public class UMLStereotypesListModel extends UMLOwnedElementListModel  {
     }
 
     public MModelElement createModelElement() {
-        return new MStereotypeImpl();
+        return MFactory.getDefaultFactory().createStereotype();
     }
     
 }

@@ -23,6 +23,7 @@
 
 
 package org.argouml.uml.ui;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 
@@ -63,7 +64,7 @@ public class UMLAssociationsListModel extends UMLOwnedElementListModel  {
     }
 
     public MModelElement createModelElement() {
-        return new MAssociationImpl();
+        return MFactory.getDefaultFactory().createAssociation();
     }
     
 }

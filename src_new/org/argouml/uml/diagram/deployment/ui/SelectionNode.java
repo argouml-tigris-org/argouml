@@ -34,6 +34,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Icon;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -164,7 +165,7 @@ public class SelectionNode extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    MNode newNode = new MNodeImpl();
+    MNode newNode = MFactory.getDefaultFactory().createNode();
     FigMNode fc = (FigMNode) _content;
     MNode cls = (MNode) fc.getOwner();
 

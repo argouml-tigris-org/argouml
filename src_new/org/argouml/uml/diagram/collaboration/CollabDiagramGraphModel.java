@@ -243,10 +243,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
     //try {
       if (edgeClass == MAssociationRoleImpl.class &&
 		(fromPort instanceof MClassifierRole && toPort instanceof MClassifierRole)) {
-	    MAssociationRole asr = new MAssociationRoleImpl();
-		MAssociationEndRole aer0 = new MAssociationEndRoleImpl();
+	    MAssociationRole asr = MFactory.getDefaultFactory().createAssociationRole();
+		MAssociationEndRole aer0 = MFactory.getDefaultFactory().createAssociationEndRole();
 		aer0.setType((MClassifierRole) fromPort);
-		MAssociationEndRole aer1 = new MAssociationEndRoleImpl();
+		MAssociationEndRole aer1 = MFactory.getDefaultFactory().createAssociationEndRole();
 		aer1.setType((MClassifierRole) toPort);
 		asr.addConnection(aer0);
 		asr.addConnection(aer1);
@@ -256,7 +256,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
       /*else if (edgeClass == MGeneralization.class &&
 		((fromPort instanceof MActor && toPort instanceof MActor) ||
 		 (fromPort instanceof MUseCase && toPort instanceof MUseCase))) {
-	    MGeneralization gen = new MGeneralization((MClassifier) fromPort,
+	    MGeneralization gen = MFactory.getDefaultFactory().createGeneralization((MClassifier) fromPort,
 						(MClassifier) toPort);
 	    gen.addStereotype(MStereotype.EXTENDS);
 	    addEdge(gen);

@@ -208,7 +208,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
     if (!(aValue instanceof String)) return;
     Vector tvs = new Vector(_target.getTaggedValues());
     if (tvs.size() == rowIndex) {
-      MTaggedValue tv = new MTaggedValueImpl();
+      MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
       if (columnIndex == 0) tv.setTag((String)aValue);
       if (columnIndex == 1) tv.setValue((String) aValue);
       tvs.addElement(tv);

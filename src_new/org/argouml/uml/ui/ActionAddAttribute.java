@@ -26,6 +26,7 @@ package org.argouml.uml.ui;
 import org.argouml.kernel.*;
 import org.argouml.uml.*;
 import org.argouml.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 
@@ -38,7 +39,7 @@ public class ActionAddAttribute extends UMLChangeAction {
     public static ActionAddAttribute SINGLETON = new ActionAddAttribute();
 
     // needs-more-work: should be part of java binding or common elements
-    //    public static MDataType INT_TYPE = new MDataTypeImpl();
+    //    public static MDataType INT_TYPE = MFactory.getDefaultFactory().createDataType();
     //     static{ INT_TYPE.setName("int"); }
 
 

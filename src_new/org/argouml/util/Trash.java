@@ -26,6 +26,7 @@ package org.argouml.util;
 import java.util.*;
 import java.beans.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 
@@ -41,7 +42,7 @@ public class Trash {
 
   /** Keys are model objects, values are TrashItems with recovery info */
   public Vector _contents = new Vector();
-  public MModel Trash_Model = new MModelImpl();
+  public MModel Trash_Model = MFactory.getDefaultFactory().createModel();
 
 
   protected Trash() { 

@@ -11,6 +11,7 @@ import javax.swing.table.*;
 import javax.swing.border.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -520,7 +521,7 @@ public class DBWriter
 	 * only for testing, do not use main!
 	 */
     public static void main(String[] Args) throws Exception {
-	MModel mymodel = new MModelImpl();
+	MModel mymodel = MFactory.getDefaultFactory().createModel();
 	DBWriter writer = new DBWriter();
     } 
 };

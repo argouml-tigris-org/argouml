@@ -229,7 +229,7 @@ public class PropPanelTransition extends PropPanelModelElement {
         MAction effect = null;
         Object target = getTarget();
         if(target instanceof MTransition) {
-            effect = new MCallActionImpl();
+            effect = MFactory.getDefaultFactory().createCallAction();
             effect.setName("anon");
             ((MTransition) target).setEffect(effect);
         }

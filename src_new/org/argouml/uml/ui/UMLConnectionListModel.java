@@ -27,15 +27,15 @@
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
 import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
 
 import org.argouml.ui.*;
 import org.argouml.kernel.*;
 
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
 
 public class UMLConnectionListModel extends UMLModelElementListModel  {
 
@@ -89,15 +89,15 @@ public class UMLConnectionListModel extends UMLModelElementListModel  {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MAssociationEnd newEnd = new MAssociationEndImpl();
+            MAssociationEnd newEnd = MFactory.getDefaultFactory().createAssociationEnd();
             newEnd.setType(classifier);
             classifier.addAssociationEnd(newEnd);
 
-            MAssociation newAssoc = new MAssociationImpl();
+            MAssociation newAssoc = MFactory.getDefaultFactory().createAssociation();
             newAssoc.setNamespace(((MClassifier) target).getNamespace());
             newEnd.setAssociation(newAssoc);
             newAssoc.addConnection(newEnd);
-            MAssociationEnd otherEnd = new MAssociationEndImpl();
+            MAssociationEnd otherEnd = MFactory.getDefaultFactory().createAssociationEnd();
             newAssoc.addConnection(otherEnd);
 
             // Having added an association, mark as needing saving

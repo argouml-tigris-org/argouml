@@ -223,10 +223,10 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
   
     if (edgeClass == MLinkImpl.class &&
       (fromPort instanceof MObject && toPort instanceof MObject)) {
-      MLink ml = new MLinkImpl();
-      MLinkEnd le0 = new MLinkEndImpl();
+      MLink ml = MFactory.getDefaultFactory().createLink();
+      MLinkEnd le0 = MFactory.getDefaultFactory().createLinkEnd();
       le0.setInstance((MObject) fromPort);
-      MLinkEnd le1 = new MLinkEndImpl();
+      MLinkEnd le1 = MFactory.getDefaultFactory().createLinkEnd();
       le1.setInstance((MObject) toPort);
       ml.addConnection(le0);
       ml.addConnection(le1);
@@ -257,7 +257,7 @@ implements MutableGraphModel, MElementListener, VetoableChangeListener {
                 action.setAsynchronous(false);
               }
               // create stimulus
-              MStimulus stimulus = new MStimulusImpl();
+              MStimulus stimulus = MFactory.getDefaultFactory().createStimulus();
               stimulus.setName("");
               //set sender and receiver
               stimulus.setSender((MObject)fromPort);

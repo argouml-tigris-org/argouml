@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Icon;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -163,7 +164,7 @@ public class SelectionComponent extends SelectionWButtons {
 
   public void buttonClicked(int buttonCode) {
     super.buttonClicked(buttonCode);
-    MComponent newNode = new MComponentImpl();
+    MComponent newNode = MFactory.getDefaultFactory().createComponent();
     FigComponent fc = (FigComponent) _content;
     MComponent cls = (MComponent) fc.getOwner();
 

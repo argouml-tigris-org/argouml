@@ -33,6 +33,7 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.Icon;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.use_cases.*;
@@ -184,9 +185,9 @@ public class SelectionUseCase extends SelectionWButtons {
     super.buttonClicked(buttonCode);
     MClassifier newNode = null;
     if (buttonCode == 10 || buttonCode == 11)
-      newNode = new MUseCaseImpl();
+      newNode = MFactory.getDefaultFactory().createUseCase();
     else
-      newNode = new MActorImpl();
+      newNode = MFactory.getDefaultFactory().createActor();
 
     FigUseCase fc = (FigUseCase) _content;
     MUseCase cls = (MUseCase) fc.getOwner();

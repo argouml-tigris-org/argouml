@@ -29,6 +29,7 @@ import org.argouml.uml.reveng.java.*;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.static_structure.layout.*;
 import org.tigris.gef.base.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 
 import javax.swing.*;

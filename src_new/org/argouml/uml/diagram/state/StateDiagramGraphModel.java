@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.state;
 import java.util.*;
 import java.beans.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
@@ -284,7 +285,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	return null;
 
     if (edgeClass == MTransitionImpl.class) {
-      MTransition tr = new MTransitionImpl();
+      MTransition tr = MFactory.getDefaultFactory().createTransition();
       // _namespace.addOwnedElement(tr);
 	  _machine.addTransition(tr);
       tr.setSource(fromSV);

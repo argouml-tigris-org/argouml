@@ -23,6 +23,7 @@
 
 package org.argouml.uml.ui;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -228,7 +229,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
             for (Iterator i = lConstraints.iterator(); i.hasNext();) {
               OclTree ocltCurrent = (OclTree) i.next();
 
-              MConstraint mc = new MConstraintImpl();
+              MConstraint mc = MFactory.getDefaultFactory().createConstraint();
               mc.setName (ocltCurrent.getConstraintName());
               mc.setBody (new MBooleanExpression ("OCL",
                   ocltCurrent.getExpression()));
@@ -255,7 +256,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
         
         if (m_mcConstraint == null) {
           // New constraint, first time setData is called
-          m_mcConstraint = new MConstraintImpl();
+          m_mcConstraint = MFactory.getDefaultFactory().createConstraint();
           
           m_mcConstraint.setName ("newConstraint");
           m_mcConstraint.setBody (new MBooleanExpression("OCL", sData));
@@ -272,7 +273,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
           m_alConstraints.set (m_nIdx, m_mcConstraint);
         }
         else {
-          mcOld = new MConstraintImpl();
+          mcOld = MFactory.getDefaultFactory().createConstraint();
           mcOld.setName (m_mcConstraint.getName());
           mcOld.setBody (new MBooleanExpression ("OCL",
                               m_mcConstraint.getBody().getBody()));
@@ -296,7 +297,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
           }
           
           // Set name
-          MConstraint mcOld = new MConstraintImpl();
+          MConstraint mcOld = MFactory.getDefaultFactory().createConstraint();
           mcOld.setName (m_mcConstraint.getName());
           mcOld.setBody (new MBooleanExpression ("OCL",
                               m_mcConstraint.getBody().getBody()));

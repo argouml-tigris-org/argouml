@@ -31,6 +31,7 @@ import java.util.*;
 import java.util.Enumeration;
 import javax.swing.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.collaborations.*;
@@ -749,7 +750,7 @@ public class FigSeqLink extends FigEdgeModelElement implements MElementListener{
           }
         }
       }
-      MCallAction mca = new MCallActionImpl();
+      MCallAction mca = MFactory.getDefaultFactory().createCallAction();
       mca.setAsynchronous(ma.isAsynchronous());
       mca.setName(ma.getName());
       ms.setDispatchAction(mca);

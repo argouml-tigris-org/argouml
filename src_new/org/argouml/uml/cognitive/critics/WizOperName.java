@@ -36,6 +36,7 @@ import javax.swing.*;
 
 import org.argouml.uml.*;
 import org.argouml.cognitive.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
@@ -201,7 +202,7 @@ public class WizOperName extends WizMEName {
                     break;
                 }
                 if (theStereotype == null) {
-                    theStereotype = new MStereotypeImpl();
+                    theStereotype = MFactory.getDefaultFactory().createStereotype();
 		    theStereotype.setName("create");
 		    // theStereotype.setStereotype(???);
 		    theStereotype.setBaseClass("BehavioralFeature");

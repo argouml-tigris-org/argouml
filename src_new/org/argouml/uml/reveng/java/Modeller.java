@@ -28,6 +28,8 @@ import org.argouml.ui.*;
 import org.argouml.ocl.OCLUtil;
 import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.model_management.*;
@@ -181,7 +183,7 @@ public class Modeller
                          Vector interfaces,
                          String javadoc)
     {
-	MClass mClass = (MClass)addClassifier(new MClassImpl(),
+	MClass mClass = (MClass)addClassifier(MFactory.getDefaultFactory().createClass(),
 					      name, modifiers, javadoc);
 
 	mClass.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
@@ -263,7 +265,7 @@ public class Modeller
                              Vector interfaces,
                              String javadoc)
     {
-	MInterface mInterface = (MInterface)addClassifier(new MInterfaceImpl(),
+	MInterface mInterface = (MInterface)addClassifier(MFactory.getDefaultFactory().createInterface(),
 							  name,
 							  modifiers,
 							  javadoc);
@@ -636,7 +638,7 @@ public class Modeller
 	}
 
 	if(mGeneralization == null) {
-	    mGeneralization = new MGeneralizationImpl();
+	    mGeneralization = MFactory.getDefaultFactory().createGeneralization();
 	    mGeneralization.setName(name);
 	}
 	return mGeneralization;
@@ -674,7 +676,7 @@ public class Modeller
 	}
 
 	if(mAbstraction == null) {
-	    mAbstraction = new MAbstractionImpl();
+	    mAbstraction = MFactory.getDefaultFactory().createAbstraction();
 	    mAbstraction.setName(name);
 	}
 	return mAbstraction;
@@ -691,7 +693,7 @@ public class Modeller
     {
 	MPackage mPackage = searchPackageInModel(name);
 	if(mPackage == null) {
-	    mPackage = new MPackageImpl();
+	    mPackage = MFactory.getDefaultFactory().createPackage();
 	    mPackage.setName(getRelativePackageName(name));
 	    mPackage.setNamespace(model);
 
@@ -758,7 +760,7 @@ public class Modeller
 	MMethod mMethod = (MMethod)parseState.getMethod(name);
 
 	if(mMethod == null) {
-	    mMethod = new MMethodImpl();
+	    mMethod = MFactory.getDefaultFactory().createMethod();
 	    mMethod.setName(name);
 	    parseState.getClassifier().addFeature(mMethod);
 	}
@@ -813,9 +815,9 @@ public class Modeller
 	}
 
 	if(mAssociationEnd == null && !noAssociations) {
-	    mAssociationEnd = new MAssociationEndImpl();
-	    MAssociationEnd mAssociationEnd2 = new MAssociationEndImpl();
-	    MAssociation mAssociation = new MAssociationImpl();
+	    mAssociationEnd = MFactory.getDefaultFactory().createAssociationEnd();
+	    MAssociationEnd mAssociationEnd2 = MFactory.getDefaultFactory().createAssociationEnd();
+	    MAssociation mAssociation = MFactory.getDefaultFactory().createAssociation();
 	    mAssociation.addConnection(mAssociationEnd);
 	    mAssociation.addConnection(mAssociationEnd2);
 	    mAssociation.setNamespace(currentPackage);
@@ -840,7 +842,7 @@ public class Modeller
 	MStereotype mStereotype = (MStereotype)model.lookup(name);
 
 	if(mStereotype == null) {
-	    mStereotype = new MStereotypeImpl();
+	    mStereotype = MFactory.getDefaultFactory().createStereotype();
 	    mStereotype.setName(name);
 	    mStereotype.setNamespace(model);
 	}
@@ -864,7 +866,7 @@ public class Modeller
 		return tv;
 	    }
 	}
-	MTaggedValue tv = new MTaggedValueImpl();
+	MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
 	tv.setModelElement(element);
 	tv.setTag(name);
 	return tv;
@@ -1013,7 +1015,7 @@ public class Modeller
       // add as OCL constraint
       String sContext = OCLUtil.getContextString (me);
 
-      MConstraint mc = new MConstraintImpl();
+      MConstraint mc = MFactory.getDefaultFactory().createConstraint();
       mc.setName (sTagData.substring (0, sTagData.indexOf (':')));
 
       if (sTagName.equals ("invariant")) {

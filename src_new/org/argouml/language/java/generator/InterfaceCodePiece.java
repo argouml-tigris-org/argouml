@@ -31,6 +31,7 @@ package org.argouml.language.java.generator;
 
 import java.io.*;
 import java.util.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
@@ -112,7 +113,7 @@ public class InterfaceCodePiece extends NamedCodePiece
 
 	if(mInterface == null) {
 	    // Removed
-	    mInterface = new MInterfaceImpl();
+	    mInterface = MFactory.getDefaultFactory().createInterface();
 	    writer.write("REMOVED ");
 	}
 

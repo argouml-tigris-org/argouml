@@ -13,6 +13,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import java.util.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -151,7 +152,7 @@ public class DBLoader
 	private MModel readModel(String modelUUID, String modelName, Statement stmt) throws SQLException {
 		System.out.println("Loading model with uuid: "+ modelUUID);
 
-		MModel model = new MModelImpl();
+		MModel model = MFactory.getDefaultFactory().createModel();
 		model.setName(modelName);
 		model.setUUID(modelUUID);
 
@@ -210,7 +211,7 @@ public class DBLoader
 
 	private void readClass(MModel model, String classUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MClass cls = new MClassImpl();
+		MClass cls = MFactory.getDefaultFactory().createClass();
 		cls.setName(name);
 		cls.setUUID(classUUID);
 		if (ns.equals(model.getUUID()))
@@ -222,7 +223,7 @@ public class DBLoader
 
 	private void readInterface(MModel model, String interfaceUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MInterface me = new MInterfaceImpl();
+		MInterface me = MFactory.getDefaultFactory().createInterface();
 		me.setName(name);
 		me.setUUID(interfaceUUID);
 		if (ns.equals(model.getUUID()))
@@ -234,7 +235,7 @@ public class DBLoader
 
 	private void readActor(MModel model, String actorUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MActor actor = new MActorImpl();
+		MActor actor = MFactory.getDefaultFactory().createActor();
 		actor.setName(name);
 		actor.setUUID(actorUUID);
 		if (ns.equals(model.getUUID()))
@@ -246,7 +247,7 @@ public class DBLoader
 
 	private void readUseCase(MModel model, String ucUUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MUseCase usecase = new MUseCaseImpl();
+		MUseCase usecase = MFactory.getDefaultFactory().createUseCase();
 		usecase.setName(name);
 		usecase.setUUID(ucUUID);
 		if (ns.equals(model.getUUID()))
@@ -258,7 +259,7 @@ public class DBLoader
 
 	private void readDataType(String dtUUID, String name) {
 
-		MDataType me = new MDataTypeImpl();
+		MDataType me = MFactory.getDefaultFactory().createDataType();
 		me.setName(name);
 		me.setUUID(dtUUID);
 
@@ -277,7 +278,7 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet attributes = stmtCl.executeQuery(query);
 		while (attributes.next()) {
-			MAttribute attr = new MAttributeImpl();
+			MAttribute attr = MFactory.getDefaultFactory().createAttribute();
 			attr.setUUID(attributes.getString("uuid"));
 			if (! attributes.getString("ownerScope").equals("-1"))
 				attr.setOwnerScope(MScopeKind.forValue(Integer.parseInt(attributes.getString("ownerScope"))));
@@ -308,7 +309,7 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet operations = stmtCl.executeQuery(query);
 		while (operations.next()) {
-			MOperation oper = new MOperationImpl();
+			MOperation oper = MFactory.getDefaultFactory().createOperation();
 			oper.setUUID(operations.getString("uuid"));
 			if (! operations.getString("ownerScope").equals("-1"))
 				oper.setOwnerScope(MScopeKind.forValue(Integer.parseInt(operations.getString("ownerScope"))));
@@ -334,7 +335,7 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet parameters = stmtCl.executeQuery(query);
 		while (parameters.next()) {
-			MParameter param = new MParameterImpl();
+			MParameter param = MFactory.getDefaultFactory().createParameter();
 			param.setUUID(parameters.getString("uuid"));
 			if (! ((parameters.getString("defaultValue") == null) || (parameters.getString("defaultValue").equals(""))))
 				param.setDefaultValue(new MExpression("",parameters.getString("defaultValue")));
@@ -358,7 +359,7 @@ public class DBLoader
 		Statement stmtCl = Conn.createStatement();
 		ResultSet constraints = stmtCl.executeQuery(query);
 		while (constraints.next()) {
-			MConstraint constraint = new MConstraintImpl();
+			MConstraint constraint = MFactory.getDefaultFactory().createConstraint();
 			constraint.setUUID(constraints.getString("uuid"));
 			if (! constraints.getString("body").equals(""))
 				constraint.setBody(new MBooleanExpression("OCL", constraints.getString("body")));
@@ -386,7 +387,7 @@ public class DBLoader
 
 	private void readAssociationEnd(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MAssociationEnd ae = new MAssociationEndImpl();
+		MAssociationEnd ae = MFactory.getDefaultFactory().createAssociationEnd();
 		MClassifier type = null;
 		ae.setName(name);
 		ae.setUUID(UUID);
@@ -426,7 +427,7 @@ public class DBLoader
 
 	private void readAssociation(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MAssociation me = new MAssociationImpl();
+		MAssociation me = MFactory.getDefaultFactory().createAssociation();
 		MAssociationEnd ae1 = null;
 		MAssociationEnd ae2 = null;
 
@@ -452,7 +453,7 @@ public class DBLoader
 
 	private void readGeneralization(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MGeneralization me = new MGeneralizationImpl();
+		MGeneralization me = MFactory.getDefaultFactory().createGeneralization();
 		MGeneralizableElement parent = null;
 		MGeneralizableElement child = null;
 		me.setName(name);
@@ -478,7 +479,7 @@ public class DBLoader
 
 	private void readAbstraction(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 
-		MAbstraction me = new MAbstractionImpl();
+		MAbstraction me = MFactory.getDefaultFactory().createAbstraction();
 		me.setName(name);
 		me.setUUID(UUID);
 		if (ns.equals(model.getUUID()))
@@ -490,7 +491,7 @@ public class DBLoader
 
 	private void readUsage(MModel model, String UUID, String name, String ns, String stereotypeUUID, String packageUUID) throws SQLException {
 	
-		MUsage me = new MUsageImpl();
+		MUsage me = MFactory.getDefaultFactory().createUsage();
 		me.setName(name);
 		me.setUUID(UUID);
 		if (ns.equals(model.getUUID()))
@@ -520,7 +521,7 @@ public class DBLoader
 
 	/** Don't use main(), it's only for testing! */
     public static void main(String[] Args) throws Exception {
-		MModel mymodel = new MModelImpl();
+		MModel mymodel = MFactory.getDefaultFactory().createModel();
 		DBLoader writer = new DBLoader();
     }
 };

@@ -25,6 +25,7 @@ package org.argouml.uml.ui;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -54,7 +55,7 @@ public class ActionAddTopLevelPackage extends UMLChangeAction {
 	try {
 	    int numPacks = p.getModels().size();
 	    String nameStr = "package_" + (numPacks + 1);
-	    MModel model = new MModelImpl();
+	    MModel model = MFactory.getDefaultFactory().createModel();
 	    model.setName(nameStr);
 	    p.addMember(model);
 	    super.actionPerformed(ae);

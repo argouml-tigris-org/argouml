@@ -43,6 +43,7 @@ import java.net.*;
 
 import org.xml.sax.InputSource;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
@@ -337,7 +338,7 @@ public class Project implements java.io.Serializable {
         // 		ex.printStackTrace();
         // 	}
 
-        MModel m1 = new MModelImpl();
+        MModel m1 = MFactory.getDefaultFactory().createModel();
         m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
 
@@ -774,7 +775,7 @@ public class Project implements java.io.Serializable {
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
             System.out.println("new Type defined!");
-            cls = new MClassImpl();
+            cls = MFactory.getDefaultFactory().createClass();
             cls.setName(s);
             _definedTypes.put(s, cls);
         }

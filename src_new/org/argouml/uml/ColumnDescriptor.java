@@ -26,6 +26,7 @@ package org.argouml.uml;
 import java.util.*;
 import java.beans.*;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
@@ -238,7 +239,7 @@ class ColumnStereotype extends ColumnDescriptor {
     if (!(target instanceof MModelElement)) return;
     if (!(value instanceof String)) return;
 	String stereoName = (String) value;
-	MStereotype s = new MStereotypeImpl();
+	MStereotype s = MFactory.getDefaultFactory().createStereotype();
 	s.setName(stereoName);
 	((MModelElement) target).setStereotype(s);
   }
@@ -908,7 +909,7 @@ class ColumnReturn extends ColumnDescriptor {
     Project p = pb.getProject();
     MClassifier rt = p.findType(s);
     ParserDisplay pd = ParserDisplay.SINGLETON;
-        MParameter rp = MMUtil.SINGLETON.buildParameter();
+	MParameter rp = MFactory.getDefaultFactory().createParameter();
 	rp.setType(rt);
 	MMUtil.SINGLETON.setReturnParameter(op, rp);
   }
@@ -1141,7 +1142,7 @@ class ColumnBaseForObject extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MObject tt = (MObject) target;
     String _value = (String) value;
-    MClass classifier = new MClassImpl(); 
+    MClass classifier = MFactory.getDefaultFactory().createClass(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 
@@ -1215,7 +1216,7 @@ class ColumnBaseForComponentInstance extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MComponentInstance tt = (MComponentInstance) target;
     String _value = (String) value;
-    MComponent classifier = new MComponentImpl(); 
+    MComponent classifier = MFactory.getDefaultFactory().createComponent(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 
@@ -1290,7 +1291,7 @@ class ColumnBaseForNodeInstance extends ColumnDescriptor {
     if (!(value instanceof String)) return;
     MNodeInstance tt = (MNodeInstance) target;
     String _value = (String) value;
-    MNode classifier = new MNodeImpl(); 
+    MNode classifier = MFactory.getDefaultFactory().createNode(); 
     Collection col = tt.getClassifiers();
     if ((col != null) && (col.size()>0)) { 
       Iterator itcol = col.iterator(); 

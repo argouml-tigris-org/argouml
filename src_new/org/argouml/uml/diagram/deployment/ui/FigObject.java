@@ -35,6 +35,7 @@ import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
@@ -59,7 +60,7 @@ public class FigObject extends FigNodeModelElement {
 
   FigRect _bigPort;
   FigRect _cover;
-  public MElementResidence resident = new MElementResidenceImpl();
+  public MElementResidence resident = MFactory.getDefaultFactory().createElementResidence();
 
   // add other Figs here aes needed
 

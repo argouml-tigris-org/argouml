@@ -68,7 +68,7 @@ public class UMLPackagesListModel extends UMLOwnedElementListModel  {
     }
 
     public MModelElement createModelElement() {
-        return new MPackageImpl();
+        return MFactory.getDefaultFactory().createPackage();
     }
     
 }

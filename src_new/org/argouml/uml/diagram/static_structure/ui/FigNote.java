@@ -34,8 +34,8 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-
 import ru.novosoft.uml.foundation.core.*;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 
@@ -167,7 +167,7 @@ public class FigNote extends FigNode implements VetoableChangeListener, DelayedV
      */
     public FigNote(MModelElement element) {
 	this();                                     // Construct the figure.
-	MComment node = new MCommentImpl();         // Create a new MComment node.
+	MComment node = MFactory.getDefaultFactory().createComment();         // Create a new Comment node.
 	setOwner(node);                             // Set it as the owner of the figure.
 	element.addComment(node);                   // Tell the annotated element, that it has a comment now.
 
