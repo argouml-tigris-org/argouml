@@ -46,9 +46,9 @@ public class AddToDoItemDialog extends ArgoDialog {
     ////////////////////////////////////////////////////////////////
     // constants    
     private static final String PRIORITIES[] = {
-        localize("level.high"),
-        localize("level.medium"),
-        localize("level.low")
+        Translator.localize("misc.level.high"),
+        Translator.localize("misc.level.medium"),
+        Translator.localize("misc.level.low")
     };
     private static final int TEXT_ROWS = 8;
     private static final int TEXT_COLUMNS = 30;

@@ -30,11 +30,9 @@ import org.argouml.i18n.Translator;
 
 public class PriorityNode {
     // Private members.
-    private static final String BUNDLE = "Cognitive";
-
-    static final String high = Translator.localize(BUNDLE, "level.high");
-    static final String medium = Translator.localize(BUNDLE, "level.medium");
-    static final String low = Translator.localize(BUNDLE, "level.low");
+    static final String high = Translator.localize("misc.level.high");
+    static final String medium = Translator.localize("misc.level.medium");
+    static final String low = Translator.localize("misc.level.low");
 
     ////////////////////////////////////////////////////////////////
     // static variables and methods
