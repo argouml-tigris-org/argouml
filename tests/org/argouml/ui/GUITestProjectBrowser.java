@@ -130,15 +130,15 @@ public class GUITestProjectBrowser extends TestCase {
         ProjectBrowser pb = ProjectBrowser.getInstance();
 
 	pb.setTarget(diagram1);
-	assertEquals(diagram1, pb.getTarget());
+	assertEquals("Diagram1 should be the target", diagram1, pb.getTarget());
 
 	pb.setTarget(diagram2);
-	assertEquals(diagram2, pb.getTarget());
+	assertEquals("Diagram2 should be the target", diagram2, pb.getTarget());
 
-	UmlFactory.getFactory().delete(package2);
+	ProjectManager.getManager().getCurrentProject().moveToTrash(package2);
 	ProjectManager pm = ProjectManager.getManager();
-	assertEquals(pm.getCurrentProject().getDiagrams().get(0), 
-		     pb.getTarget());
+	assertEquals("The target is not reset to the first diagram", 
+            pm.getCurrentProject().getDiagrams().get(0), pb.getTarget());
     }
 
     /**
