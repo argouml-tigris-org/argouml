@@ -229,6 +229,11 @@ After these operations the file will still be visible in the GUI.
 		<property name="javahelp.xsl"  value="../docbook-setup/create-javahelp.xsl"/>
 
 		<!-- Copy and change 'antcall' task below for additional DocBook documents -->
+        <antcall target="internal-dispatcher">		
+			<param name="doc.subdir"  value="cookbook"/>      <!-- sub-dir of 'documentation' with xml file -->
+			<param name="doc.prefix"  value="cookbook"/>  <!-- DocBook filename without xml extension   -->
+		</antcall>
+
 		<antcall target="internal-dispatcher">		
 			<param name="doc.subdir"  value="quick-guide"/> <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="quickguide"/>  <!-- DocBook filename without xml extension   -->
@@ -241,6 +246,7 @@ After these operations the file will still be visible in the GUI.
 			<param name="doc.subdir"  value="manual"/>      <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="argomanual"/>  <!-- DocBook filename without xml extension   -->
 		</antcall>
+       
         <antcall target="internal-dispatcher">		
 			<param name="doc.subdir"  value="javahelp"/>      <!-- sub-dir of 'documentation' with xml file -->
 			<param name="doc.prefix"  value="javahelp"/>  <!-- DocBook filename without xml extension   -->
