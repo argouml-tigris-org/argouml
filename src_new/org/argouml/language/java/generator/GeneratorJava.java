@@ -143,15 +143,16 @@ public class GeneratorJava
      * @return the full path name of the the generated file or
      * 	       null if no file can be generated.
      */
-    public String GenerateFile(MClassifier cls, String path) {
-        String name = cls.getName();
+    public String GenerateFile(Object me, String path) {
+        String name = ModelFacade.getName(me);
         if (name == null || name.length() == 0)
             return null;
+        MClassifier cls = (MClassifier)me;
         String filename = name + ".java";
         if (!path.endsWith(FILE_SEPARATOR))
             path += FILE_SEPARATOR;
 
-        String packagePath = getPackageName(cls.getNamespace());
+        String packagePath = getPackageName(ModelFacade.getNamespace(cls));
 
         int lastIndex = -1;
         do {
@@ -559,11 +560,11 @@ public class GeneratorJava
         if (cls.isLeaf()) {
             sb.append("final ");
         }
-        
+
         // add additional modifiers
         if (cls.getTaggedValue("src_modifiers") != null)
             sb.append(" "+cls.getTaggedValue("src_modifiers")+" ");
-        
+
         // add classifier keyword and classifier name
         sb.append(sClassifierKeyword).append(" ").append(
             generateName(cls.getName()));
@@ -1753,14 +1754,14 @@ public class GeneratorJava
        @param namespace the namespace
        @return the Java package name
     */
-    public String getPackageName(MNamespace namespace) {
-        if (namespace == null || namespace.getNamespace() == null)
+    public String getPackageName(Object namespace) {
+        if (namespace == null || ModelFacade.isANamespace(namespace) || ModelFacade.getNamespace(namespace) == null)
             return "";
-        String packagePath = namespace.getName();
-        while ((namespace = namespace.getNamespace()) != null) {
+        String packagePath = ModelFacade.getName(namespace);
+        while ((namespace = ModelFacade.getNamespace(namespace)) != null) {
             // ommit root package name; it's the model's root
-            if (namespace.getNamespace() != null)
-                packagePath = namespace.getName() + '.' + packagePath;
+            if (ModelFacade.getNamespace(namespace) != null)
+                packagePath = ModelFacade.getName(namespace) + '.' + packagePath;
         }
         return packagePath;
     }
