@@ -24,29 +24,20 @@
 
 package org.argouml.uml.diagram;
 
-import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlException;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.model.uml.foundation.core.CoreHelper;
-import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
-import org.argouml.uml.diagram.static_structure.ui.FigEdgeNote;
 
 import java.util.Hashtable;
 import java.util.Vector;
-
 import org.apache.log4j.Logger;
 
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.Mode;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphSupport;
-import org.tigris.gef.presentation.Fig;
-
-import sun.security.action.GetLongAction;
 
 
 /**
@@ -59,16 +50,13 @@ import sun.security.action.GetLongAction;
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
     private static final Logger LOG =
 	Logger.getLogger(UMLMutableGraphSupport.class);
     
     /** contains all the nodes in the graphmodel/diagram. */    
-    protected Vector _nodes = new Vector();
+    private Vector nodes = new Vector();
     /** constains all the edges in the graphmodel/diagram. */    
-    protected Vector _edges = new Vector();
+    private Vector edges = new Vector();
     
     
     /** constructor.
@@ -82,20 +70,27 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * @see org.tigris.gef.graph.MutableGraphSupport#getNodes()
      * @return Vector of nodes in the graphmodel/diagram
      */    
-    public Vector getNodes() { return _nodes; }
+    public Vector getNodes() { return nodes; }
     
     /** get all the edges from the graphmodel/diagram
      * @return Vector of edges in the graphmodel/diagram
      */    
-    public Vector getEdges() { return _edges; }
+    public Vector getEdges() { return edges; }
     
     
+    /**
+     * @see org.tigris.gef.graph.MutableGraphModel#containsNode(java.lang.Object)
+     */
     public boolean containsNode(Object node) {
-	return _nodes.contains(node);
+	return nodes.contains(node);
     }
     
+    /**
+     * @param edge the candidate edge
+     * @return true if it is contained
+     */
     public boolean constainsEdge(Object edge) {
-	return _edges.contains(edge);
+	return edges.contains(edge);
     }
     
     /** remove a node from the diagram and notify GEF
@@ -103,7 +98,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */    
     public void removeNode(Object node) {
 	if (!containsNode(node)) return;
-	_nodes.removeElement(node);
+	nodes.removeElement(node);
 	fireNodeRemoved(node);
     }
     
@@ -112,13 +107,16 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      */    
     public void removeEdge(Object edge) {
 	if (!containsEdge(edge)) return;
-	_edges.removeElement(edge);
+	edges.removeElement(edge);
 	fireEdgeRemoved(edge);
     }
     
     /**
      * Assume that anything can be connected to anything unless overridden
      * in a subclass.
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#canConnect(java.lang.Object, 
+     * java.lang.Object)
      */
     public boolean canConnect(Object fromP, Object toP) {
         return true;
@@ -127,12 +125,18 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 
     /** The connect method without specifying a connection
      * type is unavailable by default
+     *
+     * @see org.tigris.gef.graph.MutableGraphModel#connect(java.lang.Object, 
+     * java.lang.Object)
      */
     public Object connect(Object fromPort, Object toPort) {        
         throw new UnsupportedOperationException("The connect method is "
 						+ "not supported");
     }
     
+    /**
+     * @return the namespace of the diagram
+     */
     public abstract Object getNamespace();
 
     /** Contruct and add a new edge of the given kind and connect
@@ -207,6 +211,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (edge == null) {
             return false;
         }
-       return (UmlFactory.getFactory().isConnectionValid(edge.getClass(), UmlHelper.getHelper().getSource(edge), UmlHelper.getHelper().getDestination(edge)));
+       return (UmlFactory.getFactory().isConnectionValid(edge.getClass(), 
+               UmlHelper.getHelper().getSource(edge), 
+               UmlHelper.getHelper().getDestination(edge)));
     }
 }

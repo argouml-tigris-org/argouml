@@ -55,7 +55,7 @@ public class UseCaseDiagramGraphModel
      * model".  Also, elements from other models will have their
      * FigNodes add a line to say what their model is.<p>
      */
-    protected Object _model;
+    private Object model;
 
 
     ///////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,7 @@ public class UseCaseDiagramGraphModel
      * @return  The namespace associated with this graph model.
      */
     public Object getNamespace() {
-        return _model;
+        return model;
     }
 
 
@@ -86,7 +86,7 @@ public class UseCaseDiagramGraphModel
     public void setNamespace(Object namespace) {
         if (!ModelFacade.isANamespace(namespace))
             throw new IllegalArgumentException();
-	_model = namespace;
+	model = namespace;
     }
 
 
@@ -122,7 +122,7 @@ public class UseCaseDiagramGraphModel
     }
 
 
-    /* Return the node or edge that owns the given port.<p>
+    /** Return the node or edge that owns the given port.<p>
      *
      * In our implementation the only objects with ports, use
      * themselves as the port, so are there own owner.<p>
@@ -303,7 +303,7 @@ public class UseCaseDiagramGraphModel
      */
     public boolean canAddNode(Object node) {
         if (super.canAddNode(node)) return true;
-        if (_nodes.contains(node)) {
+        if (containsNode(node)) {
 	    return false;
 	}
         return ModelFacade.isAActor(node) || ModelFacade.isAUseCase(node);
@@ -333,7 +333,7 @@ public class UseCaseDiagramGraphModel
 
         // Give up if we are already on the graph
         if (edge == null) return false;
-        if (_edges.contains(edge)) {
+        if (containsEdge(edge)) {
             return false;
         }
 
@@ -401,8 +401,8 @@ public class UseCaseDiagramGraphModel
 
         if ((end0 == null)
 	    || (end1 == null)
-	    || (!(_nodes.contains(end0)))
-	    || (!(_nodes.contains(end1)))) {
+	    || (!(containsNode(end0)))
+	    || (!(containsNode(end1)))) {
 
             return false;
 
@@ -443,7 +443,7 @@ public class UseCaseDiagramGraphModel
         // Add the node, check that it is an actor or use case and add it to
         // the model namespace.
 
-        _nodes.addElement(node);
+        getNodes().addElement(node);
         /*
          * 2002-07-14
          * Jaap Branderhorst
@@ -463,9 +463,9 @@ public class UseCaseDiagramGraphModel
 	     || (ModelFacade.isAUseCase(node)))
 	    && (ModelFacade.getNamespace(node) == null)) {
 	    // end NEW CODE
-	    LOG.debug("setting namespace " + _model
+	    LOG.debug("setting namespace " + model
 		      + " to element " + node);
-            ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ node);
+            ModelFacade.addOwnedElement(model, /*(MModelElement)*/ node);
         }
 
         // Tell GEF its changed
@@ -493,10 +493,11 @@ public class UseCaseDiagramGraphModel
         if (!canAddEdge(edge)) return;
 
         // Add the element and place it in the namespace of the model
-        _edges.addElement(edge);
+        getEdges().addElement(edge);
 
-        if (ModelFacade.isAModelElement(edge) && ModelFacade.getNamespace(edge) == null) {
-            ModelFacade.addOwnedElement(_model, /*(MModelElement)*/ edge);
+        if (ModelFacade.isAModelElement(edge) 
+                && ModelFacade.getNamespace(edge) == null) {
+            ModelFacade.addOwnedElement(model, /*(MModelElement)*/ edge);
         }
 
         // Tell GEF

@@ -40,7 +40,7 @@ public class ActivityDiagramGraphModel extends StateDiagramGraphModel {
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
-        if (_nodes.contains(node)) return false;
+        if (containsNode(node)) return false;
         if (ModelFacade.isAPartition(node)) return true;
         else return super.canAddNode(node);
     }

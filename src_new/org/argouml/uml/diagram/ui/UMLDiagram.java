@@ -72,10 +72,7 @@ public abstract class UMLDiagram
     extends ArgoDiagram
     implements MElementListener {
 
-    /**
-     * @deprecated by Linus Tolke as of 0.16. Will be private.
-     */
-    protected static Logger cat = Logger.getLogger(UMLDiagram.class);
+    private static final Logger LOG = Logger.getLogger(UMLDiagram.class);
 
     ////////////////////////////////////////////////////////////////
     // actions for toolbar
@@ -138,18 +135,24 @@ public abstract class UMLDiagram
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    protected Object _namespace;
-    protected DiagramInfo _diagramName = new DiagramInfo(this);
+    private Object namespace;
+    private DiagramInfo diagramName = new DiagramInfo(this);
 
     private JToolBar toolBar;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * constructor
+     */
     public UMLDiagram() {
         super();
     }
 
+    /**
+     * @param ns the UML namespace
+     */
     public UMLDiagram(Object ns) {
         this();
 
@@ -159,50 +162,65 @@ public abstract class UMLDiagram
         setNamespace(ns);
     }
 
-    public UMLDiagram(String diagramName, Object ns) {
+    /**
+     * @param name the name of the diagram
+     * @param ns the UML namespace
+     */
+    public UMLDiagram(String name, Object ns) {
         this(ns);
         try {
-            setName(diagramName);
+            setName(name);
         } catch (PropertyVetoException pve) {
-            cat.fatal("Name not allowed in construction of diagram");
+            LOG.fatal("Name not allowed in construction of diagram");
         }
     }
 
+    /**
+     * @see org.tigris.gef.base.Diagram#initialize(java.lang.Object)
+     */
     public void initialize(Object owner) {
         super.initialize(owner);
         if (org.argouml.model.ModelFacade.isANamespace(owner))
             setNamespace(owner);
         else
-            cat.debug("unknown object in UMLDiagram initialize:" + owner);
+            LOG.debug("unknown object in UMLDiagram initialize:" + owner);
     }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
+    /**
+     * @return the namespace for the diagram
+     */
     public Object getNamespace() {
-        return _namespace;
+        return namespace;
     }
 
     /**
      * sets the namespace of the Diagram, and
      * adds the diagram as a listener of its namspace in the UML model.
      * (so that it can delete itself when the model element is deleted).
+     *
+     * @param ns the namespace
      */
     public void setNamespace(Object ns) {
         if (!ModelFacade.isANamespace(ns)) {
-            cat.error("Not a namespace");
-            cat.error(ns);
+            LOG.error("Not a namespace");
+            LOG.error(ns);
             throw new IllegalArgumentException("Given object not a namespace");
         }
-        _namespace = ns;
+        namespace = ns;
         // add the diagram as a listener to the namspace so
         // that when the namespace is remove()d the diagram is deleted also.
         UmlModelEventPump.getPump().addModelEventListener(
             this,
-            _namespace,
+            namespace,
             UmlModelEventPump.REMOVE);
     }
 
+    /**
+     * @see org.tigris.gef.base.Diagram#getClassAndModelID()
+     */
     public String getClassAndModelID() {
         String s = super.getClassAndModelID();
         if (getOwner() == null)
@@ -213,13 +231,19 @@ public abstract class UMLDiagram
 
     // TODO: should be overwritten by each subclass of UMLDiagram
 
+    /**
+     * @return the namespace
+     */
     public Object getOwner() {
         return getNamespace();
     }
 
+    /**
+     * @see org.tigris.gef.base.Diagram#setName(java.lang.String)
+     */
     public void setName(String n) throws PropertyVetoException {
         super.setName(n);
-        _diagramName.updateName();
+        diagramName.updateName();
     }
 
     static final long serialVersionUID = -401219134410459387L;
@@ -278,6 +302,8 @@ public abstract class UMLDiagram
 
     /**
      * Implement on the ancestor to get actions to populate toolbar.
+     *
+     * @return the actions for the toolbar
      */
     protected abstract Object[] getUmlActions();
 
@@ -320,6 +346,8 @@ public abstract class UMLDiagram
      * There is also a risk that if this diagram was the one shown in
      * the diagram panel, then it will remain after it has been
      * deleted. so we need to deselect this diagram.
+     *
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
      */
     public void removed(MElementEvent e) {
         Object newTarget =
@@ -328,7 +356,7 @@ public abstract class UMLDiagram
         TargetManager.getInstance().setTarget(newTarget);
         UmlModelEventPump.getPump().removeModelEventListener(
             this,
-            _namespace,
+            namespace,
             UmlModelEventPump.REMOVE);
         ProjectManager.getManager().getCurrentProject().moveToTrash(this);
 
@@ -336,30 +364,40 @@ public abstract class UMLDiagram
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
+     *
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
      */
     public void propertySet(MElementEvent e) {
     }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
+     *
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
     }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
+     *
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
     public void roleRemoved(MElementEvent e) {
     }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
+     *
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
      */
     public void listRoleItemSet(MElementEvent e) {
     }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
+     *
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
      */
     public void recovered(MElementEvent e) {
     }
@@ -408,6 +446,8 @@ public abstract class UMLDiagram
     /**
      * Set all toolbar buttons to unselected other then the toolbar button
      * with the supplied action.
+     *
+     * @param otherThanAction
      */
     public void deselectOtherTools(Action otherThanAction) {
         //cat.debug("Looking for action " + otherThanAction);
