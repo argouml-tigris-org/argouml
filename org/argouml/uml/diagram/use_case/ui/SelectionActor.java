@@ -28,10 +28,8 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
-import java.awt.Point;
 import java.awt.Rectangle;
 
 import javax.swing.Icon;
@@ -43,20 +41,13 @@ import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.base.ModeModify;
 import org.tigris.gef.base.SelectionManager;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
 import ru.novosoft.uml.foundation.core.MAssociation;
 
@@ -159,82 +150,29 @@ public class SelectionActor extends SelectionWButtons {
   }
 
 
-  public void buttonClicked(int buttonCode) {
-    super.buttonClicked(buttonCode);
-    MUseCase newNode = UmlFactory.getFactory().getUseCases().createUseCase();
-    FigActor fc = (FigActor) _content;
-    MActor cls = (MActor) fc.getOwner();
+  
 
-    Editor ce = Globals.curEditor();
-    GraphModel gm = ce.getGraphModel();
-    if (!(gm instanceof MutableGraphModel)) return;
-    MutableGraphModel mgm = (MutableGraphModel) gm;
 
-    if (!mgm.canAddNode(newNode)) return;
-    GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-    LayerPerspective lay = (LayerPerspective)
-      ce.getLayerManager().getActiveLayer();
-    Fig newFC = renderer.getFigNodeFor(gm, lay, newNode);
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode()
+     */
+    protected Object getNewNode(int buttonCode) {
+        return UmlFactory.getFactory().getUseCases().createUseCase();
+    }
 
-    Rectangle outputRect = new Rectangle(Math.max(0, fc.getX() - 200),
-					 Math.max(0, fc.getY() - 200),
-					 fc.getWidth() + 400,
-					 fc.getHeight() + 400);
-    if (buttonCode >=10 && buttonCode <= 13) {
-            int x = 0;
-            int y = 0; 
-            if (buttonCode == 10) {
-                // superclass
-                x = fc.getX();
-                y = Math.max(0, fc.getY() - 200);
-            }
-            else if (buttonCode == 11) {
-                x = fc.getX();
-                y = fc.getY() + fc.getHeight() + 100;
-            }
-            else if (buttonCode == 12) {
-                x = fc.getX() + fc.getWidth() + 100;
-                y = fc.getY();
-            }
-            else if (buttonCode == 13) {
-                x = Math.max(0, fc.getX() - 200);
-                y = fc.getY();
-                
-            }        
-            // place the fig if it is not a selfassociation       
-            if (!placeFig(newFC, lay, x, y, outputRect)) return;
-        }
-    ce.add(newFC);
-    mgm.addNode(newNode);
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeLeft(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeLeft(MutableGraphModel gm, Object newNode) {
+        return gm.connect(newNode, _content.getOwner(), MAssociation.class);
+    }
 
-    FigPoly edgeShape = new FigPoly();
-    Point fcCenter = fc.center();
-    edgeShape.addPoint(fcCenter.x, fcCenter.y);
-    Point newFCCenter = newFC.center();
-    edgeShape.addPoint(newFCCenter.x, newFCCenter.y);
-    Object newEdge = null;
-
-    if (buttonCode == 12) newEdge = addAssocClassRight(mgm, cls, newNode);
-    else if (buttonCode == 13) newEdge = addAssocClassLeft(mgm, cls, newNode);
-
-    FigEdge fe = (FigEdge) lay.presentationFor(newEdge);
-    edgeShape.setLineColor(Color.black);
-    edgeShape.setFilled(false);
-    edgeShape._isComplete = true;
-    fe.setFig(edgeShape);
-    ce.getSelectionManager().select(fc);
-  }
-
-  public Object addAssocClassRight(MutableGraphModel mgm, MActor cls,
-			    MUseCase newCls) {
-    return mgm.connect(cls, newCls, MAssociation.class);
-  }
-
-  public Object addAssocClassLeft(MutableGraphModel mgm, MActor cls,
-			    MUseCase newCls) {
-    return mgm.connect(newCls, cls, MAssociation.class);
-  }
-
+    /**
+     * @see org.argouml.uml.diagram.ui.SelectionWButtons#createEdgeRight(org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
+     */
+    protected Object createEdgeRight(MutableGraphModel gm, Object newNode) {
+        return gm.connect(_content.getOwner(),newNode , MAssociation.class);
+    }
 
 } /* end class SelectionActor */
 
