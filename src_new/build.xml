@@ -225,13 +225,8 @@ Property files to be searched:
     </path>
 
     <path id="argo.runtime.classpath">
-      <pathelement location="${xerces.jar.path}" />
-      <pathelement location="${nsuml.jar.path}" />
-      <pathelement location="${ocl-argo.jar.path}" />
-      <pathelement location="${gef.jar.path}" />
-      <pathelement location="${antlrall.jar.path}" />
-      <pathelement location="${log4j.jar.path}" />
-      <pathelement location="${jh.jar.path}" />
+      <!-- Currently same as the compile path. -->
+      <path refid="argo.compile.classpath" />
     </path>
 
     <!-- In order to use ant optional tasks which use jars that are not -->
@@ -870,13 +865,7 @@ ${Name} Build file
         <classpath>
             <pathelement location="${argo.build.classes}" />
             <pathelement location="${junit.jar.path}" />
-            <pathelement location="${xerces.jar.path}" />
-            <pathelement location="${nsuml.jar.path}" />
-            <pathelement location="${ocl-argo.jar.path}" />
-            <pathelement location="${gef.jar.path}" />
-            <pathelement location="${antlrall.jar.path}" />
-            <pathelement location="${log4j.jar.path}" />
-            <pathelement location="${jh.jar.path}" />
+	    <path refid="argo.compile.classpath" />
         </classpath>
      </javac>
   </target>
@@ -920,13 +909,7 @@ ${Name} Build file
         <classpath>
             <pathelement location="${argo.build.classes}"/>
             <pathelement location="${argo.tests.classes}"/>
-            <pathelement location="${xerces.jar.path}" />
-            <pathelement location="${nsuml.jar.path}" />
-            <pathelement location="${ocl-argo.jar.path}" />
-            <pathelement location="${gef.jar.path}" />
-            <pathelement location="${antlrall.jar.path}" />
-            <pathelement location="${log4j.jar.path}" />
-            <pathelement location="${jh.jar.path}" />
+            <path refid="argo.runtime.classpath"/>
         </classpath>
         <formatter type="xml"/>
       <batchtest todir="${argo.tests.reports}/junit/output">
