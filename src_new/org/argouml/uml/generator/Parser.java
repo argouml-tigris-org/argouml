@@ -35,4 +35,13 @@ public abstract class Parser {
 	throws ParseException;
 
     public abstract Object parseTransition(Object trans, String s);
+    
+    /**
+     * Parse a given string s with the information given from the action state actionState and update
+     * this actionState.
+     * @param actionState
+     * @param s
+     * @return
+     */
+    public abstract Object parseActionState(String s, Object actionState );
 } /* end class Parser */
