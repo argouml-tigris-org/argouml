@@ -194,6 +194,10 @@ public class FigMessage extends FigNodeModelElement {
     public void setArrow(int direction) {
 	Rectangle bbox = getBounds();
 
+	if (arrowDirection == direction) {
+	    return;
+	}
+
 	arrowDirection = direction;
 	switch (direction) {
 	    // south
@@ -311,14 +315,13 @@ public class FigMessage extends FigNodeModelElement {
 	int ry = receiverPort.getY();
 	if (sx < rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // east
 	    setArrow(2);
-	} else
-	    if (sx > rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // west
-		setArrow(3);
-	    } else
-		if (sy < ry) { // south
-		    setArrow(1);
-		} else
-		    setArrow(4);
+	} else if (sx > rx && Math.abs(sy - ry) <= Math.abs(sx - rx)) { // west
+	    setArrow(3);
+	} else if (sy < ry) { // south
+	    setArrow(1);
+	} else {
+	    setArrow(4);
+	}
     }
 
     /**
