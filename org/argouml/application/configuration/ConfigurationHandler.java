@@ -84,6 +84,7 @@ public abstract class ConfigurationHandler {
     }
 
     /** Constructor which optionally allows configuration changes.
+     * @param changeable indicates if the configuration can be changed
      */
     public ConfigurationHandler(boolean changeable) {
 	super();
@@ -136,6 +137,7 @@ public abstract class ConfigurationHandler {
 
     /** Save the configuration to the location it was loaded from.
      *
+     *  @param force the save even if it would not normally be done.
      *  @return true if the save was successful, false if it was not
      *  attempted or encountered an error.
      */
@@ -179,6 +181,7 @@ public abstract class ConfigurationHandler {
 
     /** Load the configuration from a <code>File</code>.
      *
+     *  @param file to load from.
      *  @return true if this call loaded the configuration,
      *  otherwise false, not distinguishing between a load
      *  error or a previously loaded configuration.
@@ -197,6 +200,7 @@ public abstract class ConfigurationHandler {
 
     /** Load the configuration from a <code>URL</code>.
      *
+     *  @param url to load from.
      *  @return true if this call loaded the configuration,
      *  otherwise false, not distinguishing between a load
      *  error or a previously loaded configuration.
@@ -214,6 +218,7 @@ public abstract class ConfigurationHandler {
 
     /** Save the configuration to a <code>File</code>.
      *
+     *  @param file to save to.
      *  @return true if this call saved the configuration,
      *  otherwise false.
      */ 
@@ -232,6 +237,7 @@ public abstract class ConfigurationHandler {
 
     /** Save the configuration to a <code>URL</code>.
      *
+     *  @param url to save to.
      *  @return true if this call saved the configuration,
      *  otherwise false.
      */ 
