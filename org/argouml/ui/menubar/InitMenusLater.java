@@ -20,6 +20,7 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+// $id$
 
 
 package org.argouml.ui.menubar;
@@ -40,11 +41,24 @@ import org.tigris.gef.base.CmdDistribute;
 import org.tigris.gef.base.CmdNudge;
 import org.tigris.gef.base.CmdReorder;
 
-
+/**
+ * Thread to initialize the submenus of the main menu of argouml (only third level, so the ones with the triangle on windows systems).
+ * @author unknown
+ */
 class InitMenusLater implements Runnable {
   JMenu align, distribute, reorder, nudge, setPreferredSize, layout;
   JMenu editTabs, detailsTabs;
 
+  /**
+   * @deprecated we don't have a details tab menu section any more
+   * @param a the alignment submenu
+   * @param d the distribute submenu
+   * @param r the reorder submenu
+   * @param n the nudge submenu
+   * @param l the layout submenu
+   * @param et the editor tabs submenu
+   * @param dt the details tab submenu
+   */
   public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, 
                         JMenu l, JMenu et, JMenu dt) {
     align = a;
@@ -55,7 +69,29 @@ class InitMenusLater implements Runnable {
     editTabs = et;
     detailsTabs = dt;
   }
+  
+  /**
+   * Constructs this new runnable to initialize the submenus.
+   * @param align the alignment submenu
+   * @param distribute the distribution submenu
+   * @param reorder the reorder submenu
+   * @param nudge the nudge submenu
+   * @param layout the layout submenu
+   * @param editTabs the edit tabs submenu
+   */
+  public InitMenusLater(JMenu align, JMenu distribute, JMenu reorder, JMenu nudge, JMenu layout, JMenu editTabs) {
+      this.align = align;
+      this.distribute = distribute;
+      this.reorder = reorder;
+      this.nudge = nudge;
+      this.layout = layout;
+      this.editTabs = editTabs;
+  }
 
+    /**
+     * The submenus of argouml are created on startup in a seperate thread. 
+     * @see java.lang.Runnable#run()
+     */
     public void run() {
         int menuShortcut = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 
@@ -135,6 +171,7 @@ class InitMenusLater implements Runnable {
         tabe2Item.setAccelerator(altshift2);
         JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("action.as-metrics"));
         tabe3Item.setAccelerator(altshift3);
+        /*
         JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("tab.todo-item"));
         tab1Item.setAccelerator(alt1);
         JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("tab.properties"));
@@ -149,5 +186,6 @@ class InitMenusLater implements Runnable {
         tab6Item.setAccelerator(alt6);
         JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("tab.checklist"));
         tab7Item.setAccelerator(alt7);
+        */
     }
 } /* end class InitMenusLater */
