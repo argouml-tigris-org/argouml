@@ -41,10 +41,9 @@ public class CrInvalidJoin extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrInvalidJoin() {
-	setHeadline("Change Join Transitions");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	addTrigger("outgoing");
     }

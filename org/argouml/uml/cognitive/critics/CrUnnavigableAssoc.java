@@ -40,11 +40,9 @@ public class CrUnnavigableAssoc extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrUnnavigableAssoc() {
-	setHeadline("Make <ocl>self</ocl> Navigable");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	addTrigger("end_navigable");
     }

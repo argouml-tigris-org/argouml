@@ -41,7 +41,7 @@ public class CrUnconventionalOperName extends AbstractCrUnconventionalName {
      * The constructor.
      */
     public CrUnconventionalOperName() {
-	setHeadline("Choose a Better MOperation Name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("feature_name");

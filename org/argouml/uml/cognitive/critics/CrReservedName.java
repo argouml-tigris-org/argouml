@@ -181,10 +181,11 @@ public class CrReservedName extends CrUML {
 
 
     ////////////////////////////////////////////////////////////////
-    /** constructor
+    /** 
+     * Constructor.
      */
     public CrReservedName() {
-	setHeadline("Change <ocl>self</ocl> to a Non-Reserved Word");
+        setupHeadAndDesc();
 	setPriority(ToDoItem.HIGH_PRIORITY);
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);

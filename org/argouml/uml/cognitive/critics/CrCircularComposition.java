@@ -46,7 +46,7 @@ public class CrCircularComposition extends CrUML {
      * The constructor.
      */
     public CrCircularComposition() {
-	setHeadline("Remove Circular Composition");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	setPriority(ToDoItem.LOW_PRIORITY);

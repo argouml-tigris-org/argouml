@@ -44,8 +44,7 @@ public class CrDupParamName extends CrUML {
      *
      */
     public CrDupParamName() {
-	setHeadline("Duplicate Parameter Name");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_CONTAINMENT);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }

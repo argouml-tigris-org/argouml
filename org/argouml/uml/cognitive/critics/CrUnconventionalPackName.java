@@ -41,7 +41,7 @@ public class CrUnconventionalPackName extends AbstractCrUnconventionalName {
      * The constructor.
      */
     public CrUnconventionalPackName() {
-	setHeadline("Revise Package Name <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

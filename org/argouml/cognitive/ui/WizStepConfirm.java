@@ -33,8 +33,9 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** A simple non-modal wizard step that shows instructions and prompts
- *  the user to confirm an action.
+/** 
+ * A non-modal wizard step that shows instructions and prompts
+ * the user to confirm an action.
  *
  * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.cognitive.ui.Wizard
@@ -44,10 +45,10 @@ public class WizStepConfirm extends WizStep {
     private JTextArea instructions = new JTextArea();
 
     /**
-     * The constructor.
-     *
+     * The constructor. Since this constructor does not set the 
+     * necessary instructions, it is private.
      */
-    public WizStepConfirm() {
+    private WizStepConfirm() {
 	instructions.setEditable(false);
 	instructions.setBorder(null);
 	instructions.setBackground(getMainPanel().getBackground());
@@ -96,7 +97,7 @@ public class WizStepConfirm extends WizStep {
     /**
      * The constructor.
      *
-     * @param w the wizard
+     * @param w the wizard (ignored)
      * @param instr the instructions
      */
     public WizStepConfirm(Wizard w, String instr) {

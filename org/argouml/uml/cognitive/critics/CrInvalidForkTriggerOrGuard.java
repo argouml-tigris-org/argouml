@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -27,19 +28,27 @@ import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 
 /**
- * UML 1.5 Well-formedness rule [1] for Transition.
+ * UML 1.5 Well-formedness rule [1] for Transition, to remove 
+ * a trigger or guard from fork outgoing transition.
  *
  * @author pepargouml@yahoo.es
  */
 public class CrInvalidForkTriggerOrGuard extends CrUML {
 
+    /**
+     * The constructor.
+     */
     public CrInvalidForkTriggerOrGuard() {
-        setHeadline("Remove Trigger or Guard from Fork Outgoing Transition");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_STATE_MACHINES);
         addTrigger("trigger");
         addTrigger("guard");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
+     * org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isATransition(dm))) return NO_PROBLEM;
         Object tr = /*(MTransition)*/ dm;
@@ -56,11 +65,12 @@ public class CrInvalidForkTriggerOrGuard extends CrUML {
                 (t != null && Model.getFacade().getName(t) != null
                 && Model.getFacade().getName(t).length() > 0);
         if (hasTrigger) return PROBLEM_FOUND;
-        boolean noGuard = (g == null || Model.getFacade().getExpression(g) == null
+        boolean noGuard = 
+            (g == null || Model.getFacade().getExpression(g) == null
                 || Model.getFacade().getBody(Model.getFacade()
-                .getExpression(g)) == null
+                        .getExpression(g)) == null
                 || Model.getFacade().getBody(Model.getFacade()
-                .getExpression(g)).toString().length() == 0);
+                        .getExpression(g)).toString().length() == 0);
         if (!noGuard) return PROBLEM_FOUND;
         return NO_PROBLEM;
     }

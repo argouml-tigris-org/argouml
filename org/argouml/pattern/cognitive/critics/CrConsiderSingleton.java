@@ -55,9 +55,7 @@ public class CrConsiderSingleton extends CrUML {
      * "associationEnd".
      */
     public CrConsiderSingleton() {
-
-        setResource("CrConsiderSingleton");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_PATTERNS);
         setPriority(ToDoItem.LOW_PRIORITY);
 

@@ -35,6 +35,7 @@ import org.argouml.model.Model;
  * Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
  * Semantics. OMG document ad/97-08-04.
  * In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
+ * Remove final keyword or remove subclasses
  *
  * @author jrobbins
  */
@@ -42,10 +43,9 @@ public class CrFinalSubclassed extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrFinalSubclassed() {
-	setHeadline("Remove final keyword or remove subclasses");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
 	addTrigger("specialization");

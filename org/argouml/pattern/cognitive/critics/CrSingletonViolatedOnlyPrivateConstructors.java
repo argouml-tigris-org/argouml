@@ -70,8 +70,7 @@ public class CrSingletonViolatedOnlyPrivateConstructors extends CrUML {
      */
 
     public CrSingletonViolatedOnlyPrivateConstructors() {
-        setResource("CrSingletonViolatedOnlyPrivateConstructors");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_PATTERNS);
         setPriority(ToDoItem.MED_PRIORITY);
 

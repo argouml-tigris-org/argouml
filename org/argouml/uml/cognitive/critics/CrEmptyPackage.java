@@ -51,8 +51,7 @@ public class CrEmptyPackage extends CrUML {
      *
      */
     public CrEmptyPackage() {
-	setHeadline("Add Elements to Package <ocl>self</ocl>");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_MODULARITY);
 	addTrigger("ownedElement");
     }

@@ -43,8 +43,7 @@ public class WizAddOperation extends UMLWizard {
 
     private WizStepTextField step1 = null;
     private String label = Translator.localize("label.name");
-    private String instructions =
-	"Please change the name of the offending model element.";
+    private String instructions;
 
     /**
      * Creates a new instance of WizAddOperation.

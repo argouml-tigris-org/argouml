@@ -39,10 +39,9 @@ public class CrMultiComposite extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrMultiComposite() {
-        setHeadline("Composite Role with MMultiplicity > 1");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
         addTrigger("aggregation");

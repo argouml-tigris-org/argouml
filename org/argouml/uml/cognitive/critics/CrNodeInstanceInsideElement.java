@@ -46,7 +46,7 @@ public class CrNodeInstanceInsideElement extends CrUML {
      *
      */
     public CrNodeInstanceInsideElement() {
-	setHeadline("NodeInstances normally have no enclosers");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

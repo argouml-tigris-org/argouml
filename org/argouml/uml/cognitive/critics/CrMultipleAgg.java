@@ -61,9 +61,7 @@ public class CrMultipleAgg extends CrUML {
      * "end_aggregation".<p>
      */
     public CrMultipleAgg() {
-
-        setResource("CrMultipleAgg");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
 

@@ -30,8 +30,10 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 
-/** A critic to detect when a classifier has to many operations).
- *  TODO: exclude getter and setter operations from count
+/** 
+ * A critic to detect when a classifier has to many operations). <p>
+ * 
+ * TODO: exclude getter and setter operations from count
  */
 public class CrTooManyOper extends AbstractCrTooMany {
 
@@ -40,7 +42,7 @@ public class CrTooManyOper extends AbstractCrTooMany {
      *
      */
     public CrTooManyOper() {
-	setHeadline("Reduce Operations on <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_METHODS);
 	setThreshold(20);
 	addTrigger("behavioralFeature");

@@ -196,10 +196,12 @@ public class CrUML extends Critic {
      * and the critic description (the detailed explanation that
      * appears in the to-do tab of the details pane).
      *
-     * TODO: Since the parameter is ignored, will be deprecated in good time.
      * MVW: Maybe we can make it part of the constructor CrUML()?
      *
-     * @param s the english headline, but ignored!
+     * @deprecated by mvw, as of ArgoUML V0.17.5. 
+     * Since the parameter is ignored, replaced by {@link setupHeadAndDesc}.
+     *
+     * @see org.argouml.cognitive.critics.Critic#setHeadline(java.lang.String)
      */
     public final void setHeadline(String s) {
 	//
@@ -209,6 +211,18 @@ public class CrUML extends Critic {
 	setResource(className.substring(className.lastIndexOf('.') + 1));
     }
 
+    /**
+     * Set up the locale specific text for the critic headline
+     * (the one liner that appears in the to-do pane)
+     * and the critic description (the detailed explanation that
+     * appears in the to-do tab of the details pane).
+     */
+    public final void setupHeadAndDesc() {
+        String className = getClass().getName();
+        setResource(className.substring(className.lastIndexOf('.') + 1));
+    }
+
+    
     /**
      * @see org.argouml.cognitive.critics.Critic#predicate(
      * java.lang.Object, org.argouml.cognitive.Designer)

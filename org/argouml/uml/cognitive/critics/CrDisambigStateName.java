@@ -34,7 +34,7 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 
 /**
- * The critic for ambiguous names.
+ * The critic for ambiguous names of a state.
  *
  * @author Jason Robbins
  */
@@ -42,10 +42,9 @@ public class CrDisambigStateName extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrDisambigStateName() {
-	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");
@@ -58,13 +57,12 @@ public class CrDisambigStateName extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAState(dm))) return NO_PROBLEM;
-	Object state = /*(MState)*/ dm;
-	String myName = Model.getFacade().getName(state);
+	String myName = Model.getFacade().getName(dm);
 	// TODO: should define a CompoundCritic
 	if (myName == null || myName.equals("")) return NO_PROBLEM;
 	String myNameString = myName;
 	if (myNameString.length() == 0) return NO_PROBLEM;
-	Collection pkgs = Model.getFacade().getElementImports2(state);
+	Collection pkgs = Model.getFacade().getElementImports2(dm);
 	if (pkgs == null) return NO_PROBLEM;
 	for (Iterator iter = pkgs.iterator(); iter.hasNext();) {
 	    Object imp = /*(MElementImport)*/ iter.next();
@@ -78,7 +76,7 @@ public class CrDisambigStateName extends CrUML {
 		Object me = /*(MModelElement)*/ 
 		    Model.getFacade().getModelElement(eo);
 		if (!(Model.getFacade().isAClassifier(me))) continue;
-		if (me == state) continue;
+		if (me == dm) continue;
 		String meName = Model.getFacade().getName(me);
 		if (meName == null || meName.equals("")) continue;
 		if (meName.equals(myNameString)) return PROBLEM_FOUND;

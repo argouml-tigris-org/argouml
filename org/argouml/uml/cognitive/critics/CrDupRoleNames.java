@@ -58,9 +58,7 @@ public class CrDupRoleNames extends CrUML {
      */
 
     public CrDupRoleNames() {
-
-        setResource("CrDupRoleNames");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_NAMING);
 
         // These may not actually make any difference at present (the code

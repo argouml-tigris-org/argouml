@@ -40,10 +40,9 @@ public class CrMergeClasses extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrMergeClasses() {
-	setHeadline("Consider Combining Classes");
+        setupHeadAndDesc();
 	setPriority(ToDoItem.LOW_PRIORITY);
 	addSupportedDecision(CrUML.DEC_CLASS_SELECTION);
 	addTrigger("associationEnd");

@@ -1,3 +1,4 @@
+// $Id$
 // Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
@@ -35,20 +36,25 @@ import java.util.Collection;
  */
 public class CrInvalidHistory extends CrUML {
 
+    /**
+     * The constructor.
+     */
     public CrInvalidHistory() {
-        setHeadline("Remove Extra Outgoing Transitions");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_STATE_MACHINES);
         addTrigger("outgoing");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(java.lang.Object,
+     * org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(Model.getFacade().isAPseudostate(dm))) return NO_PROBLEM;
         Object k = Model.getFacade().getPseudostateKind(dm);
-        if (!Model.getFacade().
-                equalsPseudostateKind(k,
+        if (!Model.getFacade().equalsPseudostateKind(k,
                         Model.getPseudostateKind().getDeepHistory())
-                && !Model.getFacade().
-                equalsPseudostateKind(k,
+                && !Model.getFacade().equalsPseudostateKind(k,
                         Model.getPseudostateKind().getShallowHistory()))
             return NO_PROBLEM;
         Collection outgoing = Model.getFacade().getOutgoings(dm);

@@ -70,8 +70,7 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      */
 
     public CrSingletonViolatedMissingStaticAttr() {
-        setResource("CrSingletonViolatedMissingStaticAttr");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_PATTERNS);
         setPriority(ToDoItem.MED_PRIORITY);
 

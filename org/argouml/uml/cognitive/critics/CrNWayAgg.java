@@ -32,16 +32,16 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 
 /**
- * <p> A critic to check that no end of a 3-way (or more) association is an
- *   aggregation.</p>
+ * A critic to check that no end of a 3-way (or more) association is an
+ * aggregation.<p>
  *
- * <p>This is the third well-formedness rule for associations in the UML 1.3
- *   standard (see section 2.5.3 of the standard).</p>
+ * This is the third well-formedness rule for associations in the UML 1.3
+ * standard (see section 2.5.3 of the standard).<p>
  *
- * <p><em>Note</em>. This only applies to 3-way or more
+ * <em>Note</em>. This only applies to 3-way or more
  * associations. There is a separate critic (see {@link
  * org.argouml.uml.cognitive.critics.CrMultipleAgg}) which deals with
- * 2-way assocations.</p>
+ * 2-way assocations. <p>
  *
  * @see <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
@@ -54,18 +54,15 @@ import org.argouml.model.Model;
 public class CrNWayAgg extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic. <p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
+     * Sets up the resource name, which will allow headline and description
      * to found for the current locale. Provides a design issue category
      * (CONTAINMENT), a knowledge type (SEMANTICS) and add triggers for
-     * "connection" and "end_aggregation".</p>
+     * "connection" and "end_aggregation".
      */
-
     public CrNWayAgg() {
-
-        setResource("CrNWayAgg");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_CONTAINMENT);
         setKnowledgeTypes(Critic.KT_SEMANTICS);
 
@@ -78,24 +75,24 @@ public class CrNWayAgg extends CrUML {
 
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>Check that the number of ends more than two, otherwise this should be
-     *   handled by the critic for 2-way assocations (see {@link
-     *   org.argouml.uml.cognitive.critics.CrMultipleAgg}).</p>
+     * Check that the number of ends more than two, otherwise this should be
+     * handled by the critic for 2-way assocations (see {@link
+     * org.argouml.uml.cognitive.critics.CrMultipleAgg}).<p>
      *
-     * <p>We do not handle association roles, which are a subclass of
-     *   association. An association role should be fine, if its parent is OK,
-     *   since it must be more tightly constrained than its parent.</p>
+     * We do not handle association roles, which are a subclass of
+     * association. An association role should be fine, if its parent is OK,
+     * since it must be more tightly constrained than its parent.<p>
      *
-     * <p><em>Note</em>. ArgoUML does not currently have a constructor to check
-     *   that an association role is more tightly constrained than its
-     *   parent.</p>
+     * <em>Note</em>. ArgoUML does not currently have a constructor to check
+     * that an association role is more tightly constrained than its
+     * parent.<p>
      *
-     * <p>Then loop through the ends, looking for aggregate ends. Note that we
-     *   look for aggregation explicitly, rather than just absence of "no
-     *   aggregation", so we don't trigger if the aggregation is just
-     *   undefined.</p>
+     * Then loop through the ends, looking for aggregate ends. Note that we
+     * look for aggregation explicitly, rather than just absence of "no
+     * aggregation", so we don't trigger if the aggregation is just
+     * undefined.
      *
      * @param  dm    the {@link java.lang.Object Object} to be checked against
      *               the critic.

@@ -29,10 +29,10 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
-/** A critic to detect when a classifier has too many attributes.
+/** 
+ * A critic to detect when a classifier has too many attributes.
  *
  * @author mkl
- *
  */
 public class CrTooManyAttr extends AbstractCrTooMany {
 
@@ -41,7 +41,7 @@ public class CrTooManyAttr extends AbstractCrTooMany {
      *
      */
     public CrTooManyAttr() {
-	setHeadline("Reduce Attributes on <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STORAGE);
 	setThreshold(7);
 	addTrigger("structuralFeature");

@@ -38,17 +38,15 @@ import org.argouml.model.Model;
  *
  * @author jrobbins
  */
-
 //TODO: split into one critic for inherited problems and
 //one for pproblems directly in this class.
 public class CrOppEndVsAttr extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrOppEndVsAttr() {
-        setHeadline("Rename Role or MAttribute");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_INHERITANCE);
         addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
         addSupportedDecision(CrUML.DEC_NAMING);

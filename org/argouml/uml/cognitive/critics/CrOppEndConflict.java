@@ -42,11 +42,12 @@ import org.argouml.model.Model;
 //TODO: split into an inherited attr critic and a local
 //attr critic
 public class CrOppEndConflict extends CrUML {
+
     /**
      * The constructor.
      */
     public CrOppEndConflict() {
-        setHeadline("Rename MAssociation Roles");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_INHERITANCE);
         addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
         addSupportedDecision(CrUML.DEC_NAMING);

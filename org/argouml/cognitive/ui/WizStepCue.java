@@ -33,8 +33,9 @@ import javax.swing.border.EtchedBorder;
 import org.argouml.swingext.SpacerPanel;
 
 
-/** A simple non-modal wizard step that shows instructions and prompts
- *  the user to enter a string.
+/** 
+ * A non-modal wizard step that shows instructions and prompts
+ * the user to enter a string.
  *
  * @see org.argouml.cognitive.critics.Critic
  * @see org.argouml.cognitive.ui.Wizard
@@ -46,7 +47,7 @@ public class WizStepCue extends WizStep {
     /**
      * The constructor.
      *
-     * @param w the wizard
+     * @param w the wizard (ignored)
      * @param cue the instructions (cue)
      */
     public WizStepCue(Wizard w, String cue) {

@@ -48,10 +48,9 @@ public class CrSubclassReference extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrSubclassReference() {
-	setHeadline("Remove Reference to Specific Subclass");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	addSupportedDecision(CrUML.DEC_PLANNED_EXTENSIONS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);

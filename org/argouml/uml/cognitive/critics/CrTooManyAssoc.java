@@ -38,8 +38,7 @@ public class CrTooManyAssoc extends AbstractCrTooMany {
      *
      */
     public CrTooManyAssoc() {
-	setHeadline("Reduce Associations on <ocl>self</ocl>");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_RELATIONSHIPS);
 	setThreshold(7);
 	addTrigger("associationEnd");

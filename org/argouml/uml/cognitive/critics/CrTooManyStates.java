@@ -29,7 +29,8 @@ import java.util.Collection;
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
 
-/** A critic to detect when a composite state has too
+/** 
+ * A critic to detect when a composite state has too
  * many subvertices.
  */
 public class CrTooManyStates extends AbstractCrTooMany {
@@ -39,7 +40,7 @@ public class CrTooManyStates extends AbstractCrTooMany {
      *
      */
     public CrTooManyStates() {
-	setHeadline("Reduce States in machine <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_STATE_MACHINES);
 	setThreshold(20);
 	addTrigger("substate");

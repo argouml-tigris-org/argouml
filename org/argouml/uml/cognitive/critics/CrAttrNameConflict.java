@@ -54,7 +54,7 @@ public class CrAttrNameConflict extends CrUML {
      *
      */
     public CrAttrNameConflict() {
-	setHeadline("Revise MAttribute Names to Avoid Conflict");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	addSupportedDecision(CrUML.DEC_STORAGE);
 	addSupportedDecision(CrUML.DEC_NAMING);

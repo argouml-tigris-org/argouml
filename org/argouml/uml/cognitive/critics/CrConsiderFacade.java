@@ -28,7 +28,8 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 
 /**
- * A critic to suggest using the facade stereotype.
+ * A critic to suggest using the facade stereotype. <p>
+ * 
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
@@ -39,8 +40,7 @@ public class CrConsiderFacade extends CrUML {
      * The constructor.
      */
     public CrConsiderFacade() {
-	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_MODULARITY);
 	addTrigger("ownedElement");
     }

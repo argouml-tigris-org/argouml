@@ -37,10 +37,9 @@ public class CrNameConflictAC extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrNameConflictAC() {
-	setHeadline("Role name conflicts with member");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }

@@ -45,7 +45,7 @@ public class CrDisambigClassName extends CrUML {
      * The constructor.
      */
     public CrDisambigClassName() {
-	setHeadline("Choose a Unique Name for <ocl>self</ocl>");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

@@ -58,9 +58,7 @@ public class CrConstructorNeeded extends CrUML {
      * "structuralFeature".
      */
     public CrConstructorNeeded() {
-
-        setResource("CrConstructorNeeded");
-
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_STORAGE);
         addKnowledgeType(Critic.KT_CORRECTNESS);
 

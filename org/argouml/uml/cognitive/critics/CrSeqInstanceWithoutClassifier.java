@@ -37,7 +37,7 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 
 /**
  * A critic to detect when an object in a deployment-diagram
- * is not inside a component or a component-instance
+ * is not inside a component or a component-instance.
  *
  * @author 5eichler
  */
@@ -45,10 +45,9 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrSeqInstanceWithoutClassifier() {
-	setHeadline("Set classifier");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

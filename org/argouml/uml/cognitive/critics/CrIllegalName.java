@@ -38,10 +38,9 @@ public class CrIllegalName extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrIllegalName() {
-	setHeadline("Choose a Legal Name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	addTrigger("name");
     }

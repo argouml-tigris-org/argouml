@@ -52,7 +52,7 @@ public class CrCircularInheritance extends CrUML {
      * The constructor.
      */
     public CrCircularInheritance() {
-	setHeadline("Remove <ocl>self</ocl>'s Circular Inheritance");
+        setupHeadAndDesc();
 	setPriority(ToDoItem.HIGH_PRIORITY);
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SYNTAX);

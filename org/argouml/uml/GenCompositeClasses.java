@@ -74,13 +74,15 @@ public class GenCompositeClasses implements ChildGenerator {
 	    if (Model.getAggregationKind().getComposite().equals(
 	            Model.getFacade().getAggregation(ae))) {
 		Object asc = Model.getFacade().getAssociation(ae);
-		ArrayList conn = new ArrayList(Model.getFacade().getConnections(asc));
+		ArrayList conn = 
+		    new ArrayList(Model.getFacade().getConnections(asc));
 		if (conn == null || conn.size() != 2) {
 		    continue;
 		}
 		Object otherEnd =
 		    (ae == conn.get(0)) ? conn.get(1) : conn.get(0);
-		if (Model.getFacade().getType(ae) != Model.getFacade().getType(otherEnd)) {
+		if (Model.getFacade().getType(ae) 
+		        != Model.getFacade().getType(otherEnd)) {
 		    res.add(Model.getFacade().getType(otherEnd));
 		}
 	    }

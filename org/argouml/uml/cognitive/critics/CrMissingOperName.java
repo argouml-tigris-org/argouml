@@ -39,7 +39,7 @@ public class CrMissingOperName extends CrUML {
      * The constructor.
      */
     public CrMissingOperName() {
-	setHeadline("Choose a name");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_NAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
 	addTrigger("name");

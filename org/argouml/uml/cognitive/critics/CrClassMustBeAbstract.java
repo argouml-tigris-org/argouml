@@ -32,8 +32,7 @@ import org.argouml.model.Model;
 
 /**
  * A critic to detect whether a non abstract class
- * contains abstract operations. It checks whether a non abstract class
- * has any abstract operations.
+ * contains abstract operations. 
  *
  * @author jrobbins
  */
@@ -44,8 +43,7 @@ public class CrClassMustBeAbstract extends CrUML {
      *
      */
     public CrClassMustBeAbstract() {
-	setHeadline("Class Must be Abstract");
-
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	addSupportedDecision(CrUML.DEC_METHODS);
 	setKnowledgeTypes(Critic.KT_SEMANTICS);

@@ -46,10 +46,9 @@ public class CrWrongLinkEnds extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrWrongLinkEnds() {
-	setHeadline("LinkEnds have not the same locations");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

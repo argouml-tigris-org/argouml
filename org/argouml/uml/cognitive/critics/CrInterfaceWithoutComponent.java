@@ -46,10 +46,9 @@ public class CrInterfaceWithoutComponent extends CrUML {
 
     /**
      * The constructor.
-     *
      */
     public CrInterfaceWithoutComponent() {
-	setHeadline("Interfaces normally are inside components");
+        setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_PATTERNS);
     }
 

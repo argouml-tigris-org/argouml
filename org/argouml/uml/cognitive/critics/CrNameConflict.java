@@ -45,7 +45,7 @@ public class CrNameConflict extends CrUML {
      * The constructor.
      */
     public CrNameConflict() {
-        setHeadline("Revise Name to Avoid Conflict");
+        setupHeadAndDesc();
         addSupportedDecision(CrUML.DEC_NAMING);
         setKnowledgeTypes(Critic.KT_SYNTAX);
         addTrigger("name");
