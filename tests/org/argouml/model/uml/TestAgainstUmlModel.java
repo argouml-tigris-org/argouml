@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -37,7 +37,6 @@ import junit.framework.TestCase;
 import junit.framework.TestSuite;
 
 import org.argouml.application.security.ArgoSecurityManager;
-import org.argouml.model.TestModelFacade;
 import org.argouml.model.uml.behavioralelements.activitygraphs.ActivityGraphsFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
@@ -61,35 +60,68 @@ public class TestAgainstUmlModel extends TestCase {
      *  that are <strong>expected</strong> to be found
      *  in the model.
      */
-    static Hashtable refs = null;
+    private static Hashtable refs = null;
  
     public TestAgainstUmlModel(String n) { super(n); }
 
-    public static void main(java.lang.String[] args) {
-        junit.textui.TestRunner.run(suite());
-    }
-
     public void testDataModel()
-    throws SAXException,
-           IOException,
-           ParserConfigurationException {
-            DocumentBuilder builder =
-                DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            String fileName = System.getProperty("test.model.uml13");
-            if (fileName == null)
-                fail("The property test.model.uml13 is not set.");
-            File file = new File(fileName);
-            if (!file.exists())
-                fail("The file " + fileName + " cannot be found.");
-            Document doc = builder.parse(file);
-            NodeList list = doc.getElementsByTagName("Model:Class");
+	throws SAXException,
+	       IOException,
+	       ParserConfigurationException {
+	Document doc = prepareDocument();
+	if (doc == null)
+	    return;		// Could not find model.
 
-            assertEquals(refs.size(), list.getLength());
+	NodeList list = doc.getElementsByTagName("Model:Class");
 
-            for (int i = 0; i < list.getLength(); i++) {
-                processClassNode ("", list.item(i));
-            }
+	assertEquals(refs.size(), list.getLength());
+
+	for (int i = 0; i < list.getLength(); i++) {
+	    processClassNode ("", list.item(i));
+	}
     }
+
+
+    /**
+     * Print a message that this test case is inconclusive because of
+     * the UML file missing.
+     *
+     * @param message that is to me printed.
+     */
+    private static void printInconclusiveMessage(String message)
+    {
+	System.out.println("warning: INCONCLUSIVE TEST!");
+	System.out.println(message);
+	System.out.println("You will have to fetch the model using the command"
+			   + " ant junit-get-model");
+    }
+
+    /**
+     * Make all preparations for the tests by preparing the document.
+     *
+     * @return the document or null if not available.
+     */
+    private static Document prepareDocument() 
+	throws ParserConfigurationException, SAXException, IOException {
+	DocumentBuilder builder =
+	    DocumentBuilderFactory.newInstance().newDocumentBuilder();
+	String fileName = System.getProperty("test.model.uml13");
+	if (fileName == null)
+	{
+	    printInconclusiveMessage("The property test.model.uml13 "
+				     + "is not set.");
+	    return null;
+	}
+	File file = new File(fileName);
+	if (!file.exists())
+	{
+	    printInconclusiveMessage("The file " + fileName 
+				     + " cannot be found.");
+	    return null;
+	}
+	return builder.parse(file);
+    }
+
 
     /** Walk through the UML Classes found.
      *
@@ -117,9 +149,10 @@ public class TestAgainstUmlModel extends TestCase {
         }
         else if (factory instanceof AbstractUmlModelFactory) {
             String[] classarg = {umlclass, null};
-            CheckUMLModelHelper.createAndRelease(this,
-                                                 (AbstractUmlModelFactory) factory,
-                                         classarg);
+            CheckUMLModelHelper.createAndRelease(
+		    this,
+		    (AbstractUmlModelFactory) factory,
+		    classarg);
         }
         else {
             fail("Test is invalid for uml method '" + umlclass + "'");
@@ -188,8 +221,10 @@ public class TestAgainstUmlModel extends TestCase {
         refs.put("Flow",                  CoreFactory.getFactory());
         refs.put("ElementResidence",      CoreFactory.getFactory());
         refs.put("TemplateParameter",     CoreFactory.getFactory());
-        refs.put("Stereotype",            ExtensionMechanismsFactory.getFactory());
-        refs.put("TaggedValue",           ExtensionMechanismsFactory.getFactory());
+        refs.put("Stereotype",
+		 ExtensionMechanismsFactory.getFactory());
+        refs.put("TaggedValue",
+		 ExtensionMechanismsFactory.getFactory());
         refs.put("Instance",              CommonBehaviorFactory.getFactory());
         refs.put("Signal",                CommonBehaviorFactory.getFactory());
         refs.put("Action",                CommonBehaviorFactory.getFactory());
@@ -270,53 +305,34 @@ public class TestAgainstUmlModel extends TestCase {
         super.setUp();
         ArgoSecurityManager.getInstance().setAllowExit(true);
 
-        /* Running the tests here causes instantiation errors from the navigator pane.
-         * This is a temporary hack until the object model is cleaned up.
+        /* Running the tests here causes instantiation errors from the
+         * navigator pane.  This is a temporary hack until the object
+         * model is cleaned up.
          */
         NavigatorPane.setInstance(null);
         assertNull("Still getting NavigatorPane", NavigatorPane.getInstance());
     }
 
-    /* (non-Javadoc)
-     * @see junit.framework.TestCase#tearDown()
-     */
-    protected void tearDown() throws Exception {
-        // TODO Auto-generated method stub
-        super.tearDown();
-    }
+    public static Test suite()
+	throws SAXException,
+	       IOException,
+	       ParserConfigurationException {
+        TestSuite suite = 
+	    new TestSuite("Tests for " 
+			  + TestAgainstUmlModel.class.getPackage().getName());
 
-    public static Test suite() {
-        TestSuite suite = new TestSuite("Tests for " + TestAgainstUmlModel.class.getPackage().getName());
+	Document doc = prepareDocument();
+	if (doc == null)
+	    return suite;	// Could not find model.
 
-        DocumentBuilder builder = null;
-        try {
-            builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-        }
-        assertNotNull("Cannot create document builder", builder);
-        String fileName = System.getProperty("test.model.uml13");
-        if (fileName == null)
-            fail("The property test.model.uml13 is not set.");
-        File file = new File(fileName);
-        if (!file.exists())
-            fail("The file " + fileName + " cannot be found.");
-        Document doc = null;
-        try {
-            doc = builder.parse(file);
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            fail(e.toString());
-        }
-        assertNotNull("Cannot parse document", doc);
         NodeList list = doc.getElementsByTagName("Model:Class");
 
         assertEquals(refs.size(), list.getLength());
 
         for (int i = 0; i < list.getLength(); i++) {
-            suite.addTest(new TestAgainstUmlModel(list.item(i).getAttributes().getNamedItem("name").getNodeValue()));
+	    Node name = list.item(i).getAttributes().getNamedItem("name");
+	    String nameVal = name.getNodeValue();
+            suite.addTest(new TestAgainstUmlModel(nameVal));
         }
         return suite;
     }
@@ -335,9 +351,10 @@ public class TestAgainstUmlModel extends TestCase {
         }
         else if (factory instanceof AbstractUmlModelFactory) {
             String[] classarg = {umlclass, null};
-            CheckUMLModelHelper.createAndRelease(this,
-                                                 (AbstractUmlModelFactory) factory,
-                                         classarg);
+            CheckUMLModelHelper.createAndRelease(
+		    this,
+		    (AbstractUmlModelFactory) factory,
+		    classarg);
         }
         else {
             fail("Test is invalid for uml method '" + umlclass + "'");
