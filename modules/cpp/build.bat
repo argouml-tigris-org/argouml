@@ -1,5 +1,11 @@
 @echo off
 
+REM
+REM build.sh always calls the version of ant distributed with ArgoUML
+REM
+set ANT_HOME=..\..\tools\ant-1.4.1
+
+
 if not "%ANT_HOME%"=="" goto CHECKJAVA
 rem missing variable: ANT_HOME
 echo ******************************************************************
