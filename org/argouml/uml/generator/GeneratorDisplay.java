@@ -63,7 +63,9 @@ import org.argouml.uml.MMUtil;
  * looks a lot like (invalid) Java.  The idea is that other generators
  * could be written for outher languages.  This code is just a
  * placeholder for future development, I expect it to be totally
- * replaced. */
+ * replaced. 
+ * @stereotype singleton
+ */
 
 // TODO: always check for null!!!
 

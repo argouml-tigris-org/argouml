@@ -155,7 +155,8 @@ class PropertySpecialString {
     return true;
   }
 }
-
+/** @stereotype singleton
+ */
 public class ParserDisplay extends Parser {
 
   public static ParserDisplay SINGLETON = new ParserDisplay();
