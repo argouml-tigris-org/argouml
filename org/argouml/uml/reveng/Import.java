@@ -225,7 +225,6 @@ public class Import {
     public void disposeDialog() {
         Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
 				getInputSourceEncoding());
-        dialog.getParent().setEnabled(true);
         dialog.setVisible(false);
         dialog.dispose();
     }
@@ -704,7 +703,6 @@ public class Import {
             UmlModelEventPump.getPump().startPumpingEvents();
 
             ExplorerEventAdaptor.getInstance().structureChanged();
-            ProjectBrowser.getInstance().setEnabled(true);
 
             LOG.info(st);
             ProjectBrowser.getInstance().getStatusBar().showProgress(0);
@@ -760,7 +758,6 @@ public class Import {
             pack();
             this.setResizable(false);
             this.setModal(true);        //MVW - Issue 2539.
-            this.getParent().setEnabled(false);   //MVW: do we really need this?
         }
 
         public void setMaximum(int i) {
@@ -922,7 +919,6 @@ class ImportClasspathDialog extends JDialog {
         pack();
         setVisible(true);
         this.setModal(true);        //MVW   Issue 2539.
-        this.getParent().setEnabled(false);   //MVW: do we really need this?
     }
 
     private void initList() {
