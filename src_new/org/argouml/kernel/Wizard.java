@@ -30,10 +30,9 @@
 
 package org.argouml.kernel;
 
-import java.util.*;
-import javax.swing.*;
+import java.util.Vector;
 
-import org.argouml.cognitive.*;
+import javax.swing.JPanel;
 
 /** "Abstract" base class for non-modal wizards.  Each subclass should
  *  define its own makeNextPanel methods. Because most
@@ -72,7 +71,7 @@ public abstract class Wizard implements java.io.Serializable {
     private boolean finished = false;
     private boolean started = false;
 
-    private ToDoItem item = null;
+    private WizardItem item = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
@@ -95,14 +94,14 @@ public abstract class Wizard implements java.io.Serializable {
      * 
      * @param i the todoitem
      */
-    public void setToDoItem(ToDoItem i) { 
+    public void setToDoItem(WizardItem i) { 
         item = i; 
     }
 
     /**
      * @return the todoitem
      */
-    public ToDoItem getToDoItem() { return item; }
+    public WizardItem getToDoItem() { return item; }
 
     /** An integer between 0 and 100, shows percent done. The current
      *  ArgoUML user interface shows different PostIt note icons for
