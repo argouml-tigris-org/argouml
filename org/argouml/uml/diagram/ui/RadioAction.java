@@ -32,7 +32,6 @@ import javax.swing.Action;
 import javax.swing.Icon;
 import org.argouml.kernel.ProjectManager;
 
-import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.toolbar.toolbutton.AbstractButtonAction;
