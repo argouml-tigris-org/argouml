@@ -46,14 +46,15 @@ import org.tigris.gef.util.*;
  * @author Bob Tarling
  */
 public class LookAndFeelMgr {
-    
-    protected static Category cat = 
+
+    protected static Category cat =
         Category.getInstance(LookAndFeelMgr.class);
 
     public static final LookAndFeelMgr SINGLETON = new LookAndFeelMgr();
 
     public static final String METAL_PLAF = "javax.swing.plaf.metal.MetalLookAndFeel";
-    
+    public static final String WINDOWS_PLAF = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
+
     private static final int THEME_NOT_SET = -1;
     private static final int THEME_DEFAULT = 0;
     private static final int THEME_NORMAL = 1;
@@ -63,7 +64,7 @@ public class LookAndFeelMgr {
     /** Creates a new instance of LookAndFeelMgr. */
     private LookAndFeelMgr() {
     }
-    
+
     /**
      * Detecting the theme from the command line.
      */
@@ -81,14 +82,14 @@ public class LookAndFeelMgr {
     }
 
     private int currentTheme = THEME_NOT_SET;
-    
+
     private int getCurrentTheme() { return currentTheme; }
-    
+
     /** set the theme to use according to the configuration information. */
     public void setCurrentTheme(int t) {
         if (t == THEME_DEFAULT) t = Configuration.getInteger(Argo.KEY_SCREEN_THEME, THEME_NORMAL);
         if (currentTheme == t) return;
-        
+
         currentTheme = t;
         switch (t) {
         case THEME_NORMAL:
@@ -122,7 +123,7 @@ public class LookAndFeelMgr {
         }
         Configuration.setInteger(Argo.KEY_SCREEN_THEME, currentTheme);
     }
-    
+
     public String determineLookAndFeel() {
         if ("true".equals(System.getProperty("force.nativelaf","false"))) {
             return UIManager.getSystemLookAndFeelClassName();
@@ -131,7 +132,7 @@ public class LookAndFeelMgr {
             return METAL_PLAF;
         }
     }
-    
+
     public void setCurrentTheme(String arg) {
         if ("normal".equals(arg))
             setCurrentTheme(THEME_NORMAL);
