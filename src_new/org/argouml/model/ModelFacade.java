@@ -5910,10 +5910,12 @@ public class ModelFacade {
     }
 
     /**
-     * Sets the extension points of some use cases.
+     * Sets the parameters of a classifier, event, objectflowstate or 
+     * behavioralfeature.
      *
-     * @param handle the use case
-     * @param parameters is a Collection of extensionPoints
+     * @param handle the classifier, event, objectflowstate or 
+     * behavioralfeature
+     * @param parameters is a Collection of parameters
      */
     public static void setParameters(Object handle, Collection parameters) {
         if (handle instanceof MObjectFlowState) {
