@@ -241,17 +241,9 @@ public class UmlFilePersister extends AbstractFilePersister {
         try {
             Project p = new Project(url);
 
-//            // TODO: Uncomment this code when the mystery
-//            // of loading a resource is solved.
-//            int versionFromFile = Integer.parseInt(getVersion(url));
-//
-//            LOG.info("Loading uml file of version " + versionFromFile);
-//            while (versionFromFile < PERSISTENCE_VERSION) {
-//                ++versionFromFile;
-//                LOG.info("Upgrading to version " + versionFromFile);
-//                url = transform(url, versionFromFile);
-//            }
-
+            // Run through any stylesheet upgrades
+            url = upgrade(url);
+            
             XmlInputStream inputStream =
                         new XmlInputStream(url.openStream(), "argo");
 
@@ -288,6 +280,22 @@ public class UmlFilePersister extends AbstractFilePersister {
         }
     }
 
+    private URL upgrade(URL url) throws OpenException {
+        try {
+            int versionFromFile = Integer.parseInt(getVersion(url));
+    
+            LOG.info("Loading uml file of version " + versionFromFile);
+            while (versionFromFile < PERSISTENCE_VERSION) {
+                ++versionFromFile;
+                LOG.info("Upgrading to version " + versionFromFile);
+                url = transform(url, versionFromFile);
+            }
+            return url;
+        } catch (IOException e) {
+            throw new OpenException(e);
+        }
+    }
+    
     /**
      * Transform a string of XML data according to the service required.
      *
@@ -301,7 +309,7 @@ public class UmlFilePersister extends AbstractFilePersister {
         throws OpenException {
 
         try {
-            String upgradeFilesPath = "/org/argouml/persistence/upgrades";
+            String upgradeFilesPath = "/org/argouml/persistence/upgrades/";
             String upgradeFile = "upgrade" + version + ".xsl";
 
             // TODO: But should instead access a resource inside the jar
