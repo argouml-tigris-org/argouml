@@ -161,7 +161,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
         while (it.hasNext()) {
-            addElement(col);
+            addElement(it.next());
         }
     }
     
