@@ -36,10 +36,11 @@ import org.argouml.uml.ui.UMLAction;
 /**
  * System information dialog. 
  */
-
 class ActionSystemInfo extends UMLAction {
 
-    public ActionSystemInfo() { super("action.system-information", HAS_ICON); }
+    public ActionSystemInfo() { 
+        super("action.system-information", HAS_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -59,11 +60,6 @@ class ActionSystemInfo extends UMLAction {
 	sysInfoDialog.setLocationRelativeTo(jFrame);
 	sysInfoDialog.show();
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() { return true; }
 
 } /* end class ActionSystemInfo */
 

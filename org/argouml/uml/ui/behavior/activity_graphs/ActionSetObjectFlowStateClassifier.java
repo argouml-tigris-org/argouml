@@ -48,7 +48,7 @@ public class ActionSetObjectFlowStateClassifier extends UMLChangeAction {
      * Constructor for ActionSetObjectFlowStateClassifier.
      */
     protected ActionSetObjectFlowStateClassifier() {
-        super(Translator.localize("Set"), true, NO_ICON);
+        super(Translator.localize("Set"), false, NO_ICON);
     }
  
     /**

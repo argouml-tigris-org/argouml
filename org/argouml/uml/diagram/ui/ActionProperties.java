@@ -50,7 +50,7 @@ public class ActionProperties extends UMLAction {
      * The constructor.
      */
     protected ActionProperties() { 
-        super(Translator.localize("action.properties"), HAS_ICON);
+        super(Translator.localize("action.properties"), true, HAS_ICON);
         String localMnemonic = 
             Translator.localize("action.properties.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {

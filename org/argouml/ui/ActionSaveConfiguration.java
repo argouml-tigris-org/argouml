@@ -30,7 +30,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.uml.ui.UMLAction;
 
 /**
- * Action for handling Argo configuration save
+ * Action for handling Argo configuration save.
  *
  * @author Thierry Lach
  * @since 0.9.4
@@ -40,8 +40,7 @@ public class ActionSaveConfiguration extends UMLAction {
      * Constructor.
      */
     public ActionSaveConfiguration() {
-        super(Translator.localize("action.save-configuration"),
-	      false);
+        super(Translator.localize("action.save-configuration"), NO_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

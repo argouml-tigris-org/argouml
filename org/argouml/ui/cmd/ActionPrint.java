@@ -44,7 +44,7 @@ public class ActionPrint extends UMLAction {
      * The constructor.
      */
     public ActionPrint() { 
-        super("action.print"); 
+        super("action.print", HAS_ICON); 
     }
 
     /**

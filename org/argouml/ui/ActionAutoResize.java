@@ -27,11 +27,12 @@ package org.argouml.ui;
 import java.awt.event.ActionEvent;
 import org.argouml.uml.ui.UMLAction;
 
-/** A class to keep track of the users desire to have his diagram nodes
- *  automatically resized.
+/** 
+ * A class to keep track of the users desire to have his diagram nodes
+ * automatically resized.
  *  
- *  @see org.argouml.ui.cmd.CmdSetPreferredSize
- *  @author Markus Klink
+ * @see org.argouml.ui.cmd.CmdSetPreferredSize
+ * @author Markus Klink
  */
 public class ActionAutoResize extends UMLAction {
 
@@ -41,7 +42,7 @@ public class ActionAutoResize extends UMLAction {
      * The constructor.
      */
     public ActionAutoResize() {
-        super("action.toggle-auto-resizing",  NO_ICON);
+        super("action.toggle-auto-resizing", NO_ICON);
     }
 
     /**

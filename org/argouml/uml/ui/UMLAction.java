@@ -29,7 +29,6 @@ import java.awt.event.ActionEvent;
 import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.Icon;
-import javax.swing.KeyStroke;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
@@ -39,7 +38,6 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.Actions;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.StatusBar;
-import org.tigris.gef.util.Localizer;
 
 /**
  * The prototype of all actions within ArgoUML.
@@ -62,40 +60,37 @@ public class UMLAction extends AbstractAction {
     private String iconName;
 
     /**
-     * The constructor for a global action with icon.
+     * The constructor for a non-global action with icon.
      * 
      * @param name the (to be localized) description of the action
      */
     public UMLAction(String name) {
-        this(name, true, HAS_ICON);
+        this(name, false, HAS_ICON);
     }
     
     /**
-     * The constructor for a global action.
+     * The constructor for a non-global action.
      * 
      * @param name the (to be localized) description of the action
      * @param hasIcon true if an icon is to be shown
      */
     public UMLAction(String name, boolean hasIcon) {
-        this(name, true, hasIcon);
+        this(name, false, hasIcon);
     }
 
     /**
      * The constructor.
-     * 
-     * @param name the (to be localized) description of the action
-     * @param global if this is a global action, then it has to be added 
-     *               to the list of such actions in the class Actions
      * @param hasIcon true if an icon has to be shown
+     * @param name the (to be localized) description of the action
+     * @param global the action is global, i.e. implements shouldBeEnabled(), 
+     *               and listens to Target changes
      */
     public UMLAction(String name, boolean global, boolean hasIcon) {
         super(Translator.localize(name));
         if (hasIcon) {
 	    iconName = name;
         }
-        putValue(
-		 Action.SHORT_DESCRIPTION,
-		 Translator.localize(name));
+        putValue(Action.SHORT_DESCRIPTION, Translator.localize(name));
         if (global)
             Actions.addAction(this);
         // Jaap B. 17-6-2003 added next line to make sure every action
@@ -184,7 +179,10 @@ public class UMLAction extends AbstractAction {
      * Return true if this action should be available to the user. This
      * method should examine the ProjectBrowser that owns it. Subclass
      * implementations of this method should always call
-     * super.shouldBeEnabled first.
+     * super.shouldBeEnabled first, and AND it with their own condition. <p>
+     * 
+     * "Global" actions shall implement this function! - Otherwise 
+     * it is not usefull to make them global...
      *
      * @return true if the action should be available.
      */
@@ -207,20 +205,6 @@ public class UMLAction extends AbstractAction {
         return res;
     }
     
-    /**
-     * This function returns a localized menu shortcut key
-     * to the specified key.
-     *
-     * @deprecated in 0.15.1. Replace by getMnemonic and the new way of
-     *             retrieving shortcuts.
-     *
-     * @param key the shortcut key
-     * @return the keystroke
-     */
-    public static final KeyStroke getShortcut(String key) {
-        return Localizer.getShortcut("CoreMenu", key);
-    }
-
     /**
      * This function returns a localized string corresponding
      * to the specified key.

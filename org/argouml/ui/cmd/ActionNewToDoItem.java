@@ -42,7 +42,7 @@ public class ActionNewToDoItem extends UMLAction {
      * The constructor.
      */
     public ActionNewToDoItem() {
-        super("action.new-todo-item");
+        super("action.new-todo-item", HAS_ICON);
     }
 
     /**

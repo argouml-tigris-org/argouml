@@ -64,7 +64,7 @@ public class ActionModifier extends UMLAction {
 			  String getMethod,
 			  String setMethod,
 			  Object mclass) {
-	super(name, NO_ICON);
+	super(name, true, NO_ICON);
 	this.object = mclass;
 	property =
 	    new UMLReflectionBooleanProperty(propertyName, mclassClass,
@@ -98,7 +98,7 @@ public class ActionModifier extends UMLAction {
 			  Object theTrueValue,
 			  Object theFalseValue)
     {
-	super(name, NO_ICON);
+	super(name, true, NO_ICON);
 	this.object = mclass;
 	property =
 	    new UMLEnumerationBooleanProperty(propertyName, mclassClass,

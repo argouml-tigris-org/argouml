@@ -63,7 +63,7 @@ public class ActionAddNote extends UMLChangeAction {
      * The constructor.
      */
     public ActionAddNote() {
-        super("New Note");
+        super("New Note", true, HAS_ICON);
     }
 
     ////////////////////////////////////////////////////////////////

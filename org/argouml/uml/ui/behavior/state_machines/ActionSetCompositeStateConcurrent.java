@@ -44,7 +44,7 @@ public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
      * Constructor for ActionSetCompositeStateConcurrent.
      */
     protected ActionSetCompositeStateConcurrent() {
-        super(Translator.localize("action.set"), true, NO_ICON);
+        super(Translator.localize("action.set"), false, NO_ICON);
     }
     
     /**

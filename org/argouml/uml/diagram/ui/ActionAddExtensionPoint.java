@@ -68,7 +68,7 @@ public final class ActionAddExtensionPoint extends UMLChangeAction {
      * singleton. Make use of the access funtion.<p>
      */
     public ActionAddExtensionPoint() {
-        super("New Extension Point");
+        super("New Extension Point", true, HAS_ICON);
     }
 
 

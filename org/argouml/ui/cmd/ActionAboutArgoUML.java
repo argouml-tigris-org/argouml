@@ -39,7 +39,9 @@ import org.argouml.uml.ui.UMLAction;
  */
 class ActionAboutArgoUML extends UMLAction {
 
-    public ActionAboutArgoUML() { super("action.about-argouml", HAS_ICON); }
+    public ActionAboutArgoUML() { 
+        super("action.about-argouml", HAS_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
@@ -52,9 +54,5 @@ class ActionAboutArgoUML extends UMLAction {
 	box.show();
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() { return true; }
 
 } /* end class ActionAboutArgoUML */

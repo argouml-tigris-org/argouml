@@ -34,7 +34,10 @@ import org.argouml.uml.ui.UMLAction;
 
 class ActionFind extends UMLAction {
 
-    public ActionFind() { super("action.find"); }
+    public ActionFind() { 
+        // this is not a "global" action, since it is never downlighted...
+        super("action.find", HAS_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

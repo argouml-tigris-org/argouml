@@ -41,7 +41,9 @@ public class UMLChangeAction extends UMLAction {
      * 
      * @param s the to be localized description string
      */
-    public UMLChangeAction(String s) { super(s, HAS_ICON); }
+    public UMLChangeAction(String s) { 
+        super(s, HAS_ICON); 
+    }
     
     /**
      * The constructor.
@@ -49,7 +51,9 @@ public class UMLChangeAction extends UMLAction {
      * @param s the to be localized description string
      * @param hasIcon true if an icon is to be shown
      */
-    public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
+    public UMLChangeAction(String s, boolean hasIcon) { 
+        super(s, hasIcon); 
+    }
     
     /**
      * The constructor.

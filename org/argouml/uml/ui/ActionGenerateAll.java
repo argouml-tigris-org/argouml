@@ -50,7 +50,7 @@ public class ActionGenerateAll extends UMLAction {
      * Constructor.
      */
     public ActionGenerateAll() {
-	super("action.generate-all-classes", NO_ICON);
+	super("action.generate-all-classes", true, NO_ICON);
     }
 
 

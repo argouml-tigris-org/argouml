@@ -46,7 +46,11 @@ import org.argouml.ui.cmd.GenericArgoMenuBar;
 
 /**
  * Action that saves the project.
- *
+ * 
+ * TODO: Currently, this action is a "global" action, i.e. its enabled status
+ * gets updated when the target changes. But that is not correct; 
+ * it should be updated inmediately after the project became dirty (needsSave).
+ * 
  * @see ActionOpenProject
  * @stereotype singleton
  */
@@ -69,16 +73,17 @@ public class ActionSaveProject extends ActionFileOperations {
      * The constructor.
      */
     protected ActionSaveProject() {
-        super("action.save-project");
+        super("action.save-project", true, HAS_ICON);
     }
 
     /**
      * The constructor.
      * @param title the title for this action
      * @param icon the icon for this action
+     * @param global if the action is global
      */
-    protected ActionSaveProject(String title, boolean icon) {
-        super(title, icon);
+    protected ActionSaveProject(String title, boolean global, boolean icon) {
+        super(title, global, icon);
     }
 
 

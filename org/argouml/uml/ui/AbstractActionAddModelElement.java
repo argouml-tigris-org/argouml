@@ -49,7 +49,8 @@ public abstract class AbstractActionAddModelElement extends UMLChangeAction {
      * The constructor.
      */
     protected AbstractActionAddModelElement() {
-        super(Translator.localize("Add"), true, NO_ICON);
+        super(Translator.localize("menu.popup.add-modelelement"), false, 
+                NO_ICON);
     }
         
 

@@ -56,7 +56,7 @@ public class ActionAddMessage extends UMLChangeAction {
      * The constructor.
      */
     private ActionAddMessage() { 
-        super("action.add-message"); 
+        super("action.add-message", true, HAS_ICON); 
     }
 
 

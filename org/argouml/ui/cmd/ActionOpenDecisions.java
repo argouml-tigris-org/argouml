@@ -34,7 +34,9 @@ import org.argouml.uml.ui.UMLAction;
 
 class ActionOpenDecisions extends UMLAction {
 
-    public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
+    public ActionOpenDecisions() { 
+        super("action.design-issues", NO_ICON); 
+    }
 
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

@@ -120,7 +120,7 @@ public class ActionNavigability extends UMLAction {
 				 Object theAssociationStart,
 				 Object theAssociationEnd,
 				 int theNavigability) {
-        super(label, NO_ICON);
+        super(label, true, NO_ICON);
 
         this.nav = theNavigability;
         this.assocStart = theAssociationStart;

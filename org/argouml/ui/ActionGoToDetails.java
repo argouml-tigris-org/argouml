@@ -48,12 +48,12 @@ public class ActionGoToDetails extends UMLAction {
      * @param name The name of the tab.
      */
     public ActionGoToDetails(String name) {
-	super(name, NO_ICON);
+	super(name, true, NO_ICON);
 	tabName = name;
     }
 
     /**
-     * Should return true as the pane where the user can navigate to supports
+     * Should return true if the pane where the user can navigate to supports
      * the current target.
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */

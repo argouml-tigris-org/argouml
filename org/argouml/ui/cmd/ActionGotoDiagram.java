@@ -49,7 +49,9 @@ public class ActionGotoDiagram
     /**
      * The constructor.
      */
-    public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
+    public ActionGotoDiagram() { 
+        super("action.goto-diagram", NO_ICON); 
+    }
 
     
     /**

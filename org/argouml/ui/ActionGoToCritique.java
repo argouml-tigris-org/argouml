@@ -22,11 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-// File: ActionGoToCritique.java
-// Classes: ActionGoToCritique
 // Original Author: agauthie
-// $Id$
 
 package org.argouml.ui;
 
@@ -58,10 +54,5 @@ public class ActionGoToCritique extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser.getInstance().getTodoPane().selectItem(item);
     }
-
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() { return true; }
 
 } /* end class ActionGoToCritique */

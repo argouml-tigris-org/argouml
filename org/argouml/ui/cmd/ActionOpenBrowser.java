@@ -46,7 +46,9 @@ public class ActionOpenBrowser extends UMLAction {
     /**
      * The constructor.
      */
-    public ActionOpenBrowser() { super("action.open-browser", NO_ICON); }
+    public ActionOpenBrowser() { 
+        super("action.open-browser", NO_ICON); 
+    }
     
     /**
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)

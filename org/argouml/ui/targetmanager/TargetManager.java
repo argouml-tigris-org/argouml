@@ -292,12 +292,8 @@ public final class TargetManager {
                 // times in history
             }
             if (oldCurrentTarget != currentTarget) {
-            	/* TODO: updateAllEnabled() has been deprecated, and
-            	 * the replacement is to use
-            	 * updateAllEnabled(TargetEvent e), but what
-            	 * TargetEvent would be passed?
-            	 */
-                Actions.updateAllEnabled();
+                Actions.updateAllEnabled(); /*TODO: (MVW) Why? Actions is 
+                * listening to target changes already... */
             }
         }
 

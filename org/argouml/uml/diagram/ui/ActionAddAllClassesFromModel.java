@@ -50,22 +50,12 @@ public class ActionAddAllClassesFromModel extends UMLAction {
     /**
      * Constructor
      *
-     * @param myTabName the name of the tab
-     */
-    public ActionAddAllClassesFromModel(String myTabName) {
-        super(myTabName, NO_ICON);
-        tabName = myTabName;
-    }
-
-    /**
-     * Constructor
-     *
-     * @param myTabName the name of the tab
+     * @param name the name of the action
      * @param o the Diagram
      */
-    public ActionAddAllClassesFromModel(String myTabName, Object o) {
-        super(myTabName, NO_ICON);
-        tabName = myTabName;
+    public ActionAddAllClassesFromModel(String name, Object o) {
+        super(name, true, NO_ICON);
+        tabName = name;
         object = o;
     }
 

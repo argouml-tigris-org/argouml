@@ -61,7 +61,7 @@ public class ActionGenerateProjectCode extends UMLAction {
      *  The constructor.
      */
     protected ActionGenerateProjectCode() {
-	super("action.generate-code-for-project", NO_ICON);
+	super("action.generate-code-for-project", true, NO_ICON);
     }
 
 
