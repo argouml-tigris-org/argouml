@@ -25,11 +25,10 @@ package org.argouml.application.events;
 import org.argouml.application.api.*;
 import java.util.*;
 
-/** The root class from which all event state objects within Argo are derived. 
+/** Definitions of Argo Event types.
  *
- *  All ArgoEvents are constructed with a reference to the object,
- *  the "source", that is logically deemed to be the object
- *  upon which the Event in question initially occurred upon.
+ *  @author Thierry Lach
+ *  @since  ARGO0.9.4
  */
 public interface ArgoEventTypes {
 
@@ -43,12 +42,8 @@ public interface ArgoEventTypes {
 
     public final static int ANY_NOTATION_EVENT       =  1200;
     public final static int NOTATION_CHANGED         =  1201;
+    public final static int NOTATION_ADDED           =  1202;
+    public final static int NOTATION_REMOVED         =  1203;
 
     public final static int ARGO_EVENT_END           = 99999;
-
-    public int getEventType();
-
-    public int getEventStartRange();
-
-    public int getEventEndRange();
 }

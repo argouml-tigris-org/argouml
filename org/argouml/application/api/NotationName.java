@@ -23,13 +23,38 @@
 
 package org.argouml.application.api;
 
+/** Encapsulates specific attributes about a notation.
+ *
+ *  @author Thierry Lach
+ *  @since  ARGO0.9.4
+ */
 public interface NotationName {
 
+    /** Returns the name of the language.
+     */
     public String getName();
 
+    /** Returns the version of the language if applicable, otherwise null
+     */
     public String getVersion();
 
+    /** Returns a textual title for the notation.
+     */
     public String getTitle();
 
+    /** Returns the text string stored in the configuration
+     *  for this notation.  This string is used to determine
+     *  notation equality in {@link #equals()}.
+     *  
+     *  This should incorporate both the name and the version if one
+     *  exists.
+     */
     public String getConfigurationValue();
+
+    /** Ease-of-use helper to determine
+     *  if this notation is the same as another.
+     *  This must be equivalent to
+     *  <code>getConfigurationValue().equals(nn.getConfigurationValue())</code>
+     */
+    public boolean equals(NotationName nn);
 }

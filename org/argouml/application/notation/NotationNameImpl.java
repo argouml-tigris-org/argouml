@@ -23,6 +23,7 @@
 
 package org.argouml.application.notation;
 import org.argouml.application.api.*;
+import org.argouml.application.events.*;
 import java.util.*;
 
 /**
@@ -33,42 +34,50 @@ import java.util.*;
  *   @author Thierry Lach
  *   @since 0.9.4
  */
-public class NotationNameImpl 
-implements NotationName {
+public class NotationNameImpl implements NotationName {
 
     String _name = null;
     String _version = null;
     
-    private static Hashtable _notations = null;
+    private static ArrayList _notations = null;
 
-    public NotationNameImpl(String name) {
+    /** A notation without a version.
+     */
+    protected NotationNameImpl(String name) {
         this(name, null);
     }
 
-    public NotationNameImpl(String name, String version) {
+    /** A notation with a version.
+     */
+    protected NotationNameImpl(String name, String version) {
         _name = name;
         _version = version;
     }
 
+    /** Accessor for the language name
+     */
     public String getName() {
         return _name;
     }
 
+    /** Accessor for the language version
+     */
     public String getVersion() {
         return _version;
     }
 
+    /** Gets a textual title for the notation suitable for use
+     *  in a combo box or other such visual location.
+     */
     public String getTitle() {
+        // needs-more-work:  Currently this does not
+	//                   differentiate from the configuration
+	//                   value.
         return getNotationNameString(_name, _version);
     }
 
     public String getConfigurationValue() {
         return getNotationNameString(_name, _version);
-    }
-
-    public String toString() {
-        if (_version == null) return "{NotationNameImpl:" + _name + "}";
-        return "{NotationNameImpl:" + _name + " version " + _version + "}";
     }
 
     public static String getNotationNameString(String k1, String k2) {
@@ -77,17 +86,66 @@ implements NotationName {
 	return k1 + "." + k2;
     }
 
+    private static void fireEvent(int eventType,  NotationName nn) {
+     ArgoEventPump.getInstance().fireEvent(new ArgoNotationEvent(eventType, nn));
+    }
+
     /** Create a notation name with or without a version.
      */
     public static NotationName makeNotation(String k1, String k2) {
-        if (_notations == null) _notations = new Hashtable();
+        if (_notations == null) _notations = new ArrayList();
 	NotationName nn = null;
-	nn = (NotationName)_notations.get(getNotationNameString(k1, k2));
+	nn = findNotation(getNotationNameString(k1, k2));
 	if (nn == null) {
 	    nn = (NotationName)new NotationNameImpl(k1, k2);
-	    _notations.put(getNotationNameString(k1, k2), nn);
+	    _notations.add(nn);
+	    fireEvent(ArgoEventTypes.NOTATION_ADDED, nn);
 	}
         return nn;
+    }
+
+    /** Get all of the registered notations.
+     */
+    public static ArrayList getAvailableNotations() {
+        // Cannot be null unless someone really messed up the code
+	// because of the static initializer.
+        return _notations;
+    }
+
+    /** Finds a NotationName matching the configuration string.
+     *  Returns null if no match.
+     */
+    public static NotationName findNotation(String s) {
+        ListIterator iterator = _notations.listIterator();
+        while (iterator.hasNext()) {
+	    try {
+                NotationName nn = (NotationName)iterator.next();
+		if (s.equals(nn.getConfigurationValue())) {
+		    return nn;
+		}
+	    }
+	    catch (Exception e) {
+	        Argo.log.error ("Unexpected exception", e);
+	    }
+	}
+	return null;
+    }
+
+    public boolean equals(NotationName nn) {
+        return this.getConfigurationValue().equals(nn.getConfigurationValue());
+    }
+
+    public String toString() {
+        if (_version == null) return "{NotationNameImpl:" + _name + "}";
+        return "{NotationNameImpl:" + _name + " version " + _version + "}";
+    }
+
+    /** Pre-populate the notation list with the internal notations.
+     */
+    static {
+        makeNotation("Default", null);
+        makeNotation("UML", "1.3");
+        makeNotation("Java", null);
     }
 }
 
