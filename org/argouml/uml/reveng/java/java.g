@@ -433,9 +433,9 @@ classVariableDefinitions[String javadoc, short modifiers, String returnType]
  * It can also include possible initialization.
  */
 classVariableDeclarator[String javadoc, short modifiers, String varType]
-{String initializer=null;}
-	:	(id:IDENT d:declaratorBrackets initializer=varInitializer)
-		{getModeller().addAttribute(modifiers, varType, id.getText(), initializer, javadoc);}
+{String initializer=null; String b=null;}
+	:	(id:IDENT b=declaratorBrackets initializer=varInitializer)
+		{getModeller().addAttribute(modifiers, varType+b, id.getText(), initializer, javadoc);}
 	;
 
 variableDefinitions[String javadoc, short modifiers, String returnType]
@@ -454,8 +454,8 @@ variableDeclarator[String javadoc, short modifiers, String varType]
 	:	(IDENT declaratorBrackets initializer=varInitializer)
 	;
 
-declaratorBrackets
-	:	(LBRACK RBRACK)*
+declaratorBrackets returns [String b=""]
+	:	(LBRACK RBRACK {b += "[]";} )*
 	;
 
 varInitializer returns [String expression=null]
