@@ -66,7 +66,7 @@ public class ActionAddTopLevelPackage extends UMLAction {
         int numPacks = p.getUserDefinedModels().size();
         String nameStr = "package_" + (numPacks + 1);
         Object/*MModel*/ model =
-	    Model.getUmlFactory().getModelManagement().createModel();
+	    Model.getModelManagementFactory().createModel();
         ModelFacade.setName(model, nameStr);
         p.addMember(model);
         super.actionPerformed(ae);

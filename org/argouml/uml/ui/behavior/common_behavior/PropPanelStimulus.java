@@ -178,7 +178,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
             Object stimulus = /*(MStimulus)*/ target;
             Object link = ModelFacade.getCommunicationLink(stimulus);
             if (link == null) {
-                link = Model.getUmlFactory().getCommonBehavior().createLink();
+                link = Model.getCommonBehaviorFactory().createLink();
                 //((MStimulus)stimulus).getFactory().createLink();
                 if (link != null) {
                     ModelFacade.addStimulus(link, stimulus);

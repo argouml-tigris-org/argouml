@@ -93,7 +93,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
                 Collection pCListeners = p.findFigsForMember(target);
                 Object model = p.getModel();
                 Object voidType = p.findType("void");
-                Object newOper = Model.getUmlFactory().getCore()
+                Object newOper = Model.getCoreFactory()
                     .buildOperation(target, model, voidType, pCListeners);
                 TargetManager.getInstance().setTarget(newOper);
                 super.actionPerformed(e);

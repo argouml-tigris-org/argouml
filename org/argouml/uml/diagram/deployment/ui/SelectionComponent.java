@@ -47,18 +47,18 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.Handle;
 
 /**
- * The selection buttons for a component. 
+ * The selection buttons for a component.
  *
  */
 public class SelectionComponent extends SelectionWButtons {
 
-    private static final Logger LOG = 
+    private static final Logger LOG =
         Logger.getLogger(SelectionComponent.class);
     ////////////////////////////////////////////////////////////////
     // constants
     private static Icon dep =
 	ResourceLoaderWrapper.lookupIconResource("Dependency");
-    private static Icon depRight = 
+    private static Icon depRight =
 	ResourceLoaderWrapper.lookupIconResource("DependencyRight");
 
 
@@ -73,18 +73,26 @@ public class SelectionComponent extends SelectionWButtons {
     public SelectionComponent(Fig f) { super(f); }
 
     /**
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      * org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
-	if (h.index != -1) return;
-	if (!isPaintButtons()) return;
+	if (h.index != -1) {
+	    return;
+	}
+	if (!isPaintButtons()) {
+	    return;
+	}
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1) return;
+	if (sm.size() != 1) {
+	    return;
+	}
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1) return;
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
+	    return;
+	}
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -94,20 +102,16 @@ public class SelectionComponent extends SelectionWButtons {
 	if (hitAbove(cx + cw / 2, cy, aw, ah, r)) {
 	    h.index = 10;
 	    h.instructions = "Add a component";
-	}
-	else if (hitBelow(cx + cw / 2, cy + ch, aw, ah, r)) {
+	} else if (hitBelow(cx + cw / 2, cy + ch, aw, ah, r)) {
 	    h.index = 11;
 	    h.instructions = "Add a component";
-	}
-	else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
+	} else if (hitLeft(cx + cw, cy + ch / 2, aw, ah, r)) {
 	    h.index = 12;
 	    h.instructions = "Add a component";
-	}
-	else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
+	} else if (hitRight(cx, cy + ch / 2, aw, ah, r)) {
 	    h.index = 13;
 	    h.instructions = "Add a component";
-	}
-	else {
+	} else {
 	    h.index = -1;
 	    h.instructions = "Move object(s)";
 	}
@@ -130,7 +134,7 @@ public class SelectionComponent extends SelectionWButtons {
 
 
     /**
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
@@ -179,8 +183,8 @@ public class SelectionComponent extends SelectionWButtons {
 	}
 	if (edgeClass != null && nodeClass != null) {
 	    Editor ce = Globals.curEditor();
-	    ModeCreateEdgeAndNode m = new
-		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    ModeCreateEdgeAndNode m =
+	        new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
 	    ce.pushMode(m);
 	}
@@ -189,7 +193,7 @@ public class SelectionComponent extends SelectionWButtons {
 
     /**
      * Contruct and add a new edge of the given kind: DEPENDENCY.
-     * 
+     *
      * @param mgm the graphmodel
      * @param component the source component
      * @param newComponent the destination component
@@ -220,7 +224,7 @@ public class SelectionComponent extends SelectionWButtons {
 	return mgm.connect(component, newComponent,
                             (Class) ModelFacade.DEPENDENCY);
     }
-        
+
     /**
      * @param mgm the graphmodel
      * @param component the source component
@@ -249,7 +253,7 @@ public class SelectionComponent extends SelectionWButtons {
 	    || !ModelFacade.isAComponent(newComponent)) {
                throw new IllegalArgumentException();
         }
-	return mgm.connect(component, newComponent, 
+	return mgm.connect(component, newComponent,
                             (Class) ModelFacade.DEPENDENCY);
     }
 
@@ -257,7 +261,7 @@ public class SelectionComponent extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return Model.getUmlFactory().getCore().createComponent();
+        return Model.getCoreFactory().createComponent();
     }
 
     /**

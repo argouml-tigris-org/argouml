@@ -92,7 +92,7 @@ class OuterClassifierContext extends Context
 		}
 		if (classifier.isInterface()) {
 		    mInterface =
-			Model.getUmlFactory().getCore()
+			Model.getCoreFactory()
 			    .buildInterface(name, mClassifier);
 		}
 		else {
@@ -120,7 +120,7 @@ class OuterClassifierContext extends Context
                     }
                     if (classifier.isInterface()) {
                         mInterface =
-			    Model.getUmlFactory().getCore()
+			    Model.getCoreFactory()
 			        .buildInterface(name, mClassifier);
                     }
                     else {
@@ -172,12 +172,12 @@ class OuterClassifierContext extends Context
 		}
 		if (classifier.isInterface()) {
 		    iClassifier =
-			Model.getUmlFactory().getCore()
+			Model.getCoreFactory()
 			    .buildInterface(name, mClassifier);
 		}
 		else {
 		    iClassifier =
-			Model.getUmlFactory().getCore()
+			Model.getCoreFactory()
 			    .buildClass(name, mClassifier);
 		}
 	    }
@@ -201,12 +201,12 @@ class OuterClassifierContext extends Context
                     }
                     if (classifier.isInterface()) {
                         iClassifier =
-			    Model.getUmlFactory().getCore()
+			    Model.getCoreFactory()
 			        .buildInterface(name, mClassifier);
                     }
                     else {
                         iClassifier =
-			    Model.getUmlFactory().getCore()
+			    Model.getCoreFactory()
 			        .buildClass(name, mClassifier);
                     }
                     

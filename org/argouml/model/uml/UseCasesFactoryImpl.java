@@ -149,7 +149,7 @@ public class UseCasesFactoryImpl
         MUseCase extension = (MUseCase) anextension;
 
 	MExtend extend =
-	    (MExtend) nsmodel.getUmlFactory().getUseCases().createExtend();
+	    (MExtend) nsmodel.getUseCasesFactory().createExtend();
 	// Set the ends
 
 	extend.setBase(base);
@@ -224,7 +224,7 @@ public class UseCasesFactoryImpl
 
         MUseCase useCase = (MUseCase) modelElement;
         MExtensionPoint extensionPoint =
-	    (MExtensionPoint) nsmodel.getUmlFactory().getUseCases()
+	    (MExtensionPoint) nsmodel.getUseCasesFactory()
 	    	.createExtensionPoint();
 
         // Set the owning use case if there is one given.
@@ -273,7 +273,7 @@ public class UseCasesFactoryImpl
         MUseCase base = (MUseCase) abase;
         MUseCase addition = (MUseCase) anaddition;
 	MInclude include =
-	    (MInclude) nsmodel.getUmlFactory().getUseCases().createInclude();
+	    (MInclude) nsmodel.getUseCasesFactory().createInclude();
 
 	// Set the ends. Because of the NSUML bug we reverse the accessors
 	// here.

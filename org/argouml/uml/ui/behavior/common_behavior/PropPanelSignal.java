@@ -106,7 +106,7 @@ public class PropPanelSignal extends PropPanelModelElement {
             if (ModelFacade.isASignal(target)) {
                 Object ns = ModelFacade.getNamespace(target);
                 if (ns != null) {
-                    Object newSig = Model.getUmlFactory().getCommonBehavior()
+                    Object newSig = Model.getCommonBehaviorFactory()
                         .createSignal(); 
                     ModelFacade.addOwnedElement(ns, newSig);
                     TargetManager.getInstance().setTarget(newSig);

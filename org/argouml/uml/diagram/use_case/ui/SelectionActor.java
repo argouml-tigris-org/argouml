@@ -171,7 +171,7 @@ public class SelectionActor extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return Model.getUmlFactory().getUseCases().createUseCase();
+        return Model.getUseCasesFactory().createUseCase();
     }
 
     /**

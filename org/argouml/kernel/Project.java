@@ -67,14 +67,16 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.util.Util;
 
 /**
- * The Project is a datastructure that represents the designer's 
+ * The Project is a datastructure that represents the designer's
  * current project. It manages the list of diagrams and UML models.
  */
 public class Project implements java.io.Serializable, TargetListener {
 
-    /** logger */
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(Project.class);
-    
+
     ////////////////////////////////////////////////////////////////
     // constants
 
@@ -85,13 +87,14 @@ public class Project implements java.io.Serializable, TargetListener {
 
     ////////////////////////////////////////////////////////////////
     // static variables
-    
+
     static final long serialVersionUID = 1399111233978692444L;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** TODO: should just be the directory to write
+    /**
+     * TODO: should just be the directory to write.
      */
     private URL url;
 //    private ChangeRegistry saveRegistry;
@@ -101,13 +104,13 @@ public class Project implements java.io.Serializable, TargetListener {
     private String version;
 
     private Vector searchpath;
-    
+
     // TODO: break into 3 main member types
     // model, diagram and other
     private MemberList members;
-    
+
     private String historyFile;
-    
+
     /**
      * The version number of the persistence format that last
      * saved this project.
@@ -134,13 +137,14 @@ public class Project implements java.io.Serializable, TargetListener {
      * the navpane).
      */
     private Object treeRoot;
-    
+
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
     private ArgoDiagram activeDiagram;
 
-    /** Cache for the default model.
+    /**
+     * Cache for the default model.
      */
     private HashMap defaultModelCache;
 
@@ -158,12 +162,12 @@ public class Project implements java.io.Serializable, TargetListener {
      * Constructor.
      */
     public Project() {
-        
+
         authorname = "";
         description = "";
         // this should be moved to a ui action.
         version = ArgoVersion.getVersion();
-        
+
         searchpath = new Vector();
         members = new MemberList();
         historyFile = "";
@@ -171,7 +175,7 @@ public class Project implements java.io.Serializable, TargetListener {
         diagrams = new Vector();
         cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
-        
+
 //        saveRegistry = new ChangeRegistry();
         LOG.info("making empty project with empty model");
         // Jaap Branderhorst 2002-12-09
@@ -190,12 +194,13 @@ public class Project implements java.io.Serializable, TargetListener {
      * class diagram and a usecase diagram and an untitled model.
      */
     protected void makeUntitledProject() {
-        if (getRoot() != null)
+        if (getRoot() != null) {
             throw new IllegalStateException(
                     "Tried to make a non-empty project "
                     + "to an untitled project");
+        }
         Object model =
-            Model.getUmlFactory().getModelManagement().createModel();
+            Model.getModelManagementFactory().createModel();
         ModelFacade.setName(model, "untitledModel");
         setRoot(model);
         setCurrentNamespace(model);
@@ -203,15 +208,15 @@ public class Project implements java.io.Serializable, TargetListener {
         addMember(new UMLClassDiagram(model));
         addMember(new UMLUseCaseDiagram(model));
         addMember(new ProjectMemberTodoList("", this));
-        ProjectManager.getManager().setNeedsSave(false);       
+        ProjectManager.getManager().setNeedsSave(false);
         setActiveDiagram((ArgoDiagram) getDiagrams().get(0));
     }
- 
+
     /**
      * Find the base name of this project.<p>
-     * 
+     *
      * This is the name minus any valid file extension.
-     * 
+     *
      * @return The name (a String).
      */
     public String getBaseName() {
@@ -225,8 +230,9 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public String getName() {
         // TODO: maybe separate name
-        if (url == null)
+        if (url == null) {
             return UNTITLED_FILE;
+        }
         String name = url.getFile();
         int i = name.lastIndexOf('/');
         return name.substring(i + 1);
@@ -234,23 +240,24 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Set the project URL.
-     * 
+     *
      * @param n The new URL (as a String).
-     * @throws MalformedURLException if the argument cannot be converted to 
+     * @throws MalformedURLException if the argument cannot be converted to
      *         an URL.
      */
     public void setName(String n)
         throws MalformedURLException {
         String s = "";
-        if (getURL() != null)
+        if (getURL() != null) {
             s = getURL().toString();
+        }
         s = s.substring(0, s.lastIndexOf("/") + 1) + n;
         setURL(new URL(s));
     }
 
     /**
      * Get the URL for this project.
-     * 
+     *
      * @return The URL.
      */
     public URL getURL() {
@@ -259,7 +266,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Set the URL for this project.
-     * 
+     *
      * @param theUrl The URL to set.
      */
     public void setURL(URL theUrl) {
@@ -268,7 +275,7 @@ public class Project implements java.io.Serializable, TargetListener {
         }
 
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Setting project URL from \"" + url 
+            LOG.debug("Setting project URL from \"" + url
                       + "\" to \"" + theUrl + "\".");
         }
 
@@ -277,7 +284,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Set the project file.
-     * 
+     *
      * This only works if it is possible to convert the File to an url.
      *
      * @param file File to set the project to.
@@ -287,10 +294,10 @@ public class Project implements java.io.Serializable, TargetListener {
             URL theProjectUrl = Util.fileToURL(file);
 
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Setting project file name from \"" 
-                          + url 
-                          + "\" to \"" 
-                          + theProjectUrl 
+                LOG.debug("Setting project file name from \""
+                          + url
+                          + "\" to \""
+                          + theProjectUrl
                           + "\".");
             }
 
@@ -318,7 +325,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get all members of the project.
-     * 
+     *
      * @return a Vector with all members.
      */
     public MemberList getMembers() {
@@ -349,7 +356,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param m the member to be added
      */
     public void addMember(Object m) {
-        
+
         if (m instanceof ArgoDiagram) {
             LOG.info("Adding diagram member");
             addDiagramMember((ArgoDiagram) m);
@@ -371,7 +378,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param m the model
      */
     private void addModelMember(Object m) {
-        
+
         boolean memberFound = false;
         Object currentMember =
             members.getMember(ProjectMemberModel.class);
@@ -382,7 +389,7 @@ public class Project implements java.io.Serializable, TargetListener {
                 memberFound = true;
             }
         }
-        
+
         if (!memberFound) {
             if (!models.contains(m)) {
                 addModel(m);
@@ -397,16 +404,16 @@ public class Project implements java.io.Serializable, TargetListener {
                     "Attempted to load 2 models");
         }
     }
-    
+
     /**
      * @param m a namespace
      */
     public void addModel(Object m) {
-        
+
         if (!ModelFacade.isANamespace(m)) {
             throw new IllegalArgumentException();
 	}
-        
+
         // fire indeterminate change to avoid copying vector
         if (!models.contains(m)) {
             models.addElement(m);
@@ -423,30 +430,32 @@ public class Project implements java.io.Serializable, TargetListener {
 
         removeDiagram(d);
         members.remove(d);
-        
-        /* Issue 2909: if there is no diagram left, then let's add a default
-         * new one... */
+
+        /*
+         * Issue 2909: if there is no diagram left, then let's add a default
+         * new one...
+         */
         if (diagrams.size() < 1) {
             ArgoDiagram defaultDiagram = new UMLClassDiagram(treeRoot);
             addMember(defaultDiagram);
-            setActiveDiagram(defaultDiagram); 
+            setActiveDiagram(defaultDiagram);
             TargetManager.getInstance().setTarget(defaultDiagram);
         }
     }
 
-    
+
     /**
      * Get the author name.
-     * 
+     *
      * @return The author name.
      */
     public String getAuthorname() {
         return authorname;
     }
-    
+
     /**
      * Set the author name.
-     * 
+     *
      * @param s The new author name.
      */
     public void setAuthorname(String s) {
@@ -455,13 +464,13 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the version.
-     * 
+     *
      * @return the version.
      */
     public String getVersion() {
         return version;
     }
-    
+
     /**
      * Set the new version.
      * @param s The new version.
@@ -472,7 +481,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the description.
-     * 
+     *
      * @return the description.
      */
     public String getDescription() {
@@ -481,7 +490,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Set a new description.
-     *  
+     *
      * @param s The new description.
      */
     public void setDescription(String s) {
@@ -490,7 +499,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Get the history file.
-     * 
+     *
      * @return The history file.
      */
     public String getHistoryFile() {
@@ -499,17 +508,17 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Set the history file.
-     * 
+     *
      * @param s The new history file.
      */
     public void setHistoryFile(String s) {
         historyFile = s;
     }
-    
+
     /**
      * Returns all models defined by the user. I.e. this does not return the
      * default model but all other models.
-     * 
+     *
      * @return A Vector of all user defined models.
      */
     public Vector getUserDefinedModels() {
@@ -518,7 +527,7 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Returns all models, including the default model (default.xmi).
-     * 
+     *
      * @return A Collection containing all models.
      */
     public Collection getModels() {
@@ -530,9 +539,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Return the model.<p>
-     * 
-     * If there isn't exactly one model, <tt>null</tt> is returned.
-     * 
+     *
+     * If there isn't exactly one model, <code>null</code> is returned.
+     *
      * @return the model.
      */
     public Object getModel() {
@@ -558,7 +567,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * found. The newly created type is added to the currentNamespace
      * and given the name s.
      * @param s the name of the type/classifier to be found
-     * @param defineNew if true, define a new one 
+     * @param defineNew if true, define a new one
      * @return MClassifier the found classifier
      */
     public Object findType(String s, boolean defineNew) {
@@ -579,13 +588,14 @@ public class Project implements java.io.Serializable, TargetListener {
         cls = findTypeInModel(s, defaultModel);
         // hey, now we should move it to the model the user is working in
         if (cls != null) {
-            cls = Model.getModelManagementHelper().getCorrespondingElement(cls, 
-                    getRoot());
+            cls =
+                Model.getModelManagementHelper()
+                	.getCorrespondingElement(cls, getRoot());
         }
         if (cls == null && defineNew) {
             LOG.debug("new Type defined!");
-            cls = Model.getUmlFactory().getCore()
-        		  .buildClass(getCurrentNamespace());
+            cls =
+                Model.getCoreFactory().buildClass(getCurrentNamespace());
             ModelFacade.setName(cls, s);
         }
         return cls;
@@ -595,8 +605,8 @@ public class Project implements java.io.Serializable, TargetListener {
      * Finds all figs on the diagrams for some project member,
      * including the figs containing the member (so for some
      * operation, the containing figclass is returned).
-     * 
-     * @param member The member we are looking for. 
+     *
+     * @param member The member we are looking for.
      *               This can be a NSUML object but also another object.
      * @return Collection The collection with the figs.
      */
@@ -613,37 +623,37 @@ public class Project implements java.io.Serializable, TargetListener {
         return figs;
     }
 
-    /** 
+    /**
      * Finds a classifier with a certain name.<p>
-     * 
+     *
      * Will only return first classifier with the matching name.
      *
      * @param s is short name.
      * @param ns Namespace where we do the search.
-     * @return the found classifier (or <tt>null</tt> if not found).
+     * @return the found classifier (or <code>null</code> if not found).
      */
     public Object findTypeInModel(String s, Object ns) {
-        
+
         if (!ModelFacade.isANamespace(ns)) {
             throw new IllegalArgumentException();
     	}
-        
+
         Collection allClassifiers =
             Model.getModelManagementHelper()
 	        .getAllModelElementsOfKind(ns, ModelFacade.CLASSIFIER);
-        
+
         Object[] classifiers = allClassifiers.toArray();
         Object classifier = null;
-        
+
         for (int i = 0; i < classifiers.length; i++) {
-            
+
             classifier = classifiers[i];
             if (ModelFacade.getName(classifier) != null
             		&& ModelFacade.getName(classifier).equals(s)) {
                 return classifier;
             }
         }
-        
+
         return null;
     }
 
@@ -651,11 +661,11 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param m the namespace
      */
     public void setCurrentNamespace(Object m) {
-        
+
         if (m != null && !ModelFacade.isANamespace(m)) {
             throw new IllegalArgumentException();
     	}
-        
+
         currentNamespace = m;
     }
 
@@ -701,7 +711,7 @@ public class Project implements java.io.Serializable, TargetListener {
             }
         }
         return null;
-    } 
+    }
 
     /**
      * @param d the diagram to be added
@@ -714,13 +724,13 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Removes a diagram from the list with diagrams. 
-     * 
+     * Removes a diagram from the list with diagrams.
+     *
      * Removes (hopefully) the event listeners for this diagram.  Does
      * not remove the diagram from the project members. This should
      * not be called directly. Use moveToTrash if you want to remove a
      * diagram.
-     * 
+     *
      * @param d the ArgoDiagram
      */
     protected void removeDiagram(ArgoDiagram d) {
@@ -741,9 +751,9 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Listener to events from the Diagram class. <p>
-     * 
+     *
      * Purpose: changing the name of a diagram shall set the need save flag.
-     * 
+     *
      * @author mvw@tigris.org
      */
     private class Vcl implements VetoableChangeListener {
@@ -752,22 +762,23 @@ public class Project implements java.io.Serializable, TargetListener {
          */
         public void vetoableChange(PropertyChangeEvent evt)
             throws PropertyVetoException {
-            if (evt.getPropertyName().equals("name"))
+            if (evt.getPropertyName().equals("name")) {
                 ProjectManager.getManager().setNeedsSave(true);
+            }
         }
     }
-    
+
     /**
      * @param me the given modelelement
-     * @return the total number of presentation 
+     * @return the total number of presentation
      *         for the given modelelement in the project
      */
     public int getPresentationCountFor(Object me) {
-        
+
         if (!ModelFacade.isAModelElement(me)) {
             throw new IllegalArgumentException();
     	}
-        
+
         int presentations = 0;
         int size = diagrams.size();
         for (int i = 0; i < size; i++) {
@@ -797,7 +808,7 @@ public class Project implements java.io.Serializable, TargetListener {
     public void setGenerationPrefs(GenerationPreferences cgp) {
         cgPrefs = cgp;
     }
-    
+
     /**
      * @return the generation preferences
      */
@@ -848,8 +859,8 @@ public class Project implements java.io.Serializable, TargetListener {
         }
         // issue 1725: the root is not set, which leads to problems
         // with displaying prop panels
-        setRoot( getModel());
-        
+        setRoot(getModel());
+
         ProjectManager.getManager().setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
         uuidRefs = null;
@@ -859,7 +870,7 @@ public class Project implements java.io.Serializable, TargetListener {
     // trash related methods
 
     /**
-     * Moves some object to trash. 
+     * Moves some object to trash.
      *
      * TODO: This mechanism must be rethought since it only deletes an
      * object completely from the project
@@ -877,14 +888,15 @@ public class Project implements java.io.Serializable, TargetListener {
 
     /**
      * Removes some object from the project. Does not update GUI since
-     * this method only handles project management.
-     * @param obj
+     * this method only handles project management.<p>
      *
-     * <p>Attention: whole Trash mechanism should be rethought concerning nsuml
-     * 
-     * <p>Note that at present these are all if, not
+     * Attention: whole Trash mechanism should be rethought concerning nsuml<p>
+     *
+     * Note that at present these are all if, not
      * else-if. Rather than make a big change, I've just explicitly dealt with
-     * the case where we have a use case that is not classifier.
+     * the case where we have a use case that is not classifier.<p>
+     *
+     * @param obj
      */
     protected void trashInternal(Object obj) {
         boolean needSave = false;
@@ -903,13 +915,13 @@ public class Project implements java.io.Serializable, TargetListener {
                     && members.contains(obj)) {
                 members.remove(obj);
             }
-            
+
             if (models.contains(obj)) {
                 models.remove(obj);
             }
-            
+
             needSave = true;
-            
+
             // scan if some diagrams need to be deleted, too
             // copy diagrams, otherwise ConcurrentModificationException
             Collection c = new ArrayList(diagrams);
@@ -920,7 +932,7 @@ public class Project implements java.io.Serializable, TargetListener {
                     if (((UMLDiagram) d).needsToBeRemoved()) {
                         moveToTrash(d);
                     }
-                }    
+                }
             }
         } else {
             if (obj instanceof ArgoDiagram) {
@@ -935,19 +947,19 @@ public class Project implements java.io.Serializable, TargetListener {
                 needSave = true;
                 // for explorer deletion:
                 obj = ((Fig) obj).getOwner();
-            } 
+            }
             if (obj instanceof CommentEdge) {
                 ProjectBrowser.getInstance().getEditorPane()
                     .removePresentationFor(obj, getDiagrams());
                 ((CommentEdge) obj).delete();
             }
-        }        
+        }
         ProjectManager.getManager().setNeedsSave(needSave);
     }
 
     /**
      * @param obj the object to be moved from the trash
-     * TODO: Is "move" remove or restore? 
+     * TODO: Is "move" remove or restore?
      */
     public void moveFromTrash(Object obj) {
         if (LOG.isDebugEnabled()) {
@@ -956,7 +968,7 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * @param dm the object 
+     * @param dm the object
      * @return true if the object is trashed
      */
     public boolean isInTrash(Object dm) {
@@ -967,25 +979,26 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param theDefaultModel a uml model
      */
     public void setDefaultModel(Object theDefaultModel) {
-        
+
         if (!ModelFacade.isAModel(theDefaultModel)) {
             throw new IllegalArgumentException();
         }
-        
+
         defaultModel = theDefaultModel;
         defaultModelCache = new HashMap();
     }
 
     /**
      * Get the default model.
-     * 
+     *
      * @return A model.
      */
     public Object getDefaultModel() {
         return defaultModel;
     }
 
-    /** Find a type by name in the default model.
+    /**
+     * Find a type by name in the default model.
      *
      * @param name the name.
      * @return the type.
@@ -994,7 +1007,7 @@ public class Project implements java.io.Serializable, TargetListener {
         if (defaultModelCache.containsKey(name)) {
             return defaultModelCache.get(name);
         }
-        
+
         Object result = findTypeInModel(name, getDefaultModel());
         defaultModelCache.put(name, result);
         return result;
@@ -1013,11 +1026,11 @@ public class Project implements java.io.Serializable, TargetListener {
      * @param root The root to set, a uml model
      */
     public void setRoot(Object root) {
-        
+
         if (!ModelFacade.isAModel(root)) {
             throw new IllegalArgumentException();
         }
-        
+
         if (treeRoot != null) {
             models.remove(treeRoot);
         }
@@ -1118,7 +1131,8 @@ public class Project implements java.io.Serializable, TargetListener {
     }
 
     /**
-     * Get the current viewed diagram
+     * Get the current viewed diagram.
+     *
      * @return the current viewed diagram
      */
     public ArgoDiagram getActiveDiagram() {
@@ -1132,27 +1146,27 @@ public class Project implements java.io.Serializable, TargetListener {
         activeDiagram = theDiagram;
     }
 
-    /** 
+    /**
      * @see TargetListener#targetAdded(TargetEvent)
      */
-    public void targetAdded(TargetEvent e) {       
+    public void targetAdded(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
-    /** 
+    /**
      * @see TargetListener#targetRemoved(TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
 
-    /** 
+    /**
      * @see TargetListener#targetSet(TargetEvent)
      */
     public void targetSet(TargetEvent e) {
     	setTarget(e.getNewTarget());
     }
-    
+
     /**
      * Called to update the current namespace and active diagram after
      * the target has changed.
@@ -1171,43 +1185,43 @@ public class Project implements java.io.Serializable, TargetListener {
             theCurrentNamespace = getRoot();
         }
         setCurrentNamespace(theCurrentNamespace);
-               
+
         if (target instanceof ArgoDiagram) {
             setActiveDiagram((ArgoDiagram) target);
-        }                  
+        }
     }
 
     /**
      * Remove the project.
      */
     public void remove() {
-        
+
         if (members != null) {
             members.clear();
         }
-        
+
         if (models != null) {
             models.clear();
         }
-        
+
         if (diagrams != null) {
             diagrams.clear();
         }
-        
+
         if (uuidRefs != null) {
             uuidRefs.clear();
         }
-        
+
         if (defaultModelCache != null) {
             defaultModelCache.clear();
         }
-        
+
         members = null;
         models = null;
         diagrams = null;
         uuidRefs = null;
         defaultModelCache = null;
-        
+
         url = null;
 //        saveRegistry = null;
         authorname = null;
@@ -1222,17 +1236,17 @@ public class Project implements java.io.Serializable, TargetListener {
         treeRoot = null;
         activeDiagram = null;
         defaultModelCache = null;
-        
+
         TargetManager.getInstance().removeTargetListener(this);
     }
-    
+
     /**
      * @return Returns the persistenceVersion.
      */
     public int getPersistenceVersion() {
         return persistenceVersion;
     }
-    
+
     /**
      * @param pv The persistenceVersion to set.
      */

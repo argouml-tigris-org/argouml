@@ -142,8 +142,8 @@ public class PropPanelPackage extends PropPanelNamespace  {
     public void addPackage() {
         Object target = getTarget();
         if (org.argouml.model.ModelFacade.isAPackage(target)) {
-            Object/*MPackage*/ newPackage =  Model.getUmlFactory().
-                getModelManagement().createPackage();
+            Object/*MPackage*/ newPackage =
+                Model.getModelManagementFactory().createPackage();
             Object/*MPackage*/ currentPackage = target;
             ModelFacade.addOwnedElement(currentPackage, newPackage);
             TargetManager.getInstance().setTarget(newPackage);

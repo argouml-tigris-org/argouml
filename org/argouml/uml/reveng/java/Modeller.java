@@ -207,7 +207,7 @@ public class Modeller {
 	      fileName.length()-5);
             */
 
-            component = Model.getUmlFactory().getCore().createComponent();
+            component = Model.getCoreFactory().createComponent();
             ModelFacade.setName(component, fileName);
         }
 
@@ -319,7 +319,7 @@ public class Modeller {
             // if no existing permission was found.
             if (perm == null) {
 		perm =
-		    Model.getUmlFactory().getCore()
+		    Model.getCoreFactory()
 		        .buildPermission(parseState.getComponent(), mPackage);
 		String newName =
 		    ModelFacade.getName(parseState.getComponent())
@@ -356,7 +356,7 @@ public class Modeller {
                 // if no existing permission was found.
                 if (perm == null) {
                     perm =
-			Model.getUmlFactory().getCore()
+			Model.getCoreFactory()
 			    .buildPermission(parseState.getComponent(),
 					     mClassifier);
 		    String newName =
@@ -399,7 +399,7 @@ public class Modeller {
                          Vector interfaces,
                          String javadoc) {
         Object mClass =
-	    addClassifier(Model.getUmlFactory().getCore().createClass(),
+	    addClassifier(Model.getCoreFactory().createClass(),
 			  name, modifiers, javadoc);
 
         ModelFacade.setAbstract(mClass,
@@ -506,7 +506,7 @@ public class Modeller {
                              Vector interfaces,
                              String javadoc) {
         Object mInterface =
-	    addClassifier(Model.getUmlFactory().getCore().createInterface(),
+	    addClassifier(Model.getCoreFactory().createInterface(),
 			  name,
 			  modifiers,
 			  javadoc);
@@ -771,7 +771,7 @@ public class Modeller {
 		    .getCurrentProject().findType("void");
 		Collection propertyChangeListeners = ProjectManager.getManager()
 		    .getCurrentProject().findFigsForMember(mOperation);
-		mParameter = Model.getUmlFactory().getCore().buildParameter(
+		mParameter = Model.getCoreFactory().buildParameter(
 		        mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter, "return");
 		ModelFacade.setKindToReturn(mParameter);
@@ -803,7 +803,7 @@ public class Modeller {
                     .getCurrentProject().findType("void");
                 Collection propertyChangeListeners = ProjectManager.getManager()
                     .getCurrentProject().findFigsForMember(mOperation);
-                mParameter = Model.getUmlFactory().getCore().buildParameter(
+                mParameter = Model.getCoreFactory().buildParameter(
                         mOperation, mdl, voidType, propertyChangeListeners);
 		ModelFacade.setName(mParameter,
 				    (String) parameter.elementAt(2));
@@ -1065,7 +1065,7 @@ public class Modeller {
         }
 
         if (mAbstraction == null) {
-            mAbstraction = Model.getUmlFactory().getCore().buildAbstraction(
+            mAbstraction = Model.getCoreFactory().buildAbstraction(
                    name, 
                    parent, 
                    child);
@@ -1085,7 +1085,7 @@ public class Modeller {
 	Object mPackage = searchPackageInModel(name);
 	if (mPackage == null) {
 	    mPackage =
-		Model.getUmlFactory().getModelManagement()
+		Model.getModelManagementFactory()
 		    .buildPackage(getRelativePackageName(name), name);
 	    ModelFacade.setNamespace(mPackage, model);
 
@@ -1141,7 +1141,7 @@ public class Modeller {
             Object voidType = ProjectManager.getManager()
                 .getCurrentProject().findType("void");
             mOperation =
-        		Model.getUmlFactory().getCore().buildOperation(
+        		Model.getCoreFactory().buildOperation(
                         cls, mdl, voidType, name, propertyChangeListeners);
 //            Iterator it2 =
 //		  ProjectManager.getManager().getCurrentProject()
@@ -1176,7 +1176,7 @@ public class Modeller {
     {
         Object mMethod = parseState.getMethod(name);
         if (mMethod == null) {
-            mMethod = Model.getUmlFactory().getCore().buildMethod(name);
+            mMethod = Model.getCoreFactory().buildMethod(name);
             ModelFacade.addFeature(parseState.getClassifier(), mMethod);
         }
         return mMethod;
@@ -1213,7 +1213,7 @@ public class Modeller {
                 .getCurrentProject().findType("int");
             Object mdl = ProjectManager.getManager()
                 .getCurrentProject().getModel();
-            mAttribute = Model.getUmlFactory().getCore()
+            mAttribute = Model.getCoreFactory()
                 .buildAttribute(cls, mdl, intType, propertyChangeListeners);
             ModelFacade.setName(mAttribute, name);
         }

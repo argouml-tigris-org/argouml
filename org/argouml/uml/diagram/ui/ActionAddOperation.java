@@ -37,8 +37,10 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
 
-/** Action to add an operation to a classifier.
- *  @stereotype singleton
+/**
+ * Action to add an operation to a classifier.
+ *
+ * @stereotype singleton
  */
 public class ActionAddOperation extends UMLAction {
 
@@ -53,8 +55,8 @@ public class ActionAddOperation extends UMLAction {
     /**
      * The constructor.
      */
-    public ActionAddOperation() { 
-        super("button.new-operation", true, HAS_ICON); 
+    public ActionAddOperation() {
+        super("button.new-operation", true, HAS_ICON);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -69,28 +71,33 @@ public class ActionAddOperation extends UMLAction {
 	Object target =  TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
 
-	if (ModelFacade.isAClassifier(target))
+	if (ModelFacade.isAClassifier(target)) {
 	    cls = target;
-	else if (ModelFacade.isAFeature(target))
+	} else if (ModelFacade.isAFeature(target)) {
 	    cls = ModelFacade.getOwner(target);
-	else
+	} else {
 	    return;
+	}
 
-	Collection propertyChangeListeners = ProjectManager.getManager()
-	    .getCurrentProject().findFigsForMember(cls);
-	Object model = ProjectManager.getManager()
-	    .getCurrentProject().getModel();
-	Object voidType = ProjectManager.getManager()
-	    .getCurrentProject().findType("void");
-	Object oper = Model.getUmlFactory().getCore()
-	    .buildOperation(cls, model, voidType, propertyChangeListeners);
+	Collection propertyChangeListeners =
+	    ProjectManager.getManager()
+	    	.getCurrentProject().findFigsForMember(cls);
+	Object model =
+	    ProjectManager.getManager()
+	    	.getCurrentProject().getModel();
+	Object voidType =
+	    ProjectManager.getManager()
+	    	.getCurrentProject().findType("void");
+	Object oper =
+	    Model.getCoreFactory()
+	    	.buildOperation(cls, model, voidType, propertyChangeListeners);
         TargetManager.getInstance().setTarget(oper);
 
         Iterator it =
 	    pb.getEditorPane().findPresentationsFor(cls,
 						    p.getDiagrams()).iterator();
         while (it.hasNext()) {
-            PropertyChangeListener listener = 
+            PropertyChangeListener listener =
                 (PropertyChangeListener) it.next();
             Model.getPump().removeModelEventListener(listener, oper);
             Model.getPump().addModelEventListener(listener, oper);
@@ -112,7 +119,7 @@ public class ActionAddOperation extends UMLAction {
     }
     /**
      * @return Returns the singleton.
-     * @deprecated singleton use will be removed in 0.18.0. 
+     * @deprecated singleton use will be removed in 0.18.0.
      * Use the constructor instead.
      */
     public static ActionAddOperation getSingleton() {

@@ -56,27 +56,27 @@ public class SelectionClass extends SelectionWButtons {
 
     private static final Logger LOG =
         Logger.getLogger(SelectionClass.class);
-    
+
     ////////////////////////////////////////////////////////////////
     // constants
-    private static Icon inherit = 
+    private static Icon inherit =
         ResourceLoaderWrapper.lookupIconResource("Generalization");
 
-    private static Icon assoc = 
+    private static Icon assoc =
         ResourceLoaderWrapper.lookupIconResource("Association");
 
-    private static Icon compos = 
+    private static Icon compos =
         ResourceLoaderWrapper.lookupIconResource("CompositeAggregation");
 
     private static Icon selfassoc =
         ResourceLoaderWrapper.lookupIconResource("SelfAssociation");
-        
+
 
 
     ////////////////////////////////////////////////////////////////
     // instance variables
     private boolean useComposite = false;
-    
+
 
 
     ////////////////////////////////////////////////////////////////
@@ -100,7 +100,7 @@ public class SelectionClass extends SelectionWButtons {
      *   5-------6-------7
      * </pre>
      *
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      * org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
@@ -182,7 +182,7 @@ public class SelectionClass extends SelectionWButtons {
 
 
     /**
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
@@ -232,8 +232,8 @@ public class SelectionClass extends SelectionWButtons {
         }
         if (edgeClass != null && nodeClass != null) {
             Editor ce = Globals.curEditor();
-            ModeCreateEdgeAndNode m = new
-                ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, useComposite);
+            ModeCreateEdgeAndNode m =
+                new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, useComposite);
             m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
             ce.pushMode(m);
         }
@@ -252,15 +252,15 @@ public class SelectionClass extends SelectionWButtons {
         super.mouseEntered(me);
         useComposite = me.isShiftDown();
     }
-    
-    
-        
+
+
+
 
     /**
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return Model.getUmlFactory().getCore().createClass();
+        return Model.getCoreFactory().createClass();
     }
 
     /**

@@ -125,7 +125,7 @@ public class PropPanelOperation extends PropPanelFeature {
         Object target = getTarget();
         if (ModelFacade.isAOperation(target)) {
             Object oper = /* (MOperation) */target;
-            Object newSignal = Model.getUmlFactory().getCommonBehavior()
+            Object newSignal = Model.getCommonBehaviorFactory()
                     .createSignal(); 
                     //((MOperation)oper).getFactory().createSignal();
             

@@ -175,7 +175,7 @@ public class UMLComboBoxEntry implements Comparable {
                 }
             }
             if (ns == null) {
-                ns = Model.getUmlFactory().getModelManagement()
+                ns = Model.getModelManagementFactory()
                     .createPackage();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);

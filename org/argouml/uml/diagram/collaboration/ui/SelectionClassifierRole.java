@@ -101,22 +101,26 @@ public class SelectionClassifierRole extends SelectionWButtons {
     }
 
     /**
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
-     * org.tigris.gef.presentation.Handle)
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
+     *         org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
 	super.hitHandle(r, h);
-	if (h.index != -1)
+	if (h.index != -1) {
 	    return;
-	if (!isPaintButtons())
+	}
+	if (!isPaintButtons()) {
 	    return;
+	}
 	Editor ce = Globals.curEditor();
 	SelectionManager sm = ce.getSelectionManager();
-	if (sm.size() != 1)
+	if (sm.size() != 1) {
 	    return;
+	}
 	ModeManager mm = ce.getModeManager();
-	if (mm.includes(ModeModify.class) && getPressedButton() == -1)
+	if (mm.includes(ModeModify.class) && getPressedButton() == -1) {
 	    return;
+	}
 	int cx = _content.getX();
 	int cy = _content.getY();
 	int cw = _content.getWidth();
@@ -146,17 +150,20 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	int cy = _content.getY();
 	int cw = _content.getWidth();
 	int ch = _content.getHeight();
-	if (showOutgoing)
+	if (showOutgoing) {
 	    paintButtonLeft(assocrole, g, cx + cw, cy + ch / 2, 12);
-	if (showIncoming)
+	}
+	if (showIncoming) {
 	    paintButtonRight(assocrole, g, cx, cy + ch / 2, 13);
-        if (showOutgoing || showIncoming)
+	}
+        if (showOutgoing || showIncoming) {
             paintButtonRight(selfassoc, g, cx, cy + ch - 10, 14);
+        }
     }
 
     /**
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
-     * org.tigris.gef.presentation.Handle)
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
+     *         org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
 	if (hand.index < 10) {
@@ -174,8 +181,9 @@ public class SelectionClassifierRole extends SelectionWButtons {
 
 	Editor ce = Globals.curEditor();
 	GraphModel gm = ce.getGraphModel();
-	if (!(gm instanceof MutableGraphModel))
+	if (!(gm instanceof MutableGraphModel)) {
 	    return;
+	}
 
 	MutableGraphModel mgm = (MutableGraphModel) gm;
 
@@ -196,7 +204,7 @@ public class SelectionClassifierRole extends SelectionWButtons {
         case 14: // add to self
             // do not want to drag this
             break;
-            
+
 	default :
 	    LOG.warn("invalid handle number");
 	    break;
@@ -209,12 +217,13 @@ public class SelectionClassifierRole extends SelectionWButtons {
 	}
     }
 
-    /** create a new ClassifierRole object.
+    /**
+     * Create a new ClassifierRole object.
+     *
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-	return Model.getUmlFactory().
-            getCollaborations().createClassifierRole();
+	return Model.getCollaborationsFactory().createClassifierRole();
     }
 
     /**

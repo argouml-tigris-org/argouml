@@ -80,7 +80,7 @@ public class SelectionInterface extends SelectionWButtons {
      *   5-------6-------7
      * </pre>
      *
-     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle, 
+     * @see org.tigris.gef.base.Selection#hitHandle(java.awt.Rectangle,
      * org.tigris.gef.presentation.Handle)
      */
     public void hitHandle(Rectangle r, Handle h) {
@@ -122,7 +122,7 @@ public class SelectionInterface extends SelectionWButtons {
 
 
     /**
-     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int, 
+     * @see org.tigris.gef.base.Selection#dragHandle(int, int, int, int,
      * org.tigris.gef.presentation.Handle)
      */
     public void dragHandle(int mX, int mY, int anX, int anY, Handle hand) {
@@ -153,8 +153,8 @@ public class SelectionInterface extends SelectionWButtons {
 	}
 	if (edgeClass != null && nodeClass != null) {
 	    Editor ce = Globals.curEditor();
-	    ModeCreateEdgeAndNode m = new
-		ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
+	    ModeCreateEdgeAndNode m =
+	        new ModeCreateEdgeAndNode(ce, edgeClass, nodeClass, false);
 	    m.setup((FigNode) _content, _content.getOwner(), bx, by, reverse);
 	    ce.pushMode(m);
 	}
@@ -162,25 +162,25 @@ public class SelectionInterface extends SelectionWButtons {
     }
 
     /**
-     * TODO: This is never used by anybody. What is it for? 
+     * TODO: This is never used by anybody. What is it for?
      * Document it, or remove!
      *
      * @param mgm the graphmodel
      * @param interf4ce a UML interface
-     * @param cl4ss a UML class 
+     * @param cl4ss a UML class
      * @return the new realization edge
      */
     public Object addRealization(MutableGraphModel mgm, Object interf4ce,
 				 Object cl4ss) {
-                                     
+
         if (!ModelFacade.isAClass(cl4ss)
 	        || !ModelFacade.isAInterface(interf4ce)) {
             throw new IllegalArgumentException();
 	}
-                                     
+
 	return mgm.connect(cl4ss, interf4ce, (Class) ModelFacade.ABSTRACTION);
     }
-	
+
     /**
      * @see SelectionWButtons#createEdgeUnder(
      *         org.tigris.gef.graph.MutableGraphModel, java.lang.Object)
@@ -194,7 +194,7 @@ public class SelectionInterface extends SelectionWButtons {
      * @see org.argouml.uml.diagram.ui.SelectionWButtons#getNewNode(int)
      */
     protected Object getNewNode(int buttonCode) {
-        return Model.getUmlFactory().getCore().createClass();
+        return Model.getCoreFactory().createClass();
     }
 
 } /* end class SelectionInterface */

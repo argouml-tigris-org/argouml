@@ -66,7 +66,7 @@ public class ActionAddPackage  extends UMLAction {
         Object namespace =
 	    TargetManager.getInstance().getModelTarget();
         ModelFacade.addOwnedElement(namespace,
-            Model.getUmlFactory().getModelManagement().createPackage());
+            Model.getModelManagementFactory().createPackage());
     }
     
 }

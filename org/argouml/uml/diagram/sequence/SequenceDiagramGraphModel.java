@@ -71,7 +71,7 @@ public class SequenceDiagramGraphModel
         private FigObject srcFigObject;
         private FigObject destFigObject;
         private Fig srcFigPort;
-        private Fig destFigPort;       
+        private Fig destFigPort;
 
         public CanConnectCmd(Object fromPort, Object toPort) {
             Editor curEditor = Globals.curEditor();
@@ -79,10 +79,10 @@ public class SequenceDiagramGraphModel
             destPort = toPort;
             if (srcPort instanceof LinkPort) {
                 srcObject = ((LinkPort) srcPort).getObject();
-            } 
+            }
             if (destPort instanceof LinkPort) {
                 destObject = ((LinkPort) destPort).getObject();
-            } 
+            }
 
             srcFigObject =
                 (FigObject) curEditor.getLayerManager().getActiveLayer()
@@ -91,9 +91,9 @@ public class SequenceDiagramGraphModel
                 (FigObject) curEditor.getLayerManager().getActiveLayer()
                     .presentationFor(destObject);
             srcFigPort = srcFigObject.getPortFig(srcPort);
-            destFigPort = destFigObject.getPortFig(destPort);            
+            destFigPort = destFigObject.getPortFig(destPort);
         }
-       
+
         /**
          * @return the {@link FigObject} of the destination.
          */
@@ -122,7 +122,7 @@ public class SequenceDiagramGraphModel
             return destPort;
         }
 
-       
+
 
         /**
          * @return the {@link FigObject} of the source.
@@ -152,7 +152,7 @@ public class SequenceDiagramGraphModel
             return srcPort;
         }
 
-       
+
 
         /**
          * @param object
@@ -181,7 +181,7 @@ public class SequenceDiagramGraphModel
         public void setDestPort(Object object) {
             destPort = object;
         }
-       
+
         /**
          * @param object
          */
@@ -266,7 +266,7 @@ public class SequenceDiagramGraphModel
 
 		    }
             	}
-            }                    
+            }
             return true;
         }
 
@@ -295,7 +295,7 @@ public class SequenceDiagramGraphModel
 		&& !((ActivationNode) this.getDestPort()).isEnd()) {
                 // cannot destroy an object in the middle of an activation.
                 return false;
-            }          
+            }
             return true;
 
         }
@@ -325,7 +325,7 @@ public class SequenceDiagramGraphModel
 
 		// cannot return in the middle of an activation.
 		return false;
-	    } 
+	    }
 	    Node startNode =
 		(Node) getSrcFigObject().getActivationNodes(
 		    (Node) getSrcPort()).get(0);
@@ -333,7 +333,7 @@ public class SequenceDiagramGraphModel
 		LinkPort linkNode = (LinkPort) startNode;
 		FigLink figLink =
 		    getSrcFigObject().getFigLink(linkNode.getFigLinkPort());
-		   	 
+
 		if (!(getDestFigObject().getActivationNodes(
 			  (Node) ((FigLinkPort) figLink.getSourcePortFig())
 			             .getOwner())
@@ -344,7 +344,7 @@ public class SequenceDiagramGraphModel
 		}
 	    } else {
 		return false;
-	    }		
+	    }
             return true;
 
         }
@@ -384,9 +384,9 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
-    /** 
+    /**
      * Return all nodes in the graph.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getNodes()
      */
     public List getNodes() {
@@ -425,9 +425,9 @@ public class SequenceDiagramGraphModel
             Model.getCollaborationsFactory().buildInteraction(c);
     }
 
-    /** 
+    /**
      * Return all edges in the graph.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getEdges()
      */
     public List getEdges() {
@@ -448,9 +448,9 @@ public class SequenceDiagramGraphModel
         return allEdges;
     }
 
-    /** 
+    /**
      * Return all ports on node or edge.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getPorts(java.lang.Object)
      */
     public List getPorts(Object nodeOrEdge) {
@@ -463,9 +463,9 @@ public class SequenceDiagramGraphModel
         return ports;
     }
 
-    /** 
+    /**
      * Return the node or edge that owns the given port.
-     * 
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getOwner(java.lang.Object)
      */
     public Object getOwner(Object port) {
@@ -486,9 +486,9 @@ public class SequenceDiagramGraphModel
         return owner;
     }
 
-    /** 
+    /**
      * Return all edges going to given port.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getInEdges(java.lang.Object)
      */
     public List getInEdges(Object port) {
@@ -510,9 +510,9 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** 
+    /**
      * Return all edges going from given port.
-     * 
+     *
      * @see org.tigris.gef.graph.GraphModel#getOutEdges(java.lang.Object)
      */
     public List getOutEdges(Object port) {
@@ -534,9 +534,9 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** 
+    /**
      * Return one end of an edge.
-     * 
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
      */
     public Object getSourcePort(Object edge) {
@@ -547,9 +547,9 @@ public class SequenceDiagramGraphModel
         return res;
     }
 
-    /** 
+    /**
      * Return  the other end of an edge.
-     * 
+     *
      * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
      */
     public Object getDestPort(Object edge) {
@@ -563,9 +563,9 @@ public class SequenceDiagramGraphModel
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 
-    /** 
+    /**
      * Return true if the given object is a valid node in this graph.
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddNode(java.lang.Object)
      */
     public boolean canAddNode(Object node) {
@@ -576,9 +576,9 @@ public class SequenceDiagramGraphModel
         return ModelFacade.isAObject(node);
     }
 
-    /** 
+    /**
      * Return true if the given object is a valid edge in this graph.
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
      */
     public boolean canAddEdge(Object edge) {
@@ -606,9 +606,9 @@ public class SequenceDiagramGraphModel
 
     }
 
-    /** 
+    /**
      * Add the given node to the graph, if valid.
-     * 
+     *
      * @see org.tigris.gef.graph.MutableGraphModel#addNode(java.lang.Object)
      */
     public void addNode(Object node) {
@@ -623,13 +623,13 @@ public class SequenceDiagramGraphModel
     }
 
     /**
-     * Adds an edge to the model if this is allowed. If the edge is a link, 
-     * an associationrole and a stimulus to accompany this link are build. 
+     * Adds an edge to the model if this is allowed. If the edge is a link,
+     * an associationrole and a stimulus to accompany this link are build.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#addEdge(java.lang.Object)
      */
     public void addEdge(Object edge) {
-        // if (canAddEdge(edge)) {            
+        // if (canAddEdge(edge)) {
         fireEdgeAdded(edge);
         // }
     }
@@ -650,9 +650,9 @@ public class SequenceDiagramGraphModel
         }
     }
 
-    /** 
+    /**
      * Return true if the two given ports can be connected by a
-     * kind of edge to be determined by the ports. 
+     * kind of edge to be determined by the ports.
      *
      * @see org.tigris.gef.graph.MutableGraphModel#canConnect(
      * java.lang.Object, java.lang.Object)
@@ -710,7 +710,7 @@ public class SequenceDiagramGraphModel
                     toObject = ((LinkPort) toPort).getObject();
 
                     action =
-                        Model.getUmlFactory().getCommonBehavior()
+                        Model.getCommonBehaviorFactory()
                             .createCallAction();
                 }
             } else if (actionClass == ModelFacade.CREATE_ACTION) {
@@ -719,7 +719,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = toPort;
                     action =
-                        Model.getUmlFactory().getCommonBehavior()
+                        Model.getCommonBehaviorFactory()
                             .createCreateAction();
                 }
             } else if (actionClass == ModelFacade.RETURN_ACTION) {
@@ -728,7 +728,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        Model.getUmlFactory().getCommonBehavior()
+                        Model.getCommonBehaviorFactory()
                             .createReturnAction();
 
                 }
@@ -738,7 +738,7 @@ public class SequenceDiagramGraphModel
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = ((LinkPort) fromPort).getObject();
                     action =
-                        Model.getUmlFactory().getCommonBehavior()
+                        Model.getCommonBehaviorFactory()
                             .createDestroyAction();
                 }
             } else if (actionClass == ModelFacade.SEND_ACTION) {
