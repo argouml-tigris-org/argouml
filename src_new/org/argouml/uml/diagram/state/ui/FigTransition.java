@@ -36,7 +36,7 @@ import java.awt.Graphics;
 
 import java.beans.PropertyVetoException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -54,7 +54,7 @@ import ru.novosoft.uml.behavior.state_machines.MTransition;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class FigTransition extends FigEdgeModelElement {
-    protected static Category cat = Category.getInstance(FigTransition.class);
+    protected static Logger cat = Logger.getLogger(FigTransition.class);
 
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
 

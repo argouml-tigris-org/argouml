@@ -33,7 +33,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Vector;
 import javax.swing.JPanel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.kernel.Wizard;
@@ -49,7 +49,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *  of an association. */
 
 public class WizNavigable extends Wizard {
-    protected static Category cat = Category.getInstance(WizNavigable.class);
+    protected static Logger cat = Logger.getLogger(WizNavigable.class);
 					      
     protected String _instructions =
 	"Please select one of the following navigability options.";

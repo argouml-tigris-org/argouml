@@ -36,7 +36,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JPanel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepCue;
@@ -66,7 +66,7 @@ import ru.novosoft.uml.model_management.MPackage;
  */
 
 public class WizOperName extends WizMEName {
-    protected static Category cat = Category.getInstance(WizOperName.class);
+    protected static Logger cat = Logger.getLogger(WizOperName.class);
 
     boolean _possibleConstructor = false;
     boolean _stereotypePathChosen;

@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 import javax.swing.event.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
@@ -45,7 +45,7 @@ import java.awt.*;
  *             that used reflection a lot.
  */
 public class UMLListMenuItem extends JMenuItem implements ActionListener {
-    protected static Category cat = Category.getInstance(UMLListMenuItem.class);
+    protected static Logger cat = Logger.getLogger(UMLListMenuItem.class);
 
     private Object _actionObj;
     private int _index;

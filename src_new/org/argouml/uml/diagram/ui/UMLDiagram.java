@@ -32,7 +32,7 @@ import javax.swing.Action;
 import javax.swing.ButtonModel;
 import javax.swing.JToolBar;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
@@ -60,7 +60,7 @@ public abstract class UMLDiagram
     implements MElementListener {
     
 
-    protected static Category cat = Category.getInstance(UMLDiagram.class);
+    protected static Logger cat = Logger.getLogger(UMLDiagram.class);
   
     ////////////////////////////////////////////////////////////////
     // actions for toolbar

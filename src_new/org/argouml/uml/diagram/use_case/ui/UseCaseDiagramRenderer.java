@@ -35,7 +35,7 @@
 
 package org.argouml.uml.diagram.use_case.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
@@ -80,8 +80,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 public class UseCaseDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Category cat =
-	Category.getInstance(UseCaseDiagramRenderer.class);
+    protected static Logger cat =
+	Logger.getLogger(UseCaseDiagramRenderer.class);
 
 
     /**

@@ -26,7 +26,7 @@ package org.argouml.uml.diagram.ui;
 
 import java.util.Collection;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -34,8 +34,8 @@ import org.argouml.ui.AbstractGoRule;
 
 
 public class GoModelToBaseElements extends AbstractGoRule {
-    protected static Category cat =
-	Category.getInstance(GoModelToBaseElements.class);
+    protected static Logger cat =
+	Logger.getLogger(GoModelToBaseElements.class);
 
     public String getRuleName() {
 	return Argo.localize ("Tree", "misc.package.base-class");

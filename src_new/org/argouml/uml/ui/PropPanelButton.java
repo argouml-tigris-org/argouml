@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.*;
 import org.argouml.uml.*;
 import java.util.*;
@@ -44,8 +44,8 @@ import ru.novosoft.uml.*;
  */
 
 public class PropPanelButton extends JButton implements ActionListener, UMLUserInterfaceComponent {
-    protected static Category cat = 
-        Category.getInstance(PropPanelButton.class);
+    protected static Logger cat = 
+        Logger.getLogger(PropPanelButton.class);
 
     private PropPanel _propPanel;
     private Method _actionMethod;

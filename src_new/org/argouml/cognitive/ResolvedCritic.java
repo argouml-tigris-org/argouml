@@ -31,7 +31,7 @@ import org.tigris.gef.util.VectorSet;
 
 import org.argouml.cognitive.critics.Critic;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 // Needs-more-work: Maybe the exception strings should be internationalized
 
@@ -43,7 +43,7 @@ import org.apache.log4j.Category;
  */
 public class ResolvedCritic
 {
-    protected static Category cat = Category.getInstance(
+    protected static Logger cat = Logger.getLogger(
 							 ResolvedCritic.class);
 
     /** The name of the critic. */

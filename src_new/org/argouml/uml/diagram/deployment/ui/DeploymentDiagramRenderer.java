@@ -36,14 +36,14 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.argouml.uml.diagram.ui.*;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.uml.diagram.static_structure.ui.*;
 
 public class DeploymentDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Category cat =
-	Category.getInstance(DeploymentDiagramRenderer.class);
+    protected static Logger cat =
+	Logger.getLogger(DeploymentDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
 

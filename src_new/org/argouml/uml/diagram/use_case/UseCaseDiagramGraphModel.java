@@ -42,7 +42,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
@@ -69,8 +69,8 @@ public class UseCaseDiagramGraphModel
     extends UMLMutableGraphSupport
     implements VetoableChangeListener
 {
-    protected static Category cat =
-	Category.getInstance(UseCaseDiagramGraphModel.class);
+    protected static Logger cat =
+	Logger.getLogger(UseCaseDiagramGraphModel.class);
 
     ///////////////////////////////////////////////////////////////////////////
     //

@@ -26,7 +26,7 @@ package org.argouml.uml.ui;
 import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import ru.novosoft.uml.*;
 
@@ -41,8 +41,8 @@ import ru.novosoft.uml.*;
  *             that used reflection a lot.
  */
 abstract public class UMLBooleanProperty  {
-    protected static Category cat = 
-        Category.getInstance(UMLBooleanProperty.class);
+    protected static Logger cat = 
+        Logger.getLogger(UMLBooleanProperty.class);
 
     private String _propertyName;
     

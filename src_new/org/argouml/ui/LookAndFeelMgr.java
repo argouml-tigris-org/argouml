@@ -37,7 +37,7 @@ import javax.swing.plaf.metal.DefaultMetalTheme;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.plaf.metal.MetalTheme;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 //import org.argouml.swingext.MetalThemes;
@@ -54,8 +54,8 @@ import org.argouml.application.api.Configuration;
 public class LookAndFeelMgr {
     public static final LookAndFeelMgr	SINGLETON = new LookAndFeelMgr();
 
-    private static Category                     cat =
-	Category.getInstance(LookAndFeelMgr.class);
+    private static Logger                     cat =
+	Logger.getLogger(LookAndFeelMgr.class);
 
     // The Metal look and feel class name
     private static final String                 METAL_LAF =

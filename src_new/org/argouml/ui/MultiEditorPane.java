@@ -40,7 +40,7 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
 import org.argouml.swingext.Horizontal;
@@ -62,7 +62,7 @@ import org.tigris.gef.presentation.Fig;
 public class MultiEditorPane
     extends JPanel
     implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
-    protected static Category cat = Category.getInstance(MultiEditorPane.class);
+    protected static Logger cat = Logger.getLogger(MultiEditorPane.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables

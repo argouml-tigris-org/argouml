@@ -27,7 +27,7 @@ package org.argouml.ui;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * This class is the TreeModel for the navigator and todo list panels.
@@ -40,8 +40,8 @@ import org.apache.log4j.Category;
  */
 public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
-    private static Category cat =
-        Category.getInstance(TreeModelComposite.class);
+    private static Logger cat =
+        Logger.getLogger(TreeModelComposite.class);
 
     /** root of the model */
     protected Object _root;

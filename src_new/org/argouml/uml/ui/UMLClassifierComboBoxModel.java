@@ -39,7 +39,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.Profile;
 
@@ -56,8 +56,8 @@ import ru.novosoft.uml.model_management.MModel;
  *             that used reflection a lot.
  */
 public class UMLClassifierComboBoxModel extends UMLComboBoxModel  {
-    protected static Category cat = 
-        Category.getInstance(UMLClassifierComboBoxModel.class);
+    protected static Logger cat = 
+        Logger.getLogger(UMLClassifierComboBoxModel.class);
 
    
 

@@ -49,7 +49,7 @@ import java.util.Vector;
 
 import javax.swing.JMenu;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.model.uml.UmlHelper;
 import org.argouml.ui.ArgoJMenu;
@@ -882,7 +882,7 @@ public class FigUseCase extends FigNodeModelElement {
      */
 
     public class FigMyCircle extends FigCircle {
-        protected Category cat = Category.getInstance(FigMyCircle.class);
+        protected Logger cat = Logger.getLogger(FigMyCircle.class);
 
         /**
          * <p>Constructor just invokes the parent constructor.</p>

@@ -40,7 +40,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.tigris.gef.base.Editor;
@@ -70,8 +70,8 @@ import org.tigris.gef.presentation.Handle;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
-    protected static Category cat =
-        Category.getInstance(ModeCreateEdgeAndNode.class);
+    protected static Logger cat =
+        Logger.getLogger(ModeCreateEdgeAndNode.class);
     ////////////////////////////////////////////////////////////////
     // static variables
     public static int Drags_To_Existing = 0;

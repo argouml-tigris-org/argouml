@@ -35,7 +35,7 @@ package org.argouml.uml.diagram.use_case.ui;
 
 import java.util.Collection;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
@@ -48,8 +48,8 @@ import org.argouml.ui.AbstractGoRule;
 
 public class GoUseCaseToExtensionPoint extends AbstractGoRule {
     
-    protected static Category cat =
-	Category.getInstance(GoUseCaseToExtensionPoint.class);
+    protected static Logger cat =
+	Logger.getLogger(GoUseCaseToExtensionPoint.class);
 
     /**
      * <p>Give a name to this rule.</p>

@@ -41,7 +41,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
 
@@ -58,7 +58,7 @@ public class DnDNavigatorTree extends DisplayTextTree
 	       DragSourceListener
 {
     
-    private static Category _cat = Category.getInstance(DnDNavigatorTree.class);
+    private static Logger _cat = Logger.getLogger(DnDNavigatorTree.class);
     
     /** the selected node */
     protected TreePath _selectedTreePath;

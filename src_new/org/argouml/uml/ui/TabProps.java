@@ -40,7 +40,7 @@ import java.util.ListIterator;
 import javax.swing.JPanel;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.PluggablePropertyPanel;
 import org.argouml.application.events.ArgoEventPump;
@@ -100,7 +100,7 @@ import ru.novosoft.uml.foundation.core.MClassImpl;
 public class TabProps
     extends TabSpawnable
     implements TabModelTarget, ArgoModuleEventListener {
-    protected static Category cat = Category.getInstance(TabProps.class);
+    protected static Logger cat = Logger.getLogger(TabProps.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
     protected boolean _shouldBeEnabled = false;

@@ -33,7 +33,7 @@ import java.beans.VetoableChangeListener;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
@@ -54,8 +54,8 @@ import ru.novosoft.uml.model_management.MElementImport;
 public class StateDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat = 
-        Category.getInstance(StateDiagramGraphModel.class);
+    protected static Logger cat = 
+        Logger.getLogger(StateDiagramGraphModel.class);
 
 
     /** The "home" UML model of this diagram, not all ModelElements in this

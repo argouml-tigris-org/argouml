@@ -45,7 +45,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.PredicateFind;
 import org.argouml.uml.TMResults;
@@ -56,8 +56,8 @@ import org.tigris.gef.util.ChildGenerator;
 public class TabResults extends TabSpawnable
     implements Runnable, MouseListener, ActionListener, ListSelectionListener, KeyListener
 {
-    protected static Category cat = 
-        Category.getInstance(TabResults.class);
+    protected static Logger cat = 
+        Logger.getLogger(TabResults.class);
     
 
     public static int _numJumpToRelated = 0;

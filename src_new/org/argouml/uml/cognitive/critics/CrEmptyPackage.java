@@ -29,7 +29,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
 // Use Model through ModelFacade
@@ -42,7 +42,7 @@ import org.argouml.model.ModelFacade;
 //of references to elements of other packages?
 
 public class CrEmptyPackage extends CrUML {
-    protected static Category cat = Category.getInstance(CrEmptyPackage.class);
+    protected static Logger cat = Logger.getLogger(CrEmptyPackage.class);
 
     public CrEmptyPackage() {
 	setHeadline("Add Elements to Package <ocl>self</ocl>");

@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -37,8 +37,8 @@ import org.argouml.cognitive.ToDoListListener;
 public class ToDoByType extends ToDoPerspective
     implements ToDoListListener 
 {
-    protected static Category cat = 
-        Category.getInstance(ToDoByType.class);
+    protected static Logger cat = 
+        Logger.getLogger(ToDoByType.class);
 
     public ToDoByType() {
 	super("combobox.todo-perspective-type");

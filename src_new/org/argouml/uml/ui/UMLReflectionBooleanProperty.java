@@ -33,7 +33,7 @@ import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
 import org.argouml.ui.*;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
 
 /**
@@ -43,7 +43,7 @@ import org.argouml.kernel.*;
  *             that used reflection a lot.
  */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
-    protected static Category cat = Category.getInstance(UMLReflectionBooleanProperty.class);
+    protected static Logger cat = Logger.getLogger(UMLReflectionBooleanProperty.class);
 
     private Method _getMethod;
     private Method _setMethod;

@@ -29,7 +29,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
@@ -49,7 +49,7 @@ import org.tigris.gef.util.VectorSet;
  */
 
 public class CrUML extends Critic {
-    protected static Category cat = Category.getInstance(CrUML.class);
+    protected static Logger cat = Logger.getLogger(CrUML.class);
     
     public static final Decision decINHERITANCE = new
 	Decision("decision.inheritance", 1);

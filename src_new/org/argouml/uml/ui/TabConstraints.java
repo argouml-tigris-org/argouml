@@ -35,7 +35,7 @@ import javax.swing.JToolBar;
 import javax.swing.JOptionPane;
 import javax.swing.event.EventListenerList;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -71,7 +71,7 @@ import tudresden.ocl.OclException;
   */
 public class TabConstraints extends TabSpawnable implements TabModelTarget {
 
-    private static Category _cat = Category.getInstance(TabConstraints.class);
+    private static Logger _cat = Logger.getLogger(TabConstraints.class);
 
     /**
      * The actual editor pane.

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.*;
@@ -55,8 +55,8 @@ import javax.swing.*;
  */
 public class ActionOpenProject extends UMLAction {
 
-    protected static Category cat =
-        Category.getInstance(org.argouml.uml.ui.ActionOpenProject.class);
+    protected static Logger cat =
+        Logger.getLogger(org.argouml.uml.ui.ActionOpenProject.class);
 
     ////////////////////////////////////////////////////////////////
     // static variables

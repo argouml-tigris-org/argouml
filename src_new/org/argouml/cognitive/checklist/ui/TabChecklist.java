@@ -43,7 +43,7 @@ import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.table.AbstractTableModel;
 import javax.swing.table.TableColumn;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.checklist.CheckItem;
 import org.argouml.cognitive.checklist.CheckManager;
 import org.argouml.cognitive.checklist.Checklist;
@@ -206,8 +206,8 @@ public class TabChecklist extends TabSpawnable
 class TableModelChecklist extends AbstractTableModel
     implements VetoableChangeListener, DelayedVChangeListener, MElementListener
 {
-    protected static Category cat = 
-        Category.getInstance(TableModelChecklist.class);
+    protected static Logger cat = 
+        Logger.getLogger(TableModelChecklist.class);
     ////////////////
     // instance varables
     Object _target;

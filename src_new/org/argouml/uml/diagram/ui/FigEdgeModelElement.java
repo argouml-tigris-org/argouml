@@ -53,7 +53,7 @@ import javax.swing.Icon;
 import javax.swing.JMenu;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.application.api.ArgoEventListener;
 import org.argouml.application.api.Notation;
@@ -112,8 +112,8 @@ public abstract class FigEdgeModelElement
         NotationContext,
         ArgoNotationEventListener {
 
-    protected static Category cat =
-        Category.getInstance(FigEdgeModelElement.class);
+    protected static Logger cat =
+        Logger.getLogger(FigEdgeModelElement.class);
     ////////////////////////////////////////////////////////////////
     // constants
 

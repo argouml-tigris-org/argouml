@@ -24,7 +24,7 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 
 /**
@@ -32,8 +32,8 @@ import org.argouml.cognitive.Designer;
  * TODO: at the moment only a dummy implementation
 */
 public class CrConsiderFacade extends CrUML {
-    protected static Category cat =
-	Category.getInstance(CrConsiderFacade.class);
+    protected static Logger cat =
+	Logger.getLogger(CrConsiderFacade.class);
 
     public CrConsiderFacade() {
 	setHeadline("Consider using facade stereotype for <ocl>self</ocl>");

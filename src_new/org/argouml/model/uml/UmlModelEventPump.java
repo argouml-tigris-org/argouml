@@ -35,7 +35,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -68,7 +68,7 @@ import ru.novosoft.uml.MFactoryImpl;
  */
 public final class UmlModelEventPump implements MElementListener {
 
-    private Category _cat = Category.getInstance(UmlModelEventPump.class);
+    private Logger _cat = Logger.getLogger(UmlModelEventPump.class);
 
     public static final String REMOVE = "remove";
 

@@ -30,7 +30,7 @@ import java.beans.*;
 
 import ru.novosoft.uml.behavior.state_machines.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
@@ -44,8 +44,8 @@ import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
  *             at the moment is to clean argouml of un maintained code.
  */
 public class TableModelTransByProps extends TableModelComposite {
-    protected static Category cat = 
-        Category.getInstance(TableModelTransByProps.class);
+    protected static Logger cat = 
+        Logger.getLogger(TableModelTransByProps.class);
     ////////////////
     // constructor
     public TableModelTransByProps() { }

@@ -37,7 +37,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.Document;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.SpacerPanel;
 import org.argouml.ui.StylePanel;
 import org.tigris.gef.ui.ColorRenderer;
@@ -45,8 +45,8 @@ import org.tigris.gef.ui.ColorRenderer;
 public class SPFigEdgeModelElement extends StylePanel
     implements ItemListener, DocumentListener 
 {
-    protected static Category cat = 
-        Category.getInstance(SPFigEdgeModelElement.class);
+    protected static Logger cat = 
+        Logger.getLogger(SPFigEdgeModelElement.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

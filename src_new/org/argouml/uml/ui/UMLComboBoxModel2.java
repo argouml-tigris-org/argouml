@@ -34,7 +34,7 @@ import java.util.List;
 import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -55,8 +55,8 @@ public abstract class UMLComboBoxModel2
     extends AbstractListModel
     implements MElementListener, ComboBoxModel, TargetListener {
 
-    private static Category log =
-        Category.getInstance("org.argouml.uml.ui.UMLComboBoxModel2");
+    private static Logger log =
+        Logger.getLogger("org.argouml.uml.ui.UMLComboBoxModel2");
 
     /**
      * The taget of the comboboxmodel. This is some UML modelelement

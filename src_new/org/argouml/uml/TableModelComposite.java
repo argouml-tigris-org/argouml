@@ -33,7 +33,7 @@ import javax.swing.table.*;
 
 import org.tigris.gef.util.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.*;
 
 /**
@@ -49,8 +49,8 @@ import org.argouml.kernel.*;
 public class TableModelComposite extends AbstractTableModel
     implements TableModelTarget 
 {
-    protected static Category cat = 
-        Category.getInstance(TableModelComposite.class);
+    protected static Logger cat = 
+        Logger.getLogger(TableModelComposite.class);
 
     ////////////////
     // instance varables

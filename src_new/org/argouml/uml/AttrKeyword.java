@@ -25,7 +25,7 @@
 package org.argouml.uml;
 
 import java.io.Serializable;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
@@ -48,7 +48,7 @@ import ru.novosoft.uml.foundation.data_types.MScopeKind;
  *             at the moment is to clean argouml of un maintained code.
  */
 public class AttrKeyword implements Serializable {
-    protected static Category cat = Category.getInstance(AttrKeyword.class);
+    protected static Logger cat = Logger.getLogger(AttrKeyword.class);
     
     public static final AttrKeyword NONE = new AttrKeyword("none");
     public static final AttrKeyword STATIC = new AttrKeyword("static");

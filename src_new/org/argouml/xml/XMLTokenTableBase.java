@@ -26,7 +26,7 @@ package org.argouml.xml;
 
 import java.util.Hashtable;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 //import java.util.Hashtable;
 
 /**
@@ -34,7 +34,7 @@ import org.apache.log4j.Category;
  */
 
 public abstract class XMLTokenTableBase {
-    protected static Category cat = Category.getInstance(XMLTokenTableBase.class);
+    protected static Logger cat = Logger.getLogger(XMLTokenTableBase.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables

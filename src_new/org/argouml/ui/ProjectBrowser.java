@@ -46,7 +46,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableMenu;
@@ -79,7 +79,7 @@ public class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
 
-    protected static Category cat = Category.getInstance(ProjectBrowser.class);
+    protected static Logger cat = Logger.getLogger(ProjectBrowser.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

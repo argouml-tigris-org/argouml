@@ -35,7 +35,7 @@ import java.awt.Rectangle;
 import java.beans.PropertyVetoException;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigLine;
@@ -49,8 +49,8 @@ import ru.novosoft.uml.behavior.state_machines.MState;
 /** Class to display graphics for a UML MCompositeState in a diagram. */
 
 public class FigCompositeState extends FigState {
-    protected static Category cat =
-	Category.getInstance(FigCompositeState.class);
+    protected static Logger cat =
+	Logger.getLogger(FigCompositeState.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

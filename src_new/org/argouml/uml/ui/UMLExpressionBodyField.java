@@ -27,7 +27,7 @@ import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
@@ -40,8 +40,8 @@ import ru.novosoft.uml.*;
  *             that used reflection a lot.
  */
 public class UMLExpressionBodyField extends JTextArea implements DocumentListener, UMLUserInterfaceComponent {
-    protected static Category cat = 
-        Category.getInstance(UMLExpressionBodyField.class);
+    protected static Logger cat = 
+        Logger.getLogger(UMLExpressionBodyField.class);
 
     private UMLExpressionModel _model;
     private boolean _notifyModel;

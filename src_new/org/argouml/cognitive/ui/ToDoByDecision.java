@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.util.Enumeration;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
@@ -38,8 +38,8 @@ import org.argouml.cognitive.ToDoListListener;
 public class ToDoByDecision extends ToDoPerspective
     implements ToDoListListener
 {
-    protected static Category cat = 
-        Category.getInstance(ToDoByDecision.class);
+    protected static Logger cat = 
+        Logger.getLogger(ToDoByDecision.class);
 
 
     public ToDoByDecision() {

@@ -26,7 +26,7 @@ package org.argouml.cognitive.ui;
 
 import java.io.Serializable;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 
 import org.argouml.cognitive.ToDoItem;
@@ -45,7 +45,7 @@ public abstract class ToDoPerspective extends TreeModelComposite
     implements Serializable 
 {
     
-    private static Category cat = Category.getInstance(ToDoPerspective.class);
+    private static Logger cat = Logger.getLogger(ToDoPerspective.class);
     
     ////////////////////////////////////////////////////////////////
     // instance variables

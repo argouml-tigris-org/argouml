@@ -35,7 +35,7 @@ import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 import ru.novosoft.uml.MBase;
@@ -50,7 +50,7 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
-    private Category cat = Category.getInstance(UMLListCellRenderer2.class);
+    private Logger cat = Logger.getLogger(UMLListCellRenderer2.class);
 
     /**
      * True if the icon for the modelelement should be shown. The icon is, for

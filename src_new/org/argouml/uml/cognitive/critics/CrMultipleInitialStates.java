@@ -31,7 +31,7 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.tigris.gef.util.VectorSet;
 
@@ -43,8 +43,8 @@ import org.argouml.model.ModelFacade;
 
 public class CrMultipleInitialStates extends CrUML {    
 
-    protected static Category cat = 
-        Category.getInstance(CrMultipleInitialStates.class);
+    protected static Logger cat = 
+        Logger.getLogger(CrMultipleInitialStates.class);
 
     public CrMultipleInitialStates() {
         setHeadline("Remove Extra Initial States");

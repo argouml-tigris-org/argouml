@@ -36,7 +36,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 import javax.swing.JPanel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.cognitive.ui.WizStepConfirm;
@@ -53,8 +53,8 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
  *  to make non-aggregate. */
 
 public class WizBreakCircularComp extends Wizard {
-    protected static Category cat =
-	Category.getInstance(WizBreakCircularComp.class);
+    protected static Logger cat =
+	Logger.getLogger(WizBreakCircularComp.class);
 						      
     protected String _instructions1 =
 	"Please select one of the following classes. " +

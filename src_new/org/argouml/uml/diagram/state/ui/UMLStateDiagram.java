@@ -33,7 +33,7 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
@@ -58,7 +58,7 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 public class UMLStateDiagram extends UMLDiagram {
-    private Category _cat = Category.getInstance(UMLStateDiagram.class);
+    private Logger _cat = Logger.getLogger(UMLStateDiagram.class);
 
     /**
      * this diagram needs to be deleted when its statemachine is deleted.

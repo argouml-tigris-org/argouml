@@ -30,7 +30,7 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -53,8 +53,8 @@ public abstract class UMLPlainTextDocument
     extends PlainDocument
     implements MElementListener, TargetListener {
 
-    public static Category cat =
-        Category.getInstance(UMLPlainTextDocument.class);
+    public static Logger cat =
+        Logger.getLogger(UMLPlainTextDocument.class);
 
     /**
      * True if an event should be fired when the text of the document is changed

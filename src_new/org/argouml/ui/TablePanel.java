@@ -54,7 +54,7 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import javax.swing.text.Document;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -81,8 +81,8 @@ public class TablePanel extends TabSpawnable
 	       ItemListener, DocumentListener,
 	       ListSelectionListener, ActionListener 
 {
-    protected static Category cat = 
-        Category.getInstance(TablePanel.class);
+    protected static Logger cat = 
+        Logger.getLogger(TablePanel.class);
 
     ////////////////////////////////////////////////////////////////
     // instance vars

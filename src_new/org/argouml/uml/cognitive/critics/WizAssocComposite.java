@@ -35,7 +35,7 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Iterator;
 import java.util.Vector;
 import javax.swing.JPanel;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.kernel.Wizard;
@@ -62,8 +62,8 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 
 public class WizAssocComposite extends Wizard {
-    protected static Category cat =
-	Category.getInstance(WizAssocComposite.class);
+    protected static Logger cat =
+	Logger.getLogger(WizAssocComposite.class);
     
 
     /**

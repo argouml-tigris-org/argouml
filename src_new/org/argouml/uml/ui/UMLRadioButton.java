@@ -32,7 +32,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.JRadioButton;
 import javax.swing.SwingUtilities;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MElementEvent;
@@ -47,7 +47,7 @@ public class UMLRadioButton
     extends JRadioButton
     implements ItemListener, UMLUserInterfaceComponent
 {
-    protected static Category cat = Category.getInstance(UMLRadioButton.class);
+    protected static Logger cat = Logger.getLogger(UMLRadioButton.class);
                                                                 
         
     private class BooleanSetter implements Runnable {

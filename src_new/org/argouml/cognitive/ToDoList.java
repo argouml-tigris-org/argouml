@@ -34,7 +34,7 @@ import java.util.Enumeration;
 import java.util.Observable;
 import java.util.Vector;
 import javax.swing.event.EventListenerList;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.critics.Critic;
 
 
@@ -77,7 +77,7 @@ import org.tigris.gef.util.VectorSet;
  */
 public class ToDoList extends Observable implements Runnable, Serializable {
     
-    protected static Category cat = Category.getInstance(ToDoList.class);
+    protected static Logger cat = Logger.getLogger(ToDoList.class);
     
     /** needs documenting */
     protected static Object _RecentOffender;

@@ -30,7 +30,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
@@ -46,9 +46,9 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  */
 public class ClassdiagramLayouter implements Layouter {
     
-    /** Category for logging events */
-    public static final Category cat =
-	Category.getInstance("org.argouml.uml.diagram.static_structure.layout"
+    /** Logger for logging events */
+    public static final Logger cat =
+	Logger.getLogger("org.argouml.uml.diagram.static_structure.layout"
 			     + ".ClassdiagramLayouter");
     
     /** stores the current diagram *

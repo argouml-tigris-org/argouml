@@ -52,7 +52,7 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.History;
 import org.argouml.kernel.HistoryEvent;
@@ -66,8 +66,8 @@ public class TabHistory extends TabSpawnable
 {
 	// TODO Replace deprecated History* with TargetManager
 	
-    protected static Category cat = 
-        Category.getInstance(TabHistory.class);
+    protected static Logger cat = 
+        Logger.getLogger(TabHistory.class);
 
     ////////////////////////////////////////////////////////////////
     // class variables

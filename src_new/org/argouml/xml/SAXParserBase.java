@@ -33,7 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.xml.sax.AttributeList;
 import org.xml.sax.HandlerBase;
@@ -46,8 +46,8 @@ import org.xml.sax.SAXException;
 
 public abstract class SAXParserBase extends HandlerBase {
     
-    protected Category cat = 
-        Category.getInstance(SAXParserBase.class);
+    protected Logger cat = 
+        Logger.getLogger(SAXParserBase.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

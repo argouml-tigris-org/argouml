@@ -27,7 +27,7 @@ package org.argouml.uml.ui;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationContext;
 import org.argouml.application.api.NotationName;
@@ -51,7 +51,7 @@ public class TabSrc
     implements ArgoNotationEventListener, NotationContext, ItemListener {
     ////////////////////////////////////////////////////////////////
     // constructor
-    private final Category cat = Category.getInstance(TabSrc.class);
+    private final Logger cat = Logger.getLogger(TabSrc.class);
 
     private NotationName _notationName = null;
 

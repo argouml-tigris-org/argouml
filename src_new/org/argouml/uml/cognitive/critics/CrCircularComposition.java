@@ -33,7 +33,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Enumeration;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
@@ -44,8 +44,8 @@ import org.tigris.gef.util.VectorSet;
 
 /**  */
 public class CrCircularComposition extends CrUML {
-    protected static Category cat =
-	Category.getInstance(CrCircularComposition.class);
+    protected static Logger cat =
+	Logger.getLogger(CrCircularComposition.class);
 						      
     public CrCircularComposition() {
 	setHeadline("Remove Circular Composition");

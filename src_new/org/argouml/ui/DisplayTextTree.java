@@ -38,7 +38,7 @@ import javax.swing.event.TreeModelEvent;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.cognitive.ToDoItem;
@@ -58,7 +58,7 @@ import org.tigris.gef.presentation.Fig;
  */
 public class DisplayTextTree extends JTree implements TargetListener {
 
-    protected static Category cat = Category.getInstance(DisplayTextTree.class);
+    protected static Logger cat = Logger.getLogger(DisplayTextTree.class);
 
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
@@ -471,9 +471,9 @@ public class DisplayTextTree extends JTree implements TargetListener {
 class DisplayTextTreeRun implements Runnable {
 
     /** needs documenting */
-    //protected Category cat;
-    protected static Category cat =
-        Category.getInstance(DisplayTextTreeRun.class);
+    //protected Logger cat;
+    protected static Logger cat =
+        Logger.getLogger(DisplayTextTreeRun.class);
 
     /** needs documenting */
     private DisplayTextTree _tree;
@@ -485,7 +485,7 @@ class DisplayTextTreeRun implements Runnable {
     boolean _queued;
 
     /** needs documenting */
-    public DisplayTextTreeRun(Category c, DisplayTextTree t) {
+    public DisplayTextTreeRun(Logger c, DisplayTextTree t) {
 
         cat.debug("DisplayTextTreeRun constructor");
         //cat = c;
