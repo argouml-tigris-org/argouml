@@ -232,9 +232,9 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "names." },
 
         { "CrFinalSubclassed_head" ,
-                "Remove final keyword or remove subclasses" },
+                "Remove leaf keyword or remove subclasses from <ocl>self</ocl>" },
         { "CrFinalSubclassed_desc" ,
-                "In Java, the keyword 'final' indicates that a class is not intended to have subclasses.  This class is marked final and has subclasses.\n\nA well thought-out class inheritance hierarchy that conveys and supports intended extensions is an important part of achieving an understandable and maintainable design.\n\nTo fix this, use the \"Next>\" button, or manually select the class and change its base class, or select the base class and use the properties tab to remove the 'final' keyword." },
+                "The keyword 'leaf' indicates that a class is not intended to have subclasses.  This class or interface is marked as 'leaf' and has subclasses.\n\nA well thought-out class inheritance hierarchy that conveys and supports intended extensions is an important part of achieving an understandable and maintainable design.\n\nTo fix this, use the \"Next>\" button, or manually select the class and change its base class, or select the base class and use the properties tab to remove the 'leaf' keyword." },
         { "CrIllegalGeneralization_head" ,
                 "Illegal Generalization " },
         { "CrIllegalGeneralization_desc" ,
