@@ -25,16 +25,9 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.event.ActionEvent;
+import javax.swing.*;
 
-import javax.swing.JComboBox;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
-import javax.swing.JTextField;
 
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.i18n.Translator;
@@ -42,8 +35,11 @@ import org.argouml.kernel.ProjectManager;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ArgoDialog;
 import org.argouml.ui.ProjectBrowser;
-
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.cognitive.UMLToDoItem;
+import org.argouml.uml.ui.UMLListCellRenderer2;
 import org.tigris.gef.util.VectorSet;
+
 
 public class AddToDoItemDialog extends ArgoDialog {
 
@@ -77,8 +73,17 @@ public class AddToDoItemDialog extends ArgoDialog {
         _priority = new JComboBox(PRIORITIES);
         _moreinfo = new JTextField(TEXT_COLUMNS);
         _description = new JTextArea(TEXT_ROWS, TEXT_COLUMNS);
-        _offenderList = new JList(TargetManager.
-            getInstance().getModelTargets().toArray());
+        
+        DefaultListModel dlm = new DefaultListModel();
+        Object[] offObj = TargetManager.getInstance().getModelTargets().toArray();
+        for (int i = 0; i < offObj.length; i++) {
+            if (offObj[i]!=null) dlm.addElement(offObj[i]);
+        }
+        
+        _offenderList = new JList(dlm);
+        _offenderList.setCellRenderer(new UMLListCellRenderer2(true));
+        JScrollPane _offenderScroll = new JScrollPane(_offenderList);
+        _offenderScroll.setOpaque(true);
 
         JLabel headlineLabel = new JLabel(Translator.localize("label.headline"));
         JLabel priorityLabel = new JLabel(Translator.localize("label.priority"));
@@ -100,9 +105,9 @@ public class AddToDoItemDialog extends ArgoDialog {
         panel.add(moreInfoLabel);
         panel.add(_moreinfo);
     
-        offenderLabel.setLabelFor(_offenderList);
+        offenderLabel.setLabelFor(_offenderScroll);
         panel.add(offenderLabel);
-        panel.add(_offenderList);
+        panel.add(_offenderScroll);
         
         _description.setLineWrap(true);  //MVW - Issue 2422
         _description.setWrapStyleWord(true);   //MVW - Issue 2422
@@ -141,7 +146,7 @@ public class AddToDoItemDialog extends ArgoDialog {
         String desc = _description.getText();
         String moreInfoURL = _moreinfo.getText();
         ToDoItem item =
-	    new ToDoItem(designer, headline, priority, desc, moreInfoURL);
+	    new UMLToDoItem(designer, headline, priority, desc, moreInfoURL);
         VectorSet newOffenders = new VectorSet();
         for (int i = 0; i < _offenderList.getModel().getSize(); i++) {
             newOffenders.addElement(_offenderList.getModel().getElementAt(i));
@@ -151,3 +156,4 @@ public class AddToDoItemDialog extends ArgoDialog {
         ProjectManager.getManager().getCurrentProject().setNeedsSave(true);
     }
 } /* end class AddToDoItemDialog */
+
