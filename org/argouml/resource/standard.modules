@@ -15,6 +15,9 @@ module.language.java.generator=org.argouml.language.java.generator.GeneratorJava
 #
 module.propertypanel.package=org.argouml.uml.ui.model_management.PropPanelPackage
 module.propertypanel.model=org.argouml.uml.ui.model_management.PropPanelModel
+module.propertypanel.diagram=org.argouml.uml.ui.diagram.PropPanelDiagram
+module.propertypanel.text=org.argouml.uml.ui.diagram.PropPanelString
+module.propertypanel.usecase=org.argouml.uml.ui.behavior.use_cases.PropPanelString
 #
 # Future implementation will load from here rather than argo.ini
 #
