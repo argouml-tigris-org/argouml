@@ -45,6 +45,7 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.ui.ColorRenderer;
 
 /**
@@ -206,6 +207,20 @@ public class StylePanelFig extends StylePanel implements ItemListener,
     }
 
     /**
+     * set whether this Fig has a editable boundingbox. This is done normally in
+     * <code>refresh()</code>, e.g. for FigEdgeModelElements where it does
+     * not make sense to edit the bounding box.
+     * 
+     * @param value
+     *            the boolean value of the bounding box property
+     */
+
+    protected void hasEditableBoundingBox(boolean value) {
+        _bboxField.setEnabled(value);
+        _bboxLabel.setEnabled(value);
+    }
+
+    /**
      * <p>
      * Handle a refresh of the style panel after the fig has moved.
      * </p>
@@ -222,6 +237,12 @@ public class StylePanelFig extends StylePanel implements ItemListener,
      * </p>
      */
     public void refresh() {
+
+        if (_target instanceof FigEdgeModelElement) {
+            hasEditableBoundingBox(false);
+        } else
+            hasEditableBoundingBox(true);
+        
         // The boundary box as held in the target fig, and as listed in
         // the
         // boundary box style field (null if we don't have anything
