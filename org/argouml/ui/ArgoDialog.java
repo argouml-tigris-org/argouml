@@ -14,7 +14,7 @@ import org.argouml.application.api.Argo;
  *
  * @author Bob Tarling
  */
-public abstract class ArgoDialog extends org.argouml.swingext.Dialog {
+public class ArgoDialog extends org.argouml.swingext.Dialog {
     
     protected static final String BUNDLE = "Cognitive";
     
@@ -26,11 +26,11 @@ public abstract class ArgoDialog extends org.argouml.swingext.Dialog {
     }
     
     protected void nameButtons() {
-        _okButton.setText(Argo.localize(BUNDLE, "button.ok"));
-        _cancelButton.setText(Argo.localize(BUNDLE, "button.cancel"));
-        _closeButton.setText(Argo.localize(BUNDLE, "button.close"));
-        _yesButton.setText(Argo.localize(BUNDLE, "button.yes"));
-        _noButton.setText(Argo.localize(BUNDLE, "button.no"));
-        _helpButton.setText(Argo.localize(BUNDLE, "button.help"));
+        getOkButton().setText(Argo.localize(BUNDLE, "button.ok"));
+        getCancelButton().setText(Argo.localize(BUNDLE, "button.cancel"));
+        getCloseButton().setText(Argo.localize(BUNDLE, "button.close"));
+        getYesButton().setText(Argo.localize(BUNDLE, "button.yes"));
+        getNoButton().setText(Argo.localize(BUNDLE, "button.no"));
+        getHelpButton().setText(Argo.localize(BUNDLE, "button.help"));
     }
 }
