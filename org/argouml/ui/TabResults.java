@@ -25,9 +25,12 @@
 package org.argouml.ui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Vector;
@@ -37,6 +40,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -49,7 +53,7 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
 public class TabResults extends TabSpawnable
-    implements Runnable, MouseListener, ActionListener, ListSelectionListener 
+    implements Runnable, MouseListener, ActionListener, ListSelectionListener, KeyListener
 {
     protected static Category cat = 
         Category.getInstance(TabResults.class);
@@ -94,7 +98,9 @@ public class TabResults extends TabSpawnable
 	resultsW.add(resultsSP, BorderLayout.CENTER);
 	_resultsTable.setModel(_resultsModel);
 	_resultsTable.addMouseListener(this);
+    _resultsTable.addKeyListener(this);
 	_resultsTable.getSelectionModel().addListSelectionListener(this);
+    _resultsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 	resultsW.setMinimumSize(new Dimension(100, 100));
 
 	JPanel relatedW = new JPanel();
@@ -105,6 +111,7 @@ public class TabResults extends TabSpawnable
 	    relatedW.add(relatedSP, BorderLayout.CENTER);
 	    _relatedTable.setModel(_relatedModel);
 	    _relatedTable.addMouseListener(this);
+        _relatedTable.addKeyListener(this);
 	    relatedW.setMinimumSize(new Dimension(100, 100));
 	}
 
@@ -140,6 +147,17 @@ public class TabResults extends TabSpawnable
 	newPanel.setResults(_results, _diagrams);
 	return newPanel;
     }
+    
+    public void doDoubleClick() {
+        myDoubleClick(_resultsTable);       
+    }
+    
+    public void selectResult(int index) {
+        if (index < _resultsTable.getRowCount()) {
+            _resultsTable.getSelectionModel().setSelectionInterval(index, index);
+        }
+    }
+    
     ////////////////////////////////////////////////////////////////
     // ActionListener implementation
 
@@ -152,21 +170,23 @@ public class TabResults extends TabSpawnable
     public void mousePressed(MouseEvent me) { }
     public void mouseReleased(MouseEvent me) { }
     public void mouseClicked(MouseEvent me) {
-	if (me.getClickCount() >= 2) myDoubleClick(me.getSource());
+        if (me.getClickCount() >= 2) myDoubleClick(me.getSource());
     }
     public void mouseEntered(MouseEvent me) { }
     public void mouseExited(MouseEvent me) { }
 
     public void myDoubleClick(Object src) {
-	int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
-
 	Object sel = null;
 	Diagram d = null;
 	if (src == _resultsTable) {
+        int row = _resultsTable.getSelectionModel().getMinSelectionIndex();
+        if (row < 0) return;
 	    sel = _results.elementAt(row);
 	    d = (Diagram) _diagrams.elementAt(row);
 	}
-	else {
+	else if (src == _relatedTable) {
+        int row = _relatedTable.getSelectionModel().getMinSelectionIndex();
+        if (row < 0) return;
 	    _numJumpToRelated++;
 	    sel = _related.elementAt(row);
 	}
@@ -175,6 +195,20 @@ public class TabResults extends TabSpawnable
 	if (d != null) TargetManager.getInstance().setTarget(d);
 	TargetManager.getInstance().setTarget(sel);
     }
+
+    ////////////////////////////////////////////////////////////////
+    // KeyListener implementation
+
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+            e.consume();
+            myDoubleClick(e.getSource());
+        }
+    }
+
+    public void keyReleased(KeyEvent e) { }
+
+    public void keyTyped(KeyEvent e) { }
 
     ////////////////////////////////////////////////////////////////
     // ListSelectionListener implementation
