@@ -22,9 +22,14 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+import org.argouml.application.api.Argo;
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyVetoException;
 import java.lang.reflect.*;
+
+import javax.swing.JOptionPane;
 import ru.novosoft.uml.*;
 
 public class UMLTextProperty  {
@@ -55,7 +60,7 @@ public class UMLTextProperty  {
         }
     }
 
-    public void setProperty(UMLUserInterfaceContainer container,String newValue) {
+    public void setProperty(UMLUserInterfaceContainer container,String newValue) throws Exception {
         if(_setMethod != null) {
             Object element = container.getTarget();
             if(element != null) {
@@ -69,11 +74,33 @@ public class UMLTextProperty  {
                         //   (or a really rare identical string pointer)
                         if(newValue != oldValue) {
                             Object[] args = { newValue };
-                            _setMethod.invoke(element,args);
-                            // Mark the project as having been changed 
-                            Project p = ProjectBrowser.TheInstance.getProject(); 
-                            if (p != null) p.setNeedsSave(true); 
-
+                            // 2002-07-18
+                            // Jaap Branderhorst
+                            // Patch for issue 738
+                            // if the setmethod trows a PropertyVetoException it should be handled.
+                            // it's handled by showing the user the message in the exception and not
+                            // marking the project for change if it is thrown.
+                            // this way the setmethod itself can check on some issues.
+                            try {
+                            	_setMethod.invoke(element,args);
+                            	// Mark the project as having been changed 
+                            	Project p = ProjectBrowser.TheInstance.getProject(); 
+								if (p != null) p.setNeedsSave(true); 
+                            }
+                            catch (InvocationTargetException inv) {
+                            	Throwable targetException = inv.getTargetException();
+                            	if (!(targetException instanceof PropertyVetoException)) {
+                            		Argo.log.error(inv);
+                            		Argo.log.error(targetException);
+                            	}
+                   				if (targetException instanceof Exception) {
+                   					throw (Exception)targetException;
+                   				}
+                   				System.exit(-1); // we have a real error 
+                            	
+                            	        		
+                            }
+                            
                         }
                     }
                 }
