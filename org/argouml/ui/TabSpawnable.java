@@ -47,7 +47,9 @@ import org.tigris.swidgets.Orientation;
  * TODO: Spawning of windows disabled in spawn()
  */
 public class TabSpawnable extends JPanel implements Cloneable, Orientable {
-
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(TabSpawnable.class);
 
     private static final int OVERLAPP = 30;
@@ -55,7 +57,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
     private String title = "untitled";
 
     /**
-     * if true, remove tab from parent JTabbedPane
+     * if true, remove tab from parent JTabbedPane.
      */
     private boolean tear = false;
 
@@ -100,10 +102,8 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
     /**
      * This is not a real clone since it doesn't copy anything from the object
-     * it is cloning. The
-     *
-     * @see #spawn method copies the title and in some cases when we are a
-     * @see TabModelTarget also the Target.
+     * it is cloning. The {@link #spawn} method copies the title and in
+     * some cases also the Target.
      *
      * @return the new object or null if not possible.
      */
@@ -119,7 +119,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
     /**
      * Set the orientation of the property panel.
      *
-     * @see org.argouml.swingext.Orientable#setOrientation(org.argouml.swingext.Orientation)
+     * @see org.tigris.swidgets.Orientable#setOrientation(Orientation)
      */
     public void setOrientation(Orientation o) {
         this.orientation = o;
@@ -161,7 +161,9 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
         f.getContentPane().setLayout(new BorderLayout());
         f.setTitle(Translator.localize(title));
         TabSpawnable newPanel = (TabSpawnable) clone();
-        if (newPanel == null) return null; //failed to clone
+        if (newPanel == null) {
+	    return null; //failed to clone
+	}
 
 //        if (newPanel instanceof TabToDo) {
 //            TabToDo me = (TabToDo) this;
@@ -190,8 +192,9 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
         f.setLocation(loc);
         f.setVisible(true);
 
-        if (tear && (getParent() instanceof JTabbedPane))
-                ((JTabbedPane) getParent()).remove(this);
+        if (tear && (getParent() instanceof JTabbedPane)) {
+	    ((JTabbedPane) getParent()).remove(this);
+	}
 
         return newPanel;
 

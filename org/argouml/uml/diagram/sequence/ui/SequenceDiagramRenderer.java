@@ -51,10 +51,11 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      * Return a Fig that can be used to represent the given node.
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay,
+				 Object node, Map styleAttributes) {
         if (Model.getFacade().isAObject(node)) {
             return new FigObject(node);
         }
@@ -68,19 +69,21 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      * Return a Fig that can be used to represent the given edge.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
+				 Object edge, Map styleAttributes) {
         if (Model.getFacade().isALink(edge)) {
-            Object stimulus = Model.getFacade().getStimuli(edge).iterator().next();
+            Object stimulus =
+		Model.getFacade().getStimuli(edge).iterator().next();
             Object action = Model.getFacade().getDispatchAction(stimulus);
             if (Model.getFacade().isACallAction(action)) {
                 return new FigCallActionLink(edge);
             } else if (Model.getFacade().isAReturnAction(action)) {
-        	    return new FigReturnActionLink(edge);
-        	} else if (Model.getFacade().isADestroyAction(edge)) {
-        		return new FigDestroyActionLink(edge);
+		return new FigReturnActionLink(edge);
+	    } else if (Model.getFacade().isADestroyAction(edge)) {
+		return new FigDestroyActionLink(edge);
             } else if (Model.getFacade().isACreateAction(edge)) {
                 return new FigCreateActionLink(edge);
             }
@@ -94,15 +97,16 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
      * Return a Fig that can be used to represent the given edge.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
         if (Model.getFacade().isALink(edge)) {
-            Object stimulus = Model.getFacade().getStimuli(edge).iterator().next();
+            Object stimulus =
+		Model.getFacade().getStimuli(edge).iterator().next();
             Object action = Model.getFacade().getDispatchAction(stimulus);
             if (Model.getFacade().isACallAction(action)) {
                 return new FigCallActionLink();
@@ -114,7 +118,8 @@ public class SequenceDiagramRenderer extends UmlDiagramRenderer {
                 return new FigCreateActionLink();
             }
         }
-        throw new IllegalArgumentException("Failed to construct a FigEdge for " + edge);
+        throw new IllegalArgumentException("Failed to construct a FigEdge for "
+					   + edge);
     }
 
 

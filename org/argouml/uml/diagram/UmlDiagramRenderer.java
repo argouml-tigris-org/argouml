@@ -235,7 +235,7 @@ public abstract class UmlDiagramRenderer
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
      * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object)
+     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
      */
     public FigEdge getFigEdgeFor(Object edge, Map styleAttributes) {
         if (edge == null) {

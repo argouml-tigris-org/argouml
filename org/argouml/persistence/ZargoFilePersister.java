@@ -61,8 +61,8 @@ public class ZargoFilePersister extends UmlFilePersister {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ZargoFilePersister.class);
+    private static final Logger LOG =
+	Logger.getLogger(ZargoFilePersister.class);
 
     /**
      * This is the old version of the ArgoUML tee file which does not contain
@@ -109,7 +109,7 @@ public class ZargoFilePersister extends UmlFilePersister {
 
         File lastArchiveFile = new File(file.getAbsolutePath() + "~");
         File tempFile = null;
-        
+
         try {
             tempFile = createTempFile(file);
         } catch (FileNotFoundException e) {
@@ -127,17 +127,18 @@ public class ZargoFilePersister extends UmlFilePersister {
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
-            ZipOutputStream stream = new ZipOutputStream(new FileOutputStream(
-                    file));
-            writer = new BufferedWriter(
-                    new OutputStreamWriter(stream, "UTF-8"));
+            ZipOutputStream stream =
+		new ZipOutputStream(new FileOutputStream(file));
+            writer =
+		new BufferedWriter(new OutputStreamWriter(stream, "UTF-8"));
 
-            ZipEntry zipEntry = new ZipEntry(project.getBaseName()
-                    + FileConstants.UNCOMPRESSED_FILE_EXT);
+            ZipEntry zipEntry =
+		new ZipEntry(project.getBaseName()
+			     + FileConstants.UNCOMPRESSED_FILE_EXT);
             stream.putNextEntry(zipEntry);
 
-            Hashtable templates = TemplateReader.getInstance().read(
-                    ARGO_MINI_TEE);
+            Hashtable templates =
+		TemplateReader.getInstance().read(ARGO_MINI_TEE);
             OCLExpander expander = new OCLExpander(templates);
             expander.expand(writer, project);
 
@@ -156,8 +157,8 @@ public class ZargoFilePersister extends UmlFilePersister {
             int counter = 0;
             int size = project.getMembers().size();
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = (ProjectMember) project
-                        .getMembers().get(i);
+                ProjectMember projectMember =
+		    (ProjectMember) project.getMembers().get(i);
                 if (!(projectMember.getType().equalsIgnoreCase("xmi"))) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member: "
@@ -171,7 +172,7 @@ public class ZargoFilePersister extends UmlFilePersister {
                     }
                     names.add(name);
                     stream.putNextEntry(new ZipEntry(name));
-                    MemberFilePersister persister = 
+                    MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, null);
                     writer.flush();
@@ -180,8 +181,8 @@ public class ZargoFilePersister extends UmlFilePersister {
             }
 
             for (int i = 0; i < size; i++) {
-                ProjectMember projectMember = (ProjectMember) project
-                        .getMembers().get(i);
+                ProjectMember projectMember =
+		    (ProjectMember) project.getMembers().get(i);
                 if (projectMember.getType().equalsIgnoreCase("xmi")) {
                     if (LOG.isInfoEnabled()) {
                         LOG.info("Saving member of type: "
@@ -190,7 +191,7 @@ public class ZargoFilePersister extends UmlFilePersister {
                     }
                     stream.putNextEntry(
                             new ZipEntry(projectMember.getZipName()));
-                    MemberFilePersister persister = 
+                    MemberFilePersister persister =
                         getMemberFilePersister(projectMember);
                     persister.save(projectMember, writer, null);
                 }
@@ -232,12 +233,11 @@ public class ZargoFilePersister extends UmlFilePersister {
     }
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File,
-     * org.argouml.persistence.ProgressListener)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public Project doLoad(File file)
         throws OpenException {
-        
+
         try {
             File combinedFile = File.createTempFile("combinedzargo_", ".uml");
             LOG.info(
@@ -247,8 +247,9 @@ public class ZargoFilePersister extends UmlFilePersister {
 
             String encoding = "UTF-8";
             FileOutputStream stream = new FileOutputStream(combinedFile);
-            PrintWriter writer = new PrintWriter(new BufferedWriter(
-                    new OutputStreamWriter(stream, encoding)));
+            PrintWriter writer =
+		new PrintWriter(new BufferedWriter(
+			new OutputStreamWriter(stream, encoding)));
 
             writer.println("<?xml version = \"1.0\" " + "encoding = \""
                     + encoding + "\" ?>");
@@ -298,8 +299,9 @@ public class ZargoFilePersister extends UmlFilePersister {
                 if (currentEntry.getName().endsWith(".pgml")
                         || currentEntry.getName().endsWith(".todo")) {
 
-                    reader = new BufferedReader(
-                            new InputStreamReader(sub, encoding));
+                    reader =
+			new BufferedReader(
+				new InputStreamReader(sub, encoding));
                     // Skip 2 lines
                     reader.readLine();
                     reader.readLine();

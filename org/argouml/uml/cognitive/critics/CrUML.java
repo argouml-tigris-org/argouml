@@ -38,10 +38,11 @@ import org.argouml.ocl.CriticOclEvaluator;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.ocl.ExpansionException;
 
-/** "Abstract" Critic subclass that captures commonalities among all
- *  critics in the UML domain.  This class also defines and registers
- *  the categories of design decisions that the critics can
- *  address.
+/**
+ * "Abstract" Critic subclass that captures commonalities among all
+ * critics in the UML domain.  This class also defines and registers
+ * the categories of design decisions that the critics can
+ * address.
  *
  * @see org.argouml.cognitive.Designer
  * @see org.argouml.cognitive.DecisionModel
@@ -52,103 +53,105 @@ public class CrUML extends Critic {
     private static final Logger LOG = Logger.getLogger(CrUML.class);
 
     /**
-     * Decision type: INHERITANCE
+     * Decision type: INHERITANCE.
      */
-    public static final Decision DEC_INHERITANCE = new
-	Decision("misc.decision.inheritance", 1);
+    public static final Decision DEC_INHERITANCE =
+	new Decision("misc.decision.inheritance", 1);
 
     /**
-     * Decision type: CONTAINMENT
+     * Decision type: CONTAINMENT.
      */
-    public static final Decision DEC_CONTAINMENT = new
-	Decision("misc.decision.containment", 1);
+    public static final Decision DEC_CONTAINMENT =
+	new Decision("misc.decision.containment", 1);
 
     /**
-     * Decision type: PATTERNS
+     * Decision type: PATTERNS.
      */
-    public static final Decision DEC_PATTERNS = new
-	Decision("misc.decision.design-patterns", 1); //??
+    public static final Decision DEC_PATTERNS =
+	new Decision("misc.decision.design-patterns", 1); //??
 
     /**
-     * Decision type: RELATIONSHIPS
+     * Decision type: RELATIONSHIPS.
      */
-    public static final Decision DEC_RELATIONSHIPS = new
-	Decision("misc.decision.relationships", 1);
+    public static final Decision DEC_RELATIONSHIPS =
+	new Decision("misc.decision.relationships", 1);
 
     /**
-     * Decision type: STORAGE
+     * Decision type: STORAGE.
      */
-    public static final Decision DEC_STORAGE = new
-	Decision("misc.decision.storage", 1);
+    public static final Decision DEC_STORAGE =
+	new Decision("misc.decision.storage", 1);
 
     /**
-     * Decision type: BEHAVIOR
+     * Decision type: BEHAVIOR.
      */
-    public static final Decision DEC_BEHAVIOR = new
-	Decision("misc.decision.behavior", 1);
+    public static final Decision DEC_BEHAVIOR =
+	new Decision("misc.decision.behavior", 1);
 
     /**
-     * Decision type: INSTANCIATION
+     * Decision type: INSTANCIATION.
      */
-    public static final Decision DEC_INSTANCIATION = new
-	Decision("misc.decision.instantiation", 1);
+    public static final Decision DEC_INSTANCIATION =
+	new Decision("misc.decision.instantiation", 1);
 
     /**
-     * Decision type: NAMING
+     * Decision type: NAMING.
      */
-    public static final Decision DEC_NAMING = new
-	Decision("misc.decision.naming", 1);
+    public static final Decision DEC_NAMING =
+	new Decision("misc.decision.naming", 1);
 
     /**
-     * Decision type: MODULARITY
+     * Decision type: MODULARITY.
      */
-    public static final Decision DEC_MODULARITY = new
-	Decision("misc.decision.modularity", 1);
+    public static final Decision DEC_MODULARITY =
+	new Decision("misc.decision.modularity", 1);
 
     /**
-     * Decision type: CLASS_SELECTION
+     * Decision type: CLASS_SELECTION.
      */
-    public static final Decision DEC_CLASS_SELECTION = new
-	Decision("misc.decision.class-selection", 1);
+    public static final Decision DEC_CLASS_SELECTION =
+	new Decision("misc.decision.class-selection", 1);
 
     /**
-     * Decision type: EXPECTED_USAGE
+     * Decision type: EXPECTED_USAGE.
      */
-    public static final Decision DEC_EXPECTED_USAGE = new
-	Decision("misc.decision.expected-usage", 1);
+    public static final Decision DEC_EXPECTED_USAGE =
+	new Decision("misc.decision.expected-usage", 1);
 
     /**
-     * Decision type: METHODS
+     * Decision type: METHODS.
      */
-    public static final Decision DEC_METHODS = new
-	Decision("misc.decision.methods", 1); //??
+    public static final Decision DEC_METHODS =
+	new Decision("misc.decision.methods", 1); //??
 
     /**
-     * Decision type: CODE_GEN
+     * Decision type: CODE_GEN.
      */
-    public static final Decision DEC_CODE_GEN = new
-	Decision("misc.decision.code-generation", 1); //??
+    public static final Decision DEC_CODE_GEN =
+	new Decision("misc.decision.code-generation", 1); //??
 
     /**
-     * Decision type: PLANNED_EXTENSIONS
+     * Decision type: PLANNED_EXTENSIONS.
      */
-    public static final Decision DEC_PLANNED_EXTENSIONS = new
-	Decision("misc.decision.planned-extensions", 1);
+    public static final Decision DEC_PLANNED_EXTENSIONS =
+	new Decision("misc.decision.planned-extensions", 1);
 
     /**
-     * Decision type: STEREOTYPES
+     * Decision type: STEREOTYPES.
      */
-    public static final Decision DEC_STEREOTYPES = new
-	Decision("misc.decision.stereotypes", 1);
+    public static final Decision DEC_STEREOTYPES =
+	new Decision("misc.decision.stereotypes", 1);
 
     /**
-     * Decision type: STATE_MACHINES
+     * Decision type: STATE_MACHINES.
      */
-    public static final Decision DEC_STATE_MACHINES = new
-	Decision("misc.decision.mstate-machines", 1);
+    public static final Decision DEC_STATE_MACHINES =
+	new Decision("misc.decision.mstate-machines", 1);
 
-    /** Static initializer for this class. Called when the class is
-     *  loaded (which is before any subclass instances are instanciated). */
+    /**
+     * Static initializer for this class. Called when the class is
+     * loaded (which is before any subclass instances are instanciated).
+     */
     static {
 	Designer d = Designer.theDesigner();
 	d.startConsidering(DEC_CLASS_SELECTION);
@@ -198,8 +201,8 @@ public class CrUML extends Critic {
      *
      * MVW: Maybe we can make it part of the constructor CrUML()?
      *
-     * @deprecated by mvw, as of ArgoUML V0.17.5. 
-     * Since the parameter is ignored, replaced by {@link setupHeadAndDesc}.
+     * @deprecated by mvw, as of ArgoUML V0.17.5.
+     * Since the parameter is ignored, replaced by {@link #setupHeadAndDesc()}.
      *
      * @see org.argouml.cognitive.critics.Critic#setHeadline(java.lang.String)
      */
@@ -222,7 +225,7 @@ public class CrUML extends Critic {
         setResource(className.substring(className.lastIndexOf('.') + 1));
     }
 
-    
+
     /**
      * @see org.argouml.cognitive.critics.Critic#predicate(
      * java.lang.Object, org.argouml.cognitive.Designer)
@@ -231,13 +234,13 @@ public class CrUML extends Critic {
 	Project p = ProjectManager.getManager().getCurrentProject();
 	if (p.isInTrash(dm)) {
 	    return NO_PROBLEM;
-	}
-	else {
+	} else {
 	    return predicate2(dm, dsgr);
 	}
     }
 
-    /** This is the decision routine for the critic.
+    /**
+     * This is the decision routine for the critic.
      *
      * @param dm is the UML entity (an NSUML object) that is being checked.
      * @param dsgr is for future development and can be ignored.
@@ -263,7 +266,9 @@ public class CrUML extends Critic {
      */
     public String expand(String res, ListSet offs) {
 
-        if (offs.size() == 0) return res;
+        if (offs.size() == 0) {
+	    return res;
+	}
 
         Object off1 = offs.firstElement();
 
@@ -285,8 +290,8 @@ public class CrUML extends Critic {
             String expr = res.substring(matchPos + OCL_START.length(), endExpr);
             String evalStr = null;
             try {
-                evalStr = CriticOclEvaluator.getInstance()
-                    .evalToString(off1, expr);
+                evalStr =
+		    CriticOclEvaluator.getInstance().evalToString(off1, expr);
             } catch (ExpansionException e) {
                 // Really ought to have a CriticException to throw here.
                 LOG.error("Failed to evaluate critic expression", e);
@@ -306,7 +311,9 @@ public class CrUML extends Critic {
         }
     }
 
-    /** create a new UMLToDoItem.
+    /**
+     * create a new UMLToDoItem.
+     *
      * @see org.argouml.uml.cognitive.UMLToDoItem
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {

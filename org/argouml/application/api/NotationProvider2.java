@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,14 +31,13 @@ package org.argouml.application.api;
  * some UML-object needs to be converted into a text string.<p>
  *
  * For UML this interface is implemented by
- * {@link org.argouml.uml.generator.GeneratorDisplay}.
+ * {@link org.argouml.uml.generator.GeneratorDisplay}.<p>
+ *
  * For Java it is implemented by
- * {@link org.argouml.language.java.generator.GeneratorJava}.
+ * {@link org.argouml.language.java.generator.GeneratorJava}.<p>
  *
  * TODO: {@link org.argouml.uml.generator.ParserDisplay} and this interface
  * should probably be joined into an editable field instead.
- *
- * @see org.argouml.language
  */
 public interface NotationProvider2 {
 

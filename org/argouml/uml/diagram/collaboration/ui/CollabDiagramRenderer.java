@@ -37,16 +37,14 @@ import org.argouml.uml.diagram.ui.FigDependency;
 import org.argouml.uml.diagram.ui.FigGeneralization;
 import org.argouml.uml.diagram.ui.FigMessage;
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * <p>This class defines a renderer object for UML Collaboration Diagrams.
- *   In a collaboration Diagram the following UML objects are displayed with the
- *   following Figs:</p>
+ * This class defines a renderer object for UML Collaboration Diagrams.
+ * In a collaboration Diagram the following UML objects are displayed with the
+ * following Figs:<p>
  *
  * <pre>
  *   UML Object       ---  Fig
@@ -56,31 +54,39 @@ import org.tigris.gef.presentation.FigNode;
  *   MComment         ---  FigComment
  * </pre>
  *
- * <p>Provides {@link #getFigNodeFor} to implement the {@link
- *   GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
- *   {@link GraphEdgeRenderer} interface.</p>
+ * Provides {@link #getFigNodeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphNodeRenderer} interface and
+ * {@link #getFigEdgeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphEdgeRenderer} interface.<p>
  *
- * <p><em>Note</em>. Should be implemented as a singleton - we don't really
- *   need a separate instance for each use case diagram.</p>
+ * <em>Note</em>. Should be implemented as a singleton - we don't really
+ * need a separate instance for each use case diagram.<p>
  *
  *
  * @author agauthie
  */
 public class CollabDiagramRenderer extends UmlDiagramRenderer {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
 	Logger.getLogger(CollabDiagramRenderer.class);
 
-    /** Return a Fig that can be used to represent the given node
+    /**
+     * Return a Fig that can be used to represent the given node.
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-	if (Model.getFacade().isAClassifierRole(node))
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay,
+				 Object node, Map styleAttributes) {
+	if (Model.getFacade().isAClassifierRole(node)) {
 	    return new FigClassifierRole(gm, lay, node);
-	if (Model.getFacade().isAMessage(node))
+	}
+	if (Model.getFacade().isAMessage(node)) {
 	    return new FigMessage(gm, lay, node);
+	}
 	if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
         }
@@ -88,15 +94,17 @@ public class CollabDiagramRenderer extends UmlDiagramRenderer {
 	return null;
     }
 
-    /** Return a Fig that can be used to represent the given edge,
+    /**
+     * Return a Fig that can be used to represent the given edge,
      * Generally the same code as for the ClassDiagram, since its
      * very related to it.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
      * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object)
+     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, Map styleAttributes) {
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay,
+				 Object edge, Map styleAttributes) {
 	if (Model.getFacade().isAAssociationRole(edge)) {
 	    FigAssociationRole asrFig = new FigAssociationRole(edge, lay);
 	    return asrFig;

@@ -38,49 +38,47 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * This class implements a layout algorithm for class diagrams.
- * <P>
+ * This class implements a layout algorithm for class diagrams.<p>
+ *
  * The layout process is performed in a row by row way. The position of the
- * nodes in a row are set using the sequence given by the <EM>natural order
- * </EM> of the nodes
- * <P>
+ * nodes in a row are set using the sequence given by the <em>natural order
+ * </em> of the nodes.<p>
+ *
  * The resulting layout sequence:
- * <OL>
- * <LI>Standalone (i.e. without links) nodes first, followed by linked nodes
- * </LI>
- * <LI>Ordered by node-typ: package, interface, class, <EM>other</EM></LI>
- * <LI>Increasing level in link-hierarchy - root elements first</LI>
- * <LI>Decreasing amount of weighted links</LI>
- * <LI>Ascending name of model object</LI>
- * </OL>
- * 
+ * <ol>
+ * <li>Standalone (i.e. without links) nodes first, followed by linked nodes
+ * <li>Ordered by node-typ: package, interface, class, <em>other</em>
+ * <li>Increasing level in link-hierarchy - root elements first
+ * <li>Decreasing amount of weighted links
+ * <li>Ascending name of model object
+ * </ol>
+ *
  * @see ClassdiagramNode#compareTo
- *  
+ *
  */
 public class ClassdiagramLayouter implements Layouter {
     // TODO: make the "magic numbers" configurable
     /**
      * This class keeps all the nodes in one row together and provides basic
      * functionality for them.
-     * 
+     *
      * @author David Gunkel
      */
     private class NodeRow {
         /**
-         * Keeps all nodes of this row
+         * Keeps all nodes of this row.
          */
         private Vector nodes = new Vector();
 
         /**
-         * The row number of this row
+         * The row number of this row.
          */
         private int rowNumber;
 
         /**
-         * Construct an empty NodeRow with the given row number
-         * 
-         * @param number
-         *            of this row
+         * Construct an empty NodeRow with the given row number.
+         *
+         * @param aRowNumber The row number of this row.
          */
         public NodeRow(int aRowNumber) {
             rowNumber = aRowNumber;
@@ -88,9 +86,8 @@ public class ClassdiagramLayouter implements Layouter {
 
         /**
          * Add a node to this NodeRow.
-         * 
-         * @param node
-         *            The node to be added
+         *
+         * @param node The node to be added
          */
         public void addNode(ClassdiagramNode node) {
             node.setRank(rowNumber);
@@ -102,18 +99,21 @@ public class ClassdiagramLayouter implements Layouter {
          * Splittable are packages and stanalone-nodes. A split is performed,
          * if the maximum width is reached or when a type change occurs (from
          * package to not-package, from standalone to not-standalone).
-         * <UL>
-         * <LI>packages</LI>
-         * <LI>After standalone
-         * </UL>
+	 *
+         * <ul>
+         * <li>packages
+         * <li>After standalone
+         * </ul>
+	 *
          * Split this row into two, if
-         * <UL>
-         * <LI>at least one standalone node is availabe</LI>
-         * <LI>and the given maximum row width is exceeded</LI>
-         * <LI>or a non-standalone element is detected.</LI>
-         * </UL>
+         * <ul>
+         * <li>at least one standalone node is availabe
+         * <li>and the given maximum row width is exceeded
+         * <li>or a non-standalone element is detected.
+         * </ul>
+	 *
          * Return the new NodeRow or null if this row is not split.
-         * 
+         *
          * @param maxWidth
          *            The maximum allowed row width
          * @param gap
@@ -144,7 +144,7 @@ public class ClassdiagramLayouter implements Layouter {
             int width = 0;
             for (iter = ts.iterator(); iter.hasNext() && width < maxWidth;) {
                 node = (ClassdiagramNode) iter.next();
-                // split = (split == null || split.isStandalone()) ? node : 
+                // split = (split == null || split.isStandalone()) ? node :
                 // split;
                 split = (split == null
                     || (hasPackage && split.isPackage() == hasPackage) || split
@@ -178,8 +178,8 @@ public class ClassdiagramLayouter implements Layouter {
 
         /**
          * Get an Iterator for the nodes of this row, sorted by their natural
-         * order
-         * 
+         * order.
+         *
          * @return Iterator for sorted nodes
          */
         public Iterator getSortedIterator() {
@@ -189,9 +189,8 @@ public class ClassdiagramLayouter implements Layouter {
         /**
          * Get the width for this row using the given horizontal gap between
          * nodes.
-         * 
-         * @param gap
-         *            The horizontal gap between nodes
+         *
+         * @param gap The horizontal gap between nodes.
          * @return The width of this row
          */
         public int getWidth(int gap) {
@@ -206,10 +205,9 @@ public class ClassdiagramLayouter implements Layouter {
         }
 
         /**
-         * Set the row number of this row
-         * 
-         * @param rowNum
-         *            The rowNumber to set.
+         * Set the row number of this row.
+         *
+         * @param rowNum The rowNumber to set.
          */
         public void setRowNumber(int rowNum) {
             this.rowNumber = rowNum;
@@ -217,8 +215,8 @@ public class ClassdiagramLayouter implements Layouter {
         }
 
         /**
-         * Adjust the properties for all nodes in this row: rank, column, offset
-         * for edges
+         * Adjust the properties for all nodes in this row: rank,
+         * column, offset for edges.
          */
         private void adjustRowNodes() {
             int col = 0;
@@ -254,46 +252,45 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Logger for logging events.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ClassdiagramLayouter.class);
+    private static final Logger LOG =
+	Logger.getLogger(ClassdiagramLayouter.class);
 
     /**
-     * Constant value for the maximum row width
+     * Constant value for the maximum row width.
      */
     // TODO: this should be a configurable property
     private static int maxRowWidth = 1200;
 
     /**
      * Constant value for the vertical gap between nodes.
-     *  
      */
     private static int vGap = 80;
 
     // Attributes
 
     /**
-     * The diagram that will be layouted
+     * The diagram that will be layouted.
      */
     private UMLDiagram diagram;
 
     /**
-     * HashMap with figures as key and Nodes as elements
+     * HashMap with figures as key and Nodes as elements.
      */
     private HashMap figNodes = new HashMap();
 
     /**
-     * The number of the last row
+     * The number of the last row.
      */
     private int lastRow;
 
     /**
      * layoutedClassNodes is a convenience which holds a subset of
-     * layoutedObjects (only ClassNodes)
+     * layoutedObjects (only ClassNodes).
      */
     private Vector layoutedClassNodes = new Vector();
 
     /**
-     * Holds all edges - subset of layoutedObjects
+     * Holds all edges - subset of layoutedObjects.
      */
     private Vector layoutedEdges = new Vector();
 
@@ -303,22 +300,25 @@ public class ClassdiagramLayouter implements Layouter {
     private Vector layoutedObjects = new Vector();
 
     /**
-     * nodeRows contains all DiagramRows of the diagram
+     * nodeRows contains all DiagramRows of the diagram.
      */
     private Vector nodeRows = new Vector();
 
-    /** internal */
+    /**
+     * internal.
+     */
     private int xPos;
 
-    /** internal */
+    /**
+     * internal.
+     */
     private int yPos;
 
     /**
      * Constructor for the layouter. Takes a diagram as input to extract all
      * LayoutedObjects, which will be layouted.
-     * 
-     * @param theDiagram
-     *            the diagram to layout
+     *
+     * @param theDiagram The diagram to layout.
      */
     public ClassdiagramLayouter(UMLDiagram theDiagram) {
         diagram = theDiagram;
@@ -333,9 +333,8 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Add an object to layout.
-     * 
-     * @param obj
-     *            represents the object to layout.
+     *
+     * @param obj represents the object to layout.
      */
     public void add(LayoutedObject obj) {
         // TODO: check for duplicates (is this possible???)
@@ -348,13 +347,13 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Get a ClassdiagramNode from the layouted objects.
-     * <P>
-     * <B>Attention! </B></BR><EM>Should not be used, because the order of
-     * nodes might be changed due to a call of layout()</EM>
-     * </P>
-     * 
-     * @deprecated
+     * Get a ClassdiagramNode from the layouted objects.<p>
+     *
+     * <em>Attention!</em><p>
+     * <em>Should not be used, because the order of
+     * nodes might be changed due to a call of layout().</em><p>
+     *
+     * @deprecated TODO: By whom? When? What do we use instead?
      * @param index
      *            represents the index of this ClassdiagramNode.
      * @return The ClassdiagramNode for this index.
@@ -365,7 +364,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the horizontal gap between nodes.
-     * 
+     *
      * @return The horizontal gap between nodes.
      */
     private int getHGap() {
@@ -375,7 +374,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getMinimumDiagramSize returns the minimum diagram size after
      * the layout process.
-     * 
+     *
      * @return The minimum diagram size after the layout process.
      */
     public Dimension getMinimumDiagramSize() {
@@ -384,10 +383,14 @@ public class ClassdiagramLayouter implements Layouter {
         int vGap2 = getVGap() / 2;
         for (Iterator iter = layoutedClassNodes.iterator(); iter.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iter.next();
-            width = Math.max(width, node.getLocation().x
-                    + (int) node.getSize().getWidth() + hGap2);
-            height = Math.max(height, node.getLocation().y
-                    + (int) node.getSize().getHeight() + vGap2);
+            width =
+		Math.max(width,
+			 node.getLocation().x
+			 + (int) node.getSize().getWidth() + hGap2);
+            height =
+		Math.max(height,
+			 node.getLocation().y
+			 + (int) node.getSize().getHeight() + vGap2);
         }
         return new Dimension(width, height);
     }
@@ -395,7 +398,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getObject returns a object with a given index from the
      * layouter.
-     * 
+     *
      * @param index
      *            represents the index of this object in the layouter.
      * @return The LayoutedObject for the given index.
@@ -407,7 +410,7 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Operation getObjects returns all the objects currently participating in
      * the layout process.
-     * 
+     *
      * @return An array holding all the object in the layouter.
      */
     public LayoutedObject[] getObjects() {
@@ -419,7 +422,7 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Get the vertical gap between nodes.
-     * 
+     *
      * @return The vertical gap between nodes.
      */
     private int getVGap() {
@@ -439,10 +442,11 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * All layoutedObjects of type "Edge" are placed using an edge-type specific
-     * layout algorithm. The offset from a <EM>centered</EM> edge is taken
-     * from the parent node to avoid overlaps.
-     * 
+     * All layoutedObjects of type "Edge" are placed using an
+     * edge-type specific layout algorithm. The offset from a
+     * <em>centered</em> edge is taken from the parent node to avoid
+     * overlaps.
+     *
      * @see ClassdiagramEdge
      */
     private void placeEdges() {
@@ -451,8 +455,8 @@ public class ClassdiagramLayouter implements Layouter {
         for (Iterator iter = layoutedEdges.iterator(); iter.hasNext();) {
             ClassdiagramEdge edge = (ClassdiagramEdge) iter.next();
             if (edge instanceof ClassdiagramInheritanceEdge) {
-                ClassdiagramNode parent = (ClassdiagramNode) figNodes.get(edge
-                        .getDestFigNode());
+                ClassdiagramNode parent =
+		    (ClassdiagramNode) figNodes.get(edge.getDestFigNode());
                 ((ClassdiagramInheritanceEdge) edge).setOffset(parent
                         .getEdgeOffset());
             }
@@ -463,9 +467,8 @@ public class ClassdiagramLayouter implements Layouter {
 
     /**
      * Set the placement coordinate for a given node.
-     * 
-     * @param Node
-     *            to be placed
+     *
+     * @param node To be placed.
      */
     private void placeNode(ClassdiagramNode node) {
         Vector uplinks = node.getUplinks();
@@ -473,8 +476,9 @@ public class ClassdiagramLayouter implements Layouter {
         int curW = node.getSize().width;
         double xOffset = node.getSize().width + getHGap();
         int bumpX = (int) getHGap() / 2; // (xOffset - curW) / 2;
-        int xPosNew = Math.max(xPos + bumpX, uplinks.size() == 1 ? node
-                .getPlacementHint() : -1);
+        int xPosNew =
+	    Math.max(xPos + bumpX,
+		     uplinks.size() == 1 ? node.getPlacementHint() : -1);
         node.setLocation(new Point(xPosNew, yPos));
         if (LOG.isDebugEnabled()) {
             LOG.debug("placeNode - Row: " + node.getRank() + " Col: "
@@ -490,7 +494,7 @@ public class ClassdiagramLayouter implements Layouter {
     }
 
     /**
-     * Place the NodeRows in the diagram
+     * Place the NodeRows in the diagram.
      */
     private void placeNodes() {
         // TODO: place comments near connected classes
@@ -515,8 +519,8 @@ public class ClassdiagramLayouter implements Layouter {
      * Rank the nodes depending on their level (position in hierarchy) and set
      * their weight to achieve a proper node-sequence for the layout. Rows
      * exceeding the maximum row width are split, if standalone nodes are
-     * available.
-     * </P>
+     * available.<p>
+     *
      * Weight the other nodes to determine their columns.
      */
     private void rankAndWeightNodes() {
@@ -527,7 +531,7 @@ public class ClassdiagramLayouter implements Layouter {
         NodeRow nodeRow = new NodeRow(0);
         TreeSet nodeTree = new TreeSet(layoutedClassNodes);
         boolean hasPackages = false;
-        // TODO: move "package in row" to NodeRow 
+        // TODO: move "package in row" to NodeRow
         for (Iterator iNode = nodeTree.iterator(); iNode.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iNode.next();
 //            if (node.isPackage()) {
@@ -550,10 +554,12 @@ public class ClassdiagramLayouter implements Layouter {
         for (Iterator iter = comments.iterator(); iter.hasNext();) {
             ClassdiagramNode node = (ClassdiagramNode) iter.next();
             ClassdiagramNode cNode = null;
-            int rowInd = node.getUplinks().isEmpty() ? 0
-                    : ((ClassdiagramNode) node.getUplinks().firstElement())
-                            .getRank();
-            
+            int rowInd =
+		node.getUplinks().isEmpty()
+		? 0
+		: (((ClassdiagramNode) node.getUplinks().firstElement())
+		   .getRank());
+
             ((NodeRow) nodeRows.elementAt(rowInd)).addNode(node);
         }
         for (row = 0; row < nodeRows.size();) {
@@ -567,9 +573,8 @@ public class ClassdiagramLayouter implements Layouter {
     }
     /**
      * Remove an object from the layout process.
-     * 
-     * @param obj
-     *            represents the object to remove.
+     *
+     * @param obj represents the object to remove.
      */
     public void remove(LayoutedObject obj) {
         layoutedObjects.remove(obj);
@@ -591,10 +596,10 @@ public class ClassdiagramLayouter implements Layouter {
         for (Iterator iter = layoutedEdges.iterator(); iter.hasNext();) {
             ClassdiagramEdge edge = (ClassdiagramEdge) iter.next();
             Fig parentFig = edge.getDestFigNode();
-            ClassdiagramNode child = (ClassdiagramNode) figNodes.get(edge
-                    .getSourceFigNode());
-            ClassdiagramNode parent = (ClassdiagramNode) figNodes
-                    .get(parentFig);
+            ClassdiagramNode child =
+		(ClassdiagramNode) figNodes.get(edge.getSourceFigNode());
+            ClassdiagramNode parent =
+		(ClassdiagramNode) figNodes.get(parentFig);
             if (edge instanceof ClassdiagramInheritanceEdge) {
                 if (parent != null && child != null) {
                     parent.addDownlink(child);

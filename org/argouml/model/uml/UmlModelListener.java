@@ -57,7 +57,7 @@ import org.argouml.model.Model;
  * @author Thierry Lach
  * @stereotype singleton
  */
-public class UmlModelListener implements PropertyChangeListener {
+public final class UmlModelListener implements PropertyChangeListener {
 
     /**
      * Singleton instance.
@@ -65,7 +65,7 @@ public class UmlModelListener implements PropertyChangeListener {
     private static final UmlModelListener INSTANCE = new UmlModelListener();
 
     /**
-     * The listener list
+     * The listener list.
      */
     private EventListenerList listenerList = new EventListenerList();
 
@@ -154,10 +154,6 @@ public class UmlModelListener implements PropertyChangeListener {
 
     /**
      * Fire an event to all members of the listener list.
-     *
-     * @param propertyName the name of the event
-     * @param oldValue the old value - which we do not really know
-     * @param newValue the new value - which is <code>true</code>
      */
     private void fireNeedsSavePropertyChanged() {
         // Guaranteed to return a non-null array
@@ -167,7 +163,8 @@ public class UmlModelListener implements PropertyChangeListener {
         for (int i = listeners.length - 2; i >= 0; i -= 2) {
             if (listeners[i] == PropertyChangeListener.class) {
                 // Lazily create the event:
-                PropertyChangeEvent event = new PropertyChangeEvent(
+                PropertyChangeEvent event =
+		    new PropertyChangeEvent(
                             this,
                             SAVE_STATE_PROPERTY_NAME,
                             new Boolean(false),
@@ -177,6 +174,4 @@ public class UmlModelListener implements PropertyChangeListener {
             }
         }
     }
-
 }
-

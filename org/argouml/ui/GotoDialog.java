@@ -91,14 +91,13 @@ public class GotoDialog extends ArgoDialog {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == getOkButton()) {
             allDiagrams.doDoubleClick();
-        }
-        else {
+        } else {
             super.actionPerformed(e);
         }
     }
 
     /**
-     * @see org.argouml.swingext.Dialog#nameButtons()
+     * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
         super.nameButtons();

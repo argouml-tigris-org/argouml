@@ -74,7 +74,9 @@ public class ClassGenerationDialog
     extends ArgoDialog
     implements ActionListener {
 
-    /** Logger. */
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(ClassGenerationDialog.class);
 
@@ -110,7 +112,8 @@ public class ClassGenerationDialog
      * Constructor.
      *
      * @param nodes The nodes to generate.
-     * @param inModel <tt>true</tt> if the path is in the model. TODO: Correct?
+     * @param inModel <code>true</code> if the path is in the model.
+     *        TODO: Correct?
      */
     public ClassGenerationDialog(Vector nodes, boolean inModel) {
         super(
@@ -226,7 +229,7 @@ public class ClassGenerationDialog
     }
 
     /**
-     * @see org.argouml.swingext.Dialog#nameButtons()
+     * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
         super.nameButtons();
@@ -244,13 +247,14 @@ public class ClassGenerationDialog
 
             JTableHeader header = classTable.getTableHeader();
             if (header != null) {
-                c = header.getDefaultRenderer().getTableCellRendererComponent(
-                    classTable,
-                    column.getHeaderValue(),
-                    false,
-                    false,
-                    0,
-                    0);
+                c =
+		    header.getDefaultRenderer().getTableCellRendererComponent(
+			    classTable,
+			    column.getHeaderValue(),
+			    false,
+			    false,
+			    0,
+			    0);
                 width = Math.max(c.getPreferredSize().width + 8, width);
             }
 
@@ -319,14 +323,14 @@ public class ClassGenerationDialog
                         if (isPathInModel) {
                             path = Generator2.getCodePath(node);
                             if (path == null) {
-                                Object parent = 
+                                Object parent =
                                     Model.getFacade().getNamespace(node);
                                 while (parent != null) {
                                     path = Generator2.getCodePath(parent);
                                     if (path != null) {
                                         break;
                                     }
-                                    parent = 
+                                    parent =
                                         Model.getFacade().getNamespace(parent);
                                 }
                             }
@@ -340,13 +344,14 @@ public class ClassGenerationDialog
                             // save the selected language in the model
                             // TODO: no support of multiple checked
                             // languages
-                            Object taggedValue = 
+                            Object taggedValue =
                                 Model.getFacade().getTaggedValue(
                                         node, "src_lang");
                             String savedLang = null;
                             if (taggedValue != null) {
-                                savedLang = Model.getFacade().getValueOfTag(
-                                    taggedValue);
+                                savedLang =
+				    Model.getFacade().getValueOfTag(
+					    taggedValue);
                             }
                             if (taggedValue == null || !language
                                 .getConfigurationValue()
@@ -459,7 +464,7 @@ public class ClassGenerationDialog
                 return false;
             }
 
-            Object taggedValue = 
+            Object taggedValue =
                 Model.getFacade().getTaggedValue(cls, "src_lang");
             if (taggedValue == null) {
                 return false;

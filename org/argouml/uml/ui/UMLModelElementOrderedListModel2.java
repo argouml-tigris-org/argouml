@@ -83,9 +83,11 @@ public abstract class UMLModelElementOrderedListModel2
      * javax.swing.JPopupMenu, int)
      */
     public boolean buildPopup(JPopupMenu popup, int index) {
-        JMenuItem moveUp = new JMenuItem(
+        JMenuItem moveUp =
+	    new JMenuItem(
                 new MoveUpAction(this, index));
-        JMenuItem moveDown = new JMenuItem(
+        JMenuItem moveDown =
+	    new JMenuItem(
                 new MoveDownAction(this, index));
         popup.add(moveUp);
         popup.add(moveDown);
@@ -107,8 +109,6 @@ class MoveUpAction extends UMLAction {
 
     /**
      * The constructor.
-     *
-     * @param name the (to be localized) description of the action
      */
     public MoveUpAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {
@@ -143,8 +143,6 @@ class MoveDownAction extends UMLAction {
 
     /**
      * The constructor.
-     *
-     * @param name the (to be localized) description of the action
      */
     public MoveDownAction(UMLModelElementOrderedListModel2 theModel,
             int theIndex) {

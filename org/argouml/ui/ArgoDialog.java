@@ -63,7 +63,7 @@ public class ArgoDialog extends Dialog {
     }
 
     /**
-     * @see org.argouml.swingext.Dialog#nameButtons()
+     * @see org.tigris.swidgets.Dialog#nameButtons()
      */
     protected void nameButtons() {
         nameButton(getOkButton(), "button.ok");

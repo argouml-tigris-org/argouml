@@ -248,7 +248,7 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
     }
 
     /**
-     * Helper method for {@link #getAllModelElementsOfKind(Object, Class)}.
+     * Helper method for {@link #getAllModelElementsOfKind(Object, Object)}.
      *
      * @param nsa namespace.
      * @param kind name of class to find, this implementation will add the "M"
@@ -534,4 +534,3 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
         throw new IllegalArgumentException("Not a base");
     }
 }
-

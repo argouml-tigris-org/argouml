@@ -54,9 +54,10 @@ import org.tigris.gef.presentation.FigNode;
  *   MUseCase         ---  FigUseCase
  * </pre>
  *
- * Provides {@link #getFigNodeFor} to implement the {@link
- * GraphNodeRenderer} interface and {@link #getFigEdgeFor} to implement the
- * {@link GraphEdgeRenderer} interface.<p>
+ * Provides {@link #getFigNodeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphNodeRenderer} interface and
+ * {@link #getFigEdgeFor} to implement the
+ * {@link org.tigris.gef.graph.GraphEdgeRenderer} interface.<p>
  *
  * <em>Note</em>. Should be implemented as a singleton - we don't really
  * need a separate instance for each use case diagram.<p>
@@ -64,6 +65,9 @@ import org.tigris.gef.presentation.FigNode;
  * @author abonner
  */
 public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(UseCaseDiagramRenderer.class);
 
@@ -76,13 +80,13 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
      * @param lay   The layer in the graph on which we want this figure.
      *
      * @param node  The node to be rendered (an NSUML object)
-     * 
+     *
      * @param styleAttributes an optional map of attributes to style the fig
-     * 
+     *
      * @return      The fig to be used, or <code>null</code> if we can't create
      *              one.
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, 
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
             Map styleAttributes) {
 
         // Create a new version of the relevant fig
@@ -106,10 +110,10 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
 
     /**
-     * <p>Return a Fig that can be used to represent the given edge.</p>
+     * Return a Fig that can be used to represent the given edge.<p>
      *
-     * <p>Generally the same code as for the ClassDiagram, since it's very
-     *   related to it. Deal with each of the edge types in turn.</p>
+     * Generally the same code as for the ClassDiagram, since it's very
+     * related to it. Deal with each of the edge types in turn.<p>
      *
      * @param gm    The graph model for which we are rendering.
      *
@@ -123,22 +127,22 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
      *              one.
      *
      * @see org.tigris.gef.graph.GraphEdgeRenderer#getFigEdgeFor(
-     * org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
-     * java.lang.Object)
+     *         org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer,
+     *         java.lang.Object, java.util.Map)
      */
-    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge, 
+    public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge,
             Map styleAttributes) {
 
         if (LOG.isDebugEnabled()) {
             LOG.debug("making figedge for " + edge);
         }
-        
+
         if (edge == null) {
             throw new IllegalArgumentException("A model edge must be supplied");
         }
-        
+
         FigEdge newEdge = null;
-        
+
         if (Model.getFacade().isAAssociation(edge)) {
             // If the edge is an association, we'll need a FigAssociation
             Object   asc         = /*(MAssociation)*/ edge;
@@ -207,9 +211,9 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             // element in each case. There really ought to be a check that
             // there are some here for safety.
 
-            Object supplier = /*(MModelElement)*/
+            Object supplier =
                  ((Model.getFacade().getSuppliers(dep).toArray())[0]);
-            Object client = /*(MModelElement)*/
+            Object client =
                  ((Model.getFacade().getClients(dep).toArray())[0]);
 
             // The figs for the two end nodes
@@ -262,7 +266,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         }
         return newEdge;
     }
-    
+
     private void setSourcePort(FigEdge edge, FigNode source) {
         edge.setSourcePortFig(source);
         edge.setSourceFigNode(source);

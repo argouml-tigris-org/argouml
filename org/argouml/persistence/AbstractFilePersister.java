@@ -44,9 +44,12 @@ import org.argouml.kernel.Project;
 public abstract class AbstractFilePersister extends FileFilter
         implements ProjectFilePersister {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(AbstractFilePersister.class);
-    
+
     private EventListenerList listenerList = new EventListenerList();
 
     /**
@@ -60,6 +63,7 @@ public abstract class AbstractFilePersister extends FileFilter
 
     /**
      * Create a temporary copy of the existing file.
+     *
      * @param file the file to copy.
      * @return the temp file or null if none copied.
      * @throws FileNotFoundException if file not found
@@ -68,18 +72,18 @@ public abstract class AbstractFilePersister extends FileFilter
     protected File createTempFile(File file)
         throws FileNotFoundException, IOException {
         File tempFile = new File(file.getAbsolutePath() + "#");
-        
+
         if (tempFile.exists()) {
             tempFile.delete();
         }
-        
+
         if (file.exists()) {
             copyFile(file, tempFile);
         }
-        
+
         return tempFile;
     }
-    
+
     /**
      * Copies one file src to another, raising file exceptions
      * if there are some problems.
@@ -117,11 +121,19 @@ public abstract class AbstractFilePersister extends FileFilter
      * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
      */
     public boolean accept(File f) {
-        if (f == null) return false;
-        if (f.isDirectory()) return true;
+        if (f == null) {
+	    return false;
+	}
+        if (f.isDirectory()) {
+	    return true;
+	}
         String s = getExtension(f);
-        if (s != null) // this check for files without extension...
-            if (s.equalsIgnoreCase(getExtension())) return true;
+        if (s != null) {
+	    // this check for files without extension...
+            if (s.equalsIgnoreCase(getExtension())) {
+		return true;
+	    }
+	}
         return false;
     }
 
@@ -134,14 +146,16 @@ public abstract class AbstractFilePersister extends FileFilter
     public abstract String getExtension();
 
     /**
-     * (Just the description, not the extension between "()".)
+     * Just the description, not the extension between "()".
      *
      * @return the description valid for this type of file
      */
     protected abstract String getDesc();
 
     private static String getExtension(File f) {
-        if (f == null) return null;
+        if (f == null) {
+	    return null;
+	}
         return getExtension(f.getName());
     }
 
@@ -241,14 +255,12 @@ public abstract class AbstractFilePersister extends FileFilter
         throws SaveException;
 
     /**
-     * @see org.argouml.persistence.ProjectFilePersister#doLoad(
-     *    java.io.File, javax.swing.JProgressBar, 
-     *    javax.swing.text.JTextComponent)
+     * @see org.argouml.persistence.ProjectFilePersister#doLoad(java.io.File)
      */
     public abstract Project doLoad(File file) throws OpenException;
-    
+
     /**
-     * Inform listeners of any progress notifications
+     * Inform listeners of any progress notifications.
      * @param percent the current percentage progress.
      */
     protected void fireProgressEvent(long percent) {
@@ -268,9 +280,10 @@ public abstract class AbstractFilePersister extends FileFilter
             }
         }
     }
-    
+
     /**
-     * Add any object interested in listening to persistence progress
+     * Add any object interested in listening to persistence progress.
+     *
      * @param listener the interested listener.
      */
     public void addProgressListener(ProgressListener listener) {
@@ -279,7 +292,8 @@ public abstract class AbstractFilePersister extends FileFilter
     
     /**
      * Remove any object no longer interested in listening to persistence
-     * progress
+     * progress.
+     *
      * @param listener the listener to remove.
      */
     public void removeProgressListener(ProgressListener listener) {
