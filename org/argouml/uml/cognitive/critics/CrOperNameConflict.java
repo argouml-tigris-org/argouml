@@ -40,66 +40,74 @@ import org.argouml.cognitive.*;
 
 public class CrOperNameConflict extends CrUML {
 
-  public CrOperNameConflict() {
-    setHeadline("Change Names or Signatures in <ocl>self</ocl>");
-    addSupportedDecision(CrUML.decMETHODS);
-    addSupportedDecision(CrUML.decNAMING);
-    addTrigger("behavioralFeature");
-    addTrigger("feature_name");
-  }
-
-  public boolean predicate2(Object dm, Designer dsgr) {
-    if (!(dm instanceof MClassifier)) return NO_PROBLEM;
-    MClassifier cls = (MClassifier) dm;
-    Collection str = cls.getFeatures();
-    if (str == null) return NO_PROBLEM;
-    Iterator enum = str.iterator();
-    Vector operSeen = new Vector();
-    // warn about inheritied name conflicts, different critic?
-    while (enum.hasNext()) {
-      MFeature f = (MFeature) enum.next();
-      if (!(f instanceof MBehavioralFeature))
-        continue;
-      MBehavioralFeature bf = (MBehavioralFeature) f;
-      int size = operSeen.size();
-      for (int i = 0; i < size; i++) {
-	MBehavioralFeature otherBF = (MBehavioralFeature) operSeen.elementAt(i);
-	if (signaturesMatch(bf, otherBF)) return PROBLEM_FOUND;
-      }
-      operSeen.addElement(bf);
+    public CrOperNameConflict() {
+        setHeadline("Change Names or Signatures in <ocl>self</ocl>");
+        addSupportedDecision(CrUML.decMETHODS);
+        addSupportedDecision(CrUML.decNAMING);
+        addTrigger("behavioralFeature");
+        addTrigger("feature_name");
     }
-    return NO_PROBLEM;
-  }
 
-
-  public boolean signaturesMatch(MBehavioralFeature bf1, MBehavioralFeature bf2) {
-    String name1 = bf1.getName();
-    String name2 = bf2.getName();
-    if (name1 == null || name2 == null) return false;
-    if (!name1.equals(name2)) return false;
-    List params1 = bf1.getParameters();
-    List params2 = bf2.getParameters();
-    int size1 = params1.size();
-    int size2 = params2.size();
-    if (size1 != size2) return false;
-    for (int i = 0; i < size1; i++) {
-      MParameter p1 = (MParameter) params1.get(i);
-      MParameter p2 = (MParameter) params2.get(i);
-      String p1Name = p1.getName();
-      String p2Name = p2.getName();
-      if (p1Name == null || p2Name == null) return false;
-      if (!p1Name.equals(p2Name)) return false;
-      MClassifier p1Type = p1.getType();
-      MClassifier p2Type = p2.getType();
-      if (p1Type == null || p2Type == null) return false;
-      if (!p1Type.equals(p2Type)) return false;
+    public boolean predicate2(Object dm, Designer dsgr) {
+        if (!(dm instanceof MClassifier)) return NO_PROBLEM;
+        MClassifier cls = (MClassifier) dm;
+        Collection str = cls.getFeatures();
+        if (str == null) return NO_PROBLEM;
+        Iterator enum = str.iterator();
+        Vector operSeen = new Vector();
+        // warn about inheritied name conflicts, different critic?
+        while (enum.hasNext()) {
+            MFeature f = (MFeature) enum.next();
+            if (!(f instanceof MOperation))
+                continue;
+            MBehavioralFeature bf = (MBehavioralFeature) f;
+            int size = operSeen.size();
+            for (int i = 0; i < size; i++) {
+                MBehavioralFeature otherBF = (MBehavioralFeature) operSeen.elementAt(i);
+                if (signaturesMatch(bf, otherBF)) return PROBLEM_FOUND;
+            }
+            operSeen.addElement(bf);
+        }
+        return NO_PROBLEM;
     }
-    return true;
-  }
 
-  public Icon getClarifier() {
-    return ClOperationCompartment.TheInstance;
-  }
+
+    public boolean signaturesMatch(MBehavioralFeature bf1, MBehavioralFeature bf2) {
+        String name1 = bf1.getName();
+        String name2 = bf2.getName();
+        if (name1 == null || name2 == null) return false;
+        if (!name1.equals(name2)) return false;
+        List params1 = bf1.getParameters();
+        List params2 = bf2.getParameters();
+        int size1 = params1.size();
+        int size2 = params2.size();
+        if (size1 != size2) return false;
+        for (int i = 0; i < size1; i++) {
+            MParameter p1 = (MParameter) params1.get(i);
+            MParameter p2 = (MParameter) params2.get(i);
+            String p1Name = p1.getName();
+            String p2Name = p2.getName();
+            if (p1Name == null || p2Name == null) return false;
+            if (!p1Name.equals(p2Name)) return false;
+            MClassifier p1Type = p1.getType();
+            MClassifier p2Type = p2.getType();
+            if (p1Type == null || p2Type == null) return false;
+            if (!p1Type.equals(p2Type)) return false;
+        }
+
+        return true;
+    }
+
+    public Icon getClarifier() {
+        return ClOperationCompartment.TheInstance;
+    }
 
 } /* end class CrOperNameConflict.java */
+
+
+
+
+
+
+
 
