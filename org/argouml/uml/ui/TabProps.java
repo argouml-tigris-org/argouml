@@ -32,47 +32,132 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.BorderLayout;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
+import javax.swing.JPanel;
 
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.application.events.*;
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.activity.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.collaboration.ui.*;
-import org.argouml.uml.diagram.deployment.ui.*;
-import org.argouml.uml.diagram.sequence.ui.*;
-import org.argouml.uml.diagram.state.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
-
-import org.argouml.uml.ui.foundation.core.*;
-import org.argouml.uml.ui.behavior.common_behavior.*;
-import org.argouml.uml.ui.behavior.collaborations.*;
-import org.argouml.uml.ui.behavior.activity_graphs.*;
-import org.argouml.uml.ui.behavior.state_machines.*;
-import org.argouml.uml.ui.behavior.use_cases.*;
-import org.argouml.uml.ui.model_management.*;
-import org.argouml.uml.ui.foundation.extension_mechanisms.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggablePropertyPanel;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoEventTypes;
+import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.events.ArgoModuleEventListener;
+import org.argouml.model.ModelFacade;
+import org.argouml.swingext.Orientable;
+import org.argouml.swingext.Orientation;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.NavigationListener;
+import org.argouml.ui.TabSpawnable;
+import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
+import org.argouml.uml.diagram.collaboration.ui.UMLCollaborationDiagram;
+import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
+import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
+import org.argouml.uml.diagram.state.ui.PropPanelUMLStateDiagram;
+import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.PropPanelDiagram;
+import org.argouml.uml.diagram.ui.PropPanelString;
+import org.argouml.uml.diagram.ui.PropPanelUMLActivityDiagram;
+import org.argouml.uml.diagram.ui.PropPanelUMLClassDiagram;
+import org.argouml.uml.diagram.ui.PropPanelUMLCollaborationDiagram;
+import org.argouml.uml.diagram.ui.PropPanelUMLDeploymentDiagram;
+import org.argouml.uml.diagram.ui.PropPanelUMLSequenceDiagram;
+import org.argouml.uml.diagram.ui.PropPanelUMLUseCaseDiagram;
+import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
+import org.argouml.uml.ui.behavior.activity_graphs.PropPanelActionState;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelAssociationEndRole;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelAssociationRole;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelClassifierRole;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelCollaboration;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelInteraction;
+import org.argouml.uml.ui.behavior.collaborations.PropPanelMessage;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelCallAction;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelComponentInstance;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelInstance;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelLink;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelNodeInstance;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelObject;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelSignal;
+import org.argouml.uml.ui.behavior.common_behavior.PropPanelStimulus;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelCallEvent;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelCompositeState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelFinalState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelGuard;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelPseudostate;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelSimpleState;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelStateMachine;
+import org.argouml.uml.ui.behavior.state_machines.PropPanelTransition;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelActor;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelExtend;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelExtensionPoint;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelInclude;
+import org.argouml.uml.ui.behavior.use_cases.PropPanelUseCase;
+import org.argouml.uml.ui.foundation.core.PropPanelAbstraction;
+import org.argouml.uml.ui.foundation.core.PropPanelAssociation;
+import org.argouml.uml.ui.foundation.core.PropPanelAssociationEnd;
+import org.argouml.uml.ui.foundation.core.PropPanelAttribute;
+import org.argouml.uml.ui.foundation.core.PropPanelClass;
+import org.argouml.uml.ui.foundation.core.PropPanelComponent;
+import org.argouml.uml.ui.foundation.core.PropPanelDataType;
+import org.argouml.uml.ui.foundation.core.PropPanelDependency;
+import org.argouml.uml.ui.foundation.core.PropPanelGeneralization;
+import org.argouml.uml.ui.foundation.core.PropPanelInterface;
+import org.argouml.uml.ui.foundation.core.PropPanelNode;
+import org.argouml.uml.ui.foundation.core.PropPanelOperation;
+import org.argouml.uml.ui.foundation.core.PropPanelParameter;
+import org.argouml.uml.ui.foundation.extension_mechanisms.PropPanelStereotype;
 import org.argouml.util.ConfigLoader;
+import org.tigris.gef.presentation.FigText;
 
-import org.argouml.swingext.*;
+import ru.novosoft.uml.behavior.activity_graphs.MActionStateImpl;
+import ru.novosoft.uml.behavior.collaborations.MAssociationEndRoleImpl;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRoleImpl;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRoleImpl;
+import ru.novosoft.uml.behavior.collaborations.MCollaborationImpl;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessageImpl;
+import ru.novosoft.uml.behavior.common_behavior.MCallActionImpl;
+import ru.novosoft.uml.behavior.common_behavior.MComponentInstanceImpl;
+import ru.novosoft.uml.behavior.common_behavior.MInstanceImpl;
+import ru.novosoft.uml.behavior.common_behavior.MLinkImpl;
+import ru.novosoft.uml.behavior.common_behavior.MNodeInstanceImpl;
+import ru.novosoft.uml.behavior.common_behavior.MObjectImpl;
+import ru.novosoft.uml.behavior.common_behavior.MSignalImpl;
+import ru.novosoft.uml.behavior.common_behavior.MStimulusImpl;
+import ru.novosoft.uml.behavior.state_machines.MCallEventImpl;
+import ru.novosoft.uml.behavior.state_machines.MCompositeStateImpl;
+import ru.novosoft.uml.behavior.state_machines.MFinalStateImpl;
+import ru.novosoft.uml.behavior.state_machines.MGuardImpl;
+import ru.novosoft.uml.behavior.state_machines.MPseudostateImpl;
+import ru.novosoft.uml.behavior.state_machines.MStateImpl;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MTransitionImpl;
+import ru.novosoft.uml.behavior.use_cases.MActorImpl;
+import ru.novosoft.uml.behavior.use_cases.MExtendImpl;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPointImpl;
+import ru.novosoft.uml.behavior.use_cases.MIncludeImpl;
+import ru.novosoft.uml.behavior.use_cases.MUseCaseImpl;
+import ru.novosoft.uml.foundation.core.MAbstractionImpl;
+import ru.novosoft.uml.foundation.core.MAssociationEndImpl;
+import ru.novosoft.uml.foundation.core.MAssociationImpl;
+import ru.novosoft.uml.foundation.core.MAttributeImpl;
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MComponentImpl;
+import ru.novosoft.uml.foundation.core.MDataTypeImpl;
+import ru.novosoft.uml.foundation.core.MDependencyImpl;
+import ru.novosoft.uml.foundation.core.MGeneralizationImpl;
+import ru.novosoft.uml.foundation.core.MInterfaceImpl;
+import ru.novosoft.uml.foundation.core.MNodeImpl;
+import ru.novosoft.uml.foundation.core.MOperationImpl;
+import ru.novosoft.uml.foundation.core.MParameterImpl;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotypeImpl;
 
 public class TabProps extends TabSpawnable
 implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
@@ -297,11 +382,15 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
     if (p == null) {
       Class panelClass = panelClassFor(targetClass);
       if (panelClass == null) return null;
-      try { p = (TabModelTarget) panelClass.newInstance(); }
+      try { p = (TabModelTarget) panelClass.newInstance();
+          // moved next line inside try block to avoid filling the hashmap with
+          // bogus values. 
+          _panels.put(targetClass, p);
+      }
+      // doubtfull if the next ones must be ignored.
       catch (IllegalAccessException ignore) { return null; }
       catch (InstantiationException ignore) { return null; }
-      catch (Exception ignore) { return null; }
-      _panels.put(targetClass, p);
+         
     }
     else cat.debug("found props for " + targetClass.getName());
     return p;
@@ -346,8 +435,17 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 
   public Object getTarget() { return _target; }
 
+  /**
+   * Determines if the property panel should be enabled. Returns true if it
+   * should be enabled. The property panel should allways be enabled if the
+   * target is an instance of a modelelement or an argodiagram.
+   * @see org.argouml.ui.TabTarget#shouldBeEnabled(Object)
+   */
   public boolean shouldBeEnabled(Object target) {
-
+        if (ModelFacade.isADiagram(target) || ModelFacade.isABase(target)) {
+            _shouldBeEnabled = true;              
+        }
+        /*
 		if (target == null) {
 			_shouldBeEnabled = false;
 			return _shouldBeEnabled;
@@ -367,6 +465,7 @@ implements TabModelTarget, NavigationListener, ArgoModuleEventListener {
 		else {
 			_shouldBeEnabled = false;
 		}
+        */
                 
                 return _shouldBeEnabled;
   }

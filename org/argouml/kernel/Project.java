@@ -931,7 +931,9 @@ public class Project implements java.io.Serializable {
     protected void postLoad() {
         for (int i = 0; i < _diagrams.size(); i++)
              ((Diagram)_diagrams.elementAt(i)).postLoad();
-        // TODO: is postLoad needed for models?
+        // issue 1725: the root is not set, which leads to problems with displaying prop panels
+        setRoot((MModel)getModel());
+        
         setNeedsSave(false);
         // we don't need this HashMap anymore so free up the memory
         _UUIDRefs = null;

@@ -24,34 +24,15 @@
 
 package org.argouml.model;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
+import java.util.Vector;
 
-// NS-UML imports:
-import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.model_management.*;
-
-// GEF imports:
-import org.tigris.gef.base.*;
-// import org.tigris.gef.presentation.*;
-// import org.tigris.gef.util.*;
-
-// Diagram model imports:
-import org.argouml.model.uml.foundation.core.*;
-import org
-    .argouml
-    .model
-    .uml
-    .foundation
-    .extensionmechanisms
-    .ExtensionMechanismsFactory;
+import org.argouml.model.uml.foundation.core.CoreHelper;
 import org
     .argouml
     .model
@@ -59,7 +40,50 @@ import org
     .foundation
     .extensionmechanisms
     .ExtensionMechanismsHelper;
-import org.argouml.uml.*;
+import org.argouml.uml.MMUtil;
+import org.tigris.gef.base.Diagram;
+
+import ru.novosoft.uml.MBase;
+import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.state_machines.MCompositeState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MConstraint;
+import ru.novosoft.uml.foundation.core.MDataType;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MMethod;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MAggregationKind;
+import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
+import ru.novosoft.uml.foundation.data_types.MProcedureExpression;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 // import org.argouml.uml.diagram.ui.*;
 // import org.argouml.uml.diagram.deployment.ui.*;
 // import org.argouml.uml.diagram.static_structure.ui.*;
@@ -104,14 +128,14 @@ public class ModelFacade {
     ////////////////////////////////////////////////////////////////
     // constants
 
-   	public static final short ACC_PUBLIC    = 1;
-    public static final short ACC_PRIVATE   = 2;
+    public static final short ACC_PUBLIC = 1;
+    public static final short ACC_PRIVATE = 2;
     public static final short ACC_PROTECTED = 3;
 
-   	public static final short CLASSIFIER = 1;
-    public static final short INSTANCE   = 2;
+    public static final short CLASSIFIER = 1;
+    public static final short INSTANCE = 2;
 
-   	public static final short GUARDED    = 1;
+    public static final short GUARDED = 1;
     public static final short SEQUENTIAL = 2;
 
     ////////////////////////////////////////////////////////////////
@@ -125,7 +149,7 @@ public class ModelFacade {
     public static boolean isAAbstraction(Object handle) {
         return handle instanceof MAbstraction;
     }
-    
+
     /** Recognizer for Association.
      *
      * @param handle candidate
@@ -167,6 +191,16 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
+    /** Recognizer for bases. A base is an object that is some form of an element
+     *  in the model. MBase in Novosoft terms.
+     *
+     * @param handle candidate
+     * @returns true if handle is abstract.
+     */
+    public static boolean isABase(Object handle) {
+        return handle instanceof MBase;
+    }
+
     /** Recognizer for Class
      *
      * @param handle candidate
@@ -193,7 +227,7 @@ public class ModelFacade {
     public static boolean isADataType(Object handle) {
         return handle instanceof MDataType;
     }
-    
+
     /** Recognizer for CompositeState
      *
      * @param handle candidate
@@ -364,10 +398,11 @@ public class ModelFacade {
      */
     public static boolean isChangeable(Object handle) {
         if (handle != null && handle instanceof MAttribute) {
-            return MChangeableKind.CHANGEABLE.equals(((MAttribute)handle).getChangeability());
-        }
-        else if (handle != null && handle instanceof MAssociationEnd) {
-            return MChangeableKind.CHANGEABLE.equals(((MAssociationEnd)handle).getChangeability());
+            return MChangeableKind.CHANGEABLE.equals(
+                ((MAttribute)handle).getChangeability());
+        } else if (handle != null && handle instanceof MAssociationEnd) {
+            return MChangeableKind.CHANGEABLE.equals(
+                ((MAssociationEnd)handle).getChangeability());
         }
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -393,17 +428,18 @@ public class ModelFacade {
      * @returns true if handle is a constructor.
      */
     public static boolean isConstructor(Object handle) {
-	return  (CoreHelper.getHelper().isOperation(handle)
-		 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
-			getStereoType(handle),
-			"create",
-			"BehavioralFeature"))
-		||
-		(CoreHelper.getHelper().isMethod(handle)
-		 && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
-			getStereoType(CoreHelper.getHelper().getSpecification(handle)),
-			"create",
-			"BehavioralFeature"));
+        return (
+            CoreHelper.getHelper().isOperation(handle)
+                && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
+                    getStereoType(handle),
+                    "create",
+                    "BehavioralFeature"))
+            || (CoreHelper.getHelper().isMethod(handle)
+                && ExtensionMechanismsHelper.getHelper().isStereotypeInh(
+                    getStereoType(
+                        CoreHelper.getHelper().getSpecification(handle)),
+                    "create",
+                    "BehavioralFeature"));
     }
 
     /**
@@ -588,7 +624,8 @@ public class ModelFacade {
     }
 
     public static boolean isTop(Object handle) {
-        return isACompositeState(handle) && ((MCompositeState)handle).getStateMachine() != null;
+        return isACompositeState(handle)
+            && ((MCompositeState)handle).getStateMachine() != null;
     }
 
     /** Recognizer for type.
@@ -631,7 +668,10 @@ public class ModelFacade {
      * @return association end
      */
     public static Object getAssociationEnd(Object type, Object assoc) {
-        if (type == null || assoc == null || !(type instanceof MClassifier) || !(assoc instanceof MAssociation))
+        if (type == null
+            || assoc == null
+            || !(type instanceof MClassifier)
+            || !(assoc instanceof MAssociation))
             return null;
         Iterator it = ((MClassifier)type).getAssociationEnds().iterator();
         while (it.hasNext()) {
@@ -735,7 +775,7 @@ public class ModelFacade {
      */
     public static Iterator getClientDependencies(Object handle) {
         if (isAModelElement(handle)) {
-			Collection c = ((MModelElement)handle).getClientDependencies();
+            Collection c = ((MModelElement)handle).getClientDependencies();
             return (c != null) ? c.iterator() : null;
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
@@ -748,7 +788,10 @@ public class ModelFacade {
      */
     public static short getConcurrency(Object o) {
         if (o != null && o instanceof MOperation) {
-            return ((MOperation)o).getConcurrency() == MCallConcurrencyKind.GUARDED ? GUARDED : SEQUENTIAL;
+            return ((MOperation)o).getConcurrency()
+                == MCallConcurrencyKind.GUARDED
+                ? GUARDED
+                : SEQUENTIAL;
         }
         throw new IllegalArgumentException("Unrecognized object " + o);
     }
@@ -786,7 +829,10 @@ public class ModelFacade {
      * @return The generalization
      */
     public static Object getGeneralization(Object child, Object parent) {
-        if (child == null || parent == null || !(child instanceof MGeneralizableElement) || !(parent instanceof MGeneralizableElement))
+        if (child == null
+            || parent == null
+            || !(child instanceof MGeneralizableElement)
+            || !(parent instanceof MGeneralizableElement))
             return null;
         Iterator it = getGeneralizations(child);
         while (it.hasNext()) {
@@ -1255,7 +1301,7 @@ public class ModelFacade {
 
     /**
        Return the tagged values iterator of a model element.
-
+    
        @param element The tagged values belong to this.
        @return The tagged values iterator
      */
@@ -1268,16 +1314,19 @@ public class ModelFacade {
 
     /**
        Return the tagged value with a specific tag.
-
+    
        @param element The tagged value belongs to this.
        @param name The tag.
        @return The found tag, null if not found
      */
     public static Object getTaggedValue(Object modelElement, String name) {
         if (modelElement != null && modelElement instanceof MModelElement) {
-            for (Iterator i = ((MModelElement)modelElement).getTaggedValues().iterator(); i.hasNext(); ) {
+            for (Iterator i =
+                ((MModelElement)modelElement).getTaggedValues().iterator();
+                i.hasNext();
+                ) {
                 MTaggedValue tv = (MTaggedValue)i.next();
-                if(tv.getTag().equals(name))
+                if (tv.getTag().equals(name))
                     return tv;
             }
         }
@@ -1286,7 +1335,7 @@ public class ModelFacade {
 
     /**
        Return the value of some tagged value.
-
+    
        @param tv The tagged value.
        @param name The tag.
        @return The found value, null if not found
@@ -1326,7 +1375,10 @@ public class ModelFacade {
      * @param feature
      */
     public static void addFeature(Object cls, Object f) {
-        if (cls != null && f != null && cls instanceof MClassifier && f instanceof MFeature) {
+        if (cls != null
+            && f != null
+            && cls instanceof MClassifier
+            && f instanceof MFeature) {
             ((MClassifier)cls).addFeature((MFeature)f);
         }
     }
@@ -1337,7 +1389,10 @@ public class ModelFacade {
      * @param method
      */
     public static void addMethod(Object o, Object m) {
-        if (o != null && m != null && o instanceof MOperation && m instanceof MMethod) {
+        if (o != null
+            && m != null
+            && o instanceof MOperation
+            && m instanceof MMethod) {
             ((MMethod)m).setVisibility(((MOperation)o).getVisibility());
             ((MMethod)m).setOwnerScope(((MOperation)o).getOwnerScope());
             ((MOperation)o).addMethod((MMethod)m);
@@ -1350,7 +1405,10 @@ public class ModelFacade {
      * @param me model element
      */
     public static void addOwnedElement(Object ns, Object me) {
-        if (ns != null && ns instanceof MNamespace && me != null && me instanceof MModelElement) {
+        if (ns != null
+            && ns instanceof MNamespace
+            && me != null
+            && me instanceof MModelElement) {
             ((MNamespace)ns).addOwnedElement((MModelElement)me);
         }
     }
@@ -1361,7 +1419,10 @@ public class ModelFacade {
      * @param cls supplier classifier
      */
     public static void addSupplier(Object a, Object cls) {
-        if (a != null && cls != null && a instanceof MAbstraction && cls instanceof MClassifier) {
+        if (a != null
+            && cls != null
+            && a instanceof MAbstraction
+            && cls instanceof MClassifier) {
             ((MAbstraction)a).addSupplier((MClassifier)cls);
         }
     }
@@ -1372,7 +1433,10 @@ public class ModelFacade {
      * @param cls client classifier
      */
     public static void addClient(Object a, Object cls) {
-        if (a != null && cls != null && a instanceof MAbstraction && cls instanceof MClassifier) {
+        if (a != null
+            && cls != null
+            && a instanceof MAbstraction
+            && cls instanceof MClassifier) {
             ((MAbstraction)a).addClient((MClassifier)cls);
         }
     }
@@ -1383,7 +1447,10 @@ public class ModelFacade {
      * @param dependency
      */
     public static void removeClientDependency(Object o, Object dep) {
-        if (o != null && dep != null && o instanceof MModelElement && dep instanceof MDependency) {
+        if (o != null
+            && dep != null
+            && o instanceof MModelElement
+            && dep instanceof MDependency) {
             ((MModelElement)o).removeClientDependency((MDependency)dep);
         }
     }
@@ -1408,7 +1475,10 @@ public class ModelFacade {
      * @param parameter
      */
     public static void removeParameter(Object o, Object p) {
-        if (o != null && p != null && o instanceof MOperation && p instanceof MParameter) {
+        if (o != null
+            && p != null
+            && o instanceof MOperation
+            && p instanceof MParameter) {
             ((MOperation)o).removeParameter((MParameter)p);
         }
     }
@@ -1419,7 +1489,10 @@ public class ModelFacade {
      * @param expression
      */
     public static void setBody(Object m, Object expr) {
-        if (m != null && expr != null && m instanceof MMethod && expr instanceof MProcedureExpression) {
+        if (m != null
+            && expr != null
+            && m instanceof MMethod
+            && expr instanceof MProcedureExpression) {
             ((MMethod)m).setBody((MProcedureExpression)expr);
         }
     }
@@ -1430,7 +1503,10 @@ public class ModelFacade {
      * @param expression
      */
     public static void setInitialValue(Object at, Object expr) {
-        if (at != null && expr != null && at instanceof MAttribute && expr instanceof MExpression) {
+        if (at != null
+            && expr != null
+            && at instanceof MAttribute
+            && expr instanceof MExpression) {
             ((MAttribute)at).setInitialValue((MExpression)expr);
         }
     }
@@ -1446,15 +1522,16 @@ public class ModelFacade {
             return;
         if (o instanceof MAttribute) {
             if ("1_N".equals(mult))
-                ((MAttribute)o).setMultiplicity(MMultiplicity.M1_N);
+                 ((MAttribute)o).setMultiplicity(MMultiplicity.M1_N);
             else
-                ((MAttribute)o).setMultiplicity(MMultiplicity.M1_1); // default
-        }
-        else if (o instanceof MAssociationEnd) {
+                ((MAttribute)o).setMultiplicity(MMultiplicity.M1_1);
+            // default
+        } else if (o instanceof MAssociationEnd) {
             if ("1_N".equals(mult))
-                ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_N);
+                 ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_N);
             else
-                ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_1); // default
+                ((MAssociationEnd)o).setMultiplicity(MMultiplicity.M1_1);
+            // default
         }
     }
 
@@ -1475,7 +1552,10 @@ public class ModelFacade {
      * @param namespace
      */
     public static void setNamespace(Object o, Object ns) {
-        if (o != null && o instanceof MModelElement && ns != null && ns instanceof MNamespace) {
+        if (o != null
+            && o instanceof MModelElement
+            && ns != null
+            && ns instanceof MNamespace) {
             ((MModelElement)o).setNamespace((MNamespace)ns);
         }
     }
@@ -1498,13 +1578,11 @@ public class ModelFacade {
      */
     public static void setVisibility(Object o, short v) {
         if (o != null && o instanceof MModelElement) {
-            if(v == ACC_PRIVATE) {
+            if (v == ACC_PRIVATE) {
                 ((MModelElement)o).setVisibility(MVisibilityKind.PRIVATE);
-            }
-            else if(v == ACC_PROTECTED) {
+            } else if (v == ACC_PROTECTED) {
                 ((MModelElement)o).setVisibility(MVisibilityKind.PROTECTED);
-            }
-            else if(v == ACC_PUBLIC) {
+            } else if (v == ACC_PUBLIC) {
                 ((MModelElement)o).setVisibility(MVisibilityKind.PUBLIC);
             }
         }
@@ -1517,10 +1595,9 @@ public class ModelFacade {
      */
     public static void setOwnerScope(Object f, short os) {
         if (f != null && f instanceof MFeature) {
-            if(os == CLASSIFIER) {
+            if (os == CLASSIFIER) {
                 ((MFeature)f).setOwnerScope(MScopeKind.CLASSIFIER);
-            }
-            else if(os == INSTANCE) {
+            } else if (os == INSTANCE) {
                 ((MFeature)f).setOwnerScope(MScopeKind.INSTANCE);
             }
         }
@@ -1533,10 +1610,9 @@ public class ModelFacade {
      */
     public static void setTargetScope(Object ae, short ts) {
         if (ae != null && ae instanceof MAssociationEnd) {
-            if(ts == CLASSIFIER) {
+            if (ts == CLASSIFIER) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.CLASSIFIER);
-            }
-            else if(ts == INSTANCE) {
+            } else if (ts == INSTANCE) {
                 ((MAssociationEnd)ae).setTargetScope(MScopeKind.INSTANCE);
             }
         }
@@ -1549,10 +1625,9 @@ public class ModelFacade {
      */
     public static void setConcurrency(Object o, short c) {
         if (o != null && o instanceof MOperation) {
-            if(c == GUARDED) {
+            if (c == GUARDED) {
                 ((MOperation)o).setConcurrency(MCallConcurrencyKind.GUARDED);
-            }
-            else if(c == SEQUENTIAL) {
+            } else if (c == SEQUENTIAL) {
                 ((MOperation)o).setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
             }
         }
@@ -1569,15 +1644,15 @@ public class ModelFacade {
             return;
         if (o instanceof MAttribute) {
             if (flag)
-                ((MAttribute)o).setChangeability(MChangeableKind.CHANGEABLE);
+                 ((MAttribute)o).setChangeability(MChangeableKind.CHANGEABLE);
             else
-                ((MAttribute)o).setChangeability(MChangeableKind.FROZEN);
-        }
-        else if (o instanceof MAssociationEnd) {
+                 ((MAttribute)o).setChangeability(MChangeableKind.FROZEN);
+        } else if (o instanceof MAssociationEnd) {
             if (flag)
-                ((MAssociationEnd)o).setChangeability(MChangeableKind.CHANGEABLE);
+                ((MAssociationEnd)o).setChangeability(
+                    MChangeableKind.CHANGEABLE);
             else
-                ((MAssociationEnd)o).setChangeability(MChangeableKind.FROZEN);
+                 ((MAssociationEnd)o).setChangeability(MChangeableKind.FROZEN);
         }
     }
 
@@ -1587,10 +1662,12 @@ public class ModelFacade {
      * @param flag
      */
     public static void setAbstract(Object o, boolean flag) {
-        if (o != null ) {
-        	if ( o instanceof MClassifier)  ((MClassifier)o).setAbstract(flag);
-        	else if ( o instanceof MOperation)  ((MOperation)o).setAbstract(flag);
-        } 
+        if (o != null) {
+            if (o instanceof MClassifier)
+                 ((MClassifier)o).setAbstract(flag);
+            else if (o instanceof MOperation)
+                 ((MOperation)o).setAbstract(flag);
+        }
     }
 
     /**
@@ -1643,11 +1720,11 @@ public class ModelFacade {
     public static void setType(Object p, Object cls) {
         if (p != null && cls != null && cls instanceof MClassifier) {
             if (p instanceof MParameter)
-                ((MParameter)p).setType((MClassifier)cls);
+                 ((MParameter)p).setType((MClassifier)cls);
             else if (p instanceof MAssociationEnd)
-                ((MAssociationEnd)p).setType((MClassifier)cls);
+                 ((MAssociationEnd)p).setType((MClassifier)cls);
             else if (p instanceof MAttribute)
-                ((MAttribute)p).setType((MClassifier)cls);
+                 ((MAttribute)p).setType((MClassifier)cls);
         }
     }
 
@@ -1659,10 +1736,10 @@ public class ModelFacade {
      */
     public static void setTaggedValue(Object o, String tag, String value) {
         if (o != null && o instanceof MModelElement) {
-		    MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
-		    tv.setModelElement((MModelElement)o);
-		    tv.setTag(tag);
-		    tv.setValue(value);
+            MTaggedValue tv = MFactory.getDefaultFactory().createTaggedValue();
+            tv.setModelElement((MModelElement)o);
+            tv.setTag(tag);
+            tv.setValue(value);
         }
     }
 
@@ -1673,7 +1750,7 @@ public class ModelFacade {
      */
     public static void setValueOfTag(Object tv, String value) {
         if (tv != null && tv instanceof MTaggedValue) {
-		    ((MTaggedValue)tv).setValue(value);
+            ((MTaggedValue)tv).setValue(value);
         }
     }
 
@@ -1685,9 +1762,12 @@ public class ModelFacade {
      */
     public static void setStereotype(Object m, Object stereo) {
         if (m != null && m instanceof MModelElement) {
-            if (stereo != null && stereo instanceof MStereotype
-                && ((MModelElement)m).getModel() != ((MStereotype)stereo).getModel()) {
-                ((MStereotype)stereo).setNamespace(((MModelElement)m).getModel());
+            if (stereo != null
+                && stereo instanceof MStereotype
+                && ((MModelElement)m).getModel()
+                    != ((MStereotype)stereo).getModel()) {
+                ((MStereotype)stereo).setNamespace(
+                    ((MModelElement)m).getModel());
             }
             ((MModelElement)m).setStereotype((MStereotype)stereo);
         }
@@ -1699,8 +1779,11 @@ public class ModelFacade {
      * @param mc constraint
      */
     public static void addConstraint(Object me, Object mc) {
-        if (me != null && me instanceof MModelElement && mc != null && mc instanceof MConstraint) {
-		    ((MModelElement)me).addConstraint((MConstraint)mc);
+        if (me != null
+            && me instanceof MModelElement
+            && mc != null
+            && mc instanceof MConstraint) {
+            ((MModelElement)me).addConstraint((MConstraint)mc);
         }
     }
 
