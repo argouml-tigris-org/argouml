@@ -35,7 +35,7 @@ public class Decision {
     /** this ia another test
      */    
     public static final Decision UNSPEC = 
-	new Decision("decision.uncategorized", 1);
+	new Decision("misc.decision.uncategorized", 1);
   
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -45,7 +45,7 @@ public class Decision {
     ////////////////////////////////////////////////////////////////
     // constructor
     public Decision(String n, int p) {
-	setName(Translator.localize("Cognitive", n));
+	setName(Translator.localize(n));
 	setPriority(p);
     }
 

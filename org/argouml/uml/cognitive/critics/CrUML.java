@@ -55,52 +55,52 @@ public class CrUML extends Critic {
     protected static Logger cat = Logger.getLogger(CrUML.class);
     
     public static final Decision decINHERITANCE = new
-	Decision("decision.inheritance", 1);
+	Decision("misc.decision.inheritance", 1);
 
     public static final Decision decCONTAINMENT = new
-	Decision("decision.containment", 1);
+	Decision("misc.decision.containment", 1);
 
     public static final Decision decPATTERNS = new
-	Decision("decision.design-patterns", 1); //??
+	Decision("misc.decision.design-patterns", 1); //??
 
     public static final Decision decRELATIONSHIPS = new
-	Decision("decision.relationships", 1);
+	Decision("misc.decision.relationships", 1);
 
     public static final Decision decSTORAGE = new
-	Decision("decision.storage", 1);
+	Decision("misc.decision.storage", 1);
 
     public static final Decision decBEHAVIOR = new
-	Decision("decision.behavior", 1);
+	Decision("misc.decision.behavior", 1);
 
     public static final Decision decINSTANCIATION = new
-	Decision("decision.instantiation", 1);
+	Decision("misc.decision.instantiation", 1);
 
     public static final Decision decNAMING = new
-	Decision("decision.naming", 1);
+	Decision("misc.decision.naming", 1);
 
     public static final Decision decMODULARITY = new
-	Decision("decision.modularity", 1);
+	Decision("misc.decision.modularity", 1);
 
     public static final Decision decCLASS_SELECTION = new
-	Decision("decision.class-selection", 1);
+	Decision("misc.decision.class-selection", 1);
 
     public static final Decision decEXPECTED_USAGE = new
-	Decision("decision.expected-usage", 1);
+	Decision("misc.decision.expected-usage", 1);
 
     public static final Decision decMETHODS = new
-	Decision("decision.methods", 1); //??
+	Decision("misc.decision.methods", 1); //??
 
     public static final Decision decCODE_GEN = new
-	Decision("decision.code-generation", 1); //??
+	Decision("misc.decision.code-generation", 1); //??
 
     public static final Decision decPLANNED_EXTENSIONS = new
-	Decision("decision.planned-extensions", 1);
+	Decision("misc.decision.planned-extensions", 1);
 
     public static final Decision decSTEREOTYPES = new
-	Decision("decision.stereotypes", 1);
+	Decision("misc.decision.stereotypes", 1);
 
     public static final Decision decSTATE_MACHINES = new
-	Decision("decision.mstate-machines", 1);
+	Decision("misc.decision.mstate-machines", 1);
 
     /** Static initializer for this class. Called when the class is
      *  loaded (which is before any subclass instances are instanciated). */
