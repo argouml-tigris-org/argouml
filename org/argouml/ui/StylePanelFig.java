@@ -21,6 +21,17 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
+// File: FigStylePanelFig.java
+// Classes: FigStylePanelFig
+// Original Author: your email address here
+// $Id$
+
+// 13 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Problem with cursor
+// jumping around in the boundary box fixed (a problem with double refreshing
+// causing rewriting). XXXXUpdate methods, setTargetBBox() and refresh()
+// recoded to fix.
+
+
 package org.argouml.ui;
 
 import java.awt.*;
@@ -196,50 +207,158 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public void refresh() {
-    super.refresh();
+    /**
+     * <p>Handle a refresh of the style panel after the fig has moved.</p>
+     *
+     * <p><em>Warning</em>. There is a circular trap here. Editing the
+     *   boundary box will also trigger a refresh, and so we reset the boundary
+     *   box, which causes funny behaviour (the cursor keeps jumping to the end
+     *   of the text).</p>
+     *
+     * <p>The solution is to not reset the boundary box field if the boundaries
+     *   have not changed.</p>
+     */
 
-    String bboxStr = _target.getX() + ", " + _target.getY() + ", " +
-      _target.getWidth() + ", " + _target.getHeight();
-    _bboxField.setText(bboxStr);
+    public void refresh() {
 
-    if (_target.getFilled())
-      _fillField.setSelectedItem(_target.getFillColor());
-    else _fillField.setSelectedItem("No Fill");
+        // Let the parent do its refresh.
 
-    if (_target.getLineWidth() > 0)
-      _lineField.setSelectedItem(_target.getLineColor());
-    else _lineField.setSelectedItem("No Line");
+        super.refresh();
 
-    if (_target instanceof FigNodeModelElement && ((FigNodeModelElement)_target).getShadowSize() > 0)
-      _shadowField.setSelectedIndex(((FigNodeModelElement)_target).getShadowSize());
-    else _shadowField.setSelectedIndex(0);
+        // The boundary box as held in the target fig, and as listed in the
+        // boundary box style field (null if we don't have anything valid)
 
-    //_dashedField.setSelectedItem(_target.getDashedString());
-  }
+        Rectangle figBounds   = _target.getBounds();
+        Rectangle styleBounds = parseBBox();
 
+        // Only reset the text if the two are not the same (i.e the fig has
+        // moved, rather than we've just edited the text, when setTargetBBox()
+        // will have made them the same). Note that styleBounds could be null,
+        // so we do the test this way round.
 
-  public void setTargetBBox() {
-    if (_target == null) return;
-    String bboxStr = _bboxField.getText();
-    if (bboxStr.length() == 0) return;
-    _target.startTrans();
-    java.util.StringTokenizer st = new java.util.StringTokenizer(bboxStr, ", ");
-    try {
-      int x = Integer.parseInt(st.nextToken());
-      int y = Integer.parseInt(st.nextToken());
-      int w = Integer.parseInt(st.nextToken());
-      int h = Integer.parseInt(st.nextToken());
-      _target.setBounds(x, y, w, h);
+        if(!(figBounds.equals(styleBounds))) {
+            _bboxField.setText(figBounds.x + "," + figBounds.y + "," +
+                               figBounds.width + ","  + figBounds.height);
+        }
+
+        // Change the fill colour
+
+        if (_target.getFilled()) {
+            _fillField.setSelectedItem(_target.getFillColor());
+        }
+        else {
+            _fillField.setSelectedItem("No Fill");
+        }
+
+        // Change the line width
+
+        if (_target.getLineWidth() > 0) {
+            _lineField.setSelectedItem(_target.getLineColor());
+        }
+        else {
+            _lineField.setSelectedItem("No Line");
+        }
+
+        // Change the shadow size if appropriate
+
+        int shadowSize = ((FigNodeModelElement) _target).getShadowSize();
+
+        if ((_target instanceof FigNodeModelElement) && (shadowSize > 0)) {
+            _shadowField.setSelectedIndex(shadowSize);
+        }
+        else {
+            _shadowField.setSelectedIndex(0);
+        }
     }
-    catch (Exception ex) {
-      System.out.println("could not parse bounds string");
-    }
-    _target.endTrans();
 
-    //System.out.println("base = " + base);
-    // needs-more-work: this could involve changes to the graph model
-  }
+
+    /**
+     * <p>Change the bounds of the target fig. Called whenever the bounds box
+     *   is edited.</p>
+     *
+     * <p>Format of the bounds is four integers representing x, y, width and
+     *   height separated by spaces or commas. An empty field is treated as no
+     *   change and leading and trailing spaces are ignored.</p>
+     *
+     * <p><em>Note</em>. There is a note in the old code that more work might
+     *   be needed, because this could change the graph model. I don't see how
+     *   that could ever be.</p>
+     */
+
+    protected void setTargetBBox() {
+
+        // Can't do anything if we don't have a fig.
+
+        if (_target == null) {
+            return;
+        }
+
+        // Parse the boundary box text. Null is returned if it is empty or
+        // invalid, which causes no change. Otherwise we tell GEF we are making
+        // a change, make the change and tell GEF we've finished.
+
+        Rectangle bounds = parseBBox();
+
+        if (bounds == null) {
+            return;
+        }
+
+        _target.startTrans();
+        _target.setBounds(bounds.x, bounds.y, bounds.width, bounds.height);
+        _target.endTrans();
+    }
+
+
+    /**
+     * <p>Parse the boundary box string and return the rectangle it
+     *   represents.</p>
+     *
+     * <p>The syntax are four integers separated by spaces or commas. We ignore
+     *   leading and trailing blanks.</p>
+     *
+     * <p>If we have the empty string we return <code>null</code>.</p>
+     *
+     * <p>If we fail to parse, then we return <code>null</code> and print out a
+     *   rude message.</p>
+     *
+     * @return The size of the box, or <code>null</code> if the bounds string
+     *         is empty or invalid.
+     */
+
+    protected Rectangle parseBBox() {
+
+        // Get the text in the field, and don't do anything if the field is
+        // empty.
+
+        String bboxStr = _bboxField.getText().trim();
+
+        if (bboxStr.length() == 0) {
+            return null;
+        }
+
+        // Parse the string as if possible
+
+        Rectangle res = new Rectangle();
+
+        java.util.StringTokenizer st =
+            new java.util.StringTokenizer(bboxStr, ", ");
+
+        try {
+            res.x      = Integer.parseInt(st.nextToken());
+            res.y      = Integer.parseInt(st.nextToken());
+            res.width  = Integer.parseInt(st.nextToken());
+            res.height = Integer.parseInt(st.nextToken());
+        }
+        catch (Exception ex) {
+            System.out.println(getClass().toString() + 
+                               ": parseBBox - could not parse bounds '" +
+                               bboxStr + "'");
+            return null;
+        }
+
+        return res;
+    }
+
 
   public void setTargetFill() {
     Object c =  _fillField.getSelectedItem();
@@ -279,19 +398,51 @@ implements ItemListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // event handling
 
-  public void insertUpdate(DocumentEvent e) {
-    //System.out.println(getClass().getName() + " insert");
-    Document bboxDoc = _bboxField.getDocument();
-    if (e.getDocument() == bboxDoc) setTargetBBox();
-    super.insertUpdate(e);
-  }
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+    /**
+     * <p>The text in the bounds box has had something inserted. Update the
+     *   model.</p>
+     *
+     * <p><em>Note</em>. This appears to be called for any text change,
+     *   irrespective of whether it is an insert, remove or delete.</p>
+     *
+     * @param e  The event that caused us to be called.
+     */
 
-  public void changedUpdate(DocumentEvent e) {
-    System.out.println(getClass().getName() + " changed");
-    // Apparently, this method is never called.
-  }
+    public void insertUpdate(DocumentEvent e) {
+        setTargetBBox();
+    }
+
+
+    /**
+     * <p>The text in the bounds box has had something removed. Update the
+     *   model.</p>
+     *
+     * <p><em>Note</em>. This never appears to be called for any text
+     *   change. Everything seems to be treated as an insertion.</p>
+     *
+     * @param e  The event that caused us to be called.
+     */
+
+    public void removeUpdate(DocumentEvent e) {
+        setTargetBBox();
+    }
+
+
+    /**
+     * <p>The text in the bounds box has had something changed. Update the
+     *   model.</p>
+     *
+     * <p><em>Note</em>. This never appears to be called for any text
+     *   change. Everything seems to be treated as an insertion.</p>
+     *
+     * @param e  The event that caused us to be called.
+     */
+
+    public void changedUpdate(DocumentEvent e) {
+        setTargetBBox();
+    }
+
 
 
   public void itemStateChanged(ItemEvent e) {
