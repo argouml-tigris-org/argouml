@@ -156,7 +156,15 @@ public class FigPackage extends FigNodeModelElement {
       }
     }
     try {
-      me.setNamespace(m);
+       // If moved into an Package
+        if (encloser.getOwner() instanceof MPackage) {
+             me.setNamespace(m);
+        }
+        
+        // If default Namespace is not already set
+        if (me.getNamespace() == null) {
+          me.setNamespace(m);
+        }
     }
     catch (Exception e) {
       System.out.println("could not set package");
@@ -198,3 +206,4 @@ public class FigPackage extends FigNodeModelElement {
 
 
 } /* end class FigPackage */
+
