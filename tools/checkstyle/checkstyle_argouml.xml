@@ -42,7 +42,18 @@
         <module name="GenericIllegalRegexp">
           <property 
 		name="format"
-                value="(public|protected|final).*Logger"/>
+                value="(public|protected).*Logger"/>
+          <property
+	        name="message"
+                value="The Logger shall be private in the ArgoUML project."/>
+        </module>
+        <module name="GenericIllegalRegexp">
+          <property 
+		name="format"
+                value="^[^/*]*Logger[ \t][ \t]*([^L]|L[^O]|LO[^G]|LOG[^ \t])"/>
+          <property
+	        name="message"
+                value="The Logger shall be named LOG in the ArgoUML project."/>
         </module>
 
  	<module name="HiddenField"/>
