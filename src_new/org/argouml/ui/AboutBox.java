@@ -44,7 +44,9 @@ public class AboutBox extends JDialog {
   // instance variables
 
   JTabbedPane _tabs = new JTabbedPane();
-  JLabel _splashButton = new JLabel("");
+
+  /** Shared splash panel */
+  SplashPanel _splashPanel = null;
 
   ////////////////////////////////////////////////////////////////
   // constructor
@@ -58,20 +60,14 @@ public class AboutBox extends JDialog {
 
   public AboutBox(Frame owner, boolean modal) {
     super(owner,modal);
-    this.setTitle("About ArgoUML");
-    String iconName = "Splash";
-    ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName, iconName);
-    int imgWidth = splashImage.getIconWidth();
-    int imgHeight = splashImage.getIconHeight();
+    this.setTitle("About Argo/UML");
+    _splashPanel = new SplashPanel("Splash");
+    int imgWidth = _splashPanel.getImage().getIconWidth();
+    int imgHeight = _splashPanel.getImage().getIconHeight();
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
     setLocation(scrSize.width/2 - imgWidth/2,
 		       scrSize.height/2 - imgHeight/2);
-    //setSize(new Dimension(imgWidth + 10, imgHeight + 40));
     getContentPane().setLayout(new BorderLayout(0, 0));
-
-    //_splashButton.setMargin(new Insets(0, 0, 0, 0));
-    _splashButton.setIcon(splashImage);
-
 
     Font ctrlFont = MetalLookAndFeel.getControlTextFont();
 
@@ -99,7 +95,7 @@ public class AboutBox extends JDialog {
 
     InputStreamReader isr = null;
 
-    _tabs.addTab("Splash", _splashButton);
+    _tabs.addTab("Splash", _splashPanel);
 
     try {
 	JTextArea a = new JTextArea();
@@ -162,8 +158,9 @@ public class AboutBox extends JDialog {
 
     getContentPane().setLayout(new BorderLayout(0, 0));
     getContentPane().add(_tabs, BorderLayout.CENTER);
-    // add preloading progress bar?
-    setSize(imgWidth + 20, imgHeight + 50);
+
+    // TODO: 10 and 120 were found by trial and error.  Calculate them.
+    setSize(imgWidth + 10, imgHeight + 120);
     //pack();
   }
 
