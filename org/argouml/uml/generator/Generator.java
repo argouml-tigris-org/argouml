@@ -34,21 +34,37 @@
 // (caused NPE when making a new stereotype).
 
 package org.argouml.uml.generator;
-import org.argouml.application.api.*;
-import org.argouml.language.helpers.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
+
+import org.argouml.application.api.NotationName;
+import org.argouml.application.api.NotationProvider;
+import org.argouml.application.api.PluggableNotation;
+import org.argouml.application.notation.NotationProviderFactory;
+import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MConstraint;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MExpression;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
-import java.util.*;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
@@ -60,7 +76,7 @@ import java.util.*;
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
 public abstract class Generator
-implements NotationProvider {
+implements NotationProvider, PluggableNotation {
 
   /**
    * Special modus for testing using the JUnit module.
@@ -211,7 +227,6 @@ implements NotationProvider {
   }
 
     // Module stuff
-  public boolean isModuleEnabled() { return true; }
   public Vector getModulePopUpActions(Vector v, Object o) { return null; }
   public boolean shutdownModule() { return true; }
   public boolean initializeModule() { return true; }

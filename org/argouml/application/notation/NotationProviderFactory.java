@@ -80,6 +80,7 @@ implements ArgoModuleEventListener {
 	    }
       }
       ArgoEventPump.addListener(ArgoEventTypes.ANY_NOTATION_EVENT, this);
+      ArgoEventPump.addListener(ArgoEventTypes.ANY_MODULE_EVENT, this);
   }
 
   /** Remove the notation change listener.

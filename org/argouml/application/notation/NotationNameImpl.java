@@ -120,7 +120,7 @@ implements NotationName, ArgoModuleEventListener {
     }
 
     private static void fireEvent(int eventType,  NotationName nn) {
-     ArgoEventPump.getInstance().fireEvent(new ArgoNotationEvent(eventType, nn));
+     ArgoEventPump.fireEvent(new ArgoNotationEvent(eventType, nn));
     }
 
     /** Create a NotationName with or without a version.

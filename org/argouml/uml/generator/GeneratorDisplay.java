@@ -41,9 +41,9 @@ import org.argouml.application.ArgoVersion;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
-import org.argouml.application.api.PluggableNotation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
+
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -88,7 +88,7 @@ import ru.novosoft.uml.model_management.MPackage;
 
 // TODO: always check for null!!!
 
-public class GeneratorDisplay extends Generator implements PluggableNotation {
+public class GeneratorDisplay extends Generator {
 
     private static GeneratorDisplay SINGLETON;
 
@@ -100,7 +100,11 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
     }
 
     private GeneratorDisplay() {
-        super(Notation.makeNotation("Uml", "1.3", Argo.lookupIconResource("UmlNotation")));
+        super(
+            Notation.makeNotation(
+                "Uml",
+                "1.3",
+                Argo.lookupIconResource("UmlNotation")));
     }
 
     public static String Generate(Object o) {
@@ -167,31 +171,38 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         Iterator it = parameters.iterator();
         int counter = 0;
         while (it.hasNext()) {
-            MParameter parameter = (MParameter) it.next();
+            MParameter parameter = (MParameter)it.next();
             if (!parameter.getKind().equals(MParameterDirectionKind.RETURN)) {
                 counter++;
-                parameterListBuffer.append(generateParameter(parameter)).append(",");
+                parameterListBuffer.append(
+                    generateParameter(parameter)).append(
+                    ",");
             }
         }
         if (counter > 0) {
-            parameterListBuffer.delete(parameterListBuffer.length() - 1, parameterListBuffer.length());
+            parameterListBuffer.delete(
+                parameterListBuffer.length() - 1,
+                parameterListBuffer.length());
         }
         String parameterStr = "(" + parameterListBuffer.toString() + ")";
 
         // the returnparameters
-        Collection returnParas = UmlHelper.getHelper().getCore().getReturnParameters(op);
+        Collection returnParas =
+            UmlHelper.getHelper().getCore().getReturnParameters(op);
         StringBuffer returnParasSb = new StringBuffer();
         if (returnParas.size() > 0) {
             returnParasSb.append(": ");
             Iterator it2 = returnParas.iterator();
             while (it2.hasNext()) {
-                MParameter param = (MParameter) it2.next();
+                MParameter param = (MParameter)it2.next();
                 if (param.getType() != null) {
                     returnParasSb.append(param.getType().getName());
                 }
                 returnParasSb.append(",");
             }
-            returnParasSb.delete(returnParasSb.length() - 1, returnParasSb.length());
+            returnParasSb.delete(
+                returnParasSb.length() - 1,
+                returnParasSb.length());
         }
         String returnParasStr = returnParasSb.toString();
 
@@ -208,20 +219,25 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             propertySb.append("leaf,");
         }
         if (op.getConcurrency() != null) {
-            propertySb.append(op.getConcurrency().getName().toString()).append(",");
+            propertySb.append(op.getConcurrency().getName().toString()).append(
+                ",");
         }
         Collection taggedValues = op.getTaggedValues();
         StringBuffer taggedValuesSb = new StringBuffer();
         if (taggedValues.size() > 0) {
             Iterator it3 = taggedValues.iterator();
             while (it3.hasNext()) {
-                taggedValuesSb.append(generateTaggedValue((MTaggedValue) it3.next()));
+                taggedValuesSb.append(
+                    generateTaggedValue((MTaggedValue)it3.next()));
                 taggedValuesSb.append(",");
             }
-            taggedValuesSb.delete(taggedValuesSb.length() - 1, taggedValuesSb.length());
+            taggedValuesSb.delete(
+                taggedValuesSb.length() - 1,
+                taggedValuesSb.length());
         }
         if (propertySb.length() > 1) {
-            propertySb.delete(propertySb.length() - 1, propertySb.length()); // remove last ,
+            propertySb.delete(propertySb.length() - 1, propertySb.length());
+            // remove last ,
             propertySb.append("}");
         } else {
             propertySb = new StringBuffer();
@@ -233,7 +249,9 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         if ((stereoStr != null) && (stereoStr.length() > 0)) {
             genStr.append(stereoStr).append(" ");
         }
-        if ((visStr != null) && (visStr.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
+        if ((visStr != null)
+            && (visStr.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
             genStr.append(visStr).append(" ");
         }
         if ((nameStr != null) && (nameStr.length() > 0)) {
@@ -243,7 +261,9 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         if ((returnParasStr != null) && (returnParasStr.length() > 0)) {
             genStr.append(returnParasStr).append(" ");
         }
-        if ((propertiesStr != null) && (propertiesStr.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
+        if ((propertiesStr != null)
+            && (propertiesStr.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
             genStr.append(propertiesStr);
         }
         return genStr.toString().trim();
@@ -284,7 +304,9 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         }
 
         StringBuffer sb = new StringBuffer();
-        if ((visibility != null) && (visibility.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
+        if ((visibility != null)
+            && (visibility.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_VISIBILITY)) {
             sb.append(visibility).append(" ");
         }
         if ((stereo != null) && (stereo.length() > 0)) {
@@ -293,16 +315,21 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         if ((name != null) && (name.length() > 0)) {
             sb.append(name).append(" ");
         }
-        if ((multiplicity != null) && (multiplicity.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY)) {
+        if ((multiplicity != null)
+            && (multiplicity.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_MULTIPLICITY)) {
             sb.append("[").append(multiplicity).append("]").append(" ");
         }
         if ((type != null) && (type.length() > 0)) {
             sb.append(": ").append(type).append(" ");
         }
-        if ((initialValue != null) && (initialValue.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE)) {
+        if ((initialValue != null)
+            && (initialValue.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_INITIAL_VALUE)) {
             sb.append(" = ").append(initialValue).append(" ");
         }
-        if ((properties.length() > 0) && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
+        if ((properties.length() > 0)
+            && Configuration.getBoolean(Notation.KEY_SHOW_PROPERTIES)) {
             sb.append(properties);
         }
         return sb.toString().trim();
@@ -330,7 +357,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             ns = ns.getNamespace();
         }
         while (!stack.isEmpty())
-            s += (String) stack.pop() + ".";
+            s += (String)stack.pop() + ".";
 
         if (s.endsWith(".")) {
             int lastIndex = s.lastIndexOf(".");
@@ -342,7 +369,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
-                s += generate((MModelElement) ownedEnum.next());
+                s += generate((MModelElement)ownedEnum.next());
                 s += "\n\n";
             }
         } else {
@@ -368,7 +395,8 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         if (cls.isLeaf())
             s += "final ";
         s += classifierKeyword + " " + generatedName + " ";
-        String baseClass = generateGeneralization(cls.getGeneralizations(), false);
+        String baseClass =
+            generateGeneralization(cls.getGeneralizations(), false);
         if (!baseClass.equals(""))
             s += "extends " + baseClass + " ";
 
@@ -394,7 +422,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
-                MAssociationEnd ae = (MAssociationEnd) endEnum.next();
+                MAssociationEnd ae = (MAssociationEnd)endEnum.next();
                 MAssociation a = ae.getAssociation();
                 s += INDENT + generateAssociationFrom(a, ae);
             }
@@ -422,7 +450,9 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
     public String generateTaggedValue(MTaggedValue tv) {
         if (tv == null)
             return "";
-        return generateName(tv.getTag()) + "=" + generateUninterpreted(tv.getValue());
+        return generateName(tv.getTag())
+            + "="
+            + generateUninterpreted(tv.getValue());
     }
 
     /**
@@ -442,7 +472,10 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         return generateMessageNumber(m, ptr.message, pos);
     }
 
-    private String generateMessageNumber(MMessage m, MMessage pre, int position) {
+    private String generateMessageNumber(
+        MMessage m,
+        MMessage pre,
+        int position) {
         Collection c;
         Iterator it;
         String mname = "";
@@ -496,7 +529,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         c = m.getPredecessors();
         it = c.iterator();
         while (it.hasNext()) {
-            MMessage msg = (MMessage) it.next();
+            MMessage msg = (MMessage)it.next();
             if (msg.getActivator() != act)
                 continue;
             int p = recCountPredecessors(msg, null) + 1;
@@ -518,7 +551,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         Iterator it = m.getMessages3().iterator();
         int count = 0;
         while (it.hasNext()) {
-            MMessage msg = (MMessage) it.next();
+            MMessage msg = (MMessage)it.next();
             if (msg.getActivator() != act)
                 continue;
             count++;
@@ -568,10 +601,14 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             int precnt = 0;
 
             while (it.hasNext()) {
-                MMessage msg = (MMessage) it.next();
+                MMessage msg = (MMessage)it.next();
                 int mpn = recCountPredecessors(msg, ptr2) + 1;
 
-                if (mpn == lpn - 1 && rt == msg.getActivator() && msg.getPredecessors().size() < 2 && (ptr2.message == null || countSuccessors(ptr2.message) < 2)) {
+                if (mpn == lpn - 1
+                    && rt == msg.getActivator()
+                    && msg.getPredecessors().size() < 2
+                    && (ptr2.message == null
+                        || countSuccessors(ptr2.message) < 2)) {
                     continue;
                 }
 
@@ -604,7 +641,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         Collection connections = a.getConnections();
         Iterator connEnum = connections.iterator();
         while (connEnum.hasNext()) {
-            MAssociationEnd ae2 = (MAssociationEnd) connEnum.next();
+            MAssociationEnd ae2 = (MAssociationEnd)connEnum.next();
             if (ae2 != ae)
                 s += generateAssociationEnd(ae2);
         }
@@ -649,7 +686,8 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         String ascName = asc.getName();
         if (n != null && n != null && n.length() > 0) {
             s += generateName(n);
-        } else if (ascName != null && ascName != null && ascName.length() > 0) {
+        } else if (
+            ascName != null && ascName != null && ascName.length() > 0) {
             s += generateName(ascName);
         } else {
             s += "my" + generateClassifierRef(ae.getType());
@@ -665,7 +703,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         String s = "{";
         Iterator conEnum = constr.iterator();
         while (conEnum.hasNext()) {
-            s += generateConstraint((MConstraint) conEnum.next());
+            s += generateConstraint((MConstraint)conEnum.next());
             if (conEnum.hasNext())
                 s += "; ";
         }
@@ -696,13 +734,15 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
     ////////////////////////////////////////////////////////////////
     // internal methods?
 
-    public String generateGeneralization(Collection generalizations, boolean impl) {
+    public String generateGeneralization(
+        Collection generalizations,
+        boolean impl) {
         Collection classes = new ArrayList();
         if (generalizations == null)
             return "";
         Iterator enum = generalizations.iterator();
         while (enum.hasNext()) {
-            MGeneralization g = (MGeneralization) enum.next();
+            MGeneralization g = (MGeneralization)enum.next();
             MGeneralizableElement ge = g.getPowertype();
             // assert ge != null
             if (ge != null) {
@@ -724,7 +764,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             return "";
         Iterator clsEnum = classifiers.iterator();
         while (clsEnum.hasNext()) {
-            s += generateClassifierRef((MClass) clsEnum.next());
+            s += generateClassifierRef((MClass)clsEnum.next());
             if (clsEnum.hasNext())
                 s += ", ";
         }
@@ -780,7 +820,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             return s;
         Iterator rangeIter = v.iterator();
         while (rangeIter.hasNext()) {
-            MMultiplicityRange mr = (MMultiplicityRange) rangeIter.next();
+            MMultiplicityRange mr = (MMultiplicityRange)rangeIter.next();
             if (!(mr.getLower() == 1 && mr.getUpper() == 1 && v.size() == 1)) {
                 s += generateMultiplicityRange(mr);
                 s += ",";
@@ -868,9 +908,10 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
             Iterator iter = internaltrans.iterator();
             while (iter.hasNext()) {
                 if (s.length() > 0)
-                	s.append("\n");
+                    s.append("\n");
                 MTransition trans = (MTransition)iter.next();
-                s.append(trans.getName()).append(" /").append(generateTransition(trans));
+                s.append(trans.getName()).append(" /").append(
+                    generateTransition(trans));
             }
         }
         return s.toString();
@@ -908,7 +949,7 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
         it = c.iterator();
         first = true;
         while (it.hasNext()) {
-            MArgument arg = (MArgument) it.next();
+            MArgument arg = (MArgument)it.next();
             if (!first)
                 p += ", ";
 
@@ -956,5 +997,13 @@ public class GeneratorDisplay extends Generator implements PluggableNotation {
     public String getModuleKey() {
         return "module.language.uml.generator";
     }
+    /**
+     * @see org.argouml.application.api.Pluggable#inContext(java.lang.Object[])
+     */
+    public boolean inContext(Object[] o) {
+        return true;
+    }
+    
+    public boolean isModuleEnabled() { return true; }
 
 } /* end class GeneratorDisplay */
