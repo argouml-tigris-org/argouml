@@ -35,15 +35,15 @@ import javax.swing.filechooser.FileFilter;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.i18n.Translator;
-import org.argouml.uml.ui.ActionFileOperations;
+import org.argouml.uml.ui.AbstractActionSaveProject;
 
 /**
  * Exports the xmi of a project to a file choosen by the user.
  * @author jaap.branderhorst@xs4all.nl
  * Jun 7, 2003
  */
-public final class ActionExportXMI extends ActionFileOperations 
-    implements PluggableMenu {
+public final class ActionExportXMI extends AbstractActionSaveProject
+        implements PluggableMenu {
 
     /** logger */
     private static final Logger LOG = Logger.getLogger(ActionExportXMI.class);
@@ -198,7 +198,14 @@ public final class ActionExportXMI extends ActionFileOperations
 
         int result = chooser.showSaveDialog(ProjectBrowser.getInstance());
         if (result == JFileChooser.APPROVE_OPTION) {
-            loadProject(chooser.getSelectedFile(), true);
+            File file = chooser.getSelectedFile();
+            if (file != null) {
+                String name = file.getName();
+                if (!name.endsWith(".xmi")) {
+                    file = new File(file.getParent(), name + ".xmi");
+                }
+            }
+            super.trySave(false, file);
         }
     }
 }
