@@ -49,6 +49,7 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MConstraint;
 import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -162,6 +163,8 @@ public abstract class Generator
             return generateGuard((MGuard) o);
         if (ModelFacade.isAMessage(o))
             return generateMessage((MMessage) o);
+        if (ModelFacade.isAVisibilityKind(o))
+            return generateVisibility((MVisibilityKind) o);
 
         if (ModelFacade.isAModelElement(o))
             return generateName(org.argouml.model.ModelFacade.getName(o));
@@ -188,6 +191,7 @@ public abstract class Generator
     public abstract String generateAction(Object m);
     public abstract String generateGuard(MGuard m);
     public abstract String generateMessage(MMessage m);
+    public abstract String generateVisibility(MVisibilityKind visibility);
 
     public String generateExpression(MExpression expr) {
         if (expr == null)

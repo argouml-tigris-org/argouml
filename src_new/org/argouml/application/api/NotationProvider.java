@@ -49,6 +49,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 import ru.novosoft.uml.model_management.MPackage;
@@ -73,6 +74,7 @@ public interface NotationProvider {
     public String generateState(MState m);
     public String generateStateBody(MState stt);
     public String generateTransition(MTransition m);
+    public String generateVisibility(MVisibilityKind m);
     public String generateAction(Object m);
     public String generateGuard(MGuard m);
     public String generateMessage(MMessage m);
