@@ -1,12 +1,12 @@
 package org.argouml.uml.diagram.collaboration.ui;
 
-import java.util.Collection;
-import java.util.Vector;
 import java.util.ArrayList;
+import java.util.Collection;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
+
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 
 /**
  * Go rule to navigate from some message to it's corresponding action
@@ -21,7 +21,8 @@ public class GoMessageAction extends AbstractGoRule {
 	 */
 	public Collection getChildren(Object parent) {
 		if (parent instanceof MMessage) {
-			MAction action = ((MMessage)parent).getAction();
+            
+			Object action = ModelFacade.getAction(parent);
 			if (action != null) {
                                 ArrayList children = new ArrayList();
                                 children.add(action);

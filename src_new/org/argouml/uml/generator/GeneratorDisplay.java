@@ -46,7 +46,6 @@ import org.argouml.model.uml.UmlHelper;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MArgument;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
@@ -68,7 +67,6 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
-import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
 import ru.novosoft.uml.foundation.data_types.MParameterDirectionKind;
@@ -562,11 +560,11 @@ public class GeneratorDisplay extends Generator {
     /**
      * Generates a textual description of a MIterationExpression.
      */
-    public String generateRecurrence(MIterationExpression expr) {
+    public String generateRecurrence(Object expr) {
         if (expr == null)
             return "";
 
-        return expr.getBody();
+        return ModelFacade.getBody(expr).toString();
     }
 
     /**
@@ -578,7 +576,7 @@ public class GeneratorDisplay extends Generator {
     public String generateMessage(MMessage m) {
         Iterator it;
         Collection pre;
-        MAction act;
+        Object act;
         MMessage rt;
         MsgPtr ptr;
 
@@ -626,8 +624,8 @@ public class GeneratorDisplay extends Generator {
 
         act = m.getAction();
         if (act != null) {
-            if (act.getRecurrence() != null)
-                number = generateRecurrence(act.getRecurrence()) + " " + number;
+            if (ModelFacade.getRecurrence(act) != null)
+                number = generateRecurrence(ModelFacade.getRecurrence(act)) + " " + number;
 
             action = generateAction(act);
         }
@@ -883,9 +881,9 @@ public class GeneratorDisplay extends Generator {
     public String generateStateBody(MState m) {
         StringBuffer s = new StringBuffer();
 
-        MAction entryAction = m.getEntry();
-        MAction doAction = m.getDoActivity();
-        MAction exitAction = m.getExit();
+        Object entryAction = ModelFacade.getEntry(m);
+        Object exitAction = ModelFacade.getExit(m);   
+        Object doAction = ModelFacade.getDoActivity(m);
         if (entryAction != null) {
             String entryStr = Generate(entryAction);
             s.append("entry /").append(entryStr);
@@ -932,20 +930,22 @@ public class GeneratorDisplay extends Generator {
         return s;
     }
 
-    public String generateAction(MAction m) {
+    public String generateAction(Object m) {
         Collection c;
         Iterator it;
         String s;
         String p;
         boolean first;
+        
+        Object script = ModelFacade.getScript(m);
 
-        if ((m.getScript() != null) && (m.getScript().getBody() != null))
-            s = m.getScript().getBody();
+        if ((script != null) && (ModelFacade.getBody(script) != null))
+            s = ModelFacade.getBody(script).toString();
         else
             s = "";
 
         p = "";
-        c = m.getActualArguments();
+        c = ModelFacade.getActualArguments(m);
         it = c.iterator();
         first = true;
         while (it.hasNext()) {

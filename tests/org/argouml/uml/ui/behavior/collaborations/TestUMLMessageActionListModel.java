@@ -27,13 +27,13 @@ package org.argouml.uml.ui.behavior.collaborations;
 import junit.framework.TestCase;
 
 import org.argouml.application.security.ArgoSecurityManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.collaborations.CollaborationsFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 
 /**
  * @since Oct 30, 2002
@@ -79,16 +79,16 @@ public class TestUMLMessageActionListModel
     }
     
     public void testSetAction() {
-        MAction action = CommonBehaviorFactory.getFactory().createAction();
-        elem.setAction(action);
+        Object action = CommonBehaviorFactory.getFactory().createAction();
+        ModelFacade.setAction(elem, action);
         assertEquals(1, model.getSize());
         assertEquals(action, model.getElementAt(0));
     }
     
     public void testRemoveAction() {
-        MAction action = CommonBehaviorFactory.getFactory().createAction();
-        elem.setAction(action);
-        elem.setAction(null);
+        Object action = CommonBehaviorFactory.getFactory().createAction();
+        ModelFacade.setAction(elem, action);
+        ModelFacade.setAction(elem, null);
         assertEquals(0, model.getSize());
         assertTrue(model.isEmpty());
     } 

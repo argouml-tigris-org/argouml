@@ -29,9 +29,9 @@ import java.util.Collection;
 import java.util.Vector;
 
 import org.argouml.application.api.Argo;
+import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 public class GoStimulusToAction extends AbstractGoRule {
@@ -40,7 +40,7 @@ public class GoStimulusToAction extends AbstractGoRule {
         if (!(parent instanceof MStimulus))
             return null;
         MStimulus ms = (MStimulus) parent;
-        MAction action = ms.getDispatchAction();
+        Object action = ModelFacade.getDispatchAction(ms);
         Vector vector = new Vector();
         vector.addElement(action);
         return vector;

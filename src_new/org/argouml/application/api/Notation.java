@@ -31,25 +31,39 @@
 
 package org.argouml.application.api;
 
-import org.argouml.application.notation.*;
-import org.argouml.application.events.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 
-import java.util.*;
-import java.beans.*;
+import javax.swing.Icon;
 
-import javax.swing.*;
+import org.apache.log4j.Logger;
+import org.argouml.application.events.ArgoEvent;
+import org.argouml.application.events.ArgoEventPump;
+import org.argouml.application.events.ArgoNotationEvent;
+import org.argouml.application.notation.NotationNameImpl;
+import org.argouml.application.notation.NotationProviderFactory;
+import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.activity_graphs.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.apache.log4j.*;
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MCallAction;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Provides centralized methods dealing with notation.
  *
@@ -275,7 +289,7 @@ public final class Notation implements PropertyChangeListener {
     protected String generateTransition(NotationName notation, MTransition m) {
         return getProvider(notation).generateTransition(m);
     }
-    protected String generateAction(NotationName notation, MAction m) {
+    protected String generateAction(NotationName notation, Object m) {
         return getProvider(notation).generateAction(m);
     }
     protected String generateGuard(NotationName notation, MGuard m) {
@@ -403,7 +417,7 @@ public final class Notation implements PropertyChangeListener {
         MTransition m) {
         return SINGLETON.generateTransition(Notation.getNotation(ctx), m);
     }
-    public static String generateAction(NotationContext ctx, MAction m) {
+    public static String generateAction(NotationContext ctx, Object m) {
         return SINGLETON.generateAction(Notation.getNotation(ctx), m);
     }
     public static String generateGuard(NotationContext ctx, MGuard m) {
@@ -531,10 +545,10 @@ public final class Notation implements PropertyChangeListener {
             return SINGLETON.generateState(nn, (MState)o);
         if (o instanceof MTransition)
             return SINGLETON.generateTransition(nn, (MTransition)o);
-        if (o instanceof MAction)
-            return SINGLETON.generateAction(nn, (MAction)o);
+        if (ModelFacade.isAAction(o))
+            return SINGLETON.generateAction(nn, o);
         if (o instanceof MCallAction)
-            return SINGLETON.generateAction(nn, (MAction)o);
+            return SINGLETON.generateAction(nn, o);
         if (o instanceof MGuard)
             return SINGLETON.generateGuard(nn, (MGuard)o);
         if (o instanceof MMessage)

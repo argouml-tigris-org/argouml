@@ -57,7 +57,6 @@ import org.argouml.uml.generator.Generator;
 
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
-import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
 import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
@@ -2566,8 +2565,8 @@ implements PluggableNotation, FileGenerator {
   public String generateStateBody(MState m) {
       // Argo.log.info("GeneratorCpp: generating state body");
     String s = "";
-    MAction entry = m.getEntry();
-    MAction exit = m.getExit();
+    Object entry = ModelFacade.getEntry(m);
+    Object exit = ModelFacade.getExit(m);   
     if (entry != null) {
       String entryStr = Generate(entry);
       if (entryStr.length() > 0) s += "entry / " + entryStr;
@@ -2626,10 +2625,11 @@ implements PluggableNotation, FileGenerator {
     return s;*/
   }
 
-  public String generateAction(MAction m) {
+  public String generateAction(Object m) {
       // return m.getName();
-      if ((m.getScript() != null) && (m.getScript().getBody() != null))
-	  return m.getScript().getBody();
+      Object script = ModelFacade.getScript(m);
+      if ((script != null) && (ModelFacade.getBody(script) != null))
+	  return ModelFacade.getBody(script).toString();
       return "";
   }
 

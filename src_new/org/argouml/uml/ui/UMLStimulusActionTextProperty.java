@@ -23,6 +23,9 @@
 
 package org.argouml.uml.ui;
 import java.lang.reflect.*;
+
+import org.argouml.model.ModelFacade;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -71,8 +74,8 @@ public class UMLStimulusActionTextProperty  {
         String value = null;       
 	MStimulus stimulus = (MStimulus) container.getTarget();
 	if(stimulus != null) {
-	    MAction action = stimulus.getDispatchAction();
-	    if (action != null) value = action.getName();
+	    Object action = ModelFacade.getDispatchAction(stimulus);
+	    if (action != null) value = ModelFacade.getName(action);
 	}
         return value;
     }

@@ -24,25 +24,60 @@
 
 package org.argouml.language.php.generator;
 
-import java.io.*;
-import java.util.*;
-import java.rmi.server.*;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.rmi.server.UID;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.model_management.*;
-
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.PluggableNotation;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlHelper;
-import org.argouml.uml.MMUtil;
-
-import org.argouml.application.api.*;
 import org.argouml.uml.DocumentationManager;
-import org.argouml.uml.generator.*;
+import org.argouml.uml.generator.FileGenerator;
+import org.argouml.uml.generator.Generator;
+
+import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.state_machines.MGuard;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MTransition;
+import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MAssociationEnd;
+import ru.novosoft.uml.foundation.core.MAttribute;
+import ru.novosoft.uml.foundation.core.MBehavioralFeature;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MConstraint;
+import ru.novosoft.uml.foundation.core.MDependency;
+import ru.novosoft.uml.foundation.core.MFeature;
+import ru.novosoft.uml.foundation.core.MGeneralizableElement;
+import ru.novosoft.uml.foundation.core.MGeneralization;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MMethod;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
+import ru.novosoft.uml.foundation.core.MStructuralFeature;
+import ru.novosoft.uml.foundation.data_types.MChangeableKind;
+import ru.novosoft.uml.foundation.data_types.MExpression;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
+import ru.novosoft.uml.foundation.data_types.MMultiplicityRange;
+import ru.novosoft.uml.foundation.data_types.MScopeKind;
+import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
+import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MPackage;
 
 /** Generator subclass to generate text for display in diagrams in in
  * text fields in the Argo/UML user interface.  The generated code
@@ -1157,8 +1192,9 @@ implements PluggableNotation, FileGenerator {
   public String generateStateBody(MState m) {
       System.out.println("GeneratorPHP: generating state body");
     String s = "";
-    MAction entry = m.getEntry();
-    MAction exit = m.getExit();
+    Object entry = ModelFacade.getEntry(m);
+    Object exit = ModelFacade.getExit(m);   
+   
     if (entry != null) {
       String entryStr = Generate(entry);
       if (entryStr.length() > 0) s += "entry / " + entryStr;
@@ -1217,10 +1253,11 @@ implements PluggableNotation, FileGenerator {
     return s;*/
   }
 
-  public String generateAction(MAction m) {
+  public String generateAction(Object m) {
       // return m.getName();
-      if ((m.getScript() != null) && (m.getScript().getBody() != null))
-	  return m.getScript().getBody();
+      Object script = ModelFacade.getScript(m);
+      if ((m != null) && (ModelFacade.getBody(script) != null))
+	  return ModelFacade.getBody(script).toString();
       return "";
   }
 
