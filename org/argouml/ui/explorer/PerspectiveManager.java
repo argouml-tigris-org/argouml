@@ -45,7 +45,7 @@ import org.apache.log4j.Logger;
  */
 public class PerspectiveManager {
     
-    private static Logger cat =
+    private static final Logger LOG =
 	Logger.getLogger(PerspectiveManager.class);
     
     private static PerspectiveManager instance;
@@ -56,8 +56,12 @@ public class PerspectiveManager {
     
     private List rules;
     
-    public final String RULES_PACKAGE = "org.argouml.ui.explorer.rules.";
+    private static final String RULES_PACKAGE = 
+        "org.argouml.ui.explorer.rules.";
     
+    /**
+     * @return the instance (singleton)
+     */
     public static PerspectiveManager getInstance() {
         if (instance == null) {
             instance = new PerspectiveManager();
@@ -74,14 +78,23 @@ public class PerspectiveManager {
         loadRules();
     }
     
+    /**
+     * @param listener the listener to be added
+     */
     public void addListener(PerspectiveManagerListener listener) {
         perspectiveListeners.add(listener);
     }
     
+    /**
+     * @param listener the listener to be removed
+     */
     public void removeListener(PerspectiveManagerListener listener) {
         perspectiveListeners.remove(listener);
     }
     
+    /**
+     * @param perspective the perspective to be added
+     */
     public void addPerspective(Object perspective) {
         perspectives.add(perspective);
         Iterator listenerIt = perspectiveListeners.iterator();
@@ -94,6 +107,9 @@ public class PerspectiveManager {
         }
     }
     
+    /**
+     * @param newPerspectives the collection of perspectives to be added
+     */
     public void addAllPerspectives(Collection newPerspectives) {
         
         Iterator newPerspectivesIt = newPerspectives.iterator();
@@ -104,6 +120,9 @@ public class PerspectiveManager {
         }
     }
     
+    /**
+     * @param perspective the perspective to be removed
+     */
     public void removePerspective(Object perspective) {
         
         perspectives.remove(perspective);
@@ -117,6 +136,9 @@ public class PerspectiveManager {
         }
     }
     
+    /**
+     * Remove all perspectives.
+     */
     public void removeAllPerspectives() {
         
         List pers = new ArrayList();
@@ -126,6 +148,9 @@ public class PerspectiveManager {
         }
     }
     
+    /**
+     * @return the list of all persppectives
+     */
     public List getPerspectives() {
         return perspectives;
     }
@@ -142,14 +167,14 @@ public class PerspectiveManager {
 		Configuration.getString(Argo.KEY_USER_EXPLORER_PERSPECTIVES,
 					"");
         
-	    StringTokenizer perspectives =
+	    StringTokenizer pst =
 		new StringTokenizer(userPerspectives, ";");
         
-	    if (perspectives.hasMoreTokens()) {
+	    if (pst.hasMoreTokens()) {
             
 		// load user perspectives
-		while (perspectives.hasMoreTokens()) {
-		    String perspective = perspectives.nextToken();
+		while (pst.hasMoreTokens()) {
+		    String perspective = pst.nextToken();
 		    StringTokenizer perspectiveDetails =
 			new StringTokenizer(perspective, ",");
                 
@@ -179,7 +204,7 @@ public class PerspectiveManager {
 				userDefinedPerspective.addRule(rule);
                             
 			    } catch (Exception ex) {
-				cat.error("could not create rule ", ex);
+				LOG.error("could not create rule ", ex);
 			    }
 			}
 		    }
@@ -380,10 +405,16 @@ public class PerspectiveManager {
 	rules = Arrays.asList(ruleNamesArray);
     }
     
+    /**
+     * @return the collection of rules
+     */
     public Collection getRules() {
         return rules;
     }
     
+    /**
+     * save the user perspectives in the ArgoUML configuration
+     */
     public void saveUserPerspectives() {
         Configuration.setString(Argo.KEY_USER_EXPLORER_PERSPECTIVES, 
             this.toString());
@@ -392,10 +423,12 @@ public class PerspectiveManager {
     /**
      * string representation of the perspectives in the same format as
      * saved in the user properties.
+     *
+     * @see java.lang.Object#toString()
      */
     public String toString() {
         
-        String perspectives = "";
+        String p = "";
         
         Iterator perspectivesIt = getPerspectives().iterator();
         while (perspectivesIt.hasNext()) {
@@ -405,24 +438,24 @@ public class PerspectiveManager {
             
             String name = perspective.toString();
             
-            perspectives += name + ",";
+            p += name + ",";
             
-            Object[] rules = perspective.getRulesArray();
+            Object[] rulesArray = perspective.getRulesArray();
             
-            for (int x = 0; x < rules.length; x++) {
+            for (int x = 0; x < rulesArray.length; x++) {
                 
-                PerspectiveRule rule = (PerspectiveRule) rules[x];
-                perspectives += rule.getClass().getName();
+                PerspectiveRule rule = (PerspectiveRule) rulesArray[x];
+                p += rule.getClass().getName();
                 
-                if (x < rules.length - 1)
-                    perspectives += ",";
+                if (x < rulesArray.length - 1)
+                    p += ",";
             }
             
             if (perspectivesIt.hasNext()) {
-                perspectives += ";";
+                p += ";";
             }
         }
         
-        return perspectives;
+        return p;
     }
 }

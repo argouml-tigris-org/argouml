@@ -47,9 +47,10 @@ public class TypeThenNameOrder extends NameOrder {
     /**
      * Compares obj1 and obj2 as per the class description.
      * nulls are sorted first.
+     * Returns a negative integer, zero, or a positive integer as the first
+     * argument is less than, equal to, or greater than the second.
      *
-     * @return a negative integer, zero, or a positive integer as the first
-     *         argument is less than, equal to, or greater than the second.
+     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
      */
     public int compare(Object obj1, Object obj2) {
 	if (obj1 instanceof DefaultMutableTreeNode) {
@@ -101,6 +102,9 @@ public class TypeThenNameOrder extends NameOrder {
         return typeNameOrder;
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return "Order By Type, Name";
     }

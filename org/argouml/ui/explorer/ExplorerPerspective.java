@@ -44,28 +44,44 @@ import org.argouml.i18n.Translator;
  */
 public class ExplorerPerspective {
     
-    List rules;
-    String name;
+    private List rules;
+    private String name;
     
-    /** Creates a new instance of ExplorerPerspective */
+    /** 
+     * Creates a new instance of ExplorerPerspective.
+     * 
+     * @param newName the name for the perspective
+     */
     public ExplorerPerspective(String newName) {
         
         name = Translator.localize("Tree", newName);
         rules = new ArrayList();
     }
     
+    /**
+     * @param rule the rule to add
+     */
     public void addRule(PerspectiveRule rule) {
         rules.add(rule);
     }
     
+    /**
+     * @param rule the rule to remove
+     */
     public void removeRule(PerspectiveRule rule) {
         rules.remove(rule);
     }
     
+    /**
+     * @return the array with all the rules
+     */
     public Object[] getRulesArray() {
         return rules.toArray();
     }
     
+    /**
+     * @see java.lang.Object#toString()
+     */
     public String toString() {
         return name;
     }

@@ -42,12 +42,20 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
     private boolean pending;
     private Set modifySet = Collections.EMPTY_SET;
 
-    /** Creates a new instance of ExplorerTreeNode */
-    public ExplorerTreeNode(Object userObj, ExplorerTreeModel model) {
+    /** 
+     * Creates a new instance of ExplorerTreeNode.
+     * 
+     * @param userObj the first object to put in the new tree
+     * @param m the tree model
+     */
+    public ExplorerTreeNode(Object userObj, ExplorerTreeModel m) {
         super(userObj);
-	this.model = model;
+	this.model = m;
     }
 
+    /**
+     * @see javax.swing.tree.TreeNode#isLeaf()
+     */
     public boolean isLeaf() {
 	if (!expanded) {
 	    model.updateChildren(new TreePath(model.getPathToRoot(this)));
@@ -64,6 +72,9 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
 	pending = value;
     }
 
+    /**
+     * @param set
+     */
     public void setModifySet(Set set) {
 	if (set == null || set.size() == 0)
 	    modifySet = Collections.EMPTY_SET;
@@ -71,9 +82,12 @@ public class ExplorerTreeNode extends DefaultMutableTreeNode {
 	    modifySet = set;
     }
 
+    /**
+     * @param node the modified node in the tree
+     */
     public void nodeModified(Object node) {
 	if (modifySet.contains(node))
-	    model.nodeUpdater.schedule(this);
+	    model.getNodeUpdater().schedule(this);
 	if (node == getUserObject())
 	    model.nodeChanged(this);
     }
