@@ -57,6 +57,7 @@ public class ClassNode extends NetNode {
     temp_list.addElement(obj1);
     FigClass fn = new FigClass(this, temp_list);
     fn.bindPort(north, obj1);
+    fn.setSize(100,70);
     return fn;
   }
 
