@@ -30,7 +30,9 @@ import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * 
+ * A searchable combobox. Searchable means that the user has only to type the
+ * starting of a modelelement name to select that modelelement. The first
+ * modelelement that conforms to the typed text is selected.
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 5, 2003
  */
@@ -56,6 +58,11 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
     }
 
     /**
+     * Searches amongst the modelelements (the elements in the listmodel) for an
+     * item that conforms to the parameter item. If such an element is a
+     * MModelelement, the name should start with the item (which is a String).
+     * Otherwise the text that is shown in the combobox should start with the
+     * text. As the element is found, this is made to the selected item.
      * @see org.argouml.uml.ui.UMLEditableComboBox#doIt(java.lang.Object)
      */
     protected void doIt(Object item) {

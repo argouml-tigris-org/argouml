@@ -36,6 +36,7 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
@@ -97,7 +98,10 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
-        } else {
+        } else 
+        if (value instanceof MMultiplicity) {
+            name = value.toString();
+        } else {                    
             name = makeTypeName(value);
         }
         return name;
