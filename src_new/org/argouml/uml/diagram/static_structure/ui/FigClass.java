@@ -1001,8 +1001,10 @@ public class FigClass extends FigNodeModelElement {
         if (me.isConsumed())
             return;
         super.mouseClicked(me);
+	if ((me.getModifiersEx() & MouseEvent.SHIFT_DOWN_MASK) != 0
+	    && TargetManager.getInstance().getTargets().size() > 0)
+	    return;
 
-        boolean targetIsSet = false;
         int i = 0;
         Editor ce = Globals.curEditor();
         Selection sel = ce.getSelectionManager().findSelectionFor(this);
@@ -1018,8 +1020,6 @@ public class FigClass extends FigNodeModelElement {
 		* (me.getY() - f.getY() - 3)
 		/ _attrVec.getHeight();
             if (i >= 0 && i < v.size() - 1) {
-                targetIsSet = true;
-                //    me.consume();
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
@@ -1031,19 +1031,12 @@ public class FigClass extends FigNodeModelElement {
 		* (me.getY() - f.getY() - 3)
 		/ _operVec.getHeight();
             if (i >= 0 && i < v.size() - 1) {
-                targetIsSet = true;
-                //    me.consume();
                 f = (Fig) v.elementAt(i + 1);
                 ((CompartmentFigText) f).setHighlighted(true);
                 highlightedFigText = (CompartmentFigText) f;
                 TargetManager.getInstance().setTarget(f);
             }
         }
-        
-        if (targetIsSet == false)
-	    TargetManager.getInstance().setTarget(getOwner());
-            
-
     }
 
     /**
