@@ -60,6 +60,7 @@ public class GoMachineDiagram extends AbstractGoRule {
   }
 
   public int getIndexOfChild(Object parent, Object child) {
+    if (!(parent instanceof MStateMachine)) return -1;
     Vector children = new Vector(getChildren(parent));
     if (children != null && children.contains(child))
       return children.indexOf(child);
@@ -95,3 +96,5 @@ public class GoMachineDiagram extends AbstractGoRule {
   public void removeTreeModelListener(TreeModelListener l) { }
 
 }
+
+
