@@ -12,8 +12,6 @@ own chapters.
 <chapter id="ch.ref.ui">
   <title>User Interface Reference</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -50,7 +48,7 @@ own chapters.
       which is described in
       <xref linkend="ch.ref.menu"/>. 
       Below that is the <emphasis>toolbar</emphasis>, as described in 
-      <xref linkend="ch.ref.toolbar"/>...
+      <xref linkend="ch.ref.toolbar"/>.
     </para>
     <para>
       The bulk of the window comprises four
@@ -62,7 +60,7 @@ own chapters.
       (see <xref linkend="ch.ref.todopane"/>). All 4 panes
       have a <emphasis>tool bar</emphasis> at the top 
       (in the <emphasis>details pane</emphasis> it is located 
-      under the <emphasis>properties</emphasis> tab).. 
+      under the <emphasis>properties</emphasis> tab).
       An overview of the panes is given in
       <xref linkend="s1.ref.panes"/>. Finally at the bottom of the window is a
       <emphasis>status bar</emphasis> described in <xref
@@ -198,10 +196,111 @@ own chapters.
     <sect2>
       <title>&Button1; Click</title>
 
-      <para>This action is generally used to select an item for subsequent
-        operations. If the item is an artifact in the explorer or the
-        editing pane it will be highlighted.</para>
+      <para>
+        Clicking on an user-interface object or on a diagram artifact 
+        may establish many different things. 
+        Most of the behaviour is experienced quite intuitive by the user, 
+        mainly because the high degree of standardisation, even spanning
+        different computer platforms (Macintosh, PC, UNIX,...). 
+        &argouml; follows the <emphasis>Java Look and Feel Design 
+        Guidelines</emphasis> by Sun.
+        Hence, behaviour of common user-interface components is generally not
+        discussed in this document.
+        <!-- TODO: Add URL to Java Look and Feel Design Guidelines -->
+        </para>
+        
+        <para>
+        On the other hand, mouse actions in a diagram may not seem so intuitive
+        to the user, since it is specific for &argouml;. 
+        Hence they are explained here.
+        In short, clicking selects or activates the object beneath the mouse-pointer, 
+        and moves the focus (i.e. navigation). 
+        <!-- For example, 
+        a click is used to activate a command button, 
+        to select an artifact on a diagram or an item from a list, 
+        or to set an insertion point in a text area.--> 
+      </para>
+      
+      <para>More in detail, the &button1; click may cause the following result:
+      </para>
 
+      <!-- Selection -->
+
+      <sect3>
+        <title>Selection</title>
+
+        <para>Here &button1; is used to choose (select) an artifact 
+          (in a list or tree or on a diagram) on 
+          which subsequent operations will take place. 
+          Multiple artifacts may be selected 
+          by using Shift and/or Control in combination with &button1;, see 
+          <xref linkend="s2.ref.mouse.shift_control"/>. 
+          Selection is always clearly indicated by a colored background.
+        </para>
+        
+        <para>
+          On a diagram, the selected artifact is indicated with colored "blocks"
+          at the corners/ends of the object. Artifacts can be selected or 
+          deselected in different ways:
+        </para>
+        
+        <itemizedlist>
+          <listitem>
+            <para>
+              &Button1; click. Deselects all artifacts, and selects the
+              one clicked on.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              &Button1; motion. Button motion 
+              (moving the mouse with the button down) in the diagram, 
+              not on any artifact, allows to draw a rectangle around artifacts
+              which will be selected when the &button1; is released.
+            </para>
+          </listitem>
+          <listitem>
+            <para>
+              Menu functions and shortcuts. 
+              Many menu operations change selection as side-effect, e.g.
+              creating a new diagram.  
+              Many keyboard shortcuts for menu operations change the selection, 
+              e.g. Ctrl-A, which stands for the 
+              <literal>Select All</literal> function.
+            </para>
+          </listitem>
+        </itemizedlist>
+      </sect3>
+
+      <!-- Activation -->
+
+      <sect3>
+        <title>Activation</title>
+
+        <para>Here &button1; is used to activate the user interface component,
+          e.g. a button. 
+          The object is usually highlighted when the mouse button is pressed 
+          and then activated when the mouse button is released. Activating an
+          user-interface object means that its function is executed.
+        </para>
+      </sect3>
+
+      <!-- Navigation -->
+
+      <sect3>
+        <title>Navigation</title>
+
+        <para>Here &button1; is used to move the focus from one 
+          user interface component or diagram artifact to another.
+          It is better known under the term
+          keyboard focus. This because keyboard commands usually work on
+          the artifact that has the focus.
+          The focus is indicated by a (hardly visible) box 
+          <!-- TODO: not present in the explorer, see issue ... -->
+          around the artifact, or for a text entry box, by a flashing cursor.
+        </para>
+      </sect3>
+      
       <!-- General behavior when editing text -->
 
       <sect3>
@@ -247,7 +346,7 @@ own chapters.
 
     <!-- Shift and control keys -->
 
-    <sect2>
+    <sect2 id="s2.ref.mouse.shift_control">
       <title>Shift and Control with &Button1;</title>
 
       <!-- Where there is a list of things -->
@@ -268,10 +367,12 @@ own chapters.
           used on an item already selected, that item is removed from the
           selection.</para>
 
-        <caution><para>Users of Microsoft Windows will be familiar with the use
-          SHIFT and CONTROL together to add sub-lists to an existing
-          selection. &argouml; does not support this. SHIFT-CONTROL will behave
-          as CONTROL.</para></caution>
+        <caution><para>Users of Microsoft Windows might be familiar with the use
+          of SHIFT-CONTROL-Click 
+          (i.e. holding both the Shift and Control key down when clicking), 
+          to add sub-lists to an existing
+          selection. &argouml; does not support this. SHIFT-CONTROL-Click will behave
+          as CONTROL-Click.</para></caution>
       </sect3>
 
       <!-- General behavior when editing text -->
@@ -281,6 +382,7 @@ own chapters.
 
         <para>In a number of places in &argouml; text may be directly edited
           (for example the constraint editor&mdash;see
+          <!-- TODO: a better example wouldbe a comment/note -->
           <xref linkend="s2.ref.details_constraint_editor"/>). Here SHIFT
           &button1; is used to select a range of text from the previously
           selected point. Subsequent operations (text entry and deletion) will
@@ -334,9 +436,13 @@ own chapters.
       <title>Re-sizing Panes</title>
 
       <para>You can re-size panes by dragging on the divider bars between
-        them. The mouse cursor changes to a vertical or horizontal bar with an
-        arrow at right-angles when over the divider bars.</para>
+        them. To indicate this possibility, 
+        the mouse cursor changes shape when hovering 
+        over the divider bars.</para>
 
+      <!-- TODO: shouldn't we better describe this independent of the 4 
+      existing panes? 
+      I.e. only describe in general how such a divider works. -->
       <para>In addition you will see there are two small left pointing arrows
         within the vertical divider bars, one at the top of the vertical
         divider bar between explorer and editing pane and one at the top
@@ -353,6 +459,11 @@ own chapters.
       <para>By using both the top arrow on the vertical divider and the arrow
         on the horizontal divider, it is possible to expand the editing pane to
         use the entire window.</para>
+        
+      <para>
+        The original configuration can be restored by clicking again on these
+        arrows, which are now located at the edge of the window.
+      </para>
     </sect2>
 
     <sect2 id="s2.ref.spawn">
@@ -363,7 +474,7 @@ own chapters.
         pane. These can then be manipulated as separate windows and placed as
         desired on the screen.</para>
 
-      <para>This is achieved through use of &button1; double click as described
+      <para>This is achieved <!--through use of &button1; double click--> as described
         in sections <xref linkend="s1.ref.edit_mouse"/> and
         <xref linkend="s1.ref.details_mouse"/>.</para>
 
@@ -388,6 +499,7 @@ own chapters.
     <para>The status bar is at the very bottom of the &argouml; window and is
       used to display short advisory messages. In general such messages are
       self explanatory. It is also used for debugging messages for the system
+      <!-- TODO: is this still true? -->
       in development&mdash;these messages can be ignored.</para>
   </sect1>
 
