@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002-2003 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,15 +45,17 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getBases(getTarget()));
+	if (ModelFacade.isAClassifierRole(getTarget())) {
+	    setAllElements(ModelFacade.getBases(getTarget()));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return ModelFacade.isAClassifier(elem) &&
-             ModelFacade.getBases(getTarget()).contains(elem);
+        return ModelFacade.isAClassifierRole(getTarget())
+		&& ModelFacade.isAClassifier(elem)
+		&& ModelFacade.getBases(getTarget()).contains(elem);
     }
-
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -45,14 +45,17 @@ public class UMLStateMachineSubmachineStateListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getSubmachineStates(getTarget()));
+	removeAllElements();
+	if (ModelFacade.isAStateMachine(getTarget())) {
+	    setAllElements(ModelFacade.getSubmachineStates(getTarget()));
+	}
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getSubmachineStates(getTarget()).contains(element);
+        return ModelFacade.isAStateMachine(getTarget())
+		&& ModelFacade.getSubmachineStates(getTarget()).contains(element);
     }
-
 }
