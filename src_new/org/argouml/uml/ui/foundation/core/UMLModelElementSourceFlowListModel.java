@@ -26,6 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MFlow;
 import ru.novosoft.uml.foundation.core.MModelElement;
@@ -56,8 +58,7 @@ public class UMLModelElementSourceFlowListModel
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
+    protected boolean isValidElement(MBase o) {
         return o instanceof MFlow && ((MModelElement)getTarget()).getSourceFlows().contains(o);
     }
 

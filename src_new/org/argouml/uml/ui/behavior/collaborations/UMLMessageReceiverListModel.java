@@ -27,7 +27,9 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -56,8 +58,8 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    protected boolean isValidElement(MBase element) {
+        return ((MMessage)getTarget()).getReceiver() == element;
     }
 
 }

@@ -26,6 +26,8 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -52,11 +54,12 @@ public class UMLModelElementNamespaceListModel
         addElement(((MModelElement)getTarget()).getNamespace());
     }
 
+    
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    protected boolean isValidElement(MBase element) {
+        return ((MModelElement)getTarget()).getNamespace() == element;
     }
 
 }

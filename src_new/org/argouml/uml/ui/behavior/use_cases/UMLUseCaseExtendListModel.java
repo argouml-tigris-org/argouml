@@ -28,13 +28,14 @@ import java.util.Iterator;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
- * A model for usecases that extend the target usecase. This is NOT a model
- * for the extend relationships the target knows.
+ * A model that shows the extend relationships for some usecase
  * @since Oct 7, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -52,24 +53,14 @@ public class UMLUseCaseExtendListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        Iterator it = ((MUseCase)getTarget()).getExtends().iterator();
-        while (it.hasNext()) {
-            MExtend extend = (MExtend)it.next();
-            addElement(extend.getExtension());
-        }
+        setAllElements(((MUseCase)getTarget()).getExtends());
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
-        Iterator it = ((MUseCase)getTarget()).getExtends().iterator();
-        while (it.hasNext()) {
-            MExtend extend = (MExtend)it.next();
-            if (extend.getExtension() == o) return true;
-        }
-        return false;
+     protected boolean isValidElement(MBase o) {
+        return ((MUseCase)getTarget()).getExtends().contains(o);
     }
 
 }

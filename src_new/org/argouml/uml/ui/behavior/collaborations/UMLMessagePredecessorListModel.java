@@ -33,6 +33,7 @@ import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
@@ -66,10 +67,9 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
     }
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object elem = getChangedElement(e);
+    protected boolean isValidElement(MBase elem) {
         return elem instanceof MMessage && 
             ((MMessage)elem).getInteraction() == ((MMessage)getTarget()).getInteraction() &&
             ((MMessage)elem).getActivator() == ((MMessage)getTarget()).getActivator();

@@ -51,7 +51,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
     	addField(Argo.localize("UMLMenu", "label.stereotype"), stereotypeBox);
         addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
         
-        JList contextList = new UMLLinkedList(this, new UMLInteractionCollaborationListModel(this));
+        JList contextList = new UMLLinkedList(this, new UMLInteractionContextListModel(this));
         contextList.setVisibleRowCount(1);
         JScrollPane contextScroll = new JScrollPane(contextList);
         addField(Argo.localize("UMLMenu", "label.context"), contextScroll);

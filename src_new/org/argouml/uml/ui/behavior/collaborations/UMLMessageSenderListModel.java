@@ -27,11 +27,13 @@ package org.argouml.uml.ui.behavior.collaborations;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
 
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
+ * Listmodel to show the sender belonging to some message.
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -52,12 +54,12 @@ public class UMLMessageSenderListModel extends UMLModelElementListModel2 {
         removeAllElements();
         addElement(((MMessage)getContainer().getTarget()).getSender());
     }
-
+    
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        return false;
+    protected boolean isValidElement(MBase elem) {
+        return ((MMessage)getTarget()).getSender() == elem;
     }
 
 }

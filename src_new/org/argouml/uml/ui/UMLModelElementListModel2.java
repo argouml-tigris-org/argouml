@@ -108,13 +108,10 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
                 Iterator it = ((Collection)o).iterator();
                 while(it.hasNext()) {
                     Object o2 = it.next();
-                    if (!contains(o2)) {
-                        addElement(it.next());
-                    }
+                    addElement(it.next());                    
                 }
             } else {
-                if (!contains(o))
-                    addElement(o);
+                addElement(o);
             }
         }
     }
@@ -193,8 +190,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         Iterator it = col.iterator();
         while (it.hasNext()) {
             Object o = it.next();
-            if (!contains(o)) 
-                addElement(o);
+            addElement(o);
         }
     }
     
@@ -299,5 +295,14 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         return valid;
     }
     
+
+    /**
+     * @see javax.swing.DefaultListModel#addElement(java.lang.Object)
+     */
+    public void addElement(Object obj) {
+        if (obj != null && !contains(obj)) {
+            super.addElement(obj);
+        }
+    }
 
 }

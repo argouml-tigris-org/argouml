@@ -26,6 +26,8 @@ package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.uml.ui.UMLModelElementListModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
+
+import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
@@ -52,12 +54,11 @@ public class UMLUseCaseExtensionPointListModel
         setAllElements(((MUseCase)getTarget()).getExtensionPoints());
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
+     /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(ru.novosoft.uml.MBase)
      */
-    protected boolean isValidRoleAdded(MElementEvent e) {
-        Object o = getChangedElement(e);
-        return o instanceof MExtensionPoint && ((MUseCase)getTarget()).getExtensionPoints().contains(o);
+     protected boolean isValidElement(MBase o) {
+        return ((MUseCase)getTarget()).getExtensionPoints().contains(o);
     }
 
 }
