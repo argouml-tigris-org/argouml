@@ -30,11 +30,13 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.Model;
+import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.model.uml.ExtensionMechanismsFactory;
 import org.argouml.model.uml.ExtensionMechanismsHelper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.AbstractUmlModelFactory;
+import org.argouml.model.uml.UmlModelListener;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -110,6 +112,9 @@ public class CheckUMLModelHelper {
 	UmlFactory.getFactory().delete(mo);
 
 	WeakReference wo = new WeakReference(mo);
+	Model.getPump().removeModelEventListener(
+            UmlModelListener.getInstance(), mo);
+
 	mo = null;
 	System.gc();
 	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
