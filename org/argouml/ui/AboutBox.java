@@ -49,7 +49,7 @@ import org.argouml.util.Tools;
 public class AboutBox extends JDialog {
 
     /** logger */
-    private static Logger cat = Logger.getLogger(AboutBox.class);
+    private static Logger _Log = Logger.getLogger(AboutBox.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -136,7 +136,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Version", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    cat.error("Unable to read version information", e);
+	    _Log.error("Unable to read version information", e);
 	}
 
 	try {
@@ -152,7 +152,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Credits", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    cat.error("Unable to read 'credits.about'", e);
+	    _Log.error("Unable to read 'credits.about'", e);
 	}
 
 	try {
@@ -168,7 +168,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Contact Info", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    cat.error("Unable to read 'contacts.about'", e);
+	    _Log.error("Unable to read 'contacts.about'", e);
 	}
 
 
@@ -185,7 +185,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Report bugs", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    cat.error("Unable to read 'bugreport.about'", e);
+	    _Log.error("Unable to read 'bugreport.about'", e);
 	}
 
 
@@ -202,7 +202,7 @@ public class AboutBox extends JDialog {
 	    _tabs.addTab("Legal", new JScrollPane(a));
 	}
 	catch (Exception e) {
-	    cat.error("Unable to read 'legal.about'", e);
+	    _Log.error("Unable to read 'legal.about'", e);
 	}
 
 	// Add the about tabs from the modules.
