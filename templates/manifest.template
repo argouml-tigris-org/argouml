@@ -1,6 +1,6 @@
 Manifest-Version: 2.0
 Main-Class: org.argouml.application.Main
-Class-Path: xerces.jar nsuml.jar ocl-argo.jar gef.jar antlrall.jar log4j.jar jh.jar saxon.jar jaxp.jar crimson.jar parser.jar xml4j.jar
+Class-Path: xerces.jar nsuml.jar ocl-argo.jar gef.jar i18n.jar antlrall.jar log4j.jar jh.jar saxon.jar jaxp.jar crimson.jar parser.jar xml4j.jar
 Created-By: 1.2 (Sun Microsystems Inc.) 
 
 Name: org/argouml/application/
