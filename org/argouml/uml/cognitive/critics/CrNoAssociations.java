@@ -36,11 +36,13 @@ import org.argouml.model.ModelFacade;
 
 // Uses Model through ModelFacade
 
-/** A critic to detect when a class can never have instances (of
- *  itself or any subclasses). */
+/** A critic to detect when a class might require associations. It checks for
+ * inherited associations as well and keeps silent if it finds any.
+ */
 
 public class CrNoAssociations extends CrUML {
 
+    /** */    
     public CrNoAssociations() {
         setHeadline("Add Associations to <ocl>self</ocl>");
         addSupportedDecision(CrUML.decRELATIONSHIPS);
@@ -48,6 +50,12 @@ public class CrNoAssociations extends CrUML {
         addTrigger("associationEnd");
     }
 
+    /** decide whether the given design material causes a problem
+     * @param dm the object to criticize
+     * the designer who decides the design process
+     * @param dsgr the designer
+     * @return <CODE>PROBLEM_FOUND</CODE> if there is a problem, otherwise <CODE>NO_PROBLEM</CODE>
+     */    
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(ModelFacade.isAClassifier(dm)))
             return NO_PROBLEM;
@@ -59,6 +67,12 @@ public class CrNoAssociations extends CrUML {
         if ((ModelFacade.getName(dm) == null)
             || ("".equals(ModelFacade.getName(dm))))
             return NO_PROBLEM;
+        
+        // abstract elements do not necessarily require associations
+        if (ModelFacade.isAGeneralizableElement(dm) && 
+            ModelFacade.isAbstract(dm)) {
+            return NO_PROBLEM;
+        }
 
         // types can probably have associations, but we should not nag at them
         // not having any.
