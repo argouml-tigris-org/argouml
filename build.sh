@@ -59,7 +59,7 @@ PATH=$PATH:$JAVA_HOME/bin
 NSUML_HOME=$ARGO_HOME/lib
 XML_HOME=$NSUML_HOME
 OCL_HOME=$NSUML_HOME
-LOCALCLASSPATH=$ANT_HOME/lib/ant.jar:$JAVA_HOME/lib/tools.jar:$ANT_HOME/lib/parser.jar:$ANT_HOME/lib/jaxp.jar
+LOCALCLASSPATH=$ANT_HOME/lib/ant.jar:$JAVA_HOME/lib/tools.jar:$ANT_HOME/lib/parser.jar:$ANT_HOME/lib/jaxp.jar:$XML_HOME/xerces.jar
 
 echo Building with classpath $CLASSPATH:$LOCALCLASSPATH
 echo
