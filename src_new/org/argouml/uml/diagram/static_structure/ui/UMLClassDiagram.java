@@ -96,8 +96,7 @@ public class UMLClassDiagram extends UMLDiagram {
   // contructors
   protected static int _ClassDiagramSerial = 1;
 
-
-  public UMLClassDiagram() {
+  protected static String getNewDiagramName() {
   	String name = null;
   	Object[] args = {name};
   	do {
@@ -105,14 +104,18 @@ public class UMLClassDiagram extends UMLDiagram {
         _ClassDiagramSerial++;
         args[0] = name;
     }
-    while (vetoCheck("name", args));
-    try { setName(name); }
+    while (TheInstance.vetoCheck("name", args));
+    return name;
+  }
+
+  public UMLClassDiagram() {
+  	super();
+    try { setName(getNewDiagramName()); }
     catch (PropertyVetoException pve) { }
   }
 
   public UMLClassDiagram(MNamespace m) {
-    this();
-    setNamespace(m);
+    super(getNewDiagramName(), m);
   }
 
   public void setNamespace(MNamespace m) {
