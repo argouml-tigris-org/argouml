@@ -29,6 +29,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
 
 import javax.swing.ImageIcon;
 import javax.swing.JList;
@@ -39,6 +40,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.MMUtil;
+import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.UMLAttributesListModel;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLClassifiersListModel;
@@ -212,6 +214,9 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
 
     public void removeElement() {
 	//overrides removeElement in PropPanel
+	ActionEvent event = new ActionEvent(this,0, "delete");
+	ActionRemoveFromModel.SINGLETON.actionPerformed(event);
+	/*
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier cls = (MClassifier) target;
@@ -228,6 +233,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             // Force an update of the navigation pane to solve issue 323
             ProjectBrowser.TheInstance.getNavPane().forceUpdate();
         }
+        */
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
