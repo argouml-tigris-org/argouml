@@ -101,6 +101,12 @@ implements TabModelTarget {
   // accessors
 
   public void setTarget(Object t) {
+    if (_table.isEditing()) {
+      TableCellEditor ce = _table.getCellEditor();
+      if (ce != null && !ce.stopCellEditing())
+	ce.cancelCellEditing();
+    }
+
     if (!(t instanceof MModelElement)) {
       _target = null;
       _shouldBeEnabled = false;
@@ -157,7 +163,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
     _target = t;
     if (_target instanceof MModelElement)
       ((MModelElement)_target).addMElementListener(this);
-    fireTableStructureChanged();
+    fireTableDataChanged();
     _tab.resizeColumns();
   }
 
@@ -205,28 +211,38 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   }
 
   public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+    TableModelEvent mEvent1 = null, mEvent2 = null;
+
     if (columnIndex != 0 && columnIndex != 1) return;
     if (!(aValue instanceof String)) return;
     Vector tvs = new Vector(_target.getTaggedValues());
-    if (tvs.size() == rowIndex) {
+    if (tvs.size() <= rowIndex) {
       MTaggedValue tv = UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
       if (columnIndex == 0) tv.setTag((String)aValue);
       if (columnIndex == 1) tv.setValue((String) aValue);
       tvs.addElement(tv);
-      fireTableStructureChanged(); //?
-      _tab.resizeColumns();
+
+      mEvent1 = new TableModelEvent(this, tvs.size()-1);
+      mEvent2 = new TableModelEvent(this, tvs.size(), tvs.size(),
+			TableModelEvent.ALL_COLUMNS, TableModelEvent.INSERT);
     }
-    else if ("".equals(aValue)) {
+    else if ("".equals(aValue) && columnIndex == 0) {
       tvs.removeElementAt(rowIndex);
-      fireTableStructureChanged(); //?
-      _tab.resizeColumns();
+      mEvent1 = new TableModelEvent(this, rowIndex, rowIndex,
+			TableModelEvent.ALL_COLUMNS, TableModelEvent.DELETE);
     }
     else {
       MTaggedValue tv = (MTaggedValue) tvs.elementAt(rowIndex);
       if (columnIndex == 0) tv.setTag((String) aValue);
       if (columnIndex == 1) tv.setValue((String) aValue);
+      mEvent1 = new TableModelEvent(this, rowIndex);
     }
     _target.setTaggedValues(tvs);
+    if (mEvent1 != null)
+      fireTableChanged(mEvent1);
+    if (mEvent2 != null)
+      fireTableChanged(mEvent2);
+    _tab.resizeColumns();
   }
 
   ////////////////
@@ -253,7 +269,7 @@ implements VetoableChangeListener, DelayedVChangeListener, MElementListener {
   }
 
   public void delayedVetoableChange(PropertyChangeEvent pce) {
-    fireTableStructureChanged();
+    fireTableDataChanged();
     _tab.resizeColumns();
   }
 
