@@ -12,7 +12,7 @@
 <!ENTITY refentactiv SYSTEM "ref_entactiv.xml">
 <!ENTITY refmenu SYSTEM "ref_menu.xml">
 <!ENTITY appumlcase SYSTEM "app_umlcase.xml">
-<!ENTITY appdocstand SYSTEM "app_docstand.xml">
+<!--ENTITY appdocstand SYSTEM "app_docstand.xml"-->
 <!ENTITY refentcollab SYSTEM "ref_entcollab.xml">
 <!ENTITY refnavpane SYSTEM "ref_navpane.xml">
 <!ENTITY refentclass SYSTEM "ref_entclass.xml">
@@ -106,7 +106,7 @@ so this tab is greyed out.">
   &appumlcase;
   &apphardlimits;
   &appdocplan;
-  &appdocstand;
+  <!-- &appdocstand;  Moved to the cookbook! -->
   &applegal;
   <index>
     <para>

@@ -7,7 +7,7 @@ Standards for writing documentation (manual, cookbook, quickguide).
 
 -->
 
-<appendix id="app.docstand">
+<chapter id="app.docstand">
   <title>Standards For Documentation Writing</title>
 
   <sect1>
@@ -343,7 +343,7 @@ Please don't delete these!
     </itemizedlist>
   </sect1>
         
-</appendix>
+</chapter>
 
 <!-- Local stuff for Emacs - please do not delete
 

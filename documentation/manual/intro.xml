@@ -331,8 +331,8 @@ the Quick Guide</ulink>.
         study used throughout the document. <xref linkend="app.umlres"/> and
         <xref linkend="app.umlcase"/> identify background information on UML
         and UML CASE tools. <xref linkend="app.docplan"/> describes the plan
-        for creation of this manual. <xref linkend="app.docstand"/> gives
-        some guidelines for those writing this manual. <xref
+        for creation of this manual. 
+        <xref
           linkend="app.legal"/> is a copy of the GNU Free Documentation
         License.</para>
 

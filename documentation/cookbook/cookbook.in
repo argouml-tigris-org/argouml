@@ -15,8 +15,10 @@
 <!ENTITY subsysteminternationalization SYSTEM "compi18n.xml">
 <!ENTITY cookbookmodules SYSTEM "cookbook_modules.xml">
 <!ENTITY cookbooklogging SYSTEM "cookbook_logging.xml">
+<!ENTITY documentationstandards SYSTEM "documentationstandards.xml">
 
 <!ENTITY argoversion    "@VERSION@">
+<!ENTITY argouml "ArgoUML">
 
 ]>
 
@@ -2536,6 +2538,7 @@ the issues discussed recently in the user community.
 
   &cvs;
   &standards;
+  &documentationstandards;
 
 <chapter id="further_reading">
 <title>Further Reading</title>
