@@ -21,56 +21,48 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.uml.diagram.ui;
+package org.argouml.ui;
 
+import java.util.*;
 import java.awt.*;
+import java.beans.*;
 import javax.swing.*;
 
 import org.tigris.gef.base.*;
-import org.tigris.gef.util.Util;
 
-import org.argouml.ui.*;
-import org.argouml.uml.ui.*;
-import org.argouml.kernel.*;
+import org.argouml.util.*;
 
-public class PropPanelDiagram extends PropPanel  {
+public class ArgoDiagram extends Diagram {
 
-    public PropPanelDiagram() {
-	super("Diagram",null, 2);
+  ////////////////////////////////////////////////////////////////
+  // constructors
 
-	addCaption("Name:",1,0,0);
-	addField(new UMLTextField(this,
-				  new UMLTextProperty(ArgoDiagram.class,"name","getName","setName")),1,0,0);
-	//
-	//   filler to take up rest of panel
-	addCaption(new JPanel(),1,0,1);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    }
+  public ArgoDiagram() { }
 
-    public void removeElement() {
-        Object target = getTarget();
-        if(target instanceof ArgoDiagram) {
-          try {
-            ArgoDiagram diagram = (ArgoDiagram) target;
-            Project project = ProjectBrowser.TheInstance.getProject();
-            //
-            //  can't easily find owner of diagram
-            //    set new target to the model
-            //
-            Object newTarget = project.getModel();
-            project.removeDiagram(diagram);
-            navigateTo(newTarget);
-          }
-          catch(Exception e) {
-            e.printStackTrace();
-          }
-        }
-    }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-	return false;
-    }
+  public ArgoDiagram(String diagramName ) {
+    try { setName(diagramName); }
+    catch (PropertyVetoException pve) { }
+  }
 
 
-} /* end class PropPanelDiagram */
+  ////////////////////////////////////////////////////////////////
+  // accessors
+
+  public void setName(String n) throws PropertyVetoException {
+    super.setName(n);
+  }
+
+  ////////////////////////////////////////////////////////////////
+  // event management
+
+  public void addChangeRegistryAsListener( ChangeRegistry change ) {
+	  getGraphModel().addGraphEventListener( change );
+  }
+
+  public void removeChangeRegistryAsListener( ChangeRegistry change ) {
+	  getGraphModel().removeGraphEventListener( change );
+  }
+
+  static final long serialVersionUID = -401219134410459387L;
+
+} /* end class ArgoDiagram */

@@ -84,7 +84,7 @@ implements TabModelTarget, NavigationListener {
   protected void initPanels() {
 
     _panels.put(MClassImpl.class, new PropPanelClass());
-    _panels.put(Diagram.class, new PropPanelDiagram());
+    _panels.put(ArgoDiagram.class, new PropPanelDiagram());
     // FigText has no owner, so we do it directly
     _panels.put(FigText.class, new PropPanelString());
     _panels.put(MModelImpl.class, new PropPanelModel());
@@ -201,7 +201,7 @@ implements TabModelTarget, NavigationListener {
 
   public TabModelTarget findPanelFor(Class targetClass) {
     TabModelTarget p = (TabModelTarget) _panels.get(targetClass);
-    // System.out.println("Getting prop panel for:" + targetClass+", found"+p);
+    //System.out.println("Getting prop panel for:" + targetClass+", found"+p);
     if (p == null) {
       Class panelClass = panelClassFor(targetClass);
       if (panelClass == null) return null;
@@ -230,6 +230,7 @@ implements TabModelTarget, NavigationListener {
         base=targetClassName.substring(16);
 
     if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
+
     if (targetClassName.startsWith("M"))
       targetClassName = targetClassName.substring(1); //remove M
     if (targetClassName.endsWith("Impl"))
@@ -249,7 +250,6 @@ implements TabModelTarget, NavigationListener {
   public Object getTarget() { return _target; }
 
   public boolean shouldBeEnabled() { return _shouldBeEnabled; }
-
 
 } /* end class TabProps */
 
@@ -277,7 +277,7 @@ class InitPanelsLater implements Runnable {
         // _panels.put(MClassImpl.class, new PropPanelClass());
         _panels.put(MClassifierRoleImpl.class, new PropPanelClassifierRole());
         _panels.put(MDependencyImpl.class, new PropPanelDependency());
-        //_panels.put(Diagram.class, new PropPanelDiagram());
+        //_panels.put(ArgoDiagram.class, new PropPanelDiagram());
         _panels.put(MGeneralizationImpl.class, new PropPanelGeneralization());
         _panels.put(MInstanceImpl.class, new PropPanelInstance());
         _panels.put(MComponentInstanceImpl.class, new PropPanelComponentInstance());

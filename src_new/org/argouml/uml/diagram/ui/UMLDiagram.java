@@ -32,7 +32,9 @@ import ru.novosoft.uml.foundation.core.*;
 
 import org.tigris.gef.base.*;
 
-public class UMLDiagram extends Diagram {
+import org.argouml.ui.*;
+
+public class UMLDiagram extends ArgoDiagram {
 
   ////////////////////////////////////////////////////////////////
   // actions for toolbar

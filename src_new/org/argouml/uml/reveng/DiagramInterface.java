@@ -84,7 +84,7 @@ public class DiagramInterface {
 
     /**
      * Get the list of modified diagrams.
-     * 
+     *
      * @return The list of modified diagrams.
      */
     Vector getModifiedDiagrams() {
@@ -97,7 +97,7 @@ public class DiagramInterface {
     void resetModifiedDiagrams() {
 	_modifiedDiagrams = new Vector();
     }
-    
+
     /**
      * Add a package to the current diagram. If the package already has
      * a representation in the current diagram, it is not(!) added.
@@ -107,8 +107,8 @@ public class DiagramInterface {
     public void addPackage(MPackage newPackage) {
 	if(!isInDiagram(newPackage)) {
 	    GraphModel gm            = Globals.curEditor().getGraphModel();
-	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
-	    FigPackage newPackageFig = new FigPackage( gm, newPackage); 
+	    LayerPerspective lay     = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
+	    FigPackage newPackageFig = new FigPackage( gm, newPackage);
 
 	    getEditor().add( newPackageFig);
 	    lay.putInPosition( (Fig)newPackageFig);
@@ -126,16 +126,16 @@ public class DiagramInterface {
      */
     public boolean isInDiagram(MPackage p) {
 	if(ProjectBrowser.TheInstance.getTarget() instanceof Diagram) {
-	    return ((Diagram)(ProjectBrowser.TheInstance.getTarget())).getNodes().contains(p); 
+	    return ((Diagram)(ProjectBrowser.TheInstance.getTarget())).getNodes().contains(p);
 	} else {
 	    if(ProjectBrowser.TheInstance.getTarget() instanceof ProjectMemberDiagram) {
-		return ((ProjectMemberDiagram)ProjectBrowser.TheInstance.getTarget()).getDiagram().getNodes().contains(p); 
+		return ((ProjectMemberDiagram)ProjectBrowser.TheInstance.getTarget()).getDiagram().getNodes().contains(p);
 	    } else {
 		return false;
 	    }
 	}
     }
-    
+
     /**
      * Create a diagram name from a package name
      *
@@ -168,7 +168,7 @@ public class DiagramInterface {
 	ProjectMember m;
 	if((m = ProjectBrowser.TheInstance.getProject().findMemberByName( getDiagramName(name) + ".pgml")) != null) {
 
-	    // The diagram already exists in this project. Select it as the current target. 
+	    // The diagram already exists in this project. Select it as the current target.
 	    // Andreas: These lines did cost me a few hours of debugging.
 	    // Why is it that findMemberByName sometimes returns a ProjectMemberDiagram, but in other
 	    // cases a UMLDiagram?
@@ -202,7 +202,7 @@ public class DiagramInterface {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	MNamespace ns = (MNamespace) target;
 	try {
-	    Diagram d = new UMLClassDiagram(ns);
+	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -214,7 +214,7 @@ public class DiagramInterface {
 	}
 	catch (PropertyVetoException pve) { }
     }
-    
+
     /**
      * Add a class to the current diagram.
      *
@@ -222,9 +222,9 @@ public class DiagramInterface {
      */
     public void addClass(MClass newClass) {
 	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
-	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 	
-	FigClass newClassFig = new FigClass( gm, newClass); 
-	
+	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
+	FigClass newClassFig = new FigClass( gm, newClass);
+
 	getEditor().add( newClassFig);
 	if (gm.canAddNode(newClass))
 	    gm.addNode(newClass);
@@ -240,15 +240,15 @@ public class DiagramInterface {
      */
     public void addInterface(MInterface newInterface) {
 	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
-	LayerPerspective lay             = (LayerPerspective)getEditor().getLayerManager().getActiveLayer(); 
-	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface); 
+	LayerPerspective lay             = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
+	FigInterface     newInterfaceFig = new FigInterface( gm, newInterface);
 
 	getEditor().add( newInterfaceFig);
 	if (gm.canAddNode(newInterface))
 	    gm.addNode(newInterface);
 	lay.putInPosition( (Fig)newInterfaceFig);
 	gm.addNodeRelatedEdges( newInterface);
-	getEditor().damaged( newInterfaceFig);		
+	getEditor().damaged( newInterfaceFig);
     }
 }
 

@@ -61,14 +61,14 @@ public class ProjectMemberDiagram extends ProjectMember {
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  private Diagram _diagram;
+  private ArgoDiagram _diagram;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ProjectMemberDiagram(String name, Project p) { super(name, p); }
 
-  public ProjectMemberDiagram(Diagram d, Project p) {
+  public ProjectMemberDiagram(ArgoDiagram d, Project p) {
     super(null, p);
     String s = Util.stripJunk(d.getName());
     //if (!(s.startsWith(_project.getBaseName() + "_")))
@@ -80,14 +80,14 @@ public class ProjectMemberDiagram extends ProjectMember {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public Diagram getDiagram() { return _diagram; }
+  public ArgoDiagram getDiagram() { return _diagram; }
   public String getType() { return MEMBER_TYPE; }
   public String getFileExtension() { return FILE_EXT; }
 
   public void load() {
     Dbg.log(getClass().getName(), "Reading " + getURL());
     PGMLParser.SINGLETON.setOwnerRegistry(getProject()._UUIDRefs);
-    Diagram d = PGMLParser.SINGLETON.readDiagram(getURL());
+    ArgoDiagram d = (ArgoDiagram)PGMLParser.SINGLETON.readDiagram(getURL());
     setDiagram(d);
     try { getProject().addDiagram(d); }
     catch (PropertyVetoException pve) { }
@@ -131,7 +131,7 @@ public class ProjectMemberDiagram extends ProjectMember {
 //     }
   }
 
-  protected void setDiagram(Diagram diagram) {
+  protected void setDiagram(ArgoDiagram diagram) {
     _diagram = diagram;
   }
 
