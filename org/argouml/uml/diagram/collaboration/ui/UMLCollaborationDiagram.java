@@ -100,8 +100,11 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * 
      * @param namespace the namespace for the diagram
      */
-    private UMLCollaborationDiagram(Object namespace) {
+    public UMLCollaborationDiagram(Object namespace) {
         this();
+        if (Model.getFacade().isACollaboration(namespace)) {
+            collaboration = namespace;
+        }
         setNamespace(namespace);
     }
 
@@ -109,7 +112,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * The constructor.
      *
      * @param namespace the namespace for the diagram
-     * @param collab the collaboration represented by this diagram
+     * @param collab the collaboration of this diagram
      */
     public UMLCollaborationDiagram(Object namespace, Object collab) {
         this();

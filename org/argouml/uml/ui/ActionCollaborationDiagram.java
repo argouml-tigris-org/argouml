@@ -68,26 +68,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
         } else if (Model.getFacade().isAClassifier(target)) {
             collaboration = Model.getCollaborationsFactory()
                             .buildCollaboration(namespace, target);
-//        } else if (Model.getFacade().isAModel(target)) {
-//            collaboration = Model.getCollaborationsFactory()
-//                            .buildCollaboration(target);
-//        } else if (Model.getFacade().isAInteraction(target)) {
-//            collaboration = Model.getFacade().getContext(target);
-//        } else if (target instanceof UMLCollaborationDiagram) {
-//            Object owner = ((UMLCollaborationDiagram) target).getOwner();
-//            if (Model.getFacade().isACollaboration(owner)) {
-//                //preventing backward compat problems
-//                collaboration = owner;
-//            }
-//        } else if (Model.getFacade().isACollaboration(target)) {
-//            collaboration = target;
-//        } else {
-//            collaboration =
-//                Model.getCollaborationsFactory().buildCollaboration(
-//                    namespace);
         }
-        UMLCollaborationDiagram d =
-            new UMLCollaborationDiagram(namespace, collaboration);
+        UMLDiagram d = new UMLCollaborationDiagram(collaboration);
         return d;
     }
 
@@ -101,9 +83,8 @@ public class ActionCollaborationDiagram extends ActionAddDiagram {
             throw new IllegalArgumentException(
                 "The argument " + handle + "is not a namespace.");
         }
-        Object/*MNamespace*/ ns = handle;
         return Model.getCollaborationsHelper()
-                                    .isAddingCollaborationAllowed(ns);
+                                    .isAddingCollaborationAllowed(handle);
     }
 
     /**
