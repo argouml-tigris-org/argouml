@@ -23,11 +23,14 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import ru.novosoft.uml.foundation.core.*;
-import javax.swing.*;
-import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
+import javax.swing.*;
+
+import ru.novosoft.uml.foundation.core.*;
+
+import org.argouml.application.api.*;
+import org.argouml.uml.ui.*;
 
 public class PropPanelDependency extends PropPanelModelElement {
 
@@ -36,13 +39,13 @@ public class PropPanelDependency extends PropPanelModelElement {
 
         Class mclass = MDependency.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",2,0,0);
-        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+        addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-        addCaption("Namespace:",3,0,1);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
         addField(namespaceScroll,3,0,0);
 
         addCaption("Suppliers:",0,1,0.5);
@@ -58,10 +61,10 @@ public class PropPanelDependency extends PropPanelModelElement {
         addField(new JScrollPane(clientsList),1,1,0.5);
 
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
 
     }
 

@@ -31,11 +31,14 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import org.argouml.uml.ui.*;
 import java.util.*;
+import javax.swing.*;
+
+import org.argouml.application.api.*;
+import org.argouml.uml.ui.*;
+
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 public class PropPanelPseudostate extends PropPanelStateVertex {
@@ -47,7 +50,7 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
 
     Class mclass = MPseudostate.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
     addCaption("Kind:",2,0,1);
@@ -92,10 +95,10 @@ public class PropPanelPseudostate extends PropPanelStateVertex {
     addField(kindPanel,2,0,0); 
 
 
-    addCaption("Incoming:",0,1,0.5);
+    addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
     addField(incomingScroll,0,1,0.5);
 
-    addCaption("Outgoing:",1,1,0.5);
+    addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
     addField(outgoingScroll,1,1,0.5);
 
   }

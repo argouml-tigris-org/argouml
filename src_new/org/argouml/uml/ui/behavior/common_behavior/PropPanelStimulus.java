@@ -30,20 +30,21 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
+import java.awt.*;
+import java.util.*;
+import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.MElementEvent;
 
-import javax.swing.*;
-import org.argouml.uml.ui.*;
-import java.awt.*;
-import java.util.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
 
 import org.tigris.gef.util.*;
 
@@ -59,14 +60,14 @@ public class PropPanelStimulus extends PropPanelModelElement {
 
     Class mclass = MStimulus.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
     
     addCaption("Action:",2,0,0);
     addField(new UMLStimulusActionTextField(this,new UMLStimulusActionTextProperty("name")),2,0,0);
 
 
-    addCaption("Stereotype:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
     addField(stereotypeBox,3,0,0);
 
    
@@ -78,7 +79,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     JScrollPane senderScroll = new JScrollPane(senderList);
     addField(senderScroll,4,0,0.5);
 
-    addCaption("Receiver:",5,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.receiver"),5,0,0);
     UMLList receiverList = new UMLList(new UMLReflectionListModel(this,"receiver",true,"getReceiver",null,null,null),true);
     receiverList.setForeground(Color.blue);
     receiverList.setVisibleRowCount(1);
@@ -86,7 +87,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
     JScrollPane receiverScroll = new JScrollPane(receiverList);
     addField(receiverScroll,5,0,0.5);
 
-     addCaption("Namespace:",6,0,1);
+     addCaption(Argo.localize("UMLMenu", "label.namespace"),6,0,1);
      addLinkField(namespaceScroll,6,0,0);
 
     
@@ -106,17 +107,17 @@ public class PropPanelStimulus extends PropPanelModelElement {
     //
     //   this is really a property of the link
     //      but since the link has so few properties of its own
-    //      more convienient to have it here
+    //      more convenient to have it here
     /*
-      addCaption("Association:",5,0,0);
+      addCaption(Argo.localize("UMLMenu", "label.association"),5,0,0);
       UML ComboBoxModel assocModel = new UMLComboBoxModel(this,"isAcceptibleAssociation",
       "association","getAssociation","setAssociation",false,MAssociation.class,true);
       addField(new UMLComboBox(assocModel),5,0,0);
     */
 
-     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+     new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+     new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu" ,"button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+     new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
      new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete object"),"removeElement",null);
 
     

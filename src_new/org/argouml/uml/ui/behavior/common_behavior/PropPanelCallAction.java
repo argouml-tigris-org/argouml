@@ -24,22 +24,20 @@
 
 
 package org.argouml.uml.ui.behavior.common_behavior;
+
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import org.argouml.uml.ui.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.*;
 
-import org.argouml.uml.ui.foundation.core.*;
-
+import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.application.api.*;
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
 
 public class PropPanelCallAction extends PropPanelModelElement {
 
@@ -50,20 +48,20 @@ public class PropPanelCallAction extends PropPanelModelElement {
 
         Class mclass = MCallAction.class;
 
-	addCaption("Name:",1,0,0);
+	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
         UMLExpressionModel expressionModel = new UMLExpressionModel(this,MAction.class,"script",
             MActionExpression.class,"getScript","setScript");
 
-        addCaption("Expression:",2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.expression"),2,0,0);
         addField(new JScrollPane(new UMLExpressionBodyField(expressionModel,true)),2,0,0);
 
-        addCaption("Language:",3,0,1);
+        addCaption(Argo.localize("UMLMenu", "label.language"),3,0,1);
         addField(new UMLExpressionLanguageField(expressionModel,true),3,0,0);
 
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     }
 
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {

@@ -493,7 +493,7 @@ public class TabConstraints extends TabSpawnable implements TabModelTarget {
   private MModelElementImpl m_mmeiTarget;
   
   public TabConstraints() {
-    super ("Constraints");
+    super ("tab.constraints");
     
     setLayout (new BorderLayout (0, 0));
     

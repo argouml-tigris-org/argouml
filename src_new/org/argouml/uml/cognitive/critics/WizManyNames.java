@@ -34,6 +34,7 @@ import java.util.*;
 import java.beans.*;
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.cognitive.ui.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -48,7 +49,7 @@ public class WizManyNames extends Wizard {
 
   protected String _instructions =
   "Please change the name of the offending model element.";
-  protected String _label = "Name:";
+  protected String _label = Argo.localize("UMLMenu", "label.name");
   public Vector _mes = null;
 
   protected WizStepManyTextFields _step1 = null;

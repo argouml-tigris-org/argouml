@@ -32,9 +32,11 @@ package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
 import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
 
@@ -47,31 +49,31 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     Class mclass = MInterface.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
     //    stereotypeBox.setEnabled(false);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-    addCaption("Namespace:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
     addField(namespaceScroll,3,0,0);
 
     addCaption("Generalizations:",4,0,0);
     addField(extendsScroll,4,0,0);
 
-    addCaption("Modifiers:",5,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.modifiers"),5,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,2));
     modifiersPanel.add(new UMLCheckBox(localize("Public"),this,new UMLEnumerationBooleanProperty("visibility",mclass,"getVisibility","setVisibility",MVisibilityKind.class,MVisibilityKind.PUBLIC,null)));
-    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,5,0,1);
 
-    addCaption("Associations:",0,1,0.3);
+    addCaption(Argo.localize("UMLMenu", "label.associations"),0,1,0.3);
     addField(connectScroll,0,1,0.3);
 
-    addCaption("Implementations:",1,1,0.4);
+    addCaption(Argo.localize("UMLMenu", "label.implementations"),1,1,0.4);
     JList implementations = new UMLList(new UMLSupplierDependencyListModel(this,null,true),true);
     implementations.setForeground(Color.blue);
     implementations.setVisibleRowCount(1);
@@ -81,20 +83,20 @@ public class PropPanelInterface extends PropPanelClassifier {
     addCaption("Specializations:",2,1,0.3);
     addField(derivedScroll,2,1,0.3);
 
-    addCaption("Operations:",0,2,0.5);
+    addCaption(Argo.localize("UMLMenu", "label.operations"),0,2,0.5);
     addField(opsScroll,0,2,0.5);
 
-    // addCaption("Attributes:",1,2,0.5);
+    // addCaption(Argo.localize("UMLMenu", "label.attributes"),1,2,0.5);
     // addField(attrScroll,1,2,0.5);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
-    //new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-    //new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete interface"),"removeElement",null);
-    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" , "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
+    //new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+    //new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-interface"),"removeElement",null);
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon, Argo.localize("UMLMenu", "button.add-new-interface"),"newInterface",null);
 
   }
 

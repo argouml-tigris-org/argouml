@@ -37,10 +37,13 @@
 package org.argouml.uml.ui.foundation.core;
 
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import org.argouml.uml.ui.*;
 import java.util.*;
+import javax.swing.*;
+
+import ru.novosoft.uml.foundation.core.*;
+
+import org.argouml.application.api.*;
+import org.argouml.uml.ui.*;
 
 public class PropPanelNode extends PropPanelClassifier {
 
@@ -51,37 +54,37 @@ public class PropPanelNode extends PropPanelClassifier {
 
     Class mclass = MNode.class;
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
     addCaption("Generalizations:",2,0,0);
     addField(extendsScroll,2,0,0);
 
-    addCaption("Stereotype:",3,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),3,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),3,0,0);
 
-    addCaption("Modifiers:",4,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,0);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-lc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-lc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,4,0,0);
 
-    addCaption("Namespace:",5,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),5,0,0);
    addField(namespaceScroll,5,0,0);
 
     addCaption("Specializations:",6,0,1);
     addField(derivedScroll,6,0,1);
 
-    addCaption("Components:",0,1,1);
+    addCaption(Argo.localize("UMLMenu", "label.components"),0,1,1);
     JList compList = new UMLList(new UMLReflectionListModel(this,"component",true,"getResidents","setResidents",null,null),true);
     compList.setForeground(Color.blue);
     compList.setVisibleRowCount(1);
     addField(new JScrollPane(compList),0,1,1);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu" ,"button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete node"),"removeElement",null);
 
   }

@@ -23,11 +23,15 @@
 
 
 package org.argouml.uml.ui;
+
 import javax.swing.*;
+
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.use_cases.*;
+
+import org.argouml.application.api.*;
 
 /**
  *   This class implements a list model for the subpackages of a package.
@@ -56,7 +60,7 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
     }
     
     /**
-     *   Called to determine if a particular feauture of the underlying collection
+     *   Called to determine if a particular feature of the underlying collection
      *   should be in the cached list of model elements.
      *   @param obj object to be considered.
      *   @return true if object is appropriate for this list.
@@ -85,13 +89,13 @@ public class UMLClassifiersListModel extends UMLOwnedElementListModel  {
 
         popup.add(open);
         JMenu addmenu = new JMenu(container.localize("Add"));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Actor"),this,"addActor",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Class"),this,"addClass",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Datatype"),this,"addDatatype",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Exception"),this,"addException",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Interface"),this,"addInterface",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_Signal"),this,"addSignal",index));
-        addmenu.add(new UMLListMenuItem(container.localize("Add_Menu_UseCase"),this,"addUseCase",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-actor"),this,"addActor",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-class"),this,"addClass",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-datatype"),this,"addDatatype",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-exception"),this,"addException",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-interface"),this,"addInterface",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-signal"),this,"addSignal",index));
+        addmenu.add(new UMLListMenuItem(Argo.localize("UMLMenu", "menu.popup.add-usecase"),this,"addUseCase",index));
         popup.add(addmenu);
         popup.add(delete);
 

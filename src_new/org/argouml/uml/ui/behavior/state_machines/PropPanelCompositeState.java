@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 
 import ru.novosoft.uml.MFactory;
@@ -50,11 +51,11 @@ public class PropPanelCompositeState extends PropPanelState {
 
         Class mclass = MCompositeState.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-        addCaption("Stereotype:",2,0,0);
-	addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
         addCaption("Subvertices:",3,0,1);
         JList subsList = new UMLList(new UMLReflectionListModel(this,"subvertex",false,"getSubvertices",null,null,null),true);
@@ -63,10 +64,10 @@ public class PropPanelCompositeState extends PropPanelState {
         JScrollPane subsScroll = new JScrollPane(subsList);
         addField(subsScroll,3,0,1);
 
-        addCaption("Incoming:",0,1,0.5);
+        addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
 	addField(incomingScroll,0,1,0.5);
 
-        addCaption("Outgoing:",1,1,0.5);
+        addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
 	addField(outgoingScroll,1,1,0.5);
 
         addCaption("Entry-Action:",0,2,0);
@@ -78,7 +79,7 @@ public class PropPanelCompositeState extends PropPanelState {
         addCaption("Do-Activity:",2,2,0);
 	addField(doScroll,2,2,0);
 
-        addCaption("Internal Transitions:",3,2,1);
+        addCaption(Argo.localize("UMLMenu", "label.internal-transitions"),3,2,1);
 	addField(internalTransitionsScroll,3,2,1);
   }
 

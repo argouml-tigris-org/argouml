@@ -35,6 +35,7 @@ import java.util.*;
 
 import javax.swing.*;
 
+import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
 
@@ -51,10 +52,10 @@ public class PropPanelCallEvent extends PropPanelEvent {
 
         Class mclass = MCallEvent.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(nameField,1,0,0);
 
-	addCaption("Parameters:",2,0,1);
+	addCaption(Argo.localize("UMLMenu", "label.parameters"),2,0,1);
 	addField(paramScroll,2,0,1);
 
   }

@@ -30,21 +30,19 @@
 package org.argouml.uml.ui.behavior.common_behavior;
 
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.ui.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.*;
+
+import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.model_management.*;
 
 public class PropPanelSignal extends PropPanelClassifier {
 
@@ -56,48 +54,48 @@ public class PropPanelSignal extends PropPanelClassifier {
 
         Class mclass = MSignal.class;
 
-        addCaption("Name:",1,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
         addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
 
-        addCaption("Stereotype:",2,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
         addField(stereotypeBox,2,0,0);
 
         addCaption("Specializes:",3,0,0);
 	addField(extendsScroll,3,0,0);
 
-        addCaption("Implements:",4,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.implements"),4,0,0);
         addField(implementsScroll,4,0,0);
 
-        addCaption("Modifiers:",5,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.modifiers"),5,0,0);
         addField(_modifiersPanel,5,0,0);
 
-        addCaption("Namespace:",6,0,0);
+        addCaption(Argo.localize("UMLMenu", "label.namespace"),6,0,0);
         addField(namespaceScroll,6,0,0);
 
         addCaption("Generalizes:",7,0,1);
         addField(derivedScroll,7,0,1);
 
-        addCaption("Operations:",0,1,0.33);
+        addCaption(Argo.localize("UMLMenu", "label.operations"),0,1,0.33);
         addField(opsScroll,0,1,0.33);
 
-        addCaption("Attributes:",1,1,0.33);
+        addCaption(Argo.localize("UMLMenu", "label.attributes"),1,1,0.33);
         addField(attrScroll,1,1,0.33);
 
-        addCaption("Associations:",2,1,0.33);
+        addCaption(Argo.localize("UMLMenu", "label.associations"),2,1,0.33);
         addField(connectScroll,2,1,0.33);
 
 
-	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
-	new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
-	//new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
-	//new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-	//new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete actor"),"removeElement",null);
-	//new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-	new PropPanelButton(this,buttonPanel,_classIcon,localize("New signal"),"newSignal",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_addOpIcon, Argo.localize("UMLMenu", "button.add-operation"),"addOperation",null);
+	new PropPanelButton(this,buttonPanel,_addAttrIcon, Argo.localize("UMLMenu", "button.add-attribute"),"addAttribute",null);
+	//new PropPanelButton(this,buttonPanel,_addAssocIcon, Argo.localize("UMLMenu", "button.add-association"),"addAssociation",null);
+	//new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+	//new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-actor"),"removeElement",null);
+	//new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+	new PropPanelButton(this,buttonPanel,_classIcon, Argo.localize("UMLMenu", "button.add-signal"),"newSignal",null);
 
 
     }

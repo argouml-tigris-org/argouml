@@ -30,17 +30,19 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
+import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 
+import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
+import ru.novosoft.uml.model_management.*;
+
+import org.argouml.application.api.*;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.*;
-import java.awt.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import java.util.*;
 
 public class PropPanelAssociation extends PropPanelModelElement {
 
@@ -59,25 +61,25 @@ public class PropPanelAssociation extends PropPanelModelElement {
     Class[] namesToWatch = { MStereotype.class,MNamespace.class,MClassifier.class };
     setNameEventListening(namesToWatch);
 
-    addCaption("Name:",1,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
     addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",2,0,0);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
+    addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
-    addCaption("Namespace:",3,0,0);
+    addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,0);
     addLinkField(namespaceScroll,3,0,0);
 
-    addCaption("Modifiers:",4,0,1);
+    addCaption(Argo.localize("UMLMenu", "label.modifiers"),4,0,1);
 
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
-    modifiersPanel.add(new UMLCheckBox(localize("Abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
-    modifiersPanel.add(new UMLCheckBox(localize("Final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
+    modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.final-uc"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("Root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,4,0,0);
 
 
-    addCaption("Association Ends:",0,1,0.25);
+    addCaption(Argo.localize("UMLMenu", "label.association-ends"),0,1,0.25);
     JList assocEndList = new UMLList(new UMLAssociationEndListModel(this,"connection",true),true);
     assocEndList.setBackground(getBackground());
     assocEndList.setForeground(Color.blue);
@@ -96,13 +98,13 @@ public class PropPanelAssociation extends PropPanelModelElement {
     JScrollPane derivedScroll=new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
     addField(derivedScroll,2,1,0);
 
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
-    //does this make sense??new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-    //does this make sense??new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    //does this make sense??new PropPanelButton(this,buttonPanel,_associationIcon,localize("New association"),"newAssociation",null);
+    new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateNamespace",null);
+    new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_deleteIcon, Argo.localize("UMLMenu", "button.delete-association"),"removeElement",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_generalizationIcon, Argo.localize("UMLMenu", "button.add-generalization"),"addGeneralization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_realizationIcon, Argo.localize("UMLMenu", "button.add-realization"),"addRealization",null);
+    //does this make sense??new PropPanelButton(this,buttonPanel,_associationIcon, Argo.localize("UMLMenu", "button.add-association"),"newAssociation",null);
 
   }
 

@@ -22,15 +22,20 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import ru.novosoft.uml.*;
+
+import java.awt.*;
+import java.util.*;
 import javax.swing.*;
 import javax.swing.tree.*;
+
+import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.use_cases.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import java.awt.*;
+
+import org.argouml.application.api.*;
+
 
 /**
  *  This class is implements a tree model for ownedElements of a MNamespace
@@ -64,7 +69,7 @@ public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
         }
         _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
             "Classes",MClass.class,null));
-        add.add(new UMLTreeMenuItem("Class",container,"addClass",false));
+        add.add(new UMLTreeMenuItem(Argo.localize("UMLMenu", "misc.class"),container,"addClass",false));
         if(!forClass) {
             _nodeList.add(new UMLMetaclassInstanceTreeNode(container,this,
                 "Interfaces",MInterface.class,null));
