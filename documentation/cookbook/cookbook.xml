@@ -1992,6 +1992,9 @@ and to allow us to know how much is involved
 when testing each component.
 </para>
     <para>
+TODO: Insert UML diagram describing the relation between components and layers.
+</para>
+    <para>
 This chapter contains 
 a list of all components and what layer they are in
 and the definition of the responsibility of each component.
@@ -2071,6 +2074,10 @@ Every other component can use the classes available with the JRE.
 	</listitem>
 
       </itemizedlist>
+    <para>
+TODO: Insert UML diagram listing all layer 0 components.
+</para>
+
     </sect1>
 
     <sect1 id="layer1">
@@ -2145,6 +2152,10 @@ to present some help for the user.
 
 	</itemizedlist>
 </para>
+    <para>
+TODO: Insert UML diagram listing all layer 1 components with relations
+to layer 0 components.
+</para>
     </sect1>
 
     <sect1 id="layer2">
@@ -2197,6 +2208,10 @@ into ArgoUML.
 </para>
 	  </listitem>
 	</itemizedlist>
+</para>
+    <para>
+TODO: Insert UML diagram listing all layer 2 components with relations
+to layer 0 and 1 components.
 </para>
     </sect1>
 
@@ -2253,9 +2268,14 @@ This is the critics.
 
 	</itemizedlist>
 </para>
+    <para>
+TODO: Insert UML diagram listing all layer 3 components with relations
+to layer 0, 1 or 2 components.
+</para>
     </sect1>
 
 <!-- Has to be rewritten to fit the new concepts.
+(If it at all will fit, I am not sure. Linus December 2002.)
     <sect1>
       <title>ArgoUML Initialization</title>
       <sect2>
@@ -2814,58 +2834,24 @@ YYY
 
 <chapter id="inside_components">
 <title>Inside the components</title>
-    <para>
-This chapter is not yet updated to discuss layers.
-</para>
 <para>...</para>
-<sect1 id="general">
-<title>General information</title>
-<para>This section explains some general concepts which come in handy, when 
-programming in ArgoUML.
-</para>
-<sect2 id="howdoi_general">
-<title>How do I ...?</title>
-<para>
-<itemizedlist>
-	    <listitem>
-	      <para>
-...get the according NS-UML element for a given
-<classname>Fig<replaceable>XXX</replaceable></classname> class?
-</para>
-	      <para>
-Each <classname>Fig<replaceable>XXX</replaceable></classname>
-implements the method <methodname>getOwner()</methodname>
-which returns the appropriate owner element which is
-responsible for this Fig element.
-</para>
-	    </listitem>
-	    <listitem>
-	      <para>
-...get the according Fig element for a given 
-<classname>MModelElement</classname>?
-</para>
-	      <para>
-for this one needs to iterate through all fig elements and invoke
-<methodname>getOwner</methodname>.
-Compare the result with the given <classname>MModelElement</classname>.
-Beware that there might be more than one Fig Element per 
-<classname>MModelElement</classname>.
-</para>
-</listitem>
-</itemizedlist>
-</para> 
-</sect2>
-</sect1>
 
     <sect1 id="model">
       <title>Model</title>
       <para id="comp-model-purpose">
-Purpose - to provide an interface to the NSUML model and also
-to the GEF diagrams that in a consistant way adds all ArgoUML-specifics 
-at every object creation, modification, and deletion.
+Purpose - to provide the data structures that keeps track of the model
+and the diagrams. 
+This comes with a complete set of methods to modify the model
+and register interest in changes to the model.
+</para>
+      <para>
+The Model is located in <classname>org.argouml.model</classname>.
 </para>
       <para>
 The Model is a Layer 1 component. See <xref linkend="layer1"></xref>.
+</para>
+      <para>
+This is implemented using NSUML to implement the UML model.
 </para>
       <para>
 ArgoUML uses several factories and helperclasses to manipulate the NSUML
@@ -3018,7 +3004,7 @@ Create it in the correct helper.
 
 
 <sect1 id="critics">
-<title>Critics and other cognitive tools</title>
+      <title>Critics and other cognitive tools</title>
       <indexterm>
 	<primary>Critics</primary>
       </indexterm>
@@ -3031,6 +3017,12 @@ Create it in the correct helper.
       <para id="comp-critics-purpose">
 Purpose - to provide cognitive help for the User.
 This help is based on the current model that the User works with.
+</para>
+      <para>
+The Critics are located in <classname>org.argouml.cognitive</classname>.
+</para>
+      <para>
+The Critics is a Layer 3 component. See <xref linkend="layer3"></xref>.
 </para>
       <para>
 This module contains the following main class types:
@@ -3374,103 +3366,24 @@ have any effect.
       </sect2>
 </sect1>
 
-    <sect1 id="notation">
-      <title>Notation</title>
-      <indexterm>
-	<primary>Notation</primary>
-      </indexterm>
-      <para id="comp-notation-purpose">
-Purpose - to provide the different possibilities on how
-classes, methods and attributes are to be shown in diagrams
-and property panels.
-</para>
-      <para>
-The interfaces <classname>NotationProvider</classname> and 
-<classname>NotationContext</classname> are used to
-provide linkages to different code generators.
-A class which can ask for different notations, such as the source box,
-or a <classname>FigClass</classname>, extends 
-<classname>NotationContext</classname>. 
-When processed, a <classname>NotationContext</classname> gets asked
-what <classname>NotationName</classname> it wants or null to indicate
-it doesn't care.
-If the <classname>NotationName</classname> is null, then the value of
-the menu selection "Edit->Notation" are used. 
-The <classname>NotationName</classname> is
-used to find the correct <classname>NotationProvider</classname>.
-That <classname>NotationProvider</classname> gets called, and the
-results are passed to the <classname>NotationContext</classname> for
-it to do what it needs.
-</para>
-      <para>
-This module contains the following main class types:
-</para>
-      <itemizedlist>
-	<listitem>
-	<para>
-<classname>NotationProviderFactory</classname>
-</para>
-	</listitem>
-
-	<listitem>
-	<para>
-<classname>Notation</classname>,
-<classname>NotationContext</classname>,
-<classname>NotationProvider</classname>
-</para>
-	</listitem>
-
-      </itemizedlist>
-      <sect2>
-	<title>Collaborations for Notation</title>
-	<para>
-Notations are used by the diagrams and tabs to provide the correct
-syntax when showing code.
-</para>
-	<sect3 id="comp-notation-to-comp-codegenreveng">
-	  <title>Notation uses Code Generation and Reverse Engineering</title>
-	  <para>
-For generating parts of the java-notation, parts of the
-java code generation is used.
-</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-plugins">
-	  <title>Notation uses Plugin-Module API</title>
-	  <para>
-Currently not!
-</para>
-	</sect3>
-	<sect3 id="comp-notation-to-comp-logging">
-	  <title>Notation uses Logging</title>
-	  <para>Currently not.</para>
-	</sect3>
-      </sect2>
-
-      <sect2 id="howdoi_notation">
-	<title>How do I ...?</title>
-	<itemizedlist>
-	  <listitem>
-	    <para>...add a new notation?</para>
-	    <para>
-Use the PluggableNotation api!
-</para>
-	    </listitem>
-	</itemizedlist>
-      </sect2>
-    </sect1>
 
     <sect1 id="diagrams">
       <title>Diagrams</title>
       <indexterm>
 	<primary>Diagrams</primary>
       </indexterm>
-      <!--
-Howto for creating prop panels.
 
-Modifications
-=============
- 8 Apr 2002:  Jeremy Bennett. First version put together
--->
+      <para>
+Purpose - to generate a graphical view of the diagrams in the model with
+tools.
+The contents of the diagrams and model is modifyable.
+</para>
+      <para>
+The Diagrams will be located in <classname>org.argouml.???</classname>.
+</para>
+      <para>
+The Diagrams is a Layer 2 component. <xref linkend="layer2"></xref>.
+</para>
 
       <sect2 id="howdoi_diagrams">
 	<title>How do I add a new element to a diagram?</title>
@@ -4871,6 +4784,9 @@ advice that the model has changed.
 
 <sect1 id="reverse">
 <title>Reverse Engineering</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
       <indexterm>
 	<primary>Reverse Engineering</primary>
       </indexterm>
@@ -5036,6 +4952,9 @@ F E D
 
     <sect1 id="detailspanel">
       <title>Details Panel</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
       <indexterm>
 	<primary>Details Panel</primary>
       </indexterm>
@@ -5074,6 +4993,9 @@ Remove the line for the tab from
 
 <sect1 id="help">
 <title>Help System</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
       <indexterm>
 	<primary>Help system</primary>
       </indexterm>
@@ -5084,6 +5006,9 @@ Remove the line for the tab from
 
 <sect1 id="internationalization">
 <title>Internationalization</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
       <indexterm>
 	<primary>Internationalization</primary>
       </indexterm>
@@ -5482,6 +5407,9 @@ it is better to rely on this simpler mechanism to guarantee correctness.
 
     <sect1>
       <title>How are modules organised in in the java code</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
       <para>
 The previous section describes how modules and plugins are 
 connected on the java level totally independant of how they
@@ -5599,6 +5527,49 @@ as the package root.
 
 &cookbooklogging;
 
+
+    <sect1 id="general">
+      <title>General information</title>
+      <para>
+This section is not yet updated to discuss layers.
+</para>
+      <para>
+This section explains some general concepts which come in handy, when 
+programming in ArgoUML.
+</para>
+      <sect2 id="howdoi_general">
+	<title>How do I ...?</title>
+	<para>
+<itemizedlist>
+	    <listitem>
+	      <para>
+...get the according NS-UML element for a given
+<classname>Fig<replaceable>XXX</replaceable></classname> class?
+</para>
+	      <para>
+Each <classname>Fig<replaceable>XXX</replaceable></classname>
+implements the method <methodname>getOwner()</methodname>
+which returns the appropriate owner element which is
+responsible for this Fig element.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>
+...get the according Fig element for a given 
+<classname>MModelElement</classname>?
+</para>
+	      <para>
+for this one needs to iterate through all fig elements and invoke
+<methodname>getOwner</methodname>.
+Compare the result with the given <classname>MModelElement</classname>.
+Beware that there might be more than one Fig Element per 
+<classname>MModelElement</classname>.
+</para>
+	    </listitem>
+	  </itemizedlist>
+</para> 
+      </sect2>
+    </sect1>
 
 </chapter>
 

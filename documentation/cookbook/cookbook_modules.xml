@@ -43,6 +43,9 @@
 </sect1info>
 -->
 <title>Modules and PlugIns</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
 <sect2 id="modules_vs_plugins">
 <title>Differences between modules and plugins</title>
 <para>

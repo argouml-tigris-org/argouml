@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <sect1 id="logging">
 <title>Logging</title>
+    <para>
+This section is not yet updated to discuss layers.
+</para>
 <para>
         <application>ArgoUML</application> uses the standard 
         <ulink url="http://jakarta.apache.org/log4j/">log4j</ulink>
