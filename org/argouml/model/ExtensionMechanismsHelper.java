@@ -26,9 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.model_management.MModel;
 
 /**
  * The interface for the helper of the ExtensionMechanisms.<p>
@@ -42,20 +39,7 @@ public interface ExtensionMechanismsHelper {
      * @param ns is the namespace.
      * @return a Collection with the stereotypes.
      */
-    Collection getStereotypes(MNamespace ns);
-
-    /**
-     * Returns all stereotypes in some model.
-     *
-     * TODO: This method can never be called, and you would probably not want
-     * to since it does exactly the same thing as the method above (which is
-     * the one you will call if you try).
-     *
-     * @param ns is the model.
-     * @return Collection The stereotypes found. An empty arraylist is returned
-     * if nothing is found.
-     */
-    Collection getStereotypes(MModel ns);
+    Collection getStereotypes(Object ns);
 
     /**
      * Finds a stereotype in some namespace, but not in its subnamespaces.
@@ -69,7 +53,7 @@ public interface ExtensionMechanismsHelper {
      * @param ns is the namespace.
      * @param stereo is the stereotype.
      */
-    MStereotype getStereotype(MNamespace ns, MStereotype stereo);
+    Object getStereotype(Object ns, Object stereo);
 
     /**
      * Searches for a stereotype just like the given stereotype in all models
@@ -85,9 +69,9 @@ public interface ExtensionMechanismsHelper {
      *
      * @param models a collection of models
      * @param stereo is the given stereotype
-     * @return MStereotype
+     * @return Stereotype
      */
-    MStereotype getStereotype(Collection models, MStereotype stereo);
+    Object getStereotype(Collection models, Object stereo);
 
     /**
      * @param m the ModelElement

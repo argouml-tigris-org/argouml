@@ -79,7 +79,7 @@ public class ExtensionMechanismsFactoryImpl
      *
      * @return an initialized UML TaggedValue instance.
      */
-    public MTaggedValue createTaggedValue() {
+    public Object createTaggedValue() {
         MTaggedValue modelElement =
 	    MFactory.getDefaultFactory().createTaggedValue();
 	super.initialize(modelElement);
@@ -105,7 +105,7 @@ public class ExtensionMechanismsFactoryImpl
      * @return                         the resulting stereotype object
      * @throws IllegalArgumentException if either argument is null.
      */
-    public MStereotype buildStereotype(Object theModelElementObject,
+    public Object buildStereotype(Object theModelElementObject,
                                        Object theName,
                                        Object theNamespaceObject) {
         if (theModelElementObject == null
@@ -121,7 +121,9 @@ public class ExtensionMechanismsFactoryImpl
     	stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
     	MStereotype stereo2 =
-	    nsmodel.getExtensionMechanismsHelper().getStereotype(ns, stereo);
+    	    (MStereotype)
+    	    	nsmodel.getExtensionMechanismsHelper()
+    	    		.getStereotype(ns, stereo);
     	if (stereo2 != null) {
             stereo2.addExtendedElement(me);
             nsmodel.getUmlFactory().delete(stereo);
@@ -141,7 +143,7 @@ public class ExtensionMechanismsFactoryImpl
      * @param models all the models
      * @return                      the new stereotype
      */
-    public MStereotype buildStereotype(
+    public Object buildStereotype(
             Object theModelElementObject,
 			String theName,
             Object model,
@@ -152,8 +154,9 @@ public class ExtensionMechanismsFactoryImpl
         stereo.setBaseClass(nsmodel.getExtensionMechanismsHelper()
 			    .getMetaModelName(me));
         MStereotype stereo2 =
-	    nsmodel.getExtensionMechanismsHelper()
-	    	.getStereotype(models, stereo);
+            (MStereotype)
+            	nsmodel.getExtensionMechanismsHelper()
+            		.getStereotype(models, stereo);
         if (stereo2 != null) {
             stereo2.addExtendedElement(me);
             nsmodel.getUmlFactory().delete(stereo);
@@ -189,8 +192,8 @@ public class ExtensionMechanismsFactoryImpl
      * @param value is the value (a String).
      * @return an initialized UML TaggedValue instance.
      */
-    public MTaggedValue buildTaggedValue(String tag, String value) {
-        MTaggedValue tv = createTaggedValue();
+    public Object buildTaggedValue(String tag, String value) {
+        MTaggedValue tv = (MTaggedValue) createTaggedValue();
         tv.setTag(tag);
         tv.setValue(value);
         return tv;
@@ -199,12 +202,22 @@ public class ExtensionMechanismsFactoryImpl
     /**
      * @param elem the stereotype
      */
-    public void deleteStereotype(MStereotype elem) { }
+    public void deleteStereotype(Object elem) {
+        if (!(elem instanceof MStereotype)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * @param elem the taggedvalue
      */
-    public void deleteTaggedValue(MTaggedValue elem) { }
+    public void deleteTaggedValue(Object elem) {
+        if (!(elem instanceof MTaggedValue)) {
+            throw new IllegalArgumentException();
+        }
+
+    }
 
     /**
      * Copies a stereotype.
@@ -213,15 +226,25 @@ public class ExtensionMechanismsFactoryImpl
      * @param ns is the namespace to put the copy in.
      * @return a newly created stereotype
      */
-    public MStereotype copyStereotype(MStereotype source, MNamespace ns) {
-	MStereotype st = (MStereotype) createStereotype();
-	ns.addOwnedElement(st);
-	doCopyStereotype(source, st);
+    public Object copyStereotype(Object source, Object ns) {
+        if (!(source instanceof MStereotype)) {
+            throw new IllegalArgumentException("source");
+        }
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException("namespace");
+        }
+
+        MStereotype st = (MStereotype) createStereotype();
+	((MNamespace) ns).addOwnedElement(st);
+	doCopyStereotype((MStereotype) source, st);
 	return st;
     }
 
     /**
      * Used by the copy functions. Do not call this function directly.
+     *
+     * @param source The stereotype to copy from.
+     * @param target The object becoming a copy.
      */
     private void doCopyStereotype(MStereotype source, MStereotype target) {
 	nsmodel.getCoreFactory().doCopyGeneralizableElement(source, target);

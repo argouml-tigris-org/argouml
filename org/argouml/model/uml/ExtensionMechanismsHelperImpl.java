@@ -67,12 +67,16 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param ns is the namespace.
      * @return a Collection with the stereotypes.
      */
-    public Collection getStereotypes(MNamespace ns) {
+    public Collection getStereotypes(Object ns) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
         List l = new ArrayList();
         if (ns == null) {
             return l;
         }
-    	Iterator it = ns.getOwnedElements().iterator();
+    	Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
     	while (it.hasNext()) {
 	    Object o = it.next();
 	    if (o instanceof MStereotype) {
@@ -80,32 +84,6 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
 	    }
     	}
     	return l;
-    }
-
-    /**
-     * Returns all stereotypes in some model.
-     *
-     * TODO: This method can never be called, and you would probably not want
-     * to since it does exactly the same thing as the method above (which is
-     * the one you will call if you try).
-     *
-     * @param ns is the model.
-     * @return Collection The stereotypes found. An empty arraylist is returned
-     * if nothing is found.
-     */
-    public Collection getStereotypes(MModel ns) {
-        List l = new ArrayList();
-        if (ns == null) {
-            return l;
-        }
-        Iterator it = ns.getOwnedElements().iterator();
-        while (it.hasNext()) {
-            Object o = it.next();
-            if (o instanceof MStereotype) {
-                l.add(o);
-            }
-        }
-        return l;
     }
 
     /**
@@ -120,9 +98,17 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      * @param ns is the namespace.
      * @param stereo is the stereotype.
      */
-    public MStereotype getStereotype(MNamespace ns, MStereotype stereo) {
-    	String name = stereo.getName();
-    	String baseClass = stereo.getBaseClass();
+    public Object getStereotype(Object ns, Object stereo) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException("namespace");
+        }
+
+        if (!(stereo instanceof MStereotype)) {
+            throw new IllegalArgumentException("stereotype");
+        }
+
+    	String name = ((MModelElement) stereo).getName();
+    	String baseClass = ((MStereotype) stereo).getBaseClass();
     	Iterator it = getStereotypes(ns).iterator();
     	while (it.hasNext()) {
 	    Object o = it.next();
@@ -153,14 +139,18 @@ class ExtensionMechanismsHelperImpl implements ExtensionMechanismsHelper {
      *
      * @param models a collection of models
      * @param stereo is the given stereotype
-     * @return MStereotype
+     * @return Stereotype
      */
-    public MStereotype getStereotype(Collection models, MStereotype stereo) {
+    public Object getStereotype(Collection models, Object stereo) {
         if (stereo == null) {
             return null;
         }
-        String name = stereo.getName();
-        String baseClass = stereo.getBaseClass();
+        if (!(stereo instanceof MStereotype)) {
+            throw new IllegalArgumentException("stereotype");
+        }
+
+        String name = ((MModelElement) stereo).getName();
+        String baseClass = ((MStereotype) stereo).getBaseClass();
         if (name == null || baseClass == null) {
             return null;
         }
