@@ -9,10 +9,12 @@ package org.argouml.swingext;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.Frame;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 
@@ -33,55 +35,131 @@ public abstract class Dialog extends JDialog implements ActionListener {
     protected int labelGap = 5;
     protected int buttonGap = 5;
     
-    protected JButton _okButton;
-    protected JButton _cancelButton;
-    protected JButton _closeButton;
-    protected JButton _yesButton;
-    protected JButton _noButton;
-    protected JButton _helpButton;
+    private JButton _okButton;
+    private JButton _cancelButton;
+    private JButton _closeButton;
+    private JButton _yesButton;
+    private JButton _noButton;
+    private JButton _helpButton;
+    
+    private JPanel _mainPanel;
+    private JComponent _content;
+    private JPanel _buttonPanel;
         
     /**
-     * Create a new Dialog
-     */
+     * Creates a new Dialog with no content component and a single Close
+     * button. After creating the Dialog, call setContent() and setButtons()
+     * to configure the dialog before calling show() to display it.
+    **/
     public Dialog(Frame owner, String title, boolean modal) {
         super(owner, title, modal);
-    
+
         _okButton = new JButton();
         _cancelButton = new JButton();
         _closeButton = new JButton();
         _yesButton = new JButton();
         _noButton = new JButton();
         _helpButton = new JButton();
-    
-        JPanel mainPanel = new JPanel();
-        mainPanel.setLayout(new BorderLayout(0, bottomBorder));
-        mainPanel.setBorder(BorderFactory.createEmptyBorder(topBorder, leftBorder, bottomBorder, rightBorder));
-        getContentPane().add(mainPanel);
+        
+        _content = null;      
 
         nameButtons();
-        
-        JPanel contentPanel = addComponents();
-        mainPanel.add(contentPanel, BorderLayout.CENTER);
-        
-        JButton[] buttons = addButtons();
-        if (buttons == null || buttons.length == 0) {
-            buttons = new JButton[] { _closeButton };
-        }
-        
-        JPanel buttonPanel = new JPanel(new SerialLayout(Horizontal.getInstance(), SerialLayout.EAST, SerialLayout.LEFTTORIGHT, SerialLayout.TOP, buttonGap));
-        for (int i = 0; i < buttons.length; ++i) {
-            buttonPanel.add(buttons[i]);
-            buttons[i].addActionListener(this);
-        }        
-        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+            
+        _mainPanel = new JPanel();
+        _mainPanel.setLayout(new BorderLayout(0, bottomBorder));
+        _mainPanel.setBorder(BorderFactory.createEmptyBorder(
+            topBorder, leftBorder, bottomBorder, rightBorder));
+        getContentPane().add(_mainPanel);
 
-        getRootPane().setDefaultButton(buttons[0]);
+        _buttonPanel = new JPanel(new SerialLayout(
+            Horizontal.getInstance(), SerialLayout.EAST, 
+            SerialLayout.LEFTTORIGHT, SerialLayout.TOP, buttonGap));
+        _mainPanel.add(_buttonPanel, BorderLayout.SOUTH);
 
-        pack();
-        
-        centerOnParent();
+        setButtons(new JButton[] { _closeButton }, _closeButton);
+    }
+    
+    public JComponent getContent() {
+        return _content;
     }
 
+    /**
+     * Sets the main component to be displayed within the dialog.
+     *
+     * @param content   main component to display in dialog
+    **/
+    public void setContent(JComponent content) {
+        if (_content != null) {
+            _mainPanel.remove(_content);
+        }
+        _content = content;
+        _mainPanel.add(_content, BorderLayout.CENTER);
+    }
+    
+    /**
+     * Sets the set of buttons to be displayed at the bottom of the dialog.
+     * The default button (which must be in this set) may also be specified,
+     * or null indicating no default button.
+     * 
+     * @param   buttons array of JButtons to add
+     * @param   defaultButton   member of the array to set as the default
+    **/
+    public void setButtons(JButton[] buttons, JButton defaultButton) {
+        _buttonPanel.removeAll();
+        
+        for (int i = 0; i < buttons.length; ++i) {
+            _buttonPanel.add(buttons[i]);
+            buttons[i].addActionListener(this);
+        }
+        
+        getRootPane().setDefaultButton(defaultButton);
+    }
+    
+    public JButton getOkButton() {
+        return _okButton;
+    }
+
+    public JButton getCancelButton() {
+        return _cancelButton;
+    }
+
+    public JButton getCloseButton() {
+        return _closeButton;
+    }
+
+    public JButton getYesButton() {
+        return _yesButton;
+    }
+
+    public JButton getNoButton() {
+        return _noButton;
+    }
+
+    public JButton getHelpButton() {
+        return _helpButton;
+    }
+    
+    public void show() {
+        pack();
+        centerOnParent();        
+        super.show();
+    }
+    
+    /**
+     * Default implementation simply closes the dialog when
+     * any of the standard buttons is pressed except the Help button.
+    **/
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == _okButton
+            || e.getSource() == _cancelButton
+            || e.getSource() == _closeButton
+            || e.getSource() == _yesButton
+            || e.getSource() == _noButton) {
+            hide();
+            dispose();
+        }
+    }
+    
     private void centerOnParent() {
         Dimension size = getSize();
         Dimension p = getParent().getSize();
@@ -89,25 +167,6 @@ public abstract class Dialog extends JDialog implements ActionListener {
         int y = (getParent().getY() - size.height) + (int) ((size.height + p.height) / 2d);
         setLocation(x, y);
     }
-    
-    /**
-     * Subclasses may override this method to specify the set of buttons
-     * to appear at the botton of the dialog. The first button in the array
-     * will be the default.
-     * 
-     * @return array of JButtons in desired order of appearance (left to right)
-    **/
-    protected JButton[] addButtons() {
-        return new JButton[] { _okButton, _cancelButton };
-    }
-
-    /**
-     * Subclasses should implement this method to construct
-     * a JPanel which contains the dialog's main UI components.
-     * 
-     * @return JPanel containing the dialog's main UI
-    **/
-    protected abstract JPanel addComponents();
         
     /**
      * Subclasses may override this method to change the names of the
