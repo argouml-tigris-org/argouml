@@ -22,17 +22,28 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
+
 import java.text.*;
 import javax.swing.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;
+
+import org.argouml.application.api.*;
+
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*; //--pjs-- added for event.
+import ru.novosoft.uml.behavior.state_machines.*;
 
+/**
+ *  This class handles the updating of text as it is typed into the text field on one
+ *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
+ *  updates the diagram as each charachter is typed. */
 public class UMLTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;
     private UMLTextProperty _property;
+    Object _target;
+    MClassifier _classifier;
     
     /** Creates new BooleanChangeListener */
     public UMLTextField(UMLUserInterfaceContainer container,UMLTextProperty property) {
@@ -46,35 +57,46 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
         _property.targetChanged();
         update();
     }
-
+ 
     public void targetReasserted() {
     }
     
     public void roleAdded(final MElementEvent p1) {
+//        Argo.log.info("UMLTextField.roleAdded: event p1 happened...");
     }
     public void recovered(final MElementEvent p1) {
+//        Argo.log.info("UMLTextField.recovered: event p1 happened...");
     }
     public void roleRemoved(final MElementEvent p1) {
+//        Argo.log.info("UMLTextField.roleRemoved: event p1 happened...");        
     }
     public void listRoleItemSet(final MElementEvent p1) {
+//        Argo.log.info("UMLTextField.listRoleItemSet: event p1 happened...");        
     }
     public void removed(final MElementEvent p1) {
     }
 
     public void propertySet(final MElementEvent event) {
+        //
+        //   check the possibility that this is a promiscuous event
+        Object eventSource = event.getSource();
+        
+        _target = _container.getTarget();
+        if (_target == null){
+            return;
+        }
         if(_property.isAffected(event)) {
-            //
-            //   check the possibility that this is a promiscuous event
-            Object eventSource = event.getSource();
-            Object target = _container.getTarget();
+
             //
             //    if event source is unknown or 
             //       the event source is the container's target
             //          then update the field
-            if(eventSource == null || eventSource == target) {
+            if(eventSource == null || eventSource == _target) {
                 update();
             }
         }
+//        else if(_target instanceof MDataType)
+//            Argo.log.info("UMLTextField.propertySet: else :Target = " + _target);
     }
     
 /** update() updates both the Collection (by setText()) and the drawing (using 
@@ -89,31 +111,48 @@ public class UMLTextField extends JTextField implements DocumentListener, UMLUse
                 setText(newText);
             }
         }
-
-        Object target = _container.getTarget();
+        _target = _container.getTarget();
         
-        if (target instanceof MClassifier){
-            MClassifier classifier = (MClassifier) target;
-            classifier.setFeatures(classifier.getFeatures());
+        if (_target == null){
+            return;
         }
-        else if (target instanceof MOperation){
-            MClassifier classifier = (MClassifier) ((MOperation)target).getOwner();
-            classifier.setFeatures(classifier.getFeatures());
+        if (_target instanceof MClassifier){
+            _classifier = (MClassifier) _target;
+            _classifier.setFeatures(_classifier.getFeatures());
         }
-        else if (target instanceof MAttribute){
-            MClassifier classifier = (MClassifier) ((MAttribute)target).getOwner();
-            classifier.setFeatures(classifier.getFeatures());
+        else if (_target instanceof MOperation){
+            _classifier = (MClassifier) ((MOperation)_target).getOwner();
+            _classifier.setFeatures(_classifier.getFeatures());
         }
-        else if (target instanceof MParameter){
-            MBehavioralFeature feature = ((MParameter) target).getBehavioralFeature();
-            MClassifier classifier = (MClassifier) feature.getOwner();
-            classifier.setFeatures(classifier.getFeatures());
-        }  
+        else if (_target instanceof MAttribute){
+            _classifier = (MClassifier) ((MAttribute)_target).getOwner();
+            _classifier.setFeatures(_classifier.getFeatures());
+        }
+        // needs_more_work We can fall into this by setting a parameter for a Call Event
+        // of a transition and get a Null Pointer Exception on the feature.getOwner()
+        // method. Have to somehow find the correct Feature...
+        else if (_target instanceof MParameter){
+            MBehavioralFeature feature = ((MParameter) _target).getBehavioralFeature();
+            //
+            // check if we are dealing with a valid parameter...Hack to prevent
+            // Null Pointer Exceptions on Call Event parameter list box...
+            if (feature == null){
+                return;
+            }
+            _classifier = (MClassifier) feature.getOwner();
+            _classifier.setFeatures(_classifier.getFeatures());
+        } 
+        else if (_target instanceof MCallEvent){
+            Argo.log.info("UMLTextField.update()...target = " + _target);
+        }
+        else
+            Argo.log.info("UMLTextField.update()else...target = " + _target);
     }
 
     
     public void changedUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
+        Argo.log.info("UMLTextField.changedUpdate: DocumentEvent p1 " );       
     }
     public void removeUpdate(final DocumentEvent p1) {
         _property.setProperty(_container,getText());
