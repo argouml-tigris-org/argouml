@@ -624,6 +624,18 @@ To get it, call ant with the docbook-xsl-get target.
       <replacetoken><![CDATA[<fo:table><fo:table-body]]></replacetoken>
       <replacevalue><![CDATA[<fo:table><fo:table-column column-width="1.5cm"/><fo:table-column column-width="14.0cm"/><fo:table-body]]></replacevalue>
     </replace>
+    <replace file="${source.dir}/${source.fo}">
+      <replacetoken><![CDATA[<fo:float float="before">]]></replacetoken>
+      <replacevalue><![CDATA[<fo:float>]]></replacevalue>
+    </replace>
+    <replace file="${source.dir}/${source.fo}">
+      <replacetoken><![CDATA[<fo:float>]]></replacetoken>
+      <replacevalue><![CDATA[]]></replacevalue>
+    </replace>
+    <replace file="${source.dir}/${source.fo}">
+      <replacetoken><![CDATA[</fo:float>]]></replacetoken>
+      <replacevalue><![CDATA[]]></replacevalue>
+    </replace>
 
     <!-- Invoke Fop on our terms. This is the only place we need more memory
          (for the user manual), so we invoke as a forked process with a bigger
