@@ -33,13 +33,14 @@ import java.util.Vector;
 import javax.swing.Icon;
 
 import org.apache.log4j.Logger;
-
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.Configuration;
 import org.argouml.cognitive.critics.Agency;
 import org.argouml.cognitive.critics.Critic;
-
+import org.argouml.i18n.Translator;
 import org.tigris.gef.util.ChildGenerator;
-import org.tigris.gef.util.VectorSet;
 import org.tigris.gef.util.EnumerationEmpty;
+import org.tigris.gef.util.VectorSet;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -51,17 +52,14 @@ import ru.novosoft.uml.MElementListener;
  * <p><strong>This area needs work, especially as it is a
  * central idea of Argo.</strong>
  *
- * <p>Currently everything is hardcoded. what can be configurable??
+ * <p>Currently everything is hardcoded. What can be configurable??
  *
- * <p>the ToDoList is dependent on this class.
+ * <p>The ToDoList is dependent on this class.
  *
  * <p>This class listens to property changes from ...?
  *
  * <p>A Designer can as well create ToDO Items, such as critics do. Hence he 
  * implements the Poster interface.
- *
- * <p>TODO: implement as singleton?? There are comments that suggest this
- * should be done. 
  * 
  * @author Jason Robbins
  */
@@ -74,7 +72,7 @@ public class Designer
 {
     private static final Logger LOG = Logger.getLogger(Designer.class);
     
-    /** the singleton of this class: TODO: needs to be made private.*/
+    /** the singleton of this class.*/
     private static Designer theDesignerSingleton = new Designer();
     
     private static boolean userWorking;
@@ -166,8 +164,8 @@ public class Designer
     ////////////////////////////////////////////////////////////////
     // constructor and singeton methods
     
-    /** TODO: this is aparently meant to be
-     * a singleton class - make this private + getInstance methods...
+    /**
+     * The constructor.
      */
     private Designer() {
         decisions = new DecisionModel();
@@ -329,8 +327,10 @@ public class Designer
     }
     
     /**
-     * what does this method do? why is is synchronised?
-     *
+     * A modelelement has been changed. 
+     * Now we give it priority to be checked by the critics ASAP.
+     * 
+     * TODO: why is is synchronised?
      * TODO: what about when objects are first created?
      *
      * @param dm the design material
@@ -837,19 +837,16 @@ public class Designer
     }
     
     /**
+     * This is used in the todo panel, when "By Poster" is chosen for a 
+     * manually created todo item.
+     * 
      * @see java.lang.Object#toString()
      */
     public String toString() {
-        //String printString = super.toString() + " [\n";
-        //printString += "  " + "decisions: " + _decisions.toString() + "\n";
-        //printString += "  " + "goals: " + _goals.toString() + "\n";
-        //printString += "  " + "prefs: " + _prefs.toString() + "\n";
-        //printString += "  " + "to do: " + _toDoList.toString() + "\n";
-        //printString += "]\n";
-        
-        // made change in respect to ToDo List Tree
-        String printString = "Designer [name?]";
-        return printString;
+        //TODO: This should be the name of the designer that created 
+        //      the todoitem, not the current username!
+        Object[] msgArgs = {Configuration.getString(Argo.KEY_USER_FULLNAME) };
+        return Translator.messageFormat("misc.designer.name", msgArgs);
     }
     
     ////////////////////////////////////////////////////////////////
@@ -871,14 +868,16 @@ public class Designer
     public boolean canFixIt(ToDoItem item) { return false; }
     
     /**
-     * @param working The _userWorking to set.
+     * @param working true if the user is working 
+     * (i.e. this is not the startup phase of ArgoUML)
      */
     public static void setUserWorking(boolean working) {
         userWorking = working;
     }
 
     /**
-     * @return Returns the _userWorking.
+     * @return true if the user is working 
+     * (i.e. this is not the startup phase of ArgoUML)
      */
     public static boolean isUserWorking() {
         return userWorking;
