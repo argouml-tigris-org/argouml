@@ -50,8 +50,8 @@ public class Goal {
   // accessors
 
   public boolean equals(Object d2) {
-    if (!(d2 instanceof Decision)) return false;
-    return ((Decision)d2).getName().equals(getName());
+    if (!(d2 instanceof Goal)) return false;
+    return ((Goal)d2).getName().equals(getName());
   }
   
   public String getName() { return _name; }

@@ -76,12 +76,12 @@ public class AboutBox extends JFrame {
 //     _legal.setFont(ctrlFont);
 //     _contact.setFont(ctrlFont);
     
-    _version.setText("Argo/UML Version 0.4\n"+
-		     "Built on July 24, 1998\n"+
+    _version.setText("Argo/UML Version 0.5\n"+
+		     "Built on September 30, 1998\n"+
 		     "Includes:\n"+
-		     "  GEF v0.6 beta 2\n"+
-		     "  Argo v0.7\n"+
-		     "  uci.uml v0.3\n"
+		     "  GEF v0.6 beta 3\n"+
+		     "  Argo v0.8\n"+
+		     "  uci.uml v0.4\n"
 		     );
 
     _credits.setText("Argo/UML was developed by the following:\n"+
@@ -94,6 +94,7 @@ public class AboutBox extends JFrame {
 		     "\nDevelopers and Testers:  \n"+
 		     "  Jason Robbins\n"+
 		     "  Adam Bonner\n"+
+		     "  Adam Gauthier\n"+
 		     "  David Hilbert\n"+
 		     "  ICS 125 team Spring 1996\n"+
 		     "  ICS 125 teams Spring 1998\n"+
@@ -103,7 +104,7 @@ public class AboutBox extends JFrame {
 
     _contact.setText("For more information on the Argo project:\n"+
 		     " + Visit our web site:\n"+
-		     "   http://www.ics.uci.edu/pub/arch/argo\n"+
+		     "   http://www.ics.uci.edu/pub/arch/uml\n"+
 		     " + Send email to Jason Robbins at:\n"+
 		     "   jrobbins@ics.uci.edu\n"+
 		     " + Read our conference and journal papers:\n"+

@@ -45,40 +45,60 @@ public class ToDoByOffender extends ToDoPerspective {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
-  public void toDoItemAdded(ToDoListEvent tde) {
+  public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
-    int childIndices[] = new int[1];
-    Object children[] = new Object[1];
 
     Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
-    Set offenders = item.getOffenders();
     java.util.Enumeration enum = allOffenders.elements();
     while (enum.hasMoreElements()) {
       Object off = enum.nextElement();
-      if (!offenders.contains(off)) continue;
       path[1] = off;
-      //System.out.println("toDoItemAdded firing new item!");
-      childIndices[0] = getIndexOfChild(off, item);
-      children[0] = item;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Set offenders = item.getOffenders();
+	if (!offenders.contains(off)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	Set offenders = item.getOffenders();
+	if (!offenders.contains(off)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(off, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
       fireTreeNodesInserted(this, path, childIndices, children);
     }
   }
 
-  public void toDoItemRemoved(ToDoListEvent tde) {
+  public void toDoItemsRemoved(ToDoListEvent tde) {
     //System.out.println("toDoItemRemoved");
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
     Set allOffenders = Designer.TheDesigner.getToDoList().getOffenders();
-    Set offenders = item.getOffenders();
     java.util.Enumeration enum = allOffenders.elements();
     while (enum.hasMoreElements()) {
       Object off = enum.nextElement();
-      if (!offenders.contains(off)) continue;      
+//       boolean anyInOff = false;
+//       for (int i = 0; i < nItems; i++) {
+// 	ToDoItem item = (ToDoItem) items.elementAt(i);
+// 	Set offenders = item.getOffenders();
+// 	if (offenders.contains(off)) anyInOff = true;
+//       }
+//       if (!anyInOff) continue;
+
       //System.out.println("toDoItemRemoved updating PriorityNode");
       path[1] = off;
       //fireTreeNodesChanged(this, path, childIndices, children);

@@ -51,7 +51,9 @@ public class ChildGenUML implements ChildGenerator {
   /** Reply a Enumeration of the children of the given Object */
   public Enumeration gen(Object o) {
     if (o instanceof Project) {
-      return ((Project)o).getModels().elements();
+      Project p = (Project) o;
+      return new EnumerationComposite(p.getModels().elements(),
+				      p.getDiagrams().elements());
     }
 
     if (o instanceof Package) {
@@ -61,7 +63,7 @@ public class ChildGenUML implements ChildGenerator {
 
     if (o instanceof ElementOwnership) {
       ModelElement me = ((ElementOwnership)o).getModelElement();
-      return new EnumerationSingle(me);
+      return new EnumerationSingle(me);  //wasteful!
     }
 
     if (o instanceof ModelElement) {

@@ -42,29 +42,29 @@ public class CrSingletonViolated extends CrUML {
 
   public CrSingletonViolated() {
     setHeadline("Singleton Stereotype Violated");
-    sd("This class is marked with the Singleton stereotype, but it does\n"+
-       "not satisfy the constraints imposed on singletons.  A singleton\n"+
-       "class can have at most one instance.  This means that the class\n"+
-       "must have (1) a static variable holding the instance, (2) only\n"+
-       "private constructors so that new instances cannot be made by\n"+
-       "other code, and (3) there must be at least one constructor to.\n"+
-       "override the default constructor.??\n"+
+    sd("This class is marked with the Singleton stereotype, but it does "+
+       "not satisfy the constraints imposed on singletons.  A singleton "+
+       "class can have at most one instance.  This means that the class "+
+       "must have (1) a static variable holding the instance, (2) only "+
+       "private constructors so that new instances cannot be made by "+
+       "other code, and (3) there must be at least one constructor to "+
+       "override the default constructor.\n"+
        "\n"+
-       "Whenever you mark a class with a stereotype, the class should\n"+
-       "satisfy all constraints of the stereotype.  This is an important\n"+
-       "part of making a self-consistent and understangle design. Using \n"+
+       "Whenever you mark a class with a stereotype, the class should "+
+       "satisfy all constraints of the stereotype.  This is an important "+
+       "part of making a self-consistent and understangle design. Using "+
        "the Singleton Pattern can save time and memory space.\n"+
        "\n"+
-       "If you no longer want this class to be a Singleton, remove the\n"+
-       "Singleton stereotype by clicking on the class and deleting Singleton\n"+
-       "from the Props tab.\n"+
-       "To automatically apply the Singleton Pattern, press the FixIt icon;\n"+
-       "or manually (1) mark the class with the Singlton stereotype, (2) add\n"+
-       "a static variable that holds one instance of this class, (3) and\n"+
+       "If you no longer want this class to be a Singleton, remove the "+
+       "Singleton stereotype by clicking on the class and deleting Singleton "+
+       "from the Props tab. \n"+
+       "To automatically apply the Singleton Pattern, press the FixIt icon; "+
+       "or manually (1) mark the class with the Singlton stereotype, (2) add "+
+       "a static variable that holds one instance of this class, (3) and "+
        "make all constructors private.\n"+
        "\n"+
        "To learn more about the Singleton Pattern, press the MoreInfo icon.");
-       
+
     addSupportedDecision(CrUML.decPATTERNS);
     setPriority(ToDoItem.LOW_PRIORITY);
   }

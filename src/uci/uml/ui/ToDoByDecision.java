@@ -52,38 +52,58 @@ implements ToDoListListener {
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
-  public void toDoItemAdded(ToDoListEvent tde) {
+  public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
-    int childIndices[] = new int[1];
-    Object children[] = new Object[1];
 
-    Poster post = item.getPoster();
-    java.util.Enumeration enum = post.getSupportedDecisions().elements();
+    Vector decs = Designer.TheDesigner.getDecisions();
+    java.util.Enumeration enum = decs.elements();
     while (enum.hasMoreElements()) {
       Decision dec = (Decision) enum.nextElement();
+      int nMatchingItems = 0;
       path[1] = dec;
-      //System.out.println("toDoItemAdded firing new item!");
-      childIndices[0] = getIndexOfChild(dec, item);
-      children[0] = item;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(dec)) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (!item.supports(dec)) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(dec, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
       fireTreeNodesInserted(this, path, childIndices, children);
     }
   }
 
-  public void toDoItemRemoved(ToDoListEvent tde) {
+  public void toDoItemsRemoved(ToDoListEvent tde) {
     //System.out.println("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
-    
-    Poster post = item.getPoster();
-    java.util.Enumeration enum = post.getSupportedDecisions().elements();
+
+    Vector decs = Designer.TheDesigner.getDecisions();
+    java.util.Enumeration enum = decs.elements();
     while (enum.hasMoreElements()) {
       Decision dec = (Decision) enum.nextElement();
       //System.out.println("toDoItemRemoved updating decision node!");
+      boolean anyInDec = false;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (item.supports(dec)) anyInDec = true;
+      }
+      if (!anyInDec) continue;
       path[1] = dec;
       //fireTreeNodesChanged(this, path, childIndices, children);
       fireTreeStructureChanged(path);

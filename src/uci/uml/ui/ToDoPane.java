@@ -220,15 +220,15 @@ implements ItemListener, TreeSelectionListener, MouseListener, ToDoListListener 
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
-  public void toDoItemAdded(ToDoListEvent tde) {
+  public void toDoItemsAdded(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener) 
-      ((ToDoListListener)_curPerspective).toDoItemAdded(tde);
+      ((ToDoListListener)_curPerspective).toDoItemsAdded(tde);
     //paintImmediately(getBounds());
   }
 
-  public void toDoItemRemoved(ToDoListEvent tde) {
+  public void toDoItemsRemoved(ToDoListEvent tde) {
     if (_curPerspective instanceof ToDoListListener)
-      ((ToDoListListener)_curPerspective).toDoItemRemoved(tde);
+      ((ToDoListListener)_curPerspective).toDoItemsRemoved(tde);
     //paintImmediately(getBounds());
   }
 

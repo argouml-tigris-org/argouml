@@ -31,6 +31,8 @@ package uci.uml.ui;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
+import java.io.*;
+
 import uci.gef.*;
 import uci.graph.*;
 import uci.util.*;
@@ -62,12 +64,8 @@ implements ChangeListener, MouseListener {
 
   public MultiEditorPane() {
     System.out.println("making MultiEditorPane");
-    _tabPanels.addElement(new TabDiagram());
-    _tabPanels.addElement(new TabJavaSrc());
-    _tabPanels.addElement(new TabTable());
-    _tabPanels.addElement(new TabUMLDisplay());
-    // debugging: _tabPanels.addElement(new TabHash());
-    
+    ConfigLoader.loadTabs(_tabPanels, "multi");
+
     setLayout(new BorderLayout());
     add(_tabs, BorderLayout.CENTER);
 
@@ -181,7 +179,5 @@ implements ChangeListener, MouseListener {
     JPanel t = (JPanel) _tabPanels.elementAt(tab);
     if (t instanceof TabSpawnable) ((TabSpawnable)t).spawn();
   }
-
-  
 
 } /* end class MultiEditorPane */

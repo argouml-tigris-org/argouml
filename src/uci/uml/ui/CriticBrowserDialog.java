@@ -75,6 +75,8 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
 
   
   protected JButton _okButton      = new JButton("OK");
+  protected JButton _wakeButton    = new JButton("Wake");
+  protected JButton _configButton  = new JButton("Configure");
   protected JButton _networkButton = new JButton("Edit Network");
   protected JButton _goButton      = new JButton("Go");
   
@@ -234,8 +236,13 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     content.add(_useClar);
 
     c.gridy = 9;
-    gb.setConstraints(_networkButton, c);
-    content.add(_networkButton);
+    JPanel buttonPanel = new JPanel();
+    buttonPanel.setLayout(new GridLayout(1, 2));
+    buttonPanel.add(_wakeButton);
+    buttonPanel.add(_configButton);
+    buttonPanel.add(_networkButton);
+    gb.setConstraints(buttonPanel, c);
+    content.add(buttonPanel);
 
     c.gridx = 2;
     c.gridy = 10;
@@ -249,6 +256,8 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _goButton.addActionListener(this);
     _okButton.addActionListener(this);
     _networkButton.addActionListener(this);
+    _wakeButton.addActionListener(this);
+    _configButton.addActionListener(this);
     _headline.getDocument().addDocumentListener(this);
     _moreInfo.getDocument().addDocumentListener(this);
     _desc.getDocument().addDocumentListener(this);
@@ -267,6 +276,9 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
     _target = (Critic) t;
     _goButton.setEnabled(false);
     _networkButton.setEnabled(false);
+    _wakeButton.setEnabled(_target != null &&
+			   _target.snoozeOrder().getSnoozed());
+    _configButton.setEnabled(false);
     _className.setText(_target.getClass().getName());
     _headline.setText(_target.getHeadline());
 
@@ -324,12 +336,19 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
       return;
     }
     if (e.getSource() == _goButton) {
-      System.out.println("go!");
+      System.out.println("needs-more-work go!");
       return;
     }
     if (e.getSource() == _networkButton) {
-      System.out.println("network!");
-      //needs-more-work: make a new history item
+      System.out.println("needs-more-work network!");
+      return;
+    }
+    if (e.getSource() == _configButton) {
+      System.out.println("needs-more-work config!");
+      return;
+    }
+    if (e.getSource() == _wakeButton) {
+      _target.unsnooze();
       return;
     }
     System.out.println("unknown src in CriticBrowserDialog: " + e.getSource());

@@ -188,7 +188,7 @@ implements ItemListener {
     if (_target == null) return;
     String keys = (String) _keywordsField.getSelectedItem();
     if (keys == null) {
-      System.out.println("keywords are null");
+      //System.out.println("keywords are null");
       return;
     }
     Operation oper = (Operation) _target;
@@ -252,7 +252,7 @@ implements ItemListener {
     }
     if (rt != null) {
       try {
-	System.out.println("setting return type: " + rt);
+	//System.out.println("setting return type: " + rt);
 	op.setReturnType(rt);
       }
       catch (PropertyVetoException pve) { }
@@ -283,18 +283,18 @@ implements ItemListener {
   public void itemStateChanged(ItemEvent e) {
     Object src = e.getSource();
     if (src == _keywordsField) {
-      System.out.println("attr keywords now is " +
-			 _keywordsField.getSelectedItem());
+//       System.out.println("attr keywords now is " +
+// 			 _keywordsField.getSelectedItem());
       setTargetKeywords();
     }
     else if (src == _visField) {
-      System.out.println("attr VisibilityKind now is " +
-			 _visField.getSelectedItem());
+//       System.out.println("attr VisibilityKind now is " +
+// 			 _visField.getSelectedItem());
       setTargetVisibility();
     }
     else if (src == _typeField) {
-      System.out.println("attr type now is " +
-			 _typeField.getSelectedItem());
+//       System.out.println("attr type now is " +
+// 			 _typeField.getSelectedItem());
       setTargetType();
     }
   }

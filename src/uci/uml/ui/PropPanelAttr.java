@@ -239,7 +239,7 @@ implements DocumentListener, ItemListener {
     Attribute attr = (Attribute) _target;
     Object sel = _typeField.getSelectedItem();
     Classifier cls;
-    System.out.println("set target type: " + sel);
+    //System.out.println("set target type: " + sel);
 
     if (sel instanceof Classifier)
       cls = (Classifier) sel;
@@ -305,8 +305,8 @@ implements DocumentListener, ItemListener {
       setTargetVisibility();
     }
     else if (src == _typeField) {
-      System.out.println("attr type now is " +
-			 _typeField.getSelectedItem());
+//       System.out.println("attr type now is " +
+// 			 _typeField.getSelectedItem());
       setTargetType();
     }
     else if (src == _initText) {
@@ -316,7 +316,6 @@ implements DocumentListener, ItemListener {
       //_initText.getText());
       setTargetInit();
     }
-    
   }
 
 
@@ -324,11 +323,13 @@ implements DocumentListener, ItemListener {
   // static methods
 
   public static Vector getOfferedTypes() {
+    // needs-more-work: should ask project
     if (OFFERED_TYPES == null) {
       OFFERED_TYPES = new Vector();
 
       OFFERED_TYPES.addElement(JavaUML.STRING_CLASS);
 
+      OFFERED_TYPES.addElement(JavaUML.VOID_TYPE);
       OFFERED_TYPES.addElement(JavaUML.CHAR_TYPE);
       OFFERED_TYPES.addElement(JavaUML.INT_TYPE);
       OFFERED_TYPES.addElement(JavaUML.BOOLEAN_TYPE);
@@ -355,5 +356,5 @@ implements DocumentListener, ItemListener {
     }
     return OFFERED_TYPES;
   }
-  
+
 } /* end class PropPanelAttr */

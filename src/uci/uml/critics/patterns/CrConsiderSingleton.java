@@ -47,33 +47,33 @@ public class CrConsiderSingleton extends CrUML {
 
   public CrConsiderSingleton() {
     setHeadline("Consider using Singleton Pattern");
-    sd("This class has no attributes or associations that are\n"+
-       "navigable away from instances of this class.  This means that every\n"+
-       "instance of this class will be equal() to every other instance,\n"+
-       "since there will be no instance variables to differentiate them.\n"+
-       "If this not your intent, you should define some attributes or \n"+
-       "associations that will represent differences bewteen instances.\n"+
-       "If there are no attributes or associations that differentiate\n"+
-       "instances, the you shoudld consider having exatly one instance\n"+
-       "of this class, as in the Singleton Pattern\n"+
+    sd("This class has no attributes or associations that are "+
+       "navigable away from instances of this class.  This means that every "+
+       "instance of this class will be equal() to every other instance, "+
+       "since there will be no instance variables to differentiate them. "+
+       "If this not your intent, you should define some attributes or "+
+       "associations that will represent differences bewteen instances. "+
+       "If there are no attributes or associations that differentiate "+
+       "instances, the you shoudld consider having exatly one instance "+
+       "of this class, as in the Singleton Pattern.\n"+
        "\n"+
-       "Defining the multiplicity of instances is needed to complete the\n"+
-       "information representation part of your design.  Using the Singleton\n"+
+       "Defining the multiplicity of instances is needed to complete the "+
+       "information representation part of your design.  Using the Singleton "+
        "Pattern can save time and memory space.\n"+
        "\n"+
-       "To automatically apply the Singleton Pattern, press the FixIt icon;\n"+
-       "or manually (1) mark the class with the Singlton stereotype, (2) add\n"+
-       "a static variable that holds one instance of this class, (3) and\n"+
+       "To automatically apply the Singleton Pattern, press the FixIt icon; "+
+       "or manually (1) mark the class with the Singlton stereotype, (2) add "+
+       "a static variable that holds one instance of this class, (3) and "+
        "make all constructors private.\n"+
        "\n"+
        "To learn more about the Singleton Pattern, press the MoreInfo icon.");
-       
+
     addSupportedDecision(CrUML.decPATTERNS);
     setPriority(ToDoItem.LOW_PRIORITY);
   }
 
   protected void sd(String s) { setDescription(s); }
-  
+
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MMClass)) return NO_PROBLEM;
     MMClass cls = (MMClass) dm;
@@ -89,8 +89,7 @@ public class CrConsiderSingleton extends CrUML {
 	if (st.getName().getBody().equals("Singleton")) return NO_PROBLEM;
       }
     }
-    
-    
+
     // if it has instance vars, no specific reason for Singleton
     if (str != null) {
       java.util.Enumeration strEnum = str.elements();
@@ -99,7 +98,7 @@ public class CrConsiderSingleton extends CrUML {
 	if (ScopeKind.INSTANCE.equals(sf.getTargetScope())) return NO_PROBLEM;
       }
     }
-    
+
     // if it has outgoing assocs, no specific reason for Singleton
     if (ends != null) {
       java.util.Enumeration endEnum = ends.elements();

@@ -46,6 +46,7 @@ public class JavaUML {
   // java.lang
   public static MMClass STRING_CLASS = new MMClass("String");
 
+  public static DataType VOID_TYPE = new DataType("void");
   public static DataType CHAR_TYPE = new DataType("char");
   public static DataType INT_TYPE = new DataType("int");
   public static DataType BOOLEAN_TYPE = new DataType("boolean");

@@ -44,45 +44,63 @@ implements ToDoListListener {
     super("By Priority");
     addSubTreeModel(new GoListToPriorityToItem());
   }
-  
+
   //public String toString() { return "Priority"; }
 
   ////////////////////////////////////////////////////////////////
   // ToDoListListener implementation
 
-  public void toDoItemAdded(ToDoListEvent tde) {
+  public void toDoItemsAdded(ToDoListEvent tde) {
     //System.out.println("toDoItemAdded");
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
-    int childIndices[] = new int[1];
-    Object children[] = new Object[1];
 
-    int pri = item.getPriority();
     java.util.Enumeration enum = PriorityNode.getPriorities().elements();
     while (enum.hasMoreElements()) {
       PriorityNode pn = (PriorityNode) enum.nextElement();
-      if (pri != pn.getPriority()) continue;
       path[1] = pn;
-      //System.out.println("toDoItemAdded firing new item!");
-      childIndices[0] = getIndexOfChild(pn, item);
-      children[0] = item;
+      int nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (item.getPriority() != pn.getPriority()) continue;
+	nMatchingItems++;
+      }
+      if (nMatchingItems == 0) continue;
+      int childIndices[] = new int[nMatchingItems];
+      Object children[] = new Object[nMatchingItems];
+      nMatchingItems = 0;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	if (item.getPriority() != pn.getPriority()) continue;
+	childIndices[nMatchingItems] = getIndexOfChild(pn, item);
+	children[nMatchingItems] = item;
+	nMatchingItems++;
+      }
       fireTreeNodesInserted(this, path, childIndices, children);
     }
   }
 
-  public void toDoItemRemoved(ToDoListEvent tde) {
+  public void toDoItemsRemoved(ToDoListEvent tde) {
     //System.out.println("toDoItemRemoved");
     ToDoList list = Designer.TheDesigner.getToDoList(); //source?
-    ToDoItem item = tde.getToDoItem();
+    Vector items = tde.getToDoItems();
+    int nItems = items.size();
     Object path[] = new Object[2];
     path[0] = Designer.TheDesigner.getToDoList();
 
-    int pri = item.getPriority();
     java.util.Enumeration enum = PriorityNode.getPriorities().elements();
     while (enum.hasMoreElements()) {
       PriorityNode pn = (PriorityNode) enum.nextElement();
-      if (pri != pn.getPriority()) continue;      
+      int nodePriority = pn.getPriority();
+      boolean anyInPri = false;
+      for (int i = 0; i < nItems; i++) {
+	ToDoItem item = (ToDoItem) items.elementAt(i);
+	int pri = item.getPriority();
+	if (pri == nodePriority) anyInPri = true;
+      }
+      if (!anyInPri) continue;
       //System.out.println("toDoItemRemoved updating PriorityNode");
       path[1] = pn;
       //fireTreeNodesChanged(this, path, childIndices, children);
@@ -91,20 +109,6 @@ implements ToDoListListener {
   }
 
   public void toDoListChanged(ToDoListEvent tde) { }
-
-
-  
-//   protected void computePseudoNodes() {
-//     super.computePseudoNodes();
-//     ToDoList list = Designer.TheDesigner.getToDoList();
-//     Predicate predHigh = new PredicatePriority(ToDoItem.HIGH_PRIORITY);
-//     Predicate predMed = new PredicatePriority(ToDoItem.MED_PRIORITY);
-//     Predicate predLow = new PredicatePriority(ToDoItem.LOW_PRIORITY);
-//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predHigh));
-//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predMed));
-//     _pseudoNodes.addElement(new ToDoPseudoNode(list, predLow));
-//   }
-  
 
 } /* end class ToDoByPriority */
 

@@ -294,7 +294,9 @@ public class Designer implements Poster, Runnable, java.io.Serializable {
   public boolean supports(Goal g) { return true; }
   public Vector getSupportedGoals() { return UNSPEC_GOAL_VECTOR; }
 
-  public boolean containsKnowledgeType(String type) { return true; }
+  public boolean containsKnowledgeType(String type) {
+    return type.equals("Designer's");
+  }
   public Set getKnowledgeTypes() { return new Set("Designer's"); }
 
   public String expand(String desc, Set offs) { return desc; }

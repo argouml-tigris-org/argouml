@@ -107,6 +107,7 @@ implements TabModelTarget, DocumentListener, ActionListener,
     _leButton.setMargin(new Insets(0, 0, 0, 0));
     exprButtons.add(_eqButton);
     _eqButton.setMargin(new Insets(0, 0, 0, 0));
+    exprButtons.add(new SpacerPanel());
     exprButtons.add(_sizeButton);
     _sizeButton.setMargin(new Insets(0, 0, 0, 0));
     exprButtons.add(_asSetButton);

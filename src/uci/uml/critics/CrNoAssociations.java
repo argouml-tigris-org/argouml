@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
-
-
-
-
 // File: CrNoAssociations.javoa
 // Classes: CrNoAssociations
 // Original Author: jrobbins@ics.uci.edu
@@ -59,7 +53,7 @@ public class CrNoAssociations extends CrUML {
        "by clicking on the association tool in the tool bar and dragging "+
        "from {name} to another node. ");
 
-    addSupportedDecision(CrUML.decSTORAGE);
+    addSupportedDecision(CrUML.decRELATIONSHIPS);
   }
 
   public boolean predicate2(Object dm, Designer dsgr) {

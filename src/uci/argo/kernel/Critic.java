@@ -81,6 +81,9 @@ public class Critic implements Poster, java.io.Serializable {
   /** The moreInfoURL of the ToDoItem produced. */
   private String _moreInfoURL;
 
+  /** Arguments used to configure the critic. */
+  private Hashtable _args = new Hashtable();
+
   public static Icon DEFAULT_CLARIFIER = loadIconResource("PostIt0");
   protected Icon _clarifier = DEFAULT_CLARIFIER;
 
@@ -206,7 +209,7 @@ public class Critic implements Poster, java.io.Serializable {
    *  Needs-More-Work: Maybe ToDoItem should carry some data to make
    *  this method more efficient. */
   public boolean stillValid(ToDoItem i, Designer dsgr) {
-    if (!isActive()) return false;
+    if (!isActive()) { System.out.println("aasd"); return false; }
     if (i.getOffenders().size() != 1) return true;
     if (predicate(i.getOffenders().firstElement(), dsgr)) {
       ToDoItem item = toDoItem(i.getOffenders().firstElement(), dsgr);
@@ -305,7 +308,7 @@ public class Critic implements Poster, java.io.Serializable {
   public void snooze() { snoozeOrder().snooze(); }
 
   /** Lift any previous SnoozeOrder. */
-  public void unsnooze() { snoozeOrder().snooze(); }
+  public void unsnooze() { snoozeOrder().unsnooze(); }
 
   /** Reply true iff this Critic is relevant to the decisions that
    *  the Designer is considering. By default just asks the Designer if
@@ -395,6 +398,15 @@ public class Critic implements Poster, java.io.Serializable {
   public String getMoreInfoURL() {
     return _moreInfoURL;
   }
+
+  protected void setArg(String name, Object value) {
+    _args.put(name, value);
+  }
+  protected Object getArg(String name) {
+    return _args.get(name);
+  }
+  public Hashtable  getArgs() { return _args; }
+  public void setArgs(Hashtable h) { _args = h; }
 
   ////////////////////////////////////////////////////////////////
   // design feedback

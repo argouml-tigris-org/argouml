@@ -35,7 +35,7 @@ import uci.gef.Diagram;
 import uci.gef.Fig;
 import uci.uml.Model_Management.*;
 import uci.uml.Foundation.Core.*;
-import uci.uml.generate.GenerationPreferences;
+import uci.uml.generate.*;
 
 /** A datastructure that represents the designer's current project.  A
  *  Project consists of diagrams and UML models. */
@@ -67,8 +67,33 @@ public class Project implements java.io.Serializable {
   protected void initProject() {
     //_models.addElement(new Model("Object Model"));
     //_diagrams.addElement(new LayerDiagram("Untitled Diagram"));
-  }
 
+    defineType(JavaUML.STRING_CLASS);
+    defineType(JavaUML.VOID_TYPE);
+    defineType(JavaUML.CHAR_TYPE);
+    defineType(JavaUML.INT_TYPE);
+    defineType(JavaUML.BOOLEAN_TYPE);
+    defineType(JavaUML.BYTE_TYPE);
+    defineType(JavaUML.LONG_TYPE);
+    defineType(JavaUML.FLOAT_TYPE);
+    defineType(JavaUML.DOUBLE_TYPE);
+
+    defineType(JavaUML.CHAR_CLASS);
+    defineType(JavaUML.INT_CLASS);
+    defineType(JavaUML.BOOLEAN_CLASS);
+    defineType(JavaUML.BYTE_CLASS);
+    defineType(JavaUML.LONG_CLASS);
+    defineType(JavaUML.FLOAT_CLASS);
+    defineType(JavaUML.DOUBLE_CLASS);
+
+    defineType(JavaUML.RECTANGLE_CLASS);
+    defineType(JavaUML.POINT_CLASS);
+    defineType(JavaUML.COLOR_CLASS);
+
+    defineType(JavaUML.VECTOR_CLASS);
+    defineType(JavaUML.HASHTABLE_CLASS);
+    defineType(JavaUML.STACK_CLASS);
+  }
   ////////////////////////////////////////////////////////////////
   // accessors
   // needs-more-work 

@@ -25,14 +25,15 @@
 
 package uci.argo.kernel;
 
+import java.util.Vector;
 
 public class ToDoListEvent {
 
-  protected ToDoItem _item;
+  protected Vector _items;
 
-  public ToDoListEvent() { _item = null ; }
-  public ToDoListEvent(ToDoItem item) { _item = item ; }
+  public ToDoListEvent() { _items = null; }
+  public ToDoListEvent(Vector items) { _items = items ; }
 
-  public ToDoItem getToDoItem() { return _item; }
+  public Vector getToDoItems() { return _items; }
 
 } /* end class ToDoListEvent */

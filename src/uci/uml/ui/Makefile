@@ -38,6 +38,7 @@ CLASSES = \
 	AddToDoItemDialog.class \
 	ArgoFileFilter.class \
 	ClassGenerationDiaglog.class \
+	ConfigLoader.class \
 	CriticBrowserDialog.class \
 	DelayedChangeNotify.class \
 	DelayedVetoableChangeListener.class \

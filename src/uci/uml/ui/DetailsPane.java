@@ -76,14 +76,25 @@ implements ChangeListener, MouseListener {
 
   public DetailsPane() {
     System.out.println("making DetailsPane");    
-    _tabPanels.addElement(new TabToDo());
-    _tabPanels.addElement(new TabProps());
-    _tabPanels.addElement(new TabDocs());
-    _tabPanels.addElement(new TabJavaSrc());
-    _tabPanels.addElement(new TabConstraints());
-    _tabPanels.addElement(new TabTaggedValues());
-    _tabPanels.addElement(new TabChecklist());
-    _tabPanels.addElement(new TabHistory());
+    ConfigLoader.loadTabs(_tabPanels, "details");
+
+
+//     _tabPanels.addElement(new TabToDo());
+//     _tabPanels.addElement(new TabProps());
+//     _tabPanels.addElement(new TabDocs());
+
+//     Class scanner = null;  // detect JDK or JRE
+//     try { scanner = Class.forName("sun.tools.java.Scanner"); }
+//     catch (ClassNotFoundException cnfe) { }
+//     if (scanner == null)
+//       _tabPanels.addElement(new TabSrc()); // for JRE
+//     else
+//       _tabPanels.addElement(new TabJavaSrc()); // for JDK
+
+//     _tabPanels.addElement(new TabConstraints());
+//     _tabPanels.addElement(new TabTaggedValues());
+//     _tabPanels.addElement(new TabChecklist());
+//     _tabPanels.addElement(new TabHistory());
 
     setLayout(new BorderLayout());
     setFont(new Font("Dialog", Font.PLAIN, 10));

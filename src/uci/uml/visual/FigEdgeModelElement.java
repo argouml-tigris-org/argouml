@@ -206,18 +206,20 @@ implements VetoableChangeListener, DelayedVetoableChangeListener, MouseListener,
 
   public void updateNameText() {
     ModelElement me = (ModelElement) getOwner();
+    if (me == null) return;
     String nameStr = GeneratorDisplay.Generate(me.getName());
-    _name.setText(nameStr);    
+    _name.setText(nameStr);
   }
 
   public void updateStereotypeText() {
     ModelElement me = (ModelElement) getOwner();
+    if (me == null) return;
     Vector stereos = me.getStereotype();
     if (stereos == null || stereos.size() == 0) return;
     String stereoStr = ((Stereotype) stereos.elementAt(0)).getName().getBody();
     _stereo.setText("<<" + stereoStr + ">>");
   }
-  
+
   /** needs-more-work: When the user deletes a ModelElement, it is
    *  moved to a special trash container. */
   public void dispose() {

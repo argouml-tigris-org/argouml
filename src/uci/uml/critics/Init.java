@@ -32,6 +32,7 @@ import uci.uml.Model_Management.*;
 import uci.uml.Behavioral_Elements.Common_Behavior.*;
 import uci.uml.Behavioral_Elements.State_Machines.*;
 import uci.uml.Behavioral_Elements.Use_Cases.*;
+import uci.uml.visual.*;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
@@ -61,6 +62,7 @@ public class Init {
   public static Critic crMultiComposite = new CrMultiComposite();
   public static Critic crMultipleAgg = new CrMultipleAgg();
   public static Critic crNWayAgg = new CrNWayAgg();
+  public static Critic crUnnavigableAssoc = new CrUnnavigableAssoc();
   public static Critic crNameConflict = new CrNameConflict();
   public static Critic crNameConflictAC = new CrNameConflictAC();
   public static Critic crMissingClassName = new CrMissingClassName();
@@ -73,6 +75,13 @@ public class Init {
   public static Critic crUselessAbstract = new CrUselessAbstract();
   public static Critic crDisambigClassName = new CrDisambigClassName();
   public static Critic crConflictingComposites = new CrConflictingComposites();
+
+  public static Critic crTooManyAssoc = new CrTooManyAssoc();
+  public static Critic crTooManyAttr = new CrTooManyAttr();
+  public static Critic crTooManyOper = new CrTooManyOper();
+  public static Critic crTooManyStates = new CrTooManyStates();
+  public static Critic crTooManyTransitions = new CrTooManyTransitions();
+  public static Critic crTooManyClasses = new CrTooManyClasses();
 
   public static Critic crNoTransitions = new CrNoTransitions();
   public static Critic crNoIncomingTransitions = new CrNoIncomingTransitions();
@@ -148,6 +157,11 @@ public class Init {
       java.lang.Class pseudostateCls = Pseudostate.class;
       //java.lang.Class stateMachineCls = StateMachine.class;
 
+      java.lang.Class classDiagramCls   = UMLClassDiagram.class;
+      java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
+      java.lang.Class useCaseDiagramCls = UMLUseCaseDiagram.class;
+      //java.lang.Class classDiagramCls = UMLClassDiagram.class;
+
       // needs-more-work: Agency should allow registration by interface
       // useful for IAssociation.
 
@@ -167,6 +181,7 @@ public class Init {
       Agency.register(crInterfaceOperOnly, interfaceCls);
       Agency.register(crMultiComposite, assocCls);
       Agency.register(crMultipleAgg, assocCls);
+      Agency.register(crUnnavigableAssoc, assocCls);
       Agency.register(crNWayAgg, assocCls);
       Agency.register(crNameConflict, namespaceCls);
       Agency.register(crNameConflictAC, assocClassCls);
@@ -202,7 +217,13 @@ public class Init {
       Agency.register(crReservedName, attrCls);
       Agency.register(crMultiInherit, classCls);
       Agency.register(crConflictingComposites, classifierCls);
-      
+      Agency.register(crTooManyAssoc, classCls);
+      Agency.register(crTooManyAttr, classCls);
+      Agency.register(crTooManyOper, classCls);
+      Agency.register(crTooManyTransitions, stateVertexCls);
+      Agency.register(crTooManyStates, compositieStateCls);
+      Agency.register(crTooManyClasses, classDiagramCls);
+
       // Agency.register(crNoTransitions, stateVertexCls);
       // Agency.register(crNoIncomingTransitions, stateVertexCls);
       // Agency.register(crNoOutgoingTransitions, stateVertexCls);

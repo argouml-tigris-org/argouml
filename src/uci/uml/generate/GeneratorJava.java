@@ -83,7 +83,8 @@ public class GeneratorJava extends Generator {
     String s = "";
     //needs-more-work: add user-defined copyright
     s += "// FILE: " + pathname +"\n\n";
-    String pack = cls.getNamespace().getName().getBody();
+    Namespace ns = cls.getNamespace();
+    String pack = ns.getName().getBody();
     if (pack.length() > 0) s += "package " + pack + ";\n";
     s += "import java.util.*;\n";
 
@@ -97,25 +98,14 @@ public class GeneratorJava extends Generator {
     s += generateScope(op);
 
     // pick out return type
-    Classifier returnType = null;
-    Vector params = op.getParameter();
-    if (params != null) {
-      java.util.Enumeration enum = params.elements();
-      while (enum.hasMoreElements()) {
-	Parameter p = (Parameter) enum.nextElement();
-	if (Parameter.RETURN_NAME.equals(p.getName())) {
-	  returnType = p.getType();
-	  break;
-	}
-      }
-    }
+    Classifier returnType = op.getReturnType();
     if (returnType == null) s += "void?? ";
     else s += generateClassifierRef(returnType) + " ";
 
 
     // name and params
     s += generateName(op.getName()) + "(";
-    params = op.getParameter();
+    Vector params = op.getParameter();
     if (params != null) {
       java.util.Enumeration enum = params.elements();
       boolean first = true;
@@ -212,27 +202,28 @@ public class GeneratorJava extends Generator {
     Vector strs = cls.getStructuralFeature();
     if (strs != null) {
       s += "\n";
-      //s += "////////////////////////////////////////////////////////////////\n";
-      s += INDENT + "// Attributes\n";
+
+      if (cls instanceof MMClass) s += INDENT + "// Attributes\n";
       java.util.Enumeration strEnum = strs.elements();
       while (strEnum.hasMoreElements()) {
 	StructuralFeature sf = (StructuralFeature) strEnum.nextElement();
 	s += INDENT + generate(sf);
-	s += INDENT + generateTaggedValues(sf);
+	String tv = generateTaggedValues(sf);
+	if (tv.length() > 0) s += INDENT + tv;
       }
     }
 
     Vector ends = cls.getAssociationEnd();
     if (ends != null) {
       s += "\n";
-      //s += "////////////////////////////////////////////////////////////////\n";
-      s += INDENT + "// Associations\n";
+      if (cls instanceof MMClass) s += INDENT + "// Associations\n";
       java.util.Enumeration endEnum = ends.elements();
       while (endEnum.hasMoreElements()) {
 	AssociationEnd ae = (AssociationEnd) endEnum.nextElement();
 	IAssociation a = ae.getAssociation();
 	s += INDENT + generateAssociationFrom(a, ae);
-	s += INDENT + generateTaggedValues(a);
+	String tv = generateTaggedValues(a);
+	if (tv.length() > 0) s += INDENT + tv;
 	s += generateConstraints(a);
       }
     }
@@ -242,7 +233,6 @@ public class GeneratorJava extends Generator {
     Vector behs = cls.getBehavioralFeature();
     if (behs != null) {
       s += "\n";
-      //s += "////////////////////////////////////////////////////////////////\n";
       s += INDENT + "// Operations\n";
       java.util.Enumeration behEnum = behs.elements();
       String terminator1 = " {\n";
@@ -251,14 +241,30 @@ public class GeneratorJava extends Generator {
       while (behEnum.hasMoreElements()) {
 	BehavioralFeature bf = (BehavioralFeature) behEnum.nextElement();
 	s += INDENT + generate(bf) + terminator1;
-	s += INDENT + generateTaggedValues(bf);
+	String tv = generateTaggedValues(bf);
+	if (tv.length() > 0) s += INDENT + tv;
 	s += generateConstraints(bf);
+	s += generateDefaultReturnStatement(bf.getReturnType());
 	s += terminator2;
       }
     }
     s += "\n";
     s += "} /* end " + classifierKeyword + " " + generatedName + " */\n";
     return s;
+  }
+
+  public String generateDefaultReturnStatement(Classifier cls) {
+    if (cls == null || cls.getName().getBody().equals("void")) return "";
+
+    if (cls.equals(JavaUML.VOID_TYPE)) return "";
+    if (cls.equals(JavaUML.CHAR_TYPE)) return INDENT + "return 'x';\n";
+    if (cls.equals(JavaUML.INT_TYPE)) return INDENT + "return 0;\n";
+    if (cls.equals(JavaUML.BOOLEAN_TYPE)) return INDENT + "return false;\n";
+    if (cls.equals(JavaUML.BYTE_TYPE)) return INDENT + "return 0;\n";
+    if (cls.equals(JavaUML.LONG_TYPE)) return INDENT + "return 0;\n";
+    if (cls.equals(JavaUML.FLOAT_TYPE)) return INDENT + "return 0.0;\n";
+    if (cls.equals(JavaUML.DOUBLE_TYPE)) return INDENT + "return 0.0;\n";
+    return INDENT + "return null;\n";
   }
 
   public String generateStereotype(Stereotype s) {
@@ -278,7 +284,7 @@ public class GeneratorJava extends Generator {
     s += "}\n";
     return s;
   }
-  
+
   public String generateTaggedValue(TaggedValue tv) {
     if (tv == null) return "";
     return generateName(tv.getTag()) + "=" +
@@ -405,9 +411,16 @@ public class GeneratorJava extends Generator {
     return generateClassList(classes);
   }
   public String generateRealization(Vector realizations) {
-    // Realization is much simplier than Generalization.
-    // There is no Realization class in UML metamodel
-    return generateRealizationList(realizations);
+    if (realizations == null) return "";
+    String s = "";
+    java.util.Enumeration clsEnum = realizations.elements();
+    while (clsEnum.hasMoreElements()) {
+      Realization r = (Realization)clsEnum.nextElement();
+      s += generateClassifierRef(r.getSupertype());
+      System.out.println("sup=" + r.getSupertype());
+      if (clsEnum.hasMoreElements()) s += ", ";
+    }
+    return s;
   }
 
   public String generateClassList(Vector classifiers) {
@@ -416,18 +429,6 @@ public class GeneratorJava extends Generator {
     java.util.Enumeration clsEnum = classifiers.elements();
     while (clsEnum.hasMoreElements()) {
       s += generateClassifierRef((Classifier)clsEnum.nextElement());
-      if (clsEnum.hasMoreElements()) s += ", ";
-    }
-    return s;
-  }
-
-  public String generateRealizationList(Vector realizations) {
-    String s = "";
-    if (realizations == null) return "";
-    java.util.Enumeration clsEnum = realizations.elements();
-    while (clsEnum.hasMoreElements()) {
-      Realization r = (Realization)clsEnum.nextElement();
-      s += generateClassifierRef(r.getSupertype());
       if (clsEnum.hasMoreElements()) s += ", ";
     }
     return s;

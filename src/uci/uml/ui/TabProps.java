@@ -86,103 +86,103 @@ implements TabModelTarget {
     if (_target instanceof Diagram) {
       _shouldBeEnabled = true;
       diagramPane.setTarget(_target);
-      add(diagramPane, BorderLayout.CENTER);
+      add(diagramPane, BorderLayout.NORTH);
       _lastPanel = diagramPane;
     }
     else if (_target instanceof Model) {
       _shouldBeEnabled = true;
       modelPane.setTarget(_target);
-      add(modelPane, BorderLayout.CENTER);
+      add(modelPane, BorderLayout.NORTH);
       _lastPanel = modelPane;
     }
     else if (_target instanceof MMClass) {
       _shouldBeEnabled = true;
       classPane.setTarget(_target);
-      add(classPane, BorderLayout.CENTER);
+      add(classPane, BorderLayout.NORTH);
       _lastPanel = classPane;
     }
     else if (_target instanceof Interface) {
       _shouldBeEnabled = true;
       interfacePane.setTarget(_target);
-      add(interfacePane, BorderLayout.CENTER);
+      add(interfacePane, BorderLayout.NORTH);
       _lastPanel = interfacePane;
     }
     else if (_target instanceof Attribute) {
       _shouldBeEnabled = true;
       attrPane.setTarget(_target);
-      add(attrPane, BorderLayout.CENTER);
+      add(attrPane, BorderLayout.NORTH);
       _lastPanel = attrPane;
     }
     else if (_target instanceof Operation) {
       _shouldBeEnabled = true;
       operPane.setTarget(_target);
-      add(operPane, BorderLayout.CENTER);
+      add(operPane, BorderLayout.NORTH);
       _lastPanel = operPane;
     }
     else if (_target instanceof Association) {
       _shouldBeEnabled = true;
       assocPane.setTarget(_target);
-      add(assocPane, BorderLayout.CENTER);
+      add(assocPane, BorderLayout.NORTH);
       _lastPanel = assocPane;
     }
     else if (_target instanceof State) {
       _shouldBeEnabled = true;
       statePane.setTarget(_target);
-      add(statePane, BorderLayout.CENTER);
+      add(statePane, BorderLayout.NORTH);
       _lastPanel = statePane;
     }
     else if (_target instanceof Transition) {
       _shouldBeEnabled = true;
       transitionPane.setTarget(_target);
-      add(transitionPane, BorderLayout.CENTER);
+      add(transitionPane, BorderLayout.NORTH);
       _lastPanel = transitionPane;
     }
     else if (_target instanceof Pseudostate) {
       _shouldBeEnabled = true;
       pseudostatePane.setTarget(_target);
-      add(pseudostatePane, BorderLayout.CENTER);
+      add(pseudostatePane, BorderLayout.NORTH);
       _lastPanel = pseudostatePane;
     }
     else if (_target instanceof UseCase) {
       _shouldBeEnabled = true;
       useCasePane.setTarget(_target);
-      add(useCasePane, BorderLayout.CENTER);
+      add(useCasePane, BorderLayout.NORTH);
       _lastPanel = useCasePane;
     }
     else if (_target instanceof Actor) {
       _shouldBeEnabled = true;
       actorPane.setTarget(_target);
-      add(actorPane, BorderLayout.CENTER);
+      add(actorPane, BorderLayout.NORTH);
       _lastPanel = actorPane;
     }
     else if (_target instanceof Instance) {
       _shouldBeEnabled = true;
       instancePane.setTarget(_target);
-      add(instancePane, BorderLayout.CENTER);
+      add(instancePane, BorderLayout.NORTH);
       _lastPanel = instancePane;
     }
     else if (_target instanceof Link) {
       _shouldBeEnabled = true;
       linkPane.setTarget(_target);
-      add(linkPane, BorderLayout.CENTER);
+      add(linkPane, BorderLayout.NORTH);
       _lastPanel = linkPane;
     }
     else if (_target instanceof Generalization) {
       _shouldBeEnabled = true;
       generalizationPane.setTarget(_target);
-      add(generalizationPane, BorderLayout.CENTER);
+      add(generalizationPane, BorderLayout.NORTH);
       _lastPanel = generalizationPane;
     }
     else if (_target instanceof Realization) {
       _shouldBeEnabled = true;
       realizationPane.setTarget(_target);
-      add(realizationPane, BorderLayout.CENTER);
+      add(realizationPane, BorderLayout.NORTH);
       _lastPanel = realizationPane;
     }
     //else if ...
     else {
       _shouldBeEnabled = false;
-      add(blankPane, BorderLayout.CENTER);
+      add(blankPane, BorderLayout.NORTH);
       _lastPanel = blankPane;
     }
     validate();

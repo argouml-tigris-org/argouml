@@ -53,6 +53,7 @@ CLASSES = \
 	CrMissingClassName.class \
 	CrMultiComposite.class \
 	CrMultipleAgg.class \
+	CrUnnavigableAssoc.class \
 	CrNWayAgg.class \
 	CrNameConflict.class \
 	CrNameConflictAC.class \
@@ -69,6 +70,12 @@ CLASSES = \
 	CrOppEndVsAttr.class \
 	CrParamTypeNotImported.class \
 	CrSignatureConflict.class \
+	CrTooManyAssoc.class \
+	CrTooManyAttr.class \
+	CrTooManyOper.class \
+	CrTooManyTransitions.class \
+	CrTooManyStates.class \
+	CrTooManyClasses.class \
 	CrUML.class \
 	CrUnconventionalAttrName.class \
 	CrUnconventionalClassName.class \

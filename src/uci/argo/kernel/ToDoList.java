@@ -122,11 +122,15 @@ implements Runnable, java.io.Serializable {
     size = removes.size();
     for (int i = 0; i < size; ++i) {
       ToDoItem item = (ToDoItem) removes.elementAt(i);
-      resolve(item);
+      removeE(item);
       History.TheHistory.addItemResolution(item, "no longer valid");
       //((ToDoItem)item).resolve("no longer valid");
-      notifyObservers("removeElement", item);
+      //notifyObservers("removeElement", item);
     }
+    recomputeAllOffenders();
+    recomputeAllKnowledgeTypes();
+    recomputeAllPosters();
+    fireToDoItemsRemoved(removes);
   }
 
   ////////////////////////////////////////////////////////////////
@@ -200,21 +204,24 @@ implements Runnable, java.io.Serializable {
       ToDoItem item = (ToDoItem) cur.nextElement();
       removeE(item);
     }
-    fireToDoListChanged();
+    recomputeAllOffenders();
+    recomputeAllKnowledgeTypes();
+    recomputeAllPosters();
+    fireToDoItemsRemoved(list.getToDoItems());
   }
 
   private synchronized boolean removeE(ToDoItem item) {
     boolean res = _items.removeElement(item);
-    recomputeAllOffenders();
-    recomputeAllKnowledgeTypes();
-    recomputeAllPosters();
-    notifyObservers("removeElement", item);
-    fireToDoItemRemoved(item);
     return res;
   }
 
   public boolean removeElement(ToDoItem item) {
     boolean res = removeE(item);
+    recomputeAllOffenders();
+    recomputeAllKnowledgeTypes();
+    recomputeAllPosters();
+    fireToDoItemRemoved(item);
+    notifyObservers("removeElement", item);
     return res;
   }
 
@@ -242,7 +249,7 @@ implements Runnable, java.io.Serializable {
     recomputeAllKnowledgeTypes();
     recomputeAllPosters();
     notifyObservers("removeAllElements");
-    fireToDoListChanged();
+    fireToDoItemsRemoved(oldItems);
   }
 
   protected static Object _RecentOffender = null;
@@ -334,6 +341,11 @@ implements Runnable, java.io.Serializable {
   }
 
   protected void fireToDoItemAdded(ToDoItem item) {
+    Vector v = new Vector();
+    v.addElement(item);
+    fireToDoItemsAdded(v);
+  }
+  protected void fireToDoItemsAdded(Vector items) {
     _RecentOffender = null;
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -343,13 +355,18 @@ implements Runnable, java.io.Serializable {
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ToDoListListener.class) {
 	// Lazily create the event:
-	if (e == null) e = new ToDoListEvent(item);
-	((ToDoListListener)listeners[i+1]).toDoItemAdded(e);
+	if (e == null) e = new ToDoListEvent(items);
+	((ToDoListListener)listeners[i+1]).toDoItemsAdded(e);
       }
     }
   }
 
   protected void fireToDoItemRemoved(ToDoItem item) {
+    Vector v = new Vector();
+    v.addElement(item);
+    fireToDoItemsRemoved(v);
+  }
+  protected void fireToDoItemsRemoved(Vector items) {
     _RecentOffender = null;
     // Guaranteed to return a non-null array
     Object[] listeners = _listenerList.getListenerList();
@@ -359,8 +376,8 @@ implements Runnable, java.io.Serializable {
     for (int i = listeners.length-2; i>=0; i-=2) {
       if (listeners[i]==ToDoListListener.class) {
 	// Lazily create the event:
-	if (e == null) e = new ToDoListEvent(item);
-	((ToDoListListener)listeners[i+1]).toDoItemRemoved(e);
+	if (e == null) e = new ToDoListEvent(items);
+	((ToDoListListener)listeners[i+1]).toDoItemsRemoved(e);
       }
     }
   }

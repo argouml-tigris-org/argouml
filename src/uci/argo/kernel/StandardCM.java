@@ -44,7 +44,7 @@ public class StandardCM extends AndCM {
 
 class NotSnoozedCM extends ControlMech {
   public boolean isRelevant(Critic c, Designer d) {
-    return !c.snoozeOrder().getSnoozeed();
+    return !c.snoozeOrder().getSnoozed();
   }
 } // end class NotSnoozedCM
 
