@@ -344,7 +344,15 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="dist-all" depends="dist,dist-src,dist-lib"/>
 
-
+  <!-- =================================================================== -->
+  <!-- Creates the whole distribution with adjusted version number         -->
+  <!-- =================================================================== -->
+  <target name="dist-release">
+  	<property name="version" value="0.9.4"/>
+  	<antcall target="dist-all">
+  	</antcall>
+  </target>
+  
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
