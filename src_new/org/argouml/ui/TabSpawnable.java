@@ -55,11 +55,6 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
     private static final int OVERLAPP = 30;
 
-    private static final String BUNDLE = "UMLMenu";
-
-    ////////////////////////////////////////////////////////////////
-    // instance variables
-
     private String title = "untitled";
 
     /**
@@ -111,7 +106,6 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
      * it is cloning. The
      * 
      * @see #spawn method copies the title and in some cases when we are a
-     * @see TabToDoTarget or
      * @see TabModelTarget also the Target.
      * 
      * @return the new object or null if not possible.
@@ -169,7 +163,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
 
         JDialog f = new JDialog(ProjectBrowser.getInstance());
         f.getContentPane().setLayout(new BorderLayout());
-        f.setTitle(Translator.localize(BUNDLE, title));
+        f.setTitle(Translator.localize(title));
         TabSpawnable newPanel = (TabSpawnable) clone();
         if (newPanel == null) return null; //failed to clone
 
@@ -187,7 +181,7 @@ public class TabSpawnable extends JPanel implements Cloneable, Orientable {
             it.setTarget(me.getTarget());
         }
 
-        newPanel.setTitle(Translator.localize(BUNDLE, title));
+        newPanel.setTitle(Translator.localize(title));
 
         f.getContentPane().add(newPanel, BorderLayout.CENTER);
         Rectangle bounds = getBounds();

@@ -380,7 +380,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Add menu to add an extension point or note. Placed one before last,
         // so the "Properties" entry is always last.
 
-        ArgoJMenu addMenu = new ArgoJMenu(BUNDLE, "menu.popup.add");
+        ArgoJMenu addMenu = new ArgoJMenu("menu.popup.add");
 
         addMenu.add(ActionAddExtensionPoint.singleton());
         addMenu.add(ActionAddNote.getSingleton());
@@ -391,7 +391,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Show menu to display/hide the extension point compartment. Placed
         // one before last, so the "Properties" entry is always last.
 
-        ArgoJMenu showMenu = new ArgoJMenu(BUNDLE, "menu.popup.show");
+        ArgoJMenu showMenu = new ArgoJMenu("menu.popup.show");
 
         if (epVec.isVisible()) {
             showMenu.add(ActionCompartmentDisplay.hideExtPointCompartment());
@@ -405,7 +405,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Modifier menu. Placed one before last, so the "Properties" entry is
         // always last.
 
-        ArgoJMenu modifierMenu = new ArgoJMenu(BUNDLE, "menu.popup.modifiers");
+        ArgoJMenu modifierMenu = new ArgoJMenu("menu.popup.modifiers");
 
         Object useCase = /*(MUseCase)*/ getOwner();
 

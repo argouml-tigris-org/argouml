@@ -23,17 +23,18 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
+
 import javax.swing.JPanel;
 
 /** 
  * An interface which must be implemented as the UI for 
- * tabs used on the settings panel.
+ * tabs used on the settings panel.<p>
  *
  * Tabs will only need to load data during {@link #handleSettingsTabRefresh}
  * and should only save data during {@link #handleSettingsTabSave}.
  * Changes can be made during editing of the tabs, but the tab must
  * be able to undo any change if requested
- * through {@link #handleSettingsTabCancel}.
+ * through {@link #handleSettingsTabCancel}.<p>
  *
  * @author Thierry Lach
  * @since 0.9.4
@@ -61,13 +62,6 @@ public interface SettingsTabPanel {
      * @return the unlocalized settings tab name
      */
     String getTabKey();
-
-    /** 
-     * Gets the name of the resource bundle to use.
-     *
-     * @return the name of the resource bundle to use.
-     */
-    String getTabResourceBundleKey();
 
     /** 
      * Gets the JPanel which implements the tab.
