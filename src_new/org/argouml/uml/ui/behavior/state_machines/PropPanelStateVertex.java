@@ -72,12 +72,16 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
         containerScroll = new JScrollPane(compositeList);
 
         addButton(new PropPanelButton2(new ActionNavigateNamespace()));
+        addExtraButtons();
         addButton(new PropPanelButton2(new ActionNewStereotype(),
                 lookupIcon("Stereotype")));
         addButton(new PropPanelButton2(new ActionRemoveFromModel(),
                 lookupIcon("Delete")));;
     }
 
+    /** Overrule this to add extra buttons. */
+    protected void addExtraButtons() { }
+    
     /**
      * @return Returns the incomingScroll.
      */
