@@ -58,7 +58,7 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
      * @param horizontal
      */
     public UMLStructuralFeatureChangeabilityRadioButtonPanel(String title, boolean horizontal) {
-        super(title, labelTextsAndActionCommands, "visibility", ActionSetModelElementVisibility.SINGLETON, horizontal);
+        super(title, labelTextsAndActionCommands, "visibility", ActionSetStructuralFeatureChangeability.SINGLETON, horizontal);
     }
 
     /**
@@ -80,3 +80,4 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
         }
     }
 }
+
