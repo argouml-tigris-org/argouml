@@ -39,12 +39,20 @@ import org.argouml.model.ModelFacade;
  */
 public class CrNoInitialState extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNoInitialState() {
 	setHeadline("Place an Initial MState");
 	addSupportedDecision(CrUML.decSTATE_MACHINES);
 	addTrigger("substate");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isACompositeState(dm))) return NO_PROBLEM;
 	Object cs = /*(MCompositeState)*/ dm;

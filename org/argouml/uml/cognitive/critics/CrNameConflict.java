@@ -47,6 +47,10 @@ import org.tigris.gef.util.VectorSet;
 
 public class CrNameConflict extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNameConflict() {
         setHeadline("Revise Name to Avoid Conflict");
         addSupportedDecision(CrUML.decNAMING);
@@ -55,15 +59,27 @@ public class CrNameConflict extends CrUML {
         addTrigger("feature_name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
-        return computeOffenders(dm).size()>1;
+        return computeOffenders(dm).size() > 1;
     }
     
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	VectorSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @param dm the object to check
+     * @return the set of offenders
+     */
     protected VectorSet computeOffenders(Object dm) {
         VectorSet offs = new VectorSet();
         if (ModelFacade.isANamespace(dm)) {
@@ -82,13 +98,17 @@ public class CrNameConflict extends CrUML {
                     offs.addElement(name1Object);
                     break;
                 }
-                names.put(name,name1Object); 
+                names.put(name, name1Object); 
             } 
         } 
         return offs;
     }
 
     
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -103,6 +123,9 @@ public class CrNameConflict extends CrUML {
 	return res;
     }
  
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
         if (w instanceof WizMEName) {
             ToDoItem item = w.getToDoItem();
@@ -115,6 +138,9 @@ public class CrNameConflict extends CrUML {
         }
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 

@@ -42,6 +42,10 @@ import org.argouml.model.ModelFacade;
 //one for pproblems directly in this class.
 public class CrOppEndVsAttr extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrOppEndVsAttr() {
         setHeadline("Rename Role or MAttribute");
         addSupportedDecision(CrUML.decINHERITANCE);
@@ -52,6 +56,10 @@ public class CrOppEndVsAttr extends CrUML {
         addTrigger("structuralFeature");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
         if (!(ModelFacade.isAClassifier(dm)))
             return NO_PROBLEM;

@@ -39,6 +39,10 @@ import org.argouml.cognitive.critics.Critic;
 
 public class CrNonAggDataType extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNonAggDataType() {
 	setHeadline("Wrap MDataType");
 	addSupportedDecision(CrUML.decCONTAINMENT);
@@ -46,6 +50,10 @@ public class CrNonAggDataType extends CrUML {
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	// TODO: not implemented
 	return NO_PROBLEM;

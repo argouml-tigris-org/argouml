@@ -41,12 +41,20 @@ import org.argouml.cognitive.critics.Critic;
 
 public class CrNameConflictAC extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrNameConflictAC() {
 	setHeadline("Role name conflicts with member");
 	addSupportedDecision(CrUML.decNAMING);
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	// TODO: not implemented
 	return NO_PROBLEM;

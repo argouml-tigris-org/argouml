@@ -43,11 +43,19 @@ import org.tigris.gef.util.VectorSet;
  */
 public class CrObjectWithoutComponent extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrObjectWithoutComponent() {
 	setHeadline("Objects normally are inside components");
 	addSupportedDecision(CrUML.decPATTERNS);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLDeploymentDiagram)) return NO_PROBLEM;
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
@@ -56,12 +64,20 @@ public class CrObjectWithoutComponent extends CrUML {
 	return PROBLEM_FOUND;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#toDoItem(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLDeploymentDiagram dd = (UMLDeploymentDiagram) dm;
 	VectorSet offs = computeOffenders(dd);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
+    /**
+     * @see org.argouml.cognitive.Poster#stillValid(
+     * org.argouml.cognitive.ToDoItem, org.argouml.cognitive.Designer)
+     */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
 	VectorSet offs = i.getOffenders();
@@ -77,7 +93,10 @@ public class CrObjectWithoutComponent extends CrUML {
      * component-instance the returned vector-set is not null. Then in
      * the vector-set are the UMLDeploymentDiagram and all FigObjects
      * with no enclosing FigComponent or FigComponentInstance
-     **/
+     *
+     * @param dd the diagram to check
+     * @return the set of offenders
+     */
     public VectorSet computeOffenders(UMLDeploymentDiagram dd) { 
 	Collection figs = dd.getLayer().getContents(null);
         Iterator figIter = figs.iterator();
@@ -89,7 +108,7 @@ public class CrObjectWithoutComponent extends CrUML {
 	    Fig enclosing = fo.getEnclosingFig();
 	    if (enclosing == null
 		|| (!(ModelFacade.isAComponent(enclosing.getOwner())
-		      || ModelFacade.isAComponentInstance(enclosing.getOwner())))) {
+		|| ModelFacade.isAComponentInstance(enclosing.getOwner())))) {
 		if (offs == null) {
 		    offs = new VectorSet();
 		    offs.addElement(dd);
