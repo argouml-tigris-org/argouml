@@ -345,8 +345,8 @@ public class LabelledLayout implements LayoutManager, java.io.Serializable {
                     JLabel jlabel = (JLabel) childComp;
                     childComp = jlabel.getLabelFor();
                     jlabel.setBounds(sectionX, y, labelWidth, (int) jlabel.getPreferredSize().getHeight());
-                    componentWidth = sectionWidth - labelWidth;
-                    componentX = sectionX + labelWidth;
+                    componentWidth = sectionWidth - (labelWidth + _hgap);
+                    componentX = sectionX + labelWidth + _hgap;
                 }
                 rowHeight = ((Integer) rowHeights.get(row)).intValue();
                 if (rowHeight == 0) {
