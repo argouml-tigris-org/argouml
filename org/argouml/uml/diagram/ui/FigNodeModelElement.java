@@ -46,7 +46,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
-import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
@@ -80,17 +79,12 @@ import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.Clarifier;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.UUIDHelper;
-import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
-import org.tigris.gef.base.LayerDiagram;
-import org.tigris.gef.base.LayerManager;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigRect;
@@ -1707,30 +1701,6 @@ public abstract class FigNodeModelElement
      */
     protected void setSuppressCalcBounds(boolean scb) {
         this.suppressCalcBounds = scb;
-    }
-
-    /**
-     * Method to draw a StateVertex Fig's enclosed figs.
-     */
-    public void redrawEnclosedFigs() {
-        if (!(Model.getFacade().isAStateVertex(getOwner()))) {
-            return;
-        }
-        if (!enclosedFigs.isEmpty() && Globals.curEditor() != null) {
-            Editor editor = Globals.curEditor();
-            LayerManager lm = editor.getLayerManager();
-            LayerDiagram lay = ((LayerDiagram) lm.getActiveLayer());
-            for (int i = 0; i < enclosedFigs.size(); i++) {
-                FigStateVertex f = ((FigStateVertex) enclosedFigs.elementAt(i));
-                lay.bringInFrontOf(f, this);
-                Collection col = null;
-                Iterator it = f.getFigEdges(col).iterator();
-                while (it.hasNext()) {
-                    lay.bringInFrontOf(((FigEdge) it.next()), this);
-                }
-                f.redrawEnclosedFigs();
-            }
-        }
     }
 
     /**
