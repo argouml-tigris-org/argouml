@@ -22,34 +22,34 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.model.uml.behavioralelements.collaborations;
-
-import org.argouml.util.CheckUMLModelHelper;
+package org.argouml.model.uml.modelmanagement;
 
 import junit.framework.TestCase;
+
+import org.argouml.util.CheckUMLModelHelper;
 
 /**
  * @since Oct 10, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class TestCollaborationsHelper extends TestCase {
+public class TestModelManagementHelper extends TestCase {
 
     /**
-     * Constructor for TestCollaborationsHelper.
+     * Constructor for TestModelManagementHelper.
      * @param arg0
      */
-    public TestCollaborationsHelper(String arg0) {
+    public TestModelManagementHelper(String arg0) {
         super(arg0);
     }
     
     public void testGetMetaModelName() {
-        CheckUMLModelHelper.metaModelNameCorrect(this, CollaborationsFactory.getFactory(),
-            TestCollaborationsFactory.allModelElements);
+        CheckUMLModelHelper.metaModelNameCorrect(this, ModelManagementFactory.getFactory(),
+            TestModelManagementFactory.allModelElements);
     }
     
     public void testIsValidStereoType() {
-        CheckUMLModelHelper.isValidStereoType(this, CollaborationsFactory.getFactory(),
-            TestCollaborationsFactory.allModelElements);
+        CheckUMLModelHelper.isValidStereoType(this, ModelManagementFactory.getFactory(),
+            TestModelManagementFactory.allModelElements);
     }
 
 }

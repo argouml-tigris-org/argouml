@@ -74,6 +74,11 @@ public class TestExtensionMechanismsHelper extends TestCase {
         CheckUMLModelHelper.metaModelNameCorrect(this, ExtensionMechanismsFactory.getFactory(),
             TestExtensionMechanismsFactory.allModelElements);
     }
+    
+    public void testIsValidStereoType() {
+        CheckUMLModelHelper.isValidStereoType(this, ExtensionMechanismsFactory.getFactory(),
+            TestExtensionMechanismsFactory.allModelElements);
+    }
         
 
 }

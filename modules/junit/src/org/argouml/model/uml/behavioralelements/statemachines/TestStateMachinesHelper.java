@@ -46,5 +46,10 @@ public class TestStateMachinesHelper extends TestCase {
         CheckUMLModelHelper.metaModelNameCorrect(this, StateMachinesFactory.getFactory(),
             TestStateMachinesFactory.allModelElements);
     }
+    
+    public void testIsValidStereoType() {
+        CheckUMLModelHelper.isValidStereoType(this, StateMachinesFactory.getFactory(),
+            TestStateMachinesFactory.allModelElements);
+    }
 
 }

@@ -60,10 +60,16 @@ import junit.framework.*;
 
 import org.apache.log4j.spi.LoggingEvent;
 import org.argouml.model.uml.*;
+import org.argouml.model.uml.foundation.core.CoreFactory;
+import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsHelper;
 
 import ru.novosoft.uml.*;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
 import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 
 
@@ -306,7 +312,38 @@ public class CheckUMLModelHelper {
             tc.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
             
         }
-    }        
+    } 
+    
+    public static void isValidStereoType(TestCase tc, AbstractUmlModelFactory f, String[] names) {
+        try {
+            MNamespace ns = CoreFactory.getFactory().createNamespace();
+            MClass clazz = CoreFactory.getFactory().buildClass(ns);
+            MStereotype stereo1 = ExtensionMechanismsFactory.getFactory().buildStereotype(clazz, "test1", ns);
+             for (int i = 0; i < names.length; i++) {
+                try {
+                    Method m = f.getClass().getMethod("create"+names[i], new Class[] {});
+                    Object base = m.invoke(f, new Object[] {});
+                    if (base instanceof MModelElement) {
+                        MStereotype stereo2 = ExtensionMechanismsFactory.getFactory().buildStereotype((MModelElement)base, "test2", ns);
+                        tc.assert("Unexpected invalid stereotype", ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo2));
+                        if (!(base instanceof MClass)) {
+                            tc.assert("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo1));
+                        } else {
+                            MInterface inter = CoreFactory.getFactory().createInterface();
+                            MStereotype stereo3 = ExtensionMechanismsFactory.getFactory().buildStereotype(inter, "test3", ns);
+                            tc.assert("Unexpected invalid stereotype", !ExtensionMechanismsHelper.getHelper().isValidStereoType((MModelElement)base, stereo3));
+                        }
+                    }
+                }
+                catch (NoSuchMethodException ns2) {}
+            }
+        }
+        catch (Exception ex) {
+            ex.printStackTrace();
+            tc.fail("Exception during test metaModelnameCorrect. Message: " + ex.getMessage());
+            
+        }
+    }
 }
 
 

@@ -46,5 +46,10 @@ public class TestActivityGraphsHelper extends TestCase {
         CheckUMLModelHelper.metaModelNameCorrect(this, ActivityGraphsFactory.getFactory(),
             TestActivityGraphsFactory.allModelElements);
     }
+    
+    public void testIsValidStereoType() {
+        CheckUMLModelHelper.isValidStereoType(this, ActivityGraphsFactory.getFactory(),
+            TestActivityGraphsFactory.allModelElements);
+    }
 
 }
