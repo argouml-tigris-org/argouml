@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,34 +21,56 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+
 package org.argouml.ui.targetmanager;
 
 import java.util.EventListener;
 
 /**
- * @author gebruiker
+ * Interface for listening to events from TargetManager.
  *
- * To change the template for this generated type comment go to
- * Window>Preferences>Java>Code Generation>Code and Comments
+ * <p>Notice that while there are three events {@link #targetSet},
+ * {@link #targetAdded} and {@link #targetRemoved} these signify that
+ * the target set and primary target has changed and the difference
+ * between when they are called is subtle.
+ *
+ * <p>It may often be appropriate to implement as listener so that
+ * targetAdded and targetRemoved calls targetSet. Sometimes the subtle
+ * difference can be used to implement optimizations in these methods,
+ * if desired (needed).
+ *
+ * @see TargetManager#
+ * @author gebruiker
  */
 public interface TargetListener extends EventListener {
     
     /**
      * Fired when a total new set of targets is set
-     * @param e The targetevent, name will be TARGET_SET
+     *
+     * @param e The TargetEvent, name will be TARGET_SET
      */
     public void targetSet(TargetEvent e);
     
     /**
      * Fired when a target is removed from the list of targets
-     * @param e The targetevent, name will be TARGET_REMOVED
+     *
+     * <p>Notice that this is special case of targetSet, that it does not
+     * imply that the primary target is the same nor different nor even that
+     * there is a primary target.
+     *
+     * @param e The TargetEvent, name will be TARGET_REMOVED
      */
     public void targetRemoved(TargetEvent e);
     
     /**
      * Fired when a target is added to the list of targets.
-     * @param e The targetevent, name will be TARGET_ADDED
+     *
+     * <p>Notice that this is special case of targetSet, that it does not
+     * imply that the primary target is the same nor that it is different
+     * nor that there was target previously.
+     *
+     * @param e The TargetEvent, name will be TARGET_ADDED
      */
     public void targetAdded(TargetEvent e);
-
 }
+
