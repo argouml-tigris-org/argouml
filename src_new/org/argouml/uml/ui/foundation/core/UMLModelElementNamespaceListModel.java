@@ -49,7 +49,7 @@ public class UMLModelElementNamespaceListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(getTarget().getNamespace());
+        addElement(((MModelElement)getTarget()).getNamespace());
     }
 
     /**
