@@ -144,10 +144,4 @@ public class ActionSaveProjectAs extends ActionSaveProject {
         }
     }
 
-    /**
-     * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
-     */
-    public boolean shouldBeEnabled() {
-        return true;
-    }
 } /* end class ActionSaveProjectAs */
