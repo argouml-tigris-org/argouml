@@ -36,7 +36,7 @@ import org.argouml.model.uml.Uml;
 import org.argouml.model.uml.UmlFactory;
 
 /**
- * Tests the accessor methods of the facade.
+ * Tests the accessor methods of the _facade.
  * 
  * TestUmlObjectCreation tests the object creation SPI.
  * 
@@ -44,7 +44,7 @@ import org.argouml.model.uml.UmlFactory;
  */
 public class TestModelFacade extends TestCase {
 
-	private ModelFacade facade = null;
+	private ModelFacade _facade = null;
 
 	/**
 	 * Constructor for TestModelFacade.
@@ -88,7 +88,7 @@ public class TestModelFacade extends TestCase {
 			// Test with null
 			args[0] = null;
 			rc = null;
-			rc = (Boolean)methodIsA.invoke(facade, args);
+			rc = (Boolean)methodIsA.invoke(_facade, args);
 			assertNotNull("isA" + objectType + " called with null", rc);
 			assertTrue("isA" + objectType + " called with null", ! rc.booleanValue());
             assertTrue("Should not be able to call isA" + objectType,
@@ -97,7 +97,7 @@ public class TestModelFacade extends TestCase {
 			// Test with an object
 			args[0] = new Object();
 			rc = null;
-			rc = (Boolean)methodIsA.invoke(facade, args);
+			rc = (Boolean)methodIsA.invoke(_facade, args);
 			assertNotNull("isA" + objectType + " called with new Object()", rc);
 			assertTrue("isA" + objectType + " called with new Object()", ! rc.booleanValue());
             assertTrue("Should not be able to call isA" + objectType,
@@ -113,7 +113,7 @@ public class TestModelFacade extends TestCase {
 					assertNotNull("Unable to create '" + umlClass + "'", testObject);
 					args[0] = testObject;
 					rc = null;
-					rc = (Boolean)methodIsA.invoke(facade, args);
+					rc = (Boolean)methodIsA.invoke(_facade, args);
 					assertTrue("isA" + objectType
 					           + " did not work with legacy create", rc.booleanValue());
 					assertTrue("Should not be able to call isA" + objectType,
@@ -132,7 +132,7 @@ public class TestModelFacade extends TestCase {
 					assertNotNull("Unable to create '" + umlClass + "'",testObject);
 					args[0] = testObject;
 					rc = null;
-					rc = (Boolean) methodIsA.invoke(facade, args);
+					rc = (Boolean) methodIsA.invoke(_facade, args);
 					assertTrue("Not JMI interface",testObject instanceof RefBaseObject);
 					assertTrue("isA" + objectType + " did not work with proxy create", rc.booleanValue());
 					assertTrue("Should not be able to call isA" + objectType, umlClass.isAvailableInFacade());
@@ -162,8 +162,8 @@ public class TestModelFacade extends TestCase {
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
-		facade = ModelFacade.getFacade();
-		assertNotNull("Cound not get ModelFacade", facade);
+		_facade = ModelFacade.getFacade();
+		assertNotNull("Cound not get ModelFacade", _facade);
 	}
 
 }
