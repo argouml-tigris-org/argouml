@@ -228,8 +228,31 @@ public class GeneratorPHP4
             }
         }
 
-        sOperation += "function " + NameGenerator.generate(modelElement,
-                iLanguageMajorVersion) + "(";
+        boolean bReturnByReference = false;
+
+        Iterator itTaggedValues = ModelFacade.getTaggedValues(modelElement);
+        if (itTaggedValues != null && itTaggedValues instanceof Iterator) {
+            while (itTaggedValues.hasNext()) {
+                Object objTaggedValue = itTaggedValues.next();
+                if (ModelFacade.getTagOfTag(objTaggedValue).equals("&")) {
+                    if (ModelFacade.getValueOfTag(objTaggedValue)
+                            .equals("true")) {
+                        bReturnByReference = true;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        String sOperationName = NameGenerator.generate(modelElement,
+                iLanguageMajorVersion);
+
+        if (bReturnByReference) {
+            sOperationName = "&" + sOperationName;
+        }
+
+        sOperation += "function " + sOperationName + "(";
 
         Collection colParameters = ModelFacade.getParameters(modelElement);
         if (colParameters != null) {
