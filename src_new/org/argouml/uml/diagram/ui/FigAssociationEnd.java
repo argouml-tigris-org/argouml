@@ -32,7 +32,6 @@ import javax.swing.SwingUtilities;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercentPlusConst;
 import org.tigris.gef.presentation.Fig;
@@ -110,7 +109,7 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         this();
         setLayer(lay);
         setOwner(edge);
-        if (org.argouml.model.ModelFacade.isAAssociationEnd(edge)) {
+        if (Model.getFacade().isAAssociationEnd(edge)) {
             Model.getPump()
                     .removeModelEventListener(this, edge);
             Model.getPump()
@@ -126,17 +125,17 @@ public class FigAssociationEnd extends FigEdgeModelElement {
         if (orderingKind == null) {
             return "";
         }
-        if (ModelFacade.getName(orderingKind) == null) {
+        if (Model.getFacade().getName(orderingKind) == null) {
             return "";
         }
-        if ("".equals(ModelFacade.getName(orderingKind))) {
+        if ("".equals(Model.getFacade().getName(orderingKind))) {
             return "";
         }
-        if ("unordered".equals(ModelFacade.getName(orderingKind))) {
+        if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
             return "";
         }
 
-        return "{" + ModelFacade.getName(orderingKind) + "}";
+        return "{" + Model.getFacade().getName(orderingKind) + "}";
     }
 
     /**
@@ -162,22 +161,22 @@ public class FigAssociationEnd extends FigEdgeModelElement {
                            FigText orderingToUpdate) {
 
         Object owner = getOwner();
-        if (!ModelFacade.isAAssociationEnd(owner)) {
+        if (!Model.getFacade().isAAssociationEnd(owner)) {
             throw new IllegalArgumentException();
         }
 
-        Object multi = ModelFacade.getMultiplicity(owner);
-        String name = ModelFacade.getName(owner);
-        Object order = ModelFacade.getOrdering(owner);
+        Object multi = Model.getFacade().getMultiplicity(owner);
+        String name = Model.getFacade().getName(owner);
+        Object order = Model.getFacade().getOrdering(owner);
         String visi = "";
         Object stereo = null;
-        if (ModelFacade.isNavigable(owner)
-                && (ModelFacade.isAClass(ModelFacade.getType(owner))
-                || ModelFacade.isAInterface(ModelFacade.getType(owner)))) {
-            visi = Notation.generate(this, ModelFacade.getVisibility(owner));
+        if (Model.getFacade().isNavigable(owner)
+                && (Model.getFacade().isAClass(Model.getFacade().getType(owner))
+                || Model.getFacade().isAInterface(Model.getFacade().getType(owner)))) {
+            visi = Notation.generate(this, Model.getFacade().getVisibility(owner));
         }
-        if (ModelFacade.getStereotypes(owner).size() > 0) {
-            stereo = ModelFacade.getStereotypes(owner).iterator().next();
+        if (Model.getFacade().getStereotypes(owner).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(owner).iterator().next();
         }
 
         multiToUpdate.setText(Notation.generate(this, multi));
@@ -205,14 +204,14 @@ public class FigAssociationEnd extends FigEdgeModelElement {
      * @see org.tigris.gef.presentation.Fig#removeFromDiagram()
      */
     public void removeFromDiagram() {
-        final Object association = ModelFacade.getAssociation(getOwner());
+        final Object association = Model.getFacade().getAssociation(getOwner());
         final Object owner = getOwner();
         final Layer layer = getLayer();
         super.removeFromDiagram();
         SwingUtilities.invokeLater(new Runnable() {
             public void run () {
                 Fig associationFig = layer.presentationFor(association);
-                if (ModelFacade.getClassifier(owner) != null
+                if (Model.getFacade().getClassifier(owner) != null
                         && associationFig instanceof FigNodeAssociation) {
                     ((FigNodeAssociation) associationFig).removeFromDiagram();
                 }

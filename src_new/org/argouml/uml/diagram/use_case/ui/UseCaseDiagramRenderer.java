@@ -28,7 +28,6 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigComment;
@@ -72,7 +71,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
 
     /**
-     * <p>Return a Fig that can be used to represent the given node.</p>
+     * Return a Fig that can be used to represent the given node.<p>
      *
      * @param gm    The graph model for which we are rendering.
      *
@@ -88,13 +87,11 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
 
         // Create a new version of the relevant fig
 
-        if (org.argouml.model.ModelFacade.isAActor(node)) {
+        if (Model.getFacade().isAActor(node)) {
             return new FigActor(gm, node);
-        }
-        else if (org.argouml.model.ModelFacade.isAUseCase(node)) {
+        } else if (Model.getFacade().isAUseCase(node)) {
             return new FigUseCase(gm, node);
-        }
-        else if (ModelFacade.isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
         }
 
@@ -139,26 +136,26 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
         
         FigEdge newEdge = null;
         
-        if (org.argouml.model.ModelFacade.isAAssociation(edge)) {
+        if (Model.getFacade().isAAssociation(edge)) {
             // If the edge is an association, we'll need a FigAssociation
             Object   asc         = /*(MAssociation)*/ edge;
             FigAssociation ascFig      = new FigAssociation(asc, lay);
 
             newEdge = ascFig;
-        } else if (org.argouml.model.ModelFacade.isAGeneralization(edge)) {
+        } else if (Model.getFacade().isAGeneralization(edge)) {
             // Generalization needs a FigGeneralization
             Object   gen    = /*(MGeneralization)*/ edge;
             FigGeneralization genFig = new FigGeneralization(gen, lay);
             newEdge = genFig;
-        } else if (org.argouml.model.ModelFacade.isAExtend(edge)) {
+        } else if (Model.getFacade().isAExtend(edge)) {
             // Extend relationship
             Object   ext    = /*(MExtend)*/ edge;
             FigExtend extFig = new FigExtend(ext);
 
             // The nodes at the two ends
 
-            Object base      = ModelFacade.getBase(ext);
-            Object extension = ModelFacade.getExtension(ext);
+            Object base      = Model.getFacade().getBase(ext);
+            Object extension = Model.getFacade().getExtension(ext);
 
             // The figs for the two end nodes
 
@@ -175,14 +172,14 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             extFig.setDestFigNode(baseFN);
 
             newEdge = extFig;
-        } else if (org.argouml.model.ModelFacade.isAInclude(edge)) {
+        } else if (Model.getFacade().isAInclude(edge)) {
             // Include relationship is very like extend. Watch out for the NSUML
             // bug here.
             Object   inc    = /*(MInclude)*/ edge;
             FigInclude incFig = new FigInclude(inc);
 
-            Object base     = ModelFacade.getBase(inc);
-            Object addition = ModelFacade.getAddition(inc);
+            Object base     = Model.getFacade().getBase(inc);
+            Object addition = Model.getFacade().getAddition(inc);
 
             // The figs for the two end nodes
 
@@ -198,7 +195,7 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             incFig.setDestFigNode(additionFN);
 
             newEdge = incFig;
-        } else if (org.argouml.model.ModelFacade.isADependency(edge)) {
+        } else if (Model.getFacade().isADependency(edge)) {
             // Dependency needs a FigDependency
             Object   dep    = /*(MDependency)*/ edge;
             FigDependency depFig = new FigDependency(dep);
@@ -208,9 +205,9 @@ public class UseCaseDiagramRenderer extends UmlDiagramRenderer {
             // there are some here for safety.
 
             Object supplier = /*(MModelElement)*/
-                 ((ModelFacade.getSuppliers(dep).toArray())[0]);
+                 ((Model.getFacade().getSuppliers(dep).toArray())[0]);
             Object client = /*(MModelElement)*/
-                 ((ModelFacade.getClients(dep).toArray())[0]);
+                 ((Model.getFacade().getClients(dep).toArray())[0]);
 
             // The figs for the two end nodes
 

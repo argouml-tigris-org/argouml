@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A non-modal wizard to assist the user in changing aggregation of an
@@ -143,13 +142,13 @@ public class WizAssocComposite extends UMLWizard {
         // Get the ends from the association (we know there are two), and the
         // types associated with them.
 
-        Iterator iter = ModelFacade.getConnections(asc).iterator();
+        Iterator iter = Model.getFacade().getConnections(asc).iterator();
 
         Object ae0 = iter.next();
         Object ae1 = iter.next();
 
-        Object cls0 = ModelFacade.getType(ae0);
-        Object cls1 = ModelFacade.getType(ae1);
+        Object cls0 = Model.getFacade().getType(ae0);
+        Object cls1 = Model.getFacade().getType(ae1);
 
         // Get the names of the two ends. If there are none (i.e they are
         // currently anonymous), use the ArgoUML convention of "(anon)" for the
@@ -159,15 +158,15 @@ public class WizAssocComposite extends UMLWizard {
         String end   = "(anon)";
 
         if ((cls0 != null)
-                && (ModelFacade.getName(cls0) != null)
-                && (!(ModelFacade.getName(cls0).equals("")))) {
-            start = ModelFacade.getName(cls0);
+                && (Model.getFacade().getName(cls0) != null)
+                && (!(Model.getFacade().getName(cls0).equals("")))) {
+            start = Model.getFacade().getName(cls0);
         }
 
         if ((cls1 != null)
-                && (ModelFacade.getName(cls1) != null)
-                && (!(ModelFacade.getName(cls1).equals("")))) {
-            end = ModelFacade.getName(cls1);
+                && (Model.getFacade().getName(cls1) != null)
+                && (!(Model.getFacade().getName(cls1).equals("")))) {
+            end = Model.getFacade().getName(cls1);
         }
 
         // Now create the five options
@@ -295,7 +294,7 @@ public class WizAssocComposite extends UMLWizard {
                 // Set the appropriate aggregation on each end
 
                 Iterator iter =
-		    ModelFacade.getConnections(getTriggerAssociation())
+		    Model.getFacade().getConnections(getTriggerAssociation())
 		    	.iterator();
 
                 Object ae0 = iter.next();

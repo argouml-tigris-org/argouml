@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -91,14 +90,14 @@ public class ActionRemoveFromModel extends UMLAction {
 		    .getDiagrams().size()
 		    > 1);
         }
-        if (ModelFacade.isAModel(target)
+        if (Model.getFacade().isAModel(target)
 	    // we cannot delete the model itself
             && target.equals(ProjectManager.getManager().getCurrentProject()
 			     .getModel())) {
             return false;
         }
-        if (ModelFacade.isAAssociationEnd(target)) {
-            return ModelFacade.getOtherAssociationEnds(target).size() > 1;
+        if (Model.getFacade().isAAssociationEnd(target)) {
+            return Model.getFacade().getOtherAssociationEnds(target).size() > 1;
         }
         if (Model.getStateMachinesHelper().isTopState(target)) {
             /* we can not delete a "top" state,
@@ -137,7 +136,7 @@ public class ActionRemoveFromModel extends UMLAction {
                     target = ((Fig) target).getOwner();
                 }
                 newTarget = getNewTarget(target);
-                if (ModelFacade.isAConcurrentRegion(target)) {
+                if (Model.getFacade().isAConcurrentRegion(target)) {
                     ActionDeleteConcurrentRegion.getSingleton()
                         .actionPerformed(ae);
                 }
@@ -166,8 +165,8 @@ public class ActionRemoveFromModel extends UMLAction {
         if (target instanceof Fig) {
             target = ((Fig) target).getOwner();
         }
-        if (ModelFacade.isABase(target)) {
-            newTarget = ModelFacade.getModelElementContainer(target);
+        if (Model.getFacade().isABase(target)) {
+            newTarget = Model.getFacade().getModelElementContainer(target);
         } else if (target instanceof Diagram) {
             Diagram firstDiagram = (Diagram) p.getDiagrams().get(0);
             if (target != firstDiagram) {
@@ -196,7 +195,7 @@ public class ActionRemoveFromModel extends UMLAction {
         // usage of other sureRemove method is legacy. They should be
         // integrated.
         boolean sure = false;
-        if (ModelFacade.isAModelElement(target)) {
+        if (Model.getFacade().isAModelElement(target)) {
             sure = sureRemoveModelElement(target);
         } else if (target instanceof UMLDiagram) {
             // lets see if this diagram has some figs on it
@@ -226,7 +225,7 @@ public class ActionRemoveFromModel extends UMLAction {
             }
         } else if (target instanceof Fig) {
             // we can delete figs like figrects now too
-            if (ModelFacade.isAModelElement(((Fig) target).getOwner())) {
+            if (Model.getFacade().isAModelElement(((Fig) target).getOwner())) {
                 sure = sureRemoveModelElement(((Fig) target).getOwner());
             } else {
                 sure = true;
@@ -258,7 +257,7 @@ public class ActionRemoveFromModel extends UMLAction {
             doAsk = true;
         }
 
-        Collection beh = ModelFacade.getBehaviors(me);
+        Collection beh = Model.getFacade().getBehaviors(me);
         if (beh != null && beh.size() > 0) {
             confirmStr +=
 		Translator.localize(
@@ -270,7 +269,7 @@ public class ActionRemoveFromModel extends UMLAction {
             return true;
         }
 
-        String name = ModelFacade.getName(me);
+        String name = Model.getFacade().getName(me);
         if (name == null || name.equals("")) {
             name =
 		Translator.localize(

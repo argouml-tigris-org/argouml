@@ -26,21 +26,22 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
- * <p> A critic to check that only one end of a binary association is an
- *   aggregation.</p>
+ * A critic to check that only one end of a binary association is an
+ * aggregation.<p>
  *
- * <p>This is the second well-formedness rule for associations in the UML 1.3
- *   standard (see section 2.5.3 of the standard).</p>
+ * This is the second well-formedness rule for associations in the UML 1.3
+ * standard (see section 2.5.3 of the standard).<p>
  *
- * <p><em>Note</em>. This only applies to binary associations. There is a
- *   separate critic (see {@link org.argouml.uml.cognitive.critics.CrNWayAgg})
- *   which deals with 3- or more-way assocations.</p>
+ * <em>Note</em>. This only applies to binary associations. There is a
+ * separate critic (see {@link org.argouml.uml.cognitive.critics.CrNWayAgg})
+ * which deals with 3- or more-way assocations.<p>
  *
  * @see <a href=
  * "http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/
@@ -52,14 +53,13 @@ import org.argouml.model.ModelFacade;
 public class CrMultipleAgg extends CrUML {
 
     /**
-     * <p>Constructor for the critic.</p>
+     * Constructor for the critic.<p>
      *
-     * <p>Sets up the resource name, which will allow headline and description
+     * Sets up the resource name, which will allow headline and description
      * to found for the current locale. Provides a design issue category
      * (CONTAINMENT), a knowledge type (SEMANTICS) and add triggers for
-     * "end_aggregation".</p>
+     * "end_aggregation".<p>
      */
-
     public CrMultipleAgg() {
 
         setResource("CrMultipleAgg");
@@ -74,24 +74,24 @@ public class CrMultipleAgg extends CrUML {
     }
 
     /**
-     * <p>The trigger for the critic.</p>
+     * The trigger for the critic.<p>
      *
-     * <p>Check that the number of ends is two, otherwise this should be
-     *   handled by the critic for N-way assocations (see {@link
-     *   org.argouml.uml.cognitive.critics.CrNWayAgg}).</p>
+     * Check that the number of ends is two, otherwise this should be
+     * handled by the critic for N-way assocations (see {@link
+     * org.argouml.uml.cognitive.critics.CrNWayAgg}).<p>
      *
-     * <p>We do not handle association roles, which are a subclass of
-     *   association. An association role should be fine, if its parent is OK,
-     *   since it must be more tightly constrained than its parent.</p>
+     * We do not handle association roles, which are a subclass of
+     * association. An association role should be fine, if its parent is OK,
+     * since it must be more tightly constrained than its parent.<p>
      *
-     * <p><em>Note</em>. ArgoUML does not currently have a constructor to check
-     *   that an association role is more tightly constrained than its
-     *   parent.</p>
+     * <em>Note</em>. ArgoUML does not currently have a constructor to check
+     * that an association role is more tightly constrained than its
+     * parent.<p>
      *
-     * <p>Then loop through the ends, counting the number of aggregate
-     *   ends. Note that we look for aggregation explicitly, rather than just
-     *   absence of "no aggregation", so we don't trigger if the aggregation is
-     *   just undefined.</p>
+     * Then loop through the ends, counting the number of aggregate
+     * ends. Note that we look for aggregation explicitly, rather than just
+     * absence of "no aggregation", so we don't trigger if the aggregation is
+     * just undefined.<p>
      *
      * @param  dm    the {@link java.lang.Object Object} to be checked against
      *               the critic.
@@ -103,12 +103,11 @@ public class CrMultipleAgg extends CrUML {
      * @return       {@link #PROBLEM_FOUND PROBLEM_FOUND} if the critic is
      *               triggered, otherwise {@link #NO_PROBLEM NO_PROBLEM}.
      */
-
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only for associations
 
-        if (!(ModelFacade.isAAssociation(dm))) {
+        if (!(Model.getFacade().isAAssociation(dm))) {
             return NO_PROBLEM;
         }
 
@@ -118,11 +117,11 @@ public class CrMultipleAgg extends CrUML {
 
         Object asc = /*(MAssociation)*/ dm;
 
-        if (ModelFacade.isAAssociationRole(asc)) {
+        if (Model.getFacade().isAAssociationRole(asc)) {
             return NO_PROBLEM;
         }
 
-        Collection   conns = ModelFacade.getConnections(asc);
+        Collection   conns = Model.getFacade().getConnections(asc);
 
         if ((conns == null) || (conns.size() != 2)) {
             return NO_PROBLEM;
@@ -134,7 +133,8 @@ public class CrMultipleAgg extends CrUML {
         Iterator assocEnds = conns.iterator();
         while (assocEnds.hasNext()) {
             Object ae = /*(MAssociationEnd)*/ assocEnds.next();
-            if (ModelFacade.isAggregate(ae) || ModelFacade.isComposite(ae)) {
+            if (Model.getFacade().isAggregate(ae)
+                    || Model.getFacade().isComposite(ae)) {
                 aggCount++;
             }
         }
@@ -143,14 +143,13 @@ public class CrMultipleAgg extends CrUML {
 
         if (aggCount > 1) {
             return PROBLEM_FOUND;
-        }
-        else {
+        } else {
             return NO_PROBLEM;
         }
     }
 
     /**
-     * <p>Find the class which will handle the wizard behaviour.</p>
+     * Find the class which will handle the wizard behaviour.<p>
      *
      * @param  item  the {@link ToDoItem} that triggered the critic.
      *

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for State->Substates.
@@ -48,8 +48,8 @@ public class GoCompositeStateToSubvertex extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isACompositeState(parent)) {
-	    return ModelFacade.getSubvertices(parent);
+	if (Model.getFacade().isACompositeState(parent)) {
+	    return Model.getFacade().getSubvertices(parent);
 	}
 	return null;
     }
@@ -58,7 +58,7 @@ public class GoCompositeStateToSubvertex extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isACompositeState(parent)) {
+        if (Model.getFacade().isACompositeState(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 
 /**
@@ -47,9 +47,9 @@ public class UMLAssociationEndMultiplicityComboBoxModel extends
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null
-                && (org.argouml.model.ModelFacade
-                        .isAAssociationEnd(getTarget())))
-                return ModelFacade.getMultiplicity(getTarget());
+                && (Model.getFacade().isAAssociationEnd(getTarget()))) {
+            return Model.getFacade().getMultiplicity(getTarget());
+        }
         return null;
     }
 

@@ -32,7 +32,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.layout.LayoutedObject;
 import org.argouml.uml.diagram.layout.Layouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
@@ -48,8 +48,8 @@ public class ClassdiagramLayouter implements Layouter {
     /**
      * Logger for logging events.
      */
-    private static final Logger LOG = Logger
-            .getLogger(ClassdiagramLayouter.class);
+    private static final Logger LOG =
+        Logger.getLogger(ClassdiagramLayouter.class);
 
     /**
      * Stores the current diagram.
@@ -188,10 +188,11 @@ public class ClassdiagramLayouter implements Layouter {
             if (!classdiagramNode.isPackage()) {
                 Object node = classdiagramNode.getFigure().getOwner();
 
-                if (ModelFacade.isAModelElement(node)) {
-                    Vector specs = new Vector(ModelFacade
-                            .getClientDependencies(node));
-                    specs.addAll(ModelFacade.getSupplierDependencies(node));
+                if (Model.getFacade().isAModelElement(node)) {
+                    Vector specs = new Vector(
+                            Model.getFacade().getClientDependencies(node));
+                    specs.addAll(
+                            Model.getFacade().getSupplierDependencies(node));
                     for (Iterator iter = specs.iterator(); iter.hasNext();) {
 
                         // Realizations are stored as MAbstractions
@@ -200,25 +201,26 @@ public class ClassdiagramLayouter implements Layouter {
                         // the dependencies for this node to get the
                         // abstractions, too.
                         Object dep = iter.next();
-                        if (ModelFacade.isAAbstraction(dep)) {
+                        if (Model.getFacade().isAAbstraction(dep)) {
                             // Is this a abstraction?
                             Object abstr = dep;
-                            if (ModelFacade.isRealize(abstr)) {
+                            if (Model.getFacade().isRealize(abstr)) {
                                 // Is this node the class, that
                                 // implements the interface?
-                                Collection clients = ModelFacade
-                                        .getClients(abstr);
+                                Collection clients =
+                                    Model.getFacade().getClients(abstr);
                                 for (Iterator iter2 = clients.iterator(); iter2
                                         .hasNext();) {
                                     Object me =
                                     /* (MModelElement) */iter2.next();
                                     if (node == me) {
-                                        Collection suppliers = ModelFacade
-                                                .getSuppliers(abstr);
+                                        Collection suppliers =
+                                            Model.getFacade()
+                                            	.getSuppliers(abstr);
                                         Iterator iter3 = suppliers.iterator();
                                         while (iter3.hasNext()) {
                                             Object me2 = iter3.next();
-                                            if (ModelFacade.isAClassifier(me2))
+                                            if (Model.getFacade().isAClassifier(me2))
                                             {
                                                 ClassdiagramNode superNode =
                                                     getClassdiagramNode4owner(
@@ -234,18 +236,18 @@ public class ClassdiagramLayouter implements Layouter {
                                 }
 
                                 // Or the implemented interface?
-                                Collection suppliers = ModelFacade
-                                        .getSuppliers(abstr);
+                                Collection suppliers =
+                                    Model.getFacade().getSuppliers(abstr);
                                 for (Iterator iter2 = suppliers.iterator();
                                     iter2.hasNext();) {
                                     Object me =
                                     /* (MModelElement) */iter2.next();
                                     if (node == me) {
-                                        clients = ModelFacade.getClients(abstr);
+                                        clients = Model.getFacade().getClients(abstr);
                                         for (Iterator iter3 = clients
                                                 .iterator(); iter3.hasNext();) {
                                             Object me2 = iter3.next();
-                                            if (ModelFacade.isAClassifier(me2))
+                                            if (Model.getFacade().isAClassifier(me2))
                                             {
                                                 ClassdiagramNode subNode =
                                                     getClassdiagramNode4owner(
@@ -264,34 +266,34 @@ public class ClassdiagramLayouter implements Layouter {
                     }
                 }
 
-                if (ModelFacade.isAGeneralizableElement(node)) {
-                    Iterator iter = ModelFacade.getGeneralizations(node)
+                if (Model.getFacade().isAGeneralizableElement(node)) {
+                    Iterator iter = Model.getFacade().getGeneralizations(node)
                             .iterator();
 
                     while (iter.hasNext()) {
                         Object g = iter.next();
                         ClassdiagramNode superNode =
-                            getClassdiagramNode4owner(ModelFacade.getParent(g));
+                            getClassdiagramNode4owner(Model.getFacade().getParent(g));
 
                         if (superNode != null) {
                             classdiagramNode.addUplink(superNode);
                         }
                     }
 
-                    iter = ModelFacade.getSpecializations(node).iterator();
+                    iter = Model.getFacade().getSpecializations(node).iterator();
                     while (iter.hasNext()) {
                         Object s = iter.next();
                         ClassdiagramNode subNode =
-                            getClassdiagramNode4owner(ModelFacade.getChild(s));
+                            getClassdiagramNode4owner(Model.getFacade().getChild(s));
 
                         if (subNode != null) {
                             classdiagramNode.addDownlink(subNode);
                         }
                     }
                 }
-                if (ModelFacade.isAClassifier(node)) {
-                    Collection associatedClassifiers = ModelFacade
-                            .getAssociatedClasses(node);
+                if (Model.getFacade().isAClassifier(node)) {
+                    Collection associatedClassifiers =
+                        Model.getFacade().getAssociatedClasses(node);
                     maptoAssocNodes
                             .put(classdiagramNode, associatedClassifiers);
                 }

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * An editable and searchable combobox to edit the multiplicity attribute of
@@ -63,7 +62,7 @@ public class UMLMultiplicityComboBox2 extends UMLSearchableComboBox {
                 	.createMultiplicity(text); //new MMultiplicity(text);
         } catch (IllegalArgumentException e) {
             Object o = search(text);
-            if (o != null && ModelFacade.isAMultiplicity(o)) {
+            if (o != null && Model.getFacade().isAMultiplicity(o)) {
                 multi = o;
             }
         }

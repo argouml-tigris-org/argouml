@@ -26,11 +26,11 @@ package org.argouml.uml.ui.behavior.state_machines;
 
 import java.util.ArrayList;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * Listmodel for the outgoing transitions of a StateVertex
+ * Listmodel for the outgoing transitions of a StateVertex.
  *
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -48,10 +48,12 @@ public class UMLStateVertexOutgoingListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        ArrayList c = new ArrayList(ModelFacade.getOutgoings(getTarget()));
-        if (ModelFacade.isAState(getTarget())) {
-            ArrayList i = new ArrayList(ModelFacade
-                .getInternalTransitions(getTarget()));
+        ArrayList c =
+            new ArrayList(Model.getFacade().getOutgoings(getTarget()));
+        if (Model.getFacade().isAState(getTarget())) {
+            ArrayList i =
+                new ArrayList(
+                        Model.getFacade().getInternalTransitions(getTarget()));
             c.removeAll(i);
         }
         setAllElements(c);
@@ -61,10 +63,12 @@ public class UMLStateVertexOutgoingListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/* MBase */element) {
-        ArrayList c = new ArrayList(ModelFacade.getOutgoings(getTarget()));
-        if (ModelFacade.isAState(getTarget())) {
-            ArrayList i = new ArrayList(ModelFacade
-                    .getInternalTransitions(getTarget()));
+        ArrayList c =
+            new ArrayList(Model.getFacade().getOutgoings(getTarget()));
+        if (Model.getFacade().isAState(getTarget())) {
+            ArrayList i =
+                new ArrayList(
+                        Model.getFacade().getInternalTransitions(getTarget()));
             c.removeAll(i);
         }
         return c.contains(element);

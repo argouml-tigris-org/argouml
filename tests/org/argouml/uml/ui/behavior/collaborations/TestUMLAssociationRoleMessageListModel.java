@@ -75,7 +75,9 @@ public class TestUMLAssociationRoleMessageListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            Model.getCollaborationsHelper().removeMessage(getElem(), elements[i]);
+            Model.getCollaborationsHelper().removeMessage(
+                    getElem(),
+                    elements[i]);
         }
     }
 

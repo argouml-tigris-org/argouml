@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.CommonBehaviorFactory;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.activity_graphs.MActionState;
@@ -418,12 +417,12 @@ public class CommonBehaviorFactoryImpl
         Object action = createCallAction();
         nsmodel.getCoreHelper().setName(action, "action");
         nsmodel.getCollaborationsHelper().setAction(message, action);
-        Object interaction = ModelFacade.getInteraction(message);
+        Object interaction = nsmodel.getFacade().getInteraction(message);
         if (interaction != null
-            && ModelFacade.getContext(interaction) != null) {
+            && nsmodel.getFacade().getContext(interaction) != null) {
             nsmodel.getCoreHelper().setNamespace(
                 action,
-                ModelFacade.getContext(interaction));
+                nsmodel.getFacade().getContext(interaction));
         } else {
             throw new IllegalStateException(
                 "In buildaction: message does not "

@@ -35,7 +35,6 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -93,9 +92,9 @@ public class FigComponent extends FigNodeModelElement {
     public FigComponent(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	if (org.argouml.model.ModelFacade.isAClassifier(node)
-	        && (org.argouml.model.ModelFacade.getName(node) != null)) {
-	    getNameFig().setText(org.argouml.model.ModelFacade.getName(node));
+	if (Model.getFacade().isAClassifier(node)
+	        && (Model.getFacade().getName(node) != null)) {
+	    getNameFig().setText(Model.getFacade().getName(node));
 	}
 	updateBounds();
     }
@@ -244,11 +243,11 @@ public class FigComponent extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 
 	if (encloser != null
-	    && org.argouml.model.ModelFacade.isANode(encloser.getOwner())
+	    && Model.getFacade().isANode(encloser.getOwner())
 	    && getOwner() != null) {
 	    Object node = /*(MNode)*/ encloser.getOwner();
 	    Object comp = /*(MComponent)*/ getOwner();
-	    if (!ModelFacade.getDeploymentLocations(comp).contains(node)) {
+	    if (!Model.getFacade().getDeploymentLocations(comp).contains(node)) {
 		Model.getCoreHelper().addDeploymentLocation(comp, node);
 	    }
 	    super.setEnclosingFig(encloser);
@@ -354,12 +353,12 @@ public class FigComponent extends FigNodeModelElement {
 	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
 	Object stereo = null;
-	if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+	if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
 	if (stereo == null
-	    || ModelFacade.getName(stereo) == null
-	    || ModelFacade.getName(stereo).length() == 0) {
+	    || Model.getFacade().getName(stereo) == null
+	    || Model.getFacade().getName(stereo).length() == 0) {
 
 	    setStereotype("");
 

@@ -29,7 +29,6 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.UMLActivityDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
@@ -57,17 +56,17 @@ public class GUITestProject extends TestCase {
     public void testDeletePackageWithClassDiagram() {
         Project p = ProjectManager.getManager().getCurrentProject();
         assertEquals(2, p.getDiagrams().size());
-        assertEquals("untitledModel", ModelFacade.getName(p.getModel()));
+        assertEquals("untitledModel", Model.getFacade().getName(p.getModel()));
         assertEquals(p.getRoot(), p.getModel());
 
         int sizeMembers = p.getMembers().size();
         int sizeDiagrams = p.getDiagrams().size();
 
-        // test with a package and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
-        Object package2 = Model.getModelManagementFactory().buildPackage(
-                "test2", null);
+        // test with a class and class diagram
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
+        Object package2 =
+            Model.getModelManagementFactory().buildPackage("test2", null);
 
         UMLClassDiagram cDiag = new UMLClassDiagram(package2);
         p.addMember(cDiag);
@@ -90,16 +89,18 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
 
         // test with a class and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
         // try with Statediagram
-        Object machine = Model.getStateMachinesFactory().buildStateMachine(
-                aClass);
-        UMLStateDiagram d = new UMLStateDiagram(ModelFacade
-                .getNamespace(machine), machine);
+        Object machine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
+        UMLStateDiagram d =
+            new UMLStateDiagram(
+                    Model.getFacade().getNamespace(machine),
+                    machine);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
@@ -121,16 +122,18 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
 
         // test with a class and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
         // try with Statediagram
-        Object machine = Model.getStateMachinesFactory().buildStateMachine(
-                aClass);
-        UMLStateDiagram d = new UMLStateDiagram(ModelFacade
-                .getNamespace(machine), machine);
+        Object machine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
+        UMLStateDiagram d =
+            new UMLStateDiagram(
+                    Model.getFacade().getNamespace(machine),
+                    machine);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
@@ -168,8 +171,8 @@ public class GUITestProject extends TestCase {
         assertEquals(2, p.getDiagrams().size());
 
         // test with a class and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         p.moveToTrash(package1);
@@ -191,16 +194,18 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
 
         // test with a class and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
 
         // try with Statediagram
-        Object machine = Model.getStateMachinesFactory().buildStateMachine(
-                aClass);
-        UMLStateDiagram d = new UMLStateDiagram(ModelFacade
-                .getNamespace(machine), machine);
+        Object machine =
+            Model.getStateMachinesFactory().buildStateMachine(aClass);
+        UMLStateDiagram d =
+            new UMLStateDiagram(
+                    Model.getFacade().getNamespace(machine),
+                    machine);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
@@ -225,21 +230,27 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
 
         // test with a class and class diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         Collection propertyChangeListeners = p.findFigsForMember(aClass);
         Object model = p.getModel();
         Object voidType = p.findType("void");
-        Object oper = Model.getCoreFactory()
-            .buildOperation(aClass, model, voidType, propertyChangeListeners);
+        Object oper =
+            Model.getCoreFactory().buildOperation(
+                    aClass,
+                    model,
+                    voidType,
+                    propertyChangeListeners);
 
         // try with Statediagram
-        Object machine = Model.getStateMachinesFactory().buildStateMachine(
-                oper);
-        UMLStateDiagram d = new UMLStateDiagram(ModelFacade
-                .getNamespace(machine), machine);
+        Object machine =
+            Model.getStateMachinesFactory().buildStateMachine(oper);
+        UMLStateDiagram d =
+            new UMLStateDiagram(
+                    Model.getFacade().getNamespace(machine),
+                    machine);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
@@ -266,15 +277,17 @@ public class GUITestProject extends TestCase {
         int sizeDiagrams = p.getDiagrams().size();
 
         // test with a package and a class and activity diagram
-        Object package1 = Model.getModelManagementFactory().buildPackage(
-                "test1", null);
+        Object package1 =
+            Model.getModelManagementFactory().buildPackage("test1", null);
         Object aClass = Model.getCoreFactory().buildClass(package1);
 
         // build the Activity Diagram
-        Object actgrph = Model.getActivityGraphsFactory().buildActivityGraph(
-                aClass);
-        UMLActivityDiagram d = new UMLActivityDiagram(ModelFacade
-                .getNamespace(actgrph), actgrph);
+        Object actgrph =
+            Model.getActivityGraphsFactory().buildActivityGraph(aClass);
+        UMLActivityDiagram d =
+            new UMLActivityDiagram(
+                    Model.getFacade().getNamespace(actgrph),
+                    actgrph);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());
@@ -313,7 +326,8 @@ public class GUITestProject extends TestCase {
         Object actgrph =
             Model.getActivityGraphsFactory().buildActivityGraph(package2);
         UMLActivityDiagram d =
-            new UMLActivityDiagram(ModelFacade.getNamespace(actgrph), actgrph);
+            new UMLActivityDiagram(
+                    Model.getFacade().getNamespace(actgrph), actgrph);
         p.addMember(d);
         assertEquals(sizeDiagrams + 1, p.getDiagrams().size());
         assertEquals(sizeMembers + 1, p.getMembers().size());

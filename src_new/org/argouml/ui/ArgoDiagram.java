@@ -30,7 +30,7 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.ItemUID;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
@@ -45,7 +45,7 @@ public class ArgoDiagram extends Diagram {
     private ItemUID id;
 
     /**
-     * hack to use vetocheck in constructing names
+     * Hack to use vetocheck in constructing names.
      */
     private static ArgoDiagram theInstance = new ArgoDiagram();
 
@@ -66,8 +66,9 @@ public class ArgoDiagram extends Diagram {
     public ArgoDiagram(String diagramName) {
   	// next line patch to issue 596 (hopefully)
   	super(diagramName);
-	try { setName(diagramName); }
-	catch (PropertyVetoException pve) { }
+	try {
+	    setName(diagramName);
+	} catch (PropertyVetoException pve) { }
     }
 
     ////////////////////////////////////////////////////////////////
@@ -128,19 +129,20 @@ public class ArgoDiagram extends Diagram {
      */
     public Fig getContainingFig(Object obj) {
         Fig fig = super.presentationFor(obj);
-        if (fig == null && ModelFacade.isAModelElement(obj)) {
+        if (fig == null && Model.getFacade().isAModelElement(obj)) {
 	    // maybe we have a modelelement that is part of some other
             // fig
-            if (ModelFacade.isAOperation(obj)
-		|| ModelFacade.isAAttribute(obj)) {
+            if (Model.getFacade().isAOperation(obj)
+		|| Model.getFacade().isAAttribute(obj)) {
 
                 // get all the classes from the diagram
                 Iterator it = getNodes(null).iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (ModelFacade.isAClassifier(o)) {
-                        if (ModelFacade.getFeatures(o).contains(obj))
-			    return presentationFor(o);
+                    if (Model.getFacade().isAClassifier(o)) {
+                        if (Model.getFacade().getFeatures(o).contains(obj)) {
+                            return presentationFor(o);
+                        }
                     }
                 }
             }

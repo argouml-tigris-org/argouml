@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -47,7 +47,7 @@ public class UMLClassifierCollaborationListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getCollaborations(getTarget()));
+            setAllElements(Model.getFacade().getCollaborations(getTarget()));
         }
     }
 
@@ -55,7 +55,8 @@ public class UMLClassifierCollaborationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getCollaborations(getTarget()).contains(element);
+        return Model.getFacade().getCollaborations(getTarget())
+        	.contains(element);
     }
 
 }

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 
@@ -48,7 +48,7 @@ public class UMLCommentAnnotatedElementListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getAnnotatedElements(getTarget()));
+            setAllElements(Model.getFacade().getAnnotatedElements(getTarget()));
         }
     }
 
@@ -56,8 +56,9 @@ public class UMLCommentAnnotatedElementListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.isAModelElement(element)
-        && ModelFacade.getAnnotatedElements(getTarget()).contains(element);
+        return Model.getFacade().isAModelElement(element)
+        	&& Model.getFacade().getAnnotatedElements(getTarget())
+        		.contains(element);
     }
 
 }

@@ -28,7 +28,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A critic to detect whether an operation has a name.
@@ -50,9 +50,9 @@ public class CrMissingOperName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAOperation(dm))) return NO_PROBLEM;
 	Object oper = /*(MOperation)*/ dm;
-	String myName = ModelFacade.getName(oper);
+	String myName = Model.getFacade().getName(oper);
 	if (myName == null || myName.equals("")) return PROBLEM_FOUND;
 	if (myName.length() == 0) return PROBLEM_FOUND;
 	return NO_PROBLEM;
@@ -68,11 +68,11 @@ public class CrMissingOperName extends CrUML {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";
-	    if (ModelFacade.isAOperation(me)) {
+	    if (Model.getFacade().isAOperation(me)) {
 		Object a = /*(MOperation)*/ me;
 		int count = 1;
-		if (ModelFacade.getOwner(a) != null)
-		    count = ModelFacade.getFeatures(ModelFacade.getOwner(a))
+		if (Model.getFacade().getOwner(a) != null)
+		    count = Model.getFacade().getFeatures(Model.getFacade().getOwner(a))
 		                                                    .size();
 		sug = "oper" + (count + 1);
 	    }

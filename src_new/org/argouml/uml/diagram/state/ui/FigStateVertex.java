@@ -25,7 +25,6 @@
 package org.argouml.uml.diagram.state.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -70,11 +69,11 @@ public abstract class FigStateVertex extends FigNodeModelElement {
          * This is used for deleting. See issue 3042. */
         if  (!isVisible())
             return; 
-        if (!(ModelFacade.isAStateVertex(getOwner()))) return;
+        if (!(Model.getFacade().isAStateVertex(getOwner()))) return;
         Object stateVertex = getOwner();
         Object compositeState = null;
         if (encloser != null
-                && (ModelFacade.isACompositeState(encloser.getOwner()))) {
+                && (Model.getFacade().isACompositeState(encloser.getOwner()))) {
             compositeState = encloser.getOwner();
             ((FigStateVertex) encloser).redrawEnclosedFigs();
         } else {
@@ -98,8 +97,9 @@ public abstract class FigStateVertex extends FigNodeModelElement {
 
         if (pstate != null) {
 
-            if (org.argouml.model.ModelFacade.isAActivityGraph(ModelFacade
-                    .getStateMachine(ModelFacade.getContainer(pstate)))) {
+            if (Model.getFacade().isAActivityGraph(
+                    Model.getFacade().getStateMachine(
+                            Model.getFacade().getContainer(pstate)))) {
                 return new SelectionActionState(this);
             } else {
                 return new SelectionState(this);

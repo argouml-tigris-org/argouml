@@ -30,9 +30,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
 
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.activity.ui.SelectionActionState;
-import org.argouml.model.ModelFacade;
-
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
@@ -122,8 +121,8 @@ public class FigFinalState extends FigStateVertex {
         Selection sel = null;
         if (getOwner() != null) {
             pstate = getOwner();
-            if (ModelFacade.isAActivityGraph(ModelFacade.getStateMachine(
-                            ModelFacade.getContainer(pstate)))) {
+            if (Model.getFacade().isAActivityGraph(Model.getFacade().getStateMachine(
+                            Model.getFacade().getContainer(pstate)))) {
                 sel = new SelectionActionState(this);
                 ((SelectionActionState) sel).setOutgoingButtonEnabled(false);
             } else {

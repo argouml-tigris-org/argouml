@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.model.StateMachinesHelper;
 
 import ru.novosoft.uml.behavior.common_behavior.MAction;
@@ -176,7 +176,7 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      */
     public boolean isTopState(Object o) {
         if (o instanceof MCompositeState) {
-            if (ModelFacade.getContainer(o) == null) {
+            if (Model.getFacade().getContainer(o) == null) {
                 return true;
             }
         }
@@ -187,6 +187,8 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
      * Returns all statemachines that can be the statemachine the given
      * submachinestate represents. To decouple ArgoUML as much as possible from
      * the NSUML model, the parameter of the method is of type Object.
+     *
+     * @param model The model where we search for state machines.
      * @param oSubmachineState The submachinestate we are searching the
      * statemachines for.
      * @return Collection The collection with found statemachines.
@@ -224,9 +226,6 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
 
     /**
      * Get the "top" composite state of a statemachine. <p>
-     *
-     * The difference with the equally named function in the ModelFacade,
-     * is that this one swallows null without causing an exception.
      *
      * @param sm the given statemachine
      * @return the top composite state
@@ -277,9 +276,9 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
             throw new IllegalArgumentException();
         }
         Object sm = getStateMachine(trans);
-        Object ns = ModelFacade.getNamespace(sm);
+        Object ns = nsmodel.getFacade().getNamespace(sm);
         if (ns instanceof MClassifier) {
-            Collection c = ModelFacade.getOperations(ns);
+            Collection c = nsmodel.getFacade().getOperations(ns);
             Iterator i = c.iterator();
             while (i.hasNext()) {
                 Object op = i.next();
@@ -300,7 +299,8 @@ class StateMachinesHelperImpl implements StateMachinesHelper {
     public Collection getAllSubStates(Object compState) {
         if (compState instanceof MCompositeState) {
             List retList = new ArrayList();
-            Iterator it = ModelFacade.getSubvertices(compState).iterator();
+            Iterator it =
+                nsmodel.getFacade().getSubvertices(compState).iterator();
             while (it.hasNext()) {
                 Object subState = it.next();
                 if (subState instanceof MCompositeState) {

@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Statemachine->Top State.
@@ -49,9 +49,9 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAStateMachine(parent)) {
+	if (Model.getFacade().isAStateMachine(parent)) {
             ArrayList list = new ArrayList();
-            list.add(ModelFacade.getTop(parent));
+            list.add(Model.getFacade().getTop(parent));
 	    return list;
 	}
 	return null;
@@ -61,7 +61,7 @@ public class GoStateMachineToTop extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStateMachine(parent)) {
+        if (Model.getFacade().isAStateMachine(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

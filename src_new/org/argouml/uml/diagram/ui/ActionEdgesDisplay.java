@@ -95,7 +95,7 @@ public class ActionEdgesDisplay extends UMLAction {
 
             if (show) { // add
                 mgm.addNodeRelatedEdges(owner);
-//                Collection c = ModelFacade.getComments(owner);
+//                Collection c = Model.getFacade().getComments(owner);
 //                Iterator i = c.iterator();
 //                while (i.hasNext()) {
 //                    Object annotatedElement = i.next();
@@ -113,7 +113,7 @@ public class ActionEdgesDisplay extends UMLAction {
                         fig.removeFromDiagram();
                 }
                 //The next does not yet work for comment edges:
-//                Collection c = ModelFacade.getComments(owner);
+//                Collection c = Model.getFacade().getComments(owner);
 //                Iterator i = c.iterator();
 //                while (i.hasNext()) {
 //                    Object annotatedElement = i.next();

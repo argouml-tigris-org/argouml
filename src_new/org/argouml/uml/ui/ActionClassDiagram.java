@@ -25,7 +25,7 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 
@@ -55,7 +55,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(Object)
      */
     public UMLDiagram createDiagram(Object ns) {
-        if (ModelFacade.isANamespace(ns)) {
+        if (Model.getFacade().isANamespace(ns)) {
             return new UMLClassDiagram(ns);
         }
         LOG.error("No namespace as argument");
@@ -68,7 +68,7 @@ public class ActionClassDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(Object)
      */
     public boolean isValidNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!Model.getFacade().isANamespace(handle)) {
             LOG.error("No namespace as argument");
             LOG.error(handle);
             throw new IllegalArgumentException(

@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.util.MyTokenizer;
 
 /**
@@ -69,14 +68,14 @@ public class DocumentationManager {
 				 String prefix, String footer) {
         String sResult = defaultFor(o, indent);
 
-        if (ModelFacade.isAModelElement(o)) {
-            Iterator iter = ModelFacade.getTaggedValues(o);
+        if (Model.getFacade().isAModelElement(o)) {
+            Iterator iter = Model.getFacade().getTaggedValues(o);
             if (iter != null) {
                 while (iter.hasNext()) {
                     Object tv = iter.next();
-                    String tag = ModelFacade.getTagOfTag(tv);
+                    String tag = Model.getFacade().getTagOfTag(tv);
                     if (tag.equals("documentation") || tag.equals("javadocs")) {
-                        sResult = ModelFacade.getValueOfTag(tv);
+                        sResult = Model.getFacade().getValueOfTag(tv);
                         // give priority to "documentation"
                         if (tag.equals("documentation")) break;
                     }
@@ -131,14 +130,14 @@ public class DocumentationManager {
      * @return true if the given element has docs.
      */
     public static boolean hasDocs(Object o) {
-	if (ModelFacade.isAModelElement(o)) {
-	    Iterator i = ModelFacade.getTaggedValues(o);
+	if (Model.getFacade().isAModelElement(o)) {
+	    Iterator i = Model.getFacade().getTaggedValues(o);
 
 	    if (i != null) {
 		while (i.hasNext()) {
 		    Object tv = i.next();
-		    String tag = ModelFacade.getTagOfTag(tv);
-		    String value = ModelFacade.getValueOfTag(tv);
+		    String tag = Model.getFacade().getTagOfTag(tv);
+		    String value = Model.getFacade().getValueOfTag(tv);
 		    if ((tag.equals("documentation") || tag.equals("javadocs"))
 			&& value != null && value.trim().length() > 0) {
 			return true;
@@ -157,7 +156,7 @@ public class DocumentationManager {
      * @return the default documentation
      */
     public static String defaultFor(Object o, String indent) {
-	if (ModelFacade.isAClass(o)) {
+	if (Model.getFacade().isAClass(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -175,7 +174,7 @@ public class DocumentationManager {
 		+ indent + " @see OtherClasses\n"
 		+ indent + " @author your_name_here";
 	}
-	if (ModelFacade.isAAttribute(o)) {
+	if (Model.getFacade().isAAttribute(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -189,7 +188,7 @@ public class DocumentationManager {
 	    return " An attribute that represents ...";
 	}
 
-	if (ModelFacade.isAOperation(o)) {
+	if (Model.getFacade().isAOperation(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -205,7 +204,7 @@ public class DocumentationManager {
 	    return " An operation that does...\n\n"
 		+ indent + " @param firstParam a description of this parameter";
 	}
-	if (ModelFacade.isAInterface(o)) {
+	if (Model.getFacade().isAInterface(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -223,7 +222,7 @@ public class DocumentationManager {
 		+ indent + " @see OtherClasses\n"
 		+ indent + " @author your_name_here";
 	}
-	if (ModelFacade.isAModelElement(o)) {
+	if (Model.getFacade().isAModelElement(o)) {
 	    /*
 	     * Changed 2001-10-05 STEFFEN ZSCHALER
 	     *
@@ -281,13 +280,13 @@ public class DocumentationManager {
 	    result.append(header).append(LINE_SEPARATOR);
 	}
 
-	if (ModelFacade.isAModelElement(o)) {
-	    Collection comments = ModelFacade.getComments(o);
+	if (Model.getFacade().isAModelElement(o)) {
+	    Collection comments = Model.getFacade().getComments(o);
 	    if (!comments.isEmpty()) {
 		int nlcount = 2;
 		for (Iterator iter = comments.iterator(); iter.hasNext();) {
 		    Object c = iter.next();
-		    String s = ModelFacade.getName(c);
+		    String s = Model.getFacade().getName(c);
 		    nlcount = appendComment(result,
 					    prefix,
 					    s,

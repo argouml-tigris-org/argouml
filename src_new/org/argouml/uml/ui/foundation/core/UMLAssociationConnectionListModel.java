@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
@@ -51,7 +50,7 @@ public class UMLAssociationConnectionListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getConnections(getTarget()));
+            setAllElements(Model.getFacade().getConnections(getTarget()));
         }
     }
 
@@ -59,8 +58,8 @@ public class UMLAssociationConnectionListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAAssociationEnd(o)
-            && ModelFacade.getConnections(getTarget()).contains(o);
+        return Model.getFacade().isAAssociationEnd(o)
+            && Model.getFacade().getConnections(getTarget()).contains(o);
     }
 
 
@@ -69,7 +68,7 @@ public class UMLAssociationConnectionListModel
      */
     public void swap(int index1, int index2) {
         Object assoc = getTarget();
-        List c = new ArrayList(ModelFacade.getConnections(assoc));
+        List c = new ArrayList(Model.getFacade().getConnections(assoc));
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
         c.set(index1, mem2);

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule to navigate from a Generalizable element to its children.<p>
@@ -50,8 +50,8 @@ public class GoGeneralizableElementToSpecialized
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAGeneralizableElement(parent)) {
-	    return ModelFacade.getChildren(parent);
+	if (Model.getFacade().isAGeneralizableElement(parent)) {
+	    return Model.getFacade().getChildren(parent);
 	}
 	return null;
     }
@@ -60,7 +60,7 @@ public class GoGeneralizableElementToSpecialized
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAGeneralizableElement(parent)) {
+        if (Model.getFacade().isAGeneralizableElement(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

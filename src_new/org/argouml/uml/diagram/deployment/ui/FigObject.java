@@ -32,7 +32,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Selection;
@@ -223,22 +222,22 @@ public class FigObject extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 	// super.setEnclosingFig(encloser);
 
-	if (ModelFacade.isAObject(getOwner())) {
+	if (Model.getFacade().isAObject(getOwner())) {
 	    Object me = /*(MObject)*/ getOwner();
 	    Object mcompInst = null;
 	    Object mcomp = null;
 
 	    if (encloser != null
-		&& (ModelFacade.isAComponentInstance(encloser.getOwner()))) {
+		&& (Model.getFacade().isAComponentInstance(encloser.getOwner()))) {
 
 		mcompInst = /*(MComponentInstance)*/ encloser.getOwner();
 		Model.getCommonBehaviorHelper().setComponentInstance(me, mcompInst);
 
-	    } else if (ModelFacade.getComponentInstance(me) != null) {
+	    } else if (Model.getFacade().getComponentInstance(me) != null) {
                 Model.getCommonBehaviorHelper().setComponentInstance(me, null);
 	    }
 	    if (encloser != null
-		&& (ModelFacade.isAComponent(encloser.getOwner()))) {
+		&& (Model.getFacade().isAComponent(encloser.getOwner()))) {
 
 		mcomp = /*(MComponent)*/ encloser.getOwner();
 		Object obj = /*(MObject)*/ getOwner();
@@ -246,7 +245,7 @@ public class FigObject extends FigNodeModelElement {
 		Model.getCoreHelper().setResident(resident, obj);
 
 	    } else {
-		if (ModelFacade.getImplementationLocation(resident) != null) {
+		if (Model.getFacade().getImplementationLocation(resident) != null) {
 		    Model.getCoreHelper().setImplementationLocation(resident, null);
 		    Model.getCoreHelper().setResident(resident, null);
 		}
@@ -275,21 +274,21 @@ public class FigObject extends FigNodeModelElement {
 	    return;
 	}
 	String nameStr = "";
-	if (ModelFacade.getName(obj) != null) {
-	    nameStr = ModelFacade.getName(obj).trim();
+	if (Model.getFacade().getName(obj) != null) {
+	    nameStr = Model.getFacade().getName(obj).trim();
 	}
 
-	Vector bases = new Vector(ModelFacade.getClassifiers(obj));
+	Vector bases = new Vector(Model.getFacade().getClassifiers(obj));
 
 	String baseString = "";
 
-	if (ModelFacade.getClassifiers(obj) != null
-	        && ModelFacade.getClassifiers(obj).size() > 0) {
+	if (Model.getFacade().getClassifiers(obj) != null
+	        && Model.getFacade().getClassifiers(obj).size() > 0) {
 
-	    baseString += ModelFacade.getName(bases.elementAt(0));
+	    baseString += Model.getFacade().getName(bases.elementAt(0));
 	    for (int i = 1; i < bases.size(); i++) {
 		baseString +=
-		    ", "  + ModelFacade.getName(bases.elementAt(i));
+		    ", "  + Model.getFacade().getName(bases.elementAt(i));
 	    }
 	}
 

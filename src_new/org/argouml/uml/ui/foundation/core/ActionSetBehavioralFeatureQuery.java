@@ -55,7 +55,7 @@ public class ActionSetBehavioralFeatureQuery extends UMLAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isABehavioralFeature(target)) {
+            if (Model.getFacade().isABehavioralFeature(target)) {
                 Object m = /*(MGeneralizableElement)*/ target;
                 Model.getCoreHelper().setQuery(m, source.isSelected());
             }

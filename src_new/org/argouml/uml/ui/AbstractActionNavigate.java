@@ -31,7 +31,7 @@ import javax.swing.Icon;
 
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
@@ -90,7 +90,7 @@ public abstract class AbstractActionNavigate extends UMLAction {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isAModelElement(target)) {
+        if (Model.getFacade().isAModelElement(target)) {
             Object elem = /* (MModelElement) */target;
             Object nav = navigateTo(elem);
             if (nav != null) {

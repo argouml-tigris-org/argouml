@@ -33,7 +33,6 @@ import javax.swing.UIManager;
 import org.apache.log4j.Logger;
 import org.argouml.model.DataTypesHelper;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.util.namespace.StringNamespace;
 import org.tigris.gef.util.ResourceLoader;
 
@@ -265,9 +264,9 @@ public final class ResourceLoaderWrapper {
 
 	Icon icon = (Icon) iconCache.get(value.getClass());
 
-        if (ModelFacade.isAPseudostate(value)) {
+        if (Model.getFacade().isAPseudostate(value)) {
 
-            Object kind = ModelFacade.getKind(value);
+            Object kind = Model.getFacade().getKind(value);
             DataTypesHelper helper = Model.getDataTypesHelper();
             if (helper.equalsINITIALKind(kind)) {
                 icon = initialStateIcon;
@@ -294,15 +293,15 @@ public final class ResourceLoaderWrapper {
             // icon = _FinalStateIcon;
         }
 
-        if (ModelFacade.isAAbstraction(value)) {
+        if (Model.getFacade().isAAbstraction(value)) {
             icon = realizeIcon;
         }
         // needs more work: sending and receiving icons
-        if (ModelFacade.isASignal(value)) {
+        if (Model.getFacade().isASignal(value)) {
             icon = signalIcon;
         }
 
-        if (ModelFacade.isAComment(value)) {
+        if (Model.getFacade().isAComment(value)) {
             icon = commentIcon;
         }
 

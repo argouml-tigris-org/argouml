@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -31,7 +31,7 @@
 
 package org.argouml.uml.reveng.java;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
    The context is the current available namespaces via import in the
@@ -77,12 +77,12 @@ abstract class Context
     */
     protected String getJavaName(Object mPackage)
     {
-	Object parent = ModelFacade.getNamespace(mPackage);
-	if (ModelFacade.isAModel(parent)) {
-	    return ModelFacade.getName(mPackage);
+	Object parent = Model.getFacade().getNamespace(mPackage);
+	if (Model.getFacade().isAModel(parent)) {
+	    return Model.getFacade().getName(mPackage);
 	}
 	else if (parent != null) {
-	    return getJavaName(parent) + "." + ModelFacade.getName(mPackage);
+	    return getJavaName(parent) + "." + Model.getFacade().getName(mPackage);
 	}
 	else {
 	    return "";

@@ -25,7 +25,8 @@
 package org.argouml.uml.ui;
 
 import javax.swing.ComboBoxModel;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 
 /**
  * A searchable combobox. Searchable means that the user only has to type the
@@ -84,7 +85,7 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
         ComboBoxModel model = getModel();
         for (int i = 0; i < model.getSize(); i++) {
             Object element = model.getElementAt(i);
-            if (org.argouml.model.ModelFacade.isABase(element)) {
+            if (Model.getFacade().isABase(element)) {
                 if (getRenderer() instanceof UMLListCellRenderer2) {
                     String labelText = ((UMLListCellRenderer2) getRenderer())
                         .makeText(element);
@@ -92,9 +93,9 @@ public class UMLSearchableComboBox extends UMLEditableComboBox {
                         return element;
                     }
                 }
-                if (org.argouml.model.ModelFacade.isAModelElement(element)) {
+                if (Model.getFacade().isAModelElement(element)) {
                     Object/*MModelElement*/ elem = element;
-                    String name = ModelFacade.getName(elem);
+                    String name = Model.getFacade().getName(elem);
                     if (name != null && name.startsWith(text)) {
                         return element;
                     }

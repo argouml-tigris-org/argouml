@@ -27,10 +27,11 @@ package org.argouml.language.java.generator;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
-import java.util.Iterator;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 
 /**
  * This code piece represents an attribute. Even though the code can
@@ -43,10 +44,14 @@ import org.argouml.model.ModelFacade;
  * @author Marcus Andersson andersson@users.sourceforge.net
  */
 public class AttributeCodePiece extends NamedCodePiece {
-    /** The code piece this attribute represents. */
+    /**
+     * The code piece this attribute represents.
+     */
     private CompositeCodePiece attributeDef;
 
-    /** The names of declared attributes. */
+    /**
+     * The names of declared attributes.
+     */
     private Vector attributeNames;
 
     /**
@@ -58,22 +63,21 @@ public class AttributeCodePiece extends NamedCodePiece {
     */
     public AttributeCodePiece(CodePiece modifiers,
                               CodePiece type,
-                              Vector names)
-    {
+                              Vector names) {
 	attributeNames = new Vector();
 	attributeDef = new CompositeCodePiece(modifiers);
 	attributeDef.add(type);
 	for (Iterator i = names.iterator(); i.hasNext();) {
 	    CodePiece cp = (CodePiece) i.next();
 	    String cpText = cp.getText().toString().trim();
-            if (cpText.indexOf('\n') > 0)
+            if (cpText.indexOf('\n') > 0) {
                 cpText = cpText.substring(0, cpText.indexOf('\n')).trim();
+            }
 	    attributeDef.add(cp);
 	    int pos = 0;
 	    if ((pos = cpText.indexOf('[')) != -1) {
 		attributeNames.add(cpText.substring(0, pos));
-	    }
-	    else {
+	    } else {
 		attributeNames.add(cpText);
 	    }
 	}
@@ -146,8 +150,8 @@ public class AttributeCodePiece extends NamedCodePiece {
 	    // now find the matching feature
 	    for (j = features.iterator(); j.hasNext();) {
 		Object mFeature = /*(MFeature)*/ j.next();
-		if (ModelFacade.isAAttribute(mFeature)
-		        && ModelFacade.getName(mFeature).equals(name)) {
+		if (Model.getFacade().isAAttribute(mFeature)
+		        && Model.getFacade().getName(mFeature).equals(name)) {
 		    // feature found, so it's an attribute (and no
 		    // association end)
 		    found = true;
@@ -174,21 +178,22 @@ public class AttributeCodePiece extends NamedCodePiece {
 		    for (j = ends.iterator(); j.hasNext();) {
 			Object associationEnd = /*(MAssociationEnd)*/ j.next();
 			Object association =
-			    ModelFacade.getAssociation(associationEnd);
+			    Model.getFacade().getAssociation(associationEnd);
 			Iterator connEnum =
-			    ModelFacade.getConnections(association).iterator();
+			    Model.getFacade()
+			    	.getConnections(association).iterator();
 			while (connEnum.hasNext()) {
 			    Object associationEnd2 =
 				/*(MAssociationEnd)*/ connEnum.next();
 			    if (associationEnd2 != associationEnd
-				&& ModelFacade.isNavigable(associationEnd2)
-				&& !ModelFacade.isAbstract(
-				        ModelFacade.getAssociation(
+				&& Model.getFacade()
+					.isNavigable(associationEnd2)
+				&& !Model.getFacade().isAbstract(
+				        Model.getFacade().getAssociation(
 				                associationEnd2))
 				&& generator().generateAscEndName(
 				        associationEnd2)
-				        .equals(name))
-			    {
+				        .equals(name)) {
 				// association end found
 				found = true;
 				writer.write(

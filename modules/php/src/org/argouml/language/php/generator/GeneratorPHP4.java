@@ -44,7 +44,6 @@ import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
 import org.argouml.language.php.PHPDocumentor;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.UUIDHelper;
 import org.argouml.uml.generator.FileGenerator;
 import org.argouml.uml.generator.Generator2;
@@ -139,7 +138,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateExtensionPoint(MExtensionPoint modelElement)");
 
-        if (!ModelFacade.isAExtensionPoint(modelElement)) {
+        if (!Model.getFacade().isAExtensionPoint(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, ExtensionPoint required");
         }
@@ -151,9 +150,11 @@ public class GeneratorPHP4
      * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
-        Object c = ModelFacade.getType(m);
-        if (c == null) return "";
-        return ModelFacade.getName(c);
+        Object c = Model.getFacade().getType(m);
+        if (c == null) {
+            return "";
+        }
+        return Model.getFacade().getName(c);
     }
 
     /**
@@ -165,7 +166,7 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateOperation(Object modelElement, boolean bAddDocs) {
-        if (!ModelFacade.isAOperation(modelElement)) {
+        if (!Model.getFacade().isAOperation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Operation required");
         }
@@ -186,37 +187,39 @@ public class GeneratorPHP4
             }
         }
 
-        String sVisibility = generate(ModelFacade.getVisibility(modelElement));
+        String sVisibility =
+            generate(Model.getFacade().getVisibility(modelElement));
         if (sVisibility != null && sVisibility != "") {
             sOperation += sVisibility + " ";
         }
 
         if (iLanguageMajorVersion > 4) {
             /* scope */
-            Object ownerScope = ModelFacade.getOwnerScope(modelElement);
+            Object ownerScope = Model.getFacade().getOwnerScope(modelElement);
             if (Model.getScopeKind().getClassifier().equals(ownerScope)) {
                 sOperation += "static ";
             }
 
             /* changeability */
-            if (ModelFacade.isLeaf(modelElement)) {
+            if (Model.getFacade().isLeaf(modelElement)) {
                 sOperation += "final ";
             }
 
             /* abstractness */
-            if (ModelFacade.isAbstract(modelElement)) {
+            if (Model.getFacade().isAbstract(modelElement)) {
                 sOperation += "abstract ";
             }
         }
 
         boolean bReturnByReference = false;
 
-        Iterator itTaggedValues = ModelFacade.getTaggedValues(modelElement);
-        if (itTaggedValues != null && itTaggedValues instanceof Iterator) {
+        Iterator itTaggedValues =
+            Model.getFacade().getTaggedValues(modelElement);
+        if (itTaggedValues != null) {
             while (itTaggedValues.hasNext()) {
                 Object objTaggedValue = itTaggedValues.next();
-                if (ModelFacade.getTagOfTag(objTaggedValue).equals("&")) {
-                    if (ModelFacade.getValueOfTag(objTaggedValue)
+                if (Model.getFacade().getTagOfTag(objTaggedValue).equals("&")) {
+                    if (Model.getFacade().getValueOfTag(objTaggedValue)
                             .equals("true")) {
                         bReturnByReference = true;
 
@@ -235,13 +238,13 @@ public class GeneratorPHP4
 
         sOperation += "function " + sOperationName + "(";
 
-        Collection colParameters = ModelFacade.getParameters(modelElement);
+        Collection colParameters = Model.getFacade().getParameters(modelElement);
         if (colParameters != null) {
             Iterator itParameters = colParameters.iterator();
             boolean bFirst = true;
             while (itParameters.hasNext()) {
                 Object objParameter = itParameters.next();
-                if (!ModelFacade.isReturn(objParameter)) {
+                if (!Model.getFacade().isReturn(objParameter)) {
                     if (!bFirst) {
                         sOperation += ", ";
                     } else {
@@ -267,7 +270,7 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateAttribute(Object modelElement, boolean bAddDocs) {
-        if (!ModelFacade.isAAttribute(modelElement)) {
+        if (!Model.getFacade().isAAttribute(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Attribute required");
         }
@@ -288,14 +291,14 @@ public class GeneratorPHP4
             }
         }
 
-        String sVisibility = generate(ModelFacade.getVisibility(modelElement));
+        String sVisibility = generate(Model.getFacade().getVisibility(modelElement));
         if (sVisibility != null && sVisibility != "") {
             sAttribute += sVisibility + " ";
         }
 
         if (iLanguageMajorVersion > 4) {
             /* scope */
-            Object ownerScope = ModelFacade.getOwnerScope(modelElement);
+            Object ownerScope = Model.getFacade().getOwnerScope(modelElement);
             if (Model.getScopeKind().getClassifier().equals(ownerScope)) {
                 sAttribute += "static ";
             }
@@ -307,14 +310,14 @@ public class GeneratorPHP4
                 iLanguageMajorVersion);
 
         String sInitialValue = null;
-        Object exprInitialValue = ModelFacade.getInitialValue(modelElement);
+        Object exprInitialValue = Model.getFacade().getInitialValue(modelElement);
         if (exprInitialValue != null) {
             sInitialValue = generateDefaultValue(
-                    ModelFacade.getType(modelElement),
+                    Model.getFacade().getType(modelElement),
                     generate(exprInitialValue).trim(), false);
         } else {
             sInitialValue = generateDefaultValue(
-                    ModelFacade.getType(modelElement), null, false);
+                    Model.getFacade().getType(modelElement), null, false);
         }
 
         if (sInitialValue != null && sInitialValue.length() > 0) {
@@ -324,11 +327,11 @@ public class GeneratorPHP4
             sAttribute += (exprInitialValue != null) ? "!= null" : "null";
             sAttribute += " | ";
             sAttribute += generateDefaultValue(
-                ModelFacade.getType(modelElement),
+                Model.getFacade().getType(modelElement),
                     generate(exprInitialValue).trim(), false);
             sAttribute += " | ";
             sAttribute += generateDefaultValue(
-                ModelFacade.getType(modelElement),
+                Model.getFacade().getType(modelElement),
                     generate(exprInitialValue).trim(), true);
             sAttribute += " ]";
         }
@@ -346,16 +349,16 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateParameter(Object modelElement) {
-        if (!ModelFacade.isAParameter(modelElement)) {
+        if (!Model.getFacade().isAParameter(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Parameter required");
         }
 
         String sParameter = "";
 
-        if (ModelFacade.isReturn(modelElement)) {
-            Object objType = ModelFacade.getType(modelElement);
-            if (ModelFacade.getName(objType).equals("void")) {
+        if (Model.getFacade().isReturn(modelElement)) {
+            Object objType = Model.getFacade().getType(modelElement);
+            if (Model.getFacade().getName(objType).equals("void")) {
                 return "";
             } else {
                 String sType = convertType(objType);
@@ -368,35 +371,35 @@ public class GeneratorPHP4
         } else {
             if (iLanguageMajorVersion < 5) {
                 // TODO: Do we really need this for PHP5?
-                // TODO: Implent this in ModelFacade
+                // TODO: Implement this in Model subsystem?
                 /* if OUT or INOUT, then pass by reference */
-                if (ModelFacade.getKind(modelElement).equals(
+                if (Model.getFacade().getKind(modelElement).equals(
                         Model.getDirectionKind().getInOutParameter())
-                        || ModelFacade.getKind(modelElement).equals(
+                        || Model.getFacade().getKind(modelElement).equals(
                             Model.getDirectionKind().getOutParameter())) {
                     sParameter += "&";
                 }
             }
 
-            sParameter += "$" + ModelFacade.getName(modelElement);
+            sParameter += "$" + Model.getFacade().getName(modelElement);
 
             String sDefaultValue =
-                generate(ModelFacade.getDefaultValue(modelElement));
+                generate(Model.getFacade().getDefaultValue(modelElement));
             if (sDefaultValue != null && sDefaultValue.length() > 0) {
                 sParameter += " = " + sDefaultValue;
             } else {
                 boolean bAddDefaultValue = false;
 
                 Collection colParameters =
-                        ModelFacade.getParameters(ModelFacade
+                        Model.getFacade().getParameters(Model.getFacade()
                                 .getBehavioralFeature(modelElement));
                 if (colParameters != null) {
                     Iterator itParameters = colParameters.iterator();
                     while (itParameters.hasNext()) {
                         Object objParameter = itParameters.next();
-                        if (!ModelFacade.isReturn(objParameter)) {
+                        if (!Model.getFacade().isReturn(objParameter)) {
                             if (!modelElement.equals(objParameter)) {
-                                if (ModelFacade.getDefaultValue(objParameter)
+                                if (Model.getFacade().getDefaultValue(objParameter)
                                         != null) {
                                     bAddDefaultValue = true;
                                 }
@@ -409,7 +412,7 @@ public class GeneratorPHP4
 
                 if (bAddDefaultValue) {
                     sParameter += " = " + generateDefaultValue(
-                        ModelFacade.getType(modelElement), null, false);
+                        Model.getFacade().getType(modelElement), null, false);
                 }
             }
         }
@@ -424,12 +427,12 @@ public class GeneratorPHP4
      *
      * @return Generated notation for model element.
      *
-     * TODO: fix org.argouml.model.ModelFacade#getType
+     * TODO: fix org.argouml.model.Facade#getType
      */
     public String generatePackage(Object modelElement) {
         String sPackage = "";
 
-        if (!ModelFacade.isAPackage(modelElement)) {
+        if (!Model.getFacade().isAPackage(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Package required");
         }
@@ -449,15 +452,15 @@ public class GeneratorPHP4
             }
         }
 
-        Collection colElements = ModelFacade.getOwnedElements(modelElement);
+        Collection colElements = Model.getFacade().getOwnedElements(modelElement);
         if (colElements != null) {
             Iterator itElements = colElements.iterator();
             if (itElements != null) {
                 while (itElements.hasNext()) {
                     Object objElement = itElements.next();
-                    if (ModelFacade.isAPackage(objElement)) {
+                    if (Model.getFacade().isAPackage(objElement)) {
                         sPackage += generate(objElement) + "\n";
-                    } else if (ModelFacade.isAClassifier(objElement)) {
+                    } else if (Model.getFacade().isAClassifier(objElement)) {
                         sPackage += generate(objElement) + "\n";
                     } else {
                         sPackage += "/*\n";
@@ -488,7 +491,7 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateClassifier(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -497,26 +500,26 @@ public class GeneratorPHP4
 
         String sClassType = "";
         if (iLanguageMajorVersion > 4) {
-            if (ModelFacade.isAClass(modelElement)) {
-                if (ModelFacade.isLeaf(modelElement)) {
+            if (Model.getFacade().isAClass(modelElement)) {
+                if (Model.getFacade().isLeaf(modelElement)) {
                     sClassType = "final class";
                 } else {
                     sClassType = "class";
                 }
-                if (ModelFacade.isAbstract(modelElement)) {
+                if (Model.getFacade().isAbstract(modelElement)) {
                     sClassType = "abstract " + sClassType;
                 }
-            } else if (ModelFacade.isAInterface(modelElement)) {
+            } else if (Model.getFacade().isAInterface(modelElement)) {
                 sClassType = "interface";
-                if (ModelFacade.isLeaf(modelElement)) {
+                if (Model.getFacade().isLeaf(modelElement)) {
                     sClassType = "final " + sClassType;
                 }
             } else {
                 return null;
             }
         } else {
-            if (ModelFacade.isAClass(modelElement)
-                    || ModelFacade.isAInterface(modelElement)) {
+            if (Model.getFacade().isAClass(modelElement)
+                    || Model.getFacade().isAInterface(modelElement)) {
                 sClassType = "class";
             } else {
                 return null;
@@ -564,7 +567,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateTaggedValue(MTaggedValue modelElement)");
 
-        if (!ModelFacade.isATaggedValue(modelElement)) {
+        if (!Model.getFacade().isATaggedValue(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, TaggedValue required");
         }
@@ -583,7 +586,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateExtensionPoint(MExtensionPoint modelElement)");
 
-        if (!ModelFacade.isAAssociation(modelElement)) {
+        if (!Model.getFacade().isAAssociation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Association required");
         }
@@ -602,7 +605,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateAssociationEnd(MAssociationEnd modelElement)");
 
-        if (!ModelFacade.isAAssociationEnd(modelElement)) {
+        if (!Model.getFacade().isAAssociationEnd(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, AssociationEnd required");
         }
@@ -621,7 +624,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateMultiplicity(MMultiplicity modelElement)");
 
-        if (!ModelFacade.isAMultiplicity(modelElement)) {
+        if (!Model.getFacade().isAMultiplicity(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Multiplicity required");
         }
@@ -640,7 +643,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateState(MState modelElement)");
 
-        if (!ModelFacade.isAState(modelElement)) {
+        if (!Model.getFacade().isAState(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, State required");
         }
@@ -659,7 +662,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateTransition(MTransition modelElement)");
 
-        if (!ModelFacade.isATransition(modelElement)) {
+        if (!Model.getFacade().isATransition(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Transition required");
         }
@@ -678,7 +681,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateAction(Object modelElement)");
 
-        if (!ModelFacade.isAAction(modelElement)) {
+        if (!Model.getFacade().isAAction(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Action required");
         }
@@ -697,7 +700,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateGuard(MGuard modelElement)");
 
-        if (!ModelFacade.isAGuard(modelElement)) {
+        if (!Model.getFacade().isAGuard(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Guard required");
         }
@@ -716,7 +719,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateMessage(MMessage modelElement)");
 
-        if (!ModelFacade.isAMessage(modelElement)) {
+        if (!Model.getFacade().isAMessage(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Message required");
         }
@@ -732,7 +735,7 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateVisibility(Object modelElement) {
-        if (!ModelFacade.isAVisibilityKind(modelElement)) {
+        if (!Model.getFacade().isAVisibilityKind(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, VisibilityKind required");
         }
@@ -760,7 +763,7 @@ public class GeneratorPHP4
      * @return Generated notation for model element.
      */
     public String generateEvent(Object modelElement) {
-        if (!ModelFacade.isAEvent(modelElement)) {
+        if (!Model.getFacade().isAEvent(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Event required");
         }
@@ -798,7 +801,7 @@ public class GeneratorPHP4
      *         <code>null</code> otherwise.
      */
     public String generateFile(Object modelElement, String sPath) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -914,7 +917,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateStateBody(MState modelElement)");
 
-        if (!ModelFacade.isAState(modelElement)) {
+        if (!Model.getFacade().isAState(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, State required");
         }
@@ -933,7 +936,7 @@ public class GeneratorPHP4
         // TODO: Auto-generated method stub
         LOG.debug("generateAssociationRole(MAssociationRole modelElement)");
 
-        if (!ModelFacade.isAAssociationRole(modelElement)) {
+        if (!Model.getFacade().isAAssociationRole(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, AssociationRole required");
         }
@@ -1001,11 +1004,15 @@ public class GeneratorPHP4
             }
 
             String sRulerLine = "+";
-            for (int i = 1; i <= iMinWidth - 2; i++) sRulerLine += "-";
+            for (int i = 1; i <= iMinWidth - 2; i++) {
+                sRulerLine += "-";
+            }
             sRulerLine += "+";
 
             String sEmptyLine = "";
-            for (int i = 1; i <= iMinWidth; i++) sEmptyLine += " ";
+            for (int i = 1; i <= iMinWidth; i++) {
+                sEmptyLine += " ";
+            }
 
             while (sbHeadLine.length() < iMinWidth) {
                 sbHeadLine.insert(sbHeadLine.length() - 2, " ");
@@ -1042,28 +1049,52 @@ public class GeneratorPHP4
      * @return The PHP type converted from the model element.
      */
     protected final String convertType(Object modelElement) {
-        String sName = ModelFacade.getName(modelElement).trim();
+        String sName = Model.getFacade().getName(modelElement).trim();
 
-        if (sName.equals("void"))    return null;
+        if (sName.equals("void")) {
+            return null;
+        }
 
-        if (sName.equals("char"))    return "string";
+        if (sName.equals("char")) {
+            return "string";
+        }
 
-        if (sName.equals("boolean")) return "bool";
-        if (sName.equals("bool"))    return "bool";
+        if (sName.equals("boolean")) {
+            return "bool";
+        }
+        if (sName.equals("bool")) {
+            return "bool";
+        }
 
-        if (sName.equals("int"))     return "int";
-        if (sName.equals("byte"))    return "int";
-        if (sName.equals("short"))   return "int";
-        if (sName.equals("long"))    return "int";
+        if (sName.equals("int")) {
+            return "int";
+        }
+        if (sName.equals("byte")) {
+            return "int";
+        }
+        if (sName.equals("short")) {
+            return "int";
+        }
+        if (sName.equals("long")) {
+            return "int";
+        }
 
-        if (sName.equals("float"))   return "float";
-        if (sName.equals("double"))  return "float";
+        if (sName.equals("float")) {
+            return "float";
+        }
+        if (sName.equals("double")) {
+            return "float";
+        }
 
         /* user defined type string, not (java.lang.)String */
-        if (sName.equals("string"))  return "string";
+        if (sName.equals("string")) {
+            return "string";
+        }
 
         /* user defined type array */
-        if (sName.equals("array"))   return "array";
+        if (sName.equals("array")) {
+            return "array";
+        }
 
         return null;
     }
@@ -1079,9 +1110,11 @@ public class GeneratorPHP4
      */
     protected final String generateDefaultValue(Object modelElement,
             String sDefault, boolean bCast) {
-        if (modelElement == null) return null;
+        if (modelElement == null) {
+            return null;
+        }
 
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -1152,7 +1185,7 @@ public class GeneratorPHP4
      *
      * @return Generated section code for the model element.
      */
-    private final String generateSection(Object modelElement) {
+    private String generateSection(Object modelElement) {
         return generateSection(modelElement, INDENT, null);
     }
 
@@ -1165,7 +1198,7 @@ public class GeneratorPHP4
      *
      * @return Generated section code for the model element.
      */
-    private final String generateSection(Object modelElement, String sIndent,
+    private String generateSection(Object modelElement, String sIndent,
                                    String sSuffix) {
         String uuid = UUIDHelper.getInstance().getUUID(modelElement);
         if (uuid == null) {
@@ -1189,8 +1222,8 @@ public class GeneratorPHP4
      * @return <code>true</code> on success,
      *         <code>false</code> otherwise;
      */
-    private final boolean createFile(Object modelElement, File file) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+    private boolean createFile(Object modelElement, File file) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -1276,9 +1309,9 @@ public class GeneratorPHP4
      *
      * @throws Exception
      */
-    private final void updateFile(Object modelElement, File fileOrig)
+    private void updateFile(Object modelElement, File fileOrig)
         throws Exception {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Classifier required");
         }
@@ -1327,18 +1360,18 @@ public class GeneratorPHP4
      * @return source code for class attributes
      */
     private String generateClassifierAttributes(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
 
         String sClsAttr = "";
 
-        if (ModelFacade.isAClass(modelElement)) {
+        if (Model.getFacade().isAClass(modelElement)) {
             sClsAttr += INDENT + "// --- ATTRIBUTES ---\n";
 
             Collection colAttributes =
-                ModelFacade.getAttributes(modelElement);
+                Model.getFacade().getAttributes(modelElement);
 
             if (colAttributes != null) {
                 Iterator itAttributes = colAttributes.iterator();
@@ -1377,7 +1410,7 @@ public class GeneratorPHP4
      * @return source code for extends part of class declaration
      */
     private String generateClassifierGeneralisations(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -1385,7 +1418,7 @@ public class GeneratorPHP4
         String sClsGen = "";
 
         Collection colGeneralizations =
-            ModelFacade.getGeneralizations(modelElement);
+            Model.getFacade().getGeneralizations(modelElement);
         if (colGeneralizations != null) {
             Iterator itGen = colGeneralizations.iterator();
             if (itGen.hasNext()) {
@@ -1398,7 +1431,7 @@ public class GeneratorPHP4
                 }
 
                 while (itGen.hasNext()) {
-                    Object elmGen = ModelFacade.getParent(itGen.next());
+                    Object elmGen = Model.getFacade().getParent(itGen.next());
                     if (elmGen != null) {
                         sClsGen += NameGenerator.generate(elmGen,
                                 iLanguageMajorVersion);
@@ -1427,7 +1460,7 @@ public class GeneratorPHP4
      * @return source code for all class methods
      */
     private String generateClassifierOperations(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -1438,10 +1471,10 @@ public class GeneratorPHP4
 
         /* generate constructor */
         Object objTaggedValue =
-            ModelFacade.getTaggedValue(modelElement, "constructor");
+            Model.getFacade().getTaggedValue(modelElement, "constructor");
         if (objTaggedValue != null) {
             String sTaggedValueConstructor =
-                ModelFacade.getValueOfTag(objTaggedValue);
+                Model.getFacade().getValueOfTag(objTaggedValue);
 
             if (sTaggedValueConstructor != null
                     && sTaggedValueConstructor.equals("true")) {
@@ -1476,13 +1509,13 @@ public class GeneratorPHP4
             }
         }
 
-        if (ModelFacade.isAClass(modelElement)) {
-            Collection colSpec = ModelFacade.getSpecifications(modelElement);
+        if (Model.getFacade().isAClass(modelElement)) {
+            Collection colSpec = Model.getFacade().getSpecifications(modelElement);
             if (colSpec != null) {
                 Iterator itSpec = colSpec.iterator();
                 while (itSpec.hasNext()) {
                     Collection colIfOps =
-                        ModelFacade.getOperations(itSpec.next());
+                        Model.getFacade().getOperations(itSpec.next());
                     if (colIfOps != null) {
                         Iterator itIfOps = colIfOps.iterator();
                         while (itIfOps.hasNext()) {
@@ -1509,7 +1542,7 @@ public class GeneratorPHP4
             }
         }
 
-        Collection colOperations = ModelFacade.getOperations(modelElement);
+        Collection colOperations = Model.getFacade().getOperations(modelElement);
         if (colOperations != null) {
             Iterator itOperations = colOperations.iterator();
             while (itOperations.hasNext()) {
@@ -1530,7 +1563,7 @@ public class GeneratorPHP4
 
                 sClsOp += INDENT + generate(op);
 
-                if (ModelFacade.isAClass(modelElement)) {
+                if (Model.getFacade().isAClass(modelElement)) {
                     sClsOp += generateMethodBody(op, false);
                 } else {
                     if (iLanguageMajorVersion < 5) {
@@ -1556,16 +1589,16 @@ public class GeneratorPHP4
      * @return source code for implements part of class declaration
      */
     private String generateClassifierSpecifications(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
 
         String sClsSpec = "";
 
-        if (ModelFacade.isAClass(modelElement)) {
+        if (Model.getFacade().isAClass(modelElement)) {
             Collection colSpecifications =
-                    ModelFacade.getSpecifications(modelElement);
+                    Model.getFacade().getSpecifications(modelElement);
             if (colSpecifications != null) {
                 Iterator itSpecifications = colSpecifications.iterator();
                 if (itSpecifications.hasNext()) {
@@ -1659,24 +1692,24 @@ public class GeneratorPHP4
      */
     private String generateMethodBody(Object modelElement,
                                       boolean bIgnoreAbstract) {
-        if (!ModelFacade.isAOperation(modelElement)) {
+        if (!Model.getFacade().isAOperation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Operation required");
         }
 
         String sMethodBody = "";
 
-        if (!ModelFacade.isAbstract(modelElement) || bIgnoreAbstract) {
+        if (!Model.getFacade().isAbstract(modelElement) || bIgnoreAbstract) {
             sMethodBody += "\n" + INDENT + "{\n";
 
-            Collection colParameters = ModelFacade.getParameters(modelElement);
+            Collection colParameters = Model.getFacade().getParameters(modelElement);
             if (colParameters != null) {
                 Iterator itParameters = colParameters.iterator();
                 while (itParameters.hasNext()) {
                     Object objParameter = itParameters.next();
-                    if (ModelFacade.isReturn(objParameter)) {
+                    if (Model.getFacade().isReturn(objParameter)) {
                         String sReturnInit = generateDefaultValue(
-                                ModelFacade.getType(objParameter), null, true);
+                                Model.getFacade().getType(objParameter), null, true);
                         String sReturnValue = generate(objParameter);
 
                         if (sReturnInit != null && sReturnValue.trim() != "") {
@@ -1723,7 +1756,7 @@ public class GeneratorPHP4
     private String generateRequired(Object modelElement) {
         String sRequired = "";
 
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -1732,11 +1765,11 @@ public class GeneratorPHP4
             new Comparator() {
                 public int compare(Object obj1, Object obj2) {
                     if (obj1 != null) {
-                        if (!ModelFacade.isAClassifier(obj1)) {
+                        if (!Model.getFacade().isAClassifier(obj1)) {
                             throw new ClassCastException(obj1.getClass()
                                     + " is not comparable as classifier");
                         }
-                        if (!ModelFacade.isAClassifier(obj2)) {
+                        if (!Model.getFacade().isAClassifier(obj2)) {
                             throw new ClassCastException(obj2.getClass()
                                     + " is not comparable as classifier");
                         }
@@ -1762,36 +1795,36 @@ public class GeneratorPHP4
             );
 
         /* generalisations */
-        Collection colGens = ModelFacade.getGeneralizations(modelElement);
+        Collection colGens = Model.getFacade().getGeneralizations(modelElement);
         if (colGens != null) {
             Iterator itGens = colGens.iterator();
             while (itGens.hasNext()) {
                 Object objGen = itGens.next();
-                tsRequired.add(ModelFacade.getParent(objGen));
+                tsRequired.add(Model.getFacade().getParent(objGen));
             }
         }
 
         /* association ends */
-        Collection colAssocEnds = ModelFacade.getAssociationEnds(modelElement);
+        Collection colAssocEnds = Model.getFacade().getAssociationEnds(modelElement);
         if (colAssocEnds != null) {
             Iterator itAssocEnds = colAssocEnds.iterator();
             while (itAssocEnds.hasNext()) {
                 Object assocEnd = itAssocEnds.next();
-                Object oppositeEnd = ModelFacade.getOppositeEnd(assocEnd);
-                if (ModelFacade.isNavigable(oppositeEnd)) {
-                    tsRequired.add(ModelFacade.getType(oppositeEnd));
+                Object oppositeEnd = Model.getFacade().getOppositeEnd(assocEnd);
+                if (Model.getFacade().isNavigable(oppositeEnd)) {
+                    tsRequired.add(Model.getFacade().getType(oppositeEnd));
                 }
             }
         }
 
         /* client dependencies */
         Collection colClientDeps =
-                ModelFacade.getClientDependencies(modelElement);
+                Model.getFacade().getClientDependencies(modelElement);
         if (colClientDeps != null) {
             Iterator itClientDeps = colClientDeps.iterator();
             while (itClientDeps.hasNext()) {
                 Object dep = itClientDeps.next();
-                Collection colDepSuppliers = ModelFacade.getSuppliers(dep);
+                Collection colDepSuppliers = Model.getFacade().getSuppliers(dep);
                 Iterator itDepSuppliers = colDepSuppliers.iterator();
                 while (itDepSuppliers.hasNext()) {
                     tsRequired.add(itDepSuppliers.next());
@@ -1823,8 +1856,8 @@ public class GeneratorPHP4
      *
      * TODO: implement the lookup
      */
-    private final Object findConstructor(Object modelElement) {
-        if (!ModelFacade.isAClass(modelElement)) {
+    private Object findConstructor(Object modelElement) {
+        if (!Model.getFacade().isAClass(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Class required");
         }

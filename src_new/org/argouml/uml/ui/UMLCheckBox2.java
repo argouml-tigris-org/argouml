@@ -27,7 +27,7 @@ package org.argouml.uml.ui;
 import javax.swing.Action;
 import javax.swing.JCheckBox;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -132,12 +132,12 @@ public abstract class UMLCheckBox2
      */
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(checkBoxTarget)) {
+        if (Model.getFacade().isABase(checkBoxTarget)) {
             UmlModelEventPump.getPump().removeModelEventListener(this,
                     checkBoxTarget, propertySetName);
         }
 
-        if (ModelFacade.isABase(target)) {
+        if (Model.getFacade().isABase(target)) {
             checkBoxTarget = target;
 	    // UmlModelEventPump.getPump()
 	    // .removeModelEventListener(this, (MBase)_target,

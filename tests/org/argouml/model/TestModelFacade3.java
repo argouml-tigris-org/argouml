@@ -37,14 +37,13 @@ import junit.framework.TestSuite;
 
 /**
  * This TestCase dynamically generates a suite of tests to throw
- * arguments at each method in the ModelFacade to check whether they
- * throw an IllegalArgumentException.
+ * arguments at each method in the Model subsystem Facade to check 
+ * whether they throw an IllegalArgumentException.
  */
 public class TestModelFacade3 extends TestCase {
 
-
     private Method methodToTest = null;
-    private ModelFacade facade = null;
+    private Facade facade = null;
 
     /**
      * Creates one of the test cases.
@@ -64,7 +63,7 @@ public class TestModelFacade3 extends TestCase {
 	    new TestSuite("Tests for "
 			  + TestModelFacade3.class.getPackage().getName());
 
-        Method methods[] = ModelFacade.class.getDeclaredMethods();
+        Method methods[] = Facade.class.getDeclaredMethods();
 
 	for (int i = 0; i < methods.length; i++) {
             suite.addTest(new TestModelFacade3(methods[i]));
@@ -73,8 +72,10 @@ public class TestModelFacade3 extends TestCase {
         return suite;
     }
 
-    /** This method checks whether a test should be executed for a given
+    /**
+     * This method checks whether a test should be executed for a given
      * method.
+     *
      * @return true if method is not eligible for testing (e.g. helper methods)
      */
     protected boolean methodForbidden() {
@@ -96,10 +97,11 @@ public class TestModelFacade3 extends TestCase {
         }
     }
 
-    /** testOneOrMoreParameters checks whether a public method in the
-     * ModelFacade throws an IllegalArgumentException when invoked with
-     * stupid arguments. Stupid arguments are arguments which are not
-     * from the UML domain, such as a plain Object.
+    /**
+     * testOneOrMoreParameters checks whether a public method in the
+     * Model subsystem Facade throws an IllegalArgumentException when
+     * invoked with stupid arguments. Stupid arguments are arguments 
+     * which are not from the UML domain, such as a plain Object.
      */
     public void testOneOrMoreParameters() {
         int nrParameters = methodToTest.getParameterTypes().length;
@@ -113,17 +115,18 @@ public class TestModelFacade3 extends TestCase {
             try {
                 if (params[i].isPrimitive()) {
                     String primitiveName = params[i].getName();
-                    if (primitiveName.equals("int"))
+                    if (primitiveName.equals("int")) {
                         foo[i] = new Integer(0);
-                    if (primitiveName.equals("boolean"))
+                    }
+                    if (primitiveName.equals("boolean")) {
                         foo[i] = new Boolean(true);
-                    if (primitiveName.equals("short"))
+                    }
+                    if (primitiveName.equals("short")) {
                         foo[i] = new Short("0");
-                }
-                else if (params[i].getName().equals("java.util.Collection")) {
+                    }
+                } else if (params[i].getName().equals("java.util.Collection")) {
                     foo[i] = new ArrayList();
-                }
-                else {
+                } else {
                     // this call could easily fall if there is e.g. no
                     // public default constructor. If it fails tweak the
                     // if/else tree above to accomodate the parameter
@@ -131,14 +134,12 @@ public class TestModelFacade3 extends TestCase {
                     // at all.
                     foo[i] = params[i].newInstance();
                 }
-            }
-            catch (InstantiationException e) {
+            } catch (InstantiationException e) {
                 fail("Cannot create an instance of : "
 		     + params[i].getName() + ", required for "
 		     + methodToTest.getName() + ". Check if "
 		     + "test needs reworking.");
-            }
-            catch (IllegalAccessException il) {
+            } catch (IllegalAccessException il) {
                 fail("Illegal Access to : " + params[i].getName());
             }
         }
@@ -148,15 +149,13 @@ public class TestModelFacade3 extends TestCase {
             methodToTest.invoke(facade,  foo);
             fail(methodToTest.getName()
 		 + " does not deliver an IllegalArgumentException");
-        }
-        catch (InvocationTargetException e) {
+        } catch (InvocationTargetException e) {
             if (e.getTargetException() instanceof IllegalArgumentException) {
                 return;
             }
             fail("Test failed for " + methodToTest.toString()
 		 + " because of: " + e.getTargetException());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             fail("Test failed for " + methodToTest.toString()
 		 + " because of: " + e.toString());
         }
@@ -168,7 +167,7 @@ public class TestModelFacade3 extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
-        facade = new ModelFacade();
-        assertNotNull("Cound not get ModelFacade", facade);
+        facade = Model.getFacade();
+        assertNotNull("Cound not get Facade", facade);
     }
 }

@@ -27,11 +27,10 @@ package org.argouml.uml.diagram.ui;
 import java.awt.event.ActionEvent;
 import java.util.Iterator;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.argouml.uml.reveng.DiagramInterface;
 import org.argouml.uml.ui.UMLAction;
-
 import org.tigris.gef.base.Globals;
 
 /**
@@ -97,10 +96,10 @@ public class ActionAddAllClassesFromModel extends UMLAction {
 
 	    Object namespace = ((UMLClassDiagram) object).getNamespace();
 	    Iterator elements =
-		ModelFacade.getOwnedElements(namespace).iterator();
+		Model.getFacade().getOwnedElements(namespace).iterator();
 	    while (elements.hasNext()) {
 		Object element = elements.next();
-		if (ModelFacade.isAClass(element)) {
+		if (Model.getFacade().isAClass(element)) {
 		    diagram.addClass(element, false);
 		}
 	    }

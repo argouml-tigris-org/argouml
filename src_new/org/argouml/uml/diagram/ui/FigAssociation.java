@@ -37,7 +37,6 @@ import java.util.Vector;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoJMenu;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
@@ -190,8 +189,8 @@ public class FigAssociation extends FigEdgeModelElement {
     public void setOwner(Object association) {
 	super.setOwner(association);
 
-	if (org.argouml.model.ModelFacade.isAAssociation(association)) {
-	    Collection connections = ModelFacade.getConnections(association);
+	if (Model.getFacade().isAAssociation(association)) {
+	    Collection connections = Model.getFacade().getConnections(association);
 	    for (int i = 0; i < connections.size(); i++) {
 		Object assEnd = (connections.toArray())[i];
 		Model.getPump()
@@ -206,10 +205,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	    Object assEnd1 = (connections.toArray())[0];
 	    FigNode destNode =
 		(FigNode) getLayer()
-		    .presentationFor(ModelFacade.getType(assEnd1));
+		    .presentationFor(Model.getFacade().getType(assEnd1));
 	    FigNode srcNode =
 		(FigNode) getLayer()
-		    .presentationFor(ModelFacade.getType(assEnd1));
+		    .presentationFor(Model.getFacade().getType(assEnd1));
 	    if (destNode != null) {
 		setDestFigNode(destNode);
 		setDestPortFig(destNode);
@@ -236,7 +235,7 @@ public class FigAssociation extends FigEdgeModelElement {
         }
 	super.textEdited(ft);
 
-	Collection conn = ModelFacade.getConnections(getOwner());
+	Collection conn = Model.getFacade().getConnections(getOwner());
 	if (conn == null || conn.size() == 0) {
 	    return;
 	}
@@ -266,22 +265,22 @@ public class FigAssociation extends FigEdgeModelElement {
 			   FigText orderingToUpdate,
 			   Object end) {
 
-        if (!ModelFacade.isAAssociationEnd(end)) {
+        if (!Model.getFacade().isAAssociationEnd(end)) {
             throw new IllegalArgumentException();
 	}
 
-	Object multi = ModelFacade.getMultiplicity(end);
-	String name = ModelFacade.getName(end);
-	Object order = ModelFacade.getOrdering(end);
+	Object multi = Model.getFacade().getMultiplicity(end);
+	String name = Model.getFacade().getName(end);
+	Object order = Model.getFacade().getOrdering(end);
         String visi = "";
         Object stereo = null;
-        if (ModelFacade.isNavigable(end)
-	    && (ModelFacade.isAClass(ModelFacade.getType(end))
-		|| ModelFacade.isAInterface(ModelFacade.getType(end)))) {
-	    visi = Notation.generate(this, ModelFacade.getVisibility(end));
+        if (Model.getFacade().isNavigable(end)
+	    && (Model.getFacade().isAClass(Model.getFacade().getType(end))
+		|| Model.getFacade().isAInterface(Model.getFacade().getType(end)))) {
+	    visi = Notation.generate(this, Model.getFacade().getVisibility(end));
         }
-        if (ModelFacade.getStereotypes(end).size() > 0) {
-            stereo = ModelFacade.getStereotypes(end).iterator().next();
+        if (Model.getFacade().getStereotypes(end).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(end).iterator().next();
         }
 
 	multiToUpdate.setText(Notation.generate(this, multi));
@@ -312,23 +311,23 @@ public class FigAssociation extends FigEdgeModelElement {
 
 	//MAssociationEnd
 	Object ae0 =
-	    ((ModelFacade.getConnections(associationEnd)).toArray())[0];
+	    ((Model.getFacade().getConnections(associationEnd)).toArray())[0];
 	//MAssociationEnd
 	Object ae1 =
-	    ((ModelFacade.getConnections(associationEnd)).toArray())[1];
+	    ((Model.getFacade().getConnections(associationEnd)).toArray())[1];
 	updateEnd(srcMult, srcRole, srcOrdering, ae0);
 	updateEnd(destMult, destRole, destOrdering, ae1);
 
-	boolean srcNav = ModelFacade.isNavigable(ae0);
-	boolean destNav = ModelFacade.isNavigable(ae1);
+	boolean srcNav = Model.getFacade().isNavigable(ae0);
+	boolean destNav = Model.getFacade().isNavigable(ae1);
 	if (srcNav && destNav && SUPPRESS_BIDIRECTIONAL_ARROWS) {
 	    srcNav = false;
 	    destNav = false;
 	}
 	sourceArrowHead =
-	    chooseArrowHead(ModelFacade.getAggregation(ae0), srcNav);
+	    chooseArrowHead(Model.getFacade().getAggregation(ae0), srcNav);
 	destArrowHead =
-	    chooseArrowHead(ModelFacade.getAggregation(ae1), destNav);
+	    chooseArrowHead(Model.getFacade().getAggregation(ae1), destNav);
 	setSourceArrowHead(sourceArrowHead);
 	setDestArrowHead(destArrowHead);
 	srcGroup.calcBounds();
@@ -347,7 +346,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
     /**
      * @param ak Object of type AggregationKind
-     * @param nav the result of a ModelFacade.isNavigable(AssociationEnd)
+     * @param nav the result of a Model.getFacade().isNavigable(AssociationEnd)
      * @return the ArrowHead chosen
      */
     private ArrowHead chooseArrowHead(Object ak, boolean nav) {
@@ -452,13 +451,13 @@ public class FigAssociation extends FigEdgeModelElement {
 	    // Navigability menu with suboptions built dynamically to
 	    // allow navigability from atart to end, from end to start
 	    // or bidirectional
-	    Collection ascEnds = ModelFacade.getConnections(association);
+	    Collection ascEnds = Model.getFacade().getConnections(association);
             Iterator iter = ascEnds.iterator();
 	    Object ascStart = iter.next();
 	    Object ascEnd = iter.next();
 
-	    if (ModelFacade.isAClassifier(ModelFacade.getType(ascStart))
-                    && ModelFacade.isAClassifier(ModelFacade.getType(ascEnd))) {
+	    if (Model.getFacade().isAClassifier(Model.getFacade().getType(ascStart))
+                    && Model.getFacade().isAClassifier(Model.getFacade().getType(ascEnd))) {
                 ArgoJMenu navMenu =
 		    new ArgoJMenu("menu.popup.navigability");
 
@@ -493,17 +492,17 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (orderingKind == null) {
 	    return "";
 	}
-	if (ModelFacade.getName(orderingKind) == null) {
+	if (Model.getFacade().getName(orderingKind) == null) {
 	    return "";
 	}
-	if ("".equals(ModelFacade.getName(orderingKind))) {
+	if ("".equals(Model.getFacade().getName(orderingKind))) {
 	    return "";
 	}
-	if ("unordered".equals(ModelFacade.getName(orderingKind))) {
+	if ("unordered".equals(Model.getFacade().getName(orderingKind))) {
 	    return "";
 	}
 
-	return "{" + ModelFacade.getName(orderingKind) + "}";
+	return "{" + Model.getFacade().getName(orderingKind) + "}";
     }
 
     /**
@@ -515,7 +514,7 @@ public class FigAssociation extends FigEdgeModelElement {
             return;
         }
         Object assoc =  getOwner();
-        if (ModelFacade.isAbstract(assoc)) {
+        if (Model.getFacade().isAbstract(assoc)) {
             getNameFig().setFont(getItalicLabelFont());
         } else {
             getNameFig().setFont(getLabelFont());

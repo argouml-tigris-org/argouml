@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -50,11 +49,11 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
      */
     public void buildModel() {
         // repair action for possible NP after load
-        if (ModelFacade.getTargetScope(getTarget()) == null) {
+        if (Model.getFacade().getTargetScope(getTarget()) == null) {
             Model.getCoreHelper().setTargetScope(getTarget(),
                     Model.getScopeKind().getInstance());
         }
-        setSelected(ModelFacade.getTargetScope(getTarget()).equals(
+        setSelected(Model.getFacade().getTargetScope(getTarget()).equals(
                 Model.getScopeKind().getClassifier()));
     }
 }

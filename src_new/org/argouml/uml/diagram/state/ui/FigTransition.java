@@ -32,7 +32,6 @@ import java.text.ParseException;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -82,10 +81,10 @@ public class FigTransition extends FigEdgeModelElement {
      */
     public FigTransition(Object edge, Layer lay) {
         this();
-        if (org.argouml.model.ModelFacade.isATransition(edge)) {
+        if (Model.getFacade().isATransition(edge)) {
             Object tr = /* (MTransition) */edge;
-            Object sourceSV = ModelFacade.getSource(tr);
-            Object destSV = ModelFacade.getTarget(tr);
+            Object sourceSV = Model.getFacade().getSource(tr);
+            Object destSV = Model.getFacade().getTarget(tr);
             FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
             FigNode destFN = (FigNode) lay.presentationFor(destSV);
             setSourcePortFig(sourceFN);
@@ -93,8 +92,8 @@ public class FigTransition extends FigEdgeModelElement {
             setDestPortFig(destFN);
             setDestFigNode(destFN);
 
-            dashed = ModelFacade.isAObjectFlowState(sourceSV)
-                    || ModelFacade.isAObjectFlowState(destSV);
+            dashed = Model.getFacade().isAObjectFlowState(sourceSV)
+                    || Model.getFacade().isAObjectFlowState(destSV);
         }
         setLayer(lay);
         setOwner(edge);
@@ -155,14 +154,14 @@ public class FigTransition extends FigEdgeModelElement {
         }
 
         // register the guard condition
-        if (ModelFacade.isATransition(e.getSource())
+        if (Model.getFacade().isATransition(e.getSource())
                 && (e.getSource() == getOwner()
                         && e.getPropertyName().equals("guard"))) {
             Model.getPump().addModelEventListener(this,
                     e.getNewValue(), "expression");
             updateNameText();
             damage();
-        } else if (ModelFacade.isATransition(e.getSource())
+        } else if (Model.getFacade().isATransition(e.getSource())
                 && e.getSource() == getOwner()
                 && e.getPropertyName().equals("trigger")) {
             // register the event (or trigger)
@@ -173,7 +172,7 @@ public class FigTransition extends FigEdgeModelElement {
             	    });
             updateNameText();
             damage();
-        } else if (ModelFacade.isATransition(e.getSource())
+        } else if (Model.getFacade().isATransition(e.getSource())
                 && e.getSource() == getOwner()
                 && e.getPropertyName().equals("effect")) {
             // register the action
@@ -181,8 +180,8 @@ public class FigTransition extends FigEdgeModelElement {
                     e.getNewValue(), "script");
             updateNameText();
             damage();
-        } else if (ModelFacade.isAEvent(e.getSource())
-                && ModelFacade.getTransitions(e.getSource()).contains(
+        } else if (Model.getFacade().isAEvent(e.getSource())
+                && Model.getFacade().getTransitions(e.getSource()).contains(
                         getOwner())) {
             // handle events send by the event
             if (e.getPropertyName().equals("parameter")) {
@@ -199,23 +198,23 @@ public class FigTransition extends FigEdgeModelElement {
             }
             updateNameText();
             damage();
-        } else if (ModelFacade.isAGuard(e.getSource())) {
+        } else if (Model.getFacade().isAGuard(e.getSource())) {
             // handle events send by the guard
             updateNameText();
             damage();
-        } else if (ModelFacade.isAAction(e.getSource())) {
+        } else if (Model.getFacade().isAAction(e.getSource())) {
             // handle events send by the action-effect
             updateNameText();
             damage();
-        } else if (ModelFacade.isAParameter(e.getSource())) {
+        } else if (Model.getFacade().isAParameter(e.getSource())) {
             // handle events send by the parameters of the event
             updateNameText();
             damage();
         } else if ((e.getSource() == getOwner())
                 && (e.getPropertyName().equals("source")
                         || (e.getPropertyName().equals("target")))) {
-            dashed = ModelFacade.isAObjectFlowState(getSource())
-                || ModelFacade.isAObjectFlowState(getDestination());
+            dashed = Model.getFacade().isAObjectFlowState(getSource())
+                || Model.getFacade().isAObjectFlowState(getDestination());
             _fig.setDashed(dashed);
         }
     }

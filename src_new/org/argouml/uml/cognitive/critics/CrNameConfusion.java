@@ -26,13 +26,15 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
-import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
 /**
@@ -57,7 +59,7 @@ public class CrNameConfusion extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAModelElement(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAModelElement(dm))) return NO_PROBLEM;
 	Object me = /*(MModelElement)*/ dm;
 	VectorSet offs = computeOffenders(me);
 	if (offs.size() > 1) return PROBLEM_FOUND;
@@ -69,21 +71,21 @@ public class CrNameConfusion extends CrUML {
      * @return the vectorset of offenders
      */
     public VectorSet computeOffenders(Object/*MModelElement*/ dm) {
-	Object ns = ModelFacade.getNamespace(dm);
+	Object ns = Model.getFacade().getNamespace(dm);
 	VectorSet res = new VectorSet(dm);
-	String n = ModelFacade.getName(dm);
+	String n = Model.getFacade().getName(dm);
 	if (n == null || n.equals("")) return res;
 	String dmNameStr = n;
 	if (dmNameStr == null || dmNameStr.length() == 0) return res;
 	String stripped2 = strip(dmNameStr);
 	if (ns == null) return res;
-	Collection oes = ModelFacade.getOwnedElements(ns);
+	Collection oes = Model.getFacade().getOwnedElements(ns);
 	if (oes == null) return res;
 	Iterator elems = oes.iterator();
 	while (elems.hasNext()) {
 	    Object me2 = /*(MModelElement)*/ elems.next();
 	    if (me2 == dm) continue;
-	    String meName = ModelFacade.getName(me2);
+	    String meName = Model.getFacade().getName(me2);
 	    if (meName == null || meName.equals("")) continue;
 	    String compareName = meName;
 	    if (confusable(stripped2, strip(compareName))

@@ -28,7 +28,6 @@ import java.util.Collection;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.critics.CrUML;
 
 // related to issue 570
@@ -55,7 +54,7 @@ public class CrMultipleRealization extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAInterface(dm))) {
+	if (!(Model.getFacade().isAInterface(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object inter = /*(MInterface)*/ dm;

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,14 +46,14 @@ public class UMLTransitionStatemachineListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getStateMachine(getTarget()));
+        addElement(Model.getFacade().getStateMachine(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getStateMachine(getTarget()) == element;
+        return Model.getFacade().getStateMachine(getTarget()) == element;
     }
 
 }

@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -63,8 +62,8 @@ public class ActionAddExtendExtensionPoint
         Vector ret = new Vector();
         if (getTarget() != null) {
             Object extend = /*(MExtend)*/getTarget();
-            Collection c = ModelFacade.getExtensionPoints(
-                    ModelFacade.getBase(extend));
+            Collection c = Model.getFacade().getExtensionPoints(
+                    Model.getFacade().getBase(extend));
             ret.addAll(c);
         }
         return ret;
@@ -83,7 +82,7 @@ public class ActionAddExtendExtensionPoint
      */
     protected Vector getSelected() {
         Vector ret = new Vector();
-        ret.addAll(ModelFacade.getExtensionPoints(getTarget()));
+        ret.addAll(Model.getFacade().getExtensionPoints(getTarget()));
         return ret;
     }
 

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
 
@@ -104,7 +103,7 @@ public abstract class UMLExpressionModel2  {
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return ModelFacade.getLanguage(expression);
+        return Model.getFacade().getLanguage(expression);
     }
 
     /**
@@ -117,7 +116,7 @@ public abstract class UMLExpressionModel2  {
         if (expression == null) {
             return EMPTYSTRING;
         }
-        return ModelFacade.getBody(expression);
+        return Model.getFacade().getBody(expression);
     }
 
     /**
@@ -127,7 +126,7 @@ public abstract class UMLExpressionModel2  {
 
         boolean mustChange = true;
         if (expression != null) {
-            String oldValue = ModelFacade.getLanguage(expression);
+            String oldValue = Model.getFacade().getLanguage(expression);
             if (oldValue != null && oldValue.equals(lang)) {
                 mustChange = false;
             }
@@ -135,7 +134,7 @@ public abstract class UMLExpressionModel2  {
         if (mustChange) {
             Object body = null;
             if (expression != null) {
-                body = ModelFacade.getBody(expression);
+                body = Model.getFacade().getBody(expression);
             }
             if (body == null) body = EMPTYSTRING;
 
@@ -149,7 +148,7 @@ public abstract class UMLExpressionModel2  {
     public void setBody(Object body) {
         boolean mustChange = true;
         if (expression != null) {
-            Object oldValue = ModelFacade.getBody(expression);
+            Object oldValue = Model.getFacade().getBody(expression);
             if (oldValue != null && oldValue.equals(body)) {
                 mustChange = false;
             }
@@ -157,7 +156,7 @@ public abstract class UMLExpressionModel2  {
         if (mustChange) {
             String lang = null;
             if (expression != null) {
-                lang = ModelFacade.getLanguage(expression);
+                lang = Model.getFacade().getLanguage(expression);
             }
             if (lang == null) lang = EMPTYSTRING;
 

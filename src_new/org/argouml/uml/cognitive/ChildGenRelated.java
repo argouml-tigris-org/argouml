@@ -29,8 +29,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.model.ModelFacade;
-
+import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
@@ -57,69 +56,69 @@ public class ChildGenRelated implements ChildGenerator {
 
 	Vector res = new Vector();
 
-	if (ModelFacade.isAPackage(o)) {
-	    Collection ownedElements = ModelFacade.getOwnedElements(o);
+	if (Model.getFacade().isAPackage(o)) {
+	    Collection ownedElements = Model.getFacade().getOwnedElements(o);
 	    if (ownedElements != null)
 		return null;
 	}
 
-	if (ModelFacade.isAClassifier(o)) {
+	if (Model.getFacade().isAClassifier(o)) {
 	    Object cls = /*(MClassifier)*/ o;
-	    Collection assocEnds = ModelFacade.getAssociationEnds(cls);
+	    Collection assocEnds = Model.getFacade().getAssociationEnds(cls);
 	    Iterator assocIterator = assocEnds.iterator();
 	    while (assocIterator.hasNext()) {
-		res.add(ModelFacade.getAssociation(assocIterator.next()));
+		res.add(Model.getFacade().getAssociation(assocIterator.next()));
 	    }
 
-	    res.addAll(ModelFacade.getFeatures(cls));
-	    res.addAll(ModelFacade.getBehaviors(cls));
+	    res.addAll(Model.getFacade().getFeatures(cls));
+	    res.addAll(Model.getFacade().getBehaviors(cls));
 	    return res.elements();
 	}
 
-	if (ModelFacade.isAAssociation(o)) {
+	if (Model.getFacade().isAAssociation(o)) {
 	    Object asc = /*(MAssociation)*/ o;
-	    Collection assocEnds = ModelFacade.getConnections(asc);
+	    Collection assocEnds = Model.getFacade().getConnections(asc);
 	    Iterator iter = assocEnds.iterator();
 	    while (iter.hasNext()) {
-		res.add(ModelFacade.getType(iter.next()));
+		res.add(Model.getFacade().getType(iter.next()));
 	    }
 	    return res.elements();
 	}
 
-	if (ModelFacade.isAStateMachine(o)) {
+	if (Model.getFacade().isAStateMachine(o)) {
 	    Object sm = /*(MStateMachine)*/ o;
-	    Object top = ModelFacade.getTop(sm);
+	    Object top = Model.getFacade().getTop(sm);
 	    if (top != null)
-		res.addAll(ModelFacade.getSubvertices(top));
-	    res.add(ModelFacade.getContext(sm)); //wasteful!
-	    res.addAll(ModelFacade.getTransitions(sm));
+		res.addAll(Model.getFacade().getSubvertices(top));
+	    res.add(Model.getFacade().getContext(sm)); //wasteful!
+	    res.addAll(Model.getFacade().getTransitions(sm));
 	    return res.elements();
 	}
 
-	if (ModelFacade.isAStateVertex(o)) {
+	if (Model.getFacade().isAStateVertex(o)) {
 	    Object sv = /*(MStateVertex)*/ o;
-	    res.addAll(ModelFacade.getIncomings(sv));
-	    res.addAll(ModelFacade.getOutgoings(sv));
+	    res.addAll(Model.getFacade().getIncomings(sv));
+	    res.addAll(Model.getFacade().getOutgoings(sv));
 
-	    if (ModelFacade.isAState(o)) {
+	    if (Model.getFacade().isAState(o)) {
 		Object s = /*(MState)*/ o;
-		res.addAll(ModelFacade.getInternalTransitions(s));
+		res.addAll(Model.getFacade().getInternalTransitions(s));
 	    }
 
-	    if (ModelFacade.isACompositeState(o)) {
+	    if (Model.getFacade().isACompositeState(o)) {
 		Object cs = /*(MCompositeState)*/ o;
-		res.addAll(ModelFacade.getSubvertices(cs));
+		res.addAll(Model.getFacade().getSubvertices(cs));
 	    }
 	    return res.elements();
 	}
 
-	if (ModelFacade.isATransition(o)) {
+	if (Model.getFacade().isATransition(o)) {
 	    Object tr = /*(MTransition)*/ o;
-	    res.add(ModelFacade.getTrigger(tr));
-	    res.add(ModelFacade.getGuard(tr));
-	    res.add(ModelFacade.getEffect(tr));
-	    res.add(ModelFacade.getSource(tr));
-	    res.add(ModelFacade.getTarget(tr));
+	    res.add(Model.getFacade().getTrigger(tr));
+	    res.add(Model.getFacade().getGuard(tr));
+	    res.add(Model.getFacade().getEffect(tr));
+	    res.add(Model.getFacade().getSource(tr));
+	    res.add(Model.getFacade().getTarget(tr));
 	    return res.elements();
 	}
 

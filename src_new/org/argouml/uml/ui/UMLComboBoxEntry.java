@@ -27,7 +27,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.Profile;
 
 /**
@@ -60,14 +59,13 @@ public class UMLComboBoxEntry implements Comparable {
      *                   representatation of the modelelement is generated
      * @param isPhantom true if this is a phantom element
      */
-    public UMLComboBoxEntry(Object/*MModelElement*/ modelElement,
+    public UMLComboBoxEntry(Object modelElement,
             Profile theProfile, boolean isPhantom) {
         element = modelElement;
         if (modelElement != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(modelElement);
+            Object ns = Model.getFacade().getNamespace(modelElement);
             shortName = theProfile.formatElement(modelElement, ns);
-        }
-        else {
+        } else {
             shortName = "";
         }
 
@@ -93,7 +91,7 @@ public class UMLComboBoxEntry implements Comparable {
      */
     public void updateName() {
         if (element != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
+            Object/*MNamespace*/ ns = Model.getFacade().getNamespace(element);
             shortName = profile.formatElement(element, ns);
         }
     }
@@ -143,31 +141,29 @@ public class UMLComboBoxEntry implements Comparable {
     // Idea to move this to MMUtil together with the same function from
     // org/argouml/uml/cognitive/critics/WizOperName.java
     // org/argouml/uml/generator/ParserDisplay.java
-    private static Object findNamespace(Object/*MNamespace*/ phantomNS,
-            Object/*MModel*/ targetModel) {
-        Object/*MNamespace*/ ns = null;
-        Object/*MNamespace*/ targetParentNS = null;
-        Object/*MNamespace*/ parentNS = ModelFacade.getNamespace(phantomNS);
+    private static Object findNamespace(Object phantomNS, Object targetModel) {
+        Object ns = null;
+        Object targetParentNS = null;
+        Object parentNS = Model.getFacade().getNamespace(phantomNS);
         if (parentNS == null) {
             ns = targetModel;
-        }
-        else {
+        } else {
             targetParentNS = findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
             //
             Collection ownedElements =
-                ModelFacade.getOwnedElements(targetParentNS);
-            String phantomName = ModelFacade.getName(phantomNS);
+                Model.getFacade().getOwnedElements(targetParentNS);
+            String phantomName = Model.getFacade().getName(phantomNS);
             String targetName;
             if (ownedElements != null) {
                 Object/*MModelElement*/ ownedElement;
                 Iterator iter = ownedElements.iterator();
                 while (iter.hasNext()) {
                     ownedElement = iter.next();
-                    targetName = ModelFacade.getName(ownedElement);
+                    targetName = Model.getFacade().getName(ownedElement);
                     if (targetName != null && phantomName.equals(targetName)) {
-                        if (ModelFacade.isAPackage(ownedElement)) {
+                        if (Model.getFacade().isAPackage(ownedElement)) {
                             ns = ownedElement;
                             break;
                         }
@@ -195,21 +191,26 @@ public class UMLComboBoxEntry implements Comparable {
         //       in the target model
         if (thisIsAPhantom && targetModel != null) {
             Object/*MNamespace*/ targetNS =
-                findNamespace(ModelFacade.getNamespace(element), targetModel);
+                findNamespace(
+                        Model.getFacade().getNamespace(element),
+                        targetModel);
             Object/*MModelElement*/ clone = null;
             try {
                 clone = element.getClass().getConstructor(
                         new Class[] {}).newInstance(new Object[] {});
-                Model.getCoreHelper().setName(clone, ModelFacade.getName(element));
+                Model.getCoreHelper().setName(
+                        clone,
+                        Model.getFacade().getName(element));
                 Object stereo = null;
-                if (ModelFacade.getStereotypes(element).size() > 0) {
+                if (Model.getFacade().getStereotypes(element).size() > 0) {
                     stereo =
-                        ModelFacade.getStereotypes(element).iterator().next();
+                        Model.getFacade().getStereotypes(element)
+                        	.iterator().next();
                 }
                 Model.getCoreHelper().setStereotype(clone, stereo);
-                if (ModelFacade.isAStereotype(clone)) {
+                if (Model.getFacade().isAStereotype(clone)) {
                     Model.getExtensionMechanismsHelper().setBaseClass(clone,
-                            ModelFacade.getBaseClass(element));
+                            Model.getFacade().getBaseClass(element));
                 }
                 Model.getCoreHelper().addOwnedElement(targetNS, clone);
                 element = clone;
@@ -280,7 +281,7 @@ public class UMLComboBoxEntry implements Comparable {
      */
     public void nameChanged(Object/*MModelElement*/ modelElement) {
         if (modelElement == element && element != null) {
-            Object/*MNamespace*/ ns = ModelFacade.getNamespace(element);
+            Object/*MNamespace*/ ns = Model.getFacade().getNamespace(element);
             shortName = profile.formatElement(element, ns);
             displayName = shortName;
             longName = null;

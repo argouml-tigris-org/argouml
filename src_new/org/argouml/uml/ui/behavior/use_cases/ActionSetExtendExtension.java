@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -62,14 +61,16 @@ public class ActionSetExtendExtension extends UMLAction {
             UMLComboBox2 combo = (UMLComboBox2) source;
             newExtension = /*(MUseCase)*/ combo.getSelectedItem();
             Object o = combo.getTarget();
-            if (org.argouml.model.ModelFacade.isAExtend(o)) {
+            if (Model.getFacade().isAExtend(o)) {
                 extend = /*(MExtend)*/ o;
                 o = combo.getSelectedItem();
-                if (org.argouml.model.ModelFacade.isAUseCase(o)) {
+                if (Model.getFacade().isAUseCase(o)) {
                     newExtension = /*(MUseCase)*/ o;
-                    oldExtension = ModelFacade.getExtension(extend);
+                    oldExtension = Model.getFacade().getExtension(extend);
                     if (newExtension != oldExtension) {
-                        Model.getUseCasesHelper().setExtension(extend, newExtension);
+                        Model.getUseCasesHelper().setExtension(
+                                extend,
+                                newExtension);
                     }
                 } else {
                     if (o != null && o.equals("")) {

@@ -28,7 +28,6 @@ package org.argouml.uml.ui.behavior.collaborations;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 /**
  * Action to build a new action to some message.
@@ -64,7 +63,7 @@ public class ActionNewActionForMessage extends AbstractActionNewModelElement {
      */
     public boolean isEnabled() {
         if (getTarget() != null) {
-            return ModelFacade.getAction(getTarget()) == null;
+            return Model.getFacade().getAction(getTarget()) == null;
         }
         return false;
     }

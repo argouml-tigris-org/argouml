@@ -29,7 +29,6 @@ import javax.swing.text.BadLocationException;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.MockUMLUserInterfaceContainer;
 
 /**
@@ -106,7 +105,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "");
     	model.insertString(0, "test", null);
-        assertEquals("test", ModelFacade.getName(elem));
+        assertEquals("test", Model.getFacade().getName(elem));
     }
 
     /**
@@ -118,7 +117,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException {
 	model.insertString(0, "test", null);
 	model.remove(0, model.getLength());
-        assertEquals("", ModelFacade.getName(elem));
+        assertEquals("", Model.getFacade().getName(elem));
     }
 
     /**
@@ -130,7 +129,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
     	model.insertString(model.getLength(), "test", null);
-        assertEquals("testtest", ModelFacade.getName(elem));
+        assertEquals("testtest", Model.getFacade().getName(elem));
     }
 
     /**
@@ -142,7 +141,7 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
     	model.insertString(1, "test", null);
-        assertEquals("ttestest", ModelFacade.getName(elem));
+        assertEquals("ttestest", Model.getFacade().getName(elem));
     }
 
     /**
@@ -154,6 +153,6 @@ public class TestUMLModelElementNameDocument extends TestCase {
 	throws BadLocationException {
         Model.getCoreHelper().setName(elem, "test");
     	model.remove(1, model.getLength() - 2);
-        assertEquals("tt", ModelFacade.getName(elem));
+        assertEquals("tt", Model.getFacade().getName(elem));
     }
 }

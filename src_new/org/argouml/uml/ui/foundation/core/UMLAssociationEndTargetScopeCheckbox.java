@@ -26,7 +26,6 @@ package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -50,8 +49,8 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
     public void buildModel() {
         if (getTarget() != null) {
             Object associationEnd = /*(MAssociationEnd)*/ getTarget();
-            setSelected(Model.getScopeKind().getClassifier()
-                           .equals(ModelFacade.getTargetScope(associationEnd)));
+            setSelected(Model.getScopeKind().getClassifier().equals(
+                    Model.getFacade().getTargetScope(associationEnd)));
         }
     }
 }

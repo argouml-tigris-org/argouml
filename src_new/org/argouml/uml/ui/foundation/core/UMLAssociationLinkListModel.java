@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,16 +45,17 @@ public class UMLAssociationLinkListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null)
-            setAllElements(ModelFacade.getLinks(getTarget()));
+        if (getTarget() != null) {
+            setAllElements(Model.getFacade().getLinks(getTarget()));
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isALink(o)
-            && ModelFacade.getLinks(getTarget()).contains(o);
+        return Model.getFacade().isALink(o)
+            && Model.getFacade().getLinks(getTarget()).contains(o);
     }
 
 }

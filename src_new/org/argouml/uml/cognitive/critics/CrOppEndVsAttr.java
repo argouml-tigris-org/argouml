@@ -27,9 +27,10 @@ package org.argouml.uml.cognitive.critics;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Well-formedness rule [2] for MClassifier. See page 29 of UML 1.1
@@ -61,11 +62,11 @@ public class CrOppEndVsAttr extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(ModelFacade.isAClassifier(dm)))
+        if (!(Model.getFacade().isAClassifier(dm)))
             return NO_PROBLEM;
         Object cls = /*(MClassifier)*/ dm;
         Vector namesSeen = new Vector();
-        Collection str = ModelFacade.getFeatures(cls);
+        Collection str = Model.getFacade().getFeatures(cls);
 
 
         // warn about inheritied name conflicts, different critic?
@@ -73,12 +74,12 @@ public class CrOppEndVsAttr extends CrUML {
         while (features.hasNext()) {
             Object o = features.next();
 
-            if (!(ModelFacade.isAStructuralFeature(o)))
+            if (!(Model.getFacade().isAStructuralFeature(o)))
                 continue;
 
             Object sf = /*(MStructuralFeature)*/ o;
 
-            String sfName = ModelFacade.getName(sf);
+            String sfName = Model.getFacade().getName(sf);
             if ("".equals(sfName))
                 continue;
 
@@ -90,26 +91,26 @@ public class CrOppEndVsAttr extends CrUML {
 
         }
 
-        Collection assocEnds = ModelFacade.getAssociationEnds(cls);
+        Collection assocEnds = Model.getFacade().getAssociationEnds(cls);
 
         // warn about inheritied name conflicts, different critic?
         Iterator myEnds = assocEnds.iterator();
         while (myEnds.hasNext()) {
             Object myAe = /*(MAssociationEnd)*/ myEnds.next();
-            Object asc = /*(MAssociation)*/ ModelFacade.getAssociation(myAe);
-            Collection conn = ModelFacade.getConnections(asc);
+            Object asc = /*(MAssociation)*/ Model.getFacade().getAssociation(myAe);
+            Collection conn = Model.getFacade().getConnections(asc);
 
-            if (ModelFacade.isAAssociationRole(asc))
-                conn = ModelFacade.getConnections(asc);
+            if (Model.getFacade().isAAssociationRole(asc))
+                conn = Model.getFacade().getConnections(asc);
             if (conn == null)
                 continue;
 
             Iterator ascEnds = conn.iterator();
             while (ascEnds.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ ascEnds.next();
-                if (ModelFacade.getType(ae) == cls)
+                if (Model.getFacade().getType(ae) == cls)
                     continue;
-                String aeName = ModelFacade.getName(ae);
+                String aeName = Model.getFacade().getName(ae);
                 if ("".equals(aeName))
                     continue;
                 String aeNameStr = aeName;

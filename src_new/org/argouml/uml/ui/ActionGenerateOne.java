@@ -29,7 +29,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.generator.ui.ClassGenerationDialog;
@@ -73,8 +73,8 @@ public class ActionGenerateOne extends UMLAction {
             if (target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
-            if (ModelFacade.isAClass(target)
-                || ModelFacade.isAInterface(target)) {
+            if (Model.getFacade().isAClass(target)
+                || Model.getFacade().isAInterface(target)) {
                 classes.add(target);
             }
         }
@@ -115,8 +115,8 @@ public class ActionGenerateOne extends UMLAction {
             if (target instanceof Fig) {
                 target = ((Fig) target).getOwner();
             }
-            if (ModelFacade.isAClass(target)
-                || ModelFacade.isAInterface(target)) {
+            if (Model.getFacade().isAClass(target)
+                || Model.getFacade().isAInterface(target)) {
                 foundOne = true;
                 break;
             }

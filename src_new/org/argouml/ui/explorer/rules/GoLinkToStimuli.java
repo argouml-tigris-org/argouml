@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Link->Stimuli.
@@ -41,9 +41,9 @@ public class GoLinkToStimuli extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (!ModelFacade.isALink(parent))
+	if (!Model.getFacade().isALink(parent))
 	    return null;
-	return ModelFacade.getStimuli(parent);
+	return Model.getFacade().getStimuli(parent);
     }
 
     /**
@@ -57,7 +57,7 @@ public class GoLinkToStimuli extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isALink(parent)) {
+        if (Model.getFacade().isALink(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

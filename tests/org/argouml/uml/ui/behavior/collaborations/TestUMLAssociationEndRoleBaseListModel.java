@@ -30,7 +30,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -104,7 +103,7 @@ public class TestUMLAssociationEndRoleBaseListModel extends TestCase {
         Model.getUmlFactory().delete(elem);
         Model.getUmlFactory().delete(assocRole);
 
-        Collection connections = ModelFacade.getConnections(baseAssoc);
+        Collection connections = Model.getFacade().getConnections(baseAssoc);
         Model.getUmlFactory().delete(baseAssoc);
 
         Iterator iter = connections.iterator();

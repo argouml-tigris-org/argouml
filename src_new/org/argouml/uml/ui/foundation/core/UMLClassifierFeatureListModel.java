@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
@@ -51,7 +50,7 @@ public class UMLClassifierFeatureListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getFeatures(getTarget()));
+            setAllElements(Model.getFacade().getFeatures(getTarget()));
         }
     }
 
@@ -59,7 +58,7 @@ public class UMLClassifierFeatureListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getFeatures(getTarget()).contains(element);
+        return Model.getFacade().getFeatures(getTarget()).contains(element);
     }
 
     /**
@@ -67,7 +66,7 @@ public class UMLClassifierFeatureListModel
      */
     public void swap(int index1, int index2) {
         Object clss = getTarget();
-        List c = new ArrayList(ModelFacade.getFeatures(clss));
+        List c = new ArrayList(Model.getFacade().getFeatures(clss));
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
         List cc = new ArrayList(c);

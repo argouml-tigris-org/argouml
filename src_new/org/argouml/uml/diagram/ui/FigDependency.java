@@ -32,7 +32,6 @@ import java.util.Iterator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadGreater;
@@ -89,16 +88,16 @@ public class FigDependency extends FigEdgeModelElement {
         Object oldOwner = getOwner();
         super.setOwner(own);
 
-        if (org.argouml.model.ModelFacade.isADependency(own)) {
+        if (Model.getFacade().isADependency(own)) {
             Object newDep = own; //MDependency
             ModelEventPump pump = Model.getPump();
-            Iterator it = ModelFacade.getSuppliers(newDep).iterator();
+            Iterator it = Model.getFacade().getSuppliers(newDep).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 pump.removeModelEventListener(this, o);
                 pump.addModelEventListener(this, o);
             }
-            it = ModelFacade.getClients(newDep).iterator();
+            it = Model.getFacade().getClients(newDep).iterator();
             while (it.hasNext()) {
                 Object o = it.next();
                 pump.removeModelEventListener(this, o);
@@ -107,9 +106,9 @@ public class FigDependency extends FigEdgeModelElement {
             pump.removeModelEventListener(this, newDep);
             pump.addModelEventListener(this, newDep);
             Object supplier =	// MModelElement
-                (ModelFacade.getSuppliers(newDep).toArray())[0];
+                (Model.getFacade().getSuppliers(newDep).toArray())[0];
             Object client =	// MModelElement
-                (ModelFacade.getClients(newDep).toArray())[0];
+                (Model.getFacade().getClients(newDep).toArray())[0];
 
             FigNode supFN = (FigNode) getLayer().presentationFor(supplier);
             FigNode cliFN = (FigNode) getLayer().presentationFor(client);

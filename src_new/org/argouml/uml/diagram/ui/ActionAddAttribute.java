@@ -29,7 +29,6 @@ import java.util.Collection;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLAction;
@@ -57,12 +56,12 @@ public class ActionAddAttribute extends UMLAction {
 	Object target = TargetManager.getInstance().getModelTarget();
 	Object/*MClassifier*/ cls = null;
 
-	if (ModelFacade.isAClassifier(target)
-            || ModelFacade.isAAssociationEnd(target)) {
+	if (Model.getFacade().isAClassifier(target)
+            || Model.getFacade().isAAssociationEnd(target)) {
 	    cls = target;
-	} else if (ModelFacade.isAFeature(target)
-		 && ModelFacade.isAClass(ModelFacade.getOwner(target))) {
-	    cls = ModelFacade.getOwner(target);
+	} else if (Model.getFacade().isAFeature(target)
+		 && Model.getFacade().isAClass(Model.getFacade().getOwner(target))) {
+	    cls = Model.getFacade().getOwner(target);
 	} else {
 	    return;
 	}
@@ -95,10 +94,10 @@ public class ActionAddAttribute extends UMLAction {
 	}
 	*/
 	return super.shouldBeEnabled()
-	       && (ModelFacade.isAClass(target)
-		   || (ModelFacade.isAFeature(target)
-		       && ModelFacade.isAClass(ModelFacade.getOwner(target)))
-           || ModelFacade.isAAssociationEnd(target));
+	       && (Model.getFacade().isAClass(target)
+		   || (Model.getFacade().isAFeature(target)
+		       && Model.getFacade().isAClass(Model.getFacade().getOwner(target)))
+           || Model.getFacade().isAAssociationEnd(target));
     }
     /**
      * @return Returns the singleton.

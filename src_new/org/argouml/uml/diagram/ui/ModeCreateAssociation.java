@@ -32,7 +32,6 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -91,7 +90,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
         if (underMouse instanceof FigAssociation  && _npoints == 0) {
             oldFigAssociation = (FigEdge) underMouse;
             association = oldFigAssociation.getOwner();
-            associationEnds = ModelFacade.getConnections(association);
+            associationEnds = Model.getFacade().getConnections(association);
             oldFigAssociation.setOwner(null);
             newFigNodeAssociation = placeTempNode(me);
             underMouse = newFigNodeAssociation;
@@ -172,7 +171,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
                     figNode.setX(x - figNode.getWidth() / 2);
                     figNode.setY(y - figNode.getHeight() / 2);
                     editor.add(figNode);
-                    associationEnds = ModelFacade.getConnections(assoc);
+                    associationEnds = Model.getFacade().getConnections(assoc);
                     Iterator it = associationEnds.iterator();
                     mutableGraphModel.addEdge(it.next());
                     mutableGraphModel.addEdge(it.next());
@@ -204,7 +203,7 @@ public class ModeCreateAssociation extends ModeCreatePolyEdge {
 
                 Object edgeType = getArg("edgeClass");
                 if (edgeType.equals(Model.getMetaTypes().getAssociation())
-                        && ModelFacade.isAAssociation(foundPort)) {
+                        && Model.getFacade().isAAssociation(foundPort)) {
                     edgeType = Model.getMetaTypes().getAssociationEnd();
                 }
                 if (edgeType != null) {

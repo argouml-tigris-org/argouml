@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,16 +46,17 @@ public class UMLAssociationEndSpecificationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null)
-            setAllElements(ModelFacade.getSpecifications(getTarget()));
+        if (getTarget() != null) {
+            setAllElements(Model.getFacade().getSpecifications(getTarget()));
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAClassifier(o)
-            && ModelFacade.getSpecifications(getTarget()).contains(o);
+        return Model.getFacade().isAClassifier(o)
+            && Model.getFacade().getSpecifications(getTarget()).contains(o);
     }
 
 }

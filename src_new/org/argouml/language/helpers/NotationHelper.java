@@ -27,17 +27,18 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider2;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
-/** This class is the abstract super class that defines a code
+/**
+ * This class is the abstract super class that defines a code
  * generation framework.  It is basically a depth-first traversal of
  * the UML model that generates strings as it goes.  This framework
  * should probably be redesigned to separate the traversal logic from
  * the generation logic.  See the <a href=
  * "http://hillside.net/patterns/">Vistor design
  * pattern</a> in "Design Patterns", and the <a href=
- * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
-
+ * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>.
+ */
 public abstract class NotationHelper
     implements NotationProvider2 {
 
@@ -65,51 +66,74 @@ public abstract class NotationHelper
      * @return the generated string
      */
     public String generate(Object o) {
-	if (o == null)
+	if (o == null) {
 	    return "";
-	if (ModelFacade.isAOperation(o))
+	}
+	if (Model.getFacade().isAOperation(o)) {
 	    return generateOperation(o);
-	if (ModelFacade.isAAttribute(o))
+	}
+	if (Model.getFacade().isAAttribute(o)) {
 	    return generateAttribute(o);
-	if (ModelFacade.isAParameter(o))
+	}
+	if (Model.getFacade().isAParameter(o)) {
 	    return generateParameter(o);
-	if (ModelFacade.isAPackage(o))
+	}
+	if (Model.getFacade().isAPackage(o)) {
 	    return generatePackage(o);
-	if (ModelFacade.isAClassifier(o))
+	}
+	if (Model.getFacade().isAClassifier(o)) {
 	    return generateClassifier(o);
-	if (ModelFacade.isAExpression(o))
+	}
+	if (Model.getFacade().isAExpression(o)) {
 	    return generateExpression(o);
-	if (o instanceof String)
+	}
+	if (o instanceof String) {
 	    return generateName((String) o);
-	if (o instanceof String)
+	}
+	if (o instanceof String) {
 	    return generateUninterpreted((String) o);
-	if (ModelFacade.isAStereotype(o))
+	}
+	if (Model.getFacade().isAStereotype(o)) {
 	    return generateStereotype(o);
-	if (ModelFacade.isATaggedValue(o))
+	}
+	if (Model.getFacade().isATaggedValue(o)) {
 	    return generateTaggedValue(o);
-	if (ModelFacade.isAAssociation(o))
+	}
+	if (Model.getFacade().isAAssociation(o)) {
 	    return generateAssociation(o);
-	if (ModelFacade.isAAssociationEnd(o))
+	}
+	if (Model.getFacade().isAAssociationEnd(o)) {
 	    return generateAssociationEnd(o);
-	if (ModelFacade.isAMultiplicity(o))
+	}
+	if (Model.getFacade().isAMultiplicity(o)) {
 	    return generateMultiplicity(o);
-	if (ModelFacade.isAState(o))
+	}
+	if (Model.getFacade().isAState(o)) {
 	    return generateState(o);
-	if (ModelFacade.isATransition(o))
+	}
+	if (Model.getFacade().isATransition(o)) {
 	    return generateTransition(o);
-	if (ModelFacade.isAAction(o))
+	}
+	if (Model.getFacade().isAAction(o)) {
 	    return generateAction(o);
-	if (ModelFacade.isACallAction(o))
+	}
+	if (Model.getFacade().isACallAction(o)) {
 	    return generateAction(o);
-	if (ModelFacade.isAGuard(o))
+	}
+	if (Model.getFacade().isAGuard(o)) {
 	    return generateGuard(o);
-	if (ModelFacade.isAMessage(o))
+	}
+	if (Model.getFacade().isAMessage(o)) {
 	    return generateMessage(o);
+	}
 
-	if (ModelFacade.isAModelElement(o))
-	    return generateName(ModelFacade.getName(o));
+	if (Model.getFacade().isAModelElement(o)) {
+	    return generateName(Model.getFacade().getName(o));
+	}
 
-	if (o == null) return "";
+	if (o == null) {
+	    return "";
+	}
 
 	return o.toString();
     }
@@ -226,7 +250,7 @@ public abstract class NotationHelper
      */
     public String generateStereotype(Object s) {
 	return getLeftGuillemot()
-	    + generateName(ModelFacade.getName(s))
+	    + generateName(Model.getFacade().getName(s))
 	    + getRightGuillemot();
     }
 
@@ -236,12 +260,16 @@ public abstract class NotationHelper
      * @return the generated string
      */
     public String generateExpression(Object expr) {
-	if (expr == null)
+	if (expr == null) {
 	    return "";
-	if (ModelFacade.isAExpression(expr))
-	    return generateUninterpreted((String) ModelFacade.getBody(expr));
-	if (ModelFacade.isAConstraint(expr))
-	    return generateExpression(ModelFacade.getBody(expr));
+	}
+	if (Model.getFacade().isAExpression(expr)) {
+	    return generateUninterpreted(
+	            (String) Model.getFacade().getBody(expr));
+	}
+	if (Model.getFacade().isAConstraint(expr)) {
+	    return generateExpression(Model.getFacade().getBody(expr));
+	}
 	return "";
     }
 
@@ -260,7 +288,9 @@ public abstract class NotationHelper
      * @return the generated string
      */
     public String generateUninterpreted(String un) {
-	if (un == null) return "";
+	if (un == null) {
+	    return "";
+	}
 	return un;
     }
 
@@ -270,8 +300,10 @@ public abstract class NotationHelper
      * @return the generated string
      */
     public String generateClassifierRef(Object cls) {
-	if (cls == null) return "";
-	return ModelFacade.getName(cls);
+	if (cls == null) {
+	    return "";
+	}
+	return Model.getFacade().getName(cls);
     }
 
 } /* end class NotationHelper */

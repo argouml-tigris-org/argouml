@@ -32,7 +32,6 @@ import java.util.Iterator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Implements the source path controller.
@@ -46,7 +45,7 @@ public class SourcePathControllerImpl implements SourcePathController {
 
     /**
      * The string used to store source path string as tagged value.
-     * [Shouldn't this be in ModelFacade?]
+     * [Shouldn't this be in the Model subsystem?]
      */
     private static final String SRC_PATH_TAG = "src_path";
 
@@ -54,9 +53,10 @@ public class SourcePathControllerImpl implements SourcePathController {
      * @see org.argouml.uml.ui.SourcePathController#getSourcePath(java.lang.Object)
      */
     public File getSourcePath(Object modelElement) {
-        Object tv = ModelFacade.getTaggedValue(modelElement, SRC_PATH_TAG);
+        Object tv =
+            Model.getFacade().getTaggedValue(modelElement, SRC_PATH_TAG);
         if (tv != null) {
-            String srcPath = ModelFacade.getValueOfTag(tv);
+            String srcPath = Model.getFacade().getValueOfTag(tv);
             if (srcPath != null) {
                 return new File(srcPath);
             }

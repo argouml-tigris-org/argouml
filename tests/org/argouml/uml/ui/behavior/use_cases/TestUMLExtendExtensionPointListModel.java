@@ -73,7 +73,9 @@ public class TestUMLExtendExtensionPointListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            Model.getUseCasesHelper().removeExtensionPoint(getElem(),  elements[i]);
+            Model.getUseCasesHelper().removeExtensionPoint(
+                    getElem(),
+                    elements[i]);
         }
     }
 

@@ -29,7 +29,6 @@ import java.util.HashMap;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.NavigatorPane;
 
 /**
@@ -119,107 +118,117 @@ public abstract class GenericUmlObjectTestFixture extends TestCase {
      * @param o the given object for the tests
      */
     protected void runTruthTests(Object o) {
-	runTruthTest(ModelFacade.isABase(o), true, null);
+	runTruthTest(Model.getFacade().isABase(o), true, null);
 	runTruthTest(
-	        ModelFacade.isAAbstraction(o),
+	        Model.getFacade().isAAbstraction(o),
 	        Model.getMetaTypes().getAbstraction());
 	runTruthTest(
-	        ModelFacade.isAAssociation(o),
+	        Model.getFacade().isAAssociation(o),
 	        Model.getMetaTypes().getAssociation());
-	runTruthTest(ModelFacade.isAAssociationEnd(o),
+	runTruthTest(Model.getFacade().isAAssociationEnd(o),
 	        Model.getMetaTypes().getAssociationEnd());
-	runTruthTest(ModelFacade.isAAssociationRole(o),
+	runTruthTest(Model.getFacade().isAAssociationRole(o),
 	        Model.getMetaTypes().getAssociationRole());
-	runTruthTest(ModelFacade.isAClass(o),
+	runTruthTest(Model.getFacade().isAClass(o),
 	        Model.getMetaTypes().getUMLClass());
 	runTruthTest(
-	        ModelFacade.isAClassifier(o),
+	        Model.getFacade().isAClassifier(o),
 	        Model.getMetaTypes().getClassifier());
-	runTruthTest(ModelFacade.isAComment(o),
+	runTruthTest(Model.getFacade().isAComment(o),
 	        Model.getMetaTypes().getComment());
 	runTruthTest(
-	        ModelFacade.isAComponent(o),
+	        Model.getFacade().isAComponent(o),
 	        Model.getMetaTypes().getComponent());
-	runTruthTest(ModelFacade.isAComponentInstance(o),
+	runTruthTest(Model.getFacade().isAComponentInstance(o),
             Model.getMetaTypes().getComponentInstance());
 	runTruthTest(
-	        ModelFacade.isADataType(o),
+	        Model.getFacade().isADataType(o),
 	        Model.getMetaTypes().getDatatype());
 	runTruthTest(
-	        ModelFacade.isADependency(o),
+	        Model.getFacade().isADependency(o),
 	        Model.getMetaTypes().getDependency());
-	runTruthTest(ModelFacade.isACompositeState(o),
+	runTruthTest(Model.getFacade().isACompositeState(o),
 	        Model.getMetaTypes().getCompositeState());
 
-	// Not currently present as token in ModelFacade.
-	// NIF: runTruthTest(ModelFacade.isAElement(o), ModelFacade.ELEMENT);
-	// NIF: runTruthTest(ModelFacade.isAExpression(o),
-	//           ModelFacade.EXPRESSION);
-	// NIF: runTruthTest(ModelFacade.isAExtensionPoint(o),
-	//           ModelFacade.EXTENSION_POINT);
-	// NIF: runTruthTest(ModelFacade.isAFeature(o), ModelFacade.FEATURE);
-	runTruthTest(ModelFacade.isAGeneralizableElement(o),
+	// Not currently present as token in Model.getFacade().
+	// NIF: runTruthTest(Model.getFacade().isAElement(o),
+	//                   Model.getFacade().ELEMENT);
+	// NIF: runTruthTest(Model.getFacade().isAExpression(o),
+	//           Model.getFacade().EXPRESSION);
+	// NIF: runTruthTest(Model.getFacade().isAExtensionPoint(o),
+	//           Model.getFacade().EXTENSION_POINT);
+	// NIF: runTruthTest(Model.getFacade().isAFeature(o),
+	//                   Model.getFacade().FEATURE);
+	runTruthTest(Model.getFacade().isAGeneralizableElement(o),
 	        Model.getMetaTypes().getGeneralizableElement());
-	runTruthTest(ModelFacade.isAGeneralization(o),
+	runTruthTest(Model.getFacade().isAGeneralization(o),
 	        Model.getMetaTypes().getGeneralization());
 
 	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAInstance(o), ModelFacade.INSTANCE);
-	// NIF: runTruthTest(ModelFacade.isAInteraction(o),
-	//           ModelFacade.INTERACTION);
+	// runTruthTest(Model.getFacade().isAInstance(o),
+	//              Model.getFacade().INSTANCE);
+	// NIF: runTruthTest(Model.getFacade().isAInteraction(o),
+	//           Model.getFacade().INTERACTION);
 
 	runTruthTest(
-	        ModelFacade.isAInterface(o),
+	        Model.getFacade().isAInterface(o),
 	        Model.getMetaTypes().getInterface());
-	runTruthTest(ModelFacade.isALink(o), Model.getMetaTypes().getLink());
-	// NIF: runTruthTest(ModelFacade.isAMethod(o), ModelFacade.METHOD);
-	runTruthTest(ModelFacade.isAModel(o), Model.getMetaTypes().getModel());
+	runTruthTest(Model.getFacade().isALink(o),
+	        Model.getMetaTypes().getLink());
+	// NIF: runTruthTest(Model.getFacade().isAMethod(o),
+	//                   Model.getFacade().METHOD);
+	runTruthTest(Model.getFacade().isAModel(o),
+	        Model.getMetaTypes().getModel());
 	runTruthTest(
-	        ModelFacade.isAModelElement(o),
+	        Model.getFacade().isAModelElement(o),
 	        Model.getMetaTypes().getModelElement());
 	runTruthTest(
-	        ModelFacade.isANamespace(o),
+	        Model.getFacade().isANamespace(o),
 	        Model.getMetaTypes().getNamespace());
-	runTruthTest(ModelFacade.isANode(o), Model.getMetaTypes().getNode());
+	runTruthTest(Model.getFacade().isANode(o),
+	        Model.getMetaTypes().getNode());
 	runTruthTest(
-	        ModelFacade.isANodeInstance(o),
+	        Model.getFacade().isANodeInstance(o),
 	        Model.getMetaTypes().getNodeInstance());
 
 	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAOperation(o), ModelFacade.OPERATION);
+	// runTruthTest(Model.getFacade().isAOperation(o),
+	//              Model.getFacade().OPERATION);
 
 	// TODO: this fails on ModelElement - why?
-	// runTruthTest(ModelFacade.isAObject(o), ModelFacade.OBJECT);
+	// runTruthTest(Model.getFacade().isAObject(o),
+	//              Model.getFacade().OBJECT);
 
 	runTruthTest(
-	        ModelFacade.isAPermission(o),
+	        Model.getFacade().isAPermission(o),
 	        Model.getMetaTypes().getPermission());
-	runTruthTest(ModelFacade.isAPackage(o),
+	runTruthTest(Model.getFacade().isAPackage(o),
 	        Model.getMetaTypes().getPackage());
 	runTruthTest(
-	        ModelFacade.isAReception(o),
+	        Model.getFacade().isAReception(o),
 	        Model.getMetaTypes().getReception());
-	// NIF: runTruthTest(ModelFacade.isARelationship(o),
-	//           ModelFacade.RELATIONSHIP);
+	// NIF: runTruthTest(Model.getFacade().isARelationship(o),
+	//           Model.getFacade().RELATIONSHIP);
 	runTruthTest(
-	        ModelFacade.isAStateMachine(o),
+	        Model.getFacade().isAStateMachine(o),
 	        Model.getMetaTypes().getStateMachine());
 	runTruthTest(
-	        ModelFacade.isAStateVertex(o),
+	        Model.getFacade().isAStateVertex(o),
 	        Model.getMetaTypes().getStateVertex());
 	runTruthTest(
-	        ModelFacade.isAStereotype(o),
+	        Model.getFacade().isAStereotype(o),
 	        Model.getMetaTypes().getStereotype());
-	// NIF: runTruthTest(ModelFacade.isAStructuralFeature(o),
-        //     ModelFacade.STRUCTURAL_FEATURE);
-	// NIF: runTruthTest(ModelFacade.isATaggedValue(o),
-	//           ModelFacade.TAGGED_VALUE);
+	// NIF: runTruthTest(Model.getFacade().isAStructuralFeature(o),
+        //     Model.getFacade().STRUCTURAL_FEATURE);
+	// NIF: runTruthTest(Model.getFacade().isATaggedValue(o),
+	//           Model.getFacade().TAGGED_VALUE);
 	runTruthTest(
-	        ModelFacade.isATransition(o),
+	        Model.getFacade().isATransition(o),
 	        Model.getMetaTypes().getTransition());
-	runTruthTest(ModelFacade.isAUseCase(o),
+	runTruthTest(Model.getFacade().isAUseCase(o),
 	        Model.getMetaTypes().getUseCase());
-	runTruthTest(ModelFacade.isAActor(o), Model.getMetaTypes().getActor());
+	runTruthTest(Model.getFacade().isAActor(o),
+	        Model.getMetaTypes().getActor());
     }
 
     /**

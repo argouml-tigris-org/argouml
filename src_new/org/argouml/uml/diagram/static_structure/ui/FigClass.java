@@ -41,7 +41,6 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -244,9 +243,9 @@ public class FigClass extends FigNodeModelElement
         this();
         enableSizeChecking(true);
         setOwner(node);
-        if ((ModelFacade.isAClassifier(node))
-                && (ModelFacade.getName(node) != null)) {
-            setName(ModelFacade.getName(node));
+        if ((Model.getFacade().isAClassifier(node))
+                && (Model.getFacade().getName(node) != null)) {
+            setName(Model.getFacade().getName(node));
         }
     }
 
@@ -799,7 +798,7 @@ public class FigClass extends FigNodeModelElement
 
         // attributes
         if (mee == null
-                || ModelFacade.isAAttribute(mee.getSource())
+                || Model.getFacade().isAAttribute(mee.getSource())
                 || (mee.getSource() == getOwner()
 		&& mee.getPropertyName().equals("feature"))) {
             updateAttributes();
@@ -807,15 +806,15 @@ public class FigClass extends FigNodeModelElement
         }
         // operations
         if (mee == null
-                || ModelFacade.isAOperation(mee.getSource())
-                || ModelFacade.isAParameter(mee.getSource())
+                || Model.getFacade().isAOperation(mee.getSource())
+                || Model.getFacade().isAParameter(mee.getSource())
                 || (mee.getSource() == getOwner()
                         && mee.getPropertyName().equals("feature"))) {
             updateOperations();
             damage();
         }
         if (mee != null && mee.getPropertyName().equals("parameter")
-                && ModelFacade.isAOperation(mee.getSource())) {
+                && Model.getFacade().isAOperation(mee.getSource())) {
             /* Copy the lists, since we will alter them below. */
             ArrayList oldP = new ArrayList((List) mee.getOldValue());
             ArrayList newP = new ArrayList((List) mee.getNewValue());
@@ -844,7 +843,7 @@ public class FigClass extends FigNodeModelElement
             updateOperations();
             damage();
         }
-        if (mee != null && ModelFacade.getStereotypes(getOwner())
+        if (mee != null && Model.getFacade().getStereotypes(getOwner())
                                 .contains(mee.getSource())) {
             updateStereotypeText();
             damage();
@@ -866,13 +865,13 @@ public class FigClass extends FigNodeModelElement
 
         Rectangle rect = getBounds();
         Object stereo = null;
-        if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
 
         if ((stereo == null)
-                || (ModelFacade.getName(stereo) == null)
-                || (ModelFacade.getName(stereo).length() == 0))	{
+                || (Model.getFacade().getName(stereo) == null)
+                || (Model.getFacade().getName(stereo).length() == 0))	{
 
             if (getStereotypeFig().isVisible()) {
                 getFigAt(BLINDER_POSN).setVisible(false);
@@ -1121,7 +1120,7 @@ public class FigClass extends FigNodeModelElement
         int xpos = attrPort.getX();
         int ypos = attrPort.getY();
         int acounter = 1;
-        Collection strs = ModelFacade.getStructuralFeatures(cls);
+        Collection strs = Model.getFacade().getStructuralFeatures(cls);
         if (strs != null) {
             Iterator iter = strs.iterator();
             // TODO: in future version of GEF call getFigs returning array
@@ -1158,7 +1157,7 @@ public class FigClass extends FigNodeModelElement
 
                 // underline, if static
                 attr.setUnderline(Model.getScopeKind().getClassifier()
-				  .equals(ModelFacade.getOwnerScope(sf)));
+				  .equals(Model.getFacade().getOwnerScope(sf)));
                 acounter++;
             }
             if (figs.size() > acounter) {
@@ -1189,7 +1188,7 @@ public class FigClass extends FigNodeModelElement
         int xpos = operPort.getX();
         int ypos = operPort.getY();
         int ocounter = 1;
-        Collection behs = ModelFacade.getOperations(cls);
+        Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {
             Iterator iter = behs.iterator();
             // TODO: in future version of GEF call getFigs returning array
@@ -1226,11 +1225,11 @@ public class FigClass extends FigNodeModelElement
 
                 // underline, if static
                 oper.setUnderline(Model.getScopeKind().getClassifier()
-				  .equals(ModelFacade.getOwnerScope(bf)));
+				  .equals(Model.getFacade().getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
                 //does not properly work (GEF bug?)
-                if (ModelFacade.isAbstract(bf)) {
+                if (Model.getFacade().isAbstract(bf)) {
                     oper.setFont(getItalicLabelFont());
                 } else {
                     oper.setFont(getLabelFont());
@@ -1286,7 +1285,7 @@ public class FigClass extends FigNodeModelElement
             return;
         }
         Object cls = /*(MClass)*/ getOwner();
-        if (ModelFacade.isAbstract(cls)) {
+        if (Model.getFacade().isAbstract(cls)) {
             getNameFig().setFont(getItalicLabelFont());
 	} else {
             getNameFig().setFont(getLabelFont());
@@ -1303,12 +1302,12 @@ public class FigClass extends FigNodeModelElement
         if (oldOwner != null && oldOwner != newOwner) {
 	    // remove the listeners if the owner is changed
             Object cl = /*(MClass)*/ oldOwner;
-            Iterator it = ModelFacade.getFeatures(cl).iterator();
+            Iterator it = Model.getFacade().getFeatures(cl).iterator();
             while (it.hasNext()) {
                 Object feat = /*(MFeature)*/ it.next();
-                if (ModelFacade.isAOperation(feat)) {
+                if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = ModelFacade.getParameters(oper).iterator();
+                    Iterator it2 = Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
                         Model.getPump()
@@ -1319,12 +1318,12 @@ public class FigClass extends FigNodeModelElement
         }
         if (newOwner != null) { // add the listeners to the newOwner
             Object cl = /*(MClass)*/ newOwner;
-            Iterator it = ModelFacade.getFeatures(cl).iterator();
+            Iterator it = Model.getFacade().getFeatures(cl).iterator();
             while (it.hasNext()) {
                 Object feat = /*(MFeature)*/ it.next();
-                if (ModelFacade.isAOperation(feat)) {
+                if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
-                    Iterator it2 = ModelFacade.getParameters(oper).iterator();
+                    Iterator it2 = Model.getFacade().getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
                         // UmlModelEventPump.getPump()

@@ -30,7 +30,7 @@ import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.model.uml.XmiReader;
 import org.xml.sax.InputSource;
 
@@ -79,19 +79,19 @@ public class ProfileJava extends Profile {
 	if (element == null) {
 	    value = "";
 	} else {
-	    Object elementNs = ModelFacade.getNamespace(element);
+	    Object elementNs = Model.getFacade().getNamespace(element);
 	    //
 	    //   if element is an AssociationEnd use
 	    //      the namespace of containing association
 	    //
-	    if (ModelFacade.isAAssociationEnd(element)) {
-		Object assoc = ModelFacade.getAssociation(element);
+	    if (Model.getFacade().isAAssociationEnd(element)) {
+		Object assoc = Model.getFacade().getAssociation(element);
 		if (assoc != null) {
-		    elementNs = ModelFacade.getNamespace(assoc);
+		    elementNs = Model.getFacade().getNamespace(assoc);
 		}
 	    }
 	    if (elementNs == namespace) {
-		value = ModelFacade.getName(element);
+		value = Model.getFacade().getName(element);
 		if (value == null || value.length() == 0) {
 		    value = defaultName(element, namespace);
 		}
@@ -113,19 +113,19 @@ public class ProfileJava extends Profile {
     protected String defaultAssocEndName(Object/*MAssociationEnd*/ assocEnd,
 					 Object namespace) {
 	String name = null;
-	Object/*MClassifier*/ type = ModelFacade.getType(assocEnd);
+	Object/*MClassifier*/ type = Model.getFacade().getType(assocEnd);
 	if (type != null) {
 	    name = formatElement(type, namespace);
 	} else {
 	    name = "unknown type";
 	}
-	Object/*MMultiplicity*/ mult = ModelFacade.getMultiplicity(assocEnd);
+	Object/*MMultiplicity*/ mult = Model.getFacade().getMultiplicity(assocEnd);
 	if (mult != null) {
 	    StringBuffer buf = new StringBuffer(name);
 	    buf.append("[");
-	    buf.append(Integer.toString(ModelFacade.getLower(mult)));
+	    buf.append(Integer.toString(Model.getFacade().getLower(mult)));
 	    buf.append("..");
-	    int upper = ModelFacade.getUpper(mult);
+	    int upper = Model.getFacade().getUpper(mult);
 	    if (upper >= 0) {
 		buf.append(Integer.toString(upper));
 	    } else {
@@ -147,7 +147,7 @@ public class ProfileJava extends Profile {
     protected String defaultAssocName(Object/*MAssociation*/ assoc,
 				      Object ns) {
 	StringBuffer buf = new StringBuffer();
-	Iterator iter = ModelFacade.getConnections(assoc).iterator();
+	Iterator iter = Model.getFacade().getConnections(assoc).iterator();
 	for (int i = 0; iter.hasNext(); i++) {
 	    if (i != 0) {
 		buf.append("-");
@@ -164,8 +164,8 @@ public class ProfileJava extends Profile {
      */
     protected String defaultGeneralizationName(Object/*MGeneralization*/ gen,
 					       Object namespace) {
-	Object/*MGeneralizableElement*/ child = ModelFacade.getChild(gen);
-	Object/*MGeneralizableElement*/ parent = ModelFacade.getParent(gen);
+	Object/*MGeneralizableElement*/ child = Model.getFacade().getChild(gen);
+	Object/*MGeneralizableElement*/ parent = Model.getFacade().getParent(gen);
 	StringBuffer buf = new StringBuffer();
 	buf.append(formatElement(child, namespace));
 	buf.append(" extends ");
@@ -181,13 +181,13 @@ public class ProfileJava extends Profile {
     protected String defaultName(Object/*MModelElement*/ element,
 				 Object namespace) {
 	String name = null;
-	if (ModelFacade.isAAssociationEnd(element)) {
+	if (Model.getFacade().isAAssociationEnd(element)) {
 	    name = defaultAssocEndName(element, namespace);
 	} else {
-	    if (ModelFacade.isAAssociation(element)) {
+	    if (Model.getFacade().isAAssociation(element)) {
 		name = defaultAssocName(element, namespace);
 	    }
-	    if (ModelFacade.isAGeneralization(element)) {
+	    if (Model.getFacade().isAGeneralization(element)) {
 		name = defaultGeneralizationName(element, namespace);
 	    }
 	}
@@ -212,12 +212,12 @@ public class ProfileJava extends Profile {
 			   Object/*MModelElement*/ element,
 			   String pathSep) {
 	if (element != null) {
-	    Object/*MNamespace*/ parent = ModelFacade.getNamespace(element);
+	    Object/*MNamespace*/ parent = Model.getFacade().getNamespace(element);
 	    if (parent != null && parent != element) {
 		buildPath(buffer, parent, pathSep);
 		buffer.append(pathSep);
 	    }
-	    String name = ModelFacade.getName(element);
+	    String name = Model.getFacade().getName(element);
 	    if (name == null || name.length() == 0) {
 		name = defaultName(element, null);
 	    }
@@ -254,7 +254,7 @@ public class ProfileJava extends Profile {
 		    buffer.append(elementSep);
 		}
 		obj = iter.next();
-		if (ModelFacade.isAModelElement(obj)) {
+		if (Model.getFacade().isAModelElement(obj)) {
 		    buffer.append(formatElement(obj, namespace));
 		} else {
 		    buffer.append(obj.toString());

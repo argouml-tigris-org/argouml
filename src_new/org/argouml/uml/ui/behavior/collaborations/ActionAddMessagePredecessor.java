@@ -29,7 +29,6 @@ import java.util.Vector;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractActionAddModelElement;
 
 /**
@@ -69,7 +68,7 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 	    throw new IllegalStateException(
                 "getSelected may not be called with null target");
         Vector vec = new Vector();
-        vec.addAll(ModelFacade.getPredecessors(getTarget()));
+        vec.addAll(Model.getFacade().getPredecessors(getTarget()));
         return vec;
     }
 

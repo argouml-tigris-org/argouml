@@ -30,7 +30,6 @@ import javax.swing.JRadioButton;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
@@ -74,8 +73,8 @@ public class ActionSetChangeability extends UMLAction {
             String actionCommand = source.getActionCommand();
             Object target =
                 ((UMLRadioButtonPanel) source.getParent()).getTarget();
-            if (ModelFacade.isAAssociationEnd(target)
-		|| ModelFacade.isAAttribute(target)) {
+            if (Model.getFacade().isAAssociationEnd(target)
+		|| Model.getFacade().isAAttribute(target)) {
                 Object m = /*(MAssociationEnd)*/ target;
                 Object/*MChangeableKind*/ kind = null;
                 if (actionCommand.equals(CHANGEABLE_COMMAND)) {

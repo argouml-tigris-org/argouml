@@ -26,10 +26,11 @@ package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
 import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -118,7 +119,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 		Object coi = /*(MComponentInstance)*/
 		                            figComponentInstance.getOwner();
 		if (coi != null) {
-		    Collection col = ModelFacade.getClassifiers(coi);
+		    Collection col = Model.getFacade().getClassifiers(coi);
 		    if (col.size() > 0) continue;
 		}
 		if (offs == null) {
@@ -127,7 +128,7 @@ public class CrComponentInstanceWithoutClassifier extends CrUML {
 		}
 		offs.addElement(figComponentInstance);
 	    } else if (figComponentInstance.getEnclosingFig() != null
-		     && ((ModelFacade.getNodeInstance(
+		     && ((Model.getFacade().getNodeInstance(
 		                         figComponentInstance.getOwner()))
 			 == null)) {
 		if (offs == null) {

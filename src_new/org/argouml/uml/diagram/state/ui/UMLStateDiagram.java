@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
@@ -97,27 +96,27 @@ public class UMLStateDiagram extends UMLDiagram {
     public UMLStateDiagram(Object namespace, Object sm) {
         this();
 
-        if (!ModelFacade.isAStateMachine(sm)) {
+        if (!Model.getFacade().isAStateMachine(sm)) {
             throw new IllegalArgumentException();
         }
 
         if (sm != null && namespace == null) {
-            Object context = ModelFacade.getContext(sm);
-            if (ModelFacade.isAClassifier(context)) {
+            Object context = Model.getFacade().getContext(sm);
+            if (Model.getFacade().isAClassifier(context)) {
                 namespace = context;
-            } else if (ModelFacade.isABehavioralFeature(context)) {
-                namespace = ModelFacade.getOwner(context);
+            } else if (Model.getFacade().isABehavioralFeature(context)) {
+                namespace = Model.getFacade().getOwner(context);
             }
         }
 
-        if (namespace != null && ModelFacade.getName(namespace) != null) {
-            if (ModelFacade.getName(namespace).trim() != "") {
+        if (namespace != null && Model.getFacade().getName(namespace) != null) {
+            if (Model.getFacade().getName(namespace).trim() != "") {
                 String name = null;
-                String diagramName = ModelFacade.getName(namespace);
+                String diagramName = Model.getFacade().getName(namespace);
                 int number =
-                    (ModelFacade.getBehaviors(namespace)) == null
+                    (Model.getFacade().getBehaviors(namespace)) == null
                     ? 0
-                            : ModelFacade.getBehaviors(namespace).size();
+                            : Model.getFacade().getBehaviors(namespace).size();
                 name = diagramName + " " + (number++);
                 LOG.info("UMLStateDiagram constructor: String name = " + name);
                 try {
@@ -148,15 +147,15 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.tigris.gef.base.Diagram#initialize(Object)
      */
     public void initialize(Object o) {
-        if (ModelFacade.isAStateMachine(o)) {
+        if (Model.getFacade().isAStateMachine(o)) {
             Object sm = /*(MStateMachine)*/ o;
-            Object context = ModelFacade.getContext(sm);
+            Object context = Model.getFacade().getContext(sm);
             Object contextNamespace = null;
-            if (ModelFacade.isAClassifier(context)) {
+            if (Model.getFacade().isAClassifier(context)) {
                 contextNamespace = context;
-            } else if (ModelFacade.isABehavioralFeature(context)) {
+            } else if (Model.getFacade().isABehavioralFeature(context)) {
                 contextNamespace =
-                    ModelFacade.getNamespace(ModelFacade.getOwner(context));
+                    Model.getFacade().getNamespace(Model.getFacade().getOwner(context));
             }
             if (contextNamespace != null) {
                 setup(contextNamespace, sm);
@@ -206,7 +205,7 @@ public class UMLStateDiagram extends UMLDiagram {
         StateDiagramRenderer rend = new StateDiagramRenderer(); // singleton
 
         LayerPerspective lay =
-            new LayerPerspectiveMutable(ModelFacade.getName(namespace), gm);
+            new LayerPerspectiveMutable(Model.getFacade().getName(namespace), gm);
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);
         setLayer(lay);
@@ -226,7 +225,7 @@ public class UMLStateDiagram extends UMLDiagram {
      */
     public void setStateMachine(Object sm) {
 
-        if (!ModelFacade.isAStateMachine(sm)) {
+        if (!Model.getFacade().isAStateMachine(sm)) {
             throw new IllegalArgumentException();
         }
 
@@ -430,7 +429,7 @@ public class UMLStateDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#needsToBeRemoved()
      */
     public boolean needsToBeRemoved() {
-        Object context = ModelFacade.getContext(theStateMachine);
+        Object context = Model.getFacade().getContext(theStateMachine);
         if (context == null) {
             return true;
         }

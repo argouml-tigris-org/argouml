@@ -25,8 +25,9 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
+
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /** A critic to detect when a classifier has too many associations.
  */
@@ -49,12 +50,12 @@ public class CrTooManyAssoc extends AbstractCrTooMany {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
 	Object cls = /*(MClassifier)*/ dm;
 	// TODO: consider inherited associations?
 	// TODO: self loops are double counted
 	int threshold = getThreshold();
-	Collection aes = ModelFacade.getAssociationEnds(cls);
+	Collection aes = Model.getFacade().getAssociationEnds(cls);
 	if (aes == null || aes.size() <= threshold) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * navigate to the context.
@@ -38,7 +38,7 @@ public class ActionNavigateContext extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
-        return ModelFacade.getContext(source);
+        return Model.getFacade().getContext(source);
     }
 
 }

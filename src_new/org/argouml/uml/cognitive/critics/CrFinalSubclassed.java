@@ -26,15 +26,15 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
-// Use model through ModelFacade
-
-/** Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
- *  Semantics. OMG document ad/97-08-04.
- *  In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
+/**
+ * Well-formedness rule [2] for MGeneralizableElement. See page 31 of UML 1.1
+ * Semantics. OMG document ad/97-08-04.
+ * In UML 1.3 it is rule [2] in section 2.5.3.18 page 2-54.
  *
  * @author jrobbins
  */
@@ -57,15 +57,15 @@ public class CrFinalSubclassed extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAGeneralizableElement(dm)) {
+	if (!Model.getFacade().isAGeneralizableElement(dm)) {
 	    return NO_PROBLEM;
 	}
 
-	if (!ModelFacade.isLeaf(dm)) {
+	if (!Model.getFacade().isLeaf(dm)) {
 	    return NO_PROBLEM;
 	}
 
-	Iterator specs = ModelFacade.getSpecializations(dm).iterator();
+	Iterator specs = Model.getFacade().getSpecializations(dm).iterator();
 	return specs.hasNext() ? PROBLEM_FOUND : NO_PROBLEM;
     }
 

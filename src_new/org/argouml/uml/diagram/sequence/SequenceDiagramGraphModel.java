@@ -35,7 +35,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.sequence.ui.FigLink;
 import org.argouml.uml.diagram.sequence.ui.FigLinkPort;
@@ -360,7 +359,7 @@ public class SequenceDiagramGraphModel
         * @see SequenceDiagramGraphModel.CanConnectCmd#doit()
         */
         public boolean doit() {
-            if (!(ModelFacade.isAObject(this.getDestPort()))
+            if (!(Model.getFacade().isAObject(this.getDestPort()))
                 || !(getSrcPort() instanceof LinkPort)) {
                 return false;
             }
@@ -391,21 +390,21 @@ public class SequenceDiagramGraphModel
      */
     public List getNodes() {
         Vector allNodes = new Vector();
-        Collection elements = ModelFacade.getOwnedElements(collaboration);
+        Collection elements = Model.getFacade().getOwnedElements(collaboration);
         Iterator it = elements.iterator();
         Collection classifierRoles = new ArrayList();
         while (it.hasNext()) {
             Object o = it.next();
-            if (ModelFacade.isAClassifierRole(o)) {
+            if (Model.getFacade().isAClassifierRole(o)) {
                 classifierRoles.add(o);
             }
         }
         it = classifierRoles.iterator();
         while (it.hasNext()) {
-            Iterator it2 = ModelFacade.getInstances(it.next()).iterator();
+            Iterator it2 = Model.getFacade().getInstances(it.next()).iterator();
             while (it2.hasNext()) {
                 Object instance = it2.next();
-                if (ModelFacade.isAObject(instance)) {
+                if (Model.getFacade().isAObject(instance)) {
                     allNodes.add(instance);
                 }
             }
@@ -432,14 +431,14 @@ public class SequenceDiagramGraphModel
      */
     public List getEdges() {
         Vector allEdges = new Vector();
-        Iterator it = ModelFacade.getOwnedElements(collaboration).iterator();
+        Iterator it = Model.getFacade().getOwnedElements(collaboration).iterator();
         while (it.hasNext()) {
             Object o = it.next();
-            if (ModelFacade.isAAssociationRole(o)) {
-                Iterator it2 = ModelFacade.getLinks(o).iterator();
+            if (Model.getFacade().isAAssociationRole(o)) {
+                Iterator it2 = Model.getFacade().getLinks(o).iterator();
                 while (it2.hasNext()) {
                     Object link = it2.next();
-                    if (ModelFacade.isALink(link)) {
+                    if (Model.getFacade().isALink(link)) {
                         allEdges.add(link);
                     }
                 }
@@ -455,10 +454,10 @@ public class SequenceDiagramGraphModel
      */
     public List getPorts(Object nodeOrEdge) {
         Vector ports = new Vector();
-        if (ModelFacade.isAObject(nodeOrEdge)) {
-            ports.addAll(ModelFacade.getLinkEnds(nodeOrEdge));
-        } else if (ModelFacade.isALink(nodeOrEdge)) {
-            ports.addAll(ModelFacade.getLinkEnds(nodeOrEdge));
+        if (Model.getFacade().isAObject(nodeOrEdge)) {
+            ports.addAll(Model.getFacade().getLinkEnds(nodeOrEdge));
+        } else if (Model.getFacade().isALink(nodeOrEdge)) {
+            ports.addAll(Model.getFacade().getLinkEnds(nodeOrEdge));
         }
         return ports;
     }
@@ -470,12 +469,12 @@ public class SequenceDiagramGraphModel
      */
     public Object getOwner(Object port) {
         Object owner = null;
-        if (ModelFacade.isALinkEnd(port)) {
+        if (Model.getFacade().isALinkEnd(port)) {
             Iterator it = getNodes().iterator();
             while (it.hasNext()) {
                 Object o = it.next();
-                if (ModelFacade.isAInstance(o)) {
-                    Collection linkEnds = ModelFacade.getLinkEnds(o);
+                if (Model.getFacade().isAInstance(o)) {
+                    Collection linkEnds = Model.getFacade().getLinkEnds(o);
                     if (linkEnds.contains(port)) {
                         owner = o;
                         break;
@@ -493,14 +492,14 @@ public class SequenceDiagramGraphModel
      */
     public List getInEdges(Object port) {
         Vector res = new Vector();
-        if (ModelFacade.isAObject(port)) {
-            Iterator it = ModelFacade.getLinkEnds(port).iterator();
+        if (Model.getFacade().isAObject(port)) {
+            Iterator it = Model.getFacade().getLinkEnds(port).iterator();
             while (it.hasNext()) {
-                Object link = ModelFacade.getLink(it.next());
-                Iterator it2 = ModelFacade.getStimuli(link).iterator();
+                Object link = Model.getFacade().getLink(it.next());
+                Iterator it2 = Model.getFacade().getStimuli(link).iterator();
                 while (it2.hasNext()) {
                     Object stimulus = it2.next();
-                    Object instance = ModelFacade.getReceiver(stimulus);
+                    Object instance = Model.getFacade().getReceiver(stimulus);
                     if (instance == port) {
                         res.add(link);
                     }
@@ -517,14 +516,14 @@ public class SequenceDiagramGraphModel
      */
     public List getOutEdges(Object port) {
         Vector res = new Vector();
-        if (ModelFacade.isAObject(port)) {
-            Iterator it = ModelFacade.getLinkEnds(port).iterator();
+        if (Model.getFacade().isAObject(port)) {
+            Iterator it = Model.getFacade().getLinkEnds(port).iterator();
             while (it.hasNext()) {
-                Object link = ModelFacade.getLink(it.next());
-                Iterator it2 = ModelFacade.getStimuli(link).iterator();
+                Object link = Model.getFacade().getLink(it.next());
+                Iterator it2 = Model.getFacade().getStimuli(link).iterator();
                 while (it2.hasNext()) {
                     Object stimulus = it2.next();
-                    Object instance = ModelFacade.getSender(stimulus);
+                    Object instance = Model.getFacade().getSender(stimulus);
                     if (instance == port) {
                         res.add(link);
                     }
@@ -541,7 +540,7 @@ public class SequenceDiagramGraphModel
      */
     public Object getSourcePort(Object edge) {
         Object res = null;
-        if (ModelFacade.isALink(edge)) {
+        if (Model.getFacade().isALink(edge)) {
             res = Model.getCommonBehaviorHelper().getSource(edge);
         }
         return res;
@@ -554,7 +553,7 @@ public class SequenceDiagramGraphModel
      */
     public Object getDestPort(Object edge) {
         Object res = null;
-        if (ModelFacade.isALink(edge)) {
+        if (Model.getFacade().isALink(edge)) {
             res = Model.getCommonBehaviorHelper().getDestination(edge);
         }
         return res;
@@ -575,7 +574,7 @@ public class SequenceDiagramGraphModel
         if (getNodes().contains(node)) {
             return false;
         }
-        return ModelFacade.isAObject(node);
+        return Model.getFacade().isAObject(node);
     }
 
     /**
@@ -589,7 +588,7 @@ public class SequenceDiagramGraphModel
         }
         Object end0 = null;
         Object end1 = null;
-        if (org.argouml.model.ModelFacade.isALink(edge)) {
+        if (Model.getFacade().isALink(edge)) {
             end0 =
 		Model.getCommonBehaviorHelper().getSource(/*(MLink)*/
 							   edge);
@@ -647,13 +646,13 @@ public class SequenceDiagramGraphModel
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
 
-        if (ModelFacade.isAInstance(node)) {
-            Collection ends = ModelFacade.getLinkEnds(node);
+        if (Model.getFacade().isAInstance(node)) {
+            Collection ends = Model.getFacade().getLinkEnds(node);
             Iterator iter = ends.iterator();
             while (iter.hasNext()) {
                 Object /*MLinkEnd*/ le = iter.next();
-                if (canAddEdge(ModelFacade.getLink(le))) {
-                    addEdge(ModelFacade.getLink(le));
+                if (canAddEdge(Model.getFacade().getLink(le))) {
+                    addEdge(Model.getFacade().getLink(le));
                 }
                 return;
             }
@@ -725,7 +724,7 @@ public class SequenceDiagramGraphModel
                 }
             } else if (Model.getMetaTypes().getCreateAction().equals(actionType)) {
                 if (fromPort instanceof LinkPort
-                    && ModelFacade.isAObject(toPort)) {
+                    && Model.getFacade().isAObject(toPort)) {
                     fromObject = ((LinkPort) fromPort).getObject();
                     toObject = toPort;
                     action =
@@ -763,9 +762,9 @@ public class SequenceDiagramGraphModel
                     fromObject,
                     toObject);
             Object classifierRoleFrom =
-                ModelFacade.getClassifiers(fromObject).iterator().next();
+                Model.getFacade().getClassifiers(fromObject).iterator().next();
             Object classifierRoleTo =
-                ModelFacade.getClassifiers(toObject).iterator().next();
+                Model.getFacade().getClassifiers(toObject).iterator().next();
             Object associationRole =
                 Model.getCollaborationsHelper().getAssocationRole(
                     classifierRoleFrom,
@@ -776,19 +775,19 @@ public class SequenceDiagramGraphModel
                         link);
             }
             Object stimulus = null;
-            if (ModelFacade.getStimuli(link) == null
-                || ModelFacade.getStimuli(link).isEmpty()) {
+            if (Model.getFacade().getStimuli(link) == null
+                || Model.getFacade().getStimuli(link).isEmpty()) {
                 stimulus =
                     Model.getCommonBehaviorFactory().buildStimulus(link);
             } else {
                 // we need to find the right stimulus
-                Iterator it = ModelFacade.getStimuli(link).iterator();
+                Iterator it = Model.getFacade().getStimuli(link).iterator();
                 while (it.hasNext()) {
                     Object o = it.next();
-                    if (ModelFacade.getSender(o) != null
-                        && ModelFacade.getSender(o).equals(fromObject)
-                        && ModelFacade.getReceiver(o) != null
-                        && ModelFacade.getReceiver(o).equals(toObject)) {
+                    if (Model.getFacade().getSender(o) != null
+                        && Model.getFacade().getSender(o).equals(fromObject)
+                        && Model.getFacade().getReceiver(o) != null
+                        && Model.getFacade().getReceiver(o).equals(toObject)) {
                         stimulus = o;
                         break;
                     }
@@ -831,13 +830,13 @@ public class SequenceDiagramGraphModel
         if ("ownedElement".equals(pce.getPropertyName())) {
             Vector oldOwned = (Vector) pce.getOldValue();
             Object eo = /*(MElementImport)*/ pce.getNewValue();
-            Object me = ModelFacade.getModelElement(eo);
+            Object me = Model.getFacade().getModelElement(eo);
             if (oldOwned.contains(eo)) {
                 LOG.debug("model removed " + me);
-                if (ModelFacade.isAObject(me)) {
+                if (Model.getFacade().isAObject(me)) {
                     removeNode(me);
                 }
-                if (ModelFacade.isAAssociation(me)) {
+                if (Model.getFacade().isAAssociation(me)) {
                     removeEdge(me);
                 }
             } else {

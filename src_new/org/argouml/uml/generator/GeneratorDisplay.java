@@ -34,7 +34,6 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Generator2 subclass to generate code for display in diagrams in
@@ -92,8 +91,8 @@ public class GeneratorDisplay extends Generator2 {
 
         // Get the fields we want
 
-        String epName = ModelFacade.getName(ep);
-        String epLocation = ModelFacade.getLocation(ep);
+        String epName = Model.getFacade().getName(ep);
+        String epLocation = Model.getFacade().getLocation(ep);
 
         // Put in the name field if it's there
 
@@ -125,19 +124,19 @@ public class GeneratorDisplay extends Generator2 {
      *          Object, boolean)
      */
     public String generateOperation(Object op, boolean documented) {
-        String stereoStr = generateStereotype(ModelFacade.getStereotypes(op));
+        String stereoStr = generateStereotype(Model.getFacade().getStereotypes(op));
         String visStr =
 	    generateVisibility(op);
-        String nameStr = generateName(ModelFacade.getName(op));
+        String nameStr = generateName(Model.getFacade().getName(op));
 
         // the parameters
         StringBuffer parameterListBuffer = new StringBuffer();
-        Collection coll = ModelFacade.getParameters(op);
+        Collection coll = Model.getFacade().getParameters(op);
         Iterator it = coll.iterator();
         int counter = 0;
         while (it.hasNext()) {
             Object parameter = it.next();
-            if (!ModelFacade.hasReturnParameterDirectionKind(parameter)) {
+            if (!Model.getFacade().hasReturnParameterDirectionKind(parameter)) {
                 counter++;
                 parameterListBuffer.append(generateParameter(parameter));
 		parameterListBuffer.append(",");
@@ -159,9 +158,9 @@ public class GeneratorDisplay extends Generator2 {
             returnParasSb.append(": ");
             Iterator it2 = coll.iterator();
             while (it2.hasNext()) {
-                Object type = ModelFacade.getType(it2.next());
+                Object type = Model.getFacade().getType(it2.next());
                 if (type != null) {
-                    returnParasSb.append(ModelFacade.getName(type));
+                    returnParasSb.append(Model.getFacade().getName(type));
                 }
                 returnParasSb.append(",");
             }
@@ -173,21 +172,21 @@ public class GeneratorDisplay extends Generator2 {
         // the properties
         StringBuffer propertySb = new StringBuffer().append("{");
         // the query state
-        if (ModelFacade.isQuery(op)) {
+        if (Model.getFacade().isQuery(op)) {
             propertySb.append("query,");
         }
-        if (ModelFacade.isRoot(op)) {
+        if (Model.getFacade().isRoot(op)) {
             propertySb.append("root,");
         }
-        if (ModelFacade.isLeaf(op)) {
+        if (Model.getFacade().isLeaf(op)) {
             propertySb.append("leaf,");
         }
-        if (ModelFacade.getConcurrency(op) != null) {
-            propertySb.append(ModelFacade.getName(
-		    ModelFacade.getConcurrency(op)));
+        if (Model.getFacade().getConcurrency(op) != null) {
+            propertySb.append(Model.getFacade().getName(
+		    Model.getFacade().getConcurrency(op)));
 	    propertySb.append(',');
         }
-        Iterator it3 = ModelFacade.getTaggedValues(op);
+        Iterator it3 = Model.getFacade().getTaggedValues(op);
         StringBuffer taggedValuesSb = new StringBuffer();
         if (it3 != null && it3.hasNext()) {
             while (it3.hasNext()) {
@@ -245,28 +244,28 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateAttribute(Object attr, boolean documented) {
         String visibility = generateVisibility(attr);
-        String stereo = generateStereotype(ModelFacade.getStereotypes(attr));
+        String stereo = generateStereotype(Model.getFacade().getStereotypes(attr));
         //cat.debug("Stereotype: " + stereo);
-        String name = ModelFacade.getName(attr);
+        String name = Model.getFacade().getName(attr);
         String multiplicity =
-	    generateMultiplicity(ModelFacade.getMultiplicity(attr));
+	    generateMultiplicity(Model.getFacade().getMultiplicity(attr));
         String type = ""; // fix for loading bad projects
-        if (ModelFacade.getType(attr) != null) {
-            type = ModelFacade.getName(ModelFacade.getType(attr));
+        if (Model.getFacade().getType(attr) != null) {
+            type = Model.getFacade().getName(Model.getFacade().getType(attr));
         }
         String initialValue = "";
-        if (ModelFacade.getInitialValue(attr) != null) {
+        if (Model.getFacade().getInitialValue(attr) != null) {
             initialValue =
-		(String) ModelFacade.getBody(
-			ModelFacade.getInitialValue(attr));
+		(String) Model.getFacade().getBody(
+			Model.getFacade().getInitialValue(attr));
         }
         String changeableKind = "";
-        if (ModelFacade.getChangeability(attr) != null) {
+        if (Model.getFacade().getChangeability(attr) != null) {
             if (Model.getChangeableKind().getFrozen().equals(
-	            ModelFacade.getChangeability(attr))) {
+	            Model.getFacade().getChangeability(attr))) {
                 changeableKind = "frozen";
 	    } else if (Model.getChangeableKind().getAddOnly().equals(
-		    ModelFacade.getChangeability(attr))) {
+		    Model.getFacade().getChangeability(attr))) {
                 changeableKind = "addOnly";
 	    }
         }
@@ -319,16 +318,16 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateParameter(Object parameter) {
         StringBuffer s = new StringBuffer();
-        s.append(generateKind(ModelFacade.getKind(parameter)));
+        s.append(generateKind(Model.getFacade().getKind(parameter)));
         s.append(" ");
-        s.append(generateName(ModelFacade.getName(parameter)));
-        String classRef = generateClassifierRef(ModelFacade.getType(parameter));
+        s.append(generateName(Model.getFacade().getName(parameter)));
+        String classRef = generateClassifierRef(Model.getFacade().getType(parameter));
         if (classRef.length() > 0) {
             s.append(" : ");
             s.append(classRef);
         }
         String defaultValue =
-	    generateExpression(ModelFacade.getDefaultValue(parameter));
+	    generateExpression(Model.getFacade().getDefaultValue(parameter));
         if (defaultValue.length() > 0) {
             s.append(" = ");
             s.append(defaultValue);
@@ -341,13 +340,13 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generatePackage(Object p) {
         String s = "package ";
-        String packName = generateName(ModelFacade.getName(p));
+        String packName = generateName(Model.getFacade().getName(p));
 
         Stack stack = new Stack();
-        Object ns = ModelFacade.getNamespace(p);
+        Object ns = Model.getFacade().getNamespace(p);
         while (ns != null) {
-            stack.push(ModelFacade.getName(ns));
-            ns = ModelFacade.getNamespace(ns);
+            stack.push(Model.getFacade().getName(ns));
+            ns = Model.getFacade().getNamespace(ns);
         }
         while (!stack.isEmpty()) {
             s += (String) stack.pop() + ".";
@@ -359,7 +358,7 @@ public class GeneratorDisplay extends Generator2 {
         }
         s += "." + packName + " {\n";
 
-        Collection ownedElements = ModelFacade.getOwnedElements(p);
+        Collection ownedElements = Model.getFacade().getOwnedElements(p);
         if (ownedElements != null) {
             Iterator ownedEnum = ownedElements.iterator();
             while (ownedEnum.hasNext()) {
@@ -377,26 +376,26 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
      */
     public String generateClassifier(Object cls) {
-        String generatedName = generateName(ModelFacade.getName(cls));
+        String generatedName = generateName(Model.getFacade().getName(cls));
         String classifierKeyword;
-        if (ModelFacade.isAClass(cls)) {
+        if (Model.getFacade().isAClass(cls)) {
             classifierKeyword = "class";
-        } else if (ModelFacade.isAInterface(cls)) {
+        } else if (Model.getFacade().isAInterface(cls)) {
             classifierKeyword = "interface";
         } else {
             return ""; // actors and use cases
         }
         String s = "";
         s += generateVisibility(cls);
-        if (ModelFacade.isAbstract(cls)) {
+        if (Model.getFacade().isAbstract(cls)) {
             s += "abstract ";
         }
-        if (ModelFacade.isLeaf(cls)) {
+        if (Model.getFacade().isLeaf(cls)) {
             s += "final ";
         }
         s += classifierKeyword + " " + generatedName + " ";
         String baseClass =
-            generateGeneralization(ModelFacade.getGeneralizations(cls), false);
+            generateGeneralization(Model.getFacade().getGeneralizations(cls), false);
         if (!baseClass.equals("")) {
             s += "extends " + baseClass + " ";
         }
@@ -407,7 +406,7 @@ public class GeneratorDisplay extends Generator2 {
         //";
         s += "{\n";
 
-        Collection strs = ModelFacade.getStructuralFeatures(cls);
+        Collection strs = Model.getFacade().getStructuralFeatures(cls);
         if (strs != null) {
             s += "\n";
             s += INDENT + "// Attributes\n";
@@ -417,27 +416,27 @@ public class GeneratorDisplay extends Generator2 {
             }
         }
 
-        Collection ends = ModelFacade.getAssociationEnds(cls);
+        Collection ends = Model.getFacade().getAssociationEnds(cls);
         if (ends != null) {
             s += "\n";
             s += INDENT + "// Associations\n";
             Iterator endEnum = ends.iterator();
             while (endEnum.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.next();
-                Object a = ModelFacade.getAssociation(ae);
+                Object a = Model.getFacade().getAssociation(ae);
                 s += INDENT + generateAssociationFrom(a, ae);
             }
         }
 
         // TODO: constructors
 
-        Collection behs = ModelFacade.getOperations(cls);
+        Collection behs = Model.getFacade().getOperations(cls);
         if (behs != null) {
             s += "\n";
             s += INDENT + "// Operations\n";
             Iterator behEnum = behs.iterator();
             String terminator = " {\n" + INDENT + "}";
-            if (ModelFacade.isAInterface(cls)) {
+            if (Model.getFacade().isAInterface(cls)) {
                 terminator = ";";
             }
             while (behEnum.hasNext()) {
@@ -456,9 +455,9 @@ public class GeneratorDisplay extends Generator2 {
         if (tv == null) {
             return "";
         }
-        return generateName(ModelFacade.getTagOfTag(tv))
+        return generateName(Model.getFacade().getTagOfTag(tv))
             + "="
-            + generateUninterpreted(ModelFacade.getValueOfTag(tv));
+            + generateUninterpreted(Model.getFacade().getValueOfTag(tv));
     }
 
     /**
@@ -507,13 +506,13 @@ public class GeneratorDisplay extends Generator2 {
             return null;
         }
 
-        act = ModelFacade.getActivator(m);
+        act = Model.getFacade().getActivator(m);
         if (act != null) {
             mname = generateMessageNumber(act);
         }
 
         if (pre != null) {
-            c = ModelFacade.getMessages3(pre);
+            c = Model.getFacade().getMessages3(pre);
             submax = c.size();
             it = c.iterator();
             while (it.hasNext() && it.next() != m) {
@@ -551,12 +550,12 @@ public class GeneratorDisplay extends Generator2 {
             return 0;
         }
 
-        act = ModelFacade.getActivator(message);
-        c = ModelFacade.getPredecessors(message);
+        act = Model.getFacade().getActivator(message);
+        c = Model.getFacade().getPredecessors(message);
         it = c.iterator();
         while (it.hasNext()) {
             Object msg = it.next();
-            if (ModelFacade.getActivator(msg) != act) {
+            if (Model.getFacade().getActivator(msg) != act) {
                 continue;
             }
             int p = recCountPredecessors(msg, null) + 1;
@@ -576,13 +575,13 @@ public class GeneratorDisplay extends Generator2 {
 
     int countSuccessors(Object/*MMessage*/ m) {
         int count = 0;
-        Object act = ModelFacade.getActivator(m);
-        Collection coll = ModelFacade.getMessages3(m);
+        Object act = Model.getFacade().getActivator(m);
+        Collection coll = Model.getFacade().getMessages3(m);
         if (coll != null) {
             Iterator it = coll.iterator();
             while (it.hasNext()) {
                 Object msg = /*(MMessage)*/ it.next();
-                if (ModelFacade.getActivator(msg) != act) {
+                if (Model.getFacade().getActivator(msg) != act) {
                     continue;
                 }
                 count++;
@@ -602,7 +601,7 @@ public class GeneratorDisplay extends Generator2 {
             return "";
         }
 
-        return ModelFacade.getBody(expr).toString();
+        return Model.getFacade().getBody(expr).toString();
     }
 
     /**
@@ -629,9 +628,9 @@ public class GeneratorDisplay extends Generator2 {
 
         ptr = new MsgPtr();
         lpn = recCountPredecessors(m, ptr) + 1;
-        rt = ModelFacade.getActivator(m);
+        rt = Model.getFacade().getActivator(m);
 
-        pre = ModelFacade.getPredecessors(m);
+        pre = Model.getFacade().getPredecessors(m);
         it = (pre != null) ? pre.iterator() : null;
         if (it != null && it.hasNext()) {
             MsgPtr ptr2 = new MsgPtr();
@@ -642,8 +641,8 @@ public class GeneratorDisplay extends Generator2 {
                 int mpn = recCountPredecessors(msg, ptr2) + 1;
 
                 if (mpn == lpn - 1
-                    && rt == ModelFacade.getActivator(msg)
-                    && ModelFacade.getPredecessors(msg).size() < 2
+                    && rt == Model.getFacade().getActivator(msg)
+                    && Model.getFacade().getPredecessors(msg).size() < 2
                     && (ptr2.message == null
                         || countSuccessors(ptr2.message) < 2)) {
                     continue;
@@ -663,11 +662,11 @@ public class GeneratorDisplay extends Generator2 {
 
         number = generateMessageNumber(m, ptr.message, lpn);
 
-        act = ModelFacade.getAction(m);
+        act = Model.getFacade().getAction(m);
         if (act != null) {
-            if (ModelFacade.getRecurrence(act) != null) {
+            if (Model.getFacade().getRecurrence(act) != null) {
                 number =
-		    generateRecurrence(ModelFacade.getRecurrence(act))
+		    generateRecurrence(Model.getFacade().getRecurrence(act))
 		    + " "
 		    + number;
             }
@@ -686,7 +685,7 @@ public class GeneratorDisplay extends Generator2 {
     public String generateAssociationFrom(Object a, Object ae) {
         // TODO: does not handle n-ary associations
         String s = "";
-        Collection connections = ModelFacade.getConnections(a);
+        Collection connections = Model.getFacade().getConnections(a);
         if (connections == null) {
             return s;
         }
@@ -722,39 +721,39 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object ae) {
-        if (!ModelFacade.isNavigable(ae)) {
+        if (!Model.getFacade().isNavigable(ae)) {
             return "";
         }
         String s = "protected ";
         if (Model.getScopeKind().getClassifier().equals(
-		ModelFacade.getTargetScope(ae))) {
+		Model.getFacade().getTargetScope(ae))) {
             s += "static ";
 	}
 
         //     String n = ae.getName(); if (n != null &&
         //     !String.UNSPEC.equals(n)) s += generateName(n) + " ";
-        //     if (ModelFacade.isNavigable(ae)) s += "navigable "; if
+        //     if (Model.getFacade().isNavigable(ae)) s += "navigable "; if
         //     (ae.getIsOrdered()) s += "ordered ";
-        Object m = ModelFacade.getMultiplicity(ae);
+        Object m = Model.getFacade().getMultiplicity(ae);
         if (Model.getMultiplicities().get11().equals(m)
 	        || Model.getMultiplicities().get01().equals(m)) {
-            s += generateClassifierRef(ModelFacade.getType(ae));
+            s += generateClassifierRef(Model.getFacade().getType(ae));
 	} else {
             s += "Vector "; //generateMultiplicity(m) + " ";
 	}
 
         s += " ";
 
-        String n = ModelFacade.getName(ae);
-        Object asc = ModelFacade.getAssociation(ae);
-        String ascName = ModelFacade.getName(asc);
+        String n = Model.getFacade().getName(ae);
+        Object asc = Model.getFacade().getAssociation(ae);
+        String ascName = Model.getFacade().getName(asc);
         if (n != null && n != null && n.length() > 0) {
             s += generateName(n);
         } else if (
             ascName != null && ascName != null && ascName.length() > 0) {
             s += generateName(ascName);
         } else {
-            s += "my" + generateClassifierRef(ModelFacade.getType(ae));
+            s += "my" + generateClassifierRef(Model.getFacade().getType(ae));
         }
 
         return s + ";\n";
@@ -765,7 +764,7 @@ public class GeneratorDisplay extends Generator2 {
      * @return a string representing the constraints for the given modelelements
      */
     public String generateConstraints(Object me) {
-        Collection constr = ModelFacade.getConstraints(me);
+        Collection constr = Model.getFacade().getConstraints(me);
         if (constr == null || constr.size() == 0) {
             return "";
         }
@@ -800,11 +799,11 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateAssociationRole(Object assocRole) {
         //get the associationRole name
-        String text = "/" + ModelFacade.getName(assocRole) + ":";
+        String text = "/" + Model.getFacade().getName(assocRole) + ":";
         //get the base association name
-        Object assoc = ModelFacade.getBase(assocRole);
+        Object assoc = Model.getFacade().getBase(assocRole);
         if (assoc != null) {
-            text = text + ModelFacade.getName(assoc);
+            text = text + Model.getFacade().getName(assoc);
         }
         return text;
     }
@@ -827,14 +826,14 @@ public class GeneratorDisplay extends Generator2 {
         Iterator gens = generalizations.iterator();
         while (gens.hasNext()) {
             Object g = /*(MGeneralization)*/ gens.next();
-            Object ge = ModelFacade.getPowertype(g);
+            Object ge = Model.getFacade().getPowertype(g);
             // assert ge != null
             if (ge != null) {
                 if (impl) {
-                    if (ModelFacade.isAInterface(ge)) {
+                    if (Model.getFacade().isAInterface(ge)) {
                         classes.add(ge);
                     }
-                } else if (!(org.argouml.model.ModelFacade.isAInterface(ge))) {
+                } else if (!(Model.getFacade().isAInterface(ge))) {
                     classes.add(ge);
                 }
             }
@@ -870,18 +869,18 @@ public class GeneratorDisplay extends Generator2 {
         if (o == null) {
             return "";
         }
-        if (ModelFacade.isAModelElement(o)) {
-            if (ModelFacade.isPublic(o)) {
+        if (Model.getFacade().isAModelElement(o)) {
+            if (Model.getFacade().isPublic(o)) {
                 return "+";
             }
-            if (ModelFacade.isPrivate(o)) {
+            if (Model.getFacade().isPrivate(o)) {
                 return "-";
             }
-            if (ModelFacade.isProtected(o)) {
+            if (Model.getFacade().isProtected(o)) {
                 return "#";
             }
         }
-        if (ModelFacade.isAVisibilityKind(o)) {
+        if (Model.getFacade().isAVisibilityKind(o)) {
             if (Model.getVisibilityKind().getPublic().equals(o)) {
                 return "+";
             }
@@ -900,7 +899,7 @@ public class GeneratorDisplay extends Generator2 {
      * @return a string representing the scope of the feature or ""
      */
     public String generateScope(Object f) {
-        Object scope = ModelFacade.getOwnerScope(f);
+        Object scope = Model.getFacade().getOwnerScope(f);
         //if (scope == null) return "";
         if (Model.getScopeKind().getClassifier().equals(scope)) {
             return "static ";
@@ -913,12 +912,12 @@ public class GeneratorDisplay extends Generator2 {
      * @return a string representing the scope of the structural feature or ""
      */
     public String generateChangability(Object sf) {
-        Object ck = ModelFacade.getChangeability(sf);
+        Object ck = Model.getFacade().getChangeability(sf);
         //if (ck == null) return "";
         if (Model.getChangeableKind().getFrozen().equals(ck)) {
             return "final ";
         }
-        //if (ModelFacade.ADD_ONLY_CHANGEABLEKIND.equals(ck)) return "final ";
+        //if (Model.getFacade().ADD_ONLY_CHANGEABLEKIND.equals(ck)) return "final ";
         return "";
     }
 
@@ -934,15 +933,15 @@ public class GeneratorDisplay extends Generator2 {
             return ANY_RANGE;
         }
         String s = "";
-        Iterator rangeIter = ModelFacade.getRanges(m);
+        Iterator rangeIter = Model.getFacade().getRanges(m);
         if (rangeIter == null) {
             return s;
         }
         boolean first = true;
         while (rangeIter.hasNext()) {
             Object mr = rangeIter.next();
-            if (!(ModelFacade.getLower(mr) == 1
-		  && ModelFacade.getUpper(mr) == 1
+            if (!(Model.getFacade().getLower(mr) == 1
+		  && Model.getFacade().getUpper(mr) == 1
 		  && first
 		  && !rangeIter.hasNext())) {
                 s += generateMultiplicityRange(mr);
@@ -972,9 +971,9 @@ public class GeneratorDisplay extends Generator2 {
     // TODO: user preference between "*" and "0..*"
 
     protected String generateMultiplicityRange(Object mr) {
-        int lower = ModelFacade.getLower(mr);
+        int lower = Model.getFacade().getLower(mr);
         String lowerStr = "" + lower;
-        int upper = ModelFacade.getUpper(mr);
+        int upper = Model.getFacade().getUpper(mr);
         String upperStr = "" + upper;
         if (lower == -1) {
             lowerStr = "*";
@@ -992,18 +991,18 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object m) {
-        return ModelFacade.getName(m);
+        return Model.getFacade().getName(m);
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
-        Object c = ModelFacade.getType(m);
+        Object c = Model.getFacade().getType(m);
         if (c == null) {
             return "";
         }
-        return ModelFacade.getName(c);
+        return Model.getFacade().getName(c);
     }
 
     /**
@@ -1012,9 +1011,9 @@ public class GeneratorDisplay extends Generator2 {
     public String generateStateBody(Object m) {
         StringBuffer s = new StringBuffer();
 
-        Object entryAction = ModelFacade.getEntry(m);
-        Object exitAction = ModelFacade.getExit(m);
-        Object doAction = ModelFacade.getDoActivity(m);
+        Object entryAction = Model.getFacade().getEntry(m);
+        Object exitAction = Model.getFacade().getExit(m);
+        Object doAction = Model.getFacade().getDoActivity(m);
         if (entryAction != null) {
             String entryStr = generate(entryAction);
             s.append("entry /").append(entryStr);
@@ -1034,7 +1033,7 @@ public class GeneratorDisplay extends Generator2 {
             }
             s.append("exit /").append(exitStr);
         }
-        Collection internaltrans = ModelFacade.getInternalTransitions(m);
+        Collection internaltrans = Model.getFacade().getInternalTransitions(m);
         if (internaltrans != null) {
             Iterator iter = internaltrans.iterator();
             while (iter.hasNext()) {
@@ -1052,9 +1051,9 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object m) {
-        String t = generate(ModelFacade.getTrigger(m));
-        String g = generate(ModelFacade.getGuard(m));
-        String e = generate(ModelFacade.getEffect(m));
+        String t = generate(Model.getFacade().getTrigger(m));
+        String g = generate(Model.getFacade().getGuard(m));
+        String e = generate(Model.getFacade().getEffect(m));
         if (g.length() > 0) {
             t += " [" + g + "]";
         }
@@ -1074,16 +1073,16 @@ public class GeneratorDisplay extends Generator2 {
         String p;
         boolean first;
 
-        Object script = ModelFacade.getScript(m);
+        Object script = Model.getFacade().getScript(m);
 
-        if ((script != null) && (ModelFacade.getBody(script) != null)) {
-            s = ModelFacade.getBody(script).toString();
+        if ((script != null) && (Model.getFacade().getBody(script) != null)) {
+            s = Model.getFacade().getBody(script).toString();
         } else {
             s = "";
         }
 
         p = "";
-        c = ModelFacade.getActualArguments(m);
+        c = Model.getFacade().getActualArguments(m);
         if (c != null) {
             it = c.iterator();
             first = true;
@@ -1093,8 +1092,8 @@ public class GeneratorDisplay extends Generator2 {
                     p += ", ";
                 }
 
-                if (ModelFacade.getValue(arg) != null) {
-                    p += generateExpression(ModelFacade.getValue(arg));
+                if (Model.getFacade().getValue(arg) != null) {
+                    p += generateExpression(Model.getFacade().getValue(arg));
 		}
                 first = false;
             }
@@ -1120,8 +1119,8 @@ public class GeneratorDisplay extends Generator2 {
      * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object m) {
-        if (ModelFacade.getExpression(m) != null) {
-            return generateExpression(ModelFacade.getExpression(m));
+        if (Model.getFacade().getExpression(m) != null) {
+            return generateExpression(Model.getFacade().getExpression(m));
         }
         return "";
     }
@@ -1136,18 +1135,18 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateEvent(Object m) {
         StringBuffer event = new StringBuffer();
-        if (ModelFacade.isAChangeEvent(m)) {
+        if (Model.getFacade().isAChangeEvent(m)) {
             event.append("when(");
-            event.append(generateExpression(ModelFacade.getExpression(m)));
+            event.append(generateExpression(Model.getFacade().getExpression(m)));
             event.append(")");
-        } else if (ModelFacade.isATimeEvent(m)) {
+        } else if (Model.getFacade().isATimeEvent(m)) {
             event.append("after(");
-            event.append(generateExpression(ModelFacade.getExpression(m)));
+            event.append(generateExpression(Model.getFacade().getExpression(m)));
             event.append(")");
-        } else if (ModelFacade.isASignalEvent(m)) {
-            event.append(generateName(ModelFacade.getName(m)));
-        } else if (ModelFacade.isACallEvent(m)) {
-            event.append(generateName(ModelFacade.getName(m)));
+        } else if (Model.getFacade().isASignalEvent(m)) {
+            event.append(generateName(Model.getFacade().getName(m)));
+        } else if (Model.getFacade().isACallEvent(m)) {
+            event.append(generateName(Model.getFacade().getName(m)));
             event.append(generateParameterList(m));
         }
         return event.toString();
@@ -1166,7 +1165,7 @@ public class GeneratorDisplay extends Generator2 {
      * @return the generated parameter list
      */
     private String generateParameterList(Object parameterListOwner) {
-        Iterator it = ModelFacade.getParameters(parameterListOwner).iterator();
+        Iterator it = Model.getFacade().getParameters(parameterListOwner).iterator();
         StringBuffer list = new StringBuffer();
         list.append("(");
         if (it.hasNext()) {
@@ -1190,9 +1189,9 @@ public class GeneratorDisplay extends Generator2 {
      */
     public String generateActionState(Object actionState) {
         String ret = "";
-        Object action = ModelFacade.getEntry(actionState);
+        Object action = Model.getFacade().getEntry(actionState);
         if (action != null) {
-            Object expression = ModelFacade.getScript(action);
+            Object expression = Model.getFacade().getScript(action);
             if (expression != null) {
                 ret = generateExpression(expression);
             }

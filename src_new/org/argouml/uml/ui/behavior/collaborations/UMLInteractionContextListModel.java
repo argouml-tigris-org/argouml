@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -46,15 +46,15 @@ public class UMLInteractionContextListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getContext(getTarget()));
+        addElement(Model.getFacade().getContext(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isACollaboration(elem)
-            && ModelFacade.getInteractions(elem).contains(getTarget());
+        return Model.getFacade().isACollaboration(elem)
+            && Model.getFacade().getInteractions(elem).contains(getTarget());
     }
 
 }

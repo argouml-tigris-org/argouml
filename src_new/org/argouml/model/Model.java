@@ -64,6 +64,18 @@ public final class Model {
     }
 
     /**
+     * Get the facade.<p>
+     *
+     * The facade is probably the most used interface. It contains recognizers
+     * and getters for all method kinds.
+     *
+     * @return The facade object.
+     */
+    public static Facade getFacade() {
+        return impl.getFacade();
+    }
+
+    /**
      * Get the event pump.
      *
      * @return the current ModelEventPump.

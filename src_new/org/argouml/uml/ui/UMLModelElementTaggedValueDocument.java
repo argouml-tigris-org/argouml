@@ -25,13 +25,12 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * This class provides a text field that can be used to access
- * tagged values of a MModelElement object;
+ * tagged values of a MModelElement object.
  * UMLModelElementTaggedValueDocument is especially useful when
- * using LabelledLayout;
+ * using LabelledLayout.
  *
  * @since 5th April 2003
  * @author Raphael Langerhorst (raphael-langerhorst@gmx.at)
@@ -40,7 +39,8 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
 
     /**
      * Creates a UMLPlainTextDocument object that represents a tagged value of
-     * an MModelElement object
+     * an MModelElement object.
+     *
      * @param taggedValue the tagged value
      */
     public UMLModelElementTaggedValueDocument(String taggedValue) {
@@ -51,12 +51,17 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
     }
 
     /**
-     * Sets the tagged value to given String
+     * Sets the tagged value to given String.
+     *
      * @param text the property
      */
     protected void setProperty(String text) {
-        if (getTarget() != null)
-            Model.getCoreHelper().setTaggedValue(getTarget(), getEventName(), text);
+        if (getTarget() != null) {
+            Model.getCoreHelper().setTaggedValue(
+                    getTarget(),
+                    getEventName(),
+                    text);
+        }
     }
 
     /**
@@ -64,12 +69,13 @@ public class UMLModelElementTaggedValueDocument extends UMLPlainTextDocument {
      * @return the value of the tagged value
      */
     protected String getProperty() {
-        String property = null;
         String eventName = getEventName();
-        Object taggedValue = ModelFacade.getTaggedValue(getTarget(), eventName);
-        if (taggedValue != null)
-            return ModelFacade.getValueOfTag(taggedValue);
-        else
+        Object taggedValue =
+            Model.getFacade().getTaggedValue(getTarget(), eventName);
+        if (taggedValue != null) {
+            return Model.getFacade().getValueOfTag(taggedValue);
+        } else {
             return "";
+        }
     }
 }

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003-2004 The Regents of the University of California. All
+// Copyright (c) 2003-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,14 +25,14 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 
 /**
  * Navigate to container of the element.
- * @see org.argouml.model.ModelFacade#getModelElementContainer(Object)
- * @author mkl
  *
+ * @see org.argouml.model.Facade#getModelElementContainer(Object)
+ * @author mkl
  */
 public class ActionNavigateContainerElement extends AbstractActionNavigate {
 
@@ -40,7 +40,7 @@ public class ActionNavigateContainerElement extends AbstractActionNavigate {
      * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
     protected Object navigateTo(Object source) {
-        return ModelFacade.getModelElementContainer(source);
+        return Model.getFacade().getModelElementContainer(source);
     }
 
 }

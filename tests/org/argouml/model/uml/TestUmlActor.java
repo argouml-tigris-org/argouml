@@ -25,7 +25,6 @@
 package org.argouml.model.uml;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 
 /**
@@ -33,7 +32,8 @@ import org.argouml.model.ModelFacade;
  */
 public class TestUmlActor extends GenericUmlObjectTestFixture {
     /**
-     * Constructor for FakeUmlModelFacadeTest.
+     * Constructor.
+     *
      * @param arg0 test name
      */
     public TestUmlActor(String arg0) {
@@ -48,8 +48,8 @@ public class TestUmlActor extends GenericUmlObjectTestFixture {
 	Object o =
 	    Model.getUmlFactory().buildNode(Model.getMetaTypes().getActor());
 	assertNotNull("Didn't create object", o);
-	assertTrue("Should be a base", ModelFacade.isABase(o));
-	assertTrue("Should be a actor", ModelFacade.isAActor(o));
+	assertTrue("Should be a base", Model.getFacade().isABase(o));
+	assertTrue("Should be a actor", Model.getFacade().isAActor(o));
 	runTruthTests(o);
     }
 

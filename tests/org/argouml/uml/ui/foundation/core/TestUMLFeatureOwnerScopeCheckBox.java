@@ -27,7 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
@@ -75,12 +74,14 @@ public class TestUMLFeatureOwnerScopeCheckBox extends TestCase {
      * is really changed
      */
     public void testDoClick() {
-        Object spec = ModelFacade.getOwnerScope(elem);
+        Object spec = Model.getFacade().getOwnerScope(elem);
 	if (box == null) {
 	    return; // Inconclusive
 	}
         box.doClick();
-        assertEquals(MScopeKind.CLASSIFIER, ModelFacade.getOwnerScope(elem));
+        assertEquals(
+                MScopeKind.CLASSIFIER,
+                Model.getFacade().getOwnerScope(elem));
     }
 
     /**

@@ -25,7 +25,7 @@
 package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Well-formedness rule [1] for MGeneralization. See page 32 of UML 1.1
@@ -54,14 +54,20 @@ public class CrIllegalGeneralization extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAGeneralization(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAGeneralization(dm))) {
+	    return NO_PROBLEM;
+	}
 	Object gen = /*(MGeneralization)*/ dm;
-	Object cls1 = ModelFacade.getParent(gen);
-	Object cls2 = ModelFacade.getChild(gen);
-	if (cls1 == null || cls2 == null) return NO_PROBLEM;
+	Object cls1 = Model.getFacade().getParent(gen);
+	Object cls2 = Model.getFacade().getChild(gen);
+	if (cls1 == null || cls2 == null) {
+	    return NO_PROBLEM;
+	}
 	java.lang.Class javaClass1 = cls1.getClass();
 	java.lang.Class javaClass2 = cls2.getClass();
-	if (javaClass1 != javaClass2) return PROBLEM_FOUND;
+	if (javaClass1 != javaClass2) {
+	    return PROBLEM_FOUND;
+	}
 	return NO_PROBLEM;
     }
 

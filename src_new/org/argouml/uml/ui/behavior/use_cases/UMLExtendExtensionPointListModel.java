@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,7 +45,7 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getExtensionPoints(getTarget()));
+        setAllElements(Model.getFacade().getExtensionPoints(getTarget()));
     }
 
 
@@ -54,8 +54,8 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.isAExtensionPoint(o)
-            && ModelFacade.getExtensionPoints(getTarget()).contains(o);
+        return Model.getFacade().isAExtensionPoint(o)
+            && Model.getFacade().getExtensionPoints(getTarget()).contains(o);
     }
 
 }

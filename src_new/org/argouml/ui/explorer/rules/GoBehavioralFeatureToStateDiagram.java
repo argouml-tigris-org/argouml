@@ -32,7 +32,7 @@ import java.util.Vector;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.state.ui.UMLStateDiagram;
 
@@ -49,8 +49,8 @@ public class GoBehavioralFeatureToStateDiagram extends AbstractPerspectiveRule {
      */
     public Collection getChildren(Object parent) {
 
-        if (ModelFacade.isABehavioralFeature(parent)) {
-            Collection col = ModelFacade.getBehaviors(parent);
+        if (Model.getFacade().isABehavioralFeature(parent)) {
+            Collection col = Model.getFacade().getBehaviors(parent);
             Vector ret = new Vector();
             Project p = ProjectManager.getManager().getCurrentProject();
             Vector diagrams = p.getDiagrams();

@@ -30,7 +30,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Go rule for the package perspective to show the comments belonging to some
@@ -47,8 +47,8 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAModelElement(parent)) {
-            return ModelFacade.getComments(parent);
+        if (Model.getFacade().isAModelElement(parent)) {
+            return Model.getFacade().getComments(parent);
         }
         return null;
     }
@@ -64,7 +64,7 @@ public class GoModelElementToComment extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAModelElement(parent)) {
+        if (Model.getFacade().isAModelElement(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

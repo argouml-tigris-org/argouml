@@ -30,7 +30,6 @@ import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
 
@@ -109,16 +108,16 @@ public abstract class FigState extends FigStateVertex {
             }
             // we don't have to act on incoming and outgoing
             // transitions since that doesn't change the fig.
-        } else if (ModelFacade.getInternalTransitions(getOwner()).contains(
+        } else if (Model.getFacade().getInternalTransitions(getOwner()).contains(
                 mee.getSource())
                 || // the internal transitions
-                (mee.getSource() == ModelFacade.getEntry(getOwner()))
+                (mee.getSource() == Model.getFacade().getEntry(getOwner()))
                 || // the entry
-                (mee.getSource() == ModelFacade.getExit(getOwner()))
+                (mee.getSource() == Model.getFacade().getExit(getOwner()))
                 || // the exit
-                (mee.getSource() == ModelFacade.getDoActivity(getOwner()))
+                (mee.getSource() == Model.getFacade().getDoActivity(getOwner()))
                 || // the doacitivity
-                ModelFacade.getDeferrableEvents(getOwner()).contains(
+                Model.getFacade().getDeferrableEvents(getOwner()).contains(
                         mee.getSource())) {
             // the defered events
             updateInternal();
@@ -136,23 +135,23 @@ public abstract class FigState extends FigStateVertex {
         if (newOwner != null) {
             // register for events from all internal transitions
             Object state = newOwner;
-            Iterator it = ModelFacade.getInternalTransitions(state).iterator();
+            Iterator it = Model.getFacade().getInternalTransitions(state).iterator();
             while (it.hasNext()) {
                 Model.getPump().addModelEventListener(this,
                         it.next());
             }
             // register for the doactivity etc.
-            if (ModelFacade.getDoActivity(state) != null) {
+            if (Model.getFacade().getDoActivity(state) != null) {
                 Model.getPump().addModelEventListener(this,
-                        ModelFacade.getDoActivity(state));
+                        Model.getFacade().getDoActivity(state));
             }
-            if (ModelFacade.getEntry(state) != null) {
+            if (Model.getFacade().getEntry(state) != null) {
                 Model.getPump().addModelEventListener(this,
-                        ModelFacade.getEntry(state));
+                        Model.getFacade().getEntry(state));
             }
-            if (ModelFacade.getExit(state) != null) {
+            if (Model.getFacade().getExit(state) != null) {
                 Model.getPump().addModelEventListener(this,
-                        ModelFacade.getExit(state));
+                        Model.getFacade().getExit(state));
             }
         } else {
             // lets remove all registrations since this is called
@@ -160,23 +159,23 @@ public abstract class FigState extends FigStateVertex {
             // change that...) the owner is the oldOwner
             Object state = getOwner();
             if (state != null) {
-                Iterator it = ModelFacade.getInternalTransitions(state)
+                Iterator it = Model.getFacade().getInternalTransitions(state)
                         .iterator();
                 while (it.hasNext()) {
                     Model.getPump().removeModelEventListener(this,
                             it.next());
                 }
-                if (ModelFacade.getDoActivity(state) != null) {
+                if (Model.getFacade().getDoActivity(state) != null) {
                     Model.getPump().removeModelEventListener(this,
-                            ModelFacade.getDoActivity(state));
+                            Model.getFacade().getDoActivity(state));
                 }
-                if (ModelFacade.getEntry(state) != null) {
+                if (Model.getFacade().getEntry(state) != null) {
                     Model.getPump().removeModelEventListener(this,
-                            ModelFacade.getEntry(state));
+                            Model.getFacade().getEntry(state));
                 }
-                if (ModelFacade.getExit(state) != null) {
+                if (Model.getFacade().getExit(state) != null) {
                     Model.getPump().removeModelEventListener(this,
-                            ModelFacade.getExit(state));
+                            Model.getFacade().getExit(state));
                 }
             }
 

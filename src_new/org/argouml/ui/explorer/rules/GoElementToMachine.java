@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Class->State Machine.
@@ -48,8 +48,8 @@ public class GoElementToMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAModelElement(parent)) {
-	    return ModelFacade.getBehaviors(parent);
+	if (Model.getFacade().isAModelElement(parent)) {
+	    return Model.getFacade().getBehaviors(parent);
 	}
 	return null;
     }
@@ -58,7 +58,7 @@ public class GoElementToMachine extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAModelElement(parent)) {
+        if (Model.getFacade().isAModelElement(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

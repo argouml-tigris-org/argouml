@@ -33,7 +33,6 @@ import javax.swing.JTextField;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -119,13 +118,13 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
 
         // Only works for extension points
 
-        if (!(org.argouml.model.ModelFacade.isAExtensionPoint(target))) {
+        if (!(Model.getFacade().isAExtensionPoint(target))) {
             return;
         }
 
         // Get the owning use case and navigate to it if it exists.
 
-        Object owner = ModelFacade.getUseCase(target);
+        Object owner = Model.getFacade().getUseCase(target);
 
         if (owner != null) {
             TargetManager.getInstance().setTarget(owner);
@@ -149,10 +148,10 @@ public class PropPanelExtensionPoint extends PropPanelModelElement {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (ModelFacade.isAExtensionPoint(target)) {
+            if (Model.getFacade().isAExtensionPoint(target)) {
                 TargetManager.getInstance().setTarget(
                     Model.getUseCasesFactory().buildExtensionPoint(
-                            ModelFacade.getUseCase(target)));
+                            Model.getFacade().getUseCase(target)));
                 super.actionPerformed(e);
             }
         }

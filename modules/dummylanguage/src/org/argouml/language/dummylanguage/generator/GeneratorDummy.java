@@ -26,7 +26,7 @@ package org.argouml.language.dummylanguage.generator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.generator.Generator2;
 
 /**
@@ -62,11 +62,11 @@ public final class GeneratorDummy
     }
 
     /**
-     * <p>Generate code for an extension point.</p>
+     * Generate code for an extension point.<p>
      *
-     * <p>Provided to comply with the interface, but returns null
-     *   since no code will be generated. This should prevent a source tab
-     *   being shown.</p>
+     * Provided to comply with the interface, but returns null
+     * since no code will be generated. This should prevent a source tab
+     * being shown.<p>
      *
      * @param handle The extension point to generate for
      *
@@ -74,7 +74,7 @@ public final class GeneratorDummy
      *            implementation.
      */
     public String generateExtensionPoint(Object handle) {
-        return "ExtensionPoint(" + ModelFacade.getName(handle) + ")";
+        return "ExtensionPoint(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
@@ -82,7 +82,7 @@ public final class GeneratorDummy
      *          java.lang.Object, boolean)
      */
     public String generateOperation(Object handle, boolean documented) {
-	return "Operation(" + ModelFacade.getName(handle) + ")";
+	return "Operation(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
@@ -90,56 +90,56 @@ public final class GeneratorDummy
      *          java.lang.Object, boolean)
      */
     public String generateAttribute(Object handle, boolean documented) {
-	return "Attribute(" + ModelFacade.getName(handle) + ")";
+	return "Attribute(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateParameter(java.lang.Object)
      */
     public String generateParameter(Object handle) {
-	return "Parameter(" + ModelFacade.getName(handle) + ")";
+	return "Parameter(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generatePackage(java.lang.Object)
      */
     public String generatePackage(Object handle) {
-	return "Package(" + ModelFacade.getName(handle) + ")";
+	return "Package(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateClassifier(java.lang.Object)
      */
     public String generateClassifier(Object handle) {
-	return "Classifier(" + ModelFacade.getName(handle) + ")";
+	return "Classifier(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateTaggedValue(java.lang.Object)
      */
     public String generateTaggedValue(Object handle) {
-	return "TaggedValue(" + ModelFacade.getTag(handle) + ")";
+	return "TaggedValue(" + Model.getFacade().getTag(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateAssociation(java.lang.Object)
      */
     public String generateAssociation(Object handle) {
-	return "Association(" + ModelFacade.getName(handle) + ")";
+	return "Association(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateAssociationEnd(java.lang.Object)
      */
     public String generateAssociationEnd(Object handle) {
-	return "AssociationEnd(" + ModelFacade.getName(handle) + ")";
+	return "AssociationEnd(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateAssociationRole(java.lang.Object)
      */
     public String generateAssociationRole(Object handle) {
-	return "AssociationRole(" + ModelFacade.getName(handle) + ")";
+	return "AssociationRole(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
@@ -153,39 +153,39 @@ public final class GeneratorDummy
      * @see org.argouml.application.api.NotationProvider2#generateVisibility(java.lang.Object)
      */
     public String generateVisibility(Object handle) {
-        if (ModelFacade.isAVisibilityKind(handle)) {
-            return "Visibility(" + ModelFacade.getValue(handle) + ")";
+        if (Model.getFacade().isAVisibilityKind(handle)) {
+            return "Visibility(" + Model.getFacade().getValue(handle) + ")";
         }
-        return "Visibility(" + ModelFacade.getName(handle) + ")";
+        return "Visibility(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateState(java.lang.Object)
      */
     public String generateState(Object handle) {
-	return "State(" + ModelFacade.getName(handle) + ")";
+	return "State(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateStateBody(java.lang.Object)
      */
     public String generateStateBody(Object handle) {
-	return "StateBody(" + ModelFacade.getName(handle) + ")";
+	return "StateBody(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateTransition(java.lang.Object)
      */
     public String generateTransition(Object handle) {
-	return "Transition(" + ModelFacade.getName(handle) + ")";
+	return "Transition(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateAction(java.lang.Object)
      */
     public String generateAction(Object handle) {
-	if (ModelFacade.isAAction(handle)) {
-	    return "Action(" + ModelFacade.getName(handle) + ")";
+	if (Model.getFacade().isAAction(handle)) {
+	    return "Action(" + Model.getFacade().getName(handle) + ")";
 	}
 	return "Action(" + handle.toString() + ")";
     }
@@ -194,39 +194,39 @@ public final class GeneratorDummy
      * @see org.argouml.application.api.NotationProvider2#generateGuard(java.lang.Object)
      */
     public String generateGuard(Object handle) {
-	return "Guard(" + ModelFacade.getName(handle) + ")";
+	return "Guard(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateMessage(java.lang.Object)
      */
     public String generateMessage(Object handle) {
-	return "Message(" + ModelFacade.getName(handle) + ")";
+	return "Message(" + Model.getFacade().getName(handle) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateObjectFlowState(java.lang.Object)
      */
     public String generateObjectFlowState(Object m) {
-        Object c = ModelFacade.getType(m);
+        Object c = Model.getFacade().getType(m);
         if (c == null) {
             return "";
         }
-        return ModelFacade.getName(c);
+        return Model.getFacade().getName(c);
     }
 
     /**
      * @see org.argouml.uml.generator.Generator2#generateEvent(java.lang.Object)
      */
     public String generateEvent(Object m) {
-        return "Event(" + ModelFacade.getName(m) + ")";
+        return "Event(" + Model.getFacade().getName(m) + ")";
     }
 
     /**
      * @see org.argouml.application.api.NotationProvider2#generateActionState(java.lang.Object)
      */
     public String generateActionState(Object actionState) {
-        return "ActionState(" + ModelFacade.getName(actionState) + ")";
+        return "ActionState(" + Model.getFacade().getName(actionState) + ")";
     }
 
 

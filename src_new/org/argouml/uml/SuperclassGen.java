@@ -28,7 +28,8 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Iterator;
 import java.util.Vector;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
 
 /** Utility class to generate the children of a class.  In this case
@@ -43,12 +44,12 @@ public class SuperclassGen implements ChildGenerator {
         Vector res = new Vector();
 
         Object/* MGeneralizableElement */ge = o;
-        Collection generalizations = ModelFacade.getGeneralizations(ge);
+        Collection generalizations = Model.getFacade().getGeneralizations(ge);
         if (generalizations == null) return res.elements();
         Iterator gens = generalizations.iterator();
         while (gens.hasNext()) {
             Object/* MGeneralization */g = gens.next();
-            res.add(ModelFacade.getParent(g));
+            res.add(Model.getFacade().getParent(g));
         }
         return res.elements();
     }

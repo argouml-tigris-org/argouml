@@ -24,9 +24,9 @@
 
 package org.argouml.ocl;
 
-import java.util.*;
+import java.util.Iterator;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ocl.ExpansionException;
 
@@ -59,25 +59,37 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
     public synchronized String evalToString(Object self, String expr)
         throws ExpansionException {
         String res = null;
-        if (GET_NAME_EXPR_1.equals(expr) && ModelFacade.isAModelElement(self)) {
-            res = ModelFacade.getName(self);
-            if (res == null || "".equals(res)) res = "(anon)";
+        if (GET_NAME_EXPR_1.equals(expr)
+                && Model.getFacade().isAModelElement(self)) {
+            res = Model.getFacade().getName(self);
+            if (res == null || "".equals(res)) {
+                res = "(anon)";
+            }
         }
-        if (GET_NAME_EXPR_2.equals(expr) && ModelFacade.isAModelElement(self)) {
-            res = ModelFacade.getName(self);
-            if (res == null || "".equals(res)) res = "(anon)";
+        if (GET_NAME_EXPR_2.equals(expr)
+                && Model.getFacade().isAModelElement(self)) {
+            res = Model.getFacade().getName(self);
+            if (res == null || "".equals(res)) {
+                res = "(anon)";
+            }
         }
-        if (GET_OWNER_EXPR.equals(expr) && ModelFacade.isAFeature(self)) {
-            res = ModelFacade.getName(self);
-            if (res == null || "".equals(res)) res = "(anon)";
+        if (GET_OWNER_EXPR.equals(expr) && Model.getFacade().isAFeature(self)) {
+            res = Model.getFacade().getName(self);
+            if (res == null || "".equals(res)) {
+                res = "(anon)";
+            }
         }
         if (GET_NAME_EXPR_1.equals(expr) && self instanceof Diagram) {
             res = ((Diagram) self).getName();
-            if (res == null || "".equals(res)) res = "(anon)";
+            if (res == null || "".equals(res)) {
+                res = "(anon)";
+            }
         }
         if (GET_NAME_EXPR_2.equals(expr) && self instanceof Diagram) {
             res = ((Diagram) self).getName();
-            if (res == null || "".equals(res)) res = "(anon)";
+            if (res == null || "".equals(res)) {
+                res = "(anon)";
+            }
         }
     /*
         if (GET_OWNER_EXPR.equals(expr) && self instanceof Diagram) {
@@ -85,7 +97,9 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
             if (res == null || "".equals(res)) res = "(anon)";
         }
     */
-        if (res == null) res = evalToString(self, expr, ", ");
+        if (res == null) {
+            res = evalToString(self, expr, ", ");
+        }
         return res;
     }
 
@@ -103,17 +117,23 @@ public class CriticOclEvaluator extends org.tigris.gef.ocl.OCLEvaluator {
         Iterator iter = values.iterator();
         while (iter.hasNext()) {
             Object v = iter.next();
-            if (ModelFacade.isAModelElement(v)) {
-                v = ModelFacade.getName(v);
-                if ("".equals(v)) v = "(anon)";
+            if (Model.getFacade().isAModelElement(v)) {
+                v = Model.getFacade().getName(v);
+                if ("".equals(v)) {
+                    v = "(anon)";
+                }
             }
-            if (ModelFacade.isAExpression(v)) {
-                v = ModelFacade.getBody(v);
-                if ("".equals(v)) v = "(unspecified)";
+            if (Model.getFacade().isAExpression(v)) {
+                v = Model.getFacade().getBody(v);
+                if ("".equals(v)) {
+                    v = "(unspecified)";
+                }
             }
             if (!"".equals(v)) {
                 _strBuf.append(v);
-                if (iter.hasNext()) _strBuf.append(sep);
+                if (iter.hasNext()) {
+                    _strBuf.append(sep);
+                }
             }
         }
         return _strBuf.toString();

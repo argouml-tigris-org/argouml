@@ -28,8 +28,7 @@ import java.util.Enumeration;
 import java.util.Vector;
 
 import org.argouml.kernel.Project;
-import org.argouml.model.ModelFacade;
-
+import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.util.ChildGenerator;
 
@@ -80,17 +79,17 @@ public class ChildGenFind implements ChildGenerator {
 
 	//     // TODO: associationclasses fit both of the next 2 cases
 
-	if (ModelFacade.isAClassifier(o)) {
+	if (Model.getFacade().isAClassifier(o)) {
 	    Object cls = /*(MClassifier)*/ o;
 	    //      EnumerationComposite res = new EnumerationComposite();
-	    Vector res = new Vector(ModelFacade.getFeatures(cls));
-	    res.addAll(ModelFacade.getBehaviors(cls));
+	    Vector res = new Vector(Model.getFacade().getFeatures(cls));
+	    res.addAll(Model.getFacade().getBehaviors(cls));
 	    return res.elements();
 	}
 
-	if (ModelFacade.isAAssociation(o)) {
+	if (Model.getFacade().isAAssociation(o)) {
 	    Object asc = /*(MAssociation)*/ o;
-	    return new Vector(ModelFacade.getConnections(asc)).elements();
+	    return new Vector(Model.getFacade().getConnections(asc)).elements();
 	    //      Vector assocEnds = asc.getConnections();
 	    //if (assocEnds != null) return assocEnds.elements();
 	}
@@ -128,19 +127,19 @@ public class ChildGenFind implements ChildGenerator {
 	    //d.getGraphModel().getEdges().elements());
 	}
 
-	if (ModelFacade.isAState(o)) {
+	if (Model.getFacade().isAState(o)) {
 	    Object s = /*(MState)*/ o;
 	    //Vector interns = s.getInternalTransition();
 	    //if (interns != null) return interns.elements();
-	    return new Vector(ModelFacade.getInternalTransitions(s)).elements();
+	    return new Vector(Model.getFacade().getInternalTransitions(s)).elements();
 	}
 
-	if (ModelFacade.isATransition(o)) {
+	if (Model.getFacade().isATransition(o)) {
 	    Object tr = /*(MTransition)*/ o;
 	    Vector res = new Vector();
-	    res.add(ModelFacade.getTrigger(tr));
-	    res.add(ModelFacade.getGuard(tr));
-	    res.add(ModelFacade.getEffect(tr));
+	    res.add(Model.getFacade().getTrigger(tr));
+	    res.add(Model.getFacade().getGuard(tr));
+	    res.add(Model.getFacade().getEffect(tr));
 	    /*
 	      Vector parts = new Vector();  // wasteful!!
 	      if (tr.getTrigger() != null) parts.addElement(tr.getTrigger());

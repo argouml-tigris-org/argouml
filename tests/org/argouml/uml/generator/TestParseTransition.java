@@ -32,7 +32,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Test ParserDisplay: parsing transitions.
@@ -70,7 +69,7 @@ public class TestParseTransition extends TestCase {
                 voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
-        Object top = ModelFacade.getTop(aStateMachine);
+        Object top = Model.getFacade().getTop(aStateMachine);
         aState = Model.getStateMachinesFactory()
             .buildCompositeState(top);
     }
@@ -138,24 +137,24 @@ public class TestParseTransition extends TestCase {
         }
         if (trigger) {
             assertTrue("Trigger was not generated for " + text,
-                    ModelFacade.getTrigger(it) != null);
+                    Model.getFacade().getTrigger(it) != null);
         } else {
             assertTrue("Trigger was generated for " + text,
-                    ModelFacade.getTrigger(it) == null);
+                    Model.getFacade().getTrigger(it) == null);
         }
         if (guard) {
             assertTrue("Guard was not generated for " + text,
-                    ModelFacade.getGuard(it) != null);
+                    Model.getFacade().getGuard(it) != null);
         } else {
             assertTrue("Guard was generated for " + text,
-                    ModelFacade.getGuard(it) == null);
+                    Model.getFacade().getGuard(it) == null);
         }
         if (effect) {
             assertTrue("Effect (action) was not generated for " + text,
-                    ModelFacade.getEffect(it) != null);
+                    Model.getFacade().getEffect(it) != null);
         } else {
             assertTrue("Effect (action) was generated for " + text,
-                    ModelFacade.getEffect(it) == null);
+                    Model.getFacade().getEffect(it) == null);
         }
         return it;
     }
@@ -174,12 +173,12 @@ public class TestParseTransition extends TestCase {
         text = "after(a while)";
         trans = checkGenerated(aState, text, true, false, false,
                 false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of TimeEvent for "
-                + text, ModelFacade.isATimeEvent(trig));
-        expr = ModelFacade.getExpression(trig);
+                + text, Model.getFacade().isATimeEvent(trig));
+        expr = Model.getFacade().getExpression(trig);
         assertTrue("Incorrectly set TimeExpression for" + text,
-                ModelFacade.getBody(expr).equals("a while"));
+                Model.getFacade().getBody(expr).equals("a while"));
 
 
         //try changing the triggertype to ChangeEvent
@@ -189,9 +188,9 @@ public class TestParseTransition extends TestCase {
         } catch (ParseException e) {
             assertTrue("Unexpected exception for " + text, true);
         }
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of ChangeEvent",
-                ModelFacade.isAChangeEvent(trig));
+                Model.getFacade().isAChangeEvent(trig));
     }
 
     /**
@@ -206,12 +205,12 @@ public class TestParseTransition extends TestCase {
 
         text = "when(it changed)/effect";
         trans = checkGenerated(aState, text, true, false, true, false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of ChangeEvent for "
-                + text, ModelFacade.isAChangeEvent(trig));
-        expr = ModelFacade.getExpression(trig);
+                + text, Model.getFacade().isAChangeEvent(trig));
+        expr = Model.getFacade().getExpression(trig);
         assertTrue("Incorrectly set ChangeExpression for" + text,
-                ModelFacade.getBody(expr).equals("it changed"));
+                Model.getFacade().getBody(expr).equals("it changed"));
 
         text = "/effect";
         try {
@@ -220,7 +219,7 @@ public class TestParseTransition extends TestCase {
             assertTrue("Unexpected exception when removing ChangeEvent trigger",
                     true);
         }
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Trigger not deleted", trig != null);
     }
 
@@ -234,15 +233,15 @@ public class TestParseTransition extends TestCase {
 
         text = "call(a method)";
         trans = checkGenerated(aState, text, true, false, false, false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of CallEvent for "
-                + text, ModelFacade.isACallEvent(trig));
+                + text, Model.getFacade().isACallEvent(trig));
 
         text = "call()";
         trans = checkGenerated(aState, text, true, false, false, false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of CallEvent for "
-                + text, ModelFacade.isACallEvent(trig));
+                + text, Model.getFacade().isACallEvent(trig));
     }
 
     /**
@@ -255,9 +254,9 @@ public class TestParseTransition extends TestCase {
 
         text = "signal";
         trans = checkGenerated(aState, text, true, false, false, false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of SignalEvent",
-                ModelFacade.isASignalEvent(trig));
+                Model.getFacade().isASignalEvent(trig));
 
         text = "/effect";
         try {
@@ -266,7 +265,7 @@ public class TestParseTransition extends TestCase {
             assertTrue("Unexpected exception when removing SignalEvent trigger",
                     true);
         }
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Trigger not deleted", trig != null);
     }
 
@@ -282,10 +281,10 @@ public class TestParseTransition extends TestCase {
 
         text = "myOper()"; // this is an existing operation of the class!
         trans = checkGenerated(aState, text, true, false, false, false);
-        trig = ModelFacade.getTrigger(trans);
+        trig = Model.getFacade().getTrigger(trans);
         assertTrue("Unexpected triggertype found instead of CallEvent for "
-                + text, ModelFacade.isACallEvent(trig));
-        myOp = ModelFacade.getOperation(trig);
+                + text, Model.getFacade().isACallEvent(trig));
+        myOp = Model.getFacade().getOperation(trig);
         assertTrue("Operation of CallEvent not linked", myOp != null);
     }
 

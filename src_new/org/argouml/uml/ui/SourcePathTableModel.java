@@ -32,7 +32,7 @@ import javax.swing.table.DefaultTableModel;
 
 import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * The table model for source path settings. This class contains functionality
@@ -58,10 +58,15 @@ class SourcePathTableModel extends DefaultTableModel {
      */
     static final int SOURCE_PATH_COLUMN = 3;
 
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(SourcePathTableModel.class);
 
-    /** Creates a new instance of SourcePathTableModel */
+    /**
+     * Creates a new instance of SourcePathTableModel.
+     */
     public SourcePathTableModel(SourcePathController srcPathCtrl) {
         super(new Object[][] {
         }, new String[] {
@@ -82,21 +87,23 @@ class SourcePathTableModel extends DefaultTableModel {
             File path = srcPathCtrl.getSourcePath(me);
             if (path != null) {
                 String type = "";
-                String name = ModelFacade.getName(me);
-                if (ModelFacade.isAModel(me)) {
+                String name = Model.getFacade().getName(me);
+                if (Model.getFacade().isAModel(me)) {
                     type = strModel;
-                } else if (ModelFacade.isAPackage(me)) {
+                } else if (Model.getFacade().isAPackage(me)) {
                     type = strPackage;
-                    Object parent = ModelFacade.getNamespace(me);
+                    Object parent = Model.getFacade().getNamespace(me);
                     while (parent != null) {
                         // ommit root package name; it's the model's root
-                        if (ModelFacade.getNamespace(parent) != null)
-                            name = ModelFacade.getName(parent) + "." + name;
-                        parent = ModelFacade.getNamespace(parent);
+                        if (Model.getFacade().getNamespace(parent) != null) {
+                            name =
+                                Model.getFacade().getName(parent) + "." + name;
+                        }
+                        parent = Model.getFacade().getNamespace(parent);
                     }
-                } else if (ModelFacade.isAClass(me)) {
+                } else if (Model.getFacade().isAClass(me)) {
                     type = strClass;
-                } else if (ModelFacade.isAInterface(me)) {
+                } else if (Model.getFacade().isAInterface(me)) {
                     type = strInterface;
                 } else {
                     LOG.warn("Can't assign a type to this model element: "

@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -71,7 +70,7 @@ public class UMLStructuralFeatureChangeabilityRadioButtonPanel
         if (getTarget() != null) {
             Object target = /*(MStructuralFeature)*/ getTarget();
             Object/*MChangeableKind*/ kind =
-                ModelFacade.getChangeability(target);
+                Model.getFacade().getChangeability(target);
             if (kind == null
                     || kind.equals(
                             Model.getChangeableKind().getAddOnly())) {

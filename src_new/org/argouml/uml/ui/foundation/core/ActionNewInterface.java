@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -56,11 +55,12 @@ class ActionNewInterface extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isAInterface(target)) {
+        if (Model.getFacade().isAInterface(target)) {
             Object iface = /*(MInterface)*/ target;
-            Object newInterface = Model.getCoreFactory()
-                .createInterface();
-            Model.getCoreHelper().addOwnedElement(ModelFacade.getNamespace(iface),
+            Object newInterface =
+                Model.getCoreFactory().createInterface();
+            Model.getCoreHelper().addOwnedElement(
+                    Model.getFacade().getNamespace(iface),
                     newInterface);
             TargetManager.getInstance().setTarget(newInterface);
             super.actionPerformed(e);

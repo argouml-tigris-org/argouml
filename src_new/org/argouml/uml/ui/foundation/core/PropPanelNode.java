@@ -31,7 +31,6 @@ import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -92,8 +91,8 @@ public class PropPanelNode extends PropPanelClassifier {
     public Collection getResidents() {
         Collection components = null;
         Object target = getTarget();
-        if (ModelFacade.isANode(target)) {
-            components = ModelFacade.getResidents(target);
+        if (Model.getFacade().isANode(target)) {
+            components = Model.getFacade().getResidents(target);
         }
         return components;
     }
@@ -103,7 +102,7 @@ public class PropPanelNode extends PropPanelClassifier {
      */
     public void setResidents(Collection components) {
         Object target = getTarget();
-        if (ModelFacade.isANode(target)) {
+        if (Model.getFacade().isANode(target)) {
             Model.getCoreHelper().setResidents(target, components);
         }
     }

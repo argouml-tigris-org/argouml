@@ -36,7 +36,6 @@ import java.util.Iterator;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.Layer;
@@ -447,8 +446,8 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
     private void postProcessEdge() {
         LOG.debug("postprocessing " + newEdge);
-        if (ModelFacade.isAAssociation(newEdge)) {
-            Collection conns = ModelFacade.getConnections(newEdge);
+        if (Model.getFacade().isAAssociation(newEdge)) {
+            Collection conns = Model.getFacade().getConnections(newEdge);
             Iterator iter = conns.iterator();
             Object associationEnd0 = iter.next();
             Model.getCoreHelper().setAggregation(associationEnd0,

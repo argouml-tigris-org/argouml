@@ -33,7 +33,6 @@ import javax.swing.table.DefaultTableModel;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.generator.Generator2;
@@ -86,10 +85,10 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
 	if (diagramNs == null) {
 	    return;
 	}
-	if (ModelFacade.isANamespace(diagramNs)) {
+	if (Model.getFacade().isANamespace(diagramNs)) {
 	    Object ns = diagramNs;
-	    while (ModelFacade.getNamespace(ns) != null) {
-		ns = ModelFacade.getNamespace(ns);
+	    while (Model.getFacade().getNamespace(ns) != null) {
+		ns = Model.getFacade().getNamespace(ns);
 	    }
 	    Collection elems =
 		Model.getModelManagementHelper().getAllModelElementsOfKind(
@@ -113,32 +112,33 @@ public class ModelTableModel extends DefaultTableModel implements Runnable {
 
     private static Object[] getCodeRelevantClassifierData(Object cls) {
         String type = null;
-        if (ModelFacade.isAClass(cls)) {
+        if (Model.getFacade().isAClass(cls)) {
             type = "Class";
-        } else if (ModelFacade.isAInterface(cls)) {
+        } else if (Model.getFacade().isAInterface(cls)) {
             type = "Interface";
         }
         String codePath = Generator2.getCodePath(cls);
-        Object parentNamespace = ModelFacade.getNamespace(cls);
+        Object parentNamespace = Model.getFacade().getNamespace(cls);
         if (codePath == null) {
             codePath = Generator2.getCodePath(parentNamespace);
         }
-        String packagePath = ModelFacade.getName(parentNamespace);
-        parentNamespace = ModelFacade.getNamespace(parentNamespace);
+        String packagePath = Model.getFacade().getName(parentNamespace);
+        parentNamespace = Model.getFacade().getNamespace(parentNamespace);
         while (parentNamespace != null) {
             if (codePath == null) {
         	codePath = Generator2.getCodePath(parentNamespace);
             }
             // ommit root package name; it's the model's root
-            if (ModelFacade.getNamespace(parentNamespace) != null) {
+            if (Model.getFacade().getNamespace(parentNamespace) != null) {
         	packagePath =
-        	    ModelFacade.getName(parentNamespace) + "." + packagePath;
+        	    Model.getFacade().getName(parentNamespace)
+        	    + "." + packagePath;
             }
-            parentNamespace = ModelFacade.getNamespace(parentNamespace);
+            parentNamespace = Model.getFacade().getNamespace(parentNamespace);
         }
         if (codePath != null && codePath.length() > 0) {
             return new Object [] {
-                ModelFacade.getName(cls),
+                Model.getFacade().getName(cls),
                 type,
                 packagePath,
                 codePath,

@@ -26,30 +26,31 @@ package org.argouml.ui.explorer;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.JPopupMenu;
 import javax.swing.JTree;
+import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeWillExpandListener;
-import javax.swing.event.TreeExpansionListener;
-import javax.swing.event.TreeExpansionEvent;
-import javax.swing.tree.TreePath;
-import javax.swing.tree.TreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.DisplayTextTree;
-import org.argouml.ui.targetmanager.TargetManager;
-import org.argouml.uml.generator.GeneratorDisplay;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
-
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.generator.GeneratorDisplay;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.Fig;
 
@@ -188,13 +189,13 @@ public class ExplorerTree
 				     boolean hasFocus) {
 
         // do model elements first
-        if (ModelFacade.isAModelElement(value)) {
+        if (Model.getFacade().isAModelElement(value)) {
 
             String name = null;
 
             // Jeremy Bennett patch
-            if (ModelFacade.isATransition(value)
-		    || ModelFacade.isAExtensionPoint(value)) {
+            if (Model.getFacade().isATransition(value)
+		    || Model.getFacade().isAExtensionPoint(value)) {
                 name = GeneratorDisplay.getInstance().generate(value);
             }
             /* Changing the label in case of comments.
@@ -202,8 +203,8 @@ public class ExplorerTree
              * is the same as the content of the comment (called "body" 
              * in UML 1.4), causing the total comment to be
              * displayed in the perspective */
-            else if (ModelFacade.isAComment(value)) {
-                name = ModelFacade.getName(value);
+            else if (Model.getFacade().isAComment(value)) {
+                name = Model.getFacade().getName(value);
 
                 if (name != null
 		    && name.indexOf("\n") < 80
@@ -215,19 +216,19 @@ public class ExplorerTree
                     name = name.substring(0, 80) + "...";
                 }
             } else {
-                name = ModelFacade.getName(value);
+                name = Model.getFacade().getName(value);
             }
 
             if (name == null || name.equals("")) {
-                name = "(anon " + ModelFacade.getUMLClassName(value) + ")";
+                name = "(anon " + Model.getFacade().getUMLClassName(value) + ")";
             }
 
             // Look for stereotype
             if (showStereotype) {
                 Object stereo = null;
-                if (ModelFacade.getStereotypes(value).size() > 0) {
+                if (Model.getFacade().getStereotypes(value).size() > 0) {
                     stereo =
-			ModelFacade.getStereotypes(value).iterator().next();
+			Model.getFacade().getStereotypes(value).iterator().next();
                 }
                 if (stereo != null) {
                     name += " " + GeneratorDisplay.getInstance()
@@ -238,8 +239,8 @@ public class ExplorerTree
             return name;
         }
 
-        if (ModelFacade.isATaggedValue(value)) {
-            String tagName = ModelFacade.getTagOfTag(value);
+        if (Model.getFacade().isATaggedValue(value)) {
+            String tagName = Model.getFacade().getTagOfTag(value);
             if (tagName == null || tagName.equals(""))
                 tagName = "(anon)";
             return ("1-" + tagName);

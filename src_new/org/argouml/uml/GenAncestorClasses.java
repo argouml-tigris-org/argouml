@@ -27,7 +27,8 @@ package org.argouml.uml;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.Vector;
-import org.argouml.model.ModelFacade;
+
+import org.argouml.model.Model;
 import org.tigris.gef.util.ChildGenerator;
 /** Utility class to generate the base classes of a class. It
  *  recursively moves up the class hierarchy.  But it does that in a
@@ -42,8 +43,8 @@ public class GenAncestorClasses implements ChildGenerator {
     public Enumeration gen(Object cls) {
 	Vector res = new Vector();
 
-	if (!(ModelFacade.isAGeneralizableElement(cls))) return res.elements();
-	Collection gens = ModelFacade.getGeneralizations(cls);
+	if (!(Model.getFacade().isAGeneralizableElement(cls))) return res.elements();
+	Collection gens = Model.getFacade().getGeneralizations(cls);
 	if (gens == null) return res.elements();
 	accumulateAncestors(cls, res);
 	return res.elements();
@@ -55,13 +56,13 @@ public class GenAncestorClasses implements ChildGenerator {
      */
     public void accumulateAncestors(Object/*MGeneralizableElement*/ cls,
             Vector accum) {
-	Vector gens = new Vector(ModelFacade.getGeneralizations(cls));
+	Vector gens = new Vector(Model.getFacade().getGeneralizations(cls));
 	if (gens == null) return;
 	int size = gens.size();
 	for (int i = 0; i < size; i++) {
 	    Object/*MGeneralization*/ g = /*(MGeneralization)*/
 	                                    (gens).elementAt(i);
-	    Object ge = ModelFacade.getParent(g);
+	    Object ge = Model.getFacade().getParent(g);
 	    if (!accum.contains(ge)) {
 		accum.add(ge);
 		accumulateAncestors(cls, accum);

@@ -74,7 +74,6 @@ import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ActionGoToCritique;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
@@ -358,10 +357,10 @@ public abstract class FigNodeModelElement
      * @return the text to be shown while placing node in diagram
      */
     public String placeString() {
-        if (org.argouml.model.ModelFacade.isAModelElement(getOwner())) {
-            String placeString = ModelFacade.getName(getOwner());
+        if (Model.getFacade().isAModelElement(getOwner())) {
+            String placeString = Model.getFacade().getName(getOwner());
             if (placeString == null) {
-                placeString = "new " + ModelFacade.getUMLClassName(getOwner());
+                placeString = "new " + Model.getFacade().getUMLClassName(getOwner());
             }
             return placeString;
         }
@@ -479,7 +478,7 @@ public abstract class FigNodeModelElement
             owner = o;
             putValue("SELECTED", new Boolean(
                     Model.getVisibilityKind().getPublic()
-                    .equals(ModelFacade.getVisibility(getOwner()))));
+                    .equals(Model.getFacade().getVisibility(getOwner()))));
         }
 
         /**
@@ -503,7 +502,7 @@ public abstract class FigNodeModelElement
             owner = o;
             putValue("SELECTED", new Boolean(
                     Model.getVisibilityKind().getProtected()
-                    .equals(ModelFacade.getVisibility(getOwner()))));
+                    .equals(Model.getFacade().getVisibility(getOwner()))));
         }
 
         /**
@@ -527,7 +526,7 @@ public abstract class FigNodeModelElement
             owner = o;
             putValue("SELECTED", new Boolean(
                     Model.getVisibilityKind().getPrivate()
-                    .equals(ModelFacade.getVisibility(getOwner()))));
+                    .equals(Model.getFacade().getVisibility(getOwner()))));
         }
 
         /**
@@ -577,7 +576,7 @@ public abstract class FigNodeModelElement
         public ActionModifierAbstract(Object o) {
             super("checkbox.abstract-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", new Boolean(ModelFacade.isAbstract(owner)));
+            putValue("SELECTED", new Boolean(Model.getFacade().isAbstract(owner)));
         }
 
         /**
@@ -585,7 +584,7 @@ public abstract class FigNodeModelElement
          */
         public void actionPerformed(ActionEvent e) {
             Model.getCoreHelper().setAbstract(owner, 
-                    !ModelFacade.isAbstract(owner));
+                    !Model.getFacade().isAbstract(owner));
         }
     }
 
@@ -599,14 +598,14 @@ public abstract class FigNodeModelElement
         public ActionModifierLeaf(Object o) {
             super("checkbox.final-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", new Boolean(ModelFacade.isLeaf(owner)));
+            putValue("SELECTED", new Boolean(Model.getFacade().isLeaf(owner)));
         }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setLeaf(owner, !ModelFacade.isLeaf(owner));
+            Model.getCoreHelper().setLeaf(owner, !Model.getFacade().isLeaf(owner));
         }
     }
 
@@ -620,14 +619,14 @@ public abstract class FigNodeModelElement
         public ActionModifierRoot(Object o) {
             super("checkbox.root-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", new Boolean(ModelFacade.isRoot(owner)));
+            putValue("SELECTED", new Boolean(Model.getFacade().isRoot(owner)));
         }
 
         /**
          * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
          */
         public void actionPerformed(ActionEvent e) {
-            Model.getCoreHelper().setRoot(owner, !ModelFacade.isRoot(owner));
+            Model.getCoreHelper().setRoot(owner, !Model.getFacade().isRoot(owner));
         }
     }
 
@@ -641,7 +640,7 @@ public abstract class FigNodeModelElement
         public ActionModifierActive(Object o) {
             super("checkbox.active-uc", NO_ICON);
             owner = o;
-            putValue("SELECTED", new Boolean(ModelFacade.isActive(owner)));
+            putValue("SELECTED", new Boolean(Model.getFacade().isActive(owner)));
         }
 
         /**
@@ -649,7 +648,7 @@ public abstract class FigNodeModelElement
          */
         public void actionPerformed(ActionEvent e) {
             Model.getCoreHelper().setActive(owner, 
-                    !ModelFacade.isActive(owner));
+                    !Model.getFacade().isActive(owner));
         }
     }
 
@@ -692,7 +691,7 @@ public abstract class FigNodeModelElement
                     owningModelelement = currentProject.getRoot();
                 }
 	    } else if (newEncloser != null
-                    && ModelFacade.isABase(newEncloser.getOwner())) {
+                    && Model.getFacade().isABase(newEncloser.getOwner())) {
                 owningModelelement = newEncloser.getOwner();
             }
             if (owningModelelement != null
@@ -1018,7 +1017,7 @@ public abstract class FigNodeModelElement
         } else {
             super.propertyChange(pve);
         }
-        if (ModelFacade.isABase(src)) {
+        if (Model.getFacade().isABase(src)) {
             /* If the source of the event is an UML object,
              * e.g. the owner of this Fig (but not always only the owner
              * is shown, e.g. for a class, also its attributes are shown),
@@ -1054,8 +1053,8 @@ public abstract class FigNodeModelElement
                 // if there was a problem parsing,
                 // then reset the text in the fig - because the model was not
                 // updated.
-                if (ModelFacade.getName(getOwner()) != null) {
-                    ft.setText(ModelFacade.getName(getOwner()));
+                if (Model.getFacade().getName(getOwner()) != null) {
+                    ft.setText(Model.getFacade().getName(getOwner()));
                 } else {
                     ft.setText("");
                 }
@@ -1075,7 +1074,7 @@ public abstract class FigNodeModelElement
      */
     public void mouseClicked(MouseEvent me) {
         if (!readyToEdit) {
-            if (ModelFacade.isAModelElement(getOwner())) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
                 Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
@@ -1114,7 +1113,7 @@ public abstract class FigNodeModelElement
      */
     public void keyPressed(KeyEvent ke) {
         if (!readyToEdit) {
-            if (ModelFacade.isAModelElement(getOwner())) {
+            if (Model.getFacade().isAModelElement(getOwner())) {
                 Model.getCoreHelper().setName(getOwner(), "");
                 readyToEdit = true;
             } else {
@@ -1263,7 +1262,7 @@ public abstract class FigNodeModelElement
     public void setOwner(Object own) {
         updateListeners(own);
         super.setOwner(own);
-        if (ModelFacade.isAModelElement(own)
+        if (Model.getFacade().isAModelElement(own)
                 && UUIDHelper.getInstance().getUUID(own) == null) {
             Model.getCoreHelper().setUUID(own,
                     UUIDHelper.getInstance().getNewUUID());
@@ -1291,15 +1290,15 @@ public abstract class FigNodeModelElement
             LOG.warn("I return...");
             return;
         }
-        if (ModelFacade.getStereotypes(getOwner()).size() > 0) {
+        if (Model.getFacade().getStereotypes(getOwner()).size() > 0) {
             stereotype =
-                ModelFacade.getStereotypes(getOwner()).iterator().next();
+                Model.getFacade().getStereotypes(getOwner()).iterator().next();
         }
         if (stereotype == null) {
             stereo.setText("");
             return;
         }
-        String stereoStr = ModelFacade.getName(stereotype);
+        String stereoStr = Model.getFacade().getName(stereotype);
         if (stereoStr == null || stereoStr.length() == 0) {
             stereo.setText("");
         } else {
@@ -1316,7 +1315,7 @@ public abstract class FigNodeModelElement
                 return;
             }
             String nameStr =
-                Notation.generate(this, ModelFacade.getName(getOwner()));
+                Notation.generate(this, Model.getFacade().getName(getOwner()));
             name.setText(nameStr);
             updateBounds();
         }
@@ -1499,13 +1498,13 @@ public abstract class FigNodeModelElement
             ArgoEventPump.removeListener(this);
         }
         Object own = getOwner();
-        if (ModelFacade.isAClassifier(own)) {
-            Iterator it = ModelFacade.getFeatures(own).iterator();
+        if (Model.getFacade().isAClassifier(own)) {
+            Iterator it = Model.getFacade().getFeatures(own).iterator();
             while (it.hasNext()) {
                 Object feature = it.next();
-                if (ModelFacade.isAOperation(feature)) {
+                if (Model.getFacade().isAOperation(feature)) {
                     Iterator it2 =
-			ModelFacade.getParameters(feature).iterator();
+			Model.getFacade().getParameters(feature).iterator();
                     while (it2.hasNext()) {
                         Model.getPump().removeModelEventListener(this,
                                 it2.next());
@@ -1514,7 +1513,7 @@ public abstract class FigNodeModelElement
                 Model.getPump().removeModelEventListener(this, feature);
             }
         }
-        if (ModelFacade.isABase(own)) {
+        if (Model.getFacade().isABase(own)) {
             Model.getPump().removeModelEventListener(this, own);
         }
         shadowSize = 0;
@@ -1686,7 +1685,7 @@ public abstract class FigNodeModelElement
      * Method to draw a StateVertex Fig's enclosed figs.
      */
     public void redrawEnclosedFigs() {
-        if (!(ModelFacade.isAStateVertex(getOwner()))) {
+        if (!(Model.getFacade().isAStateVertex(getOwner()))) {
             return;
         }
         Editor editor = Globals.curEditor();

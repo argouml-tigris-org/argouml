@@ -27,10 +27,9 @@ package org.argouml.pattern.cognitive.critics;
 import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
-import org.argouml.uml.cognitive.critics.CrUML;
 import org.argouml.cognitive.ToDoItem;
-// Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
+import org.argouml.uml.cognitive.critics.CrUML;
 
 /**
  * A critic to detect whether a class violates the conditions required for
@@ -106,25 +105,27 @@ public class CrSingletonViolatedMissingStaticAttr extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
         // Only look at classes
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(Model.getFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
         // We only look at singletons
-        if (!(ModelFacade.isSingleton(dm))) {
+        if (!(Model.getFacade().isSingleton(dm))) {
             return NO_PROBLEM;
         }
 
-	Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+	Iterator attrs = Model.getFacade().getAttributes(dm).iterator();
 
 	while (attrs.hasNext()) {
 	    Object attr = attrs.next();
 
-	    if (!(ModelFacade.isClassifierScope(attr)))
-		continue;
+	    if (!(Model.getFacade().isClassifierScope(attr))) {
+	        continue;
+	    }
 
-	    if (ModelFacade.getType(attr) == dm)
-		return NO_PROBLEM;
+	    if (Model.getFacade().getType(attr) == dm) {
+	        return NO_PROBLEM;
+	    }
 	}
 
 	// Found no such attribute

@@ -31,7 +31,6 @@ import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.foundation.core.MClass;
@@ -105,7 +104,7 @@ public final class CheckNSUMLModelHelper {
 	TestCase.assertTrue("toString() corrupt in " + c,
 		      mo.toString() instanceof String);
 	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-		      ModelFacade.getUMLClassName(mo) instanceof String);
+		      Model.getFacade().getUMLClassName(mo) instanceof String);
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,

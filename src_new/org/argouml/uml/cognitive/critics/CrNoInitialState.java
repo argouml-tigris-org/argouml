@@ -29,7 +29,6 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A critic to detect whether the Compositestate attached to a
@@ -54,17 +53,17 @@ public class CrNoInitialState extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isACompositeState(dm))) {
+	if (!(Model.getFacade().isACompositeState(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object cs = /*(MCompositeState)*/ dm;
 
 	// if this composite state is not attached to a statemachine
 	// it is not the toplevel composite state.
-	if (ModelFacade.getStateMachine(cs) == null) {
+	if (Model.getFacade().getStateMachine(cs) == null) {
 	    return NO_PROBLEM;
 	}
-	Collection peers = ModelFacade.getSubvertices(cs);
+	Collection peers = Model.getFacade().getSubvertices(cs);
 	int initialStateCount = 0;
 	if (peers == null) {
 	    return PROBLEM_FOUND;
@@ -72,8 +71,8 @@ public class CrNoInitialState extends CrUML {
 	int size = peers.size();
 	for (Iterator iter = peers.iterator(); iter.hasNext();) {
 	    Object sv = iter.next();
-	    if (ModelFacade.isAPseudostate(sv)
-		&& (ModelFacade.getKind(sv).equals(
+	    if (Model.getFacade().isAPseudostate(sv)
+		&& (Model.getFacade().getKind(sv).equals(
                         Model.getPseudostateKind().getInitial()))) {
 	        initialStateCount++;
 	    }

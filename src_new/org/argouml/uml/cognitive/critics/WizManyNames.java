@@ -31,7 +31,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepManyTextFields;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * A non-modal wizard to help the user change the name of a
@@ -79,7 +78,7 @@ public class WizManyNames extends UMLWizard {
 		int size = mes.size();
 		for (int i = 0; i < size; i++) {
 		    Object me = /*(MModelElement)*/ mes.elementAt(i);
-		    names.addElement(ModelFacade.getName(me));
+		    names.addElement(Model.getFacade().getName(me));
 		}
 		step1 = new WizStepManyTextFields(this, instructions, names);
 	    }

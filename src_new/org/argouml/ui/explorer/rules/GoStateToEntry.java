@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for navigation from a State to its Entry action.
@@ -44,10 +44,10 @@ public class GoStateToEntry extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (ModelFacade.isAState(parent)
-	        && ModelFacade.getEntry(parent) != null) {
+        if (Model.getFacade().isAState(parent)
+	        && Model.getFacade().getEntry(parent) != null) {
             Vector children = new Vector();
-            children.add(ModelFacade.getEntry(parent));
+            children.add(Model.getFacade().getEntry(parent));
             return children;
         }
         return null;
@@ -57,7 +57,7 @@ public class GoStateToEntry extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAState(parent)) {
+        if (Model.getFacade().isAState(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

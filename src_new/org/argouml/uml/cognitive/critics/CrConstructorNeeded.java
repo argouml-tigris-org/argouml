@@ -31,7 +31,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A critic to detect when a class requires a constructor.<p>
@@ -92,47 +92,47 @@ public class CrConstructorNeeded extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 
         // Only look at classes
-        if (!(ModelFacade.isAClass(dm))) {
+        if (!(Model.getFacade().isAClass(dm))) {
             return NO_PROBLEM;
         }
 
 
 	// We don't consider secondary stuff.
-	if (!(ModelFacade.isPrimaryObject(dm)))
+	if (!(Model.getFacade().isPrimaryObject(dm)))
 	    return NO_PROBLEM;
 
         // Types don't need a constructor.
-        if (ModelFacade.isType(dm)) {
+        if (Model.getFacade().isType(dm)) {
             return NO_PROBLEM;
         }
 
         // Utilities usually do not require a constructor either
-        if (ModelFacade.isUtility(dm)) {
+        if (Model.getFacade().isUtility(dm)) {
             return NO_PROBLEM;
         }
 
         // Check for uninitialised instance variables and
         // constructor.
-        Collection operations = ModelFacade.getOperations(dm);
+        Collection operations = Model.getFacade().getOperations(dm);
 
         Iterator opers = operations.iterator();
 
         while (opers.hasNext()) {
-            if (ModelFacade.isConstructor(opers.next())) {
+            if (Model.getFacade().isConstructor(opers.next())) {
                 // There is a constructor.
                 return NO_PROBLEM;
             }
         }
 
-        Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+        Iterator attrs = Model.getFacade().getAttributes(dm).iterator();
 
         while (attrs.hasNext()) {
             Object attr = attrs.next();
 
-            if (!ModelFacade.isInstanceScope(attr))
+            if (!Model.getFacade().isInstanceScope(attr))
                 continue;
 
-            if (ModelFacade.isInitialized(attr))
+            if (Model.getFacade().isInitialized(attr))
                 continue;
 
             // We have found one with instance scope that is not initialized.
@@ -155,7 +155,7 @@ public class CrConstructorNeeded extends CrUML {
 	    String ins = "Set the name of the new constructor.";
 	    String sug = null;
 	    if (me != null)
-		sug = ModelFacade.getName(me);
+		sug = Model.getFacade().getName(me);
 	    if ("".equals(sug))
 		sug = "newOperation";
 	    ((WizAddConstructor) w).setInstructions(ins);

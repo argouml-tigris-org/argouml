@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.tigris.gef.presentation.Fig;
@@ -65,14 +64,14 @@ public class ActionNewStereotype extends AbstractActionNewModelElement {
         Collection models = p.getModels();
         Object newStereo = Model.getExtensionMechanismsFactory()
             .buildStereotype(
-                    ModelFacade.isAModelElement(t) ? t : null,
+                    Model.getFacade().isAModelElement(t) ? t : null,
                     (String) null,
                     model,
                     models
             );
-        if (ModelFacade.isAModelElement(t)) {
-            Object ns = ModelFacade.getNamespace(t);
-            if (ModelFacade.isANamespace(ns)) {
+        if (Model.getFacade().isAModelElement(t)) {
+            Object ns = Model.getFacade().getNamespace(t);
+            if (Model.getFacade().isANamespace(ns)) {
                 Model.getCoreHelper().setNamespace(newStereo, ns);
             }
         }

@@ -35,7 +35,6 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
@@ -125,7 +124,7 @@ public class PropPanelDataType extends PropPanelClassifier {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+            if (Model.getFacade().isAClassifier(target)) {
                 Collection propertyChangeListeners =
                     ProjectManager.getManager()
                     	.getCurrentProject().findFigsForMember(target);
@@ -164,29 +163,31 @@ public class PropPanelDataType extends PropPanelClassifier {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (ModelFacade.isAClassifier(target)) {
+            if (Model.getFacade().isAClassifier(target)) {
                 Object stereo = null;
-                if (ModelFacade.getStereotypes(target).size() > 0) {
+                if (Model.getFacade().getStereotypes(target).size() > 0) {
                     stereo =
-                        ModelFacade.getStereotypes(target).iterator().next();
+                        Model.getFacade().getStereotypes(target)
+                        	.iterator().next();
                 }
                 if (stereo == null) {
                     //  if there is not an enumeration stereotype as
                     //     an immediate child of the model, add one
-                    Object model = ModelFacade.getModel(target);
+                    Object model = Model.getFacade().getModel(target);
                     Object ownedElement;
                     boolean match = false;
                     if (model != null) {
                         Collection ownedElements =
-                            ModelFacade.getOwnedElements(model);
+                            Model.getFacade().getOwnedElements(model);
                         if (ownedElements != null) {
                             Iterator iter = ownedElements.iterator();
                             while (iter.hasNext()) {
                                 ownedElement = iter.next();
-                                if (ModelFacade.isAStereotype(ownedElement)) {
+                                if (Model.getFacade().isAStereotype(
+                                        ownedElement)) {
                                     stereo = /* (MStereotype) */ownedElement;
                                     String stereoName =
-                                        ModelFacade.getName(stereo);
+                                        Model.getFacade().getName(stereo);
                                     if (stereoName != null
                                         && stereoName.equals("enumeration")) {
                                         match = true;
@@ -198,8 +199,12 @@ public class PropPanelDataType extends PropPanelClassifier {
                                 stereo =
                                     Model.getExtensionMechanismsFactory()
                                         .createStereotype();
-                                Model.getCoreHelper().setName(stereo, "enumeration");
-                                Model.getCoreHelper().addOwnedElement(model, stereo);
+                                Model.getCoreHelper().setName(
+                                        stereo,
+                                        "enumeration");
+                                Model.getCoreHelper().addOwnedElement(
+                                        model,
+                                        stereo);
                             }
                             Model.getCoreHelper().setStereotype(target, stereo);
                         }

@@ -31,7 +31,6 @@ import java.util.Set;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Critic to detect whether a class implements unneedded realizations through
@@ -58,7 +57,7 @@ public class CrAlreadyRealizes extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 	boolean problem = NO_PROBLEM;
-	if (ModelFacade.isAClass(dm)) {
+	if (Model.getFacade().isAClass(dm)) {
 	    Collection col =
 		Model.getCoreHelper().getAllRealizedInterfaces(dm);
 	    Set set = new HashSet();

@@ -25,11 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Collection;
-import org.apache.log4j.Logger;
 
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
-// Use Model through ModelFacade
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 
 /**
@@ -42,6 +41,9 @@ import org.argouml.model.ModelFacade;
 //of references to elements of other packages?
 
 public class CrEmptyPackage extends CrUML {
+    /**
+     * Logger.
+     */
     private static final Logger LOG = Logger.getLogger(CrEmptyPackage.class);
 
     /**
@@ -61,8 +63,10 @@ public class CrEmptyPackage extends CrUML {
      */
     public boolean predicate2(Object dm, Designer dsgr) {
 //	LOG.debug("predicate2 on " + dm);
-	if (!(ModelFacade.isAPackage(dm))) return NO_PROBLEM;
-	Collection elems = ModelFacade.getOwnedElements(dm);
+	if (!(Model.getFacade().isAPackage(dm))) {
+	    return NO_PROBLEM;
+	}
+	Collection elems = Model.getFacade().getOwnedElements(dm);
 	if (elems.size() == 0) {
             LOG.debug("PROBLEM_FOUND on " + dm);
             return PROBLEM_FOUND;

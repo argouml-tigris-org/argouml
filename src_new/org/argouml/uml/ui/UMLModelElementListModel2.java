@@ -30,7 +30,7 @@ import java.util.Iterator;
 import javax.swing.DefaultListModel;
 import javax.swing.JPopupMenu;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -271,16 +271,16 @@ public abstract class UMLModelElementListModel2
     public void setTarget(Object theNewTarget) {
         theNewTarget = theNewTarget instanceof Fig
             ? ((Fig) theNewTarget).getOwner() : theNewTarget;
-        if (ModelFacade.isABase(theNewTarget)
+        if (Model.getFacade().isABase(theNewTarget)
                 || theNewTarget instanceof Diagram) {
-            if (ModelFacade.isABase(listTarget)) {
+            if (Model.getFacade().isABase(listTarget)) {
                 UmlModelEventPump.getPump()
 		    .removeModelEventListener(this,
 					      /*(MBase)*/listTarget,
 					      eventName);
             }
 
-            if (ModelFacade.isABase(theNewTarget)) {
+            if (Model.getFacade().isABase(theNewTarget)) {
                 listTarget = theNewTarget;
                 // UmlModelEventPump.getPump()
                 // .removeModelEventListener(this, (MBase)_target,

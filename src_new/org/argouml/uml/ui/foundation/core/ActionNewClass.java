@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -54,9 +53,9 @@ public class ActionNewClass extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (org.argouml.model.ModelFacade.isAClassifier(target)) {
+        if (Model.getFacade().isAClassifier(target)) {
             Object classifier = target;
-            Object ns = ModelFacade.getNamespace(classifier);
+            Object ns = Model.getFacade().getNamespace(classifier);
             if (ns != null) {
                 Object peer = Model.getCoreFactory().buildClass(ns);
                 TargetManager.getInstance().setTarget(peer);

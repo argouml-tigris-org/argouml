@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Class to represent a checkbox for the deprecated checkbox in the
@@ -53,10 +53,12 @@ public class UMLDeprecatedCheckBox extends UMLCheckBox2 {
         String tagName = "deprecated";
         setSelected(false);
 
-        Object tv = ModelFacade.getTaggedValue(getTarget(), tagName);
+        Object tv = Model.getFacade().getTaggedValue(getTarget(), tagName);
         if (tv != null) {
-            String tag = ModelFacade.getValueOfTag(tv);
-            if ("true".equals(tag)) setSelected(true);
+            String tag = Model.getFacade().getValueOfTag(tv);
+            if ("true".equals(tag)) {
+                setSelected(true);
+            }
         }
     }
 }

@@ -24,9 +24,9 @@
 
 package org.argouml.uml;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.AbstractProjectMember;
-import org.argouml.model.ModelFacade;
+import org.argouml.kernel.Project;
+import org.argouml.model.Model;
 
 /**
  * @author Piotr Kaminski
@@ -48,7 +48,7 @@ public class ProjectMemberModel extends AbstractProjectMember {
 
         super(p.getBaseName() + FILE_EXT, p);
 
-        if (!ModelFacade.isAModel(m))
+        if (!Model.getFacade().isAModel(m))
             throw new IllegalArgumentException();
 
         setModel(m);

@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -88,7 +87,7 @@ public class UseCaseDiagramGraphModel
      * @param namespace  The namespace to use for this graph model
      */
     public void setNamespace(Object namespace) {
-        if (!ModelFacade.isANamespace(namespace)) {
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
 	model = namespace;
@@ -116,9 +115,9 @@ public class UseCaseDiagramGraphModel
     public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
 
-        if (ModelFacade.isAActor(nodeOrEdge)) {
+        if (Model.getFacade().isAActor(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
-        } else if (ModelFacade.isAUseCase(nodeOrEdge)) {
+        } else if (Model.getFacade().isAUseCase(nodeOrEdge)) {
             res.addElement(nodeOrEdge);
         }
 
@@ -156,9 +155,9 @@ public class UseCaseDiagramGraphModel
 
         // The actor case
 
-        if (ModelFacade.isAActor(port)) {
+        if (Model.getFacade().isAActor(port)) {
             Object act  = /*(MActor)*/ port;
-            Vector ends = new Vector(ModelFacade.getAssociationEnds(act));
+            Vector ends = new Vector(Model.getFacade().getAssociationEnds(act));
 
             // If there are no ends, return the empty vector
 
@@ -172,15 +171,15 @@ public class UseCaseDiagramGraphModel
 
             while (endEnum.hasMoreElements()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.nextElement();
-                res.addElement(ModelFacade.getAssociation(ae));
+                res.addElement(Model.getFacade().getAssociation(ae));
             }
         }
 
         // The use case
 
-        else if (ModelFacade.isAUseCase(port)) {
+        else if (Model.getFacade().isAUseCase(port)) {
             Object use  = /*(MUseCase)*/ port;
-            Vector   ends = new Vector(ModelFacade.getAssociationEnds(use));
+            Vector   ends = new Vector(Model.getFacade().getAssociationEnds(use));
 
             // If there are no ends, return the empty vector
 
@@ -194,7 +193,7 @@ public class UseCaseDiagramGraphModel
 
             while (endEnum.hasMoreElements()) {
                 Object ae = /*(MAssociationEnd)*/ endEnum.nextElement();
-                res.addElement(ModelFacade.getAssociation(ae));
+                res.addElement(Model.getFacade().getAssociation(ae));
             }
         }
 
@@ -238,7 +237,7 @@ public class UseCaseDiagramGraphModel
 
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getSource();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
             return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
         }
 
@@ -271,9 +270,9 @@ public class UseCaseDiagramGraphModel
 
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getDestination();
-        } else if (ModelFacade.isAAssociation(edge)) {
+        } else if (Model.getFacade().isAAssociation(edge)) {
             Object assoc = /*(MAssociation)*/ edge;
-            Vector       conns = new Vector(ModelFacade.getConnections(assoc));
+            Vector       conns = new Vector(Model.getFacade().getConnections(assoc));
 
             return conns.elementAt(1);
         }
@@ -314,7 +313,7 @@ public class UseCaseDiagramGraphModel
         if (containsNode(node)) {
 	    return false;
 	}
-        return ModelFacade.isAActor(node) || ModelFacade.isAUseCase(node);
+        return Model.getFacade().isAActor(node) || Model.getFacade().isAUseCase(node);
     }
 
 
@@ -350,11 +349,11 @@ public class UseCaseDiagramGraphModel
         Object end0 = null;
         Object end1 = null;
 
-        if (ModelFacade.isAAssociation(edge)) {
+        if (Model.getFacade().isAAssociation(edge)) {
 
             // Only allow binary associations
 
-            Collection conns = ModelFacade.getConnections(edge);
+            Collection conns = Model.getFacade().getConnections(edge);
             Iterator iter = conns.iterator();
 
             if (conns.size() < 2) {
@@ -370,30 +369,30 @@ public class UseCaseDiagramGraphModel
                 return false;
             }
 
-            end0 = ModelFacade.getType(associationEnd0);
-            end1 = ModelFacade.getType(associationEnd1);
+            end0 = Model.getFacade().getType(associationEnd0);
+            end1 = Model.getFacade().getType(associationEnd1);
         }
-        else if (ModelFacade.isAGeneralization(edge)) {
-            end0 = ModelFacade.getChild(edge);
-            end1 = ModelFacade.getParent(edge);
+        else if (Model.getFacade().isAGeneralization(edge)) {
+            end0 = Model.getFacade().getChild(edge);
+            end1 = Model.getFacade().getParent(edge);
         }
-        else if (ModelFacade.isAExtend(edge)) {
-            end0 = ModelFacade.getBase(edge);
-            end1 = ModelFacade.getExtension(edge);
+        else if (Model.getFacade().isAExtend(edge)) {
+            end0 = Model.getFacade().getBase(edge);
+            end1 = Model.getFacade().getExtension(edge);
         }
-        else if (ModelFacade.isAInclude(edge)) {
+        else if (Model.getFacade().isAInclude(edge)) {
 
-            end0 = ModelFacade.getBase(edge);
-            end1 = ModelFacade.getAddition(edge);
+            end0 = Model.getFacade().getBase(edge);
+            end1 = Model.getFacade().getAddition(edge);
         }
-        else if (ModelFacade.isADependency(edge)) {
+        else if (Model.getFacade().isADependency(edge)) {
 
             // A dependency potentially has many clients and suppliers. We only
             // consider the first of each (not clear that we should really
             // accept the case where there is more than one of either)
 
-            Collection clients   = ModelFacade.getClients(edge);
-            Collection suppliers = ModelFacade.getSuppliers(edge);
+            Collection clients   = Model.getFacade().getClients(edge);
+            Collection suppliers = Model.getFacade().getSuppliers(edge);
 
             // Give up if either clients or suppliers is undefined
 
@@ -449,8 +448,8 @@ public class UseCaseDiagramGraphModel
 
         getNodes().add(node);
         
-        if (ModelFacade.isAModelElement(node)
-                && ModelFacade.getNamespace(node) == null) {
+        if (Model.getFacade().isAModelElement(node)
+                && Model.getFacade().getNamespace(node) == null) {
             Model.getCoreHelper().addOwnedElement(model, node);
         }
 
@@ -499,8 +498,8 @@ public class UseCaseDiagramGraphModel
         getEdges().add(edge);
 
         // TODO: assumes public
-        if (ModelFacade.isAModelElement(edge)
-                && ModelFacade.getNamespace(edge) == null) {
+        if (Model.getFacade().isAModelElement(edge)
+                && Model.getFacade().getNamespace(edge) == null) {
             Model.getCoreHelper().addOwnedElement(model, edge);
         }
 
@@ -529,15 +528,15 @@ public class UseCaseDiagramGraphModel
         // relationships of which the use case is either end and iterate to see
         // if they can be added.
 
-        if (ModelFacade.isAUseCase(node)) {
+        if (Model.getFacade().isAUseCase(node)) {
             Vector ends = new Vector();
 
             // Collect all the includes at either end.
 
-            ends.addAll(ModelFacade.getIncludes(node));
-            ends.addAll(ModelFacade.getIncludes2(node));
-            ends.addAll(ModelFacade.getExtends(node));
-            ends.addAll(ModelFacade.getExtends2(node));
+            ends.addAll(Model.getFacade().getIncludes(node));
+            ends.addAll(Model.getFacade().getIncludes2(node));
+            ends.addAll(Model.getFacade().getExtends(node));
+            ends.addAll(Model.getFacade().getExtends2(node));
 
             Iterator iter = ends.iterator();
 
@@ -553,15 +552,15 @@ public class UseCaseDiagramGraphModel
         // Associations for classifiers. Iterate over all the association ends
         // to find the associations.
 
-        if (ModelFacade.isAClassifier(node)) {
-            Collection ends = ModelFacade.getAssociationEnds(node);
+        if (Model.getFacade().isAClassifier(node)) {
+            Collection ends = Model.getFacade().getAssociationEnds(node);
             Iterator   iter = ends.iterator();
 
             while (iter.hasNext()) {
                 Object ae = /*(MAssociationEnd)*/ iter.next();
 
-                if (canAddEdge(ModelFacade.getAssociation(ae))) {
-                    addEdge(ModelFacade.getAssociation(ae));
+                if (canAddEdge(Model.getFacade().getAssociation(ae))) {
+                    addEdge(Model.getFacade().getAssociation(ae));
                 }
             }
         }
@@ -569,11 +568,11 @@ public class UseCaseDiagramGraphModel
         // Generalizations and specializations for generalizable
         // elements. Iterate over each set in turn
 
-        if (ModelFacade.isAGeneralizableElement(node)) {
+        if (Model.getFacade().isAGeneralizableElement(node)) {
 
             // The generalizations
 
-            Collection gn = ModelFacade.getGeneralizations(node);
+            Collection gn = Model.getFacade().getGeneralizations(node);
 
             Iterator iter = gn.iterator();
 
@@ -587,7 +586,7 @@ public class UseCaseDiagramGraphModel
 
             // The specializations
 
-            Collection sp = ModelFacade.getSpecializations(node);
+            Collection sp = Model.getFacade().getSpecializations(node);
 
             iter = sp.iterator();
 
@@ -603,11 +602,11 @@ public class UseCaseDiagramGraphModel
         // Dependencies for model elements. Iterate over client and suppliers
         // together.
 
-        if (ModelFacade.isAModelElement(node)) {
+        if (Model.getFacade().isAModelElement(node)) {
             Vector specs =
-                new Vector(ModelFacade.getClientDependencies(node));
+                new Vector(Model.getFacade().getClientDependencies(node));
 
-            specs.addAll(ModelFacade.getSupplierDependencies(node));
+            specs.addAll(Model.getFacade().getSupplierDependencies(node));
 
             Iterator iter = specs.iterator();
 
@@ -646,7 +645,7 @@ public class UseCaseDiagramGraphModel
         // Suggest that actors may not connect (see JavaDoc comment about
         // this).
 
-        if (ModelFacade.isAActor(fromP) && ModelFacade.isAActor(toP)) {
+        if (Model.getFacade().isAActor(fromP) && Model.getFacade().isAActor(toP)) {
             return false;
         }
 
@@ -686,7 +685,7 @@ public class UseCaseDiagramGraphModel
             Vector oldOwned = (Vector) pce.getOldValue();
 
             Object eo = /*(MElementImport)*/ pce.getNewValue();
-            Object  me = ModelFacade.getModelElement(eo);
+            Object  me = Model.getFacade().getModelElement(eo);
 
             // If the element import is in the old owned, it means it must have
             // been removed. Make sure the associated model element is removed.
@@ -697,19 +696,19 @@ public class UseCaseDiagramGraphModel
 
                 // Remove a node
 
-                if ((ModelFacade.isAActor(me))
-		    || (ModelFacade.isAUseCase(me))) {
+                if ((Model.getFacade().isAActor(me))
+		    || (Model.getFacade().isAUseCase(me))) {
 
                     removeNode(me);
                 }
 
                 // Remove an edge
 
-                else if ((ModelFacade.isAAssociation(me))
-			 || (ModelFacade.isAGeneralization(me))
-			 || (ModelFacade.isAExtend(me))
-			 || (ModelFacade.isAInclude(me))
-			 || (ModelFacade.isADependency(me))) {
+                else if ((Model.getFacade().isAAssociation(me))
+			 || (Model.getFacade().isAGeneralization(me))
+			 || (Model.getFacade().isAExtend(me))
+			 || (Model.getFacade().isAInclude(me))
+			 || (Model.getFacade().isADependency(me))) {
 
                     removeEdge(me);
                 }

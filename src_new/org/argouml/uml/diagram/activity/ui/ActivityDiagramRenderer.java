@@ -27,16 +27,17 @@ package org.argouml.uml.diagram.activity.ui;
 
 import java.util.Map;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.state.ui.StateDiagramRenderer;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 
-/** This class defines a renderer object for UML Activity Diagrams. In a
- *  Activity Diagram the following UML objects are displayed with the
- *  following Figs: <p>
+/**
+ * This class defines a renderer object for UML Activity Diagrams. In a
+ * Activity Diagram the following UML objects are displayed with the
+ * following Figs: <p>
  * <pre>
  *  UML Object          ---  Fig
  *  ---------------------------------------
@@ -62,23 +63,25 @@ import org.tigris.gef.presentation.FigNode;
  */
 public class ActivityDiagramRenderer extends StateDiagramRenderer {
 
-    /** Return a Fig that can be used to represent the given node
+    /**
+     * Return a Fig that can be used to represent the given node.
      *
      * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
      * org.tigris.gef.graph.GraphModel,
-     * org.tigris.gef.base.Layer, java.lang.Object)
+     * org.tigris.gef.base.Layer, java.lang.Object, java.util.Map)
      */
-    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node, Map styleAttributes) {
-        if (ModelFacade.isAPartition(node)) {
+    public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node,
+            Map styleAttributes) {
+        if (Model.getFacade().isAPartition(node)) {
             return new FigPartition(gm, node);
         }
-        if (ModelFacade.isACallState(node)) {
+        if (Model.getFacade().isACallState(node)) {
             return new FigCallState(gm, node);
         }
-        if (ModelFacade.isAObjectFlowState(node)) {
+        if (Model.getFacade().isAObjectFlowState(node)) {
             return new FigObjectFlowState(gm, node);
         }
-        if (ModelFacade.isASubactivityState(node)) {
+        if (Model.getFacade().isASubactivityState(node)) {
             return new FigSubactivityState(gm, node);
         }
         return super.getFigNodeFor(gm, lay, node, styleAttributes);

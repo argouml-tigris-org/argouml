@@ -33,7 +33,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
@@ -77,7 +76,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public void setNamespace(Object namespace) {
 
-        if (!ModelFacade.isANamespace(namespace))
+        if (!Model.getFacade().isANamespace(namespace))
             throw new IllegalArgumentException();
 	model = namespace;
     }
@@ -93,18 +92,18 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getPorts(Object nodeOrEdge) {
         Vector res = new Vector();  //wasteful!
-        if (ModelFacade.isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
-        if (ModelFacade.isANodeInstance(nodeOrEdge)) {
+        if (Model.getFacade().isANode(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (Model.getFacade().isANodeInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
         }
 
-	if (ModelFacade.isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);
-	if (ModelFacade.isAComponentInstance(nodeOrEdge)) {
+	if (Model.getFacade().isAComponent(nodeOrEdge)) res.addElement(nodeOrEdge);
+	if (Model.getFacade().isAComponentInstance(nodeOrEdge)) {
 	    res.addElement(nodeOrEdge);
         }
-        if (ModelFacade.isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
-        if (ModelFacade.isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
-        if (ModelFacade.isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (Model.getFacade().isAClass(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (Model.getFacade().isAInterface(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (Model.getFacade().isAObject(nodeOrEdge)) res.addElement(nodeOrEdge);
         return res;
     }
 
@@ -124,55 +123,55 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
      */
     public List getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
-	if (ModelFacade.isANode(port)) {
-	    Collection ends = ModelFacade.getAssociationEnds(port);
+	if (Model.getFacade().isANode(port)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(port);
 	    if (ends == null) return res; // empty Vector
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object aec = /*(MAssociationEnd)*/ iter.next();
-		res.add(ModelFacade.getAssociation(aec));
+		res.add(Model.getFacade().getAssociation(aec));
 	    }
 	}
-	if (ModelFacade.isANodeInstance(port)) {
+	if (Model.getFacade().isANodeInstance(port)) {
 	    Object noi = /*(MNodeInstance)*/ port;
-	    Collection ends = ModelFacade.getLinkEnds(noi);
+	    Collection ends = Model.getFacade().getLinkEnds(noi);
 	    res.addAll(ends);
 	}
-	if (ModelFacade.isAComponent(port)) {
-	    Collection ends = ModelFacade.getAssociationEnds(port);
+	if (Model.getFacade().isAComponent(port)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(port);
 	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
 		Object aec = /*(MAssociationEnd)*/ endEnum.next();
-		res.addElement(ModelFacade.getAssociation(aec));
+		res.addElement(Model.getFacade().getAssociation(aec));
 	    }
 	}
-	if (ModelFacade.isAComponentInstance(port)) {
+	if (Model.getFacade().isAComponentInstance(port)) {
 	    Object coi = /*(MComponentInstance)*/ port;
-	    Collection ends = ModelFacade.getLinkEnds(coi);
+	    Collection ends = Model.getFacade().getLinkEnds(coi);
 	    res.addAll(ends);
 	}
-	if (ModelFacade.isAClass(port)) {
-	    Collection ends = ModelFacade.getAssociationEnds(port);
+	if (Model.getFacade().isAClass(port)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(port);
 	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
 		Object ae = /*(MAssociationEnd)*/ endEnum.next();
-		res.addElement(ModelFacade.getAssociation(ae));
+		res.addElement(Model.getFacade().getAssociation(ae));
 	    }
 	}
-	if (ModelFacade.isAInterface(port)) {
-	    Collection ends = ModelFacade.getAssociationEnds(port);
+	if (Model.getFacade().isAInterface(port)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(port);
 	    if (ends == null) return res; // empty Vector
 	    Iterator endEnum = ends.iterator();
 	    while (endEnum.hasNext()) {
 		Object ae = /*(MAssociationEnd)*/ endEnum.next();
-		res.addElement(ModelFacade.getAssociation(ae));
+		res.addElement(Model.getFacade().getAssociation(ae));
 	    }
 	}
-	if (ModelFacade.isAObject(port)) {
+	if (Model.getFacade().isAObject(port)) {
 	    Object clo = /*(MInstance)*/ port;
-	    Collection ends = ModelFacade.getLinkEnds(clo);
+	    Collection ends = Model.getFacade().getLinkEnds(clo);
 	    res.addAll(ends);
 	}
 
@@ -197,10 +196,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public Object getSourcePort(Object edge) {
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getSource();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
 	    return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
 	} else
-	    if (ModelFacade.isALink(edge)) {
+	    if (Model.getFacade().isALink(edge)) {
 		return Model.getCommonBehaviorHelper().getSource(edge);
 	    }
 
@@ -217,9 +216,9 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public Object getDestPort(Object edge) {
         if (edge instanceof CommentEdge) {
             return ((CommentEdge) edge).getSource();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
 	    return Model.getCoreHelper().getDestination(edge);
-	} else if (ModelFacade.isALink(edge)) {
+	} else if (Model.getFacade().isALink(edge)) {
 	    return Model.getCommonBehaviorHelper()
 		.getDestination(/*(MLink)*/ edge);
 	}
@@ -242,14 +241,14 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public boolean canAddNode(Object node) {
 	if (node == null) return false;
 	if (containsNode(node)) return false;
-	return (ModelFacade.isANode(node))
-	    || (ModelFacade.isAComponent(node))
-	    || (ModelFacade.isAClass(node))
-	    || (ModelFacade.isAInterface(node))
-	    || (ModelFacade.isAObject(node))
-	    || (ModelFacade.isANodeInstance(node))
-	    || (ModelFacade.isAComponentInstance(node)
-	    || (ModelFacade.isAComment(node)));
+	return (Model.getFacade().isANode(node))
+	    || (Model.getFacade().isAComponent(node))
+	    || (Model.getFacade().isAClass(node))
+	    || (Model.getFacade().isAInterface(node))
+	    || (Model.getFacade().isAObject(node))
+	    || (Model.getFacade().isANodeInstance(node))
+	    || (Model.getFacade().isAComponentInstance(node)
+	    || (Model.getFacade().isAComment(node)));
     }
 
     /**
@@ -264,11 +263,11 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
         if (edge instanceof CommentEdge) {
             end0 = ((CommentEdge) edge).getSource();
             end1 = ((CommentEdge) edge).getDestination();
-        } else if (ModelFacade.isARelationship(edge)) {
+        } else if (Model.getFacade().isARelationship(edge)) {
 	    end0 = Model.getCoreHelper().getSource(edge);
 	    end1 = Model.getCoreHelper().getDestination(edge);
 	}
-	else if (ModelFacade.isALink(edge)) {
+	else if (Model.getFacade().isALink(edge)) {
 	    end0 = Model.getCommonBehaviorHelper().getSource(edge);
 	    end1 =
 		Model.getCommonBehaviorHelper().getDestination(edge);
@@ -291,8 +290,8 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	getNodes().add(node);
 	// TODO: assumes public, user pref for default visibility?
 	//do I have to check the namespace here? (Toby)
-	if (ModelFacade.isAModelElement(node)
-            && (ModelFacade.getNamespace(node) == null)) {
+	if (Model.getFacade().isAModelElement(node)
+            && (Model.getFacade().getNamespace(node) == null)) {
 	    Model.getCoreHelper().addOwnedElement(model, node);
 	}
 	fireNodeAdded(node);
@@ -308,7 +307,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddEdge(edge)) return;
 	getEdges().add(edge);
 	// TODO: assumes public
-	if (ModelFacade.isAModelElement(edge)) {
+	if (Model.getFacade().isAModelElement(edge)) {
 	    Model.getCoreHelper().addOwnedElement(model, edge);
 	}
 	fireEdgeAdded(edge);
@@ -320,28 +319,28 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
     public void addNodeRelatedEdges(Object node) {
         super.addNodeRelatedEdges(node);
         
-	if (ModelFacade.isAClassifier(node)) {
-	    Collection ends = ModelFacade.getAssociationEnds(node);
+	if (Model.getFacade().isAClassifier(node)) {
+	    Collection ends = Model.getFacade().getAssociationEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
 		Object ae = /*(MAssociationEnd)*/ iter.next();
-		if (canAddEdge(ModelFacade.getAssociation(ae)))
-		    addEdge(ModelFacade.getAssociation(ae));
+		if (canAddEdge(Model.getFacade().getAssociation(ae)))
+		    addEdge(Model.getFacade().getAssociation(ae));
 		return;
 	    }
 	}
-	if (ModelFacade.isAInstance(node)) {
-	    Collection ends = ModelFacade.getLinkEnds(node);
+	if (Model.getFacade().isAInstance(node)) {
+	    Collection ends = Model.getFacade().getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
-		Object link = ModelFacade.getLink(iter.next());
+		Object link = Model.getFacade().getLink(iter.next());
 		if (canAddEdge(link))
 		    addEdge(link);
 		return;
 	    }
 	}
-	if (ModelFacade.isAGeneralizableElement(node)) {
-	    Iterator iter = ModelFacade.getGeneralizations(node).iterator();
+	if (Model.getFacade().isAGeneralizableElement(node)) {
+	    Iterator iter = Model.getFacade().getGeneralizations(node).iterator();
 	    while (iter.hasNext()) {
 		// g contains a Generalization
 		Object g = iter.next();
@@ -349,7 +348,7 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		    addEdge(g);
 		return;
 	    }
-	    iter = ModelFacade.getSpecializations(node).iterator();
+	    iter = Model.getFacade().getSpecializations(node).iterator();
 	    while (iter.hasNext()) {
 		// s contains a specialization
 		Object s = iter.next();
@@ -358,10 +357,10 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 		return;
 	    }
 	}
-	if (ModelFacade.isAModelElement(node)) {
+	if (Model.getFacade().isAModelElement(node)) {
 	    Vector specs =
-		new Vector(ModelFacade.getClientDependencies(node));
-	    specs.addAll(ModelFacade.getSupplierDependencies(node));
+		new Vector(Model.getFacade().getClientDependencies(node));
+	    specs.addAll(Model.getFacade().getSupplierDependencies(node));
 	    Iterator iter = specs.iterator();
 	    while (iter.hasNext()) {
 		Object dep = /*(MDependency)*/ iter.next();
@@ -380,37 +379,37 @@ public class DeploymentDiagramGraphModel extends UMLMutableGraphSupport
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
 	    Object eo = /*(MElementImport)*/ pce.getNewValue();
-	    Object me = ModelFacade.getModelElement(eo);
+	    Object me = Model.getFacade().getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		LOG.debug("model removed " + me);
-		if (ModelFacade.isANode(me)) {
+		if (Model.getFacade().isANode(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isANodeInstance(me)) {
+		if (Model.getFacade().isANodeInstance(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAComponent(me)) {
+		if (Model.getFacade().isAComponent(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAComponentInstance(me)) {
+		if (Model.getFacade().isAComponentInstance(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAClass(me)) {
+		if (Model.getFacade().isAClass(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAInterface(me)) {
+		if (Model.getFacade().isAInterface(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAObject(me)) {
+		if (Model.getFacade().isAObject(me)) {
 		    removeNode(me);
 		}
-		if (ModelFacade.isAAssociation(me)) {
+		if (Model.getFacade().isAAssociation(me)) {
 		    removeEdge(me);
 		}
-		if (ModelFacade.isADependency(me)) {
+		if (Model.getFacade().isADependency(me)) {
 		    removeEdge(me);
 		}
-		if (ModelFacade.isALink(me)) {
+		if (Model.getFacade().isALink(me)) {
 		    removeEdge(me);
 		}
 	    } else {

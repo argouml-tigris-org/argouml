@@ -40,7 +40,7 @@ import org.argouml.application.api.Notation;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.explorer.ExplorerEventAdaptor;
@@ -52,8 +52,9 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-/** Class to display graphics for a UML package in a class diagram. */
-
+/**
+ * Class to display graphics for a UML package in a class diagram.
+ */
 public class FigPackage extends FigNodeModelElement {
     private static final Logger LOG = Logger.getLogger(FigPackage.class);
 
@@ -162,9 +163,9 @@ public class FigPackage extends FigNodeModelElement {
         // Don't know if this should rather be done in one of the super
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (ModelFacade.isAPackage(node)
-	        && ModelFacade.getName(node) != null) {
-            getNameFig().setText(ModelFacade.getName(node));
+        if (Model.getFacade().isAPackage(node)
+	        && Model.getFacade().getName(node) != null) {
+            getNameFig().setText(Model.getFacade().getName(node));
 	}
     }
 
@@ -285,14 +286,14 @@ public class FigPackage extends FigNodeModelElement {
         Rectangle rect = getBounds();
 
         Object stereo = null;
-        if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+        if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
 
         /* check if stereotype is defined */
         if ((stereo == null)
-                || (ModelFacade.getName(stereo) == null)
-                || (ModelFacade.getName(stereo).length() == 0)) {
+                || (Model.getFacade().getName(stereo) == null)
+                || (Model.getFacade().getName(stereo).length() == 0)) {
             if (getStereotypeFig().isVisible()) {
                 stereoLineBlinder.setVisible(false);
                 getStereotypeFig().setVisible(false);
@@ -586,8 +587,8 @@ public class FigPackage extends FigNodeModelElement {
 			try {
 			    String nameSpace;
 			    if (lNS != null
-				    && ModelFacade.getName(lNS) != null)
-				nameSpace = ModelFacade.getName(lNS);
+				    && Model.getFacade().getName(lNS) != null)
+				nameSpace = Model.getFacade().getName(lNS);
 			    else
 				nameSpace = "(anon)";
 

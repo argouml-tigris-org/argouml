@@ -42,7 +42,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddExtensionPoint;
@@ -1273,7 +1272,7 @@ public class FigUseCase extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee == null
 	    || mee.getPropertyName().equals("extensionPoint")
-	    || ModelFacade.isAExtensionPoint(mee.getSource())) {
+	    || Model.getFacade().isAExtensionPoint(mee.getSource())) {
             updateExtensionPoint();
             return;
         }
@@ -1382,7 +1381,7 @@ public class FigUseCase extends FigNodeModelElement {
         // Now things to do with the use case itself. Put the use case in
         // italics if it is abstract, otherwise ordinary font.
 
-        if (ModelFacade.isAbstract(useCase)) {
+        if (Model.getFacade().isAbstract(useCase)) {
             getNameFig().setFont(getItalicLabelFont());
         } else {
             getNameFig().setFont(getLabelFont());

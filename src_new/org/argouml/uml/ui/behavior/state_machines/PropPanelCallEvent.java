@@ -31,7 +31,6 @@ import java.util.Iterator;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -92,7 +91,7 @@ class UMLCallEventOperationComboBox2 extends UMLSearchableComboBox {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isACallEvent(target)) {
+        if (Model.getFacade().isACallEvent(target)) {
             Model.getCommonBehaviorHelper().setOperation(
                     target,
                     getSelectedItem());
@@ -114,16 +113,16 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
     protected void buildModelList() {
         Object target = TargetManager.getInstance().getModelTarget();
         Collection ops = new ArrayList();
-        if (ModelFacade.isACallEvent(target)) {
-            Object ns = ModelFacade.getNamespace(target);
-            if (ModelFacade.isANamespace(ns)) {
+        if (Model.getFacade().isACallEvent(target)) {
+            Object ns = Model.getFacade().getNamespace(target);
+            if (Model.getFacade().isANamespace(ns)) {
                 Collection c =
                     Model.getModelManagementHelper().getAllModelElementsOfKind(
                             ns,
                             Model.getMetaTypes().getClassifier());
                 Iterator i = c.iterator();
                 while (i.hasNext()) {
-                    ops.addAll(ModelFacade.getOperations(i.next()));
+                    ops.addAll(Model.getFacade().getOperations(i.next()));
                 }
             }
         }
@@ -135,8 +134,8 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isACallEvent(target)) {
-            return ModelFacade.getOperation(target);
+        if (Model.getFacade().isACallEvent(target)) {
+            return Model.getFacade().getOperation(target);
         }
         return null;
     }
@@ -146,8 +145,8 @@ class UMLCallEventOperationComboBoxModel extends UMLComboBoxModel2 {
      */
     protected boolean isValidElement(Object element) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isACallEvent(target)) {
-            return element == ModelFacade.getOperation(target);
+        if (Model.getFacade().isACallEvent(target)) {
+            return element == Model.getFacade().getOperation(target);
         }
         return false;
     }

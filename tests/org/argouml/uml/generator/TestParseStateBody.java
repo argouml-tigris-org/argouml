@@ -32,7 +32,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Test ParserDisplay: parsing state body.
@@ -69,7 +68,7 @@ public class TestParseStateBody extends TestCase {
                 voidType, "myOper", propertyChangeListeners);
         aStateMachine = Model.getStateMachinesFactory()
             .buildStateMachine(aClass);
-        Object top = ModelFacade.getTop(aStateMachine);
+        Object top = Model.getFacade().getTop(aStateMachine);
         aState = Model.getStateMachinesFactory()
             .buildCompositeState(top);
     }
@@ -212,26 +211,26 @@ public class TestParseStateBody extends TestCase {
         }
         if (entryAction) {
             assertTrue("Entry Action was not generated for " + text,
-                    ModelFacade.getEntry(sst) != null);
+                    Model.getFacade().getEntry(sst) != null);
         } else {
             assertTrue("Entry Action was generated for " + text,
-                    ModelFacade.getEntry(sst) == null);
+                    Model.getFacade().getEntry(sst) == null);
         }
         if (exitAction) {
             assertTrue("Exit Action was not generated for " + text,
-                    ModelFacade.getExit(sst) != null);
+                    Model.getFacade().getExit(sst) != null);
         } else {
             assertTrue("Exit Action was generated for " + text,
-                    ModelFacade.getExit(sst) == null);
+                    Model.getFacade().getExit(sst) == null);
         }
         if (doAction) {
             assertTrue("Do Action was not generated for " + text,
-                    ModelFacade.getDoActivity(sst) != null);
+                    Model.getFacade().getDoActivity(sst) != null);
         } else {
             assertTrue("Do Action was generated for " + text,
-                    ModelFacade.getDoActivity(sst) == null);
+                    Model.getFacade().getDoActivity(sst) == null);
         }
-        Collection c = ModelFacade.getInternalTransitions(sst);
+        Collection c = Model.getFacade().getInternalTransitions(sst);
         assertTrue("Incorrect number of internal transitions (" + c.size()
                 + ") found for " + text,
                 c.size() == internals);

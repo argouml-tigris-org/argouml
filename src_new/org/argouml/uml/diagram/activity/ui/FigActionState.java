@@ -33,7 +33,6 @@ import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.state.ui.FigStateVertex;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.graph.GraphModel;
@@ -223,7 +222,7 @@ public class FigActionState extends FigStateVertex {
             updateNameText();
             damage();
         } else
-            if (ModelFacade.getEntry(getOwner()) == mee.getSource()) {
+            if (Model.getFacade().getEntry(getOwner()) == mee.getSource()) {
                 updateNameText();
                 damage();
             }

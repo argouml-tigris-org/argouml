@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -47,7 +47,7 @@ public class UMLCompositeStateConcurrentCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        setSelected(ModelFacade.isConcurrent(getTarget()));
+        setSelected(Model.getFacade().isConcurrent(getTarget()));
     }
 
 }

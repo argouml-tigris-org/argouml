@@ -132,7 +132,7 @@ public class PropPanelMessage extends PropPanelModelElement {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (org.argouml.model.ModelFacade.isAMessage(target)) {
+            if (Model.getFacade().isAMessage(target)) {
                 Model.getCommonBehaviorFactory().buildAction(target);
                 super.actionPerformed(e);
             }

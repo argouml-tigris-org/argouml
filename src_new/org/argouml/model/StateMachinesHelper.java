@@ -120,10 +120,7 @@ public interface StateMachinesHelper {
             Object oStatemachine);
 
     /**
-     * Get the "top" composite state of a statemachine. <p>
-     *
-     * The difference with the equally named function in the ModelFacade,
-     * is that this one swallows null without causing an exception.
+     * Get the "top" composite state of a statemachine.<p>
      *
      * @param sm the given statemachine
      * @return the top composite state

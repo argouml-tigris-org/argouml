@@ -25,7 +25,7 @@
 package org.argouml.uml;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 /**
@@ -74,7 +74,7 @@ public class UUIDHelper {
         if (base instanceof CommentEdge) {
             return (String) ((CommentEdge) base).getUUID();
         }
-        return ModelFacade.getUUID(base);
+        return Model.getFacade().getUUID(base);
     }
 
     /**

@@ -37,7 +37,6 @@ import java.util.ListIterator;
 
 import org.argouml.model.Model;
 import org.argouml.model.ModelEventPump;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.sequence.ActivationNode;
 import org.argouml.uml.diagram.sequence.EmptyNode;
 import org.argouml.uml.diagram.sequence.LifeLinePort;
@@ -358,9 +357,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * @return a name
      */
     private String getBeautifiedName(Object o) {
-        String name = ModelFacade.getName(o);
+        String name = Model.getFacade().getName(o);
         if (name == null || name.equals("")) {
-            name = "(anon " + ModelFacade.getUMLClassName(o) + ")";
+            name = "(anon " + Model.getFacade().getUMLClassName(o) + ")";
         }
         return name;
     }
@@ -525,7 +524,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
      * @see FigNodeModelElement#updateListeners(java.lang.Object)
      */
     protected void updateListeners(Object newOwner) {
-        if (ModelFacade.isAInstance(newOwner)) {
+        if (Model.getFacade().isAInstance(newOwner)) {
             Object oldOwner = getOwner();
             ModelEventPump pump = Model.getPump();
             pump.removeModelEventListener(this, oldOwner);
@@ -535,7 +534,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 					   "name",
 					   "stereotype",
 				       });
-            Iterator it = ModelFacade.getClassifiers(newOwner).iterator();
+            Iterator it = Model.getFacade().getClassifiers(newOwner).iterator();
             while (it.hasNext()) {
                 Object classifierRole = it.next();
                 pump.removeModelEventListener(this, classifierRole);
@@ -546,7 +545,8 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 					       "name",
 					       "base",
 					   });
-                Iterator it2 = ModelFacade.getBases(classifierRole).iterator();
+                Iterator it2 =
+                    Model.getFacade().getBases(classifierRole).iterator();
                 while (it2.hasNext()) {
                     Object base = it2.next();
                     pump.addModelEventListener(this, base, "name");
@@ -566,7 +566,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
             updateObjectName();
             nameChanged = true;
         } else if (
-            ModelFacade.isAClassifierRole(mee.getSource())
+            Model.getFacade().isAClassifierRole(mee.getSource())
                 && mee.getPropertyName().equals("name")) {
             updateClassifierRoleNames();
             nameChanged = true;
@@ -585,7 +585,7 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     private void updateClassifierRoleNames() {
         String roleNames = "";
-        Iterator it = ModelFacade.getClassifiers(getOwner()).iterator();
+        Iterator it = Model.getFacade().getClassifiers(getOwner()).iterator();
         while (it.hasNext()) {
             roleNames += getBeautifiedName(it.next());
             if (it.hasNext()) {
@@ -597,9 +597,9 @@ public class FigObject extends FigNodeModelElement implements MouseListener {
 
     private void updateBaseNames() {
         String b = "";
-        Iterator it = ModelFacade.getClassifiers(getOwner()).iterator();
+        Iterator it = Model.getFacade().getClassifiers(getOwner()).iterator();
         while (it.hasNext()) {
-            Iterator it2 = ModelFacade.getBases(it.next()).iterator();
+            Iterator it2 = Model.getFacade().getBases(it.next()).iterator();
             while (it2.hasNext()) {
                 b += getBeautifiedName(it2.next());
                 if (it2.hasNext()) {

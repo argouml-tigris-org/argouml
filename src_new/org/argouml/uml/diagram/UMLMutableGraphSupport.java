@@ -34,7 +34,6 @@ import java.util.Vector;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.UmlException;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.tigris.gef.base.Editor;
@@ -228,7 +227,7 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         if (node == null) {
             return false;
         }
-        if (ModelFacade.isAComment(node)) {
+        if (Model.getFacade().isAComment(node)) {
             return true;
         }
         return false;
@@ -260,11 +259,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         // to find the comment and annotated elements.
 
         Collection cmnt = new ArrayList();
-        if (ModelFacade.isAComment(node)) {
-            cmnt.addAll(ModelFacade.getAnnotatedElements(node));
+        if (Model.getFacade().isAComment(node)) {
+            cmnt.addAll(Model.getFacade().getAnnotatedElements(node));
         }
-        if (ModelFacade.isAModelElement(node)) {
-            cmnt.addAll(ModelFacade.getComments(node));
+        if (Model.getFacade().isAModelElement(node)) {
+            cmnt.addAll(Model.getFacade().getComments(node));
         }
         Iterator iter = cmnt.iterator();
         while (iter.hasNext()) {
@@ -338,11 +337,11 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         }
         Object comment = null;
         Object annotatedElement = null;
-        if (ModelFacade.isAComment(from)) {
+        if (Model.getFacade().isAComment(from)) {
             comment = from;
             annotatedElement = to;
         } else {
-            if (ModelFacade.isAComment(to)) {
+            if (Model.getFacade().isAComment(to)) {
                 comment = to;
                 annotatedElement = from;
             } else {
@@ -370,10 +369,10 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             Object fromElement,
             Object toElement) {
         if (edgeType.equals(CommentEdge.class)) {
-            return ((ModelFacade.isAComment(fromElement)
-                   && ModelFacade.isAModelElement(toElement))
-                 || (ModelFacade.isAComment(toElement)
-                   && ModelFacade.isAModelElement(fromElement)));
+            return ((Model.getFacade().isAComment(fromElement)
+                   && Model.getFacade().isAModelElement(toElement))
+                 || (Model.getFacade().isAComment(toElement)
+                   && Model.getFacade().isAModelElement(fromElement)));
         } else {
             return Model.getUmlFactory().isConnectionValid(
                 edgeType,

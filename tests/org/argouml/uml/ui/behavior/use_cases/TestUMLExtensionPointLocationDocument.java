@@ -29,7 +29,6 @@ import javax.swing.text.BadLocationException;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * @since Nov 3, 2002
@@ -100,7 +99,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     public void testInsertString()
 	throws BadLocationException {
 	model.insertString(0, "test", null);
-        assertEquals("test", ModelFacade.getLocation(elem));
+        assertEquals("test", Model.getFacade().getLocation(elem));
     }
 
     /**
@@ -112,7 +111,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
 	model.insertString(0, "test", null);
 	model.remove(0, model.getLength());
-        assertEquals("", ModelFacade.getLocation(elem));
+        assertEquals("", Model.getFacade().getLocation(elem));
     }
 
     /**
@@ -124,7 +123,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
 	model.insertString(model.getLength(), "test", null);
-        assertEquals("testtest", ModelFacade.getLocation(elem));
+        assertEquals("testtest", Model.getFacade().getLocation(elem));
     }
 
     /**
@@ -136,7 +135,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
 	model.insertString(1, "test", null);
-        assertEquals("ttestest", ModelFacade.getLocation(elem));
+        assertEquals("ttestest", Model.getFacade().getLocation(elem));
     }
 
     /**
@@ -148,7 +147,7 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
 	throws BadLocationException {
         Model.getUseCasesHelper().setLocation(elem, "test");
 	model.remove(1, model.getLength() - 2);
-        assertEquals("tt", ModelFacade.getLocation(elem));
+        assertEquals("tt", Model.getFacade().getLocation(elem));
     }
 
 }

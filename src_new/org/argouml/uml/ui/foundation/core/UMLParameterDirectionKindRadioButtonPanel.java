@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -72,7 +71,7 @@ public class UMLParameterDirectionKindRadioButtonPanel extends
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /* (MModelElement) */getTarget();
-            Object kind = ModelFacade.getKind(target);
+            Object kind = Model.getFacade().getKind(target);
             if (kind == null
                     || kind.equals(
                             Model.getDirectionKind().getInParameter())) {

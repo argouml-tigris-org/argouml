@@ -25,7 +25,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLMultiplicityComboBoxModel;
 
 
@@ -49,9 +49,9 @@ public class UMLClassifierRoleMultiplicityComboBoxModel extends
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null
-                && (org.argouml.model.ModelFacade
-                        .isAClassifierRole(getTarget())))
-                return ModelFacade.getMultiplicity(getTarget());
+                && (Model.getFacade().isAClassifierRole(getTarget()))) {
+            return Model.getFacade().getMultiplicity(getTarget());
+        }
         return null;
     }
 

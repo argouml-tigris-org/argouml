@@ -33,7 +33,6 @@ import java.util.TreeSet;
 
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
@@ -59,7 +58,7 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return org.argouml.model.ModelFacade.isAStereotype(o)
+        return Model.getFacade().isAStereotype(o)
             && Model.getExtensionMechanismsHelper().isValidStereoType(
 		   /*(MModelElement)*/ getTarget(), /*(MStereotype)*/ o);
     }
@@ -97,10 +96,10 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
                 try {
                     String name1 =
 			o1 instanceof String
-			? (String) o1 : ModelFacade.getName(o1);
+			? (String) o1 : Model.getFacade().getName(o1);
                     String name2 =
 			o2 instanceof String
-			? (String) o2 : ModelFacade.getName(o2);
+			? (String) o2 : Model.getFacade().getName(o2);
                     name1 = (name1 != null ? name1 : "");
                     name2 = (name2 != null ? name2 : "");
 
@@ -127,9 +126,10 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
             Object stereo = null;
-            if (ModelFacade.getStereotypes(getTarget()).size() > 0) {
+            if (Model.getFacade().getStereotypes(getTarget()).size() > 0) {
                 stereo =
-		    ModelFacade.getStereotypes(getTarget()).iterator().next();
+		    Model.getFacade().getStereotypes(getTarget())
+		    		.iterator().next();
             }
             return stereo;
         }

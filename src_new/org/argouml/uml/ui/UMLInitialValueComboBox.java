@@ -30,7 +30,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JComboBox;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
 
@@ -99,13 +98,13 @@ public class UMLInitialValueComboBox extends JComboBox
 
                 String item = (String) getSelectedItem();
                 Object target = theContainer.getTarget();
-                if (ModelFacade.isAAttribute(target)) {
+                if (Model.getFacade().isAAttribute(target)) {
                     Object itemExpr =
 			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
                     Model.getCoreHelper().setInitialValue(target, itemExpr);
                     update();
-                } else if (ModelFacade.isAParameter(target)) {
+                } else if (Model.getFacade().isAParameter(target)) {
                     Object itemExpr =
 			Model.getDataTypesFactory()
 			    .createExpression("Java", item);
@@ -131,22 +130,22 @@ public class UMLInitialValueComboBox extends JComboBox
     public void targetChanged() {
         Object target = theContainer.getTarget();
 	isUpdating = true;
-        if (org.argouml.model.ModelFacade.isAAttribute(target)) {
+        if (Model.getFacade().isAAttribute(target)) {
             Object/*MExpression*/ initExpr =
-		ModelFacade.getInitialValue(target);
+		Model.getFacade().getInitialValue(target);
             if (initExpr != null) {
-                Object init = ModelFacade.getBody(initExpr);
+                Object init = Model.getFacade().getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             } else if (initExpr == null) {
                 setSelectedItem(null); // clear residual junk from the
 				       // combo box.
             }
-        }  else if (ModelFacade.isAParameter(target)) {
+        }  else if (Model.getFacade().isAParameter(target)) {
             Object/*MExpression*/ initExpr =
-		ModelFacade.getDefaultValue(target);
+		Model.getFacade().getDefaultValue(target);
             if (initExpr != null) {
-                Object init = ModelFacade.getBody(initExpr);
+                Object init = Model.getFacade().getBody(initExpr);
                 setSelectedItem(init);
                 //update();
             } else if (initExpr == null) {
@@ -225,25 +224,26 @@ public class UMLInitialValueComboBox extends JComboBox
      */
     private void update() {
         Object target = theContainer.getTarget();
-        if (ModelFacade.isAAttribute(target)) {
-            Object classifier = ModelFacade.getOwner(target);
+        if (Model.getFacade().isAAttribute(target)) {
+            Object classifier = Model.getFacade().getOwner(target);
             if (classifier == null) {
                 return;
             }
             Model.getCoreHelper().setFeatures(classifier,
-				    ModelFacade.getFeatures(classifier));
-        } else if (ModelFacade.isAParameter(target)) {
-            if (ModelFacade.isACallEvent(target)) {
+				    Model.getFacade().getFeatures(classifier));
+        } else if (Model.getFacade().isAParameter(target)) {
+            if (Model.getFacade().isACallEvent(target)) {
                 return;
             }
-            Object feature = ModelFacade.getBehavioralFeature(target);
+            Object feature = Model.getFacade().getBehavioralFeature(target);
             if (feature != null) {
-                Object classifier = ModelFacade.getOwner(feature);
+                Object classifier = Model.getFacade().getOwner(feature);
                 if (classifier == null) {
                     return;
                 }
-                Model.getCoreHelper().setFeatures(classifier,
-					ModelFacade.getFeatures(classifier));
+                Model.getCoreHelper().setFeatures(
+                        classifier,
+                        Model.getFacade().getFeatures(classifier));
             }
         }
     }   // ...end of update() method...

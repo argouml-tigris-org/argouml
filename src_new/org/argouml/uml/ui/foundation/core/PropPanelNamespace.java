@@ -29,7 +29,6 @@ import javax.swing.JList;
 import javax.swing.JScrollPane;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.tigris.swidgets.Orientation;
@@ -73,7 +72,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addClass() {
         Object target = getTarget();
-        if (ModelFacade.isANamespace(target)) {
+        if (Model.getFacade().isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().buildClass();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);
@@ -86,7 +85,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addInterface() {
         Object target = getTarget();
-        if (ModelFacade.isANamespace(target)) {
+        if (Model.getFacade().isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getCoreFactory().createInterface();
             Model.getCoreHelper().addOwnedElement(ns, ownedElem);
@@ -99,7 +98,7 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
      */
     public void addPackage() {
         Object target = getTarget();
-        if (ModelFacade.isANamespace(target)) {
+        if (Model.getFacade().isANamespace(target)) {
             Object ns = /*(MNamespace)*/ target;
             Object ownedElem = Model.getModelManagementFactory()
                 .createPackage();

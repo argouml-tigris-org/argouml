@@ -31,7 +31,6 @@ import java.util.Iterator;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -151,7 +150,7 @@ public class TestParserDisplay extends TestCase {
         } catch (ParseException e) {
             fail("Could not parse expression " + text);
         }
-        assertEquals(name, ModelFacade.getName(ro));
+        assertEquals(name, Model.getFacade().getName(ro));
     }
 
     private void checkType(MAttribute attr, String text, String type) {
@@ -453,7 +452,7 @@ public class TestParserDisplay extends TestCase {
 
 	try {
 	    ParserDisplay.SINGLETON.parseClassifierRole(cr, text);
-	    c = ModelFacade.getBases(cr);
+	    c = Model.getFacade().getBases(cr);
 	    it = c.iterator();
 	checkAllValid :
 	    while (it.hasNext()) {

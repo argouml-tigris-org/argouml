@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,7 +45,7 @@ public class UMLInstanceLinkEndListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getLinkEnds(getTarget()));
+            setAllElements(Model.getFacade().getLinkEnds(getTarget()));
         }
     }
 
@@ -53,7 +53,7 @@ public class UMLInstanceLinkEndListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getLinkEnds(getTarget()).contains(element);
+        return Model.getFacade().getLinkEnds(getTarget()).contains(element);
     }
 
 }

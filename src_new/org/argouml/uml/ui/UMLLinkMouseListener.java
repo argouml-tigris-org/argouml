@@ -30,6 +30,7 @@ import java.awt.event.MouseListener;
 import javax.swing.JList;
 import javax.swing.SwingUtilities;
 
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
 
 /**
@@ -86,7 +87,7 @@ public class UMLLinkMouseListener implements MouseListener {
                 && SwingUtilities.isLeftMouseButton(e)) {
 
             Object o = owner.getSelectedValue();
-            if (org.argouml.model.ModelFacade.isAModelElement(o)) {
+            if (Model.getFacade().isAModelElement(o)) {
                 TargetManager.getInstance().setTarget(o);
             }
             e.consume();

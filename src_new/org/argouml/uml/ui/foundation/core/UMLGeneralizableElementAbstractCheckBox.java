@@ -25,7 +25,7 @@
 package org.argouml.uml.ui.foundation.core;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLCheckBox2;
 
 /**
@@ -48,8 +48,9 @@ public class UMLGeneralizableElementAbstractCheckBox extends UMLCheckBox2 {
      * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
      */
     public void buildModel() {
-        if (getTarget() != null)
-            setSelected(ModelFacade.isAbstract(getTarget()));
+        if (getTarget() != null) {
+            setSelected(Model.getFacade().isAbstract(getTarget()));
+        }
     }
 
 

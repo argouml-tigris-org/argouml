@@ -28,9 +28,10 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 // Using Model through Facade
 
@@ -71,13 +72,13 @@ public class CrAttrNameConflict extends CrUML {
      * @return true if there are two with the same name.
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClassifier(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClassifier(dm))) return NO_PROBLEM;
 
 	Vector namesSeen = new Vector();
 
-	Iterator attrs = ModelFacade.getAttributes(dm).iterator();
+	Iterator attrs = Model.getFacade().getAttributes(dm).iterator();
 	while (attrs.hasNext()) {
-	    String name = ModelFacade.getName(attrs.next());
+	    String name = Model.getFacade().getName(attrs.next());
 	    if (name == null || name.length() == 0) continue;
 
 	    if (namesSeen.contains(name)) return PROBLEM_FOUND;

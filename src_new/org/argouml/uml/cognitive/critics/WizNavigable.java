@@ -32,7 +32,6 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepChoice;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 /** A non-modal wizard to help the user change navigability
  *  of an association. */
 
@@ -60,18 +59,18 @@ public class WizNavigable extends UMLWizard {
 	Vector res = new Vector();
 	Object asc = /*(MAssociation)*/ getModelElement();
 	Object ae0 = /*(MAssociationEnd)*/
-	    new ArrayList(ModelFacade.getConnections(asc)).get(0);
+	    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 	Object ae1 = /*(MAssociationEnd)*/
-	    new ArrayList(ModelFacade.getConnections(asc)).get(1);
-	Object cls0 = ModelFacade.getType(ae0);
-	Object cls1 = ModelFacade.getType(ae1);
+	    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
+	Object cls0 = Model.getFacade().getType(ae0);
+	Object cls1 = Model.getFacade().getType(ae1);
 
-	if (cls0 != null && !"".equals(ModelFacade.getName(cls0))) {
-	    option0 = "Navigable Toward " + ModelFacade.getName(cls0);
+	if (cls0 != null && !"".equals(Model.getFacade().getName(cls0))) {
+	    option0 = "Navigable Toward " + Model.getFacade().getName(cls0);
         }
 
-	if (cls1 != null && !"".equals(ModelFacade.getName(cls1))) {
-	    option1 = "Navigable Toward " + ModelFacade.getName(cls1);
+	if (cls1 != null && !"".equals(Model.getFacade().getName(cls1))) {
+	    option1 = "Navigable Toward " + Model.getFacade().getName(cls1);
         }
 
 	// TODO: put in class names
@@ -124,9 +123,9 @@ public class WizNavigable extends UMLWizard {
 	    try {
 		Object asc = /*(MAssociation)*/ getModelElement();
 		Object ae0 = /*(MAssociationEnd)*/
-		    new ArrayList(ModelFacade.getConnections(asc)).get(0);
+		    new ArrayList(Model.getFacade().getConnections(asc)).get(0);
 		Object ae1 = /*(MAssociationEnd)*/
-		    new ArrayList(ModelFacade.getConnections(asc)).get(1);
+		    new ArrayList(Model.getFacade().getConnections(asc)).get(1);
 		Model.getCoreHelper().setNavigable(ae0, choice == 0 || choice == 2);
 		Model.getCoreHelper().setNavigable(ae1, choice == 1 || choice == 2);
 	    }

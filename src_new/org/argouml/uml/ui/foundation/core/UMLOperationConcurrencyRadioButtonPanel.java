@@ -28,7 +28,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLRadioButtonPanel;
 
 /**
@@ -71,7 +70,7 @@ public class UMLOperationConcurrencyRadioButtonPanel extends
     public void buildModel() {
         if (getTarget() != null) {
             Object target = /* (MModelElement) */getTarget();
-            Object kind = ModelFacade.getConcurrency(target);
+            Object kind = Model.getFacade().getConcurrency(target);
             if (kind == null
                     || kind.equals(
                             Model.getConcurrencyKind()

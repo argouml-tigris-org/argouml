@@ -34,7 +34,6 @@ import junit.framework.TestSuite;
 import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.model.UUIDManager;
 
 /**
@@ -186,9 +185,9 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         setUpNamespaces(testName);
 
         String generated = generateAClassFile(testName);
-        String modelNs = "namespace " + ModelFacade.getName(getModel()) + " {";
+        String modelNs = "namespace " + Model.getFacade().getName(getModel()) + " {";
         assertTrue(generated.indexOf(modelNs) == -1);
-        String packNs = "namespace " + ModelFacade.getName(getPack()) + " {";
+        String packNs = "namespace " + Model.getFacade().getName(getPack()) + " {";
         assertTrue(generated.indexOf(packNs) != -1);
     }
     
@@ -207,10 +206,10 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
         
         String generatedCpp = generateAClassFile(testName);
         
-        String correctName = ModelFacade.getName(otherPack) + "::" 
-            + ModelFacade.getName(otherClass);
+        String correctName = Model.getFacade().getName(otherPack) + "::" 
+            + Model.getFacade().getName(otherClass);
         assertTrue(generatedCpp.indexOf(correctName) != -1);
-        String wrongName = ModelFacade.getName(getModel()) + "::" 
+        String wrongName = Model.getFacade().getName(getModel()) + "::" 
             + correctName;
         assertTrue(generatedCpp.indexOf(wrongName) == -1);
     }
@@ -268,7 +267,7 @@ public class TestCppFileGeneration extends BaseTestGeneratorCpp {
      * @return the package pack
      */
     private Object getPack() {
-        return ModelFacade.getModelElementContainer(getAClass());
+        return Model.getFacade().getModelElementContainer(getAClass());
     }
 
     /**

@@ -65,7 +65,9 @@ public class TestUMLCollaborationConstraintListModel
         Object[] constraints = new Object[10];
         for (int i = 0; i < constraints.length; i++) {
             constraints[i] = Model.getCoreFactory().createConstraint();
-            Model.getCollaborationsHelper().addConstrainingElement(getElem(), constraints[i]);
+            Model.getCollaborationsHelper().addConstrainingElement(
+                    getElem(),
+                    constraints[i]);
         }
         return constraints;
     }
@@ -75,7 +77,9 @@ public class TestUMLCollaborationConstraintListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            Model.getCollaborationsHelper().removeConstrainingElement(getElem(), elements[i]);
+            Model.getCollaborationsHelper().removeConstrainingElement(
+                    getElem(),
+                    elements[i]);
         }
     }
 

@@ -22,14 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * ListModel for the stimuli an instance sends
+ * ListModel for the stimuli an instance sends.
  *
  * @author mkl
  *
@@ -49,14 +48,14 @@ public class UMLInstanceSenderStimulusListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getStimuli3(getTarget()));
+        addElement(Model.getFacade().getStimuli3(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getStimuli3(getTarget()).contains(element);
+        return Model.getFacade().getStimuli3(getTarget()).contains(element);
     }
 
 }

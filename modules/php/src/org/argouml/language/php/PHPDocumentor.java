@@ -34,15 +34,11 @@ import java.util.StringTokenizer;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.ArgoVersion;
-
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-
 import org.argouml.language.php.generator.NameGenerator;
-
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * This class generates DocBlocks in PHPDocumentor style
@@ -179,7 +175,7 @@ public final class PHPDocumentor {
      *
      * @throws Exception
      */
-    private final void create(Object modelElement) throws Exception {
+    private void create(Object modelElement) throws Exception {
         create(modelElement, BLOCK_TYPE_UNKNOWN);
     }
 
@@ -191,7 +187,7 @@ public final class PHPDocumentor {
      *
      * @throws Exception
      */
-    private final void create(Object modelElement, int iBlockType)
+    private void create(Object modelElement, int iBlockType)
         throws Exception {
         switch (iBlockType) {
         // TODO: move block 4 spaces right if checkstyle is fixed
@@ -229,15 +225,15 @@ public final class PHPDocumentor {
      *
      * @throws Exception
      */
-    private final void createUnknown(Object modelElement) throws Exception {
+    private void createUnknown(Object modelElement) throws Exception {
         if (modelElement != null) {
-            if (ModelFacade.isAClassifier(modelElement)) {
+            if (Model.getFacade().isAClassifier(modelElement)) {
                 createClassifier(modelElement);
-            } else if (ModelFacade.isAAttribute(modelElement)) {
+            } else if (Model.getFacade().isAAttribute(modelElement)) {
                 createAttribute(modelElement);
-            } else if (ModelFacade.isAOperation(modelElement)) {
+            } else if (Model.getFacade().isAOperation(modelElement)) {
                 createOperation(modelElement);
-            } else if (ModelFacade.isAPackage(modelElement)) {
+            } else if (Model.getFacade().isAPackage(modelElement)) {
                 createPackage(modelElement);
             } else {
                 throw new IllegalArgumentException(modelElement.getClass()
@@ -258,8 +254,8 @@ public final class PHPDocumentor {
      *
      * @throws Exception
      */
-    private final void createFile(Object modelElement) throws Exception {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+    private void createFile(Object modelElement) throws Exception {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Classifier required");
         }
@@ -309,9 +305,9 @@ public final class PHPDocumentor {
         int iSec  = calNow.get(Calendar.SECOND);
 
         String sProjectName = null;
-        Object objModel = ModelFacade.getModel(modelElement);
+        Object objModel = Model.getFacade().getModel(modelElement);
         if (objModel != null) {
-            sProjectName = ModelFacade.getName(objModel);
+            sProjectName = Model.getFacade().getName(objModel);
         }
 
         String sDateTime = "";
@@ -340,7 +336,7 @@ public final class PHPDocumentor {
 
         objDocBlock.setDescription(sDescription);
 
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
     }
 
     /**
@@ -351,7 +347,7 @@ public final class PHPDocumentor {
      * @throws Exception
      */
     private final void createInclude(Object modelElement) throws Exception {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Classifier required");
         }
@@ -365,7 +361,7 @@ public final class PHPDocumentor {
 
         objDocBlock.setDescription("include "
                 + NameGenerator.generateClassifierName(modelElement));
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
     }
 
     /**
@@ -376,7 +372,7 @@ public final class PHPDocumentor {
      * @throws Exception
      */
     private final void createClassifier(Object modelElement) throws Exception {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Classifier required");
         }
@@ -393,17 +389,17 @@ public final class PHPDocumentor {
         objDocBlock.setDefaultDescription("Short description of class "
                 + NameGenerator.generateClassifierName(modelElement));
 
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
 
-        if (ModelFacade.isAbstract(modelElement)) {
+        if (Model.getFacade().isAbstract(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ABSTRACT, "true");
         }
 
-        if (ModelFacade.isPublic(modelElement)) {
+        if (Model.getFacade().isPublic(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "public");
-        } else if (ModelFacade.isProtected(modelElement)) {
+        } else if (Model.getFacade().isProtected(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "protected");
-        } else if (ModelFacade.isPrivate(modelElement)) {
+        } else if (Model.getFacade().isPrivate(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "private");
         }
 
@@ -430,7 +426,7 @@ public final class PHPDocumentor {
      * @throws Exception
      */
     private final void createAttribute(Object modelElement) throws Exception {
-        if (!ModelFacade.isAAttribute(modelElement)) {
+        if (!Model.getFacade().isAAttribute(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Attribute required");
         }
@@ -446,21 +442,21 @@ public final class PHPDocumentor {
         objDocBlock.disableTag(DocBlock.TAG_TYPE_VERSION);
 
         objDocBlock.setDefaultDescription("Short description of attribute "
-                + ModelFacade.getName(modelElement));
+                + Model.getFacade().getName(modelElement));
 
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
 
-        Object objVarType = ModelFacade.getType(modelElement);
+        Object objVarType = Model.getFacade().getType(modelElement);
         if (objVarType != null) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_VAR,
-                    ModelFacade.getName(objVarType));
+                    Model.getFacade().getName(objVarType));
         }
 
-        if (ModelFacade.isPublic(modelElement)) {
+        if (Model.getFacade().isPublic(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "public");
-        } else if (ModelFacade.isProtected(modelElement)) {
+        } else if (Model.getFacade().isProtected(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "protected");
-        } else if (ModelFacade.isPrivate(modelElement)) {
+        } else if (Model.getFacade().isPrivate(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "private");
         }
     }
@@ -473,7 +469,7 @@ public final class PHPDocumentor {
      * @throws Exception
      */
     private final void createOperation(Object modelElement) throws Exception {
-        if (!ModelFacade.isAOperation(modelElement)) {
+        if (!Model.getFacade().isAOperation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Operation required");
         }
@@ -488,48 +484,48 @@ public final class PHPDocumentor {
         objDocBlock.enableTag(DocBlock.TAG_TYPE_ABSTRACT);
 
         objDocBlock.setDefaultDescription("Short description of method "
-                + ModelFacade.getName(modelElement));
+                + Model.getFacade().getName(modelElement));
 
-        if (ModelFacade.isPublic(modelElement)) {
+        if (Model.getFacade().isPublic(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "public");
-        } else if (ModelFacade.isProtected(modelElement)) {
+        } else if (Model.getFacade().isProtected(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "protected");
-        } else if (ModelFacade.isPrivate(modelElement)) {
+        } else if (Model.getFacade().isPrivate(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ACCESS, "private");
         }
 
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
 
-        if (ModelFacade.isAbstract(modelElement)) {
+        if (Model.getFacade().isAbstract(modelElement)) {
             objDocBlock.setTag(DocBlock.TAG_TYPE_ABSTRACT, "true");
         }
 
-        Collection colParameter = ModelFacade.getParameters(modelElement);
+        Collection colParameter = Model.getFacade().getParameters(modelElement);
         if (colParameter != null) {
             Iterator itParameter = colParameter.iterator();
             while (itParameter.hasNext()) {
                 Object objParameter = itParameter.next();
-                if (ModelFacade.isReturn(objParameter)) {
-                    Object objReturnType = ModelFacade.getType(objParameter);
+                if (Model.getFacade().isReturn(objParameter)) {
+                    Object objReturnType = Model.getFacade().getType(objParameter);
                     if (objReturnType != null) {
                         String sPackageName = NameGenerator
                             .generatePackageName(objReturnType);
                         if (sPackageName != null && sPackageName != "") {
                             objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN,
                                     sPackageName + "_"
-                                    + ModelFacade.getName(objReturnType));
+                                    + Model.getFacade().getName(objReturnType));
                         } else {
                             objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN,
-                                    ModelFacade.getName(objReturnType));
+                                    Model.getFacade().getName(objReturnType));
                         }
                     } else {
                         objDocBlock.setTag(DocBlock.TAG_TYPE_RETURN, "mixed");
                     }
                 } else {
-                    Object objParamType = ModelFacade.getType(objParameter);
+                    Object objParamType = Model.getFacade().getType(objParameter);
                     if (objParamType != null) {
                         objDocBlock.addTag(DocBlock.TAG_TYPE_PARAM,
-                                ModelFacade.getName(objParamType));
+                                Model.getFacade().getName(objParamType));
                     }
                 }
             }
@@ -543,8 +539,8 @@ public final class PHPDocumentor {
      *
      * @throws Exception
      */
-    private final void createPackage(Object modelElement) throws Exception {
-        if (!ModelFacade.isAPackage(modelElement)) {
+    private void createPackage(Object modelElement) throws Exception {
+        if (!Model.getFacade().isAPackage(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                 + " has wrong object type, Classifier required");
         }
@@ -562,7 +558,7 @@ public final class PHPDocumentor {
         objDocBlock.setDefaultDescription("Short description of package "
                 + NameGenerator.generatePackageName(modelElement));
 
-        objDocBlock.setTags(ModelFacade.getTaggedValues(modelElement));
+        objDocBlock.setTags(Model.getFacade().getTaggedValues(modelElement));
 
         String sPackageName = NameGenerator.generatePackageName(modelElement);
         if (sPackageName != null && sPackageName != "") {
@@ -940,14 +936,10 @@ public final class PHPDocumentor {
          * @return <code>true</code> on success;
          *         <code>false</code> otherwise.
          *
-         * @see ModelFacade#getTaggedValues
+         * @see org.argouml.model.Facade#getTaggedValues
          */
         public final boolean setTags(Iterator itTaggedValues) {
             if (itTaggedValues == null) {
-                return false;
-            }
-
-            if (!(itTaggedValues instanceof Iterator)) {
                 return false;
             }
 
@@ -975,15 +967,15 @@ public final class PHPDocumentor {
          *         <code>false</code> otherwise.
          */
         private final boolean setTag(Object objTaggedValue) {
-            if (!(ModelFacade.isATaggedValue(objTaggedValue))) {
+            if (!(Model.getFacade().isATaggedValue(objTaggedValue))) {
                 return false;
             }
 
             boolean bSuccess = false;
 
             try {
-                bSuccess = setTag(ModelFacade.getTagOfTag(objTaggedValue),
-                        ModelFacade.getValueOfTag(objTaggedValue));
+                bSuccess = setTag(Model.getFacade().getTagOfTag(objTaggedValue),
+                        Model.getFacade().getValueOfTag(objTaggedValue));
             } catch (IllegalArgumentException exp) {
                 LOG.warn("setting tag FAILED: " + exp.getMessage());
             }
@@ -1527,7 +1519,7 @@ public final class PHPDocumentor {
         /**
          * Gets tag content without tag name
          *
-         * @return name|name, <email>,
+         * @return name|name, email,
          *         <code>null</code> otherwise;
          */
         public String getContent() {
@@ -1807,14 +1799,14 @@ public final class PHPDocumentor {
 
     /**
      * This class is the final implementation to generate
-     * PHPDocumentor's @version tag
+     * PHPDocumentor's @version tag.
      *
      * @author  Kai Schr&ouml;der, k.schroeder@php.net
      * @since   ArgoUML 0.15.5
      */
     private final class VersionTag extends SimpleTag {
         /**
-         * Class constructor
+         * Class constructor.
          */
         public VersionTag() {
             super("version");

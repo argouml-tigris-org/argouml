@@ -41,7 +41,7 @@ import javax.swing.event.ListSelectionListener;
 import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.tigris.gef.presentation.Fig;
 
@@ -90,7 +90,7 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
      */
     public void setTarget(Object t) {
 	if (!(t instanceof Fig)) {
-	    if (ModelFacade.isABase(t)) {
+	    if (Model.getFacade().isABase(t)) {
 		Project p = ProjectManager.getManager()
 		    .getCurrentProject();
 		Collection col = p.findFigsForMember(t);
@@ -98,7 +98,9 @@ public class StylePanel extends TabSpawnable implements TabFigTarget,
 		    return;
 		} else {
 		    t = col.iterator().next();
-		    if (!(t instanceof Fig)) return;
+		    if (!(t instanceof Fig)) {
+		        return;
+		    }
 		}
 	    } else {
 		return;

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Stimulus->Action.
@@ -42,10 +42,10 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (!ModelFacade.isAStimulus(parent))
+        if (!Model.getFacade().isAStimulus(parent))
             return null;
         Object ms = /*(MStimulus)*/ parent;
-        Object action = ModelFacade.getDispatchAction(ms);
+        Object action = Model.getFacade().getDispatchAction(ms);
         Vector vector = new Vector();
         vector.addElement(action);
         return vector;
@@ -56,7 +56,7 @@ public class GoStimulusToAction extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAStimulus(parent)) {
+        if (Model.getFacade().isAStimulus(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

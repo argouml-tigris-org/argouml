@@ -27,7 +27,7 @@ package org.argouml.uml.cognitive.critics;
 
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.util.VectorSet;
 
 
@@ -83,7 +83,7 @@ public abstract class UMLWizard extends Wizard {
         if (suggestion != null) return suggestion;
         Object me = getModelElement();
         if (me != null) {
-            String n = ModelFacade.getName(me);
+            String n = Model.getFacade().getName(me);
             return n;
         }
         return "";

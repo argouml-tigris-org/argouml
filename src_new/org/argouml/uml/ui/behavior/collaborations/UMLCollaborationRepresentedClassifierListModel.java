@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.collaborations;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -48,15 +48,15 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     protected void buildModelList() {
         removeAllElements();
-        addElement(ModelFacade.getRepresentedClassifier(getTarget()));
+        addElement(Model.getFacade().getRepresentedClassifier(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ elem) {
-        return org.argouml.model.ModelFacade.isAClassifier(elem)
-            && ModelFacade.getRepresentedClassifier(getTarget()) == elem;
+        return Model.getFacade().isAClassifier(elem)
+            && Model.getFacade().getRepresentedClassifier(getTarget()) == elem;
     }
 
 }

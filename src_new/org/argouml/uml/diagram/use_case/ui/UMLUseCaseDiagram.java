@@ -32,7 +32,6 @@ import org.apache.log4j.Logger;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.ui.CmdSetMode;
 import org.argouml.uml.diagram.ui.ActionAddAssociation;
@@ -139,7 +138,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
 
         this();
 
-        if (!ModelFacade.isANamespace(m)) {
+        if (!Model.getFacade().isANamespace(m)) {
             throw new IllegalArgumentException();
         }
 
@@ -155,7 +154,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
     public UMLUseCaseDiagram(String name, Object namespace) {
         this(namespace);
 
-        if (!ModelFacade.isANamespace(namespace)) {
+        if (!Model.getFacade().isANamespace(namespace)) {
             throw new IllegalArgumentException();
         }
 
@@ -188,7 +187,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
      * @author   psager@tigris.org  Jan 24, 2002
      */
     public void setNamespace(Object handle) {
-        if (!ModelFacade.isANamespace(handle)) {
+        if (!Model.getFacade().isANamespace(handle)) {
             LOG.error(
                 "Illegal argument. Object " + handle + " is not a namespace");
             throw new IllegalArgumentException(
@@ -200,7 +199,7 @@ public class UMLUseCaseDiagram extends UMLDiagram {
         UseCaseDiagramGraphModel gm = new UseCaseDiagramGraphModel();
         gm.setNamespace(m);
         LayerPerspective lay =
-            new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
+            new LayerPerspectiveMutable(Model.getFacade().getName(m), gm);
         UseCaseDiagramRenderer rend = new UseCaseDiagramRenderer();
         lay.setGraphNodeRenderer(rend);
         lay.setGraphEdgeRenderer(rend);

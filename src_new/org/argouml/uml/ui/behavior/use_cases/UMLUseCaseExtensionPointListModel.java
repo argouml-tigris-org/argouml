@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
@@ -49,14 +48,14 @@ public class UMLUseCaseExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getExtensionPoints(getTarget()));
+        setAllElements(Model.getFacade().getExtensionPoints(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return ModelFacade.getExtensionPoints(getTarget()).contains(o);
+        return Model.getFacade().getExtensionPoints(getTarget()).contains(o);
     }
 
     /**
@@ -64,7 +63,7 @@ public class UMLUseCaseExtensionPointListModel
      */
     public void swap(int index1, int index2) {
         Object usecase = getTarget();
-        List c = new ArrayList(ModelFacade.getExtensionPoints(usecase));
+        List c = new ArrayList(Model.getFacade().getExtensionPoints(usecase));
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
         List cc = new ArrayList(c);

@@ -28,8 +28,7 @@ import java.util.Collection;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.UmlDiagramRenderer;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
@@ -39,11 +38,8 @@ import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.static_structure.ui.FigLink;
 import org.argouml.uml.diagram.ui.FigAssociation;
 import org.argouml.uml.diagram.ui.FigDependency;
-
 import org.tigris.gef.base.Layer;
-import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.graph.GraphNodeRenderer;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
@@ -67,21 +63,21 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Layer lay, 
             Object node, 
             Map styleAttributes) {
-        if (ModelFacade.isANode(node)) {
+        if (Model.getFacade().isANode(node)) {
             return new FigMNode(gm, node);
-        } else if (ModelFacade.isANodeInstance(node)) {
+        } else if (Model.getFacade().isANodeInstance(node)) {
             return new FigMNodeInstance(gm, node);
-        } else if (ModelFacade.isAComponent(node)) {
+        } else if (Model.getFacade().isAComponent(node)) {
             return new FigComponent(gm, node);
-        } else if (ModelFacade.isAComponentInstance(node)) {
+        } else if (Model.getFacade().isAComponentInstance(node)) {
             return new FigComponentInstance(gm, node);
-        } else if (ModelFacade.isAClass(node)) {
+        } else if (Model.getFacade().isAClass(node)) {
             return new FigClass(gm, node);
-        } else if (ModelFacade.isAInterface(node)) {
+        } else if (Model.getFacade().isAInterface(node)) {
             return new FigInterface(gm, node);
-        } else if (ModelFacade.isAObject(node)) {
+        } else if (Model.getFacade().isAObject(node)) {
             return new FigObject(gm, node);
-        } else if (ModelFacade.isAComment(node)) {
+        } else if (Model.getFacade().isAComment(node)) {
             return new FigComment(gm, node);
         }
         LOG.debug("TODO: DeploymentDiagramRenderer getFigNodeFor");
@@ -101,21 +97,21 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             Object edge, 
             Map styleAttributes) {
 
-        if (ModelFacade.isAAssociation(edge)) {
+        if (Model.getFacade().isAAssociation(edge)) {
             Object asc = /*(MAssociation)*/ edge;
             FigAssociation ascFig = new FigAssociation(asc, lay);
             return ascFig;
         }
-        if (ModelFacade.isALink(edge)) {
+        if (Model.getFacade().isALink(edge)) {
             Object lnk = /*(MLink)*/ edge;
             FigLink lnkFig = new FigLink(lnk);
-            Collection linkEnds = ModelFacade.getConnections(lnk);
+            Collection linkEnds = Model.getFacade().getConnections(lnk);
             if (linkEnds == null) LOG.debug("null linkRoles....");
             Object[] leArray = linkEnds.toArray();
             Object fromEnd = leArray[0];
-            Object fromInst = ModelFacade.getInstance(fromEnd);
+            Object fromInst = Model.getFacade().getInstance(fromEnd);
             Object toEnd = leArray[1];
-            Object toInst = ModelFacade.getInstance(toEnd);
+            Object toInst = Model.getFacade().getInstance(toEnd);
             FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
             FigNode toFN = (FigNode) lay.presentationFor(toInst);
             lnkFig.setSourcePortFig(fromFN);
@@ -124,14 +120,14 @@ public class DeploymentDiagramRenderer extends UmlDiagramRenderer {
             lnkFig.setDestFigNode(toFN);
             return lnkFig;
         }
-        if (ModelFacade.isADependency(edge)) {
+        if (Model.getFacade().isADependency(edge)) {
             Object dep = /*(MDependency)*/ edge;
             FigDependency depFig = new FigDependency(dep);
         
             Object supplier = /*(MModelElement)*/
-        	 ((ModelFacade.getSuppliers(dep).toArray())[0]);
+        	 ((Model.getFacade().getSuppliers(dep).toArray())[0]);
             Object client = /*(MModelElement)*/
-        	 ((ModelFacade.getClients(dep).toArray())[0]);
+        	 ((Model.getFacade().getClients(dep).toArray())[0]);
         
             FigNode supFN = (FigNode) lay.presentationFor(supplier);
             FigNode cliFN = (FigNode) lay.presentationFor(client);

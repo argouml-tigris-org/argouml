@@ -25,12 +25,14 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import javax.swing.Icon;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A critic to detect when a class or interface or its base class doesn't
@@ -53,24 +55,24 @@ public class CrNoOperations extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm)
-            || ModelFacade.isAInterface(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClass(dm)
+            || Model.getFacade().isAInterface(dm))) return NO_PROBLEM;
 
-	if (!(ModelFacade.isPrimaryObject(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isPrimaryObject(dm))) return NO_PROBLEM;
 
         // if the object does not have a name,
         // than no problem
-        if ((ModelFacade.getName(dm) == null)
-                || ("".equals(ModelFacade.getName(dm))))
+        if ((Model.getFacade().getName(dm) == null)
+                || ("".equals(Model.getFacade().getName(dm))))
             return NO_PROBLEM;
 
  	// types can probably contain operations, but we should not nag at them
 	// not having any.
-	if (ModelFacade.isType(dm)) return NO_PROBLEM;
+	if (Model.getFacade().isType(dm)) return NO_PROBLEM;
 
 	// utility is a namespace collection - also not strictly
 	// required to have operations.
-	if (ModelFacade.isUtility(dm)) return NO_PROBLEM;
+	if (Model.getFacade().isUtility(dm)) return NO_PROBLEM;
 
 	//TODO: different critic or special message for classes
 	//that inherit all ops but define none of their own.
@@ -89,25 +91,25 @@ public class CrNoOperations extends CrUML {
     }
 
     private boolean findInstanceOperationInInherited(Object dm, int depth) {
-	Iterator ops = ModelFacade.getOperations(dm).iterator();
+	Iterator ops = Model.getFacade().getOperations(dm).iterator();
 
 	while (ops.hasNext()) {
-	    if (ModelFacade.isInstanceScope(ops.next()))
+	    if (Model.getFacade().isInstanceScope(ops.next()))
 		return true;
 	}
 
 	if (depth > 50)
 	    return false;
 
-	Iterator iter = ModelFacade.getGeneralizations(dm).iterator();
+	Iterator iter = Model.getFacade().getGeneralizations(dm).iterator();
 
 	while (iter.hasNext()) {
-	    Object parent = ModelFacade.getParent(iter.next());
+	    Object parent = Model.getFacade().getParent(iter.next());
 
 	    if (parent == dm)
 		continue;
 
-	    if (ModelFacade.isAClassifier(parent))
+	    if (Model.getFacade().isAClassifier(parent))
 		if (findInstanceOperationInInherited(parent, depth + 1))
 		    return true;
 	}

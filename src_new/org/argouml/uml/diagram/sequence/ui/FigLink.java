@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,13 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Original author: jaap.branderhorst@xs4all.nl
-
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Point;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.sequence.LinkPort;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.tigris.gef.base.Globals;
@@ -38,7 +36,8 @@ import org.tigris.gef.presentation.FigPoly;
 
 /**
  * The fig for a link in a sequence diagram.
- * @author : jaap.branderhorst@xs4all.nl
+ *
+ * @author jaap.branderhorst@xs4all.nl
  */
 public abstract class FigLink
     extends FigEdgeModelElement {
@@ -70,11 +69,11 @@ public abstract class FigLink
      */
     public Object getAction() {
         Object owner = getOwner();
-        if (owner != null && ModelFacade.isALink(owner)) {
-            Iterator it = ModelFacade.getStimuli(owner).iterator();
+        if (owner != null && Model.getFacade().isALink(owner)) {
+            Iterator it = Model.getFacade().getStimuli(owner).iterator();
             Object stimulus = it.next();
             if (stimulus != null) {
-                return ModelFacade.getDispatchAction(stimulus);
+                return Model.getFacade().getDispatchAction(stimulus);
             }
         }
         return null;
@@ -144,7 +143,7 @@ public abstract class FigLink
     public Object getMessage() {
         Object action = getAction();
         if (action != null) {
-            Collection col = ModelFacade.getMessages(action);
+            Collection col = Model.getFacade().getMessages(action);
             if (!col.isEmpty()) {
                 return col.iterator().next();
             }

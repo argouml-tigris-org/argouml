@@ -25,9 +25,10 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A critic to detect whether a non abstract class
@@ -55,12 +56,12 @@ public class CrClassMustBeAbstract extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
-	if (ModelFacade.isAbstract(dm)) return NO_PROBLEM;
+	if (!(Model.getFacade().isAClass(dm))) return NO_PROBLEM;
+	if (Model.getFacade().isAbstract(dm)) return NO_PROBLEM;
 
-	Iterator ops = ModelFacade.getOperations(dm).iterator();
+	Iterator ops = Model.getFacade().getOperations(dm).iterator();
 	while (ops.hasNext()) {
-	    if (ModelFacade.isAbstract(ops.next())) return PROBLEM_FOUND;
+	    if (Model.getFacade().isAbstract(ops.next())) return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;
     }

@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,14 +45,15 @@ public class UMLStateDeferrableEventListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(ModelFacade.getDeferrableEvents(getTarget()));
+        setAllElements(Model.getFacade().getDeferrableEvents(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getDeferrableEvents(getTarget()).contains(element);
+        return Model.getFacade().getDeferrableEvents(getTarget())
+        	.contains(element);
     }
 
 }

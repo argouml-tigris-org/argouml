@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2004 The Regents of the University of California. All
+// Copyright (c) 1996-2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,7 +30,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Critic to detect whether a class name obeys to certain rules.
@@ -52,11 +52,11 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAClass(dm)) && !(ModelFacade.isAInterface(dm))) {
+	if (!(Model.getFacade().isAClass(dm)) && !(Model.getFacade().isAInterface(dm))) {
 	    return NO_PROBLEM;
 	}
 	Object cls = /*(MClassifier)*/ dm;
-	String myName = ModelFacade.getName(cls);
+	String myName = Model.getFacade().getName(cls);
 	if (myName == null || myName.equals("")) {
 	    return NO_PROBLEM;
 	}
@@ -86,7 +86,7 @@ public class CrUnconventionalClassName extends AbstractCrUnconventionalName {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String sug = ModelFacade.getName(me);
+	    String sug = Model.getFacade().getName(me);
 	    sug = computeSuggestion(sug);
 	    String ins =
 	        "Change the class name to start with an "

@@ -36,8 +36,8 @@ import javax.swing.ButtonModel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.border.TitledBorder;
-import org.argouml.model.ModelFacade;
 
+import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
 import org.argouml.ui.targetmanager.TargetEvent;
@@ -210,12 +210,12 @@ public abstract class UMLRadioButtonPanel
     public void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
         UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-        if (ModelFacade.isABase(panelTarget)) {
+        if (Model.getFacade().isABase(panelTarget)) {
             eventPump.removeModelEventListener(this, panelTarget,
                     propertySetName);
         }
         panelTarget = target;
-        if (ModelFacade.isABase(panelTarget)) {
+        if (Model.getFacade().isABase(panelTarget)) {
             // UmlModelEventPump.getPump().removeModelEventListener(this,
             // (MBase)panelTarget, _propertySetName);
             eventPump.addModelEventListener(this, panelTarget, propertySetName);

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * The model for a UML Expression that is obtained from its "parent"
@@ -50,7 +49,7 @@ public class UMLExpressionExpressionModel extends UMLExpressionModel2 {
      * @see org.argouml.uml.ui.UMLExpressionModel2#getExpression()
      */
     public Object getExpression() {
-        return ModelFacade.getExpression(getContainer().getTarget());
+        return Model.getFacade().getExpression(getContainer().getTarget());
     }
 
     /**

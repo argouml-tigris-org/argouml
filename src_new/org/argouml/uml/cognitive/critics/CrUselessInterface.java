@@ -25,15 +25,15 @@
 package org.argouml.uml.cognitive.critics;
 
 import java.util.Iterator;
+
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.critics.Critic;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
-// Use Model through ModelFacade
-
-/** A critic to detect when a class can never have instances (of
- *  itself of any subclasses).
+/**
+ * A critic to detect when a class can never have instances (of
+ * itself of any subclasses).
  *
  * @author jrobbins
  */
@@ -56,17 +56,17 @@ public class CrUselessInterface extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAInterface(dm))
+	if (!Model.getFacade().isAInterface(dm))
 	    return NO_PROBLEM;
 
-	if (!ModelFacade.isPrimaryObject(dm))
+	if (!Model.getFacade().isPrimaryObject(dm))
 	    return NO_PROBLEM;
 
 
-	Iterator iter = ModelFacade.getSupplierDependencies(dm).iterator();
+	Iterator iter = Model.getFacade().getSupplierDependencies(dm).iterator();
 
 	while (iter.hasNext())
-	    if (ModelFacade.isRealize(iter.next()))
+	    if (Model.getFacade().isRealize(iter.next()))
 		return NO_PROBLEM;
 
 	return PROBLEM_FOUND;

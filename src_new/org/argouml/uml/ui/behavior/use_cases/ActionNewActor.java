@@ -31,7 +31,6 @@ import javax.swing.Action;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -56,7 +55,7 @@ class ActionNewActor extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isAActor(target)) {
+        if (Model.getFacade().isAActor(target)) {
             Object model =
                 ProjectManager.getManager().getCurrentProject().getModel();
             TargetManager.getInstance().setTarget(

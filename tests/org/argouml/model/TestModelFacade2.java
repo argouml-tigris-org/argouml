@@ -29,12 +29,12 @@ import java.util.Collection;
 import junit.framework.TestCase;
 
 /**
- * Tests some specific methods in ModelFacade.<p>
+ * Tests some specific methods in Facade.<p>
  *
- * This is a complement to the tests in {@link TestModelFacade} and
+ * This is a complement to the tests in
  * {@link TestModelFacade3} that makes a lot more general tests.<p>
  *
- * As opposed to the tests in {@link TestModelFacade} and
+ * As opposed to the tests in
  * {@link TestModelFacade3} that are run on a whole set of objects,
  * these tests are maintained manually.
  *
@@ -56,7 +56,7 @@ public class TestModelFacade2 extends TestCase {
      */
     public void testErrorThrownInIsAsynchronous() {
 	try {
-	    ModelFacade.isAsynchronous(new Object());
+	    Model.getFacade().isAsynchronous(new Object());
 	    assertTrue("Error was not thrown", false);
 	} catch (IllegalArgumentException e) {
 	    // We expected an error to be thrown.
@@ -74,7 +74,8 @@ public class TestModelFacade2 extends TestCase {
             Character.MAX_VALUE,
         }));
         assertTrue("0xFFFF is not filtered out of the name of a modelelement",
-                ModelFacade.getName(ob).indexOf(Character.MAX_VALUE) == -1);
+                Model.getFacade().getName(ob).indexOf(Character.MAX_VALUE)
+                == -1);
     }
 
 
@@ -88,7 +89,7 @@ public class TestModelFacade2 extends TestCase {
 
 	Model.getCoreHelper().setModelElementContainer(partition, container);
 
-	Collection collection = ModelFacade.getPartitions(container);
+	Collection collection = Model.getFacade().getPartitions(container);
 	assertTrue(collection.contains(partition));
     }
 
@@ -98,13 +99,13 @@ public class TestModelFacade2 extends TestCase {
     public void testTaggedValue() {
 	Object cls = Model.getCoreFactory().buildClass();
 
-	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
+	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
 	Model.getCoreHelper().setTaggedValue(cls, "fooValue", "foo");
-	assertEquals(ModelFacade.getValueOfTag(
-		ModelFacade.getTaggedValue(cls, "fooValue")), "foo");
+	assertEquals(Model.getFacade().getValueOfTag(
+		Model.getFacade().getTaggedValue(cls, "fooValue")), "foo");
 	Model.getCoreHelper().removeTaggedValue(cls, "fooValue");
 	Model.getCoreHelper().removeTaggedValue(cls, "nonExistingValue");
-	assertNull(ModelFacade.getTaggedValue(cls, "fooValue"));
+	assertNull(Model.getFacade().getTaggedValue(cls, "fooValue"));
     }
 
     /**
@@ -113,21 +114,21 @@ public class TestModelFacade2 extends TestCase {
     public void testGetStereotypes() {
 	Object cls = Model.getCoreFactory().buildClass();
 
-	Collection coll1 = ModelFacade.getStereotypes(cls);
+	Collection coll1 = Model.getFacade().getStereotypes(cls);
 	assertEquals(0, coll1.size());
 
 	Object stereotype =
 	    Model.getExtensionMechanismsFactory().buildStereotype(
 	            "TestStereotype",
-	            ModelFacade.getNamespace(cls));
+	            Model.getFacade().getNamespace(cls));
 
 	Model.getCoreHelper().setStereotype(cls, stereotype);
 
-	Collection coll2 = ModelFacade.getStereotypes(cls);
+	Collection coll2 = Model.getFacade().getStereotypes(cls);
 
 	assertEquals(1, coll2.size());
 	assertTrue(coll2.contains(stereotype));
 	assertEquals(stereotype,
-	             ModelFacade.getStereotypes(cls).iterator().next());
+	             Model.getFacade().getStereotypes(cls).iterator().next());
     }
 }

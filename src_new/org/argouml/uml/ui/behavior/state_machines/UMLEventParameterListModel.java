@@ -24,11 +24,12 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
- * A list model for the parameters belonging to an event
+ * A list model for the parameters belonging to an event.
+ *
  * @since Dec 14, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
@@ -47,14 +48,14 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
      */
     protected void buildModelList() {
         //setAllElements(((MEvent)getTarget()).getParameters());
-        setAllElements(ModelFacade.getParameters(getTarget()));
+        setAllElements(Model.getFacade().getParameters(getTarget()));
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getParameters(getTarget()).contains(element);
+        return Model.getFacade().getParameters(getTarget()).contains(element);
     }
 
 }

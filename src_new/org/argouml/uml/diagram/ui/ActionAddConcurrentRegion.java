@@ -32,7 +32,6 @@ import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.StateDiagramGraphModel;
 import org.argouml.uml.diagram.state.ui.FigCompositeState;
@@ -96,7 +95,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
             /*Here the actions to divide a region*/
             Fig f = (Fig) TargetManager.getInstance().getTarget();
 
-            if (ModelFacade.isAConcurrentRegion(f.getOwner()))
+            if (Model.getFacade().isAConcurrentRegion(f.getOwner()))
                 f = f.getEnclosingFig();
 
             Vector nodesInside;
@@ -117,7 +116,7 @@ public class ActionAddConcurrentRegion extends UMLAction {
 
             StateDiagramGraphModel mgm = (StateDiagramGraphModel) gm;
 
-            if (!ModelFacade.isConcurrent(st)) {
+            if (!Model.getFacade().isConcurrent(st)) {
 
                 Object region1 = 
                     Model.getStateMachinesFactory().buildCompositeState(st);

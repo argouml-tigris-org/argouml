@@ -42,7 +42,6 @@ import javax.swing.JSeparator;
 import javax.swing.SwingUtilities;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.ActionAddConcurrentRegion;
 import org.argouml.uml.diagram.ui.ActionDeleteConcurrentRegion;
@@ -532,20 +531,20 @@ public class FigConcurrentRegion extends FigState
                     if (!((Collection) trCollection).isEmpty())
                         tr = ((Collection) trCollection).iterator().next();
                     if (tr != null
-                            && ModelFacade.isATransition(tr))
+                            && Model.getFacade().isATransition(tr))
                     {
                         Model.getCommonBehaviorHelper().setTarget(tr, 
-                                ModelFacade.getContainer(owner));
+                                Model.getFacade().getContainer(owner));
                     }
                 }
                 else if (eName == "outgoing") {
                     if (!((Collection) trCollection).isEmpty())
                         tr = ((Collection) trCollection).iterator().next();
                     if (tr != null
-                            && ModelFacade.isATransition(tr))
+                            && Model.getFacade().isATransition(tr))
                     {
                         Model.getStateMachinesHelper().setSource(tr,
-                                ModelFacade.getContainer(owner));
+                                Model.getFacade().getContainer(owner));
                     }
                 }
             }

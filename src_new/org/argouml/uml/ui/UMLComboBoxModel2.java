@@ -36,7 +36,7 @@ import javax.swing.AbstractListModel;
 import javax.swing.ComboBoxModel;
 
 import org.apache.log4j.Logger;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
@@ -366,14 +366,14 @@ public abstract class UMLComboBoxModel2
      */
     protected void setTarget(Object target) {
         target = target instanceof Fig ? ((Fig) target).getOwner() : target;
-        if (ModelFacade.isABase(target) || target instanceof Diagram) {
+        if (Model.getFacade().isABase(target) || target instanceof Diagram) {
             UmlModelEventPump eventPump = UmlModelEventPump.getPump();
-            if (ModelFacade.isABase(comboBoxTarget)) {
+            if (Model.getFacade().isABase(comboBoxTarget)) {
                 eventPump.removeModelEventListener(this, comboBoxTarget,
 						   propertySetName);
             }
 
-            if (ModelFacade.isABase(target)) {
+            if (Model.getFacade().isABase(target)) {
                 comboBoxTarget = target;
                 // UmlModelEventPump.getPump()
                 // .removeModelEventListener(this, (MBase)_target,
@@ -600,7 +600,7 @@ public abstract class UMLComboBoxModel2
             oldTarget = ((Fig) oldTarget).getOwner();
         }
         if (oldTarget == currentTarget) {
-            if (ModelFacade.isABase(currentTarget)) {
+            if (Model.getFacade().isABase(currentTarget)) {
                 UmlModelEventPump.getPump().removeModelEventListener(this,
                         currentTarget, propertySetName);
             }

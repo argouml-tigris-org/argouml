@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementOrderedListModel2;
 
 /**
@@ -50,7 +49,7 @@ public class UMLAssociationEndQualifiersListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getQualifiers(getTarget()));
+            setAllElements(Model.getFacade().getQualifiers(getTarget()));
         }
     }
 
@@ -58,8 +57,8 @@ public class UMLAssociationEndQualifiersListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object o) {
-        return ModelFacade.isAAttribute(o)
-            && ModelFacade.getQualifiers(getTarget()).contains(o);
+        return Model.getFacade().isAAttribute(o)
+            && Model.getFacade().getQualifiers(getTarget()).contains(o);
     }
 
 
@@ -68,7 +67,7 @@ public class UMLAssociationEndQualifiersListModel
      */
     public void swap(int index1, int index2) {
         Object assocEnd = getTarget();
-        List c = new ArrayList(ModelFacade.getQualifiers(assocEnd));
+        List c = new ArrayList(Model.getFacade().getQualifiers(assocEnd));
         Object mem1 = c.get(index1);
         Object mem2 = c.get(index2);
         c.set(index1, mem2);

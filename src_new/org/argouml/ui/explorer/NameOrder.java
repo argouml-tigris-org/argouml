@@ -24,10 +24,11 @@
 
 package org.argouml.ui.explorer;
 
-import java.util.*;
+import java.util.Comparator;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.tigris.gef.base.Diagram;
 
 /**
@@ -39,7 +40,9 @@ import org.tigris.gef.base.Diagram;
 public class NameOrder
     implements Comparator {
 
-    /** Creates a new instance of NameOrder */
+    /**
+     * Creates a new instance of NameOrder.
+     */
     public NameOrder() {
     }
 
@@ -61,7 +64,7 @@ public class NameOrder
     }
 
     /**
-     * alphabetic ordering of user object names instead of type names
+     * Alphabetic ordering of user object names instead of type names.
      *
      * @param obj Diagram or Base
      * @param obj1 Diagram or Base
@@ -69,8 +72,9 @@ public class NameOrder
      *         A positive or negative int if the names differ.
      */
     protected int compareUserObjects(Object obj, Object obj1) {
-        if ((obj instanceof Diagram || ModelFacade.isABase(obj))
-                && (obj1 instanceof Diagram || ModelFacade.isABase(obj1))) {
+        if ((obj instanceof Diagram || Model.getFacade().isABase(obj))
+                && (obj1 instanceof Diagram
+                        || Model.getFacade().isABase(obj1))) {
 	    String name = getName(obj);
 	    String name1 = getName(obj1);
             int ret = name.compareTo(name1);
@@ -80,9 +84,10 @@ public class NameOrder
 
 	return 0;
     }
-    
+
     /**
-     * Get the name of the diagram or model element
+     * Get the name of the diagram or model element.
+     *
      * @param obj the item to fetch name from
      * @return the name
      */
@@ -91,7 +96,7 @@ public class NameOrder
         if (obj instanceof Diagram) {
             name = ((Diagram) obj).getName();
         } else {
-            name = ModelFacade.getName(obj);
+            name = Model.getFacade().getName(obj);
         }
         if (name == null) {
             return "";

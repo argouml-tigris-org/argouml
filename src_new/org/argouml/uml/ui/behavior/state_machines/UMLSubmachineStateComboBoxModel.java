@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.state_machines;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 
 /**
@@ -47,7 +46,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object element) {
-        return (ModelFacade.isAStateMachine(element)
+        return (Model.getFacade().isAStateMachine(element)
             && element != Model.getStateMachinesHelper()
                 .getStateMachine(getTarget()));
     }
@@ -68,7 +67,7 @@ public class UMLSubmachineStateComboBoxModel extends UMLComboBoxModel2 {
      */
     protected Object getSelectedModelElement() {
         if (getTarget() != null) {
-            return ModelFacade.getSubmachine(getTarget());
+            return Model.getFacade().getSubmachine(getTarget());
         }
         return null;
     }

@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -60,8 +59,8 @@ class ActionAddParameter extends AbstractActionNewModelElement {
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
         Object feature = null;
-        if (ModelFacade.isAParameter(target)) {
-            feature = ModelFacade.getBehavioralFeature(target);
+        if (Model.getFacade().isAParameter(target)) {
+            feature = Model.getFacade().getBehavioralFeature(target);
             if (feature != null) {
                 Project currentProject =
                     ProjectManager.getManager().getCurrentProject();

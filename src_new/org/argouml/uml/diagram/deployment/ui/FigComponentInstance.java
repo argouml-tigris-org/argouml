@@ -37,7 +37,6 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
@@ -92,9 +91,9 @@ public class FigComponentInstance extends FigNodeModelElement {
     public FigComponentInstance(GraphModel gm, Object node) {
         this();
         setOwner(node);
-        if (org.argouml.model.ModelFacade.isAClassifier(node)
-	        && (org.argouml.model.ModelFacade.getName(node) != null)) {
-            getNameFig().setText(org.argouml.model.ModelFacade.getName(node));
+        if (Model.getFacade().isAClassifier(node)
+	        && (Model.getFacade().getName(node) != null)) {
+            getNameFig().setText(Model.getFacade().getName(node));
 	}
         updateBounds();
     }
@@ -222,12 +221,12 @@ public class FigComponentInstance extends FigNodeModelElement {
     public void setEnclosingFig(Fig encloser) {
 
         if (encloser != null
-            && ModelFacade.isANodeInstance(encloser.getOwner())
+            && Model.getFacade().isANodeInstance(encloser.getOwner())
             && getOwner() != null) {
 
             Object node = /*(MNodeInstance)*/ encloser.getOwner();
             Object comp = /*(MComponentInstance)*/ getOwner();
-            if (ModelFacade.getNodeInstance(comp) != node) {
+            if (Model.getFacade().getNodeInstance(comp) != node) {
                 Model.getCommonBehaviorHelper().setNodeInstance(comp, node);
             }
             super.setEnclosingFig(encloser);
@@ -362,12 +361,12 @@ public class FigComponentInstance extends FigNodeModelElement {
         if (me == null)
             return;
 	Object stereo = null;
-	if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+	if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
         if (stereo == null
-            || ModelFacade.getName(stereo) == null
-            || ModelFacade.getName(stereo).length() == 0) {
+            || Model.getFacade().getName(stereo) == null
+            || Model.getFacade().getName(stereo).length() == 0) {
 
             setStereotype("");
 
@@ -388,18 +387,18 @@ public class FigComponentInstance extends FigNodeModelElement {
         if (coi == null)
             return;
         String nameStr = "";
-        if (ModelFacade.getName(coi) != null) {
-            nameStr = ModelFacade.getName(coi).trim();
+        if (Model.getFacade().getName(coi) != null) {
+            nameStr = Model.getFacade().getName(coi).trim();
         }
 
         // construct bases string (comma separated)
         String baseStr = "";
-        Collection col = ModelFacade.getClassifiers(coi);
+        Collection col = Model.getFacade().getClassifiers(coi);
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
-            baseStr = ModelFacade.getName(it.next());
+            baseStr = Model.getFacade().getName(it.next());
             while (it.hasNext()) {
-                baseStr += ", " + ModelFacade.getName(it.next());
+                baseStr += ", " + Model.getFacade().getName(it.next());
             }
         }
         if (isReadyToEdit()) {

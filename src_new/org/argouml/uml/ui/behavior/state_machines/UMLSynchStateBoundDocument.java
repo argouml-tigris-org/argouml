@@ -25,7 +25,6 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLPlainTextDocument;
 
 import javax.swing.text.AttributeSet;
@@ -59,7 +58,7 @@ public class UMLSynchStateBoundDocument extends UMLPlainTextDocument {
      * @see org.argouml.uml.ui.UMLPlainTextDocument#getProperty()
      */
     protected String getProperty() {
-        int bound = ModelFacade.getBound(getTarget());
+        int bound = Model.getFacade().getBound(getTarget());
         if (bound <= 0)
             return "*";
         else

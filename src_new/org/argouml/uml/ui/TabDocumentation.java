@@ -28,11 +28,11 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Configuration;
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
+import org.tigris.gef.presentation.Fig;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.LabelledLayout;
 import org.tigris.swidgets.Vertical;
-import org.tigris.gef.presentation.Fig;
 
 /**
  * This the tab in the details pane for documentation.<p>
@@ -125,7 +125,7 @@ public class TabDocumentation extends PropPanel {
     public boolean shouldBeEnabled() {
         Object target = getTarget();
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
-        return ModelFacade.isAModelElement(target);
+        return Model.getFacade().isAModelElement(target);
     }
 
 } /* end class TabDocumentation */

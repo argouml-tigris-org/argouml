@@ -33,17 +33,17 @@ import javax.swing.JTree;
 import javax.swing.plaf.metal.MetalIconFactory;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.base.Globals;
-import org.tigris.gef.presentation.Fig;
-
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLTreeCellRenderer;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.presentation.Fig;
 
 
 /**
@@ -115,23 +115,17 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
                     else lab.setIcon(postIt100);
                 }
 
-            }
-            else if (value instanceof Decision) {
+            } else if (value instanceof Decision) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-            }
-            else if (value instanceof Goal) {
+            } else if (value instanceof Goal) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-            }
-            else if (value instanceof Poster) {
+            } else if (value instanceof Poster) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-            }
-            else if (value instanceof PriorityNode) {
+            } else if (value instanceof PriorityNode) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-            }
-            else if (value instanceof KnowledgeTypeNode) {
+            } else if (value instanceof KnowledgeTypeNode) {
                 lab.setIcon(MetalIconFactory.getTreeFolderIcon());
-            }
-            else if (value instanceof Diagram) {
+            } else if (value instanceof Diagram) {
                 return treeCellRenderer.getTreeCellRendererComponent(tree,
 								 value,
 								 sel,
@@ -139,12 +133,12 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
 								 leaf,
 								 row,
 								 hasFocus);
-            }
-            else {
+            } else {
                 Object newValue = value;
-                if (newValue instanceof Fig)
+                if (newValue instanceof Fig) {
                     newValue = ((Fig) value).getOwner();
-                if (org.argouml.model.ModelFacade.isAModelElement(newValue)) {
+                }
+                if (Model.getFacade().isAModelElement(newValue)) {
                     return treeCellRenderer.getTreeCellRendererComponent(tree,
 								     newValue,
 								     sel,
@@ -161,9 +155,9 @@ public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
             lab.setToolTipText(tip);
             tree.setToolTipText(tip);
 
-            if (!sel)
+            if (!sel) {
                 lab.setBackground(getBackgroundNonSelectionColor());
-            else {
+            } else {
                 Color high = Globals.getPrefs().getHighlightColor();
                 high = high.brighter().brighter();
                 lab.setBackground(high);

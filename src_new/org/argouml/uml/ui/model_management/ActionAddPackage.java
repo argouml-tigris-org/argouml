@@ -30,7 +30,6 @@ import javax.swing.Action;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 
@@ -55,7 +54,7 @@ class ActionAddPackage extends AbstractActionNewModelElement {
      */
     public void actionPerformed(ActionEvent e) {
         Object target = TargetManager.getInstance().getModelTarget();
-        if (ModelFacade.isAPackage(target)) {
+        if (Model.getFacade().isAPackage(target)) {
             Object newPackage =
                 Model.getModelManagementFactory().createPackage();
             Model.getCoreHelper().addOwnedElement(target, newPackage);

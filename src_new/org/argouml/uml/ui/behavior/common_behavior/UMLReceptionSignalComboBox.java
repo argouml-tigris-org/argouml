@@ -27,7 +27,6 @@ package org.argouml.uml.ui.behavior.common_behavior;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxModel2;
 import org.argouml.uml.ui.UMLUserInterfaceContainer;
@@ -55,7 +54,7 @@ public class UMLReceptionSignalComboBox extends UMLComboBox2 {
         Object o = getModel().getElementAt(getSelectedIndex());
         Object signal = /*(MSignal)*/ o;
         Object reception = /*(MReception)*/ getTarget();
-        if (signal != ModelFacade.getSignal(reception)) {
+        if (signal != Model.getFacade().getSignal(reception)) {
             Model.getCommonBehaviorHelper().setSignal(reception, signal);
         }
     }

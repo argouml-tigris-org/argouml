@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -47,7 +47,7 @@ public class UMLClassifierClassifierRoleListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getClassifierRoles(getTarget()));
+            setAllElements(Model.getFacade().getClassifierRoles(getTarget()));
         }
     }
 
@@ -55,7 +55,8 @@ public class UMLClassifierClassifierRoleListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return ModelFacade.getClassifierRoles(getTarget()).contains(element);
+        return Model.getFacade().getClassifierRoles(getTarget())
+        	.contains(element);
     }
 
 }

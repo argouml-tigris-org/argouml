@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.tigris.gef.util.VectorSet;
 
@@ -63,31 +62,31 @@ public class CrMultipleInitialStates extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-        if (!(ModelFacade.isAPseudostate(dm))) {
+        if (!(Model.getFacade().isAPseudostate(dm))) {
             return NO_PROBLEM;
         }
-        Object k = ModelFacade.getPseudostateKind(dm);
-        if (!ModelFacade.equalsPseudostateKind(
+        Object k = Model.getFacade().getPseudostateKind(dm);
+        if (!Model.getFacade().equalsPseudostateKind(
                 k,
                 Model.getPseudostateKind().getInitial())) {
 	    return NO_PROBLEM;
         }
 
         // container state / composite state
-        Object cs = ModelFacade.getModelElementContainer(dm);
+        Object cs = Model.getFacade().getModelElementContainer(dm);
         if (cs == null) {
             LOG.debug("null parent state");
             return NO_PROBLEM;
         }
-        Collection peers = ModelFacade.getSubvertices(cs);
+        Collection peers = Model.getFacade().getSubvertices(cs);
         int initialStateCount = 0;
         int size = peers.size();
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
-            if (ModelFacade.isAPseudostate(sv)
-                && ModelFacade.
+            if (Model.getFacade().isAPseudostate(sv)
+                && Model.getFacade().
                 	equalsPseudostateKind(
-                	        ModelFacade.getPseudostateKind(sv),
+                	        Model.getFacade().getPseudostateKind(sv),
                 	        Model.getPseudostateKind().getInitial())) {
                 initialStateCount++;
             }
@@ -113,18 +112,18 @@ public class CrMultipleInitialStates extends CrUML {
      */
     protected VectorSet computeOffenders(Object ps) {
         VectorSet offs = new VectorSet(ps);
-        Object cs = ModelFacade.getModelElementContainer(ps);
+        Object cs = Model.getFacade().getModelElementContainer(ps);
         if (cs == null) {
             LOG.debug("null parent in still valid");
             return offs;
 	}
-        Collection peers = ModelFacade.getSubvertices(cs);
+        Collection peers = Model.getFacade().getSubvertices(cs);
 
         for (Iterator iter = peers.iterator(); iter.hasNext();) {
             Object sv = iter.next();
-            if (ModelFacade.isAPseudostate(sv)
-                && ModelFacade.equalsPseudostateKind(
-                        ModelFacade.getPseudostateKind(sv),
+            if (Model.getFacade().isAPseudostate(sv)
+                && Model.getFacade().equalsPseudostateKind(
+                        Model.getFacade().getPseudostateKind(sv),
                         Model.getPseudostateKind().getInitial())) {
                 offs.addElement(sv);
 	    }

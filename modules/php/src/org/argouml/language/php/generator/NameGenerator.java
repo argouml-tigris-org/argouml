@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2004 The Regents of the University of California. All
+// Copyright (c) 2004, 2005 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -25,8 +25,7 @@
 package org.argouml.language.php.generator;
 
 import org.apache.log4j.Logger;
-
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Helper class to generate names for model elements in PHP notation
@@ -56,25 +55,25 @@ public final class NameGenerator {
      *
      * @return The generated name for the given model element.
      *
-     * TODO: fix org.argouml.model.ModelFacade#getName
+     * TODO: fix org.argouml.model.Facade#getName
      */
     protected static final String generate(Object modelElement,
         int iMajorVersion) {
         String sModelElementName = "";
 
-        if (ModelFacade.isAPackage(modelElement)) {
+        if (Model.getFacade().isAPackage(modelElement)) {
             return generatePackageName(modelElement);
-        } else if (ModelFacade.isAClassifier(modelElement)) {
+        } else if (Model.getFacade().isAClassifier(modelElement)) {
             return generateClassifierName(modelElement);
-        } else if (ModelFacade.isAAttribute(modelElement)) {
+        } else if (Model.getFacade().isAAttribute(modelElement)) {
             return generateAttributeName(modelElement, iMajorVersion);
-        } else if (ModelFacade.isAOperation(modelElement)) {
+        } else if (Model.getFacade().isAOperation(modelElement)) {
             return generateOperationName(modelElement, iMajorVersion);
         } else {
             try {
-                sModelElementName = ModelFacade.getName(modelElement);
+                sModelElementName = Model.getFacade().getName(modelElement);
             } catch (IllegalArgumentException exp) {
-                LOG.error("org.argouml.model.ModelFacade#getName"
+                LOG.error("org.argouml.model.Facade#getName"
                         + " needs already a fix");
             }
         }
@@ -92,23 +91,23 @@ public final class NameGenerator {
      */
     public static final String generatePackageName(Object modelElement) {
         if (modelElement == null
-                || !ModelFacade.isANamespace(modelElement)
-                || ModelFacade.getNamespace(modelElement) == null) {
+                || !Model.getFacade().isANamespace(modelElement)
+                || Model.getFacade().getNamespace(modelElement) == null) {
             return null;
         }
 
-        if (!ModelFacade.isAPackage(modelElement)) {
-            modelElement = ModelFacade.getNamespace(modelElement);
-            if (ModelFacade.getNamespace(modelElement) == null) {
+        if (!Model.getFacade().isAPackage(modelElement)) {
+            modelElement = Model.getFacade().getNamespace(modelElement);
+            if (Model.getFacade().getNamespace(modelElement) == null) {
                 return null;
             }
         }
 
-        String sPackagePath = ModelFacade.getName(modelElement);
-        while ((modelElement = ModelFacade.getNamespace(modelElement))
+        String sPackagePath = Model.getFacade().getName(modelElement);
+        while ((modelElement = Model.getFacade().getNamespace(modelElement))
                 != null) {
-            if (ModelFacade.getNamespace(modelElement) != null) {
-                sPackagePath = ModelFacade.getName(modelElement) + '_'
+            if (Model.getFacade().getNamespace(modelElement) != null) {
+                sPackagePath = Model.getFacade().getName(modelElement) + '_'
                         + sPackagePath;
             }
         }
@@ -125,12 +124,12 @@ public final class NameGenerator {
      * @return The PHP class name for the given model element
      */
     public static final String generateClassifierName(Object modelElement) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
 
-        String sName = ModelFacade.getName(modelElement);
+        String sName = Model.getFacade().getName(modelElement);
 
         String sPackageName = generatePackageName(modelElement);
         if (sPackageName != null && sPackageName.length() > 0) {
@@ -150,14 +149,14 @@ public final class NameGenerator {
      */
     protected static final String generateAttributeName(Object modelElement,
         int iMajorVersion) {
-        if (!ModelFacade.isAAttribute(modelElement)) {
+        if (!Model.getFacade().isAAttribute(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Attribute required");
         }
 
-        String sAttributeName = ModelFacade.getName(modelElement);
+        String sAttributeName = Model.getFacade().getName(modelElement);
 
-        if (iMajorVersion < 5 && !(ModelFacade.isPublic(modelElement))) {
+        if (iMajorVersion < 5 && !(Model.getFacade().isPublic(modelElement))) {
             return "_" + sAttributeName;
         } else {
             return sAttributeName;
@@ -175,14 +174,14 @@ public final class NameGenerator {
      */
     protected static final String generateOperationName(Object modelElement,
         int iMajorVersion) {
-        if (!ModelFacade.isAOperation(modelElement)) {
+        if (!Model.getFacade().isAOperation(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Operation required");
         }
 
-        String sOperationName = ModelFacade.getName(modelElement);
+        String sOperationName = Model.getFacade().getName(modelElement);
 
-        if (iMajorVersion < 5 && !(ModelFacade.isPublic(modelElement))) {
+        if (iMajorVersion < 5 && !(Model.getFacade().isPublic(modelElement))) {
             return "_" + sOperationName;
         } else {
             return sOperationName;
@@ -199,7 +198,7 @@ public final class NameGenerator {
      */
     protected static final String generateFilename(Object modelElement,
         int iMajorVersion) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -218,7 +217,7 @@ public final class NameGenerator {
      */
     protected static final String generateFilename(Object modelElement,
         String sPath, int iMajorVersion) {
-        if (!ModelFacade.isAClassifier(modelElement)) {
+        if (!Model.getFacade().isAClassifier(modelElement)) {
             throw new ClassCastException(modelElement.getClass()
                     + " has wrong object type, Classifier required");
         }
@@ -252,9 +251,9 @@ public final class NameGenerator {
 
         String sFilename = sPath;
         if (iMajorVersion > 4) {
-            if (ModelFacade.isAInterface(modelElement)) {
+            if (Model.getFacade().isAInterface(modelElement)) {
                 sFilename += "interface.";
-            } else if (ModelFacade.isAClass(modelElement)) {
+            } else if (Model.getFacade().isAClass(modelElement)) {
                 sFilename += "class.";
             } else {
                 sFilename += "unknown.";

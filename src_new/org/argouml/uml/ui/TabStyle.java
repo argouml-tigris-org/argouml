@@ -39,7 +39,7 @@ import org.argouml.kernel.DelayedChangeNotify;
 import org.argouml.kernel.DelayedVChangeListener;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.StylePanel;
 import org.argouml.ui.TabFigTarget;
@@ -181,7 +181,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
         // this is that the detailspane is configurable and cannot
         // know what's the correct target for some tab.
         if (!(t instanceof Fig)) {
-            if (ModelFacade.isABase(t)) {
+            if (Model.getFacade().isABase(t)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection col = p.findFigsForMember(t);
                 if (col == null || col.isEmpty()) {
@@ -351,7 +351,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
     public boolean shouldBeEnabled(Object targetItem) {
 
         if (!(targetItem instanceof Fig)) {
-            if (ModelFacade.isABase(targetItem)) {
+            if (Model.getFacade().isABase(targetItem)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 ArgoDiagram diagram = p.getActiveDiagram();
                 if (diagram == null) {
@@ -390,7 +390,7 @@ public class TabStyle extends TabSpawnable implements TabFigTarget,
 //    public boolean shouldBeEnabled(Object targetItem) {
 //
 //        if (!(targetItem instanceof Fig)) {
-//            if (ModelFacade.isABase(targetItem)) {
+//            if (Model.getFacade().isABase(targetItem)) {
 //                Project p = ProjectManager.getManager().getCurrentProject();
 //                Fig f = p.getActiveDiagram().presentationFor(targetItem);
 //

@@ -31,9 +31,6 @@ import java.lang.reflect.Method;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
-
-
 
 /**
  * This class is a helper class of tests that tests
@@ -95,11 +92,11 @@ public class CheckUMLModelHelper {
 	TestCase.assertTrue("toString() corrupt in " + c,
 		      mo.toString() instanceof String);
 	TestCase.assertTrue("getUMLClassName() corrupt in " + c,
-		      ModelFacade.getUMLClassName(mo) instanceof String);
+		      Model.getFacade().getUMLClassName(mo) instanceof String);
 
 	TestCase.assertTrue(
             "getUMLClassName() different from expected in " + c,
-	    name.equals(ModelFacade.getUMLClassName(mo)));
+	    name.equals(Model.getFacade().getUMLClassName(mo)));
 
 	Model.getUmlFactory().delete(mo);
 
@@ -233,7 +230,7 @@ public class CheckUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (ModelFacade.isAModelElement(base)) {
+                    if (Model.getFacade().isAModelElement(base)) {
                         TestCase.assertTrue(
                             "not a valid metaModelName " + names[i],
                             Model.getExtensionMechanismsHelper()
@@ -274,7 +271,7 @@ public class CheckUMLModelHelper {
                         f.getClass()
                         	.getMethod("create" + names[i], new Class[] {});
                     Object base = m.invoke(f, new Object[] {});
-                    if (ModelFacade.isAModelElement(base)) {
+                    if (Model.getFacade().isAModelElement(base)) {
                         Object stereo2 =
                             Model.getExtensionMechanismsFactory()
                                 .buildStereotype(base, "test2", ns);
@@ -282,7 +279,7 @@ public class CheckUMLModelHelper {
                             "Unexpected invalid stereotype",
                             Model.getExtensionMechanismsHelper()
                                 .isValidStereoType(base, stereo2));
-                        if (!(ModelFacade.isAClass(base))) {
+                        if (!(Model.getFacade().isAClass(base))) {
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()

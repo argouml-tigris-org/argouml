@@ -30,7 +30,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * A critic to detect whether an attribute has a name
@@ -52,9 +52,9 @@ public class CrMissingAttrName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!(ModelFacade.isAAttribute(dm))) return NO_PROBLEM;
+	if (!(Model.getFacade().isAAttribute(dm))) return NO_PROBLEM;
 	Object attr = /*(MAttribute)*/ dm;
-	String myName = ModelFacade.getName(attr);
+	String myName = Model.getFacade().getName(attr);
 	if (myName == null
             || "".equals(myName)) return PROBLEM_FOUND;
 	if (myName.length() == 0) return PROBLEM_FOUND;
@@ -78,11 +78,11 @@ public class CrMissingAttrName extends CrUML {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this attribute.";
 	    String sug = "AttributeName";
-	    if (ModelFacade.isAAttribute(me)) {
+	    if (Model.getFacade().isAAttribute(me)) {
 		Object a = /*(MAttribute)*/ me;
 		int count = 1;
-		if (ModelFacade.getOwner(a) != null)
-		    count = ModelFacade.getFeatures(ModelFacade.getOwner(a))
+		if (Model.getFacade().getOwner(a) != null)
+		    count = Model.getFacade().getFeatures(Model.getFacade().getOwner(a))
 		            .size();
 		sug = "attr" + (count + 1);
 	    }

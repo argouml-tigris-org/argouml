@@ -33,7 +33,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.FileChooserFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -64,7 +63,7 @@ public class ActionSetSourcePath extends UMLAction {
 	File f = getNewDirectory();
 	if (f != null) {
 	    Object obj = TargetManager.getInstance().getTarget();
-	    if (ModelFacade.isAModelElement(obj)) {
+	    if (Model.getFacade().isAModelElement(obj)) {
 		Model.getCoreHelper().setTaggedValue(obj, "src_path", 
 		        f.getPath());
 	    }
@@ -80,16 +79,16 @@ public class ActionSetSourcePath extends UMLAction {
 	String name = null;
 	String type = null;
 	String path = null;
-	if (ModelFacade.isAModelElement(obj)) {
-	    name = ModelFacade.getName(obj);
-            Object tv = ModelFacade.getTaggedValue(obj, "src_path");
+	if (Model.getFacade().isAModelElement(obj)) {
+	    name = Model.getFacade().getName(obj);
+            Object tv = Model.getFacade().getTaggedValue(obj, "src_path");
             if (tv != null)
-                path = ModelFacade.getValueOfTag(tv);
-	    if (ModelFacade.isAPackage(obj))
+                path = Model.getFacade().getValueOfTag(tv);
+	    if (Model.getFacade().isAPackage(obj))
 		type = "Package";
-	    else if (ModelFacade.isAClass(obj))
+	    else if (Model.getFacade().isAClass(obj))
 		type = "Class";
-	    if (ModelFacade.isAInterface(obj))
+	    if (Model.getFacade().isAInterface(obj))
 		type = "Interface";
 	} else {
 	    return null;

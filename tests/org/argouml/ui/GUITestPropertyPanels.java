@@ -49,7 +49,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.persistence.ZargoFilePersister;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
@@ -153,11 +152,12 @@ public class GUITestPropertyPanels extends TestCase {
 
         while (meEnum.hasMoreElements()) {
             Object obj = meEnum.nextElement();
-            if (ModelFacade.isAModelElement(obj)) {
+            if (Model.getFacade().isAModelElement(obj)) {
                 if (!meMap.containsKey(obj.getClass())) {
                     suite.addTest(new GUITestPropertyPanels(
 			    obj,
-			    "PropPanel" + ModelFacade.getUMLClassName(obj)));
+			    "PropPanel"
+			    + Model.getFacade().getUMLClassName(obj)));
                     meMap.put(obj.getClass(), obj);
                 }
             }
@@ -272,7 +272,7 @@ class ChildGenModelElements implements ChildGenerator {
             }
         }
 
-        if (!ModelFacade.isAModelElement(o)) {
+        if (!Model.getFacade().isAModelElement(o)) {
             return EnumerationEmpty.theInstance();
         }
 
@@ -281,69 +281,70 @@ class ChildGenModelElements implements ChildGenerator {
 
 
         // now we deal only with modelelements
-        if (ModelFacade.getBehaviors(o) != null) {
-            Vector beh = new Vector(ModelFacade.getBehaviors(o));
+        if (Model.getFacade().getBehaviors(o) != null) {
+            Vector beh = new Vector(Model.getFacade().getBehaviors(o));
             res.addSub(beh.elements());
         }
 
-        if (ModelFacade.isANamespace(o)) {
-            if (ModelFacade.getOwnedElements(o) != null) {
-                Vector own = new Vector(ModelFacade.getOwnedElements(o));
+        if (Model.getFacade().isANamespace(o)) {
+            if (Model.getFacade().getOwnedElements(o) != null) {
+                Vector own = new Vector(Model.getFacade().getOwnedElements(o));
                 res.addSub(own.elements());
             }
         }
 
-        if (ModelFacade.isAClassifier(o)) {
-            if (ModelFacade.getFeatures(o) != null) {
-                Vector own = new Vector(ModelFacade.getFeatures(o));
+        if (Model.getFacade().isAClassifier(o)) {
+            if (Model.getFacade().getFeatures(o) != null) {
+                Vector own = new Vector(Model.getFacade().getFeatures(o));
                 res.addSub(own.elements());
             }
         }
 
-        if (ModelFacade.isABehavioralFeature(o)) {
-            if (ModelFacade.getParameters(o) != null) {
-                Vector params = new Vector(ModelFacade.getParameters(o));
+        if (Model.getFacade().isABehavioralFeature(o)) {
+            if (Model.getFacade().getParameters(o) != null) {
+                Vector params = new Vector(Model.getFacade().getParameters(o));
                 res.addSub(params.elements());
             }
         }
 
-        if (ModelFacade.isAAssociation(o)) {
-            if (ModelFacade.getConnections(o) != null) {
-                Vector assocEnds = new Vector(ModelFacade.getConnections(o));
+        if (Model.getFacade().isAAssociation(o)) {
+            if (Model.getFacade().getConnections(o) != null) {
+                Vector assocEnds =
+                    new Vector(Model.getFacade().getConnections(o));
                 res.addSub(assocEnds.elements());
             }
             //TODO: MAssociationRole
         }
 
-        if (ModelFacade.isAElementImport(o)) {
-            Object me = ModelFacade.getModelElement(o);
+        if (Model.getFacade().isAElementImport(o)) {
+            Object me = Model.getFacade().getModelElement(o);
             res.addSub(new EnumerationSingle(me));
         }
 
-        if (ModelFacade.isACompositeState(o)) {
-            Vector substates = new Vector(ModelFacade.getSubvertices(o));
+        if (Model.getFacade().isACompositeState(o)) {
+            Vector substates = new Vector(Model.getFacade().getSubvertices(o));
             if (substates != null) {
                 res.addSub(substates.elements());
             }
         }
 
-        if (ModelFacade.isAStateMachine(o)) {
+        if (Model.getFacade().isAStateMachine(o)) {
             EnumerationComposite res2 = new EnumerationComposite();
             Object top = Model.getStateMachinesHelper().getTop(o);
             if (top != null) {
                 res2.addSub(new EnumerationSingle(top));
             }
-            res2.addSub(new Vector(ModelFacade.getTransitions(o)));
+            res2.addSub(new Vector(Model.getFacade().getTransitions(o)));
             res.addSub(res2);
         }
 
-        // if (ModelFacade.isATransition(o)) {
-        ///   Vector action = new Vector(ModelFacade.getAction(o));
+        // if (Model.getFacade().isATransition(o)) {
+        ///   Vector action = new Vector(Model.getFacade().getAction(o));
         //if (action != null) res.addSub(action.elements());
         //}
 
-        if (ModelFacade.isANode(o)) {
-            Vector substates = new Vector(ModelFacade.getResidents(o));
+        if (Model.getFacade().isANode(o)) {
+            Vector substates = new Vector(Model.getFacade().getResidents(o));
             if (substates != null) {
                 res.addSub(substates.elements());
             }

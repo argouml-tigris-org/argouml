@@ -28,7 +28,6 @@ import java.awt.event.ActionEvent;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 import org.argouml.uml.ui.UMLComboBox2;
 
@@ -62,12 +61,12 @@ public class ActionSetModelElementNamespace extends UMLAction {
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) source;
             Object o = box.getTarget();
-            if (ModelFacade.isAModelElement(o)) {
+            if (Model.getFacade().isAModelElement(o)) {
                 m = /*(MModelElement)*/ o;
-                oldNamespace = ModelFacade.getNamespace(m);
+                oldNamespace = Model.getFacade().getNamespace(m);
             }
             o = box.getSelectedItem();
-            if (ModelFacade.isANamespace(o)) {
+            if (Model.getFacade().isANamespace(o)) {
                 newNamespace = /*(MNamespace)*/ o;
             }
         }

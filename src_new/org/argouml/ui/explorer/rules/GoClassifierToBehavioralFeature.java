@@ -30,7 +30,6 @@ import java.util.Set;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 /**
  * Go rule to navigate from a classifier to the behavioral
@@ -53,7 +52,7 @@ public class GoClassifierToBehavioralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAClassifier(parent)) {
+	if (Model.getFacade().isAClassifier(parent)) {
 	    return Model.getCoreHelper().getBehavioralFeatures(parent);
 	}
 	return null;
@@ -63,7 +62,7 @@ public class GoClassifierToBehavioralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAClassifier(parent)) {
+        if (Model.getFacade().isAClassifier(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

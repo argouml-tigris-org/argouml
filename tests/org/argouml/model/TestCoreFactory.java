@@ -284,16 +284,17 @@ public class TestCoreFactory extends TestCase {
 	Object elem = Model.getModelManagementFactory().createModel();
 	Object con = Model.getCoreFactory().buildConstraint(elem);
 	assertNull("Namespace is unexpectly set",
-            ModelFacade.getNamespace(con));
+            Model.getFacade().getNamespace(con));
 	assertTrue(
 		   "Constrained element is not set",
-		   !ModelFacade.getConstrainedElements(con).isEmpty());
+		   !Model.getFacade().getConstrainedElements(con).isEmpty());
 	assertTrue("Constraint is not set",
-	        !ModelFacade.getConstraints(elem).isEmpty());
+	        !Model.getFacade().getConstraints(elem).isEmpty());
 	Model.getCoreHelper().setNamespace(elem,
 	        Model.getCoreFactory().createNamespace());
 	con = Model.getCoreFactory().buildConstraint(elem);
-	assertNotNull("Namespace is not set", ModelFacade.getNamespace(con));
+	assertNotNull("Namespace is not set",
+	        Model.getFacade().getNamespace(con));
     }
 
     /**

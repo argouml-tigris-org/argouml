@@ -34,7 +34,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Selection;
@@ -87,9 +87,9 @@ public class FigMNode extends FigNodeModelElement {
     public FigMNode(GraphModel gm, Object node) {
 	this();
 	setOwner(node);
-	if (ModelFacade.isAClassifier(node)
-	        && (ModelFacade.getName(node) != null)) {
-	    getNameFig().setText(ModelFacade.getName(node));
+	if (Model.getFacade().isAClassifier(node)
+	        && (Model.getFacade().getName(node) != null)) {
+	    getNameFig().setText(Model.getFacade().getName(node));
 	}
     }
 
@@ -235,12 +235,12 @@ public class FigMNode extends FigNodeModelElement {
 	Object me = /*(MModelElement)*/ getOwner();
 	if (me == null) return;
 	Object stereo = null;
-	if (ModelFacade.getStereotypes(me).size() > 0) {
-            stereo = ModelFacade.getStereotypes(me).iterator().next();
+	if (Model.getFacade().getStereotypes(me).size() > 0) {
+            stereo = Model.getFacade().getStereotypes(me).iterator().next();
         }
 	if (stereo == null
-	    || ModelFacade.getName(stereo) == null
-	    || ModelFacade.getName(stereo).length() == 0) {
+	    || Model.getFacade().getName(stereo) == null
+	    || Model.getFacade().getName(stereo).length() == 0) {
 
 	    setStereotype("");
 

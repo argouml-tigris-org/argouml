@@ -38,7 +38,7 @@ import org.argouml.application.events.ArgoEventPump;
 import org.argouml.application.events.ArgoNotationEvent;
 import org.argouml.application.notation.NotationNameImpl;
 import org.argouml.application.notation.NotationProviderFactory;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Provides centralized methods dealing with notation.
@@ -71,14 +71,14 @@ public final class Notation implements PropertyChangeListener {
     // .getInstance().getNotation();
 
     /**
-     * The configuration key for the preferred notation
+     * The configuration key for the preferred notation.
      */
     public static final ConfigurationKey KEY_DEFAULT_NOTATION =
         Configuration.makeKey("notation", "default");
 
     /**
      * The configuration key that indicates whether to show stereotypes
-     * in the navigation panel
+     * in the navigation panel.
      */
     public static final ConfigurationKey KEY_SHOW_STEREOTYPES =
         Configuration.makeKey("notation", "navigation", "show", "stereotypes");
@@ -300,7 +300,7 @@ public final class Notation implements PropertyChangeListener {
 
     private static String generateClassifierInState(NotationName notation,
             Object/*MObjectFlowState*/ m) {
-        Collection c = ModelFacade.getInStates(m);
+        Collection c = Model.getFacade().getInStates(m);
         // MVW: I have no idea how to handle multiple states,
         // so we go for the 1st one..
         Iterator i = c.iterator();
@@ -668,11 +668,11 @@ public final class Notation implements PropertyChangeListener {
         if (o == null) {
             return "";
 	}
-        if (ModelFacade.isAOperation(o)) {
+        if (Model.getFacade().isAOperation(o)) {
             return generateOperation(nn, /*(MOperation)*/ o,
                     		     documented);
 	}
-        if (ModelFacade.isAAttribute(o)) {
+        if (Model.getFacade().isAAttribute(o)) {
             return generateAttribute(nn, /*(MAttribute)*/ o,
 				     documented);
 	}
@@ -702,31 +702,31 @@ public final class Notation implements PropertyChangeListener {
 	}
 
         //added to support association roles
-        if (ModelFacade.isAAssociationRole(o)) {
+        if (Model.getFacade().isAAssociationRole(o)) {
             return generateAssociationRole(nn, o);
         }
 
         // Added to support extension points
-        if (ModelFacade.isAExtensionPoint(o)) {
+        if (Model.getFacade().isAExtensionPoint(o)) {
             return generateExtensionPoint(nn, o);
         }
 
-        if (ModelFacade.isAOperation(o)) {
+        if (Model.getFacade().isAOperation(o)) {
             return generateOperation(nn, o, false);
 	}
-        if (ModelFacade.isAAttribute(o)) {
+        if (Model.getFacade().isAAttribute(o)) {
             return generateAttribute(nn, o, false);
 	}
-        if (ModelFacade.isAParameter(o)) {
+        if (Model.getFacade().isAParameter(o)) {
             return generateParameter(nn, o);
 	}
-        if (ModelFacade.isAPackage(o)) {
+        if (Model.getFacade().isAPackage(o)) {
             return generatePackage(nn, o);
 	}
-        if (ModelFacade.isAClassifier(o)) {
+        if (Model.getFacade().isAClassifier(o)) {
             return generateClassifier(nn, o);
 	}
-        if (ModelFacade.isAExpression(o)) {
+        if (Model.getFacade().isAExpression(o)) {
             return generateExpression(nn, o);
 	}
         if (o instanceof String) {
@@ -735,54 +735,54 @@ public final class Notation implements PropertyChangeListener {
         // if (o instanceof String) {
         //     return generateUninterpreted(nn,(String) o);
 	// }
-        if (ModelFacade.isAStereotype(o)) {
+        if (Model.getFacade().isAStereotype(o)) {
             return generateStereotype(nn, o);
 	}
-        if (ModelFacade.isATaggedValue(o)) {
+        if (Model.getFacade().isATaggedValue(o)) {
             return generateTaggedValue(nn, o);
 	}
-        if (ModelFacade.isAAssociation(o)) {
+        if (Model.getFacade().isAAssociation(o)) {
             return generateAssociation(nn, o);
 	}
-        if (ModelFacade.isAAssociationEnd(o)) {
+        if (Model.getFacade().isAAssociationEnd(o)) {
             return generateAssociationEnd(nn, o);
 	}
-        if (ModelFacade.isAMultiplicity(o)) {
+        if (Model.getFacade().isAMultiplicity(o)) {
             return generateMultiplicity(nn, o);
 	}
-        if (ModelFacade.isAActionState(o)) {
+        if (Model.getFacade().isAActionState(o)) {
             return generateActionState(nn, o);
         }
-        if (ModelFacade.isAObjectFlowState(o)) {
+        if (Model.getFacade().isAObjectFlowState(o)) {
             return generateObjectFlowState(nn, o);
         }
-        if (ModelFacade.isAClassifierInState(o)) {
+        if (Model.getFacade().isAClassifierInState(o)) {
             return generateClassifierInState(nn, o);
         }
-        if (ModelFacade.isAState(o)) {
+        if (Model.getFacade().isAState(o)) {
             return generateState(nn, o);
 	}
-        if (ModelFacade.isATransition(o)) {
+        if (Model.getFacade().isATransition(o)) {
             return generateTransition(nn, o);
 	}
-        if (ModelFacade.isAAction(o)) {
+        if (Model.getFacade().isAAction(o)) {
             return generateAction(nn, o);
 	}
-        if (ModelFacade.isACallAction(o)) {
+        if (Model.getFacade().isACallAction(o)) {
             return generateAction(nn, o);
 	}
-        if (ModelFacade.isAGuard(o)) {
+        if (Model.getFacade().isAGuard(o)) {
             return generateGuard(nn, o);
 	}
-        if (ModelFacade.isAMessage(o)) {
+        if (Model.getFacade().isAMessage(o)) {
             return generateMessage(nn, o);
 	}
-        if (ModelFacade.isAVisibilityKind(o)) {
+        if (Model.getFacade().isAVisibilityKind(o)) {
             return generateVisibility(nn, o);
 	}
 
-        if (ModelFacade.isAModelElement(o)) {
-            return generateName(nn, ModelFacade.getName(o));
+        if (Model.getFacade().isAModelElement(o)) {
+            return generateName(nn, Model.getFacade().getName(o));
 	}
 
         return o.toString();

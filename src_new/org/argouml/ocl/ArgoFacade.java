@@ -31,7 +31,6 @@ import org.apache.log4j.Logger;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import tudresden.ocl.check.OclTypeException;
 import tudresden.ocl.check.types.Any;
@@ -48,7 +47,6 @@ import tudresden.ocl.check.types.Type2;
  * sure to explicitly specify what you mean every time.
  * import java.util.Collection;
  * import tudresden.ocl.check.types.Collection;
- * We also have two different ModelFacade but just one of them is imported.
  */
 public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
 
@@ -63,7 +61,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
      * @param t The target to create this facade for.
      */
     public ArgoFacade(Object t) {
-	if (ModelFacade.isAClassifier(t)) {
+	if (Model.getFacade().isAClassifier(t)) {
 	    target = t;
 	}
     }
@@ -74,7 +72,7 @@ public class ArgoFacade implements tudresden.ocl.check.types.ModelFacade {
     public Any getClassifier(String name) {
 	Project p = ProjectManager.getManager().getCurrentProject();
 
-	if (target != null && ModelFacade.getName(target).equals(name)) {
+	if (target != null && Model.getFacade().getName(target).equals(name)) {
 	    return new ArgoAny(target);
 	} else {
 	    Object classifier = p.findTypeInModel(name, p.getModel());
@@ -147,8 +145,8 @@ class ArgoAny implements Any, Type2 {
 	Iterator iter = attributes.iterator();
 	while (iter.hasNext() && foundAttribType == null) {
 	    Object attr = iter.next();
-	    if (ModelFacade.getName(attr).equals(name)) {
-		foundAttribType = ModelFacade.getType(attr);
+	    if (Model.getFacade().getName(attr).equals(name)) {
+		foundAttribType = Model.getFacade().getType(attr);
 	    }
 	}
 
@@ -158,37 +156,37 @@ class ArgoAny implements Any, Type2 {
 	Iterator asciter = associationEnds.iterator();
 	while (asciter.hasNext() && foundAssocType == null) {
 	    Object ae = asciter.next(); //MAssociationEnd
-	    if (ModelFacade.getName(ae) != null
-		&& name.equals(ModelFacade.getName(ae))) {
+	    if (Model.getFacade().getName(ae) != null
+		&& name.equals(Model.getFacade().getName(ae))) {
 
-		foundAssocType = ModelFacade.getType(ae);
-	    } else if (ModelFacade.getName(ae) == null
-		       || ModelFacade.getName(ae).equals("")) {
+		foundAssocType = Model.getFacade().getType(ae);
+	    } else if (Model.getFacade().getName(ae) == null
+		       || Model.getFacade().getName(ae).equals("")) {
 
 		String oppositeName =
-		    ModelFacade.getName(ModelFacade.getType(ae));
+		    Model.getFacade().getName(Model.getFacade().getType(ae));
 		if (oppositeName != null) {
 
 		    String lowerOppositeName =
 			oppositeName.substring(0, 1).toLowerCase();
 		    lowerOppositeName += oppositeName.substring(1);
 		    if (lowerOppositeName.equals(name)) {
-		        foundAssocType = ModelFacade.getType(ae);
+		        foundAssocType = Model.getFacade().getType(ae);
 		    }
 		}
 	    }
 	    if (foundAssocType != null) {
-		Object multiplicity = ModelFacade.getMultiplicity(ae);
+		Object multiplicity = Model.getFacade().getMultiplicity(ae);
 		if (multiplicity != null
-		    && (ModelFacade.getUpper(multiplicity) > 1
-			|| ModelFacade.getUpper(multiplicity)
+		    && (Model.getFacade().getUpper(multiplicity) > 1
+			|| Model.getFacade().getUpper(multiplicity)
                            == -1)) {
 		    // to do: think about the condition of this if-statement
 		    // ordered association end -> Sequence; otherwise -> Set
                     Object stereotype = null;
-                    if (ModelFacade.getStereotypes(ae).size() > 0) {
+                    if (Model.getFacade().getStereotypes(ae).size() > 0) {
                         stereotype =
-                            ModelFacade.getStereotypes(ae).iterator().next();
+                            Model.getFacade().getStereotypes(ae).iterator().next();
                     }
 		    if (stereotype != null
 			    && stereotype.toString() != null
@@ -272,7 +270,7 @@ class ArgoAny implements Any, Type2 {
 	}
 
 	Object foundOp = null; //MOperation
-	java.util.Collection operations = ModelFacade.getOperations(classifier);
+	java.util.Collection operations = Model.getFacade().getOperations(classifier);
 	Iterator iter = operations.iterator();
 	while (iter.hasNext() && foundOp == null) {
 	    Object op = iter.next();
@@ -289,7 +287,7 @@ class ArgoAny implements Any, Type2 {
 
 	if (fCheckIsQuery) {
 	    /* Query checking added 05/21/01, sz9 */
-	    if (!ModelFacade.isQuery(foundOp)) {
+	    if (!Model.getFacade().isQuery(foundOp)) {
 		throw new OclTypeException("Non-query operations cannot "
 					   + "be used in OCL expressions. ("
 					   + name + ")");
@@ -298,11 +296,11 @@ class ArgoAny implements Any, Type2 {
 
 	Object rp = Model.getCoreHelper().getReturnParameter(foundOp);
 
-	if (rp == null || ModelFacade.getType(rp) == null) {
+	if (rp == null || Model.getFacade().getType(rp) == null) {
 	    LOG.warn("WARNING: supposing return type void!");
 	    return new ArgoAny(null);
 	}
-	Object returnType = ModelFacade.getType(rp);
+	Object returnType = Model.getFacade().getType(rp);
 
 	return getOclRepresentation(returnType);
     }
@@ -350,7 +348,7 @@ class ArgoAny implements Any, Type2 {
 	if (classifier == null) {
 	    return "Void";
 	}
-	return ModelFacade.getName(classifier);
+	return Model.getFacade().getName(classifier);
     }
 
     /**
@@ -365,23 +363,23 @@ class ArgoAny implements Any, Type2 {
     protected Type getOclRepresentation(Object foundType) {
 	Type result = null;
 
-	if (ModelFacade.getName(foundType).equals("int")
-	    || ModelFacade.getName(foundType).equals("Integer")) {
+	if (Model.getFacade().getName(foundType).equals("int")
+	    || Model.getFacade().getName(foundType).equals("Integer")) {
 	    result = Basic.INTEGER;
 	}
 
-	if (ModelFacade.getName(foundType).equals("float")
-	    || ModelFacade.getName(foundType).equals("double")) {
+	if (Model.getFacade().getName(foundType).equals("float")
+	    || Model.getFacade().getName(foundType).equals("double")) {
 	    result = Basic.REAL;
 	}
 
-	if (ModelFacade.getName(foundType).equals("bool")
-	    || ModelFacade.getName(foundType).equals("Boolean")
-	    || ModelFacade.getName(foundType).equals("boolean")) {
+	if (Model.getFacade().getName(foundType).equals("bool")
+	    || Model.getFacade().getName(foundType).equals("Boolean")
+	    || Model.getFacade().getName(foundType).equals("boolean")) {
 	    result = Basic.BOOLEAN;
 	}
 
-	if (ModelFacade.getName(foundType).equals("String")) {
+	if (Model.getFacade().getName(foundType).equals("String")) {
 	    result = Basic.STRING;
 	}
 
@@ -402,18 +400,18 @@ class ArgoAny implements Any, Type2 {
     protected boolean operationMatchesCall(Object operation,
 					   String callName,
 					   Type[] callParams) {
-	if (!callName.equals(ModelFacade.getName(operation))) {
+	if (!callName.equals(Model.getFacade().getName(operation))) {
 	    return false;
 	}
 
-        Collection operationParameters = ModelFacade.getParameters(operation);
-	if (!ModelFacade.isReturn(operationParameters.iterator().next())) {
+        Collection operationParameters = Model.getFacade().getParameters(operation);
+	if (!Model.getFacade().isReturn(operationParameters.iterator().next())) {
 	    LOG.warn(
                 "ArgoFacade$ArgoAny expects the first operation parameter "
 		+ "to be the return type; this isn't the case"
 	    );
 	}
-	if (!(ModelFacade.isReturn(operationParameters.iterator().next())
+	if (!(Model.getFacade().isReturn(operationParameters.iterator().next())
 	      && operationParameters.size() == (callParams.length + 1))) {
 	    return false;
 	}
@@ -422,7 +420,7 @@ class ArgoAny implements Any, Type2 {
 	int index = 0;
 	while (paramIter.hasNext()) {
 	    Object nextParam = paramIter.next();
-	    Object paramType = ModelFacade.getType(nextParam); //MClassifier
+	    Object paramType = Model.getFacade().getType(nextParam); //MClassifier
 	    Type operationParam = getOclRepresentation(paramType);
 	    if (!callParams[index].conformsTo(operationParam)) {
 		return false;

@@ -29,7 +29,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.argouml.i18n.Translator;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 /**
  * Rule for Class->Attribute.
@@ -48,8 +48,8 @@ public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-	if (ModelFacade.isAClassifier(parent)) {
-	    return ModelFacade.getStructuralFeatures(parent);
+	if (Model.getFacade().isAClassifier(parent)) {
+	    return Model.getFacade().getStructuralFeatures(parent);
 	}
 	return null;
     }
@@ -58,7 +58,7 @@ public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getDependencies(java.lang.Object)
      */
     public Set getDependencies(Object parent) {
-        if (ModelFacade.isAClassifier(parent)) {
+        if (Model.getFacade().isAClassifier(parent)) {
 	    Set set = new HashSet();
 	    set.add(parent);
 	    return set;

@@ -33,7 +33,6 @@ import junit.framework.TestCase;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -731,23 +730,26 @@ public class GUITestParserDisplay extends TestCase {
     private void checkName(Object element, String text, String name)
         throws ParseException {
 
-        if (ModelFacade.isAAttribute(element)) {
+        if (Model.getFacade().isAAttribute(element)) {
             ParserDisplay.SINGLETON.parseAttribute(text, element);
             assertTrue(text
-                       + " gave wrong name: " + ModelFacade.getName(element),
-                       name.equals(ModelFacade.getName(element)));
-        } else if (ModelFacade.isAOperation(element)) {
+                       + " gave wrong name: "
+                       + Model.getFacade().getName(element),
+                       name.equals(Model.getFacade().getName(element)));
+        } else if (Model.getFacade().isAOperation(element)) {
             ParserDisplay.SINGLETON.parseOperation(text, element);
             assertTrue(text
-                       + " gave wrong name: " + ModelFacade.getName(element)
+                       + " gave wrong name: "
+                       + Model.getFacade().getName(element)
                        + " != " + name,
-                       name.equals(ModelFacade.getName(element)));
-        } else if (ModelFacade.isAClassifierRole(element)) {
+                       name.equals(Model.getFacade().getName(element)));
+        } else if (Model.getFacade().isAClassifierRole(element)) {
             ParserDisplay.SINGLETON.parseClassifierRole(element, text);
             assertTrue(text
-                       + " gave wrong name: " + ModelFacade.getName(element)
+                       + " gave wrong name: " 
+                       + Model.getFacade().getName(element)
                        + " != " + name,
-                       name.equals(ModelFacade.getName(element)));
+                       name.equals(Model.getFacade().getName(element)));
         } else {
             fail("Can only check name of a feature or classifier role");
         }
@@ -755,15 +757,16 @@ public class GUITestParserDisplay extends TestCase {
 
     private void checkType(Object feature, String text, String type)
         throws ParseException {
-        if (ModelFacade.isAAttribute(feature)) {
+        if (Model.getFacade().isAAttribute(feature)) {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             assertTrue(text + " gave wrong type: (null)",
-                       ModelFacade.getType(feature) != null);
+                       Model.getFacade().getType(feature) != null);
             assertTrue(text + " gave wrong type: "
-                       + ModelFacade.getName(ModelFacade.getType(feature)),
-                       type.equals(ModelFacade.getName(
-                               ModelFacade.getType(feature))));
-        } else if (ModelFacade.isAOperation(feature)) {
+                       + Model.getFacade().getName(
+                               Model.getFacade().getType(feature)),
+                       type.equals(Model.getFacade().getName(
+                               Model.getFacade().getType(feature))));
+        } else if (Model.getFacade().isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
             Collection ret =
                 Model.getCoreHelper().getReturnParameters(feature);
@@ -793,7 +796,7 @@ public class GUITestParserDisplay extends TestCase {
         int i;
 
         ParserDisplay.SINGLETON.parseOperation(text, op);
-        Collection prm = ModelFacade.getParameters(op);
+        Collection prm = Model.getFacade().getParameters(op);
         Iterator it = prm.iterator();
         assertTrue(
         	   text + " lacks parameters",
@@ -828,24 +831,24 @@ public class GUITestParserDisplay extends TestCase {
 
     private void checkVisibility(Object feature, String text, String vis)
         throws ParseException {
-        if (ModelFacade.isAAttribute(feature)) {
+        if (Model.getFacade().isAAttribute(feature)) {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             assertTrue(text + " gave wrong visibility: (null)",
-                       ModelFacade.getVisibility(feature) != null);
+                       Model.getFacade().getVisibility(feature) != null);
             assertTrue(text + " gave wrong visibility: "
-                       + ModelFacade.getName(
-                               ModelFacade.getVisibility(feature)),
-                       vis.equals(ModelFacade.getName(
-                               ModelFacade.getVisibility(feature))));
-        } else if (ModelFacade.isAOperation(feature)) {
+                       + Model.getFacade().getName(
+                               Model.getFacade().getVisibility(feature)),
+                       vis.equals(Model.getFacade().getName(
+                               Model.getFacade().getVisibility(feature))));
+        } else if (Model.getFacade().isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
             assertTrue(text + " gave wrong visibility: (null)",
-                       ModelFacade.getVisibility(feature) != null);
+                       Model.getFacade().getVisibility(feature) != null);
             assertTrue(text + " gave wrong visibility: "
-                       + ModelFacade.getName(
-                               ModelFacade.getVisibility(feature)),
-                       vis.equals(ModelFacade.getName(
-                               ModelFacade.getVisibility(feature))));
+                       + Model.getFacade().getName(
+                               Model.getFacade().getVisibility(feature)),
+                       vis.equals(Model.getFacade().getName(
+                               Model.getFacade().getVisibility(feature))));
         } else {
             fail("Can only check visibility of a feature");
         }
@@ -857,7 +860,7 @@ public class GUITestParserDisplay extends TestCase {
             String[] props)
     	throws ParseException {
 
-        if (ModelFacade.isAAttribute(feature)) {
+        if (Model.getFacade().isAAttribute(feature)) {
             int i;
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             for (i = 0; i + 1 < props.length; i += 2) {
@@ -874,7 +877,7 @@ public class GUITestParserDisplay extends TestCase {
                                           .getTaggedValue(props[i])));
                 }
             }
-        } else if (ModelFacade.isAOperation(feature)) {
+        } else if (Model.getFacade().isAOperation(feature)) {
             int i;
 
             ParserDisplay.SINGLETON.parseOperation(text, feature);
@@ -906,18 +909,18 @@ public class GUITestParserDisplay extends TestCase {
             assertTrue(
                     text
                     + " gave wrong multiplicity: "
-                    + (ModelFacade.getMultiplicity(attr) == null
+                    + (Model.getFacade().getMultiplicity(attr) == null
                        ? "(null)"
-                       : ModelFacade.getMultiplicity(attr).toString()),
-                    ModelFacade.getMultiplicity(attr) == null);
+                       : Model.getFacade().getMultiplicity(attr).toString()),
+                    Model.getFacade().getMultiplicity(attr) == null);
         } else {
             assertTrue(
                     text
                     + " gave wrong multiplicity: "
-                    + (ModelFacade.getMultiplicity(attr) == null
+                    + (Model.getFacade().getMultiplicity(attr) == null
                        ? "(null)"
-                       : ModelFacade.getMultiplicity(attr).toString()),
-                    mult.equals(ModelFacade.getMultiplicity(attr)));
+                       : Model.getFacade().getMultiplicity(attr).toString()),
+                    mult.equals(Model.getFacade().getMultiplicity(attr)));
         }
     }
 
@@ -927,14 +930,14 @@ public class GUITestParserDisplay extends TestCase {
 			     boolean prsEx,
 			     boolean ex2,
 			     boolean ex3) {
-        if (ModelFacade.isAAttribute(element)) {
+        if (Model.getFacade().isAAttribute(element)) {
             try {
                 ParserDisplay.SINGLETON.parseAttribute(text, element);
                 fail("didn't throw for " + text);
             } catch (ParseException pe) {
                 assertTrue(text + " threw ParseException " + pe, prsEx);
             }
-        } else if (ModelFacade.isAOperation(element)) {
+        } else if (Model.getFacade().isAOperation(element)) {
             try {
                 ParserDisplay.SINGLETON.parseOperation(text, element);
                 fail("didn't throw for " + text);
@@ -959,23 +962,24 @@ public class GUITestParserDisplay extends TestCase {
             assertTrue(
                     text
                     + " gave wrong visibility: "
-                    + (ModelFacade.getInitialValue(attr) == null
+                    + (Model.getFacade().getInitialValue(attr) == null
                        ? "(null)"
-                       : ModelFacade.getBody(
-                               	ModelFacade.getInitialValue(attr))),
-                    ModelFacade.getInitialValue(attr) == null
-                    || "".equals(ModelFacade.getBody(
-                            ModelFacade.getInitialValue(attr))));
+                       : Model.getFacade().getBody(
+                               	Model.getFacade().getInitialValue(attr))),
+                    Model.getFacade().getInitialValue(attr) == null
+                    || "".equals(Model.getFacade().getBody(
+                            Model.getFacade().getInitialValue(attr))));
         } else {
             assertTrue(
          	   text
          	   + " gave wrong visibility: "
-         	   + (ModelFacade.getInitialValue(attr) == null
+         	   + (Model.getFacade().getInitialValue(attr) == null
          	      ? "(null)"
-         	      : ModelFacade.getBody(ModelFacade.getInitialValue(attr))),
-         	   ModelFacade.getInitialValue(attr) != null
-         	   && val.equals(ModelFacade.getBody(
-         	           ModelFacade.getInitialValue(attr))));
+         	      : Model.getFacade().getBody(
+         	              Model.getFacade().getInitialValue(attr))),
+         	   Model.getFacade().getInitialValue(attr) != null
+         	   && val.equals(Model.getFacade().getBody(
+         	           Model.getFacade().getInitialValue(attr))));
         }
     }
 
@@ -991,35 +995,40 @@ public class GUITestParserDisplay extends TestCase {
     private void checkStereotype(Object feature, String text, String val)
         throws ParseException {
 
-        if (ModelFacade.isAAttribute(feature)) {
+        if (Model.getFacade().isAAttribute(feature)) {
             ParserDisplay.SINGLETON.parseAttribute(text, feature);
             assertTrue(
             	   text + " gave wrong stereotype "
-            	   + (ModelFacade.getStereotypes(feature).size() > 0
-            	      ? ModelFacade.getName(ModelFacade.getStereotypes(feature)
-                              .get(0))
+            	   + (Model.getFacade().getStereotypes(feature).size() > 0
+            	      ? Model.getFacade().getName(
+            	              Model.getFacade().getStereotypes(feature)
+            	              		.get(0))
             	      : "(null)"),
             	   (val == null
-                           && ModelFacade.getStereotypes(feature).size() == 0)
+                           && Model.getFacade().getStereotypes(feature).size()
+                           	== 0)
             	   || (val != null
-            	       && ModelFacade.getStereotypes(feature).size() > 0
-            	       && val.equals(ModelFacade.getName(
-            	               ModelFacade.getStereotypes(feature).get(0)))));
-        } else if (ModelFacade.isAOperation(feature)) {
+            	       && Model.getFacade().getStereotypes(feature).size() > 0
+            	       && val.equals(Model.getFacade().getName(
+            	               Model.getFacade().getStereotypes(feature)
+            	               		.get(0)))));
+        } else if (Model.getFacade().isAOperation(feature)) {
             ParserDisplay.SINGLETON.parseOperation(text, feature);
             assertTrue(
                    text
                    + " gave wrong stereotype "
-                   + (ModelFacade.getStereotypes(feature).size() > 0
-                      ? ModelFacade.getName(
-                              ModelFacade.getStereotypes(feature).get(0))
+                   + (Model.getFacade().getStereotypes(feature).size() > 0
+                      ? Model.getFacade().getName(
+                              Model.getFacade().getStereotypes(feature).get(0))
                       : "(null)"),
                    (val == null
-                           && ModelFacade.getStereotypes(feature).size() == 0)
+                           && Model.getFacade().getStereotypes(feature).size()
+                           	== 0)
                    || (val != null
-                       && ModelFacade.getStereotypes(feature).size() > 0
-                       && val.equals(ModelFacade.getName(
-                               ModelFacade.getStereotypes(feature).get(0)))));
+                       && Model.getFacade().getStereotypes(feature).size() > 0
+                       && val.equals(Model.getFacade().getName(
+                               Model.getFacade().getStereotypes(feature)
+                               		.get(0)))));
         }
     }
 

@@ -25,7 +25,7 @@
 // $Id$
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -48,7 +48,7 @@ public class UMLGeneralizableElementGeneralizationListModel
      */
     protected void buildModelList() {
         if (getTarget() != null) {
-            setAllElements(ModelFacade.getGeneralizations(getTarget()));
+            setAllElements(Model.getFacade().getGeneralizations(getTarget()));
         }
     }
 
@@ -56,8 +56,9 @@ public class UMLGeneralizableElementGeneralizationListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ element) {
-        return org.argouml.model.ModelFacade.isAGeneralization(element)
-            && ModelFacade.getGeneralizations(getTarget()).contains(element);
+        return Model.getFacade().isAGeneralization(element)
+            && Model.getFacade().getGeneralizations(getTarget())
+            	.contains(element);
     }
 
 }

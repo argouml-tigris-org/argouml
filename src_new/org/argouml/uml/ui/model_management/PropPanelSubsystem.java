@@ -35,7 +35,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -88,7 +87,7 @@ public class PropPanelSubsystem extends PropPanelPackage {
          */
         public void actionPerformed(ActionEvent e) {
             Object target = TargetManager.getInstance().getModelTarget();
-            if (ModelFacade.isAClassifier(target)) {
+            if (Model.getFacade().isAClassifier(target)) {
                 Project p = ProjectManager.getManager().getCurrentProject();
                 Collection pCListeners = p.findFigsForMember(target);
                 Object model = p.getModel();

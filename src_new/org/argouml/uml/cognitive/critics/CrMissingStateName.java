@@ -30,7 +30,7 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 
 
 /**
@@ -55,20 +55,20 @@ public class CrMissingStateName extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public boolean predicate2(Object dm, Designer dsgr) {
-	if (!ModelFacade.isAStateVertex(dm))
+	if (!Model.getFacade().isAStateVertex(dm))
 	    return NO_PROBLEM;
-        if (ModelFacade.isACompositeState(dm) && ModelFacade.isTop(dm))
+        if (Model.getFacade().isACompositeState(dm) && Model.getFacade().isTop(dm))
             return NO_PROBLEM;
-        if (ModelFacade.isAFinalState(dm))
+        if (Model.getFacade().isAFinalState(dm))
             return NO_PROBLEM;
-        if (ModelFacade.isAPseudostate(dm))
+        if (Model.getFacade().isAPseudostate(dm))
             return NO_PROBLEM;
-        if (ModelFacade.isAActionState(dm))
+        if (Model.getFacade().isAActionState(dm))
             return NO_PROBLEM;
-        if (ModelFacade.isAObjectFlowState(dm))
+        if (Model.getFacade().isAObjectFlowState(dm))
             return NO_PROBLEM;
 
-	String myName = ModelFacade.getName(dm);
+	String myName = Model.getFacade().getName(dm);
 	if (myName == null || myName.equals("") || myName.length() == 0)
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
@@ -91,12 +91,13 @@ public class CrMissingStateName extends CrUML {
 	    Object me = /*(MModelElement)*/ item.getOffenders().elementAt(0);
 	    String ins = "Set the name of this state.";
 	    String sug = "StateName";
-	    if (org.argouml.model.ModelFacade.isAStateVertex(me)) {
+	    if (Model.getFacade().isAStateVertex(me)) {
 		Object sv = /*(MStateVertex)*/ me;
 		int count = 1;
-		if (ModelFacade.getContainer(sv) != null)
-		    count = ModelFacade
-		        .getSubvertices(ModelFacade.getContainer(sv)).size();
+		if (Model.getFacade().getContainer(sv) != null)
+		    count =
+		        Model.getFacade().getSubvertices(
+		                Model.getFacade().getContainer(sv)).size();
 		sug = "S" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);

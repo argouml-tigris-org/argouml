@@ -24,7 +24,7 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import org.argouml.model.ModelFacade;
+import org.argouml.model.Model;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 /**
@@ -45,16 +45,17 @@ public class UMLDependencyClientListModel extends UMLModelElementListModel2 {
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        if (getTarget() != null)
-            setAllElements(ModelFacade.getClients(getTarget()));
+        if (getTarget() != null) {
+            setAllElements(Model.getFacade().getClients(getTarget()));
+        }
     }
 
     /**
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(Object)
      */
     protected boolean isValidElement(Object/*MBase*/ o) {
-        return org.argouml.model.ModelFacade.isAModelElement(o)
-            && ModelFacade.getClients(getTarget()).contains(o);
+        return Model.getFacade().isAModelElement(o)
+            && Model.getFacade().getClients(getTarget()).contains(o);
     }
 
 }
