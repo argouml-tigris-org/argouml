@@ -263,11 +263,6 @@ public abstract class ActionFileOperations extends AbstractAction {
                         "An error occured attempting to load the project.",
                         ex);
             dialog.setVisible(true);
-//            JOptionPane.showMessageDialog(
-//                      ProjectBrowser.getInstance(),
-//                      message,
-//                      "Error",
-//                      JOptionPane.ERROR_MESSAGE);
         } else {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

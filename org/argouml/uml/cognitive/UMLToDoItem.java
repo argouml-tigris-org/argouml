@@ -37,6 +37,7 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Poster;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -46,7 +47,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.base.Globals;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.Highlightable;
-import org.tigris.gef.util.VectorSet;
 
 
 /**
@@ -72,7 +72,7 @@ public class UMLToDoItem extends ToDoItem {
      * @param offs the offenders
      */
     public UMLToDoItem(Poster poster, String h, int p, String d, String m,
-    VectorSet offs) {
+    ListSet offs) {
         super(poster, h, p, d, m, offs);
     }
 
@@ -107,7 +107,7 @@ public class UMLToDoItem extends ToDoItem {
      * @param offs the offenders
      * @param dsgr the designer
      */
-    public UMLToDoItem(Critic c, VectorSet offs, Designer dsgr) {
+    public UMLToDoItem(Critic c, ListSet offs, Designer dsgr) {
         super(c, offs, dsgr);
     }
 

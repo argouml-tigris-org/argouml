@@ -32,11 +32,11 @@ import java.util.List;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.Model;
 import org.argouml.uml.GenDescendantClasses;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when a class can never have instances (of
@@ -66,7 +66,7 @@ public class CrSubclassReference extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(Model.getFacade().isAClass(dm))) return NO_PROBLEM;
 	Object cls = /*(MClass)*/ dm;
-	VectorSet offs = computeOffenders(cls);
+	ListSet offs = computeOffenders(cls);
 	if (offs != null) return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
@@ -77,7 +77,7 @@ public class CrSubclassReference extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Object cls = /*(MClassifier)*/ dm;
-	VectorSet offs = computeOffenders(cls);
+	ListSet offs = computeOffenders(cls);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -87,10 +87,10 @@ public class CrSubclassReference extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	Object dm = /*(MClassifier)*/ offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(dm);
+	ListSet newOffs = computeOffenders(dm);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
@@ -99,20 +99,20 @@ public class CrSubclassReference extends CrUML {
      * @param cls is the UML entity that is being checked.
      * @return the list of offenders
      */
-    public VectorSet computeOffenders(Object/*MClassifier*/ cls) {
+    public ListSet computeOffenders(Object/*MClassifier*/ cls) {
 	Collection asc = Model.getFacade().getAssociationEnds(cls);
 	if (asc == null || asc.size() == 0) return null;
 
 	Enumeration descendEnum =
 	    GenDescendantClasses.getSINGLETON().gen(cls);
 	if (!descendEnum.hasMoreElements()) return null;
-	VectorSet descendants = new VectorSet();
+	ListSet descendants = new ListSet();
 	while (descendEnum.hasMoreElements())
 	    descendants.addElement(descendEnum.nextElement());
 
 	//TODO: GenNavigableClasses?
 	int nAsc = asc.size();
-	VectorSet offs = null;
+	ListSet offs = null;
 	for (Iterator iter = asc.iterator(); iter.hasNext();) {
 	    Object ae = /*(MAssociationEnd)*/ iter.next();
 	    Object a = Model.getFacade().getAssociation(ae);
@@ -125,7 +125,7 @@ public class CrSubclassReference extends CrUML {
 	    Object otherCls = Model.getFacade().getType(otherEnd);
 	    if (descendants.contains(otherCls)) {
 		if (offs == null) {
-		    offs = new VectorSet();
+		    offs = new ListSet();
 		    offs.addElement(cls);
 		}
 		offs.addElement(a);

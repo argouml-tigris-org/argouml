@@ -30,7 +30,7 @@ import org.argouml.cognitive.Decision;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.Goal;
 import org.argouml.cognitive.ToDoItem;
-import org.tigris.gef.util.VectorSet;
+import org.argouml.cognitive.ListSet;
 
 /**
  * A CompoundCritic acts like a regular critic in that it checks the
@@ -230,7 +230,7 @@ public class CompoundCritic extends Critic {
      * @see org.argouml.cognitive.Poster#expand(java.lang.String,
      * org.tigris.gef.util.VectorSet)
      */
-    public String expand(String desc, VectorSet offs) {
+    public String expand(String desc, ListSet offs) {
 	throw new UnsupportedOperationException();
     }
 

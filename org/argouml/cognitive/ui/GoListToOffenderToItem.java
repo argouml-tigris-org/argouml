@@ -33,8 +33,8 @@ import javax.swing.tree.TreePath;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.cognitive.ToDoList;
+import org.argouml.cognitive.ListSet;
 import org.argouml.uml.PredicateNotInTrash;
-import org.tigris.gef.util.VectorSet;
 
 
 /**
@@ -93,7 +93,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
      * @return the children
      */
     public Vector getChildren(Object parent) {
-        VectorSet allOffenders = new VectorSet();
+        ListSet allOffenders = new ListSet();
         allOffenders.addAllElementsSuchThat(Designer.theDesigner()
             .getToDoList().getOffenders(),
             getListPredicate());
@@ -109,7 +109,7 @@ public class GoListToOffenderToItem extends AbstractGoList {
 	    Enumeration elems = list.elements();
 	    while (elems.hasMoreElements()) {
 		ToDoItem item = (ToDoItem) elems.nextElement();
-		VectorSet offs = new VectorSet();
+		ListSet offs = new ListSet();
                 offs.addAllElementsSuchThat(item.getOffenders(),
                     getListPredicate());
 		if (offs.contains(parent)) res.addElement(item);

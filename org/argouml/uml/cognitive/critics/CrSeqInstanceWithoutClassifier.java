@@ -29,11 +29,11 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
 import org.argouml.uml.diagram.sequence.ui.UMLSequenceDiagram;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when an object in a deployment-diagram
@@ -59,7 +59,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(dm instanceof UMLSequenceDiagram)) return NO_PROBLEM;
 	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-	VectorSet offs = computeOffenders(sd);
+	ListSet offs = computeOffenders(sd);
 	if (offs == null) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
@@ -70,7 +70,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	UMLSequenceDiagram sd = (UMLSequenceDiagram) dm;
-	VectorSet offs = computeOffenders(sd);
+	ListSet offs = computeOffenders(sd);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -80,10 +80,10 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	UMLSequenceDiagram sd = (UMLSequenceDiagram) offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(sd);
+	ListSet newOffs = computeOffenders(sd);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
@@ -97,10 +97,10 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
      * @param sd the diagram to check
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(UMLSequenceDiagram sd) {
+    public ListSet computeOffenders(UMLSequenceDiagram sd) {
 	Collection figs = sd.getLayer().getContents(null);
         Iterator figIter = figs.iterator();
-	VectorSet offs = null;
+	ListSet offs = null;
 	while (figIter.hasNext()) {
 	    Object obj = figIter.next();
 	    if (!(obj instanceof FigNodeModelElement)) continue;
@@ -112,7 +112,7 @@ public class CrSeqInstanceWithoutClassifier extends CrUML {
 		    if (col.size() > 0) continue;
 		}
 		if (offs == null) {
-		    offs = new VectorSet();
+		    offs = new ListSet();
 		    offs.addElement(sd);
 		}
 		offs.addElement(fn);

@@ -267,7 +267,7 @@ height="<ocl>self.height.intValue</ocl>"
 
           y="<ocl>self.firstPoint.y.intValue</ocl>" />
 
-  <ocl>self.pointsVectorNotFirst</ocl>
+  <ocl>self.pointsVector[1,*]</ocl>
 
 </path>
 

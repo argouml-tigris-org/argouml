@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.uml.diagram.deployment.ui.FigObject;
 import org.argouml.uml.diagram.deployment.ui.UMLDeploymentDiagram;
@@ -37,7 +38,6 @@ import org.argouml.uml.diagram.static_structure.ui.FigInterface;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.presentation.FigNode;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * A critic to detect when a class can never have instances (of
@@ -77,7 +77,7 @@ public class CrNodesOverlap extends CrUML {
 	    instanceof UMLSequenceDiagram)
 	    return NO_PROBLEM;
 
-	VectorSet offs = computeOffenders(d);
+	ListSet offs = computeOffenders(d);
 	if (offs == null) return NO_PROBLEM;
 	return PROBLEM_FOUND;
     }
@@ -89,7 +89,7 @@ public class CrNodesOverlap extends CrUML {
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
 	Diagram d = (Diagram) dm;
-	VectorSet offs = computeOffenders(d);
+	ListSet offs = computeOffenders(d);
 	return new ToDoItem(this, offs, dsgr);
     }
 
@@ -99,10 +99,10 @@ public class CrNodesOverlap extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 	Diagram d = (Diagram) offs.firstElement();
 	//if (!predicate(dm, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(d);
+	ListSet newOffs = computeOffenders(d);
 	boolean res = offs.equals(newOffs);
 	return res;
     }
@@ -111,12 +111,12 @@ public class CrNodesOverlap extends CrUML {
      * @param d the diagram
      * @return the set of offenders
      */
-    public VectorSet computeOffenders(Diagram d) {
+    public ListSet computeOffenders(Diagram d) {
 	//TODO: algorithm is n^2 in number of nodes
 	Vector figs = new Vector(d.getLayer().getContents(null));
 	int numFigs = figs.size();
 	int numRects = 0;
-	VectorSet offs = null;
+	ListSet offs = null;
 	for (int i = 0; i < numFigs - 1; i++) {
 	    Object oi = figs.elementAt(i);
 	    if (!(oi instanceof FigNode)) continue;
@@ -154,7 +154,7 @@ public class CrNodesOverlap extends CrUML {
 			    continue;
 		    }
 		    if (offs == null) {
-			offs = new VectorSet();
+			offs = new ListSet();
 			offs.addElement(d);
 		    }
 		    offs.addElement(fni);

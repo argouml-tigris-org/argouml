@@ -29,11 +29,11 @@ import java.util.Iterator;
 
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.cognitive.ui.Wizard;
 import org.argouml.model.Model;
 import org.argouml.uml.cognitive.UMLToDoItem;
-import org.tigris.gef.util.VectorSet;
 
 /**
  * Well-formedness rule [1] for MNamespace. See page 33 of UML 1.1
@@ -65,7 +65,7 @@ public class CrNameConflict extends CrUML {
      * java.lang.Object, org.argouml.cognitive.Designer)
      */
     public ToDoItem toDoItem(Object dm, Designer dsgr) {
-	VectorSet offs = computeOffenders(dm);
+	ListSet offs = computeOffenders(dm);
 	return new UMLToDoItem(this, offs, dsgr);
     }
 
@@ -73,8 +73,8 @@ public class CrNameConflict extends CrUML {
      * @param dm the object to check
      * @return the set of offenders
      */
-    protected VectorSet computeOffenders(Object dm) {
-        VectorSet offs = new VectorSet();
+    protected ListSet computeOffenders(Object dm) {
+        ListSet offs = new ListSet();
         if (Model.getFacade().isANamespace(dm)) {
             Iterator it = Model.getFacade().getOwnedElements(dm).iterator();
             HashMap names = new HashMap();
@@ -104,14 +104,14 @@ public class CrNameConflict extends CrUML {
      */
     public boolean stillValid(ToDoItem i, Designer dsgr) {
 	if (!isActive()) return false;
-	VectorSet offs = i.getOffenders();
+	ListSet offs = i.getOffenders();
 
         // first element is e.g. the class, but we need to have its namespace
         // to recompute the offenders.
 	Object f = offs.firstElement();
         Object ns = Model.getFacade().getNamespace(f);
 	if (!predicate(ns, dsgr)) return false;
-	VectorSet newOffs = computeOffenders(ns);
+	ListSet newOffs = computeOffenders(ns);
 	boolean res = offs.equals(newOffs);
 	return res;
     }

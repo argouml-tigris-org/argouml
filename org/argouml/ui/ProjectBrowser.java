@@ -48,6 +48,7 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.events.ArgoModuleEvent;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
+import org.argouml.cognitive.ListSet;
 import org.argouml.cognitive.ui.TabToDo;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.i18n.Translator;
@@ -61,7 +62,6 @@ import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.TabProps;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.VectorSet;
 import org.tigris.swidgets.BorderSplitPane;
 import org.tigris.swidgets.Horizontal;
 import org.tigris.swidgets.Orientation;
@@ -607,7 +607,7 @@ public class ProjectBrowser
      *  @param dms vector of offenders
      *  @see org.argouml.cognitive.ui.ToDoPane
      */
-    public void jumpToDiagramShowing(VectorSet dms) {
+    public void jumpToDiagramShowing(ListSet dms) {
         if (dms.size() == 0) {
             return;
         }
