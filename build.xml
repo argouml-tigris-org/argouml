@@ -797,7 +797,7 @@ ${Name} Build file
   <!-- =================================================================== -->
   <!-- Creates the whole distribution                                      -->
   <!-- =================================================================== -->
-  <target name="dist-all" depends="dist,dist-src,dist-lib"/>
+  <target name="dist-all" depends="dist,dist-src,dist-lib,dist-appbund"/>
 
   <!-- =================================================================== -->
   <!-- Creates the whole distribution with adjusted version number         -->
