@@ -37,6 +37,11 @@ import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.presentation.Fig;
 
+/**
+ * This class represents all Diagrams within ArgoUML. 
+ * It is based upon the GEF Diagram.
+ *
+ */
 public class ArgoDiagram extends Diagram {
 
     private ItemUID id;
@@ -95,12 +100,15 @@ public class ArgoDiagram extends Diagram {
     // event management
 
     /**
-     * @param change
+     * @param change the changeregistry to be added
      */
     public void addChangeRegistryAsListener( ChangeRegistry change ) {
 	getGraphModel().addGraphEventListener( change );
     }
 
+    /**
+     * @param change the changeregistry to be removed
+     */
     public void removeChangeRegistryAsListener( ChangeRegistry change ) {
 	getGraphModel().removeGraphEventListener( change );
     }
@@ -121,8 +129,6 @@ public class ArgoDiagram extends Diagram {
     	}
         return null;
     }
-
-  
 
     /**
      * Finds the presentation (the Fig) for some object. If the object
