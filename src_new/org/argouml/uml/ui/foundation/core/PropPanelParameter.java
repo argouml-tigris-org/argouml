@@ -24,24 +24,17 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import javax.swing.ButtonGroup;
 import javax.swing.JList;
-import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-
-import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBox2;
-import org.argouml.uml.ui.UMLComboBoxNavigator;
-import org.argouml.uml.ui.UMLEnumerationBooleanProperty;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.UMLList;
-import org.argouml.uml.ui.UMLRadioButton;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.util.ConfigLoader;
 /**
@@ -78,27 +71,9 @@ public class PropPanelParameter extends PropPanelModelElement {
         addField(Translator.localize("UMLMenu", "label.type"), new UMLComboBox2(new UMLParameterTypeComboBoxModel(), ActionSetParameterType.SINGLETON));
 
         addField("Initial Value:", new UMLInitialValueComboBox(this));
-
-        JPanel kindPanel = new JPanel(new GridLayout2(0, 2, GridLayout2.ROWCOLPREFERRED));
-        ButtonGroup kindGroup = new ButtonGroup();
-
-        UMLRadioButton inout = new UMLRadioButton("in/out", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", ModelFacade.PARAMETERDIRECTIONKIND, ModelFacade.INOUT_PARAMETERDIRECTIONKIND, null));
-        kindGroup.add(inout);
-        kindPanel.add(inout);
-
-        UMLRadioButton in = new UMLRadioButton("in", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", ModelFacade.PARAMETERDIRECTIONKIND, ModelFacade.IN_PARAMETERDIRECTIONKIND, null));
-        kindGroup.add(in);
-        kindPanel.add(in);
-
-        UMLRadioButton out = new UMLRadioButton("out", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", ModelFacade.PARAMETERDIRECTIONKIND, ModelFacade.OUT_PARAMETERDIRECTIONKIND, null));
-        kindGroup.add(out);
-        kindPanel.add(out);
-
-        UMLRadioButton ret = new UMLRadioButton("return", this, new UMLEnumerationBooleanProperty("kind", mclass, "getKind", "setKind", ModelFacade.PARAMETERDIRECTIONKIND, ModelFacade.RETURN_PARAMETERDIRECTIONKIND, null));
-        kindGroup.add(ret);
-        kindPanel.add(ret);
-
-	addField("Kind:", kindPanel);
+        
+        //      TODO: i18n
+        add(new UMLParameterDirectionKindRadioButtonPanel("ParameterKind:", true));
 
 	new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateUp", null);
 	new PropPanelButton(this, buttonPanel, _parameterIcon, Translator.localize("UMLMenu", "button.new-parameter"), "addParameter", null);
