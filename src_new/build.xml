@@ -1023,7 +1023,7 @@ ${Name} Build file
     <!-- We want debug, optimize, deprecation to be non-modifiable here -->
     <javac srcdir="${argo.tests.src}"
            destdir="${argo.tests.classes}"
-	   includes="**/GUITestProjectBrowser.java"
+	   includes="**/GUITestProjectBrowser.java,**/*Deprecated.java"
            debug="true"
            deprecation="false"
            optimize="false">
