@@ -27,6 +27,7 @@ package org.argouml.ui.explorer;
 import java.util.*;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.TreePath;
 
 /**
  * Ensures that explorer tree nodes have a default ordering.
@@ -34,51 +35,40 @@ import javax.swing.tree.DefaultMutableTreeNode;
  * @author  alexb
  * @since 0.15.2, Created on 27 September 2003, 17:40
  */
-public class ExplorerTreeNode 
-extends DefaultMutableTreeNode
-implements Comparable{
-    
-    private Comparator order;
-    
+public class ExplorerTreeNode extends DefaultMutableTreeNode {
+
+    private ExplorerTreeModel model;
+    private boolean expanded;
+
     /** Creates a new instance of ExplorerTreeNode */
-    public ExplorerTreeNode(Object userObj) {
+    public ExplorerTreeNode(Object userObj, ExplorerTreeModel model) {
 
         super(userObj);
-        order = new TypeThenNameOrder();
+	this.model = model;
     }
-    
-    public int compareTo(Object obj) {
-        
-        return order.compare(this, obj);
-        
+
+    public boolean isLeaf() {
+	if (!expanded) {
+	    model.updateChildren(new TreePath(model.getPathToRoot(this)));
+	    expanded = true;
+	}
+	return super.isLeaf();
     }
-    
-    public void setOrder(Comparator newOrder){
-        order = newOrder;
-    }
-    
-    public void orderChildren(){
-        if(children != null)
-            Collections.sort(this.children,order);
-    }
-    
+
     /**
      * cleans up for gc.
      */
     public void remove(){
-        
-        this.userObject = null;
-        order = null;
-        if(children != null){
-            Iterator childrenIt = children.iterator();
-            while(childrenIt.hasNext()){
-                
-                ((ExplorerTreeNode)childrenIt.next()).remove();
-            }
-            
-            children.clear();
-            children=null;
-        }
+	this.userObject = null;
+
+	if (children != null) {
+	    Iterator childrenIt = children.iterator();
+	    while (childrenIt.hasNext()) {
+		((ExplorerTreeNode) childrenIt.next()).remove();
+	    }
+
+	    children.clear();
+	    children = null;
+	}
     }
-    
 }

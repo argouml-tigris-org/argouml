@@ -28,6 +28,7 @@ import java.util.*;
 
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.MutableTreeNode;
 import javax.swing.tree.TreePath;
 import javax.swing.tree.TreeNode;
 
@@ -69,49 +70,54 @@ ItemListener{
     /**
      * the global order for siblings in the tree.
      */
-    Comparator order;
-    
+    private Comparator order;
+
+    /**
+     * The children currently being updated.
+     */
+    private Vector updatingChildren = new Vector();
+
     /** Creates a new instance of ExplorerTreeModel */
     public ExplorerTreeModel(Object root) {
-        super(new ExplorerTreeNode(root));
-        this.setAsksAllowsChildren(true);
-        modelElementMap = new HashMap();
-        
-        ExplorerEventAdaptor.getInstance()
-            .setTreeModelUMLEventListener(this);
-        
-        order = new TypeThenNameOrder();
+	super(null);
+	setRoot(new ExplorerTreeNode(root, this));
+	this.setAsksAllowsChildren(false);
+	modelElementMap = new HashMap();
+
+	ExplorerEventAdaptor.getInstance()
+	    .setTreeModelUMLEventListener(this);
+
+	order = new TypeThenNameOrder();
     }
     
     /**
      * a model element has changed in some way.
      */
     public void modelElementChanged(Object node) {
-        
-        Object[] nodesArray = this.findNodes(node).toArray();
-        
-        for(int x=0;x<nodesArray.length;x++){
-            
-            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
-            this.nodeChanged(changeNode);
-            
-//            ExplorerTreeNode parentNode = (ExplorerTreeNode)changeNode.getParent();
-//            parentNode.orderChildren();
-//            this.nodeStructureChanged(parentNode);
-        }
+
+	Object[] nodesArray = this.findNodes(node).toArray();
+
+	for (int x = 0; x < nodesArray.length; x++) {
+	    ExplorerTreeNode changeNode = (ExplorerTreeNode) nodesArray[x];
+	    nodeChanged(changeNode);
+
+	    Object path[] = getPathToRoot(changeNode);
+	    if (path.length > 0) {
+		Object newPath[] = new Object[path.length-1];
+		System.arraycopy(path, 0, newPath, 0, path.length-1);
+		updateChildren(new TreePath(newPath));
+	    }
+	}
     }
     
     /**
      * a model element has been added to the model.
      */
     public void modelElementAdded(Object node) {
-        
         Iterator nodesIt = this.findNodes(node).iterator();
         while(nodesIt.hasNext()){
-
-            DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode)nodesIt.next();
-            changeNode.removeAllChildren();
-            addAllChildren(new TreePath(this.getPathToRoot(changeNode)));
+            DefaultMutableTreeNode changeNode = (DefaultMutableTreeNode) nodesIt.next();
+	    updateChildren(new TreePath(getPathToRoot(changeNode)));
         }
     }
     
@@ -121,20 +127,14 @@ ItemListener{
     public void modelElementRemoved(Object node) {
         
         Collection nodes = this.findNodes(node);
-        Object[] nodesArray = this.findNodes(node).toArray();
+        Object[] nodesArray = nodes.toArray();
         
-        for(int x=0;x<nodesArray.length;x++){
-            
-            ExplorerTreeNode changeNode = (ExplorerTreeNode)nodesArray[x];
+        for (int x = 0; x < nodesArray.length; x++) {
+            ExplorerTreeNode changeNode = (ExplorerTreeNode) nodesArray[x];
             
             if(changeNode.getParent() != null){
-                this.removeNodeFromParent(changeNode);
+                removeNodeFromParent(changeNode);
             }
-            else{
-                nodes.remove(changeNode);
-            }
-            // remove reference for gc
-            changeNode.remove();
         }
     }
     
@@ -148,117 +148,242 @@ ItemListener{
             ((ExplorerTreeNode)this.getRoot()).remove();
         Collection values = modelElementMap.values();
         Iterator valuesIt = values.iterator();
-        while(valuesIt.hasNext()){
+        while (valuesIt.hasNext()) {
             ((Collection)valuesIt.next()).clear();
         }
         modelElementMap.clear();
-        
-        Project proj = ProjectManager.getManager().getCurrentProject();
-        ExplorerTreeNode rootNode = new ExplorerTreeNode(proj);
-        rootNode.setOrder(order);
-        ExplorerTreeNode displayRoot =
-        new ExplorerTreeNode(proj.getModel());
-        displayRoot.setOrder(order);
-        rootNode.add(displayRoot);
-        super.setRoot(rootNode);
-        this.nodeStructureChanged(rootNode);
-        
-        modelElementMap = new HashMap();
-        this.addToMap(proj, rootNode);
-        this.addToMap(proj.getModel(), displayRoot);
+
+	modelElementMap = new HashMap();
+	Project proj = ProjectManager.getManager().getCurrentProject();
+	ExplorerTreeNode rootNode = new ExplorerTreeNode(proj, this);
+
+	addToMap(proj, rootNode);
+	setRoot(rootNode);
     }
     
     /**
-     * builds the next level of the explorer tree for a given tree path.
+     * updates next level of the explorer tree for a given tree path.
      */
-    public void addAllChildren(TreePath path){
-        
-        ExplorerTreeNode node =
-        (ExplorerTreeNode)path.getLastPathComponent();
-        
-        // if the node has children,
-        // then it has been expanded meaning we do not need to add the nodes
-        // manually.
-        if(node.getChildCount() != 0)
-            return;
-        
+    public void updateChildren(TreePath path){
+	ExplorerTreeNode node = (ExplorerTreeNode) path.getLastPathComponent();
+	Vector children = new Vector();
+	Vector reordered = new Vector();
+	Vector newChildren = new Vector();
         Object modelElement = node.getUserObject();
-        
-        for(int x=0;x<rules.length;x++){
-            
-            Collection children = ((PerspectiveRule)rules[x]).getChildren(modelElement);
-            if(children != null){
-                Iterator childrenIt = children.iterator();
-                
-                while(childrenIt.hasNext()){
-                    Object child = childrenIt.next();
-                    
-                    if(child != null){
-                        ExplorerTreeNode newNode = new ExplorerTreeNode(child);
-                        newNode.setOrder(order);
-                        this.addToMap(child, newNode);
-                        
-                        node.add(newNode);
-                    }
-                }
-            }
-            
+
+	// Avoid doing this too early in the initialization process
+	if (rules == null)
+	    return;
+
+	// Avoid recursively updating the same child
+	if (updatingChildren.contains(node))
+	    return;
+	updatingChildren.add(node);
+
+	Enumeration enChld = node.children();
+	while (enChld.hasMoreElements()) {
+	    Object child = enChld.nextElement();
+	    if (child instanceof DefaultMutableTreeNode) {
+		Object obj = ((DefaultMutableTreeNode) child).getUserObject();
+		if (children.size() > 0) {
+		    Object obj0 = children.get(children.size() - 1);
+		    if (order.compare(obj0, obj) > 0)
+			reordered.add(child);
+		    else
+			children.add(obj);
+		} else {
+		    children.add(obj);
+		}
+	    }
+	}
+
+        for (int x = 0; x < reordered.size(); x++) {
+	    DefaultMutableTreeNode child = (DefaultMutableTreeNode) reordered.get(x);
+	    Object obj = node.getUserObject();
+	    int ip = Collections.binarySearch(children, obj, order);
+
+	    if (ip < 0)
+		ip = -(ip + 1);
+
+	    int cidx = node.getIndex(child);
+
+	    removeNodeFromParent(child);
+	    insertNodeInto(child, node, ip);
+	    children.add(ip, obj);
+	}
+
+        for (int x = 0; x < rules.length; x++) {
+            Collection c = ((PerspectiveRule) rules[x])
+		    .getChildren(modelElement);
+
+            if (c != null) {
+		Iterator it = c.iterator();
+		while (it.hasNext()) {
+		    Object obj = it.next();
+		    if (!newChildren.contains(obj))
+			newChildren.add(obj);
+		}
+	    }
         }
-        
-        if(node.getChildCount() > 0){
-            node.orderChildren();
-            this.nodeStructureChanged(node);
-        }
+	Collections.sort(newChildren, order);
+
+	Iterator cChlds = children.iterator();
+	Iterator nChlds = newChildren.iterator();
+	Object cc = null, nc = null;
+	int cldIdx = 0;
+	while (true) {
+	    int r;
+
+	    if (cc == null && cChlds.hasNext())
+		cc = cChlds.next();
+	    if (nc == null && nChlds.hasNext())
+		nc = nChlds.next();
+
+	    if (cc == null) {
+		if (nc == null)
+		    break;
+		r = 1;
+	    } else if (nc == null) {
+		r = -1;
+	    } else {
+		r = order.compare(cc, nc);
+	    }
+
+	    /* Always null at least one of cc and nc in every path */
+	    if (r == 0) {
+		/* Objects cc and nc sorts arbitrary */
+		cldIdx++;
+		if (cc == nc)
+		    nc = null;
+		cc = null; /* postspone adding nc */
+	    } else if (r < 0) {
+		/* cc were smaller, so it is not in nChlds -> remove */
+		removeNodeFromParent((MutableTreeNode) node.getChildAt(cldIdx));
+		cc = null;
+	    } else if (!children.contains(nc)) {
+		/* cc were greater, so nc is not in cChlds -> add */
+		ExplorerTreeNode newNode = new ExplorerTreeNode(nc, this);
+		insertNodeInto(newNode, node, cldIdx);
+		nc = null;
+		cldIdx++;
+	    } else {
+		nc = null;
+	    }
+	}
+	updatingChildren.remove(node);
     }
-    
+
+    /**
+     * Invoked this to insert newChild at location index in parents children.
+     * This will then message nodesWereInserted to create the appropriate
+     * event. This is the preferred way to add children as it will create the
+     * appropriate event.
+     */
+    public void insertNodeInto(MutableTreeNode newChild, MutableTreeNode parent, int index) {
+	super.insertNodeInto(newChild, parent, index);
+
+	addNodesToMap(newChild);
+    }
+
+    /**
+     * Message this to remove node from its parent. This will message
+     * nodesWereRemoved to create the appropriate event. This is the
+     * preferred way to remove a node as it handles the event creation
+     * for you.
+     */
+    public void removeNodeFromParent(MutableTreeNode node) {
+	removeNodesFromMap(node);
+
+	if (node instanceof ExplorerTreeNode) {
+	    ((ExplorerTreeNode) node).remove();
+	}
+
+	super.removeNodeFromParent(node);
+    }
+
+    /** Map all nodes in the subtree rooted at node */
+    private void addNodesToMap(TreeNode node) {
+	Enumeration children = node.children();
+	while (children.hasMoreElements()) {
+	    TreeNode child = (TreeNode) children.nextElement();
+	    addNodesToMap(child);
+	}
+
+	if (node instanceof DefaultMutableTreeNode) {
+	    DefaultMutableTreeNode mtn = (DefaultMutableTreeNode) node;
+	    addToMap(mtn.getUserObject(), mtn);
+	}
+    }
+
+    /** Unmap all nodes in the subtree rooted at node */
+    private void removeNodesFromMap(TreeNode node) {
+	Enumeration children = node.children();
+	while (children.hasMoreElements()) {
+	    TreeNode child = (TreeNode) children.nextElement();
+	    removeNodesFromMap(child);
+	}
+
+	if (node instanceof DefaultMutableTreeNode) {
+	    DefaultMutableTreeNode mtn = (DefaultMutableTreeNode) node;
+	    removeFromMap(mtn.getUserObject(), mtn);
+	}
+    }
+
     /**
      * adds a new tree node and model element to the map.
      * nodes are removed from the map when a {@link #modelElementRemoved(Object)
      * modelElementRemoved} event is received.
      */
-    private void addToMap(Object modelElement, TreeNode node){
-        
-        Object value = modelElementMap.get(modelElement);
-        if(value != null){
-            
-            ((Set)value).add(node);
-        }else{
-            
-            Set nodes = new HashSet();
-            nodes.add(node);
-            modelElementMap.put(modelElement,nodes);
-        }
+    private void addToMap(Object modelElement, TreeNode node) {
+
+	Object value = modelElementMap.get(modelElement);
+	if (value != null) {
+	    ((Set) value).add(node);
+	} else {
+	    Set nodes = new HashSet();
+	    nodes.add(node);
+	    modelElementMap.put(modelElement, nodes);
+	}
+    }
+
+    /**
+     * removes a new tree node and model element from the map.
+     */
+    private void removeFromMap(Object modelElement, TreeNode node) {
+	Object value = modelElementMap.get(modelElement);
+
+	if (value != null) {
+	    Set nodeset = (Set) value;
+	    nodeset.remove(node);
+	    if (nodeset.isEmpty())
+		modelElementMap.remove(modelElement);
+	}
     }
     
     /**
      * node lookup for a given model element.
      */
-    private Collection findNodes(Object modelElement){
+    private Collection findNodes(Object modelElement) {
+	Collection nodes = (Collection) modelElementMap.get(modelElement);
         
-        Collection nodes = (Collection)modelElementMap.get(modelElement);
-        
-        if(nodes == null){
-            return Collections.EMPTY_LIST;
-        }
-        else{
-            return nodes;
-        }
+	if (nodes == null) {
+	    return Collections.EMPTY_LIST;
+	} else {
+	    return nodes;
+	}
     }
     
     /**
      * Updates the explorer for new perspectives / orderings.
      */
     public void itemStateChanged(ItemEvent e) {
-        
-        if(e.getSource() instanceof PerspectiveComboBox){
-        
-            rules = ((ExplorerPerspective)e.getItem()).getRulesArray();
-        }
-        else{
-            
-            order = (Comparator)e.getItem();
-        }
-        
-        structureChanged();
+	if (e.getSource() instanceof PerspectiveComboBox) {
+            rules = ((ExplorerPerspective) e.getItem()).getRulesArray();
+	} else {
+	    order = (Comparator) e.getItem();
+	}
+
+	structureChanged();
     }
 }
+

@@ -257,7 +257,7 @@ extends DisplayTextTree
             
             if(getModel() instanceof ExplorerTreeModel){
                 
-                ((ExplorerTreeModel)getModel()).addAllChildren(tee.getPath());
+                ((ExplorerTreeModel)getModel()).updateChildren(tee.getPath());
             }
             
         }
