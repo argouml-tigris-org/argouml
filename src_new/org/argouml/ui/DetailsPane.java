@@ -598,16 +598,15 @@ public class DetailsPane
                         shouldEnable = true;
                     }
                 }
+
+                removeTargetListener((TargetListener) tab);
                 if (shouldEnable) {
-                    removeTargetListener((TargetListener) tab);
                     addTargetListener((TargetListener) tab);
                 }
             }
 
             _tabs.setEnabledAt(i, shouldEnable);
-
         }
-
     }
 
     private void fireTargetEvent(TargetEvent e) {
