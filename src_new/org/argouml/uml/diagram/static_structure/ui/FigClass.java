@@ -1334,6 +1334,7 @@ public class FigClass extends FigNodeModelElement
             Iterator it = Model.getFacade().getFeatures(cl).iterator();
             while (it.hasNext()) {
                 Object feat = /*(MFeature)*/ it.next();
+                Model.getPump().removeModelEventListener(this, feat); //MVW
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
                     Iterator it2 = 
@@ -1351,6 +1352,7 @@ public class FigClass extends FigNodeModelElement
             Iterator it = Model.getFacade().getFeatures(cl).iterator();
             while (it.hasNext()) {
                 Object feat = /*(MFeature)*/ it.next();
+                Model.getPump().addModelEventListener(this, feat); //MVW
                 if (Model.getFacade().isAOperation(feat)) {
                     Object oper = /*(MOperation)*/ feat;
                     Iterator it2 = 
