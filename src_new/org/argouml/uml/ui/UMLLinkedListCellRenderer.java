@@ -23,80 +23,45 @@
 
 // $Id$
 package org.argouml.uml.ui;
-
 import java.awt.Component;
 
-import javax.swing.DefaultListCellRenderer;
-import javax.swing.Icon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
-import org.apache.log4j.Category;
-import org.argouml.application.helpers.ResourceLoaderWrapper;
-
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
- * The default cell renderer for uml model elements. Used by UMLList2 and its
- * children.
+ * Renderer for linked lists. Should underline the cell but this does not work
+ * yet.
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 2, 2003
  */
-public class UMLListCellRenderer2 extends DefaultListCellRenderer {
-
-    private Category cat = Category.getInstance(UMLListCellRenderer.class);
+public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
 
     /**
-     * True if the icon for the modelelement should be shown. The icon is, for
-     * instance, a small class symbol for a class.
+     * Constructor for UMLLinkedListCellRenderer.
+     * @param showIcon
      */
-    private boolean _showIcon;
-
-    /**
-     * Constructor for UMLListCellRenderer2.
-     */
-    public UMLListCellRenderer2(boolean showIcon) {
-        super();
-        _showIcon = showIcon;
+    public UMLLinkedListCellRenderer(boolean showIcon) {
+        super(showIcon);
     }
 
     /**
      * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
-        if (value instanceof MBase) {
-            String name = null;
-            if (value instanceof MModelElement) {
-                MModelElement elem = (MModelElement) value;
-                name = elem.getName();
-                if (name == null || name.equals("")) {
-                    name = "(anon " + makeTypeName(elem) + ")";
-                }
-            } else {
-                name = makeTypeName(value);
-            }
-
-            label.setText(name);
-            if (_showIcon) {
-                Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(value);
-                if (icon != null)
-                    label.setIcon(icon);
-            }
-
-        }
-
-        return label;
-    }
-
-    private String makeTypeName(Object elem) {
-        String fullName = elem.getClass().getName();
-        fullName = fullName.substring(fullName.lastIndexOf('.') + 2, fullName.length());
-        if (fullName.endsWith("Impl"))
-            fullName = fullName.substring(0, fullName.indexOf("Impl"));
-        return fullName;
+        JLabel label = (JLabel)super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+        /*        
+        label.setBackground(list.getBackground());
+        label.setForeground(list.getForeground());
+        label.setBorder(BorderFactory.createEmptyBorder());
+        if (isSelected) {
+            Font font = label.getFont();
+            Map textattributes = font.getAttributes();
+            textattributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRABOLD);
+            label.setFont(font.deriveFont(textattributes));            
+        } 
+        */
+        return label;        
     }
 
 }

@@ -201,6 +201,7 @@ public class ExtensionMechanismsHelper {
      * @return boolean
      */
     public boolean isValidStereoType(MModelElement m, MStereotype stereo) {
+        if (m == null) return false;
        return isValidStereoType(m.getClass(), stereo);
     }
     

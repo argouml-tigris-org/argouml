@@ -24,10 +24,19 @@
 // $header$
 package org.argouml.application.helpers;
 
+import java.util.Hashtable;
+
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.UIManager;
 
 import org.tigris.gef.util.ResourceLoader;
+
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MComment;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
  * Wrapper around org.tigris.gef.util.ResourceLoader. Necessary since ArgoUML needs
@@ -37,11 +46,26 @@ import org.tigris.gef.util.ResourceLoader;
  */
 public final class ResourceLoaderWrapper {
 
+    protected ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
+    protected ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
+    protected ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
+    protected ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
+    protected ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
+    protected ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
+    protected ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
+    protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
+    protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+    protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
+    protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
+    protected ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
+
+    protected Hashtable _iconCache = new Hashtable();
+
     /**
      * Singleton implementation
      */
     private static ResourceLoaderWrapper _instance;
-    
+
     /**
      * Returns the singleton instance
      * @return ResourceLoaderWrapper
@@ -52,7 +76,7 @@ public final class ResourceLoaderWrapper {
         }
         return _instance;
     }
-    
+
     /**
      * Constructor for ResourceLoaderWrapper.
      */
@@ -60,7 +84,7 @@ public final class ResourceLoaderWrapper {
         super();
         initResourceLoader();
     }
-    
+
     /**
      * Initializes the resourceloader. LookupIconResource checks if there are locations 
      * and extensions known. If there are none, this method is called to initialize
@@ -69,10 +93,9 @@ public final class ResourceLoaderWrapper {
      */
     private void initResourceLoader() {
         String lookAndFeelClassName;
-        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
+        if ("true".equals(System.getProperty("force.nativelaf", "false"))) {
             lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
+        } else {
             lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
         }
         String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
@@ -89,7 +112,7 @@ public final class ResourceLoaderWrapper {
         ResourceLoader.addResourceLocation("/org/argouml/Images");
         ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
     }
-    
+
     /**
      * Wrapped method
      * @param extension
@@ -97,7 +120,7 @@ public final class ResourceLoaderWrapper {
     public void addResourceExtension(String extension) {
         ResourceLoader.addResourceExtension(extension);
     }
-    
+
     /**
      * Wrapped method
      * @param location
@@ -105,7 +128,7 @@ public final class ResourceLoaderWrapper {
     public void addResourceLocation(String location) {
         ResourceLoader.addResourceLocation(location);
     }
-    
+
     /**
      * Wrapped method
      * @param extension
@@ -114,7 +137,7 @@ public final class ResourceLoaderWrapper {
     public boolean containsExtension(String extension) {
         return ResourceLoader.containsExtension(extension);
     }
-    
+
     /**
      * Wrapped method
      * @param location
@@ -123,7 +146,7 @@ public final class ResourceLoaderWrapper {
     public boolean containsLocation(String location) {
         return ResourceLoader.containsLocation(location);
     }
-    
+
     /**
      * Wrapped method
      * @param resource
@@ -132,7 +155,7 @@ public final class ResourceLoaderWrapper {
     public boolean isInCache(String resource) {
         return ResourceLoader.isInCache(resource);
     }
-    
+
     /**
      * Wrapped method
      * @param resource
@@ -141,7 +164,7 @@ public final class ResourceLoaderWrapper {
     public ImageIcon lookupIconResource(String resource) {
         return ResourceLoader.lookupIconResource(resource);
     }
-    
+
     /**
      * Wrapped method
      * @param resource
@@ -151,7 +174,7 @@ public final class ResourceLoaderWrapper {
     public ImageIcon lookupIconResource(String resource, ClassLoader loader) {
         return ResourceLoader.lookupIconResource(resource, loader);
     }
-    
+
     /**
      * Wrapped method
      * @param resource
@@ -161,7 +184,7 @@ public final class ResourceLoaderWrapper {
     public ImageIcon lookupIconResource(String resource, String desc) {
         return ResourceLoader.lookupIconResource(resource, desc);
     }
-    
+
     /**
      * Wrapped method
      * @param resource
@@ -169,10 +192,10 @@ public final class ResourceLoaderWrapper {
      * @param loader
      * @return ImageIcon
      */
-    public ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {      
+    public ImageIcon lookupIconResource(String resource, String desc, ClassLoader loader) {
         return ResourceLoader.lookupIconResource(resource, desc, loader);
     }
-    
+
     /** 
      * Wrapped method
      * @param extension
@@ -180,12 +203,63 @@ public final class ResourceLoaderWrapper {
     public void removeResourceExtension(String extension) {
         ResourceLoader.removeResourceExtension(extension);
     }
-    
+
     /**
      * Wrapped method
      * @param location
      */
     public void removeResourceLocation(String location) {
         ResourceLoader.removeResourceExtension(location);
+    }
+
+    public Icon lookupIcon(Object value) {
+        Icon icon = (Icon) _iconCache.get(value.getClass());
+
+        if (value instanceof MPseudostate) {
+            MPseudostate ps = (MPseudostate) value;
+            MPseudostateKind kind = ps.getKind();
+            if (MPseudostateKind.INITIAL.equals(kind))
+                icon = _InitialStateIcon;
+            if (MPseudostateKind.DEEP_HISTORY.equals(kind))
+                icon = _DeepIcon;
+            if (MPseudostateKind.SHALLOW_HISTORY.equals(kind))
+                icon = _ShallowIcon;
+            if (MPseudostateKind.FORK.equals(kind))
+                icon = _ForkIcon;
+            if (MPseudostateKind.JOIN.equals(kind))
+                icon = _JoinIcon;
+            if (MPseudostateKind.BRANCH.equals(kind))
+                icon = _BranchIcon;
+            //if (MPseudostateKind.FINAL.equals(kind)) icon = _FinalStateIcon;
+        }
+        if (value instanceof MAbstraction) {
+            icon = _RealizeIcon;
+        }
+        // needs more work: sending and receiving icons
+        if (value instanceof MSignal) {
+            icon = _SignalIcon;
+        }
+
+        if (value instanceof MComment) {
+            icon = _CommentIcon;
+        }
+
+        if (icon == null) {
+            String clsPackName = value.getClass().getName();
+            if (clsPackName.startsWith("org") || clsPackName.startsWith("ru")) {
+                String cName = clsPackName.substring(clsPackName.lastIndexOf(".") + 1);
+                // special case "UML*" e.g. UMLClassDiagram
+                if (cName.startsWith("UML"))
+                    cName = cName.substring(3);
+                if (cName.startsWith("M"))
+                    cName = cName.substring(1);
+                if (cName.endsWith("Impl"))
+                    cName = cName.substring(0, cName.length() - 4);
+                icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(cName);
+                if (icon != null)
+                    _iconCache.put(value.getClass(), icon);
+            }
+        }
+        return icon;
     }
 }

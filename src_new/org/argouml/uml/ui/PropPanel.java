@@ -26,14 +26,12 @@
 // Original Author:
 // $Id$
 
-
 // 23 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Added the third party
 // event listener.
 
 // 25 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Reworked
 // setNameEventListener to use third party event listeners, and removed the
 // promiscuous listener stuff.
-
 
 package org.argouml.uml.ui;
 
@@ -52,6 +50,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -86,8 +85,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
  */
-abstract public class PropPanel extends TabSpawnable
-implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
+abstract public class PropPanel extends TabSpawnable implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     ////////////////////////////////////////////////////////////////
     // instance vars
     private Object _target;
@@ -100,7 +98,6 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     private int lastRow;
 
-
     /**
      * <p>The metaclass/property pairs for the third party listener (if we have
      *   set one up. We use this when creating a new listener on target
@@ -110,9 +107,12 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     private Vector _targetList = null;
     private JPanel center;
 
-    protected JPanel buttonPanel=new JPanel();
-    private JPanel buttonPanelWithFlowLayout=new JPanel();
-    private JPanel captionPanel=new JPanel();
+    protected JPanel buttonPanel = new JPanel();
+    private JPanel buttonPanelWithFlowLayout = new JPanel();
+
+    private JLabel _titleLabel;
+
+    private JPanel captionPanel = new JPanel();
 
     protected static ImageIcon _navBackIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateBack");
     protected static ImageIcon _navForwardIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward");
@@ -128,8 +128,8 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *    @deprecated 7-Dec-2002 by Bob Tarling. Use the constructor
      *    specifying orientation instead.
      */
-    public PropPanel(String title,int panelCount) {
-	this(title, null, panelCount);
+    public PropPanel(String title, int panelCount) {
+        this(title, null, panelCount);
     }
 
     /**
@@ -140,28 +140,29 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *    longer in use. Use of GridBagLayout is being dropped in favour of LabelledLayout
      */
     public PropPanel(String title, ImageIcon icon, int panelCount) {
-	super(title);
+        super(title);
         setLayout(new BorderLayout());
         center = new JPanel();
-        center.setLayout(new GridLayout(1,0));
-        
+        center.setLayout(new GridLayout(1, 0));
+
         JPanel panel;
-        for(long i = 0; i < panelCount; i++) {
+        for (long i = 0; i < panelCount; i++) {
             panel = new JPanel(new GridBagLayout());
             _panels.add(panel);
             center.add(panel);
         }
-        add(center,BorderLayout.CENTER);
+        add(center, BorderLayout.CENTER);
 
-	//add caption panel and button panel
-	if (icon!=null) captionPanel.add(new JLabel(icon));
-	captionPanel.add(new JLabel(localize(title)));
-	addCaption(captionPanel,0,0,0);
+        //add caption panel and button panel
+        if (icon != null)
+            captionPanel.add(new JLabel(icon));
+        captionPanel.add(new JLabel(localize(title)));
+        addCaption(captionPanel, 0, 0, 0);
 
-	buttonPanel = new JPanel(new GridLayout(1,0));
-	buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
-	buttonPanelWithFlowLayout.add(buttonPanel);
-	addField(buttonPanelWithFlowLayout,0,0,0);
+        buttonPanel = new JPanel(new GridLayout(1, 0));
+        buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
+        buttonPanelWithFlowLayout.add(buttonPanel);
+        addField(buttonPanelWithFlowLayout, 0, 0, 0);
     }
 
     public void setOrientation(Orientation orientation) {
@@ -175,20 +176,30 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      * @param sectionCount the number of sections in the proppanel
      */
     public PropPanel(String title, ImageIcon icon, Orientation orientation) {
-	super(title);
+        super(title);
         setOrientation(orientation);
 
         setLayout(new LabelledLayout(orientation));
 
-        JLabel titleLabel;
-	if (icon!=null) titleLabel = new JLabel(localize(title), icon, SwingConstants.LEFT);
-        else titleLabel = new JLabel(localize(title));
+        if (icon != null)
+            _titleLabel = new JLabel(localize(title), icon, SwingConstants.LEFT);
+        else
+            _titleLabel = new JLabel(localize(title));
         buttonPanel = new JPanel(new GridLayout2(1, 0, GridLayout2.MAXPREFERRED));
-        titleLabel.setLabelFor(buttonPanel);
-	add(titleLabel);
+        _titleLabel.setLabelFor(buttonPanel);
+        add(_titleLabel);
         add(buttonPanel);
     }
-
+    
+    /**
+     * Constructs a new Proppanel without an icon. If there is an icon it's
+     * updated at runtime via settarget.
+     * @param title
+     * @param orientation
+     */
+    public PropPanel(String title, Orientation orientation) {
+        this (title, null, orientation);
+    }
 
     /**
      *   Adds a component to the captions of the specified panel.
@@ -198,8 +209,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
      */
-    public void addCaption(Component component,int row,int panel,double weighty)
-    {
+    public void addCaption(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
             row = lastRow;
             panel = 0;
@@ -216,12 +226,12 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
         JPanel pane = (JPanel) _panels.elementAt(panel);
         GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component,gbc);
+        layout.setConstraints(component, gbc);
         pane.add(component);
     }
 
-    public void addCaption(String label,int row, int panel,double weighty) {
-        addCaption(new JLabel(localize(label)),row,panel,weighty);
+    public void addCaption(String label, int row, int panel, double weighty) {
+        addCaption(new JLabel(localize(label)), row, panel, weighty);
     }
 
     /**
@@ -244,7 +254,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      */
     public JLabel addFieldAfter(String label, Component component, Component afterComponent) {
         int nComponent = this.getComponentCount();
-        for (int i=0; i < nComponent; ++i) {
+        for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == afterComponent) {
                 JLabel jlabel = new JLabel(localize(label));
                 jlabel.setLabelFor(component);
@@ -264,7 +274,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      */
     public JLabel addFieldBefore(String label, Component component, Component beforeComponent) {
         int nComponent = this.getComponentCount();
-        for (int i=0; i < nComponent; ++i) {
+        for (int i = 0; i < nComponent; ++i) {
             if (getComponent(i) == beforeComponent) {
                 JLabel jlabel = new JLabel(localize(label));
                 jlabel.setLabelFor(component);
@@ -291,15 +301,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
 
     final public String localize(String key) {
         String localized = key;
-        if(_bundle == null) {
+        if (_bundle == null) {
             _bundle = getResourceBundle();
         }
-        if(_bundle != null) {
+        if (_bundle != null) {
             try {
                 localized = _bundle.getString(key);
+            } catch (MissingResourceException e) {
             }
-            catch(MissingResourceException e) {}
-            if(localized == null) {
+            if (localized == null) {
                 localized = key;
             }
         }
@@ -318,8 +328,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
      */
-   public void addField(Component component,int row,int panel,double weighty)
-    {
+    public void addField(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
             row = lastRow;
             panel = 0;
@@ -333,14 +342,14 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         gbc.gridwidth = 1;
         gbc.gridx = 1;
         gbc.weightx = 1;
-        if(weighty == 0)
+        if (weighty == 0)
             gbc.fill = GridBagConstraints.HORIZONTAL;
         else
             gbc.fill = GridBagConstraints.BOTH;
 
         JPanel pane = (JPanel) _panels.elementAt(panel);
         GridBagLayout layout = (GridBagLayout) pane.getLayout();
-        layout.setConstraints(component,gbc);
+        layout.setConstraints(component, gbc);
         pane.add(component);
     }
 
@@ -354,17 +363,14 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
      */
-    final public void addLinkField(Component component,int row,int panel,double weighty)
-    {
+    final public void addLinkField(Component component, int row, int panel, double weighty) {
         component.setBackground(getBackground());
         component.setForeground(Color.blue);
-        addField(component,row,panel,weighty);
+        addField(component, row, panel, weighty);
     }
 
-
-
     public Profile getProfile() {
-        if(_profile == null) {
+        if (_profile == null) {
             _profile = ProfileJava.getInstance();
         }
         return _profile;
@@ -373,9 +379,9 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     /**
         This method (and addMElementListener) can be overriden if the
         prop panel wants to monitor additional objects.
-
+    
         @param target target of prop panel
-
+    
     */
     protected void removeMElementListener(MBase target) {
         UmlModelEventPump.getPump().removeModelEventListener(this, target);
@@ -385,7 +391,7 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         This method (and removeMElementListener) can be overriden if the
         prop panel wants to monitor additional objects.  This method
         is public only since it is called from a Runnable object.
-
+    
         @param target target of prop panel
     */
     public void addMElementListener(MBase target) {
@@ -406,79 +412,82 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         // exists and dispatch a new NSUML element listener to
         // ourself. Otherwise dispatch a target reasserted to ourself.
 
-        if(t != _target) {
+        if (t != _target) {
 
             // Set up the target and its model element variant.
 
             _target = t;
             _modelElement = null;
 
-            if(_target instanceof MModelElement) {
+            if (_target instanceof MModelElement) {
                 _modelElement = (MModelElement) _target;
             }
 
-           
-
             // This will add a new MElement listener after update is complete
 
-            SwingUtilities.invokeLater(
-                new UMLChangeDispatch(this,
-                                      UMLChangeDispatch.TARGET_CHANGED_ADD));
-        }
-        else {
-            UMLChangeDispatch dispatch =
-                new UMLChangeDispatch(this,
-                                      UMLChangeDispatch.TARGET_REASSERTED);
+            SwingUtilities.invokeLater(new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_CHANGED_ADD));
+        } else {
+            UMLChangeDispatch dispatch = new UMLChangeDispatch(this, UMLChangeDispatch.TARGET_REASSERTED);
             dispatch.targetReasserted();
             SwingUtilities.invokeLater(dispatch);
         }
+        
+        // update the titleLabel 
+        if (_titleLabel != null) {
+            Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIcon(t);
+            if (icon != null)
+                _titleLabel.setIcon(icon);
+        }
     }
 
-    public final Object getTarget() { return _target; }
+    public final Object getTarget() {
+        return _target;
+    }
 
     public final MModelElement getModelElement() {
         return _modelElement;
     }
 
     public void refresh() {
-        SwingUtilities.invokeLater(new UMLChangeDispatch(this,0));
+        SwingUtilities.invokeLater(new UMLChangeDispatch(this, 0));
     }
 
-    public boolean shouldBeEnabled() { return (_modelElement != null); }
-
+    public boolean shouldBeEnabled() {
+        return (_modelElement != null);
+    }
 
     public void propertySet(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.propertySet(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
     public void listRoleItemSet(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.listRoleItemSet(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
     public void recovered(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.recovered(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
     public void removed(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.removed(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
     public void roleAdded(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.roleAdded(mee);
         SwingUtilities.invokeLater(dispatch);
     }
 
     public void roleRemoved(MElementEvent mee) {
-        UMLChangeDispatch dispatch = new UMLChangeDispatch(this,0);
+        UMLChangeDispatch dispatch = new UMLChangeDispatch(this, 0);
         dispatch.roleRemoved(mee);
         SwingUtilities.invokeLater(dispatch);
     }
@@ -489,51 +498,48 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *   the namespace of the target
      */
     protected MNamespace getDisplayNamespace() {
-      MNamespace ns = null;
-      Object target = getTarget();
-      if(target instanceof MModelElement) {
-        ns = ((MModelElement) target).getNamespace();
-      }
-      return ns;
+        MNamespace ns = null;
+        Object target = getTarget();
+        if (target instanceof MModelElement) {
+            ns = ((MModelElement) target).getNamespace();
+        }
+        return ns;
     }
 
-
     public String formatElement(MModelElement element) {
-        return getProfile().formatElement(element,getDisplayNamespace());
+        return getProfile().formatElement(element, getDisplayNamespace());
     }
 
     public String formatNamespace(MNamespace ns) {
-        return getProfile().formatElement(ns,null);
+        return getProfile().formatElement(ns, null);
     }
-
-
 
     public String formatCollection(Iterator iter) {
         MNamespace ns = getDisplayNamespace();
-        return getProfile().formatCollection(iter,ns);
+        return getProfile().formatCollection(iter, ns);
     }
 
     public void navigateTo(Object element) {
         Iterator iter = _navListeners.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             ((NavigationListener) iter.next()).navigateTo(element);
         }
     }
     public void open(Object element) {
         Iterator iter = _navListeners.iterator();
-        while(iter.hasNext()) {
+        while (iter.hasNext()) {
             ((NavigationListener) iter.next()).open(element);
         }
     }
 
-
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
         Iterator iter = _navListeners.iterator();
-	    while(iter.hasNext()) {
-	        navigated = ((NavigationListener) iter.next()).navigateBack(attempt);
-            if(navigated) attempt = false;
-	    }
+        while (iter.hasNext()) {
+            navigated = ((NavigationListener) iter.next()).navigateBack(attempt);
+            if (navigated)
+                attempt = false;
+        }
         return navigated;
     }
 
@@ -545,10 +551,11 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
         Iterator iter = _navListeners.iterator();
-	    while(iter.hasNext()) {
-	        navigated = ((NavigationListener) iter.next()).navigateForward(attempt);
-            if(navigated) attempt = false;
-	    }
+        while (iter.hasNext()) {
+            navigated = ((NavigationListener) iter.next()).navigateForward(attempt);
+            if (navigated)
+                attempt = false;
+        }
         return navigated;
     }
 
@@ -560,22 +567,20 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     public boolean isNavigateForwardEnabled() {
         boolean enabled = false;
         Iterator iter = _navListeners.iterator();
-	    while(iter.hasNext() && !enabled) {
-	        enabled = ((NavigationListener) iter.next()).isNavigateForwardEnabled();
-	    }
+        while (iter.hasNext() && !enabled) {
+            enabled = ((NavigationListener) iter.next()).isNavigateForwardEnabled();
+        }
         return enabled;
     }
 
     public boolean isNavigateBackEnabled() {
         boolean enabled = false;
         Iterator iter = _navListeners.iterator();
-	    while(iter.hasNext() && !enabled) {
-	        enabled = ((NavigationListener) iter.next()).isNavigateBackEnabled();
-	    }
+        while (iter.hasNext() && !enabled) {
+            enabled = ((NavigationListener) iter.next()).isNavigateBackEnabled();
+        }
         return enabled;
     }
-
-
 
     /**    Registers a listener for navigation events.
      */
@@ -617,22 +622,22 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
           old implementation
          
         // Convert to the third party listening pair list
-
+        
         Vector targetList = new Vector (metaclasses.length * 6);
-
+        
         for (int i = 0 ; i < metaclasses.length ; i++) {
             Class mc = metaclasses[i];
-
+        
             targetList.add(mc);
             targetList.add("name");
-
+        
             targetList.add(mc);
             targetList.add("baseClass");
-
+        
             targetList.add(mc);
             targetList.add("ownedElement");
         }
-
+        
         addThirdPartyEventListening(targetList.toArray());
         */
         for (int i = 0; i < metaclasses.length; i++) {
@@ -649,31 +654,27 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
         }
     }
 
-
     public void removeElement() {
         Object target = getTarget();
-        if(target instanceof MBase) {             
-            MModelElement newTarget = ((MModelElement)target).getModelElementContainer();
+        if (target instanceof MBase) {
+            MModelElement newTarget = ((MModelElement) target).getModelElementContainer();
             MBase base = (MBase) target;
             ProjectBrowser.TheInstance.setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
-	    ActionRemoveFromModel.SINGLETON.actionPerformed(event);	
+            ActionRemoveFromModel.SINGLETON.actionPerformed(event);
             if (newTarget != null) {
-                 ProjectBrowser.TheInstance.setTarget(newTarget);
-            }  
+                ProjectBrowser.TheInstance.setTarget(newTarget);
+            }
         }
     }
-
 
     /** check whether this element can be deleted. 
      *  Currently it only checks whether we delete the main model.
      *  ArgoUML does not like that.
      *  @since 0.13.2
      */
-   public boolean isRemovableElement() {
-       return ((getTarget() != null) && 
-               (getTarget()!= ProjectManager.getManager().getCurrentProject().getModel()));
-   } 
-
+    public boolean isRemovableElement() {
+        return ((getTarget() != null) && (getTarget() != ProjectManager.getManager().getCurrentProject().getModel()));
+    }
 
 } /* end class PropPanel */

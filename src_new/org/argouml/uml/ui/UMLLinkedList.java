@@ -51,7 +51,7 @@ public class UMLLinkedList extends UMLList2 implements MouseListener {
      */
     public UMLLinkedList(
         UMLModelElementListModel2 dataModel, boolean showIcon) {
-        super(dataModel, showIcon);
+        super(dataModel, new UMLLinkedListCellRenderer(showIcon));
         setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         addMouseListener(this);
     }
