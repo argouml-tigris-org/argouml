@@ -25,7 +25,6 @@ package org.argouml.uml.ui;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -131,28 +130,23 @@ implements ArgoNotationEventListener, NotationContext, ItemListener {
    * Invoked when any aspect of the notation has been changed.
    */
   public void notationChanged(ArgoNotationEvent e) {
-      System.out.println("TabSrc: notation changed: " + e);
       refresh();
   }
 
   /** Ignored. */
   public void notationAdded(ArgoNotationEvent e) { 
-      System.out.println("TabSrc: notation added: " + e);
   }
 
   /** Ignored. */
   public void notationRemoved(ArgoNotationEvent e) {
-      System.out.println("TabSrc: notation removed: " + e);
   }
 
   /** Ignored. */
   public void notationProviderAdded(ArgoNotationEvent e) {
-      System.out.println("TabSrc: notation provider added: " + e);
   }
 
   /** Ignored. */
   public void notationProviderRemoved(ArgoNotationEvent e) { 
-      System.out.println("TabSrc: notation provider removed: " + e);
 }
 
   public void itemStateChanged(ItemEvent event) {
