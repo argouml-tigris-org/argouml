@@ -40,7 +40,7 @@ package org.argouml.uml.ui.behavior.use_cases;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.foundation.core.PropPanelClassifier;
@@ -106,7 +106,7 @@ public class PropPanelActor extends PropPanelClassifier {
      */
 
     public void newActor() {
-        ProjectBrowser.getInstance().setTarget(UseCasesFactory.getFactory().buildActor(getTarget()));
+        TargetManager.getInstance().setTarget(UseCasesFactory.getFactory().buildActor(getTarget()));
     }
 
    

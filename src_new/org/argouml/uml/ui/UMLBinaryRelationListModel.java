@@ -11,6 +11,7 @@ import javax.swing.JPopupMenu;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
@@ -87,11 +88,11 @@ abstract public class UMLBinaryRelationListModel
                     if (!dialog.getSelected().contains(othermelement)) {
                         MModelElement connector =
                             getRelation(melement, othermelement);
-                        Object pt = ProjectBrowser.getInstance().getTarget();
-                        ProjectBrowser.getInstance().setTarget(connector);
+                        Object pt = TargetManager.getInstance().getTarget();
+                        TargetManager.getInstance().setTarget(connector);
                         ActionEvent event = new ActionEvent(this, 1, "delete");
                         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-                        ProjectBrowser.getInstance().setTarget(pt);
+                        TargetManager.getInstance().setTarget(pt);
                     }
                 }
             }
@@ -108,11 +109,11 @@ abstract public class UMLBinaryRelationListModel
             MModelElement othermelement =
                 (MModelElement) getModelElementAt(index);
             MModelElement relation = getRelation(melement, othermelement);
-            Object pt = ProjectBrowser.getInstance().getTarget();
-            ProjectBrowser.getInstance().setTarget(relation);
+            Object pt = TargetManager.getInstance().getTarget();
+            TargetManager.getInstance().setTarget(relation);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-            ProjectBrowser.getInstance().setTarget(pt);
+            TargetManager.getInstance().setTarget(pt);
             fireIntervalRemoved(this, index, index);
         }
     }

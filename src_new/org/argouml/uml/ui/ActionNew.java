@@ -23,16 +23,19 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.cognitive.Designer;
-import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-
 import java.awt.Window;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.text.MessageFormat;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+
+import org.argouml.application.api.Argo;
+import org.argouml.cognitive.Designer;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.FindDialog;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 
 /** Action to trigger creation of a new project.
  * @stereotype singleton
@@ -96,7 +99,7 @@ public class ActionNew extends UMLAction {
     p = ProjectManager.getManager().makeEmptyProject();
     FindDialog.getInstance().doClearTabs();
     FindDialog.getInstance().doResetFields();
-    ProjectBrowser.getInstance().setTarget(p.getDiagrams().toArray()[0]);
+    TargetManager.getInstance().setTarget(p.getDiagrams().toArray()[0]);
     Designer.enableCritiquing();
   }
 } /* end class ActionNew */

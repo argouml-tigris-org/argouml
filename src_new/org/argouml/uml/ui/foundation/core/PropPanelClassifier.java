@@ -120,7 +120,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             MOperation newOper =
                 UmlFactory.getFactory().getCore().buildOperation(
                     (MClassifier) target);
-            ProjectBrowser.getInstance().setTarget(newOper);
+            TargetManager.getInstance().setTarget(newOper);
         }
     }
 
@@ -130,7 +130,7 @@ abstract public class PropPanelClassifier extends PropPanelNamespace {
             MClassifier cls = (MClassifier) target;
             MAttribute attr =
                 UmlFactory.getFactory().getCore().buildAttribute(cls);
-            ProjectBrowser.getInstance().setTarget(attr);
+            TargetManager.getInstance().setTarget(attr);
         }
     }
 

@@ -28,7 +28,7 @@ import javax.swing.JScrollPane;
 
 import org.argouml.application.api.Argo;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -70,7 +70,7 @@ public class PropPanelInteraction extends PropPanelModelElement {
 	 * @see org.argouml.uml.ui.foundation.core.PropPanelModelElement#navigateUp()
 	 */
 	public void navigateUp() {
-		ProjectBrowser.getInstance().setTarget(((MInteraction)getTarget()).getContext());
+        TargetManager.getInstance().setTarget(((MInteraction)getTarget()).getContext());
 	}
 
 }

@@ -35,7 +35,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.swingext.Orientation;
-import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
@@ -78,7 +78,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
      * Adds a parameter to the event and navigates towards it.
      */
     public void buttonAddParameter() {
-        ProjectBrowser.getInstance().setTarget(CoreFactory.getFactory().buildParameter(getTarget()));
+        TargetManager.getInstance().setTarget(CoreFactory.getFactory().buildParameter(getTarget()));
     }
 
 } /* end class PropPanelEvent */

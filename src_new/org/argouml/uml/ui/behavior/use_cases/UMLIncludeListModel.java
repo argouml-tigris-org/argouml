@@ -61,6 +61,7 @@ import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
 import org.argouml.ui.ArgoDiagram;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLListMenuItem;
@@ -294,11 +295,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    			MUseCase includedusecase = (MUseCase)it.next();
 	    			if (!dialog.getSelected().contains(includedusecase)) {
 	    				MInclude include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
-			    		Object pt = ProjectBrowser.getInstance().getTarget();
-			    		ProjectBrowser.getInstance().setTarget(include);
+			    		Object pt = TargetManager.getInstance().getTarget();
+			    		TargetManager.getInstance().setTarget(include);
 			    		ActionEvent event = new ActionEvent(this, 1, "delete");
 			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-			    		ProjectBrowser.getInstance().setTarget(pt);
+			    		TargetManager.getInstance().setTarget(pt);
 	    			}
 	    		}
 	    	}
@@ -336,11 +337,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     		MUseCase usecase = (MUseCase)target;
     		MUseCase includedusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
     		MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
-    		Object pt = ProjectBrowser.getInstance().getTarget();
-    		ProjectBrowser.getInstance().setTarget(include);
+    		Object pt = TargetManager.getInstance().getTarget();
+    		TargetManager.getInstance().setTarget(include);
     		ActionEvent event = new ActionEvent(this, 1, "delete");
     		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-    		ProjectBrowser.getInstance().setTarget(pt);
+    		TargetManager.getInstance().setTarget(pt);
     		fireIntervalRemoved(this,index,index);
     	}
     	/*

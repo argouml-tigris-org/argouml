@@ -44,6 +44,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
 import org.argouml.swingext.LabelledLayout;
 import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelModifiers;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
@@ -175,7 +176,7 @@ public class PropPanelUseCase extends PropPanelClassifier {
 
             MExtensionPoint extensionPoint =
                     UseCasesFactory.getFactory().buildExtensionPoint(useCase);
-            ProjectBrowser.getInstance().setTarget(extensionPoint);
+            TargetManager.getInstance().setTarget(extensionPoint);
             
         }
     }
