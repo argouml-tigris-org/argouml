@@ -57,6 +57,7 @@ public class FigDependency extends FigEdgeModelElement {
         setDestArrowHead(endArrow);
         setBetweenNearestPoints(true);
         setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
+        getFig().setDashed(true);
     }
 
     public FigDependency(Object edge) {

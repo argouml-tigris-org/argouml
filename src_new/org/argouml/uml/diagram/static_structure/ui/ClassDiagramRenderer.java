@@ -137,7 +137,6 @@ public class ClassDiagramRenderer
                 realFig.setDestPortFig(supFN);
                 realFig.setDestFigNode(supFN);
                 realFig.getFig().setLayer(lay);
-                realFig.getFig().setDashed(true);
                 return realFig;
             }
             else {

@@ -63,6 +63,7 @@ import org.argouml.uml.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionAddNote;
 import org.argouml.uml.ui.ActionAddOperation;
 import org.argouml.uml.ui.ActionCompartmentDisplay;
+import org.argouml.uml.ui.ActionEdgesDisplay;
 import org.argouml.uml.ui.ActionModifier;
 import org.tigris.gef.base.Editor;
 import org.tigris.gef.base.Globals;
@@ -331,6 +332,9 @@ public class FigClass extends FigNodeModelElement {
             showMenu.add(ActionCompartmentDisplay.HideOperCompartment);
         else
             showMenu.add(ActionCompartmentDisplay.ShowOperCompartment);
+        
+        showMenu.add(ActionEdgesDisplay.ShowEdges);
+        showMenu.add(ActionEdgesDisplay.HideEdges);
 
         popUpActions.insertElementAt(showMenu, popUpActions.size() - 1);
 
