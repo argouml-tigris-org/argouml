@@ -185,6 +185,15 @@ public class TodoParser extends SAXParserBase {
 		{
 			switch (_tokens.toToken(e.getName(), true))
 			{
+			case TodoTokenTable.TOKEN_headline:
+			case TodoTokenTable.TOKEN_description:
+			case TodoTokenTable.TOKEN_priority:
+			case TodoTokenTable.TOKEN_moreinfourl:
+			case TodoTokenTable.TOKEN_poster:
+			case TodoTokenTable.TOKEN_offender:
+				// NOP
+				break;
+
 			case TodoTokenTable.TOKEN_todo:
 				handleTodo(e);
 				break;
@@ -230,6 +239,12 @@ public class TodoParser extends SAXParserBase {
 		{
 			switch (_tokens.toToken(e.getName(), false))
 			{
+			case TodoTokenTable.TOKEN_todo:
+			case TodoTokenTable.TOKEN_resolvedcritics:
+			case TodoTokenTable.TOKEN_todolist:
+				// NOP
+				break;
+
 			case TodoTokenTable.TOKEN_todoitem:
 				handleTodoItemEnd(e);
 				break;
