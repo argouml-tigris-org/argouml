@@ -421,8 +421,6 @@ public class ParserDisplay extends Parser {
       name = s;
     }
 
-	System.out.println("CR name: "+name+"\nCR base: "+base);
-
 	Project p = ProjectBrowser.TheInstance.getProject();
 	MClassifier type = p.findType(base);
 	if (type != null) {

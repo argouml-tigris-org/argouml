@@ -187,7 +187,7 @@ public class GeneratorDisplay extends Generator {
     //nsuml: realizations!
 //     String interfaces = generateRealization(cls.getRealizations(), true);
 //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
-//     s += "{\n";
+	s += "{\n";
 
     Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     if (strs != null) {

@@ -63,7 +63,7 @@ public class CrDisambigStateName extends CrUML {
     MState s = (MState) dm;
     String myName = s.getName();
     // needs-more-work: should define a CompoundCritic
-    if (myName.equals("")) return NO_PROBLEM;
+    if (myName == null || myName.equals("")) return NO_PROBLEM;
     String myNameString = myName;
     if (myNameString.length() == 0) return NO_PROBLEM;
     Collection pkgs = s.getElementImports2();

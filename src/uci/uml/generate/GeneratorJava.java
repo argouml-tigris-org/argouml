@@ -247,7 +247,7 @@ public class GeneratorJava extends Generator {
 	// nsuml: realizations!
 //     String interfaces = generateSpecification(cls.getSpecializations());
 //     if (!interfaces.equals("")) s += "implements " + interfaces + " ";
-//     s += "{\n";
+	s += "{\n";
 
     s += INDENT + generateTaggedValues(cls);
     s += generateConstraints(cls);

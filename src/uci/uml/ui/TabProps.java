@@ -37,6 +37,7 @@ import javax.swing.tree.*;
 //import javax.swing.border.*;
 
 import uci.gef.Diagram;
+import uci.uml.visual.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.behavior.collaborations.*;
@@ -198,6 +199,7 @@ class InitPanelsLater implements Runnable {
     _panels.put(MPseudostateImpl.class, new PropPanelPseudostate());
 	//    _panels.put(Realization.class, new PropPanelRealization());
 	// Realization in nsuml!!!
+	_panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
     _panels.put(MStateImpl.class, new PropPanelState());
     _panels.put(String.class, new PropPanelString());
     _panels.put(MTransitionImpl.class, new PropPanelTransition());

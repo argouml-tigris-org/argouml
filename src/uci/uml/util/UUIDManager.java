@@ -88,12 +88,12 @@ public class UUIDManager {
                 // me instanceof MNamespace ||
                 me instanceof MClassifier ||
                 me instanceof MStateVertex ||
-		me instanceof MStateMachine ||
+				me instanceof MStateMachine ||
                 me instanceof MTransition ||
                 me instanceof MCollaboration ||
-		me instanceof MMessage ||
+				me instanceof MMessage ||
                 me instanceof MAssociation ||
-		me instanceof MUseCase) {
+				me instanceof MUseCase) {
                 uuid = me.getUUID();
                 if (uuid == null) {
                     me.setUUID(getNewUUID());
@@ -101,7 +101,7 @@ public class UUIDManager {
             }
 			//recursive handling of namespaces, needed for Collaborations
 			if (me instanceof MNamespace) {
-				System.out.println("Found another namespace: "+me);
+				// System.out.println("Found another namespace: "+me);
 				createModelUUIDS((MNamespace)me);
 			}
         }

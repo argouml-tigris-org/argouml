@@ -1681,6 +1681,7 @@ class ActionAddMessage extends UMLChangeAction {
 		msg.setAction(ua);
 		ar.addMessage(msg);
 		MCollaboration collab = (MCollaboration) ar.getNamespace();
+		collab.addOwnedElement(msg);
 		Collection interactions = collab.getInteractions();
 		// at the moment there can be only one Interaction per Collaboration
 		Iterator iter2 = interactions.iterator();

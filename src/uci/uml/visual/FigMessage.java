@@ -93,7 +93,7 @@ public class FigMessage extends FigNodeModelElement {
     setOwner(node);
   }
 
-  public String placeString() { return "new MMessage"; }
+  public String placeString() { return "new Message"; }
 
   public Object clone() {
     FigMessage figClone = (FigMessage) super.clone();
