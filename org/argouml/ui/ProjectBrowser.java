@@ -370,6 +370,11 @@ implements IStatusBar, NavigationListener {
     critique.add(Actions.OpenGoals);
     critique.add(Actions.OpenCritics);
 
+    // Test Menu
+    JMenu test = new JMenu(menuLocalize("Test"));
+    test.add(ActionTest.getInstance());
+    _menuBar.add(test);
+
     // Help Menu
     JMenu help = new JMenu(menuLocalize("Help"));
     setMnemonic(help,"Help",'H');
