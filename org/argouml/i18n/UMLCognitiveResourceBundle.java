@@ -591,6 +591,19 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
                 "Choose a Legal Name for <ocl>self</ocl>" },
         { "CrIllegalName_desc" ,
                 "The names of model elements must be sequences of letters, numbers, and underscores.  They cannot contain punctuation.\n\nCode generation requires legal names for the resulting code to compile correctly. \n\nTo fix this, use the \"Next>\" button, or manually select the highlighted element and use the Properties tab to give it a different name." },
+	
+	{ "CrUtilityViolated_head",
+	  "Utility Stereotype Violated, instances can be created." },
+	{ "CrUtilityViolated_desc",
+	  "<ocl>self</ocl> is marked with the <<utility>>; stereotype, " +
+	  "but it does not satisfy the constraints imposed on Utilities.\n" + 
+	  "It does have instance attributes or variables.\n" +
+	  "\n" +
+	  "If you no longer wants this class to be a Utility, " +
+	  "remove the <<utility>> stereotype by clicking on the class " +
+	  "and selecting the blank selection on the stereotype " +
+	  "drop-down within the properties tab.\n" },
+
 
         // Updated to bring in line with CrSingletonViolated
 
@@ -663,7 +676,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Using the Singleton Pattern can save time and memory space.\n" +
           "\n" +
           "If you no longer want this class to be a Singleton, remove the " +
-          "<<singleton>> or <<Singleton>> stereotype by clicking on the " +
+          "<<singleton>> stereotype by clicking on the " +
           "class and selecting the blank selection on the stereotype " +
           "drop-down within the properties tab.\n" },
 
@@ -683,7 +696,7 @@ public class UMLCognitiveResourceBundle extends ListResourceBundle {
           "Using the Singleton Pattern can save time and memory space.\n" +
           "\n" +
           "If you no longer want this class to be a Singleton, remove the " +
-          "<<singleton>> or <<Singleton>> stereotype by clicking on the " +
+          "<<singleton>> stereotype by clicking on the " +
           "class and selecting the blank selection on the stereotype " +
           "drop-down within the properties tab.\n" },
 
