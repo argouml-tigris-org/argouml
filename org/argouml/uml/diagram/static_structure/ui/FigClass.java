@@ -36,6 +36,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.beans.*;
+import java.text.ParseException;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
@@ -609,7 +610,12 @@ public class FigClass extends FigNodeModelElement {
     if (i != -1) {
 	  highlightedFigText = (CompartmentFigText)ft;
 	  highlightedFigText.setHighlighted(true);
-	  ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
+	  try {
+	    ParserDisplay.SINGLETON.parseAttributeFig(cls,(MAttribute)highlightedFigText.getFeature(),highlightedFigText.getText().trim());
+	    ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+	  } catch (ParseException pe) {
+	    ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+	  }
 	  return;
 	}
 	i = _operVec.getFigs().indexOf(ft);
