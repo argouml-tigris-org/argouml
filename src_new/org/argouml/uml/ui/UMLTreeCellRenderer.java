@@ -33,6 +33,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 import org.apache.log4j.Category;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 
+import ru.novosoft.uml.foundation.core.MComment;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
@@ -57,7 +58,8 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 lab.setIcon(icon);
             else
                 cat.warn("UMLTreeCellRenderer: using default Icon");
-
+            
+            // setting the tooltip
             String tip;
             if (value instanceof MModelElement)
                 tip = ((MModelElement) value).getUMLClassName() + ": " + ((MModelElement) value).getName() + " ";
@@ -65,6 +67,18 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                 tip = (value == null) ? "null " : value.toString() + " ";
             lab.setToolTipText(tip);
             tree.setToolTipText(tip);
+            
+            // changing the label in case of comments 
+            // this is necessary since the name of the comment is the same as
+            // the content of the comment causing the total comment to be 
+            // displayed in the navperspective
+            if (value instanceof MComment) {
+                String name = ((MComment)value).getName();
+                if (name != null && name.length() > 10) {
+                    name = name.substring(0, 10) + "...";
+                    lab.setText(name);
+                }                
+            }
 
         }
         return r;
