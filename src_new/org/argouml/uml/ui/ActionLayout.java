@@ -38,47 +38,39 @@ import org.tigris.gef.base.SelectionManager;
 import org.tigris.gef.presentation.Fig;
 
 /**
- * Action to layout a diagram.
+ * Action to automatically lay out a diagram.
  *
  */
 public class ActionLayout extends UMLAction {
 
     ////////////////////////////////////////////////////////////////
-    // instance variables
-
-    private String tabName;
-
-    ////////////////////////////////////////////////////////////////
     // constructors
-
+    
     /**
      * The constructor.
-     * @param theTabName the name of the tab
      */
-    public ActionLayout(String theTabName) {
-        super(theTabName, NO_ICON);
-        tabName = theTabName;
+    public ActionLayout() {
+        super("action.layout", NO_ICON);
     }
 
     ////////////////////////////////////////////////////////////////
     // main methods
 
-    /** check whether we deal with a supported diagram type 
+    /** 
+     * Check whether we deal with a supported diagram type 
      * (currently only UMLClassDiagram).
      * Incremental Layout is not implemented for any diagram type,
      * so it is greyed out.
      * @see org.argouml.ui.ProjectBrowser
      */
     public boolean shouldBeEnabled() {
-        return (
-		super.shouldBeEnabled()
-                && (ProjectManager.getManager().getCurrentProject()
-                        .getActiveDiagram()
-                    instanceof UMLClassDiagram)
-                && "action.layout-automatic".equals(tabName));
+        return (super.shouldBeEnabled()
+            && (ProjectManager.getManager().getCurrentProject()
+                    .getActiveDiagram() instanceof UMLClassDiagram));
     }
 
-    /** This action performs the layout and triggers a redraw
+    /** 
+     * This action performs the layout and triggers a redraw
      * of the editor pane.
      *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
