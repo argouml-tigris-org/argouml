@@ -6014,15 +6014,20 @@ public class ModelFacade {
     }
 
     /**
-     * Sets a state machine of some state.
+     * Sets a state machine of some state or transition.
      *
-     * @param handle is the state
+     * @param handle is the state or transition
      * @param stm is the state machine
      */
     public static void setStateMachine(Object handle, Object stm) {
         if (handle instanceof MState
             && (stm == null || stm instanceof MStateMachine)) {
             ((MState) handle).setStateMachine((MStateMachine) stm);
+            return;
+        }
+        if (handle instanceof MTransition
+            && (stm == null || stm instanceof MStateMachine)) {
+            ((MTransition) handle).setStateMachine((MStateMachine) stm);
             return;
         }
 	illegalArgument(handle, stm);
