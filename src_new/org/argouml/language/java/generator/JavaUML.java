@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -24,6 +24,8 @@
 
 package org.argouml.language.java.generator;
 
+import org.argouml.model.uml.UmlFactory;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
@@ -46,38 +48,38 @@ public class JavaUML {
 
   // java.lang
 
-  public static MClass STRING_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass STRING_CLASS = UmlFactory.getFactory().getCore().createClass();
 
-  public static MDataType VOID_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType CHAR_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType INT_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType BOOLEAN_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType BYTE_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType LONG_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType FLOAT_TYPE = MFactory.getDefaultFactory().createDataType();
-  public static MDataType DOUBLE_TYPE = MFactory.getDefaultFactory().createDataType();
+  public static MDataType VOID_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType CHAR_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType INT_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType BOOLEAN_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType BYTE_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType LONG_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType FLOAT_TYPE = UmlFactory.getFactory().getCore().createDataType();
+  public static MDataType DOUBLE_TYPE = UmlFactory.getFactory().getCore().createDataType();
 
-  public static MClass CHAR_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass INT_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass BOOLEAN_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass BYTE_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass LONG_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass FLOAT_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass DOUBLE_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass CHAR_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass INT_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass BOOLEAN_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass BYTE_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass LONG_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass FLOAT_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass DOUBLE_CLASS = UmlFactory.getFactory().getCore().createClass();
 
 
   // java.awt
-  public static MClass RECTANGLE_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass POINT_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass COLOR_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass RECTANGLE_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass POINT_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass COLOR_CLASS = UmlFactory.getFactory().getCore().createClass();
 
 
   // java.util
-  public static MClass VECTOR_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass HASHTABLE_CLASS = MFactory.getDefaultFactory().createClass();
-  public static MClass STACK_CLASS = MFactory.getDefaultFactory().createClass();
+  public static MClass VECTOR_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass HASHTABLE_CLASS = UmlFactory.getFactory().getCore().createClass();
+  public static MClass STACK_CLASS = UmlFactory.getFactory().getCore().createClass();
 
-	public static MModel javastandards = MFactory.getDefaultFactory().createModel();
+	public static MModel javastandards = UmlFactory.getFactory().getModelManagement().createModel();
 
   static{
    STRING_CLASS.setName("String");
@@ -135,3 +137,4 @@ public class JavaUML {
 
 
 } /* end class JavaUML */
+

@@ -1,2 +1,24 @@
 (Not necessarily in priority sequence)
 
+1.   Make sure that there are no references to MThingImpl's anywhere.
+
+     Some places say "instanceof MThingImpl", these should
+     be changed to "instanceof MThing".
+
+2.   Replace any string constants that refer to MThings.
+
+3.   Make sure that org.argouml.model.uml.* factories contain stubs
+     for everything necessary.   If an element was not created in argo,
+     a factory creation method was not manually added to the factory.
+     Make sure that the implementation is complete.
+     Verify against both the UML 1.3 model and the NSUML api.
+
+4.   Put copyrights in each file.
+
+5.   Complete javadoc comments.
+
+6.   Design how the MElement changes will be pumped out to the rest of Argo.
+
+7.   There are some places where the code returns a default name
+     such as "new MInterface".  Should these be run through i18n?
+

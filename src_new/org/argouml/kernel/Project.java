@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -62,6 +62,7 @@ import org.argouml.cognitive.ui.*;
 import org.argouml.cognitive.critics.*;
 import org.argouml.cognitive.critics.ui.*;
 import org.argouml.cognitive.checklist.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.*;
@@ -259,8 +260,9 @@ public class Project implements java.io.Serializable {
 
             Argo.log.info("Loading Model from "+url);
 
-            XMIReader xmiReader = new XMIReader();
+            XMIReader xmiReader = UmlFactory.getFactory().getXMIReader();
             MModel mmodel = xmiReader.parse(new InputSource(zis));
+	    UmlFactory.getFactory().addListenersToModel(mmodel);
             addMember(mmodel);
 
             _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
@@ -330,15 +332,16 @@ public class Project implements java.io.Serializable {
         p.addSearchPath("PROJECT_DIR");
 
         // 	try {
-        // 		XMIReader reader = new XMIReader();
+        // 		XMIReader reader = UmlFactory.getFactory().getXMIReader();
         // 		MModel model  = reader.parse(new org.xml.sax.InputSource("java.xmi"));
+	//              UmlFactory.getFactory().addListenersToModel(model);
         // 		model.setName("Java standards");
         // 		p.addMember(model);
         // 	} catch (Exception ex) {
         // 		ex.printStackTrace();
         // 	}
 
-        MModel m1 = MFactory.getDefaultFactory().createModel();
+        MModel m1 = UmlFactory.getFactory().getModelManagement().createModel();
         m1.setUUID(UUIDManager.SINGLETON.getNewUUID());
         m1.setName("untitledModel");
 
@@ -775,7 +778,7 @@ public class Project implements java.io.Serializable {
         cls = (MClassifier) _definedTypes.get(s);
         if (cls == null) {
             System.out.println("new Type defined!");
-            cls = MFactory.getDefaultFactory().createClass();
+            cls = UmlFactory.getFactory().getCore().createClass();
             cls.setName(s);
             _definedTypes.put(s, cls);
         }
