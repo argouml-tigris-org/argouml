@@ -57,8 +57,6 @@ import org.argouml.uml.ui.TabModelTarget;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
-import ru.novosoft.uml.foundation.core.MElement;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /** Doesn't work, checked the argo.ini and it is not commented out
  */
@@ -121,15 +119,14 @@ public class TabChecklist extends TabSpawnable
 	}
 	_target = t;
 	_shouldBeEnabled = true;
-	MModelElement me = (MModelElement) _target;
-	Checklist cl = CheckManager.getChecklistFor(me);
+	Checklist cl = CheckManager.getChecklistFor(_target);
 	if (cl == null) {
 	    _target = null;
 	    _shouldBeEnabled = false;
 	    return;
 	}
 
-	_tableModel.setTarget(me);
+	_tableModel.setTarget(_target);
 
 	TableColumn checkCol = _table.getColumnModel().getColumn(0);
 	TableColumn descCol = _table.getColumnModel().getColumn(1);
@@ -153,8 +150,7 @@ public class TabChecklist extends TabSpawnable
 	    return _shouldBeEnabled;
 	}
 	_shouldBeEnabled = true;
-	MModelElement me = (MModelElement) target;
-	Checklist cl = CheckManager.getChecklistFor(me);
+	Checklist cl = CheckManager.getChecklistFor(target);
 	if (cl == null) {
 	    _shouldBeEnabled = false;
 	    return _shouldBeEnabled;
@@ -214,7 +210,7 @@ class TableModelChecklist extends AbstractTableModel
         Category.getInstance(TableModelChecklist.class);
     ////////////////
     // instance varables
-    MModelElement _target;
+    Object _target;
     TabChecklist _panel;
 
     ////////////////
@@ -227,12 +223,12 @@ class TableModelChecklist extends AbstractTableModel
 	return UmlModelEventPump.getPump();
     }
 
-    public void setTarget(MModelElement t) {
+    public void setTarget(Object t) {
 	if (org.argouml.model.ModelFacade.isAElement(_target))
-	    getPump().removeModelEventListener(this, (MElement) _target);
+	    getPump().removeModelEventListener(this, _target);
 	_target = t;
 	if (org.argouml.model.ModelFacade.isAElement(_target))
-	    getPump().addModelEventListener(this, (MElement) _target);
+	    getPump().addModelEventListener(this, _target);
 	fireTableStructureChanged();
     }
 
