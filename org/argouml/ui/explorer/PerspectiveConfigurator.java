@@ -291,7 +291,6 @@ public class PerspectiveConfigurator extends ArgoDialog {
         ruleLibraryList.addMouseListener(new RuleListMouseListener());
         
         removePerspectiveButton.setEnabled(false);
-        dupPersButton.setEnabled(false);
         addRuleButton.setEnabled(false);
         removeRuleButton.setEnabled(false);
     }
@@ -342,7 +341,13 @@ public class PerspectiveConfigurator extends ArgoDialog {
     
     class DuplicatePerspectiveListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-            
+            Object sel = perspectiveList.getSelectedValue();
+            if (sel != null) {
+                ExplorerPerspective newPers = ((ExplorerPerspective) sel)
+                    .makeNamedClone("Copy of " + sel.toString()); //TODO:i18n
+                perspectiveListModel.insertElementAt(newPers, 0);
+                perspectiveList.setSelectedValue(newPers, true);
+            }
         }
     }
     
