@@ -282,10 +282,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     if (edgeClass == MTransition.class) {
     	MTransition tr = null;
     	MCompositeState comp = fromSV.getContainer();
-    	if (comp != null && comp != _machine.getTop() && comp == toSV.getContainer()) {
-    		tr = StateMachinesFactory.getFactory().buildTransition(comp, fromSV, toSV);
-    	} else
-    		tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
+    	tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
       addEdge(tr);
       return tr;
     }
