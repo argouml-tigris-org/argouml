@@ -25,6 +25,9 @@ DT {
 <li><a href="#osx_link">In OS X: How can I access the context sensitive menus?</a>
 <li><a href="#osx_java">In OS X 10.2: How can I get ArgoUML to work?</a>
 <li><a href="#win_link">In Windows: How can I get ArgoUML to load when I double-click on a model file?</a>
+<li><a href="#unknownhostexception">In Linux: 
+      I cannot start because of an java.net.UnknownHostException
+    </a>
 </ul>
 
 <H4>Java Web Start</H4>
@@ -219,6 +222,29 @@ located where specified above. Click OK, then click OK, then click OK (three but
 three different levels of the dialog).
 <p>
 You can now double-click on your model and have ArgoUML instantly loaded.
+
+
+<DT><a name="unknownhostexception">In Linux: 
+      I cannot start because of an java.net.UnknownHostException
+    </a>
+<DD>
+ArgoUML uses 
+InetAddress.getLocalHost()
+to get a unique identifier on all elements that are to be created 
+in that instance of ArgoUML.
+This works for networked machines and for stand alone-machines.
+However there are cases when the TCP/IP configuration is wrong
+where this does not work.
+<p>
+
+The solution is, fix your network configuration.
+<p>
+
+If you want to suggest a better explanation or a fix within ArgoUML for this,
+go through the java.net.InetAddress and find out 
+what really happens in this case.
+
+
 </DL>
 
 
