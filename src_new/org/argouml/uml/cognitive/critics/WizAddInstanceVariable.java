@@ -41,13 +41,13 @@ import org.argouml.kernel.Wizard;
  */
 public class WizAddInstanceVariable extends Wizard {
     
-    protected WizStepTextField _step1 = null;
-    protected String _label = Translator.localize("UMLMenu", "label.name");
-    protected String _instructions =
+    private WizStepTextField step1 = null;
+    private String label = Translator.localize("UMLMenu", "label.name");
+    private String instructions =
 	"Please change the name of the offending model element.";
-    protected String _suggestion = "suggestion";
-    protected String _origSuggest = "suggestion";
-    protected boolean _mustEdit = false;
+    private String suggestion = "suggestion";
+    private String origSuggest = "suggestion";
+    private boolean mustEdit = false;
     
     /**
      * Creates a new instance of WizAddInstanceVariable
@@ -56,24 +56,33 @@ public class WizAddInstanceVariable extends Wizard {
         super();
     }
     
+    /**
+     * @see org.argouml.kernel.Wizard#doAction(int)
+     */
     public void doAction(int oldStep) {
 	Object attr;
 
 	switch (oldStep) {
 	case 1:
-	    String newName = _suggestion;
-	    if (_step1 != null)
-		newName = _step1.getText();
+	    String newName = suggestion;
+	    if (step1 != null)
+		newName = step1.getText();
 	    Object me = getModelElement();
 	    attr = UmlFactory.getFactory().getCore().buildAttribute(me);
 	    ModelFacade.setName(attr, newName);
 	}
     }
     
+    /**
+     * @see org.argouml.kernel.Wizard#getNumSteps()
+     */
     public int getNumSteps() {
         return 1;
     }
     
+    /**
+     * @return get the offending modelelement
+     */
     public Object getModelElement() {
         if (getToDoItem() != null) {
             VectorSet offs = _item.getOffenders();
@@ -85,8 +94,11 @@ public class WizAddInstanceVariable extends Wizard {
         return null;
     }
     
+    /**
+     * @return get the suggestion string
+     */
     public String getSuggestion() {
-        if (_suggestion != null) return _suggestion;
+        if (suggestion != null) return suggestion;
         Object me = getModelElement();
         if (me != null) {
             String n = ModelFacade.getName(me);
@@ -95,30 +107,41 @@ public class WizAddInstanceVariable extends Wizard {
         return "";
     }
 
+    /**
+     * @param s set a new suggestion string
+     */
     public void setSuggestion(String s) {
-	_suggestion = s;
-	_origSuggest = s;
+	suggestion = s;
+	origSuggest = s;
     }
     
+    /**
+     * @param s set a new instruction string
+     */
     public void setInstructions(String s) {
-	_instructions = s;
+	instructions = s;
     }
     
+    /**
+     * @param b
+     */
     public void setMustEdit(boolean b) {
-	_mustEdit = b;
+	mustEdit = b;
     }
     
     /**
      * Create a new panel for the given step.
+     *
+     * @see org.argouml.kernel.Wizard#makePanel(int)
      */
     public JPanel makePanel(int newStep) {
         switch (newStep) {
 	case 1:
-	    if (_step1 == null) {
-		_step1 = new WizStepTextField(this, _instructions,
-					      _label, getSuggestion());
+	    if (step1 == null) {
+		step1 = new WizStepTextField(this, instructions,
+					      label, getSuggestion());
 	    }
-	    return _step1;
+	    return step1;
         }
         return null;
     }
