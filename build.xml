@@ -318,6 +318,12 @@ Property files to be searched:
     <copy todir="${argo.build.classes}/org/argouml/i18n">
       <fileset dir="${argo.src.dir}/org/argouml/i18n" includes="*.properties"/>
     </copy>
+
+    <!-- Go through all languages: -->
+    <copy todir="${argo.build.classes}/org/argouml/i18n">
+      <fileset dir="${argo.src.dir}/../src/i18n/de/src/org/argouml/i18n" includes="*.properties"/>
+    </copy>
+
     <copy todir="${argo.build.classes}/org/argouml/resource">
       <fileset dir="${argo.src.dir}/org/argouml/resource" excludes="CVS/**" includes="**/**"/>
     </copy>
@@ -928,10 +934,10 @@ For details see http://www.clarkware.com/software/JDepend.html.
     </java>
   </target>
 
-  <target name="checkstyle-i18n" depends="init"
+  <target name="checkstyle-i18n" depends="init,prepare"
           description="Run checkstyle only on Internationalization">
     <antcall target="checkstyle-main">
-      <param name="source.dir" value="${argo.src.dir}/org/argouml/i18n"/>
+      <param name="source.dir" value="${argo.src.dir}/../build/classes/org/argouml/i18n"/>
     </antcall>
   </target>
 
