@@ -736,7 +736,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
          // changed in a targetRemoved or a TargetSet event
         fireTargetAdded(e);
     }
-
+    
     /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
