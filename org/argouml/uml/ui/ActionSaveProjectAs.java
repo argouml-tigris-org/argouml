@@ -49,7 +49,8 @@ import org.argouml.util.osdep.OsUtil;
 public class ActionSaveProjectAs extends ActionSaveProject {
 
     /** logger */
-    private static final Logger LOG = Logger.getLogger(ActionSaveProjectAs.class);
+    private static final Logger LOG = 
+        Logger.getLogger(ActionSaveProjectAs.class);
   
     /**
      * The singleton.
