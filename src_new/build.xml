@@ -55,7 +55,7 @@ when these are right the command
 will do the job.
   -->
 
-<project basedir="." default="usage" name="argouml">
+<project basedir="." default="compile" name="argouml">
 
   <!-- =================================================================== -->
   <!-- Global initialization                                               -->
@@ -66,7 +66,8 @@ will do the job.
   <!-- Convenience target for locating property files.                     -->
   <!-- =================================================================== -->
 
- <target name="list-property-files" depends="init">
+ <target name="list-property-files" depends="init"
+         description="List the property files read by the build.">
 
     <!-- ====================================================== -->
     <!-- System property path.separator is a simple way to tell -->
@@ -293,33 +294,6 @@ Property files to be searched:
    -->
 
   <!-- =================================================================== -->
-  <!-- Help on usage                                                       -->
-  <!-- =================================================================== -->
-  <target name="usage" depends="init">
-    <echo>
-
-${Name} Build file
--------------------------------------------------------------
-
-Most useful targets are:
-
-   compile      --&gt; compiles the source code to the tree under ${argo.build.dir}
-   run          --&gt; runs ArgoUML from compiled source
-   package      --&gt; copies files in place
-   jar          --&gt; generates the ${name}.jar file
-   dist         --&gt; generates ${Name}.tar.gz and .zip files into ${argo.dist.dir}
-   prepare-docs --&gt; writes the documentation to ${argo.javadocs.dir}
-   clean        --&gt; cleans up the ${argo.build.dir} directory
-   jdepend      --&gt; obtain design quality metrics by applying JDepend
-   usage        --&gt; show this message (default)
-
- See the comments inside the build.xml file for more details.
--------------------------------------------------------------
-    </echo>
-
-  </target>
-
-  <!-- =================================================================== -->
   <!-- Prepares the build directory                                        -->
   <!-- =================================================================== -->
   <target depends="init" name="prepare">
@@ -359,19 +333,11 @@ Most useful targets are:
   </target>
 
   <!-- =================================================================== -->
-  <!-- Update from CVS                                                     -->
-  <!-- =================================================================== -->
-
-  <target depends="prepare" name="update">
-    <echo message="Updating from CVS "/>
-    <cvs command="update" dest="${argo.src.dir}"/>
-  </target>
-
-  <!-- =================================================================== -->
   <!-- Generates the parsers from the grammars by using Antlr              -->
   <!-- =================================================================== -->
 
-  <target depends="prepare" name="generateparser">
+  <target name="generateparser" depends="prepare"
+          description="Generate the antlr parsers.">
     <echo message="Generate parsers"/>
 
     <java classname="antlr.Tool" classpath="${classpath}" fork="yes">
@@ -463,7 +429,8 @@ Most useful targets are:
   <!-- Compiles the source directory                                       -->
   <!-- =================================================================== -->
   <target name="compile"
-          depends="prepare,prerequisites,update-version,check-dependencies">
+          depends="prepare,prerequisites,update-version,check-dependencies"
+          description="Compile the sources.">
 
     <echo message="Compiling the sources"/>
 
@@ -485,7 +452,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Creates the jar file                                                -->
   <!-- =================================================================== -->
-  <target name="jar" depends="compile">
+  <target name="jar" depends="compile"
+          description="Build the main jar file.">
     <filter token="version" value="${argo.build.version}"/>
     <copy file="${argo.src.dir}/templates/manifest.template" filtering="on" overwrite="on" tofile="${argo.build.manifest}"/>
     <jar basedir="${argo.build.classes}" excludes="*.txt,*.bat,*.xml,*.sh" includes="org/argouml/**" jarfile="${argo.build.dir}/${name}.jar" manifest="${argo.build.manifest}"/>
@@ -496,7 +464,8 @@ Most useful targets are:
   <!-- The purpose of this is to keep names here in synch with copied-to   -->
   <!-- names in build and manifest.mf!                                     -->
   <!-- =================================================================== -->
-  <target name="package" depends="jar">
+  <target name="package" depends="jar"
+          description="Prepare all jar files, both built and just delivered.">
     <property name="names.of.all.included.libs" value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar toolbar.jar toolbutton.jar xerces.jar jmi.jar"/>
     <copy file="${antlrall.jar.path}" tofile="${argo.build.dir}/antlrall.jar"/>
     <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar"/>
@@ -520,7 +489,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Prepares the docs                                                   -->
   <!-- =================================================================== -->
-  <target name="prepare-docs" depends="init, javadocs">
+  <target name="prepare-docs" depends="init, javadocs"
+          description="Build javadocs.">
   </target>
 
   <target name="javadocs" depends="init">
@@ -548,7 +518,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Clean targets                                                       -->
   <!-- =================================================================== -->
-  <target name="clean" depends="init">
+  <target name="clean" depends="init"
+          description="Clean out all built files.">
 
     <delete dir="${argo.build.dir}/tests"/>
     <delete dir="${argo.build.dir}/src_new"/>
@@ -571,7 +542,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Run ArgoUML from compiled sources                                   -->
   <!-- =================================================================== -->
-  <target depends="compile" name="run">
+  <target name="run" depends="compile"
+          description="Compile and run the newly compiled ArgoUML.">
     <echo message="--- Executing ${Name} ---"/>
     <!-- Uncomment the sysproperty and change the value if you want -->
     <java classname="org.argouml.application.Main"
@@ -643,7 +615,7 @@ Most useful targets are:
   <!-- Compiles the tests                                                  -->
   <!-- =================================================================== -->
 
-  <target depends="prepare" name="compile-tests"> 
+  <target name="compile-tests" depends="prepare">
 
     <echo message="Compiling the tests"/>
 
@@ -746,7 +718,8 @@ Most useful targets are:
   <!-- Run the junit tests, the ones that include GUI stuff.               -->
   <!-- =================================================================== -->
   <target name="guitests"
-          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init">
+          depends="compile,junit-fetch-init,junit-setup,junit-report-clean,ant.optional.init"
+          description="Run all tests that require the GUI components.">
     <!-- ant 1.4 uses printsummary="true"                          -->
     <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
     <!-- This should never be committed as "withOutAndErr", but    -->
@@ -814,7 +787,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Run the both kind of tests.                                         -->
   <!-- =================================================================== -->
-  <target depends="compile,junit-setup,tests,guitests" name="alltests"/>
+  <target name="alltests" depends="compile,junit-setup,tests,guitests"
+          description="Run all tests, both with and without GUI."/>
 
   <!-- =================================================================== -->
   <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
@@ -843,7 +817,8 @@ Most useful targets are:
   <!-- =================================================================== -->
   <!-- Perform JDepend to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
-  <target depends="init, ant.optional.init" name="jdepend">
+  <target name="jdepend" depends="init, ant.optional.init"
+          description="Run jdepend to report static metrics.">
     <echo>
 CC - Concrete Class Count 
 AC - Abstract Class (and Interface) Count 
@@ -868,7 +843,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Perform javasrc to find about the structure in ArgoUML.             -->
   <!-- =================================================================== -->
-  <target depends="init" name="javasrc">
+  <target name="javasrc" depends="init"
+          description="Run javasrc on the source.">
     <java classname="javasrc.app.Pass1" failonerror="true" fork="true">
       <sysproperty key="recursive" value="yes"/>
       <sysproperty key="title" value="JavaSrc for ArgoUML"/>
@@ -897,7 +873,8 @@ For details see http://www.clarkware.com/software/JDepend.html.
   <!-- =================================================================== -->
   <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
   <!-- =================================================================== -->
-  <target depends="init" name="checkstyle">
+  <target name="checkstyle" depends="init"
+          description="Run checkstyle on all source.">
     <java classname="com.puppycrawl.tools.checkstyle.Main" failonerror="false" fork="true" maxmemory="32M">
       <sysproperty key="checkstyle.header.file" value="${argo.tools.dir}/checkstyle/java.header"/>
       <classpath>
@@ -1126,7 +1103,8 @@ you will have to resurrect them using cvs update.
   <!-- =================================================================== -->
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
-  <target name="dist-release">
+  <target name="dist-release"
+          description="Create a comlete release.">
 
 	<!-- Things that are needed to get this through. -->
 	<property name="Name" value="ArgoUML"/>
