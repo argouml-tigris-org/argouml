@@ -29,6 +29,15 @@ import ru.novosoft.uml.foundation.core.MOperation;
 import ru.novosoft.uml.foundation.data_types.MCallConcurrencyKind;
 import ru.novosoft.uml.foundation.data_types.MScopeKind;
 
+/**
+ * @deprecated this class is deprecated since 0.15.1 and should be removed
+ *             in 0.15.2, due to the fact that the TableModel classes
+ *             have never been used, and are not maintained,
+ *
+ *             There is no reason why someone cannot try to complete the
+ *             TableModel implementation, however, a higher priority
+ *             at the moment is to clean argouml of un maintained code.
+ */
 public class OperKeyword implements Serializable {
     public static final OperKeyword NONE = new OperKeyword("none");
     public static final OperKeyword STATIC = new OperKeyword("static");
