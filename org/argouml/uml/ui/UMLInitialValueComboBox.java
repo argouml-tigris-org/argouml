@@ -57,7 +57,7 @@ public class UMLInitialValueComboBox extends JComboBox
     /** Prevent event storms through not generating unnecessary events */
     private boolean isUpdating = false;
     
-/** items in the initial value combobox that are available for selection.*/    
+    /** items in the initial value combobox that are available for selection.*/
     private String[] listItems = {"", "0", "1", "2", "null"};
 
     /** 
@@ -74,16 +74,19 @@ public class UMLInitialValueComboBox extends JComboBox
         }
 	setEditable(true);
 
-/** handles ActionEvents from the combobox. The action listener was not handling
- *  events from the combo box properly, so I moved it up to the constructor, 
- *  where it works fine. I guess the best alternative would be to create an
- *  inner class for the listener. The listener sets the value from the combo
- *  box into the collection, and then calls update() to refresh the drawing so
- *  that it stays in synch with the model.
- * 
- *      Modified psager@tigris.org Aug.6, 2001 to handle method parameter
- *      expressions.
- */
+	/* The ActionListener below
+	 * handles ActionEvents from the combobox. The action listener was not 
+	 * handling events from the combo box properly, so I moved it 
+	 * up to the constructor, where it works fine. 
+	 * I guess the best alternative would be to create an
+	 * inner class for the listener. 
+	 * The listener sets the value from the combo
+	 * box into the collection, and then calls update() to refresh 
+	 * the drawing so that it stays in synch with the model.
+	 * 
+	 * Modified psager@tigris.org Aug.6, 2001 to handle method parameter
+	 * expressions.
+	 */
         addActionListener(new ActionListener() {
             public void actionPerformed(final ActionEvent event) {
 		if (isUpdating) {
@@ -210,15 +213,15 @@ public class UMLInitialValueComboBox extends JComboBox
 	if ("initialValue".equals(eventProp) 
 	    || "defaultValue".equals(eventProp))
 	    targetChanged();
-//	else
-//	    update();
     } 
     
-/** updates the diagram. It first has to locate it's target element and then
- *  causes the update to take place so that the diagram stays in synch with
- *  the model. 
- *  @author psager@tigris.org   Aug. 30, 2001
- */    
+    /** 
+     * Updates the diagram. It first has to locate it's target element and then
+     * causes the update to take place so that the diagram stays in synch with
+     * the model. 
+     * 
+     * @author psager@tigris.org   Aug. 30, 2001
+     */    
     private void update() {
         Object target = theContainer.getTarget();
         if (ModelFacade.isAAttribute(target)) {
