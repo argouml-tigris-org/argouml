@@ -1604,6 +1604,21 @@ public class ModelFacade {
         return null;
     }
 
+
+    /**
+       Return the UUID of this element
+
+       @param base base element (MBase type)
+       @return UUID
+    */
+    public static String getUUID(Object base) {
+        if (isABase(base)) {
+            return ((MBase) base).getUUID();
+        }
+        //
+        throw new IllegalArgumentException("Unrecognized object " + base);
+    }
+
     ////////////////////////////////////////////////////////////////
     // Other querying methods
 
