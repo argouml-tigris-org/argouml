@@ -34,6 +34,7 @@ import java.util.*;
 
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.*;
@@ -171,7 +172,7 @@ public class PropPanelObject extends PropPanelModelElement {
         MObject target = (MObject) getTarget();        
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
-        MMUtil.SINGLETON.remove(target);
+        UmlFactory.getFactory().getCommonBehavior().removeObject(target);
 	if(newTarget != null) navigateTo(newTarget);
     }
 

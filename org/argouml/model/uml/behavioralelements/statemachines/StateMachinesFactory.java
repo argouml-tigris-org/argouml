@@ -23,6 +23,9 @@
 
 package org.argouml.model.uml.behavioralelements.statemachines;
 
+import java.util.Collection;
+import java.util.Iterator;
+
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 
@@ -325,6 +328,23 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public void  removeTransition(MTransition modelelement) {
         modelelement.remove();
+    }
+    
+    /** Remove an instance of a UML Statevertex including transitions
+     */
+    public void removeStateVertex(MStateVertex modelelement) {
+    	Collection transitions = modelelement.getIncomings();
+		Iterator transitionIterator = transitions.iterator();
+		while (transitionIterator.hasNext()) {
+		    MTransition transition = (MTransition)transitionIterator.next();
+		    transition.remove();
+		}
+		transitions = modelelement.getOutgoings();
+		transitionIterator = transitions.iterator();
+		while (transitionIterator.hasNext()) {
+		    MTransition transition = (MTransition)transitionIterator.next();
+		    transition.remove();
+		}
     }
     
 	/**

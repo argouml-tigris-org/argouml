@@ -24,6 +24,7 @@
 package org.argouml.model.uml.foundation.core;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
 import org.argouml.application.api.NotationName;
@@ -33,6 +34,7 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 
 import ru.novosoft.uml.MFactory;
+import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.foundation.core.MAbstraction;
 import ru.novosoft.uml.foundation.core.MAssociation;
@@ -424,10 +426,53 @@ public class CoreFactory extends AbstractUmlModelFactory {
         modelelement.remove();
     }
 
-    /** Remove an instance of a UML Classifier.
+    /** Remove an instance of a UML Classifier including all life-cycle dependent objects
      */
     public void  removeClassifier(MClassifier modelelement) {
-        modelelement.remove();
+    	Iterator ascEndIterator = (modelelement.getAssociationEnds()).iterator();
+		while (ascEndIterator.hasNext()) {
+			MAssociationEnd ae = (MAssociationEnd)ascEndIterator.next();
+			MAssociation assoc = ae.getAssociation();
+			if ((assoc.getConnections()).size() < 3)
+				assoc.remove();
+			else
+				ae.remove();
+		}
+
+		Iterator roleIterator = (modelelement.getClassifierRoles()).iterator();
+		while (roleIterator.hasNext()) {
+			MClassifierRole r = (MClassifierRole)roleIterator.next();
+			r.remove();
+		}
+
+		Iterator generalizationIterator = (modelelement.getGeneralizations()).iterator();
+		while (generalizationIterator.hasNext()) {
+			MGeneralization gen = (MGeneralization)generalizationIterator.next();
+			gen.remove();
+		}
+
+		Iterator specializationIterator = (modelelement.getSpecializations()).iterator();
+		while (specializationIterator.hasNext()) {
+			MGeneralization spec = (MGeneralization)specializationIterator.next();
+			spec.remove();
+		}
+
+		Iterator clientDependencyIterator = modelelement.getClientDependencies().iterator();
+		while (clientDependencyIterator.hasNext()) {
+			MDependency dep = (MDependency)clientDependencyIterator.next();
+			if (dep.getClients().size() < 2)
+				dep.remove();
+		}
+
+		Iterator supplierDependencyIterator = modelelement.getSupplierDependencies().iterator();
+		while (supplierDependencyIterator.hasNext()) {
+			MDependency dep = (MDependency)supplierDependencyIterator.next();
+			if (dep.getSuppliers().size() < 2)
+				dep.remove();
+		}
+
+
+		modelelement.remove(); //takes also care of removing the elementlisteners
     }
 
     /** Remove an instance of a UML Comment.

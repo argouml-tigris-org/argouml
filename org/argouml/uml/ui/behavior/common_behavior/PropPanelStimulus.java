@@ -41,6 +41,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import ru.novosoft.uml.MElementEvent;
 
 import org.argouml.application.api.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.*;
 import org.argouml.uml.ui.*;
@@ -235,7 +236,7 @@ public class PropPanelStimulus extends PropPanelModelElement {
         MStimulus target = (MStimulus) getTarget();        
 	MModelElement newTarget = (MModelElement) target.getNamespace();
                 
-        MMUtil.SINGLETON.remove(target);
+        UmlFactory.getFactory().getCommonBehavior().removeStimulus(target);
 		if(newTarget != null) { 
 			navigateTo(newTarget);
 		}

@@ -41,6 +41,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.MMUtil;
 
 import org.tigris.gef.util.*;
@@ -142,7 +143,7 @@ public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
             Object newTarget = sv.getContainer();
 
-            MMUtil.SINGLETON.remove(sv);
+            UmlFactory.getFactory().getStateMachines().removeStateVertex(sv);
 
             if(newTarget != null) {
                 navigateTo(newTarget);
