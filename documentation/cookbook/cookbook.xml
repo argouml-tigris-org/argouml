@@ -5807,18 +5807,31 @@ used to be named Model, but that lexigraphically overlapped the Mode cluster).
       </listitem>
       <listitem>
 	<para>
-We indent 4 steps, tab stops at every eight position.
+Four spaces should be used as the unit of indentation.
+Tabs must be set exactly every 8 spaces (not 4) and represent 2 indents.
+</para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
 </para>
       </listitem>
       <listitem>
 	<para>
 If possible use lines shorter than 80 charaters wide.
 </para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
+</para>
       </listitem>
       <listitem>
 	<para>
 Open brace on same line (at end).
 Both for if/while/for and for class and functions definitions.
+</para>
+	<para>
+This is exactly as it is stated in the Sun Code Conventions.
+It is here just for the emphasis.
 </para>
       </listitem>
       <listitem>
