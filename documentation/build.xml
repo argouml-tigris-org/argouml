@@ -380,6 +380,7 @@ After these operations the file will still be visible in the GUI.
 	<!-- =================================================================== -->
 	<target name="create-javahelp" if="generate-javahelp">
 		<echo message="Building javahelp documentation for: ${source.dir}/${source.xml}. Please wait ..."/>
+		<delete dir="${target.dir}"/>
 		<mkdir dir="${target.dir}"/>
 		<style basedir="${source.dir}" style="${javahelp.xsl}" destdir="${target.dir}" includes="${source.xml}"/>
 		<!-- 'destdir' parameter was ignored due to chunking, we need to move
