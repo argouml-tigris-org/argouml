@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -46,7 +44,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MComponent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNode;

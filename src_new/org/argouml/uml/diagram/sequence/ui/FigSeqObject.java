@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -62,8 +61,6 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
-import ru.novosoft.uml.foundation.core.MClassifier;
-
 /** Class to display graphics for a UML sequence in a diagram. */
 
 public class FigSeqObject extends FigNodeModelElement

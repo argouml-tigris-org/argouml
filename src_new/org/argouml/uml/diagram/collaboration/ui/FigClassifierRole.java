@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -56,7 +55,6 @@ import org.tigris.gef.base.Selection;
 
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
-import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 

@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -31,8 +29,6 @@ import java.awt.Component;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.JLabel;
 import javax.swing.JList;
-
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
