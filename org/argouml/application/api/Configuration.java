@@ -49,11 +49,6 @@ public class Configuration {
      */
     public static final Logger cat = 
 	Logger.getLogger("org.argouml.application.configuration");
-    // TODO:  JDK 1.2 seems to not return the package name if
-    // not running from a jar.
-    //
-    // public final static Logger cat = 
-    // Logger.getLogger(ConfigurationHandler.class.getPackage().getName()); 
 
     /** Property to indicate configuration load from file
      */
