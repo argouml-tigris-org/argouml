@@ -8,6 +8,8 @@ import java.sql.*;
 import java.io.*;
 import java.util.Properties;
 
+import com.sun.java.util.collections.*;
+
 import uci.uml.util.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -81,6 +83,7 @@ public class DBWriter
 
 	try {
 	    System.out.println("Writing model: "+model.getName());
+		// this statement s
 	    stmt = Conn.createStatement();
 		store(model,stmt);
 	}
@@ -103,24 +106,38 @@ public class DBWriter
     }
 
 	private void store(MModel model, Statement stmt) throws SQLException {
+
+		// first store the model itself 
 		stmtString = "REPLACE INTO tModel (uuid) VALUES ('";
 		stmtString += model.getUUID()+ "')";
 		stmt.executeUpdate(stmtString);
-		stmtString = "REPLACE INTO tModelElement (uuid, name) VALUES ('";
-		stmtString += model.getUUID() + "','";
-		stmtString += model.getName() + "')";
-		stmt.executeUpdate(stmtString);
 
+		store((MModelElement)model, stmt);
+
+		// now iterate through the models owned elements and write them
 		Iterator ownedElements = model.getOwnedElements().iterator();
 		while (ownedElements.hasNext()) {
 			MModelElement me = (MModelElement)ownedElements.next();
+			if (me instanceof MClass) store((MClass)me,stmt);
+
 		}
 			
 	}
-		
 
-    private void store(MClass cls, Statement stmt) throws SQLException {
-		stmt.executeUpdate("REPLACE INTO tClass (uuid) VALUES ('" +cls.getUUID()+ "')");
+	private void store(MModelElement me, Statement stmt) throws SQLException {
+		stmtString = "REPLACE INTO tModelElement (uuid, name) VALUES ('";
+		stmtString += me.getUUID() + "','";
+		stmtString += me.getName() + "')";
+		stmt.executeUpdate(stmtString);
+	}
+
+    private void store(MClass cls, Statement stmt) throws SQLException {		
+		stmtString = "REPLACE INTO tClass (uuid, isActive) VALUES ('";
+		stmtString += cls.getUUID()+ ", ";
+		stmtString += cls.isActive() + "')";
+		stmt.executeUpdate(stmtString);
+
+		store((MModelElement)cls, stmt);
     }
 
 	/**
@@ -129,5 +146,5 @@ public class DBWriter
     public static void main(String[] Args) throws Exception {
 	MModel mymodel = new MModelImpl();
 	DBWriter writer = new DBWriter();
-    }
+    } 
 };
