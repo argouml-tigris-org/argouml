@@ -26,7 +26,13 @@ package org.argouml.uml.ui;
 import junit.framework.*;
 
 public class TestUMLAction extends TestCase {
-    public TestUMLAction(String name) {
+
+    protected void setUp() {
+        org.workingfrog.i18n.util.Translator.init();
+        org.workingfrog.i18n.util.Translator.setBundlesPath("org.argouml.i18n");
+    }
+
+	public TestUMLAction(String name) {
 	super(name);
     }
 
