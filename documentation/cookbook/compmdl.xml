@@ -424,6 +424,147 @@ standard instead of our own implementation.
 	</sect3>
       </sect2>
 
+  <sect2>
+    <title>How to work against the model</title>
+
+    <para>
+NS-UML is used within the Model component to keep all data structures
+in place.
+Eventually we will change that to JMI/MDR that is newer and better and 
+will take us into UML 1.4, UML 1.5 and UML 2.0.
+Working directly against NS-UML or JMI/MDR will make changes in the
+NS-UML or JMI/MDR affect large portions of the code.
+For this reason we have in the Model component
+a set of classes that lay between the NS-UML and JMI/MDR that
+hides the apis of NS-UML or JMI/MDR between something that will not
+change while moving between them.
+This is the Facade classes of the Model component i.e. the ModelFacade.
+There are also other classes that hides the internals of NS-UML like the
+Factories and the UMLEventPump.
+</para>
+    <para>
+Here follows a list of how different things are done for the purpose
+of making the transition easy.
+The plan is to move everything in the Model component 
+(under <classname>org.argouml.model.*</classname>)
+from NS-UML to JMI/MDR and
+everything else within ArgoUML to the ModelFacade/ArgoUML solution.
+</para>
+    <table>
+      <title>How to work against the model</title>
+      <tgroup cols="4">
+	<thead>
+	  <row>
+	    <entry>What</entry>
+	    <entry>NS-UML</entry>
+	    <entry>JMI/MDR</entry>
+	    <entry>ModelFacade/ArgoUML</entry>
+	  </row>
+	</thead>
+
+	<tbody>
+	  <row>
+	    <entry>Test that an Object o has a certain type</entry>
+	    <entry>
+o instanceof M<replaceable>modelelementtype</replaceable> &rarr; boolean
+</entry>
+	    <entry>
+???CLASSNAME???.isInstanceOf(RefObject toTest, String className) &rarr; boolean
+</entry>
+	    <entry>
+ModelFacade.isA<replaceable>modelelementtype</replaceable>(o) &rarr; boolean
+</entry>
+	  </row>
+
+	  <row>
+	    <entry>Get a single valued model element from an Object o</entry>
+	    <entry>
+((M<replaceable>modelelementtype</replaceable>) o).get<replaceable>property</replaceable>()
+&rarr; model element
+</entry>
+	    <entry>
+((RefFeatured) obj).refGetValue(String propName) &rarr; ???Type???
+</entry>
+	    <entry>
+ModelFacade.get<replaceable>property</replaceable>(o) &rarr; Object
+</entry>
+	  </row>
+	  <row>
+	    <entry>Get a multi valued property from an Object o</entry>
+	    <entry>
+((M<replaceable>modelelementtype</replaceable>) o).get<replaceable>property</replaceable>()
+&rarr; Collection
+</entry>
+	    <entry>
+((RefFeatured) obj).refGetValue(String propName) &rarr; Collection
+</entry>
+	    <entry>
+ModelFacade.get<replaceable>property</replaceable>(o)
+&rarr; Iterator or Collection (total confusion!)
+</entry>
+	  </row>
+	  <row>
+	    <entry>Create a new model element of type Type:</entry>
+	    <entry>
+MFactory.getDefaultFactory().create<replaceable>Type</replaceable>()
+</entry>
+	    <entry>
+???CLASSNAME???.creatInstance(String "<replaceable>Type</replaceable>", 
+                              List argument)
+&rarr; RefObject 
+</entry>
+	    <entry>
+<replaceable>elementhierachyname</replaceable>Factory.getFactory().build<replaceable>modelelementtype</replaceable>(args)
+</entry>
+	  </row>
+	  <row>
+	    <entry>
+Register for notification that a model element Object o has changed:
+</entry>
+	    <entry>
+((MBase) o).addMElementListener(MElementListener el)
+</entry>
+	    <entry>
+((MDRChangeSource) obj).addChangeListener(???)
+</entry>
+	    <entry>
+UmlEventPump.getPump().addModelEventListener((Object)MElementListener el,
+                                             Object o, String[] eventnames)
+</entry>
+	  </row>
+	  <row>
+	    <entry>
+Register for notification on all model of a certain type Type:
+</entry>
+	    <entry>
+Not possible!
+</entry>
+	    <entry>
+((MDRChangeSource) obj.refClass()).addChangeListener(???)
+</entry>
+	    <entry>
+UmlEventPump.getPump().addModelEventListener(MElementListener el,
+                                             Class M<replaceable>Type</replaceable>.class,
+                                             String[] eventnames)
+</entry>
+	  </row>
+	  <row>
+	    <entry>How do I get the model as XMI on the stream Stream:</entry>
+	    <entry>
+(new XMIWriter(MModel m, Writer Stream)).gen()
+</entry>
+	    <entry>
+new XMIWriter(???)
+</entry>
+	    <entry>
+Not currently in any Facade.
+</entry>
+	  </row>
+	</tbody>
+      </tgroup>
+    </table>
+  </sect2>
+
 <!--
       <sect2>
 	<title>Collaborations for Model</title>
