@@ -31,7 +31,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.kernel.ProjectMember;
 import org.argouml.ui.ArgoDiagram;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ProjectMemberDiagram;
 import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
@@ -41,9 +40,7 @@ import org.argouml.uml.diagram.static_structure.ui.FigPackage;
 import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.base.LayerPerspective;
-import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.argouml.model.ModelFacade;
 
@@ -233,7 +230,7 @@ public class DiagramInterface {
 	try {
 	    ArgoDiagram d = new UMLClassDiagram(ns);
 	    d.setName(getDiagramName(name));
-	    p.addMember(d);
+		p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
 
@@ -253,7 +250,6 @@ public class DiagramInterface {
 	ClassDiagramGraphModel gm        = (ClassDiagramGraphModel)getEditor().getGraphModel();
 	LayerPerspective lay = (LayerPerspective)getEditor().getLayerManager().getActiveLayer();
 	FigClass newClassFig = new FigClass( gm, newClass);
-
 	getEditor().add( newClassFig);
 	if (gm.canAddNode(newClass))
 	    gm.addNode(newClass);
@@ -279,6 +275,41 @@ public class DiagramInterface {
 	gm.addNodeRelatedEdges( newInterface);
 	getEditor().damaged( newInterfaceFig);
     }
+
+	/**
+	 * Creates new class diagram for package or selects existing one.
+	 * @param currentPackage  The package to attach the diagram to.
+	 * @param currentPackageName The fully qualified name of the package, which is
+     *             used to generate the diagram name from.
+	 */
+	public static void createOrSelectClassDiagram(Object currentPackage, String currentPackageName) {
+		Project p = ProjectManager.getManager().getCurrentProject();
+		String diagramName = currentPackageName.replace('.','_') + "_classes";
+		UMLClassDiagram d = new UMLClassDiagram(currentPackage==null?p.getRoot():currentPackage);
+		if (p.findMemberByName(diagramName + ".pgml") == null) {
+			try {
+				d.setName(diagramName);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			p.addMember(d);
+			ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(d);
+			ProjectBrowser.TheInstance.setTarget(d);
+		} else {
+			ArgoDiagram ddi = ((ProjectMemberDiagram)p.findMemberByName(diagramName + ".pgml")).getDiagram();
+			ProjectBrowser.TheInstance.getNavigatorPane().addToHistory(ddi);
+			ProjectBrowser.TheInstance.setTarget(ddi);
+		}
+	}
+	
+	/**
+	 * Creates class diagram under the root.
+	 * Is used for classes out of packages.
+	 *
+	 */
+	public static void createRootClassDiagram() {
+		createOrSelectClassDiagram(null, "");
+	}
 }
 
 
