@@ -290,6 +290,13 @@ implements ItemListener, DocumentListener {
       //_extendsField.getSelectedItem());
       setTargetExtends();
     } 
+	else if (src == _namespaceField) {
+		// what to do here?
+		//setTargetInternal();
+	}
+	else if (src == _stereoField) {
+		setTargetStereotype();
+	}
   }
 
   

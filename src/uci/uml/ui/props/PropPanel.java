@@ -252,10 +252,12 @@ implements TabModelTarget, DocumentListener, ItemListener, MElementListener{
 	  if (e.getStateChange() == ItemEvent.SELECTED) {
 		  Object src = e.getSource();
 		  if (src == _namespaceField) {
+			  System.out.println("namespacefield event");
 			  // what to do here?
 			  //setTargetInternal();
 		  }
 		  else if (src == _stereoField) {
+			  System.out.println("stereofield event");
 			  setTargetStereotype();
 		  }
 	  }
