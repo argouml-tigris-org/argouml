@@ -679,8 +679,12 @@ public class ParserDisplay extends Parser {
 
         // Build a new extension point
 
+	// This should be changed back to buildExtensionPoint, or the
+	// ExtensionPoint should be an argument.
         MExtensionPoint ep =
-	    UmlFactory.getFactory().getUseCases().buildExtensionPoint(null);
+	    UmlFactory.getFactory().getUseCases().createExtensionPoint();
+        ep.setName("newEP");
+        ep.setLocation("loc");
 
         StringTokenizer st = new StringTokenizer(text.trim(), ":", true);
         int numTokens = st.countTokens();
