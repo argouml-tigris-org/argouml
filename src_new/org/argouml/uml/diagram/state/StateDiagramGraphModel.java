@@ -28,6 +28,7 @@
 
 package org.argouml.uml.diagram.state;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesFactory;
 
 import java.util.*;
 import java.beans.*;
@@ -285,7 +286,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	return null;
 
     if (edgeClass == MTransition.class) {
-      MTransition tr = UmlFactory.getFactory().getStateMachines().buildTransition(_machine, fromSV, toSV);
+    	MTransition tr = null;
+    	MCompositeState comp = fromSV.getContainer();
+    	if (comp != null && comp != _machine.getTop() && comp == toSV.getContainer()) {
+    		tr = StateMachinesFactory.getFactory().buildTransition(comp, fromSV, toSV);
+    	} else
+    		tr = StateMachinesFactory.getFactory().buildTransition(_machine, fromSV, toSV);
       addEdge(tr);
       return tr;
     }
