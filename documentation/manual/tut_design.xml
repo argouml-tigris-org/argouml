@@ -376,7 +376,11 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
             </mediaobject></screenshot>
           </figure>
 
-          <para>By clicking on the subinterface and the properties pane, you
+          <para>
+By clicking on the subinterface and
+the source tab properties pane, 
+and then selecting Java Notation for the source tab,
+you
             can see that the interface actually extends it's
             superinterface.</para>
         </sect4>
@@ -397,6 +401,13 @@ Sequence Diagrams and Collaboration Diagrams (To be written)
 
   <sect1>
     <title>Sequence and Collaboration Diagrams (To be written)</title>
+
+    <!-- Issue: ??? -->
+    <note>
+      <para>
+Sequence diagrams does not work in &argoversion;.
+</para>
+    </note>
 
     <remark>To be written&hellip;</remark>
 
