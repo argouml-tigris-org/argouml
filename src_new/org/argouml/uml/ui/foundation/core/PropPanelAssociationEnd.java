@@ -160,8 +160,8 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
     //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
     //does this amke sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
 
   }

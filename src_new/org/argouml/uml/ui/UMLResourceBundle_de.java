@@ -122,8 +122,6 @@ public class UMLResourceBundle_de extends ListResourceBundle {
         {"active", "active" },
         {"Owned Elements:", "Owned Elements:" },
         {"Go up", "Go up" },
-        {"navigateBackAction", "navigateBackAction" },
-        {"navigateForwardAction", "navigateForwardAction" },
         {"Add generalization", "Add generalization" },
         {"Add realization", "Add realization" },
         {"Owned Elements", "Owned Elements" },

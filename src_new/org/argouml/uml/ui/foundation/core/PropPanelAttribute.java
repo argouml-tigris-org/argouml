@@ -93,8 +93,8 @@ public class PropPanelAttribute extends PropPanelModelElement {
         addField(modPanel,3,1,0);
 
         new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-        new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-        new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+        new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+        new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
         new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("New attribute"),"newAttribute",null);
         new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete attribute"),"removeElement",null);
     }
