@@ -24,9 +24,6 @@
 
 package org.argouml.uml.ui.foundation.extension_mechanisms;
 
-import java.awt.Color;
-import java.awt.GridLayout;
-
 import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -35,16 +32,17 @@ import javax.swing.JScrollPane;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
-
+import org.argouml.swingext.GridLayout2;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
-import org.argouml.uml.ui.UMLGeneralizationListModel;
-import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMetaclassComboBox;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
-import org.argouml.uml.ui.UMLSpecializationListModel;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementAbstractCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementGeneralizationListModel;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
+import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -53,6 +51,14 @@ import org.argouml.util.ConfigLoader;
  */
 public class PropPanelStereotype extends PropPanelModelElement {
 
+    private static UMLGeneralizableElementSpecializationListModel specializationListModel =
+        new UMLGeneralizableElementSpecializationListModel();
+    
+    private static UMLGeneralizableElementGeneralizationListModel generalizationListModel = 
+        new UMLGeneralizableElementGeneralizationListModel();
+    
+    private JScrollPane generalizationScroll;
+    private JScrollPane specializationScroll;
     /**
      * Construct new stereotype properties tab
      */
@@ -68,23 +74,20 @@ public class PropPanelStereotype extends PropPanelModelElement {
 
         addField(Translator.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
 
-        JPanel modifiersPanel = new JPanel(new GridLayout(0, 3));
-        modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.abstract-lc"), this, new UMLReflectionBooleanProperty("isAbstract", mclass, "isAbstract", "setAbstract")));
-        modifiersPanel.add(new UMLCheckBox(Translator.localize("UMLMenu", "checkbox.final-lc"), this, new UMLReflectionBooleanProperty("isLeaf", mclass, "isLeaf", "setLeaf")));
-        modifiersPanel.add(new UMLCheckBox(localize("root"), this, new UMLReflectionBooleanProperty("isRoot", mclass, "isRoot", "setRoot")));
-        addField(Translator.localize("UMLMenu", "label.modifiers"), modifiersPanel);
+        JPanel _modifiersPanel = new JPanel(new GridLayout2(0, 2,
+                GridLayout2.ROWCOLPREFERRED));
+        
+        _modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
+        _modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
+        _modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
+      
+        addField(Translator.localize("UMLMenu", "label.modifiers"),
+                _modifiersPanel);
 
         addSeperator();
 
-        JList extendsList = new UMLList(new UMLGeneralizationListModel(this, "generalization", true), true);
-        extendsList.setBackground(getBackground());
-        extendsList.setForeground(Color.blue);
-        addField("Generalizations:", new JScrollPane(extendsList));
-
-        JList derivedList = new UMLList(new UMLSpecializationListModel(this, null, true), true);
-        derivedList.setForeground(Color.blue);
-        derivedList.setVisibleRowCount(1);
-        addField("Specializations:", new JScrollPane(derivedList));
+        addField(Translator.localize("UMLMenu", "label.generalizations"), getGeneralizationScroll());
+        addField(Translator.localize("UMLMenu", "label.specializations"), getSpecializationScroll());
 
         new PropPanelButton(this, buttonPanel, _navUpIcon, Translator.localize("UMLMenu", "button.go-up"), "navigateNamespace", null);
         new PropPanelButton(this, buttonPanel, _stereotypeIcon, Translator.localize("UMLMenu", "button.new-stereotype"), "newStereotype", null);
@@ -122,6 +125,30 @@ public class PropPanelStereotype extends PropPanelModelElement {
 	if (org.argouml.model.ModelFacade.isAStereotype(target)) {
 	    ModelFacade.setBaseClass(target, baseClass);
 	}
+    }
+    
+    /**
+     * Returns the generalizationScroll.
+     * @return JScrollPane
+     */
+    protected JScrollPane getGeneralizationScroll() {
+        if (generalizationScroll == null) {
+            JList list = new UMLLinkedList(generalizationListModel);
+            generalizationScroll = new JScrollPane(list);
+        }
+        return generalizationScroll;
+    }
+    
+    /**
+     * Returns the specializationScroll.
+     * @return JScrollPane
+     */
+    protected JScrollPane getSpecializationScroll() {
+        if (specializationScroll == null) {
+            JList list = new UMLLinkedList(specializationListModel);
+            specializationScroll = new JScrollPane(list);
+        }
+        return specializationScroll;
     }
 
 } /* end class PropPanelStereotype */
