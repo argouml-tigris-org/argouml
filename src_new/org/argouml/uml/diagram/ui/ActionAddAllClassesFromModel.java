@@ -99,7 +99,8 @@ public class ActionAddAllClassesFromModel extends UMLAction {
 		Model.getFacade().getOwnedElements(namespace).iterator();
 	    while (elements.hasNext()) {
 		Object element = elements.next();
-		if (Model.getFacade().isAClass(element)) {
+		if (Model.getFacade().isAClass(element) 
+		    && !Model.getFacade().isAAssociationClass(element)) {
 		    diagram.addClass(element, false);
 		}
 	    }
