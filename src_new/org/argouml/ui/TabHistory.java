@@ -23,18 +23,42 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
+import java.util.Vector;
+
+import javax.swing.Box;
+import javax.swing.ImageIcon;
+import javax.swing.JComboBox;
+import javax.swing.JLabel;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTextArea;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.border.EtchedBorder;
+import javax.swing.event.EventListenerList;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
-import org.tigris.gef.util.*;
-
 import org.apache.log4j.Category;
-import org.argouml.kernel.*;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.kernel.History;
+import org.argouml.kernel.HistoryEvent;
+import org.argouml.kernel.HistoryItem;
+import org.argouml.kernel.HistoryItemManipulation;
+import org.argouml.kernel.HistoryItemResolve;
+import org.argouml.kernel.HistoryListener;
 
 public class TabHistory extends TabSpawnable
 implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
@@ -43,10 +67,10 @@ implements ListSelectionListener, ListCellRenderer, MouseMotionListener {
 
   ////////////////////////////////////////////////////////////////
   // class variables
-  protected ImageIcon _CritiqueIcon = ResourceLoader.lookupIconResource("PostIt0");
-  protected ImageIcon _ResolveIcon = ResourceLoader.lookupIconResource("PostIt100");
-  protected ImageIcon _ManipIcon = ResourceLoader.lookupIconResource("PostIt100");
-  protected ImageIcon _HistoryItemIcon = ResourceLoader.lookupIconResource("Rectangle");
+  protected ImageIcon _CritiqueIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
+  protected ImageIcon _ResolveIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+  protected ImageIcon _ManipIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+  protected ImageIcon _HistoryItemIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Rectangle");
 
   protected static String FILTERS[] = { "All History Items",
 					"History of Selection" };

@@ -50,6 +50,7 @@ import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableMenu;
 import org.argouml.application.events.ArgoModuleEvent;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ui.ToDoPane;
 import org.argouml.kernel.Project;
@@ -62,9 +63,7 @@ import org.argouml.ui.menubar.GenericArgoMenuBar;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.ui.ActionExit;
 import org.tigris.gef.base.Diagram;
-import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.ui.IStatusBar;
-import org.tigris.gef.util.ResourceLoader;
 import org.tigris.gef.util.VectorSet;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -186,7 +185,7 @@ public class ProjectBrowser extends JFrame
         // allows me to ask "Do you want to save first?"
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowCloser());
-        ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
+        ImageIcon argoImage = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Model");
         this.setIconImage(argoImage.getImage());
         // 
         

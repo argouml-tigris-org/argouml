@@ -22,17 +22,19 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 package org.argouml.application.api;
 
-import org.argouml.application.configuration.*;
-import org.argouml.application.modules.*;
-import org.argouml.application.events.*;
-import org.argouml.util.logging.*;
-import org.apache.log4j.*;
-import org.apache.log4j.helpers.*;
-import org.apache.log4j.or.*;
-import org.apache.log4j.spi.*;
-import java.util.*;
-import java.io.*;
-import javax.swing.*;
+import java.util.ArrayList;
+
+import javax.swing.Icon;
+
+import org.apache.log4j.Category;
+import org.apache.log4j.ConsoleAppender;
+import org.apache.log4j.Hierarchy;
+import org.apache.log4j.PatternLayout;
+import org.apache.log4j.Priority;
+import org.apache.log4j.spi.RootCategory;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.application.modules.ModuleLoader;
+import org.argouml.util.logging.ThrowableRenderer;
 
 /**
  * The <code>Argo</code> class provides static methods and definitions
@@ -250,12 +252,12 @@ public class Argo
 
     public static Icon lookupIconResource(String arg1)
     {
-	return org.tigris.gef.util.ResourceLoader.lookupIconResource(arg1);
+	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1);
     }
 
     public static Icon lookupIconResource(String arg1, String arg2)
     {
-	return org.tigris.gef.util.ResourceLoader.lookupIconResource(arg1, arg2);
+	return ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(arg1, arg2);
     }
 
     static {

@@ -28,30 +28,44 @@
 
 package org.argouml.uml.diagram.static_structure.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+
 import javax.swing.Icon;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-import org.tigris.gef.util.*;
-
 import org.apache.log4j.Category;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.diagram.ui.*;
+import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
+import org.argouml.uml.diagram.ui.SelectionWButtons;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.LayerPerspective;
+import org.tigris.gef.base.ModeManager;
+import org.tigris.gef.base.ModeModify;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.graph.GraphModel;
+import org.tigris.gef.graph.GraphNodeRenderer;
+import org.tigris.gef.graph.MutableGraphModel;
+import org.tigris.gef.presentation.Fig;
+import org.tigris.gef.presentation.FigEdge;
+import org.tigris.gef.presentation.FigNode;
+import org.tigris.gef.presentation.FigPoly;
+import org.tigris.gef.presentation.Handle;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MClassImpl;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 public class SelectionInterface extends SelectionWButtons {
     protected static Category cat = 
         Category.getInstance(SelectionInterface.class);
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon realiz = ResourceLoader.lookupIconResource("Realization");
+  public static Icon realiz = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
 
 
   ////////////////////////////////////////////////////////////////

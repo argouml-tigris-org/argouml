@@ -26,45 +26,31 @@ package org.argouml.uml.ui;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Frame;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Vector;
 
-import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.CellRendererPane;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JViewport;
 import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
 import org.argouml.application.api.Argo;
-import org.argouml.ui.ProjectBrowser;
-import org.tigris.gef.util.ResourceLoader;
-import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 
 /**
  * UMLAddDialog allows the user to do a multiple select from a list of choices in a seperate dialog. The 
@@ -176,9 +162,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		panelChoices.add(new JLabel(Argo.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
 		panelChoices.add(choicesScroll, BorderLayout.CENTER);
 		
-		_addButton = new JButton(ResourceLoader.lookupIconResource("NavigateForward"));
+		_addButton = new JButton(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward"));
 		_addButton.addActionListener(this);
-		_removeButton = new JButton(ResourceLoader.lookupIconResource("NavigateBack"));
+		_removeButton = new JButton(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateBack"));
 		_removeButton.addActionListener(this);
 		Box buttonBox = Box.createVerticalBox();
 		// buttonBox.add(Box.createRigidArea(new Dimension(0, 20)));

@@ -50,6 +50,7 @@ import java.util.Iterator;
 import javax.swing.Icon;
 
 import org.apache.log4j.Category;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -68,8 +69,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.Handle;
-import org.tigris.gef.util.ResourceLoader;
-
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -82,8 +81,8 @@ public class SelectionSeqObject extends SelectionWButtons  {
   
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon stimCall = ResourceLoader.lookupIconResource("StimulusCall");
-  public static Icon stimRet = ResourceLoader.lookupIconResource("StimulusReturn");
+  public static Icon stimCall = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("StimulusCall");
+  public static Icon stimRet = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("StimulusReturn");
 
   ////////////////////////////////////////////////////////////////
   // instance variables

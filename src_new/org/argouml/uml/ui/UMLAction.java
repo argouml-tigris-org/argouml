@@ -23,26 +23,23 @@
 
 package org.argouml.uml.ui;
 
-import java.util.*;
-import java.beans.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.event.ActionEvent;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.model_management.*;
-
-import org.tigris.gef.util.*;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Icon;
+import javax.swing.KeyStroke;
 
 import org.apache.log4j.Category;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
+import org.argouml.kernel.History;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.Actions;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.StatusBar;
+import org.tigris.gef.util.Localizer;
 
 public class UMLAction extends AbstractAction {
     protected static Category cat = 
@@ -59,7 +56,7 @@ public class UMLAction extends AbstractAction {
   public UMLAction(String name, boolean global, boolean hasIcon) {
     super(Translator.localize("CoreMenu", name));
     if (hasIcon) {
-      Icon icon = ResourceLoader.lookupIconResource(
+      Icon icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(
         Translator.getImageBinding(name),
         Translator.localize("CoreMenu", name));
       if (icon != null) putValue(Action.SMALL_ICON, icon);

@@ -38,7 +38,6 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.ToolTipManager;
-import javax.swing.UIManager;
 
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Category;
@@ -47,21 +46,16 @@ import org.argouml.application.api.Configuration;
 import org.argouml.application.security.ArgoAwtExceptionHandler;
 import org.argouml.application.security.ArgoSecurityManager;
 import org.argouml.cognitive.Designer;
-import org.argouml.cognitive.ui.ToDoPane;
-import org.argouml.cognitive.ui.ToDoPerspective;
 import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.LookAndFeelMgr;
-import org.argouml.ui.NavPerspective;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.SplashScreen;
 import org.argouml.uml.cognitive.critics.ChildGenUML;
 import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
-import org.tigris.gef.util.ResourceLoader;
 import org.tigris.gef.util.Util;
 import ru.novosoft.uml.MFactoryImpl;
 import ru.novosoft.uml.model_management.MModel;
@@ -212,33 +206,6 @@ public class Main {
                 }
             }
         }
-
-        //  do some initialization work before anything is drawn
-        //  sets locale for menus
-        //
-	st.mark("locales");
-        //String lookAndFeelClassName = LookAndFeelMgr.SINGLETON.determineLookAndFeel();
-        String lookAndFeelClassName;
-        if ("true".equals(System.getProperty("force.nativelaf","false"))) {
-            lookAndFeelClassName = UIManager.getSystemLookAndFeelClassName();
-        }
-        else {
-            lookAndFeelClassName = "javax.swing.plaf.metal.MetalLookAndFeel";
-        }
-
-        String lookAndFeelGeneralImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/general";
-        String lookAndFeelNavigationImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/navigation";
-        String lookAndFeelDiagramImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/diagrams";
-        String lookAndFeelElementImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml/elements";
-        String lookAndFeelArgoUmlImagePath = "/org/argouml/Images/plaf/" + lookAndFeelClassName.replace('.', '/') + "/toolbarButtonGraphics/argouml";
-        ResourceLoader.addResourceExtension("gif");
-        ResourceLoader.addResourceLocation(lookAndFeelGeneralImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelNavigationImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelDiagramImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelElementImagePath);
-        ResourceLoader.addResourceLocation(lookAndFeelArgoUmlImagePath);
-        ResourceLoader.addResourceLocation("/org/argouml/Images");
-        ResourceLoader.addResourceLocation("/org/tigris/gef/Images");
 
         Translator.init();
 

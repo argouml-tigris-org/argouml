@@ -30,37 +30,39 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.Color;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.uml.MMUtil;
-
-import org.tigris.gef.util.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.behavior.state_machines.MState;
+import ru.novosoft.uml.behavior.state_machines.MStateMachine;
+import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    protected static ImageIcon _stateIcon = ResourceLoader.lookupIconResource("State");
-    protected static ImageIcon _actionStateIcon = ResourceLoader.lookupIconResource("ActionState");
-    protected static ImageIcon _compositeStateIcon = ResourceLoader.lookupIconResource("CompositeState");
-    protected static ImageIcon _simpleStateIcon = ResourceLoader.lookupIconResource("SimpleState");
-    protected static ImageIcon _shallowHistoryIcon = ResourceLoader.lookupIconResource("ShallowHistory");
-    protected static ImageIcon _deepHistoryIcon =ResourceLoader.lookupIconResource("DeepHistory");
-    protected static ImageIcon _finalStateIcon = ResourceLoader.lookupIconResource("FinalState");
-    protected static ImageIcon _initialIcon = ResourceLoader.lookupIconResource("Initial");
-    protected static ImageIcon _forkIcon = ResourceLoader.lookupIconResource("Fork");
-    protected static ImageIcon _joinIcon = ResourceLoader.lookupIconResource("Join");
-    protected static ImageIcon _transitionIcon = ResourceLoader.lookupIconResource("Transition");
+    protected static ImageIcon _stateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("State");
+    protected static ImageIcon _actionStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ActionState");
+    protected static ImageIcon _compositeStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("CompositeState");
+    protected static ImageIcon _simpleStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SimpleState");
+    protected static ImageIcon _shallowHistoryIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ShallowHistory");
+    protected static ImageIcon _deepHistoryIcon =ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DeepHistory");
+    protected static ImageIcon _finalStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("FinalState");
+    protected static ImageIcon _initialIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Initial");
+    protected static ImageIcon _forkIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Fork");
+    protected static ImageIcon _joinIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Join");
+    protected static ImageIcon _transitionIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Transition");
 
     ////////////////////////////////////////////////////////////////
 

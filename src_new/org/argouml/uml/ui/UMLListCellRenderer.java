@@ -39,33 +39,33 @@ import ru.novosoft.uml.model_management.*;
 public class UMLListCellRenderer extends DefaultListCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-//   protected ImageIcon _AttributeIcon = ResourceLoader.lookupIconResource("MAttribute");
-//   protected ImageIcon _OperationIcon = ResourceLoader.lookupIconResource("MOperation");
-//   protected ImageIcon _ClassIcon = ResourceLoader.lookupIconResource("Class");
-//   protected ImageIcon _PackageIcon = ResourceLoader.lookupIconResource("Package");
-//   protected ImageIcon _AssociationIcon = ResourceLoader.lookupIconResource("MAssociation");
-//   protected ImageIcon _AssociationIcon2 = ResourceLoader.lookupIconResource("Association2");
-//   protected ImageIcon _AssociationIcon3 = ResourceLoader.lookupIconResource("Association3");
-//   protected ImageIcon _AssociationIcon4 = ResourceLoader.lookupIconResource("Association4");
-//   protected ImageIcon _AssociationIcon5 = ResourceLoader.lookupIconResource("Association5");
-//   protected ImageIcon _GeneralizationIcon = ResourceLoader.lookupIconResource("MGeneralization");
-//   protected ImageIcon _RealizationIcon = ResourceLoader.lookupIconResource("Realization");
-//   protected ImageIcon _ClassDiagramIcon = ResourceLoader.lookupIconResource("ClassDiagram");
-//   protected ImageIcon _UseCaseDiagramIcon = ResourceLoader.lookupIconResource("UseCaseDiagram");
-//   protected ImageIcon _StateDiagramIcon = ResourceLoader.lookupIconResource("StateDiagram");
+//   protected ImageIcon _AttributeIcon = ResourceLoaderWrapper.lookupIconResource("MAttribute");
+//   protected ImageIcon _OperationIcon = ResourceLoaderWrapper.lookupIconResource("MOperation");
+//   protected ImageIcon _ClassIcon = ResourceLoaderWrapper.lookupIconResource("Class");
+//   protected ImageIcon _PackageIcon = ResourceLoaderWrapper.lookupIconResource("Package");
+//   protected ImageIcon _AssociationIcon = ResourceLoaderWrapper.lookupIconResource("MAssociation");
+//   protected ImageIcon _AssociationIcon2 = ResourceLoaderWrapper.lookupIconResource("Association2");
+//   protected ImageIcon _AssociationIcon3 = ResourceLoaderWrapper.lookupIconResource("Association3");
+//   protected ImageIcon _AssociationIcon4 = ResourceLoaderWrapper.lookupIconResource("Association4");
+//   protected ImageIcon _AssociationIcon5 = ResourceLoaderWrapper.lookupIconResource("Association5");
+//   protected ImageIcon _GeneralizationIcon = ResourceLoaderWrapper.lookupIconResource("MGeneralization");
+//   protected ImageIcon _RealizationIcon = ResourceLoaderWrapper.lookupIconResource("Realization");
+//   protected ImageIcon _ClassDiagramIcon = ResourceLoaderWrapper.lookupIconResource("ClassDiagram");
+//   protected ImageIcon _UseCaseDiagramIcon = ResourceLoaderWrapper.lookupIconResource("UseCaseDiagram");
+//   protected ImageIcon _StateDiagramIcon = ResourceLoaderWrapper.lookupIconResource("StateDiagram");
 
-//   protected ImageIcon _StateIcon = ResourceLoader.lookupIconResource("MState");
-//   protected ImageIcon _StartStateIcon = ResourceLoader.lookupIconResource("StartState");
-//   protected ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
-//   protected ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
-//   protected ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
-//   protected ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
-//   protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
-//   protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+//   protected ImageIcon _StateIcon = ResourceLoaderWrapper.lookupIconResource("MState");
+//   protected ImageIcon _StartStateIcon = ResourceLoaderWrapper.lookupIconResource("StartState");
+//   protected ImageIcon _DeepIcon = ResourceLoaderWrapper.lookupIconResource("DeepHistory");
+//   protected ImageIcon _ShallowIcon = ResourceLoaderWrapper.lookupIconResource("ShallowHistory");
+//   protected ImageIcon _ForkIcon = ResourceLoaderWrapper.lookupIconResource("Fork");
+//   protected ImageIcon _JoinIcon = ResourceLoaderWrapper.lookupIconResource("Join");
+//   protected ImageIcon _BranchIcon = ResourceLoaderWrapper.lookupIconResource("Branch");
+//   protected ImageIcon _FinalStateIcon = ResourceLoaderWrapper.lookupIconResource("FinalState");
 
-//   protected ImageIcon _StateMachineIcon = ResourceLoader.lookupIconResource("MStateMachine");
-//   protected ImageIcon _CompositeStateIcon = ResourceLoader.lookupIconResource("MCompositeState");
-//   protected ImageIcon _TransitionIcon = ResourceLoader.lookupIconResource("MTransition");
+//   protected ImageIcon _StateMachineIcon = ResourceLoaderWrapper.lookupIconResource("MStateMachine");
+//   protected ImageIcon _CompositeStateIcon = ResourceLoaderWrapper.lookupIconResource("MCompositeState");
+//   protected ImageIcon _TransitionIcon = ResourceLoaderWrapper.lookupIconResource("MTransition");
 
   public Component getListCellRendererComponent( JList list, Object value, 
 						 int index, boolean isSelected,

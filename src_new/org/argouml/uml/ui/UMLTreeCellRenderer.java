@@ -23,25 +23,23 @@
 
 package org.argouml.uml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
+import java.awt.Component;
+import java.util.Hashtable;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.collaborations.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.apache.log4j.Category;
-import org.tigris.gef.util.*;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import ru.novosoft.uml.behavior.common_behavior.MSignal;
+import ru.novosoft.uml.behavior.state_machines.MPseudostate;
+import ru.novosoft.uml.foundation.core.MAbstraction;
+import ru.novosoft.uml.foundation.core.MComment;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /** UMTreeCellRenderer determines how the entries in the Navigationpane will be
  *  represented graphically. In particular it makes decisions about the icons
@@ -53,21 +51,21 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
 
-  protected ImageIcon _ActionStateIcon = ResourceLoader.lookupIconResource("ActionState");
-  protected ImageIcon _StateIcon = ResourceLoader.lookupIconResource("State");
-  protected ImageIcon _InitialStateIcon = ResourceLoader.lookupIconResource("Initial");
-  protected ImageIcon _DeepIcon = ResourceLoader.lookupIconResource("DeepHistory");
-  protected ImageIcon _ShallowIcon = ResourceLoader.lookupIconResource("ShallowHistory");
-  protected ImageIcon _ForkIcon = ResourceLoader.lookupIconResource("Fork");
-  protected ImageIcon _JoinIcon = ResourceLoader.lookupIconResource("Join");
-  protected ImageIcon _BranchIcon = ResourceLoader.lookupIconResource("Branch");
-  protected ImageIcon _FinalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+  protected ImageIcon _ActionStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ActionState");
+  protected ImageIcon _StateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("State");
+  protected ImageIcon _InitialStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Initial");
+  protected ImageIcon _DeepIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DeepHistory");
+  protected ImageIcon _ShallowIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("ShallowHistory");
+  protected ImageIcon _ForkIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Fork");
+  protected ImageIcon _JoinIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Join");
+  protected ImageIcon _BranchIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Branch");
+  protected ImageIcon _FinalStateIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("FinalState");
 
-  protected ImageIcon _RealizeIcon = ResourceLoader.lookupIconResource("Realization");
+  protected ImageIcon _RealizeIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Realization");
 
-  protected ImageIcon _SignalIcon = ResourceLoader.lookupIconResource("SignalSending");
+  protected ImageIcon _SignalIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("SignalSending");
 
-  protected ImageIcon _CommentIcon = ResourceLoader.lookupIconResource("Note");
+  protected ImageIcon _CommentIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Note");
   
   protected Hashtable _iconCache = new Hashtable();
 
@@ -124,7 +122,7 @@ public class UMLTreeCellRenderer extends DefaultTreeCellRenderer {
                       cName = cName.substring(1);
                   if (cName.endsWith("Impl"))
                       cName = cName.substring(0,cName.length() -4 );
-                  icon = ResourceLoader.lookupIconResource(cName);
+                  icon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource(cName);
                   if (icon != null) _iconCache.put(value.getClass(), icon);
                   if (icon == null) cat.warn("UMLTreeCellRenderer: using default Icon for " + cName);
               }

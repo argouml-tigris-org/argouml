@@ -30,28 +30,33 @@
 
 package org.argouml.uml.ui.behavior.common_behavior;
 
-import java.awt.*;
-import java.util.*;
-import javax.swing.*;
+import java.awt.Color;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.MElementEvent;
+import javax.swing.ImageIcon;
+import javax.swing.JScrollPane;
 
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.*;
-
-import org.tigris.gef.util.*;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLList;
+import org.argouml.uml.ui.UMLReflectionListModel;
+import org.argouml.uml.ui.UMLStimulusActionTextField;
+import org.argouml.uml.ui.UMLStimulusActionTextProperty;
+import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
+import ru.novosoft.uml.behavior.common_behavior.MInstance;
+import ru.novosoft.uml.behavior.common_behavior.MLink;
+import ru.novosoft.uml.behavior.common_behavior.MStimulus;
+import ru.novosoft.uml.foundation.core.MAssociation;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class PropPanelStimulus extends PropPanelModelElement {
 
-   protected static ImageIcon _stimulusIcon = ResourceLoader.lookupIconResource("Stimulus");
+   protected static ImageIcon _stimulusIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Stimulus");
 
   public PropPanelStimulus() {
     super("Stimulus Properties",_stimulusIcon, 2);

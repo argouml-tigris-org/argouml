@@ -59,6 +59,7 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.swingext.GridLayout2;
@@ -70,7 +71,6 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileJava;
-import org.tigris.gef.util.ResourceLoader;
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
@@ -114,10 +114,10 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     private JPanel buttonPanelWithFlowLayout=new JPanel();
     private JPanel captionPanel=new JPanel();
 
-    protected static ImageIcon _navBackIcon = ResourceLoader.lookupIconResource("NavigateBack");
-    protected static ImageIcon _navForwardIcon = ResourceLoader.lookupIconResource("NavigateForward");
-    protected static ImageIcon _deleteIcon = ResourceLoader.lookupIconResource("RedDelete");
-    protected static ImageIcon _navUpIcon = ResourceLoader.lookupIconResource("NavigateUp");
+    protected static ImageIcon _navBackIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateBack");
+    protected static ImageIcon _navForwardIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward");
+    protected static ImageIcon _deleteIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("RedDelete");
+    protected static ImageIcon _navUpIcon = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateUp");
 
     protected Font smallFont = MetalLookAndFeel.getSubTextFont();
 

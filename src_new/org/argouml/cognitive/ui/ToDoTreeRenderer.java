@@ -23,36 +23,33 @@
 
 package org.argouml.cognitive.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
+import java.awt.Color;
+import java.awt.Component;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
-import org.argouml.cognitive.ui.PriorityNode;
-import org.argouml.cognitive.ui.KnowledgeTypeNode;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JTree;
+import javax.swing.plaf.metal.MetalIconFactory;
+import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.tigris.gef.util.*;
-
-import org.argouml.cognitive.*;
-import org.argouml.uml.ui.*;
+import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.cognitive.Decision;
+import org.argouml.cognitive.Goal;
+import org.argouml.cognitive.Poster;
+import org.argouml.cognitive.ToDoItem;
+import org.argouml.uml.ui.UMLTreeCellRenderer;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 public class ToDoTreeRenderer extends DefaultTreeCellRenderer {
   ////////////////////////////////////////////////////////////////
   // class variables
-  public ImageIcon _PostIt0     = ResourceLoader.lookupIconResource("PostIt0");
-  public ImageIcon _PostIt25    = ResourceLoader.lookupIconResource("PostIt25");
-  public ImageIcon _PostIt50    = ResourceLoader.lookupIconResource("PostIt50");
-  public ImageIcon _PostIt75    = ResourceLoader.lookupIconResource("PostIt75");
-  public ImageIcon _PostIt99    = ResourceLoader.lookupIconResource("PostIt99");
-  public ImageIcon _PostIt100   = ResourceLoader.lookupIconResource("PostIt100");
-  //public ImageIcon _MultiPostIt = ResourceLoader.lookupIconResource("MultiPostIt");
+  public ImageIcon _PostIt0     = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt0");
+  public ImageIcon _PostIt25    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt25");
+  public ImageIcon _PostIt50    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt50");
+  public ImageIcon _PostIt75    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt75");
+  public ImageIcon _PostIt99    = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt99");
+  public ImageIcon _PostIt100   = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("PostIt100");
+  //public ImageIcon _MultiPostIt = ResourceLoaderWrapper.getResourceLoaderWrapper()Wrapper.lookupIconResource("MultiPostIt");
 
   protected UMLTreeCellRenderer _navRenderer = new UMLTreeCellRenderer();
 
