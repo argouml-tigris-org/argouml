@@ -41,7 +41,8 @@ import ru.novosoft.uml.behavior.use_cases.MUseCase;
  */
 public class ActionSetExtendExtension extends UMLChangeAction {
 
-     public static final ActionSetExtendExtension SINGLETON = new ActionSetExtendExtension();
+    public static final ActionSetExtendExtension SINGLETON =
+        new ActionSetExtendExtension();
 
     /**
      * Constructor for ActionSetExtendBase.
@@ -51,27 +52,38 @@ public class ActionSetExtendExtension extends UMLChangeAction {
         super(Argo.localize("CoreMenu", "Set"), true, NO_ICON);
     }
 
-     /**
-     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-     */
+    /**
+    * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+    */
     public void actionPerformed(ActionEvent e) {
         super.actionPerformed(e);
         Object source = e.getSource();
         MUseCase newExtension = null;
+        MUseCase oldExtension = null;
         MExtend extend = null;
         if (source instanceof UMLComboBox2) {
             UMLComboBox2 combo = (UMLComboBox2)source;
             newExtension = (MUseCase)combo.getSelectedItem();
-            if (combo.getTarget() instanceof MExtend) {
-                extend = (MExtend)combo.getTarget();
+            Object o = combo.getTarget();
+            if (o instanceof MExtend) {
+                extend = (MExtend)o;
+                o = combo.getSelectedItem();
+                if (o instanceof MUseCase) {
+                    newExtension = (MUseCase)o;
+                    oldExtension = extend.getExtension();
+                    if (newExtension != oldExtension) {
+                        extend.setExtension(newExtension);
+                    }
+                } else {
+                    if (o != null && o.equals("")) {
+                        extend.setExtension(null);
+                    }
+                }
+
             }
+
         }
-        MUseCase oldExtension = extend.getExtension();
-        // oldbase can never be null
-        if (oldExtension == null || newExtension == null) throw new IllegalStateException("Base of extend is null!");
-        if (oldExtension != newExtension) {
-            extend.setExtension(newExtension);
-        }
+
     }
 
 }
