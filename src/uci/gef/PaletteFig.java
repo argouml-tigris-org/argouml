@@ -25,7 +25,6 @@ package uci.gef;
 
 import java.awt.*;
 import java.util.*;
-import uci.gef.contrib.*;
 
 /** A Palette that defines buttons to create lines, rectangles,
  *  rounded rectangles, circles, and text. Also a select button is

@@ -119,10 +119,10 @@ public class RedrawManager implements Runnable {
 
   public static void setFramesPerSecond(float fps) {
     if (fps > 100.0 || fps < 0.5) return;
-    int _timeDelay = (int) 1000/fps;
+    int _timeDelay = (int) (1000/fps);
   }
 
-  public static float getFramesPerSecond() { return 1000.0 / _timeDelay; }
+  public static float getFramesPerSecond() { return (float) (1000.0 / _timeDelay); }
 
   ////////////////////////////////////////////////////////////////
   // managing damage
