@@ -31,7 +31,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.table.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.foundation.core.*;
 
@@ -39,144 +38,149 @@ import org.tigris.gef.util.*;
 
 import org.argouml.kernel.*;
 import org.argouml.ui.*;
+import org.argouml.util.osdep.*;
 import org.argouml.language.java.generator.*;
 
 public class ClassGenerationDialog extends JFrame implements ActionListener {
 
   ////////////////////////////////////////////////////////////////
   // constants
-  private static final String BUNDLE = "Cognitive";
+  //private static final String BUNDLE = "Cognitive";
 
-  static final String high = Localizer.localize(BUNDLE, "level.high");
-  static final String medium = Localizer.localize(BUNDLE, "level.medium");
-  static final String low = Localizer.localize(BUNDLE, "level.low");
-
-  public static final String PRIORITIES[] = { high, medium, low };
-  public static final int WIDTH = 300;
-  public static final int HEIGHT = 350;
-
+  //static final String high = Localizer.localize(BUNDLE, "level.high");
+  
   ////////////////////////////////////////////////////////////////
   // instance variables
-  TableModelClassChecks _tableModel = new TableModelClassChecks();
-  protected JTable _table = new JTable(15, 2);
-//  protected JTextField _dir = new JTextField();
-  protected JComboBox _dir;
-  protected JCheckBox _compile;
-  protected JButton _generateButton = new JButton("Generate");
-  protected JButton _cancelButton = new JButton("Cancel");
+  private TableModelClassChecks _classTableModel = new TableModelClassChecks();
+  
+  protected JCheckBox _compileCheckBox;
+  protected JLabel _classesLabel;
+  protected JTable _classTable;
+  protected JButton _cancelButton;
+  protected JButton _browseButton;
+  protected JComboBox _outputDirectoryComboBox;
+  protected JLabel _outputDirectoryLabel;
+  protected JScrollPane _tableScrollPane;
+  protected JButton _generateButton;
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
   public ClassGenerationDialog(Vector nodes) {
     super("Generate Classes");
-
-    Vector dirs = getClasspathEntries();
-//     if (dirs.size() == 0) { 
-// 	dispose();
-// 	return;
-//     }
-    _dir = new JComboBox(Converter.convert(getClasspathEntries()));
-    _dir.setEditable(true);
-
-    _compile = new JCheckBox("compile generated source");
     
+    GridBagConstraints gridBagConstraints;
+    
+    _classesLabel = new JLabel();
+    _outputDirectoryLabel = new JLabel();
+    _browseButton = new JButton();
+    _cancelButton = new JButton();
+    _generateButton = new JButton();
+    _outputDirectoryComboBox = new JComboBox(Converter.convert(getClasspathEntries()));
+    _tableScrollPane = new JScrollPane();
+    _classTable = new JTable();
+    _compileCheckBox = new JCheckBox();
 
-    JLabel promptLabel = new JLabel("Generate Classes:");
-    JLabel dirLabel = new JLabel("Output Directory:");
+    getContentPane().setLayout(new GridBagLayout());
 
-    _tableModel.setTarget(nodes);
-    _table.setModel(_tableModel);
+    _classesLabel.setText("Generate Classes ...");
+    _classesLabel.setToolTipText("null");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridwidth = 3;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.WEST;
+    getContentPane().add(_classesLabel, gridBagConstraints);
 
-    Font labelFont = MetalLookAndFeel.getSubTextFont();
-    _table.setFont(labelFont);
+    _outputDirectoryLabel.setText("Output Directory:");
+    _outputDirectoryLabel.setToolTipText("null");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 2;
+    gridBagConstraints.gridwidth = 3;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.WEST;
+    getContentPane().add(_outputDirectoryLabel, gridBagConstraints);
 
-    //_table.setRowSelectionAllowed(false);
-    _table.setIntercellSpacing(new Dimension(0, 1));
-    _table.setShowVerticalLines(false);
-//     _table.getSelectionModel().addListSelectionListener(this);
-    _table.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    _browseButton.setText("Browse...");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 3;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.EAST;
+    getContentPane().add(_browseButton, gridBagConstraints);
 
-    TableColumn checkCol = _table.getColumnModel().getColumn(0);
-    TableColumn descCol = _table.getColumnModel().getColumn(1);
+    _cancelButton.setText("Cancel");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 1;
+    gridBagConstraints.gridy = 4;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.EAST;
+    getContentPane().add(_cancelButton, gridBagConstraints);
+
+    _generateButton.setLabel("Generate");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 2;
+    gridBagConstraints.gridy = 4;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.EAST;
+    getContentPane().add(_generateButton, gridBagConstraints);
+
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 3;
+    gridBagConstraints.gridwidth = 2;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+    _outputDirectoryComboBox.setEditable(true);
+    getContentPane().add(_outputDirectoryComboBox, gridBagConstraints);
+
+    _classTableModel.setTarget(nodes);
+    _classTable.setModel(_classTableModel);
+    _classTable.setAutoResizeMode(JTable.AUTO_RESIZE_LAST_COLUMN);
+    _classTable.setShowVerticalLines(false);
+    _classTable.setTableHeader(null);
+    _classTable.setIntercellSpacing(new Dimension(0, 1));
+    TableColumn checkCol = _classTable.getColumnModel().getColumn(0);
     checkCol.setMinWidth(20);
-    checkCol.setWidth(30);
-    descCol.setMinWidth(200);
-    descCol.setWidth(200);
-    _table.setTableHeader(null);
+    checkCol.setMaxWidth(30);
+    _tableScrollPane.setViewportView(_classTable);
 
-// Vector nodes = _diagram.getGraphModel().getNodes();
-// _table.setModel();
-// _table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 1;
+    gridBagConstraints.gridwidth = GridBagConstraints.REMAINDER;
+    gridBagConstraints.fill = GridBagConstraints.BOTH;
+    gridBagConstraints.insets = new Insets(5, 5, 5, 5);
+    gridBagConstraints.weighty = 2.0;
+    getContentPane().add(_tableScrollPane, gridBagConstraints);
 
-    setSize(new Dimension(WIDTH, HEIGHT));
-    getContentPane().setLayout(new BorderLayout());
-    JPanel top = new JPanel();
-    GridBagLayout gb = new GridBagLayout();
-    top.setLayout(gb);
-    GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
-    c.weightx = 0.0;
-    c.ipadx = 3; c.ipady = 3;
-
-
-    c.gridx = 0;
-    c.gridwidth = 1;
-    c.gridy = 0;
-    gb.setConstraints(promptLabel, c);
-    top.add(promptLabel);
-
-    c.gridy = 1;
-    c.weighty = 1.0;
-    JScrollPane classesSP = new JScrollPane(_table);
-    JPanel hack = new JPanel();
-    hack.setLayout(new BorderLayout());
-    hack.add(classesSP, BorderLayout.CENTER);
-    hack.setPreferredSize(new Dimension(250, 200));
-    hack.setSize(new Dimension(250, 200));
-    gb.setConstraints(hack, c);
-    top.add(hack);
-
-    c.weighty = 0.0;
-    c.gridy = 2;
-    gb.setConstraints(dirLabel, c);
-    top.add(dirLabel);
-
-    c.weightx = 1.0;
-    c.gridx = 0;
-    c.gridwidth = GridBagConstraints.REMAINDER;
-    c.gridy = 3;
-    gb.setConstraints(_dir, c);
-    top.add(_dir);
-
-    c.gridy = 4;
-    gb.setConstraints(_compile, c);
-    top.add(_compile);
-
-    JPanel buttonPanel = new JPanel();
-    buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT));
-    JPanel buttonInner = new JPanel(new GridLayout(1, 2));
-    buttonInner.add(_generateButton);
-    buttonInner.add(_cancelButton);
-    buttonPanel.add(buttonInner);
-
+    _compileCheckBox.setText("compile generated source");
+    gridBagConstraints = new GridBagConstraints();
+    gridBagConstraints.gridx = 0;
+    gridBagConstraints.gridy = 4;
+    gridBagConstraints.fill = GridBagConstraints.HORIZONTAL;
+    gridBagConstraints.insets = new java.awt.Insets(5, 5, 5, 5);
+    gridBagConstraints.anchor = GridBagConstraints.WEST;
+    getContentPane().add(_compileCheckBox, gridBagConstraints);
+    
+    pack();
+    
+    // Center Dialog on Screen -- todo: this should be a support function
     ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    //_dir.setText(p.getGenerationPrefs().getOutputDir());
-    _dir.getModel().setSelectedItem(p.getGenerationPrefs().getOutputDir());
-
     Rectangle pbBox = pb.getBounds();
-    setLocation(pbBox.x + (pbBox.width - WIDTH)/2,
-		pbBox.y + (pbBox.height - HEIGHT)/2);
-    getContentPane().add(top, BorderLayout.NORTH);
-    getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+    setLocation(pbBox.x + (pbBox.width - this.getWidth())/2,
+    		pbBox.y + (pbBox.height - this.getHeight())/2);
+
+    Project p = pb.getProject();
+    _outputDirectoryComboBox.getModel().setSelectedItem(p.getGenerationPrefs().getOutputDir());
 
     getRootPane().setDefaultButton(_generateButton);
     _generateButton.addActionListener(this);
     _cancelButton.addActionListener(this);
+    _browseButton.addActionListener(this);
   }
 
-  public final static String pathSep=System.getProperty("path.separator");
+  public final static String pathSep = System.getProperty("path.separator");
 
   private static Vector getClasspathEntries() {
       String classpath=System.getProperty("java.class.path");
@@ -196,20 +200,19 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       return entries;
   }
 
-  public Dimension getMaximumSize() { return new Dimension(WIDTH, HEIGHT); }
-
 
   ////////////////////////////////////////////////////////////////
   // event handlers
   public void actionPerformed(ActionEvent e) {
-    if (e.getSource() == _generateButton) {
-      // String path = _dir.getText().trim();
-      String path = ((String)_dir.getModel().getSelectedItem()).trim();
+      
+      // Generate Button --------------------------------------
+      if (e.getSource() == _generateButton) {
+      String path = ((String)_outputDirectoryComboBox.getModel().getSelectedItem()).trim();
 
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       Project p = pb.getProject();
       p.getGenerationPrefs().setOutputDir(path);
-      Vector nodes = _tableModel.getChecked();
+      Vector nodes = _classTableModel.getChecked();
       int size = nodes.size();
       String[] compileCmd=new String[size+1];
 
@@ -218,7 +221,7 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
 	if (node instanceof MClassifier)
 	  compileCmd[i+1] = GeneratorJava.GenerateFile((MClassifier) node, path);
       }
-      if (_compile.isSelected()) {
+      if (_compileCheckBox.isSelected()) {
 	  String compiler=System.getProperty("argo.compiler");
 	  if (compiler==null || compiler.length()==0)
 	      compiler="javac";
@@ -241,11 +244,35 @@ public class ClassGenerationDialog extends JFrame implements ActionListener {
       setVisible(false);
       dispose();
     }
+    
+    // Cancel Button ------------------------------------------
     if (e.getSource() == _cancelButton) {
       //System.out.println("cancel");
       setVisible(false);
       dispose();
     }
+
+    // Browse Button ------------------------------------------
+      if (e.getSource() == _browseButton) {
+          try {
+              // Show Filechooser to select OuputDirectory
+              JFileChooser chooser = OsUtil.getFileChooser((String)_outputDirectoryComboBox.getModel().getSelectedItem());
+              
+              if (chooser == null) chooser = OsUtil.getFileChooser();
+              
+              chooser.setFileHidingEnabled(true);
+              chooser.setMultiSelectionEnabled(false);
+              chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+              chooser.setDialogTitle("Choose Output Directory");
+              chooser.showDialog(this,"Choose");
+              
+              if ("" != chooser.getSelectedFile().getPath()) {
+                  _outputDirectoryComboBox.getModel().setSelectedItem(chooser.getSelectedFile().getPath());
+              } // else ignore
+          }
+          catch (Exception userPressedCancel) {
+          }
+      }
   }
 
   private String compile(String[] compileCmd) {
