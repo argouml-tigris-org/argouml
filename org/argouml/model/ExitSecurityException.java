@@ -22,14 +22,14 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.application.security;
+package org.argouml.model;
 
 /** An Argo security exception.
  *
  *  @author Thierry Lach
  *  @since 0.9.4
  */
-public class ArgoSecurityException extends SecurityException
+public class ExitSecurityException extends SecurityException
 {
     private boolean hidden = false;
 
@@ -37,7 +37,7 @@ public class ArgoSecurityException extends SecurityException
      * The constructor.
      * 
      */
-    public ArgoSecurityException() {
+    public ExitSecurityException() {
         this(false);
     } 
 
@@ -46,7 +46,7 @@ public class ArgoSecurityException extends SecurityException
      * 
      * @param h true if the exception is hidden
      */
-    public ArgoSecurityException(boolean h) {
+    public ExitSecurityException(boolean h) {
         super();
 	hidden = h;
     }

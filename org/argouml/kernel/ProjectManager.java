@@ -32,8 +32,10 @@ import javax.swing.event.EventListenerList;
 
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelListener;
 import org.argouml.ui.ArgoDiagram;
+import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 import org.argouml.uml.ui.ActionSaveProject;
 
 /**
@@ -267,5 +269,18 @@ public final class ProjectManager implements PropertyChangeListener {
             getCurrentProject().setNeedsSave(true);
         }
         
+    }
+
+    /**
+     * Return the UUID of the element.
+     *
+     * @param base base element (MBase type)
+     * @return UUID
+     */
+    public static String getUUID(Object base) {
+        if (base instanceof CommentEdge) {
+            return (String) ((CommentEdge) base).getUUID();
+        }
+        return ModelFacade.getUUID(base);
     }
 }
