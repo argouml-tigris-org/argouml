@@ -144,12 +144,10 @@ public class ActionSettings extends UMLAction
 						   minimumWidth),
 					  tabs.getPreferredSize().height));
 
-                    dlg.setContent(tabs);                    
+                    dlg.setContent(tabs);        
                 }
                 catch (Exception exception) {
-                    Argo.log.error("got an Exception in ActionSettings");
-                    Argo.log.error(exception);
-                    exception.printStackTrace();
+                    Argo.log.error("got an Exception in ActionSettings", exception);
                 }
             }
             
