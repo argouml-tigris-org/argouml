@@ -21,39 +21,33 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
+package org.argouml.application.helpers;
+import org.argouml.application.api.*;
+
+import java.awt.*;
 import java.util.*;
-import org.argouml.util.*;
-import javax.swing.*;
-import java.awt.event.*;
 
 
-/** German Resource bundle for internationalization of Settings dialog
-*
-*  @author Thierry Lach
-*  @since 0.9.4
-*/
-public class SettingsResourceBundle_de extends ListResourceBundle {
+public abstract class ModuleHelper 
+implements ArgoModule {
 
-   static final Object[][] _contents = {
-        {"button_ok", "OK" },
-        {"button_cancel", "Abbrechen" },
-        {"button_apply", "\u00dcbernehmen" },
-        {"tab_user", "Benutzer" },
-        {"label_user", "Vollst\u00e4ndiger Name:" },
-        {"label_email", "Email Adresse:" },
-        {"label_splash", "Splash Panel anzeigen" },
-        {"label_preload", "Allgemeine Klassen im Voraus laden" },
-        {"label_edem", "Benutzerstatistik anzeigen" },
-        {"label_profile", "Ladezeiten anzeigen" },
-        {"tab_preferences", "Voreinstellungen" },
-        {"tab_environment", "I18N: Environment" },
-        {"caption_settings", "Einstellungen" }
-   };
+    protected boolean _enabled = false;
 
-     public Object[][] getContents() {
-        return _contents;
-     }
+    public ModuleHelper() {
+        _enabled = false;
+    }
+
+    public boolean isModuleEnabled() {
+        return _enabled;
+    }
+
+    public void setModuleEnabled(boolean enabled) {
+        _enabled = enabled;
+    }
+
+    public Vector getModulePopUpActions(Vector v, Object o) {
+        return null;
+    }
+
 }
-
 

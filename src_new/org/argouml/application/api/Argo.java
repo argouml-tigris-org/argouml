@@ -24,6 +24,7 @@
 package org.argouml.application.api;
 import org.argouml.application.configuration.*;
 import org.argouml.application.modules.*;
+import org.argouml.application.events.*;
 import org.argouml.util.logging.*;
 
 import org.apache.log4j.*;
@@ -183,32 +184,23 @@ public class Argo {
     *
     *  If no plugins are available, returns null.
     */
-   public static final Vector getPlugins (Class pluginType,
-                                          Object context1,
-				          Object context2) {
-       return ModuleLoader.getInstance().getPlugins(pluginType,
-	                                            context1,
-						    context2);
-   }
-
-   /** Returns a vector of plugins of the class type passed
-    *  which satisfy the context required.
-    *
-    *  If no plugins are available, returns null.
-    */
-   public static final Vector getPlugins (Class pluginType,
-                                          Object context) {
-       return ModuleLoader.getInstance().getPlugins(pluginType,
-	                                            context,
-						    null);
+   public static final ArrayList getPlugins (Class pluginType,
+                                        Object[] context) {
+       return ModuleLoader.getInstance().getPlugins(pluginType, context);
    }
 
    /** Returns a vector of all plugins of the class type passed.
     *
     *  If no plugins are available, returns null.
     */
-   public static final Vector getPlugins (Class pluginType) {
-       return ModuleLoader.getInstance().getPlugins(pluginType, null, null);
+   public static final ArrayList getPlugins (Class pluginType) {
+       return ModuleLoader.getInstance().getPlugins(pluginType, null);
+   }
+
+   /** Initializes the module loader.  Multiple calls are ignored.
+    */
+   public static final void initializeModules() {
+	ModuleLoader.getInstance().initialize();
    }
 
    public static String getArgoHome() {

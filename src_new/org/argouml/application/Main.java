@@ -230,6 +230,13 @@ public class Main {
     //pb.repaint();
     //pb.requestDefaultFocus();
 
+    if (splash != null) {
+      splash.getStatusBar().showStatus("Loading modules");
+      splash.getStatusBar().showProgress(75);
+    }
+    // Initialize the module loader.
+    Argo.initializeModules();
+
 
     if (splash != null) {
       splash.getStatusBar().showStatus("Opening Project Browser");

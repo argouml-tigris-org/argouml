@@ -30,7 +30,10 @@ import org.argouml.application.api.*;
  */
 
 public class ArgoModuleEvent extends ArgoEvent {
-    public ArgoModuleEvent(ArgoModule src) {
-        super(src);
+
+    public ArgoModuleEvent(int eventType, ArgoModule src) {
+        super(eventType, src);
     }
+
+    public int getEventStartRange() { return ANY_MODULE_EVENT; }
 }

@@ -43,7 +43,7 @@ import org.apache.log4j.*;
 
 import org.argouml.application.security.ArgoClassLoader;
 
-/**
+/**  Handles loading of modules and plugins for ArgoUML.
  *
  * @author  Will Howery
  * @author  Thierry Lach
@@ -56,7 +56,7 @@ public class ModuleLoader {
     // String mModulePropertyFile=null;
     private static ModuleLoader SINGLETON = null;
     
-    private Hashtable mModuleClasses = null;
+    private ArrayList mModuleClasses = null;
     private Vector mMenuActionList = null;
     private static Hashtable _singletons = null;
     private static String argoRoot = null; 
@@ -66,11 +66,11 @@ public class ModuleLoader {
      */
     private ModuleLoader() {
         _singletons = new Hashtable();
-        mModuleClasses= new Hashtable();
+        mModuleClasses= new ArrayList();
         mMenuActionList=new Vector(); 
 
 	// Use a little trick to find out where Argo is being loaded from.
-        String extForm = getClass().getResource(Argo.ARGOINI).toExternalForm();
+        String extForm = org.argouml.application.Main.class.getResource(Argo.ARGOINI).toExternalForm();
 	argoRoot = extForm.substring(0, extForm.length()-Argo.ARGOINI.length());
 
 	// If it's a jar, clean it up and make it look like a file url
@@ -133,15 +133,13 @@ public class ModuleLoader {
 	    try {
 	        File file = new File(path[i]).getCanonicalFile();
 	        if (file.exists() && file.isFile() && file.canRead()) {
-	            ArgoModule.cat.debug ("Loading modules from " + file);
-		    loadModules(new FileInputStream(file));
+	            ArgoModule.cat.info ("Loading modules from " + file);
+		    loadModules(new FileInputStream(file), file.getPath());
 		}
 	    }
-	    catch (FileNotFoundException fnfe) {
+	    catch (Exception e) {
 	        // Ignore problem
-	    }
-	    catch (IOException ioe) {
-	        // Ignore problem.
+	        ArgoModule.cat.debug ("Exception", e);
 	    }
 	}
     }
@@ -149,42 +147,65 @@ public class ModuleLoader {
     /** Check the manifest of a jar file for an argo extension.
      */
     private void processJarFile(ClassLoader classloader, File file) {
-        try {
+	JarFile jarfile = null;
+        Manifest manifest = null;
+	ArgoModule.cat.info("Opening jar file " + file);
+        // try {
 	    // File file = new File(jarName);
-	    JarFile jarfile = new JarFile(file);
-	    Manifest manifest = jarfile.getManifest();
-	    Map entries = manifest.getEntries();
-	    Iterator iMap = entries.keySet().iterator();
-	    while (iMap.hasNext()) {
-	        // Look for our specification
-		String cname = (String)iMap.next();
-		Attributes atrs = manifest.getAttributes(cname);
-		String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
-		String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
+	try {
+	    jarfile = new JarFile(file);
+	}
+	catch (Exception e) {
+	    ArgoModule.cat.debug("Unable to open " + file, e);
+	}
 
-		// needs-more-work:  If we are in jdk1.3 or above, check
-		// EXTENSION_NAME.  Otherwise pass the class name.  It's not
-		// as good of a check (we might get duplicate modules with
-		// the same key), but it's better than nothing.
-
-		// String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
-		String key = cname;
-	        if (s1.equals(Pluggable.PLUGIN_TITLE) &&
-		    s2.equals(Pluggable.PLUGIN_VENDOR) &&
-		    key != null &&
-		    cname.endsWith(CLASS_SUFFIX)) {
-		    // This load is not secure.
-                    loadClassFromLoader(classloader, key, 
-	    cname.substring(0, cname.length()-CLASS_SUFFIX.length()), false);
+	if (jarfile != null) {
+	    try {
+	        manifest = jarfile.getManifest();
+	        if (manifest == null) {
+	            ArgoModule.cat.debug(file + " does not have a manifest");
 	        }
 	    }
+	    catch (Exception e) {
+	        ArgoModule.cat.debug("Unable to read manifest of " + file, e);
+		manifest = null;
+	    }
 	}
-	catch (FileNotFoundException fnfe) {
-	    // Ignore problem
+
+	if (manifest != null) {
+	    // else {
+	        Map entries = manifest.getEntries();
+	        Iterator iMap = entries.keySet().iterator();
+	        while (iMap.hasNext()) {
+	            // Look for our specification
+		    String cname = (String)iMap.next();
+		    Attributes atrs = manifest.getAttributes(cname);
+		    String s1 = atrs.getValue(Attributes.Name.SPECIFICATION_TITLE);
+		    String s2 = atrs.getValue(Attributes.Name.SPECIFICATION_VENDOR);
+    
+		    // needs-more-work:  If we are in jdk1.3 or above, check
+		    // EXTENSION_NAME.  Otherwise pass the class name.  It's not
+		    // as good of a check (we might get duplicate modules with
+		    // the same key), but it's better than nothing.
+    
+		    // String key = atrs.getValue(Attributes.Name.EXTENSION_NAME);
+		    String key = cname;
+	            if (Pluggable.PLUGIN_TITLE.equals(s1) &&
+		        Pluggable.PLUGIN_VENDOR.equals(s2) &&
+		        key != null &&
+		        cname.endsWith(CLASS_SUFFIX)) {
+		        // This load is not secure.
+                        loadClassFromLoader(classloader, key, 
+	        cname.substring(0, cname.length()-CLASS_SUFFIX.length()), false);
+	            }
+	        }
+	    // }
 	}
-	catch (IOException ioe) {
-	    // Ignore problem.
-	} 
+	// }
+	// catch (Exception e) {
+	    // // Ignore problem.
+	    // ArgoModule.cat.debug("Exception", e);
+	// }
     }
 
     /** Search for and load modules from classpath, and from
@@ -254,14 +275,16 @@ public class ModuleLoader {
     /** Load modules listed in Argo resources.
      */ 
     public boolean loadInternalModules(Class fromClass, String rsrcName) {
+	ArgoModule.cat.info("Loading modules from " + rsrcName);
 	// Load the internal modules
 	InputStream is = fromClass.getResourceAsStream(Argo.RESOURCEDIR + rsrcName);
-	return (is == null) ? false : loadModules(is);
+	return (is == null) ? false : loadModules(is, rsrcName);
     }
 
     public boolean loadModulesFromFile(String moduleFile) {
+	ArgoModule.cat.info("Loading modules from " + moduleFile);
         try {
-	    return loadModules(new FileInputStream(moduleFile));
+	    return loadModules(new FileInputStream(moduleFile), moduleFile);
 	}
 	catch (Exception e){
             e.printStackTrace();
@@ -269,12 +292,24 @@ public class ModuleLoader {
         return false;
     }
 
+    private boolean keyAlreadyLoaded(String key) {
+        ListIterator iterator = mModuleClasses.listIterator();
+        while (iterator.hasNext()){
+            Object obj = iterator.next();
+            if (obj instanceof ArgoModule)
+                if (key.equals(((ArgoModule)obj).getModuleKey()))
+		    return true;
+	}
+	return false;
+    }
+
     private void loadClassFromLoader(ClassLoader classloader,
                                      String key,
 				     String classname,
 				     boolean secure) {
 
-	if (mModuleClasses.containsKey(key)) return;
+	ArgoModule.cat.debug("Load key:" + key + " class:" + classname);
+	if (keyAlreadyLoaded(key)) return;
 
 	Object obj = null;
 	try {
@@ -283,17 +318,15 @@ public class ModuleLoader {
 	}
 	catch (Exception e) {
 	    obj = null;
-            Argo.log.warn("Could not instantiate " + classname);
-	    // System.out.println (e);
-	    // e.printStackTrace();
+            ArgoModule.cat.debug("Could not instantiate " + classname, e);
 	}
         if (obj!= null && obj instanceof ArgoModule) {
             ArgoModule aModule = (ArgoModule) obj;
 	    if (aModule.getModuleKey().equals(key) || (! secure)) {
                 if (aModule.initializeModule()){
-                    ArgoModule.cat.debug("Loaded Module: " +
+                    ArgoModule.cat.info("Loaded Module: " +
 			                   aModule.getModuleName());
-                    mModuleClasses.put(key, aModule);
+                    mModuleClasses.add(aModule);
 		    try {
 		        if (aModule instanceof ArgoSingletonModule) {
 			    ArgoSingletonModule sModule = (ArgoSingletonModule)aModule;
@@ -302,8 +335,11 @@ public class ModuleLoader {
 			        requestNewSingleton(moduleType, sModule);
 		            }
 		        }
+		        fireEvent(ArgoModuleEvent.MODULE_LOADED, aModule);
 		    }
-		    catch (Exception e) { ArgoModule.cat.debug (e); }
+		    catch (Exception e) {
+		        ArgoModule.cat.debug ("Exception", e);
+		    }
                 }
 	    }
 	    else {
@@ -312,40 +348,54 @@ public class ModuleLoader {
         }
     }
 
-    public boolean loadModules(InputStream is) {
+    public boolean loadModules(InputStream is, String filename) {
         try {
-            PropertyResourceBundle rb = new PropertyResourceBundle(is);
-            // mPropertyResourceBundle = rb;
-            Enumeration enum = rb.getKeys();
-            while (enum.hasMoreElements()){
-                String sModule = (String) enum.nextElement();
+	    LineNumberReader lnr = new LineNumberReader(new InputStreamReader(is));
+	    while (true) {
+	        String realLine = lnr.readLine();
+		if (realLine == null) return true;
+		String line = realLine.trim();
+		if (line.charAt(0) == '#') continue;
+		if (line.charAt(0) == '!') continue;
+		String sKey = "";
+		String sClassName = "";
+		try {
+		    int equalPos = line.indexOf("=");
+		    sKey = line.substring(0, equalPos).trim();
+		    sClassName = line.substring(equalPos + 1).trim();
+		}
+		catch (Exception e) {
+		    System.err.println ("Unable to process " + filename +
+		                        " at line " + lnr.getLineNumber() +
+					" data = '" + realLine + "'");
+		    continue;
+		}
+
                 try {
-                    if (sModule.startsWith("module")){
-                        String sClassName = rb.getString(sModule);
+                    if (sKey.startsWith("module.")) {
 			loadClassFromLoader(getClass().getClassLoader(),
-			                    sModule,
+			                    sKey,
 					    sClassName,
 					    true);
 		    }
-               } catch (Exception e){
-                    Argo.log.warn("Could not load Module: " + sModule);
-                }
-                
-                sModule ="";
-            }
-            return true;
-        } catch (Exception e){
+                 } catch (Exception e){
+                     ArgoModule.cat.debug("Could not load Module: " + sKey);
+                 }
+                 sKey ="";
+               }
+	}
+	catch (Exception e){
             e.printStackTrace();
-		    System.exit(1);
+	    System.exit(1);
         }
         return false;
     }
 
     public void shutdown(){
         try{
-            Enumeration enum = mModuleClasses.elements();
-            while (enum.hasMoreElements()){
-                Object obj = enum.nextElement();
+            ListIterator iterator = mModuleClasses.listIterator();
+            while (iterator.hasNext()){
+                Object obj = iterator.next();
                 if (obj instanceof ArgoModule){
                     ArgoModule m = (ArgoModule) obj;
                     m.shutdownModule();
@@ -360,9 +410,9 @@ public class ModuleLoader {
 
     public void addModuleAction(Vector popUpActions, Object context){
         try{
-            Enumeration enum = mModuleClasses.elements();
-            while (enum.hasMoreElements()){
-                Object obj = enum.nextElement();
+            ListIterator iterator = mModuleClasses.listIterator();
+            while (iterator.hasNext()){
+                Object obj = iterator.next();
                 if (obj instanceof ArgoModule){
                     ArgoModule m = (ArgoModule) obj;
                     m.getModulePopUpActions(popUpActions,context);
@@ -374,12 +424,19 @@ public class ModuleLoader {
         }
     }
 
-    public Hashtable getModules() {
+    public ArrayList getModules() {
        return mModuleClasses;
     }
 
     public Object getModule(String key) {
-        return mModuleClasses.get(key);
+        ListIterator iterator = mModuleClasses.listIterator();
+        while (iterator.hasNext()){
+            Object obj = iterator.next();
+            if (obj instanceof ArgoModule)
+                if (key.equals(((ArgoModule)obj).getModuleKey()))
+		    return obj;
+	}
+	return null;
     }
 
     /** Activate a loaded module.
@@ -445,8 +502,7 @@ public class ModuleLoader {
    *          as the argument.
    */
   public Pluggable getPlugin (Class pluginType,
-                                    Object context1,
-				    Object context2) {
+                                    Object[] context) {
       //  Make sure that we are only looking at real extensions
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
@@ -468,21 +524,22 @@ public class ModuleLoader {
           return null;
       }
 
-      Enumeration e = getModules().elements();
-      while (e.hasMoreElements()) {
-          Object module = e.nextElement();
+      // Needs-more-work:  The vector should be populated from
+      //                   the enumeration in FIFO sequence.
+
+      ListIterator iterator = getModules().listIterator();
+      while (iterator.hasNext()) {
+          Object module = iterator.next();
 	  // if (module.getClass().isAssignableFrom(pluginType))
 	  if (classImplements(module, pluginType)) {
 	      Pluggable pluggable = (Pluggable)module;
 	  // if (pluggable.isModuleType(pluginType)) 
-	      if (context1 == null && context2 == null) {
+	      if (context == null) {
 	          return pluggable;
 	      }
 	      else {
-	          if (pluggable.inContext(1, context1)) {
-	              if (pluggable.inContext(2, context2)) {
-		          return pluggable;
-		      }
+	          if (pluggable.inContext(context)) {
+		      return pluggable;
 		  }
 	      }
 	  }
@@ -506,8 +563,7 @@ public class ModuleLoader {
    *  
    */
   public boolean hasPlugin (Class pluginType,
-                                  Object context1,
-				  Object context2) {
+                                  Object[] context) {
       //  Make sure that we are only looking at real extensions
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
@@ -529,20 +585,21 @@ public class ModuleLoader {
           return false;
       }
 
-      Enumeration e = getModules().elements();
-      while (e.hasMoreElements()) {
-          Object element = e.nextElement();
+      // Needs-more-work:  The vector should be populated from
+      //                   the enumeration in FIFO sequence.
+
+      ListIterator iterator = getModules().listIterator();
+      while (iterator.hasNext()) {
+          Object element = iterator.next();
 	  // if (element.getClass().isAssignableFrom(pluginType))
 	  if (classImplements(element, pluginType)) {
               Pluggable module = (Pluggable)element;
-	      if (context1 == null && context2 == null) {
+	      if (context == null) {
 	          return true;
 	      }
 	      else {
-		  if (module.inContext(1, context1)) {
-		      if (module.inContext(2, context2)) {
-		          return true;
-		      }
+		  if (module.inContext(context)) {
+		      return true;
 		  }
 	      }
 	  }
@@ -565,9 +622,7 @@ public class ModuleLoader {
    *          passed for the passed context, or null if none
    *          are available.
    */
-  public Vector getPlugins (Class pluginType,
-                                  Object context1,
-				  Object context2) {
+  public ArrayList getPlugins (Class pluginType, Object[] context) {
 
       if (! (pluginType.getName().startsWith(Pluggable.PLUGIN_PREFIX))) {
           Argo.log.warn ("Class " + pluginType.getName() +
@@ -589,30 +644,30 @@ public class ModuleLoader {
           return null;
       }
 
-      Vector results = new Vector();
-      Enumeration e = getModules().elements();
-      while (e.hasMoreElements()) {
-          Object module = e.nextElement();
+      // Needs-more-work:  The vector should be populated from
+      //                   the enumeration in FIFO sequence.
+
+      ArrayList results = new ArrayList();
+      ListIterator iterator = getModules().listIterator();
+      while (iterator.hasNext()) {
+          Object module = iterator.next();
 	  try {
 	      Pluggable pluggable = (Pluggable)module;
 	      // if (pluggable.isModuleType(pluginType)) 
 	      // if (pluggable.getClass().isAssignableFrom(pluginType))
 	      if (classImplements(module, pluginType)) {
-	           if (context1 == null && context2 == null) {
+	           if (context == null) {
 		       results.add(module);
 		   }
 		   else {
-	               if (pluggable.inContext(1, context1)) {
-	                   if (pluggable.inContext(2, context2)) {
-		               results.add(module);
-		           }
+	               if (pluggable.inContext(context)) {
+		           results.add(module);
 		       }
 		   }
 	      }
 	  }
 	  catch (Exception ex) {
-                  ArgoModule.cat.debug("Exception for " + module);
-		  ArgoModule.cat.debug(ex); 
+                  ArgoModule.cat.warn("Exception for " + module, ex);
 	  }
       }
       return results;
@@ -637,6 +692,11 @@ public class ModuleLoader {
 	          pathname.isFile() &&
 		  pathname.getPath().toLowerCase().endsWith(".jar"));
       }
+  }
+
+  private void fireEvent(int eventType,  ArgoModule module) {
+      ArgoEventPump.getInstance().fireEvent(new ArgoModuleEvent(eventType,
+                                                                module));
   }
 
 } /* end class ModuleLoader */ 

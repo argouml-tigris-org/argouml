@@ -47,6 +47,7 @@ public class SettingsResourceBundle extends ListResourceBundle {
         {"label_edem", "Report Usage Statistics" },  
         {"label_profile", "Report on Load Times" },  
         {"tab_preferences", "Preferences" },  
+        {"tab_environment", "Environment" },  
         {"caption_settings", "Settings" }
    };
 

@@ -58,10 +58,6 @@ public interface Pluggable extends ArgoModule {
     /** A function which allows a plug-in to decide if it is available
      *  under a specific context. 
      *
-     *  This function may be called multiple times for a single
-     *  module.  The module handler will continue to call for each
-     *  possible criteria until the function returns false.
-     *
      *  One example of a plugin with multiple criteria is the PluggableMenu.
      *  PluggableMenu requires the first context to be a JMenuItem
      *  which wants the PluggableMenu attached to as the context,
@@ -74,11 +70,11 @@ public interface Pluggable extends ArgoModule {
      *                 The interpretation of criteria is specific to
      *                 the plug-in type, but must be consistent
      *                 across that type.  The plug-in must want
-     *                 to be exposed to both contexts.
+     *                 to be exposed to all contexts.
      *
      *  @return True if the plug-in wants to make itself available
      *          for this context, otherwise false.
      */
-    public boolean inContext(int sequence, Object context);
+    public boolean inContext(Object[] context);
 
 } /* end interface Pluggable */

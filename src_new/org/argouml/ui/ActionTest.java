@@ -26,6 +26,8 @@ package org.argouml.ui;
 import org.argouml.application.api.*;
 import org.argouml.uml.ui.*;
 import java.awt.event.*;
+import java.util.*;
+import javax.swing.*;
 
 
 /** Action object for handling Argo tests
@@ -33,7 +35,8 @@ import java.awt.event.*;
  *  @author Andreas Rueckert
  *  @since  0.9.4
  */
-public class ActionTest extends UMLAction {
+public class ActionTest extends UMLAction
+implements PluggableMenu {
 
 
     ////////////////////////////////////////////////////////////////
@@ -44,6 +47,7 @@ public class ActionTest extends UMLAction {
      */
     private static ActionTest SINGLETON = new ActionTest();
 
+    private static JMenuItem _menuItem = null;
 
     ////////////////////////////////////////////////////////////////
     // Constructors.
@@ -51,8 +55,12 @@ public class ActionTest extends UMLAction {
     /**
      * Create a new ActionTest instance (is not public, due to 
      * singleton pattern).
+     *
+     * needs-more-work:  Had to make it public because of dynamic loading.
+     *                   Should modify ModuleLoader to not require
+     *                   public anonymous constructor.
      */
-    protected ActionTest() {
+    public ActionTest() {
 	super(Argo.localize(Argo.MENU_BUNDLE,"TestPanel..."), false);
     }
 
@@ -76,5 +84,39 @@ public class ActionTest extends UMLAction {
     public void actionPerformed(ActionEvent event) {
 	String [] args = {};
 	junit.swingui.TestRunner.main(args);
+    }
+
+    public void setModuleEnabled(boolean v) { }
+    public boolean initializeModule() {
+        Argo.log.info ("+------------------------+");
+        Argo.log.info ("| JUnit testing enabled! |");
+        Argo.log.info ("+------------------------+");
+        return true;
+    }
+    public Object[] buildContext(JMenuItem a, String b) {
+        return new Object[] { a, b };
+    }
+
+    public boolean inContext(Object[] o) {
+        if (o.length != 2) return false;
+	if (o[0] instanceof JMenuItem) return true;
+	if ("Tools".equals(o[1])) return true;
+        return false;
+    }
+    public boolean isModuleEnabled() { return true; }
+    public Vector getModulePopUpActions(Vector v, Object o) { return null; }
+    public boolean shutdownModule() { return true; }
+
+    public String getModuleName() { return "ActionTest"; }
+    public String getModuleDescription() { return "Menu Item for JUnit Testing"; }
+    public String getModuleAuthor() { return "ArgoUML Core"; }
+    public String getModuleVersion() { return "0.9.4"; }
+    public String getModuleKey() { return "module.menu.tools.test"; }
+
+    public JMenuItem getMenuItem(JMenuItem mi, String s) {
+        if (_menuItem == null) {
+	    _menuItem = new JMenuItem(this);
+	}
+        return _menuItem;
     }
 }

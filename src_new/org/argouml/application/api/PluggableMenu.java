@@ -47,5 +47,9 @@ public interface PluggableMenu extends Pluggable {
      */
     public JMenuItem getMenuItem(JMenuItem parentMenuItem, String menuType);
 
+    // public boolean inContext(Object[] context);
+
+    public Object[] buildContext(JMenuItem parentMenuItem, String menuType);
+
 } /* End interface PluggableMenu */
 

@@ -21,39 +21,39 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.ui;
-import java.util.*;
-import org.argouml.util.*;
-import javax.swing.*;
-import java.awt.event.*;
+package org.argouml.language;
+import org.argouml.application.api.*;
+import org.argouml.application.helpers.*;
 
-
-/** German Resource bundle for internationalization of Settings dialog
-*
-*  @author Thierry Lach
-*  @since 0.9.4
-*/
-public class SettingsResourceBundle_de extends ListResourceBundle {
+public class NotationResourceBundle extends ResourceBundleHelper
+implements PluggableResourceBundle {
 
    static final Object[][] _contents = {
-        {"button_ok", "OK" },
-        {"button_cancel", "Abbrechen" },
-        {"button_apply", "\u00dcbernehmen" },
-        {"tab_user", "Benutzer" },
-        {"label_user", "Vollst\u00e4ndiger Name:" },
-        {"label_email", "Email Adresse:" },
-        {"label_splash", "Splash Panel anzeigen" },
-        {"label_preload", "Allgemeine Klassen im Voraus laden" },
-        {"label_edem", "Benutzerstatistik anzeigen" },
-        {"label_profile", "Ladezeiten anzeigen" },
-        {"tab_preferences", "Voreinstellungen" },
-        {"tab_environment", "I18N: Environment" },
-        {"caption_settings", "Einstellungen" }
+        {"label_use_guillemots", "Use guillemots (\u00ab \u00bb) for stereotypes" },
+        {"tab_notation", "Notation" }  
    };
 
      public Object[][] getContents() {
         return _contents;
      }
+
+    public String getModuleName() {
+        return "NotationResourceBundle";
+    }
+
+    public String getModuleDescription() {
+        return "Generic Resource Bundle for Notations";
+    }
+
+    public String getModuleAuthor() {
+        return "ArgoUML Core";
+    }
+
+    public String getModuleVersion() {
+        return "0.9.4";
+    }
+
+    public String getModuleKey() {
+        return "module.resources.notation";
+    }
 }
-
-

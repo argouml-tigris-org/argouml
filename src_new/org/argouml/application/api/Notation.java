@@ -75,6 +75,11 @@ implements PropertyChangeListener {
    */
   public static final ConfigurationKey KEY_NOTATION = Configuration.makeKey("notation");
 
+  /** The configuration key that indicates whether to use guillemots
+   *  or greater/lessthan characters in stereotypes.
+   */
+  public static final ConfigurationKey KEY_USE_GUILLEMOTS = Configuration.makeKey("notation", "guillemots");
+
   /** List of currently available notations.  In the future this will
    *  be dynamically manipulated.
    */
