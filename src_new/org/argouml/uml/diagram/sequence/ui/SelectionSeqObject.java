@@ -157,13 +157,13 @@ public class SelectionSeqObject extends SelectionWButtons  {
     boolean reverse = false;
     switch (hand.index) {
     case 10: //add a called object
-      edgeClass = ru.novosoft.uml.behavior.common_behavior.MLinkImpl.class;
+      edgeClass = ru.novosoft.uml.behavior.common_behavior.MLink.class;
       actionClass =  ru.novosoft.uml.behavior.common_behavior.MCallActionImpl.class;
       by = yPos;
       bx = cx + cw;
       break;
     case 11: // add a callin object
-      edgeClass = ru.novosoft.uml.behavior.common_behavior.MLinkImpl.class;
+      edgeClass = ru.novosoft.uml.behavior.common_behavior.MLink.class;
       actionClass = ru.novosoft.uml.behavior.common_behavior.MReturnActionImpl.class;
       //reverse = true;
       by = yPos;

@@ -179,24 +179,24 @@ public class SelectionActionState extends SelectionWButtons {
     boolean reverse = false;
     switch (hand.index) {
     case 12: //add outgoing
-      edgeClass = MTransitionImpl.class;
+      edgeClass = MTransition.class;
       by = cy + ch/2;
       bx = cx + cw;
       break;
     case 13: // add incoming
-      edgeClass = MTransitionImpl.class;
+      edgeClass = MTransition.class;
       reverse = true;
       by = cy + ch/2;
       bx = cx;
       break;
      case 14: // add incoming
-      edgeClass = MTransitionImpl.class;
+      edgeClass = MTransition.class;
       reverse = true;
       by = cy ;
       bx = cx + cw/2;
       break;
      case 15: // add outgoing
-      edgeClass = MTransitionImpl.class;
+      edgeClass = MTransition.class;
       by = cy + ch;
       bx = cx + cw/2;
       break;
