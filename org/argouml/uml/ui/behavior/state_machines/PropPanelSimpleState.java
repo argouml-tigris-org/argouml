@@ -37,10 +37,20 @@ import org.argouml.util.ConfigLoader;
 
 public class PropPanelSimpleState extends PropPanelState {
 
+    /**
+     * Constructor
+     */
     public PropPanelSimpleState() {
         this("Simple State", _stateIcon, ConfigLoader.getTabPropsOrientation());
     }
 
+    /**
+     * Constructor 
+     * 
+     * @param name the name of the properties panel, shown at the top
+     * @param icon the icon shown at the top
+     * @param orientation
+     */
     public PropPanelSimpleState(String name, ImageIcon icon,
             Orientation orientation) {
         super(name, _stateIcon, ConfigLoader.getTabPropsOrientation());
