@@ -29,7 +29,6 @@ import javax.swing.JScrollPane;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.swingext.LabelledLayout;
-import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.util.ConfigLoader;
 import org.tigris.gef.presentation.Fig;
 
@@ -136,30 +135,6 @@ public class TabDocumentation extends PropPanel {
         Object target = getTarget();
         target = (target instanceof Fig) ? ((Fig) target).getOwner() : target;
         return ModelFacade.isAModelElement(target);
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    /* (non-Javadoc)
-     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
-     */
-    public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
-
     }
 
 } /* end class TabDocumentation */

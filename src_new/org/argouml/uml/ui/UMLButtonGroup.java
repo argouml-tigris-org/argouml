@@ -33,6 +33,8 @@ import javax.swing.AbstractButton;
 import javax.swing.Action;
 import javax.swing.ButtonGroup;
 
+import org.argouml.model.ModelFacade;
+
 import ru.novosoft.uml.MElementEvent;
 
 /**
@@ -87,7 +89,7 @@ public abstract class UMLButtonGroup
     public void targetChanged() {
         if (getContainer() != null && getContainer().getTarget() != null) {
             setTarget(getContainer().getTarget());
-            buildModel();
+      
         }
     }
 
@@ -97,7 +99,7 @@ public abstract class UMLButtonGroup
     public void targetReasserted() {
         if (getContainer() != null && getContainer().getTarget() != null) {
             setTarget(getContainer().getTarget());
-            buildModel();
+      
         }
     }
 
@@ -192,7 +194,9 @@ public abstract class UMLButtonGroup
      * @param target The target to set
      */
     public void setTarget(Object target) {
+        if (target == null || !ModelFacade.isAModelElement(target) || _target == target) return;
         _target = target;
+        buildModel();
     }
     
     /**

@@ -41,8 +41,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-
 public class TabSrc
     extends TabText
     implements ArgoNotationEventListener, NotationContext, ItemListener {
@@ -75,16 +73,11 @@ public class TabSrc
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    protected String genText() {
-
-        cat.debug("TabSrc getting src for " + _target);
-        Object modelObject = _target;
-        if (_target instanceof FigNode)
-            modelObject = ((FigNode) _target).getOwner();
-        if (_target instanceof FigEdge)
-            modelObject = ((FigEdge) _target).getOwner();
-        if (modelObject == null)
+    protected String genText(Object modelObject) {
+        modelObject = (modelObject instanceof Fig) ? ((Fig)modelObject).getOwner() : modelObject;       
+        if (!ModelFacade.isAElement(modelObject))
             return null;
+        
         cat.debug("TabSrc getting src for " + modelObject);
         //return Notation.generate(this, modelObject, true);
         NotationName nn =
@@ -109,17 +102,16 @@ public class TabSrc
         //Parser.ParseAndUpdate(modelObject, s);
     }
 
+    /**
+     * Sets the target of this tab. 
+     */
     public void setTarget(Object t) {
 
-        cat.debug("TabSrc.setTarget()");
+        t = (t instanceof Fig) ? ((Fig)t).getOwner() : t;
         _notationName = null;
         _shouldBeEnabled = false;
-        if (t instanceof MModelElement)
+        if (ModelFacade.isAModelElement(t))
             _shouldBeEnabled = true;
-        if (t instanceof Fig) {
-            if (((Fig) t).getOwner() instanceof MModelElement)
-                _shouldBeEnabled = true;
-        }
         // If the target is a notation context, use its notation.
         if (t instanceof NotationContext) {
             _notationName = ((NotationContext) t).getContextNotation();
@@ -143,16 +135,17 @@ public class TabSrc
         super.setTarget(t);
     }
 
+    /**
+     * Determines if the current tab should be enabled with the given target. 
+     * @return true if the given target is either a modelelement or is a fig with
+     * as owner a modelelement.
+     */
     public boolean shouldBeEnabled(Object target) {
+        target = (target instanceof Fig) ? ((Fig)target).getOwner() : target;
 
         _shouldBeEnabled = false;
         if (ModelFacade.isAModelElement(target)) {
             _shouldBeEnabled = true;
-        }
-
-        if (target instanceof Fig) {
-            if (ModelFacade.isAModelElement(((Fig) target).getOwner()))
-                _shouldBeEnabled = true;
         }
 
         return _shouldBeEnabled;

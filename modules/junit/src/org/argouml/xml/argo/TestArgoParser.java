@@ -23,11 +23,12 @@
 
 package org.argouml.xml.argo;
 
-import java.io.IOException;
-import java.net.*;
-import junit.framework.*;
-import org.argouml.ui.*;
-import org.argouml.kernel.*;
+import java.net.URL;
+
+import junit.framework.TestCase;
+
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 
 /** Testcase to load projects without exception. */
 public class TestArgoParser extends TestCase {
@@ -42,7 +43,7 @@ public class TestArgoParser extends TestCase {
 	URL url;
 	try {
 	    url = new URL(filename);
-	    Project p = Project.loadProject(url);
+	    Project p = ProjectManager.getManager().loadProject(url);
 	    assertTrue("Load Status for " + filename + ".",
 		   ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
@@ -66,7 +67,7 @@ public class TestArgoParser extends TestCase {
 	boolean loaded = true;
 	try {
 	    url = new URL("file:testmodels/Garbage.zargo");
-	    Project p = Project.loadProject(url);
+        Project p = ProjectManager.getManager().loadProject(url);
 	    assertTrue("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assertTrue("Incorrect test case.", false);

@@ -213,7 +213,8 @@ public class DetailsPane
                 Component tab = _tabs.getComponentAt(i);
                 if (tab instanceof TabTarget) {
                     if (((TabTarget) tab).shouldBeEnabled(target)) {
-                        ((TabTarget) tab).setTarget(target);
+                        if (!(tab instanceof TargetListener))
+                            ((TabTarget) tab).setTarget(target);
                         _tabs.setSelectedIndex(i);
                         tabSelected = true;
                         _lastNonNullTab = i;
@@ -419,13 +420,14 @@ public class DetailsPane
         // update the tab
 
         Object target = TargetManager.getInstance().getTarget();
-
+        
+        if (!(sel instanceof TargetListener)) {
         if (sel instanceof TabToDoTarget)
              ((TabToDoTarget) sel).refresh();
 
         else if (sel instanceof TabTarget)
              ((TabTarget) sel).setTarget(target);
-
+        }
 
         if (target != null
             && ModelFacade.isABase(target)

@@ -50,6 +50,7 @@ import org.argouml.ui.StylePanelFig;
 import org.argouml.ui.TabFigTarget;
 import org.argouml.ui.TabSpawnable;
 import org.argouml.ui.targetmanager.TargetEvent;
+import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.state.ui.FigSimpleState;
 import org.argouml.uml.diagram.state.ui.FigTransition;
 import org.argouml.uml.diagram.static_structure.ui.FigClass;
@@ -133,8 +134,14 @@ public class TabStyle
         _panels.put(c, s);
     }
 
-    ////////////////////////////////////////////////////////////////
-    // accessors
+  
+    
+    
+    /**
+     * Sets the target of the style tab. 
+     * @deprecated will change visibility in the near future
+     * @param Object the new target
+     */
     public void setTarget(Object t) {
         if (_target != null)
             _target.removePropertyChangeListener(this);
@@ -152,7 +159,8 @@ public class TabStyle
                 } else {
                     t = col.iterator().next();
                 }
-            }
+            } else
+                return;
         }
 
         _target = (Fig) t;
@@ -166,6 +174,9 @@ public class TabStyle
             _lastPanel = _blankPanel;
             return;
         }
+        if (_stylePanel != null) {
+            TargetManager.getInstance().removeTargetListener(_stylePanel);
+        }
         _shouldBeEnabled = true;
         _stylePanel = null;
         Class targetClass = t.getClass();
@@ -174,6 +185,9 @@ public class TabStyle
             targetClass = targetClass.getSuperclass();
         }
         if (_stylePanel != null) {
+            // TargetManager now replaces the old functionality of setTarget
+            TargetManager.getInstance().addTargetListener(_stylePanel);
+            // TODO: remove the next line as soon as possible
             _stylePanel.setTarget(_target);
             add((JPanel) _stylePanel, BorderLayout.NORTH);
             _shouldBeEnabled = true;
@@ -292,28 +306,33 @@ public class TabStyle
             _stylePanel.refresh();
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // we can neglect this, the TabStyle allways selects the first target
+        // in a set of targets. The first target can only be 
+        // changed in a targetRemoved or a TargetSet event
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
-        // TODO Auto-generated method stub
+        // how to handle empty target lists?
+        // probably the TabStyle should only show an empty pane in that case
+        setTarget(e.getNewTargets()[0]);
 
     }
 
-    /* (non-Javadoc)
+    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
-        // TODO Auto-generated method stub
+        setTarget(e.getNewTargets()[0]);
 
     }
+
 
 } /* end class TabStyle */

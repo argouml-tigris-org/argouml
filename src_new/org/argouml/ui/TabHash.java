@@ -23,13 +23,8 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import javax.swing.text.*;
+import org.argouml.ui.targetmanager.TargetManager;
+
 
 public class TabHash extends TabText {
 
@@ -42,9 +37,8 @@ public class TabHash extends TabText {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public String genText() {
-    if (_target == null) return "Nothing selected";
-    return Integer.toString(_target.hashCode());
+  public String genText(Object target) {  
+      return target == null ? "Nothing selected" : "" + target.hashCode();
   }
   
 
