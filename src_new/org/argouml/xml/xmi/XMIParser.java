@@ -23,6 +23,7 @@
 
 package org.argouml.xml.xmi;
 
+import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 import java.beans.PropertyVetoException;
@@ -56,27 +57,33 @@ public class XMIParser {
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    protected MModel  _curModel      = null;
-    protected Project _proj          = null;
-    protected HashMap _UUIDRefs      = null;
+    protected MModel _curModel = null;
+    protected Project _proj = null;
+    protected HashMap _UUIDRefs = null;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
-    protected XMIParser() { /* super(); */ }
+    protected XMIParser() { /* super(); */
+    }
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public MModel  getCurModel()         { return _curModel; }
-    public void    setProject(Project p) { _proj = p; }
-    public HashMap getUUIDRefs()         { return _UUIDRefs; }
-
+    public MModel getCurModel() {
+        return _curModel;
+    }
+    public void setProject(Project p) {
+        _proj = p;
+    }
+    public HashMap getUUIDRefs() {
+        return _UUIDRefs;
+    }
 
     ////////////////////////////////////////////////////////////////
     // main parsing methods
 
-    public synchronized void readModels(Project p, URL url) {
+    public synchronized void readModels(Project p, URL url) throws IOException {
 
         _proj = p;
 
@@ -87,17 +94,20 @@ public class XMIParser {
             InputSource source = new InputSource(url.openStream());
             source.setSystemId(url.toString());
             _curModel = reader.parse(source);
+            if (reader.getErrors()) {
+            	throw new IOException("XMI file " + url.toString() + " could not be parsed.");
+            }
             _UUIDRefs = new HashMap(reader.getXMIUUIDToObjectMap());
 
         }
-        catch(SAXException saxEx) {
+        catch (SAXException saxEx) {
             //
             //  a SAX exception could have been generated
             //    because of another exception.
             //    Get the initial exception to display the
             //    location of the true error
             Exception ex = saxEx.getException();
-            if(ex == null) {
+            if (ex == null) {
                 saxEx.printStackTrace();
             }
             else {
@@ -110,26 +120,28 @@ public class XMIParser {
         Argo.log.info("=======================================");
 
         try {
-            _proj.addModel((ru.novosoft.uml.foundation.core.MNamespace) _curModel);
-        } catch (PropertyVetoException ex) {
-            System.err.println("An error occurred adding the model to the project!");
+            _proj.addModel(
+                (ru.novosoft.uml.foundation.core.MNamespace) _curModel);
+        }
+        catch (PropertyVetoException ex) {
+            System.err.println(
+                "An error occurred adding the model to the project!");
             ex.printStackTrace();
         }
 
         Collection ownedElements = _curModel.getOwnedElements();
-	Iterator oeIterator = ownedElements.iterator();
+        Iterator oeIterator = ownedElements.iterator();
 
- 	while (oeIterator.hasNext()) {
+        while (oeIterator.hasNext()) {
             MModelElement me = (MModelElement) oeIterator.next();
             if (me instanceof MClass) {
                 _proj.defineType((MClass) me);
             }
-            else if (me instanceof MDataType) {
-                _proj.defineType((MDataType) me);
-            }
+            else
+                if (me instanceof MDataType) {
+                    _proj.defineType((MDataType) me);
+                }
         }
     }
 
-
 } /* end class XMIParser */
-

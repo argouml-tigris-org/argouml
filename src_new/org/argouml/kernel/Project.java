@@ -73,6 +73,7 @@ import org.argouml.util.*;
 import org.argouml.xml.argo.*;
 import org.argouml.xml.pgml.*;
 import org.argouml.xml.xmi.XMIParser;
+import org.argouml.xml.xmi.XMIReader;
 
 
 /** A datastructure that represents the designer's current project.  A
@@ -185,7 +186,7 @@ public class Project implements java.io.Serializable {
      *    Unlike the constructor which forces an .argo extension
      *    This method will attempt to load a raw XMI file
      */
-    public static Project loadProject(URL url) {
+    public static Project loadProject(URL url) throws IOException, Exception {
         Project p = null;
         String urlString = url.toString();
         int lastDot = urlString.lastIndexOf(".");
@@ -226,13 +227,26 @@ public class Project implements java.io.Serializable {
                 p = ArgoParser.SINGLETON.getProject();
 		
                 zis.close();
+                // 2002-07-18
+            	// Jaap Branderhorst
+                // moved next two lines from outside try block to solve issue 913 
+                // and make things a bit more userfriendly
+	    
+                p.loadZippedProjectMembers(url);
+                p.postLoad();
             } catch (Exception e) {
                 System.out.println("Oops, something went wrong in Project.loadProject "+e );
+                // yeah and now we want to have the old state of the Project back but we dont know the old state
                 e.printStackTrace();
+                // so we propagate the error
+                throw e;
             }
+            // 2002-07-18
+            // Jaap Branderhorst
+            // moved next two lines inside upper try block to solve issue 913 and make things a bit more userfriendly
 	    
-            p.loadZippedProjectMembers(url);
-            p.postLoad();
+            // p.loadZippedProjectMembers(url);
+            // p.postLoad();
         }
 	
         else {
@@ -244,7 +258,7 @@ public class Project implements java.io.Serializable {
         return p;
     }
     
-    public void loadZippedProjectMembers(URL url) {
+    public void loadZippedProjectMembers(URL url) throws Exception {
 
         try {
             ZipInputStream zis = new ZipInputStream(url.openStream());
@@ -258,9 +272,21 @@ public class Project implements java.io.Serializable {
 
             Argo.log.info("Loading Model from "+url);
 
-            XMIReader xmiReader = new XMIReader();
-            MModel mmodel = xmiReader.parse(new InputSource(zis));
+			// 2002-07-18
+        	// Jaap Branderhorst
+        	// changed the loading of the projectfiles to solve hanging 
+        	// of argouml if a project is corrupted. Issue 913
+        	// Created xmireader with method getErrors to check if parsing went well
+            org.argouml.xml.xmi.XMIReader xmiReader = new org.argouml.xml.xmi.XMIReader();
+            MModel mmodel = null;
+            
+            mmodel = xmiReader.parse(new InputSource(zis));
+            if (mmodel != null && !xmiReader.getErrors()) {
             addMember(mmodel);
+            }
+            else {
+            	throw new IOException("XMI file " + url.toString() + " could not be parsed.");
+            }
 
             _UUIDRefs = new HashMap(xmiReader.getXMIUUIDToObjectMap());
 
@@ -292,6 +318,11 @@ public class Project implements java.io.Serializable {
             ArgoParser.SINGLETON.setLastLoadMessage(e.toString());
             System.out.println("Oops, something went wrong in Project.loadZippedProjectMembers() "+e );
             e.printStackTrace();
+            // 2002-07-18
+            // Jaap Branderhorst
+            // we should actually propagate the error and show it to the user. And the projectbrowser should know
+            // that something went wrong. Therefore:
+            throw e; 
         }
     }
 

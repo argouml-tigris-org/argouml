@@ -23,6 +23,7 @@
 
 package org.argouml.xml.argo;
 
+import java.io.IOException;
 import java.net.*;
 import junit.framework.*;
 import org.argouml.ui.*;
@@ -41,13 +42,18 @@ public class TestArgoParser extends TestCase {
 	URL url;
 	try {
 	    url = new URL(filename);
+	    Project p = Project.loadProject(url);
+	    assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assert("Incorrect test case, malformed filename: " 
 		   + filename + ".", false);
-	    return;
+    // 2002-07-18
+	// Jaap Branderhorst
+	// Added catch block to solve issue 913
+	} catch (Exception io) {
+		fail("Incorrect test case, projectfile corrupted: " + filename);
 	}
-	Project p = Project.loadProject(url);
-	assert("Load Status", ArgoParser.SINGLETON.getLastLoadStatus());
+	
     }
 
     public void testLoadProjects() {
@@ -56,15 +62,21 @@ public class TestArgoParser extends TestCase {
     }
 
     public void testLoadGarbage() {
-	URL url;
+	URL url = null;
 	try {
 	    url = new URL("file:testmodels/Garbage.zargo");
+	    Project p = Project.loadProject(url);
+	    assert("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
 	} catch (java.net.MalformedURLException e) {
 	    assert("Incorrect test case.", false);
-	    return;
+	// 2002-07-18
+	// Jaap Branderhorst
+	// Added catch block to solve issue 913
+	} catch (Exception io) {
+		fail("Incorrect test case, projectfile corrupted: " + url.toString());
 	}
-	Project p = Project.loadProject(url);
-	assert("Load Status", !ArgoParser.SINGLETON.getLastLoadStatus());
+	
+	
     }
 }
 
