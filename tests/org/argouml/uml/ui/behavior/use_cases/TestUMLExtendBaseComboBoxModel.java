@@ -53,6 +53,10 @@ public class TestUMLExtendBaseComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        Object mmodel =
+            Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mmodel, "untitledModel");
+        Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getUseCasesFactory().createExtend();
         model = new UMLExtendBaseComboBoxModel();
         bases = new Object[10];

@@ -56,6 +56,10 @@ public class TestUMLGeneralizationPowertypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        Object mmodel =
+            Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mmodel, "untitledModel");
+        Model.getModelManagementFactory().setRootModel(mmodel);
         namespace = Model.getCoreFactory().createNamespace();
         child = Model.getCoreFactory().buildClass("child", namespace);
         parent = Model.getCoreFactory().buildClass("parent", namespace);

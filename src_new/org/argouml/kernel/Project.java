@@ -132,7 +132,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * The root of the modeltree the user is working on. (The untitledModel in
      * the navpane).
      */
-    private Object treeRoot;
+    //private Object treeRoot;
 
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
@@ -160,6 +160,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * Constructor.
      */
     public Project() {
+        Model.getModelManagementFactory().setRootModel(null);
 
         authorname = "";
         description = "";
@@ -434,6 +435,7 @@ public class Project implements java.io.Serializable, TargetListener {
          * new one...
          */
         if (diagrams.size() < 1) {
+            Object treeRoot = Model.getModelManagementFactory().getRootModel();
             ArgoDiagram defaultDiagram = new UMLClassDiagram(treeRoot);
             addMember(defaultDiagram);
             setActiveDiagram(defaultDiagram);
@@ -1085,7 +1087,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * @return MModel
      */
     public Object getRoot() {
-        return treeRoot;
+        return Model.getModelManagementFactory().getRootModel();
     }
 
     /**
@@ -1098,10 +1100,11 @@ public class Project implements java.io.Serializable, TargetListener {
             throw new IllegalArgumentException();
         }
 
+        Object treeRoot = Model.getModelManagementFactory().getRootModel();
         if (treeRoot != null) {
             models.remove(treeRoot);
         }
-        treeRoot = root;
+        Model.getModelManagementFactory().setRootModel(root);
         addModel(root);
     }
 
@@ -1290,7 +1293,6 @@ public class Project implements java.io.Serializable, TargetListener {
         defaultModelCache = null;
 
         url = null;
-//        saveRegistry = null;
         authorname = null;
         description = null;
         version = null;
@@ -1300,7 +1302,7 @@ public class Project implements java.io.Serializable, TargetListener {
         currentNamespace = null;
         cgPrefs = null;
         vetoSupport = null;
-        treeRoot = null;
+        Model.getModelManagementFactory().setRootModel(null);
         activeDiagram = null;
         defaultModelCache = null;
 

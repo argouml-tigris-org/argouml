@@ -53,6 +53,10 @@ public class TestUMLFeatureOwnerComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        Object mmodel =
+            Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mmodel, "untitledModel");
+        Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getCoreFactory().createAttribute();
         model = new UMLFeatureOwnerComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],

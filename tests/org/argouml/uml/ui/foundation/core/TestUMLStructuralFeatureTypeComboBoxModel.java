@@ -53,6 +53,12 @@ public class TestUMLStructuralFeatureTypeComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        //ProjectManager.getManager().getCurrentProject();
+        Object mmodel =
+            Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mmodel, "untitledModel");
+        Model.getModelManagementFactory().setRootModel(mmodel);
+        //
         elem = Model.getCoreFactory().createAttribute();
         model = new UMLStructuralFeatureTypeComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],

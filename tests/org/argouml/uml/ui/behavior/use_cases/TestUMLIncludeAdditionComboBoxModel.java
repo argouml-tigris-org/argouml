@@ -53,6 +53,10 @@ public class TestUMLIncludeAdditionComboBoxModel extends TestCase {
      */
     protected void setUp() throws Exception {
         super.setUp();
+        Object mmodel =
+            Model.getModelManagementFactory().createModel();
+        Model.getCoreHelper().setName(mmodel, "untitledModel");
+        Model.getModelManagementFactory().setRootModel(mmodel);
         elem = Model.getUseCasesFactory().createInclude();
         model = new UMLIncludeAdditionComboBoxModel();
         model.targetSet(new TargetEvent(this, "set", new Object[0],
