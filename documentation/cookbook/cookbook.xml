@@ -4881,7 +4881,7 @@ as the package root.
 	<primary>Testing ArgoUML</primary>
       </indexterm>
       <para>
-ArgoUML has a set of automatic test caess using JUnit-framework
+ArgoUML has a set of automatic test cases using JUnit-framework
 for testing the insides of the code.
 The purpose of these are to help in pin-pointing problems with
 code changes already before even starting ArgoUML.
