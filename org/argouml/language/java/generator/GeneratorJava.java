@@ -227,6 +227,7 @@ implements PluggableNotation, FileGenerator {
       		sb.append(INDENT).append(s);
     	sb.append('\n').append(INDENT);
     }
+
     // 2002-07-14
     // Jaap Branderhorst
     // missing concurrency generation
@@ -276,11 +277,13 @@ implements PluggableNotation, FileGenerator {
   public String generateAttribute (MAttribute attr, boolean documented) {
     StringBuffer sb = new StringBuffer(80);
 
-    String s = generateConstraintEnrichedDocComment(attr,documented,INDENT);
-    if (s != null && s.trim().length() > 0)
-      sb.append('\n').append(INDENT).append(s);
-
-    sb.append(INDENT);
+    if (documented) {
+        String s = 
+            generateConstraintEnrichedDocComment(attr,documented,INDENT);
+        if (s != null && s.trim().length() > 0)
+            sb.append('\n').append(INDENT).append(s);
+        sb.append(INDENT);
+    }
     sb.append(generateVisibility(attr));
     sb.append(generateScope(attr));
     sb.append(generateChangability(attr));
