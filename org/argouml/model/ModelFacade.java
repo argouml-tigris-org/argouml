@@ -2945,7 +2945,7 @@ public class ModelFacade {
     /**
      * Get the modelelement that were commented.
      *
-     * @param handle the comment that we are getting the model elemets of
+     * @param handle the comment that we are getting the model elements of
      * @return the modelelements (or null)
      */
     public static Collection getAnnotatedElements(Object handle) {
