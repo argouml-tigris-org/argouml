@@ -24,8 +24,6 @@
 // $header$
 package org.argouml.uml.ui;
 
-import javax.swing.ImageIcon;
-
 import org.argouml.application.api.Argo;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
@@ -53,8 +51,8 @@ public abstract class AbstractActionNewModelElement extends UMLChangeAction {
      * Sets the target.
      * @param target The target to set
      */
-    public void setTarget(MModelElement target) {
-        _target = target;
+    public void setTarget(Object target) {
+        _target = (MModelElement)target;
     }
        
 }

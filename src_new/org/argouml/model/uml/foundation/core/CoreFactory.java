@@ -39,7 +39,6 @@ import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
@@ -920,12 +919,16 @@ public class CoreFactory extends AbstractUmlModelFactory {
      * @param oper
      * @return MParameter
      */
-    public MParameter buildParameter(MEvent event) {
-        MParameter res = buildParameter();
-    
-        if (event != null)
+    public MParameter buildParameter(Object o) {
+        if (o instanceof MEvent) {
+            MEvent event = (MEvent)o;
+            MParameter res = buildParameter();   
+            res.setKind(MParameterDirectionKind.INOUT);
+            res.setNamespace(event.getNamespace());          
             event.addParameter(res);
-        return res;
+            return res;
+        } else
+            return null;
     }
     
     /**

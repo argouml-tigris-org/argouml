@@ -30,19 +30,9 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
-
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-
-import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.application.api.Argo;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import ru.novosoft.uml.behavior.state_machines.MFinalState;
 
 public class PropPanelFinalState extends PropPanelState {
 

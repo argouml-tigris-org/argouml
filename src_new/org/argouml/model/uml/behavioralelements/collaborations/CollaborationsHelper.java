@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.foundation.core.CoreHelper;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
@@ -40,6 +39,7 @@ import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MCollaboration;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
 import ru.novosoft.uml.behavior.collaborations.MMessage;
+import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MClassifier;
@@ -502,6 +502,23 @@ public class CollaborationsHelper {
                 ((MAssociationEndRole)CoreHelper.getHelper().getAssociationEnd(receiver, role)).setBase(end);
             }
         }
+    }
+    
+    /**
+     * Couples a given action to the given messgae as being the action. To 
+     * decouple ArgoUML as much as possible from the NSUML model, the parameters
+     * of the method are of type Object.
+     * @param state
+     * @param action
+     */
+    public void setActionAsAction(Object message, Object action) {
+        if (message == null || !(message instanceof MMessage)) {
+            throw new IllegalArgumentException("message either null or not an instance of MState");
+        }
+        if (action == null || !(action instanceof MAction)) {
+            throw new IllegalArgumentException("Action either null or not an instance of MMessage");
+        }
+        ((MMessage)message).setAction((MAction)action);
     }
             
 		

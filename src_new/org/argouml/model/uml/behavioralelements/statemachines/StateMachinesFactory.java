@@ -28,7 +28,6 @@ import java.util.Iterator;
 
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
-
 import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.MCallEvent;
 import ru.novosoft.uml.behavior.state_machines.MChangeEvent;
@@ -232,24 +231,6 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	return modelElement;
     }
     
-	/**
-	 * Builds a complete transition including all associations (statemachine the
-     * transition belongs to, source the transition is coming from, destination
-     * the transition is going to). The transition is owned by the statemachine.
-	 * @param owningStatemachine
-	 * @param source
-	 * @param dest
-	 * @return MTransition
-	 */
-    public MTransition buildTransition(MStateMachine owningStatemachine, 
-        MStateVertex source, MStateVertex dest) {
-      MTransition trans = createTransition();
-      owningStatemachine.addTransition(trans);
-      trans.setSource(source);
-      trans.setTarget(dest);
-      return trans;
-    }
-    
     /**
      * Builds a compositestate as top for some statemachine
      * @param statemachine
@@ -429,6 +410,34 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
             state.setStateMachine(null);       
             state.setContainer((MCompositeState)compositeState);
             return state;
+        }
+        return null;
+    }
+    
+    /**
+     * Builds an internal transition for a given state. The parameter state is 
+     * of type Object to decouple the factory and NSUML as much as possible.  
+     * @param state The state the internal transition should belong to
+     * @return MTransition The internal transition constructed
+     */
+    public MTransition buildInternalTransition(Object state) {
+        if (state instanceof MState) {
+            MTransition trans = createTransition();
+            trans.setState((MState)state);
+            trans.setSource((MState)state);
+            trans.setTarget((MState)state);
+            return trans;
+        }
+        return null;
+    }
+    
+    public MTransition buildTransition(Object source, Object target) {
+        if (source instanceof MState && target instanceof MState) {
+            MTransition trans = createTransition();
+            trans.setSource((MState)source);
+            trans.setTarget((MState)target);
+            trans.setStateMachine(StateMachinesHelper.getHelper().getStateMachine(source));
+            return trans;
         }
         return null;
     }

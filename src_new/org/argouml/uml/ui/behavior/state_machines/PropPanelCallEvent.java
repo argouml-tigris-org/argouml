@@ -30,56 +30,35 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.uml.ui.UMLLinkedList;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelCallEvent extends PropPanelEvent {
 
     ////////////////////////////////////////////////////////////////
     // contructors
     public PropPanelCallEvent() {
-        super("Call Event", null, 2);
+        super("Call event", null, ConfigLoader.getTabPropsOrientation());
+        
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
 
-        Class mclass = MCallEvent.class;
+        add(LabelledLayout.getSeperator());
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
-
-	addCaption(Argo.localize("UMLMenu", "label.parameters"),2,0,1);
-	addField(paramScroll,2,0,1);
+        // TODO: make the next list into a scrollbox
+        JList operationList = new UMLLinkedList(this, new UMLCallEventOperationListModel(this));
+        addField(Argo.localize("UMLMenu", "label.operation"), new JScrollPane(operationList));
+	addField(Argo.localize("UMLMenu", "label.parameters"), paramScroll);
+	
 
   }
-
-    //TODO: Operation should be selectable
-    public MOperation getOperation() {
-	MOperation operation=null;
-        Object target = getTarget();
-        if(target instanceof MCallEvent) {
-            operation = ((MCallEvent) target).getOperation();
-        }
-        return operation;
-    }
-
-    public void setOperation(MOperation operation) {
-        Object target = getTarget();
-        if(target instanceof MCallEvent) {
-            ((MCallEvent) target).setOperation(operation);
-        }
-    }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("CallEvent");
-    }
 
 } /* end class PropPanelCallEvent */
 

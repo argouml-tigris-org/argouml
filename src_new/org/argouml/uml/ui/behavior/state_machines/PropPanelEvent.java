@@ -21,8 +21,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-
-
 // File: PropPanelEvent.java
 // Classes: PropPanelEvent
 // Original Author: oliver.heyden@gentleware.de
@@ -30,86 +28,70 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
+import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.ProjectBrowser;
-import org.argouml.uml.*;
-import org.argouml.uml.ui.*;
+import org.argouml.swingext.Orientation;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.foundation.core.*;
 
 public abstract class PropPanelEvent extends PropPanelModelElement {
 
     protected JScrollPane paramScroll;
-    
-    ////////////////////////////////////////////////////////////////
-    // contructors
-    public PropPanelEvent(String name, int columns) {
-	this(name, null, columns);
+
+    /**
+     * Constructor for PropPanelEvent.
+     * @param name
+     * @param icon
+     * @param orientation
+     */
+    public PropPanelEvent(
+        String name,
+        ImageIcon icon,
+        Orientation orientation) {
+        super(name, icon, orientation);
+        JList paramList =
+            new UMLLinkedList(this, new UMLEventParameterListModel(this));
+        paramScroll = new JScrollPane(paramList);
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navUpIcon,
+            Argo.localize("UMLMenu", "button.go-up"),
+            "navigateUp",
+            null);
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navBackIcon,
+            Argo.localize("UMLMenu", "button.go-back"),
+            "navigateBackAction",
+            "isNavigateBackEnabled");
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _navForwardIcon,
+            Argo.localize("UMLMenu", "button.go-forward"),
+            "navigateForwardAction",
+            "isNavigateForwardEnabled");
+        new PropPanelButton(
+            this,
+            buttonPanel,
+            _parameterIcon,
+            Argo.localize("UMLMenu", "button.add-parameter"),
+            "buttonAddParameter",
+            null);
     }
 
-    public PropPanelEvent(String name, ImageIcon icon, int columns) {
-        super(name,icon,columns);
-
-        Class mclass = MEvent.class;
-
-        JList paramList = new UMLList(new UMLReflectionListModel(this,"parameter",true,"getParameters","setParameters","addParameter",null),true);
-        paramList.setForeground(Color.blue);
-        paramList.setVisibleRowCount(1);
-	paramList.setFont(smallFont);
-	paramScroll=new JScrollPane(paramList);
-
-	new PropPanelButton(this,buttonPanel,_navUpIcon, Argo.localize("UMLMenu", "button.go-up"),"navigateUp",null);
-	new PropPanelButton(this,buttonPanel,_navBackIcon, Argo.localize("UMLMenu", "button.go-back"),"navigateBackAction","isNavigateBackEnabled");
-	new PropPanelButton(this,buttonPanel,_navForwardIcon, Argo.localize("UMLMenu", "button.go-forward"),"navigateForwardAction","isNavigateForwardEnabled");
-	new PropPanelButton(this,buttonPanel,_parameterIcon, Argo.localize("UMLMenu", "button.add-parameter"),"buttonAddParameter",null);
-  }
-
-    public java.util.List getParameters() {
-        java.util.List params = null;
-        Object target = getTarget();
-        if(target instanceof MEvent) {
-            params = ((MEvent) target).getParameters();
-        }
-        return params;
-    }
-
-    public void setParameters(Collection newParams) {
-        Object target = getTarget();
-        if(target instanceof MEvent) {
-            if(newParams instanceof java.util.List) {
-                ((MEvent) target).setParameters((java.util.List) newParams);
-            }
-            else {
-                ((MEvent) target).setParameters(new ArrayList(newParams));
-            }
-        }
-    }
-
-    public void addParameter(Integer indexObj) {
-	buttonAddParameter();
-    }
-
-   public void buttonAddParameter() {
-        Object target = getTarget();
-        if(target instanceof MEvent) {
-            MEvent ev = (MEvent) target;
-            MParameter newParam = CoreFactory.getFactory().buildParameter(ev);
-            newParam.setKind(MParameterDirectionKind.INOUT);
-            navigateTo(newParam);
-        }
-    }
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("Event");
+    /**
+     * Adds a parameter to the event and navigates towards it.
+     */
+    public void buttonAddParameter() {
+        navigateTo(CoreFactory.getFactory().buildParameter(getTarget()));
     }
 
 } /* end class PropPanelEvent */

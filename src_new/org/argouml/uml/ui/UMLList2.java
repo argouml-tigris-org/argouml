@@ -130,4 +130,11 @@ public abstract class UMLList2 extends JList implements UMLUserInterfaceComponen
      */
     protected abstract void doIt(ListSelectionEvent e);
 
+    /**
+     * Getter for the target. First approach to get rid of the container.
+     * @return Object
+     */
+    public Object getTarget() {
+        return getContainer().getTarget();
+    }
 }

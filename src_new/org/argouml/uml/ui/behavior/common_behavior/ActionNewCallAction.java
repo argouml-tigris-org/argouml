@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,36 +22,35 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 // $header$
-package org.argouml.uml.ui.foundation.core;
+package org.argouml.uml.ui.behavior.common_behavior;
+
+import javax.swing.Action;
 
 import org.argouml.application.api.Argo;
-import org.argouml.uml.ui.UMLCheckBox2;
-import org.argouml.uml.ui.UMLUserInterfaceContainer;
-import ru.novosoft.uml.foundation.core.MModelElement;
+import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorFactory;
 
 /**
- * @since Oct 12, 2002
+ * @since Dec 15, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLElementOwnershipSpecificationCheckBox extends UMLCheckBox2 {
+public class ActionNewCallAction extends ActionNewAction {
 
+    public static ActionNewCallAction SINGLETON = new ActionNewCallAction();
+    
     /**
-     * Constructor for UMLElementOwnershipSpecificationCheckBox.
-     * @param container
-     * @param text
-     * @param a
+     * Constructor for ActionNewCallAction.
      */
-    public UMLElementOwnershipSpecificationCheckBox(UMLUserInterfaceContainer container) {
-        super(container, 
-            Argo.localize("UMLMenu", "label.specialization"), 
-            ActionSetElementOwnershipSpecification.SINGLETON, "isSpecification");
+    protected ActionNewCallAction() {
+        super();
+        putValue(Action.NAME, Argo.localize("UMLMenu", "button.new-callaction"));
     }
-
+    
+    
     /**
-     * @see org.argouml.uml.ui.UMLCheckBox2#buildModel()
+     * @see org.argouml.uml.ui.behavior.common_behavior.ActionNewAction#createAction()
      */
-    public void buildModel() {
-        setSelected(((MModelElement)getTarget()).isSpecification());
+    protected Object createAction() {
+        return CommonBehaviorFactory.getFactory().createCallAction();
     }
 
 }

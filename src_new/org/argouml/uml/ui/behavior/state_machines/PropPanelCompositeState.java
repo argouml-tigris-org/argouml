@@ -30,74 +30,41 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
-import java.awt.*;
-import java.util.*;
+import javax.swing.JList;
+import javax.swing.JScrollPane;
 
-import javax.swing.*;
-
-import org.argouml.application.api.*;
-import org.argouml.uml.ui.*;
-
-import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.behavior.state_machines.*;
-import ru.novosoft.uml.foundation.data_types.*;
-import ru.novosoft.uml.behavior.common_behavior.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.application.api.Argo;
+import org.argouml.swingext.LabelledLayout;
+import org.argouml.uml.ui.UMLComboBoxNavigator;
+import org.argouml.util.ConfigLoader;
 
 public class PropPanelCompositeState extends PropPanelState {
 
     public PropPanelCompositeState() {
-        super("Composite State",_compositeStateIcon, 3);
+        super("Composite State",_compositeStateIcon, ConfigLoader.getTabPropsOrientation());
 
-        Class mclass = MCompositeState.class;
+        addField(Argo.localize("UMLMenu", "label.name"), nameField);
+        addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
+        addField(Argo.localize("UMLMenu", "label.namespace"), namespaceScroll);
+        addField(Argo.localize("UMLMenu", "label.modifiers"), new UMLCompositeStateConcurentCheckBox(this)); 
+        addField(Argo.localize("UMLMenu", "label.entry"), entryScroll);
+        addField(Argo.localize("UMLMenu", "label.exit"), exitScroll);;
+        addField(Argo.localize("UMLMenu", "label.do-activity"), doScroll);
+    
+        add(LabelledLayout.getSeperator());
 
-        addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(nameField,1,0,0);
+        addField(Argo.localize("UMLMenu", "label.incoming"), incomingScroll);
+        addField(Argo.localize("UMLMenu", "label.outgoing"), outgoingScroll);
+        addField(Argo.localize("UMLMenu", "label.internal-transitions"), internalTransitionsScroll);
 
-        addCaption(Argo.localize("UMLMenu", "label.stereotype"),2,0,0);
-	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
+        add(LabelledLayout.getSeperator());
+        
+        JList subverticesList = new UMLCompositeStateSubvertexList(this, new UMLCompositeStateSubvertexListModel(this)); 
+        addField(Argo.localize("UMLMenu", "label.subvertex"), new JScrollPane(subverticesList));
+	
 
-        addCaption("Subvertices:",3,0,1);
-        JList subsList = new UMLList(new UMLReflectionListModel(this,"subvertex",false,"getSubvertices",null,null,null),true);
-        subsList.setForeground(Color.blue);
-        subsList.setFont(smallFont);
-        JScrollPane subsScroll = new JScrollPane(subsList);
-        addField(subsScroll,3,0,1);
-
-        addCaption(Argo.localize("UMLMenu", "label.incoming"),0,1,0.5);
-	addField(incomingScroll,0,1,0.5);
-
-        addCaption(Argo.localize("UMLMenu", "label.outgoing"),1,1,0.5);
-	addField(outgoingScroll,1,1,0.5);
-
-        addCaption("Entry-Action:",0,2,0);
-	addField(entryScroll,0,2,0);
-
-        addCaption("Exit-Action:",1,2,0);
-	addField(exitScroll,1,2,0);
-
-        addCaption("Do-Activity:",2,2,0);
-	addField(doScroll,2,2,0);
-
-        addCaption(Argo.localize("UMLMenu", "label.internal-transitions"),3,2,1);
-	addField(internalTransitionsScroll,3,2,1);
+        
   }
-
-    public java.util.List getSubvertices() {
-        java.util.Collection subs = null;
-        Object target = getTarget();
-        if(target instanceof MCompositeState) {
-            subs = ((MCompositeState) target).getSubvertices();
-        }
-        return new Vector(subs);
-    }
-
-
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
-        return baseClass.equals("CompositeState");
-    }
-
-
 
 } /* end class PropPanelCompositeState */
 
