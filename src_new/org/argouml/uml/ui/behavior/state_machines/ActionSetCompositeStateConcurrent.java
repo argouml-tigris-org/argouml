@@ -55,9 +55,11 @@ public class ActionSetCompositeStateConcurrent extends UMLChangeAction {
         if (e.getSource() instanceof UMLCheckBox2) {
             UMLCheckBox2 source = (UMLCheckBox2) e.getSource();
             Object target = source.getTarget();
-            if (org.argouml.model.ModelFacade.isACompositeState(target)) {
-                Object m = /*(MCompositeState)*/ target;
-                ModelFacade.setConcurent(m, !ModelFacade.isConcurent(m));
+            if (ModelFacade.isACompositeState(target)) {
+                Object compositeState = target;
+                ModelFacade.setConcurrent(
+                        compositeState,
+                        !ModelFacade.isConcurrent(compositeState));
             }
         }
     }
