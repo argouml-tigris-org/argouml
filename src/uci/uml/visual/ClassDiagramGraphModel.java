@@ -182,6 +182,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     Object end0 = null, end1 = null;
     if (edge instanceof MAssociation) {
       List conns = ((MAssociation)edge).getConnections();
+      if (conns.size() < 2) return false;
       MAssociationEnd ae0 = (MAssociationEnd) conns.get(0);
       MAssociationEnd ae1 = (MAssociationEnd) conns.get(1);
       if (ae0 == null || ae1 == null) return false;
@@ -197,7 +198,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       Collection suppliers = ((MDependency)edge).getSuppliers();
       if (clients == null || suppliers == null) return false;
       end0 = ((Object[])clients.toArray())[0];
-      end1 = ((Object[])suppliers.toArray())[1];
+      end1 = ((Object[])suppliers.toArray())[0];
     }
     else if (edge instanceof MLink) {
       Collection roles = ((MLink)edge).getConnections();
