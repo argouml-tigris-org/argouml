@@ -62,6 +62,7 @@ The priorities are used in the following manner in ArgoUML:
               <para>
 ArgoUML cannot start.
 Crashes program, jvm or computer.
+Significant loss of user data.
 </para>
             </listitem>
             <listitem>
