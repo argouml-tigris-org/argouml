@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,13 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-
-
-// File: CheckItem.java
-// Classes: CheckItem
-// Original Author: jrobbins@ics.uci.edu
-// $Id$
 
 package org.argouml.cognitive.checklist;
 
@@ -55,6 +48,7 @@ import org.tigris.gef.util.PredicateTrue;
  *
  * @see Checklist
  * @see CheckManager
+ * @author jrobbins
  */
 public class CheckItem implements Serializable {
     ////////////////////////////////////////////////////////////////
@@ -153,13 +147,20 @@ public class CheckItem implements Serializable {
      */
     public void setPredicate(Predicate p) { pred = p; }
 
+    /**
+     * @see java.lang.Object#hashCode()
+     */
+    public int hashCode() {
+        return getDescription().hashCode();
+    }
+
     /** 
-     * Is this item already on the list? 
-     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     public boolean equals(Object o) {
-	if (!(o instanceof CheckItem)) return false;
+	if (!(o instanceof CheckItem)) {
+	    return false;
+	}
 	CheckItem i = (CheckItem) o;
 	return getDescription().equals(i.getDescription());
     }
