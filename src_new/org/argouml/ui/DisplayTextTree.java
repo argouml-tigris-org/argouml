@@ -72,15 +72,6 @@ public class DisplayTextTree
     
     protected static Category cat = Category.getInstance(DisplayTextTree.class);
     
-    /** needs documenting */
-    public static final int DEPTH_LIMIT = 10;
-    /** needs documenting */
-    public static final int CHANGE = 1;
-    /** needs documenting */
-    public static final int ADD = 2;
-    /** needs documenting */
-    public static final int REMOVE = 3;
-    
     /**
      * A Map helping the tree maintain a consistent expanded paths state.
      *
