@@ -133,4 +133,16 @@ public class ParseState
     {
 	return namespace;
     }
+
+    /**
+       Get the association ends.
+     */
+    public Vector getAssociationEnds()
+    {
+        Vector result = new Vector();
+        if (mClassifier == null)
+            return result;
+        result.addAll(mClassifier.getAssociationEnds());
+        return result;
+    }
 }
