@@ -247,13 +247,13 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
       choices.remove(usecase);
       selected.addAll(UseCasesHelper.getHelper().getExtendedUseCases(usecase));
       UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-extended-usecases"), true, true);
-      int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+      int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
       if (returnValue == JOptionPane.OK_OPTION) {
       Iterator it = dialog.getSelected().iterator();
       while (it.hasNext()) {
       MUseCase eusecase = (MUseCase)it.next();
       if (!selected.contains(eusecase)) {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
+      ProjectBrowser pb = ProjectBrowser.getInstance();
       ArgoDiagram diagram = pb.getActiveDiagram();
       Fig figclass = diagram.getLayer().presentationFor(usecase);
       Fig figeusecase = diagram.getLayer().presentationFor(eusecase);
@@ -291,11 +291,11 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
       MUseCase eusecase = (MUseCase)it.next();
       if (!dialog.getSelected().contains(eusecase)) {
       MExtend extend = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-      Object pt = ProjectBrowser.TheInstance.getTarget();
-      ProjectBrowser.TheInstance.setTarget(extend);
+      Object pt = ProjectBrowser.getInstance().getTarget();
+      ProjectBrowser.getInstance().setTarget(extend);
       ActionEvent event = new ActionEvent(this, 1, "delete");
       ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-      ProjectBrowser.TheInstance.setTarget(pt);
+      ProjectBrowser.getInstance().setTarget(pt);
       }
       }
       }
@@ -328,11 +328,11 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
       MUseCase usecase = (MUseCase)target;
       MUseCase eusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getExtendedUseCases(usecase), index, null);
       MExtend gen = UseCasesHelper.getHelper().getExtends(eusecase, usecase);
-      Object pt = ProjectBrowser.TheInstance.getTarget();
-      ProjectBrowser.TheInstance.setTarget(gen);
+      Object pt = ProjectBrowser.getInstance().getTarget();
+      ProjectBrowser.getInstance().setTarget(gen);
       ActionEvent event = new ActionEvent(this, 1, "delete");
       ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-      ProjectBrowser.TheInstance.setTarget(pt);
+      ProjectBrowser.getInstance().setTarget(pt);
       fireIntervalRemoved(this,index,index);
       }
       }
@@ -374,7 +374,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
 
       // Having moved an extend relationship, mark as needing saving
 
-      Project p = ProjectBrowser.TheInstance.getProject();
+      Project p = ProjectBrowser.getInstance().getProject();
       p.setNeedsSave(true);
 
       // Tell Swing
@@ -419,7 +419,7 @@ public class UMLExtendListModel extends UMLBinaryRelationListModel  {
 
       // Having moved an extend relationship, mark as needing saving
 
-      Project p = ProjectBrowser.TheInstance.getProject();
+      Project p = ProjectBrowser.getInstance().getProject();
       p.setNeedsSave(true);
 
       // Tell Swing

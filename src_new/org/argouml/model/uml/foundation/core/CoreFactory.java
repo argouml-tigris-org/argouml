@@ -952,7 +952,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public MClass buildClass() {
 	MClass cl = createClass();
-	// cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	// cl.setNamespace(ProjectBrowser.getInstance().getProject().getModel());
 	cl.setName("");
 	cl.setStereotype(null);
 	cl.setAbstract(false);
@@ -1012,7 +1012,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
      */
     public Object buildInterface() {
 	MInterface cl = createInterface();
-	// cl.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	// cl.setNamespace(ProjectBrowser.getInstance().getProject().getModel());
 	cl.setName("");
 	cl.setStereotype(null);
 	cl.setAbstract(false);
