@@ -45,7 +45,7 @@ public class UMLCollaborationInteractionListModel
      * @param container
      */
     public UMLCollaborationInteractionListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "interaction");
     }
 
     /**

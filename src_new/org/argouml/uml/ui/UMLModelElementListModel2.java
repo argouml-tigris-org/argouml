@@ -29,6 +29,8 @@ import java.util.Iterator;
 
 import javax.swing.DefaultListModel;
 
+import org.argouml.model.uml.UmlModelEventPump;
+
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MElementEvent;
 
@@ -41,11 +43,24 @@ import ru.novosoft.uml.MElementEvent;
  */
 public abstract class UMLModelElementListModel2 extends DefaultListModel implements UMLUserInterfaceComponent{
 
+    private String _eventName = null; 
     private UMLUserInterfaceContainer _container = null;
     protected Object _target = null;
     
     /**
      * Constructor for UMLModelElementListModel2.
+     */
+    public UMLModelElementListModel2(UMLUserInterfaceContainer container, String eventName) {
+        super();
+        setEventName(eventName);
+        setContainer(container);
+    }
+    
+    /**
+     * Constructor to be used if the subclass does not depend on the 
+     * MELementListener methods and setTarget method implemented in this
+     * class
+     * @param container
      */
     public UMLModelElementListModel2(UMLUserInterfaceContainer container) {
         super();
@@ -162,6 +177,7 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      */
     protected void setContainer(UMLUserInterfaceContainer container) {
         _container = container;
+        setTarget(_container.getTarget());
     }
     
     /**
@@ -240,13 +256,15 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
      * @param target
      */
     protected void setTarget(Object target) {
+        if (_eventName == null || _eventName.equals("")) 
+            throw new IllegalStateException("eventName not set!");
         if (_target instanceof MBase) {
-            ((MBase)_target).removeMElementListener(this);
+            UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
         }
         _target = target;
         if (_target instanceof MBase) {
-            ((MBase)_target).removeMElementListener(this);
-            ((MBase)_target).addMElementListener(this);
+             UmlModelEventPump.getPump().removeModelEventListener(this, (MBase)_target, _eventName);
+             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, _eventName);
         }
         removeAllElements();
         buildModelList();
@@ -303,6 +321,28 @@ public abstract class UMLModelElementListModel2 extends DefaultListModel impleme
         if (obj != null && !contains(obj)) {
             super.addElement(obj);
         }
+    }
+    
+    
+
+    /**
+     * Returns the eventName. This method is only here for testing goals.
+     * @return String
+     */
+    String getEventName() {
+        return _eventName;
+    }
+
+    /**
+     * Sets the eventName. The eventName is the name of the MElementEvent to
+     * which the list should listen. The list is registred with UMLModelEventPump
+     * and only gets events that have a name like eventName.
+     * This method should be called in the constructor
+     * of every subclass.
+     * @param eventName The eventName to set
+     */
+    protected void setEventName(String eventName) {
+        _eventName = eventName;
     }
 
 }

@@ -38,15 +38,15 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  * @since Oct 3, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
-public class UMLCollaborationConstraintListModel
+public class UMLCollaborationConstrainingElementListModel
     extends UMLModelElementListModel2 {
 
     /**
-     * Constructor for UMLCollaborationConstraintListModel.
+     * Constructor for UMLCollaborationConstrainingElementListModel.
      * @param container
      */
-    public UMLCollaborationConstraintListModel(UMLUserInterfaceContainer container) {
-        super(container);
+    public UMLCollaborationConstrainingElementListModel(UMLUserInterfaceContainer container) {
+        super(container, "constrainingElement");
     }
 
     /**
@@ -60,7 +60,7 @@ public class UMLCollaborationConstraintListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidRoleAdded(ru.novosoft.uml.MElementEvent)
      */
     protected boolean isValidElement(MBase elem) {
-        return ((MModelElement)elem).getCollaborations1().contains(getTarget());
+        return (((MCollaboration)getTarget()).getConstrainingElements().contains(elem));
     }
 
 }

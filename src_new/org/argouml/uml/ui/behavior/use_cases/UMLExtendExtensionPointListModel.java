@@ -46,11 +46,13 @@ public class UMLExtendExtensionPointListModel
      * @param container
      */
     public UMLExtendExtensionPointListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "extensionPoint");
+        /*
         if (container instanceof PropPanel) {
             PropPanel panel = (PropPanel)container;
             panel.addThirdPartyEventListening(new Object[] {MExtend.class, "extensionPoint"});
         }
+        */
     }
 
     /**

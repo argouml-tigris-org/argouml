@@ -44,7 +44,7 @@ public class UMLModelElementElementResidenceListModel
      * @param container
      */
     public UMLModelElementElementResidenceListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "elementResidence");
     }
 
     /**

@@ -44,7 +44,7 @@ public class UMLModelElementSupplierDependencyListModel
      * @param container
      */
     public UMLModelElementSupplierDependencyListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "supplierDependency");
     }
 
     /**

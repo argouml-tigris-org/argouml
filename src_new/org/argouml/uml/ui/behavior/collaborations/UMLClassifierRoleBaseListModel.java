@@ -45,7 +45,7 @@ public class UMLClassifierRoleBaseListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLClassifierRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "base");
     }
 
     /**

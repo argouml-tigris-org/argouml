@@ -80,7 +80,7 @@ public class PropPanelCollaboration extends PropPanelNamespace {
         addField(Argo.localize("UMLMenu", "label.interaction"), 
             new JScrollPane(interactionList));
             
-        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLCollaborationConstraintListModel(this));
+        UMLLinkedList constrainingList = new UMLLinkedList(this, new UMLCollaborationConstrainingElementListModel(this));
         addField(Argo.localize("UMLMenu", "label.constraining-elements"), 
             new JScrollPane(constrainingList));
             

@@ -44,7 +44,7 @@ public class UMLModelElementConstraintListModel
      * @param container
      */
     public UMLModelElementConstraintListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "constraint");
     }
 
     /**

@@ -45,7 +45,7 @@ public class UMLModelElementSourceFlowListModel
      * @param container
      */
     public UMLModelElementSourceFlowListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "sourceFlow");
     }
 
     /**

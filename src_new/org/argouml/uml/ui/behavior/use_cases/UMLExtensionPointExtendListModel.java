@@ -44,7 +44,7 @@ public class UMLExtensionPointExtendListModel
      * @param container
      */
     public UMLExtensionPointExtendListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "extend");
     }
 
     /**

@@ -51,7 +51,7 @@ public class UMLCollaborationRepresentedClassifierListModel
      */
     public UMLCollaborationRepresentedClassifierListModel(
         UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "representedClassifier");
     }
 
     /**

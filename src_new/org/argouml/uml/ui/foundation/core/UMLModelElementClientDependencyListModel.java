@@ -45,7 +45,7 @@ public class UMLModelElementClientDependencyListModel
      * @param container
      */
     public UMLModelElementClientDependencyListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "clientDependency");
     }
 
     /**

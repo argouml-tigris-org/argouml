@@ -43,7 +43,7 @@ public class UMLExtensionPointUseCaseListModel extends UMLModelElementListModel2
      * @param container
      */
     public UMLExtensionPointUseCaseListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "useCase");
     }
 
     /**

@@ -51,7 +51,7 @@ public class UMLInteractionMessagesListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLInteractionMessagesListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "message");
     }
 
     /**

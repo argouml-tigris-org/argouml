@@ -51,7 +51,7 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLMessagePredecessorListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "predecessor");
     }
 
     /**

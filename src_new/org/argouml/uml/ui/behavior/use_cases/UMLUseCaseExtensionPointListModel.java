@@ -44,7 +44,7 @@ public class UMLUseCaseExtensionPointListModel
      * @param container
      */
     public UMLUseCaseExtensionPointListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "extensionPoint");
     }
 
     /**

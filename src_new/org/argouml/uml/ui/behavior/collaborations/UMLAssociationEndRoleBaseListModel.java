@@ -46,7 +46,7 @@ public class UMLAssociationEndRoleBaseListModel
      * @param container
      */
     public UMLAssociationEndRoleBaseListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "base");
     }
 
     /**

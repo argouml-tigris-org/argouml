@@ -45,7 +45,7 @@ public class UMLInteractionContextListModel
      * @param container
      */
     public UMLInteractionContextListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "context");
     }
 
     /**

@@ -44,7 +44,7 @@ public class UMLMessageActionListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLMessageActionListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "action");
     }
 
     /**

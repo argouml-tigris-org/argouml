@@ -45,7 +45,7 @@ public class UMLUseCaseIncludeListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLUseCaseIncludeListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "include");
     }
 
     /**

@@ -43,7 +43,7 @@ public class UMLModelElementNamespaceListModel
      * @param container
      */
     public UMLModelElementNamespaceListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "namespace");
     }
 
     /**

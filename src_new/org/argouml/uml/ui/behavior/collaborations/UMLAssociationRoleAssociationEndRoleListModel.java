@@ -47,7 +47,7 @@ public class UMLAssociationRoleAssociationEndRoleListModel
      * @param container
      */
     public UMLAssociationRoleAssociationEndRoleListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "connection");
     }
 
     /**

@@ -47,7 +47,7 @@ public class UMLCollaborationRepresentedOperationListModel
      * @param container
      */
     public UMLCollaborationRepresentedOperationListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "representedOperation");
     }
 
     /**

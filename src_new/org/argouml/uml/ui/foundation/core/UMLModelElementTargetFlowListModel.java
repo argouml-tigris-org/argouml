@@ -44,7 +44,7 @@ public class UMLModelElementTargetFlowListModel
      * @param container
      */
     public UMLModelElementTargetFlowListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "targetFlow");
     }
 
     /**

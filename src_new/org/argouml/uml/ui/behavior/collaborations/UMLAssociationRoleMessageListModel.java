@@ -44,7 +44,7 @@ public class UMLAssociationRoleMessageListModel extends UMLModelElementListModel
      * @param container
      */
     public UMLAssociationRoleMessageListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "message");
     }
 
     /**

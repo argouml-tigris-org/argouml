@@ -44,7 +44,7 @@ public class UMLMessageReceiverListModel extends UMLModelElementListModel2 {
      * @param container
      */
     public UMLMessageReceiverListModel(UMLUserInterfaceContainer container) {
-        super(container);
+        super(container, "receiver");
     }
 
     /**

@@ -42,10 +42,14 @@ public class UMLClassifierRoleAvailableContentsListModel
      * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
      */
     public void roleAdded(MElementEvent e) {
-        super.roleAdded(e);
         if (e.getName().equals("base") && e.getSource() == getTarget()) {
             MClassifier clazz = (MClassifier)getChangedElement(e);
             addAll(clazz.getOwnedElements());
+            UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "ownedElement");
+            UmlModelEventPump.getPump().addModelEventListener(this, clazz, "ownedElement");
+        } else
+        if (e.getName().equals("ownedElement") && ((MClassifierRole)getTarget()).getBases().contains(e.getSource())) {
+            addElement(getChangedElement(e));
         }
     }
     
@@ -73,7 +77,8 @@ public class UMLClassifierRoleAvailableContentsListModel
             // make sure we know it when a classifier is added as a base
             UmlModelEventPump.getPump().addModelEventListener(this, (MBase)_target, "base");
         }            
-        super.setTarget(target);
+        removeAllElements();
+        buildModelList();
     }
 
     /**
@@ -82,29 +87,18 @@ public class UMLClassifierRoleAvailableContentsListModel
     protected boolean isValidElement(MBase element) {
         return false;
     }
-    
-    
 
     /**
-     * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidEvent(ru.novosoft.uml.MElementEvent)
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
      */
-    protected boolean isValidEvent(MElementEvent e) {
-        if (e.getName().equals("ownedElement")) {
-            Object o = getChangedElement(e);
-            if (o instanceof Collection) {
-                Collection col = (Collection)o;
-                Iterator it = col.iterator();
-                while (it.hasNext()) {
-                    if (!((MClassifierRole)getTarget()).getBases().contains(((MModelElement)it.next()).getNamespace())) {
-                        return false;
-                    }
-                }
-                return true;
-            } else
-                return ((MClassifierRole)getTarget()).getBases().contains(((MModelElement)o).getNamespace());
+    public void roleRemoved(MElementEvent e) {
+        if (e.getName().equals("base") && e.getSource() == getTarget()) {
+            MClassifier clazz = (MClassifier)getChangedElement(e);
+            UmlModelEventPump.getPump().removeModelEventListener(this, clazz, "ownedElement");
         } else
-            return false;        
-        
+        if (e.getName().equals("ownedElement") && ((MClassifierRole)getTarget()).getBases().contains(e.getSource())) {
+            removeElement(getChangedElement(e));
+        }
     }
 
 }
