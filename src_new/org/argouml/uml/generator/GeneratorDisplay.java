@@ -816,14 +816,22 @@ public String generateConcurrency(MCallConcurrencyKind concurrency) {
   public String generateStateBody(MState m) {
       String s = "";
 
-      MAction entry = m.getEntry();
-      MAction exit = m.getExit();
-      if (entry != null) {
-	  String entryStr = Generate(entry);
+      MAction entryAction = m.getEntry();
+      MAction doAction = m.getDoActivity();
+      MAction exitAction = m.getExit();
+      if (entryAction != null) {
+	  String entryStr = Generate(entryAction);
 	  if (entryStr.length() > 0) s += "entry / " + entryStr;
       }
-      if (exit != null) {
-	  String exitStr = Generate(exit);
+      if (doAction != null) {
+          String doStr = Generate(doAction);
+          if (doStr.length() > 0) {
+              if (s.length() > 0) s += '\n';
+              s += "do / " + doStr;
+          }
+      }
+      if (exitAction != null) {
+	  String exitStr = Generate(exitAction);
 	  if (s.length() > 0) s += "\n";
 	  if (exitStr.length() > 0) s += "exit / " + exitStr;
       }
