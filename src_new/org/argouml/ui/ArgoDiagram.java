@@ -27,6 +27,7 @@ import java.beans.PropertyVetoException;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.argouml.cognitive.ItemUID;
 import org.argouml.util.ChangeRegistry;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -38,6 +39,7 @@ import ru.novosoft.uml.foundation.core.MOperation;
 
 public class ArgoDiagram extends Diagram {
 
+  ItemUID _id;
 
   // hack to use vetocheck in constructing names
   protected static ArgoDiagram TheInstance = new ArgoDiagram(); 
@@ -61,6 +63,14 @@ public class ArgoDiagram extends Diagram {
 
   public void setName(String n) throws PropertyVetoException {
     super.setName(n);
+  }
+
+  public void setItemUID(ItemUID id) {
+    _id = id;
+  }
+
+  public ItemUID getItemUID() {
+    return _id;
   }
 
   ////////////////////////////////////////////////////////////////
