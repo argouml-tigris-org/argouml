@@ -158,12 +158,12 @@ public abstract class UMLComboBoxModel2
     }
     
     public void targetChanged(Object newTarget) {
-        if (_target != newTarget)
+        // if (_target != newTarget)
             setTarget(newTarget);
     }
 
     public void targetReasserted(Object newTarget) {
-        if (_target != newTarget)
+        // if (_target != newTarget)
             setTarget(newTarget);
     }
     
@@ -329,9 +329,10 @@ public abstract class UMLComboBoxModel2
                 setSelectedItem( getElementAt( index - 1 ) );
             }
         }
-        _objects.remove(index);
-
-        fireIntervalRemoved(this, index, index);
+        if (index >= 0) {
+            _objects.remove(index);        
+            fireIntervalRemoved(this, index, index);
+        }
     }
     
     public void removeAllElements() {
