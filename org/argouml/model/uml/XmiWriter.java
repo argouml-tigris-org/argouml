@@ -82,7 +82,10 @@ public class XmiWriter {
         if (xmiWriter != null) {
             Iterator it = xmiWriter.getNotContainedElements().iterator();
             while (it.hasNext()) {
-                LOG.error("Not contained in XMI: " + it.next());
+                Object missingElement = it.next();
+                LOG.error("Not contained in XMI: "
+                    + missingElement.getClass().getName()
+                    + "[" + missingElement + "]");
             }
         }
     }
