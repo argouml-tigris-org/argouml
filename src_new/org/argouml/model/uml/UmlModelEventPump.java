@@ -170,7 +170,7 @@ public final class UmlModelEventPump implements MElementListener {
             ModelManagementHelper.getHelper()
 	    .getAllModelElementsOfKind(modelClass);
         if (modelClass.isAssignableFrom(MModel.class)) {
-            MModel root =
+            Object root =
                 ProjectManager.getManager().getCurrentProject().getRoot();
             if (root != null)
                 col.add(root);

@@ -78,7 +78,7 @@ public class ModelManagementHelper {
      */
     public Collection getAllSubSystems() {
         MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+            (MModel)ProjectManager.getManager().getCurrentProject().getModel();
         return getAllSubSystems(model);
     }
 
@@ -110,7 +110,7 @@ public class ModelManagementHelper {
      */
     public Collection getAllNamespaces() {
         MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+            (MModel)ProjectManager.getManager().getCurrentProject().getModel();
         return getAllNamespaces(model);
     }
 
@@ -142,7 +142,7 @@ public class ModelManagementHelper {
         if (kind == null)
             return new ArrayList();
         Project p = ProjectManager.getManager().getCurrentProject();
-        MNamespace model = p.getRoot();
+        MNamespace model = (MModel)p.getRoot();
         Collection col = getAllModelElementsOfKind(model, kind);
         return col;
     }
@@ -173,6 +173,28 @@ public class ModelManagementHelper {
         }
         return list;
 
+    }
+    
+    /**
+     * helper method for {@link #getAllModelElementsOfKind(Object, Class)}
+     *
+     * @param kind name of class to find, this implementation will add the "M"
+     *             for NSUML.
+     */
+    public Collection getAllModelElementsOfKind(Object nsa, String kind) {
+
+        if (nsa == null || kind == null)
+            return new ArrayList();
+        if (!ModelFacade.isANamespace(nsa))
+            throw new IllegalArgumentException(
+                "given argument " + nsa + " is not a namespace");
+        Collection col=null;
+        try{
+            col= getAllModelElementsOfKind(nsa, Class.forName("M"+kind));
+        }catch(ClassNotFoundException cnfe){
+            return new ArrayList();
+        }
+        return col;
     }
 
     /**

@@ -52,6 +52,7 @@ import ru.novosoft.uml.foundation.core.MBehavioralFeature;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Factory to create UML classes for the UML
@@ -483,7 +484,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MCallEvent buildCallEvent() {
         MCallEvent event = createCallEvent();
-        event.setNamespace(ProjectManager.getManager()
+        event.setNamespace((MModel)ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
@@ -496,7 +497,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MSignalEvent buildSignalEvent() {
         MSignalEvent event = createSignalEvent();
-        event.setNamespace(ProjectManager.getManager()
+        event.setNamespace((MModel)ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
@@ -509,7 +510,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MTimeEvent buildTimeEvent() {
         MTimeEvent event = createTimeEvent();
-        event.setNamespace(ProjectManager.getManager()
+        event.setNamespace((MModel)ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;
@@ -522,7 +523,7 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
      */
     public MChangeEvent buildChangeEvent() {
         MChangeEvent event = createChangeEvent();
-        event.setNamespace(ProjectManager.getManager()
+        event.setNamespace((MModel)ProjectManager.getManager()
 			   .getCurrentProject().getModel());
         event.setName("");
         return event;

@@ -87,6 +87,7 @@ import ru.novosoft.uml.foundation.data_types.MIterationExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.model_management.MModel;
 
 /**
  * Interface specifying the operation to take when a PropertySpecialString
@@ -1451,7 +1452,7 @@ public class ParserDisplay extends Parser {
 							     defaultSpace);
 	}
 	if (ModelFacade.getModel(type) != p.getModel()
-	    && !ModelManagementHelper.getHelper().getAllNamespaces(p.getModel()).contains(ModelFacade.getNamespace(type)))
+	    && !ModelManagementHelper.getHelper().getAllNamespaces((MModel)p.getModel()).contains(ModelFacade.getNamespace(type)))
 	{
 	    type =
 		ModelManagementHelper.getHelper()
@@ -1892,7 +1893,7 @@ public class ParserDisplay extends Parser {
             String typeExpr = beforeAnyOf(s, " ={").trim();
 	    if (typeExpr.length() > 0) {
 		Project p = ProjectManager.getManager().getCurrentProject();
-		type = p.findType(typeExpr);
+		type = (MClassifier)p.findType(typeExpr);
 		// Should we be getting this from the GUI? BT 11 aug 2002
 		if (type == null) { // no type defined yet
 		    type =
@@ -1924,7 +1925,7 @@ public class ParserDisplay extends Parser {
 	    typeExpr = typeExpr.trim();
 	    if (typeExpr.length() > 0) {
 		Project p = ProjectManager.getManager().getCurrentProject();
-		type = p.findType(typeExpr);
+		type = (MClassifier)p.findType(typeExpr);
 		if (type == null) { // no type defined yet
 		    type =
 			UmlFactory.getFactory().getCore().buildClass(typeExpr);
@@ -1977,7 +1978,7 @@ public class ParserDisplay extends Parser {
 	if (st.hasMoreTokens()) paramNameStr = st.nextToken();
 	if (st.hasMoreTokens()) typeStr = st.nextToken();
 	Project p = ProjectManager.getManager().getCurrentProject();
-	MClassifier cls = p.findType(typeStr);
+	MClassifier cls = (MClassifier)p.findType(typeStr);
 	MParameter param = UmlFactory.getFactory().getCore().buildParameter();
 	param.setType(cls);
 	ModelFacade.setKindToIn(param);
@@ -3402,7 +3403,8 @@ public class ParserDisplay extends Parser {
 	    while (baseTokens.hasMoreElements()) {
 		String typeString = baseTokens.nextToken();
 		MClassifier type =
-		    ProjectManager.getManager().getCurrentProject().findType(typeString);
+		    (MClassifier)ProjectManager.getManager()
+                    .getCurrentProject().findType(typeString);
 		obj.addClassifier(type);
 	    }
 	}
