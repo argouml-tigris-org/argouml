@@ -41,7 +41,6 @@ import java.util.Vector;
 import org.argouml.application.api.NotationName;
 import org.argouml.application.api.NotationProvider;
 import org.argouml.application.api.PluggableNotation;
-import org.argouml.application.notation.NotationProviderFactory;
 import org.argouml.language.helpers.NotationHelper;
 import org.argouml.model.ModelFacade;
 
@@ -76,191 +75,219 @@ import ru.novosoft.uml.model_management.MPackage;
  * "http://www.ccs.neu.edu/research/demeter/"> Demeter project</a>. */
 
 public abstract class Generator
-implements NotationProvider, PluggableNotation {
+    implements NotationProvider, PluggableNotation {
 
-  /**
-   * Special modus for testing using the JUnit module.
-   */
-  private boolean _testModus = false;
+    /**
+     * Special modus for testing using the JUnit module.
+     */
+    private boolean _testModus = false;
 
-  private NotationName _notationName = null;
+    private NotationName _notationName = null;
 
-  /** Two spaces used for indenting code in classes. */
-  public static String INDENT = "  ";
+    /** Two spaces used for indenting code in classes. */
+    public static String INDENT = "  ";
 
     private static Map s_generators = new HashMap();
 
-	/**
-	 * suffix placed behind the tag defining a testcase for an element to be generated
-	 */
-	public final static String TEST_SUFFIX = "test";
+    /**
+     * suffix placed behind the tag defining a testcase for an element to be generated
+     */
+    public final static String TEST_SUFFIX = "test";
     public static Generator getGenerator(NotationName n) {
-	return (Generator)s_generators.get(n);
+        return (Generator)s_generators.get(n);
     }
 
-  public Generator(NotationName notationName) {
-      _notationName = notationName;
-      s_generators.put(_notationName, this);
-  }
+    public Generator(NotationName notationName) {
+        _notationName = notationName;
+        s_generators.put(_notationName, this);
+    }
 
-  public NotationName getNotation() {
+    public NotationName getNotation() {
         return _notationName;
-  }
-
-
-/**
- * Generates code for some modelelement. Subclasses should implement this to generate code for different notations.
- * @param o the element to be generated
- * @return String the generated code
- */
-  public String generate(Object o) {
-    if (o == null)
-      return "";
-    if (o instanceof MExtensionPoint)
-        return generateExtensionPoint((MExtensionPoint) o);
-    if (o instanceof MOperation)
-      return generateOperation((MOperation) o, false);
-    if (o instanceof MAttribute)
-      return generateAttribute((MAttribute) o, false);
-    if (o instanceof MParameter)
-      return generateParameter((MParameter) o);
-    if (o instanceof MPackage)
-      return generatePackage((MPackage) o);
-    if (o instanceof MClassifier)
-      return generateClassifier((MClassifier) o);
-    if (o instanceof MExpression)
-      return generateExpression((MExpression) o);
-    if (o instanceof String)
-      return generateName((String) o);
-    if (o instanceof String)
-      return generateUninterpreted((String) o);
-    if (o instanceof MStereotype)
-      return generateStereotype((MStereotype) o);
-    if (o instanceof MTaggedValue) {
-    	/*
-    	 * 2002-11-07
-    	 * Jaap Branderhorst
-    	 * Added the if statement to test for the testtag. Did it here and not in (for example) GeneratorJava
-    	 * to have a single point of definition instead of all the generators.
-    	 * If in the generation of an owner of a taggedvalue, the taggedvalue must be generated the method generating
-    	 * the owner should call generate(sometag) and not generateTaggedValue(sometag)
-    	 */
-    	if (_testModus && ((MTaggedValue)o).getTag().equals(getNotation().getName() + TEST_SUFFIX)) {
-    		return "";
-    	}
-      return generateTaggedValue((MTaggedValue) o);
     }
-    if (o instanceof MAssociation)
-      return generateAssociation((MAssociation)o);
-    if (o instanceof MAssociationEnd)
-      return generateAssociationEnd((MAssociationEnd)o);
-    if (o instanceof MMultiplicity)
-      return generateMultiplicity((MMultiplicity)o);
-    if (o instanceof MState)
-      return generateState((MState)o);
-    if (o instanceof MTransition)
-      return generateTransition((MTransition)o);
-    if (o instanceof MAction)
-      return generateAction((MAction)o);
-    if (o instanceof MCallAction)
-      return generateAction((MAction)o);
-    if (o instanceof MGuard)
-      return generateGuard((MGuard)o);
-    if (o instanceof MMessage)
-      return generateMessage((MMessage)o);
 
-    if (o instanceof MModelElement)
-      return generateName(((MModelElement)o).getName());
+    /**
+     * Generates code for some modelelement. Subclasses should implement this to generate code for different notations.
+     * @param o the element to be generated
+     * @return String the generated code
+     */
+    public String generate(Object o) {
+        if (o == null)
+            return "";
+        if (o instanceof MExtensionPoint)
+            return generateExtensionPoint((MExtensionPoint)o);
+        if (o instanceof MOperation)
+            return generateOperation((MOperation)o, false);
+        if (o instanceof MAttribute)
+            return generateAttribute((MAttribute)o, false);
+        if (o instanceof MParameter)
+            return generateParameter((MParameter)o);
+        if (o instanceof MPackage)
+            return generatePackage((MPackage)o);
+        if (o instanceof MClassifier)
+            return generateClassifier((MClassifier)o);
+        if (o instanceof MExpression)
+            return generateExpression((MExpression)o);
+        if (o instanceof String)
+            return generateName((String)o);
+        if (o instanceof String)
+            return generateUninterpreted((String)o);
+        if (o instanceof MStereotype)
+            return generateStereotype((MStereotype)o);
+        if (o instanceof MTaggedValue) {
+            /*
+             * 2002-11-07
+             * Jaap Branderhorst
+             * Added the if statement to test for the testtag. Did it here and not in (for example) GeneratorJava
+             * to have a single point of definition instead of all the generators.
+             * If in the generation of an owner of a taggedvalue, the taggedvalue must be generated the method generating
+             * the owner should call generate(sometag) and not generateTaggedValue(sometag)
+             */
+            if (_testModus
+                && ((MTaggedValue)o).getTag().equals(
+                    getNotation().getName() + TEST_SUFFIX)) {
+                return "";
+            }
+            return generateTaggedValue((MTaggedValue)o);
+        }
+        if (o instanceof MAssociation)
+            return generateAssociation((MAssociation)o);
+        if (o instanceof MAssociationEnd)
+            return generateAssociationEnd((MAssociationEnd)o);
+        if (o instanceof MMultiplicity)
+            return generateMultiplicity((MMultiplicity)o);
+        if (o instanceof MState)
+            return generateState((MState)o);
+        if (o instanceof MTransition)
+            return generateTransition((MTransition)o);
+        if (o instanceof MAction)
+            return generateAction((MAction)o);
+        if (o instanceof MCallAction)
+            return generateAction((MAction)o);
+        if (o instanceof MGuard)
+            return generateGuard((MGuard)o);
+        if (o instanceof MMessage)
+            return generateMessage((MMessage)o);
 
-    if (o == null) return "";
+        if (o instanceof MModelElement)
+            return generateName(((MModelElement)o).getName());
 
-    return o.toString();
-  }
+        if (o == null)
+            return "";
 
-  public abstract String generateExtensionPoint(MExtensionPoint op);
-  public abstract String generateOperation(MOperation op, boolean documented);
-  public abstract String generateAttribute(MAttribute attr, boolean documented);
-  public abstract String generateParameter(MParameter param);
-  public abstract String generatePackage(MPackage p);
-  public abstract String generateClassifier(MClassifier cls);
-  public abstract String generateTaggedValue(MTaggedValue s);
-  public abstract String generateAssociation(MAssociation a);
-  public abstract String generateAssociationEnd(MAssociationEnd ae);
-  public abstract String generateMultiplicity(MMultiplicity m);
-  public abstract String generateState(MState m);
-  public abstract String generateTransition(MTransition m);
-  public abstract String generateAction(MAction m);
-  public abstract String generateGuard(MGuard m);
-  public abstract String generateMessage(MMessage m);
+        return o.toString();
+    }
 
-  public String generateExpression(MExpression expr) {
-    if (expr == null) return "";
-    return generateUninterpreted(expr.getBody());
-  }
+    public abstract String generateExtensionPoint(MExtensionPoint op);
+    public abstract String generateOperation(MOperation op, boolean documented);
+    public abstract String generateAttribute(
+        MAttribute attr,
+        boolean documented);
+    public abstract String generateParameter(MParameter param);
+    public abstract String generatePackage(MPackage p);
+    public abstract String generateClassifier(MClassifier cls);
+    public abstract String generateTaggedValue(MTaggedValue s);
+    public abstract String generateAssociation(MAssociation a);
+    public abstract String generateAssociationEnd(MAssociationEnd ae);
+    public abstract String generateMultiplicity(MMultiplicity m);
+    public abstract String generateState(MState m);
+    public abstract String generateTransition(MTransition m);
+    public abstract String generateAction(MAction m);
+    public abstract String generateGuard(MGuard m);
+    public abstract String generateMessage(MMessage m);
 
-  public String generateExpression(MConstraint expr) {
-    if (expr == null) return "";
-    return generateExpression(expr.getBody());
-  }
+    public String generateExpression(MExpression expr) {
+        if (expr == null)
+            return "";
+        return generateUninterpreted(expr.getBody());
+    }
 
-  public String generateName(String n) {
-    return n;
-  }
+    public String generateExpression(MConstraint expr) {
+        if (expr == null)
+            return "";
+        return generateExpression(expr.getBody());
+    }
 
-  public String generateUninterpreted(String un) {
-    if (un == null) return "";
-    return un;
-  }
+    public String generateName(String n) {
+        return n;
+    }
 
-  public String generateClassifierRef(MClassifier cls) {
-    if (cls == null) return "";
-    return cls.getName();
-  }
+    public String generateUninterpreted(String un) {
+        if (un == null)
+            return "";
+        return un;
+    }
 
-  public String generateStereotype(MStereotype st) {
-    if (st == null) return "";
-    if (st.getName() == null) return "";  // Patch by Jeremy Bennett
-    if (st.getName().length() == 0) return "";
-    return NotationHelper.getLeftGuillemot() +
-           generateName(st.getName()) +
-	   NotationHelper.getRightGuillemot();
-  }
+    public String generateClassifierRef(MClassifier cls) {
+        if (cls == null)
+            return "";
+        return cls.getName();
+    }
+
+    public String generateStereotype(MStereotype st) {
+        if (st == null)
+            return "";
+        if (st.getName() == null)
+            return ""; // Patch by Jeremy Bennett
+        if (st.getName().length() == 0)
+            return "";
+        return NotationHelper.getLeftGuillemot()
+            + generateName(st.getName())
+            + NotationHelper.getRightGuillemot();
+    }
 
     // Module stuff
-  public Vector getModulePopUpActions(Vector v, Object o) { return null; }
-  public boolean shutdownModule() { return true; }
-  public boolean initializeModule() { return true; }
-  public void setModuleEnabled(boolean enabled) { }
-  public boolean inContext(Object[] o) { return false; }
+    public Vector getModulePopUpActions(Vector v, Object o) {
+        return null;
+    }
+    public boolean shutdownModule() {
+        return true;
+    }
+    public boolean initializeModule() {
+        return true;
+    }
+    public void setModuleEnabled(boolean enabled) {
+    }
+    public boolean inContext(Object[] o) {
+        return false;
+    }
 
-/**
- * Returns the _testModus.
- * @return boolean
- */
-public boolean isTestModus()
-{
-	return _testModus;
-}
+    /**
+     * Returns the _testModus.
+     * @return boolean
+     */
+    public boolean isTestModus() {
+        return _testModus;
+    }
 
-/**
- * Sets the _testModus.
- * @param _testModus The _testModus to set
- */
-public void setTestModus(boolean _testModus)
-{
-	this._testModus = _testModus;
-}
+    /**
+     * Sets the _testModus.
+     * @param _testModus The _testModus to set
+     */
+    public void setTestModus(boolean _testModus) {
+        this._testModus = _testModus;
+    }
 
-/**
- * Gets the path of the code base for a model element, otherwise null.
- * @param me The model element
- * @return String
- */
-public static String getCodePath(Object me) {
-  String s = ModelFacade.getValueOfTag(ModelFacade.getTaggedValue(me,"src_path"));
-  if (s != null)
-    return s.trim();
-  return null;
-}
+    /**
+     * Gets the path of the code base for a model element, otherwise null.
+     * @param me The model element
+     * @return String
+     */
+    public static String getCodePath(Object me) {
+        String s =
+            ModelFacade.getValueOfTag(
+                ModelFacade.getTaggedValue(me, "src_path"));
+        if (s != null)
+            return s.trim();
+        return null;
+    }
+
+    /**   
+     * @deprecated must be added to all leaf classes from this class, these are the modules not this abstract class
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
+    public boolean isModuleEnabled() {
+        return true;
+    }
 
 } /* end class Generator */

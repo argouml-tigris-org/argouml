@@ -1004,6 +1004,9 @@ public class GeneratorDisplay extends Generator {
         return true;
     }
     
+    /**   
+     * @see org.argouml.application.api.ArgoModule#isModuleEnabled()
+     */
     public boolean isModuleEnabled() { return true; }
 
 } /* end class GeneratorDisplay */
