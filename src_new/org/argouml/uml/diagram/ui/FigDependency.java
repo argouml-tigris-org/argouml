@@ -40,10 +40,11 @@ public class FigDependency extends FigEdgeModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constructors
+  protected ArrowHeadGreater endArrow;
 
   public FigDependency() {
     addPathItem(_stereo, new PathConvPercent(this, 50, 10));
-    ArrowHeadGreater endArrow = new ArrowHeadGreater();
+    endArrow = new ArrowHeadGreater();
     endArrow.setFillColor(Color.red);
     setDestArrowHead(endArrow);
     setBetweenNearestPoints(true);
@@ -76,6 +77,10 @@ public class FigDependency extends FigEdgeModelElement {
     updateStereotypeText();
   }
 
+  public void paint(Graphics g) {
+        endArrow.setLineColor(getLineColor());
+        super.paint(g);
+  }
 
 } /* end class FigDependency */
 
