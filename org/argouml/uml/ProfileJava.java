@@ -55,20 +55,9 @@ public class ProfileJava extends Profile {
 
     private static final Logger LOG = Logger.getLogger(ProfileJava.class);
 
-    private static ProfileJava instance = null;
-
-    /**
-     * @return the instance of this class
-     */
-    public static ProfileJava getInstance() {
-    	if (instance == null)
-    	    instance = new ProfileJava();
-    	return instance;
-    }
-
     private Object/*MModel*/ defaultModel;
 
-    private ProfileJava() {
+    public ProfileJava() {
         try {
             getProfileModel();
         } catch (ProfileException e) {
@@ -294,7 +283,7 @@ public class ProfileJava extends Profile {
      * @return the model object
      * @throws ProfileException if failed to load profile
      */
-    public static Object/*MModel*/ loadProfileModel() throws ProfileException {
+    public Object/*MModel*/ loadProfileModel() throws ProfileException {
         //
         //    get a file name for the default model
         //

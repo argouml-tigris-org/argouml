@@ -49,6 +49,7 @@ import org.argouml.ui.explorer.ExplorerEventAdaptor;
 import org.argouml.ui.targetmanager.TargetEvent;
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 import org.argouml.uml.ProjectMemberModel;
@@ -129,12 +130,8 @@ public class Project implements java.io.Serializable, TargetListener {
     private GenerationPreferences cgPrefs;
     private transient VetoableChangeSupport vetoSupport;
 
-    /**
-     * The root of the modeltree the user is working on. (The untitledModel in
-     * the navpane).
-     */
-    //private Object treeRoot;
-
+    private Profile profile;
+    
     /**
      * The active diagram, pointer to a diagram in the list with diagrams.
      */
@@ -161,6 +158,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * Constructor.
      */
     public Project() {
+        profile = new ProfileJava();
         Model.getModelManagementFactory().setRootModel(null);
 
         authorname = "";
@@ -176,16 +174,16 @@ public class Project implements java.io.Serializable, TargetListener {
         cgPrefs = new GenerationPreferences();
         defaultModelCache = new HashMap();
 
-//        saveRegistry = new ChangeRegistry();
         LOG.info("making empty project with empty model");
         try {
             // Jaap Branderhorst 2002-12-09
             // load the default model
             // this is NOT the way how it should be since this makes argo
             // depend on Java even more.
-            setDefaultModel(ProfileJava.loadProfileModel());
+            setDefaultModel(profile.getProfileModel());
         } catch (ProfileException e) {
-            // TODO: how are we going to hand exceptions here?
+            // TODO: how are we going to handle exceptions here?
+            // I think we need a ProjectException.
             LOG.error("Exception setting the default profile", e);
         }
         addSearchPath("PROJECT_DIR");
@@ -1328,5 +1326,12 @@ public class Project implements java.io.Serializable, TargetListener {
      */
     public void setPersistenceVersion(int pv) {
         this.persistenceVersion = pv;
+    }
+    
+    /**
+     * @return Returns the profile.
+     */
+    public Profile getProfile() {
+        return profile;
     }
 } /* end class Project */

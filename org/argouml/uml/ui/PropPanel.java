@@ -85,7 +85,6 @@ public abstract class PropPanel
     // instance vars
     private Object target;
     private Object modelElement;
-    private static Profile profile;
 
     private ResourceBundle bundle = null;
 
@@ -301,10 +300,7 @@ public abstract class PropPanel
      * @see org.argouml.uml.ui.UMLUserInterfaceContainer#getProfile()
      */
     public Profile getProfile() {
-        if (profile == null) {
-            profile = ProfileJava.getInstance();
-        }
-        return profile;
+        return ProjectManager.getManager().getCurrentProject().getProfile();
     }
 
 //    /**

@@ -38,6 +38,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 import org.argouml.util.MyTokenizer;
@@ -1711,8 +1712,9 @@ public class ParserDisplay extends Parser {
         }
 
         try {
-            stereo = recFindStereotype(obj, ProfileJava.getInstance()
-                    .getProfileModel(), name);
+            Project project = ProjectManager.getManager().getCurrentProject();
+            Profile profile = project.getProfile();
+            stereo = recFindStereotype(obj, profile.getProfileModel(), name);
         } catch (ProfileException e) {
             // TODO: How are we going to handle exceptions here?
             // I suspect the profile should be part of the project

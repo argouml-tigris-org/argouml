@@ -32,9 +32,11 @@ import javax.swing.JPanel;
 import org.apache.log4j.Logger;
 import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
+import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.Profile;
 import org.argouml.uml.ProfileException;
 import org.argouml.uml.ProfileJava;
 
@@ -106,9 +108,10 @@ public class WizAddConstructor extends UMLWizard {
     private Object getCreateStereotype(Object obj) {
         Iterator iter = null;
         try {
-            iter = Model.getFacade().getOwnedElements(ProfileJava.getInstance()
-        		.getProfileModel())
-        	.iterator();
+            Project project = ProjectManager.getManager().getCurrentProject();
+            Profile profile = project.getProfile();
+            Object profileModel = profile.getProfileModel();
+            iter = Model.getFacade().getOwnedElements(profileModel).iterator();
         } catch (ProfileException e) {
             // TODO: How are we going to handle exceptions here?
             // I suspect the profile should be part of the project
