@@ -12,6 +12,8 @@
 <!--           Jeremy Bennett  14-March-2002. Changes to Fop classpath      -->
 <!--           suggested by Daniel Faensen's testing.                       -->
 <!--                                                                        -->
+<!--           Thierry Lach    Summer 2002. Changes to use ant 1.4.1.       -->
+<!--                                                                        -->
 <!-- Parts borrowed from the ArgoUML build file                             -->
 <!--                                                                        -->
 <!-- ====================================================================== -->
@@ -125,55 +127,51 @@ with which you can change certain properties. For example, by adding a line to
 build.compiler=jikes
 (without a blank after "jikes"!).
 
-This will force Ant to compile with jikes if you have it on your system. The
-other alternatives for this setting are;
-
-build.compiler=modern
-to use the most up-to-date version available to you which for Sun is currently
-javac from jdk1.3
-
-or the default if no explicit setting is made anywhere;
-
-build.compiler=classic
-to use a compiler/Virtual Machine combination compatible with jdk1.2.
-
-On machines using Windows the home directory is selected to be C:\ so the
-instructions in the build file will look there for .ant.properties.
-
-The filename is necessary for commonality with UNIX/LINUX systems but you will
-not be able to save or rename a file to this form of name using the Windows GUI
-directly. At least two workarounds are possible
-(i)  use Notepad (NOT Wordpad) to create, edit, rename or save the file
-(ii) go into a DOS window and use the DOS command Edit to create, edit, rename
-     or save the file. 
-After these operations the file will still be visible in the GUI.
+This will force Ant to compile with jikes if you have it on your system. Refer to the ant documentation for other settings and options.
 
 =========================================================================== -->
 
 <project name="ArgoDocs" default="help" basedir="..">
+
+  <property name="argo.root.dir" value="${basedir}"/>
+  <property environment="env"/>
+  <property file="${argo.root.dir}/documentation/build.properties"/>
+  <property file="${user.home}/argouml.build.properties"/>
+  <property file="${argo.root.dir}/documentation/default.properties"/>
+  <property name="documentation.dir" value="${argo.root.dir}/documentation"/>
+  <property name="extlib.dir"        
+      value="${argo.docbook.dir}/docbook-xsl-1.49/extensions"/>
+
+  <path id="saxon.classpath">
+    <pathelement location="${saxon.jar.path}" />
+    <pathelement location="${extlib.dir}/saxon65.jar"/>
+  </path>
+
   <target name="init">
-    <tstamp/>
+    <tstamp>
+        <format property="year" pattern="yyyy"/>
+    </tstamp>
 
     <property name="Name"              value="ArgoUML-docs"/>
     <property name="name"              value="argouml-docs"/>
-    <property name="version"           value="0.9.9"/>
-    <property name="year"              value="2002"/>
 
-    <echo message="------------ ${Name} v${version} [${year}] ------------"/>
+    <echo message="--------------- ${Name} ${argo.core.version} [${year}] ------------"/>
+    <echo message="Using ${ant.version}"/>
 
-    <property name="documentation.dir" value="${basedir}/documentation"/>
-    <property name="build.dir"         value="${basedir}/build"/>
-    <property name="output.dir"        value="${build.dir}/documentation"/>
-    <property name="printablehtml.dir" value="${output.dir}/printablehtml"/>
-    <property name="defaulthtml.dir"   value="${output.dir}/defaulthtml"/>
-    <property name="pdf.dir"           value="${output.dir}/pdf"/>
-    <property name="javahelp.dir"      value="${output.dir}/javahelp"/>
-    <property name="dist.dir"          value="${basedir}/dist"/>
-    <property name="lib.dir"           value="${basedir}/lib"/>
-    <property name="extlib.dir"        
-      value="${documentation.dir}/docbook-setup/docbook-xsl-1.49/extensions"/>
-    <property name="foplib.dir"        value="/home/jeremy/fop-0.20.3/lib"/>
-    <property name="fopbuild.dir"      value="/home/jeremy/fop-0.20.3/build"/>
+
+    <property name="printablehtml.dir" value="${argo.docs.output.dir}/printablehtml"/>
+    <property name="defaulthtml.dir"   value="${argo.docs.output.dir}/defaulthtml"/>
+    <property name="pdf.dir"           value="${argo.docs.output.dir}/pdf"/>
+    <property name="javahelp.dir"      value="${argo.docs.output.dir}/javahelp"/>
+
+    <available property="jimi-is-available"
+               value="true"
+	       classname="com.sun.jimi.core.Jimi">
+        <classpath>
+            <pathelement location="${jimi.jar.path}" />
+	</classpath>
+    </available>
+
   </target>
 
   <!-- =================================================================== -->
@@ -181,7 +179,7 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="help" depends="init">
-    <echo message="${name}-${version} build file, available targets:"/>
+    <echo message="${name}-${argo.core.version} build file, available targets:"/>
     <echo message="-------------------------------------------------------------------"/>
     <echo message="defaulthtml   : Build chunked   HTML docs to ARGO_HOME/build/documentation/ "/>
     <echo message="printablehtml : Build printable HTML docs to ARGO_HOME/build/documentation/ "/>
@@ -201,8 +199,8 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="prepare" depends="init">
-    <mkdir dir="${build.dir}"/>
-    <mkdir dir="${output.dir}"/>
+    <mkdir dir="${argo.build.dir}"/>
+    <mkdir dir="${argo.docs.output.dir}"/>
     <mkdir dir="${defaulthtml.dir}"/>
     <mkdir dir="${printablehtml.dir}"/>
     <mkdir dir="${javahelp.dir}"/>
@@ -243,11 +241,20 @@ After these operations the file will still be visible in the GUI.
     <antcall target="internal-scheduler"/>          
   </target>
   
+  <target name="jimi-check" depends="prepare" unless="jimi-is-available">
+      <fail message="Cannot build PDF documentation">
+
+Unable to create PDF documentation because the Sun JIMI library
+is not available.  Please refer to the readme file in the tools/fop-0.20.3
+directory for further information.
+
+      </fail>
+  </target>
   <!-- =================================================================== -->
   <!-- pdf: Create PDF documentation                                       -->
   <!-- =================================================================== -->
 
-  <target name="pdf" depends="prepare">
+  <target name="pdf" depends="prepare, jimi-check" if="jimi-is-available">
     <!-- Set switch for "create-pdf" target to ensure that it runs -->
     <property name="generate-pdf" value="true" />
     <!-- Call "internal-scheduler" target to start the process -->
@@ -258,7 +265,7 @@ After these operations the file will still be visible in the GUI.
   <!-- docs: Generates pdf and html documentation                          -->
   <!-- =================================================================== -->
 
-  <target name="docs" depends="prepare">
+  <target name="docs" depends="prepare,jimi-check">
     <!-- Set switch for pdf, defaulthtml and printablehtml builders       -->
     <property name="generate-defaulthtml" value="true" />
     <property name="generate-printablehtml" value="true" />
@@ -367,10 +374,10 @@ After these operations the file will still be visible in the GUI.
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
+	  taskname="saxon"
           dir="${documentation.dir}/${doc.subdir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${doc.prefix}.xml"/>
       <arg value="${imglist.xsl}"/>
@@ -429,7 +436,7 @@ After these operations the file will still be visible in the GUI.
          directory  -->
 
     <delete dir="${documentation.dir}/${doc.subdir}/images"/>
-    <delete file="${documentation.dir}/${doc.subdir}/imglist.txt"/>
+    <delete file="${documentation.dir}/${doc.subdir}/imglist.txt" quiet="true"/>
   </target>
   
   <!-- =================================================================== -->
@@ -445,10 +452,10 @@ After these operations the file will still be visible in the GUI.
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
+	  taskname="saxon"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${source.xml}"/>
       <arg value="${source.xsl}"/>
@@ -479,10 +486,10 @@ After these operations the file will still be visible in the GUI.
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
+	  taskname="saxon"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg line="-o ${target.dir}/${target.html}"/>
       <arg value="${source.xml}"/>
@@ -511,10 +518,10 @@ After these operations the file will still be visible in the GUI.
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
+	  taskname="saxon"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg line="-o ${source.dir}/${source.fo}"/>
       <arg value="${source.xml}"/>
@@ -546,26 +553,27 @@ After these operations the file will still be visible in the GUI.
 
          To process the PNG images in the manual, you will need to have built
          Fop from source using the Jimi library in your classpath, and also
-         place a jar of the Jimi library (jimi-1.0.jar) in the $ARGO_HOME/lib
-         directory. If you don't do this, Fop will complain each time it
-         encounters a PNG image, and they will not be included in the
-         output. -->
+         place a jar of the Jimi library (jimi-1.0.jar) in the
+	 $ARGO_TOOLS/lib directory. If you don't do this, Fop
+	 will complain each time it encounters a PNG image, and they will
+	 not be included in the output. -->
 
     <echo message="Building PDF for ${source.fo}..."/>
 
     <java classname="org.apache.fop.apps.Fop"
           fork="yes"
           maxmemory="128M"
+	  taskname="fop"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${foplib.dir}/jimi-1.0.jar"/>
-        <pathelement location="${fopbuild.dir}/fop.jar"/>
-        <pathelement location="${foplib.dir}/avalon-framework-4.0.jar"/>
-        <pathelement location="${foplib.dir}/batik.jar"/>
-        <pathelement location="${foplib.dir}/logkit-1.0b4.jar"/>
-        <pathelement location="${foplib.dir}/xalan-2.0.0.jar"/>
-        <pathelement location="${foplib.dir}/xalanj1compat.jar"/>
-        <pathelement location="${foplib.dir}/xerces-1.2.3.jar"/>         
+        <pathelement location="${jimi.jar.path}"/>
+        <pathelement location="${fop.build.dir}/fop-0.20.3-custom.jar"/>
+        <pathelement location="${fop.lib.dir}/avalon-framework-4.0.jar"/>
+        <pathelement location="${fop.lib.dir}/batik-1.1.jar"/>
+        <pathelement location="${fop.lib.dir}/logkit-1.0.jar"/>
+        <pathelement location="${fop.lib.dir}/xalan-2.0.0.jar"/>
+        <pathelement location="${fop.lib.dir}/xalanj1compat.jar"/>
+        <pathelement location="${argo.lib.dir}/xerces-1.2.3.jar"/>         
       </classpath>
       <arg value="-q"/>
       <arg line="-fo ${source.dir}/${source.fo}"/>
@@ -588,10 +596,10 @@ After these operations the file will still be visible in the GUI.
 
     <java classname="com.icl.saxon.StyleSheet"
           fork="yes"
+	  taskname="saxon"
           dir="${source.dir}">
       <classpath>
-        <pathelement location="${lib.dir}/saxon.jar"/>
-        <pathelement location="${extlib.dir}/saxon65.jar"/>
+        <path refid="saxon.classpath"/>
       </classpath>
       <arg value="${source.xml}"/>
       <arg value="${javahelp.xsl}"/>
@@ -613,7 +621,7 @@ After these operations the file will still be visible in the GUI.
     <move file="${target.dir}/jhelpset.hs"
           tofile="${target.dir}/${target.hs}"/>
 
-    <jar jarfile="${build.dir}/${target.jar}"
+    <jar jarfile="${argo.build.dir}/${target.jar}"
          basedir="${target.dir}"
          includes="**"
          excludes="*.jar"/>
@@ -631,13 +639,13 @@ After these operations the file will still be visible in the GUI.
 
     <!-- The ZIP file -->
 
-    <zip zipfile="${Name}-${version}.zip" basedir="${defaulthtml.dir}"/>
+    <zip zipfile="${Name}-${argo.core.version}.zip" basedir="${defaulthtml.dir}"/>
 
     <!-- The tar.gz file -->
 
-    <tar tarfile="${Name}-${version}.tar" basedir="${defaulthtml.dir}"/>
-    <gzip zipfile="${Name}-${version}.tar.gz" src="${Name}-${version}.tar"/>
-    <delete file="${Name}-${version}.tar"/>
+    <tar tarfile="${Name}-${argo.core.version}.tar" basedir="${defaulthtml.dir}"/>
+    <gzip zipfile="${Name}-${argo.core.version}.tar.gz" src="${Name}-${argo.core.version}.tar"/>
+    <delete file="${Name}-${argo.core.version}.tar"/>
   </target>
 
 
@@ -646,7 +654,7 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="clean" depends="init">
-    <delete dir="${output.dir}"/>
+    <delete dir="${argo.docs.output.dir}"/>
   </target>
   
 
@@ -655,9 +663,9 @@ After these operations the file will still be visible in the GUI.
   <!-- =================================================================== -->
 
   <target name="total-clean" depends="clean">
-    <delete file="${Name}-${version}.zip"/>
-    <delete file="${Name}-${version}.tar"/>
-    <delete file="${Name}-${version}.tar.gz"/>
+    <delete file="${Name}-${argo.core.version}.zip"/>
+    <delete file="${Name}-${argo.core.version}.tar"/>
+    <delete file="${Name}-${argo.core.version}.tar.gz"/>
   </target>       
 </project>
 
