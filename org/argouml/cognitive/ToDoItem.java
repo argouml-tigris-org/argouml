@@ -52,8 +52,8 @@ import org.argouml.cognitive.critics.*;
  *  ToDoItems will include ties back to the design rationale log.
  *  Also the run-time system needs to know who posted each ToDoItem so
  *  that it can automatically remove it if it is no longer valid. */
-
 public class ToDoItem implements java.io.Serializable {
+
   ////////////////////////////////////////////////////////////////
   // constants
   public static final int HIGH_PRIORITY = 1;
@@ -91,12 +91,19 @@ public class ToDoItem implements java.io.Serializable {
 
   ////////////////////////////////////////////////////////////////
   // constructors
-
-  public ToDoItem(Poster poster, String h, int p, String d, String m,
-		  VectorSet offs) {
+  public ToDoItem(Poster poster, String h, int p, String d, String m, VectorSet offs) {
     _poster = poster;
     _headline = h;
     _offenders = offs;
+    _priority = p;
+    _description = d;
+    _moreInfoURL = m;
+  }
+
+  public ToDoItem(Poster poster, String h, int p, String d, String m) {
+    _poster = poster;
+    _headline = h;
+    _offenders = new VectorSet();
     _priority = p;
     _description = d;
     _moreInfoURL = m;
@@ -122,6 +129,8 @@ public class ToDoItem implements java.io.Serializable {
     _wizard = c.makeWizard(this);
   }
 
+
+
   public ToDoItem(Critic c) {
     _poster = c;
     _headline = c.getHeadline();
@@ -146,6 +155,7 @@ public class ToDoItem implements java.io.Serializable {
       }
       return _cachedExpandedHeadline;
   }
+
   public void setHeadline(String h) { 
       _headline = h; 
       _cachedExpandedHeadline = null;
@@ -157,21 +167,25 @@ public class ToDoItem implements java.io.Serializable {
       }
       return _cachedExpandedDescription;
   }
+  
   public void setDescription(String d) {
       _description = d;
       _cachedExpandedDescription = null;
   }
 
   public String getMoreInfoURL() { return _moreInfoURL; }
+  
   public void setMoreInfoURL(String m) { _moreInfoURL = m; }
 
   public int getPriority() { return _priority; }
+
   public void setPriority(int p) { _priority = p; }
 
   public int getProgress() {
     if (_wizard != null) return _wizard.getProgress();
     return 0;
   }
+
 //   public void setProgress(int p) { 
 //     if (_wizard != null) return _wizard.setProgress(p);
 //   }
@@ -211,8 +225,7 @@ public class ToDoItem implements java.io.Serializable {
   public boolean supports(Goal g) {
     return getPoster().supports(g);
   }
-
-
+  
   /**
    * Is this item a copy?
    */
@@ -299,11 +312,12 @@ public class ToDoItem implements java.io.Serializable {
 
   /** Reply a string for debugging. */
   public String toString() {
-    return this.getClass().getName() + "(" +
-      getHeadline() + ") on " +
-      getOffenders().toString();
+    return this.getClass().getName() + "(" + getHeadline() + ") on " + getOffenders().toString();
   }
 
 } /* end class ToDoItem */
+
+
+
 
 
