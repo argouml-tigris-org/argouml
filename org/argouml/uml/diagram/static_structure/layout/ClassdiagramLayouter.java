@@ -131,7 +131,7 @@ public class ClassdiagramLayouter implements Layouter {
 		Object node = classdiagramNode.getFigure().getOwner(); 
 		
 		if ( node instanceof MGeneralizableElement ) {
-		    Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+		    Collection gn = ((MClassifier)node).getGeneralizations();
 		    Iterator iter = gn.iterator();
 		    while (iter.hasNext()) {
 			MGeneralization g = (MGeneralization) iter.next();
@@ -141,7 +141,7 @@ public class ClassdiagramLayouter implements Layouter {
 			    classdiagramNode.addUplink(superNode);
 			}
 		    }
-		    Collection sp = ((MGeneralizableElement)node).getSpecializations();
+		    Collection sp = ((MClassifier)node).getSpecializations();
 		    iter = sp.iterator();
 		    while (iter.hasNext()) {
 			MGeneralization s = (MGeneralization)iter.next();

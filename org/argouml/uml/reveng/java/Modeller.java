@@ -511,8 +511,12 @@ public class Modeller
 	Collection generalizations = child.getGeneralizations();
 	for(Iterator i = generalizations.iterator(); i.hasNext(); ) {
 	    mGeneralization = (MGeneralization)i.next();
-	    if(parent != mGeneralization.getParent()) {
-		child.removeGeneralization(mGeneralization);
+	    if (parent == mGeneralization.getParent()) {
+		// This is the existing generalization we were looking
+		// for.
+		break;
+            }
+	    else {
 		mGeneralization = null;
 	    }
 	}
