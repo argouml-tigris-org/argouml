@@ -28,7 +28,6 @@
 
 package org.argouml.ui;
 
-//import java.awt.BorderLayout;
 import java.awt.Frame;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
@@ -39,10 +38,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
-//import javax.swing.JDialog;
-//import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-//import javax.swing.JTabbedPane;
 import javax.swing.JTextArea;
 
 import org.argouml.i18n.Translator;

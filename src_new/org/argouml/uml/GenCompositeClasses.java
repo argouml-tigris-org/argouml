@@ -30,7 +30,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import org.argouml.model.ModelFacade;
 import org.tigris.gef.util.ChildGenerator;
-//import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 
 /** Utility class to generate the children of a class.  In this case
  *  the "children" of a class are the other classes that are

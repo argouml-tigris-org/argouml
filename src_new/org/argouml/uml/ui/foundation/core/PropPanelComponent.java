@@ -27,8 +27,6 @@ package org.argouml.uml.ui.foundation.core;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.PropPanelButton;
-import org.argouml.uml.ui.UMLCheckBox;
-import org.argouml.uml.ui.UMLReflectionBooleanProperty;
 
 import org.argouml.util.ConfigLoader;
 import org.argouml.uml.ui.UMLComboBoxNavigator;

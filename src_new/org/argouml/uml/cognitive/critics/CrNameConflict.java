@@ -31,8 +31,6 @@
 
 package org.argouml.uml.cognitive.critics;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.argouml.cognitive.Designer;

@@ -29,9 +29,6 @@
 package org.argouml.xml.xmi;
 
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.util.Iterator;
-import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
@@ -41,7 +38,6 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 import ru.novosoft.uml.MFactory;
-import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.model_management.MModel;
 
 /**

@@ -25,7 +25,6 @@
 package org.argouml.uml.ui;
 
 import org.apache.log4j.Logger;
-//import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.lang.reflect.*;

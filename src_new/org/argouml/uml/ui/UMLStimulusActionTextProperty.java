@@ -26,7 +26,6 @@ package org.argouml.uml.ui;
 import org.argouml.model.ModelFacade;
 
 import ru.novosoft.uml.MElementEvent;
-//import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 
 /**
  * TODO: this class should be moved to package

@@ -34,7 +34,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
-import java.util.Vector;
 
 import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
 import org.tigris.gef.base.Selection;

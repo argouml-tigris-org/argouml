@@ -27,7 +27,6 @@ package org.argouml.xml;
 import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
-//import java.util.Hashtable;
 
 /**
  * @author Jim Holy

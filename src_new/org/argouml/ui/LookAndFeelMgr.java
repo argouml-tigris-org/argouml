@@ -32,7 +32,6 @@ package org.argouml.ui;
 
 import java.awt.Font;
 
-//import javax.swing.AbstractAction;
 import javax.swing.LookAndFeel;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -43,7 +42,6 @@ import javax.swing.plaf.metal.MetalTheme;
 import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
-//import org.argouml.swingext.MetalThemes;
 
 /**
  * Controls the look and feel and theme of ArgoUML. LookAndFeelMgr has a

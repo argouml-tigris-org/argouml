@@ -24,7 +24,6 @@
 
 package org.argouml.model.uml;
 
-//import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.UUIDManager;
 
