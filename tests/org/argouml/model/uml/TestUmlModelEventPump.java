@@ -572,48 +572,32 @@ public class TestUmlModelEventPump extends TestCase {
     }
 
     /**
-     * Performance test for adding listeners, only run when TEST_PERFORMANCE ==
-     * true
+     * Performance test for adding and removing listeners, only run when
+     * TEST_PERFORMANCE == true
      */
-    public void testAddingListenersPerformance() {
-        if (TEST_PERFORMANCE) {
-            Date currentTime = new Date();
-            MModelElement element = new MParameterImpl();
-            for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
-                UmlModelEventPump.getPump()
-		    .addModelEventListener(new TestListener(),
-					   element,
-					   "state");
-            }
-            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
-            System.out.println("Time elapsed while adding listeners: "
-			       + timeElapsed);
-        }
-    }
-
-    /**
-     * Performance test for removing listeners, only run when TEST_PERFORMANCE
-     * == true
-     */
-    public void testRemoveListenersPerformance() {
+    public void testAddRemoveListenersPerformance() {
         if (TEST_PERFORMANCE) {
             MModelElement element = new MParameterImpl();
             TestListener[] listeners = new TestListener[PERFORMANCE_TEST_SIZE];
+	    UmlModelEventPump pump = UmlModelEventPump.getPump();
+            Date addTime = new Date();
             for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
                 listeners[i] = new TestListener();
-                UmlModelEventPump.getPump().addModelEventListener(
-								  listeners[i],
-								  element,
-								  "state");
+                pump.addModelEventListener(listeners[i],
+					   element,
+					   "state");
             }
-            Date currentTime = new Date();
+            Date removeTime = new Date();
             for (int i = 0; i < PERFORMANCE_TEST_SIZE; i++) {
-                UmlModelEventPump.getPump()
-		    .removeModelEventListener(listeners[i],
+                pump.removeModelEventListener(listeners[i],
 					      element,
 					      "state");
             }
-            long timeElapsed = (new Date()).getTime() - currentTime.getTime();
+            Date endTime = new Date();
+            long timeElapsed = removeTime.getTime() - addTime.getTime();
+            System.out.println("Time elapsed while adding listeners: "
+			       + timeElapsed);
+            timeElapsed = endTime.getTime() - removeTime.getTime();
             System.out.println("Time elapsed while removing listeners: "
 			       + timeElapsed);
         }
