@@ -54,6 +54,16 @@ public abstract class UMLModelElementListModel2
     protected Object _target = null;
 
     /**
+     * Flag to indicate wether list events should be fired
+     */
+    protected boolean _fireListEvents = true;
+
+    /**
+     * Flag to indicate wether the model is being build
+     */
+    protected boolean _buildingModel = false;
+
+    /**
      * Constructor for UMLModelElementListModel2.
      */
     public UMLModelElementListModel2(String eventName) {
@@ -82,7 +92,12 @@ public abstract class UMLModelElementListModel2
     public void propertySet(MElementEvent e) {
         if (isValidEvent(e)) {
             removeAllElements();
+            _buildingModel = true;
             buildModelList();
+            _buildingModel = false;
+            if (getSize() > 0) {
+                fireIntervalAdded(this, 0, getSize() - 1);
+            }
         }
     }
 
@@ -164,16 +179,19 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * Utility method to add the contents of the given collection to the 
-     * element list.
+     * Utility method to add a collection of elements to the model
      * @param col
      */
     protected void addAll(Collection col) {
         Iterator it = col.iterator();
+        _fireListEvents = false;
+        int oldSize = getSize();
         while (it.hasNext()) {
             Object o = it.next();
             addElement(o);
         }
+        _fireListEvents = true;
+        fireIntervalAdded(this, oldSize - 1, getSize() - 1);
     }
 
     /**
@@ -244,7 +262,12 @@ public abstract class UMLModelElementListModel2
                     _eventName);
 
                 removeAllElements();
+                _buildingModel = true;
                 buildModelList();
+                _buildingModel = false;
+                if (getSize() > 0) {
+                    fireIntervalAdded(this, 0, getSize() - 1);
+                }
             } else {
                 _target = null;
                 removeAllElements();
@@ -328,22 +351,6 @@ public abstract class UMLModelElementListModel2
     }
 
     /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetChanged(java.lang.Object)
-     */
-    public void targetChanged(Object newTarget) {
-        if (_target != newTarget)
-            setTarget(newTarget);
-    }
-
-    /**
-     * @see org.argouml.uml.ui.TargetChangedListener#targetReasserted(java.lang.Object)
-     */
-    public void targetReasserted(Object newTarget) {
-        if (_target != newTarget)
-            setTarget(newTarget);
-    }
-
-    /**
      * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {}
@@ -360,6 +367,30 @@ public abstract class UMLModelElementListModel2
      */
     public void targetSet(TargetEvent e) {
         setTarget(e.getNewTargets()[0]);
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireContentsChanged(java.lang.Object, int, int)
+     */
+    protected void fireContentsChanged(Object source, int index0, int index1) {
+        if (_fireListEvents && !_buildingModel)
+            super.fireContentsChanged(source, index0, index1);
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireIntervalAdded(java.lang.Object, int, int)
+     */
+    protected void fireIntervalAdded(Object source, int index0, int index1) {
+        if (_fireListEvents && !_buildingModel)
+            super.fireIntervalAdded(source, index0, index1);
+    }
+
+    /**
+     * @see javax.swing.AbstractListModel#fireIntervalRemoved(java.lang.Object, int, int)
+     */
+    protected void fireIntervalRemoved(Object source, int index0, int index1) {
+        if (_fireListEvents && !_buildingModel)
+            super.fireIntervalRemoved(source, index0, index1);
     }
 
 }
