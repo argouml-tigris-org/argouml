@@ -374,6 +374,14 @@ class ActionSaveProject extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite) {
+      
+      StringBuffer msg = new StringBuffer();
+      msg.append("This is a developer release of ArgoUML. You should not use it \n");
+      msg.append("for production use, it's only for testing. You may save your models,\n");
+      msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
+      msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
+      msg.append("and get one there. Thank you.");
+      JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE);      
     try {
       if (expander == null) {
 	java.util.Hashtable templates = TemplateReader.readFile(ARGO_TEE);
@@ -442,6 +450,15 @@ class ActionSaveProjectAs extends UMLAction {
   }
 
   public boolean trySave(boolean overwrite) {
+      
+      StringBuffer msg = new StringBuffer();
+      msg.append("This is a developer release of ArgoUML. You should not use it \n");
+      msg.append("for production use, it's only for testing. You may save your models,\n");
+      msg.append("but do not expect future releases of ArgoUML to be able to read them.\n");
+      msg.append("If you want to use a \"stable\" release, please go to www.argouml.org\n");
+      msg.append("and get one there. Thank you.");
+      JOptionPane.showMessageDialog(null, msg.toString(), "Warning", JOptionPane.WARNING_MESSAGE); 
+
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     Project p =  pb.getProject();
     try {
