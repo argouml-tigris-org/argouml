@@ -86,7 +86,20 @@ public class PropPanelGeneralization extends PropPanel {
     public void setParentElement(MGeneralizableElement parent) {
         Object target = getTarget();
         if(target instanceof MGeneralization) {
-            ((MGeneralization) target).setParent(parent);
+            MGeneralization gen = (MGeneralization) target;
+            MGeneralizableElement child = gen.getChild();
+            MGeneralizableElement oldParent = gen.getParent();
+            //
+            //   can't do immediate circular generalization
+            //
+            if(parent != child && parent != oldParent) {
+                gen.setParent(parent);
+            }
+            else {
+                //
+                //   force a refresh of the panel
+//                refresh();
+            }
         }
     }
     
@@ -102,7 +115,15 @@ public class PropPanelGeneralization extends PropPanel {
     public void setChild(MGeneralizableElement child) {
         Object target = getTarget();
         if(target instanceof MGeneralization) {
-            ((MGeneralization) target).setChild(child);
+            MGeneralization gen = (MGeneralization) target;
+            MGeneralizableElement parent = gen.getParent();
+            MGeneralizableElement oldChild = gen.getChild();
+            if(child != parent && child != oldChild) {
+                gen.setChild(child);
+            }
+            else {
+//                refresh();
+            }
         }
     }
     
@@ -118,7 +139,11 @@ public class PropPanelGeneralization extends PropPanel {
     public void setPowertype(MClassifier ptype) {
         Object target = getTarget();
         if(target instanceof MGeneralization) {
-            ((MGeneralization) target).setPowertype(ptype);
+            MGeneralization gen = (MGeneralization) target;
+            MClassifier oldPtype = gen.getPowertype();
+            if(ptype != oldPtype) {
+                gen.setPowertype(ptype);
+            }
         }
     }
     
