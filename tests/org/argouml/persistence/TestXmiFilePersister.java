@@ -22,7 +22,7 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-package org.argouml.xml.xmi;
+package org.argouml.persistence;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,10 +33,9 @@ import junit.framework.TestCase;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
-import org.argouml.kernel.IllegalFormatException;
-import org.argouml.kernel.XmiFilePersister;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.CoreFactory;
+import org.argouml.persistence.XmiFilePersister;
 
 import ru.novosoft.uml.foundation.core.MOperation;
 
@@ -46,13 +45,13 @@ import ru.novosoft.uml.foundation.core.MOperation;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Jan 17, 2003
  */
-public class TestXMIReader extends TestCase {
+public class TestXmiFilePersister extends TestCase {
 
     /**
      * Constructor for TestXMIReader.
      * @param arg0 is the name of the test case.
      */
-    public TestXMIReader(String arg0) {
+    public TestXmiFilePersister(String arg0) {
         super(arg0);
     }
 
@@ -61,35 +60,43 @@ public class TestXMIReader extends TestCase {
      * not work since ArgoUML crashes on a classcastexception that is catched by
      * our dear friends of NSUML. However you can use it to test things quite
      * easily :)
-     *
-     * @throws IOException when there is an file access problem 
-     * @throws MalformedURLException when the URL is wrong
-     * @throws IllegalFormatException when the format is incorrect
-     * @throws Exception any other exception
      */
-    public void testReadReturnParameter()
-        throws IOException, 
-               MalformedURLException, 
-               IllegalFormatException,
-	           Exception {
-        // next statement should be in an ArgoTestCase or something,  
-        // is almost always needed
-        Project p = ProjectManager.getManager().makeEmptyProject();
-        Object clazz = CoreFactory.getFactory().buildClass(p.getModel());
-        MOperation oper = CoreFactory.getFactory().buildOperation(clazz);
-        ModelFacade.setType(oper.getParameter(0), p.findType("String"));
-        File file = new File("test.zargo");
+    public void testSave() {
 
-        XmiFilePersister persister = new XmiFilePersister();
-      
-        p.preSave();
-        persister.save(p, file);
-        p.postSave();
+        try {
+            Project p = ProjectManager.getManager().makeEmptyProject();
+            Object clazz = CoreFactory.getFactory().buildClass(p.getModel());
+            MOperation oper = CoreFactory.getFactory().buildOperation(clazz);
+            ModelFacade.setType(oper.getParameter(0), p.findType("String"));
+            File file = new File("test.xmi");
+            XmiFilePersister persister = new XmiFilePersister();
+            p.preSave();
+            persister.save(p, file);
+            p.postSave();
+        } catch (SaveException e) {
+            fail("Save resulted in an exception");
+        }
+    }
+    
+    /**
+     * This is a regression test for issue 1504. Unfortunately this test does
+     * not work since ArgoUML crashes on a classcastexception that is catched by
+     * our dear friends of NSUML. However you can use it to test things quite
+     * easily :)
+     */
+    public void testLoadProject() {
 
-        p = null;
-        p = ProjectManager.getManager().makeEmptyProject();
-
-        URL url = file.toURL();
-        persister.loadProject(url);
+        try {
+            File file = new File("test.xmi");
+    
+            XmiFilePersister persister = new XmiFilePersister();
+          
+            Project p = null;
+            p = ProjectManager.getManager().makeEmptyProject();
+    
+            persister.doLoad(file);
+        } catch (OpenException e) {
+            fail("Load resulted in an exception");
+        }
     }
 }
