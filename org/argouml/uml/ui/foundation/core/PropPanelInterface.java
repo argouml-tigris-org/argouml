@@ -46,7 +46,7 @@ public class PropPanelInterface extends PropPanelClassifier {
 
     addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
     addCaption("Extends:",2,0,0);
 

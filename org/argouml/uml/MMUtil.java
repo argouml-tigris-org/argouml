@@ -24,7 +24,7 @@ public class MMUtil {
 		realizationStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(realizationStereo);
 	}
-    
+
     // This method takes care about removing all unneeded transitions
     // while removing a StateVertex (like a State or ActionState, also Fork et.al.)
     public void remove(MStateVertex sv) {
@@ -42,7 +42,7 @@ public class MMUtil {
 	}
 	sv.remove();
     }
-	
+
 	// This method takes care about removing all unneeded associations,
 	// generalizations, ClassifierRoles and dependencies when removing
 	// a classifier.
@@ -51,9 +51,9 @@ public class MMUtil {
 		while (ascEndIterator.hasNext()) {
 			MAssociationEnd ae = (MAssociationEnd)ascEndIterator.next();
 			MAssociation assoc = ae.getAssociation();
-			if ((assoc.getConnections()).size() < 3) 
+			if ((assoc.getConnections()).size() < 3)
 				assoc.remove();
-			else 
+			else
 				ae.remove();
 		}
 
@@ -78,14 +78,14 @@ public class MMUtil {
 		Iterator clientDependencyIterator = cls.getClientDependencies().iterator();
 		while (clientDependencyIterator.hasNext()) {
 			MDependency dep = (MDependency)clientDependencyIterator.next();
-			if (dep.getClients().size() < 2) 
+			if (dep.getClients().size() < 2)
 				dep.remove();
 		}
 
 		Iterator supplierDependencyIterator = cls.getSupplierDependencies().iterator();
 		while (supplierDependencyIterator.hasNext()) {
 			MDependency dep = (MDependency)supplierDependencyIterator.next();
-			if (dep.getSuppliers().size() < 2) 
+			if (dep.getSuppliers().size() < 2)
 				dep.remove();
 		}
 
@@ -101,7 +101,7 @@ public class MMUtil {
 	public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
 		return this.buildAssociation(c1, true, c2, true);
 	}
-		
+
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
 		MAssociationEnd ae1 = new MAssociationEndImpl();
 		ae1.setType(c1);
@@ -114,6 +114,7 @@ public class MMUtil {
 		MAssociation asc = new MAssociationImpl();
 		asc.addConnection(ae1);
 		asc.addConnection(ae2);
+
 
 		// asc.setUUID(UUIDManager.SINGLETON.getNewUUID());
 
@@ -195,7 +196,7 @@ public class MMUtil {
 
 		while (depIterator.hasNext()) {
 			MDependency dep = (MDependency)depIterator.next();
-			if ((dep instanceof MAbstraction) && 
+			if ((dep instanceof MAbstraction) &&
 			    dep.getStereotype() != null &&
 			    dep.getStereotype().getName() != null &&
 			    dep.getStereotype().getName().equals("realize")) {
@@ -340,7 +341,7 @@ public class MMUtil {
 	/** this method finds all paramters of the given operation which have
 	 * the MParamterDirectionType RETURN. If it is only one, it is returned.
 	 * In case there are no return parameters, null is returned. If there
-	 * is more than one return paramter, first of them is returned, but a 
+	 * is more than one return paramter, first of them is returned, but a
 	 * message is written to System.out
 	 *
 	 * @param operation the operation you want to find the return parameter for
@@ -359,7 +360,7 @@ public class MMUtil {
 		}
 
 		switch (returnParams.size()) {
-		case 1: 
+		case 1:
 			return (MParameter)returnParams.elementAt(0);
 		case 0:
 		    // System.out.println("No ReturnParameter found!");
@@ -371,7 +372,7 @@ public class MMUtil {
 	}
 
 	// this method removes ALL paramters of the given operation which have
-	// the MParamterDirectionType RETURN and adds the new parameter, which 
+	// the MParamterDirectionType RETURN and adds the new parameter, which
 	// gets RETURN by default
 
 	public void setReturnParameter(MOperation operation, MParameter newReturnParameter) {

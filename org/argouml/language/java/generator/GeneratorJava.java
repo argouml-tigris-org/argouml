@@ -152,7 +152,10 @@ public class GeneratorJava extends Generator {
 		if (returnType == null && !nameStr.equals(clsName)) s += "void ";
 		else if (returnType != null) s += generateClassifierRef(returnType) + " ";
 	} else {
-		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
+//          removed since it was throwing exceptions and didn't seem to do
+//                 much,  Curt Arnold 15 Jan 2001
+//
+//		if (nameStr.equals(clsName)) s += " "; // this is a constructor!
 	}
 
 

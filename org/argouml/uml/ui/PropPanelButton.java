@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -34,8 +34,8 @@ import ru.novosoft.uml.*;
 /**
  *   This abstract class provides the basic layout and event dispatching
  *   support for all Property Panels.  The property panel is layed out
- *   as a number (specified in the constructor) of equally sized panels 
- *   that split the available space.  Each panel has a column of 
+ *   as a number (specified in the constructor) of equally sized panels
+ *   that split the available space.  Each panel has a column of
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
  */
@@ -44,7 +44,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     private Method _actionMethod;
     private Method _enabledMethod;
     private static Object[] _noArgs = {};
-    
+
     public PropPanelButton(PropPanel propPanel,JPanel buttonPanel,
         Icon icon,String toolTipText,
         String actionMethod,String enabledMethod) {
@@ -68,12 +68,12 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         buttonPanel.add(this);
         addActionListener(this);
     }
-            
-    
+
+
     public void targetReasserted() {
         boolean enabled = false;
-        Object target = _propPanel.getTarget();        
-        if(target != null && _actionMethod != null) {
+        Object target = _propPanel.getTarget();
+        if(target != null && _actionMethod != null && _propPanel != null) {
             enabled = true;
             if(_enabledMethod != null) {
                 try {
@@ -90,7 +90,7 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     public void targetChanged() {
         targetReasserted();
     }
-    
+
     public void roleAdded(final MElementEvent p1) {
     }
     public void recovered(final MElementEvent p1) {
@@ -103,13 +103,17 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
     }
     public void propertySet(final MElementEvent event) {
     }
-    
+
     public void actionPerformed(final java.awt.event.ActionEvent event) {
-        try {
-            _actionMethod.invoke(_propPanel,_noArgs);
-        }
-        catch(Exception e) {
-            System.out.println(e.toString() + " in PropPanelButton.actionPerformed");
+        if(_actionMethod != null && _propPanel != null) {
+          try {
+              _actionMethod.invoke(_propPanel,_noArgs);
+          }
+          catch(Exception e) {
+              System.out.println(e.toString() + " in PropPanelButton.actionPerformed");
+              System.out.println("Container: " + _propPanel.getClass().getName());
+              System.out.println("ActionMethod: " + _actionMethod.toString());
+          }
         }
     }
 }

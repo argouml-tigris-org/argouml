@@ -168,4 +168,21 @@ public class PropPanelAttribute extends PropPanel {
             baseClass.equals("StructuralFeature") ||
             baseClass.equals("Feature");
     }
+
+    /**
+     *   Appropriate namespace is the namespace of our class,
+     *      not the class itself
+     */
+    protected MNamespace getDisplayNamespace() {
+      MNamespace ns = null;
+      Object target = getTarget();
+      if(target instanceof MAttribute) {
+        MAttribute attr = ((MAttribute) target);
+        MClassifier owner = attr.getOwner();
+        if(owner != null) {
+          ns = owner.getNamespace();
+        }
+      }
+      return ns;
+    }
 } /* end class PropPanelAttribute */

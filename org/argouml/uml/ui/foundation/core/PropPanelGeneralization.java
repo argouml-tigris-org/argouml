@@ -56,7 +56,7 @@ public class PropPanelGeneralization extends PropPanel {
 
     addCaption("Stereotype:",1,0,0);
     JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
 
     addCaption("Discriminator:",2,0,0);
     addField(new UMLTextField(this,new UMLTextProperty(mclass,"discriminator","getDiscriminator","setDiscriminator")),2,0,0);
@@ -75,17 +75,17 @@ public class PropPanelGeneralization extends PropPanel {
     //
     UMLComboBoxModel parentModel = new UMLComboBoxModel(this,"isAcceptibleParent",
         "parent","getParentElement","setParentElement",false,MGeneralizableElement.class,true);
-    addField(new UMLComboBox(parentModel),0,1,0);
+    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(parentModel)),0,1,0);
 
     addCaption("Child:",1,1,0);
     UMLComboBoxModel childModel = new UMLComboBoxModel(this,"isAcceptibleChild",
         "child","getChild","setChild",false,MGeneralizableElement.class,false);
-    addField(new UMLComboBox(childModel),1,1,0);
+    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(childModel)),1,1,0);
 
     addCaption("Powertype:",2,1,1);
     UMLComboBoxModel powerModel = new UMLComboBoxModel(this,"isAcceptiblePowertype",
         "powertype","getPowertype","setPowertype",false,MClassifier.class,true);
-    addField(new UMLComboBox(powerModel),2,1,0);
+    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(powerModel)),2,1,0);
 
     JPanel buttonBorder = new JPanel(new BorderLayout());
     JPanel buttonPanel = new JPanel(new GridLayout(0,2));
