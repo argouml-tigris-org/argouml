@@ -81,9 +81,8 @@ public class FigClass extends FigNodeModelElement
 
     //These are the positions of child figs inside this fig
     //They mst be added in the constructor in this order.
-    private static final int BLINDER_POSN = 3;
-    private static final int OPERATIONS_POSN = 4;
-    private static final int ATTRIBUTES_POSN = 5;
+    private static final int OPERATIONS_POSN = 3;
+    private static final int ATTRIBUTES_POSN = 4;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -183,16 +182,6 @@ public class FigClass extends FigNodeModelElement
         // +1 to have 1 pixel overlap with getNameFig()
         getStereotypeFig().setVisible(false);
 
-        // A thin rectangle to overlap the boundary line between stereotype
-        // and name. This is just 2 pixels high, and we rely on the line
-        // thickness, so the rectangle does not need to be filled. Whether to
-        // display is linked to whether to display the stereotype.
-        FigRect stereoLineBlinder =
-	    new FigRect(11, 10 + STEREOHEIGHT, 58, 2,
-			Color.white, Color.white);
-        stereoLineBlinder.setLineWidth(1);
-        stereoLineBlinder.setVisible(false);
-
         FigEmptyRect bigPort = new FigEmptyRect(10, 10, 0, 0);
         bigPort.setLineWidth(1);
         bigPort.setLineColor(Color.black);
@@ -214,7 +203,6 @@ public class FigClass extends FigNodeModelElement
         addFig(getStereotypeFig());
         addFig(getNameFig());
         addFig(bigPort);
-        addFig(stereoLineBlinder);
         addFig(operationsFigCompartment);
         addFig(attributesFigCompartment);
 
@@ -541,7 +529,6 @@ public class FigClass extends FigNodeModelElement
      */
     public void setFillColor(Color lColor) {
         super.setFillColor(lColor);
-        getFigAt(BLINDER_POSN).setLineColor(lColor);
     }
 
     /**
@@ -549,8 +536,6 @@ public class FigClass extends FigNodeModelElement
      */
     public void setLineColor(Color lColor) {
         super.setLineColor(lColor);
-        getFigAt(BLINDER_POSN)
-            .setLineColor(getFigAt(BLINDER_POSN).getFillColor());
     }
 
     /**
@@ -878,7 +863,6 @@ public class FigClass extends FigNodeModelElement
                 || (Model.getFacade().getName(stereo).length() == 0))	{
 
             if (getStereotypeFig().isVisible()) {
-                getFigAt(BLINDER_POSN).setVisible(false);
                 getStereotypeFig().setVisible(false);
                 rect.y += STEREOHEIGHT;
                 rect.height -= STEREOHEIGHT;
@@ -889,7 +873,6 @@ public class FigClass extends FigNodeModelElement
             setStereotype(Notation.generateStereotype(this, stereo));
 
             if (!getStereotypeFig().isVisible()) {
-                getFigAt(BLINDER_POSN).setVisible(true);
                 getStereotypeFig().setVisible(true);
 
                 // Only adjust the stereotype height if we are not newly
@@ -967,6 +950,14 @@ public class FigClass extends FigNodeModelElement
         // correction due to rounded division result, will be added to the name
         // compartment
 
+        getNameFig().setLineWidth(0);
+        getNameFig().setLineColor(Color.red);
+        
+        int stereotypeHeight = 0;
+        if (getStereotypeFig().isVisible()) {
+            stereotypeHeight = STEREOHEIGHT;
+        }
+        
         Rectangle oldBounds = getBounds();
         Dimension aSize =
             isCheckSize() ? getMinimumSize() : new Dimension(w, h);
@@ -1024,19 +1015,17 @@ public class FigClass extends FigNodeModelElement
 
         int currentY = y;
 
-        if (getStereotypeFig().isVisible()) {
-            currentY += STEREOHEIGHT;
-        }
+        currentY += stereotypeHeight;
+
+        getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
 
         if (displayedFigs == 1) {
             height = newH;
+            getNameFig().setBounds(x, y + stereotypeHeight,
+                                   newW, height - stereotypeHeight);
+        } else {
+            getNameFig().setBounds(x, y + stereotypeHeight, newW, height);
         }
-
-        getNameFig().setBounds(x, currentY, newW, height);
-
-
-        getStereotypeFig().setBounds(x, y, newW, STEREOHEIGHT + 1);
-        getFigAt(BLINDER_POSN).setBounds(x + 1, y + STEREOHEIGHT, newW - 2, 2);
 
         // Advance currentY to where the start of the attribute box is,
         // remembering that it overlaps the next box by 1 pixel. Calculate the
