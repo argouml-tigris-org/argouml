@@ -26,9 +26,15 @@ package org.argouml.uml.ui;
 import org.argouml.ui.*;
 import org.argouml.uml.diagram.static_structure.ui.*;
 import org.argouml.uml.generator.ui.*;
-import ru.novosoft.uml.foundation.core.*;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import java.awt.event.*;
 import java.util.*;
+import javax.swing.tree.TreePath;
+
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
 
 /** Action to trigger code generation for one or more classes.
  *  @stereotype singleton
@@ -63,12 +69,23 @@ public class ActionGenerateAll extends UMLAction {
       java.util.Enumeration enum = nodes.elements();
       while (enum.hasMoreElements()) {
           Object owner = enum.nextElement();
-          if (!(owner instanceof MClass) && !(owner instanceof MInterface))
+          if (!ModelFacade.isAClass(owner) && !ModelFacade.isAInterface(owner))
             continue;
-          MClassifier cls = (MClassifier) owner;
-          String name = cls.getName();
+          String name = ModelFacade.getName(owner);
           if (name == null || name.length() == 0 || Character.isDigit(name.charAt(0))) continue;
-          classes.addElement(cls);
+            classes.addElement(owner);
+      }
+      if (classes.size() == 0) {
+          TreePath[] paths = pb.getNavigatorPane().getTree().getSelectionPaths();
+          for (int i = 0; i < paths.length; i++ ) {
+              Object selected = paths[i].getLastPathComponent();
+              if (ModelFacade.isAPackage(selected)) {
+                  addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MClass.class), classes);
+                  addCollection(ModelManagementHelper.getHelper().getAllModelElementsOfKind(selected, MInterface.class), classes);
+              } else if (ModelFacade.isAClass(selected) || ModelFacade.isAInterface(selected)) {
+                  if(!classes.contains(selected)) classes.addElement(selected);
+              }
+          }
       }
       ClassGenerationDialog cgd = new ClassGenerationDialog(classes);
       cgd.show();
@@ -78,5 +95,15 @@ public class ActionGenerateAll extends UMLAction {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       ArgoDiagram activeDiagram = pb.getActiveDiagram();
       return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
+    }
+    
+    /**
+     *Adds elements from collection without duplicates
+     */
+    private void addCollection(Collection c, Vector v) {
+        for (Iterator it = c.iterator(); it.hasNext();) {
+            Object o = it.next();
+            if (!v.contains(o)) v.addElement(o);
+        }
     }
 } /* end class ActionGenerateAll */
