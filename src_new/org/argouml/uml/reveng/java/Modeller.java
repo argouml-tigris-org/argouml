@@ -2396,7 +2396,8 @@ public class Modeller
 
 
 
-        if (sCurrentTagData.charAt (sCurrentTagData.length() - 1) == '\n') {
+        if ( sCurrentTagData.length() > 0 &&
+             sCurrentTagData.charAt (sCurrentTagData.length() - 1) == '\n') {
 
           sCurrentTagData = sCurrentTagData.substring (
 
