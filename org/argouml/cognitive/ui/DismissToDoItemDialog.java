@@ -54,13 +54,6 @@ public class DismissToDoItemDialog extends ArgoDialog {
         Logger.getLogger(DismissToDoItemDialog.class);
 
     ////////////////////////////////////////////////////////////////
-    // constants
-
-    // Resource-Bundle's
-    private static final String DLGBUNDLE = "dialog";
-    private static final String OPTBUNDLE = "optionpane";
-
-    ////////////////////////////////////////////////////////////////
     // instance variables
 
     private JRadioButton    _badGoalButton;
@@ -76,7 +69,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
     public DismissToDoItemDialog() {
         super(
             ProjectBrowser.getInstance(),
-            Translator.localize(DLGBUNDLE, "dialog.title.dismiss-todo-item"),
+            Translator.localize("dialog.title.dismiss-todo-item"),
             ArgoDialog.OK_CANCEL_OPTION,
             true);
 
@@ -236,7 +229,7 @@ public class DismissToDoItemDialog extends ArgoDialog {
             JOptionPane.showMessageDialog(
                 this,
                 ure.getMessage(),
-                Translator.localize(OPTBUNDLE, "optionpane.dismiss-failed"),
+                Translator.localize("optionpane.dismiss-failed"),
                 JOptionPane.ERROR_MESSAGE);
         }
     }
