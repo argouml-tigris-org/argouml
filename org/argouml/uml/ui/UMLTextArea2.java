@@ -25,13 +25,13 @@
 // $Id$
 package org.argouml.uml.ui;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.JTextArea;
 
 import org.argouml.ui.targetmanager.TargetListener;
 import org.argouml.ui.targetmanager.TargettableModelView;
-
-import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.MElementListener;
 
 /**
  * A JTextArea especially made to represent UMLPlainTextDocuments. 
@@ -39,7 +39,7 @@ import ru.novosoft.uml.MElementListener;
  * @since Dec 28, 2002
  */
 public class UMLTextArea2 extends JTextArea 
-    implements MElementListener, TargettableModelView {
+    implements PropertyChangeListener, TargettableModelView {
 
     
     /**
@@ -55,45 +55,10 @@ public class UMLTextArea2 extends JTextArea
     }
 
     /**
-     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
      */
-    public void propertySet(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).propertySet(e);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleAdded(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).roleAdded(e);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
-     */
-    public void roleRemoved(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).roleRemoved(e);
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
-     */
-    public void listRoleItemSet(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).listRoleItemSet(e);            
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
-     */
-    public void removed(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).removed(e);     
-    }
-
-    /**
-     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
-     */
-    public void recovered(MElementEvent e) {
-        ((UMLPlainTextDocument) getDocument()).recovered(e);     
+    public void propertyChange(PropertyChangeEvent evt) {
+        ((UMLPlainTextDocument) getDocument()).propertyChange(evt);    
     }
 
     /** 
