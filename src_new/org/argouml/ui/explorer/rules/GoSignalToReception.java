@@ -44,7 +44,7 @@ public class GoSignalToReception extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-    	return Translator.localize ("Tree", "Signal->Reception");
+    	return Translator.localize ("Signal->Reception");
     }
 
     /**

@@ -44,7 +44,7 @@ public class GoCollaborationDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.collaboration.diagram");
+        return Translator.localize ("misc.collaboration.diagram");
     }
 
     /**

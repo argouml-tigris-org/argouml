@@ -69,7 +69,7 @@ public class GoStateToEntry extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state.entry");
+        return Translator.localize ("misc.state.entry");
     }
 
 }

@@ -69,6 +69,6 @@ public class GoStateToExit extends AbstractPerspectiveRule {
      * @see org.argouml.ui.AbstractGoRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state.exit");
+        return Translator.localize ("misc.state.exit");
     }
 }

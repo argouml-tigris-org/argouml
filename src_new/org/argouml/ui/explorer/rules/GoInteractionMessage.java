@@ -46,7 +46,7 @@ public class GoInteractionMessage extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.interaction.messages");
+	return Translator.localize ("misc.interaction.messages");
     }
 
     /**

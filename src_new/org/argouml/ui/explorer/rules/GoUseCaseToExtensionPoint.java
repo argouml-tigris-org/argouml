@@ -45,7 +45,7 @@ public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
      *          Point</code>"). 
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.use-case.extension-point");
+        return Translator.localize ("misc.use-case.extension-point");
     }
 
     /**

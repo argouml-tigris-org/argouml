@@ -48,7 +48,7 @@ public class GoClassToSummary extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.summary");
+	return Translator.localize ("misc.class.summary");
     }
 
     /**

@@ -45,7 +45,7 @@ public class GoMachineDiagram extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state-machine.diagram");
+        return Translator.localize ("misc.state-machine.diagram");
     }
 
     /**

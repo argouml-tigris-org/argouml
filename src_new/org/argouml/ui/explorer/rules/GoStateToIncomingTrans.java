@@ -41,7 +41,7 @@ public class GoStateToIncomingTrans extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.state.incoming-transitions");
+        return Translator.localize ("misc.state.incoming-transitions");
     }
 
     /**

@@ -42,7 +42,7 @@ public class GoModelToBaseElements extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.package.base-class");
+	return Translator.localize ("misc.package.base-class");
     }
   
     /**

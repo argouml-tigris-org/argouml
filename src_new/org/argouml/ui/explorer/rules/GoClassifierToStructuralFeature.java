@@ -41,7 +41,7 @@ public class GoClassifierToStructuralFeature extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-	return Translator.localize ("Tree", "misc.class.attribute");
+	return Translator.localize ("misc.class.attribute");
     }
 
     /**

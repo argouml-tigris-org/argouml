@@ -42,7 +42,7 @@ public class GoTransitionToSource extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() { 
-        return Translator.localize ("Tree", "misc.transition.source-state");
+        return Translator.localize ("misc.transition.source-state");
     }
 
     /**

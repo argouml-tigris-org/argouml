@@ -44,7 +44,7 @@ public class GoSummaryToAssociation extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() {
-        return Translator.localize ("Tree", "misc.summary.association");
+        return Translator.localize ("misc.summary.association");
     }
 
     /**

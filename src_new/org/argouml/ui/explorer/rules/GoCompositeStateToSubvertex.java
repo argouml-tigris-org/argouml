@@ -41,7 +41,7 @@ public class GoCompositeStateToSubvertex extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() { 
-        return Translator.localize ("Tree", "misc.state.substates");
+        return Translator.localize ("misc.state.substates");
     }
 
     /**

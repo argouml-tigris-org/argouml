@@ -40,7 +40,7 @@ public class GoDiagramToNode extends AbstractPerspectiveRule {
      * @see org.argouml.ui.explorer.rules.PerspectiveRule#getRuleName()
      */
     public String getRuleName() { 
-        return Translator.localize ("Tree", "misc.diagram.node");
+        return Translator.localize ("misc.diagram.node");
     }
 
     /**
