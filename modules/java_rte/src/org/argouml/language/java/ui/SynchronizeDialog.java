@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002, 2004 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,7 +35,12 @@ import java.awt.GridBagLayout;
  */
 public class SynchronizeDialog extends javax.swing.JDialog {
 
-    /** Creates new form SynchronizeDialog */
+    /** 
+     * Creates new form SynchronizeDialog.
+     * 
+     * @param parent the parent frame
+     * @param modal true if modal
+     */
     public SynchronizeDialog(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -90,12 +95,15 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         actionPanel.add(labelUpdCod);
 
         buttonGen.setText("Generate");
-        buttonGen.setToolTipText("Adds the selected model element to the source code");
+        buttonGen.setToolTipText(
+                "Adds the selected model element to the source code");
         buttonGen.setEnabled(false);
         actionPanel.add(buttonGen);
 
         buttonRenCod.setText("Rename");
-        buttonRenCod.setToolTipText("Renames all occurences of the selected source code element to the name of the selected model element");
+        buttonRenCod.setToolTipText(
+            "Renames all occurences of the selected source code element"
+            + " to the name of the selected model element");
         buttonRenCod.setEnabled(false);
         actionPanel.add(buttonRenCod);
 
@@ -103,12 +111,15 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         actionPanel.add(labelUpdMod);
 
         buttonImp.setText("Import");
-        buttonImp.setToolTipText("Adds the selected source code element to the model");
+        buttonImp.setToolTipText(
+                "Adds the selected source code element to the model");
         buttonImp.setEnabled(false);
         actionPanel.add(buttonImp);
 
         buttonRenMod.setText("Rename");
-        buttonRenMod.setToolTipText("Renames all occurences of the selected model element to the name of the selected source code element");
+        buttonRenMod.setToolTipText(
+            "Renames all occurences of the selected model element to "
+            + "the name of the selected source code element" );
         buttonRenMod.setEnabled(false);
         actionPanel.add(buttonRenMod);
 
@@ -133,18 +144,18 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         tableModel.setModel(new ModelTableModel());
         tableModel.setEnabled(false);
         tableModel.addKeyListener(new java.awt.event.KeyAdapter() 
-	    {
-		public void keyPressed(java.awt.event.KeyEvent evt) {
-		    tableModelKeyPressed(evt);
-		}
-	    });
-
+        {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                tableModelKeyPressed(evt);
+            }
+        });
+        
         tableModel.addMouseListener(new java.awt.event.MouseAdapter() 
-	    {
-		public void mousePressed(java.awt.event.MouseEvent evt) {
-		    tableModelMousePressed(evt);
-		}
-	    });
+        {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tableModelMousePressed(evt);
+            }
+        });
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -157,49 +168,49 @@ public class SynchronizeDialog extends javax.swing.JDialog {
 
         tableCode.setBorder(new javax.swing.border.EtchedBorder());
         tableCode.setModel(
-	        new javax.swing.table.DefaultTableModel(new Object [][] {
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null},
-							{null, null, null}
-							},
-							new String [] {
-							    "Title 1",
-							    "Title 2",
-							    "Title 3"
-							}
-							) 
-		{
-		    boolean[] canEdit = new boolean [] {
-			false, false, false
-		    };
+	    new javax.swing.table.DefaultTableModel(new Object [][] {
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null},
+	        {null, null, null}
+	    },
+	    new String [] {
+		"Title 1",
+		"Title 2",
+		"Title 3"
+	    }
+	    ) 
+	{
+	    private boolean[] canEdit = new boolean [] {
+		false, false, false
+	    };
 
-		    public boolean isCellEditable(int rowIndex, int columnIndex) {
-			return canEdit [columnIndex];
-		    }
-		});
+	    public boolean isCellEditable(int rowIndex, int columnIndex) {
+		return canEdit [columnIndex];
+	    }
+	});
         tableCode.setEnabled(false);
         tableCode.addKeyListener(new java.awt.event.KeyAdapter() 
-	    {
-		public void keyPressed(java.awt.event.KeyEvent evt) {
-		    tableCodeKeyPressed(evt);
-		}
-	    });
+        {
+	    public void keyPressed(java.awt.event.KeyEvent evt) {
+		tableCodeKeyPressed(evt);
+	    }
+	});
 
         tableCode.addMouseListener(new java.awt.event.MouseAdapter() 
-	    {
-		public void mousePressed(java.awt.event.MouseEvent evt) {
-		    tableCodeMousePressed(evt);
-		}
-	    });
+        {
+	    public void mousePressed(java.awt.event.MouseEvent evt) {
+		tableCodeMousePressed(evt);
+	    }
+	});
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -226,21 +237,21 @@ public class SynchronizeDialog extends javax.swing.JDialog {
 
         buttonPause.setText("Pause");
         buttonPause.addActionListener(new java.awt.event.ActionListener() 
-	    {
-		public void actionPerformed(java.awt.event.ActionEvent evt) {
-		    buttonPauseActionPerformed(evt);
-		}
-	    });
+	{
+	    public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonPauseActionPerformed(evt);
+	    }
+	});
 
         bottomPanel.add(buttonPause);
 
         buttonClose.setText("Close");
         buttonClose.addActionListener(new java.awt.event.ActionListener() 
-	    {
-		public void actionPerformed(java.awt.event.ActionEvent evt) {
-		    buttonCloseActionPerformed(evt);
-		}
-	    });
+        {
+	    public void actionPerformed(java.awt.event.ActionEvent evt) {
+		buttonCloseActionPerformed(evt);
+	    }
+	});
 
         bottomPanel.add(buttonClose);
 
@@ -254,7 +265,8 @@ public class SynchronizeDialog extends javax.swing.JDialog {
         pack();
     } //GEN-END:initComponents
 
-    private void buttonPauseActionPerformed(java.awt.event.ActionEvent evt) { //GEN-FIRST:event_buttonPauseActionPerformed
+    private void buttonPauseActionPerformed(java.awt.event.ActionEvent evt) { 
+        //GEN-FIRST:event_buttonPauseActionPerformed
         tableModel.setEnabled(isBusy);
         tableCode.setEnabled(isBusy);
         if (isBusy) {
@@ -303,7 +315,9 @@ public class SynchronizeDialog extends javax.swing.JDialog {
     } //GEN-LAST:event_closeDialog
 
     private void updateActionButtons() {
-        boolean renameable = tableModel.getSelectedRowCount() == 1 && tableCode.getSelectedRowCount() == 1;
+        boolean renameable = 
+            tableModel.getSelectedRowCount() == 1 
+            && tableCode.getSelectedRowCount() == 1;
         if (tableModel.isEnabled()) {
             buttonGen.setEnabled(tableModel.getSelectedRowCount() > 0);
             buttonRenMod.setEnabled(renameable);
