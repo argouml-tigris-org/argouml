@@ -23,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import org.argouml.ui.*;
 import javax.swing.*;
 
 /**  An module interface which identifies an ArgoUML plug-in used

@@ -26,7 +26,6 @@ package org.argouml.application.api;
 import org.argouml.application.configuration.*;
 import java.io.*;
 import java.beans.*;
-import java.util.*;
 import java.net.*;
 import org.apache.log4j.*;
 import org.argouml.application.configuration.ConfigurationKeyImpl;

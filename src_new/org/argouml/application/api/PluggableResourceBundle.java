@@ -23,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.api;
-import javax.swing.*;
 
 /**  An interface which identifies an ArgoUML plug-in as a resource bundle.
  *   Plug-ins are replacements or additions to standard Argo classes.

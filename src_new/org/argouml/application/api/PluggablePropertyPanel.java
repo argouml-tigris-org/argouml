@@ -24,8 +24,6 @@
 
 package org.argouml.application.api;
 
-import javax.swing.*;
-
 import org.argouml.uml.ui.*;
 
 /**  An interface which identifies an ArgoUML plug-in property panel.

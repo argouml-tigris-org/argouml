@@ -23,7 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
 import java.util.*;
 
 /** The root class from which all event state objects within Argo are derived. 

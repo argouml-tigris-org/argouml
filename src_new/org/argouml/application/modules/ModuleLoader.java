@@ -37,8 +37,6 @@ import java.io.*;
 import java.lang.reflect.*;
 import java.util.*;
 import java.util.jar.*;
-import java.net.*;
-import org.apache.log4j.*;
 
 // Import the following classes fully qualified to ensure that
 // no one can short-circuit our intended inheritance.

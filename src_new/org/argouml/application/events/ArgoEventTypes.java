@@ -23,8 +23,6 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.application.events;
-import org.argouml.application.api.*;
-import java.util.*;
 
 /** Definitions of Argo Event types.
  *
