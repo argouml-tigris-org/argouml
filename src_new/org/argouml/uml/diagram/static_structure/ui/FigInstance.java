@@ -30,7 +30,6 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
-import org.tigris.gef.base.Globals;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;

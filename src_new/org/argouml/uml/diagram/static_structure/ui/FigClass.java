@@ -65,7 +65,6 @@ import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 /**

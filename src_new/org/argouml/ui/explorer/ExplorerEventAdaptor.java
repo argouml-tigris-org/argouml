@@ -26,11 +26,10 @@ package org.argouml.ui.explorer;
 
 import java.beans.PropertyChangeListener;
 
-import org.argouml.kernel.ProjectManager;
-import org.argouml.application.api.Notation;
 import org.argouml.application.api.Configuration;
+import org.argouml.application.api.Notation;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
-import org.argouml.model.uml.ExplorerNSUMLEventAdaptor;
 
 /**
  * All events going to the Explorer must pass through here first!<p>
