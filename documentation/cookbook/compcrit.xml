@@ -144,12 +144,13 @@ methods of <classname>CrUML</classname>:
 	      <itemizedlist>
 		<listitem>
 		  <para>
-<command>setResource("Cr<replaceable>XxxxYyyyZzzz</replaceable>");</command>
+<command>setHeadline("");</command>
 to set up the locale specific text for 
 the critic headline (the one liner that appears in the to-do pane)
 and
 the critic description (the detailed explanation that appears in 
 the to-do tab of the details pane).
+The String parameter is ignored.
 </para>
 		</listitem>
 		<listitem>
@@ -213,16 +214,14 @@ description to the cognitive resource bundles.
 These are in the package 
 <classname>org.argouml.i18n</classname>, 
 in the file
-<filename>UMLCognitiveResourceBundle.java</filename>.
+<filename>critics.properties</filename>.
 You need to add two keys for the head and description,
 which will be named respectively
-<constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_head</constant>
+<constant>critics.<replaceable>CrXxxxxYyyyZzzz</replaceable>-head</constant>
 and
-<constant>Cr<replaceable>XxxxYyyyZzzz</replaceable>_desc</constant>.
+<constant>critics<replaceable>CrXxxxxYyyyZzzz</replaceable>-desc</constant>.
 There are plenty of examples to look at there.
 The other files 
-(<filename>UMLCognitiveResourceBundle_en_GB.java</filename>,
-<filename>UMLCognitiveResourceBundle_es.java</filename>, ...
 for
 British English,
 Spanish, ...
@@ -235,7 +234,7 @@ In method <methodname>Init</methodname>
 of the class <classname>org.argouml.uml.cognitive.critics.Init</classname>, 
 add two statements:
 <programlisting>
-  public static Critic <replaceable>crXxxxxYyyyZzzz</replaceable> = new <replaceable>CrXxxxxYyyyZzzz</replaceable>();
+  private static Critic <replaceable>crXxxxxYyyyZzzz</replaceable> = new <replaceable>CrXxxxxYyyyZzzz</replaceable>();
 ...
   Agency.register(<replaceable>crXxxxxYyyyZzzz</replaceable>, <replaceable>DesignMaterialCls</replaceable>);
 </programlisting>
