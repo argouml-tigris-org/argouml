@@ -124,7 +124,7 @@ public class CrConsiderSingleton extends CrUML {
 
 
 	// If there is an outgoing association => no problem
-	Iterator ends = ModelFacade.getAssociationEnds(dm);
+	Iterator ends = ModelFacade.getAssociationEnds(dm).iterator();
 
 	while (ends.hasNext()) {
 	    Iterator otherends = 

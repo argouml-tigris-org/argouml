@@ -954,15 +954,16 @@ public class CoreHelper {
      * @param classifier
      * @return Collection
      */
-    public Collection getAssociations(MClassifier classifier) {
-        if (classifier == null)
-            return new ArrayList();
-        Iterator it = classifier.getAssociationEnds().iterator();
-        List associations = new ArrayList();
-        while (it.hasNext()) {
-            associations.add(((MAssociationEnd)it.next()).getAssociation());
+    public Collection getAssociations(Object oclassifier) {
+        Collection col = new ArrayList();
+        if (ModelFacade.isAClassifier(oclassifier)) {
+            MClassifier classifier = (MClassifier)oclassifier;
+            Iterator it = classifier.getAssociationEnds().iterator();
+            while (it.hasNext()) {
+                col.add(((MAssociationEnd)it.next()).getAssociation());
+            }
         }
-        return associations;
+        return col;
     }
 
     /**
@@ -1408,7 +1409,7 @@ public class CoreHelper {
             name = ((MClassifier)o).getName();
         return name;
     }
-    
+
     /**
      * Returns all associated classes for some given classifier. Returns an
      * empty collection if the given argument o is not a classifier. The given
@@ -1440,7 +1441,7 @@ public class CoreHelper {
         }
         return col;
     }
-    
+
     /**
      * Returns the base classes (that are the classes that do not have any
      * generalizations) for some given namespace. Personally, this seems a
@@ -1453,7 +1454,11 @@ public class CoreHelper {
     public Collection getBaseClasses(Object o) {
         Collection col = new ArrayList();
         if (ModelFacade.isANamespace(o)) {
-            Iterator it = ModelManagementHelper.getHelper().getAllModelElementsOfKind(o, MGeneralizableElement.class).iterator();
+            Iterator it =
+                ModelManagementHelper
+                    .getHelper()
+                    .getAllModelElementsOfKind(o, MGeneralizableElement.class)
+                    .iterator();
             while (it.hasNext()) {
                 MGeneralizableElement gen = (MGeneralizableElement)it.next();
                 if (gen.getGeneralizations().isEmpty()) {
@@ -1463,5 +1468,5 @@ public class CoreHelper {
         }
         return col;
     }
-    
+
 }
