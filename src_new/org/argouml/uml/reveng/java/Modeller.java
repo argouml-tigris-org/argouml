@@ -185,34 +185,48 @@ public class Modeller
         ModelFacade.setLeaf(mClass,(modifiers & JavaRecognizer.ACC_FINAL) > 0);
         ModelFacade.setRoot(mClass,false);
 
-        try {
+
             if(superclassName != null) {
-                Object parentClass = getContext(superclassName).get(getClassifierName(superclassName));
-                getGeneralization(currentPackage, parentClass, mClass);
+                try {
+                    Object parentClass = getContext(superclassName).get(getClassifierName(superclassName));
+                    getGeneralization(currentPackage, parentClass, mClass);
+                }
+                catch(ClassifierNotFoundException e) {
+                    // Currently if a classifier cannot be found in the
+                    // model/classpath then information will be lost from
+                    // source files, because the classifier cannot be
+                    // created on the fly.
+                    cat.warn("Modeller.java: a classifier that was in the source"+
+                         " file could not be generated in the model "+
+                         "(to generate a generalization)- information lost\n"+
+                         "\t"+e);
+                }
             }
 
             for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
                 String interfaceName = (String)i.next();
-                Object mInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
-                Object mAbstraction = getAbstraction(currentPackage, mInterface, mClass);
-                if(ModelFacade.getSuppliers(mAbstraction).size() == 0) {
-                    ModelFacade.addSupplier(mAbstraction, mInterface);
-                    ModelFacade.addClient(mAbstraction, mClass);
+                try {
+                    Object mInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
+                    Object mAbstraction = getAbstraction(currentPackage, mInterface, mClass);
+                    if(ModelFacade.getSuppliers(mAbstraction).size() == 0) {
+                        ModelFacade.addSupplier(mAbstraction, mInterface);
+                        ModelFacade.addClient(mAbstraction, mClass);
+                    }
+                    ModelFacade.setNamespace(mAbstraction,currentPackage);
+                    ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
                 }
-                ModelFacade.setNamespace(mAbstraction,currentPackage);
-                ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
-            }
-        }
-        catch(ClassifierNotFoundException e) {
-		// Currently if a classifier cannot be found in the
-                // model/classpath then information will be lost from
-                // source files, because the classifier cannot be
-                // created on the fly.
-                cat.warn("Modeller.java: a classifier that was in the source"+
+                catch(ClassifierNotFoundException e) {
+                        // Currently if a classifier cannot be found in the
+                        // model/classpath then information will be lost from
+                        // source files, because the classifier cannot be
+                        // created on the fly.
+                        cat.warn("Modeller.java: a classifier that was in the source"+
                          " file could not be generated in the model "+
-                         "(to generate a generalization or abstraction)- information lost\n"+
+                         "(to generate a abstraction)- information lost\n"+
                          "\t"+e);
-        }
+                }
+            }
+
     }
 
     /**
@@ -253,14 +267,13 @@ public class Modeller
                              String javadoc)
     {
         Object mInterface = addClassifier(UmlFactory.getFactory().getCore().createInterface(), name, modifiers, javadoc);
-        try {
-            for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-                String interfaceName = (String)i.next();
+        for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
+            String interfaceName = (String)i.next();
+            try {
                 Object parentInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
                 getGeneralization(currentPackage, parentInterface, mInterface);
             }
-        }
-        catch(ClassifierNotFoundException e) {
+            catch(ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -269,6 +282,7 @@ public class Modeller
                          " file could not be generated in the model "+
                          "(to generate a generalization)- information lost\n"+
                          "\t"+e);
+            }
         }
     }
 
@@ -388,7 +402,6 @@ public class Modeller
           ModelFacade.removeParameter(mOperation, i.next());
       }
 
-      try {
           Object mParameter;
           String typeName;
           Object mPackage;
@@ -402,8 +415,20 @@ public class Modeller
               mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
               ModelFacade.setName(mParameter, "return");
               ModelFacade.setKindToReturn(mParameter);
-              mClassifier = getContext(returnType).get(getClassifierName(returnType));
-              ModelFacade.setType(mParameter, mClassifier);
+              try {
+                mClassifier = getContext(returnType).get(getClassifierName(returnType));
+                ModelFacade.setType(mParameter, mClassifier);
+              }
+              catch(ClassifierNotFoundException e) {
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source "+
+                         "file could not be generated in the model "+
+                         "(for generating operation return type)- information lost\n"+
+                         "\t"+e);
+             }
           }
 
           for(Iterator i = parameters.iterator(); i.hasNext(); ) {
@@ -412,11 +437,11 @@ public class Modeller
               ModelFacade.setName(mParameter, (String)parameter.elementAt(2));
               ModelFacade.setKindToIn(mParameter);
               typeName = (String)parameter.elementAt(1);
-              mClassifier = getContext(typeName).get(getClassifierName(typeName));
-              ModelFacade.setType(mParameter, mClassifier);
-          }
-      }
-      catch(ClassifierNotFoundException e) {
+              try {
+                mClassifier = getContext(typeName).get(getClassifierName(typeName));
+                ModelFacade.setType(mParameter, mClassifier);
+              }
+              catch(ClassifierNotFoundException e) {
 		// Currently if a classifier cannot be found in the
                 // model/classpath then information will be lost from
                 // source files, because the classifier cannot be
@@ -425,7 +450,9 @@ public class Modeller
                          "file could not be generated in the model "+
                          "(for generating operation params)- information lost\n"+
                          "\t"+e);
-      }
+             }
+          }
+
 
       /*
        * Changed 2001-10-05 STEFFEN ZSCHALER.
