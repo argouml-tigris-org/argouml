@@ -142,7 +142,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="0.9.post3cvs"/>
+    <property name="version" value="0.9.3-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2001"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -268,7 +268,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- =================================================================== -->
   <target name="package" depends="compile">
     <filter token="version" value="${version}"/>
-    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" />
+    <copy file="${manifest}" tofile="${build.dest}/${manifest}" filtering="on" overwrite="on" />
     <jar jarfile="${build.dir}/${name}.jar"
          basedir="${build.dest}"
          includes="org/argouml/**"
