@@ -31,21 +31,27 @@ import uci.uml.Foundation.Data_Types.*;
 
 
 public class ChangeEvent extends Event {
-  public BooleanExpression _changeExpression;
+
+  protected BooleanExpression _changeExpression;
   
   public ChangeEvent() { }
+
   public ChangeEvent(Name name, BooleanExpression exp) {
     super(name);
     try { setChangeExpression(exp); }
     catch (PropertyVetoException pve) { }
   }
+
   public ChangeEvent(String nameStr) { super(new Name(nameStr)); }
 
   public BooleanExpression getChangeExpression() { return _changeExpression; }
+
   public void setChangeExpression(BooleanExpression x)
        throws PropertyVetoException {
     fireVetoableChange("changeExpression", _changeExpression, x);
     _changeExpression = x;
   }
+
   static final long serialVersionUID = 7458730805238059328L;
+
 }
