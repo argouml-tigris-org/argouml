@@ -34,6 +34,8 @@ import ru.novosoft.uml.foundation.core.*;
 import java.awt.event.*;
 import java.util.*;
 
+/** deletes an modelelement from the diagram, but not from the model.
+ */
 public class ActionDeleteFromDiagram extends UMLChangeAction {
 
     ////////////////////////////////////////////////////////////////
@@ -63,28 +65,37 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
 	return size > 0;
     }
 
+
     public void actionPerformed(ActionEvent ae) {
-	int size = 0;
-	try {
-	    Editor ce = Globals.curEditor();
-	    Vector figs = ce.getSelectionManager().getFigs();
-	    size = figs.size();
-	    for (int i = 0; i < size; i++) {
-		Fig f = (Fig) figs.elementAt(i);
-		if (f instanceof FigNodeModelElement) {
-		    FigNodeModelElement fnme = (FigNodeModelElement) f;
-		    Object owner = fnme.getOwner();
-		    if (owner instanceof MModelElement) {
-			fnme.remove();
-		    }
-		}
-		else {
-		    f.delete();
-		}
-	    }
-	}
-	catch(Exception ex) {
-	    Argo.log.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
-	}
-    }
+        int size = 0;
+        try {
+            Editor ce = Globals.curEditor();
+            Vector figs = ce.getSelectionManager().getFigs();
+            size = figs.size();
+            for (int i = 0; i < size; i++) {
+                Fig f = (Fig) figs.elementAt(i);
+                if ( f instanceof FigNodeModelElement ) {
+                    FigNodeModelElement fnme = (FigNodeModelElement) f;
+                    Object owner = fnme.getOwner();
+                    if (owner instanceof MModelElement) {
+                        fnme.remove();
+                    }
+                }
+                else if ( f instanceof FigEdgeModelElement ) {
+                    FigEdgeModelElement fnme = (FigEdgeModelElement) f;
+                    Object owner = fnme.getOwner();
+                    if (owner instanceof MModelElement) {
+                        fnme.remove();
+                    }
+                }
+                else {
+                    f.delete();
+                }
+            }
+        }
+        catch(Exception ex) {
+            Argo.log.error("ActionDeleteFromDiagram.actionPerformed()Exception = ");
+        }
+    } 
+
 }

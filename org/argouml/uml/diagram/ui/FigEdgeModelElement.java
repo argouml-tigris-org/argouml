@@ -444,8 +444,17 @@ implements VetoableChangeListener, DelayedVChangeListener, MouseListener, KeyLis
 	super.delete();
     }
 
- /** This default implementation simply requests the default notation.
-  */
+
+    /** delete just this object.
+     * The owner is preserved.
+     */
+    public void remove() {
+        super.delete();
+    }
+
+
+   /** This default implementation simply requests the default notation.
+   */
     public NotationName getContextNotation() { return null; }
 
     public void notationChanged(ArgoNotationEvent event) {
