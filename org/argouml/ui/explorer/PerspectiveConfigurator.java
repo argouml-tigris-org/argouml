@@ -35,7 +35,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -342,9 +346,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
      */
     private void loadData() {
         
-        Vector perspectives = new Vector();
-        Vector perspectivesBackup = new Vector();
-        Vector rulesLib = new Vector();
+        List perspectives = new ArrayList();
+        List rulesLib = new ArrayList();
         
         perspectives.addAll(PerspectiveManager.getInstance().getPerspectives());
         rulesLib.addAll(PerspectiveManager.getInstance().getRules());
@@ -358,6 +361,12 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 (ExplorerPerspective) perspectives.get(i);
             Object[] ruleArray = perspective.getRulesArray();
             
+            Collections.sort(Arrays.asList(ruleArray), new Comparator() {
+                public int compare(Object o1, Object o2) {
+                return o2.toString().compareTo(o1.toString());
+                }
+            });
+            
             ExplorerPerspective editablePerspective = 
                 new ExplorerPerspective(perspective.toString());
             for (int r = 0; r < ruleArray.length; r++) {
@@ -366,6 +375,12 @@ public class PerspectiveConfigurator extends ArgoDialog {
             
             perspectiveListModel.addElement(editablePerspective);
         }
+        Collections.sort(rulesLib, new Comparator() {
+            public int compare(Object o1, Object o2) {
+            return o1.toString().compareTo(o2.toString());
+            }
+        });
+
         for (int i = 0; i < rulesLib.size(); i++) {
             ruleLibraryListModel.addElement(rulesLib.get(i));
         }
@@ -469,8 +484,8 @@ public class PerspectiveConfigurator extends ArgoDialog {
                 (PerspectiveRule) Class.forName(ruleName).newInstance();
             
             perspectiveRulesListModel.insertElementAt(newRule, 0);
-            ((ExplorerPerspective) perspectiveList
-                .getSelectedValue()).addRule(newRule);
+            ((ExplorerPerspective) perspectiveList.getSelectedValue())
+                .addRule(newRule);
         } catch (Exception e) {
             LOG.error("problem adding rule");
         }
@@ -586,8 +601,14 @@ public class PerspectiveConfigurator extends ArgoDialog {
         public void valueChanged(ListSelectionEvent lse) {
             if (lse.getValueIsAdjusting()) return;
             
-            Object selPers = perspectiveList.getSelectedValue();
-            Object selRule = perspectiveRulesList.getSelectedValue();
+            Object selPers = null;
+            if (perspectiveListModel.size() > 0)
+                selPers = perspectiveList.getSelectedValue();
+            
+            Object selRule = null;
+            if (perspectiveRulesListModel.size() > 0) 
+                selRule = perspectiveRulesList.getSelectedValue();
+            
             removeRuleButton.setEnabled(selPers != null && selRule != null);
         }
     }
