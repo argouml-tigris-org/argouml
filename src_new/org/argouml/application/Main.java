@@ -66,7 +66,6 @@ import org.argouml.ui.SplashScreen;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionExit;
 import org.argouml.uml.ui.ActionOpenProject;
-import org.argouml.util.Trash;
 import org.argouml.util.logging.SimpleTimer;
 import org.tigris.gef.util.Util;
 
@@ -296,9 +295,6 @@ public class Main {
         p = ProjectManager.getManager().getCurrentProject();
 
         st.mark("set project");
-
-        // Touch the trash
-        Trash.SINGLETON.getSize();
 
         ProjectManager.getManager().setCurrentProject(p);
         Designer.enableCritiquing();

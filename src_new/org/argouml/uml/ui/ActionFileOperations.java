@@ -39,7 +39,6 @@ import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.persistence.LastLoadInfo;
-import org.argouml.persistence.OpenException;
 import org.argouml.persistence.PersistenceManager;
 import org.argouml.persistence.ProjectFilePersister;
 import org.argouml.persistence.VersionException;
@@ -174,14 +173,14 @@ public abstract class ActionFileOperations extends AbstractAction {
                 LOG.error("Exception while loading project", ex);
                 success = false;
                 reportError(
-                        "Could not load the project "
-                        + file.getName()
-                        + " some error was found.\n"
-                        + "Please try loading with the very latest version of ArgoUML "
-                        + "which you can download from http://argouml.tigris.org\n"
-                        + "If you have no further success then please report the "
-                        + "exception below.",
-                        showUI, ex);
+                    "Could not load the project "
+                    + file.getName()
+                    + " some error was found.\n"
+                    + "Please try loading with the latest version of ArgoUML "
+                    + "which you can download from http://argouml.tigris.org\n"
+                    + "If you have no further success then please report the "
+                    + "exception below.",
+                    showUI, ex);
                 p = oldProject;
             } finally {
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
