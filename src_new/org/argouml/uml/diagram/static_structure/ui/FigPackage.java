@@ -107,10 +107,10 @@ public class FigPackage extends FigNodeModelElement {
         // lines. Initially not set to be displayed, but this will be changed
         // when we try to render it, if we find we have a stereotype.
 
-        _stereo.setExpandOnly(true);
+        getStereotypeFigText().setExpandOnly(true);
         getStereotypeFig().setFilled(true);
         getStereotypeFig().setLineWidth(1);
-        _stereo.setEditable(false);
+        getStereotypeFigText().setEditable(false);
         getStereotypeFig().setHeight(STEREOHEIGHT + 1);
         getStereotypeFig().setVisible(false);
 
@@ -352,7 +352,7 @@ public class FigPackage extends FigNodeModelElement {
             aSize.height = 21;
         }
 
-        int minWidth = Math.max(0, w + 1 + _shadowSize);
+        int minWidth = Math.max(0, w + 1 + getShadowSize());
         if (aSize.width < minWidth) {
             aSize.width = minWidth;
         }

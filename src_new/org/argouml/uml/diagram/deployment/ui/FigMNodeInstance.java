@@ -241,7 +241,7 @@ public class FigMNodeInstance extends FigNodeModelElement {
             }
         }
 
-        if (_readyToEdit) {
+        if (isReadyToEdit()) {
             if (nameStr == "" && baseStr == "") {
                 getNameFig().setText("");
 	    } else {

@@ -252,7 +252,7 @@ public class FigComponent extends FigNodeModelElement {
 		if (getEnclosingFig() instanceof FigNodeModelElement)
 		    ((FigNodeModelElement)
 		     getEnclosingFig()).getEnclosedFigs().removeElement(this);
-		_encloser = null;
+		setEncloser(null);
 	    }
 	/*
 

@@ -256,15 +256,15 @@ public class FigObject extends FigNodeModelElement {
 	    }
 	}
 
-	if (encloser != _encloser) {
-	    if (_encloser instanceof FigNodeModelElement) {
-		((FigNodeModelElement) _encloser).removeEnclosedFig(this);
+	if (encloser != getEncloser()) {
+	    if (getEncloser() instanceof FigNodeModelElement) {
+		((FigNodeModelElement) getEncloser()).removeEnclosedFig(this);
             }
 	    if (encloser instanceof FigNodeModelElement) {
 		((FigNodeModelElement) encloser).addEnclosedFig(this);
             }
 	}
-        _encloser = encloser;
+        setEncloser(encloser);
     }
 
     static final long serialVersionUID = -185736690375678962L;
@@ -293,7 +293,7 @@ public class FigObject extends FigNodeModelElement {
 		    ", "  + ModelFacade.getName(bases.elementAt(i));
 	}
 
-	if (_readyToEdit) {
+	if (isReadyToEdit()) {
 	    if ( nameStr == "" && baseString == "") {
 		getNameFig().setText("");
 	    } else {

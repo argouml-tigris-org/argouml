@@ -253,7 +253,7 @@ public class FigComponentInstance extends FigNodeModelElement {
                     .getEnclosedFigs()
                     .removeElement(
 				   this);
-            _encloser = null;
+            setEncloser(null);
         }
         /*
 	  super.setEnclosingFig(encloser);
@@ -393,7 +393,7 @@ public class FigComponentInstance extends FigNodeModelElement {
                 baseStr += ", " + ModelFacade.getName(it.next());
             }
         }
-        if (_readyToEdit) {
+        if (isReadyToEdit()) {
             if (nameStr == "" && baseStr == "")
                 getNameFig().setText("");
             else
