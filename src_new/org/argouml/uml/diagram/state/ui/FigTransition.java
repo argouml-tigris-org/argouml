@@ -94,14 +94,6 @@ public class FigTransition extends FigEdgeModelElement {
         setLayer(lay);
         setOwner(edge);
     }
-
-    /**
-     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
-     */
-    public void setFig(Fig f) {
-        super.setFig(f);
-        _fig.setDashed(dashed);
-    }
     
     /**
      * The constructor that hooks the Fig into an existing UML element
@@ -114,6 +106,14 @@ public class FigTransition extends FigEdgeModelElement {
 
     ////////////////////////////////////////////////////////////////
     // event handlers
+
+    /**
+     * @see org.tigris.gef.presentation.FigEdge#setFig(org.tigris.gef.presentation.Fig)
+     */
+    public void setFig(Fig f) {
+        super.setFig(f);
+        _fig.setDashed(dashed);
+    }
 
     /**
      * This method is called after the user finishes editing a text field that
@@ -134,6 +134,7 @@ public class FigTransition extends FigEdgeModelElement {
      * This is called after any part of the UML MModelElement has changed. This
      * method automatically updates the name FigText. Subclasses should override
      * and update other parts.
+     * 
      * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
      */
     protected void modelChanged(MElementEvent e) {
@@ -197,6 +198,12 @@ public class FigTransition extends FigEdgeModelElement {
             // handle events send by the parameters of the event
             updateNameText();
             damage();
+        } else if ((e.getSource() == getOwner()) 
+                && (e.getName().equals("source") 
+                        || (e.getName().equals("target")))) {
+            dashed = ModelFacade.isAObjectFlowState(getSource())
+                || ModelFacade.isAObjectFlowState(getDestination());
+            _fig.setDashed(dashed);
         }
     }
 
