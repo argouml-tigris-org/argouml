@@ -155,9 +155,7 @@ public class UMLTextArea
         String oldText = getText();
         String newText = _property.getProperty(_container);
         if (oldText == null || newText == null || !oldText.equals(newText)) {
-            if (oldText != newText) {
-                setText(newText);
-            }
+            setText(newText);
         }
     }
 
