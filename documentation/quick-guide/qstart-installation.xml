@@ -147,6 +147,28 @@ java -jar argouml.jar
 			</itemizedlist>
 		</para>
 	</sect1>
+  
+  <sect1>
+    <title>Installing Auxiliary Modules</title>
+    <para>
+      The standard installation of &argo; does not support C++, php and C# code
+      generation. To make this possible, you need to download the auxiliary
+      modules from the download page at the &argo; website.
+    </para>
+    
+    <para>
+      Unpack the downloaded file in the same directory as 
+      you unpacked &argo; itself.
+    </para>
+    
+    <para>
+      The result should be that the directory that contains the
+      <filename>argouml.jar</filename> file, now also contains a subdirectory
+      named <filename>ext</filename>, which contains the
+      <filename>.jar</filename> files for the extra languages.
+    </para>
+  </sect1>
+  
   <sect1>
     <title>Making .zargo-file clickable (on Windows)</title>
     <sect1info>
