@@ -90,7 +90,7 @@ public abstract class AbstractFilePersister extends FileFilter
      * @throws IOException if there is some problems with the files.
      * @throws FileNotFoundException if any of the files cannot be found.
      */
-    private File copyFile(File src, File dest)
+    protected File copyFile(File src, File dest)
         throws FileNotFoundException, IOException {
 
         FileInputStream fis  = new FileInputStream(src);
