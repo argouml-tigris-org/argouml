@@ -18,8 +18,8 @@ public class AggregationKind {
   public AggregationKind(String label) { _label = label; }
 
   public boolean equals(Object o) {
-    if (!(o instanceof VisibilityKind)) return false;
-    String oLabel = ((VisibilityKind)o)._label;
+    if (!(o instanceof AggregationKind)) return false;
+    String oLabel = ((AggregationKind)o)._label;
     return _label.equals(oLabel);
   }
 
