@@ -33,12 +33,10 @@ import org.argouml.model.ModelFacade;
 /**
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  *
- * $Revision$
- *
- * @author  alexb, $Author$
+ * @author  alexb, d00mst
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
-public class GoSummaryToOperation extends AbstractPerspectiveRule{
+public class GoSummaryToOperation extends AbstractPerspectiveRule {
 
     public String getRuleName() {
 	return "Summary->Operation";
@@ -46,7 +44,8 @@ public class GoSummaryToOperation extends AbstractPerspectiveRule{
 
     public Collection getChildren(Object parent) {
 	if (parent instanceof OperationsNode) {
-	    return ModelFacade.getOperations(((OperationsNode) parent).getParent());
+	    return ModelFacade.getOperations(
+		    ((OperationsNode) parent).getParent());
 	}
 	return null;
     }

@@ -226,7 +226,7 @@ public final class ActionExportXMI extends UMLAction implements PluggableMenu {
 			    Translator.localize(
 				"Actions",
 				"optionpane.save-project-general-exception-title"
-				);
+			    );
 
                         JOptionPane.showMessageDialog(
 			    ProjectBrowser.getInstance(),

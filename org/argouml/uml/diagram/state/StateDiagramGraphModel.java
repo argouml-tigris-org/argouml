@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -47,16 +47,19 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         VetoableChangeListener {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger
             .getLogger(StateDiagramGraphModel.class);
 
     /**
-     * The "home" UML model of this diagram, not all ModelElements in this graph
-     * are in the home model, but if they are added and don't already have a
-     * model, they are placed in the "home model". Also, elements from other
-     * models will have their FigNodes add a line to say what their model is.
+     * The "home" UML model of this diagram, not all ModelElements in
+     * this graph are in the home model, but if they are added and
+     * don't already have a model, they are placed in the "home
+     * model". Also, elements from other models will have their
+     * FigNodes add a line to say what their model is.
      */
-
     protected Object _namespace;
 
     /** The statemachine we are diagramming */
@@ -93,48 +96,67 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
     ////////////////////////////////////////////////////////////////
     // GraphModel implementation
 
-    /** Return all ports on node or edge */
+    /**
+     * Return all ports on node or edge.
+     *
+     * @return The ports.
+     * @param nodeOrEdge The node or the edge.
+     */
     public Vector getPorts(Object nodeOrEdge) {
         Vector res = new Vector(); //wasteful!
-        if (ModelFacade.isAState(nodeOrEdge)) res.addElement(nodeOrEdge);
-        if (ModelFacade.isAPseudostate(nodeOrEdge)) res.addElement(nodeOrEdge);
+        if (ModelFacade.isAState(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
+        if (ModelFacade.isAPseudostate(nodeOrEdge)) {
+	    res.addElement(nodeOrEdge);
+	}
         return res;
     }
 
-    /** Return the node or edge that owns the given port */
+    /**
+     * Return the node or edge that owns the given port.
+     *
+     * @return The owner of the port.
+     */
     public Object getOwner(Object port) {
         return port;
     }
 
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
-        if (ModelFacade.isAStateVertex(port)) { return new Vector(ModelFacade
-                .getIncomings(port)); }
-        cat.debug("TODO getInEdges of MState");
+        if (ModelFacade.isAStateVertex(port)) {
+	    return new Vector(ModelFacade.getIncomings(port));
+	}
+        cat.debug("TODO: getInEdges of MState");
         return new Vector(); //wasteful!
     }
 
     /** Return all edges going from given port */
     public Vector getOutEdges(Object port) {
-        if (ModelFacade.isAStateVertex(port)) { return new Vector(ModelFacade
-                .getOutgoings(port)); }
-        cat.debug("TODO getOutEdges of MState");
+        if (ModelFacade.isAStateVertex(port)) {
+	    return new Vector(ModelFacade.getOutgoings(port));
+	}
+        cat.debug("TODO: getOutEdges of MState");
         return new Vector(); //wasteful!
     }
 
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
-        if (ModelFacade.isATransition(edge)) { return StateMachinesHelper
-                .getHelper().getSource(/* (MTransition) */edge); }
-        cat.debug("TODO getSourcePort of MTransition");
+        if (ModelFacade.isATransition(edge)) {
+	    return StateMachinesHelper.getHelper()
+		.getSource(/* (MTransition) */edge);
+	}
+        cat.debug("TODO: getSourcePort of MTransition");
         return null;
     }
 
     /** Return the other end of an edge */
     public Object getDestPort(Object edge) {
-        if (ModelFacade.isATransition(edge)) { return StateMachinesHelper
-                .getHelper().getDestination(/* (MTransition) */edge); }
-        cat.debug("TODO getDestPort of MTransition");
+        if (ModelFacade.isATransition(edge)) {
+	    return StateMachinesHelper.getHelper()
+		.getDestination(/* (MTransition) */edge);
+	}
+        cat.debug("TODO: getDestPort of MTransition");
         return null;
     }
 
@@ -244,7 +266,7 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
 
     /** Contruct and add a new edge of the given kind */
     public Object connect(Object fromPort, Object toPort,
-            java.lang.Class edgeClass) {
+			  Class edgeClass) {
         //    try {
         if (!(ModelFacade.isAStateVertex(fromPort))) {
             cat.error("internal error not from sv");
@@ -257,10 +279,15 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         Object fromSV = /* (MStateVertex) */fromPort;
         Object toSV = /* (MStateVertex) */toPort;
 
-        if (ModelFacade.isAFinalState(fromSV)) return null;
-        if (ModelFacade.isAPseudostate(toSV))
-                if ((ModelFacade.INITIAL_PSEUDOSTATEKIND).equals(ModelFacade
-                        .getKind(toSV))) return null;
+        if (ModelFacade.isAFinalState(fromSV)) {
+	    return null;
+	}
+        if (ModelFacade.isAPseudostate(toSV)) {
+	    if ((ModelFacade.INITIAL_PSEUDOSTATEKIND).equals(
+			ModelFacade.getKind(toSV))) {
+		return null;
+	    }
+	}
 
         if (edgeClass == (Class) ModelFacade.TRANSITION) {
             Object tr = null;
@@ -314,8 +341,11 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         if (newNode == oldNode) return false;
 
         // check parameter types:
-        if (!(ModelFacade.isAState(newNode) || ModelFacade.isAState(oldNode) || ModelFacade
-                .isATransition(edge))) return false;
+        if (!(ModelFacade.isAState(newNode)
+	      || ModelFacade.isAState(oldNode)
+	      || ModelFacade.isATransition(edge))) {
+	    return false;
+	}
 
         return true;
     }

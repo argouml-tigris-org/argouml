@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,7 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// Original author: jaap.branderhorst@xs4all.nl
 package org.argouml.uml.diagram.sequence.ui;
 
 import java.awt.Cursor;
@@ -40,8 +39,11 @@ import org.tigris.gef.presentation.FigLine;
 import org.tigris.gef.presentation.FigNode;
 
 /**
- * Mode to create a link between two figobjects. This mode extends ModeCreate and
- * not ModeCreateEdge because ModeCreateEdge hides its variables a bit too much...
+ * Mode to create a link between two figobjects. This mode extends
+ * ModeCreate and not ModeCreateEdge because ModeCreateEdge hides its
+ * variables a bit too much...
+ *
+ * @author jaap.branderhorst@xs4all.nl
  */
 public class ModeCreateLink extends ModeCreate {
 
@@ -123,11 +125,12 @@ public class ModeCreateLink extends ModeCreate {
     }
 
     /** 
-     * On mouseReleased, find the port in the destination node that's on the same height
-     * as the source port fig, ask the GraphModel
-     *  to connect the two ports.  If that connection is allowed, then
-     *  construct a new FigEdge and add it to the Layer and send it to
-     *  the back. */
+     * On mouseReleased, find the port in the destination node that's
+     * on the same height as the source port fig, ask the GraphModel
+     * to connect the two ports.  If that connection is allowed, then
+     * construct a new FigEdge and add it to the Layer and send it to
+     * the back.
+     */
     public void mouseReleased(MouseEvent me) {
         if (me.isConsumed())
             return;
@@ -148,7 +151,7 @@ public class ModeCreateLink extends ModeCreate {
         if (!(gm instanceof MutableGraphModel))
             f = null;
         MutableGraphModel mgm = (MutableGraphModel) gm;
-        // needs-more-work: potential class cast exception
+        // TODO: potential class cast exception
         if (f == _sourceFigNode) {
             done();
             me.consume();
@@ -186,16 +189,13 @@ public class ModeCreateLink extends ModeCreate {
                     destFigNode.damage();
                     _newItem = null;
                     FigLink fe =
-                        (FigLink) ce
-                            .getLayerManager()
-                            .getActiveLayer()
-                            .presentationFor(
-                            _newEdge);
+                        (FigLink) ce.getLayerManager()
+                            .getActiveLayer().presentationFor(_newEdge);
                     fe.setSourcePortFig(_startPortFig);
                     fe.setSourceFigNode(_sourceFigNode);
                     fe.setDestPortFig(destPortFig);
                     fe.setDestFigNode(destFigNode);
-                    //					set the new edge in place
+				// set the new edge in place
                     if (_sourceFigNode != null)
                         _sourceFigNode.updateEdges();
                     if (destFigNode != null)

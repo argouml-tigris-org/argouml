@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,11 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UMLClassDiagram.java
-// Classes: UMLClassDiagram
-// Original Author: jrobbins@ics.uci.edy
-// $Id$
-
 package org.argouml.uml.diagram.static_structure.ui;
 
 import javax.swing.Action;
@@ -46,6 +41,9 @@ import org.tigris.gef.base.LayerPerspective;
 import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
+/**
+ * @author jrobbins@ics.uci.edy
+ */
 public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
@@ -131,27 +129,27 @@ public class UMLClassDiagram extends UMLDiagram {
 
     public void setNamespace(Object handle) {
         if (!ModelFacade.isANamespace(handle)) {
-	    cat.error("Illegal argument. Object " + handle + " is not a namespace");
-	    throw new IllegalArgumentException("Illegal argument. Object " + handle + " is not a namespace");
+	    cat.error("Illegal argument. "
+		      + "Object " + handle + " is not a namespace");
+	    throw new IllegalArgumentException("Illegal argument. "
+					       + "Object " + handle
+					       + " is not a namespace");
         }
         Object m = /*(MNamespace)*/ handle;
         super.setNamespace(m);
         ClassDiagramGraphModel gm = new ClassDiagramGraphModel();
         gm.setNamespace(m);
-		LayerPerspective lay = new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
-		ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
-			   lay.setGraphNodeRenderer(rend);
-			   lay.setGraphEdgeRenderer(rend);
-		setLayer(lay);
-        
-       
-       
-       
+	LayerPerspective lay =
+	    new LayerPerspectiveMutable(ModelFacade.getName(m), gm);
+	ClassDiagramRenderer rend = new ClassDiagramRenderer(); // singleton
+	lay.setGraphNodeRenderer(rend);
+	lay.setGraphEdgeRenderer(rend);
+	setLayer(lay);
     }
 
     /**
      * Get the actions from which to create a toolbar or equivilent
-     * graphic trigger
+     * graphic trigger.
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
@@ -212,7 +210,8 @@ public class UMLClassDiagram extends UMLDiagram {
         String name = null;
         name = "Class Diagram " + _ClassDiagramSerial;
         _ClassDiagramSerial++;
-        if (!ProjectManager.getManager().getCurrentProject().isValidDiagramName(name)) {
+        if (!ProjectManager.getManager().getCurrentProject()
+	        .isValidDiagramName(name)) {
             name = getNewDiagramName();
         }
         return name;

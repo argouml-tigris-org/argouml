@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -67,7 +67,10 @@ import org.argouml.uml.generator.Generator2;
 import org.argouml.util.osdep.OsUtil;
 import org.tigris.gef.util.Converter;
 
-public class ClassGenerationDialog extends ArgoDialog implements ActionListener {
+public class ClassGenerationDialog
+    extends ArgoDialog
+    implements ActionListener {
+
     private static final Logger cat =
         Logger.getLogger(ClassGenerationDialog.class);
 
@@ -174,7 +177,7 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             outputPanel.setBorder(
                 BorderFactory.createCompoundBorder(
                     BorderFactory.createTitledBorder(
-                    Translator.localize(BUNDLE, "label.output-directory")),
+			Translator.localize(BUNDLE, "label.output-directory")),
                     BorderFactory.createEmptyBorder(2, 5, 5, 5)));
             outputPanel.add(_outputDirectoryComboBox, BorderLayout.CENTER);
             outputPanel.add(browseButton, BorderLayout.EAST);
@@ -269,10 +272,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
         // Generate Button --------------------------------------
         if (e.getSource() == getOkButton()) {
             String path =
-                ((String) _outputDirectoryComboBox
-                    .getModel()
-                    .getSelectedItem())
-                    .trim();
+                ((String) _outputDirectoryComboBox.getModel().getSelectedItem())
+		    .trim();
             Project p = ProjectManager.getManager().getCurrentProject();
             p.getGenerationPrefs().setOutputDir(path);
             Vector[] fileNames = new Vector[_languages.size()];
@@ -304,10 +305,10 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                             String fn = generator.GenerateFile(node, path);
                             fileNames[i].add(fn);
                             // save the selected language in the model
-                            // TODO 1: no support of multiple checked
+                            // TODO: 1: no support of multiple checked
                             // languages
                             //
-                            // TODO 2: it's a change in the model ->
+                            // TODO: 2: it's a change in the model ->
                             // save needed!
                             Object taggedValue = ModelFacade.getTaggedValue(
                                 node, "src_lang");
@@ -396,11 +397,11 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 }
 
                 for (int j = 0; j < getLanguagesCount(); j++) {
-                    if (isSupposedToBeGeneratedAsLanguage((NotationName) _languages
-                        .get(j),
-                        cls))
+                    if (isSupposedToBeGeneratedAsLanguage(
+			    (NotationName) _languages.get(j),
+			    cls)) {
                         _checked[j].add(cls);
-                    else if (
+		    } else if (
                         ((NotationName) _languages.get(j)).equals(
                             Notation.getDefaultNotation())) {
                         _checked[j].add(cls);
@@ -409,7 +410,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             }
             fireTableStructureChanged();
 
-            getOkButton().setEnabled(_classes.size() > 0 && getChecked().size() > 0);
+            getOkButton().setEnabled(_classes.size() > 0
+				     && getChecked().size() > 0);
         }
 
         private boolean isSupposedToBeGeneratedAsLanguage(
@@ -460,7 +462,8 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
 
         public String getColumnName(int c) {
             if (c >= 0 && c < getLanguagesCount()) {
-                return ((NotationName) _languages.get(c)).getConfigurationValue();
+                return ((NotationName) _languages.get(c))
+		    .getConfigurationValue();
             }
             else if (c == getLanguagesCount()) {
                 return "Class Name";
@@ -502,20 +505,24 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                 return (name.length() > 0) ? name : "(anon)";
             }
             else if (col >= 0 && col < getLanguagesCount()) {
-                return _checked[col].contains(cls) ? Boolean.TRUE : Boolean.FALSE;
+                return _checked[col].contains(cls)
+		    ? Boolean.TRUE
+		    : Boolean.FALSE;
             }
             else
                 return "CC-r:" + row + " c:" + col;
         }
 
         public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-            //  cat.debug("setting table value " + rowIndex + ", " + columnIndex);
-            if (columnIndex == getLanguagesCount())
+            if (columnIndex == getLanguagesCount()) {
                 return;
-            if (columnIndex >= getColumnCount())
+	    }
+            if (columnIndex >= getColumnCount()) {
                 return;
-            if (!(aValue instanceof Boolean))
+	    }
+            if (!(aValue instanceof Boolean)) {
                 return;
+	    }
             boolean val = ((Boolean) aValue).booleanValue();
             Object cls = _classes.elementAt(rowIndex);
 
@@ -535,11 +542,14 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
             }
         }
 
-        /** Sets or clears all checkmarks for the (next) language for all classes
-         *  @param value If false then all checkmarks are cleared for all
-         *  languages.
-         *  If true then all are cleared, except for one language column,
-         *  these are all set.
+        /**
+	 * Sets or clears all checkmarks for the (next) language for
+	 * all classes.
+	 *
+         * @param value If false then all checkmarks are cleared for all
+         * languages.
+         * If true then all are cleared, except for one language column,
+         * these are all set.
          */
         public void setAllChecks(boolean value) {
             int rows = getRowCount();
@@ -561,7 +571,11 @@ public class ClassGenerationDialog extends ArgoDialog implements ActionListener 
                     }
                 }
             }
-            if (value) if (++languageHistory >= checks) languageHistory = 0;
+            if (value) {
+		if (++languageHistory >= checks) {
+		    languageHistory = 0;
+		}
+	    }
             getOkButton().setEnabled(value);
         }
     } /* end class TableModelClassChecks */

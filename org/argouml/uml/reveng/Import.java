@@ -143,7 +143,7 @@ public class Import {
     //import detail level var:
     private int importLevel;
     
-	private JTextField inputSourceEncoding;
+    private JTextField inputSourceEncoding;
 
     private JDialog dialog;
     
@@ -204,16 +204,17 @@ public class Import {
         attributes.put(key, value);
     }
     
-	public String getInputSourceEncoding() {
-		return inputSourceEncoding.getText();
-	}
+    public String getInputSourceEncoding() {
+	return inputSourceEncoding.getText();
+    }
 
     /**
      * Close dialog window.
      *
      */
     public void disposeDialog() {
-        Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING, getInputSourceEncoding());
+        Configuration.setString(Argo.KEY_INPUT_SOURCE_ENCODING,
+				getInputSourceEncoding());
         dialog.getParent().setEnabled(true);
         dialog.setVisible(false);
         dialog.dispose();
@@ -317,13 +318,16 @@ public class Import {
             general.add(classAndFeatures);
             general.add(fullImport);
 
-        general.add(new JLabel("Input source file encoding:"));
-        if ( Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null 
-			|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals(""))
-			inputSourceEncoding = new JTextField(System.getProperty("file.encoding"));
-		else
-			inputSourceEncoding = new JTextField(Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING));
-		general.add(inputSourceEncoding);
+	    general.add(new JLabel("Input source file encoding:"));
+	    if (Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING) == null
+		|| Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING).trim().equals("")) {
+		inputSourceEncoding =
+		    new JTextField(System.getProperty("file.encoding"));
+	    } else {
+		inputSourceEncoding =
+		    new JTextField(Configuration.getString(Argo.KEY_INPUT_SOURCE_ENCODING));
+	    }
+	    general.add(inputSourceEncoding);
 		
 	    tab.add(general, "General");
 	    tab.add(module.getConfigPanel(), module.getModuleName());
@@ -918,6 +922,7 @@ class ImportClasspathDialog extends JDialog {
 			}
 		    } else if (e.getActionCommand().equals(
 				   JFileChooser.CANCEL_SELECTION)) {
+			// TODO: What shall we do here?
 		    }
 		}
 	    });

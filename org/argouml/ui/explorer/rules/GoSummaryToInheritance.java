@@ -36,12 +36,10 @@ import org.argouml.model.ModelFacade;
 /**
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  *
- * $Revision$
- *
- * @author  alexb, $Author$
+ * @author  alexb, d00mst
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
-public class GoSummaryToInheritance extends AbstractPerspectiveRule{
+public class GoSummaryToInheritance extends AbstractPerspectiveRule {
 
     public String getRuleName() {
 	return "Summary->Inheritance";
@@ -53,7 +51,7 @@ public class GoSummaryToInheritance extends AbstractPerspectiveRule{
 
 	    Iterator it =
 		ModelFacade.getSupplierDependencies(
-						    ((InheritanceNode) parent).getParent()).iterator();
+			((InheritanceNode) parent).getParent()).iterator();
 
 	    while (it.hasNext()) {
 		Object next = it.next();
@@ -64,7 +62,7 @@ public class GoSummaryToInheritance extends AbstractPerspectiveRule{
 	    it =
 		ModelFacade.getClientDependencies(((InheritanceNode) parent)
 						  .getParent())
-		.iterator();
+		    .iterator();
 
 	    while (it.hasNext()) {
 		Object next = it.next();
@@ -73,15 +71,19 @@ public class GoSummaryToInheritance extends AbstractPerspectiveRule{
 	    }
 
 	    Iterator generalizationsIt =
-		ModelFacade.getGeneralizations(((InheritanceNode) parent).getParent()).iterator();
+		ModelFacade.getGeneralizations(
+			((InheritanceNode) parent).getParent()).iterator();
 	    Iterator specializationsIt =
-		ModelFacade.getSpecializations(((InheritanceNode) parent).getParent()).iterator();
+		ModelFacade.getSpecializations(
+			((InheritanceNode) parent).getParent()).iterator();
 
-	    while (generalizationsIt.hasNext())
+	    while (generalizationsIt.hasNext()) {
 		list.add(generalizationsIt.next());
+	    }
 
-	    while (specializationsIt.hasNext())
+	    while (specializationsIt.hasNext()) {
 		list.add(specializationsIt.next());
+	    }
 
 	    return list;
 	}

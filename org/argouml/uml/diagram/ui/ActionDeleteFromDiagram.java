@@ -48,11 +48,11 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
     ////////////////////////////////////////////////////////////////
     // static variables
 
-	/** logger */
-	private static Logger cat = 
-		Logger.getLogger(ActionDeleteFromDiagram.class);
+    /** logger */
+    private static Logger cat = 
+	Logger.getLogger(ActionDeleteFromDiagram.class);
 
-	public static ActionDeleteFromDiagram SINGLETON =
+    public static ActionDeleteFromDiagram SINGLETON =
         new ActionDeleteFromDiagram();
 
     ////////////////////////////////////////////////////////////////
@@ -60,9 +60,11 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
 
     private ActionDeleteFromDiagram() {
         super("action.remove-from-diagram");
-        String localMnemonic = Translator.localize("action.remove-from-diagram.mnemonic");
+        String localMnemonic =
+	    Translator.localize("action.remove-from-diagram.mnemonic");
         if (localMnemonic != null && localMnemonic.length() == 1) {
-            putValue(Action.MNEMONIC_KEY, new Integer(localMnemonic.charAt(0)));
+            putValue(Action.MNEMONIC_KEY,
+		     new Integer(localMnemonic.charAt(0)));
         }                
     }
 
@@ -101,7 +103,7 @@ public class ActionDeleteFromDiagram extends UMLChangeAction {
             Vector figs = ce.getSelectionManager().getFigs();
             size = figs.size();
         } catch (Exception e) {
-            cat.error("could not determine number of figs",e);
+            cat.error("could not determine number of figs", e);
         }
         return size > 0;
     }

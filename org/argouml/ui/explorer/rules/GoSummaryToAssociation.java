@@ -33,12 +33,10 @@ import org.argouml.model.uml.UmlHelper;
 /**
  * This class is a Go Rule for the "Class - centric" Navigation perspective.
  *
- * $Revision$
- *
- * @author  alexb, $Author$
+ * @author alexb, d00mst
  * @since argo 0.13.4, Created on 21 March 2003, 23:18
  */
-public class GoSummaryToAssociation extends AbstractPerspectiveRule{
+public class GoSummaryToAssociation extends AbstractPerspectiveRule {
 
     public String getRuleName() {
 	return "Summary->Association";

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -33,7 +33,6 @@ import java.util.Hashtable;
 import org.argouml.ui.CmdCreateNode;
 import org.argouml.model.ModelFacade;
 
-/**  */
 public class ActionCreatePseudostate extends CmdCreateNode {
 
     ////////////////////////////////////////////////////////////////
@@ -44,8 +43,9 @@ public class ActionCreatePseudostate extends CmdCreateNode {
     public ActionCreatePseudostate(Object kind, String name) {
 	super(new Hashtable(), name);
         
-        if(!ModelFacade.isAPseudostateKind(kind))
+        if (!ModelFacade.isAPseudostateKind(kind)) {
             throw new IllegalArgumentException();
+	}
         
 	setArg("className", ModelFacade.PSEUDOSTATE);
 	setArg("kind", kind);

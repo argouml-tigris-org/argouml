@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,6 +69,9 @@ public abstract class UMLDiagram
     extends ArgoDiagram
     implements MElementListener {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(UMLDiagram.class);
 
     ////////////////////////////////////////////////////////////////
@@ -217,10 +220,10 @@ public abstract class UMLDiagram
      * @see org.tigris.gef.base.Diagram#initToolBar()
      */
     public void initToolBar() {
-        toolBar = ToolBarFactory.createToolBar(true /*rollover*/
-        , getActions(), false
-        /*floating*/
-        );
+        toolBar =
+	    ToolBarFactory.createToolBar(true /*rollover*/,
+					 getActions(),
+					 false /*floating*/);
     }
 
     /**
@@ -259,20 +262,27 @@ public abstract class UMLDiagram
 
     private Object[] getManipulateActions() {
         Object actions[] =
-            {
-                new RadioAction(_actionSelect),
-                new RadioAction(_actionBroom),
-                null };
+        {
+	    new RadioAction(_actionSelect),
+	    new RadioAction(_actionBroom),
+	    null
+	};
         return actions;
     }
 
     private Object[] getShapeActions() {
-        Object actions[] = { null, getShapePopupActions()};
+        Object actions[] = {
+	    null, getShapePopupActions(),
+	};
         return actions;
     }
 
     private Object[] getShapePopupActions() {
-        Object actions[][] = { { _actionRectangle, _actionRRectangle }, {
+        Object actions[][] = {
+	    {
+		_actionRectangle, _actionRRectangle
+	    },
+	    {
                 _actionCircle, _actionLine }, {
                 _actionText, _actionPoly }, {
                 _actionSpline, _actionInk }
@@ -284,9 +294,11 @@ public abstract class UMLDiagram
     /**
      * This diagram listens to events from is namespace ModelElement;
      * When the modelelement is removed, we also want to delete this
-     * diagram too.  <p>There is also a risk that if this diagram was
-     * the one shown in the diagram panel, then it will remain after
-     * it has been deleted. so we need to deselect this diagram.
+     * diagram too.  <p>
+     *
+     * There is also a risk that if this diagram was the one shown in
+     * the diagram panel, then it will remain after it has been
+     * deleted. so we need to deselect this diagram.
      */
     public void removed(MElementEvent e) {
         Object newTarget =
@@ -304,27 +316,32 @@ public abstract class UMLDiagram
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void propertySet(MElementEvent e) {}
+    public void propertySet(MElementEvent e) {
+    }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void roleAdded(MElementEvent e) {}
+    public void roleAdded(MElementEvent e) {
+    }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void roleRemoved(MElementEvent e) {}
+    public void roleRemoved(MElementEvent e) {
+    }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void listRoleItemSet(MElementEvent e) {}
+    public void listRoleItemSet(MElementEvent e) {
+    }
 
     /**
      * not used the UMLDiagram is only interested in the removed() event.
      */
-    public void recovered(MElementEvent e) {}
+    public void recovered(MElementEvent e) {
+    }
 
     /**
      * Removes the UMLDiagram and all the figs on it as listener to 
@@ -338,8 +355,8 @@ public abstract class UMLDiagram
         while (enum.hasMoreElements()) {
             Object o = enum.nextElement();
             if (ModelFacade.isAElementListener(o)) {
-                MElementListener listener = (MElementListener)o;
-                Fig fig = (Fig)o;
+                MElementListener listener = (MElementListener) o;
+                Fig fig = (Fig) o;
                 pump.removeModelEventListener(listener, fig.getOwner());
             }
         }
@@ -356,7 +373,7 @@ public abstract class UMLDiagram
     public void setAsTarget() {
         Enumeration enum = elements();
         while (enum.hasMoreElements()) {
-            Fig fig = (Fig)enum.nextElement();
+            Fig fig = (Fig) enum.nextElement();
             if (org.argouml.model.ModelFacade.isAElementListener(fig)) {
                 Object owner = fig.getOwner();
                 // pump.addModelEventListener((MElementListener)fig, owner);
@@ -377,14 +394,14 @@ public abstract class UMLDiagram
         for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
-                ToolButton tb = (ToolButton)c;
+                ToolButton tb = (ToolButton) c;
                 Action action = tb.getRealAction();
                 if (action instanceof RadioAction) {
-                    action = ((RadioAction)action).getAction();
+                    action = ((RadioAction) action).getAction();
                 }
                 Action otherAction = otherThanAction;
                 if (otherThanAction instanceof RadioAction) {
-                    otherAction = ((RadioAction)otherThanAction).getAction();
+                    otherAction = ((RadioAction) otherThanAction).getAction();
                 }
                 if (!action.equals(otherAction)) {
                     //cat.debug("Unselecting " + tb);
@@ -415,10 +432,10 @@ public abstract class UMLDiagram
         for (int i = 0; i < toolCount; ++i) {
             Component c = toolBar.getComponent(i);
             if (c instanceof ToolButton) {
-                ToolButton tb = (ToolButton)c;
+                ToolButton tb = (ToolButton) c;
                 Action action = tb.getRealAction();
                 if (action instanceof RadioAction) {
-                    action = ((RadioAction)action).getAction();
+                    action = ((RadioAction) action).getAction();
                 }
                 tb.setSelected(false);
                 ButtonModel bm = tb.getModel();

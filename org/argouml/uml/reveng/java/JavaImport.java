@@ -48,8 +48,8 @@ public class JavaImport extends FileImportSupport {
      *
      * @exception Exception Parser exception.
      */
-    public void parseFile( Project p, Object o, DiagramInterface diagram,
-			   Import _import)
+    public void parseFile(Project p, Object o, DiagramInterface diagram,
+			  Import _import)
 	throws Exception {
 	if (o instanceof File ) {
 	    File f = (File) o;
@@ -57,7 +57,8 @@ public class JavaImport extends FileImportSupport {
 	    String encoding = _import.getInputSourceEncoding();
 	    FileInputStream in = new FileInputStream(f);
 	    JavaLexer lexer =
-		new JavaLexer(new BufferedReader(new InputStreamReader(in, encoding)));
+		new JavaLexer(
+		    new BufferedReader(new InputStreamReader(in, encoding)));
 	    // We use a special Argo token, that stores the preceding
 	    // whitespaces.
 	    lexer.setTokenObjectClass( "org.argouml.uml.reveng.java.ArgoToken");
@@ -88,7 +89,7 @@ public class JavaImport extends FileImportSupport {
 			  + f.getName());
                 throw e;
             }
-		in.close();
+	    in.close();
 	}
     }
 

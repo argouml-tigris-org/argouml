@@ -22,15 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: GoUseCaseToExtensionPoint.java
-// Classes: GoUseCaseToExtensionPoint
-// Original Author: mail@jeremybennett.com
-// $Id$
-
-// 16 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Created to support
-// display of extension points in the navigator pane.
-
-
 package org.argouml.ui.explorer.rules;
 
 import java.util.Collection;
@@ -42,13 +33,14 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 
 /**
- * <p>Provides a rule to display extension points in the navigation pane.</p>
+ * Provides a rule to display extension points in the navigation pane.<p>
  *
  * @author  16 Apr 2002. Jeremy Bennett (mail@jeremybennett.com).
  */
-
-public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule{
-    
+public class GoUseCaseToExtensionPoint extends AbstractPerspectiveRule {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat =
 	Logger.getLogger(GoUseCaseToExtensionPoint.class);
 

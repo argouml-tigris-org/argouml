@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -28,6 +28,7 @@ import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.ui.ArgoDiagram;
@@ -41,8 +42,10 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigEdge;
 import org.tigris.gef.presentation.FigNode;
 
-/** Action to add a note.
- *  @stereotype singleton
+/**
+ * Action to add a note.
+ *
+ * @stereotype singleton
  */
 public class ActionAddNote extends UMLChangeAction {
 
@@ -66,10 +69,12 @@ public class ActionAddNote extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
         Object target = TargetManager.getInstance().getModelTarget();
 
-        if (target == null || !(org.argouml.model.ModelFacade.isAModelElement(target)))
+        if (target == null || !(ModelFacade.isAModelElement(target))) {
             return;
+	}
         Object/*MModelElement*/ elem = target;
-        Object/*MComment*/ comment = CoreFactory.getFactory().buildComment(elem);
+        Object/*MComment*/ comment =
+	    CoreFactory.getFactory().buildComment(elem);
 
         // calculate the position of the comment
         ArgoDiagram diagram =
@@ -134,13 +139,10 @@ public class ActionAddNote extends UMLChangeAction {
             return false;
 
         return super.shouldBeEnabled()
-            && (org.argouml.model.ModelFacade.isAModelElement(target))
-            && (!(org.argouml.model.ModelFacade.isAComment(target)))
-            && (ProjectManager
-                .getManager()
-                .getCurrentProject()
-                .getActiveDiagram()
-                .presentationFor(target)
+            && (ModelFacade.isAModelElement(target))
+            && (!(ModelFacade.isAComment(target)))
+            && (ProjectManager.getManager().getCurrentProject()
+                .getActiveDiagram().presentationFor(target)
                 instanceof FigNode);
     }
 } /* end class ActionAddNote */

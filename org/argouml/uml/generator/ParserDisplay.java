@@ -22,18 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: ParserDisplay.java
-// Classes: ParserDisplay
-// Original Author:
-// $Id$
-
-
-
-
-// 12 Apr 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to support
-// extension points.
-
-
 package org.argouml.uml.generator;
 
 import java.text.ParseException;
@@ -159,6 +147,7 @@ class PropertySpecialString {
 public class ParserDisplay extends Parser {
     /** The one and only ParserDisplay */
     public static ParserDisplay SINGLETON = new ParserDisplay();
+
     /**
      * The standard error etc. logger
      * @deprecated since V0.15.4. Replaced by the private LOG.
@@ -200,32 +189,33 @@ public class ParserDisplay extends Parser {
     private ParserDisplay() {
 	_attributeSpecialStrings = new PropertySpecialString[2];
 	_attributeSpecialStrings[0] =
-	    new PropertySpecialString("frozen",
-		new PropertyOperation() {
-		    public void found(Object element, String value) {
-                        if (ModelFacade.isAStructuralFeature(element))
-                            if ("false".equalsIgnoreCase(value))
-				ModelFacade.setChangeability(element, 
-                                    ModelFacade.CHANGEABLE_CHANGEABLEKIND);
-                            else
-				ModelFacade.setChangeability(element, 
-                                    ModelFacade.FROZEN_CHANGEABLEKIND);
+	    new PropertySpecialString("frozen", new PropertyOperation() {
+		public void found(Object element, String value) {
+		    if (ModelFacade.isAStructuralFeature(element)) {
+			if ("false".equalsIgnoreCase(value)) {
+			    ModelFacade.setChangeability(element, 
+				    ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+			} else {
+			    ModelFacade.setChangeability(element, 
+				    ModelFacade.FROZEN_CHANGEABLEKIND);
+			}
 		    }
-                });
+		}
+            });
 	_attributeSpecialStrings[1] =
-	    new PropertySpecialString("addonly",
-                new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        if (ModelFacade.isAStructuralFeature(element)) {
-                            if ("false".equalsIgnoreCase(value))
-                                ModelFacade.setChangeability(element, 
-                                    ModelFacade.CHANGEABLE_CHANGEABLEKIND);
-                            else
-                                ModelFacade.setChangeability(element, 
-                                    ModelFacade.ADD_ONLY_CHANGEABLEKIND);
+	    new PropertySpecialString("addonly", new PropertyOperation() {
+                public void found(Object element, String value) {
+		    if (ModelFacade.isAStructuralFeature(element)) {
+			if ("false".equalsIgnoreCase(value)) {
+			    ModelFacade.setChangeability(element, 
+				    ModelFacade.CHANGEABLE_CHANGEABLEKIND);
+			} else {
+			    ModelFacade.setChangeability(element, 
+				    ModelFacade.ADD_ONLY_CHANGEABLEKIND);
                         }
-                    }
-                });
+		    }
+		}
+            });
 	_attributeCustomSep = new Vector();
 	_attributeCustomSep.add(MyTokenizer.SINGLE_QUOTED_SEPARATOR);
 	_attributeCustomSep.add(MyTokenizer.DOUBLE_QUOTED_SEPARATOR);
@@ -277,25 +267,27 @@ public class ParserDisplay extends Parser {
 		}
             });
 	_operationSpecialStrings[4] =
-	    new PropertySpecialString("abstract",
-                new PropertyOperation() {
-                    public void found(Object element, String value) {
-                        boolean isAbstract = true;
-                        if (value != null && value.equalsIgnoreCase("false"))
-                            isAbstract = false;
-                        if (ModelFacade.isAOperation(element))
-                            ModelFacade.setAbstract(element, isAbstract);
-                    }
-                });
+	    new PropertySpecialString("abstract", new PropertyOperation() {
+                public void found(Object element, String value) {
+		    boolean isAbstract = true;
+		    if (value != null && value.equalsIgnoreCase("false")) {
+			isAbstract = false;
+		    }
+		    if (ModelFacade.isAOperation(element)) {
+			ModelFacade.setAbstract(element, isAbstract);
+		    }
+		}
+            });
 	_operationSpecialStrings[5] =
-	    new PropertySpecialString("leaf",
-                new PropertyOperation() {
+	    new PropertySpecialString("leaf", new PropertyOperation() {
 		public void found(Object element, String value) {
 		    boolean isLeaf = true;
-		    if (value != null && value.equalsIgnoreCase("false"))
+		    if (value != null && value.equalsIgnoreCase("false")) {
 			isLeaf = false;
-		    if (ModelFacade.isAOperation(element))
+		    }
+		    if (ModelFacade.isAOperation(element)) {
 			ModelFacade.setLeaf(element, isLeaf);
+		    }
 		}
 	    });
 	_operationSpecialStrings[6] =
@@ -1205,8 +1197,8 @@ public class ParserDisplay extends Parser {
      *	attribute string. See also ParseError.getErrorOffset().
      */
     public void parseAttribute(String s, Object attr)
-	throws ParseException
-    {
+	throws ParseException {
+
 	String multiplicity = null;
 	String name = null;
 	Vector properties = null;
@@ -1718,7 +1710,8 @@ public class ParserDisplay extends Parser {
 	    						property.length()));
         }
         Object tag =
-            UmlFactory.getFactory().getExtensionMechanisms().createTaggedValue();
+            UmlFactory.getFactory().getExtensionMechanisms()
+	        .createTaggedValue();
         ModelFacade.setTag(tag, tagStr);
         ModelFacade.setValue(tag, valueStr);
         ModelFacade.addTaggedValue(target, tag);
@@ -2074,12 +2067,19 @@ public class ParserDisplay extends Parser {
 	    }
 	}
 
-	if (! foundEntry) delete(ModelFacade.getEntry(st));
-	if (! foundExit) delete(ModelFacade.getExit(st));
-	if (! foundDo) delete(ModelFacade.getDoActivity(st));
+	if (!foundEntry) {
+	    delete(ModelFacade.getEntry(st));
+	}
+	if (!foundExit) {
+	    delete(ModelFacade.getExit(st));
+	}
+	if (!foundDo) {
+	    delete(ModelFacade.getDoActivity(st));
+	}
         
 	Vector internals = new Vector(ModelFacade.getInternalTransitions(st));
-	Vector oldinternals = new Vector(ModelFacade.getInternalTransitions(st));
+	Vector oldinternals =
+	    new Vector(ModelFacade.getInternalTransitions(st));
 	internals.removeAll(oldinternals); //now the vector is empty
 
 	// don't forget to remove old internals!
@@ -2099,7 +2099,7 @@ public class ParserDisplay extends Parser {
 	if (s.toLowerCase().startsWith("entry") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	Object oldEntry = ModelFacade.getEntry(st);
-	if (oldEntry == null){
+	if (oldEntry == null) {
 	    ModelFacade.setEntry(st, buildNewCallAction(s));
 	} else {
             updateAction(oldEntry, s);
@@ -2115,7 +2115,7 @@ public class ParserDisplay extends Parser {
 	if (s.toLowerCase().startsWith("exit") && s.indexOf("/") > -1)
 	    s = s.substring(s.indexOf("/") + 1).trim();
 	Object oldExit = ModelFacade.getExit(st);
-	if (oldExit == null){
+	if (oldExit == null) {
 	    ModelFacade.setExit(st, buildNewCallAction(s));
 	} else {
 	    updateAction(oldExit, s);
@@ -2131,7 +2131,7 @@ public class ParserDisplay extends Parser {
         if (s.toLowerCase().startsWith("do") && s.indexOf("/") > -1)
             s = s.substring(s.indexOf("/") + 1).trim();
         Object oldDo = ModelFacade.getDoActivity(st);
-        if (oldDo == null){
+        if (oldDo == null) {
             ModelFacade.setDoActivity(st, buildNewCallAction(s));
         } else {
             updateAction(oldDo, s);
@@ -2173,7 +2173,7 @@ public class ParserDisplay extends Parser {
 	    String s1 = s.substring(0, s.indexOf(":"));
 	    /* the name may not contain a "(", for the case of: a(b:c) */
 	    /* the name may not contain a "/", for when the action contains a ":" */
-	    if((s1.indexOf("(") < 0) && (s1.indexOf("/") < 0)){ 
+	    if ((s1.indexOf("(") < 0) && (s1.indexOf("/") < 0)) { 
 	        name = s1.trim();
 	        s = s.substring(s.indexOf(":") + 1).trim();
 	    }  
@@ -2209,19 +2209,19 @@ public class ParserDisplay extends Parser {
 	    s = s.substring(s.indexOf("(") + 1).trim();
 	    s = s.substring(0, s.lastIndexOf(")")).trim();
 	    timeEvent = true;
-	}else if ((s.toLowerCase().startsWith("when")) 
-            && (s.indexOf("(", 0) > -1)
-            && (s.indexOf(")", 0) > -1))
+	} else if ((s.toLowerCase().startsWith("when")) 
+		   && (s.indexOf("(", 0) > -1)
+		   && (s.indexOf(")", 0) > -1))
 	{   // s shall contain the ChangeExpression
 	    s = s.substring(s.indexOf("(") + 1).trim();
 	    s = s.substring(0, s.lastIndexOf(")")).trim();
 	    changeEvent = true;
-	}else if ((s.indexOf("(", 0) > -1)
+	} else if ((s.indexOf("(", 0) > -1)
             && (s.indexOf(")", 0) > -1))
         {   // s shall contain the operation 
 	    operationName = s.substring(0, s.indexOf("(")).trim();
 	    callEvent = true;
-        }else { // s shall contain the signal 
+        } else { // s shall contain the signal 
             signalEvent = true;
         }
 
@@ -2259,7 +2259,7 @@ public class ParserDisplay extends Parser {
             // case 1 and 2
             if (evt == null) {
                 // case 1
-                if (timeEvent){ // after(...)
+                if (timeEvent) { // after(...)
                     evt = UmlFactory.getFactory().getStateMachines()
                                                 .buildTimeEvent(s);
                 }
@@ -2267,18 +2267,18 @@ public class ParserDisplay extends Parser {
                     evt = UmlFactory.getFactory().getStateMachines()
                                                 .buildChangeEvent(s);
                 }
-                if (callEvent){  // operation(paramlist)
+                if (callEvent) {  // operation(paramlist)
                     evt = UmlFactory.getFactory().getStateMachines()
 			                        .buildCallEvent(trans, trigger);
                 }
-                if (signalEvent){  // signalname
+                if (signalEvent) {  // signalname
                     evt = UmlFactory.getFactory().getStateMachines()
                                                 .buildSignalEvent(trigger);
                 }
                 created_evt = true;
             } else {
                 // case 2
-                if (!ModelFacade.getName(evt).equals(trigger)){
+                if (!ModelFacade.getName(evt).equals(trigger)) {
                     ModelFacade.setName(evt, trigger);
                     if (timeEvent && !ModelFacade.isATimeEvent(evt)) {
                         UmlFactory.getFactory().delete(evt);
@@ -2319,9 +2319,13 @@ public class ParserDisplay extends Parser {
                  */
                 Object enclosing = StateMachinesHelper.getHelper()
                                                 .getStateMachine(trans);
-                while((!ModelFacade.isAPackage(enclosing))&&(enclosing != null))
+                while ((!ModelFacade.isAPackage(enclosing))
+		       && (enclosing != null)) {
                     enclosing = ModelFacade.getNamespace(enclosing);
-                if (enclosing!= null) ModelFacade.setNamespace(evt, enclosing);
+		}
+                if (enclosing != null) {
+		    ModelFacade.setNamespace(evt, enclosing);
+		}
             }
 	} else { 
             // case 3 and 4
@@ -2596,10 +2600,9 @@ public class ParserDisplay extends Parser {
      * (formerly: name: action ) 
      * @param mes The MMessage to apply any changes to.
      * @param s The String to parse.
-     * @throws java.text.ParseException when it detects an error in the
+     * @throws ParseException when it detects an error in the
      *	attribute string. See also ParseError.getErrorOffset().
      */
-    
     public void parseMessage(Object mes, String s) throws ParseException {
 	String fname = null;
 	String guard = null;
@@ -2942,9 +2945,10 @@ public class ParserDisplay extends Parser {
 		    guard = "*" + guard;
 	    }
 	    Object/*MIterationExpression*/ expr = 
-               UmlFactory.getFactory().getDataTypes().createIterationExpression(
-				   Notation.getDefaultNotation().toString(),
-				   guard);
+		UmlFactory.getFactory().getDataTypes()
+		    .createIterationExpression(
+			    Notation.getDefaultNotation().toString(),
+			    guard);
 	    ModelFacade.setRecurrence(ModelFacade.getAction(mes), expr);
 	}
 
@@ -3003,15 +3007,18 @@ public class ParserDisplay extends Parser {
 	}
 
 	if (args != null) {
-	    Collection c = ModelFacade.getActualArguments(ModelFacade.getAction(mes));
+	    Collection c =
+		ModelFacade.getActualArguments(ModelFacade.getAction(mes));
 	    Iterator it = c.iterator();
 	    int pos;
 	    for (i = 0; i < args.size(); i++) {
 		Object arg = (it.hasNext() ? /*(MArgument)*/ it.next() : null);
 		if (arg == null) {
-		    arg = UmlFactory.getFactory().getCommonBehavior()
-			.createArgument();
-		    ModelFacade.addActualArgument(ModelFacade.getAction(mes), arg);
+		    arg =
+			UmlFactory.getFactory().getCommonBehavior()
+			    .createArgument();
+		    ModelFacade.addActualArgument(ModelFacade.getAction(mes),
+						  arg);
 		    refindOperation = true;
 		}
 		if (ModelFacade.getValue(arg) == null 
@@ -3100,12 +3107,12 @@ public class ParserDisplay extends Parser {
 	    } else if (root == null && pname.length() > 0) {
 		throw new ParseException("Cannot find the activator for the " 
 				+ "message", 0);
-	    } else if (swapRoles && ModelFacade.getMessages4(mes).size() > 0 
-                        && ModelFacade.getSender(mes) 
-                                                != ModelFacade.getReceiver(mes)
-                        ) {
+	    } else if (swapRoles
+		       && ModelFacade.getMessages4(mes).size() > 0 
+		       && (ModelFacade.getSender(mes)
+			   != ModelFacade.getReceiver(mes))) {
 		throw new ParseException("Cannot reverse the direction of a " 
-				+ "message that is an activator", 0);
+					 + "message that is an activator", 0);
 	    } else {
 		// Disconnect the message from the call graph
 		Collection c = ModelFacade.getPredecessors(mes);
@@ -3852,18 +3859,21 @@ public class ParserDisplay extends Parser {
         return a;
     }
 
-    /** update an existing Action with a new Script
+    /**
+     * Update an existing Action with a new Script.
      * 
      * @author      MVW
      * @param old   the Action
      * @param s     a string representing a new
      *              Script for the ActionExpression
      */
-    private void updateAction(Object old, String s){
+    private void updateAction(Object old, String s) {
         Object ae = ModelFacade.getScript(old);
         String language = "java";
         if (ae != null) language = ModelFacade.getLanguage(ae);
-        ae = UmlFactory.getFactory().getDataTypes().createActionExpression(language, s);
+        ae =
+	    UmlFactory.getFactory().getDataTypes()
+	        .createActionExpression(language, s);
         ModelFacade.setScript(old, ae);
     }
 
@@ -3872,7 +3882,7 @@ public class ParserDisplay extends Parser {
      * @author MVW
      * @param obj the modelelement to be deleted
      */
-    private void delete(Object obj){
+    private void delete(Object obj) {
         if (obj != null) UmlFactory.getFactory().delete(obj);
     }
     

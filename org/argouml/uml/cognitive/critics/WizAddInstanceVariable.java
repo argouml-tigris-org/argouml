@@ -22,12 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * WizAddInstanceVariable.java
- *
- * Created on Fabruary 6, 2004, 11:40 PM
- */
-
 package org.argouml.uml.cognitive.critics;
 
 import org.tigris.gef.util.VectorSet;
@@ -37,18 +31,20 @@ import org.argouml.cognitive.ui.WizStepTextField;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.kernel.Wizard;
 
 /**
  * A wizard to add attributes to a classifier
  *
  * @author  d00mst (copied from WizAddOperation by mkl)
+ * @since February 6, 2004, 11:40 PM
  */
-public class WizAddInstanceVariable extends org.argouml.kernel.Wizard {
+public class WizAddInstanceVariable extends Wizard {
     
     protected WizStepTextField _step1 = null;
     protected String _label = Translator.localize("UMLMenu", "label.name");
     protected String _instructions =
-    "Please change the name of the offending model element.";
+	"Please change the name of the offending model element.";
     protected String _suggestion = "suggestion";
     protected String _origSuggest = "suggestion";
     protected boolean _mustEdit = false;
@@ -100,7 +96,8 @@ public class WizAddInstanceVariable extends org.argouml.kernel.Wizard {
     }
 
     public void setSuggestion(String s) {
-	_origSuggest = _suggestion = s;
+	_suggestion = s;
+	_origSuggest = s;
     }
     
     public void setInstructions(String s) {
@@ -116,12 +113,12 @@ public class WizAddInstanceVariable extends org.argouml.kernel.Wizard {
      */
     public JPanel makePanel(int newStep) {
         switch (newStep) {
-            case 1:
-                if (_step1 == null) {
-                    _step1 = new WizStepTextField(this, _instructions,
-                    _label, getSuggestion());
-                }
-                return _step1;
+	case 1:
+	    if (_step1 == null) {
+		_step1 = new WizStepTextField(this, _instructions,
+					      _label, getSuggestion());
+	    }
+	    return _step1;
         }
         return null;
     }

@@ -38,7 +38,8 @@ import org.argouml.model.ModelFacade;
  *
  * @since 0.15.2
  */
-public class GoNamespaceToClassifierAndPackage extends AbstractPerspectiveRule{
+public class GoNamespaceToClassifierAndPackage
+    extends AbstractPerspectiveRule {
 
     public String getRuleName() {
         return "Namespace->Classifer or Package";
@@ -53,9 +54,9 @@ public class GoNamespaceToClassifierAndPackage extends AbstractPerspectiveRule{
 
         while (elements.hasNext()) {
             Object element = elements.next();
-            if (ModelFacade.isAPackage(element) ||
-                ModelFacade.isAClassifier(element)) {
-                    result.add(element);
+            if (ModelFacade.isAPackage(element)
+		    || ModelFacade.isAClassifier(element)) {
+		result.add(element);
             }
         }
 

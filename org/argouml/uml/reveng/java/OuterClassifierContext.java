@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2003 The Regents of the University of California. All
+// Copyright (c) 2003-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -76,7 +76,7 @@ class OuterClassifierContext extends Context
         Object mInterface = ModelFacade.lookupIn(mClassifier, name);
 
 	if (mInterface == null) {
-		Class classifier;
+	    Class classifier;
 	    // Try to find it via the classpath
 	    try {
 
@@ -85,15 +85,15 @@ class OuterClassifierContext extends Context
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
-                    String clazzName = packageJavaName + "." +
-				      namePrefix + name;
+                    String clazzName =
+			packageJavaName + "." + namePrefix + name;
 		    classifier =
 			Class.forName(clazzName);
 		}
 		if (classifier.isInterface()) {
 		    mInterface =
 			UmlFactory.getFactory().getCore()
-			.buildInterface(name, mClassifier);
+			    .buildInterface(name, mClassifier);
 		}
 		else {
 		    // Only interfaces will do
@@ -103,21 +103,25 @@ class OuterClassifierContext extends Context
 	    catch (ClassNotFoundException e) {
                 
                 // try USER classpath
-                try{
+                try {
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
                         classifier = Class.forName(namePrefix + name);
-                        classifier = ImportClassLoader.getInstance().loadClass(namePrefix + name);
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(namePrefix + name);
                     }
                     else {
-                        String clazzName = packageJavaName + "." +
-                        namePrefix + name;
-                        classifier = ImportClassLoader.getInstance().loadClass(clazzName);
+                        String clazzName =
+			    packageJavaName + "." + namePrefix + name;
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(clazzName);
                     }
                     if (classifier.isInterface()) {
                         mInterface =
-                        UmlFactory.getFactory().getCore()
-                        .buildInterface(name, mClassifier);
+			    UmlFactory.getFactory().getCore()
+			        .buildInterface(name, mClassifier);
                     }
                     else {
                         // Only interfaces will do
@@ -152,7 +156,7 @@ class OuterClassifierContext extends Context
 	Object iClassifier = ModelFacade.lookupIn(mClassifier, name);
 
 	if (iClassifier == null) {
-		Class classifier;
+	    Class classifier;
 	    // Try to find it via the classpath
 	    try {
 
@@ -161,43 +165,49 @@ class OuterClassifierContext extends Context
 		    classifier = Class.forName(namePrefix + name);
 		}
 		else {
-                    String clazzName = packageJavaName + "." +
-				      namePrefix + name;
+                    String clazzName =
+			packageJavaName + "." + namePrefix + name;
 		    classifier =
 			Class.forName(clazzName);
 		}
 		if (classifier.isInterface()) {
 		    iClassifier =
 			UmlFactory.getFactory().getCore()
-			.buildInterface(name, mClassifier);
+			    .buildInterface(name, mClassifier);
 		}
 		else {
 		    iClassifier =
-			UmlFactory.getFactory().getCore().buildClass(name, mClassifier);
+			UmlFactory.getFactory().getCore()
+			    .buildClass(name, mClassifier);
 		}
 	    }
 	    catch (ClassNotFoundException e) {
                 
                 // try USER classpath
-                try{
+                try {
                     
                     // Special case for model
                     if (ModelFacade.isAModel(mPackage)) {
-                        classifier = ImportClassLoader.getInstance().loadClass(namePrefix + name);
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(namePrefix + name);
                     }
                     else {
-                        String clazzName = packageJavaName + "." +
-                        namePrefix + name;
-                        classifier = ImportClassLoader.getInstance().loadClass(clazzName);
+                        String clazzName =
+			    packageJavaName + "." + namePrefix + name;
+                        classifier =
+			    ImportClassLoader.getInstance()
+			        .loadClass(clazzName);
                     }
                     if (classifier.isInterface()) {
                         iClassifier =
-                        UmlFactory.getFactory().getCore()
-                        .buildInterface(name, mClassifier);
+			    UmlFactory.getFactory().getCore()
+			        .buildInterface(name, mClassifier);
                     }
                     else {
                         iClassifier =
-                        UmlFactory.getFactory().getCore().buildClass(name, mClassifier);
+			    UmlFactory.getFactory().getCore()
+			        .buildClass(name, mClassifier);
                     }
                     
                 }

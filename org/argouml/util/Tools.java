@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -35,17 +35,19 @@ import org.apache.log4j.Logger;
 
 public class Tools {
 
-	/** logger */
-	private static final Logger LOG = Logger.getLogger(Tools.class);
+    /** logger */
+    private static final Logger LOG = Logger.getLogger(Tools.class);
 
-	static String packageList[] = new 
-        String[]{"org.argouml.application", "ru.novosoft.uml", 
+    static String packageList[] =
+	new String[]{
+	    "org.argouml.application", "ru.novosoft.uml", 
             "org.tigris.gef.base", "org.xml.sax", 
-            "java.lang", "org.apache.log4j"};
+            "java.lang", "org.apache.log4j",
+	};
 
     private static void getComponentVersionInfo(StringBuffer sb, String pn) 
     {
-        sb.append(Translator.localize("label","label.package")).append(": ");
+        sb.append(Translator.localize("label", "label.package")).append(": ");
         sb.append(pn);
         sb.append('\n');
         Package pkg = Package.getPackage(pn);
@@ -55,21 +57,21 @@ public class Tools {
         else {
             String in = pkg.getImplementationTitle();
             if (in != null) {
-                sb.append(Translator.localize("label","label.component"))
-                  .append(": ");
+                sb.append(Translator.localize("label", "label.component"));
+		sb.append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVendor();
             if (in != null) {
-                sb.append(Translator.localize("label","label.by"))
-                  .append(": ");
+                sb.append(Translator.localize("label", "label.by"));
+		sb.append(": ");
                 sb.append(in);
             }
             in = pkg.getImplementationVersion();
             if (in != null) {
-                sb.append(", ")
-                  .append(Translator.localize("label","label.version"))
-                  .append(" ");
+                sb.append(", ");
+		sb.append(Translator.localize("label", "label.version"));
+		sb.append(" ");
                 sb.append(in);
                 sb.append('\n');
             }
@@ -94,7 +96,8 @@ public class Tools {
                 Object[] msgArgs = {
                     saxFactory
                 };
-                sb.append(Translator.messageFormat("label","label.sax-factory1", 
+                sb.append(Translator.messageFormat("label",
+						   "label.sax-factory1", 
                                                    msgArgs));
             }
 
@@ -104,7 +107,8 @@ public class Tools {
                 Object[] msgArgs = {
                     saxObject.getClass().getName()
                 };
-                sb.append(Translator.messageFormat("label","label.sax-factory2", 
+                sb.append(Translator.messageFormat("label",
+						   "label.sax-factory2", 
                                                    msgArgs));
                 sb.append("\n");
             }
@@ -118,7 +122,8 @@ public class Tools {
             }
 
             if (saxObject != null) {
-                // ...getPackage() can return null's, so we have to cater for this:
+                // ...getPackage() can return null's, so we have to
+                // cater for this:
                 Package pckg = saxObject.getClass().getPackage();
                 if (pckg != null) {
                     getComponentVersionInfo(sb, pckg.getName());

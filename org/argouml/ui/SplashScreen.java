@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -39,10 +39,11 @@ public class SplashScreen extends JWindow implements IStatusBar {
 
     protected StatusBar _statusBar = new StatusBar();
 
-    static private SplashScreen instance;// = new SplashScreen("Loading ArgoUML...", "Splash");
+    private static SplashScreen instance;
+    // = new SplashScreen("Loading ArgoUML...", "Splash");
 
-    static private boolean _doSplash;
-    static public synchronized SplashScreen getInstance() {
+    private static boolean _doSplash;
+    public static synchronized SplashScreen getInstance() {
         if (!_doSplash) return null;
         if (instance == null) {
             instance = new SplashScreen("Loading ArgoUML...", "Splash");
@@ -51,7 +52,7 @@ public class SplashScreen extends JWindow implements IStatusBar {
     }
     
     /**
-     * Deprecated 0.15 will become private in release 0.16.
+     * @deprecated 0.15 will become private in release 0.16.
      * Use SplashScreen.getInstance() instead
      */
     public SplashScreen(String title, String iconName) {

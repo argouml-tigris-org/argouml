@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,17 +54,16 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 
 /**
- * UMLAddDialog allows the user to do a multiple select from a list of choices in a seperate dialog. The 
- * dialog has two possible uses:
- * <p>
- * 1. As dialog as described above with a custom cellrenderer or a default cellrenderer.
- * </p>
- * <p>
- * 2. As dialog with a UMLCellRenderer. Cells in the choices list and selected list are presented with 
- * their name instead of their toString function.
- * </p>
+ * UMLAddDialog allows the user to do a multiple select from a list of
+ * choices in a separate dialog. The dialog has two possible uses:<ol>
  *
- * <p>$Id$
+ * <li>As dialog as described above with a custom cellrenderer or a
+ * default cellrenderer.
+ *
+ * <li>As dialog with a UMLCellRenderer. Cells in the choices list and
+ * selected list are presented with their name instead of their
+ * toString function.
+ * </ol>
  */
 public class UMLAddDialog extends JPanel implements ActionListener {
 	
@@ -96,38 +95,51 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	
     protected JDialog _dialog = null;
     protected String _title = null;
+
     /**
-     * The returnvalue of the method showDialog. Returnvalue can be either JOptionPane.OK_OPTION or
-     * JOptionPane.CANCEL_OPTION
+     * The returnvalue of the method showDialog. Returnvalue can be
+     * either JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
      */
     protected int _returnValue;
 	
     /**
-     * Constructs a UMLAddDialog with a UMLListCellRenderer. Modelelements are represented with their names in
-     * the choices list and the selected list.
+     * Constructs a UMLAddDialog with a
+     * UMLListCellRenderer. Modelelements are represented with their
+     * names in the choices list and the selected list.
+     *
      * @param choices A vector with the choices a user has.
      * @param selected A vector with allready preselected choices
      * @param title The title of the dialog
      * @param multiselectAllowed True if the user may select multiple choices
-     * @param exclusive True if choices in the selected list may not appear in the choices list. If true preselected
-     * choices are removed from the choices list.
+     * @param exclusive True if choices in the selected list may not
+     *                  appear in the choices list. If true preselected
+     *                  choices are removed from the choices list.
      */
-    public UMLAddDialog(Vector choices, Vector selected, String title, boolean multiselectAllowed, boolean exclusive) {
-	this(choices, selected, title, new UMLListCellRenderer(), multiselectAllowed, exclusive);
+    public UMLAddDialog(Vector choices, Vector selected, String title,
+			boolean multiselectAllowed, boolean exclusive) {
+	this(choices, selected, title, new UMLListCellRenderer(),
+	     multiselectAllowed, exclusive);
     }	
 	
     /**
      * Constructs a UMLAddDialog with a given UMLListCellRenderer. 
+     *
      * @param choices A vector with the choices a user has.
      * @param selected A vector with allready preselected choices
      * @param title The title of the dialog
-     * @param renderer The cellrenderer of the choices list and the selected list
+     * @param renderer The cellrenderer of the choices list and the
+     * selected list
      * @param multiselectAllowed True if the user may select multiple choices
-     * @param exclusive True if choices in the selected list may not appear in the choices list. If true preselected
-     * choices are removed from the choices list.
+     * @param exclusive True if choices in the selected list may not
+     * appear in the choices list. If true preselected choices are
+     * removed from the choices list.
      */
-    public UMLAddDialog(Vector choices, Vector selected, String title, ListCellRenderer renderer, boolean multiselectAllowed, boolean exclusive) {
-	if (choices == null) throw new IllegalArgumentException("There should allways be choices in UMLAddDialog");
+    public UMLAddDialog(Vector choices, Vector selected, String title,
+			ListCellRenderer renderer,
+			boolean multiselectAllowed, boolean exclusive) {
+	if (choices == null) {
+	    throw new IllegalArgumentException("There should allways be choices in UMLAddDialog");
+	}
 	if (exclusive && selected != null && !selected.isEmpty()) {
 	    choices.removeAll(selected);
 	}
@@ -200,7 +212,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 	_okButton = new JButton(Translator.localize("UMLMenu", "button.ok"));
 	_okButton.addActionListener(this);
-	_cancelButton = new JButton(Translator.localize("UMLMenu", "button.cancel"));
+	_cancelButton =
+	    new JButton(Translator.localize("UMLMenu", "button.cancel"));
 	_cancelButton.addActionListener(this);		
 	okCancelPanel.add(_okButton);
 	okCancelPanel.add(_cancelButton);
@@ -233,7 +246,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Updates the add and remove button (sets enabled/disabled). Called whenever the model is changed.
+     * Updates the add and remove button (sets
+     * enabled/disabled). Called whenever the model is changed.
      */
     public void update() {
 	if (_choices.size() == 0) {
@@ -262,12 +276,16 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Shows the dialog. First a dialog must be constructed using one of the constructors of this class.
-     * After that this method should be called to actually show the dialog. This method returns either 
-     * JOptionPane.OK_OPTION if the user wants to select his choices or JOptionPane.CANCEL_OPTION if he
-     * does not want to.
+     * Shows the dialog. First a dialog must be constructed using one
+     * of the constructors of this class.  After that this method
+     * should be called to actually show the dialog. This method
+     * returns either JOptionPane.OK_OPTION if the user wants to
+     * select his choices or JOptionPane.CANCEL_OPTION if he does not
+     * want to.
+     *
      * @param parent The parent frame of this dialog.
-     * @return int The returnvalue, can be either JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
+     * @return int The returnvalue, can be either
+     * JOptionPane.OK_OPTION or JOptionPane.CANCEL_OPTION
      */
     public int showDialog(Component parent) {
 	Frame frame = parent instanceof Frame ? (Frame) parent
@@ -281,12 +299,11 @@ public class UMLAddDialog extends JPanel implements ActionListener {
         contentPane.add(this, BorderLayout.CENTER);
  
 	_dialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-	_dialog.addWindowListener(new WindowAdapter() 
-	    {
-    		public void windowClosing(WindowEvent we) {
-		    cancel();
-    		}
-	    });
+	_dialog.addWindowListener(new WindowAdapter() {
+    	    public void windowClosing(WindowEvent we) {
+		cancel();
+	    }
+	});
 
         _dialog.pack();
         _dialog.setLocationRelativeTo(parent);
@@ -324,8 +341,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Returns the by the user selected elements. This method should be called if the selected choices
-     * are to be known. 
+     * Returns the by the user selected elements. This method should
+     * be called if the selected choices are to be known.
+     *
      * @return Vector
      */
     public Vector getSelected() {
@@ -333,7 +351,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Adds the selected elements in the choices list to the selected list. Updates the GUI too.
+     * Adds the selected elements in the choices list to the selected
+     * list. Updates the GUI too.
      */
     public void addSelection() {
 	Vector choices = getChoices();
@@ -348,7 +367,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Removes the selected elements in the selected list and adds them to the choices list. Updates the GUI too.
+     * Removes the selected elements in the selected list and adds
+     * them to the choices list. Updates the GUI too.
      */
     public void removeSelection() {
 	Vector choices = getSelectedChoices();
@@ -363,7 +383,8 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Called when the okbutton is pressed. Closes this dialog and sets the returnvalue to JOptionPane.OK_OPTION
+     * Called when the okbutton is pressed. Closes this dialog and
+     * sets the returnvalue to JOptionPane.OK_OPTION.
      */
     public void ok() {
 	if (_dialog != null) {
@@ -373,9 +394,10 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 	
     /**
-     * Called when the cancel button is pressed. Closes this dialog and sets the returnvalue to JOptionPane.CANCEL_OPTION.
-     * Resets the selected list to the originally preselection if there is one. Otherwise the selected list
-     * is emptied.
+     * Called when the cancel button is pressed. Closes this dialog
+     * and sets the returnvalue to JOptionPane.CANCEL_OPTION.  Resets
+     * the selected list to the originally preselection if there is
+     * one. Otherwise the selected list is emptied.
      */
     public void cancel() {
 	_selected.removeAllElements();
@@ -390,6 +412,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 }
 
 /*
+  TODO: Remove this comment! It looks like a class!
 class UMLCellRenderer extends JLabel implements ListCellRenderer {
 	/**
 	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(JList, Object, int, boolean, boolean)

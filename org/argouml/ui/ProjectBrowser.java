@@ -77,6 +77,9 @@ public class ProjectBrowser
     extends JFrame
     implements IStatusBar, PropertyChangeListener, TargetListener {
 
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(ProjectBrowser.class);
 
     ////////////////////////////////////////////////////////////////
@@ -195,10 +198,8 @@ public class ProjectBrowser
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowCloser());
         ImageIcon argoImage =
-            ResourceLoaderWrapper
-	    .getResourceLoaderWrapper()
-	    .lookupIconResource(
-				"ArgoIcon");
+            ResourceLoaderWrapper.getResourceLoaderWrapper()
+	        .lookupIconResource("ArgoIcon");
         this.setIconImage(argoImage.getImage());
         // 
 
@@ -484,9 +485,7 @@ public class ProjectBrowser
      *             {@link org.argouml.kernel.Project#getActiveDiagram()}
      */
     public ArgoDiagram getActiveDiagram() {
-        return ProjectManager
-            .getManager()
-            .getCurrentProject()
+        return ProjectManager.getManager().getCurrentProject()
             .getActiveDiagram();
     }
 
@@ -770,8 +769,8 @@ public class ProjectBrowser
     } /* end class WindowCloser */
 
     /**
-     * @see
-     * java.beans.PropertyChangeListener#propertyChange(java.beans.PropertyChangeEvent)
+     * @see java.beans.PropertyChangeListener#propertyChange(
+     *         java.beans.PropertyChangeEvent)
      */
     public void propertyChange(PropertyChangeEvent evt) {
         // the project changed
@@ -809,7 +808,7 @@ public class ProjectBrowser
         Object target = e.getNewTarget();
         if (target instanceof ArgoDiagram) {
 	    ProjectManager.getManager().getCurrentProject().
-		setActiveDiagram((ArgoDiagram)target);
+		setActiveDiagram((ArgoDiagram) target);
             updateTitle();
         }
     }    

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2003 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -54,16 +54,17 @@ import org.tigris.gef.base.Editor;
 import org.tigris.gef.graph.presentation.JGraph;
 import org.tigris.gef.presentation.Fig;
 
-/** The upper right pane in the Argo/UML user interface.  It has
- *  several tabs with different kinds of "major" editors that allow
- *  the user to edit whatever is selected in the NavigatorPane. */
-
+/** 
+ * The upper right pane in the ArgoUML user interface.  It has several
+ * tabs with different kinds of "major" editors that allow the user to
+ * edit whatever is selected in the NavigatorPane.
+ */
 public class MultiEditorPane
     extends JPanel
     implements ChangeListener, MouseListener, QuadrantPanel, TargetListener {
-	/** logger */
-	private static Logger cat = Logger.getLogger(MultiEditorPane.class);
-//    protected static Logger cat = Logger.getLogger(MultiEditorPane.class);
+
+    /** logger */
+    private static Logger cat = Logger.getLogger(MultiEditorPane.class);
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -177,6 +178,8 @@ public class MultiEditorPane
      * Returns the index of a tab with a certain name in the JTabbedPane which
      * is the component shown by the multieditorpane. At the moment (version
      * 0.13.3 of ArgoUML) there is only 1 tab, the Diagram tab.
+     *
+     * @return The index.
      */
     public int getIndexOfNamedTab(String tabName) {
         for (int i = 0; i < _tabPanels.size(); i++) {
@@ -236,7 +239,7 @@ public class MultiEditorPane
 
 
     /**
-     *  called when the user selects a tab, by clicking or otherwise. 
+     * Called when the user selects a tab, by clicking or otherwise. 
      */
     public void stateChanged(ChangeEvent  e) {
         //TODO: should fire its own event and ProjectBrowser
@@ -282,7 +285,9 @@ public class MultiEditorPane
         }
     }
 
-    /** called when the user clicks once on a tab. */
+    /**
+     * Called when the user clicks once on a tab.
+     */
     public void mySingleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
         //should register a listener
@@ -292,7 +297,8 @@ public class MultiEditorPane
     /**
      * When the user double clicks on a tab, this tab is spawned by this method
      * if it is selected.
-     * @param tab
+     *
+     * @param tab The index of the tab.
      */
     public void myDoubleClick(int tab) {
         //TODO: should fire its own event and ProjectBrowser
@@ -309,8 +315,11 @@ public class MultiEditorPane
 
     /**
      * Removes all figs from all diagrams for some object obj. Does not remove 
-     * the owner of the objects (does not do a call to dispose).
-     * TODO move this to ProjectManager for example, in any case: out of the GUI
+     * the owner of the objects (does not do a call to dispose).<p>
+     *
+     * TODO: move this to ProjectManager for example, in any case: out
+     * of the GUI.
+     *
      * @param obj
      */
     public void removePresentationFor(Object obj, Vector diagrams) {
@@ -334,8 +343,11 @@ public class MultiEditorPane
     }
 
     /**
-     * Returns a list with all figs for some object o on the given diagrams.
-     * TODO move this to ProjectManager for example, in any case: out of the GUI
+     * Returns a list with all figs for some object o on the given diagrams.<p>
+     *
+     * TODO: move this to ProjectManager for example, in any case: out
+     * of the GUI
+     *
      * @param o
      * @param diagrams
      * @return List
@@ -358,16 +370,16 @@ public class MultiEditorPane
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetAdded(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetAdded(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetAdded(TargetEvent e) {
 	setTarget(e.getNewTarget());
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetRemoved(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetRemoved(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetRemoved(TargetEvent e) {
 	// how to handle empty target lists?  probably the
@@ -376,8 +388,8 @@ public class MultiEditorPane
     }
 
     /**
-     * @see
-     * org.argouml.ui.targetmanager.TargetListener#targetSet(org.argouml.ui.targetmanager.TargetEvent)
+     * @see org.argouml.ui.targetmanager.TargetListener#targetSet(
+     *         org.argouml.ui.targetmanager.TargetEvent)
      */
     public void targetSet(TargetEvent e) {
 	setTarget(e.getNewTarget());

@@ -40,7 +40,7 @@ import org.argouml.model.ModelFacade;
  * @author jaap.branderhorst@xs4all.nl	
  * @since Dec 25, 2002
  */
-public class GoStateToDoActivity extends AbstractPerspectiveRule{
+public class GoStateToDoActivity extends AbstractPerspectiveRule {
 
     /**
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)

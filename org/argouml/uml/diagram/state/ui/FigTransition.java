@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -21,11 +21,6 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
-
-// File: FigTransition.java
-// Classes: FigTransition
-// Original Author: your email address here
-// $Id$
 
 package org.argouml.uml.diagram.state.ui;
 
@@ -49,7 +44,11 @@ import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
+
 public class FigTransition extends FigEdgeModelElement {
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat = Logger.getLogger(FigTransition.class);
 
     private ArrowHeadGreater endArrow = new ArrowHeadGreater();
@@ -84,16 +83,18 @@ public class FigTransition extends FigEdgeModelElement {
     public FigTransition(Object edge) {
 	this(edge,
 	     ProjectManager.getManager().getCurrentProject()
-	     .getActiveDiagram().getLayer());
+	         .getActiveDiagram().getLayer());
     }
 
     ////////////////////////////////////////////////////////////////
     // event handlers
 
-    /** This method is called after the user finishes editing a text
-     *  field that is in the FigEdgeModelElement.  Determine which field
-     *  and update the model.  This class handles the name, subclasses
-     *  should override to handle other text elements. */
+    /**
+     * This method is called after the user finishes editing a text
+     * field that is in the FigEdgeModelElement.  Determine which
+     * field and update the model.  This class handles the name,
+     * subclasses should override to handle other text elements.
+     */
     protected void textEdited(FigText ft) throws PropertyVetoException {
     
 	Object t = /*(MTransition)*/ getOwner();
@@ -138,7 +139,8 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getDestination() {
         if (getOwner() != null) {
-            return StateMachinesHelper.getHelper().getDestination(/*(MTransition)*/ getOwner());
+            return StateMachinesHelper.getHelper()
+		.getDestination(/*(MTransition)*/ getOwner());
         }
         return null;
     }
@@ -148,7 +150,8 @@ public class FigTransition extends FigEdgeModelElement {
      */
     protected Object getSource() {
         if (getOwner() != null) {
-            return StateMachinesHelper.getHelper().getSource(/*(MTransition)*/ getOwner());
+            return StateMachinesHelper.getHelper()
+		.getSource(/*(MTransition)*/ getOwner());
         }
         return null;
     }

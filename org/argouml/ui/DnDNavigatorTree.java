@@ -94,7 +94,9 @@ public class DnDNavigatorTree extends ExplorerTree
     }
     
     /**
-     * recognises the start of the drag
+     * Recognizes the start of the drag.
+     *
+     * @param dragGestureEvent The event.
      */
     public void dragGestureRecognized(DragGestureEvent dragGestureEvent) {
         
@@ -197,7 +199,7 @@ public class DnDNavigatorTree extends ExplorerTree
 				    msg,
 				    "Error Dialog", 
 				    JOptionPane.ERROR_MESSAGE
-				    );
+			    );
 			}
 		    });
                     // reset the cursor.

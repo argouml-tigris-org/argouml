@@ -38,7 +38,7 @@ import org.argouml.model.ModelFacade;
  * To enable and disable the creation of type comments go to
  * Window>Preferences>Java>Code Generation.
  */
-public class GoStateMachineToTransition extends AbstractPerspectiveRule{
+public class GoStateMachineToTransition extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "Statemachine->Transition"; }
 

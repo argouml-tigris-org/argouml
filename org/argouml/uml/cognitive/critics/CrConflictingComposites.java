@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -58,13 +58,16 @@ public class CrConflictingComposites extends CrUML {
 	while (enum.hasNext()) {
             Object myEnd = enum.next();
 	    if (UmlHelper.getHelper().getCore()
-                .equalsAggregationKind(myEnd,"composite"))
+                .equalsAggregationKind(myEnd, "composite")) {
 		continue;
-	    if (ModelFacade.getLower(myEnd) == 0) continue;
+	    }
+	    if (ModelFacade.getLower(myEnd) == 0) {
+		continue;
+	    }
 	    Object asc = ModelFacade.getAssociation(myEnd);
-	    if (asc != null &&
-                UmlHelper.getHelper().getCore().hasCompositeEnd(asc)){
-                    compositeCount++;
+	    if (asc != null
+		&& UmlHelper.getHelper().getCore().hasCompositeEnd(asc)) {
+		compositeCount++;
             }
 	}
 	if (compositeCount > 1) return PROBLEM_FOUND;

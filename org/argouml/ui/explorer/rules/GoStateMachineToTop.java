@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoStateMachineToTop extends AbstractPerspectiveRule{
+public class GoStateMachineToTop extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "Statemachine->Top State"; }
 

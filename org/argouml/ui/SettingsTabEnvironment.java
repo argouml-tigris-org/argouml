@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -41,14 +41,14 @@ import org.argouml.application.helpers.SettingsTabHelper;
 
 
 
-/** Action object for handling Argo settings
+/**
+ * Action object for handling Argo settings.
  *
- *  @author Thierry Lach
- *  @since  0.9.4
+ * @author Thierry Lach
+ * @since  0.9.4
  */
 public class SettingsTabEnvironment extends SettingsTabHelper
-    implements SettingsTabPanel 
-{
+    implements SettingsTabPanel {
 
     public String USER_DIR;
     
@@ -91,16 +91,16 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 	labelConstraints.gridy = 0;
 	fieldConstraints.gridy = 0;
 	// This string is NOT to be translated! See issue 2381.
-  //top.add(createLabel("${argo.root}"), labelConstraints);
-  top.add(new JLabel("${argo.root}"), labelConstraints);
-      _argoRoot = createTextField();
+	//top.add(createLabel("${argo.root}"), labelConstraints);
+	top.add(new JLabel("${argo.root}"), labelConstraints);
+	_argoRoot = createTextField();
 	_argoRoot.setEnabled(false);
 	top.add(_argoRoot, fieldConstraints);
 
 	labelConstraints.gridy = 1;
 	fieldConstraints.gridy = 1;
-  // This string is NOT to be translated! See issue 2381.
-  top.add(new JLabel("${argo.home}"), labelConstraints);
+	// This string is NOT to be translated! See issue 2381.
+	top.add(new JLabel("${argo.home}"), labelConstraints);
         _argoHome = createTextField();
 	_argoHome.setEnabled(false);
 	top.add(_argoHome, fieldConstraints);
@@ -108,7 +108,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 	labelConstraints.gridy = 2;
 	fieldConstraints.gridy = 2;
  	// This string is NOT to be translated! See issue 2381.
-  top.add(new JLabel("${argo.ext.dir}"), labelConstraints);
+	top.add(new JLabel("${argo.ext.dir}"), labelConstraints);
         _argoExtDir = createTextField();
 	_argoExtDir.setEnabled(false);
 	top.add(_argoExtDir, fieldConstraints);
@@ -116,7 +116,7 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 	labelConstraints.gridy = 3;
 	fieldConstraints.gridy = 3;
   	// This string is NOT to be translated! See issue 2381.
-    top.add(new JLabel("${java.home}"), labelConstraints);
+	top.add(new JLabel("${java.home}"), labelConstraints);
         _javaHome = createTextField();
 	_javaHome.setEnabled(false);
 	top.add(_javaHome, fieldConstraints);
@@ -124,15 +124,15 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 	labelConstraints.gridy = 4;
 	fieldConstraints.gridy = 4;
   	// This string is NOT to be translated! See issue 2381.
-    top.add(new JLabel("${user.home}"), labelConstraints);
+	top.add(new JLabel("${user.home}"), labelConstraints);
         _userHome = createTextField();
 	_userHome.setEnabled(false);
 	top.add(_userHome, fieldConstraints);
 
 	labelConstraints.gridy = 5;
 	fieldConstraints.gridy = 5;
-    // This string is NOT to be translated! See issue 2381.
-    top.add(new JLabel("${user.dir}"), labelConstraints);
+	// This string is NOT to be translated! See issue 2381.
+	top.add(new JLabel("${user.dir}"), labelConstraints);
         _userDir = createTextField();
 	_userDir.setEnabled(false);
 	top.add(_userDir, fieldConstraints);
@@ -153,7 +153,8 @@ public class SettingsTabEnvironment extends SettingsTabHelper
         _argoExtDir.setText(Argo.getArgoHome() + File.separator + "ext");
         _javaHome.setText(System.getProperty("java.home"));
         _userHome.setText(System.getProperty("user.home"));
-        _userDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR, System.getProperty("user.dir")));
+        _userDir.setText(Configuration.getString(Argo.KEY_STARTUP_DIR,
+		System.getProperty("user.dir")));
         _startupDir.setText(Argo.getDirectory());
     }
 
@@ -171,8 +172,10 @@ public class SettingsTabEnvironment extends SettingsTabHelper
 	return "Settings Tab for Environment";
     }
 
-    /** Use of Module is curious. Does this mean the
+    /**
+     * Use of Module is curious. Does this mean the
      * author of a particular zargo?
+     * This means the author of this extension to ArgoUML.
      * this information is not stored in the .argo xml
      * in zargo
      */    

@@ -31,7 +31,7 @@ import java.util.Set;
 
 import org.argouml.model.ModelFacade;
 
-public class GoTransitionToSource extends AbstractPerspectiveRule{
+public class GoTransitionToSource extends AbstractPerspectiveRule {
 
     public String getRuleName() { return "Transition->Source State"; }
 

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,15 +22,10 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-/*
- * UMLDiagramGraphModel.java
- *
- * Created on November 14, 2002, 10:20 PM
- */
-
 package org.argouml.uml.diagram;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.model.uml.UmlException;
 
 import java.util.Hashtable;
 import java.util.Vector;
@@ -44,13 +39,19 @@ import org.tigris.gef.base.ModeManager;
 import org.tigris.gef.graph.MutableGraphSupport;
 
 
-/** UMLMutableGraphSupport is a helper class which extends
+/**
+ * UMLMutableGraphSupport is a helper class which extends
  * MutableGraphSupport to provide additional helper and common methods
  * for UML Diagrams.
+ *
  * @author mkl@tigris.org
+ * @since November 14, 2002, 10:20 PM
  */
 public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
     
+    /**
+     * @deprecated by Linus Tolke as of 0.16. Will be private.
+     */
     protected static Logger cat =
 	Logger.getLogger(UMLMutableGraphSupport.class);
     
@@ -105,7 +106,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
 	fireEdgeRemoved(edge);
     }
     
-    /** Assume that anything can be connected to anything unless overridden
+    /**
+     * Assume that anything can be connected to anything unless overridden
      * in a subclass.
      */
     public boolean canConnect(Object fromP, Object toP) {
@@ -117,7 +119,8 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
      * type is unavailable by default
      */
     public Object connect(Object fromPort, Object toPort) {
-        throw new UnsupportedOperationException("The connect method is not supported");
+        throw new UnsupportedOperationException("The connect method is "
+						+ "not supported");
     }
 
     /** Contruct and add a new edge of the given kind and connect
@@ -146,35 +149,31 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
             ModeManager modeManager = curEditor.getModeManager();
             Mode mode = (Mode) modeManager.top();
             Hashtable args = mode.getArgs();
-            Object style = args.get("aggregation");//MAggregationKind
+            Object style = args.get("aggregation"); //MAggregationKind
             Boolean unidirectional = (Boolean) args.get("unidirectional");
             // Create the UML connection of the given type between the
             // given model elements.
 	    // default aggregation (none)
-            connection = UmlFactory.getFactory().buildConnection(
-								 edgeClass,
-								 fromPort,
-								 style,
-								 toPort,
-								 null, 
-								 unidirectional
-								 );
-        } catch (org.argouml.model.uml.UmlException ex) {
+            connection =
+		UmlFactory.getFactory().buildConnection(edgeClass, fromPort,
+							style, toPort,
+							null, unidirectional);
+        } catch (UmlException ex) {
             // fail silently as we expect users to accidentally drop
             // on to wrong component
         }
         
         if (connection == null) {
-            cat.debug("Cannot make a " + edgeClass.getName() +
-		      " between a " + fromPort.getClass().getName() +
-		      " and a " + toPort.getClass().getName());
+            cat.debug("Cannot make a " + edgeClass.getName()
+		      + " between a " + fromPort.getClass().getName()
+		      + " and a " + toPort.getClass().getName());
             return null;
         }
         
         addEdge(connection);
-        cat.debug("Connection type" + edgeClass.getName() +
-		  " made between a " + fromPort.getClass().getName() +
-		  " and a " + toPort.getClass().getName());
+        cat.debug("Connection type" + edgeClass.getName()
+		  + " made between a " + fromPort.getClass().getName()
+		  + " and a " + toPort.getClass().getName());
         return connection;
     }
 }
