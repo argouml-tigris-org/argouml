@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,10 +69,9 @@ public class FigActor extends FigNodeModelElement {
 
   public FigActor() {
     // Put this rectangle behind the rest, so it goes first
-    //_bigPort = new FigRect(5, 5, 30, 85, Color.gray, Color.gray);
-    _bigPort = new FigCircle(10, 10, 20, 30, Color.gray, Color.gray);
-    _head = new FigCircle(10, 10, 20, 30, Color.black, Color.white);
-    _body = new FigLine(20, 40, 20, 60, Color.black);
+    _bigPort = new FigCircle(10, 30, 15, 15, Color.gray, Color.gray);
+    _head = new FigCircle(10, 30, 15, 15, Color.black, Color.white);
+    _body = new FigLine(20, 45, 20, 60, Color.black);
     _arms = new FigLine(10, 50, 30, 50, Color.black);
     _leftLeg = new FigLine(20, 60, 15, 75, Color.black );
     _rightLeg = new FigLine(20, 60, 25, 75, Color.black );
@@ -168,9 +167,9 @@ public class FigActor extends FigNodeModelElement {
     int middle = w/2;
     h = _h;
     Rectangle oldBounds = getBounds();
-    _bigPort.setLocation(x + middle - _bigPort.getWidth()/2, y + h - 85);
-    _head.setLocation(x + middle - _head.getWidth()/2, y + h - 85);
-    _body.setLocation(x + middle, y + h - 55);
+    _bigPort.setLocation(x + middle - _bigPort.getWidth()/2, y + h - 65);
+    _head.setLocation(x + middle - _head.getWidth()/2, y + h - 65);
+    _body.setLocation(x + middle, y + h - 50);
     _arms.setLocation(x + middle - _arms.getWidth()/2, y + h - 45);
     _leftLeg.setLocation(x + middle - _leftLeg.getWidth(), y + h - 35);
     _rightLeg.setLocation(x + middle,  y + h - 35);
