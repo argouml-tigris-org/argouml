@@ -1152,13 +1152,13 @@ Compiler compliance level.
       Then select
       Java => Compiler.
       At the right hand side, select the tab
-Compliance and classfiles => Compiler compliance level: 1.3.
+Compliance and classfiles => Compiler compliance level: 1.4.
 </para>
 	  <para>
-In the ArgoUML project we have decided to keep source compliance to JDK 1.3.
+In the ArgoUML project we have decided to keep source compliance to JDK 1.4.
 (See <xref linkend="REQ7"/>).
 This setting enables Eclipse to tell you where some
-JDK 1.4 or JDK 1.5
+JDK 1.5
 features has creaped in.
 </para>
 	</listitem>
