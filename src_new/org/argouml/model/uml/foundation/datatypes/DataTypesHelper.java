@@ -28,6 +28,7 @@ import java.util.Iterator;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
+import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.data_types.MPseudostateKind;
 
 /**
@@ -119,6 +120,20 @@ public class DataTypesHelper {
         }
         
         return MPseudostateKind.BRANCH.equals(kind);
+    }
+
+    /**
+     * Converts a Multiplicity to a String.
+     *
+     * @param multiplicity The Multiplicity to convert.
+     * @return The String representation of multiplicity.
+     * @throws IllegalArgumentException if multiplicity is not a Multiplicity.
+     */
+    public String multiplicityToString(Object multiplicity) {
+	if (!(multiplicity instanceof MMultiplicity))
+	    throw new IllegalArgumentException("Unrecognized object: " + multiplicity);
+
+	return ((MMultiplicity) multiplicity).toString();
     }
 }
 
