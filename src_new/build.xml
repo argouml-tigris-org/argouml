@@ -152,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="PRE${thisversion}-${DSTAMP}-${TSTAMP}"/>
+    <property name="version" value="${thisversion}-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2002"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
