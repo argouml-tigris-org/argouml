@@ -171,12 +171,14 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid node in this graph */
   public boolean canAddNode(Object node) {
+    if (_nodes.contains(node)) return false;
     return (node instanceof MClass) || (node instanceof MInterface)
     || (node instanceof MModel) || (node instanceof MInstance);
   }
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
+    if(_edges.contains(edge)) return false;
     Object end0 = null, end1 = null;
     if (edge instanceof MAssociation) {
       List conns = ((MAssociation)edge).getConnections();
@@ -241,6 +243,36 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       }
     fireEdgeAdded(edge);
   }
+
+
+  public void addNodeRelatedEdges(Object node) {
+    if ( node instanceof MClassifier ) {
+      Collection ends = ((MClassifier)node).getAssociationEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MAssociationEnd ae = (MAssociationEnd) iter.next();
+         if(canAddEdge(ae.getAssociation()))
+           addEdge(ae.getAssociation());
+      }
+    }
+    if ( node instanceof MGeneralizableElement ) {
+      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+      Iterator iter = gn.iterator();
+      while (iter.hasNext()) {
+         MGeneralization g = (MGeneralization) iter.next();
+         if(canAddEdge(g))
+           addEdge(g);
+      }
+      Collection sp = ((MGeneralizableElement)node).getSpecializations();
+      iter = sp.iterator();
+      while (iter.hasNext()) {
+         MGeneralization s = (MGeneralization) iter.next();
+         if(canAddEdge(s))
+           addEdge(s);
+      }
+    }
+  }
+
 
   /** Remove the given edge from the graph. */
   public void removeEdge(Object edge) {

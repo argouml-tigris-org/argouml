@@ -60,6 +60,9 @@ public interface MutableGraphModel extends GraphModel {
   /** Add the given edge to the graph, if valid. Sends a notification. */
   void addEdge(Object edge);
 
+  /** Add existing edges that are related to the node. */
+  void addNodeRelatedEdges(Object node);
+
   /** Remove the given edge from the graph. Sends a notification. */
   void removeEdge(Object edge);
 

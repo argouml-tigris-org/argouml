@@ -57,6 +57,7 @@ public class ActionAddExistingNode extends UMLAction implements GraphFactory
 	if (!(gm instanceof MutableGraphModel)) return;
 
 	Mode placeMode = new ModePlace(this);
+        ((ModePlace)placeMode).setAddRelatedEdges(true);
 
 	Globals.mode(placeMode, false );
     }

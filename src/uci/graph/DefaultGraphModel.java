@@ -161,6 +161,9 @@ implements java.io.Serializable {
     fireEdgeAdded(e);
   }
 
+    public void addNodeRelatedEdges(Object node) { }
+
+
   /** Remove the given edge from the graph. */
   public void removeEdge(Object edge) {
     NetEdge e = (NetEdge) edge;

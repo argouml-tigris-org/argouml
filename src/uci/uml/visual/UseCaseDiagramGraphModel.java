@@ -194,6 +194,9 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     fireEdgeAdded(edge);
   }
 
+  public void addNodeRelatedEdges(Object node) { }
+
+
   /** Remove the given edge from the graph. */
   public void removeEdge(Object edge) {
     if (!_edges.contains(edge)) return;

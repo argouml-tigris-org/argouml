@@ -78,7 +78,6 @@ public class DBWriter
 		Conn = DriverManager.getConnection(dbURL, dbUser, dbPassword);
 	    } else if (dbConnectFormat.equals("2")) {
 		String connectString = dbURL + "?user=" + dbUser + ";password=" + dbPassword;
-		System.out.println("URL: "+connectString);
 		Conn = DriverManager.getConnection(connectString);
 	    } else if (dbConnectFormat.equals("3")) {
 		Properties connprops = new Properties();
@@ -87,7 +86,6 @@ public class DBWriter
 		Conn = DriverManager.getConnection(dbURL, connprops);
 	    } else if (dbConnectFormat.equals("4")) {
 		String connectString = dbURL + "?user=" + dbUser + "&password=" + dbPassword;
-		System.out.println("URL: "+connectString);
 		Conn = DriverManager.getConnection(connectString);
 	    } else {
 		errorMessage("Unknown dbConnectFormat choice:" + dbConnectFormat, null);
