@@ -141,7 +141,6 @@ public class ProjectBrowser extends JFrame
      */
     private ToDoPane _todoPane;
 
-    private Object _detailsTarget;
     ////////////////////////////////////////////////////////////////
     // constructors
 
@@ -249,8 +248,10 @@ public class ProjectBrowser extends JFrame
         }
         _navPane = new NavigatorPane(doSplash);
         _workarea.add(_navPane, BorderSplitPane.WEST);
-        //_workarea.add(_northPane, BorderSplitPane.NORTH);
-    
+
+        // There are various details panes all of which could hold
+        // different tabs pages according to users settings (work
+        // in progress) - Bob Tarling
         Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
         while(it.hasNext()) {
             Map.Entry entry = (Map.Entry)it.next();
@@ -260,7 +261,6 @@ public class ProjectBrowser extends JFrame
 
         // Toolbar boundry is the area between the menu and the status bar. It contains
         // the workarea at centre and the toolbar position north, south, east or west.
-        // @todo - there is work in progress for toolbars - Bob Tarling
         JPanel toolbarBoundry = new JPanel();
         toolbarBoundry.setLayout(new BorderLayout());
         toolbarBoundry.add(_menuBar.getMultiToolbar(), BorderLayout.NORTH);
@@ -345,8 +345,7 @@ public class ProjectBrowser extends JFrame
         }
     }
 
-    public void setDetailsTarget(Object o) {
-        _detailsTarget = o;
+    private void setDetailsTarget(Object o) {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         while(it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane)it.next();
@@ -355,22 +354,12 @@ public class ProjectBrowser extends JFrame
     }
 
     public Object getDetailsTarget() {
-        return _detailsTarget;
-    }
-    
-    /**
-     * Returns the detailsPane. This is the pane normally in the lower right 
-     * corner of ArgoUML which contains the ToDoPane and the Property panels for
-     * example.
-     * @return DetailsPane
-     */
-    public DetailsPane getDetailsPane() {
         Iterator it = detailsPanesByCompassPoint.values().iterator();
         if (it.hasNext()) {
             DetailsPane detailsPane = (DetailsPane)it.next();
-            return detailsPane;
+            return detailsPane.getTarget();
         }
-        return null;
+        return null; // TODO Bob Tarling - Should probably throw exception here
     }
     
     /**
