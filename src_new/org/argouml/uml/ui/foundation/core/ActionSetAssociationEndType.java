@@ -71,6 +71,10 @@ public class ActionSetAssociationEndType extends UMLAction {
         }
         if (newClassifier != oldClassifier && end != null
                 && newClassifier != null) {
+            newClassifier = /*(MClassifier)*/ Model.getModelManagementHelper()
+                .getCorrespondingElement(
+                      newClassifier,
+                      Model.getFacade().getModel(end));
             Model.getCoreHelper().setType(end, newClassifier);
             super.actionPerformed(e);
         }
