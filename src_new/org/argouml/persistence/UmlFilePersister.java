@@ -243,7 +243,7 @@ public class UmlFilePersister extends AbstractFilePersister
                     }
                     MemberFilePersister persister = null;
                     if (projectMember instanceof ProjectMemberDiagram) {
-                        persister = new DiagramMemberFilePersister();
+                        persister = PersistenceManager.getInstance().getDiagramMemberFilePersister();
                     } else if (projectMember instanceof ProjectMemberTodoList) {
                         persister = new TodoListMemberFilePersister();
                     } else if (projectMember instanceof ProjectMemberModel) {
