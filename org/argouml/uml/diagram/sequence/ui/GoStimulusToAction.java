@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -34,14 +33,12 @@ import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.AbstractGoRule;
 
-import ru.novosoft.uml.behavior.common_behavior.MStimulus;
-
 public class GoStimulusToAction extends AbstractGoRule {
 
     public Collection getChildren(Object parent) {
         if (!(org.argouml.model.ModelFacade.isAStimulus(parent)))
             return null;
-        MStimulus ms = (MStimulus) parent;
+        Object ms = /*(MStimulus)*/ parent;
         Object action = ModelFacade.getDispatchAction(ms);
         Vector vector = new Vector();
         vector.addElement(action);

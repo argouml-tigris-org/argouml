@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -44,6 +42,7 @@ import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.*;
 
 
@@ -65,17 +64,17 @@ public class SequenceDiagramRenderer
 	very related to it. */
     public FigEdge getFigEdgeFor(GraphModel gm, Layer lay, Object edge) {
 	if (org.argouml.model.ModelFacade.isALink(edge)) {
-	    MLink ml = (MLink) edge;
+	    Object ml = /*(MLink)*/ edge;
 	    FigSeqLink mlFig = new FigSeqLink(ml);
-	    Collection connections = ml.getConnections();
+	    Collection connections = ModelFacade.getConnections(ml);
 	    if (connections == null) {
 		cat.debug("null connections....");
 		return null;
 	    }
 	    MLinkEnd fromEnd = (MLinkEnd) ((Object[]) connections.toArray())[0];
-	    MInstance fromInst = (MInstance) fromEnd.getInstance();
+	    Object fromInst = /*(MInstance)*/ fromEnd.getInstance();
 	    MLinkEnd toEnd = (MLinkEnd) ((Object[]) connections.toArray())[1];
-	    MInstance toInst = (MInstance) toEnd.getInstance();
+	    Object toInst = /*(MInstance)*/ toEnd.getInstance();
 	    FigNode fromFN = (FigNode) lay.presentationFor(fromInst);
 	    FigNode toFN = (FigNode) lay.presentationFor(toInst);
 	    mlFig.setSourcePortFig(fromFN);

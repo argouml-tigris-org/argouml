@@ -40,6 +40,7 @@ import java.util.Vector;
 
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Diagram;
@@ -61,6 +62,7 @@ import org.tigris.gef.presentation.FigText;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
+
 /** Class to display graphics for a UML sequence in a diagram. */
 
 public class FigSeqObject extends FigNodeModelElement
@@ -526,25 +528,25 @@ public class FigSeqObject extends FigNodeModelElement
 
     protected void textEdited(FigText ft) throws PropertyVetoException {
 	// super.textEdited(ft);
-	MObject obj = (MObject) getOwner();
+	Object obj = /*(MObject)*/ getOwner();
 	if (ft == _name) {
 	    String s = ft.getText();
 
 	    // needs more Work:
-	    ParserDisplay.SINGLETON.parseObject(obj, s);
+	    ParserDisplay.SINGLETON.parseObject((MObject)obj, s);
 	}
     }
 
 
     protected void modelChanged(MElementEvent mee) {
 	super.modelChanged(mee);
-	MObject obj = (MObject) getOwner();
+	Object obj = /*(MObject)*/ getOwner();
 	if (obj == null) return;
-	String nameStr = Notation.generate(this, obj.getName()).trim();
+	String nameStr = Notation.generate(this, ModelFacade.getName(obj)).trim();
 	String baseString = "";
-	Vector bases = new Vector(obj.getClassifiers());
+	Vector bases = new Vector(ModelFacade.getClassifiers(obj));
 	if (bases.size() == 1)
-	    baseString = org.argouml.model.ModelFacade.getName(bases.elementAt(0));
+	    baseString = ModelFacade.getName(bases.elementAt(0));
 	else if (bases.size() > 1)
 	    baseString = "(multiple)";
 

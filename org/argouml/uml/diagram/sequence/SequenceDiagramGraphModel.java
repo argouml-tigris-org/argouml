@@ -74,14 +74,14 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
      *  line to say what their model is. */
 
     /** The Sequence / interaction we are diagramming */
-    protected MNamespace _Sequence;
+    protected Object _Sequence;
     //protected MInteraction _interaction;
 
     ////////////////////////////////////////////////////////////////
     // accessors
 
-    public MNamespace getNamespace() { return _Sequence; }
-    public void setNamespace(MNamespace m) {
+    public Object getNamespace() { return _Sequence; }
+    public void setNamespace(Object/*MNamespace*/ m) {
 	_Sequence = m;
     }
 
@@ -109,14 +109,14 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return all edges going to given port */
     public Vector getInEdges(Object port) {
 	Vector res = new Vector(); //wasteful!
-	if (org.argouml.model.ModelFacade.isAObject(port)) {
-	    MObject mo = (MObject) port;
-	    Collection ends = mo.getLinkEnds();
+	if (ModelFacade.isAObject(port)) {
+	    Object mo = /*(MObject)*/ port;
+	    Collection ends = ModelFacade.getLinkEnds(mo);
 	    if (ends == null) return res; // empty Vector
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
-		MLinkEnd aer = (MLinkEnd) iter.next();
-		res.addElement(aer.getLink());
+		Object aer = /*(MLinkEnd)*/ iter.next();
+		res.addElement(ModelFacade.getLink(aer));
 	    }
 	}
 	return res;
@@ -130,7 +130,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return one end of an edge */
     public Object getSourcePort(Object edge) {
 	if (org.argouml.model.ModelFacade.isALink(edge)) {
-	    return CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+	    return CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	}
 	cat.debug("TODO getSourcePort");
 	return null;
@@ -140,7 +140,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     public Object getDestPort(Object edge) {
 	if (org.argouml.model.ModelFacade.isALink(edge)) {
 	    return CommonBehaviorHelper.getHelper()
-		.getDestination((MLink) edge);
+		.getDestination(/*(MLink)*/ edge);
 	}
 	cat.debug("TODO getDestPort");
 	return null;
@@ -163,9 +163,9 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	Object end0 = null;
 	Object end1 = null;
 	if (org.argouml.model.ModelFacade.isALink(edge)) {
-	    end0 = CommonBehaviorHelper.getHelper().getSource((MLink) edge);
+	    end0 = CommonBehaviorHelper.getHelper().getSource(/*(MLink)*/ edge);
 	    end1 =
-		CommonBehaviorHelper.getHelper().getDestination((MLink) edge);
+		CommonBehaviorHelper.getHelper().getDestination(/*(MLink)*/ edge);
 	}
 	if (end0 == null || end1 == null) return false;
 	if (!_nodes.contains(end0)) return false;
@@ -181,7 +181,7 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	_nodes.addElement(node);
 	// TODO: assumes public, user pref for default visibility?
 	if (org.argouml.model.ModelFacade.isAModelElement(node)) {
-	    _Sequence.addOwnedElement((MModelElement) node);
+	    ModelFacade.addOwnedElement(_Sequence, /*(MModelElement)*/ node);
 	    // ((MClassifier)node).setNamespace(_Sequence.getNamespace());
 	}
 
@@ -193,15 +193,15 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 	if (!canAddEdge(edge)) return;
 	_edges.addElement(edge);
 	// TODO: assumes public
-	if (org.argouml.model.ModelFacade.isAModelElement(edge)) {
-	    _Sequence.addOwnedElement((MModelElement) edge);
+	if (ModelFacade.isAModelElement(edge)) {
+	    ModelFacade.addOwnedElement(_Sequence, /*(MModelElement)*/ edge);
 	}
 	fireEdgeAdded(edge);
 
     }
 
     public void addNodeRelatedEdges(Object node) {
-	if ( org.argouml.model.ModelFacade.isAInstance(node) ) {
+	if (ModelFacade.isAInstance(node) ) {
 	    Collection ends = ModelFacade.getLinkEnds(node);
 	    Iterator iter = ends.iterator();
 	    while (iter.hasNext()) {
@@ -217,31 +217,29 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     /** Return true if the two given ports can be connected by a
      * kind of edge to be determined by the ports. */
     public boolean canConnect(Object fromP, Object toP) {
-	if ((org.argouml.model.ModelFacade.isAObject(fromP)) && (org.argouml.model.ModelFacade.isAObject(toP))) return true;
+	if ((ModelFacade.isAObject(fromP)) && (ModelFacade.isAObject(toP))) return true;
 	return false;
     }
 
   
     /** Contruct and add a new edge of the given kind */
     public Object connect(Object fromPort, Object toPort,
-			  java.lang.Class edgeClass)
-    {
-        if (edgeClass == MLink.class
-	    && (org.argouml.model.ModelFacade.isAObject(fromPort) && org.argouml.model.ModelFacade.isAObject(toPort)))
-	{
-            MLink ml = UmlFactory.getFactory().getCommonBehavior().createLink();
-            MLinkEnd le0 =
+			  Class edgeClass) {
+        if (edgeClass == ModelFacade.LINK &&
+	        (ModelFacade.isAObject(fromPort) && ModelFacade.isAObject(toPort))) {
+            Object ml = UmlFactory.getFactory().getCommonBehavior().createLink();
+            Object le0 =
 		UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-            le0.setInstance((MObject) fromPort);
-            MLinkEnd le1 =
+            ModelFacade.setInstance(le0, /*(MObject)*/ fromPort);
+            Object le1 =
 		UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-            le1.setInstance((MObject) toPort);
-            ml.addConnection(le0);
-            ml.addConnection(le1);
+            ModelFacade.setInstance(le1, /*(MObject)*/ toPort);
+            ModelFacade.addConnection(ml, le0);
+            ModelFacade.addConnection(ml, le1);
             addEdge(ml);
             // add stimulus with given action, taken from global mode
             Editor curEditor = Globals.curEditor();
-            if (ml.getStimuli() == null || ml.getStimuli().size() == 0) {
+            if (ModelFacade.getStimuli(ml) == null || ModelFacade.getStimuli(ml).size() == 0) {
                 ModeManager modeManager = curEditor.getModeManager();
                 Mode mode = (Mode) modeManager.top();
                 Hashtable args = mode.getArgs();
@@ -251,23 +249,23 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
                     Class actionClass = (Class) args.get("action");
                     if (actionClass != null) {
                         //create the action
-                        if (actionClass == MCallAction.class)
+                        if (actionClass == ModelFacade.CALL_ACTION)
                             action =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createCallAction();
-                        else if (actionClass == MCreateAction.class)
+                        else if (actionClass == ModelFacade.CREATE_ACTION)
                             action =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createCreateAction();
-                        else if (actionClass == MDestroyAction.class)
+                        else if (actionClass == ModelFacade.DESTROY_ACTION)
                             action =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createDestroyAction();
-                        else if (actionClass == MSendAction.class)
+                        else if (actionClass == ModelFacade.SEND_ACTION)
                             action =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createSendAction();
-                        else if (actionClass == MReturnAction.class)
+                        else if (actionClass == ModelFacade.RETURN_ACTION)
                             action =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createReturnAction();
@@ -277,14 +275,13 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
                             ModelFacade.setName(action, "new action");
 
                             if (ModelFacade.isASendAction(action)
-				|| ModelFacade.isAReturnAction(action))
-			    {
+                                    || ModelFacade.isAReturnAction(action)) {
                                 ModelFacade.setAsynchronous(action, true);
                             } else {
                                 ModelFacade.setAsynchronous(action, false);
                             }
                             // create stimulus
-                            MStimulus stimulus =
+                            Object stimulus =
 				UmlFactory.getFactory().getCommonBehavior()
 				.createStimulus();
                             //if we want to allow the sequence number to appear
@@ -294,15 +291,15 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 			      int num=sd.getNumStimuluss()+1;
 			      stimulus.setName(""+num);*/
                             //otherwise: no sequence number
-                            stimulus.setName("");
+                            ModelFacade.setName(stimulus, "");
 
                             //set sender and receiver
-                            stimulus.setSender((MObject) fromPort);
-                            stimulus.setReceiver((MObject) toPort);
+                            ModelFacade.setSender(stimulus, /*(MObject)*/ fromPort);
+                            ModelFacade.setReceiver(stimulus,/*(MObject)*/ toPort);
                             // set action type
                             ModelFacade.setDispatchAction(stimulus, action);
                             // add stimulus to link
-                            ml.addStimulus(stimulus);
+                            ModelFacade.addStimulus(ml, stimulus);
                             // add new modelelements: stimulus and
                             // action to namesapce
                             ModelFacade.addOwnedElement(_Sequence, stimulus);
@@ -330,13 +327,13 @@ public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
 
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
-	    MElementImport eo = (MElementImport) pce.getNewValue();
-	    MModelElement me = eo.getModelElement();
+	    Object eo = /*(MElementImport)*/ pce.getNewValue();
+	    Object me = ModelFacade.getModelElement(eo);
 	    if (oldOwned.contains(eo)) {
 		cat.debug("model removed " + me);
-		if (org.argouml.model.ModelFacade.isAObject(me)) removeNode(me);
-		if (org.argouml.model.ModelFacade.isAStimulus(me)) removeNode(me);
-		if (org.argouml.model.ModelFacade.isAAssociation(me)) removeEdge(me);
+		if (ModelFacade.isAObject(me)) removeNode(me);
+		if (ModelFacade.isAStimulus(me)) removeNode(me);
+		if (ModelFacade.isAAssociation(me)) removeEdge(me);
 	    }
 	    else {
 		cat.debug("model added " + me);

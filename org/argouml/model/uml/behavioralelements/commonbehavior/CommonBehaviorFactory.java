@@ -214,7 +214,7 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      *  
      *  @return an initialized UML LinkEnd instance.
      */
-    public MLinkEnd createLinkEnd() {
+    public Object createLinkEnd() {
         MLinkEnd modelElement = MFactory.getDefaultFactory().createLinkEnd();
         super.initialize(modelElement);
         return modelElement;
@@ -353,14 +353,14 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
      */
     public MLink buildLink(MInstance fromInstance, MInstance toInstance) {
         MLink link = UmlFactory.getFactory().getCommonBehavior().createLink();
-        MLinkEnd le0 =
+        Object/*MLinkEnd*/ le0 =
             UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-        le0.setInstance(fromInstance);
-        MLinkEnd le1 =
+        ModelFacade.setInstance(le0, fromInstance);
+        Object/*MLinkEnd*/ le1 =
             UmlFactory.getFactory().getCommonBehavior().createLinkEnd();
-        le1.setInstance(toInstance);
-        link.addConnection(le0);
-        link.addConnection(le1);
+        ModelFacade.setInstance(le1, toInstance);
+        ModelFacade.addConnection(link, le0);
+        ModelFacade.addConnection(link, le1);
         return link;
     }
 

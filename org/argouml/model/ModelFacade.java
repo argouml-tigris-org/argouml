@@ -233,8 +233,12 @@ public class ModelFacade {
     public static final Object ACTION_STATE       = MActionState.class;
     public static final Object ASSOCIATION_END    = MAssociationEnd.class;
     public static final Object CALL_ACTION        = MCallAction.class;
+    public static final Object CREATE_ACTION      = MCreateAction.class;
+    public static final Object DESTROY_ACTION     = MDestroyAction.class;
     public static final Object NAMESPACE          = MNamespace.class;
     public static final Object RECEPTION          = MReception.class;
+    public static final Object RETURN_ACTION      = MReturnAction.class;
+    public static final Object SEND_ACTION        = MSendAction.class;
     public static final Object STEREOTYPE         = MStereotype.class;
 
 
@@ -937,6 +941,13 @@ public class ModelFacade {
         }
         if (handle instanceof MParameter) {
             return ((MParameter) handle).getKind();
+        }
+        throw new IllegalArgumentException("Unrecognized handle " + handle);
+    }
+
+    public static Object getLink(Object handle) {
+        if (handle instanceof MLinkEnd) {
+            return ((MLinkEnd) handle).getLink();
         }
         throw new IllegalArgumentException("Unrecognized handle " + handle);
     }
@@ -3927,6 +3938,19 @@ public class ModelFacade {
         }
     }
 
+    public static void setInstance(Object handle, Object inst) {
+        if (inst == null || inst instanceof MInstance) {
+            if (handle instanceof MLinkEnd) {
+                ((MLinkEnd)handle).setInstance((MInstance) inst);
+            }
+            if (handle instanceof MAttributeLink) {
+                ((MAttributeLink)handle).setInstance((MInstance) inst);
+            }
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle +
+                                           " or " + inst);
+    }
+
     public static void setMessages3(Object handle, Collection messages) {
         if (handle instanceof MMessage) {
             ((MMessage) handle).setMessages3(messages);
@@ -4895,25 +4919,38 @@ public class ModelFacade {
         }
     }
 
+    public static void addConnection(Object handle, Object connection) {
+        if (handle instanceof MAssociation && connection instanceof MAssociationEnd) {
+            ((MAssociation) handle).addConnection((MAssociationEnd) connection);
+            return;
+        }
+        if (handle instanceof MAssociation && connection instanceof MAssociationEnd) {
+            ((MLink) handle).addConnection((MLinkEnd) connection);
+            return;
+        }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + connection);
+    }
+
     /**
      * Adds a constraint to some model element.
      * @param me model element
      * @param mc constraint
      */
     public static void addConstraint(Object me, Object mc) {
-        if (me != null
-            && me instanceof MModelElement
-            && mc != null
-            && mc instanceof MConstraint) {
+        if (me instanceof MModelElement && mc instanceof MConstraint) {
             ((MModelElement) me).addConstraint((MConstraint) mc);
         }
+        throw new IllegalArgumentException("Unrecognized object " + me
+					   + " or " + mc);
     }
 
     public static void addDeploymentLocation(Object handle, Object node) {
-        if (handle instanceof MComponent
-            && node instanceof MNode) {
+        if (handle instanceof MComponent && node instanceof MNode) {
             ((MComponent)handle).addDeploymentLocation((MNode)node);
         }
+        throw new IllegalArgumentException("Unrecognized object " + handle
+					   + " or " + node);
     }
 
     /**
