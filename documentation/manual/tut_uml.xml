@@ -730,15 +730,6 @@ Modifications
         (which will be less reliable, but have more features). Choose according
         to your own situation.</para>
 
-      <para>This documentation was produced using &argouml; &argoversion;,
-        which at the time of writing was the version about to be issued.</para>
-
-      <warning><para>The previous paragraph is a statement of
-        <quote>anticipation</quote>. The preparation of &argoversion; and the
-        writing of this edition of the User Manual are running in parallel. So
-        this manual really reflects the current (unstable) development of the
-        previous version!</para></warning>
-
       <!-- Using Java Web Start -->
 
       <sect3>
