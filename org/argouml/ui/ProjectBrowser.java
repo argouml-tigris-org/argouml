@@ -280,6 +280,17 @@ implements IStatusBar, NavigationListener {
     view.add(Actions.GotoDiagram);
     JMenuItem findItem =  view.add(Actions.Find);
     setAccelerator(findItem,F3);
+
+    view.addSeparator();
+
+    JMenu zoom = (JMenu) view.add(new JMenu(menuLocalize("Zoom")));   
+    zoom.add(new ActionZoom(25));
+    zoom.add(new ActionZoom(50));
+    zoom.add(new ActionZoom(75));
+    zoom.add(new ActionZoom(100));
+    zoom.add(new ActionZoom(125));
+    zoom.add(new ActionZoom(150));
+
     view.addSeparator();
 
     JMenu editTabs = (JMenu) view.add(new JMenu(menuLocalize("Editor Tabs")));
@@ -336,9 +347,10 @@ implements IStatusBar, NavigationListener {
     JMenu distribute = (JMenu) arrange.add(new JMenu(menuLocalize("Distribute")));
     JMenu reorder = (JMenu) arrange.add(new JMenu(menuLocalize("Reorder")));
     JMenu nudge = (JMenu) arrange.add(new JMenu(menuLocalize("Nudge")));
+    JMenu layout = (JMenu) arrange.add(new JMenu(menuLocalize("Layout")));
 
     Runnable initLater = new
-      InitMenusLater(align, distribute, reorder, nudge, editTabs, detailsTabs);
+      InitMenusLater(align, distribute, reorder, nudge, layout, editTabs, detailsTabs);
     org.argouml.application.Main.addPostLoadAction(initLater);
 
     JMenu generate = (JMenu) _menuBar.add(new JMenu(menuLocalize("Generation")));
@@ -594,15 +606,16 @@ class WindowCloser extends WindowAdapter {
 } /* end class WindowCloser */
 
 class InitMenusLater implements Runnable {
-  JMenu align, distribute, reorder, nudge;
+  JMenu align, distribute, reorder, nudge, layout;
   JMenu editTabs, detailsTabs;
 
-  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n,
+  public InitMenusLater(JMenu a, JMenu d, JMenu r, JMenu n, JMenu l,
 			JMenu et, JMenu dt) {
     align = a;
     distribute = d;
     reorder = r;
     nudge = n;
+    layout = l;
     editTabs = et;
     detailsTabs = dt;
   }
@@ -662,6 +675,9 @@ class InitMenusLater implements Runnable {
     nudge.add(new CmdNudge(CmdNudge.RIGHT));
     nudge.add(new CmdNudge(CmdNudge.UP));
     nudge.add(new CmdNudge(CmdNudge.DOWN));
+
+    JMenuItem autoLayout = layout.add(new ActionLayout("Automatic"));
+    JMenuItem incrLayout = layout.add(new ActionLayout("Incremental"));
 
     JMenuItem nextEditItem = editTabs.add(Actions.NextEditTab);
     nextEditItem.setAccelerator(F6);
