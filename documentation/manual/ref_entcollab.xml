@@ -389,7 +389,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -433,10 +433,9 @@ Modifications
             <listitem><para><literal>Delete</literal>. Delete the selected
               association role.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more association roles, and the
-              association role selected is not at the top. It is moved
-              one up the list.</para>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more association roles, and the association role
+              selected is not at the top. It is moved up one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Association roles can not be moved in
@@ -444,10 +443,10 @@ Modifications
               deleted and then recreated on the
               diagram.</para></caution></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more association roles listed, and
-              the association role selected is not at the bottom. It is
-              moved one down the list.</para>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more association roles listed, and the
+              association role selected is not at the bottom. It is moved down
+              one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Association roles can not be moved in
@@ -740,7 +739,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -773,16 +772,14 @@ Modifications
             <listitem><para><literal>Open</literal>. Navigate to the
               selected message.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more messages, and the message
-              selected is not at the top. It is moved one up the
-              list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more messages, and the message selected is not
+              at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more messages listed, and the message
-              selected is not at the bottom. It is moved one down the
-              list.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more messages listed, and the message selected
+              is not at the bottom. It is moved down one.</para></listitem>
+              </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Association End Roles -->
@@ -813,16 +810,15 @@ Modifications
             <listitem><para><literal>Open</literal>. Where an association
               end exists, navigate to it.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more association end roles, and the
-              association end role selected is not at the top. It is moved
-              one up the list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more association end roles, and the association
+              end role selected is not at the top. It is moved up
+              one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more association end roles listed, and
-              the association end role selected is not at the bottom. It is
-              moved one down the list.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more association end roles listed, and the
+              association end role selected is not at the bottom. It is moved
+              down one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -1114,7 +1110,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>

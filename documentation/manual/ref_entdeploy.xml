@@ -363,14 +363,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              generalization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              generalization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Stereotype -->
@@ -404,7 +403,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -482,14 +481,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              specialization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              specialization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Components -->
@@ -508,16 +506,14 @@ Modifications
             <listitem><para><literal>Open</literal>. Navigate to the
               selected component.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more components, and the
-              component selected is not at the top. It is moved one up
-              the list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more components, and the component selected is
+              not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more components listed, and the
-              component selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more components listed, and the component
+              selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -829,7 +825,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -1113,7 +1109,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -1163,16 +1159,14 @@ Modifications
             <listitem><para><literal>Delete</literal>. Removes the link to
               the selected generalization.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more generalizations, and the
-              generalization selected is not at the top. It is moved one up
-              the list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more generalizations, and the generalization
+              selected is not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more generalizations listed, and the
+              generalization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Modifiers -->
@@ -1514,7 +1508,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>

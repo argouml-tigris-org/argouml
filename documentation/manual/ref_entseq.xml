@@ -85,10 +85,10 @@ Modifications
       cannot show generic behavior between classifier roles.</para>
 
     <para>An object is represented on a sequence diagram in &argouml; as a
-      plain box labeled with the object name (if any) and class, separated by a
-      colon (:). As links with stimuli to and from other objects are added, a
-      time line grows down from the object. This is thin where the object does
-      not have control and thick where it does.</para>
+      plain box labeled with the object name (if any) and class name, separated
+      by a colon (:). As links with stimuli to and from other objects are
+      added, a time line grows down from the object. This is thin where the
+      object does not have control and thick where it does.</para>
 
     <caution><para>The current release of &argouml; shows interactions between
       objects, although the UML standard for sequence diagrams is for
@@ -372,7 +372,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -419,20 +419,18 @@ Modifications
               is always grayed out. Stimuli can only be deleted from the
               diagram.</para></caution></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more stimuli, and the stimulus
-              selected is not at the top. It is moved one up the
-              list.</para>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more stimuli, and the stimulus selected is not
+              at the top. It is moved up one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more stimuli listed, and the stimulus
-              selected is not at the bottom. It is moved one down the
-              list.</para>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more stimuli listed, and the stimulus selected
+              is not at the bottom. It is moved down one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Stimuli can not be moved in the
@@ -473,20 +471,18 @@ Modifications
               is always grayed out. Stimuli can only be deleted from the
               diagram.</para></caution></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more stimuli, and the stimulus
-              selected is not at the top. It is moved one up the
-              list.</para>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more stimuli, and the stimulus selected is not
+              at the top. It is moved up one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Stimuli can not be moved in the
               order. To change the order a stimulus must be deleted and
               then recreated on the diagram.</para></caution></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more stimuli listed, and the stimulus
-              selected is not at the bottom. It is moved one down the
-              list.</para>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more stimuli listed, and the stimulus selected
+              is not at the bottom. It is moved down one.</para>
 
             <caution><para>In the current release of &argouml; this entry
               is always grayed out. Stimuli can not be moved in the
@@ -505,9 +501,9 @@ Modifications
     <title>Stimulus</title>
 
     <para>A stimulus is a communication between two instances and is generated
-      by an action. On a sequence diagram is associated with a link&mdash;an
-      instance of an association linking two object instances. In the UML
-      metamodel <literal>Stimulus</literal> is a sub-class of
+      by an action. On a sequence diagram a stimulus is associated with a
+      link&mdash;an instance of an association linking two object instances. In
+      the UML metamodel <literal>Stimulus</literal> is a sub-class of
       <literal>ModelElement</literal>.</para>
 
     <para>The link (see <xref linkend="s1.ref.link_sequence"/>) associated with
@@ -823,7 +819,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -1247,7 +1243,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>

@@ -17,6 +17,9 @@ Modifications
 
  1 Feb 2002:  Jeremy Bennett. Broke critics out into separate chapter
 
+ 3 May 2002:  Jeremy Bennett. Version numbers placed here. Updated for issue
+              0.9.9.
+
 -->
 
   <!-- File inclusion ENTITIES -->
@@ -61,7 +64,7 @@ Modifications
   <!-- Text substitution ENTITIES -->
 
   <!ENTITY argouml          "ArgoUML">
-  <!ENTITY argoversion      "0.9.8">
+  <!ENTITY argoversion      "0.9.9">
   <!ENTITY ooad             "OOA&amp;D">
   <!ENTITY button1          "button&nbsp;1">
   <!ENTITY Button1          "Button&nbsp;1">

@@ -882,7 +882,7 @@ Modifications
 
       <glossdef>
         <para>A UML notation for capturing requirements of a system or
-          sub-system. See <xref linkend="s1.umlusecases"/> for more
+          sub-system. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
 
         <glossseealso otherterm="gl.uml"/>
@@ -897,7 +897,7 @@ Modifications
 
       <glossdef>
         <para>A UML diagram showing the relationships between Actors and Use
-          Cases. See <xref linkend="s1.umlusecases"/> for more
+          Cases. See <xref linkend="s1.tut.req_process_output"/> for more
           information.</para>
 
         <glossseealso otherterm="gl.actor"/>

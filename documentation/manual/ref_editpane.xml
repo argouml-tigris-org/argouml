@@ -22,6 +22,10 @@ Modifications
               use case diagram added for release 0.9.8.
 
 18 Apr 2002:  Jeremy Bennett. Incorporated comments from Bob Marcum.
+
+ 3 May 2002:  Jeremy Bennett. Documented extension point tool and show menu for
+              use cases.
+
 -->
 
 <chapter id="ch.ref.editpane">
@@ -66,7 +70,7 @@ Modifications
   <sect1 id="s1.ref.edit_mouse">
     <title>Mouse Behavior in the Editing Pane</title>
 
-    <para>Behaviour of the mouse in general, and the naming of the buttons is
+    <para>Behavior of the mouse in general, and the naming of the buttons is
       covered in the chapter on the overall user interface (see
       <xref linkend="ch.ref.ui"/>).</para>
 
@@ -181,7 +185,9 @@ Modifications
       <para>When used over artifacts in the the editing pane, this will display
         a context dependent pop-up menu. Menu entries are highlighted (but not
         selected) and sub-menus exposed by subsequent mouse motion (without any
-        buttons). Menu entry selection is with &button1;</para>
+        buttons). Menu entry selection is with &button1;. See <xref
+        linkend="s1.ref.edit_pane_pop_up"/> for details of the specific pop-up
+        menus.</para>
 
       <para>If the artifact generating the menu has not yet been selected it
         will also be selected.</para>
@@ -460,9 +466,25 @@ Modifications
           artifacts selected using &button1; motion (from the including to the
           included use case).</para></listitem>
 
+        <listitem><para><guiicon><inlinemediaobject><imageobject> <imagedata
+          format="GIF" align="center"
+          fileref="images/icons/extension_point.gif"/>
+          </imageobject></inlinemediaobject></guiicon> <literal>Add Extension
+          Point</literal>. Add an extension point to a selected use case. The
+          extension point is given the default name <literal>newEP</literal>
+          and location <literal>loc</literal>. Where the extension point
+          compartment is displayed, the extension point may be edited by
+          &button1; double click and using the keyboard, or by selecting with
+          &button1; click (after the use case has been selected) and using the
+          property tab. Otherwise it may be edited through its property tab,
+          selected through the property tab of the owning use case.</para>
+
+        <note><para>This tool is grayed out except when a use case is
+          selected.</para></note></listitem>
+
         <listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
-                     fileref="images/icons/dependency.gif"/> 
+                     fileref="images/icons/dependency.gif"/>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Dependency</literal>. Add a dependency between two artifacts
           selected using &button1; motion (from the dependent artifact).</para>
@@ -1168,35 +1190,46 @@ Modifications
     <sect2>
       <title>Show</title>
 
-      <para>This sub-menu only appears with class or object artifacts. It is
-        used to control whether the attribute and operation compartments of the
-        artifact are displayed. There are six possible entries, but at most
-        three show at any one time.</para>
+      <para>This sub-menu only appears with use case, class or object
+        artifacts. It is used to control whether the extension point
+        compartment is displayed for use cases and whether the attribute and
+        operation compartments are displayed for classes and objects. There are
+        six possible entries, but at most three show at any one time.</para>
 
       <itemizedlist>
+        <listitem><para><literal>Hide Extension Point
+          Compartment</literal>. Only appears when the extension point
+          compartment of a use case is displayed. Hides the
+          compartment.</para></listitem>
+
+        <listitem><para><literal>Show Extension Point
+          Compartment</literal>. Only appears when the extension point
+          compartment of a use case is hidden. Displays the
+          compartment.</para></listitem>
+
         <listitem><para><literal>Hide All Compartments</literal>. Only appears
-          when both attribute and operation compartments are displayed. Hides
-          both compartments.</para></listitem>
+          when both attribute and operation compartments are displayed on a
+          class or object. Hides both compartments.</para></listitem>
 
         <listitem><para><literal>Show All Compartments</literal>. Only appears
-          when both attribute and operation compartments are hidden. Displays
-          both compartments.</para></listitem>
+          when both attribute and operation compartments are hidden on a class
+          or object. Displays both compartments.</para></listitem>
 
         <listitem><para><literal>Hide Attribute Compartment</literal>. Only
-          appears when the attribute compartment is displayed. Hides the
-          compartment.</para></listitem>
+          appears when the attribute compartment of a class or object is
+          displayed. Hides the compartment.</para></listitem>
 
         <listitem><para><literal>Show Attribute Compartment</literal>. Only
-          appears when the attribute compartment is hidden. Displays the
-          compartment.</para></listitem>
+          appears when the attribute compartment of a class or object is
+          hidden. Displays the compartment.</para></listitem>
 
         <listitem><para><literal>Hide Operation Compartment</literal>. Only
-          appears when the operation compartment is displayed. Hides the
-          compartment.</para></listitem>
+          appears when the operation compartment of a class or object is
+          displayed. Hides the compartment.</para></listitem>
 
         <listitem><para><literal>Show Operation Compartment</literal>. Only
-          appears when the operation compartment is hidden. Displays the
-          compartment.</para></listitem>
+          appears when the operation compartment of a class or object is
+          hidden. Displays the compartment.</para></listitem>
       </itemizedlist>
     </sect2>
 

@@ -335,7 +335,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>

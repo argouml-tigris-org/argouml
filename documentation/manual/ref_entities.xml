@@ -54,9 +54,9 @@ Modifications
     <title>The Model</title>
 
     <para>The model is the top level artifact within &argouml;. In the UML
-      meta-model it is a sub-class of package. In many respects within &argouml;
-      it behaves similarly to a package (see <xref
-        linkend="s1.ref.package"/>).</para>
+      meta-model it is a sub-class of package. In many respects within
+      &argouml; it behaves similarly to a package (see <xref
+      linkend="s1.ref.package"/>).</para>
 
     <note><para>&argouml; is restricted to one model within the
       tool.</para></note>
@@ -479,7 +479,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
@@ -569,14 +569,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              specialization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              specialization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Generalizations -->
@@ -622,14 +621,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              generalization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              generalization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Implements -->
@@ -1040,7 +1038,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype"/>).</para></listitem>
         </varlistentry>
@@ -1136,14 +1134,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              generalization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              generalization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Specializations -->
@@ -1187,14 +1184,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              specialization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              specialization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Implements -->
@@ -1230,15 +1226,14 @@ Modifications
               has been added this removes it completely from the
               model.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more abstractions, and the abstraction
-              selected is not at the top. It is moved one up the
-              list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more abstractions, and the abstraction selected
+              is not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more abstractions listed, and the
-              abstraction selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more abstractions listed, and the abstraction
+              selected is not at the bottom. It is moved down
+              one.</para></listitem>
           </itemizedlist>
 
           <tip><para>In principle a datatype could realize some
@@ -1270,15 +1265,14 @@ Modifications
             <listitem><para><literal>Delete</literal>. Removes the selected
               operation from the model.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more operations, and the operation
-              selected is not at the top. It is moved one up the
-              list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more operations, and the operation selected is
+              not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more operations listed, and the
-              operation selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more operations listed, and the operation
+              selected is not at the bottom. It is moved down
+              one.</para></listitem>
           </itemizedlist>
 
           <para>See <xref linkend="s1.ref.operation"/> for details of
@@ -1312,15 +1306,13 @@ Modifications
             <listitem><para><literal>Delete</literal>. Removes the selected
               literal from the model.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more literals, and the literal
-              selected is not at the top. It is moved one up the
-              list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more literals, and the literal selected is not
+              at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more literals listed, and the
-              literal selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more literals listed, and the literal selected
+              is not at the bottom. It is moved down one.</para></listitem>
           </itemizedlist>
 
           <caution><para>&argouml; does not actually have a separate
@@ -1686,14 +1678,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              generalization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more generalizations listed, and the
-              generalization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              generalization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
 
         <!-- Entry for Specializations -->
@@ -1737,14 +1728,13 @@ Modifications
 
             <listitem><para><literal>Move Up</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the top. It is moved one up the
-              list.</para></listitem>
+              specialization selected is not at the top. It is moved up
+              one.</para></listitem>
 
             <listitem><para><literal>Move Down</literal>. Only available where
               there are two or more specializations listed, and the
-              specialization selected is not at the bottom. It is moved one
-              down the list.</para></listitem>
-          </itemizedlist></listitem>
+              specialization selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>

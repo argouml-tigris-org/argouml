@@ -26,12 +26,14 @@ Modifications
 
  4 Apr 2002:  Jeremy Bennett. Updated for issue 0.9.8.
 
-18 Apr 2002:  Jeremy Bennett. Incorporated first two batches of comments from
-              Bob Marcum.
+22 Apr 2002:  Jeremy Bennett. Incorporated first three batches of comments from
+              Bob Marcum (draft A for 0.9.9).
+
+ 3 May 2002:  Jeremy Bennett. Updated for issue 0.9.9.
 -->
 
 <bookinfo>
-  <date>11/30/2001</date>
+  <date>5/3/2002</date>
 
   <title>&argouml; User Manual</title>
   <subtitle>A tutorial and reference description of &argouml;</subtitle>
@@ -100,6 +102,21 @@ Modifications
   </legalnotice>
 
   <revhistory>
+    <revision>
+      <revnumber>0.9.9</revnumber> <date>3 May 2002</date>
+      <revdescription><para>Full issue for release 0.9.9. Update to add the
+        tutorial chapter on incorporate further comments from Bob Marcum, plus
+        changes to the use case diagram. The reference part of the manual
+        (chapters 7 through 22) is now completed. In addition chapter 1
+        (introduction) and tutorial chapters 2 and 3 are now largely
+        complete.</para>
+
+      <para>Chapter 3 (requirements capture tutorial) written. Bob Marcum's
+        comments for chapters 15 and 16 incorporated. Details of extension
+        point tool and extension point compartment on use cases
+        added.</para></revdescription>
+    </revision>
+
     <revision>
       <revnumber>0.9.9, draft A</revnumber> <date>22 Apr 2002</date>
       <revdescription><para>Update to incorporate Bob Marcum's comments from

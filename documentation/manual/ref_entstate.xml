@@ -326,7 +326,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -1005,7 +1005,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>
@@ -1382,16 +1382,14 @@ Modifications
             <listitem><para><literal>Add</literal>. Create a new parameter
               and navigate to it.</para></listitem>
 
-            <listitem><para><literal>Move Up</literal>. Only available
-              where there are two or more parameters, and the parameter
-              selected is not at the top. It is moved one up the
-              list.</para></listitem>
+            <listitem><para><literal>Move Up</literal>. Only available where
+              there are two or more parameters, and the parameter selected is
+              not at the top. It is moved up one.</para></listitem>
 
-            <listitem><para><literal>Move Down</literal>. Only available
-              where there are two or more parameters listed, and the
-              parameter selected is not at the bottom. It is moved
-              one down the list.</para></listitem>
-          </itemizedlist></listitem>
+            <listitem><para><literal>Move Down</literal>. Only available where
+              there are two or more parameters listed, and the parameter
+              selected is not at the bottom. It is moved down
+              one.</para></listitem> </itemizedlist></listitem>
         </varlistentry>
       </variablelist>
     </sect2>
@@ -2195,7 +2193,7 @@ Modifications
               format="GIF" align="center"
               fileref="images/icons/navigate_stereotype.gif"/>
             </imageobject></inlinemediaobject></guiicon> icon. If a
-              stereotype has been selected, this will navigate you to the
+              stereotype has been selected, this will navigate to the
               stereotype property panel (see <xref
                 linkend="s1.ref.stereotype_class"/>).</para></listitem>
         </varlistentry>

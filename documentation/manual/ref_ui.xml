@@ -166,14 +166,14 @@ Modifications
   <sect1 id="s1.ref.mouse">
     <title>General Mouse Behavior in &argouml;</title>
 
-    <para>Mouse behaviour that is specific to the various panes of &argouml;
+    <para>Mouse behavior that is specific to the various panes of &argouml;
       (see <xref linkend="s1.ref.panes"/>) or the menu bar, is discussed in the
       chapters covering those panes and the menu bar. In this section we cover
-      behaviour that is general across all of &argouml;.</para>
+      behavior that is general across all of &argouml;.</para>
 
     <para>In a number of places in &argouml; text may be directly edited
       (for example the constraint editor&mdash;see
-      <xref linkend="s2.ref.details_constraint_editor"/>). The behaviour of the
+      <xref linkend="s2.ref.details_constraint_editor"/>). The behavior of the
       mouse when handling text is discussed in the sections that follow.</para>
 
     <sect2>
@@ -204,10 +204,10 @@ Modifications
         operations. If the item is an artifact in the navigation pane or the
         editing pane it will be highlighted.</para>
 
-      <!-- General behaviour when editing text -->
+      <!-- General behavior when editing text -->
 
       <sect3>
-        <title>General Behaviour When Editing Text</title>
+        <title>General Behavior When Editing Text</title>
 
         <para>Here &button1; is used to select the point within the text at
           which operations (text entry and deletion) will take place.</para>
@@ -219,13 +219,13 @@ Modifications
     <sect2>
       <title>&Button1; Double Click</title>
 
-      <para>The behaviour of &button1; double click varies betweens panes and
+      <para>The behavior of &button1; double click varies betweens panes and
         is discussed in their chapters.</para>
 
-      <!-- General behaviour when editing text -->
+      <!-- General behavior when editing text -->
 
       <sect3>
-        <title>General Behaviour When Editing Text</title>
+        <title>General Behavior When Editing Text</title>
 
         <para>Here &button1; double click is used to select a complete word, or
           other syntactic unit within the text. Subsequent operations (text
@@ -239,7 +239,7 @@ Modifications
       <title>&Button1; Motion</title>
 
       <sect3>
-        <title>General Behaviour When Editing Text</title>
+        <title>General Behavior When Editing Text</title>
 
         <para>Here &button1; motion is used to select a range of
           text. Subsequent operations (text entry and deletion) will replace
@@ -276,10 +276,10 @@ Modifications
           as CONTROL.</para></caution>
       </sect3>
 
-      <!-- General behaviour when editing text -->
+      <!-- General behavior when editing text -->
 
       <sect3>
-        <title>General Behaviour When Editing Text</title>
+        <title>General Behavior When Editing Text</title>
 
         <para>In a number of places in &argouml; text may be directly edited
           (for example the constraint editor&mdash;see
