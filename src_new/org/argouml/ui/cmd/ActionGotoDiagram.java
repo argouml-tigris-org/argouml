@@ -71,7 +71,7 @@ public class ActionGotoDiagram
 	//TODO: class TearOffHostFrame and TearOffManager.
 	//idea: pop-up on tab that lists docking locations, new window.
 	ArgoDialog f =
-	    new ArgoDialog(pb, "Goto Diagram...",
+	    new ArgoDialog(pb, Translator.localize("dialog.gotodiagram.title"),
 			   ArgoDialog.OK_CANCEL_OPTION, false) {
 		public void actionPerformed(ActionEvent e) {
 		    if (e.getSource() == getOkButton()) {
