@@ -30,6 +30,8 @@ import javax.swing.Action;
 import junit.framework.TestCase;
 
 import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.behavior.state_machines.MEvent;
+import ru.novosoft.uml.behavior.state_machines.MEventImpl;
 import ru.novosoft.uml.foundation.core.MClassImpl;
 
 /**
@@ -38,7 +40,7 @@ import ru.novosoft.uml.foundation.core.MClassImpl;
  */
 public class TestUMLCheckBox2 extends TestCase {
     
-    private boolean _buildModelCalled = false;
+    private static boolean _buildModelCalled = false;
     private UMLCheckBox2 box = null;
     private MElementEvent event = null;
     private boolean _actionPerformedCalled = false;
@@ -54,7 +56,7 @@ public class TestUMLCheckBox2 extends TestCase {
             UMLUserInterfaceContainer container,
             String text,
             Action a) {
-            super(container, text, a);
+            super(container, text, a, "test");
         }
 
         /**
@@ -95,7 +97,7 @@ public class TestUMLCheckBox2 extends TestCase {
     
     public void testPropertySet() {
         box.propertySet(event);
-        assert("Propertyset does not work!", _buildModelCalled);
+        assert("Propertyset does not work!", _buildModelCalled); 
     }
     
     public void testClick() {
@@ -110,6 +112,7 @@ public class TestUMLCheckBox2 extends TestCase {
         super.setUp();
         box = new DummyUMLCheckBox2(new MockUMLUserInterfaceContainer(), 
                 "dummy", new MockAction());
+        event = new MElementEvent(new MClassImpl(), "", 1, null, null);
     }
 
     /**
@@ -118,7 +121,7 @@ public class TestUMLCheckBox2 extends TestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         box = null;
-        event = new MElementEvent(new MClassImpl(), 1);
+        event = null;
         _buildModelCalled = false;
     }
 }
