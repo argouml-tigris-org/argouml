@@ -222,8 +222,10 @@ public class TabProps
      * Sets the target of the property panel. The given target t may either be a 
      * Diagram or a modelelement. If the target given is a Fig, a check is made if the fig has an owning modelelement and occurs on
      * the current diagram. If so, that modelelement is the target.
-     * @deprecated in a feature release, this will become non-public. It is replaced
-     * by the TargetManager
+     *
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      */
     public void setTarget(Object t) {
         // targets ought to be modelelements or diagrams 
@@ -342,7 +344,9 @@ public class TabProps
 
     /**
      * Returns the current target.
-     * @deprecated use TargetManager.getInstance().getTarget() instead
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}.
      */
     public Object getTarget() {
         return _target;

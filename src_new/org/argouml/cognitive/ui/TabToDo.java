@@ -148,8 +148,9 @@ public class TabToDo extends TabSpawnable implements TabToDoTarget {
 
     /**
      * Sets the target of the TabToDo
-     * @deprecated Replaced by implementing TargetListener. Will change visibility
-     * to protected in a couple of releases.
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param Object the new target
      */
     public void setTarget(Object item) {

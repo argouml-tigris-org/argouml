@@ -147,7 +147,8 @@ abstract public class PropPanelModelElement extends PropPanel {
      *    Constructs the PropPanel.
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
-     *    @deprecated 7-Dec-2002 by Bob Tarling. Use the constructor
+     *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002),
+     *                Use the constructor (which one ????)
      *    specifying orientation instead.
      */
     public PropPanelModelElement(String name, int columns) {

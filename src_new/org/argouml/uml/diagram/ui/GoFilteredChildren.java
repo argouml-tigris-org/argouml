@@ -35,7 +35,8 @@ import org.tigris.gef.util.Predicate;
 import org.tigris.gef.util.PredicateTrue;
 
 /**
- * @deprecated any use of this class should be replaced by
+ * @deprecated As of ArgoUml version 0.13.4, 
+ *             any use of this class should be replaced by
  *             an AbstractGoRule subclass, because the use of the GEF Predicate
  *             class is not necessary now that we have 
  *             org.argouml.model.ModelFacade#isA(...) methods.

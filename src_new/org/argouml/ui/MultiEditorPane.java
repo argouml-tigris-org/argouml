@@ -123,7 +123,8 @@ public class MultiEditorPane
      * model elements) that tab should display the target if the target is an 
      * ArgoDiagram.
      * @param target
-     * @deprecated this method will change visibility in the near future
+     * @deprecated As of ArgoUml version 0.13.5, 
+     *             this method will change visibility in the near future
      */
     public void setTarget(Object target) {
         enableTabs(target);
@@ -158,7 +159,8 @@ public class MultiEditorPane
      * TODO: check if the target is needed for the multieditorpane as an
      * instance variable.
      * @return Object
-     * @deprecated use TargetManager.getInstance().getTarget() instead
+     * @deprecated As of ArgoUml version 0.13.5, 
+     *             use {@link org.argouml.ui.targetmanager.TargetManager.getTarget() TargetManager.getInstance().getTarget()} instead
      */
     public Object getTarget() {
         return TargetManager.getInstance().getTarget();
@@ -211,8 +213,10 @@ public class MultiEditorPane
     /**
      * Selects a Fig on a TabDiagram if the TabDiagram is currently shown. 
      * @param o The Fig or the owner of the Fig to select.
-     * @deprecated The tabdiagram arranges for it's own selection now via 
-     * it's targetlistener
+     *
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             The tabdiagram arranges for it's own selection now via 
+     *             it's {@link org.argouml.ui.targetmanager.TargetListener}.
      */
     public void select(Object o) {
         Component curTab = _tabs.getSelectedComponent();

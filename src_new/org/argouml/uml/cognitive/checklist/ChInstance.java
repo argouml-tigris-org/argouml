@@ -34,7 +34,7 @@ import ru.novosoft.uml.behavior.state_machines.*;
  *  design. TODO: the checklist items are categorized, but
  *  those categories are not shown yet in the user interface. 
  *
- *  @deprecated Now created by loading strings from 
+ *  @deprecated As of ArgoUml version 0.9.1, Now created by loading strings from 
  *     UMLCognitiveResourceBundle into a generic UMLChecklist instance
  *           
  *  @see org.argouml.uml.cognitive.UMLCognitiveResourceBundle

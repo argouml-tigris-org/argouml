@@ -139,7 +139,10 @@ public class TabStyle
 
     /**
      * Sets the target of the style tab. 
-     * @deprecated will change visibility in the near future
+     *
+     * @deprecated As of ArgoUml version 0.13.5,
+     *             the visibility of this method will change in the future,
+     *             replaced by {@link org.argouml.ui.targetmanager.TargetManager}.
      * @param Object the new target
      */
     public void setTarget(Object t) {

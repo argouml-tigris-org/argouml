@@ -47,7 +47,9 @@ public class UMLChecklist extends Checklist {
   }
 
   /**
-   * @deprecated Previously used by ChActor et al
+   * @deprecated As of ArgoUml version unknown (before 0.13.5),
+   *             Previously used by ChActor et al,
+   *             replaced by (presumably) {@link #UMLChecklist(String[][])}
    */
   public UMLChecklist() {
 /*       used to capture checklist contents
@@ -58,7 +60,7 @@ public class UMLChecklist extends Checklist {
   }
 
   /**
-   *   @deprecated Previously used by ChActor et al
+   *   @deprecated As of ArgoUml version unknown (before 0.13.5), Previously used by ChActor et al
    */
   public void addItem(String description) {
     CheckItem item = new UMLCheckItem(_nextCategory, description);
@@ -69,7 +71,7 @@ public class UMLChecklist extends Checklist {
   }
 
   /**
-   *   @deprecated Previously used by ChActor et al
+   *   @deprecated As of ArgoUml version unknown (before 0.13.5), Previously used by ChActor et al
    */
   public void setNextCategory(String category) {
     super.setNextCategory(category);

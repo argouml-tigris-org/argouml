@@ -113,19 +113,19 @@ public class Import {
     
     /**
      * not used.
-     * @deprecated
+     * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
     public static final String separator = "/";
     
     /**
      * Unnecessary attribute
-     * @deprecated
+     * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
     private ProjectBrowser pb = ProjectBrowser.getInstance();
     
     /**
      * Unnecessary attribute
-     * @deprecated
+     * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
     private Project p = ProjectManager.getManager().getCurrentProject();
     
@@ -158,7 +158,7 @@ public class Import {
     
     /**
      * Unnecessary method
-     * @deprecated
+     * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
     public Project getProject() {
         return p;
@@ -166,7 +166,7 @@ public class Import {
     
     /**
      * Unnecessary method
-     * @deprecated
+     * @deprecated As of ArgoUml version 0.13.5, don't use this!
      */
     public ProjectBrowser getProjectBrowser() {
         return pb;

@@ -61,7 +61,8 @@ public class FigInclude extends FigEdgeModelElement {
      *   can't mark it as private, since GEF expects to be able to call this
      *   when creating the diagram.</p>
      *
-     * @deprecated use {@link #FigInclude(Object)}, since that sets the owner.
+     * @deprecated As of ArgoUml version 0.9.8,
+     *             use {@link #FigInclude(Object)}, since that sets the owner.
      */
 
     public FigInclude() {

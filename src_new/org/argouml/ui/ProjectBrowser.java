@@ -88,7 +88,8 @@ public class ProjectBrowser
     /**
      * ArgoUML will not support this method of invocation of the projectbrowser
      * very soon.
-     * @deprecated 
+     * @deprecated As of ArgoUml version 0.13.5, replaced by
+     *             {@link org.argouml.ui.ProjectBrowser#getInstance()}
      */
     public static ProjectBrowser TheInstance;
 
@@ -389,7 +390,8 @@ public class ProjectBrowser
      * of target in one view creating a call back to this method, which 
      * would then change the target in all views again...
      * </p>
-     * @deprecated replaced by TargetManager.getInstance().setTarget(Object target)
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#setTarget(Object) TargetManager.getInstance().setTarget(Object)}
      */
     public void setTarget(Object o) {
         
@@ -458,7 +460,8 @@ public class ProjectBrowser
 
     /** 
      * return the current target in the editor pane
-     * @deprecated use TargetManager.getInstance().getTarget() now 
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}
      */
     
     public Object getTarget() {
@@ -471,7 +474,8 @@ public class ProjectBrowser
      * which the classes were imported.
      * It should also default the model name as well.
      *{@link #setTarget}.
-     * @deprecated use Project.setActiveDiagram instead
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.kernel.Project#setActiveDiagram(ArgoDiagram)}
      */
     public void setActiveDiagram(ArgoDiagram ad) {
         ProjectManager.getManager().getCurrentProject().setActiveDiagram(ad);
@@ -479,7 +483,8 @@ public class ProjectBrowser
 
     /**
      * Return the diagram, the user is currently working on.
-     * @deprecated use Project.getActiveDiagram instead 
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.kernel.Project#getActiveDiagram()}
      */
     public ArgoDiagram getActiveDiagram() {
         return ProjectManager
@@ -505,7 +510,9 @@ public class ProjectBrowser
     /**
      * Gets the target of the detailspane. This is exactly the same as the target
      * of the TargetManager. 
-     * @deprecated replaced by TargetManager.getInstance().getTarget()
+     *
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#getTarget() TargetManager.getInstance().getTarget()}
      * @return the target
      */
     public Object getDetailsTarget() {
@@ -658,7 +665,8 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated replace by TargetManager.getInstance().navigateBack()
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBack() TargetManager.getInstance().navigateBack()}
      */
     public boolean navigateBack(boolean attempt) {
         boolean navigated = false;
@@ -669,7 +677,8 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateForward()
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForward() TargetManager.getInstance().navigateForward()}
      */
     public boolean navigateForward(boolean attempt) {
         boolean navigated = false;
@@ -682,14 +691,16 @@ public class ProjectBrowser
     }
 
     /**
-     * @deprecated replaced by TargetManager.getInstance().navigateBackPossible();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateBackPossible() TargetManager.getInstance().navigateBackPossible()}
      */
     public boolean isNavigateBackEnabled() {
         return TargetManager.getInstance().navigateBackPossible();
     }
 
     /**
-     * @deprecated TargetManager.getInstance().navigateForwardPossible();
+     * @deprecated As of ArgoUml version 0.13.5,replaced by
+     *             {@link org.argouml.ui.targetmanager.TargetManager#navigateForwardPossible() TargetManager.getInstance().navigateForwardPossible()}
      */
     public boolean isNavigateForwardEnabled() {
         return TargetManager.getInstance().navigateForwardPossible();
