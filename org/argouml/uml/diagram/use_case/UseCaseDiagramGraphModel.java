@@ -179,7 +179,7 @@ public class UseCaseDiagramGraphModel
 
         else if (Model.getFacade().isAUseCase(port)) {
             Object use  = /*(MUseCase)*/ port;
-            Vector   ends = new Vector(Model.getFacade().getAssociationEnds(use));
+            Vector ends = new Vector(Model.getFacade().getAssociationEnds(use));
 
             // If there are no ends, return the empty vector
 
@@ -219,73 +219,6 @@ public class UseCaseDiagramGraphModel
         return new Vector();
     }
 
-
-    /**
-     * Return the source end of an edge.<p>
-     *
-     * <em>Needs more work</em>.  In the current implementation we
-     * only know how to handle associations, returning the first of
-     * its connections&mdash;which, if set, will be a use case or an
-     * actor.<p>
-     *
-     * @param edge  The edge for which we want the source port.
-     *
-     * @return      The source port for the edge, or <code>null</code> if the
-     *              edge given is not an association or has no source defined.
-     */
-    public Object getSourcePort(Object edge) {
-
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getSource();
-        } else if (Model.getFacade().isARelationship(edge)) {
-            return Model.getCoreHelper().getSource(/*(MRelationship)*/ edge);
-        }
-
-        // Don't know what to do otherwise
-
-        LOG.error(this.getClass().toString() + ": getSourcePort("
-		  + edge.toString() + ") - can't handle");
-
-        return null;
-    }
-
-
-    /**
-     * Return the destination end of an edge.<p>
-     *
-     * <em>Needs more work</em>.  In the current implementation we
-     * only know how to handle associations, returning the second of
-     * its connections&mdash;which, if set, will be a use case or an
-     * actor.<p>
-     *
-     * @param edge  The edge for which we want the destination port.
-     *
-     * @return      The destination port for the edge, or <code>null</code> if
-     *              the edge given is not an association or has no destination
-     *              defined.
-     */
-    public Object getDestPort(Object edge) {
-
-        // Know what to do for an association
-
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getDestination();
-        } else if (Model.getFacade().isAAssociation(edge)) {
-            Object assoc = /*(MAssociation)*/ edge;
-            Vector       conns = new Vector(Model.getFacade().getConnections(assoc));
-
-            return conns.elementAt(1);
-        }
-
-        // Don't know what to do otherwise
-
-        LOG.error(this.getClass().toString() + ": getDestPort("
-		  + edge.toString() + ") - can't handle");
-
-        return null;
-    }
-
-
     ///////////////////////////////////////////////////////////////////////////
     //
     // Methods that implement the MutableGraphModel interface
@@ -313,7 +246,8 @@ public class UseCaseDiagramGraphModel
         if (containsNode(node)) {
 	    return false;
 	}
-        return Model.getFacade().isAActor(node) || Model.getFacade().isAUseCase(node);
+        return Model.getFacade().isAActor(node) 
+            || Model.getFacade().isAUseCase(node);
     }
 
 
@@ -645,7 +579,8 @@ public class UseCaseDiagramGraphModel
         // Suggest that actors may not connect (see JavaDoc comment about
         // this).
 
-        if (Model.getFacade().isAActor(fromP) && Model.getFacade().isAActor(toP)) {
+        if (Model.getFacade().isAActor(fromP) 
+                && Model.getFacade().isAActor(toP)) {
             return false;
         }
 

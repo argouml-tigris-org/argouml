@@ -128,7 +128,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
-	    Iterator it = Model.getFacade().getSupplierDependencies(port).iterator();
+	    Iterator it = 
+	        Model.getFacade().getSupplierDependencies(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
@@ -205,7 +206,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	// top of the hierarchy is ME:
 	if (Model.getFacade().isAModelElement(port)) {
-	    Iterator it = Model.getFacade().getClientDependencies(port).iterator();
+	    Iterator it = 
+	        Model.getFacade().getClientDependencies(port).iterator();
 	    while (it.hasNext()) {
 		edges.add(it.next());
 	    }
@@ -221,7 +223,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if (Model.getFacade().isAClassifier(port)) {
 	    Iterator it = Model.getFacade().getAssociationEnds(port).iterator();
 	    while (it.hasNext()) {
-		Object nextAssocEnd = Model.getFacade().getOppositeEnd(it.next());
+		Object nextAssocEnd = 
+		    Model.getFacade().getOppositeEnd(it.next());
 		// navigable.... only want outgoing
 		if (Model.getFacade().isNavigable(nextAssocEnd)) {
 		    edges.add(nextAssocEnd);
@@ -231,33 +234,6 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 
 	return edges;
     }
-
-    /**
-     * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
-     *
-     * Return one end of an edge.
-     */
-    public Object getSourcePort(Object edge) {
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getSource();
-        } else {
-            return Model.getUmlHelper().getSource(edge);
-        }
-    }
-
-    /**
-     * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
-     *
-     * Return the other end of an edge.
-     */
-    public Object getDestPort(Object edge) {
-        if (edge instanceof CommentEdge) {
-            return ((CommentEdge) edge).getDestination();
-        } else {
-            return Model.getUmlHelper().getDestination(edge);
-        }
-    }
-
 
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
@@ -279,7 +255,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
             Iterator iter = ends.iterator();
             boolean canAdd = true;
             while (iter.hasNext()) {
-                Object classifier = Model.getFacade().getClassifier(iter.next());
+                Object classifier = 
+                    Model.getFacade().getClassifier(iter.next());
                 if (!containsNode(classifier)) {
                     canAdd = false;
                     break;
@@ -450,14 +427,16 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
                 Object associationEnd = iter.next();
                 if (!Model.getFacade().isANaryAssociation(
                         Model.getFacade().getAssociation(associationEnd))
-                    && canAddEdge(Model.getFacade().getAssociation(associationEnd))) {
+                    && canAddEdge(
+                        Model.getFacade().getAssociation(associationEnd))) {
 
                     addEdge(Model.getFacade().getAssociation(associationEnd));
                 }
             }
         }
         if (Model.getFacade().isAGeneralizableElement(node)) {
-            Collection generalizations = Model.getFacade().getGeneralizations(node);
+            Collection generalizations = 
+                Model.getFacade().getGeneralizations(node);
             Iterator iter = generalizations.iterator();
             while (iter.hasNext()) {
         	Object generalization = iter.next();
@@ -466,7 +445,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
         	    // return;
         	}
             }
-            Collection specializations = Model.getFacade().getSpecializations(node);
+            Collection specializations = 
+                Model.getFacade().getSpecializations(node);
             iter = specializations.iterator();
             while (iter.hasNext()) {
         	Object specialization = iter.next();
@@ -513,7 +493,8 @@ public class ClassDiagramGraphModel extends UMLMutableGraphSupport
 	if ("ownedElement".equals(pce.getPropertyName())) {
 	    Vector oldOwned = (Vector) pce.getOldValue();
 	    Object elementImport = /*(MElementImport)*/ pce.getNewValue();
-            Object modelElement = Model.getFacade().getModelElement(elementImport);
+            Object modelElement = 
+                    Model.getFacade().getModelElement(elementImport);
 	    //MModelElement modelElement = elementImport.getModelElement();
 	    if (oldOwned.contains(elementImport)) {
 		LOG.debug("model removed " + modelElement);

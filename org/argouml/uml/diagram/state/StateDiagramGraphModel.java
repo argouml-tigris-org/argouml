@@ -162,34 +162,6 @@ public class StateDiagramGraphModel extends UMLMutableGraphSupport implements
         return new Vector(); //wasteful!
     }
 
-    /**
-     * Return one end of an edge.
-     *
-     * @see org.tigris.gef.graph.BaseGraphModel#getSourcePort(java.lang.Object)
-     */
-    public Object getSourcePort(Object edge) {
-        if (Model.getFacade().isATransition(edge)) {
-	    return Model.getStateMachinesHelper()
-		.getSource(/* (MTransition) */edge);
-	}
-        LOG.debug("TODO: getSourcePort of MTransition");
-        return null;
-    }
-
-    /**
-     * Return the other end of an edge.
-     *
-     * @see org.tigris.gef.graph.BaseGraphModel#getDestPort(java.lang.Object)
-     */
-    public Object getDestPort(Object edge) {
-        if (Model.getFacade().isATransition(edge)) {
-	    return Model.getStateMachinesHelper()
-		.getDestination(/* (MTransition) */edge);
-	}
-        LOG.debug("TODO: getDestPort of MTransition");
-        return null;
-    }
-
     ////////////////////////////////////////////////////////////////
     // MutableGraphModel implementation
 

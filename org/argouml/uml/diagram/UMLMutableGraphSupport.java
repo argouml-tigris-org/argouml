@@ -233,6 +233,66 @@ public abstract class UMLMutableGraphSupport extends MutableGraphSupport {
         return false;
     }
 
+    /**
+     * Return the source end of an edge.
+     *
+     * @param edge  The edge for which we want the source port.
+     *
+     * @return      The source port for the edge, or <code>null</code> if the
+     *              edge given is of the wrong type or has no source defined.
+     */
+    public Object getSourcePort(Object edge) {
+
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getSource();
+        } else if (Model.getFacade().isARelationship(edge) 
+            || Model.getFacade().isATransition(edge)
+            || Model.getFacade().isAAssociationEnd(edge))  {
+            return Model.getUmlHelper().getSource(edge);
+        } else if (Model.getFacade().isALink(edge)) {
+            return Model.getCommonBehaviorHelper().getSource(edge);
+        }
+
+        // Don't know what to do otherwise
+
+        LOG.error(this.getClass().toString() + ": getSourcePort("
+                + edge.toString() + ") - can't handle");
+
+        return null;
+    }
+
+
+    /**
+     * Return the destination end of an edge.
+     * 
+     * @param edge  The edge for which we want the destination port.
+     *
+     * @return      The destination port for the edge, or <code>null</code> if
+     *              the edge given is otf the wrong type or has no destination
+     *              defined.
+     */
+    public Object getDestPort(Object edge) {
+        if (edge instanceof CommentEdge) {
+            return ((CommentEdge) edge).getDestination();
+        } else if (Model.getFacade().isAAssociation(edge)) {
+            Vector conns = new Vector(Model.getFacade().getConnections(edge));
+            return conns.elementAt(1);
+        } else if (Model.getFacade().isARelationship(edge) 
+                || Model.getFacade().isATransition(edge)
+                || Model.getFacade().isAAssociationEnd(edge)) {
+            return Model.getUmlHelper().getDestination(edge);
+        } else if (Model.getFacade().isALink(edge)) {
+            return Model.getCommonBehaviorHelper().getDestination(edge);
+        }
+ 
+        // Don't know what to do otherwise
+
+        LOG.error(this.getClass().toString() + ": getDestPort("
+                + edge.toString() + ") - can't handle");
+
+        return null;
+    }
+
 
     /**
      * @see org.tigris.gef.graph.MutableGraphModel#canAddEdge(java.lang.Object)
