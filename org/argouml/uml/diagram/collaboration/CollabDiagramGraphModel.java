@@ -31,7 +31,7 @@
 
 package org.argouml.uml.diagram.collaboration;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.model.uml.foundation.core.CoreHelper;
@@ -55,8 +55,8 @@ import ru.novosoft.uml.model_management.*;
 public class CollabDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat =
-	Category.getInstance(CollabDiagramGraphModel.class);
+    protected static Logger cat =
+	Logger.getLogger(CollabDiagramGraphModel.class);
 
     /** The "home" UML model of this diagram, not all ModelElements in this
      *  graph are in the home model, but if they are added and don't

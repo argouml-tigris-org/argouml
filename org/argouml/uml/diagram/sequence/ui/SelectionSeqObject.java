@@ -50,7 +50,7 @@ import java.util.Iterator;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
@@ -76,8 +76,8 @@ import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
 
 public class SelectionSeqObject extends SelectionWButtons  {
-    protected static Category cat = 
-        Category.getInstance(SelectionSeqObject.class);
+    protected static Logger cat = 
+        Logger.getLogger(SelectionSeqObject.class);
 
   
     ////////////////////////////////////////////////////////////////

@@ -42,7 +42,7 @@ import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -66,7 +66,7 @@ import ru.novosoft.uml.model_management.MPackage;
 /** Class to display graphics for a UML package in a class diagram. */
 
 public class FigPackage extends FigNodeModelElement {
-    protected static Category cat = Category.getInstance(FigPackage.class);
+    protected static Logger cat = Logger.getLogger(FigPackage.class);
 
     ////////////////////////////////////////////////////////////////
     // constants

@@ -28,7 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Vector;
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.cognitive.Designer;
 
 import org.argouml.cognitive.ResolvedCritic;
@@ -49,7 +49,7 @@ import org.tigris.gef.util.VectorSet;
  * @author	Michael Stockman
  */
 public class TodoParser extends SAXParserBase {
-    protected static Category cat = Category.getInstance(TodoParser.class);
+    protected static Logger cat = Logger.getLogger(TodoParser.class);
 
     /** The SINGLETON object of this class. */
     public static TodoParser SINGLETON = new TodoParser();

@@ -29,7 +29,7 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.diagram.ui.FigDependency;
@@ -46,8 +46,8 @@ import org.tigris.gef.presentation.FigNode;
 public class CollabDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer 
 {
-    protected static Category cat =
-	Category.getInstance(CollabDiagramRenderer.class);
+    protected static Logger cat =
+	Logger.getLogger(CollabDiagramRenderer.class);
 
     /** Return a Fig that can be used to represent the given node */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {

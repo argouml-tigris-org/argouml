@@ -30,7 +30,7 @@ package org.argouml.swingext;
 import java.awt.*;
 import javax.swing.*;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 
 /**
  * Similar to <code>GridLayout2</code> but once the components fill
@@ -43,7 +43,7 @@ import org.apache.log4j.Category;
  * @author Bob Tarling
  */
 public class NewspaperLayout extends GridLayout2 {
-    protected static Category cat = Category.getInstance(NewspaperLayout.class);
+    protected static Logger cat = Logger.getLogger(NewspaperLayout.class);
 
     private int gridGap = 0;
     private int preferredX;

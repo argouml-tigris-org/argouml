@@ -30,7 +30,7 @@
 
 package org.argouml.uml.diagram.sequence;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.behavioralelements.commonbehavior.CommonBehaviorHelper;
@@ -62,8 +62,8 @@ import org.argouml.uml.diagram.UMLMutableGraphSupport;
 public class SequenceDiagramGraphModel extends UMLMutableGraphSupport
     implements VetoableChangeListener 
 {
-    protected static Category cat = 
-        Category.getInstance(SequenceDiagramGraphModel.class);
+    protected static Logger cat = 
+        Logger.getLogger(SequenceDiagramGraphModel.class);
     ////////////////////////////////////////////////////////////////
     // instance variables
   

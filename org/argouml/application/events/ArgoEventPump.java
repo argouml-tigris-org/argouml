@@ -32,7 +32,7 @@ import org.apache.log4j.*;
  */
 public class ArgoEventPump {
 
-    Category cat = Category.getInstance(ArgoEventPump.class.getName());
+    Logger cat = Logger.getLogger(ArgoEventPump.class.getName());
 
     private ArrayList _listeners = null;
 

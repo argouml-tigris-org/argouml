@@ -52,7 +52,7 @@ import java.util.Vector;
 
 import javax.swing.JMenu;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Notation;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -98,7 +98,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  */
 
 public class FigClass extends FigNodeModelElement {
-    private Category cat = Category.getInstance(this.getClass());
+    private Logger cat = Logger.getLogger(this.getClass());
 
     ////////////////////////////////////////////////////////////////
     // constants

@@ -26,7 +26,7 @@ package org.argouml.uml.ui.foundation.core;
 
 import javax.swing.JScrollPane;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.model.ModelFacade;
 
@@ -59,8 +59,8 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  *       old gui components.
  */
 public class PropPanelGeneralization extends PropPanelModelElement {
-    protected static Category cat =
-        Category.getInstance(PropPanelGeneralization.class);
+    protected static Logger cat =
+        Logger.getLogger(PropPanelGeneralization.class);
 
     private PropPanelButton _newButton;
 

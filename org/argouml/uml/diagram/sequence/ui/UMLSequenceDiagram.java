@@ -38,7 +38,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -60,8 +60,8 @@ import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 public class UMLSequenceDiagram extends UMLDiagram {
-    protected static Category cat =
-        Category.getInstance(UMLSequenceDiagram.class);
+    protected static Logger cat =
+        Logger.getLogger(UMLSequenceDiagram.class);
 
     ////////////////
     // actions for toolbar

@@ -31,7 +31,7 @@ import java.awt.Rectangle;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
@@ -52,8 +52,8 @@ import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 
 
 public class SelectionClassifierRole extends SelectionWButtons {
-    protected static Category cat = 
-        Category.getInstance(SelectionClassifierRole.class);
+    protected static Logger cat = 
+        Logger.getLogger(SelectionClassifierRole.class);
     ////////////////////////////////////////////////////////////////
     // constants
     public static Icon assocrole =

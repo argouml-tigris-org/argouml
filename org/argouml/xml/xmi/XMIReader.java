@@ -33,7 +33,7 @@ import java.io.IOException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParserFactory;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -50,7 +50,7 @@ import ru.novosoft.uml.model_management.MModel;
  * @see ru.novosoft.uml.xmi.XMIReader
  */
 public class XMIReader extends ru.novosoft.uml.xmi.XMIReader {
-    private Category cat = Category.getInstance(this.getClass());
+    private Logger cat = Logger.getLogger(this.getClass());
     
     private boolean errors = false;
     private org.xml.sax.Parser parser = null;

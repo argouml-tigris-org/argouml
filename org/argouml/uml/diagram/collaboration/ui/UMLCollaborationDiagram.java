@@ -36,7 +36,7 @@ import java.util.Vector;
 
 import javax.swing.Action;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.ui.CmdCreateNode;
@@ -65,8 +65,8 @@ import ru.novosoft.uml.foundation.data_types.MAggregationKind;
 public class UMLCollaborationDiagram extends UMLDiagram {
 
     /** for logging */
-    private static final Category cat =
-        Category.getInstance("org.argouml.uml.diagram.collaboration.ui."
+    private static final Logger cat =
+        Logger.getLogger("org.argouml.uml.diagram.collaboration.ui."
 			     + "UMLCollaborationDiagram");
 
     ////////////////

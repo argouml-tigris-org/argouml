@@ -37,7 +37,7 @@ import java.util.Vector;
 
 import javax.swing.Icon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.ConfigurationKey;
@@ -120,13 +120,13 @@ public class Critic implements Poster, Serializable {
      *
      *  @since 0.9.4
      */
-    public static final Category cat = 
-	Category.getInstance("org.argouml.cognitive.critics");
+    public static final Logger cat = 
+	Logger.getLogger("org.argouml.cognitive.critics");
     // TODO:  JDK 1.2 seems to not return the package name if
     // not running from a jar.
     //
-    // public final static Category cat = 
-    // Category.getInstance(Critic.class.getPackage().getName());
+    // public final static Logger cat = 
+    // Logger.getLogger(Critic.class.getPackage().getName());
 
 
     /** The email address of the author/maintainer of this critic. */

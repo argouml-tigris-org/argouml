@@ -33,7 +33,7 @@ import java.util.Iterator;
 import java.util.Stack;
 import java.util.Vector;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
@@ -52,7 +52,7 @@ import org.tigris.gef.base.Globals;
  */
 public class Modeller
 {
-    protected static Category cat = Category.getInstance(Modeller.class);
+    protected static Logger cat = Logger.getLogger(Modeller.class);
     /** Current working model. */
     private Object model;
 

@@ -30,14 +30,14 @@ import java.awt.Color;
 import java.awt.Rectangle;
 import java.awt.Polygon;
 
-import org.apache.log4j.Category;
+import org.apache.log4j.Logger;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigPoly;
 
 /** Class to display graphics for a UML model in a class diagram. */
 
 public class FigModel extends FigPackage {
-    protected static Category cat = Category.getInstance(FigModel.class);
+    protected static Logger cat = Logger.getLogger(FigModel.class);
 
     protected FigPoly _figPoly;
 
