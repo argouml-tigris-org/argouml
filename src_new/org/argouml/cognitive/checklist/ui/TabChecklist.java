@@ -58,11 +58,11 @@ import org.tigris.gef.presentation.Fig;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
-/** Tab to show the checklist for a certain element.
+/**
+ * Tab to show the checklist for a certain element.
  */
 public class TabChecklist extends TabSpawnable
-    implements TabModelTarget, ActionListener, ListSelectionListener
-{
+    implements TabModelTarget, ActionListener, ListSelectionListener {
 
     ////////////////////////////////////////////////////////////////
     // instance variables
@@ -73,7 +73,6 @@ public class TabChecklist extends TabSpawnable
 
     /**
      * The constructor.
-     * 
      */
     public TabChecklist() {
 	super("tab.checklist");
@@ -103,16 +102,17 @@ public class TabChecklist extends TabSpawnable
 	JScrollPane sp = new JScrollPane(table);
 
 	setLayout(new BorderLayout());
-	add(new JLabel(Translator.localize("tab.checklist.warning")), 
+	add(new JLabel(Translator.localize("tab.checklist.warning")),
 	    BorderLayout.NORTH);
 	add(sp, BorderLayout.CENTER);
     }
-    
-    
-    /** Converts a selected element to a target that is appropriate for a 
+
+
+    /**
+     * Converts a selected element to a target that is appropriate for a
      * checklist.<p>
      *
-     * The argument can be either 
+     * The argument can be either
      * a Fig, if a Figure when something is selected from a diagram
      * or a model element when an object is selected from the explorer.<p>
      *
@@ -126,17 +126,18 @@ public class TabChecklist extends TabSpawnable
         }
         return t;
     }
- 
+
 
     ////////////////////////////////////////////////////////////////
     // accessors
-    /** Actually prepares the Tab.
+    /**
+     * Actually prepares the Tab.
      *
      * @param t is the target to show the list for.
      */
     public void setTarget(Object t) {
         target = findTarget(t);
-        
+
         if (target == null) {
             shouldBeEnabled = false;
             return;
@@ -163,7 +164,7 @@ public class TabChecklist extends TabSpawnable
 	resizeColumns();
 	validate();
     }
-    
+
     /**
      * @see org.argouml.ui.TabTarget#getTarget()
      */
@@ -174,19 +175,20 @@ public class TabChecklist extends TabSpawnable
      */
     public void refresh() { setTarget(target); }
 
-    /** Decides if the tab should be enabled or not.<p>
+    /**
+     * Decides if the tab should be enabled or not.<p>
      *
      * @param t is the object element that it is then enabled for
      * @return true if it should be enabled.
      */
     public boolean shouldBeEnabled(Object t) {
         t = findTarget(t);
-  
+
         if (t == null) {
             shouldBeEnabled = false;
             return shouldBeEnabled;
         }
-        
+
 	shouldBeEnabled = true;
 	Checklist cl = CheckManager.getChecklistFor(t);
 	if (cl == null) {
@@ -198,7 +200,7 @@ public class TabChecklist extends TabSpawnable
     }
 
     /**
-     * Resize the columns to fit. 
+     * Resize the columns to fit.
      */
     public void resizeColumns() {
 	table.sizeColumnsToFit(0);
@@ -209,7 +211,7 @@ public class TabChecklist extends TabSpawnable
 
     /**
      * Enable buttons when selection made.
-     * 
+     *
      * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
     public void actionPerformed(ActionEvent ae) {
@@ -247,9 +249,14 @@ public class TabChecklist extends TabSpawnable
 
 
 
+/**
+ * The table model for checklists.
+ */
 class TableModelChecklist extends AbstractTableModel
-    implements VetoableChangeListener, MElementListener
-{
+    implements VetoableChangeListener, MElementListener {
+    /**
+     * Logger.
+     */
     private static final Logger LOG =
         Logger.getLogger(TableModelChecklist.class);
 
@@ -260,7 +267,14 @@ class TableModelChecklist extends AbstractTableModel
 
     ////////////////
     // constructor
-    public TableModelChecklist(TabChecklist tc) { panel = tc; }
+    /**
+     * Constructor.
+     *
+     * @param tc The TabChecklist to show.
+     */
+    public TableModelChecklist(TabChecklist tc) {
+        panel = tc;
+    }
 
     ////////////////
     // accessors
@@ -269,92 +283,163 @@ class TableModelChecklist extends AbstractTableModel
     }
 
     public void setTarget(Object t) {
-	if (ModelFacade.isAElement(target))
+	if (ModelFacade.isAElement(target)) {
 	    getPump().removeModelEventListener(this, target);
+	}
 	target = t;
-	if (ModelFacade.isAElement(target))
+	if (ModelFacade.isAElement(target)) {
 	    getPump().addModelEventListener(this, target);
+	}
 	fireTableStructureChanged();
     }
 
     ////////////////
     // TableModel implemetation
+    /**
+     * @see javax.swing.table.TableModel#getColumnCount()
+     */
     public int getColumnCount() { return 2; }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnName(int)
+     */
     public String  getColumnName(int c) {
-	if (c == 0) return "X";
-	if (c == 1) return "Description";
+	if (c == 0) {
+	    return "X";
+	}
+	if (c == 1) {
+	    return "Description";
+	}
 	return "XXX";
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getColumnClass(int)
+     */
     public Class getColumnClass(int c) {
-	if (c == 0) return Boolean.class;
-	if (c == 1) return String.class;
+	if (c == 0) {
+	    return Boolean.class;
+	}
+	if (c == 1) {
+	    return String.class;
+	}
 	return String.class;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#isCellEditable(int, int)
+     */
     public boolean isCellEditable(int row, int col) {
 	return col == 0;
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getRowCount()
+     */
     public int getRowCount() {
-	if (target == null) return 0;
+	if (target == null) {
+	    return 0;
+	}
 	Checklist cl = CheckManager.getChecklistFor(target);
-	if (cl == null) return 0;
+	if (cl == null) {
+	    return 0;
+	}
 	return cl.size();
     }
 
+    /**
+     * @see javax.swing.table.TableModel#getValueAt(int, int)
+     */
     public Object getValueAt(int row, int col) {
 	Checklist cl = CheckManager.getChecklistFor(target);
-	if (cl == null) return "no checklist";
+	if (cl == null) {
+	    return "no checklist";
+	}
 	CheckItem ci = cl.elementAt(row);
 	if (col == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(target);
 	    return (stat.contains(ci)) ? Boolean.TRUE : Boolean.FALSE;
-	}
-	else if (col == 1) {
+	} else if (col == 1) {
 	    return ci.getDescription(target);
-	}
-	else
+	} else {
 	    return "CL-" + row * 2 + col;
+	}
     }
 
+    /**
+     * @see javax.swing.table.TableModel#setValueAt(java.lang.Object, int, int)
+     */
     public void setValueAt(Object aValue, int rowIndex, int columnIndex)  {
 	LOG.debug("setting table value " + rowIndex + ", " + columnIndex);
-	if (columnIndex != 0) return;
-	if (!(aValue instanceof Boolean)) return;
+	if (columnIndex != 0) {
+	    return;
+	}
+	if (!(aValue instanceof Boolean)) {
+	    return;
+	}
 	boolean val = ((Boolean) aValue).booleanValue();
 	Checklist cl = CheckManager.getChecklistFor(target);
-	if (cl == null) return;
+	if (cl == null) {
+	    return;
+	}
 	CheckItem ci = cl.elementAt(rowIndex);
 	if (columnIndex == 0) {
 	    ChecklistStatus stat = CheckManager.getStatusFor(target);
-	    if (val) stat.addItem(ci);
-	    else stat.removeItem(ci);
+	    if (val) {
+	        stat.addItem(ci);
+	    } else {
+	        stat.removeItem(ci);
+	    }
 	}
     }
 
     ////////////////
     // event handlers
+    /**
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(MElementEvent mee) {
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(MElementEvent mee) {
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(MElementEvent mee) {
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(MElementEvent mee) {
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(MElementEvent mee) {
     }
+
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(MElementEvent mee) {
     }
 
+    /**
+     * @see java.beans.VetoableChangeListener#vetoableChange(java.beans.PropertyChangeEvent)
+     */
     public void vetoableChange(PropertyChangeEvent pce) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 fireTableStructureChanged();
                 panel.resizeColumns();
             }
-    });
+        });
     }
 } /* end class TableModelChecklist */

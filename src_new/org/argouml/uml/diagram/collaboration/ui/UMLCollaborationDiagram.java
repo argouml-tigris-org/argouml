@@ -22,10 +22,6 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: UMLCollaborationDiagram.java
-// Classes: UMLCollaborationDiagram
-// Original Author: agauthie@ics.uci.edu
-
 package org.argouml.uml.diagram.collaboration.ui;
 
 import java.beans.PropertyVetoException;
@@ -59,10 +55,13 @@ import org.tigris.gef.presentation.Fig;
  * constructors for a top level diagram and one within a defined
  * namespace.<p>
  *
+ * @author agauthie@ics.uci.edu
  */
 public class UMLCollaborationDiagram extends UMLDiagram {
 
-    /** for logging */
+    /**
+     * Logging.
+     */
     private static final Logger LOG =
         Logger.getLogger(UMLCollaborationDiagram.class);
 
@@ -87,7 +86,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
     // contructors
 
     /**
-     * constructor
+     * Constructor.
      */
     public UMLCollaborationDiagram() {
 
@@ -121,10 +120,10 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         return res;
     }
 
-    /** 
+    /**
      * Method to perform a number of important initializations of a
      * <I>CollaborationDiagram</I>.<p>
-     * 
+     *
      * Each diagram type has a similar <I>UMLxxxDiagram</I> class.<p>
      *
      * Changed <I>lay</I> from <I>LayerPerspective</I> to
@@ -133,7 +132,7 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * difficulties in changing the model.  <I>Lay</I> is used mainly
      * in <I>LayerManager</I>(GEF) to control the adding, changing and
      * deleting layers on the diagram...
-     * 
+     *
      * @param handle  MNamespace from the model in NSUML...
      * @author psager@tigris.org Jan. 24, 2002
      */
@@ -164,32 +163,34 @@ public class UMLCollaborationDiagram extends UMLDiagram {
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getUmlActions()
      */
     protected Object[] getUmlActions() {
-        Object actions[] = {
+        Object[] actions = {
 	    getActionClassifierRole(),
 	    null,
 	    getAssociationActions(),
 	    getActionGeneralize(),
 	    getActionDepend(),
             null,
-            getActionMesage() //this one behaves differently, hence seperated!
-            };
+            getActionMesage(), //this one behaves differently, hence seperated!
+        };
         return actions;
     }
 
     private Object[] getAssociationActions() {
-        Object actions[][] = {
+        Object[][] actions = {
 	    {getActionAssociation(), getActionUniAssociation() },
 	    {getActionAggregation(), getActionUniAggregation() },
-	    {getActionComposition(), getActionUniComposition() }
+	    {getActionComposition(), getActionUniComposition() },
         };
 
         return actions;
     }
 
-    /**  After loading the diagram it?s necessary to connect
-     *  every FigMessage to its FigAssociationRole. 
-     *  This is done by adding the FigMessage 
-     *  to the PathItems of its FigAssociationRole */
+    /**
+     * After loading the diagram it?s necessary to connect
+     * every FigMessage to its FigAssociationRole.
+     * This is done by adding the FigMessage
+     * to the PathItems of its FigAssociationRole.
+     */
     public void postLoad() {
 
         super.postLoad();
@@ -234,14 +235,14 @@ public class UMLCollaborationDiagram extends UMLDiagram {
         }
         return name;
     }
-    
+
     /**
      * @see org.argouml.uml.diagram.ui.UMLDiagram#getLabelName()
      */
     public String getLabelName() {
         return Translator.localize("label.colaboration-diagram");
     }
-    
+
     /**
      * @return Returns the actionClassifierRole.
      */
