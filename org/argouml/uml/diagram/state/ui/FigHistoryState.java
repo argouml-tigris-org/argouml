@@ -40,11 +40,9 @@ import org.tigris.gef.presentation.FigText;
 
 /** Class to display graphics for a UML HistoryState in a diagram. 
  * 
- * TODO: This class seems never used, which is understandable, 
- * since we have Figs for both a DeepHistory and a ShallowHistory. 
- * Maybe we can make the 2 others extend this one...
+ * This abstract class is used for both a DeepHistory and a ShallowHistory. 
  */
-public class FigHistoryState extends FigStateVertex {
+public abstract class FigHistoryState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // constants
@@ -71,8 +69,8 @@ public class FigHistoryState extends FigStateVertex {
     public FigHistoryState() {
         setBigPort(new FigCircle(X, Y, WIDTH, HEIGHT, Color.cyan, Color.cyan));
         head = new FigCircle(X, Y, WIDTH, HEIGHT, Color.black, Color.white);
-        h = new FigText(X + 5, Y + 5, WIDTH - 10, HEIGHT - 10);
-        h.setText("H");
+        h = new FigText(X, Y, WIDTH - 10, HEIGHT - 10);
+        h.setText(getH());
         h.setTextColor(Color.black);
         h.setFilled(false);
         h.setLineWidth(0);
@@ -86,6 +84,13 @@ public class FigHistoryState extends FigStateVertex {
         Rectangle r = getBounds();
     }
 
+    /**
+     * This should return the text shown at the center of the history state.
+     *
+     * @return the text at the center (H or H*)
+     */
+    protected abstract String getH();
+    
     /**
      * @see org.argouml.uml.diagram.ui.FigNodeModelElement#placeString()
      */
