@@ -106,23 +106,20 @@ implements ItemListener, DocumentListener {
   protected void setTargetInternal(Object t) { 
     super.setTargetInternal(t); 
     MNodeInstance noi = (MNodeInstance) t; 
-    if (noi.getClassifiers() != null) { 
-      String base = ""; 
-      Collection classifiers = noi.getClassifiers(); 
-      Iterator it = classifiers.iterator(); 
-      while (it.hasNext()) { 
-        Object o = it.next(); 
-        if (o != null && (o instanceof MClassifier)) { 
-          MClassifier cls = (MClassifier) o; 
-          if (cls != null) { 
-            base = cls.getName(); 
-          } 
-        } 
-      } 
-      _baseField.setText(base);         
-    }  
+    // construct bases string (comma separated)
+    String baseStr = "";
+    Collection col = noi.getClassifiers(); 
+    if (col != null && col.size() > 0){
+	Iterator it = col.iterator();
+	baseStr = ((MClassifier)it.next()).getName(); 
+	while (it.hasNext()) { 
+	    baseStr += ", "+((MClassifier)it.next()).getName(); 
+	} 
+	_baseField.setText(baseStr);
+    } 
+      
     else { 
-      _baseField.setText(null); 
+	_baseField.setText(null); 
     } 
     
     // set the values to be shown in all widgets based on model 
