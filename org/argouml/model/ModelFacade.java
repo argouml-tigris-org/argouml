@@ -61,6 +61,7 @@ import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
 import ru.novosoft.uml.behavior.common_behavior.MCreateAction;
 import ru.novosoft.uml.behavior.common_behavior.MDataValue;
 import ru.novosoft.uml.behavior.common_behavior.MDestroyAction;
+import ru.novosoft.uml.behavior.common_behavior.MException;
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MLink;
 import ru.novosoft.uml.behavior.common_behavior.MLinkEnd;
@@ -788,6 +789,16 @@ public class ModelFacade {
      */
     public static boolean isAEvent(Object handle) {
         return handle instanceof MEvent;
+    }
+
+    /**
+     * Recognizer for Exception
+     *
+     * @param handle candidate
+     * @return true if handle is an Exception
+     */
+    public static boolean isAException(Object handle) {
+        return handle instanceof MException;
     }
 
     /**
