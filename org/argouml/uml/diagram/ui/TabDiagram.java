@@ -405,6 +405,10 @@ public class TabDiagram
  * they are in the clipping area.
  * @author jaap.branderhorst@xs4all.nl
  * @since Apr 13, 2003
+ * @deprecated Bob Tarling 11 Jan 2005. This has been corrected in GEF.
+ * Please do not fix GEF in ArgoUML, contribute to GEF project. Because
+ * of this we currently miss out on GEF features.
+ * Remove this on the next GEF release after 0.10.10
  */
 class ArgoJGraph extends JGraph {
 
