@@ -28,10 +28,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
-import org.argouml.model.ModelFacade;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import org.argouml.ui.AbstractGoRule;
 
 /**
  * @since Oct 1, 2002

@@ -30,21 +30,17 @@ import java.awt.Dimension;
 import javax.swing.JComboBox;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.QuadrantPanel;
-import org.argouml.ui.explorer.DnDExplorerTree;
-import org.argouml.ui.explorer.ExportExplorer;
 import org.argouml.ui.explorer.ExplorerTree;
+import org.argouml.ui.explorer.ExplorerTreeModel;
+import org.argouml.ui.explorer.ExportExplorer;
+import org.argouml.ui.explorer.NameOrder;
 import org.argouml.ui.explorer.PerspectiveComboBox;
 import org.argouml.ui.explorer.PerspectiveManager;
-import org.argouml.ui.explorer.ExplorerTreeModel;
-import org.argouml.ui.explorer.NameOrder;
 import org.argouml.ui.explorer.TypeThenNameOrder;
-
 import org.tigris.toolbar.ToolBar;
 
 /**
