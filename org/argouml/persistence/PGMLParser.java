@@ -791,20 +791,15 @@ public class PGMLParser extends org.tigris.gef.xml.pgml.PGMLParser {
                 while(st2.hasMoreElements()) {
                     String t = st2.nextToken();
                     String v = st2.nextToken();
-                    if(t.equals("sourcePortFig")) {
-                        spf = findFig(v);
-                    }
-
-                    if(t.equals("destPortFig")) {
-                        dpf = findFig(v);
-                    }
 
                     if(t.equals("sourceFigNode")) {
-                        sfn = (FigNode)_figRegistry.get(v);
+                        sfn = (FigNodeModelElement)_figRegistry.get(v);
+                        spf = (Fig)sfn.getPortFigs().get(0);
                     }
 
                     if(t.equals("destFigNode")) {
-                        dfn = (FigNode)_figRegistry.get(v);
+                        dfn = (FigNodeModelElement)_figRegistry.get(v);
+                        dpf = (Fig)dfn.getPortFigs().get(0);
                     }
                 }
 
