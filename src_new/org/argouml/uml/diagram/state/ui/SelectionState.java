@@ -41,7 +41,7 @@ import ru.novosoft.uml.behavior.activity_graphs.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.state.*;
@@ -49,7 +49,7 @@ import org.argouml.uml.diagram.state.*;
 public class SelectionState extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon trans = Util.loadIconResource("Transition");
+  public static Icon trans = ResourceLoader.lookupIconResource("Transition");
 
   ////////////////////////////////////////////////////////////////
   // instance varables

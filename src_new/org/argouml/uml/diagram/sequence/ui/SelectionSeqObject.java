@@ -49,7 +49,7 @@ import ru.novosoft.uml.behavior.common_behavior.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.sequence.*;
@@ -59,8 +59,8 @@ public class SelectionSeqObject extends SelectionWButtons  {
   
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon stimCall = Util.loadIconResource("StimulusCall");
-  public static Icon stimRet = Util.loadIconResource("StimulusReturn");
+  public static Icon stimCall = ResourceLoader.lookupIconResource("StimulusCall");
+  public static Icon stimRet = ResourceLoader.lookupIconResource("StimulusReturn");
 
   ////////////////////////////////////////////////////////////////
   // instance variables

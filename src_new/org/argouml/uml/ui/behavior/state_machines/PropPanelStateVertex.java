@@ -42,23 +42,23 @@ import org.argouml.uml.ui.*;
 import org.argouml.uml.ui.foundation.core.*;
 import org.argouml.uml.MMUtil;
 
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 public abstract class PropPanelStateVertex extends PropPanelModelElement {
 
     ////////////////////////////////////////////////////////////////
     // constants
-    protected static ImageIcon _stateIcon = Util.loadIconResource("State");
-    protected static ImageIcon _actionStateIcon = Util.loadIconResource("ActionState");
-    protected static ImageIcon _compositeStateIcon = Util.loadIconResource("CompositeState");
-    protected static ImageIcon _simpleStateIcon = Util.loadIconResource("SimpleState");
-    protected static ImageIcon _shallowHistoryIcon = Util.loadIconResource("ShallowHistory");
-    protected static ImageIcon _deepHistoryIcon = Util.loadIconResource("DeepHistory");
-    protected static ImageIcon _finalStateIcon = Util.loadIconResource("FinalState");
-    protected static ImageIcon _initialIcon = Util.loadIconResource("Initial");
-    protected static ImageIcon _forkIcon = Util.loadIconResource("Fork");
-    protected static ImageIcon _joinIcon = Util.loadIconResource("Join");
-    protected static ImageIcon _transitionIcon = Util.loadIconResource("Transition");
+    protected static ImageIcon _stateIcon = ResourceLoader.lookupIconResource("State");
+    protected static ImageIcon _actionStateIcon = ResourceLoader.lookupIconResource("ActionState");
+    protected static ImageIcon _compositeStateIcon = ResourceLoader.lookupIconResource("CompositeState");
+    protected static ImageIcon _simpleStateIcon = ResourceLoader.lookupIconResource("SimpleState");
+    protected static ImageIcon _shallowHistoryIcon = ResourceLoader.lookupIconResource("ShallowHistory");
+    protected static ImageIcon _deepHistoryIcon =ResourceLoader.lookupIconResource("DeepHistory");
+    protected static ImageIcon _finalStateIcon = ResourceLoader.lookupIconResource("FinalState");
+    protected static ImageIcon _initialIcon = ResourceLoader.lookupIconResource("Initial");
+    protected static ImageIcon _forkIcon = ResourceLoader.lookupIconResource("Fork");
+    protected static ImageIcon _joinIcon = ResourceLoader.lookupIconResource("Join");
+    protected static ImageIcon _transitionIcon = ResourceLoader.lookupIconResource("Transition");
 
     ////////////////////////////////////////////////////////////////
 

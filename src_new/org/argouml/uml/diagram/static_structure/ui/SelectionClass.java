@@ -39,7 +39,7 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.diagram.deployment.*;
@@ -47,9 +47,9 @@ import org.argouml.uml.diagram.deployment.*;
 public class SelectionClass extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon inherit = Util.loadIconResource("Generalization");
-  public static Icon assoc = Util.loadIconResource("Association");
-  public static Icon compos = Util.loadIconResource("CompositeAggregation");
+  public static Icon inherit = ResourceLoader.lookupIconResource("Generalization");
+  public static Icon assoc = ResourceLoader.lookupIconResource("Association");
+  public static Icon compos = ResourceLoader.lookupIconResource("CompositeAggregation");
 
   ////////////////////////////////////////////////////////////////
   // instance variables

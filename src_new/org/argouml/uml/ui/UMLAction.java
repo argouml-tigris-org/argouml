@@ -57,7 +57,7 @@ public class UMLAction extends AbstractAction {
   public UMLAction(String name, boolean global, boolean hasIcon) {
     super(localize(name));
     if (hasIcon) {
-      Icon icon = Util.loadIconResource(name);
+      Icon icon = ResourceLoader.lookupIconResource(name);
       if (icon != null) putValue(Action.SMALL_ICON, icon);
       else { System.out.println("icon not found: " + name); }
     }

@@ -31,6 +31,8 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import org.tigris.gef.util.*;
+
 public class AboutBox extends JFrame {
 
   ////////////////////////////////////////////////////////////////
@@ -48,7 +50,7 @@ public class AboutBox extends JFrame {
   public AboutBox() {
     super("About Argo/UML");
     String iconName = "Splash";
-    ImageIcon splashImage = loadIconResource(iconName, iconName);
+    ImageIcon splashImage = ResourceLoader.lookupIconResource(iconName, iconName);
     int imgWidth = splashImage.getIconWidth();
     int imgHeight = splashImage.getIconHeight();
     Dimension scrSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -194,37 +196,5 @@ public class AboutBox extends JFrame {
     setSize(imgWidth + 20, imgHeight + 50);
     //pack();
   }
-
-  protected static ImageIcon loadIconResource(String imgName, String desc) {
-    ImageIcon res = null;
-    try {
-      java.net.URL imgURL = AboutBox.class.getResource(imageName(imgName));
-      if (imgURL == null) return null;
-      //System.out.println(imgName);
-      //System.out.println(imgURL);
-      return new ImageIcon(imgURL, desc);
-    }
-    catch (Exception ex) {
-      System.out.println("Exception in loadIconResource");
-      ex.printStackTrace();
-      return new ImageIcon(desc);
-    }
-  }
-
-  protected static String imageName(String name) {
-    return "/org/argouml/Images/" + stripJunk(name) + ".gif";
-  }
-
-
-  protected static String stripJunk(String s) {
-    String res = "";
-    int len = s.length();
-    for (int i = 0; i < len; i++) {
-      char c = s.charAt(i);
-      if (Character.isJavaIdentifierPart(c)) res += c;
-    }
-    return res;
-  }
-
 
 } /* end class AboutBox */

@@ -39,14 +39,14 @@ import ru.novosoft.uml.foundation.data_types.*;
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 import org.tigris.gef.graph.*;
-import org.tigris.gef.util.Util;
+import org.tigris.gef.util.*;
 
 import org.argouml.uml.diagram.ui.*;
 
 public class SelectionComponent extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
-  public static Icon dep = Util.loadIconResource("Dependency");
+  public static Icon dep = ResourceLoader.lookupIconResource("Dependency");
 
 
 

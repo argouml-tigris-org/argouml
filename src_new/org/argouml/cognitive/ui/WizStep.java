@@ -53,7 +53,7 @@ implements TabToDoTarget, ActionListener, DocumentListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
-  public static final ImageIcon WIZ_ICON = Util.loadIconResource("Wiz", "Wiz");
+  public static final ImageIcon WIZ_ICON = ResourceLoader.lookupIconResource("Wiz", "Wiz");
 
   ////////////////////////////////////////////////////////////////
   // instance variables
