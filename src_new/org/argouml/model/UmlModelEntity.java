@@ -64,6 +64,7 @@ public class UmlModelEntity extends AbstractModelEntity {
     public UmlModelEntity(String string,
                           boolean isCreatable) {
         super(string);
+        _availableInFacade = true;
         _creatable = isCreatable;
     }
 
