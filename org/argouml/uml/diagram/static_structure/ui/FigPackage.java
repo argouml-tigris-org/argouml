@@ -118,11 +118,11 @@ public class FigPackage extends FigNodeModelElement {
 		    // Draw the shadow                
 		    if (_shadowSize > 0) {
 			for (int i = 0; i < _shadowSize; ++i) {
-			    Color shadow =
-				new Color(0.1f, 0.1f, 0.1f, 
-					  (0.5f
-					   * (((float) _shadowSize - i)
-					      / (float) _shadowSize)));
+                Color shadow = new Color(
+                    SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, SHADOW_COLOR_VALUE, 
+                    SHADOW_COLOR_ALPHA
+                        * (((float) _shadowSize - i)
+                        / (float) _shadowSize));
 			    g.setColor(shadow);
 
 			    g.drawLine(
