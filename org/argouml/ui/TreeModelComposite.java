@@ -40,16 +40,20 @@ import org.apache.log4j.Logger;
  */
 public class TreeModelComposite extends TreeModelSupport implements TreeModel {
 
-    private static Logger cat =
+    private static final Logger LOG =
         Logger.getLogger(TreeModelComposite.class);
 
-    /** root of the model */
-    protected Object _root;
+    /** The root of the model. */
+    private Object root;
 
     ////////////////////////////////////////////////////////////////
     // contructors
 
-    /** needs documenting */
+    /**
+     * The constructor.
+     * 
+     * @param name the name that will be localized
+     */
     public TreeModelComposite(String name) {
 
         super(name);
@@ -58,9 +62,11 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // TreeModel implementation
 
-    /** needs documenting */
+    /** Getter for the root of the model.
+     * @see javax.swing.tree.TreeModel#getRoot()
+     */
     public Object getRoot() {
-        return _root;
+        return root;
     }
 
     /**
@@ -84,7 +90,9 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return null;
     }
 
-    /** needs documenting */
+    /**
+     * @see javax.swing.tree.TreeModel#getChildCount(java.lang.Object)
+     */
     public int getChildCount(Object parent) {
 
         int childCount = 0;
@@ -96,7 +104,10 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
         return childCount;
     }
 
-    /** needs documenting */
+    /**
+     * @see javax.swing.tree.TreeModel#getIndexOfChild(java.lang.Object, 
+     * java.lang.Object)
+     */
     public int getIndexOfChild(Object parent, Object child) {
 
         int childCount = 0;
@@ -109,7 +120,7 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
             }
             childCount += tm.getChildCount(parent);          
         }
-        cat.debug("child not found!");
+        LOG.debug("child not found!");
 
         //The child is sometimes not found when the tree is being updated
         return -1;
@@ -152,9 +163,11 @@ public class TreeModelComposite extends TreeModelSupport implements TreeModel {
     ////////////////////////////////////////////////////////////////
     // other methods
 
-    /** needs documenting */
+    /**
+     * @param r the root of the model
+     */
     public void setRoot(Object r) {
-        _root = r;
+        root = r;
     }
 
 } /* end class TreeModelComposite */
