@@ -176,10 +176,19 @@ public class ModelFacade {
         return handle instanceof MClassifier;
     }
 
-    /** Recognizer for Classifier
+    /** Recognizer for DataType
      *
      * @param handle candidate
-     * @returns true if handle is a Classifier
+     * @returns true if handle is a DataType
+     */
+    public static boolean isADataType(Object handle) {
+        return handle instanceof MDataType;
+    }
+    
+    /** Recognizer for CompositeState
+     *
+     * @param handle candidate
+     * @returns true if handle is a CompositeState
      */
     public static boolean isACompositeState(Object handle) {
         return handle instanceof MCompositeState;
