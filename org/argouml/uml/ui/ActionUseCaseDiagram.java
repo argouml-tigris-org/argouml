@@ -53,10 +53,7 @@ public class ActionUseCaseDiagram extends UMLChangeAction {
 	//_cmdCreateNode.doIt();
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
-	    Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-	    MNamespace ns = p.getCurrentNamespace();
-	    if (target instanceof MPackage) ns = (MNamespace) target;
-	    ArgoDiagram d  = new UMLUseCaseDiagram(ns);
+	    ArgoDiagram d  = new UMLUseCaseDiagram( p.getModel());
 	    p.addMember(d);
 	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
 	    ProjectBrowser.TheInstance.setTarget(d);
@@ -64,4 +61,6 @@ public class ActionUseCaseDiagram extends UMLChangeAction {
 	catch (PropertyVetoException pve) { }
 	super.actionPerformed(ae);
     }
+	
+
 } /* end class ActionUseCaseDiagram */
