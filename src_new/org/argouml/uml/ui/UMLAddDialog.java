@@ -117,7 +117,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
      */
     public UMLAddDialog(Vector choices, Vector selected, String title,
 			boolean multiselectAllowed, boolean exclusive) {
-	this(choices, selected, title, new UMLListCellRenderer(),
+	this(choices, selected, title, new UMLListCellRenderer2(true),
 	     multiselectAllowed, exclusive);
     }	
 	
@@ -163,7 +163,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 		
 		
 	_choicesList = new JList(constructListModel(choices));
-	_choicesList.setPrototypeCellValue("123456789:123456789:123456789");
+	_choicesList.setMinimumSize(new Dimension(150,300));
 	if (renderer != null) {
 	    _choicesList.setCellRenderer(renderer);
 	}
@@ -177,9 +177,9 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	panelChoices.add(new JLabel(Translator.localize("UMLMenu", "label.choices")), BorderLayout.NORTH);
 	panelChoices.add(choicesScroll, BorderLayout.CENTER);
 		
-	_addButton = new JButton(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateForward"));
+	_addButton = new JButton(ResourceLoaderWrapper.lookupIconResource("NavigateForward"));
 	_addButton.addActionListener(this);
-	_removeButton = new JButton(ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("NavigateBack"));
+	_removeButton = new JButton(ResourceLoaderWrapper.lookupIconResource("NavigateBack"));
 	_removeButton.addActionListener(this);
 	Box buttonBox = Box.createVerticalBox();
 	// buttonBox.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -188,7 +188,7 @@ public class UMLAddDialog extends JPanel implements ActionListener {
 	buttonBox.add(_removeButton);
 		
 	_selectedList = new JList(constructListModel(_selected));	
-	_selectedList.setPrototypeCellValue("123456789:123456789;123456789");
+	_selectedList.setMinimumSize(new Dimension(150,300));
 	if (renderer != null) {
 	    _selectedList.setCellRenderer(renderer);
 	}
@@ -411,42 +411,6 @@ public class UMLAddDialog extends JPanel implements ActionListener {
     }
 }
 
-/*
-  TODO: Remove this comment! It looks like a class!
-class UMLCellRenderer extends JLabel implements ListCellRenderer {
-	/**
-	 * @see javax.swing.ListCellRenderer#getListCellRendererComponent(JList, Object, int, boolean, boolean)
-	 */
-	 /*
-	public Component getListCellRendererComponent(
-		JList list,
-		Object value,
-		int index,
-		boolean isSelected,
-		boolean cellHasFocus) {
-		
-		String s = null;
-		if (value instanceof MModelElement) {
-			s = ((MModelElement)value).getName();
-		} else {
-			s = value.toString();
-		}
-     	setText(s);
-   		if (isSelected) {
-        	setBackground(list.getSelectionBackground());
-       		setForeground(list.getSelectionForeground());
-   		}
-     	else {
-       		setBackground(list.getBackground());
-       		setForeground(list.getForeground());
-   		}
-   		setEnabled(list.isEnabled());
-   		setFont(list.getFont());
-     	return this;
-	}
-
-}
-*/
 	
 
 
