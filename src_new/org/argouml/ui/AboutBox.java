@@ -102,28 +102,38 @@ public class AboutBox extends JFrame {
 		     "  Marko Boger (GentleWare)\n"+
 		     "  \n"+
 		     "Module Owners (contact these people for contributions):\n"+
-		     "  GEF: Edwin Park (esp@parkplace.dhs.org)\n"+
+		     "  GEF: Thorsten Sturm (thorsten.sturm@gentleware.de)\n"+
 		     "  UML Diagrams: Marko Boger (boger@informatik.uni-hamburg.de)\n"+
 		     "  UML Metamodel, XMI: Toby Baier (Toby.Baier@gmx.net)\n"+
-		     "  Plugin-support: Sean Chen (schen@bw.webex.net)\n"+
+		     "  Plugin-support: Thierry Lach (thierry_lach@hotmail.com)\n"+
 		     "  Java RE: Andreas Rueckert (a_rueckert@gmx.net)\n"+
+		     "  Roundtrip engineering, UML notation: Thomas Neustupny (thn-d@gmx.de)\n"+
 		     "  Knowledge support: Jason Robbins (jrobbins@collab.net)\n"+
 		     "  User manual: Philippe Vanpeperstraete (Philippe.Vanpeperstraete@skynet.be)\n"+
+		     "  FAQ: Dennis Daniels (denny_d@hotmail.com)\n"+
+		     "  Website: Markus Klink (mkl@baba9.com)\n"+
 		     "  \n"+
 		     "Contributing Developers (in no special order):\n"+
-		     "  Jim Holt\n"+
-		     "  Thomas Schaumburg\n"+
-		     "  David Glaser\n"+
-		     "  Toby Baier\n"+
 		     "  Eugenio Alvarez\n"+
-		     "  Clemens Eichler\n"+
-		     "  Curt Arnold\n"+
-		     "  Andreas Rueckert\n"+
-		     "  Frank Finger\n"+
-		     "  Stuart Zakon\n"+
-		     "  Frank Wienberg\n"+
 		     "  Marcus Andersson\n"+
-
+		     "  Curt Arnold\n"+
+		     "  Toby Baier\n"+
+		     "  Dennis Daniels\n"+
+		     "  Clemens Eichler\n"+
+		     "  Frank Finger\n"+
+		     "  David Glaser\n"+
+		     "  Jim Holt\n"+
+		     "  Will Howery\n"+
+		     "  Markus Klink\n"+
+		     "  Thierry Lach\n"+
+		     "  Luc Maisonobe\n"+
+		     "  Thomas Neustupny\n"+
+		     "  Edwin Park\n"+
+		     "  Andreas Rueckert\n"+
+		     "  Phil Sager\n"+
+		     "  Thomas Schaumburg\n"+
+		     "  Frank Wienberg\n"+
+		     "  Stuart Zakon\n"+
 		     "\n"+
 		     "Credits for previous versions:\n"+
 		     "\nResearchers:  \n"+
