@@ -33,13 +33,16 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.use_case.ui.*;
+import java.awt.event.ActionEvent;
+import java.util.Vector;
+
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import java.awt.event.*;
-import java.util.*;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 
 
 /**

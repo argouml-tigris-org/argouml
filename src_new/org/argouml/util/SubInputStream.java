@@ -24,8 +24,9 @@
 
 package org.argouml.util;
 
-import java.io.*;
-import java.util.zip.*;
+import java.io.IOException;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class SubInputStream extends java.io.FilterInputStream
 {

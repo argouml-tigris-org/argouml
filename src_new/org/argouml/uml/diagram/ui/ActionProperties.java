@@ -24,12 +24,13 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.i18n.Translator;
-import org.argouml.ui.*;
-import java.awt.event.*;
-import org.argouml.uml.ui.UMLAction;
+import java.awt.event.ActionEvent;
 
 import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.ui.UMLAction;
 
 /** Action to select the properties tab.
  * @stereotype singleton

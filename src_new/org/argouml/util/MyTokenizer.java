@@ -24,7 +24,10 @@
 
 package org.argouml.util;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Enumeration;
+import java.util.NoSuchElementException;
+import java.util.Vector;
 
 /**
  * Internal class for managing the delimiters in MyTokenizer. It's rather

@@ -24,12 +24,16 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.argouml.uml.ui.UMLAction;
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import java.awt.event.*;
-import java.util.*;
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.UMLAction;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.Selection;
+import org.tigris.gef.presentation.Fig;
 
 
 /**

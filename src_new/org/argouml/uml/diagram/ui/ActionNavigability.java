@@ -24,7 +24,8 @@
 
 package org.argouml.uml.diagram.ui;
 
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+
 import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLAction;
 
