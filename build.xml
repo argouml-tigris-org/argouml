@@ -945,7 +945,7 @@ For details see http://www.clarkware.com/software/JDepend.html.
           failonerror="true">
       <arg value="."/> 
       <classpath>
-	<pathelement location="../tools/lib/jdepend.jar"/>
+	<path refid="ant.optional.classpath"/>
       </classpath>
     </java>
   </target>
