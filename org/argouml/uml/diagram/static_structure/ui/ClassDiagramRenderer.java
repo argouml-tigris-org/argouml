@@ -133,8 +133,10 @@ public class ClassDiagramRenderer
         } else if (ModelFacade.isAAssociationEnd(edge)) {
             FigAssociationEnd asend = new FigAssociationEnd(edge, lay);
             ModelFacade.getAssociation(edge);
-            FigNode associationFN = (FigNode) lay.presentationFor(ModelFacade.getAssociation(edge));
-            FigNode classifierFN = (FigNode) lay.presentationFor(ModelFacade.getType(edge));
+            FigNode associationFN = 
+                (FigNode) lay.presentationFor(ModelFacade.getAssociation(edge));
+            FigNode classifierFN = 
+                (FigNode) lay.presentationFor(ModelFacade.getType(edge));
 
             asend.setSourcePortFig(associationFN);
             asend.setSourceFigNode(associationFN);

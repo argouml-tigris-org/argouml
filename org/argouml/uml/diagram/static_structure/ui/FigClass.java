@@ -322,10 +322,24 @@ public class FigClass extends FigNodeModelElement
     }
 
     /**
+     * @return The bounds of the operations compartment.
+     */
+    public Rectangle getOperationsBounds() {
+        return ((FigGroup) getFigAt(OPERATIONS_POSN)).getBounds();
+    }
+
+    /**
+     * @return The bounds of the attributes compartment.
+     */
+    public Rectangle getAttributesBounds() {
+        return ((FigGroup) getFigAt(ATTRIBUTES_POSN)).getBounds();
+    }
+
+    /**
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
-    public FigGroup getOperationsFig() {
+    private FigGroup getOperationsFig() {
         return (FigGroup) getFigAt(OPERATIONS_POSN);
     }
 
@@ -333,7 +347,7 @@ public class FigClass extends FigNodeModelElement
      * @return The vector of graphics for operations (if any).
      * First one is the rectangle for the entire operations box.
      */
-    public FigGroup getAttributesFig() {
+    private FigGroup getAttributesFig() {
         return (FigGroup) getFigAt(ATTRIBUTES_POSN);
     }
 

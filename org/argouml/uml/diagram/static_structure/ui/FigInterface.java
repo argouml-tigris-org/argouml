@@ -291,6 +291,15 @@ public class FigInterface extends FigNodeModelElement
     }
 
     /**
+     * Getter for operVec.
+     *
+     * @return operVec
+     */
+    public Rectangle getOperationsBounds() {
+        return operVec.getBounds();
+    }
+
+    /**
      * Returns the status of the operation field.
      * @return true if the operations are visible, false otherwise
      */

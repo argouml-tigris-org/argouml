@@ -24,7 +24,7 @@
 
 package org.argouml.uml.diagram.ui;
 
-import org.tigris.gef.presentation.FigGroup;
+import java.awt.Rectangle;
 
 /**
  * An interface to be implemented by any Fig that contains
@@ -44,9 +44,9 @@ public interface AttributesCompartmentContainer {
      */
     void setAttributesVisible(boolean visible);
 
+
     /**
-     * @return The vector of graphics for operations (if any).
-     * First one is the rectangle for the entire attributes box.
+     * @return The bounds of the operations compartment
      */
-    FigGroup getAttributesFig();
+    Rectangle getAttributesBounds();
 }
