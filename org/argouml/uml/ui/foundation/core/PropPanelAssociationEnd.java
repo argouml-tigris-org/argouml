@@ -54,8 +54,7 @@ import org.tigris.swidgets.GridLayout2;
 import org.tigris.swidgets.Orientation;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on old gui
- * components.
+ * The properties panel for an association end.
  */
 public class PropPanelAssociationEnd extends PropPanelModelElement {
 
@@ -255,6 +254,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
      * @param label the label
      */
     protected void setAssociationLabel(String label) {
+        associationLabel = label;
     }
 
     /**
