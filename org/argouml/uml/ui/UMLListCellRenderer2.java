@@ -39,10 +39,10 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
 /**
  * The default cell renderer for uml model elements. Used by UMLList2 and its
  * children.
- *
+ * 
  * This class must be efficient as it is called many 1000's of times.
- *
- * @author jaap.branderhorst@xs4all.nl	
+ * 
+ * @author jaap.branderhorst@xs4all.nl
  * @since Jan 2, 2003
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
@@ -59,79 +59,82 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      * Constructor for UMLListCellRenderer2.
      */
     public UMLListCellRenderer2(boolean showIcon) {
-        
+
         // only need to this from super()
         updateUI();
         setAlignmentX(LEFT_ALIGNMENT);
-        
+
         _showIcon = showIcon;
     }
 
     /**
-     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList,
+     *      java.lang.Object, int, boolean, boolean)
      */
-    public Component getListCellRendererComponent(JList list, Object value, 
-                    int index, boolean isSelected, boolean cellHasFocus) {
+    public Component getListCellRendererComponent(JList list, Object value,
+            int index, boolean isSelected, boolean cellHasFocus) {
         cat.debug("determine rendering for: " + value);
         cat.debug("show icon: " + _showIcon);
         if (ModelFacade.isABase(value) || ModelFacade.isAMultiplicity(value)) {
-            
+
             cat.debug("is a MBase or MMultiplicity");
             String text = makeText(value);
             setText(text);
-            
-            if (_showIcon) {                
-                
+
+            if (_showIcon) {
+
                 // ----- setup similar to the super() implementation -----
                 setComponentOrientation(list.getComponentOrientation());
                 if (isSelected) {
                     setBackground(list.getSelectionBackground());
-                }
-                else {
+                } else {
                     setBackground(list.getBackground());
                 }
-                
+
                 setEnabled(list.isEnabled());
                 setFont(list.getFont());
-                setBorder((cellHasFocus) ? 
-                    UIManager.getBorder("List.focusCellHighlightBorder") : 
-                            noFocusBorder);
+                setBorder((cellHasFocus) ? UIManager
+                        .getBorder("List.focusCellHighlightBorder")
+                        : noFocusBorder);
                 // --------------------------------------------------------
-                setIcon(ResourceLoaderWrapper
-                            .getResourceLoaderWrapper().lookupIcon(value));
+                setIcon(ResourceLoaderWrapper.getResourceLoaderWrapper()
+                        .lookupIcon(value));
             } else {
-                // hack to make sure that the right hight is 
+                // hack to make sure that the right hight is
                 // applied when no icon is used.
-                return super.getListCellRendererComponent(list, 
-                            text, index, isSelected, cellHasFocus);
+                return super.getListCellRendererComponent(list, text, index,
+                        isSelected, cellHasFocus);
             }
-            
-        } else
-            if (value == null || value.equals("")) {
-                JLabel label = new JLabel(" ");
-                label.setIcon(null);
-                return label;
-            }
-        
+
+        } else if (value instanceof String) {
+            JLabel label = new JLabel(value.toString());
+            return label;
+        } else if (value == null || value.equals("")) {
+            JLabel label = new JLabel(" ");
+            label.setIcon(null);
+            return label;
+        }
+
         return this;
     }
 
     /**
      * Makes the text that must be placed on the label that is returned.
+     * 
      * @param value
      * @return String
      */
     public String makeText(Object value) {
         String name = null;
         if (ModelFacade.isAModelElement(value)) {
-            Object/*MModelElement*/ elem = value;
+            Object/* MModelElement */elem = value;
             name = ModelFacade.getName(elem);
             if (name == null || name.equals("")) {
                 name = "(anon " + makeTypeName(elem) + ")";
             }
         } else if (ModelFacade.isAMultiplicity(value)) {
             name = value.toString();
-        } else {                    
+        } else {
             name = makeTypeName(value);
         }
         return name;
@@ -139,9 +142,8 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (org.argouml.model.ModelFacade.isABase(elem)) {
-            return ModelFacade.getUMLClassName(elem);
-        }
+        if (org.argouml.model.ModelFacade.isABase(elem)) { return ModelFacade
+                .getUMLClassName(elem); }
         return null;
     }
 

@@ -71,7 +71,7 @@ public class UMLComboBox2
     }
            
     public UMLComboBox2(UMLComboBoxModel2 arg0, UMLAction action) {
-        this(arg0, action, false);
+        this(arg0, action, true);
     }
 
     /**
