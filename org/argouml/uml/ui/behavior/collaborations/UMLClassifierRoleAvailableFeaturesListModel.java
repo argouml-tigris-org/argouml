@@ -78,7 +78,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 							      "feature");
         } else if (
 		   e.getName().equals("feature")
-		   && ((MClassifierRole) getTarget()).getBases().contains(
+		   && ModelFacade.getBases(getTarget()).contains(
 									  e.getSource())) {
             addElement(getChangedElement(e));
         }
@@ -90,7 +90,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
      */
     public void setTarget(Object target) {
         if (_target != null) {
-            Collection bases = ((MClassifierRole) getTarget()).getBases();
+            Collection bases = ModelFacade.getBases(getTarget());
             Iterator it = bases.iterator();
             while (it.hasNext()) {
                 MBase base = (MBase) it.next();
@@ -109,7 +109,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
             return;
         _target = target;
         if (_target != null) {
-            Collection bases = ((MClassifierRole) _target).getBases();
+            Collection bases = ModelFacade.getBases(_target);
             Iterator it = bases.iterator();
             while (it.hasNext()) {
                 MBase base = (MBase) it.next();
@@ -153,7 +153,7 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 								 "feature");
         } else if (
 		   e.getName().equals("feature")
-		   && ((MClassifierRole) getTarget()).getBases().contains(
+		   && ModelFacade.getBases(getTarget()).contains(
 									 e.getSource())) {
             removeElement(getChangedElement(e));
         }
