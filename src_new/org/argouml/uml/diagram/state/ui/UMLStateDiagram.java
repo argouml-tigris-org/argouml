@@ -50,7 +50,6 @@ import org.tigris.gef.base.LayerPerspectiveMutable;
 import org.tigris.gef.base.ModeCreatePolyEdge;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.behavior.state_machines.MStateMachine;
 
 public class UMLStateDiagram extends UMLDiagram {
     private Logger _cat = Logger.getLogger(UMLStateDiagram.class);
@@ -116,10 +115,14 @@ public class UMLStateDiagram extends UMLDiagram {
         }
     }
 
-    public UMLStateDiagram(Object namespace, MStateMachine sm) {
+    public UMLStateDiagram(Object namespace, Object sm) {
         this();
+        
+        if(!ModelFacade.isAStateMachine(sm))
+            throw new IllegalArgumentException();
+        
         if (sm != null && namespace == null) {
-            Object context = sm.getContext();
+            Object context = ModelFacade.getContext(sm);
             if (ModelFacade.isAClassifier(context)) {
                 namespace = context;
             } else if (ModelFacade.isABehavioralFeature(context)) {
@@ -224,7 +227,11 @@ public class UMLStateDiagram extends UMLDiagram {
      * @param sm
      * @param m
      */
-    public void setStateMachine(MStateMachine sm) {
+    public void setStateMachine(Object sm) {
+        
+        if(!ModelFacade.isAStateMachine(sm))
+            throw new IllegalArgumentException();
+        
         ((StateDiagramGraphModel) getGraphModel()).setMachine(sm);
     }
 

@@ -244,6 +244,7 @@ public class ModelFacade {
     public static final Object GENERALAIZABLE_ELEMENT
                                         = MGeneralizableElement.class;
     public static final Object DATATYPE          = MDataType.class;
+    public static final Object STATEMACHINE      = MStateMachine.class;
 
     public static final Object ATTRIBUTE          = MAttribute.class;
     public static final Object OPERATION          = MOperation.class;
@@ -281,6 +282,12 @@ public class ModelFacade {
 
     public static final Object M1_1_MULTIPLICITY =
         MMultiplicity.M1_1;
+    
+    public static final Object CLASSIFIER_SCOPEKIND =
+        MScopeKind.CLASSIFIER;
+    
+    public static final Object INSTANCE_SCOPEKIND =
+        MScopeKind.INSTANCE;
     
     /** Singleton instance */        
 	private static ModelFacade singleton = new ModelFacade();

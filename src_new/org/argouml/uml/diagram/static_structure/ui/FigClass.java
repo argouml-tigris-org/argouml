@@ -76,8 +76,6 @@ import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
 import ru.novosoft.uml.MElementEvent;
-import ru.novosoft.uml.foundation.data_types.MScopeKind;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
@@ -356,8 +354,8 @@ public class FigClass extends FigNodeModelElement {
 				   "visibility", "getVisibility",
 				   "setVisibility",
 				   mclass,
-				   MVisibilityKind.class,
-				   MVisibilityKind.PUBLIC,
+				   (Class)ModelFacade.VISIBILITYKIND,
+				   ModelFacade.PUBLIC_VISIBILITYKIND,
 				   null));
         modifierMenu.addCheckItem(
 		new ActionModifier("Abstract",
@@ -1088,7 +1086,7 @@ public class FigClass extends FigNodeModelElement {
                 attr.setText(Notation.generate(this, sf));
                 attr.setOwner(sf);
                 // underline, if static
-                attr.setUnderline(MScopeKind.CLASSIFIER
+                attr.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(sf)));
                 acounter++;
             }
@@ -1147,7 +1145,7 @@ public class FigClass extends FigNodeModelElement {
                 oper.setText(Notation.generate(this, bf));
                 oper.setOwner(bf);
                 // underline, if static
-                oper.setUnderline(MScopeKind.CLASSIFIER
+                oper.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(bf)));
                 // italics, if abstract
                 //oper.setItalic(((MOperation)bf).isAbstract()); //
