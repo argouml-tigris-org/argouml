@@ -23,7 +23,6 @@
 
 package org.argouml.i18n;
 import java.util.*;
-import org.argouml.util.*;
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -77,8 +76,6 @@ public class MenuResourceBundle_fr extends ListResourceBundle {
         {"action.collaboration-diagram", "Diagramme de collaboration" },
         {"action.deployment-diagram", "Diagramme de d\u00e9ploiement" },
         {"action.sequence-diagram", "Diagramme de sequence" },
-        {"button.add-attribute", "Ajouter un Attribut" },
-        {"button.add-operation", "Ajouter une Op\u00e9ration" },
         {"action.add-message", "Ajouter un Message" },
         {"action.add-internal-transition", "Ajouter une Transition Interne" },
         {"action.generate-selected-classes", "G\u00e9n\u00e9rer les Classes S\u00e9lectionn\u00e9es..." },

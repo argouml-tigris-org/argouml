@@ -101,8 +101,6 @@ public class MenuResourceBundle extends ListResourceBundle {
         {"action.collaboration-diagram", "CollaborationDiagram" },
         {"action.deployment-diagram", "DeploymentDiagram" },
         {"action.sequence-diagram", "SequenceDiagram" },
-        {"button.add-attribute", "Add Attribute" },
-        {"button.add-operation", "Add Operation" },
         {"action.add-message", "Add Message" },
         {"action.add-internal-transition", "Add Internal Transition" },
         {"action.generate-selected-classes", "Generate Selected Classes..." },
