@@ -110,7 +110,7 @@ public abstract class AbstractUmlModelFactory {
             
             ((MBase)base).addMElementListener(pump);
             pump.addModelEventListener(ExplorerNSUMLEventAdaptor.getInstance(),base);
-            ((MBase)base).addMElementListener(UmlModelListener.getInstance());
+            pump.addModelEventListener(UmlModelListener.getInstance(),base);
         }
     }
 }
