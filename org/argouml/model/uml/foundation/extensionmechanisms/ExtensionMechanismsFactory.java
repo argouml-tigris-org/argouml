@@ -85,7 +85,7 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	if (m == null || text == null || ns == null) throw new IllegalArgumentException("In buildStereotype: one of the arguments is null");
     	MStereotype stereo = createStereotype();
     	stereo.setName(text);
-    	stereo.setBaseClass(getMetaModelName(m));
+    	stereo.setBaseClass(ExtensionMechanismsHelper.getHelper().getMetaModelName(m));
     	MStereotype stereo2 = ExtensionMechanismsHelper.getHelper().getStereotype(ns, stereo);
     	if (stereo2 != null) {
     		stereo2.addExtendedElement(m);
@@ -98,14 +98,6 @@ public class ExtensionMechanismsFactory extends AbstractUmlModelFactory {
     	}
     }
     
-    private String getMetaModelName(MModelElement m) {
-    	String name = m.getClass().getName();
-    	name = name.substring(name.lastIndexOf('.')+2,name.length());
-    	if (name.endsWith("Impl")) {
-    		name = name.substring(0,name.lastIndexOf("Impl"));
-    	}
-    	return name;
-    }
     
     public void deleteStereotype(MStereotype elem) {}
     
