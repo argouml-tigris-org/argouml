@@ -137,8 +137,8 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
      *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *                {@link #PropPanel(????)}
-     *    specifying orientation instead.
+     *                {@link #PropPanel(String title, ImageIcon icon, Orientation orientation)}
+     *                I propose to remove this by version 0.13.7 (Bob Tarling)
      */
     public PropPanel(String title, int panelCount) {
         this(title, null, panelCount);
@@ -182,11 +182,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         buttonPanelWithFlowLayout.add(buttonPanel);
         addField(buttonPanelWithFlowLayout, 0, 0, 0);
     }
-
-    public void setOrientation(Orientation orientation) {
-        super.setOrientation(orientation);
-    }
-
+    
     /**
      * Construct new PropPanel using LabelledLayout
      * @param icon The icon to display for the panel
@@ -199,10 +195,12 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
 
         setLayout(new LabelledLayout(orientation));
 
-        if (icon != null)
+        if (icon != null) {
             _titleLabel = new JLabel(localize(title), icon, SwingConstants.LEFT);
-        else
+        }
+        else {
             _titleLabel = new JLabel(localize(title));
+        }
         buttonPanel = new JPanel(new GridLayout2(1, 0, GridLayout2.MAXPREFERRED));
         _titleLabel.setLabelFor(buttonPanel);
         add(_titleLabel);
@@ -217,6 +215,14 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      */
     public PropPanel(String title, Orientation orientation) {
         this (title, null, orientation);
+    }
+
+    /**
+     * Set the orientation of the panel
+     * @param orientation
+     */
+    public void setOrientation(Orientation orientation) {
+        super.setOrientation(orientation);
     }
 
     /**
