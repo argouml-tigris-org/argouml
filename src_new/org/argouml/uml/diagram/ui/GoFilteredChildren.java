@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.swing.tree.TreeModel;
-
 import org.argouml.application.api.Argo;
 import org.argouml.ui.AbstractGoRule;
 import org.tigris.gef.util.Predicate;
@@ -44,88 +42,97 @@ import org.tigris.gef.util.PredicateTrue;
  */
 public class GoFilteredChildren extends AbstractGoRule {
 
-  ////////////////////////////////////////////////////////////////
-  // instance vars
-  String _name = "unamed filtered rule";
-  Predicate _pred = PredicateTrue.theInstance();
-  AbstractGoRule _tm;
+    ////////////////////////////////////////////////////////////////
+    // instance vars
+    String _name = "unamed filtered rule";
+    Predicate _pred = PredicateTrue.theInstance();
+    AbstractGoRule _tm;
 
-  ////////////////////////////////////////////////////////////////
-  // constructor
-  public GoFilteredChildren(String name, AbstractGoRule tm, Predicate pred) {
-    _name = Argo.localize ("Tree", name);
-    _tm = tm;
-    _pred = pred;
-  }
-
-
-  ////////////////////////////////////////////////////////////////
-  // accessors
-
-  // TODO
-  
-  ////////////////////////////////////////////////////////////////
-  // TreeModel implementation
-  
-  public String getRuleName() { return _name; }
-  
-  public Object getChild(Object parent, int index) {
-    int unfilteredCount = _tm.getChildCount(parent);
-    int filteredCount = 0;
-    for (int i = 0; i < unfilteredCount; ++i) {
-      Object kid = _tm.getChild(parent, i);
-      if (_pred.predicate(kid)) {
-	if (filteredCount == index) return kid;
-	filteredCount++;
-      }
+    ////////////////////////////////////////////////////////////////
+    // constructor
+    public GoFilteredChildren(String name, AbstractGoRule tm, Predicate pred) {
+        _name = Argo.localize("Tree", name);
+        _tm = tm;
+        _pred = pred;
     }
-    return null;
-  }
 
-  public Collection getChildren(Object parent) { 
-      List list = new ArrayList();
-      for (int i = 0; i < getChildCount(parent); i++) {
-          list.add(getChild(parent, i));
-      }    
-      return list;            
-  }
-  
-  public int getChildCount(Object parent) {
-    int unfilteredCount = _tm.getChildCount(parent);
-    int filteredCount = 0;
-    for (int i = 0; i < unfilteredCount; ++i) {
-      Object kid = _tm.getChild(parent, i);
-      if (_pred.predicate(kid)) filteredCount++;
+    ////////////////////////////////////////////////////////////////
+    // accessors
+
+    // TODO
+
+    ////////////////////////////////////////////////////////////////
+    // TreeModel implementation
+
+    public String getRuleName() {
+        return _name;
     }
-    return filteredCount;
-  }
-  
-  private boolean hasChildren(Object parent) {
-    int unfilteredCount = _tm.getChildCount(parent);
-    for (int i = 0; i < unfilteredCount; i++) {
-      Object kid = _tm.getChild(parent, i);
-      if (_pred.predicate(kid)) return true;
+
+    public Object getChild(Object parent, int index) {
+        _tm.setCacheable(parent, true);
+        int unfilteredCount = _tm.getChildCount(parent);
+        int filteredCount = 0;
+        for (int i = 0; i < unfilteredCount; ++i) {
+            Object kid = _tm.getChild(parent, i);
+            if (_pred.predicate(kid)) {
+                if (filteredCount == index) {
+                    _tm.setCacheable(parent, false);                
+                    return kid;
+                }
+                filteredCount++;
+            }
+        }
+        _tm.setCacheable(parent, false);    
+        return null;
     }
-    return false;
-  }
-  
-  public int getIndexOfChild(Object parent, Object child) {
-    int unfilteredCount = _tm.getChildCount(parent);
-    int filteredCount = 0;
-    for (int i = 0; i < unfilteredCount; ++i) {
-      Object kid = _tm.getChild(parent, i);
-      if (_pred.predicate(kid)) {
-	if (kid == child) return filteredCount;
-	filteredCount++;
-      }
+
+    public Collection getChildren(Object parent) {
+        List list = new ArrayList();
+        for (int i = 0; i < getChildCount(parent); i++) {
+            list.add(getChild(parent, i));
+        }
+        return list;
     }
-    return -1;
-  }
-  
-  /*
-  public boolean isLeaf(Object node) {
-    return !hasChildren(node);
-  }
-   */
+
+    public int getChildCount(Object parent) {
+        int unfilteredCount = _tm.getChildCount(parent);
+        int filteredCount = 0;
+        for (int i = 0; i < unfilteredCount; ++i) {
+            Object kid = _tm.getChild(parent, i);
+            if (_pred.predicate(kid))
+                filteredCount++;
+        }
+        return filteredCount;
+    }
+
+    private boolean hasChildren(Object parent) {
+        int unfilteredCount = _tm.getChildCount(parent);
+        for (int i = 0; i < unfilteredCount; i++) {
+            Object kid = _tm.getChild(parent, i);
+            if (_pred.predicate(kid))
+                return true;
+        }
+        return false;
+    }
+
+    public int getIndexOfChild(Object parent, Object child) {
+        int unfilteredCount = _tm.getChildCount(parent);
+        int filteredCount = 0;
+        for (int i = 0; i < unfilteredCount; ++i) {
+            Object kid = _tm.getChild(parent, i);
+            if (_pred.predicate(kid)) {
+                if (kid == child)
+                    return filteredCount;
+                filteredCount++;
+            }
+        }
+        return -1;
+    }
+
+    /*
+    public boolean isLeaf(Object node) {
+      return !hasChildren(node);
+    }
+     */
 
 }

@@ -56,6 +56,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace,Object)
      */
     public UMLDiagram createDiagram(Object handle) {
+        // a deployment diagram shows something about the whole model according to the uml spec
+          handle = ProjectManager.getManager().getCurrentProject().getRoot();   
         if (!ModelFacade.isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
@@ -70,6 +72,8 @@ public class ActionDeploymentDiagram extends ActionAddDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#isValidNamespace(MNamespace)
      */
     public boolean isValidNamespace(Object handle) {
+        // a deployment diagram shows something about the whole model according to the uml spec
+        handle = ProjectManager.getManager().getCurrentProject().getRoot();        
         if (!ModelFacade.isANamespace(handle)) {
             cat.error("No namespace as argument");
             cat.error(handle);
