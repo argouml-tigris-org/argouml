@@ -1722,19 +1722,19 @@ Every interface has a description at componentname-to-componentname
 	    </row>
 	    <row>
 	      <entry>Model</entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
 	      <entry> - </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
-	      <entry>       </entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry>No</entry>
+	      <entry><xref linkend="comp-model-to-comp-logging"/></entry>
+	      <entry>No</entry>
 	    </row>
 	    <row>
 	      <entry>Saving and Loading</entry>
@@ -2039,6 +2039,199 @@ Beware that there might be more than one Fig Element per
 </sect2>
 </sect1>
 
+    <sect1 id="model">
+      <title>Model</title>
+      <para id="comp-model-purpose">
+Purpose - to provide an interface to the NSUML model and also
+to the GEF diagrams that in a consistant way adds all ArgoUML-specifics 
+at every object creation, modification, and deletion.
+</para>
+      <para>
+ArgoUML uses several factories and helperclasses to manipulate the NSUML
+model. 
+The NSUML model itself does not define enough 'business' logic
+to be directly used and the factories and helperclasses provide a
+centralized place for accessing this 'business' logic.
+Per section of chapter 2 of the UML 1.3 specification there is one factory
+and one helper. They are placed in their own package. The package name
+convention is:
+<classname>org.argouml.model.uml.SECTIONNAME</classname> 
+where sectionname is one of the following:
+<itemizedlist>
+	  <listitem>
+	    <para>foundation</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.core</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.extensionmechanisms</para>
+	  </listitem>
+	  <listitem>
+	    <para>foundation.datatypes</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.commonbehaviour</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.statemachines</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.usecases</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.collaborations</para>
+	  </listitem>
+	  <listitem>
+	    <para>behavioralelements.activitygraphs</para>
+	  </listitem>
+	  <listitem>
+	    <para>modelmanagement</para>
+	  </listitem>
+	</itemizedlist>
+</para>
+      <para>
+Each package has at least a helper and a factory in it. 
+The factories contain all methods that deal with 
+creating and building modelelements.
+The helpers contain all utility methods needed to manipulate
+the modelelements.
+</para>
+      <para>
+Both helpers and factories are singletons. 
+The static method to access them is
+<methodname>getFactory</methodname> for the factory
+and <methodname>getHelper</methodname> for the helper.
+</para>
+      <sect2>
+	<title>Factories</title>
+	<para>
+The factories contain at least for each modelelement a create method.
+Example: <methodname>createClass</methodname>
+resides in <classname>CoreFactory</classname> in the package
+<classname>org.argouml.model.uml.foundation.core</classname>.
+Besides that, there are several buildmethods to build classes.
+The build methods have a signature like
+<methodsynopsis>
+	    <modifier>public</modifier>
+	    <type><replaceable>MODELELEMENT</replaceable></type>
+	    <methodname>build<replaceable>MODELELEMENTNAME</replaceable></methodname>
+	    <methodparam>
+	      <parameter><replaceable>params</replaceable></parameter>
+	    </methodparam>
+	  </methodsynopsis>.
+</para>
+	<para>
+Each build method verifies the wellformednessrules
+as defined in the UML spec 1.3. 
+The reason for this is that NS-UML does not enforce 
+the wellformedness rules even though non-wellformed UML can lead to
+non-wellformed XMI which leads to saving/loading issues and 
+all kinds of illegal states of argouml.
+</para>
+	<para>
+If you want to create an element you shall use the create methods
+in the factories.
+You are strongly advised to use a build method or, if there is
+none that suits your needs, to build one thereby reusing the allready
+existing build methods and utility methods in the helpers. 
+One reason for this is that the eventlisteners for
+the newly create modelelement are setup correctly.
+</para>
+      </sect2>
+      <sect2>
+	<title>Helpers</title>
+	<para>
+The helpers contain all utility methods for manipulating modelelements. 
+For example, they contain methods to get all modelelements 
+of a certain class out of the model 
+(see <methodname>getAllModelelementsOfKind</methodname> in 
+<classname>ModelmanagementHelper</classname>).
+</para>
+	<para>
+To find a utility method you need to know where it is.
+As a rule of thumb, a utility method for some modelelement 
+is defined in the helper that corresponds with the section
+in the UML specification.
+For example, all utility methods for manipulating classes 
+are defined in <classname>CoreHelper</classname>.
+</para>
+	<para>
+There are a few exceptions to this rule, mainly if 
+the utility method deals with two modelelements 
+that correspond to different sections in the UML
+specification.
+Then you have to look in both corresponding helpers and you
+will probably find what you are searching for.
+</para>
+      </sect2>
+      <sect2>
+	<title>Collaborations for Model</title>
+	<para>
+The Model does not use much of the other parts of ArgoUML.
+It is provided for use of others.
+</para>
+	<sect3 id="comp-model-to-comp-diagrams">
+	  <title>Model uses Diagrams</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-saveload">
+	  <title>Model uses Saving/Loading</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-notation">
+	  <title>Model uses Notation</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-codegenreveng">
+	  <title>Model uses Code Generation and Reverse Engineering</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-critics">
+	  <title>Model uses the Cognitive stuff</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-help">
+	  <title>Model uses Help System</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-internationalization">
+	  <title>Model uses Internationalization</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-plugins">
+	  <title>Model uses Plugin-Module API</title>
+	  <para>Not at all!</para>
+	</sect3>
+	<sect3 id="comp-model-to-comp-logging">
+	  <title>Model uses Logging</title>
+	  <para>
+Currently not.
+</para>
+	</sect3>
+      </sect2>
+
+      <sect2 id="howdoi_model">
+	<title>How do I...?</title>
+	<itemizedlist>
+	  <listitem>
+	    <para>...create a new create method?</para>
+	    <para>
+Create it in the correct factory.
+</para>
+	    </listitem>
+	  <listitem>
+	    <para>...create a new utility method?</para>
+	    <para>
+Create it in the correct helper.
+</para>
+	    </listitem>
+	</itemizedlist>
+      </sect2>
+    </sect1>
 
 
 <sect1 id="critics">
