@@ -24,13 +24,10 @@
 
 package org.argouml.uml.ui.foundation.core;
 
-import java.util.Collection;
+import javax.swing.JPanel;
+import javax.swing.border.TitledBorder;
 
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.ProjectManager;
-import org.argouml.model.Model;
-import org.argouml.model.ModelFacade;
-import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.diagram.ui.ActionAddAttribute;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -39,6 +36,7 @@ import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLInitialValueComboBox;
 import org.argouml.uml.ui.foundation.extension_mechanisms.ActionNewStereotype;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.FlexiGridLayout;
 
 /**
  * The properties panel for an Attribute.
@@ -84,7 +82,14 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 
         add(getVisibilityPanel());
         add(getChangeabilityRadioButtonPanel());
-        add(getOwnerScopeCheckbox());
+
+        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3, 
+                FlexiGridLayout.ROWCOLPREFERRED));
+        modifiersPanel.setBorder(new TitledBorder(
+                Translator.localize("label.modifiers")));
+        modifiersPanel.add(getOwnerScopeCheckbox());
+        add(modifiersPanel);
+
 
         addButton(new PropPanelButton2(new ActionNavigateContainerElement()));
         addButton(new PropPanelButton2(new ActionAddAttribute()));
@@ -96,21 +101,5 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
                 lookupIcon("Delete")));;
     }
 
-    /**
-     * Create a new attribute.
-     */
-    public void newAttribute() {
-        Object target = getTarget();
-        if (ModelFacade.isAStructuralFeature(target)) {
-            Object owner = ModelFacade.getOwner(target);
-            Collection propertyChangeListeners = 
-                ProjectManager.getManager().getCurrentProject().findFigsForMember(owner);
-            Object intType = ProjectManager.getManager().getCurrentProject().findType("int");
-            Object model = ProjectManager.getManager().getCurrentProject().getModel();
-            TargetManager.getInstance().setTarget(
-                    Model.getUmlFactory().getCore().buildAttribute(owner, model, intType, propertyChangeListeners));
-        }
-
-    }
 
 } /* end class PropPanelAttribute */

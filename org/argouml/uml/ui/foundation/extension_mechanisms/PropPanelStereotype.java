@@ -46,8 +46,7 @@ import org.argouml.util.ConfigLoader;
 import org.tigris.swidgets.FlexiGridLayout;
 
 /**
- * TODO: this property panel needs refactoring to remove dependency on old gui
- * components.
+ * The properties panel for a Stereotype.
  */
 public class PropPanelStereotype extends PropPanelModelElement {
 
@@ -81,14 +80,13 @@ public class PropPanelStereotype extends PropPanelModelElement {
                  getNamespaceComboBox());
         
 
-        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 2, 
+        JPanel modifiersPanel = new JPanel(new FlexiGridLayout(0, 3, 
                 FlexiGridLayout.ROWCOLPREFERRED));
         modifiersPanel.setBorder(new TitledBorder(
                 Translator.localize("label.modifiers")));
         modifiersPanel.add(new UMLGeneralizableElementAbstractCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementLeafCheckBox());
         modifiersPanel.add(new UMLGeneralizableElementRootCheckBox());
-
         add(modifiersPanel);
 
         addSeperator();
