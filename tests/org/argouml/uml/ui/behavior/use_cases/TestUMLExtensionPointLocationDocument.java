@@ -29,9 +29,7 @@ import javax.swing.text.BadLocationException;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
+import org.argouml.model.ModelFacade;
 
 /**
  * @since Nov 3, 2002
@@ -39,12 +37,12 @@ import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
  */
 public class TestUMLExtensionPointLocationDocument extends TestCase {
 
-    private MExtensionPoint elem = null;
-    private int oldEventPolicy;
+    private Object elem;
     private UMLExtensionPointLocationDocument model;
-    
+
     /**
      * Constructor for TestUMLExtensionPointLocationDocument.
+     *
      * @param arg0 is the name of the test case.
      */
     public TestUMLExtensionPointLocationDocument(String arg0) {
@@ -57,8 +55,6 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getUseCasesFactory().createExtensionPoint();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE); 
         model = new UMLExtensionPointLocationDocument();
         model.setTarget(elem);
     }
@@ -70,97 +66,89 @@ public class TestUMLExtensionPointLocationDocument extends TestCase {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
         elem = null;
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setLocation().
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testSetName()
-	throws BadLocationException
-    {
-        elem.setLocation("test");
+	throws BadLocationException {
+        ModelFacade.setLocation(elem, "test");
 	assertEquals("test", model.getText(0, model.getLength()));
     }
-    
+
     /**
      * Test setLocation() with null argument.
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testRemoveName()
-	throws BadLocationException
-    {
-        elem.setLocation("test");
-        elem.setLocation(null);
+	throws BadLocationException {
+        ModelFacade.setLocation(elem, "test");
+        ModelFacade.setLocation(elem, null);
 	assertEquals("", model.getText(0, model.getLength()));
     }
-    
+
     /**
      * Test insertString().
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testInsertString()
-	throws BadLocationException
-    {
+	throws BadLocationException {
 	model.insertString(0, "test", null);
-        assertEquals("test", elem.getLocation());
+        assertEquals("test", ModelFacade.getLocation(elem));
     }
-    
+
     /**
      * Test remove().
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testRemoveString()
-	throws BadLocationException
-    {
+	throws BadLocationException {
 	model.insertString(0, "test", null);
 	model.remove(0, model.getLength());
-        assertEquals("", elem.getLocation());
+        assertEquals("", ModelFacade.getLocation(elem));
     }
-    
+
     /**
      * Test insertString().
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testAppendString()
-	throws BadLocationException
-    {
-        elem.setLocation("test");
+	throws BadLocationException {
+        ModelFacade.setLocation(elem, "test");
 	model.insertString(model.getLength(), "test", null);
-        assertEquals("testtest", elem.getLocation());
+        assertEquals("testtest", ModelFacade.getLocation(elem));
     }
-    
+
     /**
      * Test inserting a string in the middle.
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
     public void testInsertStringHalfway()
-	throws BadLocationException
-    {
-        elem.setLocation("test");
+	throws BadLocationException {
+        ModelFacade.setLocation(elem, "test");
 	model.insertString(1, "test", null);
-        assertEquals("ttestest", elem.getLocation());
+        assertEquals("ttestest", ModelFacade.getLocation(elem));
     }
-    
+
     /**
      * Test remove a string from the middle.
-     * 
+     *
      * @throws BadLocationException when the lacation is refused
      */
-    public void testRemoveStringHalfway() 
-	throws BadLocationException
-    {
-        elem.setLocation("test");
+    public void testRemoveStringHalfway()
+	throws BadLocationException {
+        ModelFacade.setLocation(elem, "test");
 	model.remove(1, model.getLength() - 2);
-        assertEquals("tt", elem.getLocation());
+        assertEquals("tt", ModelFacade.getLocation(elem));
     }
 
 }

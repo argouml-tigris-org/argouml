@@ -22,14 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
  * @since Oct 30, 2002
@@ -64,10 +61,10 @@ public class TestUMLUseCaseExtensionPointListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MExtensionPoint[] ext = new MExtensionPoint[10];
+        Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getUseCasesFactory().createExtensionPoint();
-            ((MUseCase) getElem()).addExtensionPoint(ext[i]);
+            ModelFacade.addExtensionPoint(getElem(), ext[i]);
         }
         return ext;
     }
@@ -77,8 +74,7 @@ public class TestUMLUseCaseExtensionPointListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MUseCase) getElem()).removeExtensionPoint(
-                    (MExtensionPoint) elements[i]);
+            ModelFacade.removeExtensionPoint(getElem(), elements[i]);
         }
     }
 

@@ -27,21 +27,16 @@ package org.argouml.uml.ui.behavior.use_cases;
 import junit.framework.TestCase;
 
 import org.argouml.model.Model;
-
-import ru.novosoft.uml.MFactoryImpl;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import org.argouml.model.ModelFacade;
 
 /**
  * @since Oct 30, 2002
  * @author jaap.branderhorst@xs4all.nl
  */
 public class TestUMLExtensionPointUseCaseListModel extends TestCase {
-    
-    private MExtensionPoint elem;
-    private int oldEventPolicy;
+
+    private Object elem;
     private UMLExtensionPointUseCaseListModel model;
-    
 
     /**
      * Constructor for TestUMLExtensionPointUseCaseListModel.
@@ -50,46 +45,43 @@ public class TestUMLExtensionPointUseCaseListModel extends TestCase {
     public TestUMLExtensionPointUseCaseListModel(String arg0) {
         super(arg0);
     }
-    
+
     /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
         super.setUp();
         elem = Model.getUseCasesFactory().createExtensionPoint();
-        oldEventPolicy = MFactoryImpl.getEventPolicy();
-        MFactoryImpl.setEventPolicy(MFactoryImpl.EVENT_POLICY_IMMEDIATE);
         model = new UMLExtensionPointUseCaseListModel();
         model.setTarget(elem);
     }
-    
+
     /**
      * @see junit.framework.TestCase#tearDown()
      */
     protected void tearDown() throws Exception {
         super.tearDown();
         Model.getUmlFactory().delete(elem);
-        MFactoryImpl.setEventPolicy(oldEventPolicy);
         model = null;
     }
-    
+
     /**
      * Test setUseCase().
      */
     public void testSetUseCase() {
-        MUseCase usecase = Model.getUseCasesFactory().createUseCase();
-        elem.setUseCase(usecase);
+        Object usecase = Model.getUseCasesFactory().createUseCase();
+        ModelFacade.setUseCase(elem, usecase);
         assertEquals(1, model.getSize());
         assertEquals(usecase, model.getElementAt(0));
     }
-    
+
     /**
      * Test setUseCase() with null argument.
      */
     public void testRemoveUseCase() {
-        MUseCase usecase = Model.getUseCasesFactory().createUseCase();
-        elem.setUseCase(usecase);
-        elem.setUseCase(null);
+        Object usecase = Model.getUseCasesFactory().createUseCase();
+        ModelFacade.setUseCase(elem, usecase);
+        ModelFacade.setUseCase(elem, null);
         assertEquals(0, model.getSize());
     }
 

@@ -24,12 +24,6 @@
 
 package org.argouml.model;
 
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MExtensionPoint;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.behavior.use_cases.MUseCaseInstance;
 
 /**
  * The interface for the factory for UseCases.<p>
@@ -42,42 +36,42 @@ public interface UseCasesFactory {
      *
      * @return an initialized Extend instance.
      */
-    MExtend createExtend();
+    Object createExtend();
 
     /**
      * Create an empty but initialized instance of a ExtensionPoint.
      *
      * @return an initialized ExtensionPoint instance.
      */
-    MExtensionPoint createExtensionPoint();
+    Object createExtensionPoint();
 
     /**
      * Create an empty but initialized instance of a Actor.
      *
      * @return an initialized Actor instance.
      */
-    MActor createActor();
+    Object createActor();
 
     /**
      * Create an empty but initialized instance of a Include.
      *
      * @return an initialized Include instance.
      */
-    MInclude createInclude();
+    Object createInclude();
 
     /**
      * Create an empty but initialized instance of a UseCase.
      *
      * @return an initialized UseCase instance.
      */
-    MUseCase createUseCase();
+    Object createUseCase();
 
     /**
      * Create an empty but initialized instance of a UseCaseInstance.
      *
      * @return an initialized UseCaseInstance instance.
      */
-    MUseCaseInstance createUseCaseInstance();
+    Object createUseCaseInstance();
 
     /**
      * Build an extend relationship.<p>
@@ -93,7 +87,7 @@ public interface UseCasesFactory {
      * @return            The new extend relationship or <code>null</code>
      *                    if it can't be created.
      */
-    MExtend buildExtend(Object abase, Object anextension);
+    Object buildExtend(Object abase, Object anextension);
 
     /**
      * Build an extend relationship.<p>
@@ -104,7 +98,7 @@ public interface UseCasesFactory {
      * @return            The new extend relationship or <code>null</code>
      *                    if it can't be created.
      */
-    MExtend buildExtend(Object abase, Object anextension, Object apoint);
+    Object buildExtend(Object abase, Object anextension, Object apoint);
 
     /**
      * Builds an extension point for a use case.
@@ -113,7 +107,7 @@ public interface UseCasesFactory {
      * @return The new extension point.
      * @throws IllegalArgumentException if modelElement isn't a use-case.
      */
-    MExtensionPoint buildExtensionPoint(Object modelElement);
+    Object buildExtensionPoint(Object modelElement);
 
     /**
      * Build an include relationship.<p>
@@ -133,7 +127,7 @@ public interface UseCasesFactory {
      * @return           The new include relationship or <code>null</code> if
      *                   it can't be created.
      */
-    MInclude buildInclude(Object abase, Object anaddition);
+    Object buildInclude(Object abase, Object anaddition);
 
     /**
      * Builds an actor in the same namespace of the given actor. If
@@ -144,35 +138,35 @@ public interface UseCasesFactory {
      * @param actor the given actor
      * @return MActor the newly build actor
      */
-    MActor buildActor(Object actor, Object model);
+    Object buildActor(Object actor, Object model);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteActor(MActor elem);
+    void deleteActor(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteExtend(MExtend elem);
+    void deleteExtend(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteExtensionPoint(MExtensionPoint elem);
+    void deleteExtensionPoint(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteInclude(MInclude elem);
+    void deleteInclude(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteUseCase(MUseCase elem);
+    void deleteUseCase(Object elem);
 
     /**
      * @param elem the UML element to be deleted
      */
-    void deleteUseCaseInstance(MUseCaseInstance elem);
+    void deleteUseCaseInstance(Object elem);
 }

@@ -102,12 +102,12 @@ public class TestUseCasesFactory extends TestCase {
      * Test building extensions.
      */
     public void testBuildExtend1() {
-        MUseCase base = Model.getUseCasesFactory().createUseCase();
-        MUseCase extension = Model.getUseCasesFactory().createUseCase();
+        MUseCase base = (MUseCase) Model.getUseCasesFactory().createUseCase();
+        MUseCase extension = (MUseCase) Model.getUseCasesFactory().createUseCase();
         MExtensionPoint point =
-	    Model.getUseCasesFactory().buildExtensionPoint(base);
+	    (MExtensionPoint) Model.getUseCasesFactory().buildExtensionPoint(base);
         MExtend extend =
-	    Model.getUseCasesFactory().buildExtend(base, extension, point);
+	    (MExtend) Model.getUseCasesFactory().buildExtend(base, extension, point);
         assertTrue("extensionpoint not added to base",
 		   !base.getExtensionPoints().isEmpty());
         assertTrue("extend not added to base", !base.getExtends2().isEmpty());

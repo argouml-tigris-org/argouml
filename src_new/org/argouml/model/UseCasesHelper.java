@@ -26,10 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MNamespace;
 
 /**
  * The interface for the helper for UseCases.<p>
@@ -55,7 +51,7 @@ public interface UseCasesHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    Collection getAllUseCases(MNamespace ns);
+    Collection getAllUseCases(Object ns);
 
     /**
      * Returns all actors in some namespace ns.
@@ -63,7 +59,7 @@ public interface UseCasesHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    Collection getAllActors(MNamespace ns);
+    Collection getAllActors(Object ns);
 
     /**
      * Returns all usecases this given usecase extends.<p>
@@ -103,9 +99,9 @@ public interface UseCasesHelper {
      *
      * @param abase the given base usecase
      * @param aninclusion the given inclusion usecase
-     * @return MExtend the include relation
+     * @return The include relation.
      */
-    MInclude getIncludes(Object abase, Object aninclusion);
+    Object getIncludes(Object abase, Object aninclusion);
 
     /**
      * Returns the specificationpath operation of some usecase. See
@@ -122,5 +118,5 @@ public interface UseCasesHelper {
      * @param extend the given extend
      * @param base the base usecase
      */
-    void setBase(MExtend extend, MUseCase base);
+    void setBase(Object extend, Object base);
 }

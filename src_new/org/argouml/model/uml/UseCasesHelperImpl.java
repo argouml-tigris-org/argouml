@@ -87,13 +87,17 @@ class UseCasesHelperImpl implements UseCasesHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    public Collection getAllUseCases(MNamespace ns) {
-	Iterator it = ns.getOwnedElements().iterator();
+    public Collection getAllUseCases(Object ns) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+	Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
 	List list = new ArrayList();
 	while (it.hasNext()) {
 	    Object o = it.next();
 	    if (o instanceof MNamespace) {
-		list.addAll(getAllUseCases((MNamespace) o));
+		list.addAll(getAllUseCases(o));
 	    }
 	    if (o instanceof MUseCase) {
 		list.add(o);
@@ -109,13 +113,17 @@ class UseCasesHelperImpl implements UseCasesHelper {
      * @param ns is the namespace
      * @return Collection
      */
-    public Collection getAllActors(MNamespace ns) {
-	Iterator it = ns.getOwnedElements().iterator();
+    public Collection getAllActors(Object ns) {
+        if (!(ns instanceof MNamespace)) {
+            throw new IllegalArgumentException();
+        }
+
+	Iterator it = ((MNamespace) ns).getOwnedElements().iterator();
 	List list = new ArrayList();
 	while (it.hasNext()) {
 	    Object o = it.next();
 	    if (o instanceof MNamespace) {
-		list.addAll(getAllActors((MNamespace) o));
+		list.addAll(getAllActors(o));
 	    }
 	    if (o instanceof MActor) {
 		list.add(o);
@@ -218,7 +226,7 @@ class UseCasesHelperImpl implements UseCasesHelper {
      * @param aninclusion the given inclusion usecase
      * @return MExtend the include relation
      */
-    public MInclude getIncludes(Object abase, Object aninclusion) {
+    public Object getIncludes(Object abase, Object aninclusion) {
         MUseCase base = (MUseCase) abase;
         MUseCase inclusion = (MUseCase) aninclusion;
 	if (base == null || inclusion == null) {
@@ -263,21 +271,27 @@ class UseCasesHelperImpl implements UseCasesHelper {
      * @param extend the given extend
      * @param base the base usecase
      */
-    public void setBase(MExtend extend, MUseCase base) {
-        if (extend == null || base == null) {
-            throw new IllegalArgumentException("Either base or extend null");
+    public void setBase(Object extend, Object base) {
+        if (extend == null || !(extend instanceof MExtend)) {
+            throw new IllegalArgumentException("extend");
         }
-        if (base == extend.getBase()) {
+        if (base == null || !(base instanceof MUseCase)) {
+            throw new IllegalArgumentException("base");
+        }
+
+        MExtend theExtend = ((MExtend) extend);
+        if (base == theExtend.getBase()) {
             return;
         }
-        Iterator it = extend.getExtensionPoints().iterator();
+        Iterator it = theExtend.getExtensionPoints().iterator();
         while (it.hasNext()) {
             MExtensionPoint point = (MExtensionPoint) it.next();
-            point.removeExtend(extend);
+            point.removeExtend(theExtend);
         }
         MExtensionPoint point =
-	    nsmodel.getUseCasesFactory().buildExtensionPoint(base);
-        extend.setBase(base);
-        extend.addExtensionPoint(point);
+	    (MExtensionPoint)
+	    	nsmodel.getUseCasesFactory().buildExtensionPoint(base);
+        theExtend.setBase((MUseCase) base);
+        theExtend.addExtensionPoint(point);
     }
 }

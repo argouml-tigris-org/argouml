@@ -5079,6 +5079,22 @@ public class ModelFacade {
     }
 
     /**
+     * Add an include to a Use Case.
+     *
+     * @param usecase The Use Case.
+     * @param include The Include.
+     */
+    public static void addInclude(Object usecase, Object include) {
+        if (usecase instanceof MUseCase
+                && include instanceof MInclude) {
+            ((MUseCase) usecase).addInclude((MInclude) include);
+            return;
+        }
+
+        illegalArgument(usecase, include);
+    }
+
+    /**
      * Adds an instance to a classifier role.
      *
      * @param classifierRole is the classifier role
@@ -5626,6 +5642,48 @@ public class ModelFacade {
     }
 
     /**
+     * Remove an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    public static void removeExtend(Object elem, Object extend) {
+        if (elem instanceof MUseCase
+                && extend instanceof MExtend) {
+            ((MUseCase) elem).removeExtend((MExtend) extend);
+            return;
+        }
+        if (elem instanceof MExtensionPoint
+                && extend instanceof MExtend) {
+            ((MExtensionPoint) elem).removeExtend((MExtend) extend);
+            return;
+        }
+
+        illegalArgument(elem, extend);
+    }
+
+    /**
+     * This method removes an Extension Point from a Use Case or an Extend.
+     *
+     * @param elem is The Use Case or Extend.
+     * @param ep is the extension point
+     */
+    public static void removeExtensionPoint(Object elem, Object ep) {
+        if (elem instanceof MUseCase
+                && ep instanceof MExtensionPoint) {
+            ((MUseCase) elem).removeExtensionPoint((MExtensionPoint) ep);
+            return;
+        }
+        if (elem instanceof MExtend
+                && ep instanceof MExtensionPoint) {
+            ((MExtend) elem).removeExtensionPoint((MExtensionPoint) ep);
+            return;
+        }
+
+        illegalArgument(elem, ep);
+    }
+
+    /**
      * This method removes a feature from a classifier.
      *
      * @param handle is the classifier
@@ -5641,18 +5699,19 @@ public class ModelFacade {
     }
 
     /**
-     * This method removes an extension point from a use case.
+     * Remove an include from a Use Case.
      *
-     * @param uc is the use case
-     * @param ep is the extension point
+     * @param usecase The Use Case.
+     * @param include The Include.
      */
-    public static void removeExtensionPoint(Object uc, Object ep) {
-        if (uc instanceof MUseCase
-                && ep instanceof MExtensionPoint) {
-            ((MUseCase) uc).removeExtensionPoint((MExtensionPoint) ep);
+    public static void removeInclude(Object usecase, Object include) {
+        if (usecase instanceof MUseCase
+                && include instanceof MInclude) {
+            ((MUseCase) usecase).removeInclude((MInclude) include);
             return;
         }
-	illegalArgument(uc, ep);
+
+        illegalArgument(usecase, include);
     }
 
     /**
@@ -5960,6 +6019,7 @@ public class ModelFacade {
                 		createExpressionEditor(handle);
             expressionEditor.setLanguage(language);
             handle = expressionEditor.toExpression();
+            // TODO: Is something missing here?
 
             return;
         }
@@ -7688,6 +7748,23 @@ public class ModelFacade {
     }
 
     /**
+     * Set a Use Case for an Extension Point.
+     *
+     * @param elem The Extension Point.
+     * @param usecase The Use Case.
+     */
+    public static void setUseCase(Object elem, Object usecase) {
+        if (elem instanceof MExtensionPoint
+                && (usecase instanceof MUseCase
+                        || usecase == null)) {
+            ((MExtensionPoint) elem).setUseCase((MUseCase) usecase);
+            return;
+        }
+
+        illegalArgument(elem, usecase);
+    }
+
+    /**
      * Set the UUID of this element.
      *
      * @param handle base element (MBase type)
@@ -7892,6 +7969,27 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle, node);
+    }
+
+    /**
+     * Add an extend to a Use Case or Extension Point.
+     *
+     * @param elem The Use Case or Extension Point.
+     * @param extend The Extend to add.
+     */
+    public static void addExtend(Object elem, Object extend) {
+        if (elem instanceof MUseCase
+                && extend instanceof MExtend) {
+            ((MUseCase) elem).addExtend((MExtend) extend);
+            return;
+        }
+        if (elem instanceof MExtensionPoint
+                && extend instanceof MExtend) {
+            ((MExtensionPoint) elem).addExtend((MExtend) extend);
+            return;
+        }
+
+        illegalArgument(elem, extend);
     }
 
     /**

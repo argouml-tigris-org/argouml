@@ -22,14 +22,11 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// $header$
 package org.argouml.uml.ui.behavior.use_cases;
 
 import org.argouml.model.Model;
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.AbstractUMLModelElementListModel2Test;
-
-import ru.novosoft.uml.behavior.use_cases.MInclude;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
 
 /**
  * @since Oct 30, 2002
@@ -64,10 +61,10 @@ public class TestUMLUseCaseIncludeListModel
      * @see org.argouml.uml.ui.AbstractUMLModelElementListModel2Test#fillModel()
      */
     protected Object[] fillModel() {
-        MInclude[] ext = new MInclude[10];
+        Object[] ext = new Object[10];
         for (int i = 0; i < 10; i++) {
             ext[i] = Model.getUseCasesFactory().createInclude();
-            ((MUseCase) getElem()).addInclude(ext[i]);
+            ModelFacade.addInclude(getElem(), ext[i]);
         }
         return ext;
     }
@@ -77,7 +74,7 @@ public class TestUMLUseCaseIncludeListModel
      */
     protected void removeHalfModel(Object[] elements) {
         for (int i = 0; i < 5; i++) {
-            ((MUseCase) getElem()).removeInclude((MInclude) elements[i]);
+            ModelFacade.removeInclude(getElem(), elements[i]);
         }
     }
 }
