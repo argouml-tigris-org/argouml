@@ -29,10 +29,20 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Hashtable;
 import java.util.List;
+
+import javax.xml.transform.Result;
+import javax.xml.transform.Source;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.transform.stream.StreamSource;
 
 import org.apache.log4j.Logger;
 import org.argouml.application.ArgoVersion;
@@ -109,14 +119,16 @@ public class UmlFilePersister extends AbstractFilePersister {
             project.setVersion(ArgoVersion.getVersion());
             project.setPersistenceVersion(PERSISTENCE_VERSION);
 
+            String encoding = "UTF-8";
             FileOutputStream stream =
                 new FileOutputStream(file);
             writer =
                 new PrintWriter(new BufferedWriter(new OutputStreamWriter(
-                        stream, "UTF-8")));
+                        stream, encoding)));
             
             Integer indent = new Integer(4);
-
+            
+            writer.println("<?xml version = \"1.0\" encoding = \"" + encoding + "\" ?>");
             writer.println("<uml version=\"" + PERSISTENCE_VERSION + "\">");
             // Write out header section
             try {
@@ -201,13 +213,16 @@ public class UmlFilePersister extends AbstractFilePersister {
      */
     public Project doLoad(URL url) throws OpenException {
         try {
+            // First scan fist line of real XML to get version number
+            
+            // If version < PERSISTENCE_VERSION call stylesheets and return final url
+            
             XmlInputStream inputStream =
                         new XmlInputStream(url.openStream(), "argo");
 
             ArgoParser parser = new ArgoParser();
             Project p = new Project(url);
             parser.readProject(p, inputStream);
-            //inputStream.realClose();
 
             List memberList = parser.getMemberList();
             
@@ -222,6 +237,8 @@ public class UmlFilePersister extends AbstractFilePersister {
                 } else if (memberList.get(i).equals("xmi")) {
                     persister = new ModelMemberFilePersister();
                 }
+                LOG.info("Loading member with "
+                        + persister.getClass().getName());
                 inputStream.reopen(persister.getMainTag());
                 persister.load(p, inputStream);
             }
@@ -235,5 +252,41 @@ public class UmlFilePersister extends AbstractFilePersister {
             LOG.error("SAXException", e);
             throw new OpenException(e);
         }
+    }
+    
+    /**
+     * Transform a string of XML data according to the service required
+     * @param xml The original XML
+     * @param xslt the XSLT transformation
+     * @return the transformed XML
+     * @throws TransformerException on XSLT transformation error
+     */
+    public static final String transform(String xml, String xslt)
+            throws TransformerException {
+
+        StreamSource xsltStreamSource = new StreamSource(new StringReader(xslt));
+        return transform(xml, xsltStreamSource);
+    }
+    
+    /**
+     * Transform a string of XML data according to the service required
+     * @param xml The original XML
+     * @param xsltStreamSource the transformation stream
+     * @return the transformed XML
+     * @throws TransformerException on XSLT transformation error
+     */
+    public static final String transform(String xml, StreamSource xsltStreamSource)
+            throws TransformerException {
+
+        TransformerFactory factory = TransformerFactory.newInstance();
+        Transformer transformer = factory.newTransformer(xsltStreamSource);
+        Source input = new StreamSource(new StringReader(xml));
+
+        StringWriter writer = new StringWriter();
+        Result result = new StreamResult(writer);
+
+        transformer.transform(input, result);
+        String transformation = writer.toString();
+        return transformation;
     }
 }
