@@ -85,7 +85,7 @@ public class UMLClassDiagram extends UMLDiagram {
 
     protected static Action _actionGeneralize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MGeneralization.class, "Generalization");
 
-    protected static Action _actionRealize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", MAbstraction.class, "Realization");
+    protected static Action _actionRealize = new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", ModelFacade.ABSTRACTION, "Realization");
 
     protected static Action _actionPackage = new CmdCreateNode(MPackage.class, "Package");
 

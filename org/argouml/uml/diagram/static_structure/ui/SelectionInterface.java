@@ -37,6 +37,7 @@ import javax.swing.Icon;
 
 import org.apache.log4j.Category;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.diagram.ui.ModeCreateEdgeAndNode;
 import org.argouml.uml.diagram.ui.SelectionWButtons;
@@ -157,7 +158,7 @@ public class SelectionInterface extends SelectionWButtons {
 	
   public Object addRealization(MutableGraphModel mgm, MInterface cls,
 			    MClass newCls) {
-    return mgm.connect(newCls, cls, MAbstraction.class);
+    return mgm.connect(newCls, cls, (Class)ModelFacade.ABSTRACTION);
   }
 	
     /**

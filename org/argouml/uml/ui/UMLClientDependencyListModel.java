@@ -31,6 +31,8 @@ package org.argouml.uml.ui;
 
 import ru.novosoft.uml.*;
 import javax.swing.*;
+
+import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.foundation.core.*;
 import java.util.*;
 import java.awt.*;
@@ -118,8 +120,8 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
         // Get the new abstraction from the factory and add it to the
         // namespace.
 
-        MAbstraction newAbstraction = ns.getFactory().createAbstraction();
-        ns.addOwnedElement(newAbstraction);
+        Object newAbstraction = ns.getFactory().createAbstraction();
+        ModelFacade.addOwnedElement(ns, newAbstraction);
 
         // We need not set the clients array up - that will happen when we add
         // to the client dependency of the model element.
@@ -128,7 +130,8 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
         // entry.
 
         if(index == getModelElementSize()) {    
-            modelElement.addClientDependency(newAbstraction);
+            ModelFacade.addClientDependency(modelElement, newAbstraction);
+           
         }
         else {
             modelElement.setClientDependencies(

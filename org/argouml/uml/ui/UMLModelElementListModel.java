@@ -61,7 +61,6 @@ import org.argouml.ui.targetmanager.TargetManager;
 import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.foundation.core.MModelElement;
 
-
 /**
  *  This class is an abstract superclass for classes that provide a list
  *  of UML model elements.
@@ -73,7 +72,9 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
  *             that used reflection a lot.
  */
-abstract public class UMLModelElementListModel extends AbstractListModel implements UMLUserInterfaceComponent, NotationContext {
+abstract public class UMLModelElementListModel
+    extends AbstractListModel
+    implements UMLUserInterfaceComponent, NotationContext {
 
     /**
      *   The container that provides the "target" model element.
@@ -118,14 +119,18 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
      */
-    public UMLModelElementListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
+    public UMLModelElementListModel(
+        UMLUserInterfaceContainer container,
+        String property,
+        boolean showNone) {
         _container = container;
         _showNone = showNone;
         _property = property;
         _recalcSize = true;
         _upper = NO_LIMIT;
         _none = _container.localize("none");
-        if(_none == null) _none = "none";
+        if (_none == null)
+            _none = "none";
     }
 
     public int getUpperBound() {
@@ -151,20 +156,18 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         return _property;
     }
 
-
     /**
      *  Determines the number of "actual" entries in the list.  May be
      *     overriden in combination with getModelElementAt,
      *     but typically recalcModelElementSize is overriden.
      *   @return number of "actual" list entries.
      */
-    protected final int getModelElementSize()
-    {
+    protected final int getModelElementSize() {
         // if(_recalcSize) {
-            _currentModelElementSize = recalcModelElementSize();
-            if(_currentModelElementSize < 0) {
-                return 0;
-            }
+        _currentModelElementSize = recalcModelElementSize();
+        if (_currentModelElementSize < 0) {
+            return 0;
+        }
         //    _recalcSize = false;
         // }
         return _currentModelElementSize;
@@ -211,7 +214,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
     public int getSize() {
         int size = getModelElementSize();
-        if(size == 0 && _showNone) {
+        if (size == 0 && _showNone) {
             size = 1;
         }
         return size;
@@ -229,18 +232,17 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
     public Object getElementAt(int index) {
         Object value = null;
-        if(index >= 0 && index < getModelElementSize()) {
+        if (index >= 0 && index < getModelElementSize()) {
             MModelElement element = getModelElementAt(index);
             //
             //   shouldn't be null, here for debugging
             //
-            if(element == null) {
+            if (element == null) {
                 element = getModelElementAt(index);
             }
             value = formatElement(element);
-        }
-        else {
-            if(index == 0 && _showNone) {
+        } else {
+            if (index == 0 && _showNone) {
                 value = _none;
             }
         }
@@ -264,58 +266,59 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
     public void targetChanged() {
         int oldSize = _currentModelElementSize;
-        if(_showNone && oldSize == 0) oldSize = 1;
+        if (_showNone && oldSize == 0)
+            oldSize = 1;
         resetSize();
         int newSize = getSize();
 
-        if(newSize < oldSize) {
-            if(newSize > 0) {
-                fireContentsChanged(this,0,newSize-1);
+        if (newSize < oldSize) {
+            if (newSize > 0) {
+                fireContentsChanged(this, 0, newSize - 1);
             }
-            fireIntervalRemoved(this,newSize,oldSize-1);
-        }
-        else {
-            if(oldSize > 0) {
-                fireContentsChanged(this,0,oldSize-1);
+            fireIntervalRemoved(this, newSize, oldSize - 1);
+        } else {
+            if (oldSize > 0) {
+                fireContentsChanged(this, 0, oldSize - 1);
             }
-            if(newSize > oldSize) {
-                fireIntervalAdded(this,oldSize,newSize-1);
+            if (newSize > oldSize) {
+                fireIntervalAdded(this, oldSize, newSize - 1);
             }
         }
     }
 
     public void targetReasserted() {
-         resetSize();
-         fireContentsChanged(this,0,getSize()-1);
+        resetSize();
+        fireContentsChanged(this, 0, getSize() - 1);
     }
 
     /**
      * @see ru.novosoft.uml.MElementListener#roleAdded(MElementEvent)
      */
     public void roleAdded(final MElementEvent event) {
-       String eventName = event.getName();
-        if(_property == null || eventName == null || eventName.equals(_property)) {
+        String eventName = event.getName();
+        if (_property == null
+            || eventName == null
+            || eventName.equals(_property)) {
             resetSize();
             Object addedValue = event.getAddedValue();
             boolean found = false;
-            if(addedValue != null) {
+            if (addedValue != null) {
                 int size = getModelElementSize();
-                for(int i = 0; i < size; i++) {
-                    if(addedValue == getModelElementAt(i)) {
+                for (int i = 0; i < size; i++) {
+                    if (addedValue == getModelElementAt(i)) {
                         found = true;
-                        fireIntervalAdded(this,i,i);
+                        fireIntervalAdded(this, i, i);
                     }
                 }
             }
             //
             //  if that specific element wasn't found then
             //     mark everything as being changed
-            if(!found) {
+            if (!found) {
                 resetSize();
-                fireContentsChanged(this,0,getSize()-1);
+                fireContentsChanged(this, 0, getSize() - 1);
             }
-        }
-        else{
+        } else {
             // The following two lines appear to be an error. It has the effect
             // of disabling add for other elements when any element has put on
             // a promiscuous listener. Replaced by the following line
@@ -329,44 +332,50 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     //      documented in UMLUserInterfaceComponent
     public void roleRemoved(final MElementEvent event) {
         String eventName = event.getName();
-        if(_property == null || eventName == null || eventName.equals(_property)) {
+        if (_property == null
+            || eventName == null
+            || eventName.equals(_property)) {
             resetSize();
-            fireContentsChanged(this,0,getSize()-1);
+            fireContentsChanged(this, 0, getSize() - 1);
         }
     }
 
     //      documented in UMLUserInterfaceComponent
     public void recovered(final MElementEvent p1) {
-          resetSize();
-          fireContentsChanged(this,0,getSize()-1);
+        resetSize();
+        fireContentsChanged(this, 0, getSize() - 1);
     }
 
     //      documented in UMLUserInterfaceComponent
     public void listRoleItemSet(final MElementEvent p1) {
-	resetSize();
-        fireContentsChanged(this,0,getSize()-1);
+        resetSize();
+        fireContentsChanged(this, 0, getSize() - 1);
     }
 
     //      documented in UMLUserInterfaceComponent
     public void removed(final MElementEvent p1) {
-            resetSize();
-            fireContentsChanged(this,0,getSize()-1);
+        resetSize();
+        fireContentsChanged(this, 0, getSize() - 1);
     }
 
     //      documented in UMLUserInterfaceComponent
     public void propertySet(final MElementEvent p1) {
-            resetSize();
-            fireContentsChanged(this,0,getSize()-1);
+        resetSize();
+        fireContentsChanged(this, 0, getSize() - 1);
     }
 
     /**
      *  This method is called by context menu actions that
      *  desire to change to currently displayed object.
-     *
+     *  @deprecated 
      *  @param modelElement model element to display
      */
     public void navigateTo(MModelElement modelElement) {
         TargetManager.getInstance().setTarget(modelElement);
+    }
+    
+    public void navigateTo(Object modelElement) {
+        navigateTo((MModelElement)modelElement);
     }
 
     /**
@@ -376,14 +385,13 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *   @param index index of item to open (zero-based).
      */
     public void open(int index) {
-        if(index >= 0 && index < _currentModelElementSize) {
+        if (index >= 0 && index < _currentModelElementSize) {
             MModelElement modelElement = getModelElementAt(index);
-            if(modelElement != null) {
+            if (modelElement != null) {
                 navigateTo(modelElement);
             }
         }
     }
-
 
     /**
      *  This method builds a context (pop-up) menu for the list.  This method
@@ -394,30 +402,60 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of selected list item
      *  @return "true" if popup menu should be displayed
      */
-    public boolean buildPopup(JPopupMenu popup,int index) {
+    public boolean buildPopup(JPopupMenu popup, int index) {
         UMLUserInterfaceContainer container = getContainer();
-        UMLListMenuItem open = new UMLListMenuItem(container.localize("Open"),this,"open",index);
-        UMLListMenuItem delete = new UMLListMenuItem(container.localize("Delete"),this,"delete",index);
-        if(_currentModelElementSize <= 0) {
+        UMLListMenuItem open =
+            new UMLListMenuItem(
+                container.localize("Open"),
+                this,
+                "open",
+                index);
+        UMLListMenuItem delete =
+            new UMLListMenuItem(
+                container.localize("Delete"),
+                this,
+                "delete",
+                index);
+        if (_currentModelElementSize <= 0) {
             open.setEnabled(false);
             delete.setEnabled(false);
         }
 
         popup.add(open);
-        UMLListMenuItem add =new UMLListMenuItem(container.localize("Add"),this,"add",index);
-        if(_upper >= 0 && _currentModelElementSize >= _upper) {
+        UMLListMenuItem add =
+            new UMLListMenuItem(container.localize("Add"), this, "add", index);
+        if (_upper >= 0 && _currentModelElementSize >= _upper) {
             add.setEnabled(false);
         }
         popup.add(add);
         popup.add(delete);
 
-        UMLListMenuItem moveUp = new UMLListMenuItem(container.localize("Move Up"),this,"moveUp",index);
-        if(index == 0) moveUp.setEnabled(false);
+        UMLListMenuItem moveUp =
+            new UMLListMenuItem(
+                container.localize("Move Up"),
+                this,
+                "moveUp",
+                index);
+        if (index == 0)
+            moveUp.setEnabled(false);
         popup.add(moveUp);
-        UMLListMenuItem moveDown = new UMLListMenuItem(container.localize("Move Down"),this,"moveDown",index);
-        if(index == getSize()-1) moveDown.setEnabled(false);
+        UMLListMenuItem moveDown =
+            new UMLListMenuItem(
+                container.localize("Move Down"),
+                this,
+                "moveDown",
+                index);
+        if (index == getSize() - 1)
+            moveDown.setEnabled(false);
         popup.add(moveDown);
         return true;
+    }
+
+    public static java.util.List addAtUtil(
+        Collection oldCollection,
+        Object newItem,
+        int index) {
+        return addAtUtil(oldCollection, (MModelElement)newItem, index);
     }
 
     /**
@@ -447,8 +485,10 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *
      *  @return               new list */
 
-    public static java.util.List addAtUtil(Collection oldCollection,
-                                    MModelElement newItem,int index) {
+    public static java.util.List addAtUtil(
+        Collection oldCollection,
+        MModelElement newItem,
+        int index) {
 
         int oldSize = oldCollection.size();
 
@@ -456,17 +496,17 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         Iterator iter = oldCollection.iterator();
 
         int i;
-        for(i = 0; i < index; i ++) {
-            newCollection.add(i,iter.next());
+        for (i = 0; i < index; i++) {
+            newCollection.add(i, iter.next());
         }
 
-        newCollection.add(i,newItem);
+        newCollection.add(i, newItem);
 
         // Don't forget to step past the one we've just added (bug fix by
         // Jeremy Bennett).
 
-        for(i++;i <= oldSize;i++) {
-            newCollection.add(i,iter.next());
+        for (i++; i <= oldSize; i++) {
+            newCollection.add(i, iter.next());
         }
 
         return newCollection;
@@ -481,7 +521,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move up.
      *  @return new collection
      */
-    public static java.util.List moveUpUtil(Collection oldCollection,int index) {
+    public static java.util.List moveUpUtil(
+        Collection oldCollection,
+        int index) {
         int size = oldCollection.size();
         ArrayList newCollection = new ArrayList(size);
         int i;
@@ -489,15 +531,15 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         //
         //  move all the earliest elements
         //
-        for(i = 0; i < index -1; i++) {
-            newCollection.add(i,iter.next());
+        for (i = 0; i < index - 1; i++) {
+            newCollection.add(i, iter.next());
         }
         Object swap1 = iter.next();
         Object swap2 = iter.next();
-        newCollection.add(i++,swap2);
-        newCollection.add(i++,swap1);
-        for(; i < size; i++) {
-            newCollection.add(i,iter.next());
+        newCollection.add(i++, swap2);
+        newCollection.add(i++, swap1);
+        for (; i < size; i++) {
+            newCollection.add(i, iter.next());
         }
         return newCollection;
     }
@@ -511,7 +553,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move down.
      *  @return new collection
      */
-    public static java.util.List moveDownUtil(Collection oldCollection,int index) {
+    public static java.util.List moveDownUtil(
+        Collection oldCollection,
+        int index) {
         int size = oldCollection.size();
         ArrayList newCollection = new ArrayList(size);
         int i;
@@ -519,15 +563,15 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         //
         //  move all the earliest elements
         //
-        for(i = 0; i < index; i++) {
-            newCollection.add(i,iter.next());
+        for (i = 0; i < index; i++) {
+            newCollection.add(i, iter.next());
         }
         Object swap1 = iter.next();
         Object swap2 = iter.next();
-        newCollection.add(i++,swap2);
-        newCollection.add(i++,swap1);
-        for(; i < size; i++) {
-            newCollection.add(i,iter.next());
+        newCollection.add(i++, swap2);
+        newCollection.add(i++, swap1);
+        for (; i < size; i++) {
+            newCollection.add(i, iter.next());
         }
         return newCollection;
     }
@@ -541,27 +585,28 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @param index index of element to move down.
      *  @return new collection
      */
-    public static MModelElement elementAtUtil(Collection collection,int index,Class requiredClass) {
+    public static MModelElement elementAtUtil(
+        Collection collection,
+        int index,
+        Class requiredClass) {
         Object obj = null;
-        if(collection != null && index >= 0 && index < collection.size()) {
-            if(collection instanceof java.util.List) {
-                obj = ((java.util.List) collection).get(index);
-            }
-            else {
+        if (collection != null && index >= 0 && index < collection.size()) {
+            if (collection instanceof java.util.List) {
+                obj = ((java.util.List)collection).get(index);
+            } else {
                 Iterator iter = collection.iterator();
                 Object temp;
-                for(int i = 0; iter.hasNext(); i++) {
+                for (int i = 0; iter.hasNext(); i++) {
                     temp = iter.next();
-                    if(i == index) {
+                    if (i == index) {
                         obj = temp;
                         break;
                     }
                 }
             }
         }
-        return (MModelElement) obj;
+        return (MModelElement)obj;
     }
-
 
     /**
      * <p>Gives a notation name, so subclasses can use the Notation
@@ -576,20 +621,20 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     public NotationName getContextNotation() {
         return null;
     }
-    
+
     /**
      * Standard delete method.
      * @param index
      */
-     public void delete(int index) {
+    public void delete(int index) {
         MModelElement modElem = getModelElementAt(index);
         Object target = TargetManager.getInstance().getTarget();
         ProjectBrowser.getInstance().setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");
         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-        fireIntervalRemoved(this,index,index);
+        fireIntervalRemoved(this, index, index);
         if (!target.equals(modElem)) {
-        	ProjectBrowser.getInstance().setTarget(target);
+            ProjectBrowser.getInstance().setTarget(target);
         }
     }
 }
