@@ -38,8 +38,6 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.ui.ArgoDiagram;
-import org.argouml.uml.diagram.UMLMutableGraphSupport;
 import org.argouml.uml.diagram.static_structure.ui.CommentEdge;
 
 import ru.novosoft.uml.MFactory;
@@ -593,23 +591,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a default binary association with two default association ends.
-     * @param c1 The first classifier to connect to
-     * @param nav1 The navigability of the Associaton end
-     * @param c2 The second classifier to connect to
-     * @param nav2 The navigability of the second Associaton end
-     * @return MAssociation
-     */
-    private MAssociation buildAssociation(
-					 MClassifier c1,
-					 boolean nav1,
-					 MClassifier c2,
-					 boolean nav2) {
-        return buildAssociation(c1, nav1, MAggregationKind.NONE,
-                                c2, nav2, MAggregationKind.NONE);
-    }
-
-    /**
      * Builds a binary association with a direction, aggregation
      * and a given name.
      *
@@ -629,23 +610,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
         if (assoc != null)
             assoc.setName(name);
         return assoc;
-    }
-
-    /**
-     * Builds a default binary association with two default association ends.
-     * @param c1 The first classifier to connect to
-     * @param agg1 The aggregation type of the second Associaton end
-     * @param c2 The second classifier to connect to
-     * @param agg2 The aggregation type of the second Associaton end
-     * @return MAssociation
-     */
-    private MAssociation buildAssociation(
-					 MClassifier c1,
-					 MAggregationKind agg1,
-					 MClassifier c2,
-					 MAggregationKind agg2) {
-        return buildAssociation(c1, true, agg1,
-                                c2, true, agg2);
     }
 
     /**
@@ -778,30 +742,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * @param type the given classifier
-     * @param assoc the given association
-     * @return the newly build associationend
-     */
-    private MAssociationEnd buildAssociationEnd(
-					       MClassifier type,
-					       MAssociation assoc) {
-	if (type == null || assoc == null)
-	    throw new IllegalArgumentException("one of the arguments is null");
-	return buildAssociationEnd(
-				   assoc,
-				   "",
-				   type,
-				   null,
-				   null,
-				   true,
-				   null,
-				   null,
-				   null,
-				   null,
-				   MVisibilityKind.PUBLIC);
-    }
-
-    /**
      * Builds an association class from a class and two classifiers
      * that should be associated. Both ends of the associationclass
      * are navigable.<p>
@@ -917,19 +857,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
     }
 
     /**
-     * Builds a default attribute with a given name.
-     *
-     * @param name the given name
-     * @return attribute the newly build attribute
-     */
-    private MAttribute buildAttribute(String name) {
-        MAttribute attr = (MAttribute) buildAttribute();
-        if (attr != null)
-            attr.setName(name);
-        return attr;
-    }
-
-    /**
      * Builds an attribute owned by some classifier cls. I don't know
      * if this is legal for an interface (purely UML speaking). In
      * this method it is.<p>
@@ -955,37 +882,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
             Model.getPump().addModelEventListener(listener, attr);
         }
         return attr;
-    }
-
-    /**
-     * Builds a binding between a client modelelement and a supplier
-     * modelelement.<p>
-     *
-     * @param client 
-     * @param supplier
-     * @return MBinding
-     */
-    private MBinding buildBinding(MModelElement client,
-				 MModelElement supplier) {
-        Collection clientDependencies = supplier.getClientDependencies();
-        if (!clientDependencies.isEmpty()
-                && clientDependencies.contains(client)) {
-            throw new IllegalArgumentException(
-            				   "Supplier has already "
-            				   + "client "
-            				   + client.getName()
-            				   + " as Client");
-        }
-        // end new code
-        MBinding binding = createBinding();
-        binding.addSupplier(supplier);
-        binding.addClient(client);
-        if (supplier.getNamespace() != null) {
-            binding.setNamespace(supplier.getNamespace());
-        } else if (client.getNamespace() != null) {
-            binding.setNamespace(client.getNamespace());
-        }
-        return binding;
     }
 
     /**
@@ -1018,7 +914,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
     public Object buildClass(Object owner) {
         Object clazz = buildClass();
         if (owner instanceof MNamespace)
-            ModelFacade.setNamespace(clazz, (MNamespace) owner);
+            ModelFacade.setNamespace(clazz, /*MNamespace*/ owner);
         return clazz;
     }
 
@@ -1047,7 +943,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
         Object clazz = buildClass();
         ModelFacade.setName(clazz, name);
         if (owner instanceof MNamespace) {
-            ModelFacade.setNamespace(clazz, (MNamespace) owner);
+            ModelFacade.setNamespace(clazz, /*MNamespace*/ owner);
         }
         return clazz;
     }
@@ -1566,25 +1462,6 @@ public class CoreFactory extends AbstractUmlModelFactory {
 				 .getCurrentProject().getModel());
 
 	return comment;
-    }
-    
-    /**
-     * Builds a comment owned by the namespace of the active diagram 
-     * or by the model if the active diagram
-     * does not have a namespace.
-     * @return The comment build
-     */
-    private MComment buildComment() {
-        MComment comment = createComment();
-        Object ns = null;
-        ArgoDiagram diagram = 
-            ProjectManager.getManager().getCurrentProject().getActiveDiagram();
-        ns = ((UMLMutableGraphSupport) diagram.getGraphModel()).getNamespace();
-        if (ns == null || !ModelFacade.isANamespace(ns)) {
-            ns = ProjectManager.getManager().getCurrentProject().getModel();
-        }
-        ModelFacade.setNamespace(comment, ns);
-        return comment;
     }
     
     /**
