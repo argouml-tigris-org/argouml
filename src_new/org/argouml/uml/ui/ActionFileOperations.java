@@ -25,6 +25,8 @@
 package org.argouml.uml.ui;
 
 import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.MessageFormat;
 
 import javax.swing.AbstractAction;
@@ -168,17 +170,18 @@ public abstract class ActionFileOperations extends AbstractAction {
                 success = false;
                 reportError(ex.getMessage(), showUI);
                 p = oldProject;
-            } catch (OpenException ex) {
+            } catch (Exception ex) {
                 LOG.error("Exception while loading project", ex);
                 success = false;
                 reportError(
                         "Could not load the project "
                         + file.getName()
-                        + " due to parser configuration errors.\n"
-                        + "Please read the instructions at www.argouml.org "
-                        + "on the "
-                        + "requirements of argouml and how to install it.",
-                        showUI);
+                        + " some error was found.\n"
+                        + "Please try loading with the very latest version of ArgoUML "
+                        + "which you can download from http://argouml.tigris.org\n"
+                        + "If you have no further success then please report the "
+                        + "exception below.",
+                        showUI, ex);
                 p = oldProject;
             } finally {
                 if (!LastLoadInfo.getInstance().getLastLoadStatus()) {
@@ -242,5 +245,23 @@ public abstract class ActionFileOperations extends AbstractAction {
         } else {
             System.err.print(message);
         }
+    }
+
+    /**
+     * Open a Message Dialog with an error message.
+     *
+     * @param message the message to display.
+     * @param showUI true if an error message may be shown to the user,
+     *               false if run in commandline mode
+     */
+    private void reportError(String message, boolean showUI, Throwable ex) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        ex.printStackTrace(pw);
+        String exception = sw.toString();
+        
+        message += "\n\n" + exception;
+        
+        reportError(message, showUI);
     }
 }
