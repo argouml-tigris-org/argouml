@@ -59,14 +59,14 @@ public final class UmlModelEventPump implements MElementListener {
     
     private static UmlModelEventPump _instance = null;
     
-    private Map _listenerClassModelEventsMap = Collections.synchronizedMap(new HashMap());
-    private Map _listenerModelEventsMap = Collections.synchronizedMap(new HashMap());
+    private Map _listenerClassModelEventsMap = new HashMap();
+    private Map _listenerModelEventsMap = new HashMap();
     
     /**
      * Singleton access method
      * @return UmlModelEventPump
      */
-    public static UmlModelEventPump getPump() {
+    public synchronized static UmlModelEventPump getPump() {
         if (_instance == null) {
             _instance = new UmlModelEventPump();
         }
@@ -166,7 +166,7 @@ public final class UmlModelEventPump implements MElementListener {
      * @param modelClass
      * @param eventName
      */
-    private void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+    private synchronized void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
         Set listenerList = (HashSet)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
         if (listenerList == null) {
             listenerList = new HashSet();
@@ -226,7 +226,7 @@ public final class UmlModelEventPump implements MElementListener {
         executeRemoveClassModelEventListener(listener, modelClass, null);       
     }
     
-    private void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
+    private synchronized void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
         Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
         if (listenerList == null) return;
         listenerList.remove(listener);
@@ -294,7 +294,7 @@ public final class UmlModelEventPump implements MElementListener {
         executeAddModelEventListener(listener, modelelement, null);
     }
     
-    private void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
+    private synchronized void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey(modelelement, eventName));
         if (listenerList == null) {
             listenerList = new HashSet();
@@ -345,7 +345,7 @@ public final class UmlModelEventPump implements MElementListener {
         executeRemoveModelEventListener(listener, modelElement, eventName);
     }
     
-    private void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
+    private synchronized void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
         Set listenerList = (Set)_listenerModelEventsMap.get(getKey(elem, eventName));
         if (listenerList != null) {   
             listenerList.remove(listener);
