@@ -968,15 +968,17 @@ unaryExpressionNotPlusMinus
 
 // qualified names, array expressions, method invocation, post inc/dec
 postfixExpression
-	:	primaryExpression // start with a primary
-
+{String ex; String id = "UNHANDLED ID"; Vector els = new Vector();}
+	:	ex=primaryExpression // start with a primary
+		{els.add(ex);}
 		(	// qualified id (id.id.id.id...) -- build the name
-			DOT ( IDENT
-				| "this"
-				| "class"
-				| newExpression
+			DOT ( ide:IDENT { id = ide.getText(); }
+				| "this" { id = "this"; }
+				| "class" { id = "class"; }
+				| id=newExpression
 				| "super" LPAREN ( expressionList )? RPAREN
 				)
+			{els.add("."); els.add(id);}
 			// the above line needs a semantic check to make sure "class"
 			//   is the _last_ qualifier.
 
@@ -986,6 +988,7 @@ postfixExpression
 
 			// an array indexing operation
 		|	LBRACK expression RBRACK
+			{els.add("[]");}
 
 			// method invocation
 			// The next line is not strictly proper; it allows x(3)(4) or
@@ -995,6 +998,17 @@ postfixExpression
 		|	LPAREN
 				argList
 			RPAREN
+			{if (els.size() > 0) {
+			   StringBuffer sb = new StringBuffer();
+			   // All except the last two elements.
+			   for (int i = 0; i < els.size() - 2; i++) {
+			     sb.append((String)els.elementAt(i));
+                           }
+			   getModeller().addCall((String)els.lastElement(),
+						 sb.toString());
+                         }
+			 els.add("()");
+                        }
 		)*
 
 		// possibly add on a post-increment or post-decrement.
@@ -1011,16 +1025,16 @@ postfixExpression
 	;
 
 // the basic element of an expression
-primaryExpression
-	:	IDENT
-	|	newExpression
-	|	constant
-	|	"super"
+primaryExpression returns [String name = "UNHANDLED PRIMARY EXPRESSION";]
+	:	id:IDENT { name = id.getText(); }
+	|	name=newExpression 
+	|	name=constant
+	|	"super" { name = "super"; }
 	|	"true"
 	|	"false"
-	|	"this"
+	|	"this" { name = "this"; }
 	|	"null"
-	|	LPAREN assignmentExpression RPAREN
+	|	LPAREN assignmentExpression RPAREN { name = "EXPRESSION"; }
 	;
 
 /** object instantiation.
@@ -1072,10 +1086,10 @@ primaryExpression
  *               2
  *  
  */
-newExpression
+newExpression returns [String res = null]
 	{String t = null;}
 	:	"new" t=type
-		(	LPAREN argList RPAREN
+		(	LPAREN argList RPAREN { res = "new " + t + "(...)"; }
 			(	{ getModeller().addAnonymousClass(t); }
 				classBlock
 				{ getModeller().popClassifier(); }
@@ -1116,11 +1130,11 @@ newArrayDeclarator
 		)+
 	;
 
-constant
-	:	NUM_INT
+constant returns [String constant = null]
+	:	ni:NUM_INT { constant = ni.getText(); }
 	|	CHAR_LITERAL
-	|	STRING_LITERAL
-	|	NUM_FLOAT
+	|	sl:STRING_LITERAL { constant = sl.getText(); }
+	|	nf:NUM_FLOAT { constant = nf.getText(); }
 	;
 
 

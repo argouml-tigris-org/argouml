@@ -1264,5 +1264,12 @@ public class Modeller
       }
     }
   }
+
+    public void addCall(String method, String obj) {
+	if (obj.equals(""))
+	    System.out.println("Add call to method " + method);
+	else
+	    System.out.println("Add call to method " + method + " in " + obj);
+    }
 }
 
