@@ -1612,6 +1612,11 @@ to report bugs on the new release.
 		<para>
 Make sure that the upcoming releases have 
 target milestones created for them.
+This needs to be done for all subcomponents that has the same
+release scheme.
+Also see that the numbering is the same in all subcomponents and
+that it is in the correct chronological order
+except for the not yet done releases that come before the already completed.
 </para>
 	      </listitem>
 	      <listitem>
