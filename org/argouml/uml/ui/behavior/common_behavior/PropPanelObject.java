@@ -45,9 +45,7 @@ import org.argouml.uml.ui.UMLComboBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLStimulusListModel;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-import org.argouml.uml.ui.foundation.core.UMLModelElementNameDocument;
 
 import ru.novosoft.uml.behavior.common_behavior.MInstance;
 import ru.novosoft.uml.behavior.common_behavior.MObject;
@@ -64,7 +62,7 @@ public class PropPanelObject extends PropPanelModelElement {
 	Class mclass = MObject.class;
 
 	addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-	addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
+	addField(getNameTextField(),1,0,0);
 	
 	addCaption("Classifier:",2,0,0);   	
 	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",true,MClassifier.class,true);

@@ -46,7 +46,7 @@ public class PropPanelComment extends PropPanelModelElement {
      */
     public PropPanelComment() {
         super("Comment", ConfigLoader.getTabPropsOrientation());
-        UMLTextArea2 text = new UMLTextArea2(new UMLModelElementNameDocument());
+        UMLTextArea2 text = new UMLTextArea2(getNameDocument());
         text.setLineWrap(true);
         text.setRows(5);
         JScrollPane pane = new JScrollPane(text);

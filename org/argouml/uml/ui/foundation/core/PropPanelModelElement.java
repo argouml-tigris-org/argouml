@@ -34,6 +34,7 @@ import javax.swing.JComboBox;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.ArgoModule;
@@ -46,6 +47,7 @@ import org.argouml.uml.ui.UMLComboBox2;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLLinkedList;
 import org.argouml.uml.ui.UMLMutableLinkedList;
+import org.argouml.uml.ui.UMLPlainTextDocument;
 import org.argouml.uml.ui.UMLSearchableComboBox;
 import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
@@ -118,6 +120,7 @@ abstract public class PropPanelModelElement extends PropPanel {
     private JPanel namespaceVisibilityPanel;
     private JCheckBox specializationCheckBox;
     private JScrollPane elementResidenceScroll;
+    private JTextField nameTextField;
 
     private static UMLModelElementNamespaceComboBoxModel namespaceComboBoxModel = new UMLModelElementNamespaceComboBoxModel();
     private static UMLModelElementStereotypeComboBoxModel stereotypeComboBoxModel = new UMLModelElementStereotypeComboBoxModel();
@@ -159,7 +162,7 @@ abstract public class PropPanelModelElement extends PropPanel {
      */
     public PropPanelModelElement() {
         this("ModelElement", null, ConfigLoader.getTabPropsOrientation());
-        addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+        addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
         addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"), getStereotypeBox()));
         addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceScroll());
 
@@ -309,6 +312,22 @@ abstract public class PropPanelModelElement extends PropPanel {
             elementResidenceScroll = new JScrollPane(elementResidenceList);
         }
         return elementResidenceScroll;
+    }
+    
+    protected JTextField getNameTextField() {
+        if (nameTextField == null) {
+            nameTextField = new UMLTextField2(nameDocument);
+        }
+        return nameTextField;
+    }
+    
+    /**
+     * Returns the document (model) for the name. Only used for the
+     * PropPanelComment.
+     * @return Document
+     */
+    protected UMLPlainTextDocument getNameDocument() {
+        return nameDocument;
     }
 
 }

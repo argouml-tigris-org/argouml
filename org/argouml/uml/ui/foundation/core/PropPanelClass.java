@@ -38,7 +38,6 @@ import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.UMLCheckBox;
 import org.argouml.uml.ui.UMLComboBoxNavigator;
 import org.argouml.uml.ui.UMLReflectionBooleanProperty;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.util.ConfigLoader;
 
 import ru.novosoft.uml.foundation.core.MClass;
@@ -50,11 +49,11 @@ public class PropPanelClass extends PropPanelClassifier {
 
   ////////////////////////////////////////////////////////////////
   // contructors
-  public PropPanelClass() {
+  public PropPanelClass() { 
     super("Class", ConfigLoader.getTabPropsOrientation());
     Class mclass = MClass.class;
-    
-    addField(Argo.localize("UMLMenu", "label.name"), new UMLTextField2(new UMLModelElementNameDocument()));
+
+    addField(Argo.localize("UMLMenu", "label.name"), getNameTextField());
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),getStereotypeBox()));
     addField(Argo.localize("UMLMenu", "label.namespace"), getNamespaceComboBox());
     _modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.active-uc"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));

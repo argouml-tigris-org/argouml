@@ -49,7 +49,6 @@ import org.argouml.uml.ui.UMLList;
 import org.argouml.uml.ui.UMLMultiplicityComboBox2;
 import org.argouml.uml.ui.UMLReflectionListModel;
 import org.argouml.uml.ui.UMLTaggedBooleanProperty;
-import org.argouml.uml.ui.UMLTextField2;
 import org.argouml.uml.ui.UMLVisibilityPanel;
 
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -77,7 +76,7 @@ public class PropPanelAttribute extends PropPanelModelElement {
 
 
         addCaption(Argo.localize("UMLMenu", "label.name"),1,0,0);
-        addField(new UMLTextField2(new UMLModelElementNameDocument()),1,0,0);
+        addField(getNameTextField(),1,0,0);
 
 	addCaption(Argo.localize("UMLMenu", "label.multiplicity"),2,0,0);
         addField(new UMLMultiplicityComboBox2(new UMLStructuralFeatureMultiplicityComboBoxModel(), ActionSetStructuralFeatureMultiplicity.SINGLETON),2,0,0);
