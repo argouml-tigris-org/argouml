@@ -143,12 +143,63 @@ public class JavaRecognizer extends antlr.LLkParser
 	void setModeller(Modeller modeller) {
 	    _modeller = modeller;
         }
+	
+        // A reference to the last added MOperation (here: method)
+        private Object _currentMethod = null;
+
+	/**
+	 * get reference to the last added MOperation (here: method)
+	 */
+	Object getMethod() {
+	    return _currentMethod;
+	}
+
+	/**
+	 * set reference to the last added MOperation (here: method)
+	 */
+	void setMethod(Object method) {
+	    _currentMethod = method;
+        }
+
+        // A method body
+        private String _methodBody = null;
+
+	/**
+	 * get last method body
+	 */
+	String getBody() {
+	    return _methodBody;
+	}
+
+	/**
+	 * set last method body
+	 */
+	void setBody(String body) {
+	    _methodBody = body;
+        }
 
 	// A flag to indicate if we track the tokens for a expression.
 	private boolean      _trackExpression  = false;	
 
+	// A flag to indicate if we are inside a compoundStatement
+	private boolean      _inCompoundStatement  = false;	
+
 	// A string buffer for the current expression.
     	private StringBuffer _expressionBuffer = new StringBuffer();   
+
+	/**
+	 * set if we are inside a compoundStatement
+	 */
+	void setIsInCompoundStatement(boolean flag) {
+	    _inCompoundStatement = flag;
+	}
+
+	/**
+	 * check if we are inside a compoundStatement
+	 */
+	boolean isInCompoundStatement() {
+	    return _inCompoundStatement;
+	}
 
 	/**
 	 * Activate the tracking of expressions.
@@ -177,13 +228,21 @@ public class JavaRecognizer extends antlr.LLkParser
             return result;
         }      
 
+	/**
+     	 * Appends to a tracked expression. (used to restore it)
+     	 */
+    	public void appendExpression(String expr) {
+            _expressionBuffer.append(expr);
+        }      
+
 	public void match(int t) throws MismatchedTokenException, TokenStreamException {
             String text = ((ArgoToken)LT(1)).getWhitespace() + LT(1).getText();
 
             super.match(t);
 
-            if(_trackExpression)
-                _expressionBuffer.append(text);
+            // '== 0' to avoid the following when backtracking
+            if(_trackExpression && inputState.guessing==0)
+                appendExpression(text);
     	}     
 
 protected JavaRecognizer(TokenBuffer tokenBuf, int k) {
@@ -1060,6 +1119,11 @@ public JavaRecognizer(ParserSharedInputState state) {
 				if ((LA(1)==IDENT) && (LA(2)==LPAREN)) {
 					ctorHead(mods);
 					compoundStatement();
+					if ( inputState.guessing==0 ) {
+						getModeller().addBodyToOperation(getMethod(),getBody());
+									 setMethod(null);
+									 setBody(null);
+					}
 				}
 				else if (((LA(1) >= LITERAL_void && LA(1) <= IDENT)) && (_tokenSet_6.member(LA(2)))) {
 					t=typeSpec();
@@ -1115,7 +1179,10 @@ public JavaRecognizer(ParserSharedInputState state) {
 						}
 						}
 						if ( inputState.guessing==0 ) {
-							getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment());
+							setMethod(getModeller().addOperation(mods, t, name.getText(), param, getJavadocComment()));
+											   getModeller().addBodyToOperation(getMethod(),getBody());
+											   setMethod(null);
+											   setBody(null);
 						}
 					}
 					else if ((LA(1)==IDENT) && (_tokenSet_7.member(LA(2)))) {
@@ -1160,8 +1227,8 @@ public JavaRecognizer(ParserSharedInputState state) {
 		param=parameterDeclarationList();
 		match(RPAREN);
 		if ( inputState.guessing==0 ) {
-			getModeller().addOperation(mods, null, 
-						name.getText(), param, getJavadocComment());
+			setMethod(getModeller().addOperation(mods, null, 
+						name.getText(), param, getJavadocComment()));
 		}
 		{
 		switch ( LA(1)) {
@@ -1184,8 +1251,14 @@ public JavaRecognizer(ParserSharedInputState state) {
 	
 	public final void compoundStatement() throws RecognitionException, TokenStreamException {
 		
+		boolean isOutestCompStat = !isInCompoundStatement();
 		
 		match(LCURLY);
+		if ( inputState.guessing==0 ) {
+			if (isOutestCompStat) {
+					   setIsInCompoundStatement(true);
+					   activateExpressionTracking();}
+		}
 		{
 		_loop96:
 		do {
@@ -1197,6 +1270,12 @@ public JavaRecognizer(ParserSharedInputState state) {
 			}
 			
 		} while (true);
+		}
+		if ( inputState.guessing==0 ) {
+			if (isOutestCompStat) {
+					   setBody(getExpression());
+					   deactivateExpressionTracking();
+					   setIsInCompoundStatement(false);}
 		}
 		match(RCURLY);
 	}
@@ -1366,6 +1445,7 @@ public JavaRecognizer(ParserSharedInputState state) {
 	public final String  varInitializer() throws RecognitionException, TokenStreamException {
 		String expression=null;
 		
+		String trackedSoFar = null;
 		
 		{
 		switch ( LA(1)) {
@@ -1373,11 +1453,19 @@ public JavaRecognizer(ParserSharedInputState state) {
 		{
 			match(ASSIGN);
 			if ( inputState.guessing==0 ) {
-				activateExpressionTracking();
+				trackedSoFar=getExpression();
+						   if (!isInCompoundStatement())
+						     activateExpressionTracking();
 			}
 			initializer();
 			if ( inputState.guessing==0 ) {
-				deactivateExpressionTracking(); expression=getExpression();
+				expression=getExpression();
+						   if (isInCompoundStatement()) {
+						     activateExpressionTracking();
+						     appendExpression(trackedSoFar);
+						     appendExpression(expression);
+						   } else
+						     deactivateExpressionTracking();
 			}
 			break;
 		}

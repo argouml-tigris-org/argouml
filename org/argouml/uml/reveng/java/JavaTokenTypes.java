@@ -1,4 +1,4 @@
-// $ANTLR 2.7.1: "java.g" -> "JavaRecognizer.java"$
+// $ANTLR 2.7.1: "java.g" -> "JavaLexer.java"$
 
 package org.argouml.uml.reveng.java;
 
