@@ -181,7 +181,7 @@ public class NotationNameImpl implements NotationName {
      */
     static {
         makeNotation("Default", null, null);
-        makeNotation("UML", "1.3", null);
+        makeNotation("UML", "1.3", Argo.lookupIconResource("UmlNotation"));
         makeNotation("Java", null, Argo.lookupIconResource("JavaNotation"));
     }
 }
