@@ -69,7 +69,7 @@ import org.tigris.gef.presentation.Handle;
  *  and connecting it to other model elements. */
 
 public class ModeCreateEdgeAndNode extends ModeCreate {
-    protected static Logger cat =
+    private static Logger LOG =
         Logger.getLogger(ModeCreateEdgeAndNode.class);
     ////////////////////////////////////////////////////////////////
     // static variables
@@ -120,6 +120,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         setArg("edgeClass", edgeClass);
         setArg("nodeClass", nodeClass);
         _postProcessEdge = post;
+        LOG.debug("postprocessing: " + _postProcessEdge);
     }
 
     ////////////////////////////////////////////////////////////////
@@ -202,7 +203,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
         // TODO: potential class cast exception
 
         if (f == null) {
-            cat.debug("make new node");
+            LOG.debug("make new node");
             Drags_To_New++;
             Object newNode = null;
             Class nodeClass = (Class) getArg("nodeClass");
@@ -210,10 +211,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 newNode = nodeClass.newInstance();
                 
             } catch (java.lang.IllegalAccessException ignore) {
-                cat.error(ignore);
+                LOG.error(ignore);
                 return;
             } catch (java.lang.InstantiationException ignore) {
-                cat.error(ignore);
+                LOG.error(ignore);
                 return;
             }
 
@@ -297,8 +298,10 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
                 // (determined by the GraphEdgeRenderer).
 
                 if (_newEdge != null) {
-                    if (_postProcessEdge)
+                    if (_postProcessEdge) {
+                        LOG.debug("postprocess edge.");
                         postProcessEdge();
+                    }
                     ce.damaged(_newItem);
                     _sourceFigNode.damage();
                     destFigNode.damage();
@@ -334,9 +337,9 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
 
                     return;
                 } else
-                    cat.warn("connection return null");
+                    LOG.warn("connection return null");
             } else
-                cat.warn("in dest node but no port");
+                LOG.warn("in dest node but no port");
         }
 
         _sourceFigNode.damage();
@@ -383,6 +386,7 @@ public class ModeCreateEdgeAndNode extends ModeCreate {
     // internal methods
 
     public void postProcessEdge() {
+        LOG.debug("postprocessing " + _newEdge);
         if (ModelFacade.isAAssociation(_newEdge)) {
             Collection conns = ModelFacade.getConnections(_newEdge);
             Iterator iter = conns.iterator();
