@@ -87,10 +87,12 @@ public class StylePanelFigInterface extends StylePanelFigNodeModelElement {
     // accessors
 
     public void refresh() {
-        _refreshTransaction = true;
-        super.refresh();
-        FigInterface ti = (FigInterface) _target;
-        _operCheckBox.setSelected(ti.isOperationVisible());
+	_refreshTransaction = true;
+	super.refresh();
+	if (_target instanceof FigInterface) {
+	    FigInterface ti = (FigInterface) _target;
+	    _operCheckBox.setSelected(ti.isOperationVisible());
+	}
         _refreshTransaction = false;
     }
 
