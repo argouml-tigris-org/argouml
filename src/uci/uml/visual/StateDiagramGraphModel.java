@@ -61,7 +61,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
    *  Also, elements from other models will have their FigNodes add a
    *  line to say what their model is. */
 
-  protected MNamespace _model;
+  protected MNamespace _namespace;
 
   /** The statemachine we are diagramming */
   protected MStateMachine _machine;
@@ -69,11 +69,11 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
   ////////////////////////////////////////////////////////////////
   // accessors
 
-  public MNamespace getNamespace() { return _model; }
+  public MNamespace getNamespace() { return _namespace; }
   public void setNamespace(MNamespace m) {
-    if (_model != null) _model.removeMElementListener(this);
-    _model = m;
-    if (_model != null) _model.addMElementListener(this);
+    if (_namespace != null) _namespace.removeMElementListener(this);
+    _namespace = m;
+    if (_namespace != null) _namespace.addMElementListener(this);
   }
 
   public MStateMachine getMachine() { return _machine; }
@@ -178,7 +178,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     _nodes.addElement(sv);
 	// needs-more-work: assumes public, user pref for default visibility?
 	if (sv.getNamespace() == null)
-		_model.addOwnedElement(sv);
+		_namespace.addOwnedElement(sv);
       // needs-more-work: assumes not nested in another composite state
       MCompositeState top = (MCompositeState) _machine.getTop();
       top.addSubvertex(sv);
@@ -199,7 +199,7 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     _edges.addElement(tr);
 	// needs-more-work: assumes public
 	if (tr.getNamespace() == null)
-		_model.addOwnedElement(tr);
+		_namespace.addOwnedElement(tr);
 	//_machine.addTransition(tr);
 	tr.setStateMachine(_machine);
     fireEdgeAdded(edge);
@@ -267,7 +267,8 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
     if (edgeClass == MTransitionImpl.class) {
       MTransition tr = new MTransitionImpl();
-      _model.addOwnedElement(tr);
+      _namespace.addOwnedElement(tr);
+	  _machine.addTransition(tr);
       tr.setSource(fromSV);
       tr.setTarget(toSV);
       addEdge(tr);

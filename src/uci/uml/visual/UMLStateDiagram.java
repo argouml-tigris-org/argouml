@@ -125,13 +125,13 @@ public class UMLStateDiagram extends UMLDiagram {
 	}
 
   public void setup(MClass m, MStateMachine sm) {
-	  MNamespace namespace = null;
-	  if (m.getNamespace() != null) namespace = m.getNamespace();
-	  else namespace = m;
+// 	  MNamespace namespace = null;
+// 	  if (m.getNamespace() != null) namespace = m.getNamespace();
+// 	  else namespace = m;
 	  
-	  super.setNamespace(namespace);
+	  setNamespace(m);
 	  StateDiagramGraphModel gm = new StateDiagramGraphModel();
-	  gm.setNamespace(namespace);
+	  gm.setNamespace(m);
 	  if (sm != null) gm.setMachine(sm);
 	  setGraphModel(gm);
 	  LayerPerspective lay = new LayerPerspective(m.getName(), gm);

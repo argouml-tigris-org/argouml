@@ -41,6 +41,7 @@ import uci.gef.*;
 import uci.graph.*;
 import uci.argo.kernel.*;
 import uci.uml.ui.*;
+import uci.uml.util.*;
 import uci.uml.generate.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -310,7 +311,7 @@ public class FigClass extends FigNodeWithCompartments {
     MClassifier cls = (MClassifier) getOwner();
     if (cls == null) return;
     //    String clsNameStr = GeneratorDisplay.Generate(cls.getName());
-    Collection strs = cls.getStructuralFeatures();
+    Collection strs = MMUtil.SINGLETON.getAttributes(cls);
     String attrStr = "";
     if (strs != null) {
 	Iterator iter = strs.iterator();
@@ -321,7 +322,7 @@ public class FigClass extends FigNodeWithCompartments {
 	      attrStr += "\n";
       }
     }
-    Collection behs = cls.getFeatures();
+    Collection behs = MMUtil.SINGLETON.getOperations(cls);
     behs.removeAll(strs);
     String operStr = "";
     if (behs != null) {
