@@ -160,7 +160,7 @@ public class Init {
   public static Critic crClassMustBeAbstract = new CrClassMustBeAbstract();
   public static Critic crReservedName = new CrReservedName();
   public static Critic crMultiInherit = new CrMultipleInheritance();
-
+  public static Critic crMultiRealization = new CrMultipleRealization();
   // code generation
   public static Critic crIllegalName = new CrIllegalName();
 
@@ -293,6 +293,7 @@ public class Init {
       Agency.register(crReservedName, stateCls);
       Agency.register(crReservedName, assocCls);
       Agency.register(crMultiInherit, classCls);
+      Agency.register(crMultiRealization, interfaceCls);
 //      Agency.register(crConflictingComposites, classifierCls);
       Agency.register(crTooManyAssoc, classCls);
       Agency.register(crTooManyAttr, classCls);
