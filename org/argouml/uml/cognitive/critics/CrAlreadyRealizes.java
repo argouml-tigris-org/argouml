@@ -47,7 +47,7 @@ public class CrAlreadyRealizes extends CrUML {
         setupHeadAndDesc();
 	addSupportedDecision(CrUML.DEC_INHERITANCE);
 	setKnowledgeTypes(Critic.KT_SEMANTICS, Critic.KT_PRESENTATION);
-	addTrigger("genealization");
+	addTrigger("genealization"); //TODO: typo?
 	addTrigger("realization");
     }
 
