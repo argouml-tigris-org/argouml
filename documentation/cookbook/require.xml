@@ -315,12 +315,16 @@ The developers of ArgoUML would like to use these new features.
 <emphasis>Interpretation:</emphasis>
 This means that we currently want to support
 JREs
-1.3.0,
 1.3.1,
-1.4.0,
-1.4.1, and
-5.0
-When a JRE compatible to Sun JRE 5.0.1 has come out for all major platforms:
+1.4.2, and
+5.0.
+(1.3.0,
+1.4.0, and
+1.4.1
+have gone through EOL).
+When a JRE compatible to 
+Java&trade; 2 Platform Standard Edition 5.1
+has come out for all major platforms:
 Solaris, Linux, Windows, Mac, 
 support for 1.3.0 and 1.3.1 will be discontinued.
 </para>
