@@ -222,6 +222,24 @@ public class StateMachinesFactory extends AbstractUmlModelFactory {
 	super.initialize(modelElement);
 	return modelElement;
     }
+    
+	/**
+	 * Builds a complete transition including all associations (statemachine the
+     * transition belongs to, source the transition is coming from, destination
+     * the transition is going to).
+	 * @param owningStatemachine
+	 * @param source
+	 * @param dest
+	 * @return MTransition
+	 */
+    public MTransition buildTransition(MStateMachine owningStatemachine, 
+        MStateVertex source, MStateVertex dest) {
+      MTransition trans = createTransition();
+      owningStatemachine.addTransition(trans);
+      trans.setSource(source);
+      trans.setTarget(dest);
+      return trans;
+    }
 
 }
 

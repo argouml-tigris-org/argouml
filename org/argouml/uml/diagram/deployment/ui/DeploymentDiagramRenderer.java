@@ -36,9 +36,11 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
 
     if (edge instanceof MAssociation) {
       MAssociation asc = (MAssociation) edge;
-      FigAssociation ascFig = new FigAssociation(asc);
+      FigAssociation ascFig = new FigAssociation(asc, lay);
+      /*
       Collection connections = asc.getConnections();
       if (connections == null) System.out.println("null connections....");
+      
 	  Object[] connArray = connections.toArray();
       MAssociationEnd fromEnd = (MAssociationEnd) connArray[0];
       MClassifier fromCls = (MClassifier) fromEnd.getType();
@@ -50,6 +52,7 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       ascFig.setSourceFigNode(fromFN);
       ascFig.setDestPortFig(toFN);
       ascFig.setDestFigNode(toFN);
+      */
       return ascFig;
     }
     if (edge instanceof MLink) {

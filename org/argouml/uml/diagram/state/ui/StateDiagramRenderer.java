@@ -117,17 +117,7 @@ public class StateDiagramRenderer implements GraphNodeRenderer, GraphEdgeRendere
     //System.out.println("making figedge for " + edge);
     if (edge instanceof MTransition) {
       MTransition tr = (MTransition) edge;
-      FigTransition trFig = new FigTransition(tr);
-      // set source and dest
-      // set any arrowheads, labels, or colors
-      MStateVertex sourceSV = tr.getSource();
-      MStateVertex destSV = tr.getTarget();
-      FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
-      FigNode destFN = (FigNode) lay.presentationFor(destSV);
-      trFig.setSourcePortFig(sourceFN);
-      trFig.setSourceFigNode(sourceFN);
-      trFig.setDestPortFig(destFN);
-      trFig.setDestFigNode(destFN);
+      FigTransition trFig = new FigTransition(tr, lay);
       return trFig;
     }
 

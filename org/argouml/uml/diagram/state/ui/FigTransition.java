@@ -29,7 +29,16 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.awt.Point;
 import java.beans.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+import java.util.Vector;
 
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -40,6 +49,7 @@ import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
 
 import org.argouml.application.api.*;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.*;
 import org.argouml.uml.generator.*;
 
@@ -48,14 +58,30 @@ public class FigTransition extends FigEdgeModelElement {
   ////////////////////////////////////////////////////////////////
   // constructors
   public FigTransition() {
+    super();
     addPathItem(_name, new PathConvPercent(this, 50, 10));
     _fig.setLineColor(Color.black);
     setDestArrowHead(new ArrowHeadGreater());
   }
+  
+  public FigTransition(Object edge, Layer lay) {
+    this();
+    if (edge instanceof MTransition) {
+      MTransition tr = (MTransition)edge;
+      MStateVertex sourceSV = tr.getSource();
+      MStateVertex destSV = tr.getTarget();
+      FigNode sourceFN = (FigNode) lay.presentationFor(sourceSV);
+      FigNode destFN = (FigNode) lay.presentationFor(destSV);
+      setSourcePortFig(sourceFN);
+      setSourceFigNode(sourceFN);
+      setDestPortFig(destFN);
+      setDestFigNode(destFN);
+    }
+    setOwner(edge);
+  }
 
   public FigTransition(Object edge) {
-    this();
-    setOwner(edge);
+    this(edge, ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
   }
 
   ////////////////////////////////////////////////////////////////
@@ -84,6 +110,74 @@ public class FigTransition extends FigEdgeModelElement {
     String nameStr = Notation.generate(this, me);
     _name.setText(nameStr);
   }
+  
+/**
+ * Returns all transitions existing between the source and the destination 
+ * of this FigTransition
+ * @return Collection the collection with all the transitions in it
+ */
+  protected Vector getTransitions() {  
+    Fig dest = getDestPortFig();
+    Fig source = getSourcePortFig();
+    if (dest != null && source != null) {
+        MStateVertex destOwner = (MStateVertex)dest.getOwner();
+        MStateVertex sourceOwner = (MStateVertex)source.getOwner();
+        Set set = new HashSet();
+        set.addAll(destOwner.getOutgoings());
+        set.addAll(destOwner.getIncomings());
+        set.addAll(sourceOwner.getOutgoings());
+        set.addAll(sourceOwner.getIncomings());
+        Vector retVector = new Vector();
+        retVector.addAll(set);
+        return retVector;                  
+    }
+    return new Vector(); // return an empty vector to prevent nullpointers.
+    
+  }
+  
+  protected int[] flip(int[] Ps) {
+    int[] r = new int[Ps.length];
+    for (int i = Ps.length; i == 0; i--) {
+        r[Ps.length-i] = Ps[i];
+    }
+    return r;
+  }
+    
+  protected void updateRoute() {
+    
+    // first see if there are transitions the other way around.
+    List transitions = new ArrayList();
+    transitions.addAll(getTransitions());
+    transitions.remove(getOwner());
+    if (!transitions.isEmpty()) {
+        // we have to find all transitions that have equal points
+        int[] xs = getXs();
+        int[] ys = getYs();
+        for (int i = 0; i < xs.length; i++) {
+            System.out.println("Point " + i + " x coor: " + xs[i]);
+            System.out.println("Point " + i + " y coor: " + ys[i]);
+        }
+        for (int i = 0; i < transitions.size(); i++) {
+            FigEdge fig = ((FigEdge)getLayer().presentationFor(transitions.get(i)));
+            if ((xs.equals(fig.getXs()) && ys.equals(fig.getYs())) || (xs.equals(flip(fig.getXs())) && ys.equals(flip(fig.getYs())))) {
+                Point startPoint = getFirstPoint();
+                Point endPoint = getLastPoint();
+                 
+                int x = (int)Math.round(Math.abs((startPoint.getX()-endPoint.getX())/2) + Math.min(startPoint.getX(), endPoint.getX()));
+                int y = (int)Math.round(Math.abs((startPoint.getY()-endPoint.getY())/2) + Math.min(startPoint.getY(), endPoint.getY()));
+                insertPoint(1, x, y);
+            }
+        }
+    }
+  }
+
+	/**
+	 * @see org.tigris.gef.presentation.FigEdge#computeRoute()
+	 */
+	public void computeRoute() {
+		super.computeRoute();
+        updateRoute();
+	}
 
 } /* end class FigTransition */
 
