@@ -30,9 +30,6 @@ import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import org.argouml.uml.ui.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
-
-import org.tigris.gef.util.Util;
 
 public class PropPanelClass extends PropPanelClassifier {
 
@@ -40,11 +37,9 @@ public class PropPanelClass extends PropPanelClassifier {
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelClass() {
-    super("Class Properties",2);
+    super("Class",_classIcon, 3);
 
     Class mclass = MClass.class;
-    Font smallFont = MetalLookAndFeel.getSubTextFont();
-
 
     //
     //   this will cause the components on this page to be notified
@@ -54,92 +49,51 @@ public class PropPanelClass extends PropPanelClassifier {
         MParameter.class,MAttribute.class,MAssociation.class,MClassifier.class };
     setNameEventListening(namesToWatch);
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    addCaption("Namespace:",3,0,0);
+    addLinkField(namespaceScroll,3,0,0);
 
-    addCaption("Extends:",2,0,0);
+    addCaption("Extends:",4,0,0);
+    addField(extendsScroll,4,0,0);
 
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    extendsList.setFont(smallFont);
-    addField(extendsList,2,0,0);
-
-    addCaption("Implements:",3,0,0);
-    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-    implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);
-    addField(implementsList,3,0,0);
-
-    addCaption("Modifiers:",4,0,0);
-
+    addCaption("Modifiers:",5,0,1);
     _modifiersPanel.add(new UMLCheckBox(localize("active"),this,new UMLReflectionBooleanProperty("isActive",mclass,"isActive","setActive")));
-    addField(_modifiersPanel,4,0,0);
+    addField(_modifiersPanel,5,0,0);
 
-    addCaption("Namespace:",5,0,0);
-    addLinkField(new UMLList(new UMLNamespaceListModel(this),true),5,0,0);
+    addCaption("Associations:",0,1,0);
+    addField(connectScroll,0,1,0.5);
 
-    addCaption("Derived:",6,0,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    JScrollPane derivedScroll = new JScrollPane(derivedList);
-    addField(derivedScroll,6,0,1);
+    addCaption("Implements:",1,1,0);
+    addField(implementsScroll,1,1,0.3);
 
-    addCaption("Operations:",0,1,0.25);
-    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-    opsList.setForeground(Color.blue);
-    opsList.setVisibleRowCount(1);
-    opsList.setFont(smallFont);
-    JScrollPane opsScroll = new JScrollPane(opsList);
-    addField(opsScroll,0,1,0.25);
+    addCaption("Derived:",2,1,0);
+    addField(derivedScroll,2,1,0.2);
 
-    addCaption("Attributes:",1,1,0.25);
-    JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
-    attrList.setForeground(Color.blue);
-    attrList.setVisibleRowCount(1);
-    attrList.setFont(smallFont);
-    JScrollPane attrScroll= new JScrollPane(attrList);
-    addField(attrScroll,1,1,0.25);
+    addCaption("Operations:",0,2,0.4);
+    addField(opsScroll,0,2,0.4);
 
-    addCaption("Associations:",2,1,0.25);
-    JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-    connectList.setForeground(Color.blue);
-    connectList.setVisibleRowCount(1);
-    connectList.setFont(smallFont);
-    addField(new JScrollPane(connectList),2,1,0.25);
+    addCaption("Attributes:",1,2,0.4);
+    addField(attrScroll,1,2,0.4);
 
+    addCaption("Owned Elements:",2,2,0.2);
+    addField(innerScroll,2,2,0.2);
 
-
-    addCaption("Owned Elements:",3,1,0.25);
-    JList innerList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
-    innerList.setForeground(Color.blue);
-    innerList.setVisibleRowCount(1);
-    innerList.setFont(smallFont);
-    addField(new JScrollPane(innerList),3,1,0.25);
-
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete class"),"removeElement",null);
-    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
+    //does this make sense??    new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
+    //new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+    //new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    //does this make sense??    new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_innerClassIcon,localize("Add inner class"),"addInnerClass",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete class"),"removeElement",null);
 
   }
 

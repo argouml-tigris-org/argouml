@@ -1444,6 +1444,11 @@ class ActionSequenceDiagram extends UMLChangeAction {
       Object target = ProjectBrowser.TheInstance.getDetailsTarget();
       MNamespace ns = p.getCurrentNamespace();
       if (target instanceof MModel) ns = (MNamespace) target;
+      /*
+	while (ns.getNamespace() != null) {
+	  ns = ns.getNamespace();
+      }
+      */
       Diagram d  = new UMLSequenceDiagram(ns);
       p.addMember(d);
       ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
@@ -1452,6 +1457,8 @@ class ActionSequenceDiagram extends UMLChangeAction {
     catch (PropertyVetoException pve) { }
     super.actionPerformed(ae);
   }
+
+    
 }  /* end class ActionSequenceDiagram */
 
 ////////////////////////////////////////////////////////////////
@@ -1550,7 +1557,7 @@ class ActionAddInternalTrans extends UMLChangeAction {
     Object target = pb.getDetailsTarget();
     if (!(target instanceof MState)) return;
     MState st = (MState) target;
-	MTransition t = new MTransitionImpl();
+    /*	MTransition t = new MTransitionImpl();
 	t.setSource(st);
 	t.setTarget(st);
 	MStateMachine sm = (MStateMachine)st.getStateMachine();
@@ -1567,7 +1574,7 @@ class ActionAddInternalTrans extends UMLChangeAction {
 	MActionSequence as = new MActionSequenceImpl();
 	as.setName("actions");
 	t.setEffect(as);
-	t.setState(st);
+	t.setState(st);*/
 	super.actionPerformed(ae);
   }
   public boolean shouldBeEnabled() {
@@ -1638,13 +1645,8 @@ class ActionAddAttribute extends UMLChangeAction {
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
-	MClassifier intType = p.findType("int");
-	MAttribute attr = new MAttributeImpl();
-	attr.setName("newAttr");
-	attr.setType(intType);
-	attr.setInitialValue(new MExpression("Java", "0"));
-	attr.setVisibility(MVisibilityKind.PUBLIC);
-	cls.addFeature(attr);
+
+	MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
 	super.actionPerformed(ae);
     }
 
@@ -1662,20 +1664,14 @@ class ActionAddOperation extends UMLChangeAction {
 
     public ActionAddOperation() { super("Add Operation"); }
 
-    public void actionPerformed(ActionEvent ae) {
+    public void actionPerformed(ActionEvent ae) {	
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	Project p = pb.getProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
+
 	MClassifier cls = (MClassifier) target;
-	MClassifier voidType = p.findType("void");
-	MOperation oper = new MOperationImpl();
-	MParameter returnParameter = new MParameterImpl();
-	returnParameter.setKind(MParameterDirectionKind.RETURN);
-	oper.addParameter(returnParameter);
-	oper.setName("newOperation");
-	oper.setVisibility(MVisibilityKind.PUBLIC);
-	cls.addFeature(oper);
+	MOperation oper=MMUtil.SINGLETON.buildOperation(cls);
 	super.actionPerformed(ae);
     }
     public boolean shouldBeEnabled() {
@@ -1688,59 +1684,41 @@ class ActionAddOperation extends UMLChangeAction {
 class ActionAddMessage extends UMLChangeAction {
 	public ActionAddMessage() { super("Add Message"); }
 
-	public void actionPerformed(ActionEvent ae) {
-		ProjectBrowser pb = ProjectBrowser.TheInstance;
-		Object target = pb.getDetailsTarget();
-		Object d = pb.getTarget();
-		if (!(d instanceof UMLCollaborationDiagram)) return;
+        public void actionPerformed(ActionEvent ae) {
+	    ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    Object target = pb.getDetailsTarget();
+	    Object d = pb.getTarget();
+	
+	    if (!(target instanceof MAssociationRole)) return;
+	    MAssociationRole ar = (MAssociationRole) target;
+
+	    String nextStr="";
+	    if (d instanceof UMLCollaborationDiagram){
 		UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
-		if (!(target instanceof MAssociationRole)) return;
-		MAssociationRole ar = (MAssociationRole) target;
+		nextStr = "" + (cd.getNumMessages() + 1);
+	    }
+	    
+	    MMessage msg=MMUtil.SINGLETON.buildMessage(ar,nextStr);
 
-		Editor ce = Globals.curEditor();
-		GraphModel gm = ce.getGraphModel();
-		GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-		Layer lay = ce.getLayerManager().getActiveLayer();
-		SelectionManager sm = ce.getSelectionManager();
-		Vector figs = sm.selections();
-		Selection cf = (Selection) figs.firstElement();
-		FigEdge curFig = (FigEdge) cf.getContent();
-		Point center = curFig.center();
-
-		String nextStr = "" + (cd.getNumMessages() + 1);
-		MMessage msg = new MMessageImpl();
-		msg.setName(nextStr);
-		Collection ascEnds = ar.getConnections();
-
-		if (ascEnds.size() != 2 ) return;
-		Iterator iter = ascEnds.iterator();
-		MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
-		MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
-
-		// by default the "first" Classifierrole is the Sender,
-		// should be configurable in PropPanelMessage!
-		MClassifierRole crSrc = (MClassifierRole)aer1.getType();
-		MClassifierRole crDst = (MClassifierRole)aer2.getType();
-		msg.setSender(crSrc);
-		msg.setReceiver(crDst);
-		MUninterpretedAction ua = new MUninterpretedActionImpl();
-		msg.setAction(ua);
-		ar.addMessage(msg);
-		MCollaboration collab = (MCollaboration) ar.getNamespace();
-		// collab.addOwnedElement(msg);
-		Collection interactions = collab.getInteractions();
-		// at the moment there can be only one Interaction per Collaboration
-		Iterator iter2 = interactions.iterator();
-		((MInteraction)iter2.next()).addMessage(msg);
-		FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
-		Collection messages = ar.getMessages();
-		int size = messages.size();
-		int percent = 15 + size*10;
-		if (percent > 100) percent = 100;
-		curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
-		curFig.updatePathItemLocations();
-		lay.add(pers);
-		super.actionPerformed(ae);
+	    Editor ce = Globals.curEditor();
+	    GraphModel gm = ce.getGraphModel();
+	    GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
+	    Layer lay = ce.getLayerManager().getActiveLayer();
+	    SelectionManager sm = ce.getSelectionManager();
+	    Vector figs = sm.selections();
+	    Selection cf = (Selection) figs.firstElement();
+	    FigEdge curFig = (FigEdge) cf.getContent();
+	    Point center = curFig.center();
+	
+	    FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
+	    Collection messages = ar.getMessages();
+	    int size = messages.size();
+	    int percent = 15 + size*10;
+	    if (percent > 100) percent = 100;
+	    curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
+	    curFig.updatePathItemLocations();
+	    lay.add(pers);
+	    super.actionPerformed(ae);
 	}
 
 	public boolean shouldBeEnabled() {

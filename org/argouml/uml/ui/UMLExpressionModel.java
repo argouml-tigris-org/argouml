@@ -156,11 +156,12 @@ public final class UMLExpressionModel  {
     
     private void setExpression(String lang,String body) {
         try {
-            MExpression newExpression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
+            //MExpression newExpression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
+            _expression = (MExpression) _constructor.newInstance(new Object[] { lang,body });
             
             Object target = _container.getTarget();
             if(target != null) {
-                _setMethod.invoke(target,new Object[] { newExpression});
+                _setMethod.invoke(target,new Object[] { _expression});
             }
         }
         catch(Exception e) {

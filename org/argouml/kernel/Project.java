@@ -32,6 +32,7 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.xmi.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 import org.tigris.gef.base.*;
 import org.tigris.gef.presentation.*;
@@ -726,6 +727,18 @@ public class Project implements java.io.Serializable {
 	  if (obj instanceof MStateVertex) {
 		  // System.out.println("trashInternal: "+obj);
 		  MStateVertex me = (MStateVertex) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  if (obj instanceof MObject) {
+		  // System.out.println("trashInternal: "+obj);
+		  MObject me = (MObject) obj;
+		  // me.remove();
+		  MMUtil.SINGLETON.remove(me);
+	  }
+	  if (obj instanceof MStimulus) {
+		  // System.out.println("trashInternal: "+obj);
+		  MStimulus me = (MStimulus) obj;
 		  // me.remove();
 		  MMUtil.SINGLETON.remove(me);
 	  }

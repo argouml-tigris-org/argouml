@@ -29,16 +29,18 @@ import ru.novosoft.uml.*;
 import java.awt.event.*;
 import java.awt.*;
 import ru.novosoft.uml.foundation.core.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 public class UMLList extends JList implements UMLUserInterfaceComponent, MouseListener {
 
     private UMLModelElementListModel _umlListModel;
     private boolean _navigate;
-    
+
     public UMLList(UMLModelElementListModel listModel,boolean navigate) {
         super(listModel);
         _umlListModel = listModel;
         _navigate = navigate;
+        setFont(MetalLookAndFeel.getSubTextFont());
 
         if(navigate) {
             addMouseListener(this);
@@ -47,40 +49,49 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
 
     public void targetChanged() {
         _umlListModel.targetChanged();
+        updateUI();
     }
 
     public void targetReasserted() {
+        _umlListModel.targetReasserted();
+        updateUI();
     }
-    
+
     public void roleAdded(final MElementEvent event) {
         _umlListModel.roleAdded(event);
+        updateUI();
     }
-    
+
     public void recovered(final MElementEvent event) {
         _umlListModel.recovered(event);
+        updateUI();
     }
-    
+
     public void roleRemoved(final MElementEvent event) {
         _umlListModel.roleRemoved(event);
+        updateUI();
     }
-    
+
     public void listRoleItemSet(final MElementEvent event) {
         _umlListModel.listRoleItemSet(event);
+        updateUI();
     }
-    
+
     public void removed(final MElementEvent event) {
         _umlListModel.removed(event);
+        updateUI();
     }
     public void propertySet(final MElementEvent event) {
-        _umlListModel.propertySet(event);
+          _umlListModel.propertySet(event);
+          updateUI();
     }
-   
+
     public void mouseReleased(final MouseEvent event) {
         if(event.isPopupTrigger()) {
             showPopup(event);
         }
     }
-    
+
     public void mouseEntered(final MouseEvent event) {
         if(event.isPopupTrigger()) {
             showPopup(event);
@@ -90,16 +101,16 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
     public void mouseClicked(final MouseEvent event) {
         if(event.isPopupTrigger()) {
             showPopup(event);
-        }            
+        }
         else {
             int mods = event.getModifiers();
             if(mods == InputEvent.BUTTON1_MASK) {
                 int index = locationToIndex(event.getPoint());
                 _umlListModel.open(index);
             }
-        }        
+        }
     }
-    
+
     public void mousePressed(final MouseEvent event) {
         if(event.isPopupTrigger()) {
             showPopup(event);
@@ -111,7 +122,7 @@ public class UMLList extends JList implements UMLUserInterfaceComponent, MouseLi
             showPopup(event);
         }
     }
-    
+
     private final void showPopup(MouseEvent event) {
         Point point = event.getPoint();
         int index = locationToIndex(point);

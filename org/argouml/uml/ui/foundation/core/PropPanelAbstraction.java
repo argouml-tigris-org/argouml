@@ -29,42 +29,43 @@ import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
 
-public class PropPanelAbstraction extends PropPanel {
+public class PropPanelAbstraction extends PropPanelModelElement {
 
   ////////////////////////////////////////////////////////////////
   // constructors
 
     public PropPanelAbstraction() {
-        super("Abstraction Properties",2);
+        super("Abstraction",_realizationIcon, 2);
 
         Class mclass = MDependency.class;
 
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+        addCaption("Name:",1,0,0);
+        addField(nameField,1,0,0);
 
+        addCaption("Stereotype:",2,0,0);
+        addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,1,0,0);
-
-
-        addCaption("Namespace:",2,0,1);
-        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        namespaceList.setBackground(getBackground());
-        namespaceList.setForeground(Color.blue);
-        addField(namespaceList,2,0,0);
+        addCaption("Namespace:",3,0,1);
+        addField(namespaceScroll,3,0,0);
 
         addCaption("Suppliers:",0,1,0.5);
         JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);
         suppliersList.setForeground(Color.blue);
         suppliersList.setVisibleRowCount(1);
-        addField(new JScrollPane(suppliersList),1,1,0.5);
+        addField(new JScrollPane(suppliersList),0,1,0.5);
 
         addCaption("Clients:",1,1,0.5);
         JList clientsList = new UMLList(new UMLReflectionListModel(this,"client",true,"getClients","setClients",null,null),true);
         clientsList.setForeground(Color.blue);
         clientsList.setVisibleRowCount(1);
         addField(new JScrollPane(clientsList),1,1,0.5);
+
+
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association"),"removeElement",null);
+
     }
 
     public Collection getSuppliers() {

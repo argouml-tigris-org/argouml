@@ -42,135 +42,71 @@ import org.tigris.gef.util.Util;
 
 public class PropPanelPackage extends PropPanelNamespace {
 
-  private static ImageIcon _classIcon = Util.loadIconResource("Class");
-  private static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
-  private static ImageIcon _dataTypeIcon = Util.loadIconResource("DataType");
-  private static ImageIcon _packageIcon = Util.loadIconResource("Package");
-  private static ImageIcon _stereotypeIcon = Util.loadIconResource("Stereotype");
-  private static ImageIcon _actorIcon = Util.loadIconResource("Actor");
-  private static ImageIcon _useCaseIcon = Util.loadIconResource("UseCase");
-  protected static ImageIcon _associationIcon = Util.loadIconResource("Association");
-  protected static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
-  protected static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
-
-
-//  private static ImageIcon _generalizationIcon = Util.loadIconResource("Generalization");
-//  private static ImageIcon _realizationIcon = Util.loadIconResource("Realization");
-
-
     protected PropPanelButton _stereotypeButton;
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelPackage() {
-    super("Package Properties",2);
+      super("Package", _packageIcon,2);
 
     Class mclass = MPackage.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(stereotypeBox,1,0,0);
-
-    addCaption("Extends:",2,0,0);
-
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(extendsList,2,0,0);
-
-    addCaption("Implements:",3,0,0);
-    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-    implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);
-    addField(implementsList,3,0,0);
+    addCaption("Namespace:",3,0,0);
+    addField(namespaceScroll,3,0,0);
 
     addCaption("Modifiers:",4,0,0);
-
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
     addField(modifiersPanel,4,0,0);
 
-    addCaption("Namespace:",5,0,0);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,5,0,0);
-
-    addCaption("Derived:",6,0,1);
+    addCaption("Derived:",5,0,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
     derivedList.setForeground(Color.blue);
     derivedList.setVisibleRowCount(1);
+    derivedList.setFont(smallFont);
     JScrollPane derivedScroll = new JScrollPane(derivedList);
-    addField(derivedScroll,6,0,1);
+    addField(derivedScroll,5,0,0);
 
-//    double ygrowth = 0.2;
-//    addCaption("Packages:",0,1,ygrowth);
-//    JList packList = new UMLList(new UMLPackagesListModel(this,"ownedElement",true),true);
-//    packList.setForeground(Color.blue);
-//    packList.setVisibleRowCount(1);
-//    addField(new JScrollPane(packList),0,1,ygrowth);
+    addCaption("Extends:",0,1,0);
+    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
+    extendsList.setBackground(getBackground());
+    extendsList.setForeground(Color.blue);
+    addField(new JScrollPane(extendsList),0,1,0);
 
-//    addCaption("Classifiers:",1,1,ygrowth);
-//    JList classList = new UMLList(new UMLClassifiersListModel(this,"ownedElement",true),true);
-//    classList.setForeground(Color.blue);
-//    classList.setVisibleRowCount(1);
-//    addField(new JScrollPane(classList),1,1,ygrowth);
+    addCaption("Implements:",1,1,0);
+    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
+    implementsList.setBackground(getBackground());
+    implementsList.setForeground(Color.blue);
+    addField(new JScrollPane(implementsList),1,1,0);
 
-//    addCaption("Associations:",2,1,ygrowth);
-//    JList assocList = new UMLList(new UMLAssociationsListModel(this,"ownedElement",true),true);
-//    assocList.setForeground(Color.blue);
-//    assocList.setVisibleRowCount(1);
-//    addField(new JScrollPane(assocList),2,1,ygrowth);
-
-//    addCaption("Generalizations:",3,1,ygrowth);
-//    JList genList = new UMLList(new UMLGeneralizationsListModel(this,"ownedElement",true),true);
-//    genList.setForeground(Color.blue);
-//    genList.setVisibleRowCount(1);
-//    addField(new JScrollPane(genList),3,1,ygrowth);
-
-//    addCaption("Stereotypes:",4,1,ygrowth);
-//    JList stereoList = new UMLList(new UMLStereotypesListModel(this,"ownedElement",true),true);
-//    stereoList.setForeground(Color.blue);
-//    stereoList.setVisibleRowCount(1);
-//    addField(new JScrollPane(stereoList),4,1,ygrowth);
-
-    addCaption("Owned Elements",0,1,1);
+    addCaption("Owned Elements",2,1,1);
     UMLOwnedElementRootNode root = new UMLOwnedElementRootNode(this,"ownedElement",false);
     UMLTreeModel model = new UMLTreeModel(this,root);
     root.setModel(model);
-    addField(new JScrollPane(new UMLTree(this,model,true)),0,1,1);
+    addField(new JScrollPane(new UMLTree(this,model,true)),2,1,1);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_classIcon,localize("Add class"),"addClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("Add interface"),"addInterface",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("Add datatype"),"addDataType",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_classIcon,localize("Add class"),"addClass",null);
+    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("Add interface"),"addInterface",null);
+    new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("Add datatype"),"addDataType",null);
     _stereotypeButton = new PropPanelButton(this,buttonPanel,_stereotypeIcon,localize("Add stereotype"),"addStereotype",null);
     _stereotypeButton.setEnabled(false);
-
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete package"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_actorIcon,localize("Add actor"),"addActor",null);
     new PropPanelButton(this,buttonPanel,_useCaseIcon,localize("Add use case"),"addUseCase",null);
     new PropPanelButton(this,buttonPanel,_packageIcon,localize("Add subpackage"),"addPackage",null);
-    new PropPanelButton(this,buttonPanel,_associationIcon,localize("Add association"),"addAssociation",null);
     new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-
-//    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-//    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete package"),"removeElement",null);
 
 
   }

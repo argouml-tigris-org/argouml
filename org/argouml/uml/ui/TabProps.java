@@ -76,7 +76,7 @@ implements TabModelTarget, NavigationListener {
   }
 
   public TabProps() {
-    this("Properties", "props.PropPanel");
+    this("Properties", "ui.PropPanel");
   }
 
   /** Preload property panels that are commonly used within the first
@@ -89,7 +89,9 @@ implements TabModelTarget, NavigationListener {
     _panels.put(FigText.class, new PropPanelString());
     _panels.put(MModelImpl.class, new PropPanelModel());
     _panels.put(MUseCaseImpl.class, new PropPanelUseCase());
-
+    //important: MStateImpl corresponds to PropPanelSimpleState not to PropPanelState!!
+    //otherwise, spawing will not ne successful!!
+    _panels.put(MStateImpl.class, new PropPanelSimpleState());
 
     org.argouml.application.Main.addPostLoadAction(new InitPanelsLater(_panels,this));
   }
@@ -206,6 +208,7 @@ implements TabModelTarget, NavigationListener {
       try { p = (TabModelTarget) panelClass.newInstance(); }
       catch (IllegalAccessException ignore) { return null; }
       catch (InstantiationException ignore) { return null; }
+      catch (Exception ignore) { return null; }
       _panels.put(targetClass, p);
     }
     //else System.out.println("found props for " + targetClass.getName());
@@ -213,18 +216,31 @@ implements TabModelTarget, NavigationListener {
   }
 
   public Class panelClassFor(Class targetClass) {
-    String pack = "org.argouml.ui";
-    String base = getClassBaseName();
+    String panelClassName="";
+    String pack = "org.argouml.uml";
+    String base = "";
+
     String targetClassName = targetClass.getName();
     int lastDot = targetClassName.lastIndexOf(".");
+
+    //remove "ru.novosoft.uml"
+    if (lastDot>0)
+        base=targetClassName.substring(16, lastDot+1);
+    else
+        base=targetClassName.substring(16);
+
     if (lastDot > 0) targetClassName = targetClassName.substring(lastDot+1);
     if (targetClassName.startsWith("M"))
-      targetClassName = targetClassName.substring(2);
+      targetClassName = targetClassName.substring(1); //remove M
+    if (targetClassName.endsWith("Impl"))
+      targetClassName = targetClassName.substring(0,targetClassName.length()-4); //remove Impl
     try {
-      String panelClassName = pack + "." + base + targetClassName;
+      panelClassName = pack + ".ui." + base + "PropPanel" + targetClassName;
       return Class.forName(panelClassName);
     }
-    catch (ClassNotFoundException ignore) { }
+    catch (ClassNotFoundException ignore) {
+      //System.out.println("Class "+panelClassName+" for Panel not found!");
+    }
     return null;
   }
 
@@ -283,7 +299,9 @@ class InitPanelsLater implements Runnable {
             //    _panels.put(Realization.class, new PropPanelRealization());
             // Realization in nsuml!!!
             _panels.put(UMLStateDiagram.class, new PropPanelUMLStateDiagram());
-        _panels.put(MStateImpl.class, new PropPanelState());
+        _panels.put(MStateImpl.class, new PropPanelSimpleState());
+        _panels.put(MCompositeStateImpl.class, new PropPanelCompositeState());
+        _panels.put(MFinalStateImpl.class, new PropPanelFinalState());
         _panels.put(String.class, new PropPanelString());
         _panels.put(MTransitionImpl.class, new PropPanelTransition());
         //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
@@ -295,12 +313,13 @@ class InitPanelsLater implements Runnable {
         _panels.put(MPackageImpl.class, new PropPanelPackage());
         _panels.put(MAbstractionImpl.class, new PropPanelAbstraction());
         _panels.put(MGuardImpl.class,new PropPanelGuard());
+        _panels.put(MCallEventImpl.class,new PropPanelCallEvent());
+	_panels.put(MCallActionImpl.class,new PropPanelCallAction());
     }
     catch(Exception e) {
         System.out.println(e.toString() + " in InitPanelsLater.run()");
         e.printStackTrace();
     }
-    //_panels.put(MUseCaseImpl.class, new PropPanelUseCase());
 
     Iterator iter = _panels.values().iterator();
     Object panel;

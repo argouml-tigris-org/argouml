@@ -68,7 +68,7 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     MCompositeState m = null;
     if (encloser != null && (encloser.getOwner() instanceof MCompositeState)) {
       m = (MCompositeState) encloser.getOwner();
-    }
+     }
     else {
       ProjectBrowser pb = ProjectBrowser.TheInstance;
       if (pb.getTarget() instanceof UMLDiagram) {
@@ -81,8 +81,9 @@ public abstract class FigStateVertex extends FigNodeModelElement {
           ex.printStackTrace();
         }
       }
-    }
-    sv.setContainer(m);
+    }	
+    if (m!=null) 
+	sv.setContainer(m);
   }
 
 

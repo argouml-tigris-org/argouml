@@ -39,94 +39,62 @@ import ru.novosoft.uml.foundation.data_types.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
-
 public class PropPanelSignal extends PropPanelClassifier {
 
+
+    ////////////////////////////////////////////////////////////////
+    // contructors
     public PropPanelSignal() {
-        super("Signal Properties",2);
+        super("Signal", _signalIcon,2);
 
         Class mclass = MSignal.class;
 
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+        addCaption("Name:",1,0,0);
+        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
 
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,1,0,0);
+        addCaption("Stereotype:",2,0,0);
+        addField(stereotypeBox,2,0,0);
 
-        addCaption("Extends:",2,0,0);
+        addCaption("Extends:",3,0,0);
+	addField(extendsScroll,3,0,0);
 
-        JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-        extendsList.setBackground(getBackground());
-        extendsList.setForeground(Color.blue);
-        addField(extendsList,2,0,0);
+        addCaption("Implements:",4,0,0);
+        addField(implementsScroll,4,0,0);
 
-        addCaption("Implements:",3,0,0);
-        JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-        implementsList.setBackground(getBackground());
-        implementsList.setForeground(Color.blue);    
-        addField(implementsList,3,0,0);
+        addCaption("Modifiers:",5,0,0);
+        addField(_modifiersPanel,5,0,0);
 
-        addCaption("Modifiers:",4,0,0);
+        addCaption("Namespace:",6,0,0);
+        addField(namespaceScroll,6,0,0);
 
-        addField(_modifiersPanel,4,0,0);
-
-        addCaption("Namespace:",5,0,0);
-        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        namespaceList.setBackground(getBackground());
-        namespaceList.setForeground(Color.blue);
-        addField(namespaceList,5,0,0);
-
-        addCaption("Derived:",6,0,1);
-        JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-        //derivedList.setBackground(getBackground());
-        derivedList.setForeground(Color.blue);    
-        derivedList.setVisibleRowCount(1);
-        JScrollPane derivedScroll = new JScrollPane(derivedList,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        addField(derivedScroll,6,0,1);
+        addCaption("Derived:",7,0,1);
+        addField(derivedScroll,7,0,1);
 
         addCaption("Operations:",0,1,0.33);
-        JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-        opsList.setForeground(Color.blue);
-        opsList.setVisibleRowCount(1);
-        JScrollPane opsScroll = new JScrollPane(opsList);
         addField(opsScroll,0,1,0.33);
 
         addCaption("Attributes:",1,1,0.33);
-        JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
-        attrList.setForeground(Color.blue);
-        attrList.setVisibleRowCount(1);
-        JScrollPane attrScroll= new JScrollPane(attrList);
         addField(attrScroll,1,1,0.33);
 
         addCaption("Associations:",2,1,0.33);
-        JList connectList = new UMLList(new UMLConnectionListModel(this,null,true),true);
-        connectList.setForeground(Color.blue);
-        connectList.setVisibleRowCount(1);
-        addField(new JScrollPane(connectList),2,1,0.33);
+        addField(connectScroll,2,1,0.33);
 
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-    
-    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
-    new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
-    new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
-    new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete actor"),"removeElement",null);
-    new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
-    new PropPanelButton(this,buttonPanel,_classIcon,localize("New signal"),"newSignal",null);
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+	new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
+	new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add attribute"),"addAttribute",null);
+	//new PropPanelButton(this,buttonPanel,_addAssocIcon,localize("Add association"),"addAssociation",null);
+	//new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
+	//new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete actor"),"removeElement",null);
+	//new PropPanelButton(this,buttonPanel,_realizationIcon,localize("Add realization"),"addRealization",null);
+	new PropPanelButton(this,buttonPanel,_classIcon,localize("New signal"),"newSignal",null);
 
 
-        
     }
-    
+
     public void newSignal() {
         Object target = getTarget();
         if(target instanceof MSignal) {
@@ -146,7 +114,7 @@ public class PropPanelSignal extends PropPanelClassifier {
             baseClass.equals("GeneralizableElement") ||
             baseClass.equals("Namespace");
     }
-  
+
 
 } /* end class PropPanelSignal */
 

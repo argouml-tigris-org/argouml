@@ -71,7 +71,11 @@ public class ParserDisplay extends Parser {
 	for (int i = 0; i < oldOps.size(); i++)
 		((MOperation)oldOps.elementAt(i)).remove();
 	features.addAll(newOps);
-	cls.setFeatures(features);
+	//add features with add-Operation, so a role-added-event is generated
+	for (int i=0; i<features.size(); i++){
+	    MOperation oper=(MOperation)features.elementAt(i);
+	    cls.addFeature(oper);
+	}
   }
 
   public void parseAttributeCompartment(MClassifier cls, String s) {
@@ -92,7 +96,12 @@ public class ParserDisplay extends Parser {
 		((MAttribute)oldAttrs.elementAt(i)).remove();
 	features.removeAll(MMUtil.SINGLETON.getAttributes(cls));
 	features.addAll(newAttrs);
-	cls.setFeatures(features);
+
+	//add features with add-Operation, so a role-added-event is generated
+	for (int i=0; i<features.size(); i++){
+	    MAttribute attr=(MAttribute)features.elementAt(i);
+	    cls.addFeature(attr);
+	}
 
   }
 
@@ -318,36 +327,58 @@ public class ParserDisplay extends Parser {
   }
 
   public void parseStateBody(MState st, String s) {
-    Collection trans = new ArrayList();
-    java.util.StringTokenizer lines = new java.util.StringTokenizer(s, "\n\r");
-    while (lines.hasMoreTokens()) {
-      String line = lines.nextToken().trim();
-      if (line.startsWith("entry")) parseStateEntyAction(st, line);
-      else if (line.startsWith("exit")) parseStateExitAction(st, line);
-      else {
-		MTransition t = parseTransition(line);
-		if (t == null) continue;
-		//System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
-		trans.add(t);
-      }
-    }
-    st.setInternalTransitions(trans);
-  }
+      //remove all old transitions; needs-more-work: this should be done better!!
+      st.setEntry(null);
+      st.setExit(null);   
 
-  public void parseStateEntyAction(MState st, String s) {
+      Collection trans = new ArrayList();
+      java.util.StringTokenizer lines = new java.util.StringTokenizer(s, "\n\r");
+      while (lines.hasMoreTokens()) {
+	  String line = lines.nextToken().trim();
+	  if (line.startsWith("entry")) parseStateEntyAction(st, line);
+	  else if (line.startsWith("exit")) parseStateExitAction(st, line);
+	  else {
+	      MTransition t = parseTransition(new MTransitionImpl(), line);
+	      
+	      if (t == null) continue;
+	      //System.out.println("just parsed:" + GeneratorDisplay.Generate(t));
+	      t.setStateMachine(st.getStateMachine());
+	      t.setTarget(st);
+	      t.setSource(st);
+	      trans.add(t);
+	  }
+      }
+      
+      Vector internals = new Vector(st.getInternalTransitions());
+      Vector oldinternals = new Vector(st.getInternalTransitions());
+      internals.removeAll(oldinternals); //now the vector is empty
+      
+      // don't forget to remove old internals!
+      for (int i = 0; i < oldinternals.size(); i++)
+	  ((MTransition)oldinternals.elementAt(i)).remove();
+      internals.addAll(trans);
+      
+      st.setInternalTransitions(trans);
+  }
+    
+    public void parseStateEntyAction(MState st, String s) {
     if (s.startsWith("entry") && s.indexOf("/") > -1)
-      s = s.substring(s.indexOf("/")+1).trim();
-    st.setEntry(parseActions(s));
+	s = s.substring(s.indexOf("/")+1).trim();
+    MCallAction entryAction=(MCallAction)parseAction(s);
+    entryAction.setName("entry");
+    st.setEntry(entryAction);
   }
 
   public void parseStateExitAction(MState st, String s) {
     if (s.startsWith("exit") && s.indexOf("/") > -1)
       s = s.substring(s.indexOf("/")+1).trim();
-    st.setExit(parseActions(s));
+    MCallAction exitAction=(MCallAction)parseAction(s);
+    exitAction.setName("exit");
+    st.setExit(exitAction);
   }
 
   /** Parse a line of the form: "name: trigger [guard] / actions" */
-  public MTransition parseTransition(String s) {
+  public MTransition parseTransition(MTransition trans, String s) {
     // strip any trailing semi-colons
     s = s.trim();
     if (s.length() == 0) return null;
@@ -376,20 +407,28 @@ public class ParserDisplay extends Parser {
 
     trigger = s;
 
-//     System.out.println("name=|" + name +"|");
-//     System.out.println("trigger=|" + trigger +"|");
-//     System.out.println("guard=|" + guard +"|");
-//     System.out.println("actions=|" + actions +"|");
+    /*     System.out.println("name=|" + name +"|");
+     System.out.println("trigger=|" + trigger +"|");
+     System.out.println("guard=|" + guard +"|");
+     System.out.println("actions=|" + actions +"|");
+    */   
+    trans.setName(parseName(name));
 
-    MTransition t = new MTransitionImpl();
-    t.setName(parseName(name));
+    MEvent evt=parseEvent(trigger);
+    if (evt!=null){
+        trans.setTrigger((MCallEvent)evt);
+    }
+    MGuard g=parseGuard(guard);
+    if (g!=null){
+	g.setName("guard");
+        g.setTransition(trans);
+        trans.setGuard(g);
+    }
+    MCallAction effect=(MCallAction)parseAction(actions);
+    effect.setName("effect");
+    trans.setEffect(effect);
 
-    t.setTrigger(parseEvent(trigger));
-    t.setGuard(parseGuard(guard));
-    t.setEffect(parseActions(actions));
-
-
-    return t;
+    return trans;
   }
 
   /** Parse a line of the form: "name: base" */
@@ -421,19 +460,21 @@ public class ParserDisplay extends Parser {
       Iterator itcol = col.iterator();
       while (itcol.hasNext()) {
         MClassifier bse = (MClassifier) itcol.next();
-        cls.removeBase(bse);
+	if (bse!=null)
+	    cls.removeBase(bse);
       }
     }
 
-    while(baseTokens.hasMoreElements()){
-	String typeString = baseTokens.nextToken();
-	MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
-	cls.addBase(type);
+    if (baseTokens!=null){
+	while(baseTokens.hasMoreElements()){
+	    String typeString = baseTokens.nextToken();
+	    MClassifier type = ProjectBrowser.TheInstance.getProject().findType(typeString);
+	    if (type!=null)
+		cls.addBase(type);
+	}
     }
 
-    cls.setName(name);
-
-  }
+   }
 
   /** Parse a line of the form: "name: action" */
   public void parseMessage(MMessage mes, String s) {
@@ -491,28 +532,28 @@ public class ParserDisplay extends Parser {
   }
 
   public MAction parseAction(String s) {
-	  MAction a = new MActionImpl();
+	  MCallAction a = new MCallActionImpl();
 	  a.setScript(new MActionExpression("Java",s));
 	  return a;
   }
 
-  public MActionSequence parseActions(String s) {
+    /*  public MActionSequence parseActions(String s) {
     MActionSequence as = new MActionSequenceImpl();
     as.setName(s);
     return as;
-  }
+    }*/
 
   public MGuard parseGuard(String s) {
 	MGuard g = new MGuardImpl();
-	g.setExpression(new MBooleanExpression("bool",s));
-    return g;
+	g.setExpression(new MBooleanExpression("Java",s));
+        return g;
   }
 
   public MEvent parseEvent(String s) {
-	MSignalEvent se = new MSignalEventImpl();
-	se.setName(s);
-	se.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
-    return se;
+	MCallEvent ce = new MCallEventImpl();
+	ce.setName(s);
+	ce.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+        return ce;
   }
 
   /** Parse a line of the form: "name: base-class" */

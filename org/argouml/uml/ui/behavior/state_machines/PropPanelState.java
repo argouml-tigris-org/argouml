@@ -31,57 +31,180 @@
 package org.argouml.uml.ui.behavior.state_machines;
 
 import java.awt.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import org.argouml.uml.ui.*;
 import java.util.*;
+
+import javax.swing.*;
+
+import org.argouml.uml.ui.*;
+
+import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.state_machines.*;
 import ru.novosoft.uml.foundation.data_types.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.foundation.core.*;
 
-public class PropPanelState extends PropPanel {
+public abstract class PropPanelState extends PropPanelStateVertex {
 
-  ////////////////////////////////////////////////////////////////
-  // contructors
-    public PropPanelState() {
-        super("State Properties",2);
+    protected JScrollPane entryScroll;
+    protected JScrollPane exitScroll;
+    protected JScrollPane doScroll;
+    protected JScrollPane internalTransitionsScroll;
+    protected JList entryList;
+    protected JList exitList;
+    protected JList doList;
+    protected JList internalTransitionsList;
 
-        Class mclass = MState.class;
-    
-        addCaption("Name:",0,0,0);
-        addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    public PropPanelState(String name, int columns) {
+	this(name, null, columns);
+    }
 
-        addCaption("Stereotype:",1,0,0);
-        JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-        addField(stereotypeBox,1,0,0);
+    public PropPanelState(String name,ImageIcon icon, int columns) {
+	super(name, icon, columns);
 
-        addCaption("State Machine:",2,0,0);
-        JList stateList = new UMLList(new UMLReflectionListModel(this,"statemachine",false,"getStateMachine",null,null,null),true);
-        addLinkField(stateList,2,0,0);
-        
-        addCaption("Namespace:",3,0,1);
-        JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-        addLinkField(namespaceList,3,0,0);
-    
+        UMLModelElementListModel entryModel=new UMLReflectionListModel(this, "entry",true,"getEntryAction",null, "addEntryAction","deleteEntryAction");
+	entryModel.setUpperBound(1);
+	entryList = new UMLList(entryModel,true);
+	entryList.setForeground(Color.blue);
+	entryList.setVisibleRowCount(1);
+	entryList.setFont(smallFont);
+        entryScroll = new JScrollPane(entryList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-        addCaption("Incoming:",0,1,0);
-        addCaption("Outgoing:",1,1,1);
-    
-    
-  }
+	UMLModelElementListModel exitModel=new UMLReflectionListModel(this,"exit",true,"getExitAction",null,"addExitAction","deleteExitAction");
+	exitModel.setUpperBound(1);
+	exitList = new UMLList(exitModel,true);
+	exitList.setForeground(Color.blue);
+	exitList.setVisibleRowCount(1);
+	exitList.setFont(smallFont);
+        exitScroll = new JScrollPane(exitList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-    public MStateMachine getStateMachine() {
-        MStateMachine machine = null;
+	UMLModelElementListModel doModel=new UMLReflectionListModel(this,"doActivity",true,"getDoActivity",null,"addDoActivity","deleteExitAction");
+	doModel.setUpperBound(1);
+	doList = new UMLList(doModel,true);
+	doList.setForeground(Color.blue);
+	doList.setVisibleRowCount(1);
+	doList.setFont(smallFont);
+        doScroll = new JScrollPane(doList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+
+	UMLModelElementListModel internalTransitionsModel=new UMLReflectionListModel(this,"internalTransitions",true,"getInternalTransitions",null,"addInternalTransition",null);
+	internalTransitionsList = new UMLList(internalTransitionsModel,true);
+	internalTransitionsList.setForeground(Color.blue);
+	internalTransitionsList.setFont(smallFont);
+        internalTransitionsScroll = new JScrollPane(internalTransitionsList);
+
+    }
+
+     public MAction getEntryAction() {
+        MAction entryAction = null;
         Object target = getTarget();
         if(target instanceof MState) {
-            machine = ((MState) target).getStateMachine();
+            entryAction = ((MState) target).getEntry();
         }
-        return machine;
+        return entryAction;
+     }
+
+    public MCallAction addEntryAction(Integer index) {
+        MCallAction entryAction = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            MFactory factory=((MState) target).getFactory();
+            entryAction = factory.createCallAction();
+            entryAction.setName("entry");
+            ((MState) target).setEntry(entryAction);
+        }
+        return entryAction;
     }
 
-    protected boolean isAcceptibleBaseMetaClass(String baseClass) {
+    public void deleteEntryAction(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MState) {
+            ((MState) target).setEntry(null);
+        }
+    }
+
+    public MAction getExitAction() {
+        MAction exitAction = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            exitAction = ((MState) target).getExit();
+        }
+        return exitAction;
+     }
+
+    public MCallAction addExitAction(Integer index) {
+        MCallAction exitAction = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            MFactory factory=((MState) target).getFactory();
+            exitAction = factory.createCallAction();
+            exitAction.setName("exit");
+            ((MState) target).setExit(exitAction);
+        }
+        return exitAction;
+    }
+
+    public void deleteExitAction(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MState) {
+            ((MState) target).setExit(null);
+        }
+    }
+
+    public MAction getDoActivity() {
+        MAction doActivity = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            doActivity = ((MState) target).getDoActivity();
+        }
+        return doActivity;
+     }
+
+    public MCallAction addDoActivity(Integer index) {
+        MCallAction doActivity = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            MFactory factory=((MState) target).getFactory();
+            doActivity = factory.createCallAction();
+            doActivity.setName("do");
+            ((MState) target).setDoActivity(doActivity);
+        }
+        return doActivity;
+    }
+
+    public void deleteDoActivity(Integer index) {
+        Object target = getTarget();
+        if(target instanceof MState) {
+            ((MState) target).setDoActivity(null);
+        }
+    }
+
+    public java.util.List getInternalTransitions() {
+        java.util.Collection internals = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            internals = ((MState) target).getInternalTransitions();
+        }
+        return new Vector(internals);
+    }
+
+      public MTransition addInternalTransition(Integer index) {
+        MTransition transition = null;
+        Object target = getTarget();
+        if(target instanceof MState) {
+            MState state=(MState) target;
+            MFactory factory=((MState) target).getFactory();
+            transition = factory.createTransition();
+            transition.setName("internal");
+            transition.setSource(state);
+            transition.setTarget(state);
+            ((MState) target).addInternalTransition(transition);
+        }
+        return transition;
+    }
+
+       protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("State");
     }
-  
+
 
 
 } /* end class PropPanelState */

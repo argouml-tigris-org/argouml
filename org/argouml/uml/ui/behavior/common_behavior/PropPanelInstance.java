@@ -29,50 +29,59 @@
 // $Id$
 
 package org.argouml.uml.ui.behavior.common_behavior;
+
 import java.awt.*;
 import javax.swing.*;
+import java.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
-import org.argouml.uml.ui.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
 
+import org.argouml.uml.ui.*;
+import org.argouml.uml.ui.foundation.core.*;
 
-public class PropPanelInstance extends PropPanel {
-
-
-  ////////////////////////////////////////////////////////////////
-  // contructors
-  public PropPanelInstance() {
-    super("Instance Properties",2);
-
-    Class mclass = MInstance.class;
-
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+public class PropPanelInstance extends PropPanelModelElement {
 
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    public PropPanelInstance() {
+	super("Instance Properties",_instanceIcon,2);
+ 
+	Class mclass = MInstance.class;
+   
+	addCaption("Name:",1,0,0);
+	addField(nameField,1,0,0);
+      
+	addCaption("Classifier:",2,0,0);
+   	UMLClassifierComboBoxModel classifierModel = new UMLClassifierComboBoxModel(this,"isAcceptibleClassifier","classifier","getClassifier","setClassifier",false,MClassifier.class,true);
+	UMLComboBox clsComboBox = new UMLComboBox(classifierModel);
+   	addField(new UMLComboBoxNavigator(this,"NavClass",clsComboBox),2,0,0);
 
-    addCaption("Classifier:",2,0,0);
-    UMLComboBoxModel classifierModel = new UMLComboBoxModel(this,"isAcceptibleClassifier",
-            "classifier","getClassifier","setClassifier",false,MClassifier.class,true);
-    addField(new UMLComboBoxNavigator(this,"NavClass",new UMLComboBox(classifierModel)),2,0,0);
 
-    addCaption("Namespace:",3,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,3,0,1);
+	addCaption("Stereotype:",3,0,0);
+	addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),3,0,0);
 
+	addCaption("Namespace:",4,0,0);
+	addLinkField(namespaceScroll,4,0,0);
+
+
+	new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
+	new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
+	new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+   
+    
     //
     //   temporary
     //
-    addCaption("Related Elements",0,1,1);
-    JTree tempTree = new JTree(new Object[] { "Slots", "Links", "Stimuli [Recieved, Sent, In Arg List]" });
-    addField(tempTree,0,1,1);
+    
+	addCaption("Related Elements",0,1,1);
+	JTree tempTree = new JTree(new Object[] { "Slots", "Links", "Stimuli [Recieved, Sent, In Arg List]" });
+	addField(tempTree,0,1,1);
+    
+
+    
   }
+
+    
 
     public boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Instance");
@@ -82,23 +91,50 @@ public class PropPanelInstance extends PropPanel {
         return classifier instanceof MClassifier;
     }
 
-    public MClassifier getClassifier() {
+     public MClassifier getClassifier() {
         MClassifier classifier = null;
         Object target = getTarget();
         if(target instanceof MInstance) {
         //    UML 1.3 apparently has this a 0..n multiplicity
         //    I'll have to figure out what that means
         //            classifier = ((MInstance) target).getClassifier();
+
+	    // at the moment , we only deal with one classifier
+	    Collection col = ((MInstance)target).getClassifiers();
+	    if (col != null) {
+		Iterator iter = col.iterator();
+		if (iter != null && iter.hasNext()) {
+		    classifier = (MClassifier)iter.next();
+		}
+	    }
+		    
         }
         return classifier;
     }
 
     public void setClassifier(MClassifier element) {
         Object target = getTarget();
+	
         if(target instanceof MInstance) {
+	    MInstance inst = (MInstance)target;
 //            ((MInstance) target).setClassifier((MClassifier) element);
+
+	    // delete all classifiers
+	    Collection col = inst.getClassifiers();
+	    if (col != null) {
+		Iterator iter = col.iterator();
+		if (iter != null && iter.hasNext()) {
+		    MClassifier classifier = (MClassifier)iter.next();
+		    inst.removeClassifier(classifier);
+		}
+	    }
+	    // add classifier
+	    inst.addClassifier( element);
+
         }
     }
+
+   
 
 } /* end class PropPanelInstance */
 

@@ -23,12 +23,17 @@
 
 
 package org.argouml.uml.ui;
+
 import ru.novosoft.uml.*;
-import javax.swing.*;
 import ru.novosoft.uml.foundation.core.*;
+
+import javax.swing.*;
+
 import java.util.*;
 import java.awt.*;
 import java.lang.reflect.*;
+
+import org.argouml.uml.MMUtil;
 
 public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
 
@@ -70,17 +75,14 @@ public class UMLOperationsListModel extends UMLModelElementCachedListModel  {
         Object target = getTarget();
         if(target instanceof MClassifier) {
             MClassifier classifier = (MClassifier) target;
-            MOperation newOp = new MOperationImpl();
+            MOperation newOp = MMUtil.SINGLETON.buildOperation(classifier);
             int oldSize = getModelElementSize();
             java.util.List newOps = addElement(classifier.getFeatures(),index,newOp);
-            if(newOps == null) {
-                classifier.addFeature(newOp);
+            if(newOps == null) 
                 fireIntervalAdded(this,oldSize,oldSize);
-            }
-            else {
-                classifier.setFeatures(newOps);
+	    else 
                 fireIntervalAdded(this,index+1,index+1);
-            }
+            
             navigateTo(newOp);
         }
     }

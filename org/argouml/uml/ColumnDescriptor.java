@@ -709,6 +709,10 @@ class ColumnEntry extends ColumnDescriptor {
 	public void setValueFor(Object target, Object value) {
 		if (!(target instanceof MState)) return;
     if (!(value instanceof String)) return;
+
+
+    System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXX");
+
     MState st = (MState) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
@@ -873,7 +877,7 @@ class ColumnEffect extends ColumnDescriptor {
     MTransition tr = (MTransition) target;
     String s = (String) value;
     ParserDisplay pd = ParserDisplay.SINGLETON;
-    tr.setEffect(pd.parseActions(s));
+    tr.setEffect(pd.parseAction(s));
   }
 } /* end class ColumnEffect */
 

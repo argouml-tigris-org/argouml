@@ -33,57 +33,37 @@ import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
 
-import org.tigris.gef.util.Util;
-
-
 public class PropPanelDataType extends PropPanelClassifier {
 
-  private static ImageIcon _dataTypeIcon = Util.loadIconResource("DataType");
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelDataType() {
-    super("DataType Properties",2);
+    super("DataType", _dataTypeIcon,2);
 
     Class mclass = MDataType.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),1,0,0);
 
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
-    addCaption("Extends:",2,0,0);
+    addCaption("Extends:",3,0,0);
+    addField(extendsScroll,3,0,0);
 
-    JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
-    extendsList.setBackground(getBackground());
-    extendsList.setForeground(Color.blue);
-    addField(extendsList,2,0,0);
+    addCaption("Implements:",4,0,0);
+    addField(implementsScroll,4,0,0);
 
-    addCaption("Implements:",3,0,0);
-    JList implementsList = new UMLList(new UMLClientDependencyListModel(this,null,true),true);
-    implementsList.setBackground(getBackground());
-    implementsList.setForeground(Color.blue);
-    addField(implementsList,3,0,0);
+    addCaption("Modifiers:",5,0,0);
+    addField(_modifiersPanel,5,0,0);
 
-    addCaption("Modifiers:",4,0,0);
-    addField(_modifiersPanel,4,0,0);
+    addCaption("Namespace:",6,0,0);
+    addField(namespaceScroll,6,0,0);
 
-    addCaption("Namespace:",5,0,0);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,5,0,0);
-
-    addCaption("Derived:",6,0,1);
-    JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
-    //derivedList.setBackground(getBackground());
-    derivedList.setForeground(Color.blue);
-    derivedList.setVisibleRowCount(1);
-    JScrollPane derivedScroll = new JScrollPane(derivedList);
-    addField(derivedScroll,6,0,1);
+    addCaption("Derived:",7,0,1);
+    addField(derivedScroll,7,0,1);
 
     addCaption("Literals:",1,1,0.5);
     JList attrList = new UMLList(new UMLAttributesListModel(this,"feature",true),true);
@@ -92,39 +72,16 @@ public class PropPanelDataType extends PropPanelClassifier {
     JScrollPane attrScroll= new JScrollPane(attrList);
     addField(attrScroll,1,1,0.5);
 
-
     addCaption("Operations:",0,1,0.5);
-    JList opsList = new UMLList(new UMLOperationsListModel(this,"feature",true),true);
-    opsList.setForeground(Color.blue);
-    opsList.setVisibleRowCount(1);
-    JScrollPane opsScroll = new JScrollPane(opsList);
     addField(opsScroll,0,1,0.5);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_addOpIcon,localize("Add operation"),"addOperation",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add enumeration literal"),"addAttribute",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_generalizationIcon,localize("Add generalization"),"addGeneralization",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete class"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_dataTypeIcon,localize("New data type"),"newDataType",null);
+    new PropPanelButton(this,buttonPanel,_addAttrIcon,localize("Add enumeration literal"),"addAttribute",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete datatype"),"removeElement",null);
   }
-
-    public void addOperation() {
-        Object target = getTarget();
-        if(target instanceof MClassifier) {
-            MClassifier classifier = (MClassifier) target;
-            MOperation oper = classifier.getFactory().createOperation();
-            oper.setQuery(true);
-            classifier.addFeature(oper);
-            navigateTo(oper);
-        }
-    }
 
     public void addAttribute() {
         Object target = getTarget();

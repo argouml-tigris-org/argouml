@@ -51,7 +51,10 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
         super(icon);
         _propPanel = propPanel;
         setPreferredSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
-        setToolTipText(toolTipText);
+	setMaximumSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
+	setMinimumSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
+	setSize(new Dimension(icon.getIconWidth()+6,icon.getIconHeight()+6));
+         setToolTipText(toolTipText);
 
         Class propPanelClass = propPanel.getClass();
         Class[] noClass = {};
@@ -79,7 +82,10 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
                 try {
                     enabled = ((Boolean) _enabledMethod.invoke(_propPanel,_noArgs)).booleanValue();
                 }
-                catch(Exception e) {
+		catch(InvocationTargetException ex) {
+                    System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton");
+                }              
+		catch(Exception e) {
                     System.out.println(e.toString() + " in PropPanelButton");
                 }
             }
@@ -109,6 +115,11 @@ public class PropPanelButton extends JButton implements ActionListener, UMLUserI
           try {
               _actionMethod.invoke(_propPanel,_noArgs);
           }
+	  catch(InvocationTargetException ex) {
+	      System.out.println(ex.getTargetException().toString() + " is InvocationTargetException in PropPanelButton");
+              System.out.println("Container: " + _propPanel.getClass().getName());
+              System.out.println("ActionMethod: " + _actionMethod.toString());
+	  }              
           catch(Exception e) {
               System.out.println(e.toString() + " in PropPanelButton.actionPerformed");
               System.out.println("Container: " + _propPanel.getClass().getName());

@@ -7,8 +7,12 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 import ru.novosoft.uml.behavior.state_machines.*;
+import ru.novosoft.uml.behavior.common_behavior.*;
 
 import java.util.*;
+
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.kernel.Project;
 
 public class MMUtil {
 
@@ -23,6 +27,11 @@ public class MMUtil {
 		realizationStereo.setName("realize");
 		realizationStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
 		STANDARDS.addOwnedElement(realizationStereo);
+
+		MStereotype interfaceStereo = new MStereotypeImpl();
+		interfaceStereo.setName("interface");
+		interfaceStereo.setUUID(UUIDManager.SINGLETON.getNewUUID());
+		STANDARDS.addOwnedElement(interfaceStereo);
 	}
 
     // This method takes care about removing all unneeded transitions
@@ -93,23 +102,48 @@ public class MMUtil {
 		cls.remove();
     }
 
+ public void remove (MObject obj) {
+	Iterator linkEndIterator = (obj.getLinkEnds()).iterator();
+	while (linkEndIterator.hasNext()) {
+	    MLinkEnd le = (MLinkEnd)linkEndIterator.next();
+	    MLink link = le.getLink();
+	    if ((link.getConnections()).size() < 3)
+		link.remove();
+	    else
+		le.remove();
+	}
+	obj.remove();
+    }
+
+    public void remove (MStimulus stimulus) {
+	MLink link = stimulus.getCommunicationLink();
+	link.remove();
+	stimulus.remove();
+    }
+
+     public void remove (MLink link) {
+	link.remove();
+    }
+
     // should be moved to better standards repository!
     public MStereotype getRealizationStereotype() {
 	return (MStereotype)STANDARDS.lookup("realize");
     }
 
-	public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
-		return this.buildAssociation(c1, true, c2, true);
-	}
+    public MAssociation buildAssociation(MClassifier c1, MClassifier c2) {
+	return this.buildAssociation(c1, true, c2, true);
+    }
 
     public MAssociation buildAssociation(MClassifier c1, boolean nav1, MClassifier c2, boolean nav2) {
 		MAssociationEnd ae1 = new MAssociationEndImpl();
 		ae1.setType(c1);
 		ae1.setNavigable(nav1);
-
+		ae1.setMultiplicity(MMultiplicity.M1_1);
+	
 		MAssociationEnd ae2 = new MAssociationEndImpl();
 		ae2.setType(c2);
 		ae2.setNavigable(nav2);
+		ae2.setMultiplicity(MMultiplicity.M1_1);
 
 		MAssociation asc = new MAssociationImpl();
 		asc.addConnection(ae1);
@@ -182,6 +216,79 @@ public class MMUtil {
 		else if (client.getNamespace() != null) usage.setNamespace(client.getNamespace());
 		return usage;
 	}
+
+    public MOperation buildOperation(MClassifier cls){
+	//build the default operation
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = pb.getProject();
+	MClassifier voidType = p.findType("void");
+
+	MParameter returnParameter = new MParameterImpl();
+	returnParameter.setKind(MParameterDirectionKind.RETURN);
+	returnParameter.setType(voidType);
+	returnParameter.setName("return");
+
+	MOperation oper = new MOperationImpl();
+	oper.addParameter(returnParameter);
+	oper.setName("newOperation");
+	oper.setVisibility(MVisibilityKind.PUBLIC);
+
+	cls.addFeature(oper);
+	return oper;
+    }
+
+
+    public MAttribute buildAttribute(MClassifier cls){
+	//build the default operation
+	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	Project p = pb.getProject();
+	MClassifier intType = p.findType("int");
+	MAttribute attr = cls.getFactory().createAttribute();
+	attr.setName("newAttr");
+	attr.setType(intType);
+	attr.setVisibility(MVisibilityKind.PUBLIC);
+
+	cls.addFeature(attr);
+	return attr;
+    }
+
+    public MMessage buildMessage(MAssociationRole ar){
+	return buildMessage(ar, "");
+    }
+
+    public MMessage buildMessage(MAssociationRole ar,String sequenceNumber){
+
+	MMessage msg = new MMessageImpl();
+	msg.setName(sequenceNumber);
+	Collection ascEnds = ar.getConnections();
+
+	if (ascEnds.size() != 2 ) return null;
+	Iterator iter = ascEnds.iterator();
+	MAssociationEndRole aer1 = (MAssociationEndRole)iter.next();
+	MAssociationEndRole aer2 = (MAssociationEndRole)iter.next();
+	
+	// by default the "first" Classifierrole is the Sender,
+	// should be configurable in PropPanelMessage!
+	MClassifierRole crSrc = (MClassifierRole)aer1.getType();
+	MClassifierRole crDst = (MClassifierRole)aer2.getType();
+	msg.setSender(crSrc);
+	msg.setReceiver(crDst);
+
+	MCallAction action = new MCallActionImpl();
+	action.setNamespace(ProjectBrowser.TheInstance.getProject().getModel());
+	action.setName("action"+sequenceNumber);
+	msg.setAction(action);
+
+	ar.addMessage(msg);
+	MCollaboration collab = (MCollaboration) ar.getNamespace();
+	// collab.addOwnedElement(msg);
+	Collection interactions = collab.getInteractions();
+	// at the moment there can be only one Interaction per Collaboration
+	Iterator iter2 = interactions.iterator();
+	((MInteraction)iter2.next()).addMessage(msg);
+	
+	return msg;
+    }
 
 	/** This method returns all Interfaces of which this class is a realization.
 	 * @param cls  the class you want to have the interfaces for

@@ -34,46 +34,37 @@ import java.awt.event.*;
 import org.argouml.uml.ui.foundation.core.*;
 import ru.novosoft.uml.foundation.core.*;
 
-
-import org.tigris.gef.util.Util;
-
 public class PropPanelStereotype extends PropPanelModelElement {
-
-  private static ImageIcon _stereotypeIcon = Util.loadIconResource("Stereotype");
-
 
   ////////////////////////////////////////////////////////////////
   // contructors
   public PropPanelStereotype() {
-    super("Class Properties",2);
+    super("Stereotype", _stereotypeIcon ,2);
 
     Class mclass = MStereotype.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
-    addCaption("Base Class:",1,0,0);
+    addCaption("Base Class:",2,0,0);
     JComboBox baseClass = new UMLMetaclassComboBox(this,"baseClass","getBaseClass","setBaseClass");
-    addField(baseClass,1,0,0);
+    addField(baseClass,2,0,0);
 
-    addCaption("Extends:",2,0,0);
+    addCaption("Namespace:",3,0,0);
+    addField(namespaceScroll,3,0,0);
+
+    addCaption("Extends:",4,0,0);
     JList extendsList = new UMLList(new UMLGeneralizationListModel(this,"generalization",true),true);
     extendsList.setBackground(getBackground());
     extendsList.setForeground(Color.blue);
-    addField(extendsList,2,0,0);
+    addField(new JScrollPane(extendsList),4,0,0);
 
-    addCaption("Modifiers:",3,0,0);
+    addCaption("Modifiers:",5,0,1);
     JPanel modifiersPanel = new JPanel(new GridLayout(0,3));
     modifiersPanel.add(new UMLCheckBox(localize("abstract"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));
     modifiersPanel.add(new UMLCheckBox(localize("final"),this,new UMLReflectionBooleanProperty("isLeaf",mclass,"isLeaf","setLeaf")));
     modifiersPanel.add(new UMLCheckBox(localize("root"),this,new UMLReflectionBooleanProperty("isRoot",mclass,"isRoot","setRoot")));
-    addField(modifiersPanel,3,0,0);
-
-    addCaption("Namespace:",4,0,1);
-    JList namespaceList = new UMLList(new UMLNamespaceListModel(this),true);
-    namespaceList.setBackground(getBackground());
-    namespaceList.setForeground(Color.blue);
-    addField(namespaceList,4,0,0);
+    addField(modifiersPanel,5,0,1);
 
     addCaption("Derived:",0,1,1);
     JList derivedList = new UMLList(new UMLSpecializationListModel(this,null,true),true);
@@ -81,17 +72,11 @@ public class PropPanelStereotype extends PropPanelModelElement {
     derivedList.setVisibleRowCount(1);
     addField(new JScrollPane(derivedList),0,1,1);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-    new PropPanelButton(this,buttonPanel,_stereotypeIcon,localize("New stereotype"),"newStereotype",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateNamespace",null);
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete package"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),"navigateBackAction","isNavigateBackEnabled");
-    buttonPanel.add(new JPanel());
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),"navigateForwardAction","isNavigateForwardEnabled");
+    new PropPanelButton(this,buttonPanel,_stereotypeIcon,localize("New stereotype"),"newStereotype",null);
+    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete package"),"removeElement",null);
 
   }
 
@@ -128,6 +113,6 @@ public class PropPanelStereotype extends PropPanelModelElement {
     protected boolean isAcceptibleBaseMetaClass(String baseClass) {
         return baseClass.equals("Stereotype");
     }
-  
+
 
 } /* end class PropPanelStereotype */

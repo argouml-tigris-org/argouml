@@ -62,11 +62,13 @@ public class UMLClientDependencyListModel extends UMLModelElementListModel  {
     
     public Object formatElement(MModelElement element) {
         Object value = _nullLabel;
-        MDependency dependency = (MDependency) element;
-        Collection target = dependency.getSuppliers();
-        if(target != null) {
-            value = getContainer().formatCollection(target.iterator());
-        }
+	if ((element!=null) && (element instanceof MDependency)){
+	    MDependency dependency = (MDependency) element;
+	    Collection target = dependency.getSuppliers();
+	    if(target != null) {
+		value = getContainer().formatCollection(target.iterator());
+	    }
+	}
         return value;
     }
  

@@ -221,7 +221,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
  
 
   
-
+    /*
   public void delete() {
     // a stimulus can only be removed from the link
     Editor ce = Globals.curEditor();
@@ -232,6 +232,7 @@ public class FigSeqStimulus extends FigNodeModelElement {
     if (  cf.getContent() instanceof FigSeqLink ) super.delete();
 
   }
+   */
 
   public void addPathItemToLink(Layer lay) {
 

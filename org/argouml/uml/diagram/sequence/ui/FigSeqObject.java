@@ -874,7 +874,7 @@ public class FigSeqObject extends FigNodeModelElement
 
 ///////////////////////////////////////////////////////////////////////////////
 // MElementListener-implementation
-
+/*
   public void removed(MElementEvent mee) {
 
      Vector edges = getFigEdges();
@@ -883,6 +883,6 @@ public class FigSeqObject extends FigNodeModelElement
      }
      else System.out.println("Object not deleted, there are some Links to or from this object left!");
   }
-
+*/
 
 } /* end class FigSeqObject */

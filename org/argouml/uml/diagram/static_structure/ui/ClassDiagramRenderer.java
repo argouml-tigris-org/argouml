@@ -143,9 +143,9 @@ implements GraphNodeRenderer, GraphEdgeRenderer {
       return realFig;
 	  }*/
     if (edge instanceof MDependency) {
-	System.out.println("get fig for "+edge);
+	//System.out.println("get fig for "+edge);
       MDependency dep = (MDependency) edge;
-	System.out.println("stereo "+dep.getStereotype());
+      //System.out.println("stereo "+dep.getStereotype());
       if (dep.getStereotype() != null && dep.getStereotype().getName().equals("realize")) {
 		  FigRealization realFig = new FigRealization(dep);
 		  

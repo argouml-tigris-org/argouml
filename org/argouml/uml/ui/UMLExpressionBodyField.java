@@ -36,11 +36,12 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     public UMLExpressionBodyField(UMLExpressionModel model,boolean notifyModel) {
         _model = model;
         _notifyModel = notifyModel;
-        getDocument().addDocumentListener(this);
+        getDocument().addDocumentListener(this);       
     }
 
     public void targetChanged() {
-        if(_notifyModel) _model.targetChanged();
+	//System.out.println("UMLExpressionBodyField: targetChanged");
+	if(_notifyModel) _model.targetChanged();
         update();
     }
 
@@ -58,16 +59,20 @@ public class UMLExpressionBodyField extends JTextArea implements DocumentListene
     public void removed(final MElementEvent p1) {
     }
     public void propertySet(final MElementEvent event) {
-        if(_notifyModel && _model.propertySet(event)) {
-            update();
-        }
+       	//System.out.println("UMLExpressionBodyField: propertySet"+event);
+	/*	if(_notifyModel && _model.propertySet(event)) {
+		update();
+		}*/
     }
     
     private void update() {
         String oldText = getText();
         String newText = _model.getBody();
-        if(oldText == null || newText == null || !oldText.equals(newText)) {
+	//    	System.out.println("UMLExpressionBodyField: update: "+oldText+" "+newText);
+
+	if(oldText == null || newText == null || !oldText.equals(newText)) {
             if(oldText != newText) {
+		//System.out.println("setNewText!!");
                 setText(newText);
             }
         }

@@ -245,7 +245,11 @@ public class FigInterface extends FigNodeModelElement {
     if (cls.isAbstract()) _name.setFont(ITALIC_LABEL_FONT);
     else _name.setFont(LABEL_FONT);
 
-  }
+    calcBounds();
+    Rectangle rect = getBounds();
+    setBounds(rect.x, rect.y, rect.width, rect.height);
+    firePropChange("bounds", rect, getBounds());
+ }
 
   static final long serialVersionUID = 4928213949795787107L;
 

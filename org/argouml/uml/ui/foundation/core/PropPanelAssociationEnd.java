@@ -31,53 +31,37 @@ import org.argouml.uml.ui.*;
 import java.awt.*;
 import java.util.*;
 
+public class PropPanelAssociationEnd extends PropPanelModelElement {
 
-import org.tigris.gef.util.Util;
-
-
-public class PropPanelAssociationEnd extends PropPanel {
-
-    protected static ImageIcon _classIcon = Util.loadIconResource("Class");
-    protected static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
-    protected static ImageIcon _assocEndIcon = Util.loadIconResource("AssociationEnd");
-
-
-  ////////////////////////////////////////////////////////////////
-  // constants
-  ////////////////////////////////////////////////////////////////
-
-  // contructors
-  public PropPanelAssociationEnd() {
-    super("AssociationEnd Properties",3);
+   public PropPanelAssociationEnd() {
+    super("AssociationEnd", _assocEndIcon,3);
 
     Class mclass = MAssociationEnd.class;
 
-    addCaption("Name:",0,0,0);
-    addField(new UMLTextField(this,new UMLTextProperty(mclass,"name","getName","setName")),0,0,0);
+    addCaption("Name:",1,0,0);
+    addField(nameField,1,0,0);
 
-    addCaption("Stereotype:",1,0,0);
-    JComboBox stereotypeBox = new UMLStereotypeComboBox(this);
-    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),1,0,0);
+    addCaption("Stereotype:",2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavStereo",stereotypeBox),2,0,0);
 
 
-    addCaption("Type:",2,0,0);
+    addCaption("Type:",3,0,0);
     UMLComboBoxModel model = new UMLComboBoxModel(this,"isAcceptibleType",
         "type","getType","setType",false,MClassifier.class,true);
     UMLComboBox box = new UMLComboBox(model);
     box.setToolTipText("Warning: Do not use this to change an end that is already in a diagram.");
-    addField(new UMLComboBoxNavigator(this,"NavClass",box),2,0,0);
+    addField(new UMLComboBoxNavigator(this,"NavClass",box),3,0,0);
 
-    addCaption("Multiplicity:",3,0,0);
-    addField(new UMLMultiplicityComboBox(this,MAssociationEnd.class),3,0,0);
+    addCaption("Multiplicity:",4,0,0);
+    addField(new UMLMultiplicityComboBox(this,MAssociationEnd.class),4,0,0);
 
-    addCaption("Association:",4,0,1);
+    addCaption("Association:",5,0,1);
     JList namespaceList = new UMLList(
-      new UMLReflectionListModel(this,"association",false,
-        "getAssociation",null,null,null),true);
-
+				      new UMLReflectionListModel(this,"association",false,"getAssociation",null,null,null),true);
     namespaceList.setBackground(getBackground());
     namespaceList.setForeground(Color.blue);
-    addField(namespaceList,4,0,0);
+    namespaceList.setVisibleRowCount(1);
+    addField(new JScrollPane(namespaceList,JScrollPane.VERTICAL_SCROLLBAR_NEVER,JScrollPane.HORIZONTAL_SCROLLBAR_NEVER),5,0,0);
 
     addCaption("Navigable:",0,1,0);
     addField(new UMLCheckBox(localize("navigable"),this,
@@ -173,20 +157,12 @@ public class PropPanelAssociationEnd extends PropPanel {
     addCaption("Visibility:",2,2,1);
     addField(new UMLVisibilityPanel(this,mclass,1,false),2,2,0);
 
-    JPanel buttonBorder = new JPanel(new BorderLayout());
-    JPanel buttonPanel = new JPanel(new GridLayout(0,2));
-    buttonBorder.add(buttonPanel,BorderLayout.NORTH);
-    add(buttonBorder,BorderLayout.EAST);
-
-
-    new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
+    //does this make sense?? new PropPanelButton(this,buttonPanel,_classIcon,localize("New class"),"newClass",null);
     new PropPanelButton(this,buttonPanel,_navUpIcon,localize("Go up"),"navigateUp",null);
-    new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
+    //does this amke sense?? new PropPanelButton(this,buttonPanel,_interfaceIcon,localize("New interface"),"newInterface",null);
     new PropPanelButton(this,buttonPanel,_navBackIcon,localize("Go back"),localize("navigateBackAction"),"isNavigateBackEnabled");
-    new PropPanelButton(this,buttonPanel,_deleteIcon,localize("Delete association end"),"removeElement",null);
     new PropPanelButton(this,buttonPanel,_navForwardIcon,localize("Go forward"),localize("navigateForwardAction"),"isNavigateForwardEnabled");
     new PropPanelButton(this,buttonPanel,_assocEndIcon,localize("Go to other end"),"gotoOther",null);
-
 
   }
 

@@ -35,24 +35,19 @@ import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.*;
 
-import org.tigris.gef.util.Util;
-
 import org.argouml.uml.ui.foundation.core.*;
 
 public abstract class PropPanelNamespace extends PropPanelModelElement {
 
-    private static ImageIcon _classIcon = Util.loadIconResource("Class");
-    private static ImageIcon _interfaceIcon = Util.loadIconResource("Interface");
-    private static ImageIcon _datatypeIcon = Util.loadIconResource("DataType");
-    private static ImageIcon _packageIcon = Util.loadIconResource("Package");
-
-
-
 
   ////////////////////////////////////////////////////////////////
   // contructors
+    public PropPanelNamespace(String panelName, ImageIcon icon, int columns) {
+        super(panelName,icon,columns);
+    }
+
     public PropPanelNamespace(String panelName,int columns) {
-        super(panelName,columns);
+        this(panelName,null,columns);
     }
 
     public void addClass() {
@@ -70,16 +65,6 @@ public abstract class PropPanelNamespace extends PropPanelModelElement {
         if(target instanceof MNamespace) {
             MNamespace ns = (MNamespace) target;
             MModelElement ownedElem = ns.getFactory().createInterface();
-            ns.addOwnedElement(ownedElem);
-            navigateTo(ownedElem);
-        }
-    }
-
-    public void addDataType() {
-        Object target = getTarget();
-        if(target instanceof MNamespace) {
-            MNamespace ns = (MNamespace) target;
-            MModelElement ownedElem = ns.getFactory().createDataType();
             ns.addOwnedElement(ownedElem);
             navigateTo(ownedElem);
         }

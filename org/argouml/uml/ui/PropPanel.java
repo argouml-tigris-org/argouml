@@ -27,6 +27,7 @@ import org.argouml.uml.*;
 import java.util.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
@@ -56,11 +57,15 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
   private Vector _panels = new Vector();
   private UMLNameEventListener _nameListener;
 
+    protected JPanel buttonPanel=new JPanel();
+    protected JPanel captionPanel=new JPanel();
+
   protected static ImageIcon _navBackIcon = Util.loadIconResource("NavigateBack");
   protected static ImageIcon _navForwardIcon = Util.loadIconResource("NavigateForward");
   protected static ImageIcon _deleteIcon = Util.loadIconResource("RedDelete");
   protected static ImageIcon _navUpIcon = Util.loadIconResource("NavigateUp");
 
+    protected Font smallFont = MetalLookAndFeel.getSubTextFont();
 
 
   ////////////////////////////////////////////////////////////////
@@ -72,7 +77,11 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
      *    @param panelCount number of horizontal panels
      */
     public PropPanel(String title,int panelCount) {
-        super(title);
+	this(title, null, panelCount);
+    }
+
+    public PropPanel(String title, ImageIcon icon, int panelCount) {
+	super(title);
         setLayout(new BorderLayout());
 
         JPanel center = new JPanel(new GridLayout(1,0));
@@ -83,6 +92,17 @@ implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
             center.add(panel);
         }
         add(center,BorderLayout.CENTER);
+
+	//add caption panel and button panel
+	if (icon!=null) captionPanel.add(new JLabel(icon));
+	captionPanel.add(new JLabel(localize(title)));
+	addCaption(captionPanel,0,0,0);
+
+	buttonPanel = new JPanel(new GridLayout(1,0));
+	JPanel buttonPanelWithFlowLayout = new JPanel(new FlowLayout());
+	buttonPanelWithFlowLayout.add(buttonPanel);
+	addField(buttonPanelWithFlowLayout,0,0,0);
+
     }
 
     /**

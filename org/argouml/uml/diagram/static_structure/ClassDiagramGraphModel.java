@@ -35,6 +35,7 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.behavior.common_behavior.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 import org.tigris.gef.graph.*;
 
@@ -227,6 +228,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	((MModelElement)node).getNamespace() == null) {
 	_model.addOwnedElement((MModelElement) node);
     }
+    if (node instanceof MInterface){
+	//System.out.println("Interface stereo: "+MMUtil.STANDARDS.lookup("interface"));
+
+	((MInterface)node).setStereotype((MStereotype)MMUtil.STANDARDS.lookup("interface"));
+    }
+    
     fireNodeAdded(node);
     // System.out.println("adding "+node+" OK");
   }

@@ -53,7 +53,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      * Set to true when an event suggests that the size needs to be recalculated.
      */
     private boolean _recalcSize;
-    /** 
+    /**
      *  A string indicating an NSUML event name that indicates that list may
      *  need to be updated.
      */
@@ -63,12 +63,12 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *    should be part of the profile or localization.
      */
     private String _none = "none";
-    
+
     /**
      *  upper bound of length of list.
      */
-    private int _upper;
-    
+    protected int _upper;
+
     /**
      *   Creates a new list model
      *   @param container the container (typically a PropPanelClass or PropPanelInterface)
@@ -77,7 +77,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *                       of the list model.  A null value will cause all events to trigger a refresh.
      *   @param showNone  if true, an element labelled "none" will be shown where there are
      *                        no actual entries in the list.
-     */    
+     */
     public UMLModelElementListModel(UMLUserInterfaceContainer container,String property,boolean showNone) {
         _container = container;
         _showNone = showNone;
@@ -87,11 +87,11 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         _none = _container.localize("none");
         if(_none == null) _none = "none";
     }
-    
+
     public int getUpperBound() {
         return _upper;
     }
-    
+
     public void setUpperBound(int newBound) {
         _upper = newBound;
     }
@@ -103,18 +103,18 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     protected void resetSize() {
         _recalcSize = true;
     }
-    
+
     /**
      *  Returns NSUML event name that is monitored, may be null.
      */
     public final String getProperty() {
         return _property;
     }
-    
-        
+
+
     /**
      *  Determines the number of "actual" entries in the list.  May be
-     *     overriden in combination with getModelElementAt, 
+     *     overriden in combination with getModelElementAt,
      *     but typically recalcModelElementSize is overriden.
      *   @returns number of "actual" list entries.
      */
@@ -131,10 +131,10 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     }
 
     /**
-     *  This method is called from getModelElementSize 
+     *  This method is called from getModelElementSize
      *    when the list size has been marked as invalid.
      *  @returns number of "actual" list entries.
-     *    
+     *
      */
     abstract protected int recalcModelElementSize();
 
@@ -147,25 +147,25 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      *  @returns corresponding model element
      */
     abstract protected MModelElement getModelElementAt(int index);
-    
+
     /**
      *  This method returns the current "target" of the container.
      */
     final Object getTarget() {
         return _container.getTarget();
     }
-    
+
     /**
      *  This method returns the container passed as an argument
-     *  to the constructor 
+     *  to the constructor
      */
     final UMLUserInterfaceContainer getContainer() {
         return _container;
     }
-    
+
     /**
      *  This method returns the size of the list (including any
-     *     element for none).  
+     *     element for none).
      *  @returns size of list
      *  @see #getModelElementSize
      */
@@ -176,9 +176,9 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         }
         return size;
     }
-    
+
     /**
-     *  This method returns an object (typically a String) 
+     *  This method returns an object (typically a String)
      *  to represent a particular element in this list (including
      *  any element for "none").
      *
@@ -206,7 +206,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         }
         return value;
     }
-    
+
     /**
      *   This method returns a rendering (typically a String) of the model element for the list.
      *   Default implementation defers to the current Profile of the container, but this
@@ -225,7 +225,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         if(_showNone && oldSize == 0) oldSize = 1;
         resetSize();
         int newSize = getSize();
-        
+
         if(newSize < oldSize) {
             if(newSize > 0) {
                 fireContentsChanged(this,0,newSize-1);
@@ -243,11 +243,13 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     }
 
     public void targetReasserted() {
+         resetSize();
+         fireContentsChanged(this,0,getSize()-1);
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void roleAdded(final MElementEvent event) {
-        String eventName = event.getName();
+       String eventName = event.getName();
         if(_property == null || eventName == null || eventName.equals(_property)) {
             resetSize();
             Object addedValue = event.getAddedValue();
@@ -265,11 +267,16 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
             //  if that specific element wasn't found then
             //     mark everything as being changed
             if(!found) {
+                resetSize();
                 fireContentsChanged(this,0,getSize()-1);
             }
         }
+        else{
+             if(_upper < 0) _upper = 0;
+             fireIntervalAdded(this,_upper,_upper);
+        }
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void roleRemoved(final MElementEvent event) {
         String eventName = event.getName();
@@ -278,23 +285,31 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
             fireContentsChanged(this,0,getSize()-1);
         }
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void recovered(final MElementEvent p1) {
+          resetSize();
+          fireContentsChanged(this,0,getSize()-1);
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void listRoleItemSet(final MElementEvent p1) {
+	resetSize();
+        fireContentsChanged(this,0,getSize()-1);
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void removed(final MElementEvent p1) {
+            resetSize();
+            fireContentsChanged(this,0,getSize()-1);
     }
-    
+
     //      documented in UMLUserInterfaceComponent
     public void propertySet(final MElementEvent p1) {
+            resetSize();
+            fireContentsChanged(this,0,getSize()-1);
     }
-    
+
     /**
      *  This method is called by context menu actions that
      *  desire to change to currently displayed object.
@@ -304,7 +319,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
     public void navigateTo(MModelElement modelElement) {
         _container.navigateTo(modelElement);
     }
-    
+
     /**
      *   This method is called in response to selecting "Open" from
      *   a context (pop-up) menu on this list.
@@ -316,11 +331,11 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
             MModelElement modelElement = getModelElementAt(index);
             if(modelElement != null) {
                 navigateTo(modelElement);
-            }    
+            }
         }
     }
-    
-    
+
+
     /**
      *  This method builds a context (pop-up) menu for the list.  This method
      *  may be overriden for lists that have additional menu items or when
@@ -355,7 +370,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         popup.add(moveDown);
         return true;
     }
-    
+
     /**
      *  This utility function may be called in the implemention of an Add action.
      *  It creates a new collection by adding an element at a specific offset
@@ -396,7 +411,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         int i;
         Iterator iter = oldCollection.iterator();
         //
-        //  move all the earliest elements 
+        //  move all the earliest elements
         //
         for(i = 0; i < index -1; i++) {
             newCollection.add(i,iter.next());
@@ -426,7 +441,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         int i;
         Iterator iter = oldCollection.iterator();
         //
-        //  move all the earliest elements 
+        //  move all the earliest elements
         //
         for(i = 0; i < index; i++) {
             newCollection.add(i,iter.next());
@@ -440,7 +455,7 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         }
         return newCollection;
     }
- 
+
     /**
      *  This utility function may be called in the implemention of getElementAt.
      *  It determines the element at a specific index by brute iteration through
@@ -470,10 +485,10 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
         }
         return (MModelElement) obj;
     }
-    
-    
-    
-    
+
+
+
+
 }
 
 
