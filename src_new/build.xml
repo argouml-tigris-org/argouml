@@ -255,6 +255,18 @@ Property files to be searched:
       <path refid="antlr.runtime.classpath"/>
     </path>
 
+    <path id="argo.compile.classpath.without.nsuml">
+      <pathelement location="${xerces.jar.path}"/>
+      <pathelement location="${ocl-argo.jar.path}"/>
+      <pathelement location="${gef.jar.path}"/>
+      <pathelement location="${i18n.jar.path}"/>
+      <pathelement location="${log4j.jar.path}"/>
+      <pathelement location="${jh.jar.path}"/>
+      <pathelement location="${toolbutton.jar.path}"/>
+      <pathelement location="${toolbar.jar.path}"/>
+      <path refid="antlr.runtime.classpath"/>
+    </path>
+
     <path id="argo.runtime.classpath">
       <!-- Currently same as the compile path. -->
       <path refid="argo.compile.classpath"/>
@@ -1124,6 +1136,57 @@ For details see http://www.clarkware.com/software/JDepend.html.
         <include name="ClassfileTreeParserTokenTypes.java"/>
       </fileset>
     </delete>
+  </target>
+
+
+
+  <!-- =================================================================== -->
+  <!-- Compiles without nsuml.                                             -->
+  <!-- This can be used to find references to NS-UML in the code.          -->
+  <!-- =================================================================== -->
+
+  <target depends="prepare,prerequisites,update-version,check-dependencies"
+          name="compile-without-nsuml"
+          description="Compiles without nsuml.">
+
+    <!-- create directories -->
+    <mkdir dir="${argo.build.classes}"/>
+
+    <!-- build the model component -->
+    <javac debug="${debug}"
+           deprecation="off"
+           destdir="${argo.build.classes}"
+           includes="org/argouml/model/**/*.java"
+           optimize="${optimize}"
+           srcdir="${argo.src.dir}">
+       <classpath>
+	  <path refid="argo.compile.classpath"/>
+       </classpath>
+    </javac>
+
+    <echo>
+If this target was run with a clean build/classes directory (after clean),
+the delete files here depend directly or indirectly on the model component
+and should be investigated:
+    </echo>
+    <delete verbose="yes">
+      <fileset dir="${argo.build.dir}/classes"
+               includes="**/*.class"
+               excludes="org/argouml/model/**"/>
+    </delete>
+
+    <!-- build the rest of ArgoUML that should not have references to nsuml -->
+    <javac debug="${debug}"
+           deprecation="off"
+           destdir="${argo.build.classes}"
+           includes="org/argouml/**/*.java"
+           optimize="${optimize}"
+           srcdir="${argo.src.dir}">
+       <classpath>
+	  <path refid="argo.compile.classpath.without.nsuml"/>
+       </classpath>
+    </javac>
+
   </target>
 
 <!-- Attempts at generating code. -->
