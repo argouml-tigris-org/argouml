@@ -54,7 +54,10 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);
-        UmlModelEventPump.getPump().addClassModelEventListener(this, MNamespace.class, "ownedElement");
+        UmlModelEventPump.getPump().addClassModelEventListener(
+            this,
+            MNamespace.class,
+            "ownedElement");
     }
 
     /**
@@ -72,10 +75,16 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
         Project p = ProjectManager.getManager().getCurrentProject();
         Iterator it = p.getUserDefinedModels().iterator();
         while (it.hasNext()) {
-           MModel model = (MModel)it.next();
-           elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(model, MClassifier.class));
+            MModel model = (MModel)it.next();
+            elements.addAll(
+                ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+                    model,
+                    MClassifier.class));
         }
-        elements.addAll(ModelManagementHelper.getHelper().getAllModelElementsOfKind(p.getDefaultModel(), MClassifier.class));
+        elements.addAll(
+            ModelManagementHelper.getHelper().getAllModelElementsOfKind(
+                p.getDefaultModel(),
+                MClassifier.class));
         setElements(elements);
     }
 
@@ -83,10 +92,14 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#getSelectedModelElement()
      */
     protected Object getSelectedModelElement() {
-         if (getTarget() != null) {
-            return ((MStructuralFeature)getTarget()).getType();
+        Object o = null;
+        if (getTarget() != null) {
+            o = ((MStructuralFeature)getTarget()).getType();
         }
-        return null;
+        if (o == null) {
+            o = " ";
+        }
+        return o;
     }
 
 }

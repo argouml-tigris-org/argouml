@@ -73,7 +73,8 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
      * @see org.argouml.uml.ui.UMLComboBoxModel2#addElement(java.lang.Object)
      */
     public void addElement(Object o) {
-        if (!multiplicityList.contains(o)) {
+        if (o == null) return;
+        if (!multiplicityList.contains(o) && isValidElement(o)) {
             multiplicityList.add(o);
         }
         super.addElement(o);        
@@ -84,10 +85,10 @@ public abstract class UMLMultiplicityComboBoxModel extends UMLComboBoxModel2 {
     /**
      * @see javax.swing.ComboBoxModel#setSelectedItem(java.lang.Object)
      */
-    public void setSelectedItem(Object anItem) {
-        if (!contains(anItem)) {
+    public void setSelectedItem(Object anItem) {        
+        if (!contains(anItem) && anItem instanceof MMultiplicity) {
             addElement(anItem);
-        }
+        }        
         super.setSelectedItem(anItem);        
     }
 
