@@ -46,6 +46,7 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 import ru.novosoft.uml.behavior.collaborations.*;
 
 import org.tigris.gef.presentation.*;
+import org.tigris.gef.base.Layer;
 import org.tigris.gef.graph.*;
 
 import org.argouml.application.api.*;
@@ -182,8 +183,9 @@ public class FigClassifierRole extends FigNodeModelElement {
      * @param node  The NSUML object to associate with this Fig.
      */
 
-    public FigClassifierRole(GraphModel gm, Object node) {
+    public FigClassifierRole(GraphModel gm, Layer lay, Object node) {
         this();
+        setLayer(lay);
         setOwner(node);
     }
 

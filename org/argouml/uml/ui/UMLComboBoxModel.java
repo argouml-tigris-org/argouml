@@ -594,7 +594,8 @@ public class UMLComboBoxModel extends AbstractListModel implements
         MModel        model   = element.getModel();
 
         if (model == null) {
-            Argo.log.error(this.getClass().toString() + "targetChanged() - " +
+        	// extra attempt
+            Argo.log.error(this.getClass().toString() + " targetChanged() - " +
                            "getModel() == null for " + 
                            target.getClass().toString());
             return;
