@@ -48,7 +48,13 @@ public class SettingsResourceBundle extends ListResourceBundle {
         {"label_profile", "Report on Load Times" },  
         {"tab_preferences", "Preferences" },  
         {"tab_environment", "Environment" },  
-        {"caption_settings", "Settings" }
+
+	{"tab_fonts", "Fonts" },
+	{"label_fonts_normal", "Normal size" },
+	{"label_fonts_big", "Big size" },
+	{"label_fonts_huge", "Huge size" },
+
+        {"caption_settings", "Settings" },
    };
 
      public Object[][] getContents() {
