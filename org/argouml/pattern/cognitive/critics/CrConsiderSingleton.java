@@ -135,6 +135,7 @@ public class CrConsiderSingleton extends CrUML {
         // Now we know it is a class, handle the object as a class
 
         MClass cls = (MClass) dm;
+	if (!(CriticUtils.isPrimaryObject(cls))) return NO_PROBLEM;
 
         // Check for Singleton stereotype, uninitialised instance variables and
         // outgoing associations, as per JavaDoc above.

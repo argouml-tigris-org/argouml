@@ -132,6 +132,9 @@ public class CrNameConfusion extends CrUML {
       char c = s.charAt(i);
       if (Character.isLetterOrDigit(c))
 	res.append(Character.toLowerCase(c));
+      else if (c == ']' && i > 1 && s.charAt(i - 1) == '[') {
+	  res.append("[]");
+      }
     }
     return res.toString();
   }

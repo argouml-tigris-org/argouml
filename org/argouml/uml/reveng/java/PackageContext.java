@@ -24,10 +24,12 @@
 package org.argouml.uml.reveng.java;
 
 import org.argouml.model.uml.UmlFactory;
+import org.argouml.uml.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.model_management.*;
+import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /**
    This context is a package.
@@ -77,6 +79,11 @@ class PackageContext extends Context
 		    mInterface = UmlFactory.getFactory().getCore().createInterface();
 		    mInterface.setName(name);
 		    mInterface.setNamespace(mPackage);
+		    MTaggedValue tv = UmlFactory.getFactory().
+			getExtensionMechanisms().createTaggedValue();
+		    tv.setModelElement(mInterface);
+		    tv.setTag(MMUtil.GENERATED_TAG);
+		    tv.setValue("yes");
 		}
 	    }
 	    catch(Throwable e) {
@@ -130,6 +137,11 @@ class PackageContext extends Context
 		}
 		mClassifier.setName(name);
 		mClassifier.setNamespace(mPackage);
+		MTaggedValue tv = UmlFactory.getFactory().
+		    getExtensionMechanisms().createTaggedValue();
+		tv.setModelElement(mClassifier);
+		tv.setTag(MMUtil.GENERATED_TAG);
+		tv.setValue("yes");
 	    }
 	    catch(Throwable e) {
 		// No class or interface found

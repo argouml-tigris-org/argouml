@@ -55,6 +55,7 @@ public class CrUselessInterface extends CrUML {
   public boolean predicate2(Object dm, Designer dsgr) {
     if (!(dm instanceof MInterface)) return false;
     MInterface intf = (MInterface) dm;
+    if (!(CriticUtils.isPrimaryObject(intf))) return NO_PROBLEM;
     Collection realization = getRealizations(intf);
     if (realization == null || realization.size() == 0)
       return PROBLEM_FOUND;
