@@ -38,19 +38,19 @@ Modifications
        level in the current version of the document. -->
 
   <sect1>
-    <title>The Design Process</title>
+    <title>The Design Process (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>Output of the Design Process</title>
+      <title>Output of the Design Process (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Organizing everything into packages. -->
 
       <sect3>
-        <title>Package Diagram</title>
+        <title>Package Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -58,7 +58,7 @@ Modifications
       <!-- Take the Class Diagram down to reality. -->
 
       <sect3>
-        <title>Realization Class Diagrams</title>
+        <title>Realization Class Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -66,7 +66,9 @@ Modifications
       <!-- Sequence Diagrams need to be tied into Collaboration Diagrams -->
 
       <sect3>
-        <title>Sequence Diagrams and Collaboration Diagrams</title>
+        <title>
+Sequence Diagrams and Collaboration Diagrams (To be written)
+</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -76,7 +78,7 @@ Modifications
            variant-->
 
       <sect3>
-        <title>State Diagrams and Activity Diagrams</title>
+        <title>State Diagrams and Activity Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -84,7 +86,7 @@ Modifications
       <!-- How everything will fit together -->
 
       <sect3>
-        <title>Deployment Diagram</title>
+        <title>Deployment Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -92,7 +94,7 @@ Modifications
       <!-- What documents do we need. The System Architecture -->
 
       <sect3>
-        <title>Documents</title>
+        <title>Documents (To be written)</title>
 
         <remark>System Architecture. To be
           written&hellip;</remark>
@@ -104,27 +106,27 @@ Modifications
        to introduce the need for a System Architecture here. -->
 
   <sect1>
-    <title>Package Diagrams</title>
+    <title>Package Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <!-- Done using the Class Diagram -->
 
     <sect2>
-      <title>The Package Diagram</title>
+      <title>The Package Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Advanced Package Diagrams</title>
+      <title>Advanced Package Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Subpackages -->
 
       <sect3>
-        <title>Subpackages</title>
+        <title>Subpackages (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -132,7 +134,7 @@ Modifications
       <!-- How to add a new data type -->
 
       <sect3>
-        <title>Adding DataTypes</title>
+        <title>Adding DataTypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -140,7 +142,7 @@ Modifications
       <!-- How to add a new stereotype -->
 
       <sect3>
-        <title>Adding Stereotypes</title>
+        <title>Adding Stereotypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -163,7 +165,7 @@ Modifications
       <!-- How and when to sub-package -->
 
       <sect3>
-        <title>Subpackages</title>
+        <title>Subpackages (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -173,23 +175,23 @@ Modifications
     <!-- How packages can be related -->
 
     <sect2>
-      <title>Relationships between packages</title>
+      <title>Relationships between packages (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Dependency</title>
+        <title>Dependency (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Generalization</title>
+        <title>Generalization (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
       <sect3>
-        <title>Realization and Abstraction</title>
+        <title>Realization and Abstraction (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -198,18 +200,18 @@ Modifications
     <!-- Datatypes and Stereotypes -->
 
     <sect2>
-      <title>Advanced Package Features</title>
+      <title>Advanced Package Features (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Creating New Datatypes</title>
+        <title>Creating New Datatypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Creating New Stereotypes</title>
+        <title>Creating New Stereotypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -219,37 +221,37 @@ Modifications
   <!-- Show more on Classes, when used for realization and lots of detail. -->
 
   <sect1>
-    <title>More on Class Diagrams</title>
+    <title>More on Class Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The Class Diagram</title>
+      <title>The Class Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Lots more on attributes and operations -->
 
       <sect3>
-        <title>Class Attributes</title>
+        <title>Class Attributes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Class Operations</title>
+        <title>Class Operations (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Advanced Class Diagrams</title>
+      <title>Advanced Class Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Realization and Abstraction</title>
+        <title>Realization and Abstraction (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -259,22 +261,22 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>More on Class Diagrams in &argouml;</title>
+    <title>More on Class Diagrams in &argouml; (To be written)</title>
 
     <sect2>
-      <title>Classes</title>
+      <title>Classes (To be written)</title>
 
       <remark>More on identifying classes from existing materials and use of
       stereotypes. To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Class Attributes and Operationss</title>
+      <title>Class Attributes and Operations (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Class Attributes</title>
+        <title>Class Attributes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -282,7 +284,7 @@ Modifications
       <!-- We need to go into operations properly here -->
 
       <sect3>
-        <title>Class Operations</title>
+        <title>Class Operations (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -383,7 +385,7 @@ Modifications
       <!-- Use stereotypes to distinguish concept diagrams -->
 
       <sect3>
-        <title>Stereotypes</title>
+        <title>Stereotypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -394,14 +396,14 @@ Modifications
        an equivalent. -->
 
   <sect1>
-    <title>Sequence and Collaboration Diagrams</title>
+    <title>Sequence and Collaboration Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <!-- Extend what we already knew -->
 
     <sect2>
-      <title>More on the Sequence Diagram</title>
+      <title>More on the Sequence Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -409,14 +411,14 @@ Modifications
     <!-- Introduce its relative, the Collaboration Diagram -->
 
     <sect2>
-      <title>The Collaboration Diagram</title>
+      <title>The Collaboration Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Adding Messages -->
 
       <sect3>
-        <title>Messages</title>
+        <title>Messages (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -424,14 +426,14 @@ Modifications
       <!-- Actions associated with messages -->
 
       <sect3>
-        <title>Actions</title>
+        <title>Actions (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Advanced Collaboration Diagrams</title>
+      <title>Advanced Collaboration Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -440,30 +442,30 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Collaboration Diagrams in &argouml;</title>
+    <title>Creating Collaboration Diagrams in &argouml; (To be written)</title>
 
     <sect2>
-      <title>Collaboration Diagrams</title>
+      <title>Collaboration Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Messages</title>
+      <title>Messages (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Actions associated with messages -->
 
       <sect3>
-        <title>Actions</title>
+        <title>Actions (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Advanced Collaboration Diagrams</title>
+      <title>Advanced Collaboration Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -474,12 +476,12 @@ Modifications
        and collaboration diagrams. -->
 
   <sect1>
-    <title>State Diagrams</title>
+    <title>State Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The State Diagram</title>
+      <title>The State Diagram (To be written)</title>
 
       <remark>More on this. To be written&hellip;</remark>
     </sect2>
@@ -487,14 +489,14 @@ Modifications
     <!-- More on all the detailed stuff -->
 
     <sect2>
-      <title>Advanced State Diagrams</title>
+      <title>Advanced State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- All the options for where actions can go -->
 
       <sect3>
-        <title>Actions</title>
+        <title>Actions (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -502,14 +504,14 @@ Modifications
       <!-- Transitions - all the advanced stuff -->
 
       <sect3>
-        <title>Transitions</title>
+        <title>Transitions (To be written)</title>
 
         <remark>To be written&hellip;</remark>
 
         <!-- Triggers -->
 
         <sect4>
-          <title>Triggers</title>
+          <title>Triggers (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -517,7 +519,7 @@ Modifications
         <!-- Guards -->
 
         <sect4>
-          <title>Guards</title>
+          <title>Guards (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -525,7 +527,7 @@ Modifications
         <!-- Effects -->
 
         <sect4>
-          <title>Effectss</title>
+          <title>Effectss (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -534,14 +536,14 @@ Modifications
       <!-- Pseudo states (we've already met the initial state) -->
 
       <sect3>
-        <title>Pseudo States</title>
+        <title>Pseudo States (To be written)</title>
 
         <remark>To be written&hellip;</remark>
 
         <!-- Branch  -->
 
         <sect4>
-          <title>Branch</title>
+          <title>Branch (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -549,7 +551,7 @@ Modifications
         <!-- Fork and Join  -->
 
         <sect4>
-          <title>Fork and Join</title>
+          <title>Fork and Join (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -558,7 +560,7 @@ Modifications
       <!-- Hierarchical States -->
 
       <sect3>
-        <title>Hierarchical State Machines</title>
+        <title>Hierarchical State Machines (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -566,7 +568,7 @@ Modifications
       <!-- History -->
 
       <sect3>
-        <title>Models for State History</title>
+        <title>Models for State History (To be written)</title>
 
         <remark>Shallow v Deep. To be written&hellip;</remark>
       </sect3>
@@ -576,31 +578,31 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating State Diagrams in &argouml;</title>
+    <title>Creating State Diagrams in &argouml; (To be written)</title>
 
     <!-- A bit more detail this time -->
 
     <sect2>
-      <title>State Diagrams</title>
+      <title>State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>States</title>
+      <title>States (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Transitions</title>
+      <title>Transitions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
     </sect2>
 
     <sect2>
-      <title>Actions</title>
+      <title>Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -608,21 +610,21 @@ Modifications
     <!-- How to do hard things -->
 
     <sect2>
-      <title>Advanced State Diagrams</title>
+      <title>Advanced State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- Transitions - all the advanced stuff -->
 
       <sect3>
-        <title>Transitions</title>
+        <title>Transitions (To be written)</title>
 
         <remark>To be written&hellip;</remark>
 
         <!-- Triggers -->
 
         <sect4>
-          <title>Triggers</title>
+          <title>Triggers (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -630,7 +632,7 @@ Modifications
         <!-- Guards -->
 
         <sect4>
-          <title>Guards</title>
+          <title>Guards (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -638,21 +640,21 @@ Modifications
         <!-- Effects -->
 
         <sect4>
-          <title>Effectss</title>
+          <title>Effectss (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
       </sect3>
 
       <sect3>
-        <title>Pseudo States</title>
+        <title>Pseudo States (To be written)</title>
 
         <remark>To be written&hellip;</remark>
 
         <!-- Branch  -->
 
         <sect4>
-          <title>Branch</title>
+          <title>Branch (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -660,7 +662,7 @@ Modifications
         <!-- Fork and Join  -->
 
         <sect4>
-          <title>Fork and Join</title>
+          <title>Fork and Join (To be written)</title>
 
           <remark>To be written&hellip;</remark>
         </sect4>
@@ -669,7 +671,7 @@ Modifications
       <!-- Hierarchical States -->
 
       <sect3>
-        <title>Hierarchical State Machines</title>
+        <title>Hierarchical State Machines (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -677,7 +679,7 @@ Modifications
       <!-- History -->
 
       <sect3>
-        <title>History</title>
+        <title>History (To be written)</title>
 
         <remark>Shallow v Deep. To be written&hellip;</remark>
       </sect3>
@@ -687,19 +689,19 @@ Modifications
   <!-- Activity Diagrams as a variant of State Diagrams -->
 
   <sect1>
-    <title>Activity Diagrams</title>
+    <title>Activity Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The Activity Diagram</title>
+      <title>The Activity Diagram (To be written)</title>
 
       <remark>More on this. To be written&hellip;</remark>
 
       <!-- Actions States - the one new bit -->
 
       <sect3>
-        <title>Action States</title>
+        <title>Action States (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -709,10 +711,10 @@ Modifications
   <!-- Now show how to do in in Argo/UML. Relate to State Diagrams -->
 
   <sect1>
-    <title>Creating Activity Diagrams in &argouml;</title>
+    <title>Creating Activity Diagrams in &argouml; (To be written)</title>
 
     <sect2>
-      <title>Activity Diagrams</title>
+      <title>Activity Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -727,7 +729,7 @@ Modifications
     </sect2>
 
     <sect2>
-      <title>Action States</title>
+      <title>Action States (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -736,14 +738,14 @@ Modifications
   <!-- Deployment Diagrams -->
 
   <sect1>
-    <title>Deployment Diagrams</title>
+    <title>Deployment Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <!-- Explain the UML Concept -->
 
     <sect2>
-      <title>The Deployment Diagram</title>
+      <title>The Deployment Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -752,17 +754,17 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Deployment Diagrams in &argouml;</title>
+    <title>Creating Deployment Diagrams in &argouml; (To be written)</title>
 
     <!-- How do we work all this out -->
 
     <sect2>
-      <title>Nodes</title>
+      <title>Nodes (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Node Instances</title>
+        <title>Node Instances (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -770,12 +772,12 @@ Modifications
     </sect2>
 
     <sect2>
-      <title>Components</title>
+      <title>Components (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Component Instances</title>
+        <title>Component Instances (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -785,23 +787,23 @@ Modifications
     <!-- How nodes and components can be related -->
 
     <sect2>
-      <title>Relationships between nodes and components</title>
+      <title>Relationships between nodes and components (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Dependency</title>
+        <title>Dependency (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Associations</title>
+        <title>Associations (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
       <sect3>
-        <title>Links</title>
+        <title>Links (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -811,7 +813,7 @@ Modifications
   <!-- The System Architecture. Need to say something about this. -->
 
   <sect1>
-    <title>System Architecture</title>
+    <title>System Architecture (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>
@@ -820,94 +822,94 @@ Modifications
        Study. -->
 
   <sect1>
-    <title>Case Study</title>
+    <title>Case Study (To be written)</title>
 
     <sect2>
-      <title>Packages</title>
+      <title>Packages (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Identifying Packages</title>
+        <title>Identifying Packages (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Datatypes and Stereotypes</title>
-
-         <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <sect2>
-      <title>Class Diagrams</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <sect3>
-        <title>Identifying classes</title>
-
-         <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <sect3>
-        <title>Identifying associations</title>
-
-         <remark>To be written&hellip;</remark>
-      </sect3>
-
-      <sect3>
-        <title>Specifying Attributes and Operations</title>
+        <title>Datatypes and Stereotypes (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Sequence Diagrams</title>
+      <title>Class Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Identifying actions</title>
+        <title>Identifying classes (To be written)</title>
+
+         <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Identifying associations (To be written)</title>
+
+         <remark>To be written&hellip;</remark>
+      </sect3>
+
+      <sect3>
+        <title>Specifying Attributes and Operations (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Collaboration Diagrams</title>
+      <title>Sequence Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Identifying Messages</title>
+        <title>Identifying actions (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>State Diagrams</title>
+      <title>Collaboration Diagrams (To be written)</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <sect3>
+        <title>Identifying Messages (To be written)</title>
+
+         <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Activity Diagrams</title>
+      <title>Activity Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>The Deployment Diagram</title>
+      <title>The Deployment Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>The System Architecture</title>
+      <title>The System Architecture (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>

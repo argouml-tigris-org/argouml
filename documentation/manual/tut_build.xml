@@ -14,7 +14,7 @@ Modifications
 -->
 
 <chapter id="ch.tut.build">
-  <title>Build</title>
+  <title>Build (To be written)</title>
 
   <sect1>
     <title>Introduction</title>
@@ -45,19 +45,19 @@ Modifications
        level in the current version of the document. -->
 
   <sect1>
-    <title>The Build Process</title>
+    <title>The Build Process (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>Output of the Build Process</title>
+      <title>Output of the Build Process (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <!-- The Code -->
 
       <sect3>
-        <title>Code</title>
+        <title>Code (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -66,7 +66,7 @@ Modifications
            User Documentation. -->
 
       <sect3>
-        <title>Documents</title>
+        <title>Documents (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -76,12 +76,12 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Adding Code to &argouml;</title>
+    <title>Adding Code to &argouml; (To be written)</title>
 
     <!-- Code for classes -->
 
     <sect2>
-      <title>Classes</title>
+      <title>Classes (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -89,7 +89,7 @@ Modifications
     <!-- Code for Actions -->
 
     <sect2>
-      <title>Actions</title>
+      <title>Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -98,17 +98,17 @@ Modifications
   <!-- Now illustrate these techniques with the Case Study. -->
 
   <sect1>
-    <title>Case Study</title>
+    <title>Case Study (To be written)</title>
 
     <sect2>
-      <title>Coding for Classes</title>
+      <title>Coding for Classes (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
     </sect2>
 
     <sect2>
-      <title>Coding Actions</title>
+      <title>Coding Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -118,7 +118,7 @@ Modifications
   <!-- And round off with a summary -->
 
   <sect1>
-    <title>Case Study</title>
+    <title>Case Study (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 

@@ -42,12 +42,12 @@ Modifications
        level in the current version of the document. -->
 
   <sect1>
-    <title>The Analysis Process</title>
+    <title>The Analysis Process (To be written)</title>
 
     <remark>Include CRC cards. To be written&hellip;</remark>
 
     <sect2>
-      <title>Output of the Analysis Process</title>
+      <title>Output of the Analysis Process (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -56,7 +56,7 @@ Modifications
            stereotyping. Note that this is done on a deployment diagram. -->
 
       <sect3>
-        <title>Concept Diagram</title>
+        <title>Concept Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -66,7 +66,7 @@ Modifications
            solution. Needs also to use stereotyping. -->
 
       <sect3>
-        <title>System Sequence Diagram</title>
+        <title>System Sequence Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -75,7 +75,7 @@ Modifications
            dynamic models together. -->
 
       <sect3>
-        <title>System State Diagram</title>
+        <title>System State Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -83,13 +83,13 @@ Modifications
       <!-- Use Cases and their specifications recast in solution language. -->
 
       <sect3>
-        <title>Realisation Use Case Diagram</title>
+        <title>Realisation Use Case Diagram (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Documents</title>
+        <title>Documents (To be written)</title>
 
         <remark>Use Case Specifications and Supplementary Requirements
           Specifications recast in solution language. To be
@@ -103,23 +103,23 @@ Modifications
        show the bits relevant to Concept level diagrams. -->
 
   <sect1 id="s1.umlclassdiags">
-    <title>Class Diagrams</title>
+    <title>Class Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The Class Diagram</title>
+      <title>The Class Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Advanced Class Diagrams</title>
+      <title>Advanced Class Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Association Classes</title>
+        <title>Association Classes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -154,19 +154,19 @@ Modifications
     </sect2>
 
     <sect2>
-      <title>Associations</title>
+      <title>Associations (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Aggregation</title>
+        <title>Aggregation (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Class Attributes and Operations</title>
+      <title>Class Attributes and Operations (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
@@ -188,7 +188,7 @@ Modifications
            stage. -->
 
       <sect3>
-        <title>Class Attributes</title>
+        <title>Class Attributes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -197,17 +197,17 @@ Modifications
            Design Phase -->
 
       <sect3>
-        <title>Class Operations</title>
+        <title>Class Operations (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>Advanced Class Features</title>
+      <title>Advanced Class Features (To be written)</title>
 
       <sect3>
-        <title>Association Classes</title>
+        <title>Association Classes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -215,7 +215,7 @@ Modifications
       <!-- Use stereotypes to distinguish concept diagrams -->
 
       <sect3>
-        <title>Stereotypes</title>
+        <title>Stereotypes (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -227,24 +227,24 @@ Modifications
        we only show the bits relevant to System level diagrams. -->
 
   <sect1 id="s1.umlseqdiags">
-    <title>Sequence Diagrams</title>
+    <title>Sequence Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The Sequence Diagram</title>
+      <title>The Sequence Diagram (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Identifying Actions</title>
+      <title>Identifying Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Advanced Sequence Diagrams</title>
+      <title>Advanced Sequence Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -289,13 +289,13 @@ Modifications
     </sect2>
 
     <sect2>
-      <title>Actions</title>
+      <title>Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Advanced Sequence Diagrams</title>
+      <title>Advanced Sequence Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -307,12 +307,12 @@ Modifications
        we only show the bits relevant to System level diagrams. -->
 
   <sect1 id="s1.umlstatediags">
-    <title>State Diagrams</title>
+    <title>State Diagrams (To be written)</title>
 
     <remark>To be written&hellip;</remark>
 
     <sect2>
-      <title>The State Diagram</title>
+      <title>The State Diagram (To be written)</title>
 
       <remark>Types of state diagram (Moore, Mealy); Hierarchical diagrams. To
         be written&hellip;</remark>
@@ -322,12 +322,12 @@ Modifications
          Level -->
 
     <sect2>
-      <title>Advanced State Diagrams</title>
+      <title>Advanced State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Hierarchical State Diagrams</title>
+        <title>Hierarchical State Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -340,7 +340,7 @@ Modifications
     <title>Creating State Diagrams in &argouml;</title>
 
     <sect2>
-      <title>State Diagrams</title>
+      <title>State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
       
@@ -356,7 +356,7 @@ Modifications
 
 
     <sect2>
-      <title>States</title>
+      <title>States (To be written)</title>
 
       <remark>To be written&hellip;</remark>
       
@@ -378,13 +378,13 @@ Modifications
     </sect2>
 
     <sect2>
-      <title>Transitions</title>
+      <title>Transitions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Actions</title>
+      <title>Actions (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
@@ -393,12 +393,12 @@ Modifications
          Level -->
 
     <sect2>
-      <title>Advanced State Diagrams</title>
+      <title>Advanced State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Hierarchical State Diagrams</title>
+        <title>Hierarchical State Diagrams (To be written)</title>
 
         <remark>To be written&hellip;</remark>
       </sect3>
@@ -409,7 +409,7 @@ Modifications
        just what has to be done with what we have already. -->
 
   <sect1>
-    <title>Realisation Use Cases</title>
+    <title>Realisation Use Cases (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>
@@ -417,7 +417,7 @@ Modifications
   <!-- Now show how to do in in Argo/UML. -->
 
   <sect1>
-    <title>Creating Realisation Use Cases in &argouml;</title>
+    <title>Creating Realisation Use Cases in &argouml; (To be written)</title>
 
     <remark>To be written&hellip;</remark>
   </sect1>
@@ -426,46 +426,46 @@ Modifications
        Study. -->
 
   <sect1>
-    <title>Case Study</title>
+    <title>Case Study (To be written)</title>
 
     <sect2>
-      <title>Concept Class Diagrams</title>
+      <title>Concept Class Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
 
       <sect3>
-        <title>Identifying classes</title>
+        <title>Identifying classes (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
 
       <sect3>
-        <title>Identifying associations</title>
-
-         <remark>To be written&hellip;</remark>
-      </sect3>
-    </sect2>
-
-    <sect2>
-      <title>System Sequence Diagrams</title>
-
-      <remark>To be written&hellip;</remark>
-
-      <sect3>
-        <title>Identifying actions</title>
+        <title>Identifying associations (To be written)</title>
 
          <remark>To be written&hellip;</remark>
       </sect3>
     </sect2>
 
     <sect2>
-      <title>System State Diagrams</title>
+      <title>System Sequence Diagrams (To be written)</title>
+
+      <remark>To be written&hellip;</remark>
+
+      <sect3>
+        <title>Identifying actions (To be written)</title>
+
+         <remark>To be written&hellip;</remark>
+      </sect3>
+    </sect2>
+
+    <sect2>
+      <title>System State Diagrams (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
 
     <sect2>
-      <title>Realisation Use Cases</title>
+      <title>Realisation Use Cases (To be written)</title>
 
       <remark>To be written&hellip;</remark>
     </sect2>
