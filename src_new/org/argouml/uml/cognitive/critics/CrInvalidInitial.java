@@ -40,12 +40,20 @@ import org.argouml.model.ModelFacade;
 
 public class CrInvalidInitial extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrInvalidInitial() {
 	setHeadline("Remove Extra Outgoing Transitions");
 	addSupportedDecision(CrUML.decSTATE_MACHINES);
 	addTrigger("outgoing");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAPseudostate(dm))) return NO_PROBLEM;
 	Object k = ModelFacade.getPseudostateKind(dm);

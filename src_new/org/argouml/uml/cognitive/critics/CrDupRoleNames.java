@@ -46,8 +46,8 @@ import org.argouml.model.ModelFacade;
  *   standard (see section 2.5.3 of the standard).</p>
  *
  * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_dup_role_names">ArgoUML
- * User Manual: Duplicate end (role) names for &lt;association&gt;</a>
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_dup_role_names">
+ * ArgoUML User Manual: Duplicate end (role) names for &lt;association&gt;</a>
  */
 
 public class CrDupRoleNames extends CrUML {

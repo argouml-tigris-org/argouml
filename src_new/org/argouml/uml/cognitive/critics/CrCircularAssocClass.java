@@ -37,6 +37,10 @@ import org.argouml.cognitive.critics.Critic;
 
 public class CrCircularAssocClass extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrCircularAssocClass() {
 	setHeadline("Circular MAssociation");
 
@@ -44,6 +48,10 @@ public class CrCircularAssocClass extends CrUML {
 	setKnowledgeTypes(Critic.KT_SEMANTICS);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	// TODO: not implemented
 	return NO_PROBLEM;

@@ -36,6 +36,10 @@ import org.argouml.model.ModelFacade;
  */
 public class CrMergeClasses extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrMergeClasses() {
 	setHeadline("Consider Combining Classes");
 	setPriority(ToDoItem.LOW_PRIORITY);
@@ -44,6 +48,10 @@ public class CrMergeClasses extends CrUML {
     }
 
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAClass(dm))) return NO_PROBLEM;
 	Object cls = /*(MClass)*/ dm;
@@ -55,17 +63,17 @@ public class CrMergeClasses extends CrUML {
 	Object ae0 = /*(MAssociationEnd)*/ conns.get(0);
 	Object ae1 = /*(MAssociationEnd)*/ conns.get(1);
 	// both ends must be classes, otherwise there is nothing to merge
-	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0)) && 
-	      ModelFacade.isAClass(ModelFacade.getType(ae1)))) 
+	if (!(ModelFacade.isAClass(ModelFacade.getType(ae0)) 
+            && ModelFacade.isAClass(ModelFacade.getType(ae1)))) 
 	    return NO_PROBLEM;
 	// both ends must be navigable, otherwise there is nothing to merge
-	if (!(ModelFacade.isNavigable(ae0) && 
-	      ModelFacade.isNavigable(ae1)))
+	if (!(ModelFacade.isNavigable(ae0) 
+            && ModelFacade.isNavigable(ae1)))
 	    return NO_PROBLEM;
 	if (ModelFacade.getMultiplicity(ae0)
-                .equals(ModelFacade.M1_1_MULTIPLICITY) &&
-	    ModelFacade.getMultiplicity(ae1)
-                .equals(ModelFacade.M1_1_MULTIPLICITY))
+            .equals(ModelFacade.M1_1_MULTIPLICITY) 
+                && ModelFacade.getMultiplicity(ae1)
+                    .equals(ModelFacade.M1_1_MULTIPLICITY))
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }

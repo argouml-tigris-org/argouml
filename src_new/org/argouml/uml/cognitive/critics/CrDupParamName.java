@@ -34,13 +34,16 @@ import java.util.Vector;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlHelper;
 
 /** Well-formedness rule [1] for MBehavioralFeature. See page 28 of UML 1.1
  *  Semantics. OMG document ad/97-08-04.
  */
 public class CrDupParamName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrDupParamName() {
 	setHeadline("Duplicate Parameter Name");
 
@@ -48,6 +51,10 @@ public class CrDupParamName extends CrUML {
 	setKnowledgeTypes(Critic.KT_SYNTAX);
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!ModelFacade.isABehavioralFeature(dm)) {
 	    return NO_PROBLEM;

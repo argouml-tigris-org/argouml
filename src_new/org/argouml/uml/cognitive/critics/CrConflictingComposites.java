@@ -41,6 +41,10 @@ import org.argouml.model.uml.UmlHelper;
 
 public class CrConflictingComposites extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrConflictingComposites() {
 	setHeadline("Remove Conflicting Composite Associations");
 
@@ -49,6 +53,10 @@ public class CrConflictingComposites extends CrUML {
 	// no good trigger
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object classifier, Designer dsgr) {
 	if (!(ModelFacade.isAClassifier(classifier))) return NO_PROBLEM;
 	Collection conns = ModelFacade.getAssociationEnds(classifier);

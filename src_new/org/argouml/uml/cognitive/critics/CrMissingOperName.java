@@ -41,6 +41,10 @@ import org.argouml.model.ModelFacade;
  **/
 public class CrMissingOperName extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrMissingOperName() {
 	setHeadline("Choose a name");
 	addSupportedDecision(CrUML.decNAMING);
@@ -48,6 +52,10 @@ public class CrMissingOperName extends CrUML {
 	addTrigger("name");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAOperation(dm))) return NO_PROBLEM;
 	Object oper = /*(MOperation)*/ dm;
@@ -57,6 +65,9 @@ public class CrMissingOperName extends CrUML {
 	return NO_PROBLEM;
     }
 
+    /**
+     * @see org.argouml.cognitive.critics.Critic#initWizard(org.argouml.kernel.Wizard)
+     */
     public void initWizard(Wizard w) {
 	if (w instanceof WizMEName) {
 	    ToDoItem item = w.getToDoItem();
@@ -67,13 +78,18 @@ public class CrMissingOperName extends CrUML {
 		Object a = /*(MOperation)*/ me;
 		int count = 1;
 		if (ModelFacade.getOwner(a) != null)
-		    count = ModelFacade.getFeatures(ModelFacade.getOwner(a)).size();
+		    count = ModelFacade.getFeatures(ModelFacade.getOwner(a))
+		                                                    .size();
 		sug = "oper" + (count + 1);
 	    }
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
     }
+    
+    /**
+     * @see org.argouml.cognitive.critics.Critic#getWizardClass(org.argouml.cognitive.ToDoItem)
+     */
     public Class getWizardClass(ToDoItem item) { return WizMEName.class; }
 
 } /* end class CrMissingOperName */

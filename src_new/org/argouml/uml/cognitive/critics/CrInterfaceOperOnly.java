@@ -41,6 +41,10 @@ import org.argouml.model.ModelFacade;
 
 public class CrInterfaceOperOnly extends CrUML {
 
+    /**
+     * The constructor.
+     * 
+     */
     public CrInterfaceOperOnly() {
 	setHeadline("Interfaces may only have operations");
 	addSupportedDecision(CrUML.decPLANNED_EXTENSIONS);
@@ -48,6 +52,10 @@ public class CrInterfaceOperOnly extends CrUML {
 	addTrigger("structuralFeature");
     }
 
+    /**
+     * @see org.argouml.uml.cognitive.critics.CrUML#predicate2(
+     * java.lang.Object, org.argouml.cognitive.Designer)
+     */
     public boolean predicate2(Object dm, Designer dsgr) {
 	if (!(ModelFacade.isAInterface(dm))) return NO_PROBLEM;
 	Object inf = /*(MInterface)*/ dm;

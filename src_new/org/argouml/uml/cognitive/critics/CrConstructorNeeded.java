@@ -41,14 +41,14 @@ import org.argouml.model.ModelFacade;
  * <p> A critic to detect when a class requires a constructor.</p>
  *
  * <p>The critic will trigger whenever a class has instance variables that are
- * uninitialised and there is no constructor. It will not trigger for certain stereotyped classes.</p>
+ * uninitialised and there is no constructor. It will not trigger for 
+ * certain stereotyped classes.</p>
  * <p>this critic is part of a compound critic</p>
  *
  * @see <a
- * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">ArgoUML
- * User Manual: Constructor Needed</a>
+ * href="http://argouml.tigris.org/documentation/snapshots/manual/argouml.html/#s2.ref.critics_constructor_needed">
+ * ArgoUML User Manual: Constructor Needed</a>
  */
-
 public class CrConstructorNeeded extends CrUML {
 
     /**
