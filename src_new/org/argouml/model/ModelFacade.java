@@ -1600,28 +1600,28 @@ public class ModelFacade {
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Get a parameter of an operation.
+    /** Get a parameter of a behavioral feature.
      *
-     * @param op operation to retrieve from
+     * @param handle behavioral feature to retrieve from
      * @param n parameter number
      * @return parameter.
      */
     public static Object getParameter(Object handle, int n) {
-        if (handle instanceof MOperation)
-            return ((MOperation) handle).getParameter(n);
+        if (handle instanceof MBehavioralFeature)
+            return ((MBehavioralFeature) handle).getParameter(n);
 
         // ...
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
-    /** Get the parameters of an operation.
+    /** Get the parameters of a behavioral feature.
      *
      * @param handle operation to retrieve from
      * @return Iterator with operations.
      */
     public static Collection getParameters(Object handle) {
-        if (handle instanceof MOperation) {
-            return ((MOperation) handle).getParameters();
+        if (handle instanceof MBehavioralFeature) {
+            return ((MBehavioralFeature) handle).getParameters();
         }
 
         // ...
@@ -1716,6 +1716,18 @@ public class ModelFacade {
         }
 
         // ...
+        throw new IllegalArgumentException("Unrecognized object " + handle);
+    }
+
+    /**
+     * Returns the state machine belonging to some given state
+     * @param handle
+     * @return Object
+     */
+    public static Object getStateMachine(Object handle) {
+        if (handle instanceof MState) {
+            return ((MState) handle).getStateMachine();
+        }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
 
@@ -2653,11 +2665,11 @@ public class ModelFacade {
         // FIXME: the implementation is ugly, because I have no spec at hand...
         if (o == null)
             return;
-        if (o instanceof MAttribute) {
+        if (o instanceof MStructuralFeature) {
             if (flag)
-		((MAttribute) o).setChangeability(MChangeableKind.CHANGEABLE);
+		((MStructuralFeature) o).setChangeability(MChangeableKind.CHANGEABLE);
             else
-		((MAttribute) o).setChangeability(MChangeableKind.FROZEN);
+		((MStructuralFeature) o).setChangeability(MChangeableKind.FROZEN);
         } else if (o instanceof MAssociationEnd) {
 	    MAssociationEnd ae = (MAssociationEnd) o;
             if (flag)
@@ -2773,6 +2785,17 @@ public class ModelFacade {
     }
 
     /**
+     * Sets the query flag of a behavioral feature.
+     * @param behavioral feature
+     * @param flag
+     */
+    public static void setQuery(Object bf, boolean flag) {
+        if (bf instanceof MBehavioralFeature) {
+            ((MBehavioralFeature) bf).setQuery(flag);
+        }
+    }
+
+    /**
      * Sets the type of some parameter.
      * @param parameter
      * @param type
@@ -2811,6 +2834,18 @@ public class ModelFacade {
     public static void setValueOfTag(Object tv, String value) {
         if (tv != null && tv instanceof MTaggedValue) {
             ((MTaggedValue) tv).setValue(value);
+        }
+    }
+
+    /**
+     * Sets a state machine of some state.
+     * @param state
+     * @param state machine
+     */
+    public static void setStateMachine(Object st, Object stm) {
+        if (st != null && st instanceof MState
+            && (stm == null || stm instanceof MStateMachine)) {
+            ((MState) st).setStateMachine((MStateMachine) stm);
         }
     }
 
