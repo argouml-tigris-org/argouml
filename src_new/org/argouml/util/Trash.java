@@ -28,10 +28,11 @@ import java.util.Vector;
 
 import org.apache.log4j.Category;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.model_management.MModel;
+// import ru.novosoft.uml.foundation.core.MModelElement;
+// import ru.novosoft.uml.model_management.MModel;
 
 /** In the furture this will be a trash can icon in the project
  * browser.  Deleting an object moves it to the trash.  You can move
@@ -48,12 +49,12 @@ public class Trash {
 
   /** Keys are model objects, values are TrashItems with recovery info */
   public Vector _contents = new Vector();
-  public MModel Trash_Model = UmlFactory.getFactory().getModelManagement().createModel();
+    // public MModel Trash_Model = UmlFactory.getFactory().getModelManagement().createModel();
 
 
   protected Trash() { 
       boolean saveNeeded = ProjectManager.getManager().getCurrentProject().needsSave();      
-	  Trash_Model.setName("Trash");
+	  // Trash_Model.setName("Trash");
       // the last statement causes the project to think that a save is needed
       // since it is the trash model it is not needed
       ProjectManager.getManager().getCurrentProject().setNeedsSave(saveNeeded);
@@ -64,8 +65,8 @@ public class Trash {
       cat.warn("tried to add null to trash!");
       return;
     }    
-    if (obj instanceof MModelElement) {
-      MModelElement me = (MModelElement) obj;
+    if (ModelFacade.isAModelElement(obj)) {
+        //MModelElement me = (MModelElement) obj;
 	  TrashItem ti = new TrashItem(obj, places);
 	  _contents.addElement(ti);
       
@@ -88,7 +89,7 @@ public class Trash {
   
   public void recoverItem(Object obj) {
     cat.debug("TODO: recover from trash");
-    if (obj instanceof MModelElement) {
+    if (ModelFacade.isAModelElement(obj)) {
       TrashItem ti = null; //TODO: find in trash
 	  //((MModelElement)obj).recoverFromTrash(ti);
     }
@@ -133,14 +134,14 @@ class TrashItem {
   TrashItem(Object item, Vector places) {
     _item = item;
     _places = places;
-    if (item instanceof MModelElement) {
+    //if (item instanceof MModelElement) {
 		// this can't work with nsuml. Toby
 		/*      try {
 				_recoveryInfo = ((MModelElement)item).prepareForTrash();
 				}
 				catch (PropertyVetoException pve) { }
 		*/
-    }
+    //}
   }
 
   public boolean equals(Object o) {
