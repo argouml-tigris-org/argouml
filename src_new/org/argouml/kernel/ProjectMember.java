@@ -97,6 +97,12 @@ public abstract class ProjectMember {
         (s.startsWith (_project.getBaseName()))) {
       cat.debug ("Setting project member name excluding project base name...");
       _name = s.substring (_project.getBaseName().length());
+      int i = 0;
+      for (; i < _name.length(); i++)
+        if (_name.charAt(i) != '_')
+          break;
+      if (i > 0)
+        _name = _name.substring(i);
     }
     else {
       cat.debug ("Setting project member name including project base name...");
