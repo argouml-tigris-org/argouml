@@ -31,6 +31,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,11 +74,16 @@ public class FindDialog extends ArgoDialog
     private static int nextResultNum = 1;
 
     private static int numFinds = 0;
+    
+    /** Insets in pixels  */
+    private static int insetPx = 3;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
-    private JButton     search     = new JButton("Find");
-    private JButton     clearTabs  = new JButton("Clear Tabs");
+    private JButton     search     = new JButton(
+            Translator.localize("dialog.find.button.find"));
+    private JButton     clearTabs  = new JButton(
+            Translator.localize("dialog.find.button.clear-tabs"));
     private JTabbedPane tabs       = new JTabbedPane();
     private JPanel      nameLocTab = new JPanel();
     private JPanel     modifiedTab = new JPanel();
@@ -112,20 +118,24 @@ public class FindDialog extends ArgoDialog
      * 
      */
     public FindDialog() {
-        super(ProjectBrowser.getInstance(), "Find", 
+        super(ProjectBrowser.getInstance(), 
+                Translator.localize("dialog.find.title"), 
                 ArgoDialog.OK_CANCEL_OPTION, false);
         
         JPanel mainPanel = new JPanel(new BorderLayout());
 
         initNameLocTab();
-        tabs.addTab("Name and Location", nameLocTab);
+        tabs.addTab(Translator.localize("dialog.find.tab.name-and-location"), 
+                nameLocTab);
 
         initModifiedTab();
-        tabs.addTab("Last Modified", modifiedTab);
+        tabs.addTab(Translator.localize("dialog.find.tab.last-modified"), 
+                modifiedTab);
         tabs.setEnabledAt(1, false);
 
         initTagValsTab();
-        tabs.addTab("Tagged Values", tagValsTab);
+        tabs.addTab(Translator.localize("dialog.find.tab.tagged-values"), 
+                tagValsTab);
         tabs.setEnabledAt(2, false);
 
         initConstraintsTab();
@@ -133,7 +143,6 @@ public class FindDialog extends ArgoDialog
 		     constraintsTab);
         tabs.setEnabledAt(3, false);
 
-        //_tabs.addTab("Tagged Values", _tagValsTab);
         tabs.setMinimumSize(new Dimension(300, 250));
 
         JPanel north = new JPanel();
@@ -142,7 +151,7 @@ public class FindDialog extends ArgoDialog
         mainPanel.add(north, BorderLayout.NORTH);
 
         initHelpTab();
-        results.addTab("Help", help);
+        results.addTab(Translator.localize("dialog.find.tab.help"), help);
         mainPanel.add(results, BorderLayout.CENTER);
 
         //     JPanel south = new JPanel();
@@ -189,12 +198,17 @@ public class FindDialog extends ArgoDialog
         GridBagLayout gb = new GridBagLayout();
         nameLocTab.setLayout(gb);
 
-        JLabel elementNameLabel = new JLabel("Element Name:");
-        JLabel diagramNameLabel = new JLabel("In Diagram:");
-        JLabel typeLabel = new JLabel("Element Type:");
-        JLabel locLabel = new JLabel("Find In:");
+        JLabel elementNameLabel = new JLabel(
+                Translator.localize("dialog.find.label.element-name"));
+        JLabel diagramNameLabel = new JLabel(
+                Translator.localize("dialog.find.label.in-diagram"));
+        JLabel typeLabel = new JLabel(
+                Translator.localize("dialog.find.label.element-type"));
+        JLabel locLabel = new JLabel(
+                Translator.localize("dialog.find.label.find-in"));
 
-        location.addItem("Entire Project");
+        location.addItem(
+                Translator.localize("dialog.find.comboboxitem.entire-project"));
         /*      MVW: The following panel is not used at all. 
          *      So let's not show it. 
          *      See issue 2502. 
@@ -282,24 +296,9 @@ public class FindDialog extends ArgoDialog
     public void initHelpTab() {
         help.setLayout(new BorderLayout());
         JTextArea helpText = new JTextArea();
-        String s; // TODO: i18n
-        s = "Please follow these steps to find model elements:\n\n" 
-            + "1. Enter search information in the tabs " 
-                    + "at the top of this window.\n\n" 
-            + "2. Press the \"Find\" button.  This will produce a new tab.\n\n" 
-            + "3. The top half of each result tab lists each results.\n" 
-            + "   + Single clicking on a result shows more " 
-                    + "information about it,\n" 
-            + "     including a list of related objects.\n" 
-            + "   + Double clicking on a result jumps to the " 
-                    + "selected diagram.\n\n"
-            + "You can \"tear-off\" a results tab by double clicking " 
-                    + "on the tab name.\n" 
-            + "If you accumulate too many tabs, press \"Clear " 
-                    + "Tabs\" to remove " 
-            + "them all.";
-        helpText.setText(s);
+        helpText.setText(Translator.localize("dialog.find.helptext"));
         helpText.setEditable(false);
+        helpText.setMargin(new Insets(insetPx, insetPx, insetPx, insetPx));
         help.add(new JScrollPane(helpText), BorderLayout.CENTER);
     }
 
@@ -409,11 +408,17 @@ public class FindDialog extends ArgoDialog
             diagramName.setSelectedItem(dName);
         }
         String name = eName;
-        if (dName.length() > 0) name += " in " + dName;
+        if (dName.length() > 0) { 
+            Object[] msgArgs = {name, dName };
+            name = Translator.messageFormat(
+                    "dialog.find.comboboxitem.element-in-diagram", msgArgs);
+            //name += " in " + dName;
+        }
         String typeName = type.getSelectedItem().toString();
         if (!typeName.equals("Any Type")) name += " " + typeName;
         if (name.length() == 0)
-            name = "Find" + (nextResultNum++);
+            name = Translator.localize("dialog.find.tabname") 
+                + (nextResultNum++);
         if (name.length() > 15)
             name = name.substring(0, 12) + "...";
 
@@ -439,7 +444,9 @@ public class FindDialog extends ArgoDialog
         clearTabs.setEnabled(true);
         getOkButton().setEnabled(true);
         results.setSelectedComponent(newResults);
-        location.addItem("In Tab: " + name);
+        Object[] msgArgs = {name };
+        location.addItem(Translator.messageFormat(
+                "dialog.find.comboboxitem.in-tab", msgArgs));
         invalidate();
         results.invalidate();
         validate();
@@ -476,7 +483,8 @@ public class FindDialog extends ArgoDialog
             diagramName.addItem("*");
         }
         location.removeAllItems();
-        location.addItem("Entire Project");
+        location.addItem(
+                Translator.localize("dialog.find.comboboxitem.entire-project"));
     }
 
     /**
@@ -549,6 +557,7 @@ public class FindDialog extends ArgoDialog
         if (t instanceof TabSpawnable) {
             if (((TabSpawnable) t).spawn() != null) {
                 resultTabs.removeElementAt(tab);
+                //TODO: This next line does not work...
                 location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
             }
         }
