@@ -46,39 +46,39 @@ import ru.novosoft.uml.MElementEvent;
  */
 public class FigCompositeState extends FigState {
 
-    public final int MARGIN = 2;
+    private static final int MARGIN = 2;
 
     ////////////////////////////////////////////////////////////////
     // instance variables
 
-    /** The main label on this icon. */
-    //FigText _name;
-
-    FigRect _cover;
-    FigLine _divider;
-
-    // add other Figs here aes needed
+    private FigRRect bigPort;
+    private FigRect cover;
+    private FigLine divider;
 
     ////////////////////////////////////////////////////////////////
     // constructors
 
+    /**
+     * The main constructor
+     * 
+     */
     public FigCompositeState() {
         super();
-        _bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1,
+        bigPort = new FigRRect(getInitialX() + 1, getInitialY() + 1,
 				getInitialWidth() - 2, getInitialHeight() - 2,
 				Color.cyan, Color.cyan);
-        _cover = new FigRRect(getInitialX(), getInitialY(),
+        cover = new FigRRect(getInitialX(), getInitialY(),
 			      getInitialWidth(), getInitialHeight(),
 			      Color.black, Color.white);
 
-        _bigPort.setLineWidth(0);
+        bigPort.setLineWidth(0);
         getNameFig().setLineWidth(0);
         getNameFig().setBounds(getInitialX() + 2, getInitialY() + 2,
 			       getInitialWidth() - 4,
 			       getNameFig().getBounds().height);
         getNameFig().setFilled(false);
 
-        _divider =
+        divider =
 	    new FigLine(getInitialX(),
 			getInitialY() + 2 + getNameFig().getBounds().height + 1,
 			getInitialWidth() - 1,
@@ -86,10 +86,10 @@ public class FigCompositeState extends FigState {
 			Color.black);
 
         // add Figs to the FigNode in back-to-front order
-        addFig(_bigPort);
-        addFig(_cover);
+        addFig(bigPort);
+        addFig(cover);
         addFig(getNameFig());
-        addFig(_divider);
+        addFig(divider);
         addFig(_internal);
 
         //setBlinkPorts(false); //make port invisble unless mouse enters
@@ -97,6 +97,11 @@ public class FigCompositeState extends FigState {
         setBounds(r.x, r.y, r.width, r.height);
     }
 
+    /**
+     * The constructor for when a new Fig is created for an existing UML elm
+     * @param gm ignored 
+     * @param node the UML element
+     */
     public FigCompositeState(GraphModel gm, Object node) {
         this();
         setOwner(node);
@@ -115,10 +120,10 @@ public class FigCompositeState extends FigState {
     public Object clone() {
         FigCompositeState figClone = (FigCompositeState) super.clone();
         Iterator it = figClone.getFigs(null).iterator();
-        figClone._bigPort = (FigRect) it.next();
-        figClone._cover = (FigRect) it.next();
+        figClone.bigPort = (FigRRect) it.next();
+        figClone.cover = (FigRect) it.next();
         figClone.setNameFig((FigText) it.next());
-        figClone._divider = (FigLine) it.next();
+        figClone.divider = (FigLine) it.next();
         figClone._internal = (FigText) it.next();
         return figClone;
     }
@@ -158,14 +163,14 @@ public class FigCompositeState extends FigState {
         Dimension nameDim = getNameFig().getMinimumSize();
 
         getNameFig().setBounds(x + 2, y + 2, w - 4, nameDim.height);
-        _divider.setShape(x, y + nameDim.height + 1,
+        divider.setShape(x, y + nameDim.height + 1,
 			  x + w - 1, y + nameDim.height + 1);
 
         _internal.setBounds(x + 2, y + nameDim.height + 4,
 			    w - 4, h - nameDim.height - 6);
 
-        _bigPort.setBounds(x, y, w, h);
-        _cover.setBounds(x, y, w, h);
+        bigPort.setBounds(x, y, w, h);
+        cover.setBounds(x, y, w, h);
 
         calcBounds(); //_x = x; _y = y; _w = w; _h = h;
         updateEdges();
@@ -179,58 +184,58 @@ public class FigCompositeState extends FigState {
      * @see org.tigris.gef.presentation.Fig#setLineColor(java.awt.Color)
      */
     public void setLineColor(Color col) {
-        _cover.setLineColor(col);
-        _divider.setLineColor(col);
+        cover.setLineColor(col);
+        divider.setLineColor(col);
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getLineColor()
      */
     public Color getLineColor() {
-        return _cover.getLineColor();
+        return cover.getLineColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFillColor(java.awt.Color)
      */
     public void setFillColor(Color col) {
-        _cover.setFillColor(col);
+        cover.setFillColor(col);
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getFillColor()
      */
     public Color getFillColor() {
-        return _cover.getFillColor();
+        return cover.getFillColor();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setFilled(boolean)
      */
     public void setFilled(boolean f) {
-        _cover.setFilled(f);
+        cover.setFilled(f);
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getFilled()
      */
     public boolean getFilled() {
-        return _cover.getFilled();
+        return cover.getFilled();
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#setLineWidth(int)
      */
     public void setLineWidth(int w) {
-        _cover.setLineWidth(w);
-        _divider.setLineWidth(w);
+        cover.setLineWidth(w);
+        divider.setLineWidth(w);
     }
 
     /**
      * @see org.tigris.gef.presentation.Fig#getLineWidth()
      */
     public int getLineWidth() {
-        return _cover.getLineWidth();
+        return cover.getLineWidth();
     }
 
     ////////////////////////////////////////////////////////////////
