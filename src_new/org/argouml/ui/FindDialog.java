@@ -292,13 +292,12 @@ public class FindDialog extends ArgoDialog
                     + "information about it,\n" 
             + "     including a list of related objects.\n" 
             + "   + Double clicking on a result jumps to the " 
-                    + "selected diagram.\n\n" 
-            + "You can \"tear-off\" a results tab by double clicking " 
-                    + "on the tab name.\n" 
-            + "If you accumulate too many tabs, press \"Clear " 
-                    + "Tabs\" to remove " 
-            + "them all.";
-    
+                    + "selected diagram.\n\n"; 
+//            + "You can \"tear-off\" a results tab by double clicking " 
+//                    + "on the tab name.\n" 
+//            + "If you accumulate too many tabs, press \"Clear " 
+//                    + "Tabs\" to remove " 
+//            + "them all.";
         helpText.setText(s);
         helpText.setEditable(false);
         help.add(new JScrollPane(helpText), BorderLayout.CENTER);
@@ -542,16 +541,18 @@ public class FindDialog extends ArgoDialog
     /**
      * React on a double-click on a given tab.
      * 
+     * TODO: Since spawning is disabled, we cannot do this....
+     * MVW: I commented out the code below since it leads to exceptions.
+     * 
      * @param tab the given tab
      */
     public void myDoubleClick(int tab) {
-        JPanel t = (JPanel) resultTabs.elementAt(tab);
-        if (t instanceof TabSpawnable) {
-            ((TabSpawnable) t).spawn();
-            resultTabs.removeElementAt(tab);
-            location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
-	
-        }
+//        JPanel t = (JPanel) resultTabs.elementAt(tab);
+//        if (t instanceof TabSpawnable) {
+//            ((TabSpawnable) t).spawn();
+//            resultTabs.removeElementAt(tab);
+//            location.removeItem("In Tab:" + ((TabSpawnable) t).getTitle());
+//        }
     }
 
 } /* end class FindDialog */
