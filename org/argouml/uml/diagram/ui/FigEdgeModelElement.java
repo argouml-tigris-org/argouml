@@ -701,6 +701,21 @@ public abstract class FigEdgeModelElement
 	return false;
     }
 
+    public boolean hit(Rectangle r) {
+	// Check if labels etc have been hit
+	// Apparently GEF does require PathItems to be "annotations"
+	// which ours aren't, so until that is resolved...
+	int size = _pathItems.size();
+	Iterator it = getPathItemFigs().iterator();
+	while (it.hasNext()) {
+	    Fig f = (Fig) it.next();
+	    if (f.hit(r))
+		return true;
+	}
+
+	return super.hit(r);
+    }
+
 // TODO: Explain the added value of this method to that given in
 // the GEF bas class. If this does actually add any value then
 // implement in GEF, not ArgoUML.
