@@ -309,14 +309,16 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <emphasis>Broom</emphasis>. &Button1; motion with this tool provide a
           <quote>broom</quote> which will sweep all artifacts along. This is
-          very shortcut way of lining things up.</para>
+          a very shortcut way of lining things up.</para>
 
-        <para>Broom can also be invoked by using CONTROL with &button1; motion
-          when the <literal>Select</literal> tool is in use.</para></listitem>
+        <para>The Broom can also be invoked by using CONTROL with &button1; motion
+          when the <literal>Select</literal> tool is in use.</para>
+        <para>The Broom is discussed at length in its own chapter, see 
+          <xref linkend="s1.ref.edit_pane_broom"/></para>
+        </listitem>
       </itemizedlist>
 
       <!-- Don't forget other ways of doing this -->
-
       <tip><para>Additional control of artifact layout is provided through the
         <literal>Arrange</literal> menu (see
         <xref linkend="s1.ref.menu_arrange"/>).</para></tip>
@@ -1117,6 +1119,114 @@ graphic artifacts to diagrams.</para></listitem>
     </sect2>
   </sect1>
 
+  <!-- The Broom -->
+  
+  <sect1 id="s1.ref.edit_pane_broom">
+    <title>The Broom</title>
+    
+    <para>&argouml;'s broom alignment tool is specialized to support the needs 
+      of designers in achieving the kind of alignment used in UML diagrams. 
+      It is common for designers to roughly align objects as they are created 
+      or by using simple movement commands. 
+      The broom is an easy way to precisely align objects 
+      that are already roughly aligned.
+      Furthermore, the broom's distribution options are suited 
+      to the needs of UML designers: 
+      making related objects appear evenly spaced, 
+      packing objects to save diagram space, 
+      and spreading objects out to make room for new objects. 
+      The broom also makes it easy to change 
+      from horizontal to vertical alignment or 
+      from left-alignment to right-alignment.
+    </para>
+    
+    <para>The T-shaped icon in &argouml;'s diagram toolbar 
+      invokes the broom alignment tool. 
+      <!-- TODO: Rewrite this para into something better explaining what to do
+      as user to operate the broom. -->
+      When the mouse &button1; is pressed while in broom-mode, 
+      the designer's initial mouse movement orients the broom 
+      to face in one of four directions: north, south, east, or west. 
+      After that, mouse drag events cause the broom to advance 
+      in the chosen direction, withdraw, or grow in a lateral direction. 
+      Like a real-world push broom, the broom tool pushes diagram elements 
+      that come in contact with it. 
+      This has the effect of aligning objects along the face of the broom 
+      and provides immediate visual feedback 
+      (see the figure below). 
+      Unlike a real-world broom, moving backwards 
+      allows diagram elements to return to their original position. 
+      Growing the broom makes it possible to align objects 
+      that are not near each other. 
+      When the mouse button is released, the broom disappears 
+      and the moved objects are selected 
+      to make it easy to manipulate them further.
+    </para>
+    <figure id="fig.ref.editpane_broom" float="1">
+      <title>The Broom.</title>
+      <informaltable frame="none">
+        <tgroup cols="2">
+          <tbody>
+            <row>
+              <entry>
+                <screenshot><mediaobject>
+                    <imageobject>
+                      <imagedata format="PNG" align="center"
+                                 fileref="images/reference/edit_broom1.png"/>
+                    </imageobject>
+                  </mediaobject></screenshot>
+              </entry>
+              <entry>
+                <screenshot><mediaobject>
+                    <imageobject>
+                      <imagedata format="PNG" align="center"
+                                 fileref="images/reference/edit_broom2.png"/>
+                    </imageobject>
+                  </mediaobject></screenshot>
+              </entry>
+            </row>
+            <row>
+              <entry>
+                <screenshot><mediaobject>
+                    <imageobject>
+                      <imagedata format="PNG" align="center"
+                                 fileref="images/reference/edit_broom3.png"/>
+                    </imageobject>
+                  </mediaobject></screenshot>
+              </entry>
+              <entry>
+                <screenshot><mediaobject>
+                    <imageobject>
+                      <imagedata format="PNG" align="center"
+                                 fileref="images/reference/edit_broom4.png"/>
+                    </imageobject>
+                  </mediaobject></screenshot>
+              </entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </informaltable>
+    </figure>
+
+    <para>If the designer presses the space bar while using the broom, 
+      objects on the face of the broom are distributed (i.e., spaced evenly). 
+      &argouml;'s broom supports three distribution modes: 
+      objects can be spaced evenly across the space that they use, 
+      objects can be packed together with only a small gap between them, 
+      or objects can be distributed evenly over the entire length 
+      of the broom's face. 
+      Repeatedly pressing the space bar cycles among these three 
+      distribution modes 
+      and displays a brief message indicating the operation just performed.
+    </para>
+    <warning><para>
+      This distribution function does not work in V0.14 of &argouml;.
+    </para></warning>
+      <!-- TODO: This does not seem to work. Did it ever?
+      See issue ...-->
+
+  </sect1>
+  
   <!-- Selection Action Buttons -->
   
   <sect1 id="s1.ref.edit_pane_selection_action_buttons">
