@@ -1,4 +1,4 @@
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 1996-01 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -85,35 +85,23 @@ public class Actions {
   static Vector _allActions = new Vector(100);
 
   public static UMLAction New = new ActionNew();
-  //public static UMLAction Open = new ActionOpen();
-  //public static UMLAction OpenXMI = new ActionOpenXMI();
-  //public static UMLAction Save = new ActionSave();
-  //public static UMLAction SaveAs = new ActionSaveAs();
-  //public static UMLAction SaveAsXMI = new ActionSaveAsXMI();
+
   public static UMLAction OpenProject = new ActionOpenProject();
   public static UMLAction SaveProject = new ActionSaveProject();
   public static UMLAction LoadModelFromDB = new ActionLoadModelFromDB();
   public static UMLAction StoreModelToDB = new ActionStoreModelToDB();
   public static UMLAction SaveProjectAs = new ActionSaveProjectAs();
-  //public static UMLAction AddToProj = new ActionAddToProj();
+
   public static UMLAction Print = new ActionPrint();
   public static UMLAction ImportFromSources = new ActionImportFromSources();
   public static UMLAction SaveGIF = new ActionSaveGIF();
-//   public static UMLAction SavePS = new ActionSavePS();
+
   public static UMLAction SaveGraphics = new ActionSaveGraphics();
   public static UMLAction Exit = new ActionExit();
 
   public static UMLAction Undo = new ActionUndo();
   public static UMLAction Redo = new ActionRedo();
-  public static UMLAction Cut = new ActionCut();
-  public static UMLAction Copy = new ActionCopy();
-  public static UMLAction Paste = new ActionPaste();
-  public static UMLAction DeleteFromDiagram = new ActionDeleteFromDiagram();
-  public static UMLAction RemoveFromModel = new ActionRemoveFromModel();
-  public static UMLAction EmptyTrash = new ActionEmptyTrash();
 
-//   public static UMLAction NavUp = new ActionNavUp();
-//   public static UMLAction NavDown = new ActionNavDown();
   public static UMLAction NavBack = new ActionNavBack();
   public static UMLAction NavForw = new ActionNavForw();
   //public static UMLAction NavFavs = new ActionNavFavs();
@@ -123,41 +111,13 @@ public class Actions {
   public static UMLAction GotoDiagram = new ActionGotoDiagram();
 
   public static UMLAction NextEditTab = new ActionNextEditTab();
-  //public static UMLAction AddToFavs = new ActionAddToFavs();
   public static UMLAction NextDetailsTab = new ActionNextDetailsTab();
   public static UMLAction ShowRapidButtons = new ActionShowRapidButtons();
 
   public static UMLAction CreateMultiple = new ActionCreateMultiple();
-  //public static UMLAction ClassWizard = new ActionClassWizard();
-
-  //public static UMLAction MModel = new ActionModel();
-  public static UMLAction AddTopLevelPackage = new ActionAddTopLevelPackage();
-  public static UMLAction ClassDiagram = new ActionClassDiagram();
-  public static UMLAction UseCaseDiagram = new ActionUseCaseDiagram();
-  public static UMLAction StateDiagram = new ActionStateDiagram();
-  public static UMLAction ActivityDiagram = new ActionActivityDiagram();
-  public static UMLAction CollaborationDiagram = new ActionCollaborationDiagram();
-  public static UMLAction DeploymentDiagram = new ActionDeploymentDiagram();
-  public static UMLAction SequenceDiagram = new ActionSequenceDiagram();
-
-  //public static UMLAction Class = new ActionClass();
-  //public static UMLAction MInterface = new ActionInterface();
-  //public static UMLAction MActor = new ActionActor();
-  //public static UMLAction MUseCase = new ActionUseCase();
-  //public static UMLAction MState = new MActionState();
-  //public static UMLAction MPseudostate = new ActionPseudostate();
-  //public static UMLAction Package = new ActionPackage();
-  //public static UMLAction MInstance = new ActionInstance();
-  public static UMLAction AddAttribute = new ActionAddAttribute();
-  public static UMLAction AddOperation = new ActionAddOperation();
-  public static UMLAction AddNote = new ActionAddNote();
-  public static UMLAction AddMessage = new ActionAddMessage();
-  public static UMLAction AddInternalTrans = new ActionAddInternalTrans();
 
   public static UMLAction GenerateOne = new ActionGenerateOne();
   public static UMLAction GenerateAll = new ActionGenerateAll();
-  //public static UMLAction GenerateWeb = new ActionGenerateWeb();
-
 
   public static UMLAction AutoCritique = new ActionAutoCritique();
   public static UMLAction OpenDecisions = new ActionOpenDecisions();
@@ -171,13 +131,6 @@ public class Actions {
   public static UMLAction EmailExpert = new ActionEmailExpert();
   public static UMLAction MoreInfo = new ActionMoreInfo();
   public static UMLAction Snooze = new ActionSnooze();
-
-  //public static UMLAction RecordFix = new ActionRecordFix();
-  //public static UMLAction ReplayFix = new ActionReplayFix();
-
-  //   public static UMLAction FixItNext = new ActionFixItNext();
-  //   public static UMLAction FixItBack = new ActionFixItBack();
-  //   public static UMLAction FixItFinish = new ActionFixItFinish();
 
   public static UMLAction AboutArgoUML = new ActionAboutArgoUML();
   public static UMLAction Properties = new ActionProperties();
@@ -251,16 +204,7 @@ public class Actions {
 }  /* end class Actions */
 
 
-class UMLChangeAction extends UMLAction {
 
-  public UMLChangeAction(String s) { super(s, HAS_ICON); }
-  public UMLChangeAction(String s, boolean hasIcon) { super(s, hasIcon); }
-
-  public void actionPerformed(ActionEvent e) {
-    markNeedsSave();
-    Actions.updateAllEnabled();
-  }
-} /* end class UMLChangeAction */
 
 
 ////////////////////////////////////////////////////////////////
@@ -343,19 +287,9 @@ class ActionOpenProject extends UMLAction {
 	        return;
 	    }
         }
-    }
-    //catch (FileNotFoundException ignore) {
-    //  System.out.println("got an FileNotFoundException");
-    //}
-    //     catch (java.lang.ClassNotFoundException ignore) {
-    //       System.out.println("got an ClassNotFoundException");
-    //      }
-    catch (IOException ignore) {
+    } catch (IOException ignore) {
       System.out.println("got an IOException in ActionOpenProject");
     }
-//     catch (org.xml.sax.SAXException ignore) {
-//       System.out.println("got an SAXException in ActionOpenProject");
-//     }
   }
 } /* end class ActionOpenProject */
 
@@ -942,192 +876,9 @@ class ActionRedo extends UMLAction {
   public boolean shouldBeEnabled() { return false; }
 } /* end class ActionRedo */
 
-class ActionCut extends UMLAction {
-  public ActionCut() { super("Cut"); }
-  public boolean shouldBeEnabled() { return false; }
-} /* end class ActionCut */
-
-class ActionCopy extends UMLChangeAction {
-  public ActionCopy() { super("Copy"); }
-  public boolean shouldBeEnabled() {
-    int size = 0;
-    try {
-      size = Globals.curEditor().getSelectionManager().selections().size();
-    }
-    //
-    //   this can happen when running in a debugger, not sure why
-    //
-    catch(Exception e) {
-      size = 0;
-    }
-    return (size > 0);
-  }
-  public void actionPerformed(ActionEvent ae) {
-    CmdCopy cmd = new CmdCopy();
-    cmd.doIt();
-    super.actionPerformed(ae);
-  }
-} /* end class ActionCopy */
-
-class ActionPaste extends UMLChangeAction {
-  public ActionPaste() { super("Paste"); }
-  public boolean shouldBeEnabled() {
-    if (Globals.clipBoard != null)
-      return true;
-    return false;
-  }
-  public void actionPerformed(ActionEvent ae) {
-    CmdPaste cmd = new CmdPaste();
-    cmd.doIt();
-    super.actionPerformed(ae);
-  }
-
-} /* end class ActionPaste */
-
-
-class ActionDeleteFromDiagram extends UMLChangeAction {
-  public ActionDeleteFromDiagram() { super("Remove From Diagram", NO_ICON); }
-  public boolean shouldBeEnabled() {
-    int size = 0;
-    try {
-      Editor ce = Globals.curEditor();
-      Vector figs = ce.getSelectionManager().getFigs();
-      size = figs.size();
-    }
-    catch(Exception e) {
-    }
-    return size > 0;
-  }
-  public void actionPerformed(ActionEvent ae) {
-    Editor ce = Globals.curEditor();
-    SelectionManager sm = ce.getSelectionManager();
-    sm.delete();
-  }
-}
-
-
-class ActionRemoveFromModel extends UMLChangeAction {
-  public ActionRemoveFromModel() { super("Delete From Model", NO_ICON); }
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-    if (target instanceof MModelElement) return true;
-
-    int size = 0;
-    try {
-    // needs-more-work: trashing diagrams
-      Editor ce = Globals.curEditor();
-      Vector figs = ce.getSelectionManager().getFigs();
-      size = figs.size();
-    }
-    catch(Exception e) {}
-    if (size > 0) return true;
-    //     for (int i = 0; i < size; i++) {
-    //       Fig f = (Fig) figs.elementAt(i);
-    //       Object owner = f.getOwner();
-    //       if (owner instanceof MModelElement) return true;
-    //     }
-    return false;
-  }
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-	Project p = pb.getProject();
-    if (target instanceof MModelElement) {
-		if (sureRemove((MModelElement)target)) {
-			// System.out.println("deleting "+target+"+ "+(((MModelElement)target).getMElementListeners()).size());
-			p.moveToTrash(target);
-		}
-    }
-
-    // needs-more-work: trashing diagrams
-    else {
-      int size = 0;
-      try {
-        Editor ce = Globals.curEditor();
-        Vector figs = ce.getSelectionManager().getFigs();
-        size = figs.size();
-        for (int i = 0; i < size; i++) {
-		  Fig f = (Fig) figs.elementAt(i);
-		  Object owner = f.getOwner();
-		  if (owner instanceof MModelElement) {
-			  if (!sureRemove((MModelElement)owner)) return;
-		  }
-        }
-        for (int i = 0; i < size; i++) {
-		  Fig f = (Fig) figs.elementAt(i);
-		  Object owner = f.getOwner();
-		  if (owner == null) f.delete();
-		  else if (owner instanceof MModelElement) p.moveToTrash(owner);
-        }
-      }
-      catch(Exception ex) {}
-    }
-    super.actionPerformed(ae);
-  }
-
-  public boolean sureRemove(MModelElement me) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    int count = p.getPresentationCountFor(me);
-    String confirmStr = "";
-    if (count > 1) confirmStr += "\nIt will be removed from all diagrams.";
-
-    Collection beh = me.getBehaviors();
-    if (beh != null && beh.size() > 0)
-      confirmStr += "\nIt's subdiagram will also be removed.";
-
-    if (confirmStr.equals("")) return true;
-    String name = me.getName();
-    if (name == null || name.equals("")) name = "this element";
-    confirmStr = "Are you sure you want to remove " + name + "?" + confirmStr;
-    int response =
-      JOptionPane.showConfirmDialog(pb, confirmStr, "Are you sure?",
-				    JOptionPane.YES_NO_OPTION);
-    return (response == JOptionPane.YES_OPTION);
-  }
-} /* end class ActionRemoveFromModel */
-
-class ActionEmptyTrash extends UMLChangeAction {
-  public ActionEmptyTrash() { super("Empty Trash", NO_ICON); }
-  public boolean shouldBeEnabled() {
-    return Trash.SINGLETON.getSize() > 0;
-  }
-  public void actionPerformed(ActionEvent ae) {
-    Trash.SINGLETON.emptyTrash();
-    super.actionPerformed(ae);
-  }
-
-} /* end class ActionEmptyTrash */
-
 
 ////////////////////////////////////////////////////////////////
 // items on view menu
-
-
-// class ActionNavUp extends UMLAction {
-//   public ActionNavUp() { super("Navigate Up"); }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-//   public void actionPerformed(ActionEvent ae) {
-//     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
-//     np.navUp();
-//   }
-// } /* end class ActionNavUp */
-
-// class ActionNavDown extends UMLAction {
-//   public ActionNavDown() { super("Navigate Down"); }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-//   public void actionPerformed(ActionEvent ae) {
-//     NavigatorPane np = ProjectBrowser.TheInstance.getNavPane();
-//     np.navDown();
-//   }
-// } /* end class ActionNavDown */
 
 class ActionFind extends UMLAction {
   public ActionFind() { super("Find..."); }
@@ -1265,593 +1016,11 @@ class ActionCreateMultiple extends UMLAction {
 ////////////////////////////////////////////////////////////////
 // diagram creation actions
 
-class ActionClassDiagram extends UMLChangeAction {
-  public ActionClassDiagram() { super("ClassDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    //_cmdCreateNode.doIt();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-    MNamespace ns = p.getCurrentNamespace();
-    if (target instanceof MPackage) ns = (MNamespace) target;
-    try {
-      ArgoDiagram d = new UMLClassDiagram(ns);
-      p.addMember(d);
-      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-      ProjectBrowser.TheInstance.setTarget(d);
-    }
-    catch (PropertyVetoException pve) { }
-    super.actionPerformed(ae);
-  }
-} /* end class ActionClassDiagram */
-
-class ActionUseCaseDiagram extends UMLChangeAction {
-  public ActionUseCaseDiagram() { super("UseCaseDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    //_cmdCreateNode.doIt();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-      MNamespace ns = p.getCurrentNamespace();
-      if (target instanceof MPackage) ns = (MNamespace) target;
-      ArgoDiagram d  = new UMLUseCaseDiagram(ns);
-      p.addMember(d);
-      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-      ProjectBrowser.TheInstance.setTarget(d);
-    }
-    catch (PropertyVetoException pve) { }
-    super.actionPerformed(ae);
-  }
-} /* end class ActionUseCaseDiagram */
-
-class ActionStateDiagram extends UMLChangeAction {
-  public ActionStateDiagram() { super("StateDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    //_cmdCreateNode.doIt();
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-	try {
-		Object contextObj = pb.getDetailsTarget();
-		if (!(contextObj instanceof MClass)) return;
-		MClass cls = (MClass) contextObj;
-		String contextNameStr = cls.getName();
-		if (contextNameStr == null) contextNameStr = "untitled";
-		MStateMachine sm = new MStateMachineImpl();
-		sm.setUUID(UUIDManager.SINGLETON.getNewUUID());
-		sm.setName(contextNameStr + "StateMachine");
-		MCompositeState cs = new MCompositeStateImpl();
-		cs.setName("state_machine_top");
-		//cs.setNamespace(cls);
-		sm.setNamespace(cls);
-		sm.setTop(cs);
-		cls.addBehavior(sm);
-		UMLStateDiagram d = new UMLStateDiagram(cls,sm);
-		p.addMember(d);
-		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-		pb.setTarget(d);
-    } catch (PropertyVetoException e) {
-		System.out.println("PropertyVetoException in ActionStateDiagram");
-	}
-    super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && p != null &&
-      (target instanceof MClass);
-  }
-} /* end class ActionStateDiagram */
-
-class ActionActivityDiagram extends UMLChangeAction {
-  public ActionActivityDiagram() { super("ActivityDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    try {
-      MNamespace ns=(MNamespace)pb.getDetailsTarget();
-      if (!((ns instanceof MUseCase) || (ns instanceof MClass))) return;
-      String contextNameStr = ns.getName();
-      if (contextNameStr == null) contextNameStr = "untitled";
-      MActivityGraph am = new MActivityGraphImpl();
-      am.setUUID(UUIDManager.SINGLETON.getNewUUID());
-      am.setName(contextNameStr + "ActivityGraph");
-      MCompositeState cs = new MCompositeStateImpl();
-      cs.setName("activities_top");
-      //cs.setNamespace(ns);
-      am.setNamespace(ns);
-      am.setTop(cs);
-      ns.addBehavior(am);
-      UMLActivityDiagram d = new UMLActivityDiagram(ns, am);
-      p.addMember(d);
-      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-      pb.setTarget(d);
-    } catch (PropertyVetoException pve) {
-      System.out.println("PropertyVetoException in ActionActivityDiagram");
-    }
-    super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Project p = pb.getProject();
-    Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && p != null &&
-      ((target instanceof MUseCase)||(target instanceof MClass)); // or MOperation
-  }
-} /* end class ActionActivityDiagram */
-
-class ActionCollaborationDiagram extends UMLChangeAction {
-  public ActionCollaborationDiagram() { super("CollaborationDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-		MCollaboration c = new MCollaborationImpl();
-		c.setUUID(UUIDManager.SINGLETON.getNewUUID());
-		c.setName("Collaboration");
-		p.getModel().addOwnedElement(c);
-		MInteraction interaction = new MInteractionImpl();
-		interaction.setName("default Interaction");
-		c.addInteraction(interaction);
-		UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
-		p.addMember(d);
-		ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-		ProjectBrowser.TheInstance.setTarget(d);
-    }
-    catch (PropertyVetoException pve) { }
-    super.actionPerformed(ae);
-  }
-} /* end class ActionCollaborationDiagram */
-
-class ActionDeploymentDiagram extends UMLChangeAction {
-  public ActionDeploymentDiagram() { super("DeploymentDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    //_cmdCreateNode.doIt();
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-      MNamespace ns = p.getCurrentNamespace();
-      if (target instanceof MPackage) ns = (MNamespace) target;
-      ArgoDiagram d  = new UMLDeploymentDiagram(ns);
-      p.addMember(d);
-      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-      ProjectBrowser.TheInstance.setTarget(d);
-    }
-    catch (PropertyVetoException pve) { }
-    super.actionPerformed(ae);
-  }
-} /* end class ActionDeploymentDiagram */
-
-
-class ActionSequenceDiagram extends UMLChangeAction {
-  public ActionSequenceDiagram() { super("SequenceDiagram"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-      Object target = ProjectBrowser.TheInstance.getDetailsTarget();
-      MNamespace ns = p.getCurrentNamespace();
-      if (target instanceof MModel) ns = (MNamespace) target;
-      ArgoDiagram d  = new UMLSequenceDiagram(ns);
-      p.addMember(d);
-      ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-      ProjectBrowser.TheInstance.setTarget(d);
-    }
-    catch (PropertyVetoException pve) { }
-    super.actionPerformed(ae);
-  }
-
-    
-}  /* end class ActionSequenceDiagram */
 
 ////////////////////////////////////////////////////////////////
 // model element creation actions
 
-// class ActionClass extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MClass.class, "Class");
 
-//   public ActionClass() { super("Class"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     //System.out.println("making class...");
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionClass */
-
-// class ActionInterface extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MInterface.class, "MInterface");
-
-//   public ActionInterface() { super("MInterface"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     System.out.println("making interface...");
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionInterface */
-
-// class ActionActor extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MActor.class, "MActor");
-
-//   public ActionActor() { super("MActor"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     //System.out.println("making actor...");
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionActor */
-
-// class ActionUseCase extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MUseCase.class, "MUseCase");
-
-//   public ActionUseCase() { super("MUseCase"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     //System.out.println("making Use Case...");
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionUseCase */
-
-// class MActionState extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MCompositeState.class, "MState");
-
-//   public MActionState() { super("MState"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     //System.out.println("making state...");
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class MActionState */
-
-class ActionAddInternalTrans extends UMLChangeAction {
-  public ActionAddInternalTrans() { super("Add Internal Transition"); }
-
-  public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-    if (!(target instanceof MState)) return;
-    MState st = (MState) target;
-    /*	MTransition t = new MTransitionImpl();
-	t.setSource(st);
-	t.setTarget(st);
-	MStateMachine sm = (MStateMachine)st.getStateMachine();
-	sm.addTransition(t);
-
-	// which nsuml-Event to generate as default? is SignalEvent ok?
-	MEvent triggerEvent = new MSignalEventImpl();
-	triggerEvent.setName("event");
-	t.setTrigger(triggerEvent);
-
-	MGuard guard = new MGuardImpl();
-	guard.setName("condition");
-	t.setGuard(guard);
-	MActionSequence as = new MActionSequenceImpl();
-	as.setName("actions");
-	t.setEffect(as);
-	t.setState(st);*/
-	super.actionPerformed(ae);
-  }
-  public boolean shouldBeEnabled() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    Object target = pb.getDetailsTarget();
-    return super.shouldBeEnabled() && target instanceof MState;
-  }
-} /* end class ActionAddInternalTrans */
-
-// class ActionPseudostate extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MPseudostate.class, "MPseudostate");
-
-//   public ActionPseudostate() { super("MPseudostate"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionPseudostate */
-
-// class ActionPackage extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MSubsystem.class, "Package");
-
-//   public ActionPackage() { super("Package"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionPackage */
-
-// class ActionInstance extends UMLChangeAction {
-//   org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   org.tigris.gef.base.CmdCreateNode(MInstance.class, "MInstance");
-
-//   public ActionInstance() { super("MInstance"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     _cmdCreateNode.doIt();
-//     super.actionPerformed(ae);
-//   }
-//   public boolean shouldBeEnabled() {
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     return super.shouldBeEnabled() && p != null;
-//   }
-// } /* end class ActionInstance */
-
-class ActionAddAttribute extends UMLChangeAction {
-    // needs-more-work: should be part of java binding or common elements
- //    public static MDataType INT_TYPE = new MDataTypeImpl();
-//     static{ INT_TYPE.setName("int"); }
-
-    public ActionAddAttribute() { super("Add Attribute"); }
-
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	Object target = pb.getDetailsTarget();
-	if (!(target instanceof MClassifier)) return;
-	MClassifier cls = (MClassifier) target;
-
-	MAttribute attr = MMUtil.SINGLETON.buildAttribute(cls);
-	super.actionPerformed(ae);
-    }
-
-    public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
-    }
-} /* end class ActionAddAttribute */
-
-class ActionAddOperation extends UMLChangeAction {
-    // needs-more-work: should be part of java binding or common elements
-//     public static MDataType VOID_TYPE = new MDataTypeImpl();
-//     static { VOID_TYPE.setName("void"); }
-
-    public ActionAddOperation() { super("Add Operation"); }
-
-    public void actionPerformed(ActionEvent ae) {	
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Project p = pb.getProject();
-	Object target = pb.getDetailsTarget();
-	if (!(target instanceof MClassifier)) return;
-
-	MClassifier cls = (MClassifier) target;
-	MOperation oper=MMUtil.SINGLETON.buildOperation(cls);
-	super.actionPerformed(ae);
-    }
-    public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
-    }
-} /* end class ActionAddOperation */
-
-class ActionAddNote extends UMLChangeAction {
-
-    public ActionAddNote() { super("Note"); }
-
-    public void actionPerformed(ActionEvent ae) {	
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	Object d = pb.getTarget();
-	
-	if (!(target instanceof MClassifier)) return;
-	MClassifier cls = (MClassifier)target;
-    
-	Editor ce = Globals.curEditor();
-	GraphModel gm = ce.getGraphModel();
-	GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-	Layer lay = ce.getLayerManager().getActiveLayer();
-
-	// There are 2 FigNote classes in the project now, so I have to
-	// use the fully qualified typename here.
-	org.argouml.uml.diagram.static_structure.ui.FigNote note = new org.argouml.uml.diagram.static_structure.ui.FigNote(cls);
-
-	// place the note a few pixels right of the selected figure
-	Fig f = null;  // The figure for the associated object.
-	Rectangle targetBounds=null;  // The bounds of this figure.
-        Vector figs = ce.getSelectionManager().getFigs();  // Get all the figures of the current diagram.
-        int size = figs.size();
-        for (int i = 0; i < size; i++) {  // Now search the figure for the active element
-	    f = (Fig)figs.elementAt(i);  
-	    Object owner = f.getOwner();  // Get the owner of the current figure.
-	    if((owner instanceof MModelElement) && (owner == target)) {  // If this is the figure,
-		targetBounds = f.getBounds();   // get the bounds of it.
-
-		// Place the note right of the figure,
-		note.setLocation(targetBounds.x + targetBounds.width + 80, targetBounds.y);
-
-		// And finish the search.
-		break;
-	    }
-        }
-	lay.add(note);  // Add the figure for for the note to the current layer.
-
-	// Add a link from note to associated figure
-	//
-
-	Rectangle noteBounds = note.getBounds();  // Get the bounds of the note.
-
-	// Simulate a mouseclick in the middle of the figure to get a port to connect
-	// the link to.
-	Object startPort = note.deepHitPort( noteBounds.x + noteBounds.width/2, noteBounds.y + noteBounds.height/2);      
-	Fig startPortFigure = note.getPortFig(startPort);
-
-	MutableGraphModel mgm = (MutableGraphModel)gm;
-
-	if (f instanceof FigNode) {
-	    FigNode destFigNode = (FigNode)f;
-
-	    // Place the port in the middle of the figure.
-	    Object foundPort = destFigNode.deepHitPort(targetBounds.x + targetBounds.width/2, targetBounds.y + targetBounds.height/2);
-
-	    if (foundPort != null) {
-		Fig destPortFig = destFigNode.getPortFig(foundPort);
-
-		FigEdgeNote fe = new FigEdgeNote();
-
-		fe.setSourcePortFig( startPortFigure);
-		fe.setSourceFigNode( note);
-		fe.setDestPortFig( destPortFig);
-		fe.setDestFigNode( (FigNode)f);
-
-		// Compute the route for this edge. That methods basically adds a snap point at
-		// the edge of the figures, so you can mode the edge at the edge of the figures.
-		fe.computeRoute();
-
-		lay.add(fe);  // Add the edge to the current layer.
-		lay.sendToBack(fe);
-
-		// set the new edge in place
-		note.addFigEdge(fe);
-		destFigNode.addFigEdge(fe);
-		note.updateEdges();
-		destFigNode.updateEdges();   
-		ce.damaged(fe);
-		note.damage();
-		f.damage();
-	    }
-	}
-	super.actionPerformed(ae);
-    }
-
-    public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
-	Object target = pb.getDetailsTarget();
-	return super.shouldBeEnabled() && target instanceof MClassifier;
-    }
-} /* end class ActionAddNote */
-
-class ActionAddMessage extends UMLChangeAction {
-	public ActionAddMessage() { super("Add Message"); }
-
-        public void actionPerformed(ActionEvent ae) {
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    Object target = pb.getDetailsTarget();
-	    Object d = pb.getTarget();
-	
-	    if (!(target instanceof MAssociationRole)) return;
-	    MAssociationRole ar = (MAssociationRole) target;
-
-	    String nextStr="";
-	    if (d instanceof UMLCollaborationDiagram){
-		UMLCollaborationDiagram cd = (UMLCollaborationDiagram) d;
-		nextStr = "" + (cd.getNumMessages() + 1);
-	    }
-	    
-	    MMessage msg=MMUtil.SINGLETON.buildMessage(ar,nextStr);
-
-	    Editor ce = Globals.curEditor();
-	    GraphModel gm = ce.getGraphModel();
-	    GraphNodeRenderer renderer = ce.getGraphNodeRenderer();
-	    Layer lay = ce.getLayerManager().getActiveLayer();
-	    SelectionManager sm = ce.getSelectionManager();
-	    Vector figs = sm.selections();
-	    Selection cf = (Selection) figs.firstElement();
-	    FigEdge curFig = (FigEdge) cf.getContent();
-	    Point center = curFig.center();
-	
-	    FigNode pers = renderer.getFigNodeFor(gm, lay, msg);
-	    Collection messages = ar.getMessages();
-	    int size = messages.size();
-	    int percent = 15 + size*10;
-	    if (percent > 100) percent = 100;
-	    curFig.addPathItem(pers, new PathConvPercent(curFig, percent, 10));
-	    curFig.updatePathItemLocations();
-	    lay.add(pers);
-	    super.actionPerformed(ae);
-	}
-
-	public boolean shouldBeEnabled() {
-		ProjectBrowser pb = ProjectBrowser.TheInstance;
-		Object target = pb.getDetailsTarget();
-		return super.shouldBeEnabled() && target instanceof MAssociationRole;
-	}
-}
-
-
-/* end class ActionAddMessage */
-
-// class ActionModel extends UMLChangeAction {
-//   //org.tigris.gef.base.Cmd _cmdCreateNode = new
-//   //org.tigris.gef.base.CmdCreateNode(ru.novosoft.uml.model_management.MModel.class, "MModel");
-//   // needs-more-work: need FigModel and UMLPackageDiagram
-//   public ActionModel() { super("MModel"); }
-
-//   public void actionPerformed(ActionEvent ae) {
-//     //_cmdCreateNode.doIt();
-//     Project p = ProjectBrowser.TheInstance.getProject();
-//     //try {
-//       p.addMember(new MModel());
-//       super.actionPerformed(ae);
-//       //}
-//     //catch (PropertyVetoException pve) { }
-//   }
-
-// } /* end class ActionModel */
-
-class ActionAddTopLevelPackage extends UMLChangeAction {
-  public ActionAddTopLevelPackage() {
-    super("Add Top-Level Package", NO_ICON);
-  }
-
-  public void actionPerformed(ActionEvent ae) {
-    Project p = ProjectBrowser.TheInstance.getProject();
-    try {
-      int numPacks = p.getModels().size();
-      String nameStr = "package_" + (numPacks + 1);
-	  MModel model = new MModelImpl();
-	  model.setName(nameStr);
-      p.addMember(model);
-      super.actionPerformed(ae);
-      Actions.ClassDiagram.actionPerformed(ae);
-    }
-    catch (PropertyVetoException pve) { }
-  }
-
-} /* end class ActionAddTopLevelPackage */
 
 
 ////////////////////////////////////////////////////////////////
@@ -2023,26 +1192,6 @@ class ToDoItemAction extends UMLAction {
     return target instanceof ToDoItem;
   }
 }
-
-// class ActionRecordFix extends ToDoItemAction {
-//   public ActionRecordFix() { super("Record My Fix..."); }
-// } /* end class ActionRecordFix */
-
-// class ActionReplayFix extends ToDoItemAction {
-//   public ActionReplayFix() { super("Replay My Fix..."); }
-// } /* end class ActionReplayFix */
-
-// class ActionFixItNext extends ToDoItemAction {
-//   public ActionFixItNext() { super("Fix It Next..."); }
-// } /* end class ActionFixItNext */
-
-// class ActionFixItBack extends ToDoItemAction {
-//   public ActionFixItBack() { super("Fix It Back..."); }
-// } /* end class ActionFixItBack */
-
-// class ActionFixItFinish extends ToDoItemAction {
-//   public ActionFixItFinish() { super("Fix It Finish..."); }
-// } /* end class ActionFixItFinish */
 
 class ActionResolve extends ToDoItemAction {
   public ActionResolve() { super("Resolve Item..."); }

@@ -40,6 +40,7 @@ import org.tigris.gef.graph.*;
 
 import org.argouml.ui.*;
 import org.argouml.uml.*;
+import org.argouml.uml.ui.*;
 import org.argouml.uml.generator.*;
 import org.argouml.uml.diagram.ui.*;
 
@@ -123,10 +124,9 @@ public class FigInterface extends FigNodeModelElement {
   public Vector getPopUpActions(MouseEvent me) {
     Vector popUpActions = super.getPopUpActions(me);
     JMenu addMenu = new JMenu("Add");
-    addMenu.add(Actions.AddOperation);
-    addMenu.add(Actions.AddNote);
-    popUpActions.insertElementAt(addMenu,
-				 popUpActions.size() - 1);
+    addMenu.add(ActionAddOperation.SINGLETON);
+    addMenu.add(ActionAddNote.SINGLETON);
+    popUpActions.insertElementAt(addMenu, popUpActions.size() - 1);
 
     return popUpActions;
   }
