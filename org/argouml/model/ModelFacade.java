@@ -279,6 +279,7 @@ public class ModelFacade {
     public static final Object AGGREGATIONKIND = MAggregationKind.class;
     public static final Object BOOLEAN_EXPRESSION = MBooleanExpression.class;
     public static final Object GUARD = MGuard.class;
+    public static final Object EVENT = MEvent.class;
 
     public static final Object ADD_ONLY_CHANGEABLEKIND =
         MChangeableKind.ADD_ONLY;
@@ -528,6 +529,9 @@ public class ModelFacade {
             return ((MGeneralizableElement) handle).isAbstract();
         if (handle instanceof MAssociation)
             return ((MAssociation) handle).isAbstract();
+        // isAbstarct() is not a typo! mistake in nsuml!
+        if (handle instanceof MReception)
+            return ((MReception) handle).isAbstarct();
         // ...
 	return illegalArgumentBoolean(handle);
     }
@@ -1074,6 +1078,16 @@ public class ModelFacade {
     }
 
     /**
+     * Recognizer for Partition
+     *
+     * @param handle candidate
+     * @return true if handle is a Partition
+     */
+    public static boolean isAPartition(Object handle) {
+        return handle instanceof MPartition;
+    }
+
+    /**
      * Recognizer for Permission
      *
      * @param handle candidate
@@ -1093,16 +1107,6 @@ public class ModelFacade {
         return handle instanceof MPackage;
     }
     
-    /**
-     * Recognizer for Partition
-     *
-     * @param handle candidate
-     * @return true if handle is a Partition
-     */
-    public static boolean isAPartition(Object handle) {
-        return handle instanceof MPartition;
-    }
-
     /**
      * Recognizer for Pseudostate
      *
@@ -2000,6 +2004,7 @@ public class ModelFacade {
 	return illegalArgumentObject(handle);
     }
 
+    
     /**
      * Get the child of a generalization.
      *
@@ -2776,6 +2781,13 @@ public class ModelFacade {
         }
 	return illegalArgumentObject(handle);
     }
+    
+    public static Collection getContents(Object handle) {
+        if (handle instanceof MPartition) {
+            return ((MPartition) handle).getContents();
+        }
+        return illegalArgumentCollection(handle);
+    }
 
     /**
      * Returns the context of some given statemachine or the context
@@ -2860,6 +2872,19 @@ public class ModelFacade {
             return ((MGeneralization) handle).getDiscriminator();
         }
 	return illegalArgumentObject(handle);
+    }
+    
+    /**
+     * 
+     * @param handle a generalization
+     * @param discriminator the discriminator to set
+     */
+    public static void setDiscriminator(Object handle, String discriminator) {
+        if (handle instanceof MGeneralization) {
+             ((MGeneralization) handle).setDiscriminator(discriminator);
+             return;
+        }
+        illegalArgument(handle);
     }
 
     /**
@@ -3217,8 +3242,6 @@ public class ModelFacade {
 
     /**
      * Get the parent of a generalization.
-     *
-     * TODO: Check that the concepts parent and child exist in the UML model.
      *
      * @param handle generalization.
      * @return the parent.
@@ -3826,6 +3849,13 @@ public class ModelFacade {
                 result.add(feature);
         }
         return result;
+    }
+    
+    public static String getSpecification(Object handle) {
+        if (handle instanceof MReception) {
+            return ((MReception) handle).getSpecification();
+        }
+        return illegalArgumentString(handle);
     }
 
     /**
@@ -4945,6 +4975,9 @@ public class ModelFacade {
         if (handle instanceof MPartition
             && container instanceof MActivityGraph) {
             ((MPartition) handle).setActivityGraph((MActivityGraph) container);
+        } else if (handle instanceof MModelElement &&
+                container instanceof MPartition) {
+            	((MPartition) container).addContents((MModelElement)handle);
         } else if (
             handle instanceof MConstraint
                 && container instanceof MStereotype) {
@@ -5994,6 +6027,19 @@ public class ModelFacade {
             return;
         }
 	illegalArgument(handle);
+    }
+    
+    /**
+     * 
+     * @param handle a reception
+     * @param specification the specification
+     */
+    public static void setSpecification(Object handle, String specification) {
+        if (handle instanceof MReception) {
+            ((MReception) handle).setSpecification(specification);
+            return;
+        }
+        illegalArgument(handle);
     }
 
     public static void setSpecification(Object handle, boolean specification) {
