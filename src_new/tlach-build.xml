@@ -1,0 +1,1301 @@
+<?xml version="1.0"?>
+
+<!-- =====================================================================
+
+!!!!!!!!!!!!!!!!  Now requires ANT 1.4.1   !!!!!!!!!!!!!!!!!!!!!
+if you get a message like:
+
+build.xml:162: Could not create task of type: copy because I can't
+               find it in the list of task class definitions
+
+You are not running ANT 1.4.1
+
+
+                           * ================== *
+                           |  How to build Argo |
+                           * ================== *
+
+           Adaption from the FOP build.xml written by Stefano Mazzocchi
+                by Giacomo Pati with some addition by Fotis Jannidis
+           Adapted by Andreas Rueckert, Alejandro Ramirez and Andrew Smith
+
+
+Introduction
+============
+
+ArgoUML is a free UML tool. It is written entirely in Java.
+The homepage of ArgoUML is http://argouml.tigris.org
+
+Installing the build tools
+==========================
+
+Building ArgoUML from source is automated using Ant which is a little
+but very handy tool that uses a build file written in XML (this file)
+as building instructions. For more information refer to
+"http://jakarta.apache.org/ant/".
+
+You have to make sure that the "JAVA_HOME" environment property should
+be set to match the JVM and compiler you want to use. That's it.
+
+
+Building instructions
+=====================
+
+First, make sure your current working directory is where this very
+file is located. Then just type
+
+	build
+
+if on a MS Windows system,
+or
+	./build.sh
+
+if on a *nix system, to create the settings for an environment to suit
+Ant.
+
+After the above command you should see a help screen describing the
+usage of the Ant facility if everything is set up properly.
+
+Executing build.bat/build.sh will use the bundled ant distribution,
+which is version 1.4.1.
+
+
+Alternatively, you can type
+
+	ant
+
+if you have installed ant somewhere else and want to use it.  In that
+case, you are responsible for setting ANT_HOME, and ensuring that all
+of the necessary jar files are available for execution (refer to the
+ant documentation for optional tasks if necessary).
+
+Property Settings
+=================
+
+You may place a simple text file named "argouml.build.properties" in
+your home directory using which you can change certain properties. For
+example, by adding a line to argouml.build.properties you can change
+the compiler to be used
+
+build.compiler=jikes
+(without a blank after "jikes"!).
+
+This will force Ant to compile with jikes if you have it on your
+system.
+
+Refer to the ant documentation for other settings.
+
+Compilation instructions for ArgoUML
+====================================
+
+If you want to compile ArgoUML, you need to have following:
+- JAVA_HOME correctly set to where Java2 jdk is installed
+- the additional libraries (ns, ocl-argo.jar, xml4j.jar,
+  gef.jar, i18n.jar, antlrall.jar) in argouml/lib
+
+when these are right the command
+
+     build compile
+
+will do the job. With this arrangement problems with the set size of
+environment may arise for DOS command line windows, but a setting of
+4096b should be ample on the Memory page of the Property dialogue box.
+
+If something went wrong, go to the FAQ section below.
+
+Also, you'll note that reusing a single JVM instance for each task,
+increases tremendously the performance of the whole build system,
+compared to other tools (i.e. make or shell scripts) where a new JVM
+is started for each task.
+
+Build targets
+=============
+See the usage target.
+
+
+================================= FAQ =====================================
+
+1) Why some of the classes present in the original jar are not built
+anymore?
+
+The ArgoUML build system is very flexible: if a module requires a
+package that is not present in the classpath at build time, the module
+is skipped but the built process is not stopped.
+
+2) I see a lot of warnings starting like this: "Warning: file modified
+in the future:" 
+
+Sometimes ant gives out this warnings, but the build is finished
+without any problems.  This usually has to do with the timestamps of
+files that were restored from either tar or zip archives, where there
+is a difference in the clock between the machine the archive was
+created on and the machine it was extracted on.
+
+3) "ant run" doesn't work, XML classes are not found, what's wrong?
+
+Maybe you have hard-coded your ANT_HOME variable in the ant
+start-script. This way it doesn't find it's own XML-libs. You need to
+set ANT_HOME in your shell.
+
+
+========================================================================== -->
+
+<project name="argouml" default="usage" basedir=".">
+
+  <!-- =================================================================== -->
+  <!-- Global initialization                                               -->
+  <!-- =================================================================== -->
+
+
+  <!-- =================================================================== -->
+  <!-- Convenience target for locating property files.                     -->
+  <!-- =================================================================== -->
+
+ <target name="list-property-files" depends="init">
+
+    <!-- ====================================================== -->
+    <!-- System property path.separator is a simple way to tell -->
+    <!-- what operating system we are running on                -->
+    <!-- ====================================================== -->
+    <pathconvert pathsep="${path.separator}" property="lbp.path">
+        <path>
+            <pathelement location="${local.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="ubp.path">
+        <path>
+            <pathelement location="${user.build.properties}"/>
+	</path>
+    </pathconvert>
+
+    <pathconvert pathsep="${path.separator}" property="dp.path">
+        <path>
+            <pathelement location="default.properties"/>
+	</path>
+    </pathconvert>
+
+    <!-- ====================================================== -->
+    <!-- Ant does not replace property values once they are     -->
+    <!-- set.  So only those which do not exist will get the    -->
+    <!-- property values set to "not present".                  -->
+    <!-- ====================================================== -->
+    <available property="lbp.exists" file="${lbp.path}" value="present"/>
+    <available property="ubp.exists" file="${ubp.path}" value="present"/>
+    <available property="dp.exists" file="${dp.path}" value="present"/>
+
+    <property name="lbp.exists" value="not present"/>
+    <property name="ubp.exists" value="not present"/>
+    <property name="dp.exists" value="not present"/>
+
+    <echo>
+
+Property files to be searched:
+
+1.  ${lbp.path}
+            File is ${lbp.exists}.
+
+2.  ${ubp.path}
+            File is ${ubp.exists}.
+
+3.  ${dp.path}
+            File is ${dp.exists}.
+
+    </echo>
+
+ </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialization target                                               -->
+  <!-- =================================================================== -->
+
+ <target name="init">
+
+    <tstamp>
+        <format property="year" pattern="yyyy"/>
+    </tstamp>
+
+    <property name="argo.root.dir" value=".."/>
+
+    <!-- ============================================================= -->
+    <!-- when executed using target "dist-release", the properties     -->
+    <!-- "local.build.properties" and "user.build.properties"          -->
+    <!-- are set to "build.properties" so that there can be no         -->
+    <!-- possibility of overriding the default.                        -->
+    <!-- ============================================================= -->
+    <property name="local.build.properties" value="build.properties"/>
+    <property name="user.build.properties"
+              value="${user.home}/argouml.build.properties"/>
+
+    <!-- 
+	<property environment="env"/>
+    -->
+
+
+    <property file="${local.build.properties}"/>
+    <property file="${user.build.properties}"/>
+
+    <property file="default.properties"/>
+  
+    <path id="java.tools.classpath">
+      <pathelement path="${JAVA_HOME}/lib/tools.jar" />
+    </path>
+
+    <path id="antlr.runtime.classpath">
+      <pathelement location="${antlrall.jar.path}" />
+    </path>
+
+    <path id="argo.compile.classpath">
+      <pathelement location="${xerces.jar.path}" />
+      <pathelement location="${nsuml.jar.path}" />
+      <pathelement location="${ocl-argo.jar.path}" />
+      <pathelement location="${gef.jar.path}" />
+      <pathelement location="${i18n.jar.path}" />
+      <pathelement location="${log4j.jar.path}" />
+      <pathelement location="${jh.jar.path}" />
+      <path refid="antlr.runtime.classpath" />
+    </path>
+
+    <path id="argo.runtime.classpath">
+      <!-- Currently same as the compile path. -->
+      <path refid="argo.compile.classpath" />
+    </path>
+
+    <!-- In order to use ant optional tasks which use jars that are not -->
+    <!-- copied into ANT_HOME/lib, we must declare the tasks ourselves. -->
+
+    <path id="ant.optional.classpath">
+      <pathelement location="${ant.home}/optional.jar" />
+      <pathelement location="${junit.jar.path}" />
+      <pathelement location="${jdepend.jar.path}" />
+      <pathelement location="${xerces.jar.path}" />
+      <pathelement location="${xalan.jar.path}" />
+      <pathelement location="${bsf.jar.path}" />
+      <pathelement location="${javasrc.jar.path}" />
+    </path>
+
+    <!--taskdef name="junit"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.JUnitTask">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef name="junitreport"
+             classname="org.apache.tools.ant.taskdefs.optional.junit.XMLResultAggregator">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef>
+
+    <taskdef name="jdepend"
+             classname="org.apache.tools.ant.taskdefs.optional.jdepend.JDependTask">
+      <classpath>
+	 <path refid="ant.optional.classpath"/>
+      </classpath>
+    </taskdef-->
+
+    <!-- End of support section for ant optional tasks                  -->
+
+    <property name="Name" value="ArgoUML"/>
+    <property name="name" value="argouml"/>
+
+    <!-- ============================================================= -->
+    <!-- when executed using target "dist-release", argo.build.version -->
+    <!-- is set prior to "init" being executed and will not contain    -->
+    <!-- the "PRE-" portion.                                           -->
+    <!-- ============================================================= -->
+    <property name="argo.build.version" value="PRE-${argo.core.version}"/>
+
+    <property name="argo.timestamp.version"
+              value="${argo.build.version}-${DSTAMP}-${TSTAMP}"/>
+ 
+    <echo message="------ ${Name} ${argo.timestamp.version} [${year}] ----"/>
+    <echo message="Using ${ant.version}"/>
+
+    <property name="version.package" value="org/argouml/application"/>
+
+    <!-- TODO:  Change name to javadoc.packages -->
+    
+    <property name="packages" value="org.argouml.*"/>
+
+    <available classname="org.tigris.gef.base.Globals"
+	       classpathref="argo.compile.classpath"
+               property="has.gef" />
+    <available classname="org.tigris.gef.util.Localizer"
+	       classpathref="argo.compile.classpath"
+               property="has.gef.localizer" />
+    <available classname="org.apache.log4j.Category"
+	       classpathref="argo.compile.classpath"
+               property="has.log4j" />
+    <available classname="antlr.ANTLRException"
+	       classpathref="argo.compile.classpath"
+               property="has.antlr" />
+
+    <!-- developer.lib.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to build.dir, and "build install"  -->
+    <!-- will not do anything.                                            -->
+    <property name="developer.lib.dir" value="${argo.build.dir}"/>
+
+    <!-- developer.bin.dir is the developer snapshot directory.           -->
+    <!-- If it is not set, it defaults to argo.bin.dir, and               -->
+    <!-- "build install"  will not do anything.                           -->
+    <property name="developer.bin.dir" value="${argo.bin.dir}"/>
+
+  </target>
+
+  <!-- Note this file can only make Ant display values set in the
+       file correctly, but external values in the environment or
+       properties file will be operational.
+   -->
+
+  <!-- =================================================================== -->
+  <!-- Help on usage                                                       -->
+  <!-- =================================================================== -->
+  <target name="usage" depends="init">
+    <echo>
+
+${Name} Build file
+-------------------------------------------------------------
+
+ available targets are:
+
+   compile      --> compiles the source code to the tree under ${argo.build.dir}
+   run          --> runs ArgoUML from compiled source
+   package      --> copies files in place
+   jar          --> generates the ${name}.jar file
+   dist         --> generates ${Name} .tar.gz and .zip files into ${argo.dist.dir}
+   prepare-docs --> writes the documentation to ${argo.javadocs.dir}
+   clean        --> cleans up the ${build.dir} directory
+   distclean    --> cleans up the distribution directory, ${dist.dir}
+   jdepend      --> obtain design quality metrics by applying JDepend
+   usage        --> show this message (default)
+
+ See the comments inside the build.xml file for more details.
+-------------------------------------------------------------
+    </echo>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the build directory                                        -->
+  <!-- =================================================================== -->
+  <target name="prepare" depends="init">
+    <!-- create directories -->
+    <echo message="Preparing the build directories"/>
+    <mkdir dir="${argo.build.dir}"/>
+    <mkdir dir="${argo.build.dir}/ext"/>
+    <mkdir dir="${argo.build.dir}"/>
+
+    <uptodate property="version.is.current"
+	    targetfile="${argo.src.dir}/${version.package}/ArgoVersion.java">
+	    <srcfiles dir="${argo.src.dir}/templates">
+          <include name="ArgoVersion.template"/>
+      </srcfiles>
+      <srcfiles dir="${argo.src.dir}">
+          <include name="default.properties"/>
+          <include name="build.properties"/>
+      </srcfiles>
+    </uptodate>
+
+    <copy todir="${argo.build.classes}/org/argouml/Images">
+      <fileset dir="${argo.src.dir}/org/argouml/Images" 
+               includes="**/**"
+               excludes="CVS/**" />
+
+    </copy>
+    <copy todir="${argo.build.classes}/org/argouml/i18n">
+      <fileset dir="${argo.src.dir}/org/argouml/i18n"
+               includes="*.properties" />
+    </copy>
+    <copy todir="${argo.build.classes}/org/argouml/resource">
+      <fileset dir="${argo.src.dir}/org/argouml/resource" 
+               includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy todir="${argo.build.classes}/org/argouml/xml/dtd">
+      <fileset dir="${argo.src.dir}/org/argouml/xml/dtd" 
+               includes="**/**" excludes="CVS/**" />
+    </copy>
+    <copy file="${argo.src.dir}/org/argouml/argo.ini"
+          tofile="${argo.build.classes}/org/argouml/argo.ini" />
+    <copy file="${argo.src.dir}/org/argouml/default.xmi"
+          tofile="${argo.build.classes}/org/argouml/default.xmi" />
+    <copy file="${argo.src.dir}/org/argouml/registry.xml"
+          tofile="${argo.build.classes}/org/argouml/registry.xml"/>
+    <copy file="${argo.src.dir}/org/argouml/eventtree.xml"
+          tofile="${argo.build.classes}/org/argouml/eventtree.xml"/>     
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Update from CVS                                                     -->
+  <!-- =================================================================== -->
+
+  <target name="update" depends="prepare">
+    <echo message="Updating from CVS "/>
+    <cvs dest="${argo.src.dir}"
+	 command="update"
+    />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Generates the parsers from the grammars by using Antlr              -->
+  <!-- =================================================================== -->
+
+  <target name="generateparser" depends="prepare">
+    <echo message="Generate parsers"/>
+
+    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
+          <arg line="-o ${argo.src.dir}/org/argouml/uml/reveng/java  ${argo.src.dir}/org/argouml/uml/reveng/java/java.g"/>
+          <classpath>
+	          <path refid="antlr.runtime.classpath"/>
+          </classpath>
+    </java>
+    <java fork="yes" classname="antlr.Tool" classpath="${classpath}">
+          <arg line="-o ${argo.src.dir}/org/argouml/language/java/generator  ${argo.src.dir}/org/argouml/language/java/generator/java.g"/>
+          <classpath>
+	          <path refid="antlr.runtime.classpath"/>
+          </classpath>
+    </java>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Checks for necessary libraries and correct versions of libraries    -->
+  <!-- =================================================================== -->
+
+  <target name="prerequisites"
+          depends="prepare,
+	           check.gef.localizer,
+		   check.gef,
+		   check.log4j,
+		   check.antlr">
+  </target>
+
+  <target name="check.gef"
+          depends="prepare"
+	  unless="has.gef">
+    <fail message="gef library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.gef.localizer"
+          depends="prepare, check.gef"
+	  unless="has.gef.localizer">
+    <fail message="Please install a more recent version of the gef library (minimum 0.9.5)"/>
+  </target>
+
+  <target name="check.log4j"
+          depends="prepare"
+	  unless="has.log4j">
+    <fail message="log4j library does not appear to be in the classpath."/>
+  </target>
+
+  <target name="check.antlr"
+          depends="prepare"
+	  unless="has.antlr">
+    <fail message="antlrall library does not appear to be in the classpath."/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Updates the version source file if necessary                        -->
+  <!-- =================================================================== -->
+  <target name="update-version" depends="prepare" unless="version.is.current">
+    <echo message="Creating ArgoVersion.java for version ${argo.build.version}"/>
+    <filter token="ARGO_RELEASE_VERSION"
+	    value="${argo.build.version}"/>
+    <copy file="${argo.src.dir}/templates/ArgoVersion.template"
+	  tofile="${argo.src.dir}/${version.package}/ArgoVersion.java"
+	  filtering="on"
+	  overwrite="on"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Check dependencies.                                                 -->
+  <!--                                                                     -->
+  <!-- This process can be bypassed during the normal compile              -->
+  <!-- by setting the property "skip.dependency.check" to any value.       -->
+  <!--                                                                     -->
+  <!-- It can still be run directly using the "depend" target.             -->
+  <!-- =================================================================== -->
+  <target name="depend" depends="prepare,prerequisites">
+
+    <!-- create directories -->
+    <mkdir dir="${argo.build.classes}"/>
+
+    <!-- TODO:  Investigate cache -->
+    <!-- TODO:  Decide whether to use dump or not -->
+    <!-- TODO:  Decide whether to use closure or not -->
+    <!-- TODO:  Allow setting of dump and closure in properties -->
+    <depend srcdir="${argo.src.dir}"
+            destdir="${argo.build.classes}"
+	    dump="true"
+	    closure="true">
+       <classpath>
+	  <path refid="argo.compile.classpath"/>
+       </classpath>
+    </depend>
+  </target>
+
+  <target name="check-dependencies" unless="skip.dependency.check">
+      <antcall target="depend" inheritall="true"/>
+  </target>
+  
+  
+  <!-- =================================================================== -->
+  <!-- Compiles the source directory                                       -->
+  <!-- =================================================================== -->
+  <target name="compile" depends="prepare,
+                                  prerequisites,
+                                  update-version,
+                                  check-dependencies">
+
+
+    <echo message="Compiling the sources"/>
+
+    <!-- create directories -->
+    <mkdir dir="${argo.build.classes}"/>
+
+    <!-- remove obsolete classes before compiling -->
+    <delete file="${argo.build.classes}/org/argouml/model/uml/ModelListener.class"/>
+    <delete file="${argo.build.classes}/org/argouml/model/uml/AbstractModelFactory.class"/>
+
+    <javac srcdir="${argo.src.dir}"
+           destdir="${argo.build.classes}"
+	   includes="org/argouml/**/*.java"
+           debug="${debug}"
+           deprecation="${deprecation}"
+           optimize="${optimize}">
+       <classpath>
+	  <path refid="argo.compile.classpath"/>
+       </classpath>
+    </javac>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the jar file                                                -->
+  <!-- =================================================================== -->
+  <target name="jar" depends="compile">
+    <filter token="version" value="${argo.build.version}"/>
+    <copy file="${argo.src.dir}/templates/manifest.template"
+          tofile="${argo.build.manifest}"
+          filtering="on"
+          overwrite="on" />
+    <jar jarfile="${argo.build.dir}/${name}.jar"
+         basedir="${argo.build.classes}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.build.manifest}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Copies the complete set of jar files to the build directory.        -->
+  <!-- The purpose of this is to keep names here in synch with copied-to   -->
+  <!-- names in build and manifest.mf!                                     -->
+  <!-- =================================================================== -->
+  <target name="package" depends="jar">
+    <property name="names.of.all.included.libs"
+              value="antlrall.jar gef.jar i18n.jar log4j.jar nsuml.jar ocl-argo.jar xerces.jar jmi.jar argouml-model.jar argouml-uml.jar argouml-api.jar"
+     />
+    <copy file="${antlrall.jar.path}" 
+          tofile="${argo.build.dir}/antlrall.jar" />
+    <copy file="${gef.jar.path}" tofile="${argo.build.dir}/gef.jar" />
+    <copy file="${i18n.jar.path}" tofile="${argo.build.dir}/i18n.jar" />
+    <copy file="${log4j.jar.path}" tofile="${argo.build.dir}/log4j.jar" />
+    <copy file="${nsuml.jar.path}" tofile="${argo.build.dir}/nsuml.jar" />
+    <copy file="${ocl-argo.jar.path}"
+          tofile="${argo.build.dir}/ocl-argo.jar" />
+    <copy file="${xerces.jar.path}" tofile="${argo.build.dir}/xerces.jar" />
+    <copy file="${argouml.api.jar.path}"
+          tofile="${argo.build.dir}/argouml-api.jar" />
+    <copy file="${jmi.jar.path}"
+          tofile="${argo.build.dir}/jmi.jar" />
+    <copy file="${argouml.uml.jar.path}"
+          tofile="${argo.build.dir}/argouml-uml.jar" />
+    <copy file="${argouml.model.jar.path}"
+          tofile="${argo.build.dir}/argouml-model.jar" />
+    <!-- End of name synch area in this file. -->
+
+    <copy file="${jh.jar.path}" tofile="${argo.build.dir}/jh.jar" />
+
+    <copy file="${argo.src.dir}/README.txt"
+          tofile="${argo.build.dir}/README.txt" />
+    <copy file="${argo.src.dir}/bin/argouml.sh" todir="${argo.build.dir}" />
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates a snapshot                                                  -->
+  <!-- =================================================================== -->
+  <target name="snapshot" depends="compile">
+    <!-- create directories -->
+    <mkdir dir="${argo.snapshot.dir}"/>
+    <filter token="version" value="${argo.build.version}"/>
+    <copy file="${argo.src.dir}/templates/manifest.template"
+          tofile="${argo.build.manifest}"
+          filtering="on"
+          overwrite="on"/>
+    <jar jarfile="${argo.snapshot.dir}/${name}-snapshot-${DSTAMP}.jar"
+         basedir="${argo.build.classes}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.build.manifest}"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepares the docs                                                   -->
+  <!-- =================================================================== -->
+  <target name="prepare-docs" depends="init, javadocs">
+  </target>
+
+  <target name="javadocs" depends="init">
+    <mkdir dir="${argo.javadocs.dir}"/>
+
+    <!-- Links allow reference to external classes from within Argo javadocs
+      -->
+    <javadoc sourcepath="${argo.src.dir}"
+             destdir="${argo.javadocs.dir}"
+             packagenames="${packages}"
+	     use="${javadoc.use}"
+	     private="${javadoc.private}"
+	     splitindex="${javadoc.splitindex}"
+	     author="${javadoc.author}"
+	     windowtitle="ArgoUML Documentation"
+	     overview="org/argouml/overview-argo.html"
+             bottom="&lt;table width='100%'&gt;&lt;tr&gt;&lt;td width='33%' align='left'&gt;ArgoUML &amp;copy; 1996-2003 (${DSTAMP})&lt;/td&gt;&lt;td width='34%' align='center'&gt;&lt;a href='http://argouml.tigris.org/' target='_blank'&gt;ArgoUML Project Home&lt;/a&gt;&lt;/td&gt;&lt;td width='33%' align='right'&gt;&lt;a href='http://argouml.tigris.org/documentation/defaulthtml/cookbook/' target='_blank'&gt;ArgoUML Cookbook&lt;/a&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;">
+      <classpath>
+	  <path refid="argo.compile.classpath"/>
+      </classpath>
+      <link offline="true"
+            href="${jdk.javadoc.link}"
+            packagelistLoc="${jdk.javadoc.link}"/>
+      <link offline="true"
+            href="${log4j.javadoc.link}"
+            packagelistLoc="${log4j.javadoc.link}"/>
+      <link offline="true"
+            href="${xerces.javadoc.link}"
+            packagelistLoc="${xerces.javadoc.link}"/>
+
+    </javadoc>
+
+    <copy todir="${argo.javadocs.dir}/org/argouml/doc-files">
+      <fileset dir="${argo.src.dir}/org/argouml/doc-files"
+               includes="**/**" excludes="CVS/**" />
+    </copy>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Zips the javadocs                                                   -->
+  <!-- Coincidentally (not) this file is suitable for adding to NetBeans   -->
+  <!-- =================================================================== -->
+  <target name="zip-docs" depends="prepare-docs">
+      <zip zipfile="${argo.build.dir}/argo-javadocs.zip"
+           basedir="${argo.javadocs.dir}">
+      </zip> 
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the distribution                                            -->
+  <!-- =================================================================== -->
+  <target name="dist" depends="package">
+    <echo message="Building the distribution files (zip, tar)"/>
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.zip" 
+         basedir="${argo.build.dir}" 
+         includes="${names.of.all.included.libs} argouml.jar README.txt"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.tar"
+	 basedir="${argo.build.dir}" 
+	 includes="${names.of.all.included.libs} argouml.jar README.txt">
+    <!--
+      <tarfileset mode="555">
+	<include name="argouml.sh">
+      </tarfileset>
+    -->
+    </tar>
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.tar.gz"
+	  src="${argo.root.dir}/${Name}-${argo.build.version}.tar"
+     />
+    <delete file="${argo.root.dir}/${Name}-${argo.build.version}.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the source distribution                                     -->
+  <!-- =================================================================== -->
+  <target name="dist-src" depends="init">
+    <echo message="Building the source distribution files (zip,tar)"/>
+    <chmod file="${argo.src.dir}/build.sh" perm="ugo+rx" />
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-src.zip"
+         basedir="${argo.src.dir}/.."
+         excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"
+         includes="src_new/**"/>
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-src.tar"
+         basedir="${argo.src.dir}/.."
+         excludes="**/.*/** **/.* **/*% **/*~ **/*.shared* **/*.proj* **/*.ref.* **/*.bak"
+         includes="src_new/**"/>
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-src.tar.gz"
+          src="${argo.root.dir}/${Name}-${argo.build.version}-src.tar" />
+    <delete file="${argo.root.dir}/${Name}-${argo.build.version}-src.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the lib distribution                                        -->
+  <!-- =================================================================== -->
+  <target name="dist-lib" depends="init">
+    <echo message="Building the library distribution files (zip,tar)"/>
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.zip"
+         basedir="${argo.build.dir}"
+         includes="${names.of.all.included.libs}"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"
+         basedir="${argo.build.dir}" 
+         includes="${names.of.all.included.libs}"
+     />
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar.gz"
+          src="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar" />
+    <delete file="${argo.root.dir}/${Name}-${argo.build.version}-libs.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the distribution of modules                                 -->
+  <!-- =================================================================== -->
+  <target name="dist-modules" depends="package">
+    <echo message="Building the modules."/>
+
+    <!-- List of modules to be imported. -->
+    <ant dir="../modules/cpp" target="install" inheritAll="false"/>
+    <ant dir="../modules/csharp" target="install" inheritAll="false"/>
+    <ant dir="../modules/classfile" target="install" inheritAll="false"/>
+    <ant dir="../modules/php" target="install" inheritAll="false"/>
+
+    <zip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.zip"
+         basedir="${argo.build.dir}"
+         includes="ext/**.jar"
+     />
+    <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar"
+         basedir="${argo.build.dir}" 
+         includes="ext/**.jar"
+     />
+    <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar.gz"
+          src="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar" />
+    <delete file="${argo.root.dir}/${Name}-${argo.build.version}-modules.tar"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Creates the distribution as an Mac OS X Application Bundle          -->
+  <!-- =================================================================== -->
+  <target name="dist-appbund" depends="package"
+          description="Creates a MacOS X application bundle manually">
+     <property name="app.source.dir"
+	       location="${argo.src.dir}/bin/appbund"/>
+     <property name="app.bundle.dir"
+               location="${argo.build.dir}/AppBundle"/>
+     <property name="bundle.contents.dir"
+               location="${app.bundle.dir}/ArgoUML.app/Contents"/>
+     <property name="bundle.contents.macos.dir"
+               location="${bundle.contents.dir}/MacOS"/>
+     <property name="bundle.contents.resources.dir"
+               location="${bundle.contents.dir}/Resources"/>
+     <property name="bundle.contents.resources.java.dir"
+               location="${bundle.contents.resources.dir}/Java"/>
+
+     <mkdir dir="${app.bundle.dir}"/>
+     <mkdir dir="${bundle.contents.dir}"/>
+     <copy file="${app.source.dir}/Info.plist"
+         tofile="${bundle.contents.dir}/Info.plist">
+         <filterset>
+             <filter token="BUNDLE_NAME"     value="${Name}"/>
+             <filter token="VERSION_NUMBER"  value="${argo.build.version}"/>
+         </filterset>
+     </copy>
+     <mkdir dir="${bundle.contents.macos.dir}"/>
+     <copy file="${app.source.dir}/JavaApplicationStub"
+         todir="${bundle.contents.macos.dir}"
+         preservelastmodified="true"/>
+     <copy file="${app.source.dir}/PkgInfo"
+         tofile="${bundle.contents.dir}/PkgInfo">
+     </copy>
+     <mkdir dir="${bundle.contents.resources.dir}"/>
+     <copy file="${app.source.dir}/GenericJavaApp.icns"
+         todir="${bundle.contents.resources.dir}"
+         preservelastmodified="true"/>
+     <copy file="${app.source.dir}/MRJApp.properties"
+         todir="${bundle.contents.resources.dir}"
+         preservelastmodified="true"/>
+     <mkdir dir="${bundle.contents.resources.java.dir}"/>
+     <copy todir="${bundle.contents.resources.java.dir}">
+       <fileset dir="${argo.build.dir}"
+         includes="${names.of.all.included.libs} argouml.jar README.txt"/>
+     </copy>
+
+     <tar tarfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tar">
+        <tarfileset dir="${app.bundle.dir}">
+          <include name="**/**"/>
+	  <exclude name="**/JavaApplicationStub"/>
+        </tarfileset>
+	<tarfileset dir="${app.bundle.dir}" mode="755">
+	  <include name="**/JavaApplicationStub"/>
+        </tarfileset>
+     </tar>
+     <gzip zipfile="${argo.root.dir}/${Name}-${argo.build.version}.app.tgz"
+           src="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
+     <delete file="${argo.root.dir}/${Name}-${argo.build.version}.app.tar"/>
+     <delete dir="${app.bundle.dir}"/>
+
+   </target>
+
+
+
+
+  <!-- =================================================================== -->
+  <!-- Creates the whole distribution                                      -->
+  <!-- =================================================================== -->
+  <target name="dist-all" depends="dist,dist-src,dist-lib,dist-appbund,dist-modules"/>
+
+  <!-- =================================================================== -->
+  <!-- Creates the whole distribution with adjusted version number         -->
+  <!-- =================================================================== -->
+  <target name="dist-release">
+
+	<!-- Things that are needed to get this through. -->
+	<property name="argo.root.dir" value=".."/>
+	<property name="Name" value="ArgoUML"/>
+	<property name="name" value="argouml"/>
+
+        <!-- ====================================================== -->
+        <!-- Load all default information here so that no overrides -->
+        <!-- can be done either intentionally or accidentally.      -->
+        <!-- ====================================================== -->
+
+        <property file="default.properties"/>
+
+        <!-- ====================================================== -->
+        <!-- Make sure that none of the other property files        -->
+        <!-- are read either.                                       -->
+        <!-- ====================================================== -->
+        <property name="local.build.properties" value="default.properties"/>
+        <property name="user.build.properties" value="default.properties"/>
+
+ 	<!-- ====================================================== -->
+ 	<!-- Developers can embed version numbers into the source   -->
+ 	<!-- using @ACTUAL_RELEASE@ without knowing what release    -->
+ 	<!-- the source might be released in.                       -->
+ 	<!-- Examples might be:                                     -->
+ 	<!--                                                        -->
+ 	<!--    @since  ARGO@ACTUAL_RELEASE@                        -->
+ 	<!--                                                        -->
+ 	<!-- or                                                     -->
+ 	<!--                                                        -->
+ 	<!--    static String version = "@ACTUAL_RELEASE@";         -->
+ 	<!--                                                        -->
+ 	<!-- This will replace the release in source as required.   -->
+ 	<!-- ====================================================== -->
+
+        <!--  Not currently functioning
+        <replace dir="org/argouml" summary="yes" includes="**/*.java">
+             <replacefilter token="@ACTUAL_RELEASE@"
+                            value="${argo.core.version}"/>
+ 	</replace>
+        -->
+
+  	<property name="argo.build.version" value="${argo.core.version}"/>
+
+  	<antcall target="dist-all">
+  	</antcall>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Clean targets                                                       -->
+  <!-- =================================================================== -->
+  <target name="clean" depends="init">
+
+    <delete dir="${argo.build.dir}/tests"/>
+    <delete dir="${argo.build.dir}/src_new"/>
+    <delete dir="${argo.build.dir}/classes"/>
+    <delete dir="${argo.build.dir}/bin"/>
+    <delete file="${argo.src.dir}/${version.package}/ArgoVersion.java"/>
+
+    <!-- TODO: Some of these are obsolete -->
+    <delete quiet="true">
+        <fileset dir="${argo.build.dir}">
+            <include name="*.jar"/>
+            <include name="Fop.java"/>
+            <include name="Fop.class"/>
+            <include name="README.txt"/>
+            <include name="argouml.sh"/>
+        </fileset>
+    </delete>
+  </target>
+
+  <target name="distclean" depends="clean">
+    <delete dir="${argo.dist.dir}"/>
+    <delete>
+       <fileset dir="${argo.root.dir}"
+                includes="${Name}-${argo.build.version}*" />
+    </delete>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run ArgoUML from compiled sources                                   -->
+  <!-- =================================================================== -->
+  <target name="run" depends="compile">
+    <echo message="--- Executing ${Name} ---"/>
+    <!-- Uncomment the sysproperty and change the value if you want -->
+    <java classname="org.argouml.application.Main"
+          fork="yes"
+          taskname="argouml"
+          classpath="${argo.build.classes};${classpath}">
+      <!--sysproperty key="javax.xml.parsers.SAXParserFactory"
+                   value="org.apache.xerces.parsers.SAXParser"/-->
+      <!-- sysproperty key="log4j.configuration"
+                   value="org/argouml/resource/configuration.lcf"/-->
+        <classpath>
+	  <pathelement location="${argo.build.classes}"/>
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Move the jar file into the user execution directory.                -->
+  <!-- =================================================================== -->
+  <target name="developer_snapshot" depends="package">
+    <copy file="${argo.build.dir}/${name}.jar" todir="${developer.lib.dir}"/>
+
+    <filter token="argojarfile" value="${developer.lib.dir}/${name}.jar"/>
+    <copy todir="${argo.bin.dir}" filtering="on" >
+        <fileset dir="${developer.bin.dir}">
+	    <include name="argouml.bat"/>
+	    <include name="argouml.sh"/>
+        </fileset>
+    </copy>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Initialize for the junit tests.                                     -->
+  <!-- =================================================================== -->
+  <target name="junit-init" depends="init">
+
+     <property name="011202.xml" value="tests/testmodels/01-12-02.xml"/>
+     <property name="991015.dtd" value="tests/testmodels/Model.dtd"/>
+
+     <available file="${011202.xml}" property="011202.xml.available"/>
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 dtd if necessary                                    -->
+  <!-- =================================================================== -->
+  <target name="junit-get-991015-dtd" depends="junit-init"
+          unless="991015.dtd.available">
+
+    <get src="http://cgi.omg.org/docs/ad/99-10-15.dtd"
+         dest="${991015.dtd}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${991015.dtd}" property="991015.dtd.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Get the uml 1.3 model if necessary                                  -->
+  <!-- =================================================================== -->
+  <target name="junit-get-011202-xml"
+          depends="junit-init"
+          unless="011202.xml.available">
+
+    <get src="http://cgi.omg.org/docs/ad/01-12-02.xml"
+         dest="${011202.xml}"
+	 usetimestamp="true"
+	 verbose="false"
+	 ignoreerrors="true"/>
+
+     <!-- Check availability again - if the get worked, it will be there. -->
+     <available file="${011202.xml}" property="011202.xml.available"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Compiles the tests                                                  -->
+  <!-- =================================================================== -->
+
+  <target name="compile-tests" depends="prepare"> 
+
+    <echo message="Compiling the tests"/>
+
+    <!-- create directories -->
+    <mkdir dir="${argo.tests.classes}"/>
+
+    <!-- There are classes/test that actually test deprecated methods. -->
+    <!-- They are listed here. -->
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac srcdir="${argo.tests.src}"
+           destdir="${argo.tests.classes}"
+	   includes="**/GUITestProjectBrowser.java,**/*Deprecated.java"
+           debug="true"
+           deprecation="false"
+           optimize="false">
+        <classpath>
+            <pathelement location="${argo.build.classes}" />
+            <pathelement location="${junit.jar.path}" />
+	    <path refid="argo.compile.classpath" />
+        </classpath>
+     </javac>
+
+    <!-- We want debug, optimize, deprecation to be non-modifiable here -->
+    <javac srcdir="${argo.tests.src}"
+           destdir="${argo.tests.classes}"
+           debug="true"
+           deprecation="true"
+           optimize="false">
+        <classpath>
+            <pathelement location="${argo.build.classes}" />
+            <pathelement location="${junit.jar.path}" />
+	    <path refid="argo.compile.classpath" />
+        </classpath>
+     </javac>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Prepare for the junit tests.                                        -->
+  <!-- =================================================================== -->
+  <target name="junit-setup" depends="compile-tests,
+                                      junit-get-011202-xml,
+                                      junit-get-991015-dtd"/>
+
+  <target name="junit-report-clean">
+    <mkdir dir="${argo.tests.reports}/junit/output"/>
+    <mkdir dir="${argo.tests.reports}/junit/output/html"/>
+    <delete>
+        <fileset dir="${argo.tests.reports}/junit/output">
+           <include name="TEST-*.xml"/>
+           <include name="TEST-*.txt"/>
+        </fileset>
+    </delete>
+  </target>
+
+  <target name="junit-report-create">
+    <junitreport todir="${argo.tests.reports}/junit/output">
+      <fileset dir="${argo.tests.reports}/junit/output">
+        <include name="TEST-*.xml"/>
+      </fileset>
+      <report format="frames"
+              todir="${argo.tests.reports}/junit/output/html"/>
+    </junitreport>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests.                                                -->
+  <!-- =================================================================== -->
+  <target name="tests" depends="compile,junit-setup,junit-report-clean">
+    <!-- ant 1.4 uses printsummary="true"                          -->
+    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
+    <!-- This should never be committed as "withOutAndErr", but    -->
+    <!-- this comment is in case it gets committed by accident.    -->
+
+    <!-- TODO:  This should be contained in default.properties     -->
+    <!--        and overridable in build.properties so that        -->
+    <!--        individual users can set as wanted.                -->
+    <!--        That is part of issue 579.                         -->
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           maxmemory="48M"
+           fork="yes">
+	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+	<sysproperty key="log4j.configuration"
+		     value="org/argouml/resource/default.lcf"/>
+	<sysproperty key="java.awt.headless" value="true"/>
+        <classpath>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/**/Test*.java" />
+        </fileset>
+      </batchtest>
+<!--
+      <test name="org.argouml.model.uml.OptionalTestAgainstUmlModel"
+            todir="${argo.tests.reports}/junit/output"
+            if="011202.xml.available">
+      </test>
+-->
+    </junit>
+    <antcall target="junit-report-create"/>
+
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the junit tests, the ones that include GUI stuff.               -->
+  <!-- =================================================================== -->
+  <target name="guitests" depends="compile,junit-setup,junit-report-clean">
+    <!-- ant 1.4 uses printsummary="true"                          -->
+    <!-- ant 1.5 allows printsummary="withOutAndErr"               -->
+    <!-- This should never be committed as "withOutAndErr", but    -->
+    <!-- this comment is in case it gets committed by accident.    -->
+
+    <!-- TODO:  This should be contained in default.properties     -->
+    <!--        and overridable in build.properties so that        -->
+    <!--        individual users can set as wanted.                -->
+    <!--        That is part of issue 579.                         -->
+
+    <junit printsummary="true"
+           haltonfailure="false"
+           errorproperty="junit.failure"
+           maxmemory="48M"
+           fork="yes">
+	<sysproperty key="test.model.uml13" value="${011202.xml}"/>
+	<sysproperty key="log4j.configuration"
+		     value="org/argouml/resource/default.lcf"/>
+        <classpath>
+            <pathelement location="${argo.build.classes}"/>
+            <pathelement location="${argo.tests.classes}"/>
+            <path refid="argo.runtime.classpath"/>
+        </classpath>
+        <formatter type="xml"/>
+      <batchtest todir="${argo.tests.reports}/junit/output">
+        <fileset dir="${argo.tests.src}">
+          <include name="org/argouml/**/GUITest*.java" />
+        </fileset>
+      </batchtest>
+    </junit>
+    <antcall target="junit-report-create"/>
+  </target>
+
+  <!-- =================================================================== -->
+  <!-- Run the both kind of tests.                                         -->
+  <!-- =================================================================== -->
+  <target name="alltests" 
+          depends="compile,junit-setup,tests,guitests"/>
+
+  <!-- =================================================================== -->
+  <!-- Start ArgoUML with JUnit test cases from ../tests.                  -->
+  <!-- =================================================================== -->
+  <target name="run-with-test-panel" depends="compile,junit-setup">
+    <copy file="${argo.tests.src}/org/manifest.mf"
+          todir="${argo.tests.classes}/org"/>
+    <jar jarfile="${argo.build.dir}/argo_junit_tests.jar"
+         basedir="${argo.tests.classes}"
+         includes="org/argouml/**"
+         excludes="*.txt,*.bat,*.xml,*.sh"
+         manifest="${argo.tests.classes}/org/manifest.mf"/>
+
+    <echo message="--- Executing ${Name} ---"/>
+    <!-- Uncomment the sysproperty and change the value if you want -->
+    <java classname="junit.swingui.TestRunner"
+          fork="yes"
+          taskname="argouml">
+        <classpath>
+	  <pathelement location="${argo.build.dir}/argo_junit_tests.jar"/>
+          <pathelement location="${argo.tests.classes}"/>
+	  <pathelement location="${argo.build.classes}"/>
+          <pathelement location="${junit.jar.path}" />
+	  <path refid="argo.runtime.classpath"/>
+        </classpath>
+    </java>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Perform JDepend to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="jdepend" depends="init">
+    <echo>
+CC - Concrete Class Count 
+AC - Abstract Class (and Interface) Count 
+Ca - Afferent Couplings (Ca) 
+Ce - Efferent Couplings (Ce) 
+A - Abstractness (0-1) 
+I - Instability (0-1) 
+D - Distance from the Main Sequence (0-1) 
+Cyclic - If the package contains a dependency cycle 
+
+For details see http://www.clarkware.com/software/JDepend.html.
+    </echo>
+    <java classname="jdepend.swingui.JDepend" 
+          fork="true"
+          failonerror="true">
+      <arg value="."/> 
+      <classpath>
+	<path refid="ant.optional.classpath"/>
+      </classpath>
+    </java>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Perform javasrc to find about the structure in ArgoUML.             -->
+  <!-- =================================================================== -->
+  <target name="javasrc" depends="init">
+    <java classname="javasrc.app.Pass1" 
+          fork="true"
+          failonerror="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+        <pathelement location="${antlrall.jar.path}" />
+      </classpath>
+      <arg value="."/>
+    </java>
+    <java classname="javasrc.app.Pass2" 
+          fork="true"
+          failonerror="true">
+      <sysproperty key="recursive" value="yes"/>
+      <sysproperty key="title" value="JavaSrc for ArgoUML"/>
+      <sysproperty key="outdir" value="../build/javasrc"/>
+      <sysproperty key="verbose" value="yes"/>
+      <classpath>
+	<pathelement location="${javasrc.jar.path}"/>
+	<pathelement location="${antlrall.jar.path}"/>
+      </classpath>
+      <arg value="../build/javasrc"/>
+    </java>
+  </target>
+
+
+  <!-- =================================================================== -->
+  <!-- Runs checkstyle to find style problems in ArgoUML.                  -->
+  <!-- =================================================================== -->
+  <target name="checkstyle" depends="init">
+    <java classname="com.puppycrawl.tools.checkstyle.Main"
+          fork="true"
+	  maxmemory="32M"
+          failonerror="false">
+      <sysproperty key="checkstyle.header.file" 
+	           value="${argo.tools.dir}/checkstyle/java.header"/>
+      <classpath>
+	<pathelement location="${checkstyle.jar.path}"/>
+	<pathelement location="${checkstyleindent.jar.path}"/>
+        <pathelement location="${xerces.jar.path}" />
+      </classpath>
+      <arg value="-c"/>
+      <arg value="${argo.tools.dir}/checkstyle/checkstyle_argouml.xml"/>
+      <arg value="-r"/>
+      <arg value="org"/>
+      <arg value="-r"/>
+      <arg value="../tests"/>
+      <arg value="-r"/>
+      <arg value="../modules"/>
+    </java>
+  </target>
+
+<!-- Attempts at generating code. -->
+
+  <target name="generate">
+    <style basedir="org/argouml/xml/generator" destdir="../build/generator"
+         style="org/argouml/xml/generator/mf.xsl"
+	 in="org/argouml/xml/generator/metamodel.xml"
+	 out="../build/generator/result.xxx" />
+  </target>
+
+</project>
+
+<!-- End of file -->
