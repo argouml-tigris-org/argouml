@@ -34,6 +34,8 @@ import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.Fig;
+
+import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.behavior.state_machines.MCompositeState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 
@@ -79,6 +81,5 @@ public abstract class FigStateVertex extends FigNodeModelElement {
     if (m!=null) 
 	sv.setContainer(m);
   }
-
 
 } /* end class FigStateVertex */

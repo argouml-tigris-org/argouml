@@ -143,11 +143,6 @@ public class FigFinalState extends FigStateVertex {
 		return sel;
 	}
 
-	public void setOwner(Object node) {
-		super.setOwner(node);
-		bindPort(node, _bigPort);
-	}
-
 	/** Final states are fixed size. */
 	public boolean isResizable() {
 		return false;

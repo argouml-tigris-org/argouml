@@ -72,7 +72,6 @@ public class FigSeqObject extends FigNodeModelElement
   ////////////////////////////////////////////////////////////////
   // instance variables
 
-  FigRect _bigPort;
   FigRect _cover, _lifeline, fr;
 
   FigDynPort _port;
