@@ -352,7 +352,7 @@ public class ClassGenerationDialog
                                     node,
                                     "src_lang",
                                     language.getConfigurationValue());
-                                ProjectManager.getManager().getCurrentProject()
+                                ProjectManager.getManager()
                                     .setNeedsSave(true);
                             }
                         }

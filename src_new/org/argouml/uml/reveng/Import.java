@@ -63,7 +63,6 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Logger;
-
 import org.argouml.application.api.Argo;
 import org.argouml.application.api.Configuration;
 import org.argouml.application.api.PluggableImport;
@@ -79,7 +78,6 @@ import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.util.logging.SimpleTimer;
 import org.argouml.util.osdep.OsUtil;
-
 import org.tigris.gef.base.Globals;
 
 /**
@@ -660,8 +658,7 @@ public class Import {
             // Check if any diagrams where modified and the project
             // should be saved before exiting.
             if (diagramInterface != null && needsSave()) {
-                ProjectManager.getManager().getCurrentProject()
-                    .setNeedsSave(true);
+                ProjectManager.getManager().setNeedsSave(true);
             }
 
             ProjectBrowser.getInstance().showStatus("Import done");

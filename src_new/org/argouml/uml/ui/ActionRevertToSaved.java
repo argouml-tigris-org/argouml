@@ -63,7 +63,7 @@ public class ActionRevertToSaved extends ActionFileOperations {
         ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         
-        if (p == null || !p.needsSave()) {
+        if (p == null || !ProjectManager.getManager().needsSave()) {
             return;
         }
         

@@ -77,7 +77,7 @@ public class ActionExit extends UMLAction
 	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
     
-	if (p != null && p.needsSave() && !active) {
+	if (p != null && ProjectManager.getManager().needsSave() && !active) {
 	    active = true;
 	    String t = 
 		MessageFormat.format(Translator.localize(
