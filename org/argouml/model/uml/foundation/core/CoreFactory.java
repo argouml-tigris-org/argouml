@@ -137,19 +137,18 @@ public class CoreFactory extends AbstractUmlModelFactory {
 		return modelElement;
 	}
 
-	/** Create an empty but initialized instance of a UML Abstraction
-	 *  with a given name.
-	 *
-	 *  @param parent The superclass.
-	 *  @return an initialized UML Abstraction instance.
-	 */
-	public Object createAbstraction(String name) {
-		MAbstraction modelElement =
-			MFactory.getDefaultFactory().createAbstraction();
-		super.initialize(modelElement);
-		modelElement.setName(name);
-		return modelElement;
-	}
+    /** Build an empty but initialized instance of a UML Abstraction
+     *  with a given name.
+     *
+     *  @param name
+     *  @return an initialized UML Abstraction instance.
+     */
+    public Object buildAbstraction(String name) {
+        MAbstraction abstraction = MFactory.getDefaultFactory().createAbstraction();
+        super.initialize(abstraction);
+        abstraction.setName(name);
+        return abstraction;
+    }
 
 	/** Create an empty but initialized instance of a UML Association.
 	 *
@@ -1276,7 +1275,7 @@ public class CoreFactory extends AbstractUmlModelFactory {
 
 	/**
 	 * Adds a parameter initialized to default values to a given event
-         * or behevioral feature
+	 * or behavioral feature
 	 * @param oper
 	 * @return MParameter
 	 */
@@ -1288,8 +1287,8 @@ public class CoreFactory extends AbstractUmlModelFactory {
 			res.setNamespace(event.getNamespace());
 			event.addParameter(res);
 			return res;
-                } else if (o instanceof MBehavioralFeature) {
-                        return buildParameter((MBehavioralFeature)o);
+		} else if (o instanceof MBehavioralFeature) {
+			return buildParameter((MBehavioralFeature)o);
 		} else
 			return null;
 	}

@@ -39,8 +39,6 @@ import org.argouml.uml.*;
 import org.argouml.uml.reveng.*;
 
 import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.foundation.extension_mechanisms.*;
-import ru.novosoft.uml.model_management.*;
 import ru.novosoft.uml.foundation.data_types.*;
 
 /** This class receives calls from the parser and builds the UML
@@ -57,12 +55,12 @@ public class Modeller
 {
         protected static Category cat = Category.getInstance(Modeller.class);
     /** Current working model. */
-    private MModel model;
+    private Object model;
 
     private DiagramInterface _diagram;
 
     /** The package which the currentClassifier belongs to. */
-    private MPackage currentPackage;
+    private Object currentPackage;
 
     /** Keeps the data that varies during parsing. */
     private ParseState parseState;
@@ -90,7 +88,7 @@ public class Modeller
 		    boolean noAssociations,
 		    boolean arraysAsDatatype)
     {
-	this.model = (MModel)model;
+	this.model = model;
 	this.noAssociations = noAssociations;
 	this.arraysAsDatatype = arraysAsDatatype;
 	currentPackage = this.model;
@@ -136,7 +134,7 @@ public class Modeller
 	}
 
 	// Find or create a MPackage NSUML object for this package.
-	MPackage mPackage = getPackage(name);
+	Object mPackage = getPackage(name);
 
 	// Set the current package for the following source code.
 	currentPackage = mPackage;
@@ -156,15 +154,14 @@ public class Modeller
     {
 	String packageName = getPackageName(name);
 	String classifierName = getClassifierName(name);
-	MPackage mPackage = getPackage(packageName);
+	Object mPackage = getPackage(packageName);
 
 	if(classifierName.equals("*")) {
 	    parseState.addPackageContext(mPackage);
 	}
 	else {
 	    try {
-		MClassifier mClassifier =
-		    (MClassifier)(new PackageContext(null, mPackage)).get(classifierName);
+		Object mClassifier = (new PackageContext(null, mPackage)).get(classifierName);
 		parseState.addClassifierContext(mClassifier);
 	    }
 	    catch(ClassifierNotFoundException e) {
@@ -192,43 +189,33 @@ public class Modeller
                          Vector interfaces,
                          String javadoc)
     {
-	MClass mClass = (MClass)addClassifier(UmlFactory.getFactory().getCore().createClass(),
-					      name, modifiers, javadoc);
+        Object mClass = addClassifier(UmlFactory.getFactory().getCore().createClass(), name, modifiers, javadoc);
 
-	mClass.setAbstract((modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
-	mClass.setLeaf((modifiers & JavaRecognizer.ACC_FINAL) > 0);
-	mClass.setRoot(false);
+        ModelFacade.setAbstract(mClass,(modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
+        ModelFacade.setLeaf(mClass,(modifiers & JavaRecognizer.ACC_FINAL) > 0);
+        ModelFacade.setRoot(mClass,false);
 
-	try {
-	    if(superclassName != null) {
-		MClass parentClass = (MClass)getContext(superclassName)
-		    .get(getClassifierName(superclassName));
+        try {
+            if(superclassName != null) {
+                Object parentClass = getContext(superclassName).get(getClassifierName(superclassName));
+                getGeneralization(currentPackage, parentClass, mClass);
+            }
 
-		MGeneralization mGeneralization =
-		    (MGeneralization)getGeneralization(currentPackage, parentClass, mClass);
-		mGeneralization.setParent(parentClass);
-		mGeneralization.setChild(mClass);
-		mGeneralization.setNamespace(currentPackage);
-	    }
-
-	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-		String interfaceName = (String)i.next();
-		MInterface mInterface = (MInterface)(getContext(interfaceName)
-		    .getInterface(getClassifierName(interfaceName)));
-
-		MAbstraction mAbstraction =
-		    (MAbstraction)getAbstraction(currentPackage, mInterface, mClass);
-		if(mAbstraction.getSuppliers().size() == 0) {
-		    mAbstraction.addSupplier(mInterface);
-		    mAbstraction.addClient(mClass);
-		}
-		mAbstraction.setNamespace(currentPackage);
-		ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
-	    }
-	}
-	catch(ClassifierNotFoundException e) {
-	    _exception = e;
-	}
+            for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
+                String interfaceName = (String)i.next();
+                Object mInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
+                Object mAbstraction = getAbstraction(currentPackage, mInterface, mClass);
+                if(ModelFacade.getSuppliers(mAbstraction).size() == 0) {
+                    ModelFacade.addSupplier(mAbstraction, mInterface);
+                    ModelFacade.addClient(mAbstraction, mClass);
+                }
+                ModelFacade.setNamespace(mAbstraction,currentPackage);
+                ModelFacade.setStereotype(mAbstraction,getStereotype("realize"));
+            }
+        }
+        catch(ClassifierNotFoundException e) {
+            _exception = e;
+        }
     }
 
     /**
@@ -238,25 +225,20 @@ public class Modeller
     */
     public void addAnonymousClass(String type)
     {
-	String name = parseState.anonymousClass();
-	try {
-	    MClassifier mClassifier =
-		(MClassifier)(getContext(type).get(getClassifierName(type)));
-	    Vector interfaces = new Vector();
-	    if(mClassifier instanceof MInterface) {
-		interfaces.add(type);
-	    }
-	    addClass(name,
-		     (short)0,
-		     mClassifier instanceof MClass ? type : null,
-		     interfaces,
-		     "");
-	}
-	catch(ClassifierNotFoundException e) {
-	    _exception = e;
-	    // Must add it anyway, or the class poping will mismatch.
-	    addClass(name, (short)0, null, new Vector(), "");
-	}
+        String name = parseState.anonymousClass();
+        try {
+            Object mClassifier = getContext(type).get(getClassifierName(type));
+            Vector interfaces = new Vector();
+            if(ModelFacade.isAInterface(mClassifier)) {
+                interfaces.add(type);
+            }
+            addClass(name, (short)0, ModelFacade.isAClass(mClassifier) ? type : null, interfaces, "");
+        }
+        catch(ClassifierNotFoundException e) {
+            _exception = e;
+            // Must add it anyway, or the class poping will mismatch.
+            addClass(name, (short)0, null, new Vector(), "");
+        }
     }
 
     /**
@@ -266,7 +248,7 @@ public class Modeller
        @param modifiers A sequence of interface modifiers.
        @param interfaces Zero or more strings with the names of extended
                          interfaces. Can be fully qualified or just a
-			 simple interface name.
+                         simple interface name.
        @param javadoc The javadoc comment. "" if no comment available.
     */
     public void addInterface(String name,
@@ -274,29 +256,17 @@ public class Modeller
                              Vector interfaces,
                              String javadoc)
     {
-	MInterface mInterface = (MInterface)addClassifier(UmlFactory.getFactory().getCore().createInterface(),
-							  name,
-							  modifiers,
-							  javadoc);
-
-	try {
-	    for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
-		String interfaceName = (String)i.next();
-		MInterface parentInterface = (MInterface)(getContext(interfaceName)
-		    .getInterface(getClassifierName(interfaceName)));
-
-		MGeneralization mGeneralization =
-		    (MGeneralization)getGeneralization(currentPackage,
-				      parentInterface,
-				      mInterface);
-		mGeneralization.setParent(parentInterface);
-		mGeneralization.setChild(mInterface);
-		mGeneralization.setNamespace(currentPackage);
-	    }
-	}
-	catch(ClassifierNotFoundException e) {
-	    _exception = e;
-	}
+        Object mInterface = addClassifier(UmlFactory.getFactory().getCore().createInterface(), name, modifiers, javadoc);
+        try {
+            for(Iterator i = interfaces.iterator(); i.hasNext(); ) {
+                String interfaceName = (String)i.next();
+                Object parentInterface = getContext(interfaceName).getInterface(getClassifierName(interfaceName));
+                getGeneralization(currentPackage, parentInterface, mInterface);
+            }
+        }
+        catch(ClassifierNotFoundException e) {
+            _exception = e;
+        }
     }
 
     /**
@@ -361,24 +331,23 @@ public class Modeller
     */
     public void popClassifier()
     {
-	// add the current classifier to the diagram.
-	MClassifier classifier = (MClassifier)parseState.getClassifier();
+        // add the current classifier to the diagram.
+        Object classifier = parseState.getClassifier();
+        if(ModelFacade.isAInterface(classifier)) {
+            getDiagram().addInterface(classifier);
+        } else {
+            if(ModelFacade.isAClass(classifier)) {
+                getDiagram().addClass(classifier);
+            }
+        }
 
-	if(classifier instanceof MInterface) {
-	    getDiagram().addInterface((MInterface)classifier);
-	} else {
-	    if(classifier instanceof MClass) {
-		getDiagram().addClass((MClass)classifier);
-	    }
-	}
+        // Remove operations and attributes not in source
+        parseState.removeObsoleteFeatures();
 
-	// Remove operations and attributes not in source
-	parseState.removeObsoleteFeatures();
+        // Remove inner classes not in source
+        parseState.removeObsoleteInnerClasses();
 
-	// Remove inner classes not in source
-	parseState.removeObsoleteInnerClasses();
-
-	parseState = (ParseState)parseStateStack.pop();
+        parseState = (ParseState)parseStateStack.pop();
     }
 
     /** Called from the parser when an operation is
@@ -404,53 +373,44 @@ public class Modeller
       ModelFacade.setAbstract(mOperation,(modifiers & JavaRecognizer.ACC_ABSTRACT) > 0);
       ModelFacade.setLeaf(mOperation,(modifiers & JavaRecognizer.ACC_FINAL) > 0);
       ModelFacade.setRoot(mOperation,false);
-      setScope(mOperation, modifiers);
+      setOwnerScope(mOperation, modifiers);
       setVisibility(mOperation, modifiers);
       if((modifiers & JavaRecognizer.ACC_SYNCHRONIZED) > 0) {
-          ((MOperation)mOperation).setConcurrency(MCallConcurrencyKind.GUARDED);
-      } else if(((MOperation)mOperation).getConcurrency() ==
-          MCallConcurrencyKind.GUARDED) {
-          ((MOperation)mOperation).setConcurrency(MCallConcurrencyKind.SEQUENTIAL);
+          ModelFacade.setConcurrency(mOperation, ModelFacade.GUARDED);
+      } else if(ModelFacade.getConcurrency(mOperation) == ModelFacade.GUARDED) {
+          ModelFacade.setConcurrency(mOperation, ModelFacade.SEQUENTIAL);
       }
 
-
-      for(Iterator i = ModelFacade.getParameters(mOperation);
-          i.hasNext(); ) {
-          ((MOperation)mOperation).removeParameter((MParameter)i.next());
+      for(Iterator i = ModelFacade.getParameters(mOperation); i.hasNext(); ) {
+          ModelFacade.removeParameter(mOperation, i.next());
       }
 
       try {
-          MParameter mParameter;
+          Object mParameter;
           String typeName;
-          MPackage mPackage;
-          MClassifier mClassifier;
+          Object mPackage;
+          Object mClassifier;
 
           if(returnType == null) {
-        // Constructor
-        ModelFacade.setStereotype(mOperation,getStereotype("create"));
+              // Constructor
+              ModelFacade.setStereotype(mOperation,getStereotype("create"));
           }
           else {
-	      mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
-              mParameter.setName("return");
-              mParameter.setKind(MParameterDirectionKind.RETURN);
-
-
-        mClassifier =
-            (MClassifier)(getContext(returnType).get(getClassifierName(returnType)));
-        mParameter.setType(mClassifier);
+              mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
+              ModelFacade.setName(mParameter, "return");
+              ModelFacade.setKindToReturn(mParameter);
+              mClassifier = getContext(returnType).get(getClassifierName(returnType));
+              ModelFacade.setType(mParameter, mClassifier);
           }
 
-          for(Iterator i=parameters.iterator(); i.hasNext(); ) {
-        Vector parameter = (Vector)i.next();
-        mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
-        mParameter.setName((String)parameter.elementAt(2));
-        mParameter.setKind(MParameterDirectionKind.IN);
-
-
-        typeName = (String)parameter.elementAt(1);
-        mClassifier =
-            (MClassifier)(getContext(typeName).get(getClassifierName(typeName)));
-        mParameter.setType(mClassifier);
+          for(Iterator i = parameters.iterator(); i.hasNext(); ) {
+              Vector parameter = (Vector)i.next();
+              mParameter = UmlFactory.getFactory().getCore().buildParameter(mOperation);
+              ModelFacade.setName(mParameter, (String)parameter.elementAt(2));
+              ModelFacade.setKindToIn(mParameter);
+              typeName = (String)parameter.elementAt(1);
+              mClassifier = getContext(typeName).get(getClassifierName(typeName));
+              ModelFacade.setType(mParameter, mClassifier);
           }
       }
       catch(ClassifierNotFoundException e) {
@@ -477,37 +437,27 @@ public class Modeller
     }
 
     /**
-       Called from the parser to add a method body to an operation.
-       (At the moment, an operation will have exactly one body.)
-
-       @param op An operation.
-       @param body A method body.
-    */
+     * Called from the parser to add a method body to an operation.
+     * (An operation will have exactly one Java body.)
+     *
+     * @param op An operation.
+     * @param body A method body.
+     */
     public void addBodyToOperation(Object op, String body)
     {
-	if (op == null || !(op instanceof MOperation)) {
-	    cat.warn("adding body failed: no operation!");
-	    return;
-	}
-	if (body == null || body.length() == 0)
-	    return;
+        if (op == null || !ModelFacade.isAOperation(op)) {
+            cat.warn("adding body failed: no operation!");
+            return;
+        }
+        if (body == null || body.length() == 0)
+            return;
 
-	MOperation operation = (MOperation)op;
-
-	MMethod method = (MMethod)getMethod(operation.getName());
-	parseState.feature(method);
-
-	method.setBody(UmlFactory.getFactory().getDataTypes().createProcedureExpression("Java", body));
-
-	// Mirror the operation properties to get the method in sync with it.
-	method.setVisibility(operation.getVisibility());
-	method.setOwnerScope(operation.getOwnerScope());
-
-	operation.addMethod(method);  // Add the method to it's specification.
-
-	// Add this method as a feature to the classifier that owns
-	// the operation.
-	operation.getOwner().addFeature(method);
+        Object method = getMethod(ModelFacade.getName(op));
+        parseState.feature(method);
+        ModelFacade.setBody(method, UmlFactory.getFactory().getDataTypes().createProcedureExpression("Java", body));
+        ModelFacade.addMethod(op,method);  // Add the method to it's specification.
+        // Add this method as a feature to the classifier that owns the operation.
+        ModelFacade.addFeature(ModelFacade.getOwner(op), method);
     }
 
     /**
@@ -540,7 +490,7 @@ public class Modeller
           if(mAttribute != null) {
             parseState.feature(mAttribute);
 
-            setScope(mAttribute, modifiers);
+            setOwnerScope(mAttribute, modifiers);
             setVisibility(mAttribute, modifiers);
             mAttribute.setMultiplicity(multiplicity);
 
@@ -581,7 +531,7 @@ public class Modeller
             MAssociationEnd mAssociationEnd =
                 (MAssociationEnd)getAssociationEnd(name, mClassifier);
 
-            setScope(mAssociationEnd, modifiers);
+            setTargetScope(mAssociationEnd, modifiers);
             setVisibility(mAssociationEnd, modifiers);
             mAssociationEnd.setMultiplicity(multiplicity);
 
@@ -637,9 +587,11 @@ public class Modeller
         String name = ModelFacade.getName(parent) + "<-" + ModelFacade.getName(child);
         Object mGeneralization = null;
         mGeneralization = ModelFacade.getGeneralization(child, parent);
-
         if(mGeneralization == null) {
             mGeneralization = CoreFactory.getFactory().buildGeneralization(child, parent, name);
+        }
+        if(mGeneralization != null) {
+            ModelFacade.setNamespace(mGeneralization,mPackage);
         }
         return mGeneralization;
     }
@@ -676,7 +628,7 @@ public class Modeller
         }
 
         if(mAbstraction == null) {
-            mAbstraction = UmlFactory.getFactory().getCore().createAbstraction(name);
+            mAbstraction = UmlFactory.getFactory().getCore().buildAbstraction(name);
         }
         return mAbstraction;
     }
@@ -688,24 +640,20 @@ public class Modeller
        @param name The name of the package.
        @return The package found or created.
     */
-    private MPackage getPackage(String name)
+    private Object getPackage(String name)
     {
-	MPackage mPackage = searchPackageInModel(name);
+	Object mPackage = searchPackageInModel(name);
 	if(mPackage == null) {
-	    mPackage = UmlFactory.getFactory().getModelManagement().createPackage();
-	    mPackage.setName(getRelativePackageName(name));
-	    mPackage.setNamespace(model);
+	    mPackage = UmlFactory.getFactory().getModelManagement().buildPackage(getRelativePackageName(name), name);
+	    ModelFacade.setNamespace(mPackage, model);
 
 	    // Find the owner for this package.
 	    if("".equals(getPackageName(name))) {
-		model.addOwnedElement(mPackage);
+		ModelFacade.addOwnedElement(model, mPackage);
 	    }
 	    else {
-		getPackage(getPackageName(name)).addOwnedElement(mPackage);
+		ModelFacade.addOwnedElement(getPackage(getPackageName(name)), mPackage);
 	    }
-	}
-	if(mPackage.getUUID() == null) {
-	    mPackage.setUUID(name);
 	}
 	return mPackage;
     }
@@ -719,12 +667,12 @@ public class Modeller
      * @param name The fully qualified package name of the package we are searching for.
      * @return The found package or null, if it is not in the model.
      */
-    private MPackage searchPackageInModel(String name) {
+    private Object searchPackageInModel(String name) {
 	if("".equals(getPackageName(name))) {
-	    return (MPackage)model.lookup(name);
+	    return ModelFacade.lookupIn(model,name);
 	} else {
-	    MPackage owner = (MPackage)searchPackageInModel(getPackageName(name));
-	    return owner == null ? null : (MPackage)owner.lookup(getRelativePackageName(name));
+	    Object owner = searchPackageInModel(getPackageName(name));
+	    return owner == null ? null : ModelFacade.lookupIn(owner,getRelativePackageName(name));
 	}
     }
 
@@ -860,7 +808,7 @@ public class Modeller
      */
     private void cleanModelElement(Object element) {
         for(Iterator i = ModelFacade.getTaggedValues(element); i.hasNext(); ) {
-            Object tv = (MTaggedValue)i.next();
+            Object tv = i.next();
             if (ModelFacade.getValueOfTag(tv).equals(MMUtil.GENERATED_TAG)) {
                 UmlFactory.getFactory().delete(tv);
             }
@@ -941,38 +889,37 @@ public class Modeller
     }
 
     /**
-       Set the scope for a feature.
+       Set the owner scope for a feature.
 
        @param feature The feature.
        @param modifiers A sequence of modifiers which may contain
                         'static'.
     */
-    private void setScope(Object feature,
-                          short modifiers)
+    private void setOwnerScope(Object feature, short modifiers)
     {
-	if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-	    ((MFeature)feature).setOwnerScope(MScopeKind.CLASSIFIER);
-	}
-	else {
-	    ((MFeature)feature).setOwnerScope(MScopeKind.INSTANCE);
-	}
+        if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setOwnerScope(feature,ModelFacade.CLASSIFIER);
+        }
+        else {
+            ModelFacade.setOwnerScope(feature,ModelFacade.INSTANCE);
+        }
     }
 
     /**
-       Set the scope for an association end.
+       Set the target scope for an association end.
 
        @param mAssociationEnd The end.
        @param modifiers A sequence of modifiers which may contain
                         'static'.
     */
-    private void setScope(MAssociationEnd mAssociationEnd, short modifiers)
+    private void setTargetScope(Object mAssociationEnd, short modifiers)
     {
-	if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
-	    mAssociationEnd.setTargetScope(MScopeKind.CLASSIFIER);
-	}
-	else {
-	    mAssociationEnd.setTargetScope(MScopeKind.INSTANCE);
-	}
+        if((modifiers & JavaRecognizer.ACC_STATIC) > 0) {
+            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.CLASSIFIER);
+        }
+        else {
+            ModelFacade.setTargetScope(mAssociationEnd,ModelFacade.INSTANCE);
+        }
     }
 
     /**
