@@ -97,7 +97,6 @@ public class Project implements java.io.Serializable, TargetListener {
      * TODO: should just be the directory to write.
      */
     private URL url;
-//    private ChangeRegistry saveRegistry;
 
     private String authorname;
     private String description;
