@@ -34,11 +34,6 @@ import java.awt.Rectangle;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.util.Iterator;
-
-//import org.argouml.uml.diagram.activity.ui.SelectionActionState;
-import org.argouml.uml.diagram.ui.SelectionMoveClarifiers;
-
-import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigCircle;
 
@@ -93,10 +88,6 @@ public class FigBranchState extends FigStateVertex {
 
     ////////////////////////////////////////////////////////////////
     // Fig accessors
-
-    public Selection makeSelection() {
-	return new SelectionMoveClarifiers(this);
-    }
 
     public void setOwner(Object node) {
 	super.setOwner(node);
