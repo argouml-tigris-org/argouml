@@ -71,10 +71,6 @@ public class Modeller
     /** Arrays will be modelled as unique datatypes. */
     private boolean arraysAsDatatype;
 
-    /** Pointer to exception caught during parsing, null if no
-        exception caught.*/
-    private Exception _exception;
-
     /**
        Create a new modeller.
 
@@ -92,7 +88,6 @@ public class Modeller
 	parseState = new ParseState(this.model, getPackage("java.lang"));
 	parseStateStack = new Stack();
 	_diagram = diagram;
-	_exception = null;
     }
 
     /**
@@ -102,15 +97,6 @@ public class Modeller
      */
     private DiagramInterface getDiagram() {
 	return _diagram;
-    }
-
-    /**
-       Get the exception that was caught during parsing.
-
-       @return Exception, null if none was thrown.
-    */
-    public Exception getException() {
-	return _exception;
     }
 
     /**
@@ -162,7 +148,14 @@ public class Modeller
 		parseState.addClassifierContext(mClassifier);
 	    }
 	    catch(ClassifierNotFoundException e) {
-		// Postpone the problems to the actual class parsing.
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source"+
+                         " file could not be generated in the model "+
+                         "(to generate an imported classifier)- information lost\n"+
+                         "\t"+e);
 	    }
 	}
     }
@@ -211,7 +204,14 @@ public class Modeller
             }
         }
         catch(ClassifierNotFoundException e) {
-            _exception = e;
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source"+
+                         " file could not be generated in the model "+
+                         "(to generate a generalization or abstraction)- information lost\n"+
+                         "\t"+e);
         }
     }
 
@@ -232,7 +232,6 @@ public class Modeller
             addClass(name, (short)0, ModelFacade.isAClass(mClassifier) ? type : null, interfaces, "");
         }
         catch(ClassifierNotFoundException e) {
-            _exception = e;
             // Must add it anyway, or the class poping will mismatch.
             addClass(name, (short)0, null, new Vector(), "");
         }
@@ -262,7 +261,14 @@ public class Modeller
             }
         }
         catch(ClassifierNotFoundException e) {
-            _exception = e;
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source"+
+                         " file could not be generated in the model "+
+                         "(to generate a generalization)- information lost\n"+
+                         "\t"+e);
         }
     }
 
@@ -411,7 +417,14 @@ public class Modeller
           }
       }
       catch(ClassifierNotFoundException e) {
-          _exception = e;
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source "+
+                         "file could not be generated in the model "+
+                         "(for generating operation params)- information lost\n"+
+                         "\t"+e);
       }
 
       /*
@@ -485,7 +498,15 @@ public class Modeller
         // get the attribute type
         mClassifier = getContext(typeSpec).get(getClassifierName(typeSpec));
       }catch(ClassifierNotFoundException e) {
-        _exception = e;
+		// Currently if a classifier cannot be found in the
+                // model/classpath then information will be lost from
+                // source files, because the classifier cannot be
+                // created on the fly.
+                cat.warn("Modeller.java: a classifier that was in the source "+
+                         "file could not be generated in the model "+
+                         "(for generating an attribute)- information lost\n"+
+                         "\t"+e);
+                
         // if we can't find the attribute type then
         // we can't add the attribute.
         return;
