@@ -198,7 +198,7 @@ public interface NotationProvider2 {
     /**
      * Generate the String representation for an Action State.
      *
-     * @param m Object to generate representation for.
+     * @param actionState Object to generate representation for.
      * @return The String representation of the object.
      */
     public String generateActionState(Object actionState);
