@@ -58,6 +58,20 @@ Change to XXX.
 
       <tbody valign="top">
         <row>
+          <entry>2005-03-10</entry>
+          <entry>
+Change to process for verifying issues.
+Any release after the one where the issue is fixed
+can be used for verifications.
+(See <xref linkend="verify_resolved_fixed"/>).
+</entry>
+          <entry>Linus Tolke</entry>
+        </row>
+      </tbody>
+
+
+      <tbody valign="top">
+        <row>
           <entry>2005-03-06</entry>
           <entry>
 Change to description of how to build.

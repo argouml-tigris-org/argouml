@@ -671,7 +671,9 @@ not raised, nor solved and that is included in a release
         </listitem>
         <listitem>
           <para>
-Run the specified release of ArgoUML as provided for downloads or 
+Run the specified release of ArgoUML.
+You can also use any later release.
+Use ArgoUML provided for downloads or 
 through Java Web Start.
 </para>
         </listitem>
