@@ -2064,7 +2064,7 @@ public class ModelFacade {
      * @param handle to the association.
      * @return an Iterator with all connections.
      * @deprecated by Linus Tolke as of 0.15.5. Use 
-     * {@link #getConnections()}.size() instead.
+     * {@link #getConnections(Object)}.size() instead.
      */
     public static int getConnectionCount(Object handle) {
         if (handle instanceof MAssociation) {
