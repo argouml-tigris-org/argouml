@@ -23,21 +23,39 @@ public class ArgoFacade implements ModelFacade {
 
     public Any getClassifier(String name) {
       Project p = ProjectBrowser.TheInstance.getProject();
+      
       if (target != null && target.getName().equals(name) ) {
-	  return new ArgoAny(target);
+        return new ArgoAny(target);
       }
       // else we have a problem: this is not clean!
       else {
+        /*
+         * Changed 2001-10-18 STEFFEN ZSCHALER
+         *
+         * Was:
+         *
 	  MClassifier classifier = p.findTypeInModel(name, p.getCurrentNamespace());
-	  if (classifier == null) {
-	      throw new OclTypeException("cannot find classifier: "+name);
-	  }
-	  return new ArgoAny(classifier);
+         *
+         */
+        MClassifier classifier = p.findTypeInModel(name, p.getModel());
+        
+        if (classifier == null) {
+          /**
+           * Added search in defined types 2001-10-18 STEFFEN ZSCHALER.
+           */
+          classifier = (MClassifier) p.getDefinedTypes().get (name);
+          
+          if (classifier == null) {
+            throw new OclTypeException("cannot find classifier: "+name);
+          }
+        }
+        
+        return new ArgoAny(classifier);
       }
     }
 }
 
-class ArgoAny implements Any {
+class ArgoAny implements Any, Type2 {
 
     MClassifier classifier;
 
@@ -45,7 +63,8 @@ class ArgoAny implements Any {
       this.classifier = classifier;
     }
 
-    public Type navigateQualified(String name, Type[] qualifiers) {
+    public Type navigateQualified (String name, Type[] qualifiers)
+      throws OclTypeException {
 
       if (classifier == null) {
           throw new OclTypeException("attempting to access features of Void");
@@ -133,7 +152,20 @@ class ArgoAny implements Any {
       return result;
     }
 
-    public Type navigateParameterized(String name, Type[] params) {
+    public Type navigateParameterizedQuery (String name, Type[] qualifiers) 
+      throws OclTypeException {
+      return internalNavigateParameterized (name, qualifiers, true);
+    }
+    
+    public Type navigateParameterized (String name, Type[] qualifiers) 
+      throws OclTypeException {
+      return internalNavigateParameterized (name, qualifiers, false);
+    }
+      
+    public Type internalNavigateParameterized (final String name,
+                                               final Type[] params,
+                                               boolean fCheckIsQuery)
+      throws OclTypeException {
       if (classifier == null) {
           throw new OclTypeException("attempting to access features of Void");
       }
@@ -153,10 +185,12 @@ class ArgoAny implements Any {
 
       if (foundOp == null) { throw new OclTypeException("operation "+name+" not found in classifier "+toString());}
 
-      /* Query checking added 05/21/01, sz9 */
-      if (! foundOp.isQuery()) {
-        throw new OclTypeException ("Non-query operations cannot be used in OCL expressions. (" + name + ")");
-      }      
+      if (fCheckIsQuery) {
+        /* Query checking added 05/21/01, sz9 */
+        if (! foundOp.isQuery()) {
+          throw new OclTypeException ("Non-query operations cannot be used in OCL expressions. (" + name + ")");
+        }
+      }
       
       MParameter rp = MMUtil.SINGLETON.getReturnParameter(foundOp);
 
@@ -280,5 +314,6 @@ class ArgoAny implements Any {
       return true;
     }
 }
+
 
 
