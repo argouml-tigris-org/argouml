@@ -211,11 +211,11 @@ public class Argo {
        return ModuleLoader.getInstance().getPlugins(pluginType, null, null);
    }
 
-   public String getArgoHome() {
+   public static String getArgoHome() {
        return ModuleLoader.getInstance().getArgoHome();
    }
 
-   public String getArgoRoot() {
+   public static String getArgoRoot() {
        return ModuleLoader.getInstance().getArgoRoot();
    }
 
