@@ -32,7 +32,28 @@ import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigNode;
 
 
-/**
+/** This class defines a renderer object for UML Activity Diagrams. In a
+ *  Activity Diagram the following UML objects are displayed with the
+ *  following Figs: <p>
+ * <pre>
+ *  UML Object          ---  Fig
+ *  ---------------------------------------
+ *  ActionState         ---  FigActionState
+ *  FinalState          ---  FigFinalState
+ *  Pseudostate         ---  FigPseudostate
+ *    Inititial         ---  FigInitialState
+ *    Choice (Branch)   ---  FigBranchState
+ *    Junction          ---  FigJunctionState
+ *    Fork              ---  FigForkState
+ *    Join              ---  FigJoinState
+ *    DeepHistory       ---  FigDeepHistoryState
+ *    ShallowHistory    ---  FigShallowistoryState
+ *  Transition          ---  FigTransition
+ *  CallState           ---  FigCallState
+ *  ObjectFlowState     ---  FigObjectFlowState
+ *  SubactivityState    ---  FigSubactivityState
+ *  more...
+ *  </pre>
  * 
  * @author mkl
  *
@@ -41,7 +62,9 @@ public class ActivityDiagramRenderer extends StateDiagramRenderer {
 
     /** Return a Fig that can be used to represent the given node
      *  
-     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(org.tigris.gef.graph.GraphModel, org.tigris.gef.base.Layer, java.lang.Object)
+     * @see org.tigris.gef.graph.GraphNodeRenderer#getFigNodeFor(
+     * org.tigris.gef.graph.GraphModel, 
+     * org.tigris.gef.base.Layer, java.lang.Object)
      */
     public FigNode getFigNodeFor(GraphModel gm, Layer lay, Object node) {
         if (ModelFacade.isAPartition(node)) {
