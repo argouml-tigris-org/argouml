@@ -98,5 +98,9 @@ public class UmlModelListener implements PropertyChangeListener {
     public void newElement(Object elm) {
         Model.getPump().addModelEventListener(this, elm);
     }
+    
+    public void deleteElement(Object elm) {
+        Model.getPump().removeModelEventListener(this, elm);
+    }
 }
 

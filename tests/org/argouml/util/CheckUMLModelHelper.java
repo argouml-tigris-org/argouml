@@ -112,9 +112,7 @@ public class CheckUMLModelHelper {
 	UmlFactory.getFactory().delete(mo);
 
 	WeakReference wo = new WeakReference(mo);
-	Model.getPump().removeModelEventListener(
-            UmlModelListener.getInstance(), mo);
-
+	
 	mo = null;
 	System.gc();
 	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);

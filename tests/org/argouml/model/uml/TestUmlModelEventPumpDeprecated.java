@@ -228,8 +228,6 @@ public class TestUmlModelEventPumpDeprecated extends TestCase {
     public void testCreateDelete() {
         WeakReference ref = new WeakReference(elem);
         UmlFactory.getFactory().delete(elem);
-        Model.getPump().removeModelEventListener(
-                UmlModelListener.getInstance(), elem);
         elem = null;
         System.gc();
         assertNull(ref.get());
