@@ -37,7 +37,8 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetSubmachineStateSubmachine extends UMLChangeAction {
 
-    public static final ActionSetSubmachineStateSubmachine SINGLETON = new ActionSetSubmachineStateSubmachine();
+    private static final ActionSetSubmachineStateSubmachine SINGLETON = 
+        new ActionSetSubmachineStateSubmachine();
 
     /**
      * Constructor for ActionSetModelElementStereotype.
@@ -53,8 +54,16 @@ public class ActionSetSubmachineStateSubmachine extends UMLChangeAction {
         super.actionPerformed(e);
         if (e.getSource() instanceof UMLComboBox2) {
             UMLComboBox2 box = (UMLComboBox2) e.getSource();
-            StateMachinesHelper.getHelper().setStatemachineAsSubmachine(box.getTarget(), box.getSelectedItem());
+            StateMachinesHelper.getHelper().setStatemachineAsSubmachine(
+                    box.getTarget(), box.getSelectedItem());
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetSubmachineStateSubmachine getInstance() {
+        return SINGLETON;
     }
 
 }

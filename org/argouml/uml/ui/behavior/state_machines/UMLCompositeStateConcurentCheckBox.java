@@ -40,7 +40,7 @@ public class UMLCompositeStateConcurentCheckBox extends UMLCheckBox2 {
      */
     public UMLCompositeStateConcurentCheckBox() {
          super(Translator.localize("UMLMenu", "label.concurrent"), 
-            ActionSetCompositeStateConcurrent.SINGLETON, 
+            ActionSetCompositeStateConcurrent.getInstance(), 
             "isConcurent");
     }
 

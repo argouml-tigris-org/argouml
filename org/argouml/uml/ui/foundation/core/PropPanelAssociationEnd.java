@@ -178,7 +178,7 @@ public class PropPanelAssociationEnd extends PropPanelModelElement {
                 Translator.localize("UMLMenu", "label.visibility"), true);
         specificationScroll = new JScrollPane(new UMLMutableLinkedList(
                 new UMLAssociationEndSpecificationListModel(),
-                ActionAddAssociationSpecification.SINGLETON, null, null, true));
+                ActionAddAssociationSpecification.getInstance(), null, null, true));
     }
 
     /**

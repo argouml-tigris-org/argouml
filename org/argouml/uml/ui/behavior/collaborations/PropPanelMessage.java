@@ -103,14 +103,14 @@ public class PropPanelMessage extends PropPanelModelElement {
 	JList actionList =
 		 new UMLMutableLinkedList(new UMLMessageActionListModel(),
 					  null,
-					  ActionNewAction.SINGLETON);
+					  ActionNewAction.getInstance());
 	actionList.setVisibleRowCount(1);
 	JScrollPane actionScroll = new JScrollPane(actionList);
 	addField(Translator.localize("UMLMenu", "label.action"), actionScroll);
 
 	JScrollPane predecessorScroll = new JScrollPane(
             new UMLMutableLinkedList(new UMLMessagePredecessorListModel(),
-		ActionAddMessagePredecessor.SINGLETON,
+		ActionAddMessagePredecessor.getInstance(),
 		null));
 	addField(Translator.localize("UMLMenu", "label.predecessor"),
 		 predecessorScroll);

@@ -36,9 +36,11 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  * @author jaap.branderhorst@xs4all.nl
  * @stereotype singleton
  */
-public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement {
+public class ActionAddExtendExtensionPoint 
+    extends AbstractActionAddModelElement {
  
-    public final static ActionAddExtendExtensionPoint SINGLETON = new ActionAddExtendExtensionPoint();
+    private static final ActionAddExtendExtensionPoint SINGLETON = 
+        new ActionAddExtendExtensionPoint();
     /**
      * Constructor for ActionAddExtendExtensionPoint.
      */
@@ -60,7 +62,8 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
         Vector ret = new Vector();
         if (getTarget() != null) {
             Object extend = /*(MExtend)*/getTarget();
-            Collection c = ModelFacade.getExtensionPoints(ModelFacade.getBase(extend));
+            Collection c = ModelFacade.getExtensionPoints(
+                    ModelFacade.getBase(extend));
             ret.addAll(c);
         }
         return ret;
@@ -70,7 +73,8 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
      * @see org.argouml.uml.ui.AbstractActionAddModelElement#getDialogTitle()
      */
     protected String getDialogTitle() {
-        return Translator.localize("UMLMenu", "dialog.title.add-extensionpoints");
+        return Translator.localize("UMLMenu", 
+                "dialog.title.add-extensionpoints");
     }
 
     /**
@@ -80,6 +84,13 @@ public class ActionAddExtendExtensionPoint extends AbstractActionAddModelElement
         Vector ret = new Vector();
         ret.addAll(ModelFacade.getExtensionPoints(getTarget()));
         return ret;
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionAddExtendExtensionPoint getInstance() {
+        return SINGLETON;
     }
 
 }

@@ -85,7 +85,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	    new UMLMutableLinkedList(new UMLClassifierRoleBaseListModel(),
 				     ActionAddClassifierRoleBase.SINGLETON,
 				     null,
-				     ActionRemoveClassifierRoleBase.SINGLETON,
+				     ActionRemoveClassifierRoleBase.getInstance(),
 				     false);
 	addField(Translator.localize("UMLMenu", "label.base"),
 		 new JScrollPane(baseList));
@@ -142,7 +142,7 @@ public class PropPanelClassifierRole extends PropPanelClassifier {
 	    multiplicityComboBox =
 		new UMLMultiplicityComboBox2(
 				 multiplicityComboBoxModel,
-				 ActionSetClassifierRoleMultiplicity.SINGLETON);
+				 ActionSetClassifierRoleMultiplicity.getInstance());
 	    multiplicityComboBox.setEditable(true);
 	}
 	return multiplicityComboBox;

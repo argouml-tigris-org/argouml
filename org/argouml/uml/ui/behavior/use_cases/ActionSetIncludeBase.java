@@ -38,7 +38,8 @@ import org.argouml.uml.ui.UMLComboBox2;
  */
 public class ActionSetIncludeBase extends UMLChangeAction {
 
-    public static final ActionSetIncludeBase SINGLETON = new ActionSetIncludeBase();
+    private static final ActionSetIncludeBase SINGLETON = 
+        new ActionSetIncludeBase();
 
     /**
      * Constructor for ActionSetIncludeBase.
@@ -79,6 +80,14 @@ public class ActionSetIncludeBase extends UMLChangeAction {
             }
 
         }
+    }
+
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetIncludeBase getInstance() {
+        return SINGLETON;
     }
 
 }

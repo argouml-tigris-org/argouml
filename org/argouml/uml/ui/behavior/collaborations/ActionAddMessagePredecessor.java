@@ -40,7 +40,7 @@ import org.argouml.uml.ui.AbstractActionAddModelElement;
  */
 public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
 
-    public final static ActionAddMessagePredecessor SINGLETON =
+    private static final ActionAddMessagePredecessor SINGLETON =
 	new ActionAddMessagePredecessor();
     
     /**
@@ -56,7 +56,8 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
     protected Vector getChoices() {
         if (getTarget() == null) return new Vector();
         Vector vec = new Vector();
-        vec.addAll(CollaborationsHelper.getHelper().getAllPossiblePredecessors(getTarget()));
+        vec.addAll(CollaborationsHelper.getHelper()
+                .getAllPossiblePredecessors(getTarget()));
         return vec;
     }
 
@@ -65,7 +66,8 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      */
     protected Vector getSelected() {
         if (getTarget() == null)
-	    throw new IllegalStateException("getSelected may not be called with null target");
+	    throw new IllegalStateException(
+                "getSelected may not be called with null target");
         Vector vec = new Vector();
         vec.addAll(ModelFacade.getPredecessors(getTarget()));
         return vec;
@@ -84,9 +86,17 @@ public class ActionAddMessagePredecessor extends AbstractActionAddModelElement {
      */
     protected void doIt(Vector selected) {
 	if (getTarget() == null)
-	    throw new IllegalStateException("doIt may not be called with null target");
+	    throw new IllegalStateException(
+                "doIt may not be called with null target");
 	Object message = /*(MMessage)*/ getTarget();
 	ModelFacade.setPredecessors(message, selected);
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionAddMessagePredecessor getInstance() {
+        return SINGLETON;
     }
 
 }

@@ -36,8 +36,8 @@ import org.argouml.uml.ui.ActionSetMultiplicity;
  */
 public class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
 
-
-    public static final ActionSetClassifierRoleMultiplicity SINGLETON = new ActionSetClassifierRoleMultiplicity();
+    private static final ActionSetClassifierRoleMultiplicity SINGLETON = 
+        new ActionSetClassifierRoleMultiplicity();
 
     /**
      * 
@@ -47,7 +47,8 @@ public class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
     }
 
     /**
-     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(java.lang.Object, java.lang.Object)
+     * @see org.argouml.uml.ui.ActionSetMultiplicity#setSelectedItem(
+     * java.lang.Object, java.lang.Object)
      */
     public void setSelectedItem(Object item, Object target) {
         if (target != null
@@ -58,5 +59,12 @@ public class ActionSetClassifierRoleMultiplicity extends ActionSetMultiplicity {
                 ModelFacade.setMultiplicity(target, null);
 
         }
+    }
+
+    /**
+     * @return Returns the SINGLETON.
+     */
+    public static ActionSetClassifierRoleMultiplicity getInstance() {
+        return SINGLETON;
     }
 }

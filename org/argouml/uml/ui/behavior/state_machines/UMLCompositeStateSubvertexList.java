@@ -50,18 +50,18 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
             newMenu.setText(Translator.localize("action.new"));
             ActionNewPseudoState.getSingleton().setTarget(getTarget());
             newMenu.add(ActionNewPseudoState.getSingleton());
-            newMenu.add(ActionNewSynchState.SINGLETON);
-            ActionNewSynchState.SINGLETON.setTarget(getTarget());
-            newMenu.add(ActionNewStubState.SINGLETON);
-            ActionNewStubState.SINGLETON.setTarget(getTarget());
+            newMenu.add(ActionNewSynchState.getInstance());
+            ActionNewSynchState.getInstance().setTarget(getTarget());
+            newMenu.add(ActionNewStubState.getInstance());
+            ActionNewStubState.getInstance().setTarget(getTarget());
             newMenu.add(ActionNewCompositeState.getSingleton());
             ActionNewCompositeState.getSingleton().setTarget(getTarget());
             newMenu.add(ActionNewSimpleState.getSingleton());
             ActionNewSimpleState.getSingleton().setTarget(getTarget());
             newMenu.add(ActionNewFinalState.getSingleton());
             ActionNewFinalState.getSingleton().setTarget(getTarget());
-            newMenu.add(ActionNewSubmachineState.SINGLETON);
-            ActionNewSubmachineState.SINGLETON.setTarget(getTarget());
+            newMenu.add(ActionNewSubmachineState.getInstance());
+            ActionNewSubmachineState.getInstance().setTarget(getTarget());
             add(newMenu);
             
             addSeparator();
@@ -75,7 +75,7 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
     
     /**
      * Constructor for UMLCompositeStateSubvertexList.
-     * @param dataModel
+     * @param dataModel the data model
      */
     public UMLCompositeStateSubvertexList(
         UMLModelElementListModel2 dataModel) {
