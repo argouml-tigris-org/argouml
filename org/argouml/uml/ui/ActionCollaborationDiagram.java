@@ -28,10 +28,15 @@ import org.argouml.kernel.*;
 import org.argouml.model.uml.UmlFactory;
 import org.argouml.uml.*;
 import org.argouml.uml.diagram.collaboration.ui.*;
+import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.ui.*;
 
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.collaborations.*;
+import ru.novosoft.uml.foundation.core.MClassifier;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.model_management.MModel;
 
 import java.awt.event.*;
 import java.beans.*;
@@ -57,17 +62,42 @@ public class ActionCollaborationDiagram extends UMLChangeAction {
     public void actionPerformed(ActionEvent ae) {
 	Project p = ProjectBrowser.TheInstance.getProject();
 	try {
-	    MCollaboration c = UmlFactory.getFactory().getCollaborations().createCollaboration();
-	    // c.setUUID(UUIDManager.SINGLETON.getNewUUID());
-	    c.setName("Collaboration");
-	    p.getModel().addOwnedElement(c);
-	    MInteraction interaction = UmlFactory.getFactory().getCollaborations().createInteraction();
-	    interaction.setName("default Interaction");
-	    c.addInteraction(interaction);
-	    UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
-	    p.addMember(d);
-	    ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
-	    ProjectBrowser.TheInstance.setTarget(d);
+		// Object target = ProjectBrowser.TheInstance.getTarget();
+		Object target = ProjectBrowser.TheInstance.getDetailsTarget();
+		MCollaboration c = null;
+		MNamespace ns = p.getCurrentNamespace();
+		// check for valid target and valid collaboration
+		if (target instanceof MOperation) {
+			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+			c.setRepresentedOperation((MOperation)target);
+		} else {
+		if (target instanceof MClassifier) {
+			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+			c.setRepresentedClassifier((MClassifier)target);
+		} else {
+		if (target instanceof MModel) {
+			c = UmlFactory.getFactory().getCollaborations().buildCollaboration((MModel)target);
+		} else {
+		if (target instanceof UMLCollaborationDiagram) {
+			Object o = ((UMLCollaborationDiagram)target).getOwner();
+			if (o instanceof MCollaboration) { //preventing backward compat problems
+				c = (MCollaboration)o;
+			} else {
+				c = UmlFactory.getFactory().getCollaborations().buildCollaboration(p.getModel());
+			}
+		} else {
+		if (target instanceof UMLDiagram) {
+			c = UmlFactory.getFactory().getCollaborations().buildCollaboration(ns);
+		} else {
+		if (target instanceof MCollaboration) {
+			c = (MCollaboration)target;
+		} } } } } } 
+		if (c != null) {
+	    	UMLCollaborationDiagram d  = new UMLCollaborationDiagram(c);
+	    	p.addMember(d);
+	    	ProjectBrowser.TheInstance.getNavPane().addToHistory(d);
+	    	ProjectBrowser.TheInstance.setTarget(d);
+		}
 	}
 	catch (PropertyVetoException pve) { }
 	super.actionPerformed(ae);
