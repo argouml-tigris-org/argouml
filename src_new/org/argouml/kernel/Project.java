@@ -1046,7 +1046,6 @@ public class Project implements java.io.Serializable, TargetListener {
             if (obj instanceof ArgoDiagram) {
                 removeProjectMemberDiagram((ArgoDiagram) obj);
                 needSave = true;
-                //obj = ((UMLDiagram) obj).getNamespace();
                 // only need to manually delete diagrams because they
                 // don't have a decent event system set up.
                 ExplorerEventAdaptor.getInstance().modelElementRemoved(obj);

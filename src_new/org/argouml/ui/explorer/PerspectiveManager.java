@@ -27,44 +27,56 @@ package org.argouml.ui.explorer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.argouml.uml.diagram.collaboration.ui.GoClassifierToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoCollaborationInteraction;
 import org.argouml.uml.diagram.collaboration.ui.GoInteractionMessage;
 import org.argouml.uml.diagram.collaboration.ui.GoMessageAction;
 import org.argouml.uml.diagram.collaboration.ui.GoModelToCollaboration;
 import org.argouml.uml.diagram.collaboration.ui.GoOperationToCollaboration;
-
+import org.argouml.uml.diagram.deployment.ui.GoDiagramToNode;
 import org.argouml.uml.diagram.sequence.ui.GoLinkStimuli;
 import org.argouml.uml.diagram.sequence.ui.GoStimulusToAction;
-
 import org.argouml.uml.diagram.state.ui.GoCompositeStateToSubvertex;
+import org.argouml.uml.diagram.state.ui.GoMachineDiagram;
 import org.argouml.uml.diagram.state.ui.GoMachineToState;
+import org.argouml.uml.diagram.state.ui.GoMachineToTrans;
+import org.argouml.uml.diagram.state.ui.GoProjectToStateMachine;
 import org.argouml.uml.diagram.state.ui.GoStateMachineToTransition;
 import org.argouml.uml.diagram.state.ui.GoStateToDoActivity;
 import org.argouml.uml.diagram.state.ui.GoStateToEntry;
 import org.argouml.uml.diagram.state.ui.GoStateToExit;
+import org.argouml.uml.diagram.state.ui.GoStateToIncomingTrans;
 import org.argouml.uml.diagram.state.ui.GoStateToInternalTrans;
-
+import org.argouml.uml.diagram.state.ui.GoStateToOutgoingTrans;
+import org.argouml.uml.diagram.state.ui.GoTransitionToSource;
+import org.argouml.uml.diagram.state.ui.GoTransitionToTarget;
+import org.argouml.uml.diagram.static_structure.ui.GoClassToAssociatedClass;
 import org.argouml.uml.diagram.static_structure.ui.GoClassToSummary;
+
+import org.argouml.uml.diagram.static_structure.ui.GoModelToClass;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAssociation;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToAttribute;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToIncomingDependency;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToInheritance;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOperation;
 import org.argouml.uml.diagram.static_structure.ui.GoSummaryToOutgoingDependency;
-
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateDiagram;
 import org.argouml.uml.diagram.ui.GoBehavioralFeatureToStateMachine;
 import org.argouml.uml.diagram.ui.GoClassifierToBeh;
 import org.argouml.uml.diagram.ui.GoClassifierToStateMachine;
 import org.argouml.uml.diagram.ui.GoClassifierToStructuralFeature;
+
+import org.argouml.uml.diagram.ui.GoDiagramToEdge;
+import org.argouml.uml.diagram.ui.GoGenElementToDerived;
+import org.argouml.uml.diagram.ui.GoModelToBaseElements;
 import org.argouml.uml.diagram.ui.GoNamespaceToDiagram;
 import org.argouml.uml.diagram.ui.GoOperationToCollaborationDiagram;
+import org.argouml.uml.diagram.ui.GoProjectToDiagram;
 import org.argouml.uml.diagram.ui.GoProjectToModel;
 
-import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
 
+
+import org.argouml.uml.diagram.use_case.ui.GoUseCaseToExtensionPoint;
 import org.argouml.uml.ui.behavior.common_behavior.GoSignalToReception;
 
 /**
@@ -139,7 +151,8 @@ public class PerspectiveManager {
     
     public void loadDefaultPerspectives(){
         
-        ExplorerPerspective classPerspective = new ExplorerPerspective("Class centric");
+        ExplorerPerspective classPerspective = 
+            new ExplorerPerspective("Class centric");
         classPerspective.addRule(new GoNamespaceToClassifierAndPackage());
         classPerspective.addRule(new GoNamespaceToDiagram());
         classPerspective.addRule(new GoClassToSummary());
@@ -150,7 +163,8 @@ public class PerspectiveManager {
         classPerspective.addRule(new GoSummaryToIncomingDependency());
         classPerspective.addRule(new GoSummaryToOutgoingDependency());
         
-        ExplorerPerspective packagePerspective = new ExplorerPerspective("Package centric");
+        ExplorerPerspective packagePerspective = 
+            new ExplorerPerspective("combobox.item.package-centric");
         packagePerspective.addRule(new GoProjectToModel());
         packagePerspective.addRule(new GoNamespaceToOwnedElements());
         packagePerspective.addRule(new GoNamespaceToDiagram());
@@ -178,7 +192,51 @@ public class PerspectiveManager {
         packagePerspective.addRule(new GoStateToEntry());
         packagePerspective.addRule(new GoStateToExit());
         
-        addPerspective(classPerspective);
+        ExplorerPerspective diagramPerspective = 
+            new ExplorerPerspective("combobox.item.diagram-centric");
+        diagramPerspective.addRule(new GoProjectToDiagram());
+        diagramPerspective.addRule(new GoDiagramToNode());
+        diagramPerspective.addRule(new GoDiagramToEdge());
+        diagramPerspective.addRule(new GoUseCaseToExtensionPoint());
+        diagramPerspective.addRule(new GoClassifierToStructuralFeature());
+        diagramPerspective.addRule(new GoClassifierToBeh());
+        
+        ExplorerPerspective inheritancePerspective = 
+            new ExplorerPerspective("combobox.item.inheritance-centric");
+        inheritancePerspective.addRule(new GoProjectToModel());
+        inheritancePerspective.addRule(new GoModelToBaseElements());
+        inheritancePerspective.addRule(new GoGenElementToDerived());
+        
+        ExplorerPerspective associationsPerspective = 
+            new ExplorerPerspective("combobox.item.class-associations");
+        associationsPerspective.addRule(new GoProjectToModel());
+        associationsPerspective.addRule(new GoNamespaceToDiagram());
+        associationsPerspective.addRule(new GoModelToClass());
+        associationsPerspective.addRule(new GoClassToAssociatedClass());
+        
+        ExplorerPerspective statePerspective = 
+            new ExplorerPerspective("combobox.item.state-centric");
+        statePerspective.addRule(new GoProjectToStateMachine());
+        statePerspective.addRule(new GoMachineDiagram());
+        statePerspective.addRule(new GoMachineToState());
+        statePerspective.addRule(new GoCompositeStateToSubvertex());
+        statePerspective.addRule(new GoStateToIncomingTrans());
+        statePerspective.addRule(new GoStateToOutgoingTrans());
+        
+        ExplorerPerspective transitionsPerspective = 
+            new ExplorerPerspective("combobox.item.transitions-centric");
+        transitionsPerspective.addRule(new GoProjectToStateMachine());
+        transitionsPerspective.addRule(new GoMachineDiagram());
+        transitionsPerspective.addRule(new GoMachineToTrans());
+        transitionsPerspective.addRule(new GoTransitionToSource());
+        transitionsPerspective.addRule(new GoTransitionToTarget());
+        
         addPerspective(packagePerspective);
+        addPerspective(classPerspective);
+        addPerspective(diagramPerspective);
+        addPerspective(inheritancePerspective);
+        addPerspective(associationsPerspective);
+        addPerspective(statePerspective);
+        addPerspective(transitionsPerspective);
     }
 }
