@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-2002 The Regents of the University of California. All
+// Copyright (c) 1996-2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -32,7 +32,8 @@ import ru.novosoft.uml.MElementEvent;
 import ru.novosoft.uml.MElementListener;
 
 /**
- * A single listener that converts MElementEvents into Argo events. 
+ * A single listener that listens to all Model Element events and change
+ * the NeedsSave information on the project.
  *
  * @since ARGO0.11.2
  * @author Thierry Lach
@@ -40,86 +41,91 @@ import ru.novosoft.uml.MElementListener;
  */
 public class UmlModelListener implements MElementListener {
 
-    /** Log4j logging category.
+    /**
+     * Log4j logging category.
      */
-    private Logger _logger = null;
+    private static final Logger LOG = Logger.getLogger(UmlModelListener.class);
 
-    /** Singleton instance.
+    /**
+     * Singleton instance.
      */
     private static UmlModelListener SINGLETON = new UmlModelListener();
 
-    /** Singleton instance access method.
+    /**
+     * Singleton instance access method.
+     *
      * @return the singleton instance.
      */
     public static UmlModelListener getInstance() {
         return SINGLETON;
     }
 
-    /** Don't allow instantiation.
-     * Create the logger.
+    /**
+     * Don't allow instantiation.
      */
     private UmlModelListener() {
-        _logger = Logger.getLogger("org.argouml.model.uml.listener");
     }
 
-    /** Handle the event.
+    /**
+     * Handle the event.
      */
-    public void listRoleItemSet (MElementEvent mee) {
-        _logger.debug("listRoleItemSet(" + mee + ")");
-    // TODO:  Do we need to model change notify here?
+    public void listRoleItemSet(MElementEvent mee) {
+        LOG.debug("listRoleItemSet(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
     }
 
-    /** Handle the event.
-     *  Provides a model change notification only if the property
-     *  values differ.
+    /**
+     * Handle the event.
+     * Provides a model change notification only if the property
+     * values differ.
      */
-    public void propertySet (MElementEvent mee) {
-    notifyModelChanged(mee);
+    public void propertySet(MElementEvent mee) {
+	notifyModelChanged(mee);
     }
 
-    /** Handle the event.
+    /**
+     * Handle the event.
      */
-    public void recovered (MElementEvent mee) {
-        _logger.debug("recovered(" + mee + ")");
-    // TODO:  Do we need to model change notify here?
+    public void recovered(MElementEvent mee) {
+        LOG.debug("recovered(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
     }
 
-    /** Handle the event.
+    /**
+     * Handle the event.
      */
-    public void removed (MElementEvent mee) {
-        _logger.debug("removed(" + mee + ")");
-    // TODO:  Do we need to model change notify here?
-    // yes since we need to update the GUI
-    notifyModelChanged(mee);
+    public void removed(MElementEvent mee) {
+        LOG.debug("removed(" + mee + ")");
+	// TODO:  Do we need to model change notify here?
+	// yes since we need to update the GUI
+	notifyModelChanged(mee);
     }
 
-    /** Handle the event.
-     *  Provides a model change notification.
+    /**
+     * Handle the event.
+     * Provides a model change notification.
      */
-    public void roleAdded (MElementEvent mee) {
-        _logger.debug("roleAdded(" + mee + ")");
-    notifyModelChanged(mee);
+    public void roleAdded(MElementEvent mee) {
+        LOG.debug("roleAdded(" + mee + ")");
+	notifyModelChanged(mee);
     }
 
-    /** Handle the event.
-     *  Provides a model change notification.
+    /**
+     * Handle the event.
+     * Provides a model change notification.
      */
-    public void roleRemoved (MElementEvent mee) {
-        _logger.debug("roleRemoved(" + mee + ")");
+    public void roleRemoved(MElementEvent mee) {
+        LOG.debug("roleRemoved(" + mee + ")");
         
-    notifyModelChanged(mee);
+	notifyModelChanged(mee);
     }
 
-    /** Common model change notification process.
+    /**
+     * Common model change notification process.
      */
-    protected void notifyModelChanged(MElementEvent mee) {
+    private void notifyModelChanged(MElementEvent mee) {
         // TODO: Change the project dirty flag outside this package
         //       using an event listener.
-
-        // TODO: post an event of some type.
-        //
-        // Should this be a property change event?
-        //
 
         if (mee.getAddedValue() != null
             || mee.getRemovedValue() != null
