@@ -30,11 +30,7 @@ import javax.swing.event.DocumentListener;
 import ru.novosoft.uml.MElementEvent;
 
 /**
- * @deprecated as of ArgoUml 0.13.5 (10-may-2003), because it depends on
- * {@link org.argouml.uml.ui.UMLExpressionModel}.
- * This class is part of the 'old'(pre 0.13.*) implementation of proppanels
- * that used reflection a lot.
- * TODO: What is it replaced by?
+ * This text field shows the language of a UML expression.
  */
 public class UMLExpressionLanguageField
     extends JTextField
