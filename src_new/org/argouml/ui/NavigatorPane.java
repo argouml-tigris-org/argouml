@@ -165,22 +165,6 @@ public class NavigatorPane
     // methods
 
     /**
-     * Does nothing.
-     *
-     * Notification from Argo that the model has changed and
-     * the Tree view needs updating.
-     *
-     * TODO: More specific information needs to be provided, it is 
-     * expesive to update the whole tree.
-     *
-     * @see org.argouml.uml.ui.ActionRemoveFromModel
-     * @see org.argouml.uml.ui.ActionAddDiagram
-     * @see org.argouml.uml.ui.foundation.core.PropPanelGeneralization
-     */
-    public void forceUpdate() {
-    }
-
-    /**
      * @see java.awt.Component#getMinimumSize()
      *
      * sets minimum size to 120,100
