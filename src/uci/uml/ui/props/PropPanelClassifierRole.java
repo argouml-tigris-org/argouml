@@ -43,6 +43,7 @@ import javax.swing.border.*;
 import javax.swing.table.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+import com.sun.java.util.collections.*;
 import uci.util.*;
 import ru.novosoft.uml.foundation.core.*;
 import ru.novosoft.uml.foundation.data_types.*;
@@ -124,8 +125,15 @@ implements ItemListener, DocumentListener {
   protected void setTargetInternal(Object t) {
     super.setTargetInternal(t);
     MClassifierRole cr = (MClassifierRole) t;
-    if (cr.getUMLClassName() != null)
-      _baseField.setText(cr.getUMLClassName().trim());
+    if (cr.getBases() != null) {
+		Vector bases = new Vector(cr.getBases());
+		if (bases.size() == 1)
+			_baseField.setText(((MClassifier)bases.elementAt(0)).getName());
+		else if (bases.size() == 0)
+			_baseField.setText("(anon)");
+		else
+			_baseField.setText("(multiple bases)");
+	}
     // set the values to be shown in all widgets based on model
 
     //_tableModel.setTarget(cr);
@@ -146,7 +154,9 @@ implements ItemListener, DocumentListener {
     }
   }
 
-  public void removeUpdate(DocumentEvent e) { insertUpdate(e); }
+  public void removeUpdate(DocumentEvent e) { 
+	  // insertUpdate(e); 
+  }
 
   public void changedUpdate(DocumentEvent e) {
     // Apparently, this method is never called.
@@ -159,16 +169,20 @@ implements ItemListener, DocumentListener {
   }
 
   protected void setTargetBaseString(String s) {
-
-	  // what the hell should this do? Toby, nsuml
-	  /*    if (_target == null) return;
-			if (_inChange) return;
-			try {
-			((MClassifierRole)_target).setBaseString(s);
-			}
-			catch (PropertyVetoException pve) { } 
-			
-	  */			}
+	  if (_target == null) return;
+	  MClassifierRole cr = (MClassifierRole) _target;
+	  if (_inChange) return;
+	  Project p = ProjectBrowser.TheInstance.getProject();
+	  MClassifier type = p.findType(s);
+	  if (type != null) {
+		  cr.setBases(new Vector());
+		  cr.addBase(type);
+	  }
+	  else {
+		  // generate critic here? (Toby)
+		  _baseField.setText("(no such type)");
+	  }
+  }
 			
 
 } /* end class PropPanelClassifierRole */

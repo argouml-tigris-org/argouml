@@ -440,6 +440,11 @@ public class Project implements java.io.Serializable {
   public void needsSave() { setNeedsSave(true); }
 
   public Vector getModels() { return _models; }
+
+	public MNamespace getModel() {
+		if (_models.size() != 1) return null;
+		return (MNamespace)_models.elementAt(0);
+	}
 //   public void addModel(MNamespace m) throws PropertyVetoException {
 //     getVetoSupport().fireVetoableChange("Models", _models, m);
 //     _models.addElement(m);

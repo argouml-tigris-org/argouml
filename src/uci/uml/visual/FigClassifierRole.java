@@ -114,6 +114,7 @@ public class FigClassifierRole extends FigNodeModelElement {
     super.setOwner(node);
     Object onlyPort = node;
     bindPort(onlyPort, _bigPort);
+	modelChanged();
   }
 
   public Dimension getMinimumSize() {
@@ -152,10 +153,11 @@ public class FigClassifierRole extends FigNodeModelElement {
   // event handlers
 
   protected void textEdited(FigText ft) throws PropertyVetoException {
-    super.textEdited(ft);
+	  // super.textEdited(ft);
     MClassifierRole cls = (MClassifierRole) getOwner();
     if (ft == _name) {
        String s = ft.getText();
+	   System.out.println("S ist: "+s);
       ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
     }
   }
@@ -165,7 +167,13 @@ public class FigClassifierRole extends FigNodeModelElement {
     MClassifierRole cr = (MClassifierRole) getOwner();
     if (cr == null) return;
     String nameStr = GeneratorDisplay.Generate(cr.getName()).trim();
-    String baseString = cr.getUMLClassName().trim();
+	String baseString = "";
+	Vector bases = new Vector(cr.getBases());
+	if (bases.size() == 1)
+		baseString = ((MClassifier)bases.elementAt(0)).getName();
+	else if (bases.size() > 1)
+		baseString = "(multiple)";
+		
     if (_readyToEdit) {
       if( nameStr == "" && baseString == "")
 	_name.setText("");

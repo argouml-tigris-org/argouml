@@ -420,14 +420,21 @@ public class ParserDisplay extends Parser {
     else {
       name = s;
     }
-    MClassifier clf = new MClassifierImpl();
-    clf.setName(base);
-    cls.addBase(clf);
-    //cls.setBaseString(base);
-    //Project p = ProjectBrowser.TheInstance.getProject();
-    //MClassImpl bs = p.findType(base);
 
-    cls.setName(new String(name));
+	System.out.println("CR name: "+name+"\nCR base: "+base);
+
+	Project p = ProjectBrowser.TheInstance.getProject();
+	MClassifier type = p.findType(base);
+	if (type != null) {
+		cls.setBases(new Vector());
+		cls.addBase(type);
+	}
+	else {
+		// generate critic here? (Toby)
+		cls.setBases(new Vector());
+	}
+
+    cls.setName(name);
 
   }
 
