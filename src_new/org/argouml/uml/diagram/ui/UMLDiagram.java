@@ -237,8 +237,8 @@ public abstract class UMLDiagram
 
     private Object[] getManipulateActions() {
         Object actions[] = {
-            _actionSelect,
-            _actionBroom,
+            new RadioAction(_actionSelect),
+            new RadioAction(_actionBroom),
             null
         };
         return actions;
