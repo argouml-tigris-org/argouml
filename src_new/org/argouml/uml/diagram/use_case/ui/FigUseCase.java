@@ -1272,7 +1272,7 @@ public class FigUseCase extends FigNodeModelElement {
         super.modelChanged(mee);
         if (mee == null
 	    || mee.getPropertyName().equals("extensionPoint")
-	    || org.argouml.model.ModelFacade.isAExtensionPoint(mee.getSource())) {
+	    || ModelFacade.isAExtensionPoint(mee.getSource())) {
             updateExtensionPoint();
             return;
         }

@@ -66,7 +66,8 @@ public class ActionAddAssociationSpecification
             Project p = ProjectManager.getManager().getCurrentProject();
             Object model = p.getRoot();
             ret.addAll(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(model, ModelFacade.CLASSIFIER));
+                .getAllModelElementsOfKindWithModel(model, 
+                        ModelFacade.CLASSIFIER));
         }
         return ret;
     }

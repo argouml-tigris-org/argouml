@@ -169,7 +169,8 @@ public class TestCoreFactory extends TestCase {
      * Test if deleting a classifier does also delete its association.
      */
     public void testDeleteClassifier1() {
-        MModel model = (MModel) nsumlmodel.getModelManagementFactory().createModel();
+        MModel model = 
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         Object class2 = nsumlmodel.getCoreFactory().buildClass(model);
         MAssociation assoc =
@@ -280,7 +281,8 @@ public class TestCoreFactory extends TestCase {
      * Test if both associations were deleted in the process.
      */
     public void testDeleteModelelementClassSelfAssociations() {
-        MModel model = (MModel) nsumlmodel.getModelManagementFactory().createModel();
+        MModel model = 
+            (MModel) nsumlmodel.getModelManagementFactory().createModel();
         Object class1 = nsumlmodel.getCoreFactory().buildClass(model);
         MAssociation assoc1 =
             (MAssociation)

@@ -63,7 +63,8 @@ public class UMLFeatureOwnerComboBoxModel extends UMLComboBoxModel2 {
         Project p = ProjectManager.getManager().getCurrentProject();
         MNamespace model = (MModel) p.getRoot();
         setElements(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(model, ModelFacade.CLASSIFIER));
+                .getAllModelElementsOfKindWithModel(model, 
+                        ModelFacade.CLASSIFIER));
     }
 
     /**

@@ -300,10 +300,9 @@ public final class CheckNSUMLModelHelper {
                         } else {
                             Object inter =
                                 Model.getCoreFactory().createInterface();
-                            MStereotype stereo3 =
-                                (MStereotype)
-                                	Model.getExtensionMechanismsFactory()
-                                		.buildStereotype(inter, "test3", ns);
+                            MStereotype stereo3 = (MStereotype)
+                                Model.getExtensionMechanismsFactory()
+                                    .buildStereotype(inter, "test3", ns);
                             TestCase.assertTrue(
                                 "Unexpected invalid stereotype",
                                 !Model.getExtensionMechanismsHelper()

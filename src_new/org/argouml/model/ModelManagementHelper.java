@@ -56,8 +56,8 @@ public interface ModelManagementHelper {
     /**
      * Returns all modelelements of the given kind.
      *
-     * @param model
-     * @param type is the class kind
+     * @param model the model that is searched
+     * @param type is the class kind that is sought
      * 
      * @return Collection
      */

@@ -75,7 +75,9 @@ public interface UmlFactory {
      * of the diagram manage those items and not call this
      * method. It also only works for UML model elements that
      * are represented in diagrams by a node.
+     * 
      * @param elementType the type of model element to build
+     * @return the model element
      */
     Object buildNode(Object elementType);
     

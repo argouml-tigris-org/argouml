@@ -39,6 +39,9 @@ import org.tigris.gef.util.VectorSet;
  */
 public abstract class UMLWizard extends Wizard {
 
+    /**
+     * The suggestion string.
+     */
     protected String suggestion;
 
     /**

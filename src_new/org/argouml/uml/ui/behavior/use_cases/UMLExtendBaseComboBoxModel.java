@@ -60,7 +60,8 @@ public class UMLExtendBaseComboBoxModel extends UMLComboBoxModel2 {
         Project p = ProjectManager.getManager().getCurrentProject();
         Object model = p.getRoot();
         setElements(Model.getModelManagementHelper()
-                .getAllModelElementsOfKindWithModel(model, ModelFacade.USE_CASE));
+                .getAllModelElementsOfKindWithModel(model, 
+                        ModelFacade.USE_CASE));
         if (ModelFacade.getExtension(extend) != null) {
             removeElement(ModelFacade.getExtension(extend));
         }

@@ -24,6 +24,13 @@
 
 package org.argouml.kernel;
 
+/**
+ * A member of the project is a part of the datastructure that 
+ * makes up the project. A saved project data file contains all members.<p>
+ * 
+ * Examples: The UML model, the ToDo list.
+ *
+ */
 public interface ProjectMember {
 
     /**

@@ -157,7 +157,8 @@ class ModelManagementHelperImpl implements ModelManagementHelper {
      * @param type is the class kind
      * @return Collection
      */
-    public Collection getAllModelElementsOfKindWithModel(Object model, Object type) {
+    public Collection getAllModelElementsOfKindWithModel(Object model, 
+            Object type) {
         Class kind = (Class) type;
         Collection ret = getAllModelElementsOfKind(model, kind);
         if (kind.isAssignableFrom(model.getClass())) {

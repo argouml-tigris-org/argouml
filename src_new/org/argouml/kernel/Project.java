@@ -896,7 +896,7 @@ public class Project implements java.io.Serializable, TargetListener {
      * else-if. Rather than make a big change, I've just explicitly dealt with
      * the case where we have a use case that is not classifier.<p>
      *
-     * @param obj
+     * @param obj the object to be thrown away
      */
     protected void trashInternal(Object obj) {
         boolean needSave = false;

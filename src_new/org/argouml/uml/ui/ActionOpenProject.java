@@ -97,7 +97,8 @@ public class ActionOpenProject extends ActionFileOperations
             if (p != null && p.getURL() != null) {
                 File file = new File(p.getURL().getFile());
                 if (file.getParentFile() != null) {
-                    chooser = FileChooserFactory.getFileChooser(file.getParent());
+                    chooser = 
+                        FileChooserFactory.getFileChooser(file.getParent());
                 }
             } else {
                 chooser = FileChooserFactory.getFileChooser();
