@@ -313,22 +313,7 @@ public class UMLChangeDispatch implements Runnable, UMLUserInterfaceComponent {
                         uiComp.targetReasserted();
                         break;
                 }
-            } else {
-                if (component instanceof TargetChangedListener && _target != null) {
-                   TargetChangedListener listener = (TargetChangedListener) component;        
-                   switch(_eventType) {
-                        case -1:
-                        case 0:
-                            listener.targetChanged(_target);
-                            break;
-                         
-                        case 7:
-                            listener.targetReasserted(_target);
-                            break;
-                            
-                   }
-                }
-            }
+            } 
         }
        
     }

@@ -63,7 +63,7 @@ public abstract class UMLComboBoxModel2
     /**
      * The list with objects that should be shown in the combobox
      */
-    private List _objects = Collections.synchronizedList(new ArrayList());
+    private List _objects = new ArrayList();
     
     /**
      * The selected object
@@ -184,16 +184,6 @@ public abstract class UMLComboBoxModel2
                 removeElement(o);
             }      
         }
-    }
-    
-    public void targetChanged(Object newTarget) {
-        // if (_target != newTarget)
-            setTarget(newTarget);
-    }
-
-    public void targetReasserted(Object newTarget) {
-        // if (_target != newTarget)
-            setTarget(newTarget);
     }
     
     /**
@@ -382,11 +372,11 @@ public abstract class UMLComboBoxModel2
     public void removeAllElements() {
         int startIndex = 0;
         int endIndex = _objects.size()-1;
-        if (!_objects.isEmpty()) {
+        // if (!_objects.isEmpty()) {
             _objects.clear();
             _selectedObject = null;
             fireIntervalRemoved(this, startIndex, endIndex);
-        }
+        // }
     }
     
     public Object getSelectedItem() {

@@ -1264,7 +1264,7 @@ public class CoreHelper {
         if (m == null)
             return ret;
         MNamespace model =
-            ProjectManager.getManager().getCurrentProject().getModel();
+            ProjectManager.getManager().getCurrentProject().getRoot();
         if (isValidNamespace(m, model))
             ret.add(model);
         Iterator it =
