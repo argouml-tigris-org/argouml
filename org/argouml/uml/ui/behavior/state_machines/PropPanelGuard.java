@@ -30,6 +30,7 @@ import javax.swing.JScrollPane;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
+import org.argouml.uml.ui.ActionNavigateTransition;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
@@ -87,7 +88,9 @@ public class PropPanelGuard extends PropPanelModelElement {
 
 	new PropPanelButton(this,
             ResourceLoaderWrapper.lookupIconResource("NavigateUp"), 
-            Translator.localize("button.go-up"), "navigateUp", null);
+            Translator.localize("button.go-up"), 
+            new ActionNavigateTransition());
+    
 	addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 

@@ -32,13 +32,10 @@ import org.argouml.i18n.Translator;
 import org.argouml.model.uml.CoreFactory;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton;
 import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.uml.ui.UMLMutableLinkedList;
 import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.uml.ui.foundation.core.PropPanelModelElement;
-
 import org.tigris.swidgets.Orientation;
 
 /**
@@ -71,12 +68,9 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
     protected void initialize() {
 
         paramScroll = getParameterScroll();
+        
         addButton(new PropPanelButton2(this,
                 new ActionNavigateContainerElement()));
-
-        new PropPanelButton(this, lookupIcon("Parameter"), 
-                Translator.localize("button.new-parameter"),
-                "buttonAddParameter", null);
 
         addField(Translator.localize("label.name"),
                 getNameTextField());
@@ -88,8 +82,6 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
                 getParameterScroll());
 
         addSeperator();
-
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
     /**
@@ -107,7 +99,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
         if (paramScroll == null) {
             paramListModel = new UMLEventParameterListModel();
             JList paramList = new UMLMutableLinkedList(paramListModel,
-                    ActionNewParameter.getInstance());
+                    new ActionNewParameter());
             paramList.setVisibleRowCount(3);
             paramScroll = new JScrollPane(paramList);
         }

@@ -28,6 +28,11 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.i18n.Translator;
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton;
+import org.argouml.uml.ui.PropPanelButton2;
+import org.argouml.uml.ui.foundation.core.ActionNewParameter;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -44,6 +49,19 @@ public class PropPanelSignalEvent extends PropPanelEvent {
         super("Signal event", lookupIcon("SignalEvent"), 
               ConfigLoader.getTabPropsOrientation());
     }
+    
+    /**
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     */
+    public void initialize() {
+        super.initialize();
+        
+        new PropPanelButton(this, lookupIcon("Parameter"), 
+                Translator.localize("button.new-parameter"),
+                new ActionNewParameter());
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+    }
+
 } 
 
 

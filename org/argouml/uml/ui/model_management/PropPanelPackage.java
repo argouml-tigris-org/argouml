@@ -33,8 +33,6 @@ import javax.swing.border.TitledBorder;
 import org.argouml.i18n.Translator;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.tigris.swidgets.GridLayout2;
-import org.tigris.swidgets.Orientation;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.ActionNavigateNamespace;
 import org.argouml.uml.ui.ActionRemoveFromModel;
@@ -48,6 +46,8 @@ import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementLeafCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementRootCheckBox;
 import org.argouml.uml.ui.foundation.core.UMLGeneralizableElementSpecializationListModel;
 import org.argouml.util.ConfigLoader;
+import org.tigris.swidgets.GridLayout2;
+import org.tigris.swidgets.Orientation;
 
 
 /**
@@ -130,11 +130,10 @@ public class PropPanelPackage extends PropPanelNamespace  {
                 new ActionNavigateNamespace()));
         new PropPanelButton(this, lookupIcon("Package"), 
                 Translator.localize("button.new-package"), 
-                "addPackage", null);
+                new ActionAddPackage());
         addButton(new PropPanelButton2(this, 
             new ActionRemoveFromModel()));
     }
-
 
     /** add a package to the current package. */
     public void addPackage() {

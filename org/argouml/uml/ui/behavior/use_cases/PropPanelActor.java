@@ -24,9 +24,15 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import java.awt.event.ActionEvent;
+
+import javax.swing.Action;
+
 import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UseCasesFactory;
 import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
 import org.argouml.uml.ui.ActionNavigateContainerElement;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.PropPanelButton;
@@ -47,17 +53,9 @@ import org.argouml.util.ConfigLoader;
 
 public class PropPanelActor extends PropPanelClassifier {
 
-
-    ///////////////////////////////////////////////////////////////////////////
-    //
-    // Constructors
-    //
-    ///////////////////////////////////////////////////////////////////////////
-
     /**
      * <p>Constructor. Builds up the various fields required.</p>
      */
-
     public PropPanelActor() {
     	super("Actor", ConfigLoader.getTabPropsOrientation());
 
@@ -67,10 +65,10 @@ public class PropPanelActor extends PropPanelClassifier {
     	addField(Translator.localize("label.stereotype"), 
                 getStereotypeBox());
 
-        add(getModifiersPanel());
-
     	addField(Translator.localize("label.namespace"), 
                 getNamespaceComboBox());
+
+        add(getModifiersPanel());
 
     	addSeperator();
 
@@ -88,14 +86,35 @@ public class PropPanelActor extends PropPanelClassifier {
         addButton(new PropPanelButton2(this, 
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, lookupIcon("Actor"),
-                Translator.localize("button.new-actor"), "newActor",
-                            null);
+                Translator.localize("button.new-actor"), new ActionNewActor());
         new PropPanelButton(this, lookupIcon("Reception"), 
                 Translator.localize("button.new-reception"), 
                 getActionNewReception());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
+    private class ActionNewActor extends AbstractActionNewModelElement {
+
+        /**
+         * The constructor.
+         */
+        public ActionNewActor() {
+            super("button.new-actor");
+            putValue(Action.NAME, Translator.localize("button.new-actor"));
+        }
+
+        /**
+         * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e) {
+            Object target = TargetManager.getInstance().getModelTarget();
+            if (ModelFacade.isAActor(target)) {
+                TargetManager.getInstance().setTarget(
+                        UseCasesFactory.getFactory().buildActor(target));
+                super.actionPerformed(e);
+            }
+        }
+    }
 
     /**
      * <p>Invoked by the "Add actor" toolbar button to create a new actor

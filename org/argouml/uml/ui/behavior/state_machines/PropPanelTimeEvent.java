@@ -28,6 +28,8 @@
 
 package org.argouml.uml.ui.behavior.state_machines;
 
+import org.argouml.uml.ui.ActionRemoveFromModel;
+import org.argouml.uml.ui.PropPanelButton2;
 import org.argouml.util.ConfigLoader;
 
 /**
@@ -44,6 +46,16 @@ public class PropPanelTimeEvent extends PropPanelEvent {
         super("Time event", lookupIcon("TimeEvent"), 
               ConfigLoader.getTabPropsOrientation());
     }
+    
+    /**
+     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     */
+    public void initialize() {
+        super.initialize();
+
+        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+    }
+
 } 
 
 

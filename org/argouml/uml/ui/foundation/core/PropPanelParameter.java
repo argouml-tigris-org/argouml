@@ -91,7 +91,7 @@ public class PropPanelParameter extends PropPanelModelElement {
                 new ActionNavigateContainerElement()));
         new PropPanelButton(this, lookupIcon("Parameter"), 
                 Translator.localize("button.new-parameter"), 
-                "addParameter", null);
+                new ActionAddParameter());
         addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
     }
 
@@ -199,6 +199,5 @@ public class PropPanelParameter extends PropPanelModelElement {
         }
         return behFeatureScroll;
     }
-
 
 } /* end class PropPanelParameter */

@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,40 +22,22 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelChangeEvent
-// Classes: PropPanelChangeEvent
-// Original Author: oliver.heyden@gentleware.de
+package org.argouml.uml.ui;
 
-package org.argouml.uml.ui.behavior.state_machines;
-
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import org.argouml.model.ModelFacade;
 
 /**
- * The properties panel for a ChangeEvent.
- *
+ * Navigate to the transition. Used for e.g. a Guard.
+ * 
+ * @author Michiel
  */
-public class PropPanelChangeEvent extends PropPanelEvent {
+public class ActionNavigateTransition extends AbstractActionNavigate {
 
     /**
-     * The constructor.
-     * 
+     * @see org.argouml.uml.ui.AbstractActionNavigate#navigateTo(java.lang.Object)
      */
-    public PropPanelChangeEvent() {
-        super("Change event", lookupIcon("ChangeEvent"), 
-              ConfigLoader.getTabPropsOrientation());
+    protected Object navigateTo(Object source) {
+        return ModelFacade.getTransition(source);
     }
 
-    /**
-     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
-     */
-    public void initialize() {
-        super.initialize();
-        
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
-    }
-
-} 
-
-
+}

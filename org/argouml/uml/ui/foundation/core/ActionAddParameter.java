@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,40 +22,48 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelChangeEvent
-// Classes: PropPanelChangeEvent
-// Original Author: oliver.heyden@gentleware.de
+package org.argouml.uml.ui.foundation.core;
 
-package org.argouml.uml.ui.behavior.state_machines;
+import java.awt.event.ActionEvent;
 
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.CoreFactory;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+
 
 /**
- * The properties panel for a ChangeEvent.
- *
+ * Action to create a new parameter "next to" the existing parameter 
+ * (that is actually selected by the user).
+ * 
+ * @author Michiel
  */
-public class PropPanelChangeEvent extends PropPanelEvent {
+class ActionAddParameter extends AbstractActionNewModelElement {
 
     /**
      * The constructor.
-     * 
      */
-    public PropPanelChangeEvent() {
-        super("Change event", lookupIcon("ChangeEvent"), 
-              ConfigLoader.getTabPropsOrientation());
+    public ActionAddParameter() {
+        super("button.new-parameter");
+        putValue(Action.NAME, Translator.localize("button.new-parameter"));
     }
 
     /**
-     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void initialize() {
-        super.initialize();
-        
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+    public void actionPerformed(ActionEvent e) {
+        Object target = TargetManager.getInstance().getModelTarget();
+        Object feature = null;
+        if (ModelFacade.isAParameter(target)) {
+            feature = ModelFacade.getBehavioralFeature(target);
+            if (feature != null) {
+                TargetManager.getInstance().setTarget(
+                        CoreFactory.getFactory().buildParameter(feature));
+                super.actionPerformed(e);
+            }
+        }
     }
-
-} 
-
-
+}
