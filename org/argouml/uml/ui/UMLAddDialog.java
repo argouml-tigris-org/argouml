@@ -60,7 +60,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.ListSelectionModel;
 import javax.swing.SwingUtilities;
 
-import org.apache.fop.fo.properties.RightMaker;
 import org.argouml.application.api.Argo;
 import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.util.ResourceLoader;
