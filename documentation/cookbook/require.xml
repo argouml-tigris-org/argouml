@@ -318,39 +318,22 @@ User of ArgoUML
     <title>Requirements on java and jvm</title>
     <sect2 id="REQ7">
       <title>Choice of JRE:
-		We will support any JRE compatible with the Sun specification one version
-		behind the most recent stable JRE from Sun.
-		A stable JRE is considered to be one that has had a second non-beta release.
+ArgoUML will support any JRE compatible with a 
+Sun specification of any JRE from Sun that has not begun the Sun End of Life
+(EOL) process.
 </title>
-	    <para>
-                This is to allow ArgoUML to gradually take on board new stable features of
-                the Java language while still offering users some choice of JRE.
-	    </para>
-	    <para>
-REQ7 REVa
+      <para>
+REQ7 REVb
 </para>
-	    <para>
+      <para>
 <emphasis>Rationale:</emphasis>
 The JREs and the adjoining libraries (especially swing) are always improving
 to include new features and new ideas.
 The developers of ArgoUML would like to use these new features.
 </para>
 	    <para>
-<emphasis>Interpretation:</emphasis>
-This means that we currently want to support
-JREs
-1.3.1,
-1.4.2, and
-5.0.
-(1.3.0,
-1.4.0, and
-1.4.1
-have gone through EOL).
-When a JRE compatible to 
-Java&trade; 2 Platform Standard Edition 5.1
-has come out for all major platforms:
-Solaris, Linux, Windows, Mac, 
-support for 1.3.0 and 1.3.1 will be discontinued.
+Note: J2SE 1.3.1 begun its Sun End of Life (EOL) process
+on October 25, 2004.
 </para>
 	    <para>
 <emphasis>Stakeholder:</emphasis>
