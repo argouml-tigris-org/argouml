@@ -33,9 +33,9 @@ import org.argouml.application.helpers.*;
 public class NotationResourceBundle_ru extends ResourceBundleHelper implements PluggableResourceBundle {
 
    static final Object[][] _contents = {
-        {"label_use_guillemots", "Используйте угловые кавычки (\u00ab \u00bb) для стереотипов" },
-        {"label_uml_notation_only", "Разрешить только стогую UML нотацию" },
-        {"tab_notation", "Нотация" }  
+        {"label.use-guillemots", "Используйте угловые кавычки (\u00ab \u00bb) для стереотипов" },
+        {"label.uml-notation-only", "Разрешить только стогую UML нотацию" },
+        {"tab.notation", "Нотация" }  
    };
 
      public Object[][] getContents() {

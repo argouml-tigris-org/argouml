@@ -42,15 +42,16 @@ public class SettingsResourceBundle_de extends ListResourceBundle {
 
         {"caption.settings", "Einstellungen" },
 
-        {"tab_user", "Benutzer" },
-        {"label_user", "Vollst\u00e4ndiger Name:" },
-        {"label_email", "Email Adresse:" },
-        {"label_splash", "Splash Panel anzeigen" },
-        {"label_preload", "Allgemeine Klassen im Voraus laden" },
-        {"label_edem", "Benutzerstatistik anzeigen" },
-        {"label_profile", "Ladezeiten anzeigen" },
-        {"tab_preferences", "Voreinstellungen" },
-        {"tab_environment", "I18N: Environment" },
+        {"label.edem", "Benutzerstatistik anzeigen" },
+        {"label.email", "Email Adresse:" },
+        {"label.preload", "Allgemeine Klassen im Voraus laden" },
+        {"label.profile", "Ladezeiten anzeigen" },
+        {"label.splash", "Splash Panel anzeigen" },
+        {"label.user", "Vollst\u00e4ndiger Name:" },
+
+        {"tab.environment", "I18N: Environment" },
+        {"tab.preferences", "Voreinstellungen" },
+        {"tab.user", "Benutzer" },
    };
 
      public Object[][] getContents() {

@@ -43,15 +43,16 @@ public class SettingsResourceBundle_es extends ListResourceBundle {
 
         {"caption.settings", "Configuraci\u00f3n" },
 
-        {"tab_user", "Usuario" },
-        {"label_user", "Nombre completo:" },
-        {"label_email", "Direcci\u00f3n de correo:" },
-        {"label_splash", "Mostrar Panel Splash" },
-        {"label_preload", "Precargar Clases Comunes" },
-        {"label_edem", "Informe de Estad\u00edsticas de uso" },
-        {"label_profile", "Informe de Tiempo de Carga" },
-        {"tab_preferences", "Preferencias" },
-        {"tab_environment", "I18N: Environment" },
+        {"label.edem", "Informe de Estad\u00edsticas de uso" },
+        {"label.email", "Direcci\u00f3n de correo:" },
+        {"label.preload", "Precargar Clases Comunes" },
+        {"label.profile", "Informe de Tiempo de Carga" },
+        {"label.splash", "Mostrar Panel Splash" },
+        {"label.user", "Nombre completo:" },
+
+        {"tab.environment", "I18N: Environment" },
+        {"tab.preferences", "Preferencias" },
+        {"tab.user", "Usuario" },
    };
 
      public Object[][] getContents() {
