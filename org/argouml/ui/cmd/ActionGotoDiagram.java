@@ -31,6 +31,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.JPanel;
 
 import org.argouml.application.api.CommandLineInterface;
+import org.argouml.i18n.Translator;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.ArgoDialog;
@@ -43,10 +44,19 @@ import org.tigris.gef.base.Diagram;
 ////////////////////////////////////////////////////////////////
 // items on view menu
 
+/**
+ * This Action will display a dialogbox listing all diagrams.
+ * Doubleclicking on any listed diagram selects it.
+ *
+ */
 public class ActionGotoDiagram 
 	extends UMLAction 
 	implements CommandLineInterface {
 
+    /**
+     * The constructor.
+     * 
+     */
     public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
 
     /**
