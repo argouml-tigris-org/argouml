@@ -477,7 +477,7 @@ public class Critic implements Poster, Serializable {
    *  Critic encapsulates some information you may need to override
    *  this method. */
   public boolean isRelevantToDecisions(Designer dsgr) {
-      cat.info(this);
+      cat.debug(this);
     Enumeration enum = getSupportedDecisions().elements();
     while (enum.hasMoreElements()) {
       Decision d = (Decision) enum.nextElement();

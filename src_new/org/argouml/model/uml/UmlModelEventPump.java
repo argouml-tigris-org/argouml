@@ -28,9 +28,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ru.novosoft.uml.MBase;
 import ru.novosoft.uml.MBaseImpl;
@@ -165,9 +167,9 @@ public final class UmlModelEventPump implements MElementListener {
      * @param eventName
      */
     private void executeAddClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        Set listenerList = (HashSet)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
         if (listenerList == null) {
-            listenerList = new ArrayList();
+            listenerList = new HashSet();
             _listenerClassModelEventsMap.put(getKey(modelClass, eventName), listenerList);
         } else
         if (listenerList.contains(listener))
@@ -225,7 +227,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void executeRemoveClassModelEventListener(MElementListener listener, Class modelClass, String eventName) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(modelClass, eventName));
         if (listenerList == null) return;
         listenerList.remove(listener);
         if (listenerList.isEmpty()) 
@@ -293,9 +295,9 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void executeAddModelEventListener(MElementListener listener, MBase modelelement, String eventName) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey(modelelement, eventName));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey(modelelement, eventName));
         if (listenerList == null) {
-            listenerList = new ArrayList();
+            listenerList = new HashSet();
             _listenerModelEventsMap.put(getKey(modelelement, eventName), listenerList);
         } else
         if (listenerList.contains(listener)) 
@@ -344,7 +346,7 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void executeRemoveModelEventListener(MElementListener listener, MBase elem, String eventName) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey(elem, eventName));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey(elem, eventName));
         if (listenerList != null) {   
             listenerList.remove(listener);
             if (listenerList.isEmpty())
@@ -372,12 +374,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRoleItemSet(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -392,7 +394,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRoleItemSet(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -409,12 +417,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassPropertySet(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -429,7 +437,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectPropertySet(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -446,12 +460,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRecovered(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -465,7 +479,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRecovered(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -482,12 +502,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRemoved(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, REMOVE));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, REMOVE));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -501,7 +521,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), REMOVE));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), REMOVE));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -518,12 +544,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRoleAdded(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -537,7 +563,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRoleAdded(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
@@ -554,12 +586,12 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireClassRoleRemoved(Class clazz, MElementEvent e) {
-        List listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
+        Set listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, e.getName()));
         if (_listenerClassModelEventsMap.get(getKey(clazz, null)) != null) {
             if (listenerList == null) 
-                listenerList = (List)_listenerClassModelEventsMap.get(getKey(clazz, null));
+                listenerList = (Set)_listenerClassModelEventsMap.get(getKey(clazz, null));
             else 
-                listenerList.addAll((List)_listenerClassModelEventsMap.get(getKey(clazz, null)));
+                listenerList.addAll((Set)_listenerClassModelEventsMap.get(getKey(clazz, null)));
         }
         if (listenerList != null) {
             Iterator it = listenerList.iterator();
@@ -573,7 +605,13 @@ public final class UmlModelEventPump implements MElementListener {
     }
     
     private void fireObjectRoleRemoved(MElementEvent e) {
-        List listenerList = (List)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        Set listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), e.getName()));
+        if (_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)) != null) {
+            if (listenerList == null) 
+                listenerList = (Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null));
+            else 
+                listenerList.addAll((Set)_listenerModelEventsMap.get(getKey((MBase)e.getSource(), null)));
+        }
         if (listenerList == null) return;
         Iterator it = listenerList.iterator();
         while(it.hasNext()) {
