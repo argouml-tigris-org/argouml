@@ -25,14 +25,6 @@
 // File: Init.java
 // Classes: Init
 // Original Author: jrobbins@ics.uci.edu
-// $Id$
-
-// 8 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). CrCrossNamespaceAssoc
-// registration corrected to Association, rather than AssociationClass
-
-// 12 Mar 2002: Jeremy Bennett (mail@jeremybennett.com). CrDupRoleNames
-// registration put back in (was commented out)
-
 
 package org.argouml.uml.cognitive.critics;
 
@@ -54,41 +46,14 @@ import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.diagram.ui.UMLDiagram;
 import org.argouml.uml.diagram.use_case.ui.UMLUseCaseDiagram;
-
-import ru.novosoft.uml.behavior.state_machines.MCompositeState;
-import ru.novosoft.uml.behavior.state_machines.MPseudostate;
-import ru.novosoft.uml.behavior.state_machines.MState;
-import ru.novosoft.uml.behavior.state_machines.MStateVertex;
-import ru.novosoft.uml.behavior.state_machines.MTransition;
-import ru.novosoft.uml.behavior.use_cases.MActor;
-import ru.novosoft.uml.behavior.use_cases.MUseCase;
-import ru.novosoft.uml.foundation.core.MAssociation;
-import ru.novosoft.uml.foundation.core.MAssociationClass;
-import ru.novosoft.uml.foundation.core.MAssociationEnd;
-import ru.novosoft.uml.foundation.core.MAttribute;
-import ru.novosoft.uml.foundation.core.MClass;
-import ru.novosoft.uml.foundation.core.MClassifier;
-import ru.novosoft.uml.foundation.core.MDataType;
-import ru.novosoft.uml.foundation.core.MGeneralizableElement;
-import ru.novosoft.uml.foundation.core.MGeneralization;
-import ru.novosoft.uml.foundation.core.MInterface;
-import ru.novosoft.uml.foundation.core.MModelElement;
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.core.MOperation;
-import ru.novosoft.uml.foundation.core.MParameter;
-import ru.novosoft.uml.model_management.MPackage;
-import ru.novosoft.uml.model_management.MModel;
+import org.argouml.model.ModelFacade;
 
 /** Registers critics for use in Argo/UML.  This class is called at
  *  system startup time. If you add a new critic, you need to add a
  *  line here.
  *
  * @see org.argouml.cognitive.critics.Agency */
-  
 public class Init {
-    // domain independent
-    //public static Critic crTooManyDisabled = new CrTooManyDisabled();
-    //public static Critic crTooMuchFeedback = new CrTooMuchFeedback();
 
     // UML specific
     public static Critic crAssocNameConflict = new CrAssocNameConflict();
@@ -106,12 +71,10 @@ public class Init {
     public static Critic crAlreadyRealizes = new CrAlreadyRealizes();
     public static Critic crInterfaceAllPublic = new CrInterfaceAllPublic();
     public static Critic crInterfaceOperOnly = new CrInterfaceOperOnly();
-    //public static Critic crMultiComposite = new CrMultiComposite();
     public static Critic crMultipleAgg = new CrMultipleAgg();
     public static Critic crNWayAgg = new CrNWayAgg();
     public static Critic crNavFromInterface = new CrNavFromInterface();
     public static Critic crUnnavigableAssoc = new CrUnnavigableAssoc();
-    //public static Critic crNameConflict = new CrNameConflict();
     public static Critic crNameConflictAC = new CrNameConflictAC();
     public static Critic crMissingClassName = new CrMissingClassName();
     public static Critic crMissingAttrName = new CrMissingAttrName();
@@ -224,40 +187,35 @@ public class Init {
     public static CompoundCritic noTrans2 =
 	new CompoundCritic(crNoTransitions, crNoOutgoingTransitions);
 
-    // TODO: under testing - mkl
-    //public static Critic crConsiderFacade = new CrConsiderFacade();
-
     /** static initializer, register all appropriate critics */
     public static void init() {
-	//     try {
-	java.lang.Class modelCls = MModel.class;
-	java.lang.Class packageCls = MPackage.class;
-	java.lang.Class modelElementCls = MModelElement.class;
-	java.lang.Class classCls = MClass.class;
-	java.lang.Class classifierCls = MClassifier.class;
-	java.lang.Class interfaceCls = MInterface.class;
-	java.lang.Class attrCls = MAttribute.class;
-	java.lang.Class paramCls = MParameter.class;
-	java.lang.Class operCls = MOperation.class;
-	java.lang.Class iassocCls = MAssociation.class;
-	java.lang.Class assocCls = MAssociation.class;
-	java.lang.Class assocEndCls = MAssociationEnd.class;
-	java.lang.Class assocClassCls = MAssociationClass.class;
-	java.lang.Class namespaceCls = MNamespace.class;
-	java.lang.Class genElementCls = MGeneralizableElement.class;
-	java.lang.Class genCls = MGeneralization.class;
-	java.lang.Class datatypeCls = MDataType.class;
 
-	java.lang.Class useCaseCls = MUseCase.class;
-	java.lang.Class actorCls = MActor.class;
+	java.lang.Class modelCls = (Class)ModelFacade.MODEL;
+	java.lang.Class packageCls = (Class)ModelFacade.PACKAGE;
+	java.lang.Class modelElementCls = (Class)ModelFacade.MODELELEMENT;
+	java.lang.Class classCls = (Class)ModelFacade.CLASS;
+	java.lang.Class classifierCls = (Class)ModelFacade.CLASSIFIER;
+	java.lang.Class interfaceCls = (Class)ModelFacade.INTERFACE;
+	java.lang.Class attrCls = (Class)ModelFacade.ATTRIBUTE;
+	java.lang.Class paramCls = (Class)ModelFacade.PARAMETER;
+	java.lang.Class operCls = (Class)ModelFacade.OPERATION;
+	java.lang.Class assocCls = (Class)ModelFacade.ASSOCIATION;
+	java.lang.Class assocEndCls = (Class)ModelFacade.ASSOCIATION_END;
+	java.lang.Class assocClassCls = (Class)ModelFacade.ASSOCIATION_CLASS;
+	java.lang.Class namespaceCls = (Class)ModelFacade.NAMESPACE;
+	java.lang.Class genElementCls=(Class)ModelFacade.GENERALAIZABLE_ELEMENT;
+	java.lang.Class genCls = (Class)ModelFacade.GENERALIZATION;
+	java.lang.Class datatypeCls = (Class)ModelFacade.DATATYPE;
 
-	java.lang.Class stateVertexCls = MStateVertex.class;
-	java.lang.Class stateCls = MState.class;
-	java.lang.Class compositieStateCls = MCompositeState.class;
-	java.lang.Class pseudostateCls = MPseudostate.class;
-	java.lang.Class transitionCls = MTransition.class;
-	//java.lang.Class stateMachineCls = MStateMachine.class;
+	java.lang.Class useCaseCls = (Class)ModelFacade.USE_CASE;
+	java.lang.Class actorCls = (Class)ModelFacade.ACTOR;
 
+	java.lang.Class stateVertexCls = (Class)ModelFacade.STATEVERTEX;
+	java.lang.Class stateCls = (Class)ModelFacade.STATE;
+	java.lang.Class compositieStateCls = (Class)ModelFacade.COMPOSITESTATE;
+	java.lang.Class pseudostateCls = (Class)ModelFacade.PSEUDOSTATE;
+	java.lang.Class transitionCls = (Class)ModelFacade.TRANSITION;
+        
 	java.lang.Class diagramCls        = UMLDiagram.class;
 	java.lang.Class classDiagramCls   = UMLClassDiagram.class;
 	java.lang.Class stateDiagramCls   = UMLStateDiagram.class;
@@ -266,7 +224,6 @@ public class Init {
 	java.lang.Class sequenceDiagramCls = UMLSequenceDiagram.class;
 	java.lang.Class nodeCls           = FigNodeModelElement.class;
 	java.lang.Class edgeCls           = FigEdgeModelElement.class;
-
 
 	// TODO: Agency should allow registration by interface
 	// useful for MAssociation.
@@ -278,26 +235,21 @@ public class Init {
 	Agency.register(crCircularInheritance, genElementCls);
 	Agency.register(crCircularComposition, classCls);
 	Agency.register(crClassMustBeAbstract, classCls); 
-	Agency.register(crCrossNamespaceAssoc, assocCls); // Jeremy Bennett fix
+	Agency.register(crCrossNamespaceAssoc, assocCls);
 	Agency.register(crDupParamName, operCls);
-	Agency.register(crDupRoleNames, assocCls);  // Jeremy Bennett fix
+	Agency.register(crDupRoleNames, assocCls);
 	Agency.register(crFinalSubclassed, classCls);
 	Agency.register(crFinalSubclassed, interfaceCls);
 	Agency.register(crIllegalGeneralization, genCls);
 	Agency.register(crAlreadyRealizes, classCls);
 	Agency.register(crInterfaceAllPublic, interfaceCls);
 	Agency.register(crInterfaceOperOnly, interfaceCls);
-	//Agency.register(crMultiComposite, assocEndCls);
 	Agency.register(crMultipleAgg, assocCls);
 	Agency.register(crUnnavigableAssoc, assocCls);
 	Agency.register(crNWayAgg, assocCls);
 	Agency.register(crNavFromInterface, assocCls);
-	//Agency.register(crNameConflict, namespaceCls);
 	Agency.register(crNameConflictAC, assocClassCls);
 
-	// Agency.register(crMissingClassName, classCls);
-	// Agency.register(crMissingClassName, actorCls);
-	// Agency.register(crMissingClassName, useCaseCls);
 	Agency.register(clsNaming, classCls);
 	Agency.register(clsNaming, actorCls);
 	Agency.register(clsNaming, useCaseCls);
@@ -317,7 +269,6 @@ public class Init {
 	Agency.register(crConstructorNeeded, classCls);
 	Agency.register(crEmptyPackage, packageCls);
 	Agency.register(crNonAggDataType, datatypeCls);
-	//      Agency.register(crOppEndConflict, classifierCls);
 	Agency.register(crUselessAbstract, classCls);
 	Agency.register(crUselessInterface, interfaceCls);
 	Agency.register(crDisambigStateName, stateCls);
@@ -339,7 +290,6 @@ public class Init {
 	Agency.register(crReservedName, assocCls);
 	Agency.register(crMultiInherit, classCls);
 	Agency.register(crMultiRealization, interfaceCls);
-	// Agency.register(crConflictingComposites, classifierCls);
 	Agency.register(crTooManyAssoc, classCls);
 	Agency.register(crTooManyAttr, classCls);
 	Agency.register(crTooManyOper, classCls);
@@ -347,9 +297,6 @@ public class Init {
 	Agency.register(crTooManyStates, compositieStateCls);
 	Agency.register(crTooManyClasses, classDiagramCls);
 
-	// Agency.register(crNoTransitions, stateVertexCls);
-	// Agency.register(crNoIncomingTransitions, stateVertexCls);
-	// Agency.register(crNoOutgoingTransitions, stateVertexCls);
 	Agency.register(noTrans1, stateVertexCls);
 	Agency.register(noTrans2, stateVertexCls);
 	Agency.register(crMultipleInitialStates, pseudostateCls);
@@ -396,9 +343,6 @@ public class Init {
       
 	Agency.register(new CrOppEndVsAttr(), classifierCls);
 
-	// under testing
-	// Agency.register(crConsiderFacade, packageCls);
     }
-
       
 } /* end class Init */

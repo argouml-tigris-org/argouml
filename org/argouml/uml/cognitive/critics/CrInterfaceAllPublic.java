@@ -36,14 +36,9 @@ import java.util.Iterator;
 import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
-import ru.novosoft.uml.foundation.data_types.MVisibilityKind;
-
-
 
 /** Well-formedness rule [3] for MInterface. See page 32 of UML 1.1
  *  Semantics. OMG document ad/97-08-04. */
-
-
 public class CrInterfaceAllPublic extends CrUML {
 
     public CrInterfaceAllPublic() {
@@ -62,7 +57,7 @@ public class CrInterfaceAllPublic extends CrUML {
 	while (enum.hasNext()) {
 	    Object f = /*(MFeature)*/ enum.next();
 	    if (ModelFacade.getVisibility(f) == null) return NO_PROBLEM;
-	    if (!ModelFacade.getVisibility(f).equals(MVisibilityKind.PUBLIC))
+	    if (!ModelFacade.getVisibility(f).equals(ModelFacade.PUBLIC_VISIBILITYKIND))
 		return PROBLEM_FOUND;
 	}
 	return NO_PROBLEM;

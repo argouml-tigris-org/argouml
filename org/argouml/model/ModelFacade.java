@@ -240,7 +240,10 @@ public class ModelFacade {
     public static final Object RETURN_ACTION      = MReturnAction.class;
     public static final Object SEND_ACTION        = MSendAction.class;
     public static final Object STEREOTYPE         = MStereotype.class;
-
+    public static final Object PARAMETER          = MParameter.class;
+    public static final Object GENERALAIZABLE_ELEMENT
+                                        = MGeneralizableElement.class;
+    public static final Object DATATYPE          = MDataType.class;
 
     public static final Object ATTRIBUTE          = MAttribute.class;
     public static final Object OPERATION          = MOperation.class;
@@ -276,6 +279,9 @@ public class ModelFacade {
     public static final Object NONE_AGGREGATIONKIND =
         MAggregationKind.NONE;
 
+    public static final Object M1_1_MULTIPLICITY =
+        MMultiplicity.M1_1;
+    
     /** Singleton instance */        
 	private static ModelFacade singleton = new ModelFacade();
 
@@ -297,7 +303,7 @@ public class ModelFacade {
      * 
      * This will allow abstraction of the create mechanism at a single point.
      * 
-     * @param entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
+     * @ entity Class to create - must implement {@link org.argouml.model.uml.Uml.Entity}
      * @return the created object or null if it cannot create the class.
      */
     public Object create(ModelEntity entity) {

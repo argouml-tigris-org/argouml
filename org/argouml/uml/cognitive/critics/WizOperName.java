@@ -42,7 +42,6 @@ import org.argouml.cognitive.ui.WizStepCue;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
 /** A wizard to help the user change the name of an operation to a better name.
  * Same as WizMEName expect that it handles the special case where 
  * the operation instead should be made a constructor of the class.
@@ -243,7 +242,7 @@ public class WizOperName extends WizMEName {
     private static Object findNamespace(Object/*MNamespace*/ phantomNS,
 					Object/*MModel*/ targetModel) {
         Object ns = null;
-        MNamespace targetParentNS = null;
+        Object /*MNamespace*/ targetParentNS = null;
         if (phantomNS == null) {
             return targetModel;
         }
@@ -252,7 +251,7 @@ public class WizOperName extends WizMEName {
             return targetModel;
         }
         else {
-            targetParentNS = (MNamespace)findNamespace(parentNS, targetModel);
+            targetParentNS = findNamespace(parentNS, targetModel);
             //
             //   see if there is already an element with the same name
             //
@@ -274,7 +273,7 @@ public class WizOperName extends WizMEName {
                 }
             }
             if (ns == null) {
-                ns = targetParentNS.getFactory().createPackage();
+                ns = UmlFactory.getFactory().getCore().createNamespace();
                 ModelFacade.setName(ns, phantomName);
                 ModelFacade.addOwnedElement(targetParentNS, ns);
             }

@@ -31,9 +31,6 @@ import org.argouml.cognitive.Designer;
 import org.argouml.cognitive.ToDoItem;
 import org.argouml.model.ModelFacade;
 
-import ru.novosoft.uml.foundation.data_types.MMultiplicity;
-
-
 /** A critic to check whether to classes sharing a 1..1 association can or
  *  should be combined.
  */
@@ -65,8 +62,10 @@ public class CrMergeClasses extends CrUML {
 	if (!(ModelFacade.isNavigable(ae0) && 
 	      ModelFacade.isNavigable(ae1)))
 	    return NO_PROBLEM;
-	if (ModelFacade.getMultiplicity(ae0).equals(MMultiplicity.M1_1) &&
-	    ModelFacade.getMultiplicity(ae1).equals(MMultiplicity.M1_1))
+	if (ModelFacade.getMultiplicity(ae0)
+                .equals(ModelFacade.M1_1_MULTIPLICITY) &&
+	    ModelFacade.getMultiplicity(ae1)
+                .equals(ModelFacade.M1_1_MULTIPLICITY))
 	    return PROBLEM_FOUND;
 	return NO_PROBLEM;
     }
