@@ -66,17 +66,19 @@ public class TestExtensionMechanismsHelper extends TestCase {
             ProjectManager.getManager().getCurrentProject()
             	.getModels();
         MStereotype stereo1 =
-	        Model.getExtensionMechanismsFactory().buildStereotype(
-                clazz,
-                "test1",
-                model,
-                models);
+            (MStereotype)
+            	Model.getExtensionMechanismsFactory().buildStereotype(
+            	        clazz,
+            	        "test1",
+            	        model,
+            	        models);
         MStereotype stereo2 =
+            (MStereotype)
 	        Model.getExtensionMechanismsFactory().buildStereotype(
-                clazz,
+	                clazz,
 		        "test2",
-                model,
-                models);
+		        model,
+		        models);
         Collection col =
 	    Model.getExtensionMechanismsHelper()
 	        .getAllPossibleStereotypes(models, clazz);

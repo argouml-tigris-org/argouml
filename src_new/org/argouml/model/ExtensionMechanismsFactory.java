@@ -26,10 +26,6 @@ package org.argouml.model;
 
 import java.util.Collection;
 
-import ru.novosoft.uml.foundation.core.MNamespace;
-import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
-import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
-
 /**
  * The interface for the factory for ExstensionMechanisms.<p>
  *
@@ -48,7 +44,7 @@ public interface ExtensionMechanismsFactory {
      *
      * @return an initialized UML TaggedValue instance.
      */
-    MTaggedValue createTaggedValue();
+    Object createTaggedValue();
 
     /**
      * Builds a stereotype for some kind of modelelement.
@@ -69,7 +65,8 @@ public interface ExtensionMechanismsFactory {
      * @return                         the resulting stereotype object
      * @throws IllegalArgumentException if either argument is null.
      */
-    MStereotype buildStereotype(Object theModelElementObject, Object theName,
+    Object buildStereotype(Object theModelElementObject,
+            Object theName,
             Object theNamespaceObject);
 
     /**
@@ -81,7 +78,7 @@ public interface ExtensionMechanismsFactory {
      * @param models all the models
      * @return                      the new stereotype
      */
-    MStereotype buildStereotype(Object theModelElementObject, String theName,
+    Object buildStereotype(Object theModelElementObject, String theName,
             Object model, Collection models);
 
     /**
@@ -100,17 +97,17 @@ public interface ExtensionMechanismsFactory {
      * @param value is the value (a String).
      * @return an initialized UML TaggedValue instance.
      */
-    MTaggedValue buildTaggedValue(String tag, String value);
+    Object buildTaggedValue(String tag, String value);
 
     /**
      * @param elem the stereotype
      */
-    void deleteStereotype(MStereotype elem);
+    void deleteStereotype(Object elem);
 
     /**
      * @param elem the taggedvalue
      */
-    void deleteTaggedValue(MTaggedValue elem);
+    void deleteTaggedValue(Object elem);
 
     /**
      * Copies a stereotype.
@@ -119,5 +116,5 @@ public interface ExtensionMechanismsFactory {
      * @param ns is the namespace to put the copy in.
      * @return a newly created stereotype
      */
-    MStereotype copyStereotype(MStereotype source, MNamespace ns);
+    Object copyStereotype(Object source, Object ns);
 }
