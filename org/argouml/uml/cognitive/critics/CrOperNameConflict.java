@@ -215,8 +215,8 @@ public class CrOperNameConflict extends CrUML {
 
 	// Check that the parameter lists match.
 
-	Iterator params1 = ModelFacade.getParameters(op1);
-	Iterator params2 = ModelFacade.getParameters(op2);
+	Iterator params1 = ModelFacade.getParameters(op1).iterator();
+	Iterator params2 = ModelFacade.getParameters(op2).iterator();
 
 	while (params1.hasNext() 
 	       && params2.hasNext()) {

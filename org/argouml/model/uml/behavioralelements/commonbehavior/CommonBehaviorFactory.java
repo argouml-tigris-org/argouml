@@ -26,6 +26,7 @@ package org.argouml.model.uml.behavioralelements.commonbehavior;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.UmlFactory;
 import ru.novosoft.uml.MFactory;
@@ -367,13 +368,14 @@ public class CommonBehaviorFactory extends AbstractUmlModelFactory {
     /**
      * Builds an action (actually an uninterpretedaction) for some message
      */
-    public MAction buildAction(MMessage message) {
-        MAction action = createCallAction();
-        action.setName("action");
-        message.setAction(action);
-        if (message.getInteraction() != null
-            && message.getInteraction().getContext() != null) {
-            action.setNamespace(message.getInteraction().getContext());
+    public Object buildAction(Object message) {
+        Object action = createCallAction();
+        ModelFacade.setName(action, "action");
+        ModelFacade.setAction(message, action);
+        Object interaction = ModelFacade.getInteraction(message);  
+        if (interaction != null
+            && ModelFacade.getContext(interaction) != null) {
+                ModelFacade.setNamespace(action, ModelFacade.getContext(interaction));
         } else
             throw new IllegalStateException("In buildaction: message does not have an interaction or the interaction does not have a context");
         return action;

@@ -42,6 +42,7 @@ import ru.novosoft.uml.MFactory;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.behavior.collaborations.MInteraction;
+import ru.novosoft.uml.behavior.collaborations.MMessage;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 import ru.novosoft.uml.behavior.common_behavior.MCallAction;
 import ru.novosoft.uml.behavior.common_behavior.MComponentInstance;
@@ -185,6 +186,15 @@ public class ModelFacade {
      */
     public static boolean isAAbstraction(Object handle) {
         return handle instanceof MAbstraction;
+    }
+    
+    /** Recognizer for Action.
+     *
+     * @param handle candidate
+     * @returns true if handle is an Action
+     */
+    public static boolean isAAction(Object handle) {
+        return handle instanceof MAction;
     }
 
     /** Recognizer for Association.
@@ -402,6 +412,15 @@ public class ModelFacade {
      */
     public static boolean isALink(Object handle) {
         return handle instanceof MLink;
+    }
+    
+    /** Recognizer for Message
+     *
+     * @param handle candidate
+     * @returns true if handle is a Method
+     */
+    public static boolean isAMessage(Object handle) {
+        return handle instanceof MMessage;
     }
 
     /** Recognizer for Method
@@ -1086,6 +1105,19 @@ public class ModelFacade {
         throw new IllegalArgumentException(
             "Unrecognized object " + stateVertex);
     }
+    
+    /**
+     * Returns the interaction for some message
+     * @param handle
+     * @return
+     */
+    public static Object getInteraction(Object handle) {
+        if (isAMessage(handle)) {
+            return ((MMessage)handle).getInteraction();
+        }
+        throw new IllegalArgumentException(
+                    "Unrecognized object " + handle);
+    }
 
     /**
      * Returns the messages belonging to some interaction
@@ -1117,14 +1149,17 @@ public class ModelFacade {
     }
     
     /**
-     * Returns the context of some given statemachine
-     * @param handle the statemachine
-     * @return the context of the statemachine or null if the statemachine doesn't 
+     * Returns the context of some given statemachine or the context of some given interaction
+     * @param handle the statemachine or the interaction
+     * @return the context of the statemachine or interaction or null if the statemachine or interaction doesn't 
      * have a context.
      */
     public static Object getContext(Object handle) {
-        if (handle instanceof MStateMachine) {
+        if (isAStateMachine(handle)) {
             return ((MStateMachine)handle).getContext();            
+        }
+        if (isAInteraction(handle)) {
+            return ((MInteraction)handle).getContext();
         }
         throw new IllegalArgumentException("Unrecognized object " + handle);
     }
@@ -1990,6 +2025,18 @@ public class ModelFacade {
             else if (o instanceof MOperation)
                  ((MOperation)o).setAbstract(flag);
         }
+    }
+    
+    /**
+     * Sets the action to a message
+     * @param message
+     * @param action
+     */
+    public static void setAction(Object message, Object action) {
+        if (isAMessage(message) && isAAction(action)) {
+            ((MMessage)message).setAction((MAction)action);
+        }
+        throw new IllegalArgumentException("Unrecognized object " + message  + " or " + action);        
     }
 
     /**
