@@ -54,14 +54,14 @@ public class FigClass extends FigNode {
     _clss = new FigText(10,10,90,20, Color.blue, "Times", 10);
     _clss.setExpandOnly(true);
     //_clss.setText((new GeneratorDisplay()).generateClassifierRef((Classifier)node));
-    _clss.setText("A sadfkak large line more\nthan one line of it");
+    _clss.setText("class foo");
     _attr = new FigText(10,30,90,20, Color.blue, "Times", 10);
     _attr.setExpandOnly(true);
-    _attr.setText("Attrib data");
+    _attr.setText("int bob;\nint bar;\nint adfy;");
     _attr.setAlignment("Left");
     _oper = new FigText(10,50,90,20, Color.blue, "Times", 10);
     _oper.setExpandOnly(true);
-    _oper.setText("Function data");
+    _oper.setText("int test(double xyzyzyxyzyyyxzyxyzyxyzyyzx, double big2);\n");
     _oper.setAlignment("Left");
     addFig(_bigPort);
     addFig(_clss);
@@ -88,12 +88,20 @@ public class FigClass extends FigNode {
     Rectangle _attr_pref = _attr.getBounds();
     Rectangle _oper_pref = _oper.getBounds();
 
-    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
-    heightP = Math.max(heightP, 3*Math.max(_clss_pref.height, Math.max(_attr_pref.height, _oper_pref.height)));
+    int combined_height = _clss_pref.height + _attr_pref.height + _oper_pref.height;
 
-    _clss.setBounds(leftSide, topSide, widthP, (heightP/3));
-    _attr.setBounds(leftSide, topSide + (heightP/3), widthP, (heightP/3));
-    _oper.setBounds(leftSide, topSide + (heightP/3) * 2, widthP, (heightP/3));
+    widthP = Math.max(widthP, Math.max(_clss_pref.width, Math.max(_attr_pref.width, _oper_pref.width)));
+    heightP = Math.max(heightP, combined_height);
+    
+    int leftover_height = heightP - combined_height;
+
+    Rectangle _clss_rect = new Rectangle(leftSide, topSide, widthP, _clss_pref.height + leftover_height/3);
+    Rectangle _attr_rect = new Rectangle(leftSide, topSide + _clss_rect.height, widthP, _attr_pref.height + leftover_height/3);
+    Rectangle _oper_rect = new Rectangle(leftSide, topSide + _clss_rect.height + _attr_rect.height, widthP, _oper_pref.height + leftover_height/3);
+
+    _clss.setBounds(_clss_rect);
+    _attr.setBounds(_attr_rect);
+    _oper.setBounds(_oper_rect);
     _bigPort.setBounds(leftSide, topSide, widthP, heightP);
 
     calcBounds(); //_x = x; _y = y; _w = w; _h = h;
