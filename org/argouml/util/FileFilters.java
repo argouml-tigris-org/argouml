@@ -107,6 +107,12 @@ public class FileFilters {
         SuffixFilter("gif", "GIF image");
 
     /**
+     * Filter for portable network graphics (png) files.
+     */
+    public static final SuffixFilter PNG_FILTER = new
+        SuffixFilter("png", "PNG image");
+
+    /**
      * This writes a Postscript file.
      */
     public static final SuffixFilter PS_FILTER = new

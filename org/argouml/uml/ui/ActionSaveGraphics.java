@@ -47,6 +47,7 @@ import org.argouml.util.SuffixFilter;
 import org.tigris.gef.base.CmdSaveEPS;
 import org.tigris.gef.base.CmdSaveGIF;
 import org.tigris.gef.base.CmdSaveGraphics;
+import org.tigris.gef.base.CmdSavePNG;
 import org.tigris.gef.base.CmdSavePS;
 import org.tigris.gef.base.CmdSaveSVG;
 import org.tigris.gef.base.Diagram;
@@ -132,15 +133,16 @@ public class ActionSaveGraphics
 	    // Only specified format are allowed.
 	    chooser.removeChoosableFileFilter(chooser.
 					      getAcceptAllFileFilter());
+	    chooser.addChoosableFileFilter(FileFilters.PNG_FILTER);
 	    chooser.addChoosableFileFilter(FileFilters.GIF_FILTER);
 	    chooser.addChoosableFileFilter(FileFilters.PS_FILTER);
 	    chooser.addChoosableFileFilter(FileFilters.EPS_FILTER);
 	    chooser.addChoosableFileFilter(FileFilters.SVG_FILTER);
 	    // concerning the following lines: is .GIF preferred?
-	    chooser.setFileFilter(FileFilters.GIF_FILTER);
-	    File def = new File(defaultName + "."
-				+ FileFilters.GIF_FILTER.getSuffix());
-	    chooser.setSelectedFile(def);
+	    chooser.setFileFilter(FileFilters.PNG_FILTER);
+	    String fileName = defaultName + "."
+		+ FileFilters.PNG_FILTER.getSuffix();
+	    chooser.setSelectedFile(new File(fileName));
 
 	    int retval = chooser.showSaveDialog(pb);
 	    if (retval == 0) {
@@ -157,6 +159,7 @@ public class ActionSaveGraphics
 			|| !(suffix.equals(FileFilters.PS_FILTER.getSuffix())
 			|| suffix.equals(FileFilters.EPS_FILTER.getSuffix())
 			|| suffix.equals(FileFilters.GIF_FILTER.getSuffix())
+			|| suffix.equals(FileFilters.PNG_FILTER.getSuffix())
 			|| suffix.equals(FileFilters.SVG_FILTER
 			                                     .getSuffix()))) {
 			// add the selected filter suffix
@@ -203,6 +206,8 @@ public class ActionSaveGraphics
 	    cmd = new CmdSavePS();
 	} else if (FileFilters.EPS_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new ActionSaveGraphicsCmdSaveEPS();
+	} else if (FileFilters.PNG_FILTER.getSuffix().equals(suffix)) {
+	    cmd = new CmdSavePNG();
 	} else if (FileFilters.GIF_FILTER.getSuffix().equals(suffix)) {
 	    cmd = new CmdSaveGIF();
 	} else if (FileFilters.SVG_FILTER.getSuffix().equals(suffix)) {
