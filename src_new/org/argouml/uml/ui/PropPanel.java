@@ -665,11 +665,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         if (target instanceof MBase) {
             MModelElement newTarget = ((MModelElement) target).getModelElementContainer();
             MBase base = (MBase) target;
-            ProjectBrowser.TheInstance.setTarget(base);
+            ProjectBrowser.getInstance().setTarget(base);
             ActionEvent event = new ActionEvent(this, 1, "delete");
             ActionRemoveFromModel.SINGLETON.actionPerformed(event);
             if (newTarget != null) {
-                ProjectBrowser.TheInstance.setTarget(newTarget);
+                ProjectBrowser.getInstance().setTarget(newTarget);
             }
         }
     }

@@ -127,7 +127,7 @@ public class TabSpawnable
      */
   public TabSpawnable spawn() {
 
-    JDialog  f = new JDialog(ProjectBrowser.TheInstance);    
+    JDialog  f = new JDialog(ProjectBrowser.getInstance());    
     f.getContentPane().setLayout(new BorderLayout());
     f.setTitle(Argo.localize(BUNDLE, _title));
     TabSpawnable newPanel = (TabSpawnable) clone();

@@ -214,9 +214,9 @@ public class FigMessage extends FigNodeModelElement {
        String s = ft.getText();
        try {
 	  ParserDisplay.SINGLETON.parseMessage(mes, s);
-	  ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+	  ProjectBrowser.getInstance().getStatusBar().showStatus("");
        } catch (ParseException pe) {
-	  ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+	  ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
        }
     }
     else

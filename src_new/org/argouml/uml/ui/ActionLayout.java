@@ -23,17 +23,17 @@
 
 package org.argouml.uml.ui;
 
-import org.tigris.gef.base.*;
-import org.tigris.gef.presentation.*;
-import org.tigris.gef.graph.*;
-
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.ui.UMLDiagram;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.diagram.static_structure.layout.*;
-
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
 import java.util.Vector;
+
+import org.argouml.kernel.ProjectManager;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.tigris.gef.base.Editor;
+import org.tigris.gef.base.Globals;
+import org.tigris.gef.base.SelectionManager;
+import org.tigris.gef.presentation.Fig;
 
 public class ActionLayout extends UMLAction {
 
@@ -42,15 +42,13 @@ public class ActionLayout extends UMLAction {
 
     protected String _tabName;
 
-
     ////////////////////////////////////////////////////////////////
     // constructors
 
     public ActionLayout(String tabName) {
-	super(tabName, NO_ICON);
-	_tabName = tabName;
+        super(tabName, NO_ICON);
+        _tabName = tabName;
     }
-
 
     ////////////////////////////////////////////////////////////////
     // main methods
@@ -62,31 +60,47 @@ public class ActionLayout extends UMLAction {
      * @see org.argouml.ui.ProjectBrowser
      */
     public boolean shouldBeEnabled() {
-	return (super.shouldBeEnabled() 
-		&& (ProjectBrowser.TheInstance.getActiveDiagram() instanceof UMLClassDiagram)
-        && "action.layout-automatic".equals(_tabName));
+        return (
+            super.shouldBeEnabled()
+                && (ProjectManager
+                    .getManager()
+                    .getCurrentProject()
+                    .getActiveDiagram()
+                    instanceof UMLClassDiagram)
+                && "action.layout-automatic".equals(_tabName));
     }
 
     /** This action performs the layout and triggers a redraw
      * of the editor pane.
      */
     public void actionPerformed(ActionEvent ae) {
-	ClassdiagramLayouter layouter = 
-	    new ClassdiagramLayouter((UMLDiagram)ProjectBrowser.
-				     TheInstance.getActiveDiagram());
+        ClassdiagramLayouter layouter =
+            new ClassdiagramLayouter(
+                (UMLDiagram) ProjectManager
+                    .getManager()
+                    .getCurrentProject()
+                    .getActiveDiagram());
 
-	Editor ce = Globals.curEditor();
-	SelectionManager sm = ce.getSelectionManager();         
+        Editor ce = Globals.curEditor();
+        SelectionManager sm = ce.getSelectionManager();
 
         // Get all the figures from the diagram.
-        Vector nodes = ((UMLClassDiagram)ProjectBrowser.TheInstance.getActiveDiagram()).getLayer().getContents();
-        for(int i=0; i < nodes.size(); i++) {
-	    sm.select((Fig)(nodes.elementAt(i)));  // Select all the figures in the diagram.
-        }      
+        Vector nodes =
+            ((UMLClassDiagram) ProjectManager
+                .getManager()
+                .getCurrentProject()
+                .getActiveDiagram())
+                .getLayer()
+                .getContents();
+        for (int i = 0; i < nodes.size(); i++) {
+            sm.select((Fig) (nodes.elementAt(i)));
+            // Select all the figures in the diagram.
+        }
 
-	sm.startTrans();    // Notify the selection manager that selected figures will be moved now.
-	layouter.layout();  // Compute a new layout.
-	sm.endTrans();      // Finish the transition.
-	sm.deselectAll();   // Deselect all figures.
+        sm.startTrans();
+        // Notify the selection manager that selected figures will be moved now.
+        layouter.layout(); // Compute a new layout.
+        sm.endTrans(); // Finish the transition.
+        sm.deselectAll(); // Deselect all figures.
     }
 } /* end class ActionLayout */

@@ -139,9 +139,9 @@ public class ConfigLoader {
 					System.out.println(e.toString());
 				}
 				if (res != null) {
-                                        if (ProjectBrowser.TheInstance.getSplashScreen() != null) {
-					   ProjectBrowser.TheInstance.getSplashScreen().getStatusBar().showStatus("Making Project Browser: " + tabName);
-					   ProjectBrowser.TheInstance.getSplashScreen().getStatusBar().incProgress(2);
+                                        if (ProjectBrowser.getInstance().getSplashScreen() != null) {
+					   ProjectBrowser.getInstance().getSplashScreen().getStatusBar().showStatus("Making Project Browser: " + tabName);
+					   ProjectBrowser.getInstance().getSplashScreen().getStatusBar().incProgress(2);
                                         }
 					return res;
 				}

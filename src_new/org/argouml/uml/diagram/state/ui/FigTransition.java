@@ -34,8 +34,8 @@ import java.beans.PropertyVetoException;
 
 import org.apache.log4j.Category;
 import org.argouml.application.api.Notation;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.behavioralelements.statemachines.StateMachinesHelper;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigEdgeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 import org.tigris.gef.base.Layer;
@@ -80,7 +80,7 @@ public class FigTransition extends FigEdgeModelElement {
   }
 
   public FigTransition(Object edge) {
-    this(edge, ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
+    this(edge, ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
   }
 
   ////////////////////////////////////////////////////////////////

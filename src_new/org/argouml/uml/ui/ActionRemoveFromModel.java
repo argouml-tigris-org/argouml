@@ -93,7 +93,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
         } catch (Exception e) {
         }
         if (size > 0) return true;
-        Object target = ProjectBrowser.TheInstance.getTarget();                
+        Object target = ProjectBrowser.getInstance().getTarget();                
         if (target instanceof Diagram) { // we cannot delete the last diagram
             return ProjectManager.getManager().getCurrentProject().getDiagrams().size() > 1;
         }
@@ -131,9 +131,9 @@ public class ActionRemoveFromModel extends UMLChangeAction {
                 if (target instanceof ArgoDiagram) {
                     newTarget = ProjectManager.getManager().getCurrentProject().getDiagrams().get(0);
                 }
-                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
                 if (newTarget != null) 
-                    ProjectBrowser.TheInstance.setTarget(newTarget);
+                    ProjectBrowser.getInstance().setTarget(newTarget);
                 
             } 
         }        
@@ -162,7 +162,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
     			 String confirmStr = MessageFormat.format(Argo.localize("Actions",
                                          "template.remove_from_model.confirm_delete"),
                                           new Object[] {diagram.getName(), ""});
-                 int response = JOptionPane.showConfirmDialog(ProjectBrowser.TheInstance, confirmStr,
+                 int response = JOptionPane.showConfirmDialog(ProjectBrowser.getInstance(), confirmStr,
                                             Argo.localize("Actions", 
                                             "text.remove_from_model.confirm_delete_title"),
                                             JOptionPane.YES_NO_OPTION);
@@ -188,7 +188,7 @@ public class ActionRemoveFromModel extends UMLChangeAction {
      * @return boolean
      */
     public static boolean sureRemove(MModelElement me) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
         
         int count = p.getPresentationCountFor(me);
@@ -235,6 +235,6 @@ public class ActionRemoveFromModel extends UMLChangeAction {
             figs = ce.getSelectionManager().getFigs();
         } catch (Exception e) {
         }
-        return figs.size() > 0 ? figs.toArray() : new Object[] {ProjectBrowser.TheInstance.getTarget()};        
+        return figs.size() > 0 ? figs.toArray() : new Object[] {ProjectBrowser.getInstance().getTarget()};        
     }
 } /* end class ActionRemoveFromModel */

@@ -132,7 +132,6 @@ public class ExtensionMechanismsHelper {
         String name = stereo.getName();
         String baseClass = stereo.getBaseClass();
         if (name == null || baseClass == null) return null;
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
         Iterator it2 = ProjectManager.getManager().getCurrentProject().getModels().iterator();
         while (it2.hasNext()) {
             MModel model = (MModel)it2.next();

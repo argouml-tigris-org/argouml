@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.cognitive.ItemUID;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.util.ChangeRegistry;
 import org.tigris.gef.base.Diagram;
 import org.tigris.gef.base.Editor;
@@ -130,7 +131,7 @@ public class ArgoDiagram extends Diagram {
 	 */
 	public void initialize(Object owner) {
 		super.initialize(owner);
-		ProjectBrowser.TheInstance.setActiveDiagram(this);
+		ProjectManager.getManager().getCurrentProject().setActiveDiagram(this);
 	}
     
     public void damage() {

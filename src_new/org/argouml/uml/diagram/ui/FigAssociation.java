@@ -35,8 +35,8 @@ import java.util.Vector;
 import javax.swing.JMenu;
 
 import org.argouml.application.api.Notation;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.UmlModelEventPump;
-import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionAggregation;
 import org.argouml.uml.ui.ActionMultiplicity;
 import org.argouml.uml.ui.ActionNavigability;
@@ -162,7 +162,7 @@ public class FigAssociation extends FigEdgeModelElement {
     
         setBetweenNearestPoints(true);
         // next line necessary for loading
-        setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
+        setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
     }
 
   public FigAssociation(Object edge, Layer lay) {

@@ -236,7 +236,7 @@ public class PropPanelGeneralization extends PropPanelModelElement {
                         // 2002-07-15
             			// Jaap Branderhorst
             			// Force an update of the navigation pane to solve issue 323
-            			ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+            			ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
                     }
                     catch(Exception e) {
                         cat.error(e.toString() + " in PropPanelGeneralization.newElement", e);

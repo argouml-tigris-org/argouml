@@ -1,4 +1,5 @@
-// Copyright (c) 1996-01 The Regents of the University of California. All
+// $Id$
+// Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -20,40 +21,34 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
+package org.argouml.ui.targetmanager;
 
-package org.argouml.uml.ui;
+import java.util.EventListener;
 
-import org.argouml.ui.*;
-import java.awt.event.*;
-
-/** Action to select the properties tab.
- * @stereotype singleton
+/**
+ * @author gebruiker
+ *
+ * To change the template for this generated type comment go to
+ * Window>Preferences>Java>Code Generation>Code and Comments
  */
-public class ActionProperties extends UMLAction {
+public interface TargetListener extends EventListener {
+    
+    /**
+     * Fired when a total new set of targets is set
+     * @param e The targetevent, name will be TARGET_SET
+     */
+    public void targetSet(TargetEvent e);
+    
+    /**
+     * Fired when a target is removed from the list of targets
+     * @param e The targetevent, name will be TARGET_REMOVED
+     */
+    public void targetRemoved(TargetEvent e);
+    
+    /**
+     * Fired when a target is added to the list of targets.
+     * @param e The targetevent, name will be TARGET_ADDED
+     */
+    public void targetAdded(TargetEvent e);
 
-    ////////////////////////////////////////////////////////////////
-    // static variables
-
-    public static ActionProperties SINGLETON = new ActionProperties(); 
-
-
-    ////////////////////////////////////////////////////////////////
-    // constructors
-
-    protected ActionProperties() { super("action.properties", NO_ICON); }
-
-
-    ////////////////////////////////////////////////////////////////
-    // main methods
-
-    public void actionPerformed(ActionEvent ae) {
-	ProjectBrowser pb = ProjectBrowser.getInstance();
-	if (pb == null) return;
-	pb.selectTabNamed("action.properties");
-    }
-
-    public boolean shouldBeEnabled() { 
-	return true; 
-    }
-} /* end class ActionProperties */
-
+}

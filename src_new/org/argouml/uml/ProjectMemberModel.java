@@ -110,8 +110,7 @@ public class ProjectMemberModel extends ProjectMember {
 
     XMIWriter xmiwriter = null;
 
-    try {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
+    try {    
 
       xmiwriter = new XMIWriter(_model,writer);
       xmiwriter.gen();

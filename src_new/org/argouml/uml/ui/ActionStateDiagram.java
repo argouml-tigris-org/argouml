@@ -78,7 +78,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
      */
     public boolean shouldBeEnabled() {
         return StateMachinesHelper.getHelper().isAddingStatemachineAllowed(
-            ProjectBrowser.TheInstance.getTarget());
+            ProjectBrowser.getInstance().getTarget());
     }
 
     /**
@@ -92,7 +92,7 @@ public class ActionStateDiagram extends ActionAddDiagram {
                 "The argument " + handle + "is not a namespace.");
         }
         MNamespace ns = (MNamespace)handle;
-        Object target = ProjectBrowser.TheInstance.getTarget();
+        Object target = ProjectBrowser.getInstance().getTarget();
         // TODO: get rid of the parameter ns
         MStateMachine machine =
             StateMachinesFactory.getFactory().buildStateMachine(

@@ -109,7 +109,7 @@ public class PropPanelAttribute extends PropPanelStructuralFeature {
 	}	
 
 	public void newAttribute() {
-        ProjectBrowser.TheInstance.setTarget(UmlFactory.getFactory().getCore().buildAttribute(getTarget()));
+        ProjectBrowser.getInstance().setTarget(UmlFactory.getFactory().getCore().buildAttribute(getTarget()));
 	}
 
 } /* end class PropPanelAttribute */

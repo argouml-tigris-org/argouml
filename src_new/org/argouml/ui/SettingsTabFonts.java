@@ -23,20 +23,19 @@
 
 package org.argouml.ui;
 
+import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+
 import org.argouml.application.ArgoVersion;
-import org.argouml.application.api.*;
-import org.argouml.application.helpers.*;
-import org.argouml.kernel.*;
-import org.argouml.uml.ui.UMLAction;
-
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-
-import javax.swing.*;
-import java.util.*;
-
-import org.tigris.gef.util.*;
+import org.argouml.application.api.SettingsTabPanel;
+import org.argouml.application.helpers.SettingsTabHelper;
 
 /* This is copied from SettingsTabPreferences */
 /** Action object for handling Argo settings
@@ -88,7 +87,7 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
 	fieldConstraints.gridy = 0;
 
 	_bg = new ButtonGroup();
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 
 	checkConstraints.gridy = 0;
 	_normal = createRadioButton(_bg, "label.fonts.normal",
@@ -114,7 +113,7 @@ public class SettingsTabFonts extends SettingsTabHelper implements SettingsTabPa
     }
 
     public void handleSettingsTabSave() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	if (_normal.isSelected()) {
 	    LookAndFeelMgr.SINGLETON.setCurrentTheme("normal");
 	}

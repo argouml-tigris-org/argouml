@@ -23,15 +23,20 @@
 
 package org.argouml.uml.ui;
 
-import org.argouml.ui.*;
-import org.argouml.uml.diagram.static_structure.ui.*;
-import org.argouml.uml.generator.ui.*;
-import org.argouml.model.ModelFacade;
+import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
+
+import javax.swing.tree.TreePath;
+
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.tree.TreePath;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.diagram.static_structure.ui.UMLClassDiagram;
+import org.argouml.uml.generator.ui.ClassGenerationDialog;
 
 import ru.novosoft.uml.foundation.core.MClass;
 import ru.novosoft.uml.foundation.core.MInterface;
@@ -59,8 +64,8 @@ public class ActionGenerateAll extends UMLAction {
     // main methods
 
     public void actionPerformed(ActionEvent ae) {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      ProjectBrowser pb = ProjectBrowser.getInstance();
+      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
       if (!(activeDiagram instanceof UMLClassDiagram)) return;
 
       UMLClassDiagram d = (UMLClassDiagram) activeDiagram;
@@ -92,8 +97,8 @@ public class ActionGenerateAll extends UMLAction {
     }
 
     public boolean shouldBeEnabled() {
-      ProjectBrowser pb = ProjectBrowser.TheInstance;
-      ArgoDiagram activeDiagram = pb.getActiveDiagram();
+      ProjectBrowser pb = ProjectBrowser.getInstance();
+      ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();;
       return super.shouldBeEnabled() && (activeDiagram instanceof UMLClassDiagram);
     }
     

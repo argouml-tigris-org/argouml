@@ -112,7 +112,7 @@ public class PropPanelActor extends PropPanelClassifier {
      */
 
     public void newActor() {
-        ProjectBrowser.TheInstance.setTarget(UseCasesFactory.getFactory().buildActor(getTarget()));
+        ProjectBrowser.getInstance().setTarget(UseCasesFactory.getFactory().buildActor(getTarget()));
     }
 
    

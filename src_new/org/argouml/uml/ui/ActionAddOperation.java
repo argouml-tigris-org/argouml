@@ -60,7 +60,7 @@ public class ActionAddOperation extends UMLChangeAction {
 
     public void actionPerformed(ActionEvent ae) {
    
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Project p = ProjectManager.getManager().getCurrentProject();
 	Object target = pb.getDetailsTarget();
 	if (!(target instanceof MClassifier)) return;
@@ -79,7 +79,7 @@ public class ActionAddOperation extends UMLChangeAction {
     }
 
     public boolean shouldBeEnabled() {
-	ProjectBrowser pb = ProjectBrowser.TheInstance;
+	ProjectBrowser pb = ProjectBrowser.getInstance();
 	Object target = pb.getDetailsTarget();
 	return super.shouldBeEnabled() && target instanceof MClassifier && !(target instanceof MSignal);
     }

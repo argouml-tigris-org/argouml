@@ -15,7 +15,6 @@ import org.argouml.ui.ProjectBrowser;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MFeature;
-import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  * @author Jaap
@@ -54,7 +53,7 @@ public class UMLAttributesClassifierRoleListModel
 	    	choices.removeAll(role.getAvailableContentses());
 	    	selected.addAll(role.getAvailableContentses());
 	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-available-contents"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		Iterator it = dialog.getSelected().iterator();
 	    		while (it.hasNext()) {

@@ -63,7 +63,7 @@ public class ActionStoreModelToDB extends UMLAction {
 	DBWriter writer = new DBWriter();
 
 	if (writer.hasConnection()) {
-	    ProjectBrowser pb = ProjectBrowser.TheInstance;
+	    ProjectBrowser pb = ProjectBrowser.getInstance();
 	    Project p =  ProjectManager.getManager().getCurrentProject();
 
 	    MNamespace nm = p.getCurrentNamespace();

@@ -444,9 +444,9 @@ public class FigClassifierRole extends FigNodeModelElement {
             String s = ft.getText();
 	    try {
 		ParserDisplay.SINGLETON.parseClassifierRole(cls, s);
-		ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+		ProjectBrowser.getInstance().getStatusBar().showStatus("");
 	    } catch (ParseException pe) {
-		ProjectBrowser.TheInstance.getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
+		ProjectBrowser.getInstance().getStatusBar().showStatus("Error: " + pe + " at " + pe.getErrorOffset());
 	    }
         }
     }

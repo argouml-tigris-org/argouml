@@ -25,26 +25,42 @@
 
 package org.argouml.uml.reveng;
 
-import org.argouml.kernel.*;
-import org.argouml.uml.reveng.java.*;
-import org.argouml.uml.diagram.ui.*;
-import org.argouml.uml.diagram.static_structure.layout.*;
-import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
-import org.tigris.gef.base.*;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionListener;
+import java.awt.BorderLayout;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import java.util.*;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Hashtable;
+import java.util.ListIterator;
+import java.util.Vector;
 
-import org.argouml.ui.*;
-import org.argouml.application.api.*;
-import org.argouml.util.logging.*;
-import org.argouml.cognitive.Designer;
-import org.argouml.util.FileFilters;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingUtilities;
 
 import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.application.api.PluggableImport;
+import org.argouml.cognitive.Designer;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.ui.StatusBar;
+import org.argouml.uml.diagram.static_structure.ClassDiagramGraphModel;
+import org.argouml.uml.diagram.static_structure.layout.ClassdiagramLayouter;
+import org.argouml.uml.diagram.ui.UMLDiagram;
+import org.argouml.util.logging.SimpleTimer;
+import org.tigris.gef.base.Globals;
 
 /**
  * This is the main class for all import classes.
@@ -83,7 +99,7 @@ public class Import {
     private static Category cat = Category.getInstance(org.argouml.uml.reveng.Import.class);
 
 	public static final String separator = "/"; //System.getProperty("file.separator");
-	private ProjectBrowser pb = ProjectBrowser.TheInstance;
+	private ProjectBrowser pb = ProjectBrowser.getInstance();
 	private Project p = ProjectManager.getManager().getCurrentProject();
 	private JDialog dialog;
 	private PluggableImport module; // current language module

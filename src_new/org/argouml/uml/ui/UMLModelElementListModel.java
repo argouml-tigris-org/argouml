@@ -45,16 +45,20 @@
 
 package org.argouml.uml.ui;
 
-import ru.novosoft.uml.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-import java.util.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
-import org.argouml.application.api.*;
+import javax.swing.AbstractListModel;
+import javax.swing.JPopupMenu;
+
+import org.argouml.application.api.NotationContext;
+import org.argouml.application.api.NotationName;
 import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -573,13 +577,13 @@ abstract public class UMLModelElementListModel extends AbstractListModel impleme
      */
      public void delete(int index) {
         MModelElement modElem = getModelElementAt(index);
-        Object target = ProjectBrowser.TheInstance.getTarget();
-        ProjectBrowser.TheInstance.setTarget(modElem);
+        Object target = ProjectBrowser.getInstance().getTarget();
+        ProjectBrowser.getInstance().setTarget(modElem);
         ActionEvent event = new ActionEvent(this, 1, "delete");
         ActionRemoveFromModel.SINGLETON.actionPerformed(event);
         fireIntervalRemoved(this,index,index);
         if (!target.equals(modElem)) {
-        	ProjectBrowser.TheInstance.setTarget(target);
+        	ProjectBrowser.getInstance().setTarget(target);
         }
     }
 }

@@ -23,18 +23,29 @@
 
 package org.argouml.ui;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.FlowLayout;
+import java.awt.Frame;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Vector;
 
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.model_management.*;
+import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.tree.TreeModel;
 
 import org.apache.log4j.Category;
-import org.tigris.gef.util.*;
+import org.tigris.gef.util.Converter;
 
 /**
  * The "Configure Perspectives" dialog.
@@ -415,8 +426,8 @@ implements ActionListener, ChangeListener, ListSelectionListener, MouseListener 
   }
 
   public void doOk() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
+    ProjectBrowser pb = ProjectBrowser.getInstance();
+    NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
     //np.setPerspectives(NavPerspective.getRegisteredPerspectives());
     np.updateTree();
     setVisible(false);

@@ -949,7 +949,7 @@ public class FigUseCase extends FigNodeModelElement {
         // If we didn't get the EP compartment, we just select ourself.
 
         if (!targetIsSet) {
-            ProjectBrowser.TheInstance.setTarget(getOwner());
+            ProjectBrowser.getInstance().setTarget(getOwner());
         }
     }
 

@@ -32,8 +32,8 @@ package org.argouml.uml.diagram.ui;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.foundation.core.CoreFactory;
-import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.ArrowHeadTriangle;
@@ -75,7 +75,7 @@ public class FigGeneralization extends FigEdgeModelElement {
     setBetweenNearestPoints(true);
     
     if (getLayer() == null) {
-	   	setLayer(ProjectBrowser.TheInstance.getActiveDiagram().getLayer());
+	   	setLayer(ProjectManager.getManager().getCurrentProject().getActiveDiagram().getLayer());
     }
     
   }

@@ -29,31 +29,26 @@
 // 3 May 2002: Jeremy Bennett (mail@jeremybennett.com). Extended to mark the
 // project as needing saving if a text field is changed.
 package org.argouml.uml.ui;
-import java.text.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyVetoException;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.tigris.gef.presentation.Fig;
-import org.tigris.gef.presentation.FigEdge;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
-import javax.swing.event.*;
-import javax.swing.text.BadLocationException;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyVetoException;
-import java.lang.reflect.*;
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*; //--pjs-- added for event.
-import ru.novosoft.uml.behavior.use_cases.*;
-import ru.novosoft.uml.behavior.state_machines.*;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.ui.ProjectBrowser;
+import org.tigris.gef.presentation.Fig;
+
+import ru.novosoft.uml.MElementEvent;
+import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  *  This class handles the updating of text as it is typed into the text field on one
  *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
@@ -406,7 +401,7 @@ public class UMLTextField
         String message = ex.getMessage();
         // cant show the messagebox in this container
         JOptionPane.showMessageDialog(
-            ProjectBrowser.TheInstance,
+            ProjectBrowser.getInstance(),
             message,
             "error",
             JOptionPane.ERROR_MESSAGE);

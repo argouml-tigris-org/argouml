@@ -22,16 +22,17 @@
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.argouml.uml.ui;
-import ru.novosoft.uml.*;
-import javax.swing.*;
-import ru.novosoft.uml.foundation.core.*;
-import java.util.*;
-import java.awt.*;
-import java.lang.reflect.*;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
+import java.util.Iterator;
+
+import javax.swing.JPopupMenu;
 
 import org.apache.log4j.Category;
-import org.argouml.ui.NavigatorPane;
 import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 /**
  *  This class is an implements a list model using reflection.
@@ -232,7 +233,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(),_noArgs);
                 Collection newCollection = moveUpUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(),new Object[] { newCollection });
-                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveUp()", ex);
@@ -249,7 +250,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
                 Collection oldCollection = (Collection) _getMethod.invoke(getContainer(),_noArgs);
                 Collection newCollection = moveDownUtil(oldCollection,index);
                 _setMethod.invoke(getContainer(), new Object[] { newCollection });
-                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.moveDown() ", ex.getTargetException());
@@ -265,7 +266,7 @@ public class UMLReflectionListModel extends UMLModelElementListModel   {
         if(_deleteMethod != null) {
             try {
                 _deleteMethod.invoke(getContainer(),new Object[] { new Integer(index) });
-                ProjectBrowser.TheInstance.getNavigatorPane().forceUpdate();
+                ProjectBrowser.getInstance().getNavigatorPane().forceUpdate();
             }
 	    catch(InvocationTargetException ex) {
                 cat.error(ex.getTargetException().toString() + " is InvocationTargetException in UMLReflectionListModel.delete()", ex);

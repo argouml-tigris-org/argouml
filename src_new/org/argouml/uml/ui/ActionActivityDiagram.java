@@ -52,7 +52,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.ActionAddDiagram#createDiagram(MNamespace, Object)
      */
     public UMLDiagram createDiagram(MNamespace ns) {
-        Object target = ProjectBrowser.TheInstance.getTarget();
+        Object target = ProjectBrowser.getInstance().getTarget();
         MActivityGraph graph = ActivityGraphsFactory.getFactory().buildActivityGraph((MModelElement)target);
         if (target instanceof MBehavioralFeature) {
             ns = ((MBehavioralFeature)target).getNamespace();
@@ -65,7 +65,7 @@ public class ActionActivityDiagram extends ActionStateDiagram {
      * @see org.argouml.uml.ui.UMLAction#shouldBeEnabled()
      */
     public boolean shouldBeEnabled() {
-        return super.shouldBeEnabled() || ProjectBrowser.TheInstance.getTarget() instanceof MPackage;
+        return super.shouldBeEnabled() || ProjectBrowser.getInstance().getTarget() instanceof MPackage;
     }
 
 } /* end class ActionActivityDiagram */

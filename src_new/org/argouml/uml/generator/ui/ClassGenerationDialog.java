@@ -23,26 +23,43 @@
 
 package org.argouml.uml.generator.ui;
 
-import java.io.*;
-import java.util.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 import java.util.StringTokenizer;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.util.Vector;
 
-import org.tigris.gef.util.*;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
-import org.argouml.kernel.*;
-import org.argouml.ui.*;
-import org.argouml.util.osdep.*;
-import org.argouml.language.java.generator.*;
 import org.apache.log4j.Category;
-import org.argouml.application.api.*;
-import org.argouml.application.notation.*;
-import org.argouml.uml.generator.*;
+import org.argouml.application.api.Notation;
+import org.argouml.application.api.NotationName;
+import org.argouml.application.notation.NotationProviderFactory;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
+import org.argouml.ui.ProjectBrowser;
+import org.argouml.uml.generator.FileGenerator;
+import org.argouml.uml.generator.Generator;
+import org.argouml.util.osdep.OsUtil;
+import org.tigris.gef.util.Converter;
 
 public class ClassGenerationDialog extends JDialog implements ActionListener {
     protected static Category cat = Category.getInstance(ClassGenerationDialog.class);
@@ -79,7 +96,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
   }
 
   public ClassGenerationDialog(Vector nodes, boolean isPathInModel) {
-    super(ProjectBrowser.TheInstance, "Generate Classes");
+    super(ProjectBrowser.getInstance(), "Generate Classes");
     this.isPathInModel = isPathInModel;
 
     GridBagConstraints gridBagConstraints;
@@ -195,7 +212,7 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     pack();
 
     // Center Dialog on Screen -- todo: this should be a support function
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Rectangle pbBox = pb.getBounds();
     setLocation(pbBox.x + (pbBox.width - this.getWidth())/2,
     		pbBox.y + (pbBox.height - this.getHeight())/2);

@@ -26,10 +26,8 @@ package org.argouml.uml.ui;
 import java.awt.event.ActionEvent;
 
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.i18n.Translator;
 import org.argouml.ui.ProjectBrowser;
 
-import ru.novosoft.uml.model_management.MPackage;
 import ru.novosoft.uml.foundation.core.MNamespace;
 
 /** 
@@ -61,7 +59,7 @@ public class ActionAddPackage  extends UMLAction {
      */
     public void actionPerformed(ActionEvent e) {
         
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         MNamespace namespace = (MNamespace)pb.getNavigatorPane().getSelectedObject();
         namespace.addOwnedElement(
             UmlFactory.getFactory().getModelManagement().createPackage());

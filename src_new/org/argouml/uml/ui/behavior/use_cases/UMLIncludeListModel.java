@@ -45,17 +45,22 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
-import java.util.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.Vector;
 
-import javax.swing.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPopupMenu;
 
-import ru.novosoft.uml.*;
-import ru.novosoft.uml.foundation.core.*;
-import ru.novosoft.uml.behavior.use_cases.*;
-
-import org.argouml.ui.*;
+import org.apache.log4j.Category;
+import org.argouml.application.api.Argo;
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
+import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+import org.argouml.ui.ArgoDiagram;
+import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.ui.ActionRemoveFromModel;
 import org.argouml.uml.ui.UMLAddDialog;
 import org.argouml.uml.ui.UMLListMenuItem;
@@ -64,11 +69,10 @@ import org.argouml.uml.ui.UMLUserInterfaceContainer;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.graph.MutableGraphModel;
 import org.tigris.gef.presentation.Fig;
-import org.apache.log4j.Category;
-import org.argouml.application.api.Argo;
-import org.argouml.kernel.*;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesFactory;
-import org.argouml.model.uml.behavioralelements.usecases.UseCasesHelper;
+
+import ru.novosoft.uml.behavior.use_cases.MInclude;
+import ru.novosoft.uml.behavior.use_cases.MUseCase;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
 
 /**
@@ -265,14 +269,14 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    	choices.remove(usecase);
 	    	selected.addAll(UseCasesHelper.getHelper().getIncludedUseCases(usecase));
 	    	UMLAddDialog dialog = new UMLAddDialog(choices, selected, Argo.localize("UMLMenu", "dialog.title.add-included-usecases"), true, true);
-	    	int returnValue = dialog.showDialog(ProjectBrowser.TheInstance);
+	    	int returnValue = dialog.showDialog(ProjectBrowser.getInstance());
 	    	if (returnValue == JOptionPane.OK_OPTION) {
 	    		Iterator it = dialog.getSelected().iterator();
 	    		while (it.hasNext()) {
 	    			MUseCase includedusecase = (MUseCase)it.next();
 	    			if (!selected.contains(includedusecase)) {
-	    				ProjectBrowser pb = ProjectBrowser.TheInstance;
-	    				ArgoDiagram diagram = pb.getActiveDiagram();
+	    				ProjectBrowser pb = ProjectBrowser.getInstance();
+	    				ArgoDiagram diagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
 	    				Fig figclass = diagram.getLayer().presentationFor(usecase);
 	    				Fig figeusecase = diagram.getLayer().presentationFor(includedusecase);
 	    				if (figclass != null && figeusecase != null) {
@@ -290,11 +294,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
 	    			MUseCase includedusecase = (MUseCase)it.next();
 	    			if (!dialog.getSelected().contains(includedusecase)) {
 	    				MInclude include = UseCasesHelper.getHelper().getIncludes(usecase, includedusecase);
-			    		Object pt = ProjectBrowser.TheInstance.getTarget();
-			    		ProjectBrowser.TheInstance.setTarget(include);
+			    		Object pt = ProjectBrowser.getInstance().getTarget();
+			    		ProjectBrowser.getInstance().setTarget(include);
 			    		ActionEvent event = new ActionEvent(this, 1, "delete");
 			    		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-			    		ProjectBrowser.TheInstance.setTarget(pt);
+			    		ProjectBrowser.getInstance().setTarget(pt);
 	    			}
 	    		}
 	    	}
@@ -332,11 +336,11 @@ public class UMLIncludeListModel extends UMLModelElementListModel  {
     		MUseCase usecase = (MUseCase)target;
     		MUseCase includedusecase = (MUseCase)UMLModelElementListModel.elementAtUtil(UseCasesHelper.getHelper().getIncludedUseCases(usecase), index, null);
     		MInclude include = UseCasesHelper.getHelper().getIncludes(includedusecase, usecase);
-    		Object pt = ProjectBrowser.TheInstance.getTarget();
-    		ProjectBrowser.TheInstance.setTarget(include);
+    		Object pt = ProjectBrowser.getInstance().getTarget();
+    		ProjectBrowser.getInstance().setTarget(include);
     		ActionEvent event = new ActionEvent(this, 1, "delete");
     		ActionRemoveFromModel.SINGLETON.actionPerformed(event);
-    		ProjectBrowser.TheInstance.setTarget(pt);
+    		ProjectBrowser.getInstance().setTarget(pt);
     		fireIntervalRemoved(this,index,index);
     	}
     	/*

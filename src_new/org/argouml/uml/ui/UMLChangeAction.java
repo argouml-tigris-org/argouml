@@ -23,6 +23,8 @@
 
 package org.argouml.uml.ui;
 
+import org.argouml.kernel.Project;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.*;
 import java.awt.event.*;
 
@@ -36,8 +38,12 @@ public class UMLChangeAction extends UMLAction {
   }
 
   public void actionPerformed(ActionEvent e) {
-    markNeedsSave();
-    Actions.updateAllEnabled();
+      Project p = ProjectManager.getManager().getCurrentProject();
+      if (p != null) {      
+        markNeedsSave();
+        Actions.updateAllEnabled();
+      }
+    
   }
 
 } /* end class UMLChangeAction */

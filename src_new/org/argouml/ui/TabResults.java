@@ -23,25 +23,30 @@
 
 package org.argouml.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.util.Vector;
+
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSplitPane;
+import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.plaf.metal.MetalLookAndFeel;
-import javax.swing.border.*;
-
-import ru.novosoft.uml.foundation.core.*;
-
-import org.tigris.gef.base.Diagram;
-import org.tigris.gef.graph.GraphModel;
-import org.tigris.gef.util.*;
-import org.tigris.gef.util.*;
 
 import org.apache.log4j.Category;
-import org.argouml.uml.*;
-import org.argouml.uml.cognitive.*;
+import org.argouml.uml.PredicateFind;
+import org.argouml.uml.TMResults;
+import org.argouml.uml.cognitive.ChildGenRelated;
+import org.tigris.gef.base.Diagram;
+import org.tigris.gef.util.ChildGenerator;
 
 public class TabResults extends TabSpawnable
 implements Runnable, MouseListener, ActionListener, ListSelectionListener {
@@ -178,7 +183,7 @@ implements Runnable, MouseListener, ActionListener, ListSelectionListener {
     }
 
     if (d != null) cat.debug("go " + sel + " in " + d.getName());
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     if (d != null) pb.setTarget(d);
     pb.setTarget(sel);
   }

@@ -92,7 +92,7 @@ public abstract class PropPanelEvent extends PropPanelModelElement {
      * Adds a parameter to the event and navigates towards it.
      */
     public void buttonAddParameter() {
-        ProjectBrowser.TheInstance.setTarget(CoreFactory.getFactory().buildParameter(getTarget()));
+        ProjectBrowser.getInstance().setTarget(CoreFactory.getFactory().buildParameter(getTarget()));
     }
 
 } /* end class PropPanelEvent */

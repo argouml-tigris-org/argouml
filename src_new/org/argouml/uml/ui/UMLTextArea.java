@@ -44,19 +44,17 @@
 
 package org.argouml.uml.ui;
 
-import java.text.*;
-
-import javax.swing.event.*;
-
-import javax.swing.*;
-import org.argouml.ui.ProjectBrowser;
-
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.beans.PropertyVetoException;
-import java.lang.reflect.*;
 
-import ru.novosoft.uml.*;
+import javax.swing.JOptionPane;
+import javax.swing.JTextArea;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
+import org.argouml.ui.ProjectBrowser;
+
+import ru.novosoft.uml.MElementEvent;
 
 public class UMLTextArea
     extends JTextArea
@@ -195,7 +193,7 @@ public class UMLTextArea
             String message = ex.getMessage();
             // cant show the messagebox in this container
             JOptionPane.showMessageDialog(
-                ProjectBrowser.TheInstance,
+                ProjectBrowser.getInstance(),
                 message,
                 "error",
                 JOptionPane.ERROR_MESSAGE);

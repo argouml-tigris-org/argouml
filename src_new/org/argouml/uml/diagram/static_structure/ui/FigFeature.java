@@ -81,11 +81,11 @@ public class FigFeature extends CompartmentFigText {
                         if (figs[i].equals(_content)) {
                             if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                                 if (i < figs.length - 1) {
-                                    ProjectBrowser.TheInstance.setTarget(
+                                    ProjectBrowser.getInstance().setTarget(
                                         figs[i + 1]);
                                 }
                             } else if (i > 1) {
-                                ProjectBrowser.TheInstance.setTarget(
+                                ProjectBrowser.getInstance().setTarget(
                                     figs[i - 1]);
 
                             }

@@ -119,7 +119,7 @@ class ActionPrint extends UMLAction {
   public ActionPrint() { super("action.print"); }
 
   public void actionPerformed(ActionEvent ae) {
-    Object target = ProjectBrowser.TheInstance.getActiveDiagram();
+    Object target = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     if (target instanceof Diagram) {
       String n = ((Diagram)target).getName();
       cmd.setDiagramName(n);
@@ -162,14 +162,14 @@ class ActionRedo extends UMLAction {
 class ActionFind extends UMLAction {
   public ActionFind() { super("action.find"); }
   public void actionPerformed(ActionEvent ae) {
-    FindDialog.SINGLETON.setVisible(true);
+    FindDialog.getInstance().setVisible(true);
   }
 } /* end class ActionFind */
 
 class ActionGotoDiagram extends UMLAction {
   public ActionGotoDiagram() { super("action.goto-diagram", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Project p = ProjectManager.getManager().getCurrentProject();
     //TODO: class TearOffHostFrame and TearOffManager.
     //idea: pop-up on tab that lists docking locations, new window.
@@ -190,10 +190,10 @@ class ActionGotoDiagram extends UMLAction {
 class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("action.navigate-back"); }
   public boolean shouldBeEnabled() {
-    if (ProjectBrowser.TheInstance != null) {
+    if (ProjectBrowser.getInstance() != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
+        NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
 	if ((np == null)) return false;
 	boolean b = np.canNavBack();
         return b;
@@ -202,7 +202,7 @@ class ActionNavBack extends UMLAction {
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
+    NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
     np.navBack();
   }
 } /* end class ActionNavBack */
@@ -210,16 +210,16 @@ class ActionNavBack extends UMLAction {
 class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("action.navigate-forward"); }
   public boolean shouldBeEnabled() {
-    if (ProjectBrowser.TheInstance != null) {
+    if (ProjectBrowser.getInstance() != null) {
         Project p = ProjectManager.getManager().getCurrentProject();
         if (!(super.shouldBeEnabled() && p != null)) return false;
-        NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
+        NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
         return np.canNavForw();
     } else
         return false;
   }
   public void actionPerformed(ActionEvent ae) {
-    NavigatorPane np = ProjectBrowser.TheInstance.getNavigatorPane();
+    NavigatorPane np = ProjectBrowser.getInstance().getNavigatorPane();
     np.navForw();
   }
 } /* end class ActionNavForw */
@@ -235,7 +235,7 @@ class ActionNavForw extends UMLAction {
 class ActionNavConfig extends UMLAction {
   public ActionNavConfig() { super("action.nav-config"); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     NavigatorPane nav = pb.getNavigatorPane();
     NavigatorConfigDialog ncd = new NavigatorConfigDialog(pb,nav);
     ncd.setVisible(true);
@@ -245,7 +245,7 @@ class ActionNavConfig extends UMLAction {
 class ActionNextEditTab extends UMLAction {
   public ActionNextEditTab() { super("action.next-editing-tab", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     MultiEditorPane mep = pb.getEditorPane();
     mep.selectNextTab();
   }
@@ -326,7 +326,7 @@ class ActionAutoCritique extends UMLAction {
 class ActionOpenDecisions extends UMLAction {
   public ActionOpenDecisions() { super("action.design-issues", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.TheInstance);
+    DesignIssuesDialog d = new DesignIssuesDialog(ProjectBrowser.getInstance());
     d.show();
   }
 } /* end class ActionOpenDecisions */
@@ -334,7 +334,7 @@ class ActionOpenDecisions extends UMLAction {
 class ActionOpenGoals extends UMLAction {
   public ActionOpenGoals() { super("action.design-goals", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    GoalsDialog d = new GoalsDialog(ProjectBrowser.TheInstance);
+    GoalsDialog d = new GoalsDialog(ProjectBrowser.getInstance());
     d.show();
   }
 } /* end class ActionOpenGoals */
@@ -352,7 +352,7 @@ class ActionOpenCritics extends UMLAction {
 class ActionFlatToDo extends UMLAction {
   public ActionFlatToDo() { super("action.toggle-flat-view", NO_ICON); }
   public void actionPerformed(ActionEvent ae) {
-    ProjectBrowser.TheInstance.getTodoPane().toggleFlat();
+    ProjectBrowser.getInstance().getTodoPane().toggleFlat();
   }
 } /* end class ActionFlatToDo */
 

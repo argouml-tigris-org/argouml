@@ -95,7 +95,7 @@ implements ActionListener, ListSelectionListener, ItemListener, DocumentListener
   // constructors
 
   public CriticBrowserDialog() {
-    super(ProjectBrowser.TheInstance, "Critics");
+    super(ProjectBrowser.getInstance(), "Critics");
 
     Container mainContent = getContentPane();
 //     GridBagLayout gb = new GridBagLayout();

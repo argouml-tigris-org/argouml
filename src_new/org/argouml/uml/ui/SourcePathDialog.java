@@ -23,22 +23,35 @@
 
 package org.argouml.uml.ui;
 
-import java.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.table.*;
+import java.awt.Dimension;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
+import java.util.Iterator;
 
-//import org.argouml.kernel.Project;
-//import org.argouml.kernel.ProjectManager;
+import javax.swing.JButton;
+import javax.swing.JDialog;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+
 import org.argouml.application.api.Argo;
+import org.argouml.kernel.ProjectManager;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.generator.Generator;
 
-import ru.novosoft.uml.model_management.*;
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MClass;
+import ru.novosoft.uml.foundation.core.MInterface;
+import ru.novosoft.uml.foundation.core.MModelElement;
+import ru.novosoft.uml.foundation.core.MNamespace;
+import ru.novosoft.uml.model_management.MModel;
+import ru.novosoft.uml.model_management.MPackage;
 
 public class SourcePathDialog extends JDialog implements ActionListener {
 
@@ -55,7 +68,7 @@ public class SourcePathDialog extends JDialog implements ActionListener {
   // constructors
 
   public SourcePathDialog() {
-    super(ProjectBrowser.TheInstance, Argo.localize("CoreMenu", "action.generate-code-for-project"));
+    super(ProjectBrowser.getInstance(), Argo.localize("CoreMenu", "action.generate-code-for-project"));
 
     GridBagConstraints gridBagConstraints;
 
@@ -104,7 +117,7 @@ public class SourcePathDialog extends JDialog implements ActionListener {
     pack();
 
     // Center Dialog on Screen -- todo: this should be a support function
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
+    ProjectBrowser pb = ProjectBrowser.getInstance();
     Rectangle pbBox = pb.getBounds();
     setLocation(pbBox.x + (pbBox.width - this.getWidth())/2,
     		pbBox.y + (pbBox.height - this.getHeight())/2);
@@ -157,8 +170,8 @@ class SrcPathTableModel extends DefaultTableModel {
     );
     // The following lines should be substituted by the following 2 commented lines.
     // (This is because getting the project still does not seem to work...)
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    org.argouml.ui.ArgoDiagram activeDiagram = pb.getActiveDiagram();
+    ProjectBrowser pb = ProjectBrowser.getInstance();
+    org.argouml.ui.ArgoDiagram activeDiagram = ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     if (!(activeDiagram instanceof org.argouml.uml.diagram.ui.UMLDiagram)) return;
     ru.novosoft.uml.foundation.core.MNamespace ns = ((org.argouml.uml.diagram.ui.UMLDiagram)activeDiagram).getNamespace();
     if (ns == null) return;

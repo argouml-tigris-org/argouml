@@ -80,7 +80,7 @@ public class ActionOpenProject extends UMLAction {
      * @param e an event
      */
     public void actionPerformed(ActionEvent e) {
-        ProjectBrowser pb = ProjectBrowser.TheInstance;
+        ProjectBrowser pb = ProjectBrowser.getInstance();
         Project p = ProjectManager.getManager().getCurrentProject();
 
         if (p != null && p.needsSave()) {
@@ -187,7 +187,7 @@ public class ActionOpenProject extends UMLAction {
         try {
             p = ProjectManager.getManager().loadProject(url);
 
-            ProjectBrowser.TheInstance.showStatus(
+            ProjectBrowser.getInstance().showStatus(
                 MessageFormat.format(
                     Argo.localize(
                         "Actions",
@@ -265,7 +265,7 @@ public class ActionOpenProject extends UMLAction {
      */
     private void showErrorPane(String message) {
         JOptionPane.showMessageDialog(
-            ProjectBrowser.TheInstance,
+            ProjectBrowser.getInstance(),
             message,
             "Error",
             JOptionPane.ERROR_MESSAGE);

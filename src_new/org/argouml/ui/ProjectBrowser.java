@@ -89,8 +89,16 @@ extends I18NJFrame
 
     ////////////////////////////////////////////////////////////////
     // class variables
-
-    public static ProjectBrowser TheInstance = new ProjectBrowser();
+    
+    /**
+     * ArgoUML will not support this method of invocation of the projectbrowser
+     * very soon.
+     * @deprecated 
+     */
+    public static ProjectBrowser TheInstance;
+    
+    private static String _Title ="ArgoUML";
+    private static boolean _Splash = false;
 
     // ----- diagrams
 
@@ -129,11 +137,6 @@ extends I18NJFrame
     private NavigationHistory _history = new NavigationHistory();
 
     /**
-     * The diagram which the user is currently working on.
-     */
-    private ArgoDiagram _activeDiagram;
-
-    /**
      * The splash screen shown at startup
      */
     private SplashScreen _splash;
@@ -166,11 +169,11 @@ extends I18NJFrame
      * For testing purposes. In tests this constructor can be called so
      * TheInstance is filled.
      */
-    public ProjectBrowser() {
+    private ProjectBrowser() {
         this("ArgoUML", false);
     }
 
-    public ProjectBrowser(String appName, boolean doSplash) {
+    private ProjectBrowser(String appName, boolean doSplash) {
         super(appName);
         TheInstance = this;
         if (doSplash) {
@@ -432,7 +435,7 @@ extends I18NJFrame
             }
 
             if (o instanceof ArgoDiagram) {
-                setActiveDiagram((ArgoDiagram)o);
+                ProjectManager.getManager().getCurrentProject().setActiveDiagram((ArgoDiagram)o);
                 if (o instanceof UMLDiagram) {
                     MNamespace m = ((UMLDiagram)o).getNamespace();
                     if (m != null)
@@ -461,17 +464,18 @@ extends I18NJFrame
      * which the classes were imported.
      * It should also default the model name as well.
      *{@link #setTarget}.
+     * @deprecated use Project.setActiveDiagram instead
      */
     public void setActiveDiagram(ArgoDiagram ad) {
-        _activeDiagram = ad;
-        cat.debug("Active diagram set to " + ad.getName());
+        ProjectManager.getManager().getCurrentProject().setActiveDiagram(ad);      
     }
 
     /**
      * Return the diagram, the user is currently working on.
+     * @deprecated use Project.getActiveDiagram instead 
      */
     public ArgoDiagram getActiveDiagram() {
-        return _activeDiagram;
+        return ProjectManager.getManager().getCurrentProject().getActiveDiagram();
     }
 
     /**
@@ -806,4 +810,21 @@ extends I18NJFrame
         }
         _splash = splash;
     }
+    
+    /**
+     * Singleton retrieval method for the projectbrowser. Lazely instantiates
+     * the projectbrowser. 
+     * @return the singleton instance of the projectbrowser
+     */
+    public synchronized static ProjectBrowser getInstance() {
+        if (TheInstance == null) {
+            TheInstance = new ProjectBrowser("ArgoUML", _Splash);            
+        }
+        return TheInstance;
+    }
+    
+    public synchronized static void setSplash(boolean splash) {
+        _Splash = splash;
+    }
+       
 } /* end class ProjectBrowser */

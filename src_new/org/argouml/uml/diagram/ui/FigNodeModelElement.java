@@ -43,7 +43,6 @@ import java.beans.PropertyChangeListener;
 import java.beans.PropertyVetoException;
 import java.beans.VetoableChangeListener;
 import java.text.ParseException;
-import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -504,10 +503,10 @@ public abstract class FigNodeModelElement
                 ParserDisplay.SINGLETON.parseModelElement(
                     me,
                     ft.getText().trim());
-                ProjectBrowser.TheInstance.getStatusBar().showStatus("");
+                ProjectBrowser.getInstance().getStatusBar().showStatus("");
                 updateNameText();
             } catch (ParseException pe) {
-                ProjectBrowser.TheInstance.getStatusBar().showStatus(
+                ProjectBrowser.getInstance().getStatusBar().showStatus(
                     "Error: " + pe + " at " + pe.getErrorOffset());
             }
             //me.setName(ft.getText());
