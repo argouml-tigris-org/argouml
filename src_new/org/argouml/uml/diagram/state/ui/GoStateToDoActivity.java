@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -29,11 +28,9 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 import java.util.Vector;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.state_machines.MState;
-
 
 /**
  * Go rule to navigate from a state to it's doactivity. Used in the package
@@ -48,12 +45,12 @@ public class GoStateToDoActivity extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (org.argouml.model.ModelFacade.isAState(parent)
-	    && ((MState) parent).getDoActivity() != null)
+        if (ModelFacade.isAState(parent)
+	    && ModelFacade.getDoActivity(parent) != null)
 	{
             Vector children = new Vector();
             
-            children.add(((MState) parent).getDoActivity());
+            children.add(ModelFacade.getDoActivity(parent));
             return children;
         }
         return null;

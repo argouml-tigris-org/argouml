@@ -1,5 +1,3 @@
-
-
 // $Id$
 // Copyright (c) 2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -26,12 +24,10 @@
 
 package org.argouml.uml.ui.behavior.use_cases;
 
+import org.argouml.model.ModelFacade;
 import org.argouml.uml.ui.UMLModelElementListModel2;
 
 import ru.novosoft.uml.MBase;
-import ru.novosoft.uml.behavior.use_cases.MExtend;
-
-
 /**
  * @since Oct 6, 2002
  * @author jaap.branderhorst@xs4all.nl
@@ -51,7 +47,7 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#buildModelList()
      */
     protected void buildModelList() {
-        setAllElements(((MExtend) getTarget()).getExtensionPoints());
+        setAllElements(ModelFacade.getExtensionPoints(getTarget()));
     }
 
    
@@ -60,7 +56,7 @@ public class UMLExtendExtensionPointListModel
      * @see org.argouml.uml.ui.UMLModelElementListModel2#isValidElement(MBase)
      */
     protected boolean isValidElement(MBase o) {
-        return org.argouml.model.ModelFacade.isAExtensionPoint(o) && ((MExtend) getTarget()).getExtensionPoints().contains(o);
+        return ModelFacade.isAExtensionPoint(o) && ModelFacade.getExtensionPoints(getTarget()).contains(o);
     }
 
 }

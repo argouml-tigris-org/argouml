@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -27,10 +26,9 @@ package org.argouml.uml.diagram.state.ui;
 
 import java.util.Collection;
 import java.util.Vector;
+import org.argouml.model.ModelFacade;
 
 import org.argouml.ui.AbstractGoRule;
-
-import ru.novosoft.uml.behavior.state_machines.MState;
 
 /**
  * 
@@ -43,9 +41,9 @@ public class GoStateToEntry extends AbstractGoRule {
      * @see org.argouml.ui.AbstractGoRule#getChildren(java.lang.Object)
      */
     public Collection getChildren(Object parent) {
-        if (org.argouml.model.ModelFacade.isAState(parent) && ((MState) parent).getEntry() != null) {
+        if (ModelFacade.isAState(parent) && ModelFacade.getEntry(parent) != null) {
             Vector children = new Vector();
-            children.add(((MState) parent).getEntry());
+            children.add(ModelFacade.getEntry(parent));
             return children;
         }
         return null;

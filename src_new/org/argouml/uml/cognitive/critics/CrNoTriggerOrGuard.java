@@ -1,4 +1,3 @@
-
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -37,7 +36,6 @@ import org.argouml.cognitive.critics.Critic;
 import org.argouml.model.ModelFacade;
 import ru.novosoft.uml.behavior.state_machines.MEvent;
 import ru.novosoft.uml.behavior.state_machines.MGuard;
-import ru.novosoft.uml.behavior.state_machines.MState;
 import ru.novosoft.uml.behavior.state_machines.MStateVertex;
 import ru.novosoft.uml.behavior.state_machines.MTransition;
 
@@ -60,7 +58,7 @@ public class CrNoTriggerOrGuard extends CrUML {
 	MGuard g = tr.getGuard();
 	MStateVertex sv = tr.getSource();
 	if (!(ModelFacade.isAState(sv))) return NO_PROBLEM;
-	if (((MState) sv).getDoActivity() != null) return NO_PROBLEM;
+	if (ModelFacade.getDoActivity(sv) != null) return NO_PROBLEM;
 	boolean hasTrigger =
 	    (t != null && t.getName() != null && t.getName().length() > 0);
 	if (hasTrigger) return NO_PROBLEM;
