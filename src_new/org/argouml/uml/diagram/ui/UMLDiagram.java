@@ -80,14 +80,14 @@ public abstract class UMLDiagram
     /**
      * Tool to add a comment node.
      */
-    protected static Action _actionComment =
+    protected static Action actionComment =
 	new RadioAction(new CmdCreateNode(ModelFacade.COMMENT, "Note"));
 
     /**
      * Tool to create an relationship between a comment node and some other node
      * using a polyedge.<p>
      */
-    protected static Action _actionCommentLink = new RadioAction(
+    protected static Action actionCommentLink = new RadioAction(
         new CmdSetMode(
             ModeCreatePolyEdge.class,  
             "edgeClass",
@@ -95,41 +95,41 @@ public abstract class UMLDiagram
             "CommentLink"));
 
 
-    protected static Action _actionSelect =
+    private static Action actionSelect =
         new CmdSetMode(ModeSelect.class, "Select");
 
-    protected static Action _actionBroom =
+    private static Action actionBroom =
         new CmdSetMode(ModeBroom.class, "Broom");
 
-    protected static Action _actionRectangle =
+    private static Action actionRectangle =
         new RadioAction(new CmdSetMode(ModeCreateFigRect.class, "Rectangle",
         Translator.localize("misc.primitive.rectangle")));
 
-    protected static Action _actionRRectangle =
+    private static Action actionRRectangle =
         new RadioAction(new CmdSetMode(ModeCreateFigRRect.class, "RRect",
         Translator.localize("misc.primitive.rounded-rectangle")));
 
-    protected static Action _actionCircle =
+    private static Action actionCircle =
         new RadioAction(new CmdSetMode(ModeCreateFigCircle.class, "Circle",
         Translator.localize("misc.primitive.circle")));
 
-    protected static Action _actionLine =
+    private static Action actionLine =
         new RadioAction(new CmdSetMode(ModeCreateFigLine.class, "Line",
         Translator.localize("misc.primitive.line")));
 
-    protected static Action _actionText =
+    private static Action actionText =
         new RadioAction(new CmdSetMode(ModeCreateFigText.class, "Text",
         Translator.localize("misc.primitive.text")));
 
-    protected static Action _actionPoly =
+    private static Action actionPoly =
         new RadioAction(new CmdSetMode(ModeCreateFigPoly.class, "Polygon",
         Translator.localize("misc.primitive.polygon")));
 
-    protected static Action _actionSpline =
+    private static Action actionSpline =
         new RadioAction(new CmdSetMode(ModeCreateFigSpline.class, "Spline",
         Translator.localize("misc.primitive.spline")));
 
-    protected static Action _actionInk =
+    private static Action actionInk =
         new RadioAction(new CmdSetMode(ModeCreateFigInk.class, "Ink",
         Translator.localize("misc.primitive.ink")));
 
@@ -287,14 +287,16 @@ public abstract class UMLDiagram
 
         int posn = 0;
         System.arraycopy(
-            manipulateActions,
-            0,
-            actions,
-            posn,
-            manipulateActions.length);
+            manipulateActions,           // source
+            0,                           // source position
+            actions,                     // destination
+            posn,                        // destination position
+            manipulateActions.length);   // number of objects to be copied
         posn += manipulateActions.length;
+        
         System.arraycopy(umlActions, 0, actions, posn, umlActions.length);
         posn += umlActions.length;
+        
         System.arraycopy(shapeActions, 0, actions, posn, shapeActions.length);
 
         return actions;
@@ -310,8 +312,8 @@ public abstract class UMLDiagram
     private Object[] getManipulateActions() {
         Object actions[] =
         {
-	    new RadioAction(_actionSelect),
-	    new RadioAction(_actionBroom),
+	    new RadioAction(actionSelect),
+	    new RadioAction(actionBroom),
 	    null
 	};
         return actions;
@@ -327,12 +329,12 @@ public abstract class UMLDiagram
     private Object[] getShapePopupActions() {
         Object actions[][] = {
 	    {
-		_actionRectangle, _actionRRectangle
+		actionRectangle, actionRRectangle
 	    },
 	    {
-                _actionCircle, _actionLine }, {
-                _actionText, _actionPoly }, {
-                _actionSpline, _actionInk }
+                actionCircle, actionLine }, {
+                actionText, actionPoly }, {
+                actionSpline, actionInk }
         };
 
         return actions;

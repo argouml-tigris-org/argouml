@@ -50,65 +50,65 @@ public class UMLClassDiagram extends UMLDiagram {
 
     ////////////////
     // actions for toolbar
-
-    protected Action _actionClass = new RadioAction(
+ 
+    private Action actionClass = new RadioAction(
         new CmdCreateNode(ModelFacade.CLASS, "Class"));
 
-    protected Action _actionObject = new RadioAction(
+    private Action actionObject = new RadioAction(
         new CmdCreateNode(ModelFacade.INSTANCE, "Instance"));
 
-    protected Action _actionInterface = new RadioAction(
+    private Action actionInterface = new RadioAction(
         new CmdCreateNode(ModelFacade.INTERFACE, "Interface"));
 
-    protected Action _actionDepend = new RadioAction(
+    private Action actionDepend = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.DEPENDENCY, "Dependency"));
 
-    protected Action _actionPermission = new RadioAction(
+    private Action actionPermission = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass", 
                     ModelFacade.PERMISSION, "Permission"));
 
-    protected Action _actionUsage = new RadioAction(
+    private Action actionUsage = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.USAGE, "Usage"));
 
-    protected Action _actionLink = new RadioAction(
+    private Action actionLink = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.LINK, "Link"));
 
-    protected Action _actionGeneralize = new RadioAction(
+    private Action actionGeneralize = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.GENERALIZATION, "Generalization"));
 
-    protected Action _actionRealize = new RadioAction(
+    private Action actionRealize = new RadioAction(
         new CmdSetMode(ModeCreatePolyEdge.class, "edgeClass",
                     ModelFacade.ABSTRACTION, "Realization"));
 
-    protected Action _actionPackage = new RadioAction(
+    private Action actionPackage = new RadioAction(
         new CmdCreateNode(ModelFacade.PACKAGE, "Package"));
 
-    protected Action _actionModel = new RadioAction(
+    private Action actionModel = new RadioAction(
         new CmdCreateNode(ModelFacade.MODEL, "Model"));
 
-    protected Action _actionSubsystem = new RadioAction(
+    private Action actionSubsystem = new RadioAction(
         new CmdCreateNode(ModelFacade.SUBSYSTEM, "Subsystem"));
 
-    protected Action _actionAssociation = new RadioAction(
+    private Action actionAssociation = new RadioAction(
         new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND,
                     false, "Association"));
-    protected Action _actionAggregation = new RadioAction(
+    private Action actionAggregation = new RadioAction(
         new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND,
                     false, "Aggregation"));
-    protected Action _actionComposition = new RadioAction(
+    private Action actionComposition = new RadioAction(
         new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
                     false, "Composition"));
-    protected Action _actionUniAssociation = new RadioAction(
+    private Action actionUniAssociation = new RadioAction(
         new ActionAddAssociation(ModelFacade.NONE_AGGREGATIONKIND, 
                     true, "UniAssociation"));
-    protected Action _actionUniAggregation = new RadioAction(
+    private Action actionUniAggregation = new RadioAction(
         new ActionAddAssociation(ModelFacade.AGGREGATE_AGGREGATIONKIND, 
                     true, "UniAggregation"));
-    protected Action _actionUniComposition = new RadioAction(
+    private Action actionUniComposition = new RadioAction(
         new ActionAddAssociation(ModelFacade.COMPOSITE_AGGREGATIONKIND, 
                     true, "UniComposition"));
 
@@ -169,19 +169,19 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     protected Object[] getUmlActions() {
         Object actions[] = {
-            _actionPackage,
-            _actionClass,
+            actionPackage,
+            actionClass,
             getAssociationActions(),
-            _actionDepend,
-            _actionPermission,
-            _actionUsage,
-            _actionGeneralize, null,
-            _actionInterface,
-            _actionRealize, null,
+            actionDepend,
+            actionPermission,
+            actionUsage,
+            actionGeneralize, null,
+            actionInterface,
+            actionRealize, null,
             ActionAddAttribute.getSingleton(),
             ActionAddOperation.getSingleton(), null,
-            _actionComment,
-            _actionCommentLink
+            actionComment,
+            actionCommentLink
         };
 
         return actions;
@@ -198,7 +198,7 @@ public class UMLClassDiagram extends UMLDiagram {
         */
         /* subsystem. model disabled */
         Object actions[] = {
-            _actionPackage 
+            actionPackage 
         };
        
         return actions;
@@ -210,9 +210,9 @@ public class UMLClassDiagram extends UMLDiagram {
      */
     private Object[] getAssociationActions() {
         Object actions[][] = {
-            {_actionAssociation, _actionUniAssociation},
-            {_actionAggregation, _actionUniAggregation},
-            {_actionComposition, _actionUniComposition}
+            {actionAssociation, actionUniAssociation},
+            {actionAggregation, actionUniAggregation},
+            {actionComposition, actionUniComposition}
         };
 
         return actions;
