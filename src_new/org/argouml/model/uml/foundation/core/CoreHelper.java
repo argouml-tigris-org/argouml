@@ -28,6 +28,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
+
 import org.apache.log4j.Category;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
@@ -35,6 +36,7 @@ import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
 import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
+
 import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.behavior.collaborations.MAssociationRole;
 import ru.novosoft.uml.behavior.collaborations.MClassifierRole;
@@ -45,7 +47,6 @@ import ru.novosoft.uml.behavior.use_cases.MExtend;
 import ru.novosoft.uml.behavior.use_cases.MInclude;
 import ru.novosoft.uml.behavior.use_cases.MUseCase;
 import ru.novosoft.uml.foundation.core.MAbstraction;
-import ru.novosoft.uml.foundation.core.MAbstractionImpl;
 import ru.novosoft.uml.foundation.core.MAssociation;
 import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
@@ -930,7 +931,7 @@ public class CoreHelper {
      * sources, only the first is returned. If there is no source, null is
      * returned. Examples of sources include classifiers that are types to
      * associationends, usecases that are bases to extend and include relations
-     * and so on.
+     * and so on. A source is allways the start from the arrow in the fig, the destination the end.
      * @param relation
      * @return MModelElement
      */
@@ -944,11 +945,11 @@ public class CoreHelper {
         }
         if (relation instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization)relation;
-            return gen.getParent();
+            return gen.getChild();
         }
         if (relation instanceof MDependency) {
             MDependency dep = (MDependency)relation;
-            Collection col = dep.getSuppliers();
+            Collection col = dep.getClients();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
@@ -966,7 +967,7 @@ public class CoreHelper {
         }
         if (relation instanceof MInclude) {
             MInclude include = (MInclude)relation;
-            return include.getBase();
+            return include.getAddition();
         }
         return null;
     }
@@ -991,11 +992,11 @@ public class CoreHelper {
         }
         if (relation instanceof MGeneralization) {
             MGeneralization gen = (MGeneralization)relation;
-            return gen.getChild();
+            return gen.getParent();
         }
         if (relation instanceof MDependency) {
             MDependency dep = (MDependency)relation;
-            Collection col = dep.getClients();
+            Collection col = dep.getSuppliers();
             if (col.isEmpty())
                 return null;
             return (MModelElement) (col.toArray())[0];
@@ -1013,7 +1014,7 @@ public class CoreHelper {
         }
         if (relation instanceof MInclude) {
             MInclude include = (MInclude)relation;
-            return include.getAddition();
+            return include.getBase();
         }
         return null;
     }
