@@ -43,9 +43,8 @@ public class ActionNewParameter extends AbstractActionNewModelElement {
 
     /**
      * The constructor.
-     * 
      */
-    protected ActionNewParameter() {
+    public ActionNewParameter() {
         super("button.new-parameter");
     }
 

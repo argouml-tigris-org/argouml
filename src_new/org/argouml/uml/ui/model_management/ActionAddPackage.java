@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 1996-99 The Regents of the University of California. All
+// Copyright (c) 2004 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -22,40 +22,45 @@
 // CALIFORNIA HAS NO OBLIGATIONS TO PROVIDE MAINTENANCE, SUPPORT,
 // UPDATES, ENHANCEMENTS, OR MODIFICATIONS.
 
-// File: PropPanelChangeEvent
-// Classes: PropPanelChangeEvent
-// Original Author: oliver.heyden@gentleware.de
+package org.argouml.uml.ui.model_management;
 
-package org.argouml.uml.ui.behavior.state_machines;
+import java.awt.event.ActionEvent;
 
-import org.argouml.uml.ui.ActionRemoveFromModel;
-import org.argouml.uml.ui.PropPanelButton2;
-import org.argouml.util.ConfigLoader;
+import javax.swing.Action;
+
+import org.argouml.i18n.Translator;
+import org.argouml.model.ModelFacade;
+import org.argouml.model.uml.UmlFactory;
+import org.argouml.ui.targetmanager.TargetManager;
+import org.argouml.uml.ui.AbstractActionNewModelElement;
+
 
 /**
- * The properties panel for a ChangeEvent.
- *
+ * Action to create a new Package inside a package.
+ * 
+ * @author Michiel
  */
-public class PropPanelChangeEvent extends PropPanelEvent {
+class ActionAddPackage extends AbstractActionNewModelElement {
 
     /**
      * The constructor.
-     * 
      */
-    public PropPanelChangeEvent() {
-        super("Change event", lookupIcon("ChangeEvent"), 
-              ConfigLoader.getTabPropsOrientation());
+    public ActionAddPackage() {
+        super("button.new-package");
+        putValue(Action.NAME, Translator.localize("button.new-package"));
     }
 
     /**
-     * @see org.argouml.uml.ui.behavior.state_machines.PropPanelEvent#initialize()
+     * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
      */
-    public void initialize() {
-        super.initialize();
-        
-        addButton(new PropPanelButton2(this, new ActionRemoveFromModel()));
+    public void actionPerformed(ActionEvent e) {
+        Object target = TargetManager.getInstance().getModelTarget();
+        if (ModelFacade.isAPackage(target)) {
+            Object newPackage =  UmlFactory.getFactory()
+                .getModelManagement().createPackage();
+            ModelFacade.addOwnedElement(target, newPackage);
+            TargetManager.getInstance().setTarget(newPackage);
+            super.actionPerformed(e);
+        }
     }
-
-} 
-
-
+}
