@@ -34,7 +34,6 @@ import javax.swing.KeyStroke;
 import org.apache.log4j.Logger;
 import org.argouml.application.helpers.ResourceLoaderWrapper;
 import org.argouml.i18n.Translator;
-import org.argouml.kernel.History;
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.ui.Actions;
@@ -79,18 +78,11 @@ public class UMLAction extends AbstractAction {
         setEnabled(shouldBeEnabled());
     }
 
-    /** Perform the work the action is supposed to do. */
+    /** Perform the work the action is supposed to do.*/
     public void actionPerformed(ActionEvent e) {
         cat.debug("pushed " + getValue(Action.NAME));
         StatusBar sb = ProjectBrowser.getInstance().getStatusBar();
         sb.doFakeProgress(stripJunk(getValue(Action.NAME).toString()), 100);
-		// TODO Replace deprecated History with TargetManager
-        History.TheHistory.addItemManipulation(
-					       "pushed " + getValue(Action.NAME),
-					       "",
-					       null,
-					       null,
-					       null);
         Actions.updateAllEnabled();
     }
 

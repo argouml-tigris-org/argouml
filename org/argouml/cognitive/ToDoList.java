@@ -35,10 +35,9 @@ import java.util.Observable;
 import java.util.Vector;
 import javax.swing.event.EventListenerList;
 import org.apache.log4j.Logger;
+
 import org.argouml.cognitive.critics.Critic;
 
-
-import org.argouml.kernel.History;
 import org.tigris.gef.util.VectorSet;
 
 /** Implements a list of ToDoItem's.
@@ -193,7 +192,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         for (int i = 0; i < size; ++i) {
             ToDoItem item = (ToDoItem) removes.elementAt(i);
             removeE(item);
-            History.TheHistory.addItemResolution(item, "no longer valid");
+//            History.TheHistory.addItemResolution(item, "no longer valid");
             //((ToDoItem)item).resolve("no longer valid");
             //notifyObservers("removeElement", item);
         }
@@ -317,10 +316,10 @@ public class ToDoList extends Observable implements Runnable, Serializable {
         _longestToDoList = Math.max(_longestToDoList, _items.size());
         addOffenders(item.getOffenders());
         addPosters(item.getPoster());
-        if (item.getPoster() instanceof Designer)
-            History.TheHistory.addItem(item, "note: ");
-        else
-            History.TheHistory.addItemCritique(item);
+//        if (item.getPoster() instanceof Designer)
+//            History.TheHistory.addItem(item, "note: ");
+//        else
+//            History.TheHistory.addItemCritique(item);
         notifyObservers("addElement", item);
         fireToDoItemAdded(item);
     }
@@ -381,7 +380,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
           
         if (item.getPoster() instanceof Designer) {
             boolean res = resolve(item);
-            History.TheHistory.addItemResolution(item, reason);
+//            History.TheHistory.addItemResolution(item, reason);
             return res;
         }
         
@@ -394,7 +393,7 @@ public class ToDoList extends Observable implements Runnable, Serializable {
 					       item.getOffenders());
         boolean res = resolve(item);
         _resolvedItems.addElement(rc);
-        History.TheHistory.addItemResolution(item, reason);
+//        History.TheHistory.addItemResolution(item, reason);
         return res;
     }
     
