@@ -88,7 +88,7 @@ public class UMLExpressionBodyField
     
     private void update() {
         String oldText = getText();
-        Object newText = ModelFacade.getBody(_model);
+        Object newText = _model.getBody();
 	cat.debug("UMLExpressionBodyField: update: " + oldText + " " + newText);
 
 	if (oldText == null || newText == null || !oldText.equals(newText)) {
