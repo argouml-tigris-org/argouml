@@ -239,4 +239,105 @@ public class UMLDeploymentDiagram extends UMLDiagram {
         }
         return name;
     }
+    
+    //////////////////////////////
+    // Getters for plugin modules:
+    //////////////////////////////
+    
+    /**
+     * @return Returns the actionAggregation.
+     */
+    protected static Action getActionAggregation() {
+        return actionAggregation;
+    }
+    /**
+     * @return Returns the actionAssociation.
+     */
+    protected static Action getActionAssociation() {
+        return actionAssociation;
+    }
+    /**
+     * @return Returns the actionComposition.
+     */
+    protected static Action getActionComposition() {
+        return actionComposition;
+    }
+    /**
+     * @return Returns the actionMAssociation.
+     */
+    protected static Action getActionMAssociation() {
+        return actionMAssociation;
+    }
+    /**
+     * @return Returns the actionMClass.
+     */
+    protected static Action getActionMClass() {
+        return actionMClass;
+    }
+    /**
+     * @return Returns the actionMComponent.
+     */
+    protected static Action getActionMComponent() {
+        return actionMComponent;
+    }
+    /**
+     * @return Returns the actionMComponentInstance.
+     */
+    protected static Action getActionMComponentInstance() {
+        return actionMComponentInstance;
+    }
+    /**
+     * @return Returns the actionMDependency.
+     */
+    protected static Action getActionMDependency() {
+        return actionMDependency;
+    }
+    /**
+     * @return Returns the actionMInterface.
+     */
+    protected static Action getActionMInterface() {
+        return actionMInterface;
+    }
+    /**
+     * @return Returns the actionMLink.
+     */
+    protected static Action getActionMLink() {
+        return actionMLink;
+    }
+    /**
+     * @return Returns the actionMNode.
+     */
+    protected static Action getActionMNode() {
+        return actionMNode;
+    }
+    /**
+     * @return Returns the actionMNodeInstance.
+     */
+    protected static Action getActionMNodeInstance() {
+        return actionMNodeInstance;
+    }
+    /**
+     * @return Returns the actionMObject.
+     */
+    protected static Action getActionMObject() {
+        return actionMObject;
+    }
+    /**
+     * @return Returns the actionUniAggregation.
+     */
+    protected static Action getActionUniAggregation() {
+        return actionUniAggregation;
+    }
+    /**
+     * @return Returns the actionUniAssociation.
+     */
+    protected static Action getActionUniAssociation() {
+        return actionUniAssociation;
+    }
+    /**
+     * @return Returns the actionUniComposition.
+     */
+    protected static Action getActionUniComposition() {
+        return actionUniComposition;
+    }
 } /* end class UMLDeploymentDiagram */
