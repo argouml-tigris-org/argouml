@@ -377,7 +377,6 @@ extends DisplayTextTree
                     
                     setSelection(targets);
                 }
-                repaint();
                 updatingSelection = false;
             }
         }
