@@ -50,7 +50,7 @@ public class PropPanelDependency extends PropPanelModelElement {
         addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),2,0,0);
 
         addCaption(Argo.localize("UMLMenu", "label.namespace"),3,0,1);
-        addField(namespaceScroll,3,0,0);
+        addField(namespaceComboBox,3,0,0);
 
         addCaption("Suppliers:",0,1,0.5);
         JList suppliersList = new UMLList(new UMLReflectionListModel(this,"supplier",true,"getSuppliers","setSuppliers",null,null),true);

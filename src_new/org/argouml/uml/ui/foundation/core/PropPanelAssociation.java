@@ -129,7 +129,7 @@ public class PropPanelAssociation extends PropPanelModelElement {
     addField(Argo.localize("UMLMenu", "label.name"), nameField);
     addField(Argo.localize("UMLMenu", "label.stereotype"), new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox));
     
-    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceScroll);
+    addField(Argo.localize("UMLMenu", "label.namespace"),namespaceComboBox);
 
     JPanel modifiersPanel = new JPanel(new GridLayout2(0,3,GridLayout2.ROWCOLPREFERRED));
     modifiersPanel.add(new UMLCheckBox(Argo.localize("UMLMenu", "checkbox.abstract-uc"),this,new UMLReflectionBooleanProperty("isAbstract",mclass,"isAbstract","setAbstract")));

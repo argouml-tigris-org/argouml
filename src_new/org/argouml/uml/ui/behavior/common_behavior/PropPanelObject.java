@@ -65,7 +65,7 @@ public class PropPanelObject extends PropPanelModelElement {
 	addField(new UMLComboBoxNavigator(this, Argo.localize("UMLMenu", "tooltip.nav-stereo"),stereotypeBox),3,0,0);
    
 	addCaption(Argo.localize("UMLMenu", "label.namespace"),4,0,1);
-	addLinkField(namespaceScroll,4,0,0);
+	addLinkField(namespaceComboBox,4,0,0);
 
 	addCaption("Stimuli sent:",1,1,0.25);
 	JList sentList = new UMLList(new UMLStimulusListModel(this,null,true,"sent"),true);
