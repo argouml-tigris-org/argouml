@@ -267,7 +267,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     ListIterator iterator = arraylist.listIterator();
     while (iterator.hasNext()) {
       PluggableMenu module = (PluggableMenu)iterator.next();
-	    menuitem.add(module.getMenuItem(menuitem, key));
+	    menuitem.add(module.getMenuItem(context));
 	    menuitem.setEnabled(true);
     }
   }
@@ -774,33 +774,41 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   public void moduleLoaded(ArgoModuleEvent event) {
   	if (event.getSource() instanceof PluggableMenu) {
 	    PluggableMenu module = (PluggableMenu)event.getSource();
-	    if (module.inContext(module.buildContext(_tools, "Tools"))) {
-		    _tools.add(module.getMenuItem(_tools, "Tools"));
+            Object[] context = new Object[] { _tools, "Tools" };
+	    if (module.inContext(context)) {
+		    _tools.add(module.getMenuItem(context));
 	      _tools.setEnabled(true);
 	    }
-	    if (module.inContext(module.buildContext(_import, "File:Import"))) {
-       _import.add(module.getMenuItem(_import, "File:Import"));
+            context = new Object[] { _import, "File:Import" };
+	    if (module.inContext(context)) {
+               _import.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_generate, "Generate"))) {
-        _generate.add(module.getMenuItem(_generate, "Generate"));
+            context = new Object[] { _generate, "Generate" };
+	    if (module.inContext(context)) {
+                _generate.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_edit, "Edit"))) {
-        _edit.add(module.getMenuItem(_edit, "Edit"));
+            context = new Object[] { _edit, "Edit" };
+	    if (module.inContext(context)) {
+                _edit.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_view, "View"))) {
-      	_view.add(module.getMenuItem(_view, "View"));
+            context = new Object[] { _view, "View" };
+	    if (module.inContext(context)) {
+      	        _view.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_createDiagrams, "Create Diagrams"))) {
-       	_createDiagrams.add(module.getMenuItem(_createDiagrams, "Create Diagrams"));
+            context = new Object[] { _createDiagrams, "Create Diagrams" };
+	    if (module.inContext(context)) {
+       	        _createDiagrams.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_arrange, "Arrange"))) {
-       	_arrange.add(module.getMenuItem(_arrange, "Arrange"));
+            context = new Object[] { _arrange, "Arrange" };
+	    if (module.inContext(context)) {
+       	        _arrange.add(module.getMenuItem(context));
 	    }
-	    if (module.inContext(module.buildContext(_help, "Help"))) {
+            context = new Object[] { _help, "Help" };
+	    if (module.inContext(context)) {
         if (_help.getItemCount() == 1) {
 		      _help.insertSeparator(0);
         }
-		    _help.insert(module.getMenuItem(_help, "Help"), 0);
+		    _help.insert(module.getMenuItem(context), 0);
 	    }
     }
 	}

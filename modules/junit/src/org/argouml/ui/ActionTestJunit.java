@@ -1,4 +1,4 @@
-// Copyright (c) 1996-2001 The Regents of the University of California. All
+// Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -154,6 +154,14 @@ implements PluggableMenu {
     public String getModuleKey() { return "module.menu.tools.junit"; }
 
     public JMenuItem getMenuItem(JMenuItem mi, String s) {
+        return getMenuItem(buildContext(mi, s));
+    }
+
+    public JMenuItem getMenuItem(Object [] context) {
+        if (! inContext(context)) {
+	    return null;
+	}
+
         if (_menuItem == null) {
             _menuItem = new JMenuItem(Argo.localize(Argo.MENU_BUNDLE,
 	                                            "Test Panel..."));
