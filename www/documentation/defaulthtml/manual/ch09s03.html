@@ -1,310 +1,191 @@
 <html><head>
       <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-   <title>9.3.&nbsp;The tool bar</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch09.html" title="Chapter&nbsp;9.&nbsp;The Editing Pane"><link rel="previous" href="ch09s02.html" title="9.2.&nbsp;Mouse Behavior in the Editing Pane"><link rel="next" href="ch09s04.html" title="9.4.&nbsp;Clarifiers"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.3.&nbsp;The tool bar</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;9.&nbsp;The Editing Pane</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="s1.ref.edit_pane_tool_bar"></a>9.3.&nbsp;The tool bar</h2></div></div><div></div></div><p>The toolbar at the top of the editing pane provides the main
-      functions of the pane. The default tool is the <tt class="literal">Select</tt>
-      tool (<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/select.gif" align="middle"></span></span>. In general button&nbsp;1 on any
-      tool click selects a tool for one use, before reverting to the default
-      tool, button&nbsp;1 double click selects a tool for repeat use until another
-      tool is selected.</p><p>The tools fall into four categories.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="emphasis"><em>Layout tools.</em></span> Provide assistance in
-        laying out artifacts on the diagram.</p></li><li><p><span class="emphasis"><em>Annotation tools.</em></span> Used to annotate
-        artifacts on the diagram.</p></li><li><p><span class="emphasis"><em>Drawing tools.</em></span> Used to add general
-graphic artifacts to diagrams.</p></li><li><p><span class="emphasis"><em>Diagram specific tools.</em></span> Used to add
-        UML artifacts specific to a particular diagram type to the
-        diagram.</p></li></ul></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.edit_layout"></a>9.3.1.&nbsp;Layout Tools</h3></div></div><div></div></div><p>Two tools are provided in all diagrams in this category.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/select.gif" align="middle"></span></span>
-          <tt class="literal">Select</tt>. This tool provides for general selection
-          of artifacts on the diagram. Button&nbsp;1 click will select an
-          artifact. SHIFT with button&nbsp;1 can be used to select (or deselect
-          multiple artifacts. Button&nbsp;1 motion will move selected 2D items or
-          add and move a new control point on a link. Button&nbsp;1 motion on a
-          selected component's control point will stretch that component's
-          shape.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/broom.gif" align="middle"></span></span>
-          <span class="emphasis"><em>Broom</em></span>. Button&nbsp;1 motion with this tool provide a
-          &#8220;<span class="quote">broom</span>&#8221; which will sweep all artifacts along. This is
-          very shortcut way of lining things up.</p><p>Broom can also be invoked by using CONTROL with button&nbsp;1 motion
-          when the <tt class="literal">Select</tt> tool is in use.</p></li></ul></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>Additional control of artifact layout is provided through the
-        <tt class="literal">Arrange</tt> menu (see
-        <a href="ch12s07.html" title="12.7.&nbsp;The Arrange Menu">Section&nbsp;12.7, &#8220;The Arrange Menu&#8221;</a>).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5757"></a>9.3.2.&nbsp;Annotation Tools</h3></div></div><div></div></div><p>Only one annotation tool is provide, <tt class="literal">Note</tt>
-        (<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/note.gif" align="middle"></span></span>). This is used to add a
-        note to a selected UML artifact.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike most other tools you use the
-        <tt class="literal">Select</tt> tool to select an artifact, and then
-        button&nbsp;1 click on <tt class="literal">Note</tt> to create the
-        note.</p></td></tr></table></div><p>The note is created alongside the selected artifact, with the
-        default contents <tt class="literal">New note</tt>. This text can be selected
-        with button&nbsp;1 and edited from the keyboard.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>The UML standard allows notes to be attached to any
-        artifact. However in the current version of ArgoUML there is only a
-        partial implementation. <tt class="literal">Note</tt> is only provided on
-        class and state diagrams, and can only be attached to classes,
-        interfaces, states and pseudostates.</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>You can add a note also to an object in a deployment diagram
-        by using its context sensitive <tt class="literal">Add</tt> pop-up menu (see
-        <a href="ch09s07.html" title="9.7.&nbsp;Pop-Up Menus">Section&nbsp;9.7, &#8220;Pop-Up Menus&#8221;</a>).</p></td></tr></table></div><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>If you need to add a note to some other artifact, try using
-        a text box from the graphics drawing tools (see
-        <a href="ch09s03.html#s2.ref.edit_pane_drawing_tools" title="9.3.3.&nbsp;Drawing Tools">Section&nbsp;9.3.3, &#8220;Drawing Tools&#8221;</a>).</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.edit_pane_drawing_tools"></a>9.3.3.&nbsp;Drawing Tools</h3></div></div><div></div></div><p>These are a series of tools for providing graphical additions to
-        diagrams. Although they are not UML artifacts, the UML standard
-        provides for such decoration to improve the readability of
-        diagrams.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>These drawing tools provide a useful way to partially support
-        some of the UML features (such as general purpose notes) that are
-        missing from the current release of ArgoUML.</p></td></tr></table></div><p>Eight tools are provided. button&nbsp;1 click on the diagram will place
-        an instance of the graphical item of the same size as the last one
-        placed. The size can be controlled by button&nbsp;1 motion during
-        placement. One side or end of the element will be at button&nbsp;1 down,
-        the other side or end at button&nbsp;1 up. In general after they are placed
-        on the diagram, graphical elements can be moved with the
-        <tt class="literal">Select</tt> tool and button&nbsp;1 and re-sized by button&nbsp;1
-        motion on the handles after they have been selected.</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/rectangle.gif" align="middle"></span></span>
-          <tt class="literal">Rectangle</tt>. Provides a rectangle.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/rounded_rectangle.gif" align="middle"></span></span>
-          <tt class="literal">Rounded Rectangle</tt>. Provides a rectangle with
-          rounded corners. There is no control over the degree of
-          rounding.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/circle.gif" align="middle"></span></span>
-          <tt class="literal">Circle</tt>. Provides a circle.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/line.gif" align="middle"></span></span>
-          <tt class="literal">Line</tt>. Provides a line.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/text.gif" align="middle"></span></span>
-          <tt class="literal">Text</tt>. Provides a text box. The text is entered by
-          selecting the box and typing. Text is in blue and centered and
-          after typing, the box will shrink to the size of the text. However it
-          can be re-sized by dragging on the corners.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/polygon.gif" align="middle"></span></span>
-          <tt class="literal">Polygon</tt>. Provides a polygon. The points of the
-          polygon are selected by button&nbsp;1 click and the polygon closed with
-          button&nbsp;1 double click (which will link the final point to the first
-          point).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/spline.gif" align="middle"></span></span>
-          <tt class="literal">Spline</tt>. Provide an open spline. The control points
-          of the spline are selected with button&nbsp;1 and the last point selected
-          with button&nbsp;1 double click.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/ink.gif" align="middle"></span></span>
-          <tt class="literal">Ink</tt>. Provide a polyline. The points are provided
-          by button&nbsp;1 motion.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5899"></a>9.3.4.&nbsp;Use Case Diagram Specific Tools</h3></div></div><div></div></div><p>Seven tools are provided specific to UML artifacts on use case
-        diagrams. The detailed properties of these artifacts are described in
-        the section on use case diagram artifacts (see
-        <a href="ch15.html" title="Chapter&nbsp;15.&nbsp;ArgoUML Use Case Diagram Artifact Reference">Chapter&nbsp;15, <i>ArgoUML Use Case Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/actor.gif" align="middle"></span></span>
-          <tt class="literal">Actor</tt>. Add an actor to the
-          diagram. For convenience, when the mouse is over a selected actor it
-          displays two handles to left and right which may be dragged to form
-          association relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/use_case.gif" align="middle"></span></span>
-          <tt class="literal">Use Case</tt>. Add a use case to the
-          diagram. For convenience, when the mouse is over a selected use case
-          it displays two handles to left and right which may be dragged to
-          form association relationships and two handles top and bottom which
-          may be dragged to form generalization and specialization
-          relationships respectively.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/association.gif" align="middle"></span></span>
-          <tt class="literal">Association</tt>. Add an association between two
-          artifacts selected using button&nbsp;1 motion (for the first artifact to
-          the second).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/generalization.gif" align="middle"></span></span>
-          <tt class="literal">Generalization</tt>. Add a generalization between two
-          artifacts selected using button&nbsp;1 motion (from the child to the
-          parent).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/extend.gif" align="middle"></span></span>
-          <tt class="literal">Extend</tt>. Add an extend relationship between two
-          artifacts selected using button&nbsp;1 motion (from the extended to the
-          extending use case).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/include.gif" align="middle"></span></span>
-          <tt class="literal">Include</tt>. Add an include relationship between two
-          artifacts selected using button&nbsp;1 motion (from the including to the
-          included use case).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/extension_point.gif" align="middle"></span></span> <tt class="literal">Add Extension
-          Point</tt>. Add an extension point to a selected use case. The
-          extension point is given the default name <tt class="literal">newEP</tt>
-          and location <tt class="literal">loc</tt>. Where the extension point
-          compartment is displayed, the extension point may be edited by
-          button&nbsp;1 double click and using the keyboard, or by selecting with
-          button&nbsp;1 click (after the use case has been selected) and using the
-          property tab. Otherwise it may be edited through its property tab,
-          selected through the property tab of the owning use case.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This tool is grayed out except when a use case is
-          selected.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/dependency.gif" align="middle"></span></span>
-          <tt class="literal">Dependency</tt>. Add a dependency between two artifacts
-          selected using button&nbsp;1 motion (from the dependent artifact).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>Older versions of ArgoUML incorrectly used stereotyped
-          dependencies to represent UML <tt class="literal">extends</tt> and
-          <tt class="literal">includes</tt> relationships. Where these are found they
-          should be replaced by proper extend and include relationships, which
-          are now supported on the use case
-          diagram.</p></td></tr></table></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6006"></a>9.3.5.&nbsp;Class Diagram Specific Tools</h3></div></div><div></div></div><p>Nine tools are provided specific to UML artifacts on class
-        diagrams. The detailed properties of these artifacts are described in
-        the section on class diagram artifacts (see
-        <a href="ch16.html" title="Chapter&nbsp;16.&nbsp;ArgoUML Class Diagram Artifact Reference">Chapter&nbsp;16, <i>ArgoUML Class Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/package.gif" align="middle"></span></span>
-          <tt class="literal">Package</tt>. Add a package to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/class.gif" align="middle"></span></span>
-          <tt class="literal">Class</tt>. Add a class to the
-          diagram. For convenience, when the mouse is over a selected class it
-          displays two handles to left and right which may be dragged to form
-          association relationships and two handles top and bottom which may be
-          dragged to form generalization and specialization relationships
-          respectively.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/association.gif" align="middle"></span></span>
-          <tt class="literal">Association</tt>. Add an association between two
-          artifacts selected using button&nbsp;1 motion (from the first artifact
-          to the second artifact).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/dependency.gif" align="middle"></span></span>
-          <tt class="literal">Dependency</tt>. Add a dependency between two artifacts
-          selected using button&nbsp;1 motion (from the dependent
-          artifact).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/generalization.gif" align="middle"></span></span>
-          <tt class="literal">Generalization</tt>. Add a generalization between two
-          artifacts selected using button&nbsp;1 (from the child to the
-          parent).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/interface.gif" align="middle"></span></span>
-          <tt class="literal">Interface</tt>. Add an interface to the
-          diagram. For convenience, when the mouse is over a selected interface
-          it displays a handle at the bottom which may be dragged to form a
-          realization relationship (the target being the realizing
-          class).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/realization.gif" align="middle"></span></span>
-          <tt class="literal">Realization</tt>. Add a realization between a class and
-          an interface selected using button&nbsp;1 motion (from the realizing
-          class to the realized interface).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/attribute.gif" align="middle"></span></span>
-          <tt class="literal">Add Attribute</tt>. Add an attribute to the
-          currently selected class. The attribute is given the default name
-          <tt class="literal">newAttr</tt> of type <tt class="literal">int</tt> and may be
-          edited by button&nbsp;1 double click and using the keyboard, or by
-          selecting with button&nbsp;1 click (after the class has been selected)
-          and using the property tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This tool is grayed out except when a class or interface is
-          selected.</p></td></tr></table></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML this tool is not
-          grayed out for intefaces as it should be (attributes are not
-          permitted for interfaces in the UML 1.3 standard). However the tool
-          has no effect if selected for an
-          interface.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/operation.gif" align="middle"></span></span>
-          <tt class="literal">Add Operation</tt>. Add an operation to the
-          currently selected class or interface. The operation is given the
-          default name <tt class="literal">newOperation</tt> with no arguments and
-          return type <tt class="literal">void</tt> and may be edited by button&nbsp;1
-          double click and using the keyboard, or by selecting with button&nbsp;1
-          click (after the class has been selected) and using the property
-          tab.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This tool is grayed out except when a class or interface is
-          selected.</p></td></tr></table></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6126"></a>9.3.6.&nbsp;Sequence Diagram Specific Tools</h3></div></div><div></div></div><p>Six tools are provided specific to UML artifacts on sequence
-        diagrams. The detailed properties of these artifacts are described in
-        the section on sequence diagram artifacts (see
-        <a href="ch17.html" title="Chapter&nbsp;17.&nbsp;ArgoUML Sequence Diagram Artifact Reference">Chapter&nbsp;17, <i>ArgoUML Sequence Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/object.gif" align="middle"></span></span>
-          <tt class="literal">Object</tt>. Add an object to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stimulus_call.gif" align="middle"></span></span>
-          <tt class="literal">Stimulus Call</tt>. Add a call stimulus between two
-          objects selected using button&nbsp;1 motion (from the originating object
-          to the receiving object).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stimulus_create.gif" align="middle"></span></span>
-          <tt class="literal">Stimulus Create</tt>. Add a create stimulus between two
-          objects selected using button&nbsp;1 motion (from the originating object
-          to the receiving object).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stimulus_destroy.gif" align="middle"></span></span>
-          <tt class="literal">Stimulus Destroy</tt>. Add a destroy stimulus between
-          two objects selected using button&nbsp;1 motion (from the originating
-          object to the receiving object).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stimulus_send.gif" align="middle"></span></span>
-          <tt class="literal">Stimulus Send</tt>. Add a send stimulus between two
-          objects selected using button&nbsp;1 motion (from the originating object
-          to the receiving object).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/stimulus_return.gif" align="middle"></span></span>
-          <tt class="literal">Stimulus Return</tt>. Add a return stimulus between two
-          objects selected using button&nbsp;1 motion (from the originating object
-          to the receiving object).</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6195"></a>9.3.7.&nbsp;State Diagram Specific Tools</h3></div></div><div></div></div><p>Ten tools are provided specific to UML artifacts on state
-        diagrams. The detailed properties of these artifacts are described in
-        the section on state diagram artifacts (see
-        <a href="ch18.html" title="Chapter&nbsp;18.&nbsp;ArgoUML State Diagram Artifact Reference">Chapter&nbsp;18, <i>ArgoUML State Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/state.gif" align="middle"></span></span>
-          <tt class="literal">State</tt>. Add a state to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/composite_state.gif" align="middle"></span></span>
-          <tt class="literal">Composite State</tt>. Add a composite state to the
-          diagram. All artifacts that are subsequently placed on the diagram on
-          top of the composite state will form part of that composite
-          state.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/transition.gif" align="middle"></span></span>
-          <tt class="literal">Transition</tt>. Add a transition between two states
-          selected using button&nbsp;1 motion (from the originating state to the
-          receiving state).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/initial_state.gif" align="middle"></span></span>
-          <tt class="literal">Initial</tt>. Add an initial pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is nothing to stop you adding more than one
-          initial state to a diagram or composite state. However to do so is
-          meaningless, and one of the critics will
-          complain.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/final_state.gif" align="middle"></span></span>
-          <tt class="literal">Final State</tt>. Add a final state to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/branch.gif" align="middle"></span></span>
-          <tt class="literal">Branch</tt>. Add a branch pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed branch should have one incoming transition
-          and two or more outgoing. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any branch that does not follow
-          this rule.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/fork.gif" align="middle"></span></span>
-          <tt class="literal">Fork</tt>. Add a fork pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed fork should have one incoming transition
-          and two or more outgoing. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any fork that does not follow
-          this rule.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/join.gif" align="middle"></span></span>
-          <tt class="literal">Join</tt>. Add a join pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed join should have one outgoing transition
-          and two or more incoming. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any join that does not follow
-          this rule.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/shallow_history.gif" align="middle"></span></span>
-          <tt class="literal">Shallow History</tt>. Add a shallow history pseudostate
-          to the diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/deep_history.gif" align="middle"></span></span>
-          <tt class="literal">Deep History</tt>. Add a deep history pseudostate
-          to the diagram.</p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6316"></a>9.3.8.&nbsp;Collaboration Diagram Specific Tools</h3></div></div><div></div></div><p>Three tools are provided specific to UML artifacts on collaboration
-        diagrams. The detailed properties of these artifacts are described in
-        the section on collaboration diagram artifacts (see
-        <a href="ch19.html" title="Chapter&nbsp;19.&nbsp;ArgoUML Collaboration Diagram Artifact Reference">Chapter&nbsp;19, <i>ArgoUML Collaboration Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/classifier_role.gif" align="middle"></span></span>
-          <tt class="literal">Classifier Role</tt>. Add a classifier role to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/association_role.gif" align="middle"></span></span>
-          <tt class="literal">Association Role</tt>. Add an association role between
-          two classifier roles selected using button&nbsp;1 motion (from the
-          originating classifier role to the receiving classifier
-          role).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/message.gif" align="middle"></span></span>
-          <tt class="literal">Add Message</tt>. Add a message to the selected
-          association role.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>This tool is grayed out except when an association role is
-          selected.</p></td></tr></table></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6358"></a>9.3.9.&nbsp;Activity Diagram Specific Tools</h3></div></div><div></div></div><p>Seven tools are provided specific to UML artifacts on activity
-        diagrams. The detailed properties of these artifacts are described in
-        the section on activity diagram artifacts (see
-        <a href="ch20.html" title="Chapter&nbsp;20.&nbsp;ArgoUML Activity Diagram Artifact Reference">Chapter&nbsp;20, <i>ArgoUML Activity Diagram Artifact Reference</i></a>).</p><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/action_state.gif" align="middle"></span></span>
-          <tt class="literal">Action State</tt>. Add an action state to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/transition.gif" align="middle"></span></span>
-          <tt class="literal">Transition</tt>. Add a transition between two action
-          states selected using button&nbsp;1 motion (from the originating action
-          state to the receiving action state).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/initial_state.gif" align="middle"></span></span>
-          <tt class="literal">Initial</tt>. Add an initial pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>There is nothing to stop you adding more than one
-          initial state to a diagram. However to do so is meaningless, and one
-          of the critics will complain.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/final_state.gif" align="middle"></span></span>
-          <tt class="literal">Final State</tt>. Add a final state to the
-          diagram.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/branch.gif" align="middle"></span></span>
-          <tt class="literal">Branch</tt>. Add a branch pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed branch should have one incoming transition
-          and two or more outgoing. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any branch that does not follow
-          this rule.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/fork.gif" align="middle"></span></span>
-          <tt class="literal">Fork</tt>. Add a fork pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed fork should have one incoming transition
-          and two or more outgoing. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any fork that does not follow
-          this rule.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/join.gif" align="middle"></span></span>
-          <tt class="literal">Join</tt>. Add a join pseudostate to the
-          diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>A well formed join should have one outgoing transition
-          and two or more incoming. ArgoUML does not enforce this, but an
-          ArgoUML critic will complain about any join that does not follow
-          this rule.</p></td></tr></table></div></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6449"></a>9.3.10.&nbsp;Deployment Diagram Specific Tools</h3></div></div><div></div></div><p>Ten tools are provided specific to UML artifacts on deployment
-        diagrams. The detailed properties of these artifacts are described in
-        the section on deployment diagram artifacts (see
-        <a href="ch21.html" title="Chapter&nbsp;21.&nbsp;ArgoUML Deployment Diagram Artifact Reference">Chapter&nbsp;21, <i>ArgoUML Deployment Diagram Artifact Reference</i></a>).</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Remember that ArgoUML's deployment diagrams are also used
-        for component diagrams.</p></td></tr></table></div><div class="itemizedlist"><ul type="disc"><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/node.gif" align="middle"></span></span>
-          <tt class="literal">Node</tt>. Add a node to the
-          diagram. For convenience, when the mouse is over a selected node it
-          displays four handles to left, right, top and bottom which may be
-          dragged to form association relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/node_instance.gif" align="middle"></span></span>
-          <tt class="literal">Node Instance</tt>. Add a node instance to the
-          diagram. For convenience, when the mouse is over a selected node
-          instance it displays four handles to left, right, top and bottom
-          which may be dragged to form link relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/component.gif" align="middle"></span></span>
-          <tt class="literal">Component</tt>. Add a component to the
-          diagram. For convenience, when the mouse is over a selected component
-          it displays four handles to left, right, top and bottom which may be
-          dragged to form dependency relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/component_instance.gif" align="middle"></span></span>
-          <tt class="literal">Component Instance</tt>. Add a component instance to
-          the diagram. For convenience, when the mouse is over a selected
-          component instance it displays four handles to left, right, top and
-          bottom which may be dragged to form dependency
-          relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/dependency.gif" align="middle"></span></span>
-          <tt class="literal">Dependency</tt>. Add a dependency between two artifacts
-          selected using button&nbsp;1 motion (from the dependent
-          artifact).</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/class.gif" align="middle"></span></span>
-          <tt class="literal">Class</tt>. Add a class to the diagram. For
-          convenience, when the mouse is over a selected class it displays two
-          handles to left and right which may be dragged to form association
-          relationships.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Unlike a class diagram, two handles top and bottom which
-          may be dragged to form generalization and specialization
-          relationships are not shown. Such relationships may not be described
-          on a deployment or component diagram.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/interface.gif" align="middle"></span></span>
-          <tt class="literal">Interface</tt>. Add an interface to the diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the current release of ArgoUML, when the mouse is
-          over a selected interface it displays a handle at the bottom.  This
-          suggests this may be dragged to form a realization relationship as in
-          a class diagram. Such relationships may not be displayed on a
-          deployment or component diagram, and this handle has no
-          effect.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/association.gif" align="middle"></span></span>
-          <tt class="literal">Association</tt>. Add an association between two
-          artifacts (node, component, class or interface) selected using
-          button&nbsp;1 motion (from the first artifact to the second
-          artifact).</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>The constraint that associations between classes and
-          interfaces must not be navigable <span class="emphasis"><em>from</em></span> the
-          interface still applies on deployment
-          diagrams.</p></td></tr></table></div></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/object.gif" align="middle"></span></span>
-          <tt class="literal">Object</tt>. Add an object to the diagram. For
-          convenience, when the mouse is over a selected object it displays
-          four handles to left, right, top and bottom, which may be dragged to
-          form link relationships.</p></li><li><p><span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/link.gif" align="middle"></span></span>
-          <tt class="literal">Link</tt>. Add a link between two artifacts
-          (node instance, component instance or object) selected using
-          button&nbsp;1 motion.</p></li></ul></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.2.&nbsp;Mouse Behavior in the Editing Pane&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.4.&nbsp;Clarifiers</td></tr></table></div></body></html>
+   <title>9.3.&nbsp;The File Menu</title><link rel="stylesheet" href="look-and-feel.css" type="text/css"><meta name="generator" content="DocBook XSL Stylesheets V1.60.1"><link rel="home" href="index.html" title="ArgoUML User Manual"><link rel="up" href="ch09.html" title="Chapter&nbsp;9.&nbsp;The Menu bar"><link rel="previous" href="ch09s02.html" title="9.2.&nbsp;Mouse Behavior in the Menu Bar"><link rel="next" href="ch09s04.html" title="9.4.&nbsp;The Edit Menu"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">9.3.&nbsp;The File Menu</th></tr><tr><td width="20%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a>&nbsp;</td><th width="60%" align="center">Chapter&nbsp;9.&nbsp;The Menu bar</th><td width="20%" align="right">&nbsp;<a accesskey="n" href="ch09s04.html">Next</a></td></tr></table><hr></div><div class="sect1" lang="en"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="d0e5617"></a>9.3.&nbsp;The File Menu</h2></div></div><div></div></div><p>These are actions concerned with input and output and the overall
+      management of projects and the ArgoUML system.</p><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_new"></a>9.3.1.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/new.gif" align="middle"></span></span> New</h3></div></div><div></div></div><a class="indexterm" name="d0e5630"></a><a class="indexterm" name="d0e5633"></a><p>Shortcut Ctrl-N.</p><p>This initializes a new project within ArgoUML. The project is
+        created without a the name. It contains a (top-level) 
+        <tt class="literal">Model</tt> named <tt class="literal">untitledModel</tt> 
+        and two empty diagrams: 
+        a class diagram and a use case diagram.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p><tt class="literal">untitledModel</tt> is not a conventional
+        model name (most processes suggest models should start with an upper
+        case letter). ArgoUML permits you to use a lower case letter, but
+
+        a critic will trigger to warn that this is not conventional. See <a href="ch15s02.html" title="15.2.&nbsp;The Model">Section&nbsp;15.2, &#8220;The Model&#8221;</a> for a discussion of this.</p></td></tr></table></div><p>
+        If the model has been altered, then activating the "New" function is
+        potentionally not the user's intention, since it will erase the changes.
+        Hence a confirmation dialog appears to allow the user to save his work
+        first, or cancel the operation completely.
+      </p><div class="figure-float"><div class="figure"><a name="d0e5659"></a><p class="title"><b>Figure&nbsp;9.1.&nbsp;The confirmation dialog for <tt class="literal">New</tt>.</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_dialog_confirm_new.png" align="middle" alt="The confirmation dialog for New."></div></div><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_open_project"></a>9.3.2.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/open_project.gif" align="middle"></span></span> Open
+        Project&#8230;</h3></div></div><div></div></div><a class="indexterm" name="d0e5677"></a><a class="indexterm" name="d0e5680"></a><p>Shortcut Ctrl-O.</p><p>This opens an existing project from a file. 
+        Selecting this menu option will
+        open a file selection dialog (see
+        <a href="ch09s03.html#fig.ref.menu_open_project" title="Figure&nbsp;9.2.&nbsp;The file selection dialog for&#xA;          Open&nbsp;Project&#8230;.">Figure&nbsp;9.2</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_open_project"></a><p class="title"><b>Figure&nbsp;9.2.&nbsp;The file selection dialog for
+          <tt class="literal">Open&nbsp;Project&#8230;</tt>.</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_open_project.png" align="middle" alt="The file selection dialog for Open&nbsp;Project&#8230;."></div></div><p></p></div></div><p>At the top of the dialog is a drop down selector labeled
+        <tt class="literal">Look&nbsp;in:</tt>, specifying the currently selected
+        directory preceded by the folder icon,
+        <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/folder.gif" align="middle"></span></span>. The drop down selector
+        gives access to all directories above this directory.</p><p>Next to this are four icons:
+        <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/up_directory.gif" align="middle"></span></span> to move up a directory;
+        <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/home.gif" align="middle"></span></span> to select the users home
+        directory,
+        <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/list_files.gif" align="middle"></span></span> to specify that a simple
+          file list is displayed; and 
+        <span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/details_files.gif" align="middle"></span></span> 
+        that shows details of all files.</p><p>The main body of the dialog is a text area with a listing of all
+        directories and
+        files in the currently selected directory which match the current
+        filter (see below). If these will not all fit on the display,
+        scroll bars are provided to browse through the list.</p><p>Hence, navigating up a directory tree is possible by selecting 
+        a directory in the drop down selector at the top of this dialog.
+        Navigating deeper in the tree happens by double clicking button&nbsp;1 on
+        the directory shown in the main text area.
+      </p><p>In the lower portion of the dialog is a text box labeled
+        <tt class="literal">File&nbsp;name:</tt> for the name of the file to be
+        opened. The file name may be typed directly in here, or selected from
+        the directory listing above using button&nbsp;1 click.</p><p>Beneath this is a drop down selector labeled
+        <tt class="literal">Files&nbsp;of&nbsp;type:</tt> to specify a filter on the
+        files to be shown in the directory listing. Only files that match the
+        filter are listed. The available filters are listed below. 
+        The default filter is the second one (.zargo).</p><div class="itemizedlist"><ul type="disc"><li><p>All Files</p></li><li><p>Argo compressed project files (*.zargo)</p></li><li><p>Argo uncompressed project file (*.argo)</p></li><li><p>XMI Metadata Interchange (*.xmi)</p></li></ul></div><p>Argo uncompressed project files (*.argo) 
+        were produced by earlier releases of ArgoUML,
+        XMI files allow you to use diagrams from other tools (which may not
+        always work!).</p><p>To the right of the file name and filter are two buttons,
+        <tt class="literal">Open</tt> and <tt class="literal">Cancel</tt> to open the
+        selected project or cancel the operation.</p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>Open will only succeed if a valid filename is
+        provided.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_save_project"></a>9.3.3.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/save_project.gif" align="middle"></span></span> Save Project</h3></div></div><div></div></div><a class="indexterm" name="d0e5782"></a><a class="indexterm" name="d0e5785"></a><p>Shortcut Ctrl-S.</p><p>This saves the project using its current file name.
+        Use <tt class="literal">Save&nbsp;Project&nbsp;As&#8230;</tt> to save the
+        project to a different file.
+        If no filename is given yet (e.g. after <tt class="literal">New</tt>), 
+        then this function works
+        exactly as <tt class="literal">Save Project As&#8230;</tt>.
+      </p><div class="note" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Note"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Note]" src="images/note.png"></td><th align="left">Note</th></tr><tr><td colspan="2" align="left" valign="top"><p>In certain circumstances, there is nothing to save,
+        and this menuitem is downlighted.
+        E.g. when the user did not yet alter a loaded project. 
+        
+      </p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_save_project_as"></a>9.3.4.&nbsp;Save Project As&#8230;</h3></div></div><div></div></div><p>This opens a dialog allowing you to save the project under a
+        different file name (or to specify a file name for the first time if
+        the project is a new project).</p><p>The dialog box is identical to that for
+        <tt class="literal">Open&nbsp;Project</tt> (see 
+        <a href="ch09s03.html#fig.ref.menu_open_project" title="Figure&nbsp;9.2.&nbsp;The file selection dialog for&#xA;          Open&nbsp;Project&#8230;.">Figure&nbsp;9.2</a>). 
+        The  <tt class="literal">Files&nbsp;of&nbsp;type:</tt> drop down selector 
+        also specifies the file type used for saving, 
+        but only the <tt class="literal">.zargo</tt> format is available.
+        The extension of the filename is automatically set.</p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_revert_to_saved"></a>9.3.5.&nbsp;Revert to Saved</h3></div></div><div></div></div><p>
+This menu-item allows you to throw away all your recent changes, 
+and reload the last saved version of the current project. 
+It works a bit like an <tt class="literal">Undo</tt> feature, 
+but only restores changes done since the last time the file was saved.
+      </p><p>
+This menu-item is downlighted unless 
+the currentproject has been saved or loaded before (i.e. it has a name), 
+and it has been altered.
+      </p><p>
+When this menu-item is activated, 
+a small confirmation dialog box opens, 
+as shown in the figure below.
+This warning that all recent changes will be discarded, 
+is needed because the action can not be undone.
+Selecting <tt class="literal">No</tt> cancels the whole action as if you did not select the menu-item in the first place.
+Selecting <tt class="literal">Yes</tt> reloads the last saved file.
+      </p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_revert_to_saved"></a><p class="title"><b>Figure&nbsp;9.3.&nbsp;The warning dialog for Revert to Saved.
+        </b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_revert_to_saved.png" align="middle" alt="The warning dialog for Revert to Saved."></div></div><p></p></div></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s3.ref.menu_import_sources"></a>9.3.6.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/import_sources.gif" align="middle"></span></span> Import
+        Sources&#8230;</h3></div></div><div></div></div><p>A very powerful feature of ArgoUML is that it can
+          &#8220;<span class="quote">Reverse Engineer</span>&#8221; Java code to yield a class
+          diagram. This sub-menu entry specifies Java code to be imported for
+          reverse engineering.</p><p>The dialog box is very similar to that for
+          <tt class="literal">Open&nbsp;Project</tt> (see
+          <a href="ch09s03.html#fig.ref.menu_open_project" title="Figure&nbsp;9.2.&nbsp;The file selection dialog for&#xA;          Open&nbsp;Project&#8230;.">Figure&nbsp;9.2</a>), but with two extra tabs
+          placed alongside the directory listing, as shown in
+          <a href="ch09s03.html#fig.ref.menu_import_sources" title="Figure&nbsp;9.4.&nbsp;The file selection dialog for&#xA;            Import&nbsp;Sources&#8230;.">Figure&nbsp;9.4</a>).</p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_import_sources"></a><p class="title"><b>Figure&nbsp;9.4.&nbsp;The file selection dialog for
+            <tt class="literal">Import&nbsp;Sources&#8230;</tt>.</b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_import_sources.png" align="middle" alt="The file selection dialog for Import&nbsp;Sources&#8230;."></div></div><p></p></div></div><p>Those fields that are the same as
+          <tt class="literal">Open&nbsp;Project</tt> behave in the same way (see
+          <a href="ch09s03.html#s2.ref.menu_open_project" title="9.3.2.&nbsp; Open&#xA;        Project&#8230;">Section&nbsp;9.3.2, &#8220; Open
+        Project&#8230;&#8221;</a>).</p><p>Next to the "All Files" file filter, there is only the default
+          filter "Java Source File (*.java)".
+        </p><p>The first of the two tabs is labeled <tt class="literal">General</tt>
+          and is selected by button&nbsp;1 click on its tab. 
+          It provides a combo box for the language selection 
+          (in V0.14 of ArgoUML only Java can be chosen), 
+          and the following check boxes:
+        </p><div class="itemizedlist"><ul type="disc"><li><p>
+              <tt class="literal">Descend&nbsp;directories&nbsp;recursively</tt>. If
+              enabled (the default), reverse engineering will track through
+              sub-directories for any further Java files. If not it will restrict
+              to the selected directory.
+            </p></li><li><p>
+              <tt class="literal">Create diagrams from imported code</tt>
+            </p></li><li><p>
+              <tt class="literal">Minimise Class icons in diagrams</tt>. If selected,
+              then attributes and operations will not be shown in the generated
+              class diagrams.
+            </p></li><li><p>
+              <tt class="literal">Perform Automatic Diagram Layout</tt>
+            </p></li></ul></div><p>The second of the two tabs is labeled <tt class="literal">Java</tt>
+          and is selected by button&nbsp;1 click on its tab. It provides two pairs
+          of radio boxes.</p><div class="itemizedlist"><ul type="disc"><li><p>
+              The first radio box allows selection between modeling attributes
+              of Java classes as UML attributes (the default) or as UML
+              associations to the class specified.
+            </p></li><li><p>
+              The second radio box allows selection between modeling arrays as
+              new datatypes in their own right (the default) or as their base
+              datatype with multiplicity.
+            </p></li></ul></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e5946"></a>9.3.7.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/page_setup.gif" align="middle"></span></span> Page&nbsp;Setup&#8230;</h3></div></div><div></div></div><a class="indexterm" name="d0e5953"></a><p>This brings up the standard dialog box provided by the operating system 
+        to adjust printer paper size, orientation, and other options.
+      </p></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_print"></a>9.3.8.&nbsp;<span class="guiicon"><span class="inlinemediaobject"><img src="images/icons/print.gif" align="middle"></span></span> Print&#8230;</h3></div></div><div></div></div><a class="indexterm" name="d0e5966"></a><a class="indexterm" name="d0e5969"></a><p>Shortcut Ctrl-P.</p><p>This brings up the standard dialog box provided 
+        by the operating system allowing the ArgoUML model to be
+        printed out.</p><div class="warning" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Warning"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Warning]" src="images/warning.png"></td><th align="left">Warning</th></tr><tr><td colspan="2" align="left" valign="top"><p>In the V0.12 release of ArgoUML this function behaves
+      
+        strangely if you have no printer configured under Linux. A small dialog
+        box appears, but it has no functionality.</p></td></tr></table></div><p>
+        In some cases, when the printing is started, the dialog box of 
+        <a href="ch09s03.html#fig.ref.menu_diagram_exceeds_page" title="Figure&nbsp;9.5.&nbsp;The diagram exceeds page size dialog.&#xA;        ">Figure&nbsp;9.5</a>
+        appears. Selecting the "Fit to page" button does print the whole diagram
+        fitted on one page by scaling it down. 
+        Which might cause all text to be too small to read in case of big
+        diagrams, but it is a quick and easy way to get an usable printout.
+        Selecting the "Multiple pages"
+        option does print unscaled, by dividing the diagram in pieces, 
+        on as many pages as needed.
+        Pressing the close button of the dialog does the former option.
+
+      </p><div class="figure-float"><div class="figure"><a name="fig.ref.menu_diagram_exceeds_page"></a><p class="title"><b>Figure&nbsp;9.5.&nbsp;The diagram exceeds page size dialog.
+        </b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_diagram_exceeds_page.png" align="middle" alt="The diagram exceeds page size dialog."></div></div><p></p></div></div><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>
+          If the diagram contains no selected artifacts, then the whole diagram
+          is printed. However, if one or more artifacts are selected, then only
+          the area they cover is printed! If scaling is selected (by the "Fit to
+          page" choice in the dialog box descibed above), then the scaling is
+          done on  basis of the selected artifacts only. If scaling is not
+          chosen (or in case it is not needed), then all pages containing a
+          selected artifact are printed.
+        </p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6000"></a>9.3.9.&nbsp;Save Graphics&#8230;</h3></div></div><div></div></div><p>This menu entry brings up a dialog box allowing the currently
+        selected diagram (in the editing pane) to be saved in one of a number
+        of graphic formats.</p><p>The dialog box is identical to that for
+        <tt class="literal">Open&nbsp;Project</tt> (see 
+        <a href="ch09s03.html#fig.ref.menu_open_project" title="Figure&nbsp;9.2.&nbsp;The file selection dialog for&#xA;          Open&nbsp;Project&#8230;.">Figure&nbsp;9.2</a>), except for the
+        <tt class="literal">Files&nbsp;of&nbsp;type:</tt>. The chosen filetype
+        specifies the graphics format used for saving. 
+        The filename is automatically extended with the
+        corresponding ending (if not entered already). 
+        A default filename is generated based on the diagram name.</p><p>The available graphics types are:</p><div class="itemizedlist"><ul type="disc"><li><p>GIF image (*.gif)</p></li><li><p>Postscript file (*.ps)</p></li><li><p>Encapsulated Postscript file (*.eps)</p></li><li><p>Scalable Vector Graphics file (*.svg)</p></li></ul></div><p>The GIF format is the default.</p><div class="caution" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Caution"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Caution]" src="images/caution.png"></td><th align="left">Caution</th></tr><tr><td colspan="2" align="left" valign="top"><p>You should be aware that there are patent issues
+        
+        surrounding GIF files and act accordingly. There are
+        <span class="emphasis"><em>currently</em></span> no such concerns about
+        SVG.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="s2.ref.menu_save_config"></a>9.3.10.&nbsp;Save Configuration</h3></div></div><div></div></div><p>ArgoUML has various user specific configurations that can be set,
+        both through the <tt class="literal">Settings&#8230;</tt> entry on the
+        <tt class="literal">Edit</tt> menu (see
+        <a href="ch09s04.html#s2.ref.menu_settings" title="9.4.8.&nbsp;Settings&#8230;">Section&nbsp;9.4.8, &#8220;Settings&#8230;&#8221;</a>) and directly on the various
+        panes. This menu entry saves the information in the file
+        <tt class="literal">argo.user.properties</tt> in the users home
+        directory.</p><div class="tip" style="margin-left: 0.5in; margin-right: 0.5in;"><table border="0" summary="Tip"><tr><td rowspan="2" align="center" valign="top" width="25"><img alt="[Tip]" src="images/tip.png"></td><th align="left">Tip</th></tr><tr><td colspan="2" align="left" valign="top"><p>This is a text file, which you can edit to configure
+        ArgoUML.</p></td></tr></table></div></div><div class="sect2" lang="en"><div class="titlepage"><div><div><h3 class="title"><a name="d0e6061"></a>9.3.11.&nbsp;Exit</h3></div></div><div></div></div><a class="indexterm" name="d0e6064"></a><a class="indexterm" name="d0e6067"></a><p>Shortcut Alt-F4.</p><p>This closes down ArgoUML. A warning message will pop-up if you
+        have a project open with unsaved changes asking if you wish to save
+        it. See <a href="ch09s03.html#fig.ref.menu_save_changes" title="Figure&nbsp;9.6.&nbsp;The save changes dialog.&#xA;        ">Figure&nbsp;9.6</a>.
+        The options are:</p><div class="itemizedlist"><ul type="disc"><li><p><tt class="literal">Yes</tt> (save the project and
+          exit ArgoUML);</p></li><li><p><tt class="literal">No</tt> (do not save the project, but
+          still exit ArgoUML); and </p></li><li><p><tt class="literal">Cancel</tt> (do not save the project and
+          do not exit ArgoUML).</p></li><li><p>The dialog box can also be closed by clicking in the
+            close button in the window border. The effect is the same as selecting
+            "No".
+            
+          </p></li></ul></div><div class="figure-float"><div class="figure"><a name="fig.ref.menu_save_changes"></a><p class="title"><b>Figure&nbsp;9.6.&nbsp;The save changes dialog.
+        </b></p><div class="screenshot"><div class="mediaobject" align="center"><img src="images/reference/menu_save_changes.png" align="middle" alt="The save changes dialog."></div></div><p></p></div></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"><a accesskey="p" href="ch09s02.html">Prev</a>&nbsp;</td><td width="20%" align="center"><a accesskey="u" href="ch09.html">Up</a></td><td width="40%" align="right">&nbsp;<a accesskey="n" href="ch09s04.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top">9.2.&nbsp;Mouse Behavior in the Menu Bar&nbsp;</td><td width="20%" align="center"><a accesskey="h" href="index.html">Home</a></td><td width="40%" align="right" valign="top">&nbsp;9.4.&nbsp;The Edit Menu</td></tr></table></div></body></html>
