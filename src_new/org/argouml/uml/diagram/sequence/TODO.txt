@@ -1,0 +1,12 @@
+Currently there are the following issues on sequence diagrams:
+
+- Replaced FigSeqObject with older version because of compilation errors; will
+  have to redo Alexander's changes later. This also includes some work on
+  OldLayoutConverter because of changes in the layout algorithm.
+
+- Messages drawing is not complete.
+
+- Nested calls are not implemented yet, though the PortModel is prepared.
+
+- Parallel activations have even no user interface defined. PortModel is
+  prepared to hold them.
