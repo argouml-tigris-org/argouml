@@ -340,8 +340,8 @@ public class FigUseCase extends FigNodeModelElement {
         figClone._bigPort = (FigMyCircle) allFigs.elementAt(0);
         figClone._cover   = (FigMyCircle) allFigs.elementAt(1);
         figClone._name    = (FigText) allFigs.elementAt(2);
-        figClone._epSep   = (FigLine) allFigs.elementAt(2);
-        figClone._epVec   = (FigGroup) allFigs.elementAt(2);
+        figClone._epSep   = (FigLine) allFigs.elementAt(3);
+        figClone._epVec   = (FigGroup) allFigs.elementAt(4);
         
         return figClone;
     }
