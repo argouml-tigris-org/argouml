@@ -586,8 +586,8 @@ graphic artifacts to diagrams.</para></listitem>
           </imageobject></inlinemediaobject></guiicon>
           <literal>Package</literal>. Add a package to the
           diagram.</para>
-          <!-- TODO: Why is a package a drop-down selector with 1 item? Enter an
-          issue for this. See issue ... -->
+          <!-- TODO: Why is a package a drop-down selector with 1 item? 
+          See issue 2095. -->
         </listitem>
 
         <listitem><para><guiicon><inlinemediaobject><imageobject>

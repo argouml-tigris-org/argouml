@@ -713,7 +713,9 @@ A hierarchical listing of the packages,
           <listitem><para>Standard tab. The tick boxes,
             <literal>Attributes</literal> and <literal>Operations</literal>
             allow the attributes and operations compartments to be shown (the
-            default) or hidden. The <literal>Bounds:</literal> field defines
+            default) or hidden.
+            This is a setting valid for all diagrams that show the class.
+            The <literal>Bounds:</literal> field defines
             the bounding box for the package on the diagram.</para></listitem>
         </varlistentry>
 
@@ -4108,7 +4110,11 @@ In the UML metamodel it is a sub-class of
         <varlistentry>
           <term><literal>Style</literal></term>
 
-          <listitem><para>Standard tab. The <literal>Bounds:</literal> field
+          <listitem><para>Standard tab. 
+            The tick box <literal>Display Operations</literal> allows 
+            the operation compartment to be shown (the default) or hidden. This
+            is a setting valid for all diagrams that show the interface.
+            The <literal>Bounds:</literal> field
             defines the bounding box for the package on the
             diagram.</para></listitem>
         </varlistentry>

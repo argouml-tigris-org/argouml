@@ -12,8 +12,6 @@ the chapter on diagrams.
 <chapter id="ch.ref.detpane">
   <title>The Details Pane</title>
 
-  &notupdatedfor014disclaimer;
-
   <sect1>
     <title>Introduction</title>
 
@@ -38,9 +36,8 @@ the chapter on diagrams.
       associated data is viewed and entered.</para>
 
     <para>The Pane has a series of tabs at the top, which are selected by
-      &button1; click, through the
-      <literal>View&nbsp;&gt;&nbsp;Details&nbsp;Tabs</literal> menu or through
-      the menu shortcuts. The body of a tab is a menu of items to be checked,
+      &button1; click
+      The body of a tab is a menu of items to be checked,
       selected or entered specific to the particular tab selected.</para>
 
     <para>Of these, the <literal>Properties</literal> Tab is by far the most
@@ -76,12 +73,12 @@ the chapter on diagrams.
       <title>&Button1; Click</title>
 
       <para>This action is generally used to select an item for subsequent
-        operations. For fields of the property tab that are references to other
-        artifacts this will navigate to that artifact.</para>
+        operations. 
+      </para>
 
       <para>Where &button2; click has been used to bring up a context sensitive
         pop-up menu (see below), &button1; click is used to select the menu
-        entry required. &button1; click outside the menu area will remove
+        entry required. &Button1; click outside the menu area will remove
         it.</para>
     </sect2>
 
@@ -91,9 +88,10 @@ the chapter on diagrams.
       <title>&Button1; Double Click</title>
 
       <para>In general this has no effect other than that of &button1; single
-        click.</para>
+        click. However, for fields of the property tab that are references to other
+        artifacts this will navigate to that artifact.</para>
 
-      <para>However you can <quote>spawn</quote> a copy of any tab by
+      <para>And you can <quote>spawn</quote> a copy of any tab by
         double-clicking on the tab. It will then show as an individual window
         and you can put it where you will on the screen.</para>
     </sect2>
@@ -107,7 +105,7 @@ the chapter on diagrams.
         may display a context dependent pop-up menu (depending on the
         field). Menu entries are highlighted (but not selected) and sub-menus
         exposed by subsequent mouse motion (without any buttons). Menu entry
-        selection is with &button1;</para>
+        selection is with &button1;.</para>
 
       <para>If the entry generating the menu has not yet been highlighted it
         will also be highlighted.</para>
@@ -137,7 +135,8 @@ the chapter on diagrams.
   <sect1 id="s1.ref.to_do">
     <title>To Do Item Tab</title>
 
-    <para>This tab provides control over the various to-do items raised by the
+    <para>This tab provides control over the various to-do items 
+      created by the user, or raised automatically by the
       &argouml; critics (discussed in more detail in the section on the
       <literal>Critique</literal> menu&mdash;see
       <xref linkend="s1.ref.menu_critique"/>). 
@@ -176,8 +175,14 @@ the chapter on diagrams.
         This launches a dialog box (see 
         <xref linkend="fig.ref.details_new_to_do"/>), which allows you to
         create your own to-do item, with its own headline (which appears in the
-        to-do pane), priority for the to-do pane, reference URL and detailed
-        description for further information.</para>
+        to-do pane), priority for the to-do pane, reference URL
+        <!-- TODO: What is the use of the reference URL? It is never shown
+        anymore.-->
+        and detailed
+        description for further information.
+        <!-- TODO: It is not possible to edit a todo item once it is created. Should
+        that not be possible? Enhancement issue... -->
+        </para>
 
       <!-- The New To-Do Item dialog. -->
 
@@ -193,9 +198,7 @@ the chapter on diagrams.
         </mediaobject></screenshot>
       </figure>
 
-      <warning><para>In the current release of &argouml; these to-do notes
-        are not saved, and so will be lost. They should not be used at this
-        stage.</para></warning></listitem>
+      </listitem>
 
       <!-- Resolve the to-do item for a reason -->
 
@@ -209,37 +212,62 @@ the chapter on diagrams.
         This is an important dialog, because it allows you to deal with
         to-do items in ways other than the recommendation of the to-do item
         (which is the whole point of their being advisory).</para>
+        
+        <para>This dialog box is intended to be used for the following
+          reasons: deleting todo items that were manually created, 
+          preventing a single critic to trigger on a single object,
+          and dismissing categories of todo items by lowering 
+          design concerns or design goals.
+        </para>
 
-      <!-- The Resolve To-Do Item dialog. -->
+        <!-- The Resolve To-Do Item dialog. -->
+        
+        <figure id="fig.ref.details_resolve_to_do" float="1">
+          <title>Dialog box for
+            <literal>Resolve&nbsp;Item</literal></title>
 
-      <figure id="fig.ref.details_resolve_to_do" float="1">
-        <title>Dialog box for
-          <literal>New&nbsp;To&nbsp;Do&nbsp;Item</literal></title>
-
-        <screenshot><mediaobject>
-          <imageobject>
-            <imagedata format="PNG" align="center"
+            <screenshot><mediaobject>
+            <imageobject>
+              <imagedata format="PNG" align="center"
                        fileref="images/reference/details_resolve_to_do.png"/>
-          </imageobject>
-        </mediaobject></screenshot>
-      </figure>
+            </imageobject>
+          </mediaobject></screenshot>
+        </figure>
+        <!-- TODO: The titlebar of the window is "Dismiss..". Should be
+        "Resolve...". See issue ... -->
 
-      <para>At the top are three buttons, which will dismiss the selected item,
-        labeled 1) <literal>It is not relevant to my goals</literal>, 2)
-        <literal>It is not of concern at the moment</literal>, and 3)
-        <literal>Reason given below</literal>. If you choose the third of these
-        you should <emphasis>first</emphasis> enter a reason in the main text
-        box.</para>
+        <para>At the top are three radio-buttons, 
+          of which by default the last is selected,
+          labeled 1) <literal>It is not relevant to my goals</literal>, 2)
+          <literal>It is not of concern at the moment</literal>, and 3)
+          <literal>Reason given below</literal>. If you choose the third of these
+          you should enter a reason in the main text
+          box.
+          <!-- TODO: but it is not retrievable: you can never see the reason again -->
+          <!-- TODO: But it is not stored in the project file -->
+        </para>
 
-      <tip><para>If you wish to resolve a to-do item by following its
-        recommendations, just make the recommended changes and the to-do item
-        will disappear of its own accord.There is no need to use this
-        dialog.</para></tip>
+        <tip><para>If you wish to resolve a to-do item
+          (that is generated by a critic)
+          by following its
+          recommendations, just make the recommended changes and the to-do item
+          will disappear of its own accord. There is no need to use this
+          dialog.
+        </para></tip>
 
-      <caution><para>Because of the layout of the dialog box in the current
-        release of &argouml;, it is all to easy to click the
-        <literal>Reason given below</literal> button before entering a
-        reason.</para></caution></listitem>
+        <caution><para>The reason given is not stored when the project is saved. 
+          And there is no way to retrieve todo items that were resolved.
+          So, it is not usefull to give a reason at all.
+          <!-- TODO: Solve this problem... -->
+          </para>
+          <para>
+            When a todo item generated by a critic is resolved, then there is no
+            way to undo this (unless by re-crating the object that triggered the
+            critic).
+          <!-- TODO: Solve this problem... -->
+          </para>
+        </caution>
+      </listitem>
 
       <!-- Send Email to expert -->
 
@@ -249,17 +277,17 @@ the chapter on diagrams.
         </imageobject></inlinemediaobject></guiicon>
         <literal>Send Email To Expert&hellip;</literal>
         This pops up a dialog allowing the user to send Email to an expert
-asking for advice.
-</para>
-	<note>
-	  <para>
-This feature is currently disabled because the target address of
-the email i.e. the expert is not available.
-One idea is to direct these kind of messages to the 
-Users' mailing list 
+        asking for advice.
+        </para>
+        <note>
+          <para>
+This feature is does not send an email in the V0.14 &argouml;. A box opens, to
+enter the email, but the <literal>Send</literal> button does not work.
+<!-- TODO: See enhancement issue 1875. -->  
+The default destination address is
 <literal>users@argouml.tigris.org</literal>.
-</para>
-	</note>
+          </para>
+        </note>
       </listitem>
 
       <!-- Snooze the current critic -->
@@ -288,9 +316,9 @@ Initially this
 
     <!-- All about the wizards -->
 
-    <para>Some of the more common critics now have a <quote>wizard</quote>
+    <para>Some of the more common critics have a <quote>wizard</quote>
       available to help in fixing the problem. This comprises a series of pages
-      in the <literal>To&nbsp;Do&nbsp;Item</literal> tab that step you through
+      in the <literal>ToDo&nbsp;Item</literal> tab that step you through
       the changes. The wizard is driven through the first three buttons at the
       bottom of the tab.</para>
 
@@ -308,8 +336,8 @@ Initially this
         step.</para></listitem>
     </itemizedlist>
 
-    <note><para>Not all to-do items yet have wizards in the current release of
-      &argouml;. If there is no wizard all three buttons will remain grayed
+    <note><para>Not all to-do items have wizards. 
+      If there is no wizard all three buttons will remain grayed
       out.</para></note>
 
     <!-- The Help button -->
@@ -319,8 +347,15 @@ Initially this
       <literal>Help</literal>. This will fire up a browser to a URL with
       further help.</para>
 
-    <warning><para>In the current release of &argouml; the URLs are generally
-      invalid. The few that are valid have no information.</para></warning>
+    <warning><para>In the V0.14 release of &argouml; the browser does not fire.
+      <!-- TODO: See issue ... -->
+      And the URLs are generally invalid. 
+      <!-- TODO: How do I know? See issue ... -->
+      The few that are valid have no information.
+      <!-- TODO: Make integrated help system. 
+      Remove the Help button from this pane. 
+      See enhancement issue ... -->
+    </para></warning>
 
     <!-- Point to browse critics menu -->
 
@@ -336,7 +371,7 @@ Initially this
 
     <para>Through this tab, the properties of artifacts selected in the
       explorer or editing pane may be set. The properties of an artifact
-      may be displayed in one of two ways:</para>
+      may be displayed in one of the following ways:</para>
 
     <orderedlist>
       <listitem><para>Selection of the artifact in the explorer or editing
@@ -347,7 +382,18 @@ Initially this
         <literal>Properties</literal> (using &button2; click) on an artifact in
         the editing or explorer, which will select the item
         <emphasis>and</emphasis>select the <literal>Properties</literal> tab in
-        the details pane.</para></listitem>
+        the details pane.
+        <!-- TODO: Get rid of such useless way of selecting a tab by selecting a
+        pop-up menu item. -->
+      </para></listitem>
+      
+      <listitem><para>
+        Navigation buttons cause different artifacts to be selected. I.e. the
+        <literal>Go Up</literal> button on the properties tab, the
+        <literal>Navigate Back</literal> and <literal>Navigate Forward</literal>
+        buttons in the main tool bar, and the various menu-items under
+        <literal>Edit - Select</literal>.
+      </para></listitem>
     </orderedlist>
 
     <para><xref linkend="fig.ref.details_properties"/> shows a typical
@@ -370,11 +416,12 @@ Initially this
       artifact). In this example the property tab is for a class.</para>
 
     <para>To the right of this is a toolbar of icons relevant to this property
-      tab. The first three are always navigation
-      (<literal>Go&nbsp;up</literal>, <literal>Go&nbsp;back</literal> and
-      <literal>Go&nbsp;forward</literal>). The last is always
-      <literal>Delete</literal> to delete the selected artifact from the
-      model.</para>
+      tab. The first one is always navigation
+      <literal>Go&nbsp;up</literal>. 
+      The last is always <literal>Delete</literal> to 
+      delete the selected artifact from the model.
+      The ones in between depend on the artifact.
+    </para>
 
     <para>The remainder of the tab comprises fields, laid out in two or three
       columns. Each field has a label to its left. The fields may be text
@@ -383,9 +430,9 @@ Initially this
       boxes this is sometimes by just typing the required value.</para>
 
     <para>However for
-      most text boxes and all text areas, data entry is usually via a context
+      many text boxes and text areas, data entry is via a context
       sensitive pop-up menu (using &button2; click), which offers options to
-      open an entry (i.e. transfer to its property sheet), add a new entry,
+      add a new entry,
       delete an entry or move entries up and down (in text areas with multiple
       entries).</para>
 
@@ -403,12 +450,13 @@ Initially this
       collaboration diagram (<xref linkend="ch.ref.entcollab"/>,
       activity diagram (<xref linkend="ch.ref.entactiv"/>,
       deployment diagram (<xref linkend="ch.ref.entdeploy"/>). Property sheets
-      for artifacts that are common to all diagram type have their own chapter
+      for artifacts that are common to all diagram types have their own chapter
       (<xref linkend="ch.ref.entities"/>).</para>
 
     <caution><para>&argouml; will always try to squeeze all fields on to the
       property sheet. If the size of the property tab is too small, it may
       become unusable. The solution is to either enlarge the property tab by
+      enlarging the main window, or by
       moving the dividers to left and top, or to split it off altogether as a
       separate window (see <xref linkend="s2.ref.spawn"/>).</para></caution>
   </sect1>
@@ -478,16 +526,18 @@ Initially this
     <para>This tab provides some limited control over the graphical
       representation of artifacts in the editing pane.</para>
 
-    <caution><para>Artifacts that do not have any specific direct graphical
+    <para>Artifacts that do not have any specific direct graphical
       representation on the screen (beyond their textual description) do not
-      have style tabs of their own. They show the style tab of their nearest
-      parent that does have a style sheet, and any changes will affect that
-      parent. For example the style sheet of an operation on a class will be
-      the style sheet of the class.</para></caution>
+      have style tabs of their own. 
+      For example the style sheet of an operation on a class will be
+      downlighted.
+    </para>
 
     <para>Style sheets vary a little from artifact to artifact, but <xref
      linkend="fig.ref.details_style"/> shows a typical style tab for an
-     artifact in &argouml; (in this case an interface).</para>
+     artifact in &argouml; 
+     (in this case a package).
+   </para>
 
     <figure id="fig.ref.details_style" float="1">
       <title>A typical <literal>Style</literal> tab on the details
@@ -501,7 +551,8 @@ Initially this
       </mediaobject></screenshot>
     </figure>
 
-    <para>There may be further fields in some cases, but the four fields shown
+    <para>There may be further fields in some cases, e.g. for a class, 
+      but the fields shown
       are common to many artifacts.</para>
 
     <itemizedlist>
@@ -512,25 +563,66 @@ Initially this
         left corner of the box; iii) the width of the box; and iv) the height
         of the box. All units are pixels on the editing pane.</para>
 
-      <caution><para>This field has no effect on 1D artifacts that link other
-        artifacts (associations, generalizations etc), since their position is
-        constrained by their connectedness.</para></caution>
-
-      <warning><para>In the current version of &argouml; there is strange
-        behavior when typing in this field. Be wary of the cursor jumping
-        around unexpectedly.</para></warning></listitem>
+        <caution><para>This field has no effect on 1D artifacts that link other
+          artifacts (associations, generalizations etc), since their position is
+          constrained by their connectedness.
+        </para></caution>
+      </listitem>
 
       <listitem><para><literal>Fill:</literal> This drop-down selector
         specifies the fill color for 2D artifacts. It is not present for line
-        artifacts.</para></listitem>
+        artifacts.
+        Selecting <literal>No Fill</literal> makes the artifact transparant.
+        Selecting <literal>Custom</literal> allows to create other colors then
+        the ones listed. 
+        It causes the color selector dialog box to appear, see 
+        <xref linkend="fig.ref.details_style_colorpicker1"/>.
+      </para></listitem>
 
       <listitem><para><literal>Line:</literal> This drop-down selector
-        specifies the line color for artifacts.</para></listitem>
+        specifies the line color for artifacts.
+        Selecting <literal>No Fill</literal> makes the artifact transparant.
+        Selecting <literal>Custom</literal> allows to create other colors then
+        the ones listed. 
+        It causes the color selector dialog box to appear, see 
+        <xref linkend="fig.ref.details_style_colorpicker1"/>.
+      </para></listitem>
 
       <listitem><para><literal>Shadow:</literal> This drop-down selector
         specifies the width of the shadow (if any) for 2D artifacts. It is not
         present for line artifacts.</para></listitem>
     </itemizedlist>
+
+    <figure id="fig.ref.details_style_colorpicker1" float="1">
+      <title>The <literal>Custom Fill/Line Color</literal> dialog box</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/details_style_colorpicker1.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <figure id="fig.ref.details_style_colorpicker2" float="1">
+      <title>The <literal>Custom Fill/Line Color</literal> dialog box</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/details_style_colorpicker2.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+
+    <figure id="fig.ref.details_style_colorpicker3" float="1">
+      <title>The <literal>Custom Fill/Line Color</literal> dialog box</title>
+      <screenshot><mediaobject>
+        <imageobject>
+          <imagedata format="PNG" align="center"
+                     fileref="images/reference/details_style_colorpicker3.png"/>
+        </imageobject>
+      </mediaobject></screenshot>
+    </figure>
+
   </sect1>
 
   <!-- The Source tab -->
@@ -543,9 +635,9 @@ Initially this
       required (most specifically for classes). The intention is that you will
       add artifact specific code here, and it will be incorporated.</para>
 
-    <warning><para>This is part of &argouml; that is very much under
+    <warning><para>This part of &argouml; is very much under
       development. At this stage any code you add will be lost.
-</para>
+      </para>
     </warning>
   </sect1>
 
@@ -562,7 +654,7 @@ Initially this
     <para>The standard pre-defines a small number of constraints (for example
       the <literal>xor</literal> constraint over a set of associations
       indicating that only one may be manifest for any particular
-      instance.</para>
+      instance).</para>
 
     <para>The standard also envisages a number of circumstances where general
       purpose constraints may be useful:</para>
@@ -590,7 +682,6 @@ Initially this
     <figure id="fig.ref.details_constraints" float="1">
       <title>A typical <literal>Constraints</literal> tab on the details
         pane</title>
-
       <screenshot><mediaobject>
         <imageobject>
           <imagedata format="PNG" align="center"
@@ -614,7 +705,27 @@ Initially this
         tab</literal> for that new constraint (see
         <xref linkend="s2.ref.details_constraint_editor"/>). The new constraint
         is created with a context declaration for the currently selected
-        artifact.</para></listitem>
+        artifact.
+        </para>
+        <warning>
+          <para>
+            It seems logical, that when a new constraint is created, 
+            it needs to be edited. But &argouml; V0.14 fails to start the OCL editor 
+            upon creation; you have to do this by 
+            primo selecting the new constraint first, 
+            secundo rename it, 
+            and tertio press the <literal>Edit Constraint</literal> button.
+            It is essental for successfully creating a constraint 
+            to follow these 4 steps accurately: create, select,
+            rename, edit.
+            The step to rename is necessary, because the validity check will
+            refuse the constraint if 
+            its name differs from the name mentioned in the constraint text.
+            For the same reason, renaming a constraint afterwards is impossible.
+          </para>
+        </warning>
+        <!-- TODO: See enhancement issue ...  -->
+      </listitem>
 
       <!-- Delete constraint -->
 
@@ -624,7 +735,18 @@ Initially this
         </imageobject></inlinemediaobject></guiicon>
         <literal>Delete Constraint</literal>. The constraint currently selected
         in the <literal>Constraint&nbsp;Name</literal> box (see below) is
-        deleted.</para></listitem>
+        deleted.
+        </para>
+        
+        <caution>
+          <para>
+            In V0.14 of &argouml; this button is not downlighted when 
+            it is not functional, i.e. when
+            no constraint is selected.
+            <!-- TODO: See issue ... -->
+          </para>
+        </caution>
+      </listitem>
 
       <!-- Edit constraint -->
 
@@ -636,11 +758,22 @@ Initially this
         in the <literal>Constraints</literal> tab (see
         <xref linkend="s2.ref.details_constraint_editor"/>). The editor is
         invoked on the constraint currently selected in the
-        <literal>Constraint&nbsp;Name</literal> box.</para></listitem>
+        <literal>Constraint&nbsp;Name</literal> box.
+        </para>
+        
+        <caution>
+          <para>
+            In V0.14 of &argouml; this button is not downlighted when 
+            it is not functional, i.e. when
+            no constraint is selected.
+            <!-- TODO: See issue ... -->
+          </para>
+        </caution>
+      </listitem>
 
       <!-- Check constraint -->
 
-      <listitem><para><guiicon><inlinemediaobject><imageobject>
+      <!--listitem><para><guiicon><inlinemediaobject><imageobject>
         <imagedata format="GIF" align="center"
                    fileref="images/icons/check_constraint.gif"/> 
         </imageobject></inlinemediaobject></guiicon>
@@ -651,7 +784,7 @@ Initially this
         grayed out on the main <literal>Constraints</literal> tab. It may only
         be invoked from within the constraint editor (see
         <xref linkend="s2.ref.details_constraint_editor"/>).
-      </para></caution></listitem>
+      </para></caution></listitem-->
 
       <!-- Configure constraints -->
 
@@ -667,7 +800,6 @@ Initially this
 
       <figure id="fig.ref.details_constraints_dialog" float="1">
         <title>Dialog box for configuring constraints</title>
-
         <screenshot><mediaobject>
           <imageobject>
             <imagedata format="PNG" align="center"
@@ -676,8 +808,9 @@ Initially this
         </mediaobject></screenshot>
       </figure>
 
-      <para>The dialog box has a check box for two options, both enabled by
-        default.</para>
+      <para>
+        The dialog box has a check box for the following option.
+      </para>
 
       <itemizedlist>
         <listitem><para><literal>Check type conformance of OCL
@@ -685,11 +818,6 @@ Initially this
           design it may be helpful to disable type checking, rather than follow
           through all the detailed specification needed to get type
           consistency.</para></listitem>
-
-        <listitem><para><literal>AutoSplit: Automatically split
-          apart multiple constraints entered as a single text</literal>. If you
-          enter multiple constraints in the editor, this will cause them to be
-          split into separate constraints.</para></listitem>
       </itemizedlist>
 
       <para>At the bottom are two buttons, labeled
@@ -697,14 +825,14 @@ Initially this
         <literal>Cancel</literal> (to discard the changes).</para></listitem>
     </itemizedlist>
 
-    <para>To the right of the toolbar is a check box labeled <literal>Syntax
+    <!--para>To the right of the toolbar is a check box labeled <literal>Syntax
       Assistant</literal> (unchecked by default), which will enable the syntax
       assistant in the constraint editor (see
       <xref linkend="s2.ref.details_constraint_editor"/>).</para>
 
     <caution><para>In the current release of &argouml; this check box is always
       grayed out on the main <literal>Constraints</literal> tab. It may only be
-      changed from within the constraint editor.</para></caution>
+      changed from within the constraint editor.</para></caution-->
 
     <para>The main body of the constraints tab comprises two boxes, a smaller
       to the left and a larger one to the right. The two are separated by two
@@ -738,15 +866,18 @@ Initially this
       artifact. A constraint may be selected by &button1; click.</para>
 
     <para>The box on the right is labeled <literal>Preview</literal> and
-      contains the text of the constraint. Where a constraint is too large for
+      contains the text of the constraint.
+      This box only shows some contents if a constraint is selected.
+      Where a constraint is too large for
       the box, a scroll bar is provided to the right.</para>
 
     <sect2 id="s2.ref.details_constraint_editor">
       <title>The Constraint Editor</title>
     
       <para>This is invoked through the use of the
-        <literal>New&nbsp;Constraint</literal> or
-        <literal>Edit&nbsp;Constraint</literal> buttons on the main
+        <!-- TODO: Enter issue for the feature of the next line -->
+        <!-- <literal>New&nbsp;Constraint</literal> or -->
+        <literal>Edit&nbsp;Constraint</literal> button on the main
         <literal>Constraints</literal> tab. The constraint editor takes up the
         whole tab (see 
         <xref linkend="fig.ref.details_constraint_editor"/>).</para>
@@ -755,7 +886,6 @@ Initially this
 
       <figure id="fig.ref.details_constraint_editor" float="1">
         <title>Dialog box for configuring constraints</title>
-
         <screenshot><mediaobject>
           <imageobject>
             <imagedata format="PNG" align="center"
@@ -770,7 +900,7 @@ Initially this
 
         <!-- New constraint -->
 
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
+        <!--listitem><para><guiicon><inlinemediaobject><imageobject>
           <imagedata format="GIF" align="center"
                      fileref="images/icons/new_constraint.gif"/> 
           </imageobject></inlinemediaobject></guiicon>
@@ -781,22 +911,7 @@ Initially this
           always grayed out in the constraints editor. It can only be invoked
           from the main <literal>Constraints</literal> tab (see
           <xref linkend="s1.ref.details_constraints"/>).
-        </para></caution></listitem>
-
-        <!-- Delete constraint -->
-
-        <listitem><para><guiicon><inlinemediaobject><imageobject>
-          <imagedata format="GIF" align="center"
-                     fileref="images/icons/delete_constraint.gif"/> 
-          </imageobject></inlinemediaobject></guiicon>
-          <literal>Delete Constraint</literal>. The constraint is intended to
-          delete the constraint being edited.</para>
-
-        <caution><para>In the current release of &argouml; this button is
-          always grayed out in the constraints editor. It can only be invoked
-          from the main <literal>Constraints</literal> tab (see
-          <xref linkend="s1.ref.details_constraints"/>).
-        </para></caution></listitem>
+        </para></caution></listitem-->
 
         <!-- Cancel Edit constraint -->
 
@@ -820,10 +935,15 @@ Initially this
           <literal>Constraints</literal> tab. If the syntax is not valid, a
           dialog box explains the problem.</para>
 
-        <tip><para>Whether type checking is included is configurable using the
-          <literal>Configure&nbsp;Constraint&nbsp;Editor</literal> button (see
-          <xref linkend="s1.ref.details_constraints"/> for more
-          details).</para></tip></listitem>
+          <warning>
+            <para>Whether type checking is included should be configurable with the
+              <literal>Configure&nbsp;Constraint&nbsp;Editor</literal> button (see
+              below). But &argouml; V0.14 does always check, and refuses to
+              accept any constraint with the slightest error.
+              <!-- TODO: See issue ... -->
+            </para>
+          </warning>
+        </listitem>
 
         <!-- Configure constraints -->
 
@@ -843,11 +963,24 @@ Initially this
         syntax assistant in the constraint editor.</para>
 
       <para>If the syntax assistant is enabled, six drop down menus are
-        provided in a row immediately after the toolbar. These provide standard
+        provided in a row immediately below the toolbar. These provide standard
         templates for OCL that, when selected, will be inserted into the
         constraint being edited.</para>
+        
+        <!-- TODO: These drop-down menus are very non-standard UI widgets. 
+        Normally, drop down combo boxes do not invoke an action, 
+        that is considered bad behaviour. 
+        Also, the first item in the drop-down is not supposed to be a title, 
+        selecting of which only cancels opening the drop-down.
+        Make something better, see enhancement issue ... -->
+        
+      <para>
+        The syntax assistant can be made floating in a seperate window by 
+        &button1; motion on the small divider area to the left of the row of
+        drop-down menus.
+      </para>
 
-      <!-- Details of the syntax assistance -->
+      <!-- Details of the syntax assistant -->
 
       <itemizedlist>
         <listitem><para><literal>General</literal>. General OCL
@@ -869,7 +1002,10 @@ Initially this
         <listitem><para><literal>Numbers</literal>. Arithmetic operators and
           functions. Entries: <literal>+</literal>; <literal>-</literal>;
           <literal>*</literal>; <literal>/</literal>; <literal>mod</literal>;
-          <literal>div</literal>; and <literal>abs</literal>.</para></listitem>
+          <literal>div</literal>; <literal>abs</literal>;
+          <literal>max</literal>; <literal>min</literal>;
+          <literal>round</literal>; and <literal>floor</literal>.
+        </para></listitem>
       
         <listitem><para><literal>Strings</literal>. String functions. Entries:
           <literal>concat</literal>; <literal>size</literal>;
@@ -908,7 +1044,7 @@ Initially this
             difference); and
             <literal>symmetricDifference</literal>.</para></listitem>
 
-          <listitem><para><literal>General</literal>. Functions that apply to
+          <listitem><para><literal>Sequences</literal>. Functions that apply to
             sequences. Entries: <literal>first</literal>;
             <literal>last</literal>; <literal>at</literal>;
             <literal>append</literal>; <literal>prepend</literal>; and
@@ -926,13 +1062,13 @@ Initially this
         <literal>Ctrl-C</literal> and <literal>Ctrl-V</literal>
         respectively.</para>
 
-      <warning><para>There is a known problem with the current release of
+      <warning><para>There is a known problem with the V0.14 release of
         &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
         <literal>Paste</literal> functions on the <literal>Edit</literal> menu
         cannot be used within the constraint editor. If used they will work on
         the currently selected artifact in the editing pane.</para>
 
-      <para>Given the known problems with these menu buttons in the current
+      <para>Given the known problems with these menu buttons in the V0.14
         release of &argouml; (see <xref linkend="s2.ref.menu_cut"/>,
         <xref linkend="s2.ref.menu_copy"/> and
         <xref linkend="s2.ref.menu_paste"/>) this could disrupt the model. It
@@ -951,7 +1087,7 @@ Initially this
       <emphasis>tags</emphasis>. UML pre-defines a number of tags that are
       useful for many of its artifacts.</para>
 
-    <note><para>The <literal>documentation</literal> tag is defined for the top
+    <note><para>The tag <literal>documentation</literal> is defined for the top
       UML metaclass, <literal>Element</literal> and is so available to all
       artifacts. In &argouml; documentation values are provided through the
       <literal>Documentation</literal> tab, rather than by using the
@@ -969,13 +1105,13 @@ Initially this
       <literal>Ctrl-C</literal> and <literal>Ctrl-V</literal>
       respectively.</para>
 
-    <warning><para>There is a known problem with the current release of
+    <warning><para>There is a known problem with the V0.14 release of
       &argouml;. The <literal>Cut</literal>, <literal>Copy</literal> and
       <literal>Paste</literal> functions on the <literal>Edit</literal> menu
       cannot be used within the constraint editor. If used they will work on
       the currently selected artifact in the editing pane.</para>
 
-   <para>Given the known problems with these menu buttons in the current
+   <para>Given the known problems with these menu buttons in the V0.14
       release of &argouml; (see <xref linkend="s2.ref.menu_cut"/>, <xref
       linkend="s2.ref.menu_copy"/> and <xref linkend="s2.ref.menu_paste"/>)
       this could disrupt the model. It should be avoided at all
@@ -984,7 +1120,7 @@ Initially this
 
   <!-- The Checklist tab -->
 
-  <sect1>
+  <!--sect1>
     <title>Checklist Tab</title>
 
     <para>&argouml; provides the concept that the user can maintain a checklist
@@ -993,7 +1129,7 @@ Initially this
 
     <caution><para>In the current release of &argouml; this tab is not
       implemented, and is always grayed out.</para></caution>
-  </sect1>
+  </sect1-->
 </chapter>
 
 <!-- Local stuff for Emacs - please do not delete

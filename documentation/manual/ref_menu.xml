@@ -1006,7 +1006,7 @@ on to the current diagram in the drawing pane.
       <!-- TODO: enter an issue to remove this useless menu item ... -->
     </sect2>
 
-    <!-- Settings for Argo/UML -->
+    <!-- Settings for ArgoUML -->
 
     <sect2 id="s2.ref.menu_settings">
       <title>Settings&hellip;</title>
@@ -1310,6 +1310,7 @@ See issue ... -->
 
     <sect2>
       <title>Goto Diagram&hellip;</title>
+      <!-- TODO: There is a new icon (?). See issue 2156. -->
 
       <para>This menu entry brings up a dialog box, describing all the diagrams
         in the current project under &argouml; (see
