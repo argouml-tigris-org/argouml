@@ -24,20 +24,14 @@
 package org.argouml.cognitive.ui;
 
 import java.awt.*;
-import java.awt.event.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.text.*;
+import java.text.MessageFormat;
 
-import ru.novosoft.uml.foundation.core.*;
+import ru.novosoft.uml.foundation.core.MModelElement;
 
-import org.tigris.gef.ui.ToolBar;
-
-import org.argouml.application.api.*;
+import org.argouml.application.api.Argo;
 import org.argouml.cognitive.*;
-import org.argouml.cognitive.critics.*;
+import org.argouml.cognitive.critics.Critic;
 
 public class WizDescription extends WizStep {
 
