@@ -83,8 +83,8 @@ public class PopupMenuNewAction extends JPopupMenu {
 
         addSeparator();
 
-        ActionRemoveModelElement.SINGLETON.setTarget(
-						     list.getSelectedValue());
+        ActionRemoveModelElement.SINGLETON.setObjectToRemove(ActionNewAction
+             .getAction(role, list.getTarget()));
         add(ActionRemoveModelElement.SINGLETON);
     }
 }

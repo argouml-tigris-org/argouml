@@ -113,4 +113,27 @@ public abstract class ActionNewAction extends AbstractActionNewModelElement {
         
     }
 
+    /**
+     * @param role the role the action plays
+     * @param t the transition or state to get the action for
+     * @return the action
+     */
+    public static Object getAction(String role, Object t) {
+        if (role.equals(Roles.EXIT)) {
+            return ModelFacade.getExit(t);
+        } else
+            if (role.equals(Roles.ENTRY)) {
+                return ModelFacade.getEntry(t);          
+            } else
+                if (role.equals(Roles.DO)) {
+                    return ModelFacade.getDoActivity(t);
+                } else
+                    if (role.equals(Roles.ACTION)) {
+                        return ModelFacade.getAction(t);
+                    } else
+                        if (role.equals(Roles.EFFECT)) {
+                            return ModelFacade.getEffect(t);
+                        } 
+        return null;
+    }
 }
