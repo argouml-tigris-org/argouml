@@ -48,6 +48,8 @@ import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
 
+import ru.novosoft.uml.MElementEvent;
+
 
 /** Class to display graphics for a UML ObjectFlowState in a diagram. 
  * 
@@ -83,8 +85,8 @@ public class FigObjectFlowState extends FigNodeModelElement {
                 Color.cyan, Color.cyan));
         cover = new FigRect(OFFSET, OFFSET, WIDTH, HEIGHT, 
                 Color.black, Color.white);
-                                                // values don't care
-        classifier = new FigText(OFFSET, WIDTH - OFFSET, WIDTH, 21); 
+
+        classifier = new FigText(OFFSET, HEIGHT - OFFSET, WIDTH, 21); 
         classifier.setFont(getLabelFont());
         classifier.setTextColor(Color.black);
         classifier.setMultiLine(false);
@@ -93,7 +95,7 @@ public class FigObjectFlowState extends FigNodeModelElement {
         classifier.setFilled(false);
         classifier.setUnderline(true);
         
-        state = new FigText(OFFSET, OFFSET, WIDTH, 21); // values don't care
+        state = new FigText(OFFSET, OFFSET, WIDTH, 21); 
         state.setFont(getLabelFont());
         state.setTextColor(Color.black);
         state.setMultiLine(false);
@@ -127,6 +129,16 @@ public class FigObjectFlowState extends FigNodeModelElement {
         this();
         setOwner(node);
         enableSizeChecking(true);
+    }
+
+    /**
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     */
+    protected void modelChanged(MElementEvent mee) {        
+        super.modelChanged(mee);
+        if (mee.getSource() == getOwner()) {
+            renderingChanged();
+        }
     }
     
     /**
