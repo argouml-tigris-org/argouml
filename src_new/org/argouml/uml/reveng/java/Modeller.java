@@ -451,6 +451,9 @@ public class Modeller
         catch (ClassifierNotFoundException e) {
             // Must add it anyway, or the class poping will mismatch.
             addClass(name, (short) 0, null, new Vector(), "");
+            cat.warn("Modeller.java: an anonymous class was created\n" +
+                     "although it could not be found in the classpath.\n" +
+                         "\t" + e);
         }
     }
 
