@@ -38,6 +38,7 @@ import org.argouml.application.api.Notation;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.Model;
 import org.argouml.ui.ArgoJMenu;
+import org.argouml.ui.ProjectBrowser;
 import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.base.PathConvPercentPlusConst;
@@ -249,16 +250,30 @@ public class FigAssociation extends FigEdgeModelElement {
 	    Model.getCoreHelper().setName(destAE, destRole.getText());
 	} else if (ft == srcMult) {
 	    Object srcAE = (conn.toArray())[0];
-	    Object multi =
-	        Model.getDataTypesFactory()
-	        	.createMultiplicity(srcMult.getText());
-	    Model.getCoreHelper().setMultiplicity(srcAE, multi);
+	    try {
+	        Object multi = Model.getDataTypesFactory()
+	                        .createMultiplicity(srcMult.getText());
+	        Model.getCoreHelper().setMultiplicity(srcAE, multi);
+	    } catch (IllegalArgumentException e) {
+	        ProjectBrowser.getInstance().getStatusBar().showStatus(
+                        "Error parsing multiplicity: " + e);
+                // TODO: i18n
+	        srcMult.setText(
+                    Model.getFacade().getMultiplicity(srcAE).toString());
+	    }
 	} else if (ft == destMult) {
 	    Object destAE = (conn.toArray())[1];
-	    Object multi =
-	        Model.getDataTypesFactory()
-	        	.createMultiplicity(destMult.getText());
-	    Model.getCoreHelper().setMultiplicity(destAE, multi);
+	    try {
+	        Object multi = Model.getDataTypesFactory()
+	                        .createMultiplicity(destMult.getText());
+	        Model.getCoreHelper().setMultiplicity(destAE, multi);
+	    } catch (IllegalArgumentException e) {
+	        ProjectBrowser.getInstance().getStatusBar().showStatus(
+	                "Error parsing multiplicity: " + e);
+	        // TODO: i18n
+	        srcMult.setText(
+                    Model.getFacade().getMultiplicity(destAE).toString());
+	    }
 	}
     }
 
@@ -275,10 +290,10 @@ public class FigAssociation extends FigEdgeModelElement {
 	Object order = Model.getFacade().getOrdering(end);
         String visi = "";
         Object stereo = null;
+        Object et = Model.getFacade().getType(end);
         if (Model.getFacade().isNavigable(end)
-	    && (Model.getFacade().isAClass(Model.getFacade().getType(end))
-		|| Model.getFacade().isAInterface(Model.getFacade()
-		        .getType(end)))) {
+	    && (Model.getFacade().isAClass(et) 
+                || Model.getFacade().isAInterface(et))) {
 	    visi = 
 	        Notation.generate(this, Model.getFacade().getVisibility(end));
         }
@@ -292,8 +307,7 @@ public class FigAssociation extends FigEdgeModelElement {
 	if (n.length() < 1) visi = ""; //temporary solution for issue 1011
 	if (stereo != null) {
 	    roleToUpdate.setText(Notation.generate(this, stereo)
-				 + " " + visi
-				 + n);
+				 + " " + visi + n);
 	} else {
 	    roleToUpdate.setText(visi + n);
 	}
