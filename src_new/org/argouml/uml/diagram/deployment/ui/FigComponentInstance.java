@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -95,8 +96,8 @@ public class FigComponentInstance extends FigNodeModelElement {
         this();
         setOwner(node);
         if (org.argouml.model.ModelFacade.isAClassifier(node)
-            && (((MClassifier) node).getName() != null))
-            _name.setText(((MModelElement) node).getName());
+            && (org.argouml.model.ModelFacade.getName(node) != null))
+            _name.setText(org.argouml.model.ModelFacade.getName(node));
         updateBounds();
     }
 
@@ -344,9 +345,9 @@ public class FigComponentInstance extends FigNodeModelElement {
         Collection col = coi.getClassifiers();
         if (col != null && col.size() > 0) {
             Iterator it = col.iterator();
-            baseStr = ((MClassifier) it.next()).getName();
+            baseStr = org.argouml.model.ModelFacade.getName(it.next());
             while (it.hasNext()) {
-                baseStr += ", " + ((MClassifier) it.next()).getName();
+                baseStr += ", " + org.argouml.model.ModelFacade.getName(it.next());
             }
         }
         if (_readyToEdit) {

@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -768,7 +769,7 @@ public abstract class FigNodeModelElement
                 return;
             MModelElement owner = (MModelElement) getOwner();
             String nameStr =
-                Notation.generate(this, ((MModelElement) getOwner()).getName());
+                Notation.generate(this, org.argouml.model.ModelFacade.getName(getOwner()));
             _name.setText(nameStr);
             updateBounds();
         }

@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -323,8 +324,8 @@ public class FigPackage extends FigNodeModelElement {
         // Don't know if this should rather be done in one of the super
         // classes, since similar code is used in FigClass.java etc.
         // Andreas Rueckert <a_rueckert@gmx.net>
-        if (org.argouml.model.ModelFacade.isAPackage(node) && (((MPackage) node).getName() != null))
-            _name.setText(((MModelElement) node).getName());
+        if (org.argouml.model.ModelFacade.isAPackage(node) && (org.argouml.model.ModelFacade.getName(node) != null))
+            _name.setText(org.argouml.model.ModelFacade.getName(node));
     }
 
     public String placeString() {

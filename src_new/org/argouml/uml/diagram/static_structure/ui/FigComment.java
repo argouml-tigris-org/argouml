@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -425,7 +426,7 @@ public class FigComment
      */
     public final String retrieveNote() {
         return (getOwner() != null)
-	    ? ((MModelElement) getOwner()).getName()
+	    ? org.argouml.model.ModelFacade.getName(getOwner())
 	    : null;
     }
 
@@ -507,7 +508,7 @@ public class FigComment
      */
     protected void updateNameText() {
         if (getOwner() != null) {
-            String text = ((MComment) getOwner()).getName();
+            String text = org.argouml.model.ModelFacade.getName(getOwner());
             if (text != null) {
                 _text.setText(text);
                 calcBounds();

@@ -1,4 +1,5 @@
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -129,7 +130,7 @@ public class ItemUID
     protected static String readObjectID(Object obj)
     {
 	if (org.argouml.model.ModelFacade.isABase(obj))
-	    return ((MBase) obj).getUUID();
+	    return org.argouml.model.ModelFacade.getUUID(obj);
 
 	/*
 	// Want to use the "built in" UID of the MXxx instances

@@ -2,6 +2,7 @@
 
 
 
+
 // $Id$
 // Copyright (c) 1996-2001 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -169,7 +170,7 @@ public abstract class Generator
             return generateMessage((MMessage) o);
 
         if (org.argouml.model.ModelFacade.isAModelElement(o))
-            return generateName(((MModelElement) o).getName());
+            return generateName(org.argouml.model.ModelFacade.getName(o));
 
         if (o == null)
             return "";

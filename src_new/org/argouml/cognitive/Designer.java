@@ -1,3 +1,4 @@
+
 // $Id$
 // Copyright (c) 1996-99 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -347,8 +348,7 @@ public class Designer
     /** TODO: remove this */
     public void propertySet(MElementEvent mee) {
         critiqueASAP(mee.getSource(),
-		     ((MModelElement) mee.getOldValue())
-		     .getName());
+		     org.argouml.model.ModelFacade.getName(mee.getOldValue()));
     }
     
     /** TODO: remove this */

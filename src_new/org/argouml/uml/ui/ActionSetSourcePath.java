@@ -1,5 +1,6 @@
 
 
+
 // $Id$
 // Copyright (c) 1996-2002 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
@@ -85,7 +86,7 @@ public class ActionSetSourcePath extends UMLAction {
 	String type = null;
 	String path = null;
 	if (org.argouml.model.ModelFacade.isAModelElement(obj)) {
-	    name = ((MModelElement) obj).getName();
+	    name = org.argouml.model.ModelFacade.getName(obj);
 	    path = ((MModelElement) obj).getTaggedValue("src_path");
 	    if (org.argouml.model.ModelFacade.isAPackage(obj))
 		type = "Package";
