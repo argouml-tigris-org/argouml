@@ -27,6 +27,39 @@ package org.argouml.uml.diagram;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.argouml.model.ModelFacade;
+import org.argouml.uml.diagram.activity.ui.FigActionState;
+import org.argouml.uml.diagram.activity.ui.FigCallState;
+import org.argouml.uml.diagram.activity.ui.FigObjectFlowState;
+import org.argouml.uml.diagram.activity.ui.FigPartition;
+import org.argouml.uml.diagram.activity.ui.FigSubactivityState;
+import org.argouml.uml.diagram.collaboration.ui.FigClassifierRole;
+import org.argouml.uml.diagram.deployment.ui.FigComponent;
+import org.argouml.uml.diagram.deployment.ui.FigComponentInstance;
+import org.argouml.uml.diagram.deployment.ui.FigMNode;
+import org.argouml.uml.diagram.deployment.ui.FigMNodeInstance;
+import org.argouml.uml.diagram.deployment.ui.FigObject;
+import org.argouml.uml.diagram.state.ui.FigBranchState;
+import org.argouml.uml.diagram.state.ui.FigCompositeState;
+import org.argouml.uml.diagram.state.ui.FigDeepHistoryState;
+import org.argouml.uml.diagram.state.ui.FigFinalState;
+import org.argouml.uml.diagram.state.ui.FigForkState;
+import org.argouml.uml.diagram.state.ui.FigInitialState;
+import org.argouml.uml.diagram.state.ui.FigJoinState;
+import org.argouml.uml.diagram.state.ui.FigJunctionState;
+import org.argouml.uml.diagram.state.ui.FigShallowHistoryState;
+import org.argouml.uml.diagram.state.ui.FigSimpleState;
+import org.argouml.uml.diagram.static_structure.ui.FigClass;
+import org.argouml.uml.diagram.static_structure.ui.FigComment;
+import org.argouml.uml.diagram.static_structure.ui.FigInstance;
+import org.argouml.uml.diagram.static_structure.ui.FigInterface;
+import org.argouml.uml.diagram.static_structure.ui.FigModel;
+import org.argouml.uml.diagram.static_structure.ui.FigPackage;
+import org.argouml.uml.diagram.static_structure.ui.FigSubsystem;
+import org.argouml.uml.diagram.ui.FigMessage;
+import org.argouml.uml.diagram.ui.FigNodeAssociation;
+import org.argouml.uml.diagram.use_case.ui.FigActor;
+import org.argouml.uml.diagram.use_case.ui.FigUseCase;
 
 import org.tigris.gef.graph.GraphEdgeRenderer;
 import org.tigris.gef.graph.GraphNodeRenderer;
@@ -51,7 +84,7 @@ import org.tigris.gef.presentation.FigNode;
 public abstract class UmlDiagramRenderer
     implements GraphNodeRenderer, GraphEdgeRenderer {
     private static final Logger LOG =
-	Logger.getLogger(UmlDiagramRenderer.class);
+        Logger.getLogger(UmlDiagramRenderer.class);
 
     /**
      * Return a Fig that can be used to represent the given node
@@ -61,7 +94,84 @@ public abstract class UmlDiagramRenderer
      * java.lang.Object)
      */
     public FigNode getFigNodeFor(Object node, Map styleAttributes) {
-        return null;
+        FigNode figNode = null;
+        if (ModelFacade.isAComment(node)) {
+            figNode = new FigComment();
+        } else if (ModelFacade.isAClass(node)) {
+             figNode = new FigClass();
+        } else if (ModelFacade.isAInterface(node)) {
+            figNode = new FigInterface();
+        } else if (ModelFacade.isAInstance(node)) {
+            figNode = new FigInstance();
+        } else if (ModelFacade.isAModel(node)) {
+            figNode = new FigModel();
+        } else if (ModelFacade.isASubsystem(node)) {
+            figNode = new FigSubsystem();
+        } else if (ModelFacade.isAPackage(node)) {
+            figNode = new FigPackage();
+        } else if (ModelFacade.isAAssociation(node)) {
+            figNode = new FigNodeAssociation();
+        } else if (ModelFacade.isAActor(node)) {
+            figNode = new FigActor();
+        } else if (ModelFacade.isAUseCase(node)) {
+            figNode = new FigUseCase();
+        } else if (ModelFacade.isAPartition(node)) {
+            figNode = new FigPartition();
+        } else if (ModelFacade.isACallState(node)) {
+            figNode = new FigCallState();
+        } else if (ModelFacade.isAObjectFlowState(node)) {
+            figNode = new FigObjectFlowState();
+        } else if (ModelFacade.isASubactivityState(node)) {
+            figNode = new FigSubactivityState();
+        } else if (ModelFacade.isAClassifierRole(node)) {
+            figNode = new FigClassifierRole();
+        } else if (ModelFacade.isAMessage(node)) {
+            figNode = new FigMessage();
+        } else if (ModelFacade.isANode(node)) {
+            figNode = new FigMNode();
+        } else if (ModelFacade.isANodeInstance(node)) {
+            figNode = new FigMNodeInstance();
+        } else if (ModelFacade.isAComponent(node)) {
+            figNode = new FigComponent();
+        } else if (ModelFacade.isAComponentInstance(node)) {
+            figNode = new FigComponentInstance();
+        } else if (ModelFacade.isAObject(node)) {
+            figNode = new FigObject();
+        } else if (ModelFacade.isAComment(node)) {
+            figNode = new FigComment();
+        } else if (ModelFacade.isAActionState(node)) {
+            figNode = new FigActionState();
+        } else if (org.argouml.model.ModelFacade.isAFinalState(node)) {
+            figNode = new FigFinalState();
+        } else if (org.argouml.model.ModelFacade.isACompositeState(node)) {
+            figNode = new FigCompositeState();
+        } else if (org.argouml.model.ModelFacade.isAState(node)) {
+            figNode = new FigSimpleState();
+        } else if (ModelFacade.isAPseudostate(node)) {
+            Object pState = node;
+            Object kind = ModelFacade.getKind(pState);
+            if (ModelFacade.INITIAL_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigInitialState();
+            } else if (ModelFacade.BRANCH_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigBranchState();
+            } else if (ModelFacade.JUNCTION_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigJunctionState();
+            } else if (ModelFacade.FORK_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigForkState();
+            } else if (ModelFacade.JOIN_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigJoinState();
+            } else if (ModelFacade.SHALLOWHISTORY_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigShallowHistoryState();
+            } else if (ModelFacade.DEEPHISTORY_PSEUDOSTATEKIND.equals(kind)) {
+                figNode = new FigDeepHistoryState();
+            }
+        }
+        
+        if (figNode == null) {
+            LOG.error("Failed to construct a FigNode for " + node);
+        }
+        
+        return figNode;
     }
 
     /**
