@@ -138,8 +138,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
   <target name="setversion">
     <!-- These cannot be changed in .ant.properties -->
-    <property name="nextversion" value="0.9.8"/>
-    <property name="lastversion" value="0.9.7"/>
+    <property name="thisversion" value="0.9.7"/>
   </target>
 
 
@@ -153,7 +152,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
 
     <property name="Name" value="ArgoUML"/>
     <property name="name" value="argouml"/>
-    <property name="version" value="${lastversion}-${DSTAMP}-${TSTAMP}"/>
+    <property name="version" value="PRE${thisversion}-${DSTAMP}-${TSTAMP}"/>
     <property name="year" value="2002"/>
 
     <echo message="------------------- ${Name} ${version} [${year}] ----------------"/>
@@ -505,7 +504,7 @@ doesn't find it's own XML-libs. You need to set ANT_HOME in your shell.
   <!-- Creates the whole distribution with adjusted version number         -->
   <!-- =================================================================== -->
   <target name="dist-release" depends="setversion">
-  	<property name="version" value="${nextversion}"/>
+  	<property name="version" value="${thisversion}"/>
   	<antcall target="dist-all">
   	</antcall>
   </target>
