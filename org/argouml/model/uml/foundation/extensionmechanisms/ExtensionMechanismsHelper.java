@@ -33,6 +33,7 @@ import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.foundation.core.CoreHelper;
+import org.argouml.model.uml.modelmanagement.ModelManagementHelper;
 
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
@@ -231,12 +232,12 @@ public class ExtensionMechanismsHelper {
      * @param stereo
      */
     public void setStereoType(Object modelElement, Object stereotype) {
-        MModelElement m = (MModelElement)modelElement;
-        MStereotype stereo = (MStereotype)stereotype;
-        if (stereo != null && m.getModel() != stereo.getModel()) {
-            stereo.setNamespace(m.getModel());
-        }
-        m.setStereotype(stereo);
+        ModelFacade.setStereotype(
+		modelElement,
+		ModelManagementHelper.getHelper().getCorrespondingElement(
+			stereotype,
+			ModelFacade.getModel(modelElement),
+			true));
     }
 
     /**
