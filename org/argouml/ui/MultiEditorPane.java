@@ -46,7 +46,7 @@ import org.argouml.uml.diagram.ui.*;
  *  the user to edit whatever is selected in the NavigatorPane. */
 
 public class MultiEditorPane extends JPanel
-implements ChangeListener, MouseListener {
+implements ChangeListener, MouseListener, QuadrantPanel {
 
   ////////////////////////////////////////////////////////////////
   // instance variables
@@ -231,5 +231,7 @@ implements ChangeListener, MouseListener {
             }
         }
     }
+
+    public int getQuadrant() { return Q_TOP_RIGHT; }
 
 } /* end class MultiEditorPane */
