@@ -59,7 +59,8 @@ public class SelectionComponent extends SelectionWButtons {
   ////////////////////////////////////////////////////////////////
   // constants
   public static Icon dep = ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("Dependency");
-
+  public static Icon depRight = 
+      ResourceLoaderWrapper.getResourceLoaderWrapper().lookupIconResource("DependencyRight");
 
 
   ////////////////////////////////////////////////////////////////
@@ -115,8 +116,8 @@ public class SelectionComponent extends SelectionWButtons {
     int ch = _content.getHeight();
     paintButtonAbove(dep, g, cx + cw/2, cy, 10);
     paintButtonBelow(dep, g, cx + cw/2, cy + ch, 11);
-    paintButtonLeft(dep, g, cx + cw, cy + ch/2, 12);
-    paintButtonRight(dep, g, cx, cy + ch/2, 13);
+    paintButtonLeft(depRight, g, cx + cw, cy + ch/2, 12);
+    paintButtonRight(depRight, g, cx, cy + ch/2, 13);
   }
 
 
