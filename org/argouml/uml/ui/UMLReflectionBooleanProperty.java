@@ -35,7 +35,12 @@ import org.argouml.ui.*;
 import org.apache.log4j.Category;
 import org.argouml.kernel.*;
 
-
+/**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLReflectionBooleanProperty extends UMLBooleanProperty {
     protected static Category cat = Category.getInstance(UMLReflectionBooleanProperty.class);
 

@@ -53,6 +53,9 @@ import ru.novosoft.uml.MElementListener;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.extension_mechanisms.MTaggedValue;
 
+/**
+ *Table view of a Model Element's Tagged Values.
+ */
 public class TabTaggedValues extends TabSpawnable
 implements TabModelTarget {
   ////////////////////////////////////////////////////////////////

@@ -44,6 +44,11 @@ import ru.novosoft.uml.foundation.data_types.MExpression;
  *  Method PropertySet listens for MElementEvent events and updates the other
  *  elements, such as type, visibility and changeability.
  *      Modified psager@tigris.org
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             to be replaced by something similar to {@link org.argouml.uml.ui.foundation.core.UMLAttributeInitialValueListModel},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 public class UMLInitialValueComboBox extends JComboBox 
              implements ActionListener, UMLUserInterfaceComponent {

@@ -39,6 +39,11 @@ import ru.novosoft.uml.foundation.core.MModelElement;
  *  This class is an implements a list model using reflection.
  *
  *  @author Curt Arnold
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by {@link org.argouml.uml.ui.UMLModelElementListModel2},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 public class UMLReflectionListModel extends UMLModelElementListModel   {
     protected static Category cat = Category.getInstance(UMLReflectionListModel.class);

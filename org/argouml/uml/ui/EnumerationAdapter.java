@@ -31,6 +31,8 @@ import java.util.*;
 /**
  *  This class implements the java.util.Enumeration interface
  *        by delegating to a java.util.Interator
+ *  @deprecated as of argouml 0.13.5 (10-may-2003),
+ *              no replacement as this class was never used.
  *  @author Curt Arnold
  */
 

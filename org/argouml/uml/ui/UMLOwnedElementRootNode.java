@@ -41,6 +41,11 @@ import org.argouml.application.api.*;
  *  This class is implements a tree model for ownedElements of a MNamespace
  *
  *  @author Curt Arnold
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by nothing,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 public class UMLOwnedElementRootNode extends UMLTreeRootNode  {
     

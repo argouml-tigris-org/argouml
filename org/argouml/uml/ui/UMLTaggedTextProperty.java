@@ -26,6 +26,12 @@ import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 import ru.novosoft.uml.foundation.core.*;
 
+/**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLTaggedTextProperty extends UMLTextProperty  {
     
     public UMLTaggedTextProperty(String propertyName) {

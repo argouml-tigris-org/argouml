@@ -27,6 +27,10 @@ import ru.novosoft.uml.*;
 import ru.novosoft.uml.behavior.common_behavior.MStimulus;
 import ru.novosoft.uml.behavior.common_behavior.MAction;
 
+/**
+ * @TODO this class should be moved to package
+ * org.argouml.uml.ui.behavior.common_behavior
+ */
 public class UMLStimulusActionTextProperty  {
     
    

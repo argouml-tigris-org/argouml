@@ -31,6 +31,12 @@ import java.awt.*;
 import ru.novosoft.uml.foundation.core.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 
+/**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by {@link org.argouml.uml.ui.UMLList2},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLList extends JList implements UMLUserInterfaceComponent, MouseListener {
 
     private UMLModelElementListModel _umlListModel;

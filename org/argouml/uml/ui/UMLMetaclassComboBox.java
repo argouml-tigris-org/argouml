@@ -31,6 +31,12 @@ import java.awt.event.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
+/**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by nothing?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLMetaclassComboBox extends JComboBox implements UMLUserInterfaceComponent, ItemListener {
    protected static Category cat = Category.getInstance(UMLMetaclassComboBox.class);
 

@@ -34,6 +34,11 @@ import ru.novosoft.uml.foundation.extension_mechanisms.*;
 
 /** An UMLTaggedBooleanProperty is a property which maintains a tagged value
  *  as a boolean field. It is e.g. used to work with UMLCheckbox.
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by ?,
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
  */
 public class UMLTaggedBooleanProperty extends UMLBooleanProperty {
     private String _tagName;

@@ -29,6 +29,10 @@ import javax.swing.*;
 import java.lang.reflect.*;
 import ru.novosoft.uml.*;
 
+/**
+ * @TODO this class should be moved to package
+ * org.argouml.uml.ui.behavior.common_behavior
+ */
 public class UMLStimulusActionTextField extends JTextField implements DocumentListener, UMLUserInterfaceComponent {
 
     private UMLUserInterfaceContainer _container;

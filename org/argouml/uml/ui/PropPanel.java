@@ -86,15 +86,18 @@ import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
 
 /**
- *   <p>
- *   This abstract class provides the basic layout and event dispatching
- *   support for all Property Panels.  The property panel is layed out
+ *   <p>This abstract class provides the basic layout and event dispatching
+ *   support for all Property Panels.</p>
+ *
+ *   <p>The property panel is {@link org.argouml.swingext.LabelledLayout layed out}
  *   as a number (specified in the constructor) of equally sized panels
  *   that split the available space.  Each panel has a column of
  *   "captions" and matching column of "fields" which are laid out
  *   indepently from the other panels.
  *   </p>
  *  
+ *   <p>The Properties panels for UML Model Elements are structured in an
+ *   inheritance hierarchy that matches the UML 1.3 metamodel.
  */
 abstract public class PropPanel extends TabSpawnable implements TabModelTarget, MElementListener, UMLUserInterfaceContainer {
     ////////////////////////////////////////////////////////////////
@@ -137,7 +140,7 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *    @param title Title of panel
      *    @param panelCount number of horizontal panels
      *    @deprecated As of ArgoUml version 0.13.2 (7-Dec-2002), replaced by
-     *                {@link #PropPanel(String title, ImageIcon icon, Orientation orientation)}
+     *                {@link #PropPanel(String, ImageIcon, Orientation)}
      *                I propose to remove this by version 0.13.7 (Bob Tarling)
      */
     public PropPanel(String title, int panelCount) {
@@ -232,6 +235,10 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *   @param panel panel index, zero-based.
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
+     *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+ *             replaced by ? - Labelled layout method.
      */
     public void addCaption(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
@@ -254,6 +261,11 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
         pane.add(component);
     }
 
+    /**
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+ *             replaced by ? - Labelled layout method
+     */
     public void addCaption(String label, int row, int panel, double weighty) {
         addCaption(new JLabel(localize(label)), row, panel, weighty);
     }
@@ -351,6 +363,10 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *   @param panel panel index, zero-based.
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
+     *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+ *             replaced by ? - Labelled layout method.
      */
     public void addField(Component component, int row, int panel, double weighty) {
         if (orientation == Vertical.getInstance()) {
@@ -386,6 +402,10 @@ abstract public class PropPanel extends TabSpawnable implements TabModelTarget, 
      *   @param panel panel index, zero-based.
      *   @param weighty specifies how to distribute extra vertical space,
      *      see GridBagConstraint for details on usage.
+     *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+     *         GridBagConstraints is no longer used as a prop panel layout,
+ *             replaced by ? - Labelled layout method.
      */
     final public void addLinkField(Component component, int row, int panel, double weighty) {
         component.setBackground(getBackground());

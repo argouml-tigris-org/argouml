@@ -62,6 +62,8 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  * 2. As dialog with a UMLCellRenderer. Cells in the choices list and selected list are presented with 
  * their name instead of their toString function.
  * </p>
+ *
+ * <p>$Id$
  */
 public class UMLAddDialog extends JPanel implements ActionListener {
 	

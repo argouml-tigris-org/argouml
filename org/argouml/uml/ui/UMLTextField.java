@@ -52,7 +52,13 @@ import ru.novosoft.uml.foundation.core.MClassifier;
 /**
  *  This class handles the updating of text as it is typed into the text field on one
  *  of the many property panels. By catching the MElementEvent dispatched from NSUML it
- *  updates the diagram as each character is typed. */
+ *  updates the diagram as each character is typed.
+ *
+ * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
+ *             replaced by {@link org.argouml.uml.ui.UMLTextField2},
+ *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             that used reflection a lot.
+ */
 public class UMLTextField
     extends JTextField
     implements DocumentListener, UMLUserInterfaceComponent, FocusListener {

@@ -36,8 +36,10 @@ import java.awt.*;
 /**
  *   This class extends JMenuItem to invoke a method upon selection.
  *   The method must have the form of "void method(MModelElement );".
+ *
  * @deprecated As of ArgoUml version 0.13.5, 
  * This class is not used and probably shouldn't be in the future either.
+ *
  *   @author Curt Arnold
  */
 public class UMLTreeMenuItem extends JMenuItem implements ActionListener {
