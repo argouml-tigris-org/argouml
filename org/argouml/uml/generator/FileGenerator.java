@@ -38,6 +38,11 @@ import java.util.*;
  * can generate a file.
  */
 public interface FileGenerator {
+	
+   /**
+   * The fileseperation for this operating system.
+   */
+	public final static String FILE_SEPARATOR = System.getProperty("file.separator");
     /** Generates a file for this classifier.
      * Needs-more-work:
      * This will only work for languages that have each node
