@@ -46,6 +46,7 @@ import ru.novosoft.uml.foundation.core.MAssociationEnd;
 import ru.novosoft.uml.foundation.core.MAttribute;
 import ru.novosoft.uml.foundation.core.MClassifier;
 import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.data_types.MExpression;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
 import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
@@ -59,7 +60,7 @@ public interface NotationProvider {
     public String generateExtensionPoint(MExtensionPoint op);
     public String generateOperation(MOperation op, boolean documented);
     public String generateAttribute(MAttribute attr, boolean documented);
-    public String generateParameter(Object parameter);
+    public String generateParameter(MParameter parameter);
     public String generateName(String name);
     public String generatePackage(MPackage pkg);
     public String generateExpression(MExpression expr);

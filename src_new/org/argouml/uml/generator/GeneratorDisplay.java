@@ -65,6 +65,7 @@ import ru.novosoft.uml.foundation.core.MGeneralization;
 import ru.novosoft.uml.foundation.core.MModelElement;
 import ru.novosoft.uml.foundation.core.MNamespace;
 import ru.novosoft.uml.foundation.core.MOperation;
+import ru.novosoft.uml.foundation.core.MParameter;
 import ru.novosoft.uml.foundation.core.MStructuralFeature;
 import ru.novosoft.uml.foundation.data_types.MChangeableKind;
 import ru.novosoft.uml.foundation.data_types.MMultiplicity;
@@ -174,7 +175,7 @@ public class GeneratorDisplay extends Generator {
             if (!ModelFacade.hasReturnParameterDirectionKind(parameter)) {
                 counter++;
                 parameterListBuffer.append(
-                    generateParameter(parameter)).append(
+                    generateParameter((MParameter)parameter)).append(
                     ",");
             }
         }
@@ -336,7 +337,7 @@ public class GeneratorDisplay extends Generator {
 
     }
 
-    public String generateParameter(Object parameter) {
+    public String generateParameter(MParameter parameter) {
         String s = "";
         //TODO: qualifiers (e.g., const)
         //TODO: stereotypes...

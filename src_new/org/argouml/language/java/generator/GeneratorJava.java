@@ -424,7 +424,7 @@ public class GeneratorJava
                 if (i > 0) {
                     sb.append(", ");
                 }
-                sb.append(generateParameter(params.elementAt(i)));
+                sb.append(generateParameter((MParameter)params.elementAt(i)));
 //                MParameter p = (MParameter) params.elementAt(i);
 //                sb.append(generateParameter(p));
             }
@@ -498,7 +498,7 @@ public class GeneratorJava
         return sb.toString();
     }
 
-    public String generateParameter(Object parameter) {
+    public String generateParameter(MParameter parameter) {
         StringBuffer sb = new StringBuffer(20);
         //TODO: qualifiers (e.g., const)
         //TODO: stereotypes...
