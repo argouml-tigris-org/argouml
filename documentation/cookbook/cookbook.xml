@@ -1247,6 +1247,68 @@ problems found by themselves and others.
      </para>
  </sect1>
 </chapter>
+
+  <chapter id="requirements">
+    <chapterinfo>
+      <authorgroup>
+	<author>
+	  <firstname>Linus</firstname>
+	  <surname>Tolke</surname>
+	</author>
+      </authorgroup>
+    </chapterinfo>
+    <title>ArgoUML requirements</title>
+
+    <para>
+This chapter contains a description on how ArgoUML should work
+and behave for the users.
+</para>
+
+    <para>
+These things might not be implemented yet and the solutions
+might not even be clear but it is a definition of the goal.
+</para>
+    <para>
+If it is not implemented that can could be registered as a bug
+in the bug registering tool.
+</para>
+
+    <sect1>
+      <title>Look and feel</title>
+      <para>
+This describes how the ArgoUML look and feel should behave.
+</para>
+      <para>
+Discussions on how this is supposed to be are not completed.
+</para>
+    </sect1>
+
+    <sect1>
+      <title>UML</title>
+      <para>
+ArgoUML shall be a correct implementation of the UML 1.3 model.
+</para>
+      <para>
+ArgoUML shall implement everything in the UML 1.3 model.
+</para>
+    </sect1>
+
+    <sect1>
+      <title>Logging and console output</title>
+      <para>
+The code shall contain entries logging important information
+for the purpose of helping developers to find problems.
+</para>
+      <para>
+All logging and console output shall be turned off by default
+so normally there shouldn't be anything written to the console
+or to any file.
+</para>
+    </sect1>
+
+  </chapter>
+
+
 <chapter id="components">
     <title>ArgoUML Components</title>
 
@@ -3705,9 +3767,10 @@ copying from another <filename>TabYYY.java</filename>
 (e.g. <classname>TabSrc</classname>, <classname>TabStyle</classname>).
 Then register your <classname>TabXXX</classname> in
 <filename>org/argouml/argo.ini</filename>
-by adding a line like
+by adding a line giving the compass point to place the tab.
+Like - 
 <programlisting>
-details: 	TabXXX
+south: 	TabXXX
 </programlisting>
 </para>
 	    </listitem>
@@ -5239,6 +5302,117 @@ code works also with the additions on that branch.
       </sect2>
 
 </sect1>
+
+    <sect1>
+      <title>Other CVS comments</title>
+      <para>
+This is included in the cookbook because it seems that there are
+persons within the project that don't have the in-depth knowledge
+of CVS nor the interest or need to acquire it.
+For that reason some simple questions are answered here to set
+the ground rule for use of CVS in the project.
+</para>
+      <itemizedlist>
+	<listitem>
+	  <para>
+Why do I get double lines?
+Why do I get ^M at the end of each line?
+Why do I get the whole checked out file on a single line?
+</para>
+	  <para>
+CVS is line oriented.
+It stores in the repository the concept of a new line
+after each line.
+It is the CVS clients (the program you have installed on you machine) 
+responsibility to convert the conceptual new line to the correct new
+line character on your system.
+<note>
+	      <para>
+This is only so for normal files (not marked with -kb in cvs).
+</para>
+	    </note>
+</para>
+	  <para>
+If files are moved from one system to another or for that matter
+checked out on one system and used and edited on another (NFS, SMB, ...)
+this is not done correctly.
+There could also be CVS clients out there, not doing this correctly. 
+</para>
+	  <para>
+Systems known to the author (Linus) are Unix uses LF, DOS/Windows uses CR-LF,
+Mac uses CR.
+</para>
+	  <para>
+Most of the time this really doesn't matter because the editors and
+java compiler on all systems is very forgiving.
+</para>
+	  <para>
+There are however some cases when this is cumbersome.
+</para>
+	  <orderedlist>
+	    <listitem>
+	      <para>When an editor (or developer) decides to "fix-it".</para>
+	      <para>
+This means that the editor (or the user) goes through the file and
+removes ^M on every line or something else that touches every line 
+in the file.
+</para>
+	      <para>
+This is a problem because the subsequent commit will also touch every
+line in the file making that file unmergeable.
+This means that every developer that had it modified in a branch or in
+a checked out copy will have no help from cvs when doing his merging.
+</para>
+	      <para>
+Remember that you never know what other developers are working with.
+</para>
+	      <para>
+This is fixed by not doing any such fixes and doing a cvs diff before
+each check in so that your editor has not done this for you.
+</para>
+	    </listitem>
+	    <listitem>
+	      <para>When cvs clients and file systems are not in sync</para>
+	      <para>
+This could result in one of several things. 
+Either each line get an extra empty line when commited,
+or the whole file turns out to be on the same line.
+</para>
+	      <para>
+This is the case on several files in the repository at the moment
+(August 2002, Linus) and can be cumbersome for the developers.
+</para>
+	      <para>
+These cases should be fixed because the files are no longer
+readable.
+For the first case, removing every other line (the empty ones)
+can in some cases be done without cvs having problems with
+merging later on.
+For the second case, with a single long line, this will be very
+problematic so even though it might cause problems for other
+developers it is better do this as soon as possible.
+</para>
+	      <para>
+When this is fixed, let the fix be the only thing done in that commit.
+</para>
+	      <para>
+To avoid this in the future, always do a cvs diff before doing your
+change to make sure that only the lines that you have actually
+modified will be changed by cvs and not the whole file.
+</para>
+	    </listitem>
+	  </orderedlist>
+	  <para>
+Files that are binary that shall be stored in cvs shall be marked
+as binary.
+They are marked with the admin flag -kb.
+This means that the line ending conversion mechanism will not be applied
+on those files and they will be exactly the same on all systems.
+This is good for jars, gifs, and other such files.
+</para>
+	</listitem>
+      </itemizedlist>
+    </sect1>
 </chapter>
 
 
