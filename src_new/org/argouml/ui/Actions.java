@@ -405,7 +405,7 @@ class ActionEmailExpert extends ToDoItemAction {
      * @see org.argouml.ui.ToDoItemAction#shouldBeEnabled(java.lang.Object)
      */
     public boolean shouldBeEnabled(Object target) {
-        return _target != null;
+        return _target != null && _target instanceof ToDoItem;
     }
 
 } /* end class ActionEmailExpert */
