@@ -30,18 +30,28 @@ import ru.novosoft.uml.MElementEvent;
 /**
  * @deprecated as of ArgoUml 0.13.5 (10-may-2003),
  *             replaced by {@link org.argouml.uml.ui.UMLModelElementListModel2},
- *             this class is part of the 'old'(pre 0.13.*) implementation of proppanels
+ *             this class is part of the 'old'(pre 0.13.*) 
+ *             implementation of proppanels
  *             that used reflection a lot.
  */
-abstract public class UMLModelElementCachedListModel extends UMLModelElementListModel {
+public abstract class UMLModelElementCachedListModel 
+    extends UMLModelElementListModel {
 
-    public UMLModelElementCachedListModel(UMLUserInterfaceContainer container, String property, boolean showNone) {
+    /**
+     * The constructor.
+     * 
+     * @param container the container
+     * @param property the property
+     * @param showNone
+     */
+    public UMLModelElementCachedListModel(UMLUserInterfaceContainer container, 
+            String property, boolean showNone) {
         super(container, property, showNone);
     }
 
-    abstract protected void resetCache();
-    abstract protected java.util.List getCache();
-    abstract public boolean isProperClass(Object obj);
+    protected abstract void resetCache();
+    protected abstract java.util.List getCache();
+    public abstract boolean isProperClass(Object obj);
     abstract Collection getRawCollection();
 
     java.util.Collection createCollection(int initialSize) {
@@ -49,6 +59,9 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
 
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#recalcModelElementSize()
+     */
     protected int recalcModelElementSize() {
         int size = 0;
         java.util.List cache = getCache();
@@ -58,6 +71,9 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         return size;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLModelElementListModel#getModelElementAt(int)
+     */
     protected Object getModelElementAt(int index) {
         Object/*MModelElement*/ element = null;
         java.util.List cache = getCache();
@@ -67,16 +83,22 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         return /*(MModelElement)*/ element;
     }
 
+    /**
+     * @see org.argouml.uml.ui.UMLUserInterfaceComponent#targetChanged()
+     */
     public void targetChanged() {
         resetCache();
         super.targetChanged();
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleRemoved(ru.novosoft.uml.MElementEvent)
+     */
     public void roleRemoved(final MElementEvent event) {
 	Object eventProperty = event.getName();
         Object listProperty = getProperty();
-        if (listProperty == null || eventProperty == null ||
-            listProperty.equals(eventProperty)) {
+        if (listProperty == null || eventProperty == null 
+                || listProperty.equals(eventProperty)) {
             Object source = event.getSource();
             //
             //   if the thing removed was in our list
@@ -90,12 +112,15 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
         }
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#roleAdded(ru.novosoft.uml.MElementEvent)
+     */
     public void roleAdded(final MElementEvent event) {
 	Object eventProperty = event.getName();
         Object listProperty = getProperty();
 
-        if (listProperty == null || eventProperty == null ||
-            listProperty.equals(eventProperty)) {
+        if (listProperty == null || eventProperty == null 
+                || listProperty.equals(eventProperty)) {
             Object added = event.getAddedValue();
 
             if (isProperClass(added)) {
@@ -109,19 +134,30 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
 
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#recovered(ru.novosoft.uml.MElementEvent)
+     */
     public void recovered(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#listRoleItemSet(ru.novosoft.uml.MElementEvent)
+     */
     public void listRoleItemSet(final MElementEvent p1) {
     }
 
+    /**
+     * @see ru.novosoft.uml.MElementListener#removed(ru.novosoft.uml.MElementEvent)
+     */
     public void removed(final MElementEvent event) {
     }
 
-
-    //
-    //   this needs to be overriden if the derived class
-    //      wants to resort based on the name change
+    /**
+     * This needs to be overriden if the derived class
+     * wants to resort based on the name change.
+     * 
+     * @see ru.novosoft.uml.MElementListener#propertySet(ru.novosoft.uml.MElementEvent)
+     */
     public void propertySet(final MElementEvent event) {
         //TODO: update of listmodel is not correct!!
         //example: propertySet-event of classifier.setFeature(features)
@@ -137,15 +173,23 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
             fireContentsChanged(this, index, index);
     }
 
-/**
- * Swap two items in a Collection. The Collection contains the attributes list
- * and operations list together, however these items need to be swapped
- * independantly of each other so we must iterate through the list to find
- * a "value match". The parameter "lowIndex" is no longer needed, however I
- * left it in for compatability. The same operation is performed twice,
- * once for the source Collection, and again for the cache list.
- */
-    protected java.util.List swap(Collection source, int lowIndex, Object first, Object second) {
+    /**
+     * Swap two items in a Collection. 
+     * The Collection contains the attributes list
+     * and operations list together, however these items need to be swapped
+     * independantly of each other so we must iterate through the list to find
+     * a "value match". The parameter "lowIndex" is no longer needed, however I
+     * left it in for compatability. The same operation is performed twice,
+     * once for the source Collection, and again for the cache list.
+     *
+     * @param source the source collection
+     * @param lowIndex (not used)
+     * @param first the 1st item
+     * @param second the 2nd item
+     * @return the destination list
+     */
+    protected java.util.List swap(Collection source, int lowIndex, 
+            Object first, Object second) {
         java.util.List dest = new ArrayList(source);
 
         for (ListIterator i = dest.listIterator(); i.hasNext();) {
@@ -185,7 +229,8 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
  *  @param  source  underlying collection of attributes and operations.
  *  @param  index   location of the element within the list box.
  *  @param  newElement  element to be added.
- *  @param  element element at position before the add point (or null to add as first).
+ *  @param  element element at position before the add point 
+ *                  (or null to add as first).
  *  @return dest    new collection as a ArrayList().
 */
     protected java.util.List addElement(Collection source, int index,
@@ -210,6 +255,9 @@ abstract public class UMLModelElementCachedListModel extends UMLModelElementList
     }
 
 
+    /**
+     * @return the cache list
+     */
     protected java.util.List buildCache() {
         java.util.List cache = null;
         Collection collection = null;

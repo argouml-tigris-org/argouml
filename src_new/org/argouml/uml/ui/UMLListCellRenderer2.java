@@ -47,24 +47,27 @@ import org.argouml.application.helpers.ResourceLoaderWrapper;
  */
 public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
-    private Logger cat = Logger.getLogger(UMLListCellRenderer2.class);
+    private static final Logger LOG = 
+        Logger.getLogger(UMLListCellRenderer2.class);
 
     /**
      * True if the icon for the modelelement should be shown. The icon is, for
      * instance, a small class symbol for a class.
      */
-    private boolean _showIcon;
+    private boolean showIcon;
 
     /**
      * Constructor for UMLListCellRenderer2.
+     *
+     * @param showTheIcon true if the list should show icons
      */
-    public UMLListCellRenderer2(boolean showIcon) {
+    public UMLListCellRenderer2(boolean showTheIcon) {
 
         // only need to this from super()
         updateUI();
         setAlignmentX(LEFT_ALIGNMENT);
 
-        _showIcon = showIcon;
+        showIcon = showTheIcon;
     }
 
     /**
@@ -73,15 +76,15 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
      */
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected, boolean cellHasFocus) {
-        cat.debug("determine rendering for: " + value);
-        cat.debug("show icon: " + _showIcon);
+        LOG.debug("determine rendering for: " + value);
+        LOG.debug("show icon: " + showIcon);
         if (ModelFacade.isABase(value) || ModelFacade.isAMultiplicity(value)) {
 
-            cat.debug("is a MBase or MMultiplicity");
+            LOG.debug("is a MBase or MMultiplicity");
             String text = makeText(value);
             setText(text);
 
-            if (_showIcon) {
+            if (showIcon) {
 
                 // ----- setup similar to the super() implementation -----
                 setComponentOrientation(list.getComponentOrientation());
@@ -122,9 +125,11 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
 
     /**
      * Makes the text that must be placed on the label that is returned.
+     * If there is no name for the given modelelement, then 
+     * (anon xxx) is shown, with xxx the type name.
      * 
-     * @param value
-     * @return String
+     * @param value the given modelelement
+     * @return String the text to be shown 
      */
     public String makeText(Object value) {
         String name = null;
@@ -144,8 +149,9 @@ public class UMLListCellRenderer2 extends DefaultListCellRenderer {
     }
 
     private String makeTypeName(Object elem) {
-        if (org.argouml.model.ModelFacade.isABase(elem)) { return ModelFacade
-                .getUMLClassName(elem); }
+        if (org.argouml.model.ModelFacade.isABase(elem)) { 
+            return ModelFacade.getUMLClassName(elem); 
+        }
         return null;
     }
 

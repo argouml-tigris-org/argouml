@@ -40,17 +40,20 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
 
     /**
      * Constructor for UMLLinkedListCellRenderer.
-     * @param showIcon
+     * @param showIcon true if the icon should be shown
      */
     public UMLLinkedListCellRenderer(boolean showIcon) {
         super(showIcon);
     }
 
     /**
-     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(javax.swing.JList, java.lang.Object, int, boolean, boolean)
+     * @see javax.swing.ListCellRenderer#getListCellRendererComponent(
+     * javax.swing.JList, java.lang.Object, int, boolean, boolean)
      */
-    public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
-        JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+    public Component getListCellRendererComponent(JList list, Object value, 
+            int index, boolean isSelected, boolean cellHasFocus) {
+        JLabel label = (JLabel) super.getListCellRendererComponent(
+                list, value, index, isSelected, cellHasFocus);
         /*       
         label.setBackground(list.getBackground());
         label.setForeground(list.getForeground());
@@ -58,7 +61,8 @@ public class UMLLinkedListCellRenderer extends UMLListCellRenderer2 {
         if (isSelected) {
             Font font = label.getFont();
             Map textattributes = font.getAttributes();
-            textattributes.put(TextAttribute.WEIGHT, TextAttribute.WEIGHT_EXTRABOLD);
+            textattributes.put(TextAttribute.WEIGHT, 
+                TextAttribute.WEIGHT_EXTRABOLD);
             label.setFont(font.deriveFont(textattributes));            
         } 
         */

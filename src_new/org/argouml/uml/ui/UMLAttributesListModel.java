@@ -210,7 +210,7 @@ public class UMLAttributesListModel extends UMLModelElementCachedListModel  {
         popup.add(open);
         UMLListMenuItem add = new UMLListMenuItem(
                 container.localize("New"), this, "add", index);
-        if (_upper >= 0 && getModelElementSize() >= _upper) {
+        if (getUpper() >= 0 && getModelElementSize() >= getUpper()) {
             add.setEnabled(false);
         }
         popup.add(add);
