@@ -25,15 +25,14 @@
 package org.argouml.uml.diagram.state.ui;
 
 import java.awt.Color;
+import java.beans.PropertyChangeEvent;
 import java.util.Iterator;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * The fig hierarchy should comply as much as possible to the hierarchy of the
@@ -90,18 +89,18 @@ public abstract class FigState extends FigStateVertex {
     }
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
         if (mee.getSource().equals(getOwner())) {
             // the events concerning the MState
-            if (mee.getName().equals("classifierInState")
-                    || mee.getName().equals("deferrableEvent")
-                    || mee.getName().equals("internalTransition")
-                    || mee.getName().equals("doActivity")
-                    || mee.getName().equals("entry")
-                    || mee.getName().equals("exit")) {
+            if (mee.getPropertyName().equals("classifierInState")
+                    || mee.getPropertyName().equals("deferrableEvent")
+                    || mee.getPropertyName().equals("internalTransition")
+                    || mee.getPropertyName().equals("doActivity")
+                    || mee.getPropertyName().equals("entry")
+                    || mee.getPropertyName().equals("exit")) {
                 updateInternal();
                 // register this fig as a listener if the event is
                 // about adding modelelements to the state
@@ -139,20 +138,20 @@ public abstract class FigState extends FigStateVertex {
             Object state = newOwner;
             Iterator it = ModelFacade.getInternalTransitions(state).iterator();
             while (it.hasNext()) {
-                UmlModelEventPump.getPump().addModelEventListener(this,
+                Model.getPump().addModelEventListener(this,
                         it.next());
             }
             // register for the doactivity etc.
             if (ModelFacade.getDoActivity(state) != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this,
+                Model.getPump().addModelEventListener(this,
                         ModelFacade.getDoActivity(state));
             }
             if (ModelFacade.getEntry(state) != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this,
+                Model.getPump().addModelEventListener(this,
                         ModelFacade.getEntry(state));
             }
             if (ModelFacade.getExit(state) != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this,
+                Model.getPump().addModelEventListener(this,
                         ModelFacade.getExit(state));
             }
         } else {
@@ -164,19 +163,19 @@ public abstract class FigState extends FigStateVertex {
                 Iterator it = ModelFacade.getInternalTransitions(state)
                         .iterator();
                 while (it.hasNext()) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this,
+                    Model.getPump().removeModelEventListener(this,
                             it.next());
                 }
                 if (ModelFacade.getDoActivity(state) != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this,
+                    Model.getPump().removeModelEventListener(this,
                             ModelFacade.getDoActivity(state));
                 }
                 if (ModelFacade.getEntry(state) != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this,
+                    Model.getPump().removeModelEventListener(this,
                             ModelFacade.getEntry(state));
                 }
                 if (ModelFacade.getExit(state) != null) {
-                    UmlModelEventPump.getPump().removeModelEventListener(this,
+                    Model.getPump().removeModelEventListener(this,
                             ModelFacade.getExit(state));
                 }
             }

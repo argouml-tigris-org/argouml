@@ -31,6 +31,7 @@ package org.argouml.uml.diagram.collaboration.ui;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Iterator;
@@ -41,14 +42,11 @@ import org.argouml.model.ModelFacade;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.uml.diagram.ui.FigNodeModelElement;
 import org.argouml.uml.generator.ParserDisplay;
-
 import org.tigris.gef.base.Layer;
+import org.tigris.gef.base.Selection;
 import org.tigris.gef.graph.GraphModel;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-import org.tigris.gef.base.Selection;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * Class to display graphics for a UML classifier role in a  collaboration
@@ -519,13 +517,13 @@ public class FigClassifierRole extends FigNodeModelElement {
     }
 
     /**
-     * @see FigNodeModelElement#modelChanged(MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
+    protected void modelChanged(PropertyChangeEvent mee) {
         // base should get it's own figtext and it's own update method
         // TODO: remove the mee == null as soon as everything is migrated
         if (mee == null
-	    || mee.getName().equals("base")
+	    || mee.getPropertyName().equals("base")
 	    && mee.getSource() == getOwner())
 	{
             updateNameText();

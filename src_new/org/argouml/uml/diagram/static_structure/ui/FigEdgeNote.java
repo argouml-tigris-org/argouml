@@ -26,6 +26,7 @@ package org.argouml.uml.diagram.static_structure.ui;
 
 import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.beans.VetoableChangeListener;
 
@@ -39,8 +40,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigNode;
 import org.tigris.gef.presentation.FigPoly;
-
-import ru.novosoft.uml.MElementEvent;
 
 
 /** 
@@ -134,15 +133,11 @@ public class FigEdgeNote
     public String toString() {
         return Translator.localize("misc.comment-edge");
     }
-    
-    
-    
-    
 
     /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent e) {        
+    protected void modelChanged(PropertyChangeEvent e) {        
     }
     /**
      * @see org.tigris.gef.presentation.Fig#setOwner(java.lang.Object)

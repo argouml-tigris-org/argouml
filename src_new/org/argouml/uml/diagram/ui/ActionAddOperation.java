@@ -25,13 +25,14 @@
 package org.argouml.uml.diagram.ui;
 
 import java.awt.event.ActionEvent;
+import java.beans.PropertyChangeListener;
 import java.util.Iterator;
 
 import org.argouml.kernel.Project;
 import org.argouml.kernel.ProjectManager;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
 import org.argouml.model.uml.UmlFactory;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
 import org.argouml.uml.ui.UMLChangeAction;
@@ -80,10 +81,10 @@ public class ActionAddOperation extends UMLChangeAction {
 	    pb.getEditorPane().findPresentationsFor(cls,
 						    p.getDiagrams()).iterator();
         while (it.hasNext()) {
-            Object/*MElementListener*/ listener = it.next();
-            UmlModelEventPump.getPump().removeModelEventListener(listener,
-								 oper);
-            UmlModelEventPump.getPump().addModelEventListener(listener, oper);
+            PropertyChangeListener listener = 
+                (PropertyChangeListener) it.next();
+            Model.getPump().removeModelEventListener(listener, oper);
+            Model.getPump().addModelEventListener(listener, oper);
         }
 
 	super.actionPerformed(ae);

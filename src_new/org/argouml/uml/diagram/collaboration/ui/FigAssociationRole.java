@@ -24,6 +24,7 @@
 
 package org.argouml.uml.diagram.collaboration.ui;
 
+import java.beans.PropertyChangeEvent;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -35,8 +36,6 @@ import org.tigris.gef.base.Layer;
 import org.tigris.gef.base.PathConvPercent;
 import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
-
-import ru.novosoft.uml.MElementEvent;
 
 
 
@@ -73,14 +72,15 @@ public class FigAssociationRole extends FigAssociation {
 
     ////////////////////////////////////////////////////////////////
     // event handlers
+    
     /**
-     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
-     *
-     * calls the method on the "super" (FigAssociation)
+     * Calls the method on the "super" (FigAssociation)
      * and then changes the name to take care of the
      * "/ name : base association name" form.
-     */    
-    protected void modelChanged(MElementEvent e) {
+     *
+     * @see org.argouml.uml.diagram.ui.FigEdgeModelElement#modelChanged(java.beans.PropertyChangeEvent)
+     */
+    protected void modelChanged(PropertyChangeEvent e) {
         super.modelChanged(e);
         //change the name
         Object ar = /*(MAssociationRole)*/ getOwner();

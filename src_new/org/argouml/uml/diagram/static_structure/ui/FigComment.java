@@ -62,8 +62,6 @@ import org.tigris.gef.presentation.FigPoly;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
 
-import ru.novosoft.uml.MElementEvent;
-
 /**
  * Class to display a UML note in a diagram
  * Since we don't need stereotypes for the note and an
@@ -549,9 +547,9 @@ public class FigComment
      * This is called aftern any part of the UML MModelElement has
      * changed. This method automatically updates the note FigText.
      *
-     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(ru.novosoft.uml.MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected final void modelChanged(MElementEvent mee) {
+    protected final void modelChanged(PropertyChangeEvent mee) {
         super.modelChanged(mee);
 
         String noteStr = retrieveNote();

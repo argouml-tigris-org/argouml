@@ -30,6 +30,7 @@ import java.awt.Rectangle;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyVetoException;
 import java.text.ParseException;
 import java.util.Collection;
@@ -37,8 +38,8 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.argouml.application.api.Notation;
+import org.argouml.model.Model;
 import org.argouml.model.ModelFacade;
-import org.argouml.model.uml.UmlModelEventPump;
 import org.argouml.ui.ArgoJMenu;
 import org.argouml.ui.ProjectBrowser;
 import org.argouml.ui.targetmanager.TargetManager;
@@ -64,8 +65,6 @@ import org.tigris.gef.presentation.Fig;
 import org.tigris.gef.presentation.FigGroup;
 import org.tigris.gef.presentation.FigRect;
 import org.tigris.gef.presentation.FigText;
-
-import ru.novosoft.uml.MElementEvent;
 
 /**
  * <p>Class to display graphics for a UML Class in a diagram.</p>
@@ -763,13 +762,11 @@ public class FigClass extends FigNodeModelElement
     /**
      * Handles changes of the model. Takes into account the event that
      * occured. If you need to update the whole fig, consider using
-     * renderingChanged.<p>
+     * renderingChanged.
      *
-     * @see FigNodeModelElement#modelChanged(MElementEvent)
+     * @see org.argouml.uml.diagram.ui.FigNodeModelElement#modelChanged(java.beans.PropertyChangeEvent)
      */
-    protected void modelChanged(MElementEvent mee) {
-        super.modelChanged(mee);
-
+    protected void modelChanged(PropertyChangeEvent mee) {
         if (getOwner() == null) {
             return;
         }
@@ -778,7 +775,7 @@ public class FigClass extends FigNodeModelElement
         if (mee == null
                 || ModelFacade.isAAttribute(mee.getSource())
                 || (mee.getSource() == getOwner()
-		&& mee.getName().equals("feature"))) {
+		&& mee.getPropertyName().equals("feature"))) {
             updateAttributes();
             damage();
         }
@@ -787,27 +784,28 @@ public class FigClass extends FigNodeModelElement
                 || ModelFacade.isAOperation(mee.getSource())
                 || ModelFacade.isAParameter(mee.getSource())
                 || (mee.getSource() == getOwner()
-		&& mee.getName().equals("feature"))) {
+                        && mee.getPropertyName().equals("feature"))) {
             updateOperations();
             damage();
         }
-        if (mee != null && mee.getName().equals("parameter") 
-                && ModelFacade.isAOperation(mee.getSource())) {
-            if (mee.getAddedValue() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, 
-                        mee.getAddedValue(), new String[] {
-                            "name", "kind", "type", "defaultValue"});
-            }
-            if (mee.getRemovedValue() != null) {
-                UmlModelEventPump.getPump().addModelEventListener(this, 
-                        mee.getRemovedValue());
-            }
+        if (mee != null && mee.getPropertyName().equals("parameter") 
+                && ModelFacade.isAOperation(mee.getSource())) { ;
+            //TODO: MVW: Do not know how to replace this. Is it used? When?
+//            if (mee.getAddedValue() != null) {
+//                Model.getPump().addModelEventListener(this, 
+//                        mee.getAddedValue(), new String[] {
+//                            "name", "kind", "type", "defaultValue"});
+//            }
+//            if (mee.getRemovedValue() != null) {
+//                Model.getPump().addModelEventListener(this, 
+//                        mee.getRemovedValue());
+//            }
         }
-        if (mee == null || mee.getName().equals("isAbstract")) {
+        if (mee == null || mee.getPropertyName().equals("isAbstract")) {
             updateAbstract();
             damage();
         }
-        if (mee == null || mee.getName().equals("stereotype")) {
+        if (mee == null || mee.getPropertyName().equals("stereotype")) {
             updateStereotypeText();
             updateAttributes();
             updateOperations();
@@ -1096,9 +1094,8 @@ public class FigClass extends FigNodeModelElement
             while (iter.hasNext()) {
                 Object sf = /*(MStructuralFeature)*/ iter.next();
                 // update the listeners
-		// UmlModelEventPump.getPump().removeModelEventListener(this,
-		// sf);
-                UmlModelEventPump.getPump().addModelEventListener(this, sf);
+		// Model.getPump().removeModelEventListener(this, sf);
+                // Model.getPump().addModelEventListener(this, sf); //??
                 if (figs.size() <= acounter) {
                     attr =
 			new FigFeature(xpos + 1,
@@ -1118,7 +1115,10 @@ public class FigClass extends FigNodeModelElement
                     attr = (CompartmentFigText) figs.elementAt(acounter);
                 }
                 attr.setText(Notation.generate(this, sf));
-                attr.setOwner(sf);
+                attr.setOwner(sf); //TODO: update the model again here? 
+                /* This causes another event, and modelChanged() called, 
+                 * and updateAttributes() called again... */
+                
                 // underline, if static
                 attr.setUnderline(ModelFacade.CLASSIFIER_SCOPEKIND
 				  .equals(ModelFacade.getOwnerScope(sf)));
@@ -1161,9 +1161,8 @@ public class FigClass extends FigNodeModelElement
             while (iter.hasNext()) {
                 Object bf = /*(MBehavioralFeature)*/ iter.next();
                 // update the listeners
-		// UmlModelEventPump.getPump().removeModelEventListener(this,
-		// bf);
-                UmlModelEventPump.getPump().addModelEventListener(this, bf);
+		// Model.getPump().removeModelEventListener(this, bf);
+                // Model.getPump().addModelEventListener(this, bf);
                 if (figs.size() <= ocounter) {
                     oper =
                         new FigFeature(xpos + 1,
@@ -1271,7 +1270,7 @@ public class FigClass extends FigNodeModelElement
                     Iterator it2 = ModelFacade.getParameters(oper).iterator();
                     while (it2.hasNext()) {
                         Object param = /*(MParameter)*/ it2.next();
-                        UmlModelEventPump.getPump()
+                        Model.getPump()
 			    .removeModelEventListener(this, param);
                     }
                 }
@@ -1289,7 +1288,7 @@ public class FigClass extends FigNodeModelElement
                         Object param = /*(MParameter)*/ it2.next();
                         // UmlModelEventPump.getPump()
                         // .removeModelEventListener(this, param);
-                        UmlModelEventPump.getPump()
+                        Model.getPump()
 			    .addModelEventListener(this, param);
                     }
                 }
