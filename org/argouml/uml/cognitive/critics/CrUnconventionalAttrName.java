@@ -151,7 +151,7 @@ public class CrUnconventionalAttrName extends CrUML {
 	    ToDoItem item = (ToDoItem) w.getToDoItem();
 	    Object me =
 		/*(MModelElement)*/ item.getOffenders().elementAt(0);
-	    String sug = ModelFacade.getName(me);
+	    String sug = computeSuggestion(ModelFacade.getName(me));
 	    if (sug.startsWith("_"))
 		sug =
 		    "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
@@ -162,6 +162,19 @@ public class CrUnconventionalAttrName extends CrUML {
 	    ((WizMEName) w).setInstructions(ins);
 	    ((WizMEName) w).setSuggestion(sug);
 	}
+    }
+    
+    public String computeSuggestion(String name) {
+        String sug = name;
+        if (sug == null) return "";
+        // next if is not very nice, improve this suggestion and related test.
+        if ("_".equals(sug)) return "_";
+        if (sug.startsWith("_"))
+		sug =
+		    "_" + sug.substring(1, 2).toLowerCase() + sug.substring(2);
+	    else
+		sug = sug.substring(0, 1).toLowerCase() + sug.substring(1);
+        return sug;
     }
     
     /**
