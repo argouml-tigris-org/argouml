@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -30,6 +30,7 @@ import java.lang.reflect.Method;
 
 import junit.framework.TestCase;
 
+import org.argouml.model.uml.UmlFactory;
 import org.argouml.model.uml.AbstractUmlModelFactory;
 import org.argouml.model.uml.foundation.core.CoreFactory;
 import org.argouml.model.uml.foundation.extensionmechanisms.ExtensionMechanismsFactory;
@@ -52,40 +53,65 @@ import ru.novosoft.uml.foundation.extension_mechanisms.MStereotype;
  */
 public class CheckUMLModelHelper {
 
-    public static void createAndRelease(TestCase tc,
+    /**
+     * Deleted a model object, looses the refence and then checks that 
+     * the object is reclaimed.
+     *
+     * This must be called with just one reference to the object or
+     * else it will fail.
+     *
+     * @param tc the test case where we run the assertions.
+     * @param mo the model object that we try to delete, release and reclaim.
+     */
+    public static void deleteAndRelease(TestCase tc,
 					Object mo) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c, 
-			    mo.toString() instanceof String);
+	tc.assertTrue("toString() corrupt in " + c, 
+		      mo.toString() instanceof String);
  
+	UmlFactory.getFactory().delete(mo);
+
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
+	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
-    public static void createAndRelease(TestCase tc,
-					MBase mo,
-					String name) {
+    /**
+     * Deleted a model object, looses the refence and then checks that 
+     * the object is reclaimed.
+     *
+     * This must be called with just one reference to the object or
+     * else it will fail.
+     *
+     * @param tc the test case where we run the assertions.
+     * @param mo the model object that we try to delete, release and reclaim.
+     * @param name the class name of the uml object
+     */
+    private static void deleteAndRelease(TestCase tc,
+					 MBase mo,
+					 String name) {
 	Class c = mo.getClass();
 
 	// Call methods that exists for all objects and that always return
 	// something meaningfull.
-	TestCase.assertTrue("toString() corrupt in " + c, 
-			    mo.toString() instanceof String);
-	TestCase.assertTrue("getUMLClassName() corrupt in " + c, 
-			    mo.getUMLClassName() instanceof String);
+	tc.assertTrue("toString() corrupt in " + c, 
+		      mo.toString() instanceof String);
+	tc.assertTrue("getUMLClassName() corrupt in " + c, 
+		      mo.getUMLClassName() instanceof String);
 
-	TestCase.assertTrue("getUMLClassName() different from expected in " + c, 
-			    name.equals(mo.getUMLClassName()));
+	tc.assertTrue("getUMLClassName() different from expected in " + c, 
+		      name.equals(mo.getUMLClassName()));
+
+	UmlFactory.getFactory().delete(mo);
 
 	WeakReference wo = new WeakReference(mo);
 	mo = null;
 	System.gc();
-	TestCase.assertTrue("Could not reclaim " + c, wo.get() == null);
+	tc.assertTrue("Could not reclaim " + c, wo.get() == null);
     }
 
     public static void createAndRelease(TestCase tc,
@@ -113,11 +139,11 @@ public class CheckUMLModelHelper {
 		// Extra careful now, not to keep any references to the
 		// second argument.
 		try {
-		    createAndRelease(tc, (MBase) m.invoke(f, args), names[i]);
+		    deleteAndRelease(tc, (MBase) m.invoke(f, args), names[i]);
 		}
 		catch (ClassCastException e) {
 		    // Here it is another object sent to the test.
-		    createAndRelease(tc, m.invoke(f, args));
+		    deleteAndRelease(tc, m.invoke(f, args));
 		}
 	    }
 	    catch (IllegalAccessException e) {

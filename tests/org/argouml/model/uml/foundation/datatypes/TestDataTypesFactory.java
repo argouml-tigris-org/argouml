@@ -1,5 +1,5 @@
 // $Id$
-// Copyright (c) 2002 The Regents of the University of California. All
+// Copyright (c) 2002-2003 The Regents of the University of California. All
 // Rights Reserved. Permission to use, copy, modify, and distribute this
 // software and its documentation without fee, and without a written
 // agreement is hereby granted, provided that the above copyright notice
@@ -69,25 +69,25 @@ public class TestDataTypesFactory extends TestCase {
 	    null 
 	};
 
+	DataTypesFactory dtf = DataTypesFactory.getFactory();
+
 	CheckUMLModelHelper.createAndRelease(
 					     this,
-					     DataTypesFactory.getFactory(),
+					     dtf,
 					     objs,
 					     args);
 
 	// Multiplicity
 
-	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     DataTypesFactory.getFactory().createMultiplicity(1, 10));
+	CheckUMLModelHelper.deleteAndRelease(this,
+					     dtf.createMultiplicity(1, 10));
 
-	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     DataTypesFactory.getFactory().createMultiplicity(new LinkedList()));
+	CheckUMLModelHelper.deleteAndRelease(
+		this,
+		dtf.createMultiplicity(new LinkedList()));
 
-	CheckUMLModelHelper.createAndRelease(
-					     this,
-					     DataTypesFactory.getFactory().createMultiplicity("1..10"));
+	CheckUMLModelHelper.deleteAndRelease(this,
+					     dtf.createMultiplicity("1..10"));
 
 	// Do we need to add tests for the following?
 	//
@@ -121,7 +121,7 @@ public class TestDataTypesFactory extends TestCase {
       }
     */
 
-    /* (non-Javadoc)
+    /**
      * @see junit.framework.TestCase#setUp()
      */
     protected void setUp() throws Exception {
