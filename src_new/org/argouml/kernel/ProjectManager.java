@@ -411,3 +411,13 @@ public final class ProjectManager {
         oldProject.remove();
     }
 }
+
+
+/**
+ * @deprecated since 0.15.1. TODO: What is this replaced by?
+ */
+class ResetStatsLater implements Runnable {
+	public void run() {
+		Project.resetStats();
+	}
+} /* end class ResetStatsLater */
