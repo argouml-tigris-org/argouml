@@ -75,9 +75,7 @@ public class UMLCompositeStateSubvertexList extends UMLMutableLinkedList {
     
     /**
      * Constructor for UMLCompositeStateSubvertexList.
-     * @param container
      * @param dataModel
-     * @param popup
      */
     public UMLCompositeStateSubvertexList(
         UMLModelElementListModel2 dataModel) {

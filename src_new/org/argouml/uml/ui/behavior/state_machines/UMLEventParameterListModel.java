@@ -37,7 +37,6 @@ public class UMLEventParameterListModel extends UMLModelElementListModel2 {
     
     /**
      * Constructor for UMLEventParameterListModel.
-     * @param container
      */
     public UMLEventParameterListModel() {
         super("parameter"); 

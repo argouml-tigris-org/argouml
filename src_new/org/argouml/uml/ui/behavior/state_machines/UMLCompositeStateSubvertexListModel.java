@@ -36,7 +36,6 @@ public class UMLCompositeStateSubvertexListModel
 
     /**
      * Constructor for UMLStateMachineTransitionListModel.
-     * @param container
      */
     public UMLCompositeStateSubvertexListModel() {
         super("subvertex");

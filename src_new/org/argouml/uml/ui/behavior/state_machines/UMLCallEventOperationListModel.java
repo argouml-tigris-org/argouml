@@ -39,7 +39,6 @@ public class UMLCallEventOperationListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLCallEventOperationListModel.
-     * @param container
      */
     public UMLCallEventOperationListModel() {
         super("operation");

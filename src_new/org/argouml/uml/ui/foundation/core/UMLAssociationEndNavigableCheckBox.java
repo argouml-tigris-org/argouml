@@ -38,10 +38,6 @@ public class UMLAssociationEndNavigableCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLAssociationEndNavigableCheckBox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLAssociationEndNavigableCheckBox() {
         super(Translator.localize("UMLMenu", "label.navigable"), ActionSetAssociationEndNavigable.SINGLETON, "isNavigable");

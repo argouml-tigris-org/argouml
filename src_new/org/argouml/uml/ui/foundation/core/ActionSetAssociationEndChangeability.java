@@ -52,7 +52,6 @@ public class ActionSetAssociationEndChangeability extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetAssociationEndChangeability() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -35,7 +35,6 @@ public class UMLStateDoActivityListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLStateDoActivityListModel.
-     * @param container
      */
     public UMLStateDoActivityListModel() {
         super("doActivity");

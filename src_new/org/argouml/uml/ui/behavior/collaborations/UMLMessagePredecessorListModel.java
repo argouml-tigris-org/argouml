@@ -39,7 +39,6 @@ public class UMLMessagePredecessorListModel extends UMLModelElementListModel2 {
    
     /**
      * Constructor for UMLMessagePredecessorListModel.
-     * @param container
      */
     public UMLMessagePredecessorListModel() {
         super("predecessor");

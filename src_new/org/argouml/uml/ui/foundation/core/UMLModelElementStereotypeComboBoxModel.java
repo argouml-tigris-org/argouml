@@ -45,7 +45,6 @@ public class UMLModelElementStereotypeComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLModelElementStereotypeComboBoxModel.
-     * @param container
      */
     public UMLModelElementStereotypeComboBoxModel() {
         super("stereotype", true);

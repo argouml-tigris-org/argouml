@@ -36,7 +36,6 @@ public class UMLUseCaseExtensionPointListModel
 
     /**
      * Constructor for UMLUseCaseExtensionPointListModel.
-     * @param container
      */
     public UMLUseCaseExtensionPointListModel() {
         super("extensionPoint");

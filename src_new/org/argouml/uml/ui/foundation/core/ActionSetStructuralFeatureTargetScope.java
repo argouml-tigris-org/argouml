@@ -42,7 +42,6 @@ public class ActionSetStructuralFeatureTargetScope extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetCompositeStateConcurrent.
-     * @param s
      */
     protected ActionSetStructuralFeatureTargetScope() {
 	super(Translator.localize("Set"), true, NO_ICON);

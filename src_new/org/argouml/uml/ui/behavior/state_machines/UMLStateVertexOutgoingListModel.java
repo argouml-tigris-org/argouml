@@ -37,7 +37,6 @@ public class UMLStateVertexOutgoingListModel
 
     /**
      * Constructor for UMLStateVertexOutgoingListModel.
-     * @param container
      */
     public UMLStateVertexOutgoingListModel() {
         super("outgoing");

@@ -35,7 +35,6 @@ public class UMLFeatureOwnerListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLFeatureOwnerListModel
-     * @param container
      */
     public UMLFeatureOwnerListModel() {
 	super("owner");

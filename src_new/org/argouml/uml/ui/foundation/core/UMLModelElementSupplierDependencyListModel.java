@@ -36,7 +36,6 @@ public class UMLModelElementSupplierDependencyListModel
 
     /**
      * Constructor for UMLModelElementSupplierDependencyListModel.
-     * @param container
      */
     public UMLModelElementSupplierDependencyListModel() {
         super("supplierDependency");

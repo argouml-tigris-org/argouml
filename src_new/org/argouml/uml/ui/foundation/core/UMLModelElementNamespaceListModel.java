@@ -36,7 +36,6 @@ public class UMLModelElementNamespaceListModel
 
     /**
      * Constructor for UMLModelElementNamespaceListModel.
-     * @param container
      */
     public UMLModelElementNamespaceListModel() {
         super("namespace");

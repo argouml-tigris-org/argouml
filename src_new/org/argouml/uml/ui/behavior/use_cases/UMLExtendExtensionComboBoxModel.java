@@ -37,7 +37,6 @@ public class UMLExtendExtensionComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLExtendExtensionComboBoxModel.
-     * @param container
      */
     public UMLExtendExtensionComboBoxModel() {
         super("extension", false);

@@ -43,7 +43,6 @@ public class ActionSetFlowSource extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetFlowSource() {
         super(Translator.localize("Set"), true, NO_ICON);

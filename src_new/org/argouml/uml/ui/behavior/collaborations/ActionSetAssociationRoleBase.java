@@ -44,7 +44,6 @@ public class ActionSetAssociationRoleBase extends UMLChangeAction {
     
     /**
      * Constructor for ActionSetAssociationRoleBase.
-     * @param s
      */
     protected ActionSetAssociationRoleBase() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -43,7 +43,6 @@ public class UMLClassifierRoleAvailableFeaturesListModel
 
     /**
      * Constructor for UMLClassifierRoleAvailableFeaturesListModel.
-     * @param container
      */
     public UMLClassifierRoleAvailableFeaturesListModel() {
         super();

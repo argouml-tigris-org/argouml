@@ -48,7 +48,6 @@ public class PropPanelStructuralFeature extends PropPanelFeature {
     /**
      * Constructor for PropPanelStructuralFeature.
      * @param name
-     * @param icon
      * @param orientation
      */
     protected PropPanelStructuralFeature(

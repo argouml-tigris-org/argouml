@@ -38,9 +38,6 @@ public class UMLStructuralFeatureTargetScopeCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLStructuralFeatureTargetScopeCheckBox.
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLStructuralFeatureTargetScopeCheckBox() {
         super(Translator.localize("UMLMenu", "label.classifier"), 

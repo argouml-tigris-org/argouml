@@ -36,7 +36,6 @@ public class UMLModelElementConstraintListModel
 
     /**
      * Constructor for UMLModelElementConstraintListModel.
-     * @param container
      */
     public UMLModelElementConstraintListModel() {
         super("constraint");

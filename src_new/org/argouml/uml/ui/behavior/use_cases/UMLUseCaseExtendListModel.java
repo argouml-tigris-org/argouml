@@ -36,7 +36,6 @@ public class UMLUseCaseExtendListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLUseCaseExtendListModel.
-     * @param container
      */
     public UMLUseCaseExtendListModel() {
         super("extend");

@@ -24,14 +24,14 @@ public class LinkNode extends ActivationNode implements LinkPort {
     }
 
     /**
-     * @return
+     * @return _figLinkPort
      */
     public FigLinkPort getFigLinkPort() {
         return _figLinkPort;
     }
 
     /**
-     * @param port
+     * @param figLinkPort
      */
     public void setFigLinkPort(FigLinkPort figLinkPort) {
         _figLinkPort = figLinkPort;
@@ -44,7 +44,7 @@ public class LinkNode extends ActivationNode implements LinkPort {
     }
 
     /**
-     * @return
+     * @return _destroyed
      */
     public boolean isDestroyed() {
         return _destroyed;

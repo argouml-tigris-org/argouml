@@ -36,7 +36,6 @@ public class UMLTransitionTriggerListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLTransitionTriggerListModel.
-     * @param container
      */
     public UMLTransitionTriggerListModel() {
         super("trigger");

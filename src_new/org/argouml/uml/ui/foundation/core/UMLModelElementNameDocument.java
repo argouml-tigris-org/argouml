@@ -36,8 +36,6 @@ public class UMLModelElementNameDocument extends UMLPlainTextDocument {
 
     /**
      * Constructor for UMLModelElementNameDocument.
-     * @param panel
-     * @param propertyList
      */
     public UMLModelElementNameDocument() {
         super("name");

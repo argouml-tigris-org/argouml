@@ -61,7 +61,6 @@ public class PropPanelPackage extends PropPanelNamespace  {
     /**
      * Constructor for PropPanelPackage.
      * @param title
-     * @param icon
      * @param orientation
      */
     public PropPanelPackage(String title, Orientation orientation) {

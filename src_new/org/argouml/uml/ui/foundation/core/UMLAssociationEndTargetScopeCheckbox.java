@@ -38,10 +38,6 @@ public class UMLAssociationEndTargetScopeCheckbox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLAssociationEndTargetScopeCheckbox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLAssociationEndTargetScopeCheckbox() {
         super(Translator.localize("UMLMenu", "label.targetscope-classifier"), ActionSetAssociationEndTargetScope.SINGLETON, "ordering");

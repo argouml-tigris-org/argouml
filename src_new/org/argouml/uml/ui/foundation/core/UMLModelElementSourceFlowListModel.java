@@ -36,7 +36,6 @@ public class UMLModelElementSourceFlowListModel
 
     /**
      * Constructor for UMLModelElementSourceFlowListModel.
-     * @param container
      */
     public UMLModelElementSourceFlowListModel() {
         super("sourceFlow");

@@ -37,7 +37,6 @@ public class UMLStructuralFeatureMultiplicityComboBoxModel extends UMLMultiplici
 
     /**
      * Constructor for UMLStructuralFeatureMultiplicityComboBoxModel.
-     * @param propertySetName
      */
     public UMLStructuralFeatureMultiplicityComboBoxModel() {
         super("multiplicity");

@@ -37,8 +37,6 @@ public class UMLStateMachineContextListModel
 
     /**
      * Constructor for UMLStateMachineContextListModel.
-     * @param container
-     * @param eventName
      */
     public UMLStateMachineContextListModel() {
         super("context");

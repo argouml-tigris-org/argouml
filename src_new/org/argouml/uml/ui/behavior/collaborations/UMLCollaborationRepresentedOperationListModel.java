@@ -38,7 +38,6 @@ public class UMLCollaborationRepresentedOperationListModel
 
     /**
      * Constructor for UMLCollaborationRepresentedOperationListModel.
-     * @param container
      */
     public UMLCollaborationRepresentedOperationListModel() {
         super("representedOperation");

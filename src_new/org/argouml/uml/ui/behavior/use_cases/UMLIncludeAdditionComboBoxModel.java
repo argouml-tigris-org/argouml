@@ -37,7 +37,6 @@ public class UMLIncludeAdditionComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLIncludeAdditionComboBoxModel.
-     * @param container
      */
     public UMLIncludeAdditionComboBoxModel() {
         super("addition", false);

@@ -44,7 +44,6 @@ public class UMLClassifierRoleAvailableContentsListModel
 
     /**
      * Constructor for UMLClassifierRoleAvailableContentsListModel.
-     * @param container
      */
     public UMLClassifierRoleAvailableContentsListModel() {
         super();

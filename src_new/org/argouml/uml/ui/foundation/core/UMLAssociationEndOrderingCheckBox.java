@@ -38,10 +38,6 @@ public class UMLAssociationEndOrderingCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLAssociationEndOrderingCheckBox.
-     * @param container
-     * @param text
-     * @param a
-     * @param propertySetName
      */
     public UMLAssociationEndOrderingCheckBox() {
         super(Translator.localize("UMLMenu", "label.ordering"), ActionSetAssociationEndOrdering.SINGLETON, "ordering");

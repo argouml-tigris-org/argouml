@@ -37,7 +37,6 @@ public class UMLStateMachineTransitionListModel
 
     /**
      * Constructor for UMLStateMachineTransitionListModel.
-     * @param container
      */
     public UMLStateMachineTransitionListModel() {
         super("transition");

@@ -36,7 +36,6 @@ public class UMLTransitionTargetListModel extends UMLModelElementListModel2 {
 
    /**
      * Constructor for UMLStateMachineTopListModel.
-     * @param container
      */
     public UMLTransitionTargetListModel() {
         super("target");

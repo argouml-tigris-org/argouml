@@ -50,9 +50,6 @@ public class UMLAssociationEndAggregationRadioButtonPanel extends UMLRadioButton
     /**
      * Constructor for UMLAssociationEndAggregationRadioButtonPanel.
      * @param title
-     * @param labeltexts
-     * @param propertySetName
-     * @param setAction
      * @param horizontal
      */
     public UMLAssociationEndAggregationRadioButtonPanel(String title, boolean horizontal) {

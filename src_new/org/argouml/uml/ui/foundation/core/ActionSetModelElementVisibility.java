@@ -48,7 +48,6 @@ public class ActionSetModelElementVisibility extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetModelElementVisibility() {
         super(Translator.localize("Set"), true, NO_ICON);

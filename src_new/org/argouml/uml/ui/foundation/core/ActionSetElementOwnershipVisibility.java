@@ -50,7 +50,7 @@ public class ActionSetElementOwnershipVisibility extends AbstractAction {
 
     /**
      * Constructor for ActionSetElementOwnershipVisibility.
-     * @param s
+     * @param group
      */
     public ActionSetElementOwnershipVisibility(UMLButtonGroup group) {
         super();

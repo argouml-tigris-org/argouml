@@ -44,7 +44,6 @@ public class ActionSetExtendBase extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetExtendBase.
-     * @param s
      */
     protected ActionSetExtendBase() {
         super(Translator.localize("action.set"), true, NO_ICON);

@@ -36,7 +36,6 @@ public class UMLModelElementTargetFlowListModel
 
     /**
      * Constructor for UMLModelElementTargetFlowListModel.
-     * @param container
      */
     public UMLModelElementTargetFlowListModel() {
         super("targetFlow");

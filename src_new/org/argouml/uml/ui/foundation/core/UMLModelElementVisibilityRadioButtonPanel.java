@@ -50,9 +50,6 @@ public class UMLModelElementVisibilityRadioButtonPanel extends UMLRadioButtonPan
     /**
      * Constructor for UMLAssociationEndChangeabilityRadioButtonPanel.
      * @param title
-     * @param labeltexts
-     * @param propertySetName
-     * @param setAction
      * @param horizontal
      */
     public UMLModelElementVisibilityRadioButtonPanel(String title, boolean horizontal) {

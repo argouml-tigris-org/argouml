@@ -47,9 +47,6 @@ public class UMLStructuralFeatureTypeComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLStructuralFeatureTypeComboBoxModel.
-     * @param container
-     * @param propertySetName
-     * @param clearable
      */
     public UMLStructuralFeatureTypeComboBoxModel() {
         super("type", false);

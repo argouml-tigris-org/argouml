@@ -36,7 +36,6 @@ public class UMLReceptionSignalComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLReceptionSignalComboBoxModel.
-     * @param container
      */
     public UMLReceptionSignalComboBoxModel() {
         super("signal", false);

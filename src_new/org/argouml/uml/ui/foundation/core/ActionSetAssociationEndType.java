@@ -41,7 +41,6 @@ public class ActionSetAssociationEndType extends UMLChangeAction {
     
     /**
      * Constructor for ActionSetStructuralFeatureType.
-     * @param s
      */
     protected ActionSetAssociationEndType() {
         super(Translator.localize("Set"), true, NO_ICON);

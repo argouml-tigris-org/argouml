@@ -40,9 +40,7 @@ public class UMLStateDoActivityList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLStateDoActivityList.
-     * @param container
      * @param dataModel
-     * @param popup
      */
     public UMLStateDoActivityList(
         UMLModelElementListModel2 dataModel) {

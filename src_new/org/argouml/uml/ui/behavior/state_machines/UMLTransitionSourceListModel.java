@@ -35,7 +35,6 @@ public class UMLTransitionSourceListModel extends UMLModelElementListModel2 {
 
    /**
      * Constructor for UMLStateMachineTopListModel.
-     * @param container
      */
     public UMLTransitionSourceListModel() {
         super("source");

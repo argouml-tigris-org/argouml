@@ -38,9 +38,6 @@ public class PropPanelStubState extends PropPanelStateVertex {
 
     /**
      * Constructor for PropPanelStubState.
-     * @param name
-     * @param icon
-     * @param orientation
      */
     public PropPanelStubState() {
         // TODO: give the stubstate it's own icon

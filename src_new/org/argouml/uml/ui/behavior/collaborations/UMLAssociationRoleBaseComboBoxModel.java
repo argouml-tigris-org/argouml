@@ -37,8 +37,6 @@ public class UMLAssociationRoleBaseComboBoxModel extends UMLComboBoxModel2 {
 
     /**
      * Constructor for UMLAssociationRoleBaseComboBoxModel.
-     * @param container
-     * @param propertySetName
      */
     public UMLAssociationRoleBaseComboBoxModel() {
         super("base", true);

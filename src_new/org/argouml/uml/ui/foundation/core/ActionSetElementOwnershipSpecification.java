@@ -41,7 +41,6 @@ public class ActionSetElementOwnershipSpecification extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetElementOwnershipSpecification() {
         super(Translator.localize("Set"), true, NO_ICON);

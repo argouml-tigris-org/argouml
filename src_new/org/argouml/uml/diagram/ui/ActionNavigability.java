@@ -46,9 +46,9 @@ public class ActionNavigability extends UMLAction {
     /**
      * The <code>ActionNavigability</code> constructor.
      *
-     * @param start a <code>MAssociationEnd</code> object at the start
+     * @param assocStart a <code>MAssociationEnd</code> object at the start
      * of an association.
-     * @param end a <code>MAssociationEnd</code> object at the end of
+     * @param assocEnd a <code>MAssociationEnd</code> object at the end of
      * an association.
      * @param nav the type of navigation required in the association
      * being either <ul> <li>BIDIRECTIONAL <li>STARTTOEND

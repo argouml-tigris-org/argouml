@@ -42,7 +42,6 @@ public class ActionSetAssociationEndTargetScope extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetAssociationEndTargetScope() {
         super(Translator.localize("Set"), true, NO_ICON);

@@ -44,7 +44,6 @@ public class ActionSetAssociationEndOrdering extends UMLChangeAction {
 
     /**
      * Constructor for ActionSetElementOwnershipSpecification.
-     * @param s
      */
     protected ActionSetAssociationEndOrdering() {
         super(Translator.localize("Set"), true, NO_ICON);

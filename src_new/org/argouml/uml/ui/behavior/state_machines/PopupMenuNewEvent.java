@@ -39,7 +39,8 @@ public class PopupMenuNewEvent extends JPopupMenu {
 
     /**
      * Constructor for PopupMenuNewEvent.
-     * @param label
+     * @param role
+     * @param list
      */
     public PopupMenuNewEvent(String role, UMLMutableLinkedList list) {
         super();

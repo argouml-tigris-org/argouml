@@ -37,9 +37,6 @@ public class UMLFeatureOwnerScopeCheckBox extends UMLCheckBox2 {
 
     /**
      * Constructor for UMLFeatureOwnerScopeCheckBox.
-     * @param container
-     * @param text
-     * @param a
      */
     public UMLFeatureOwnerScopeCheckBox() {
         super(Translator.localize("UMLMenu", "static"), ActionSetFeatureOwnerScope.SINGLETON, "ownerScope");

@@ -36,7 +36,6 @@ public class UMLMessageInteractionListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLMessageInteractionListModel.
-     * @param eventName
      */
     public UMLMessageInteractionListModel() {
         super("interaction");

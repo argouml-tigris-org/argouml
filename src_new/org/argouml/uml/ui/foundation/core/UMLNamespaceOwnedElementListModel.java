@@ -36,7 +36,6 @@ public class UMLNamespaceOwnedElementListModel extends UMLModelElementListModel2
 
     /**
      * Constructor for UMLNamespaceOwnedElementListModel.
-     * @param eventName
      */
     public UMLNamespaceOwnedElementListModel() {
         super("ownedElement");

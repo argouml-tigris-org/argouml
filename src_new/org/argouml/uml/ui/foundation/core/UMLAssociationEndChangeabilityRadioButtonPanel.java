@@ -50,9 +50,6 @@ public class UMLAssociationEndChangeabilityRadioButtonPanel extends UMLRadioButt
     /**
      * Constructor for UMLAssociationEndChangeabilityRadioButtonPanel.
      * @param title
-     * @param labeltexts
-     * @param propertySetName
-     * @param setAction
      * @param horizontal
      */
     public UMLAssociationEndChangeabilityRadioButtonPanel(String title, boolean horizontal) {

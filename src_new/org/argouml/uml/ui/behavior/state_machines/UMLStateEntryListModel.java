@@ -36,7 +36,6 @@ public class UMLStateEntryListModel extends UMLModelElementListModel2 {
 
     /**
      * Constructor for UMLStateEntryListModel.
-     * @param container
      */
     public UMLStateEntryListModel() {
         super("entry");

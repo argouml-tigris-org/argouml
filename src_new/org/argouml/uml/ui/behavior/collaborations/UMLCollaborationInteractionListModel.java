@@ -36,7 +36,6 @@ public class UMLCollaborationInteractionListModel
 
     /**
      * Constructor for UMLInteractionCollaborationListModel2.
-     * @param container
      */
     public UMLCollaborationInteractionListModel() {
         super("interaction");

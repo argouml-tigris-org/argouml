@@ -40,9 +40,7 @@ public class UMLStateExitList extends UMLMutableLinkedList {
 
     /**
      * Constructor for UMLStateEntryList.
-     * @param container
      * @param dataModel
-     * @param popup
      */
     public UMLStateExitList(
         UMLModelElementListModel2 dataModel) {
