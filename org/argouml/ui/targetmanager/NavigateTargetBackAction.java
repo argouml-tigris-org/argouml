@@ -33,13 +33,16 @@ import org.argouml.uml.ui.UMLAction;
  * @author jaap.branderhorst@xs4all.nl
  */
 public class NavigateTargetBackAction extends UMLAction {
-    private static NavigateTargetBackAction _instance;
+    private static NavigateTargetBackAction instance;
 
+    /**
+     * @return the instance (singleton)
+     */
     public static NavigateTargetBackAction getInstance() {
-        if (_instance == null) {
-            _instance = new NavigateTargetBackAction();
+        if (instance == null) {
+            instance = new NavigateTargetBackAction();
         }
-        return _instance;
+        return instance;
     }
 
     private NavigateTargetBackAction() {
