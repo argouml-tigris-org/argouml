@@ -151,7 +151,18 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 
   /** Return true if the given object is a valid edge in this graph */
   public boolean canAddEdge(Object edge)  {
-    return (edge instanceof MTransition);
+    if(_edges.contains(edge)) return false;
+    Object end0 = null, end1 = null;
+    if (edge instanceof MTransition) {
+      MTransition tr = (MTransition)edge;
+      end0 = tr.getSource();
+      end1 = tr.getTarget();
+    }
+
+    if (end0 == null || end1 == null) return false;
+    if (!_nodes.contains(end0)) return false;
+    if (!_nodes.contains(end1)) return false;
+    return true;
   }
 
   /** Remove the given node from the graph. */
@@ -200,7 +211,18 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     fireEdgeAdded(edge);
   }
 
-  public void addNodeRelatedEdges(Object node) { }
+  public void addNodeRelatedEdges(Object node) {    
+      if ( node instanceof MStateVertex ) {
+      Vector transen = new Vector(((MStateVertex)node).getOutgoings());
+      transen.addAll(((MStateVertex)node).getIncomings());
+      Iterator iter = transen.iterator();
+      while (iter.hasNext()) {
+         MTransition dep = (MTransition) iter.next();
+         if(canAddEdge(dep))
+           addEdge(dep);
+      }
+    }
+  }
 
 
   /** Remove the given edge from the graph. */

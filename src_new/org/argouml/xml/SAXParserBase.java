@@ -27,6 +27,10 @@ import org.xml.sax.*;
 import org.xml.sax.helpers.*;
 import java.util.Stack;
 import java.net.URL;
+import java.io.*;
+import org.xml.sax.*;
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.parsers.SAXParser;
 
 /**
  * @author Jim Holt
@@ -75,23 +79,26 @@ public abstract class SAXParserBase extends HandlerBase {
 
   public void parse(URL url) throws Exception {
     long start, end;
-    String parserName = System.getProperty("org.xml.sax.parser");
-    if (parserName == null) parserName = "com.ibm.xml.parsers.SAXParser";
-    if (_dbg || _verbose)
-      System.out.println("NOTE: using parser class: " + parserName);
-    Parser parser = ParserFactory.makeParser(parserName);
-    parser.setDocumentHandler(this);
-    parser.setEntityResolver(this);
+//    String parserName = System.getProperty("org.xml.sax.parser");
+//    if (parserName == null) parserName = "com.ibm.xml.parsers.SAXParser";
+//    if (_dbg || _verbose)
+//      System.out.println("NOTE: using parser class: " + parserName);
+//    Parser parser = ParserFactory.makeParser(parserName);
+    SAXParserFactory factory = SAXParserFactory.newInstance();
+    factory.setNamespaceAware(false);
+    factory.setValidating(false);
     try {
+      SAXParser parser = factory.newSAXParser();
       InputSource input = new InputSource(url.openStream());
+      input.setSystemId(url.toString());
       start = System.currentTimeMillis();
-      parser.parse(input);
+      parser.parse(input,this);
       end = System.currentTimeMillis();
       _parseTime = end - start;
       if (_stats) {
 	System.out.println("Elapsed time: " + (end - start) + " ms");
       }
-    } catch (SAXException se) {
+    } catch (Exception se) {
       se.printStackTrace();
     }
   }
@@ -161,13 +168,20 @@ public abstract class SAXParserBase extends HandlerBase {
       InputSource s = new InputSource(testIt.openStream());
       return s;
     } catch (Exception e) {
-      if (_dbg || _verbose)
+      if (_dbg || _verbose) {
 	System.out.println("NOTE: Could not open DTD " + systemId);
+      }
       String dtdName = systemId.substring(systemId.lastIndexOf('/')+1);
-      URL url = SAXParserBase.class.getResource("/org/argouml/xml/dtd/" + dtdName);
-      if (_dbg || _verbose)
-	System.out.println("NOTE: Using DTD " + url.toString());
-      return new InputSource(url.toString());
+      String dtdPath = "/org/argouml/xml/dtd/" + dtdName;
+      InputStream is = SAXParserBase.class.getResourceAsStream(dtdPath);
+      if(is == null) {
+        try {
+            is = new FileInputStream(dtdPath.substring(1));
+        }
+        catch(Exception ex) {
+        }
+      }
+      return new InputSource(is);
     }
   }
 

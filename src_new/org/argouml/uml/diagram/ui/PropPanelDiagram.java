@@ -59,9 +59,10 @@ implements TabModelTarget, DocumentListener {
     GridBagLayout gb = new GridBagLayout();
     setLayout(gb);
     GridBagConstraints c = new GridBagConstraints();
-    c.fill = GridBagConstraints.BOTH;
+    c.fill = GridBagConstraints.NONE;
     c.weightx = 0.0;
     c.ipadx = 3; c.ipady = 3;
+    c.anchor = GridBagConstraints.NORTHWEST;
 
     c.gridx = 0;
     c.gridwidth = 1;
@@ -69,6 +70,7 @@ implements TabModelTarget, DocumentListener {
     gb.setConstraints(_nameLabel, c);
     add(_nameLabel);
 
+    c.fill = GridBagConstraints.HORIZONTAL;
     c.weightx = 1.0;
     c.gridx = 1;
     //c.gridwidth = GridBagConstraints.REMAINDER;

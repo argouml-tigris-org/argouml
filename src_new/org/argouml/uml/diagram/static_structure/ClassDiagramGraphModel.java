@@ -271,6 +271,16 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
            addEdge(s);
       }
     }
+    if ( node instanceof MModelElement ) {
+      Vector specs = new Vector(((MModelElement)node).getClientDependencies());
+      specs.addAll(((MModelElement)node).getSupplierDependencies());
+      Iterator iter = specs.iterator();
+      while (iter.hasNext()) {
+         MDependency dep = (MDependency) iter.next();
+         if(canAddEdge(dep))
+           addEdge(dep);
+      }
+    }
   }
 
 

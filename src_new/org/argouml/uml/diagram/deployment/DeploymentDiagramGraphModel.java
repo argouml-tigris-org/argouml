@@ -192,12 +192,12 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
       Collection suppliers = ((MDependency)edge).getSuppliers();
       if (clients == null || suppliers == null) return false;
       end0 = ((Object[])clients.toArray())[0];
-      end1 = ((Object[])suppliers.toArray())[1];
+      end1 = ((Object[])suppliers.toArray())[0];
     }
     else if (edge instanceof MLink) {
       Collection roles = ((MLink)edge).getConnections();
       MLinkEnd le0 = (MLinkEnd)((Object[]) roles.toArray())[0];
-      MLinkEnd le1 = (MLinkEnd)((Object[]) roles.toArray())[0];
+      MLinkEnd le1 = (MLinkEnd)((Object[]) roles.toArray())[1];
       if (le0 == null || le1 == null) return false;
       end0 = le0.getInstance();
       end1 = le1.getInstance();
@@ -244,7 +244,52 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
     fireEdgeAdded(edge);
   }
 
-  public void addNodeRelatedEdges(Object node) { }
+  public void addNodeRelatedEdges(Object node) {
+    if ( node instanceof MClassifier ) {
+      Collection ends = ((MClassifier)node).getAssociationEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MAssociationEnd ae = (MAssociationEnd) iter.next();
+         if(canAddEdge(ae.getAssociation()))
+           addEdge(ae.getAssociation());
+      }
+    }
+    if ( node instanceof MInstance ) {
+      Collection ends = ((MInstance)node).getLinkEnds();
+      Iterator iter = ends.iterator();
+      while (iter.hasNext()) {
+         MLinkEnd ae = (MLinkEnd) iter.next();
+         if(canAddEdge(ae.getLink()))
+           addEdge(ae.getLink());
+      }
+    }
+    if ( node instanceof MGeneralizableElement ) {
+      Collection gn = ((MGeneralizableElement)node).getGeneralizations();
+      Iterator iter = gn.iterator();
+      while (iter.hasNext()) {
+         MGeneralization g = (MGeneralization) iter.next();
+         if(canAddEdge(g))
+           addEdge(g);
+      }
+      Collection sp = ((MGeneralizableElement)node).getSpecializations();
+      iter = sp.iterator();
+      while (iter.hasNext()) {
+         MGeneralization s = (MGeneralization) iter.next();
+         if(canAddEdge(s))
+           addEdge(s);
+      }
+    }
+    if ( node instanceof MModelElement ) {
+      Vector specs = new Vector(((MModelElement)node).getClientDependencies());
+      specs.addAll(((MModelElement)node).getSupplierDependencies());
+      Iterator iter = specs.iterator();
+      while (iter.hasNext()) {
+         MDependency dep = (MDependency) iter.next();
+         if(canAddEdge(dep))
+           addEdge(dep);
+      }
+    }
+ }
 
 
   /** Remove the given edge from the graph. */
@@ -304,7 +349,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	MComponent toCom = (MComponent) toPort; 
    	
 	  if (edgeClass == MDependencyImpl.class) {
-	    // nsuml: using Binding as default
 	    MDependency dep = MMUtil.SINGLETON.buildDependency(fromCom, toCom);
 	    addEdge(dep);
 	    return dep;
@@ -317,7 +361,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
    	
 
 	  if (edgeClass == MDependencyImpl.class) {
-	    // nsuml: using Binding as default
 	    MDependency dep = MMUtil.SINGLETON.buildDependency(fromComI, toComI);
 	    addEdge(dep);
 	    return dep;
@@ -335,7 +378,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return asc;
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
-	      // nsuml: using Binding as default
 	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toCls);
 	      addEdge(dep);
 	      return dep;
@@ -358,7 +400,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return asc;
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
-	      // nsuml: using Binding as default
 	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromCls, toIntf);
 	      addEdge(dep);
 	      return dep;
@@ -382,7 +423,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	      return asc;
 	    }
  	    else if (edgeClass == MDependencyImpl.class) {
-	      // nsuml: using Binding as default
 	      MDependency dep = MMUtil.SINGLETON.buildDependency(fromIntf, toCls);
 	      addEdge(dep);
 	      return dep;
@@ -400,7 +440,6 @@ implements MutableGraphModel, VetoableChangeListener, MElementListener {
 	MInterface toIntf = (MInterface) toPort;
 
  	if (edgeClass == MDependencyImpl.class) {
-	  // nsuml: using Binding as default
 	  MDependency dep = MMUtil.SINGLETON.buildDependency(fromIntf, toIntf);
 	  addEdge(dep);
 	  return dep;

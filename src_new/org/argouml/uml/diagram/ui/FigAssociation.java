@@ -51,6 +51,7 @@ public class FigAssociation extends FigEdgeModelElement {
 
   public FigAssociation() {
     addPathItem(_name, new PathConvPercent(this, 50, 10));
+    addPathItem(_stereo, new PathConvPercent(this, 50, 25));
 
     _srcMult = new FigText(10, 30, 90, 20);
     _srcMult.setFont(LABEL_FONT);

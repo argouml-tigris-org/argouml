@@ -55,7 +55,7 @@ public class FigInterface extends FigNodeModelElement {
   // instance variables
   protected FigRect _bigPort;
   protected FigRect _outline;
-  protected FigText _stereo;
+  protected FigText _stereoFake;
   protected FigText _oper;
   public MElementResidence resident = new MElementResidenceImpl();
 
@@ -71,13 +71,13 @@ public class FigInterface extends FigNodeModelElement {
 
     _outline = new FigRect(8,8,92,30, Color.black, Color.white);
 
-    _stereo = new FigText(10,10,92,15,Color.black, "Times", 10);
-    _stereo.setExpandOnly(true);
-    _stereo.setFilled(false);
-    _stereo.setLineWidth(0);
-    _stereo.setEditable(false);
-    _stereo.setText("<<Interface>>");
-    _stereo.setHeight(15);
+    _stereoFake = new FigText(10,10,92,15,Color.black, "Times", 10);
+    _stereoFake.setExpandOnly(true);
+    _stereoFake.setFilled(false);
+    _stereoFake.setLineWidth(0);
+    _stereoFake.setEditable(false);
+    _stereoFake.setText("<<Interface>>");
+    _stereoFake.setHeight(15);
 
     _name.setHeight(18);
     _name.setY(23);
@@ -92,7 +92,7 @@ public class FigInterface extends FigNodeModelElement {
 
     addFig(_bigPort);
     addFig(_outline);
-    addFig(_stereo);
+    addFig(_stereoFake);
     addFig(_name);
     addFig(_oper);
     Rectangle r = getBounds();
@@ -111,7 +111,7 @@ public class FigInterface extends FigNodeModelElement {
     Vector v = figClone.getFigs();
     figClone._bigPort = (FigRect) v.elementAt(0);
     figClone._outline = (FigRect) v.elementAt(1);
-    figClone._stereo = (FigText) v.elementAt(2);
+    figClone._stereoFake = (FigText) v.elementAt(2);
     figClone._name = (FigText) v.elementAt(3);
     figClone._oper = (FigText) v.elementAt(4);
     return figClone;
@@ -130,7 +130,7 @@ public class FigInterface extends FigNodeModelElement {
   }
 
   public Dimension getMinimumSize() {
-    Dimension stereoMin = _stereo.getMinimumSize();
+    Dimension stereoMin = _stereoFake.getMinimumSize();
     Dimension nameMin = _name.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
 
@@ -141,13 +141,13 @@ public class FigInterface extends FigNodeModelElement {
 
   public void setLineColor(Color c) {
     super.setLineColor(c);
-    _stereo.setLineWidth(0);
+    _stereoFake.setLineWidth(0);
     _name.setLineWidth(0);
   }
 
   public void setLineWidth(int w) {
     super.setLineWidth(w);
-    _stereo.setLineWidth(0);
+    _stereoFake.setLineWidth(0);
     _name.setLineWidth(0);
   }
 
@@ -156,13 +156,13 @@ public class FigInterface extends FigNodeModelElement {
     if (_name == null) return;
 
     Rectangle oldBounds = getBounds();
-    Dimension stereoMin = _stereo.getMinimumSize();
+    Dimension stereoMin = _stereoFake.getMinimumSize();
     Dimension nameMin = _name.getMinimumSize();
     Dimension operMin = _oper.getMinimumSize();
 
     _outline.setBounds(x, y, w,
 		       stereoMin.height + nameMin.height - OVERLAP);
-    _stereo.setBounds(x+1, y+1, w-2, stereoMin.height);
+    _stereoFake.setBounds(x+1, y+1, w-2, stereoMin.height);
     _name.setBounds(x+1, y + stereoMin.height - OVERLAP + 1, w-2, nameMin.height);
     _oper.setBounds(x, y + _outline.getBounds().height-1,
 		    w, h - _outline.getBounds().height+1);

@@ -46,7 +46,7 @@ import org.argouml.uml.diagram.ui.UMLDiagram;
 /** The main window of the Argo/UML application. */
 
 public class ProjectBrowser extends JFrame
-implements IStatusBar {
+implements IStatusBar, NavigationListener {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -108,6 +108,7 @@ implements IStatusBar {
   protected static Action _actionActivityDiagram = Actions.ActivityDiagram;
   protected static Action _actionCollaborationDiagram = Actions.CollaborationDiagram;
   protected static Action _actionDeploymentDiagram = Actions.DeploymentDiagram;
+  protected static Action _actionSequenceDiagram = Actions.SequenceDiagram;
 
   // ----- model elements
   //protected static Action _actionModel = Actions.MModel;
@@ -164,6 +165,8 @@ implements IStatusBar {
 
   protected JSplitPane _mainSplit, _topSplit, _botSplit;
 
+  private NavigationHistory _history = new NavigationHistory();
+
 
   ////////////////////////////////////////////////////////////////
   // constructors
@@ -179,7 +182,9 @@ implements IStatusBar {
     sb.incProgress(5);
     _toDoPane = new ToDoPane();
     _multiPane = new MultiEditorPane(sb);
+    _multiPane.addNavigationListener(this);
     _detailsPane = new DetailsPane(sb);
+    _detailsPane.addNavigationListener(this);
     setAppName(appName);
     if (TheInstance == null) TheInstance = this;
     //setName(title);
@@ -355,6 +360,7 @@ implements IStatusBar {
     createDiagrams.add(Actions.ActivityDiagram);
     createDiagrams.add(Actions.CollaborationDiagram);
     createDiagrams.add(Actions.DeploymentDiagram);
+    createDiagrams.add(Actions.SequenceDiagram);
 
     //JMenu createModelElements = (JMenu) create.add(new JMenu("Model Elements"));
     //createModelElements.add(Actions.AddTopLevelPackage);
@@ -579,6 +585,53 @@ implements IStatusBar {
   ////////////////////////////////////////////////////////////////
   // IStatusBar
   public void showStatus(String s) { _statusBar.showStatus(s); }
+
+    /**    Called by a user interface element when a request to
+     *    navigate to a model element has been received.
+     */
+    public void navigateTo(Object element) {
+        _history.navigateTo(element);
+        setTarget(element);
+    }
+
+    /**   Called by a user interface element when a request to
+     *   open a model element in a new window has been recieved.
+     */
+    public void open(Object element) {
+    }
+    
+    public boolean navigateBack(boolean attempt) {
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateBack(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
+    }
+    
+    public boolean navigateForward(boolean attempt) {
+        boolean navigated = false;
+        if(attempt) {
+            Object target = _history.navigateForward(attempt);
+            if(target != null) {
+                navigated = true;
+                setTarget(target);
+            }
+        }
+        return navigated;
+    }
+
+    public boolean isNavigateBackEnabled() {
+        return _history.isNavigateBackEnabled();
+    }
+
+    public boolean isNavigateForwardEnabled() {
+        return _history.isNavigateForwardEnabled();
+    }
+    
 
 
 } /* end class ProjectBrowser */
