@@ -113,7 +113,8 @@ public class ClassGenerationDialog extends JDialog implements ActionListener {
     gridBagConstraints.gridwidth = 3;
     gridBagConstraints.insets = new Insets(5, 5, 5, 5);
     gridBagConstraints.anchor = GridBagConstraints.WEST;
-    getContentPane().add(_outputDirectoryLabel, gridBagConstraints);
+    if (!isPathInModel)
+      getContentPane().add(_outputDirectoryLabel, gridBagConstraints);
 
     _browseButton.setText("Browse...");
     gridBagConstraints = new GridBagConstraints();
