@@ -61,8 +61,8 @@ public class Actions {
   public static UMLAction Undo = new ActionUndo();
   public static UMLAction Redo = new ActionRedo();
 
-  public static UMLAction NavBack = new ActionNavBack();
-  public static UMLAction NavForw = new ActionNavForw();
+  //public static UMLAction NavBack = new ActionNavBack();
+  //public static UMLAction NavForw = new ActionNavForw();
   //public static UMLAction NavFavs = new ActionNavFavs();
   public static UMLAction NavConfig = new ActionNavConfig();
 
@@ -187,6 +187,7 @@ class ActionGotoDiagram extends UMLAction {
   }
 } /* end class ActionGotoDiagram */
 
+/*
 class ActionNavBack extends UMLAction {
   public ActionNavBack() { super("action.navigate-back"); }
   public boolean shouldBeEnabled() {
@@ -207,6 +208,7 @@ class ActionNavBack extends UMLAction {
   }
 } /* end class ActionNavBack */
 
+/*
 class ActionNavForw extends UMLAction {
   public ActionNavForw() { super("action.navigate-forward"); }
   public boolean shouldBeEnabled() {

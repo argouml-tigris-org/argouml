@@ -68,7 +68,6 @@ public class ActionAddOperation extends UMLChangeAction {
 	if (!(target instanceof MClassifier)) return;
 	MClassifier cls = (MClassifier) target;
 	MOperation oper = UmlFactory.getFactory().getCore().buildOperation(cls);
-	pb.getNavigatorPane().addToHistory(oper);
 	pb.setTarget(oper);
         Iterator it = pb.getEditorPane().findPresentationsFor(cls, p.getDiagrams()).iterator();
         while (it.hasNext()) {
