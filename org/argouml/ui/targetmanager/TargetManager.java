@@ -568,7 +568,6 @@ public final class TargetManager {
 			  + listeners[i + 1]
 			  + " an error is thrown.",
 			  e);
-		throw (e); // this should not fail silently to the user
 	    }
         }
     }
