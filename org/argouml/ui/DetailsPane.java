@@ -39,6 +39,7 @@ import org.argouml.application.api.*;
 import org.argouml.util.*;
 import org.argouml.uml.ui.*;
 import org.argouml.cognitive.ui.*;
+import org.argouml.swingext.*;
 
 /** The lower-right pane of the main Argo/UML window.  This panel has
  * several tabs that show details of the selected ToDoItem, or the
@@ -50,7 +51,7 @@ import org.argouml.cognitive.ui.*;
  */
 
 public class DetailsPane extends JPanel
-implements ChangeListener, MouseListener, QuadrantPanel {
+implements ChangeListener, MouseListener, QuadrantPanel, Orientable {
   ////////////////////////////////////////////////////////////////
   // constants
 
@@ -74,12 +75,15 @@ implements ChangeListener, MouseListener, QuadrantPanel {
   protected Vector _tabPanels = new Vector();
   protected int _lastNonNullTab = 0;
 
+  private Orientation orientation;
+  
   ////////////////////////////////////////////////////////////////
   // constructors
 
-  public DetailsPane(StatusBar sb) {
-    Argo.log.info("making DetailsPane");
-    ConfigLoader.loadTabs(_tabPanels, "details", sb);
+  public DetailsPane(StatusBar sb, String pane, Orientation orientation) {
+    Argo.log.info("making DetailsPane("+pane+")");
+    orientation = orientation;
+    ConfigLoader.loadTabs(_tabPanels, pane, sb, orientation);
 
 
 //     _tabPanels.addElement(new TabToDo());
@@ -136,17 +140,19 @@ implements ChangeListener, MouseListener, QuadrantPanel {
 
   public JTabbedPane getTabs() { return _tabs; }
 
-  // needs-more-work: ToDoItem
-  public void setToDoItem(Object item) {
-    _item = item;
-    for (int i = 0; i < _tabPanels.size(); i++) {
-      JPanel t = (JPanel) _tabPanels.elementAt(i);
-      if (t instanceof TabToDoTarget) {
-	((TabToDoTarget)t).setTarget(_item);
-	_tabs.setSelectedComponent(t);
-      }
+    // needs-more-work: ToDoItem
+    public boolean setToDoItem(Object item) {
+        _item = item;
+        for (int i = 0; i < _tabPanels.size(); i++) {
+            JPanel t = (JPanel) _tabPanels.elementAt(i);
+            if (t instanceof TabToDoTarget) {
+                ((TabToDoTarget)t).setTarget(_item);
+	        _tabs.setSelectedComponent(t);
+                return true;
+            }
+        }
+        return false;
     }
-  }
 
 
 	public void setTarget(Object target) {
@@ -226,13 +232,38 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     return -1;
   }
 
-  public void selectTabNamed(String tabName) {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
+    /**
+     * Get the JPanel of the tab with the given name
+     * @param tabName the name of the required tab
+     * @return the tab of the given name
+     */
+    public JPanel getNamedTab(String tabName) {
+        for (int i = 0; i < _tabPanels.size(); i++) {
+            String title = _tabs.getTitleAt(i);
+            if (title != null && title.equals(tabName)) return (JPanel)_tabs.getComponentAt(i);
+        }
+        return null;
+    }
 
-    int index = getIndexOfNamedTab(tabName);
-    if (index != -1) _tabs.setSelectedIndex(index);
-  }
+    /**
+     * Get the number of tab pages
+     * @return the number of tab pages
+     */
+    public int getTabCount() {
+        return _tabPanels.size();
+    }
+
+    public boolean selectTabNamed(String tabName) {
+        ProjectBrowser pb = ProjectBrowser.TheInstance;
+
+        int index = getIndexOfNamedTab(tabName);
+        if (index != -1) {
+            pb.setDetailsPaneVisible(true);
+            _tabs.setSelectedIndex(index);
+            return true;
+        }
+        return false;
+    }
 
   public void addToPropTab(Class c, PropPanel p) {
     for (int i = 0; i < _tabPanels.size(); i++) {
@@ -242,21 +273,34 @@ implements ChangeListener, MouseListener, QuadrantPanel {
     }
   }
 
-  public void selectNextTab() {
-    ProjectBrowser pb = ProjectBrowser.TheInstance;
-    pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
+  //public void selectNextTab() {
+  //  ProjectBrowser pb = ProjectBrowser.TheInstance;
+  //  pb.setDetailsPaneVisible(true); // Added BobTarling 7-Jan-2002
 
-    int size = _tabPanels.size();
-    int currentTab = _tabs.getSelectedIndex();
-    for (int i = 1; i < _tabPanels.size(); i++) {
-      int newTab = (currentTab + i) % size;
-      if (_tabs.isEnabledAt(newTab)) {
-	_tabs.setSelectedIndex(newTab);
-	return;
-      }
+  //  int size = _tabPanels.size();
+  //  int currentTab = _tabs.getSelectedIndex();
+  //  for (int i = 1; i < _tabPanels.size(); i++) {
+  //    int newTab = (currentTab + i) % size;
+  //    if (_tabs.isEnabledAt(newTab)) {
+  //	_tabs.setSelectedIndex(newTab);
+  //	return;
+  //    }
+  //  }
+  //}
+
+    public TabProps getTabProps() {
+        Iterator iter = _tabPanels.iterator();
+        Object o;
+        while(iter.hasNext()) {
+            o = iter.next();
+            if(o instanceof TabProps) {
+                return(TabProps) o;
+            }
+        }
+        return null;
     }
-  }
 
+  
     public void addNavigationListener(NavigationListener navListener) {
         Iterator iter = _tabPanels.iterator();
         Object panel;
@@ -335,6 +379,21 @@ implements ChangeListener, MouseListener, QuadrantPanel {
 
   public int getQuadrant() { return Q_BOTTOM_RIGHT; }
 
+    /**
+     * Set the orientation of this details pane;
+     * @param the required orientation
+     */
+    public void setOrientation(Orientation orientation) {
+        this.orientation = orientation;
+        for (int i = 0; i < _tabPanels.size(); i++) {
+            JPanel t = (JPanel) _tabPanels.elementAt(i);
+            if (t instanceof Orientable) {
+                Orientable o = (Orientable)t;
+                o.setOrientation(orientation);
+            }
+        } /* end for */
+    }
+  
 } /* end class DetailsPane */
 
 

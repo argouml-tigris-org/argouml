@@ -104,8 +104,16 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
    * format
    */
   public ToDoPane _toDoPane;
-  protected MultiEditorPane _multiPane;
-  protected DetailsPane _detailsPane;
+  protected MultiEditorPane _editorPane;
+  protected DetailsPane _northEastPane;
+  protected DetailsPane _northPane;
+  protected DetailsPane _northWestPane;
+  protected DetailsPane _eastPane;
+  protected DetailsPane _southEastPane;
+  protected DetailsPane _southPane;
+  
+  private Map detailsPanesByCompassPoint = new HashMap();
+  
   protected JMenuBar _menuBar = new JMenuBar();
 
   /** Submenu of file for importing sources and other things.
@@ -177,44 +185,58 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
     public ProjectBrowser() {new ProjectBrowser("Test",null,0);}
 
-  public ProjectBrowser(String appName, StatusBar sb, int theme) {
+    public ProjectBrowser(String appName, StatusBar sb, int theme) {
 	super(appName);
 	setCurrentTheme(theme);
-    sb.showStatus("Making Project Browser: Navigator Pane");
-    sb.incProgress(5);
-    _navPane = new NavigatorPane();
-    sb.showStatus("Making Project Browser: To Do Pane");
-    sb.incProgress(5);
-    _toDoPane = new ToDoPane();
-    _multiPane = new MultiEditorPane(sb);
-    _multiPane.addNavigationListener(this);
-    _detailsPane = new DetailsPane(sb);
-    _detailsPane.addNavigationListener(this);
-    setAppName(appName);
-    if (TheInstance == null) TheInstance = this;
-    //setName(title);
-    //loadImages();
-    getContentPane().setFont(defaultFont);
-    getContentPane().setLayout(new BorderLayout());
-    initMenus();
-    //initToolBar();
-    getContentPane().add(_menuBar, BorderLayout.NORTH);
-    //JPanel p = new JPanel();
-    //p.setLayout(new BorderLayout());
-    //getContentPane().add(p, BorderLayout.CENTER);
-    //p.add(_toolBar, BorderLayout.NORTH);
-    getContentPane().add(createPanels(), BorderLayout.CENTER);
-    getContentPane().add(_statusBar, BorderLayout.SOUTH);
-    _toDoPane.setRoot(Designer.TheDesigner.getToDoList());
+        sb.showStatus("Making Project Browser: Navigator Pane");
+        sb.incProgress(5);
+        _navPane = new NavigatorPane();
+        sb.showStatus("Making Project Browser: To Do Pane");
+        sb.incProgress(5);
+        _toDoPane = new ToDoPane();
+        _editorPane = new MultiEditorPane(sb);
+        _editorPane.addNavigationListener(this);
+        
+        _eastPane      = makeDetailsPane(sb, BorderSplitPane.EAST.toLowerCase(), Vertical.getInstance());
+        _southPane     = makeDetailsPane(sb, BorderSplitPane.SOUTH. toLowerCase(), Horizontal.getInstance());
+        _southEastPane = makeDetailsPane(sb, BorderSplitPane.SOUTHEAST.toLowerCase(), Horizontal.getInstance());
+        _northWestPane = makeDetailsPane(sb, BorderSplitPane.NORTHWEST.toLowerCase(), Horizontal.getInstance());
+        _northPane     = makeDetailsPane(sb, BorderSplitPane.NORTH.toLowerCase(), Horizontal.getInstance());
+        _northEastPane = makeDetailsPane(sb, BorderSplitPane.NORTHEAST.toLowerCase(), Horizontal.getInstance());
 
-    // allows me to ask "Do you want to save first?"
-    setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-    addWindowListener(new WindowCloser());
-    ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
-    this.setIconImage(argoImage.getImage());
-  }
+        if (_southPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTH, _southPane);
+        if (_southEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.SOUTHEAST, _southEastPane);
+        if (_eastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.EAST, _eastPane);
+        if (_northWestPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTHWEST, _northWestPane);
+        if (_northPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTH, _northPane);
+        if (_northEastPane != null) detailsPanesByCompassPoint.put(BorderSplitPane.NORTHEAST, _northEastPane);
 
+        getTabProps().addNavigationListener(this);
 
+        setAppName(appName);
+        if (TheInstance == null) TheInstance = this;
+        //setName(title);
+        //loadImages();
+        getContentPane().setFont(defaultFont);
+        getContentPane().setLayout(new BorderLayout());
+        initMenus();
+        //initToolBar();
+        getContentPane().add(_menuBar, BorderLayout.NORTH);
+        //JPanel p = new JPanel();
+        //p.setLayout(new BorderLayout());
+        //getContentPane().add(p, BorderLayout.CENTER);
+        //p.add(_toolBar, BorderLayout.NORTH);
+        getContentPane().add(createPanels(), BorderLayout.CENTER);
+        getContentPane().add(_statusBar, BorderLayout.SOUTH);
+        _toDoPane.setRoot(Designer.TheDesigner.getToDoList());
+
+        // allows me to ask "Do you want to save first?"
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
+        addWindowListener(new WindowCloser());
+        ImageIcon argoImage = ResourceLoader.lookupIconResource("Model");
+        this.setIconImage(argoImage.getImage());
+    }
+    
 //   void loadImages() {
 //     String s = "A blue bullet icon - to draw attention to a menu item";
 //     blueDot = loadImageIcon("images/dot.gif", s);
@@ -520,9 +542,11 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
         Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
     ));
 
-    _detailsPane.setPreferredSize(new Dimension(
-        0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
-    ));
+    if (_southPane != null) {
+        _southPane.setPreferredSize(new Dimension(
+            0, Configuration.getInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, DEFAULT_COMPONENTHEIGHT)
+        ));
+    }
 
     _navPane.setPreferredSize(new Dimension(
         Configuration.getInteger(Argo.KEY_SCREEN_WEST_WIDTH, DEFAULT_COMPONENTWIDTH),0
@@ -533,9 +557,15 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     // up the argo application can be positioned.
     _workarea = new BorderSplitPane();
     _workarea.add(_toDoPane, BorderSplitPane.SOUTHWEST);
-    _workarea.add(_detailsPane, BorderSplitPane.SOUTH);
     _workarea.add(_navPane, BorderSplitPane.WEST);
-    _workarea.add(_multiPane);
+    //_workarea.add(_northPane, BorderSplitPane.NORTH);
+    
+    Iterator it = detailsPanesByCompassPoint.entrySet().iterator();
+    while(it.hasNext()) {
+        Map.Entry entry = (Map.Entry)it.next();
+        _workarea.add((DetailsPane)entry.getValue(), (String)entry.getKey());
+    }
+    _workarea.add(_editorPane);
 
     // Toolbar boundry is the area between the menu and the status bar. It contains
     // the workarea at centre and the toolbar position north, south, east or west.
@@ -605,34 +635,39 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     _toDoPane.setCurPerspective(tm);
   }
 
-  public void select(Object o) {
-    _multiPane.select(o);
-    _detailsPane.setTarget(o);
-    Actions.updateAllEnabled();
-  }
-
-  public void setTarget(Object o) {
-	  _multiPane.setTarget(o);
-	  _detailsPane.setTarget(o);
-	  if (o instanceof MNamespace) _project.setCurrentNamespace((MNamespace)o);
-	  if (o instanceof UMLDiagram) {
-		  MNamespace m = ((UMLDiagram)o).getNamespace();
-		  if (m != null) _project.setCurrentNamespace(m);
-	  }
-    if (o instanceof ArgoDiagram) {
-      setActiveDiagram ((ArgoDiagram) o);
+    public void select(Object o) {
+        _editorPane.select(o);
+        setDetailsTarget(o);
     }
-	  if (o instanceof MModelElement) {
-		  MModelElement eo = (MModelElement)o;
-		  if (eo == null) { System.out.println("no path to model"); return; }
-		  _project.setCurrentNamespace(eo.getNamespace());
-	  }
-	  Actions.updateAllEnabled();
-  }
+
+    public void setTarget(Object o) {
+        _editorPane.setTarget(o);
+        
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            detailsPane.setTarget(o);
+        }
+         
+	if (o instanceof MNamespace) _project.setCurrentNamespace((MNamespace)o);
+	if (o instanceof UMLDiagram) {
+	    MNamespace m = ((UMLDiagram)o).getNamespace();
+	    if (m != null) _project.setCurrentNamespace(m);
+	}
+        if (o instanceof ArgoDiagram) {
+            setActiveDiagram ((ArgoDiagram) o);
+        }
+	if (o instanceof MModelElement) {
+	    MModelElement eo = (MModelElement)o;
+	    if (eo == null) { System.out.println("no path to model"); return; }
+	    _project.setCurrentNamespace(eo.getNamespace());
+	}
+	Actions.updateAllEnabled();
+    }
 
   public Object getTarget() {
-    if (_multiPane == null) return null;
-    return _multiPane.getTarget();
+    if (_editorPane == null) return null;
+    return _editorPane.getTarget();
   }
 
   /**
@@ -654,18 +689,36 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     return _activeDiagram;
   }
 
-  public void setToDoItem(Object o) {
-    _detailsPane.setToDoItem(o);
-  }
+    /**
+     * Select the tab page containing the todo item
+     *
+     * @todo should introduce an instance variable to go straight to the correct tab instead of trying all
+     */
+    public void setToDoItem(Object o) {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            if (detailsPane.setToDoItem(o)) return;
+        }
+    }
 
-  public void setDetailsTarget(Object o) {
-    _detailsPane.setTarget(o);
-    Actions.updateAllEnabled();
-  }
+    public void setDetailsTarget(Object o) {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            detailsPane.setTarget(o);
+        }
+        Actions.updateAllEnabled();
+    }
 
-  public Object getDetailsTarget() {
-    return _detailsPane.getTarget();
-  }
+    public Object getDetailsTarget() {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        if (it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            return detailsPane.getTarget();
+        }
+        return null; // TODO Bob Tarling - Should probably throw exception here
+    }
 
   public StatusBar getStatusBar() { return _statusBar; }
 
@@ -673,9 +726,58 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 
   public ToDoPane getToDoPane() { return _toDoPane; }
   public NavigatorPane getNavPane() { return _navPane; }
-  public MultiEditorPane getEditorPane() { return _multiPane; }
-  public DetailsPane getDetailsPane() { return _detailsPane; }
+  public MultiEditorPane getEditorPane() { return _editorPane; }
+  //public DetailsPane getDetailsPane() { return _southPane; }
 
+    /**
+     * Find the tabpage with the given label and make it the front tab
+     * @param The tabpage label
+     * @return false if no tab was found of given name
+     */
+    public void selectTabNamed(String tabName) {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            if (detailsPane.selectTabNamed(tabName)) return;
+        }
+        throw new IllegalArgumentException("No such tab named " + tabName);
+    }
+
+    /**
+     * Find the tabpage with the given label
+     * @param The tabpage label
+     * @return the tabpage
+     */
+    public JPanel getNamedTab(String tabName) {
+        JPanel panel;
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            panel = detailsPane.getNamedTab(tabName);
+            if (panel != null) return panel;
+        }
+        return null;
+        //throw new IllegalArgumentException("No such tab named " + tabName);
+    }
+
+    /**
+     * Find the tabpage with the given label
+     * @param The tabpage label
+     * @return the tabpage
+     */
+    public TabProps getTabProps() {
+        Iterator it = detailsPanesByCompassPoint.values().iterator();
+        while(it.hasNext()) {
+            DetailsPane detailsPane = (DetailsPane)it.next();
+            TabProps tabProps = detailsPane.getTabProps();
+            if (tabProps != null) {
+                return tabProps;
+            }
+        }
+        return null;
+        //throw new IllegalStateException("No such tab named " + tabName);
+    }
+    
   public void jumpToDiagramShowing(VectorSet dms) {
     if (dms.size() == 0) return;
     Object first = dms.elementAt(0);
@@ -690,7 +792,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
       return;
     }
     Vector diagrams = getProject().getDiagrams();
-    Object target = _multiPane.getTarget();
+    Object target = _editorPane.getTarget();
     if ((target instanceof Diagram) && ((Diagram)target).countContained(dms) == dms.size()) {
       select(first);
       return;
@@ -918,7 +1020,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
 	  * @return     true if visible
 	  */
 	public boolean isDetailsPaneVisible() {
-	  return _detailsPane.isVisible();
+	  return _southPane.isVisible();
 	}
 
 	/**
@@ -1015,7 +1117,7 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
     public void saveScreenConfiguration() {
         Configuration.setInteger(Argo.KEY_SCREEN_WEST_WIDTH, _navPane.getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_SOUTHWEST_WIDTH, _toDoPane.getWidth());
-        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _detailsPane.getHeight());
+        Configuration.setInteger(Argo.KEY_SCREEN_SOUTH_HEIGHT, _southPane.getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_WIDTH, getWidth());
         Configuration.setInteger(Argo.KEY_SCREEN_HEIGHT, getHeight());
         Configuration.setInteger(Argo.KEY_SCREEN_LEFT_X, getX());
@@ -1033,6 +1135,20 @@ implements IStatusBar, NavigationListener, ArgoModuleEventListener {
   public void moduleDisabled(ArgoModuleEvent event) {
         // needs-more-work:  Disable menu
   }
+  
+    /**
+     * Build a new details pane for the given compass point
+     * @param compassPoint the position for which to build the pane
+     * @param orientation the required orientation of the pane.
+     * @return the details pane or null if none is required for the given
+     *         compass point.
+     */
+    private DetailsPane makeDetailsPane(StatusBar sb, String compassPoint, Orientation orientation) {
+        DetailsPane detailsPane = new DetailsPane(sb, compassPoint, orientation);
+        if (detailsPane.getTabCount() == 0) return null;
+        return detailsPane;
+    }
+
 
   class WindowCloser extends WindowAdapter {
     public WindowCloser() { }
@@ -1132,11 +1248,11 @@ class InitMenusLater implements Runnable {
     JMenuItem tabe3Item = editTabs.add(new ActionGoToEdit("As Metrics"));
     tabe3Item.setAccelerator(altshift3);
 
-    JMenuItem nextDetailsItem = detailsTabs.add(Actions.NextDetailsTab);
-    nextDetailsItem.setAccelerator(F5);
-    detailsTabs.addSeparator();
+//    JMenuItem nextDetailsItem = detailsTabs.add(Actions.NextDetailsTab);
+//    nextDetailsItem.setAccelerator(F5);
+//    detailsTabs.addSeparator();
 
-    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDoItem"));
+    JMenuItem tab1Item = detailsTabs.add(new ActionGoToDetails("ToDo Item"));
     tab1Item.setAccelerator(alt1);
     JMenuItem tab2Item = detailsTabs.add(new ActionGoToDetails("Properties"));
     tab2Item.setAccelerator(alt2);
@@ -1146,7 +1262,7 @@ class InitMenusLater implements Runnable {
     tab4Item.setAccelerator(alt4);
     JMenuItem tab5Item = detailsTabs.add(new ActionGoToDetails("Constraints"));
     tab5Item.setAccelerator(alt5);
-    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("TaggedValues"));
+    JMenuItem tab6Item = detailsTabs.add(new ActionGoToDetails("Tagged Values"));
     tab6Item.setAccelerator(alt6);
     JMenuItem tab7Item = detailsTabs.add(new ActionGoToDetails("Checklist"));
     tab7Item.setAccelerator(alt7);

@@ -47,8 +47,7 @@ public class ActionProperties extends UMLAction {
     public void actionPerformed(ActionEvent ae) {
 	ProjectBrowser pb = ProjectBrowser.TheInstance;
 	if (pb == null) return;
-	DetailsPane dp = pb.getDetailsPane();
-	dp.selectTabNamed("Properties");
+	pb.selectTabNamed("Properties");
     }
 
     public boolean shouldBeEnabled() { 

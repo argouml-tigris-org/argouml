@@ -35,19 +35,18 @@ import org.tigris.gef.base.*;
 import org.argouml.ui.*;
 
 public class CmdUMLProperties extends Cmd {
-  public static CmdUMLProperties Properties = new CmdUMLProperties();
+    public static CmdUMLProperties Properties = new CmdUMLProperties();
 
-  public CmdUMLProperties() { super("Properties"); }
+    public CmdUMLProperties() { super("Properties"); }
 
-  public void doIt() {
+    public void doIt() {
     //Editor ce = Globals.curEditor();
     //SelectionManager sm = ce.getSelectionManager();
     ProjectBrowser pb = ProjectBrowser.TheInstance;
     if (pb == null) return;
-    DetailsPane dp = pb.getDetailsPane();
-    dp.selectTabNamed("Properties");
-  }
+    pb.selectTabNamed("Properties");
+    }
 
-  public void undoIt() { }
+    public void undoIt() { }
 
 } /* end class CmdProperties */
